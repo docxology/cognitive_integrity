@@ -1,0 +1,38 @@
+
+OUTPUT STATISTICS REPORT
+============================================================
+
+Output Directory: /Users/4d/Documents/GitHub/template/output/cognitive_integrity/cogsec_multiagent_3_practical
+
+Total Files: 117
+Total Size: 2.77 MB
+
+Files by Category:
+  • pdf: 8 files (0.56 MB)
+  • web: 13 files (0.31 MB)
+  • slides: 79 files (1.15 MB)
+  • figures: 12 files (0.74 MB)
+  • reports: 4 files (0.01 MB)
+  • logs: 1 files (0.01 MB)
+
+Largest Files:
+  • cogsec_multiagent_3_practical_combined.pdf: 0.27 MB (pdf)
+  • posture_radar.png: 0.22 MB (figures)
+  • index.html: 0.12 MB (web)
+  • trust_decay.png: 0.11 MB (figures)
+  • _combined_manuscript.tex: 0.09 MB (pdf)
+
+Missing Expected Files:
+  ⚠  cogsec_multiagent_3_practical_combined.pdf or project_combined.pdf
+
+File Types:
+  • .pdf: 18 file(s)
+  • .log: 13 file(s)
+  • .aux: 12 file(s)
+  • .tex: 12 file(s)
+  • .html: 12 file(s)
+  • .nav: 11 file(s)
+  • .snm: 11 file(s)
+  • .toc: 11 file(s)
+  • .png: 6 file(s)
+  • .md: 4 file(s)

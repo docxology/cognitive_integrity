@@ -1,0 +1,289 @@
+{
+  "directories": {
+    "pdf": {
+      "exists": true,
+      "file_count": 8,
+      "size_mb": "0.91",
+      "total_size_bytes": 957652,
+      "largest_files": [
+        {
+          "name": "cogsec_multiagent_2_computational_combined.pdf",
+          "size_mb": "0.47",
+          "path": "pdf/cogsec_multiagent_2_computational_combined.pdf"
+        },
+        {
+          "name": "_combined_manuscript.tex",
+          "size_mb": "0.14",
+          "path": "pdf/_combined_manuscript.tex"
+        },
+        {
+          "name": "_combined_manuscript.md",
+          "size_mb": "0.12",
+          "path": "pdf/_combined_manuscript.md"
+        }
+      ],
+      "extensions": {
+        ".md": 1,
+        ".log": 1,
+        ".aux": 1,
+        ".blg": 1,
+        ".bib": 1,
+        ".tex": 1,
+        ".pdf": 1,
+        ".bbl": 1
+      }
+    },
+    "web": {
+      "exists": true,
+      "file_count": 15,
+      "size_mb": "0.38",
+      "total_size_bytes": 396920,
+      "largest_files": [
+        {
+          "name": "index.html",
+          "size_mb": "0.13",
+          "path": "web/index.html"
+        },
+        {
+          "name": "_combined_manuscript.md",
+          "size_mb": "0.12",
+          "path": "web/_combined_manuscript.md"
+        },
+        {
+          "name": "02_methodology.html",
+          "size_mb": "0.03",
+          "path": "web/02_methodology.html"
+        }
+      ],
+      "extensions": {
+        ".md": 1,
+        ".html": 14
+      }
+    },
+    "slides": {
+      "exists": true,
+      "file_count": 94,
+      "size_mb": "1.88",
+      "total_size_bytes": 1967896,
+      "largest_files": [
+        {
+          "name": "02_methodology_slides.log",
+          "size_mb": "0.15",
+          "path": "slides/02_methodology_slides.log"
+        },
+        {
+          "name": "03_attack_corpus_slides.pdf",
+          "size_mb": "0.11",
+          "path": "slides/03_attack_corpus_slides.pdf"
+        },
+        {
+          "name": "S02_detection_algorithms_slides.log",
+          "size_mb": "0.11",
+          "path": "slides/S02_detection_algorithms_slides.log"
+        }
+      ],
+      "extensions": {
+        ".nav": 13,
+        ".pdf": 13,
+        ".toc": 13,
+        ".tex": 13,
+        ".vrb": 3,
+        ".snm": 13,
+        ".aux": 13,
+        ".log": 13
+      }
+    },
+    "figures": {
+      "exists": true,
+      "file_count": 30,
+      "size_mb": "3.04",
+      "total_size_bytes": 3185910,
+      "largest_files": [
+        {
+          "name": "trust_calculus_comprehensive.png",
+          "size_mb": "0.41",
+          "path": "figures/trust_calculus_comprehensive.png"
+        },
+        {
+          "name": "cif_comprehensive.png",
+          "size_mb": "0.30",
+          "path": "figures/cif_comprehensive.png"
+        },
+        {
+          "name": "comprehensive_taxonomy.png",
+          "size_mb": "0.21",
+          "path": "figures/comprehensive_taxonomy.png"
+        }
+      ],
+      "extensions": {
+        ".png": 15,
+        ".pdf": 15
+      }
+    },
+    "data": {
+      "exists": true,
+      "file_count": 0,
+      "size_mb": "0.00",
+      "total_size_bytes": 0,
+      "largest_files": [],
+      "extensions": {}
+    },
+    "reports": {
+      "exists": true,
+      "file_count": 4,
+      "size_mb": "0.01",
+      "total_size_bytes": 6027,
+      "largest_files": [
+        {
+          "name": "validation_report.json",
+          "size_mb": "0.00",
+          "path": "reports/validation_report.json"
+        },
+        {
+          "name": "test_results.json",
+          "size_mb": "0.00",
+          "path": "reports/test_results.json"
+        },
+        {
+          "name": "test_results.md",
+          "size_mb": "0.00",
+          "path": "reports/test_results.md"
+        }
+      ],
+      "extensions": {
+        ".md": 2,
+        ".json": 2
+      }
+    },
+    "simulations": {
+      "exists": true,
+      "file_count": 0,
+      "size_mb": "0.00",
+      "total_size_bytes": 0,
+      "largest_files": [],
+      "extensions": {}
+    },
+    "llm": {
+      "exists": true,
+      "file_count": 0,
+      "size_mb": "0.00",
+      "total_size_bytes": 0,
+      "largest_files": [],
+      "extensions": {}
+    },
+    "logs": {
+      "exists": true,
+      "file_count": 1,
+      "size_mb": "0.01",
+      "total_size_bytes": 8499,
+      "largest_files": [
+        {
+          "name": "pipeline.log",
+          "size_mb": "0.01",
+          "path": "logs/pipeline.log"
+        }
+      ],
+      "extensions": {
+        ".log": 1
+      }
+    }
+  },
+  "total_files": 152,
+  "total_size_mb": 6.220726013183594,
+  "largest_files": [
+    {
+      "name": "cogsec_multiagent_2_computational_combined.pdf",
+      "size_mb": "0.47",
+      "category": "pdf",
+      "path": "pdf/cogsec_multiagent_2_computational_combined.pdf"
+    },
+    {
+      "name": "trust_calculus_comprehensive.png",
+      "size_mb": "0.41",
+      "category": "figures",
+      "path": "figures/trust_calculus_comprehensive.png"
+    },
+    {
+      "name": "cif_comprehensive.png",
+      "size_mb": "0.30",
+      "category": "figures",
+      "path": "figures/cif_comprehensive.png"
+    },
+    {
+      "name": "comprehensive_taxonomy.png",
+      "size_mb": "0.21",
+      "category": "figures",
+      "path": "figures/comprehensive_taxonomy.png"
+    },
+    {
+      "name": "02_methodology_slides.log",
+      "size_mb": "0.15",
+      "category": "slides",
+      "path": "slides/02_methodology_slides.log"
+    },
+    {
+      "name": "_combined_manuscript.tex",
+      "size_mb": "0.14",
+      "category": "pdf",
+      "path": "pdf/_combined_manuscript.tex"
+    },
+    {
+      "name": "index.html",
+      "size_mb": "0.13",
+      "category": "web",
+      "path": "web/index.html"
+    },
+    {
+      "name": "_combined_manuscript.md",
+      "size_mb": "0.12",
+      "category": "pdf",
+      "path": "pdf/_combined_manuscript.md"
+    },
+    {
+      "name": "_combined_manuscript.md",
+      "size_mb": "0.12",
+      "category": "web",
+      "path": "web/_combined_manuscript.md"
+    },
+    {
+      "name": "03_attack_corpus_slides.pdf",
+      "size_mb": "0.11",
+      "category": "slides",
+      "path": "slides/03_attack_corpus_slides.pdf"
+    }
+  ],
+  "missing_expected_files": [
+    "cogsec_multiagent_2_computational_combined.pdf or project_combined.pdf"
+  ],
+  "file_counts_by_type": {
+    ".md": 4,
+    ".log": 15,
+    ".aux": 14,
+    ".blg": 1,
+    ".bib": 1,
+    ".tex": 14,
+    ".pdf": 29,
+    ".bbl": 1,
+    ".html": 14,
+    ".nav": 13,
+    ".toc": 13,
+    ".vrb": 3,
+    ".snm": 13,
+    ".png": 15,
+    ".json": 2
+  },
+  "sizes_by_category": {
+    "pdf": 0.9132881164550781,
+    "web": 0.37853240966796875,
+    "slides": 1.8767318725585938,
+    "figures": 3.038320541381836,
+    "data": 0.0,
+    "reports": 0.005747795104980469,
+    "simulations": 0.0,
+    "llm": 0.0,
+    "logs": 0.008105278015136719
+  },
+  "pdf_files": 8,
+  "figures": 30,
+  "data_files": 0
+}

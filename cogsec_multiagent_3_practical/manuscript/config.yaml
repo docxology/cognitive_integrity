@@ -1,0 +1,56 @@
+paper:
+  title: "Cognitive Integrity Framework: Practical Deployment Guide"
+  subtitle: "Part 3 of 3: Actionable Guidance for Operators and Developers"
+  short_title: "CIF Practice"
+  version: "1.0"
+  type: "research"
+  series: "Cognitive Security for Multiagent Operators"
+  part: 3
+  doi: "10.5281/zenodo.18364130"
+  date: "2026-01-24"
+
+authors:
+  - name: "Daniel Ari Friedman"
+    email: "daniel@activeinference.institute"
+    orcid: "0000-0001-6232-9096"
+    affiliation: "Active Inference Institute"
+    corresponding: true
+
+keywords:
+  - cognitive security
+  - AI safety
+  - deployment guidelines
+  - operator posture
+  - security checklists
+  - risk assessment
+  - multiagent operations
+
+abstract: |
+  This paper translates the Cognitive Integrity Framework (CIF) into actionable
+  guidance for practitioners deploying multiagent AI systems. Building on the
+  formal foundations of Part 1 and the empirical validation of Part 2, we provide
+  concrete recommendations for immediate implementation.
+  
+  Contents include: (1) Operator posture assessment for cognitive security
+  readiness; (2) Step-by-step deployment checklists; (3) Machine-readable
+  guidelines for AI agent self-monitoring; (4) Configuration recommendations
+  across risk profiles; (5) Common pitfalls observed in production deployments
+  with specific mitigations; (6) Risk assessment methodology for cognitive
+  attack surfaces.
+  
+  This guidance requires minimal technical prerequisites while maintaining
+  rigorous grounding in the theoretical and empirical work of Parts 1 and 2.
+  Intended for security practitioners, developers, operators, and compliance
+  teams evaluating multiagent AI deployments.
+  
+  This is Part 3 of a three-part series:
+  - Part 1 (DOI: 10.5281/zenodo.18364119): Formal foundations and theoretical analysis
+  - Part 2 (DOI: 10.5281/zenodo.18364128): Computational validation and implementation
+  - Part 3 (this paper): Practical deployment guidance
+
+llm:
+  translations:
+    enabled: true
+    languages: [zh, es, ar]
+  review:
+    enabled: true

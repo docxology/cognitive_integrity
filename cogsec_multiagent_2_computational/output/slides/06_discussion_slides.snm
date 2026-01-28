@@ -1,0 +1,14 @@
+\beamer@slide {synthesis-of-findings}{3}
+\beamer@slide {why-layered-defense-succeeds}{3}
+\beamer@slide {fig:defense-composition}{3}
+\beamer@slide {architecture-specific-insights}{3}
+\beamer@slide {tab:architecture-insights}{3}
+\beamer@slide {limitations}{4}
+\beamer@slide {detection-gaps-remaining}{4}
+\beamer@slide {scalability-constraints}{4}
+\beamer@slide {generalization-limitations}{4}
+\beamer@slide {relationship-to-prior-work}{5}
+\beamer@slide {future-directions}{6}
+\beamer@slide {adaptive-defenses}{6}
+\beamer@slide {emergent-behavior-security}{6}
+\beamer@slide {cross-system-federation}{6}

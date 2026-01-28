@@ -1,0 +1,2602 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>_combined_manuscript</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <script defer=""
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+
+<style>
+body {
+  font-family: 'Liberation Serif', 'Times New Roman', serif;
+  line-height: 1.6;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f8f8f8;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #2c3e50;
+  border-bottom: 2px solid #3498db;
+  padding-bottom: 5px;
+}
+
+code {
+  background-color: #ecf0f1;
+  padding: 2px 4px;
+  border-radius: 3px;
+  font-family: 'Liberation Mono', 'Courier New', monospace;
+}
+
+pre {
+  background-color: #2c3e50;
+  color: #ecf0f1;
+  padding: 15px;
+  border-radius: 5px;
+  overflow-x: auto;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 20px 0;
+}
+
+th, td {
+  border: 1px solid #bdc3c7;
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background-color: #3498db;
+  color: white;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #bdc3c7;
+  border-radius: 5px;
+  margin: 20px 0;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+a {
+  color: #2980b9;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.toc {
+  background-color: #ecf0f1;
+  padding: 20px;
+  border-radius: 5px;
+  margin-bottom: 30px;
+}
+
+.toc a {
+  color: #2c3e50;
+}
+
+.math {
+  text-align: center;
+  margin: 20px 0;
+  font-size: 1.1em;
+}
+
+.figure {
+  text-align: center;
+  margin: 30px 0;
+}
+
+.figure img {
+  max-width: 100%;
+  height: auto;
+  border: 2px solid #3498db;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.figure-caption {
+  font-style: italic;
+  color: #7f8c8d;
+  margin-top: 10px;
+  text-align: center;
+}
+
+</style>
+</head>
+<body>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#abstract" id="toc-abstract"><span
+class="toc-section-number">1</span> Abstract</a>
+<ul>
+<li><a href="#contributions" id="toc-contributions"><span
+class="toc-section-number">1.1</span> Contributions</a></li>
+<li><a href="#key-findings" id="toc-key-findings"><span
+class="toc-section-number">1.2</span> Key Findings</a></li>
+<li><a href="#paper-series" id="toc-paper-series"><span
+class="toc-section-number">1.3</span> Paper Series</a></li>
+</ul></li>
+<li><a href="#sec:intro" id="toc-sec:intro"><span
+class="toc-section-number">2</span> Introduction</a>
+<ul>
+<li><a href="#motivation-and-context"
+id="toc-motivation-and-context"><span
+class="toc-section-number">2.1</span> Motivation and Context</a>
+<ul>
+<li><a href="#the-theory-practice-gap"
+id="toc-the-theory-practice-gap"><span
+class="toc-section-number">2.1.1</span> The Theory-Practice Gap</a></li>
+<li><a href="#the-practical-imperative"
+id="toc-the-practical-imperative"><span
+class="toc-section-number">2.1.2</span> The Practical
+Imperative</a></li>
+</ul></li>
+<li><a href="#paper-contributions" id="toc-paper-contributions"><span
+class="toc-section-number">2.2</span> Paper Contributions</a></li>
+<li><a href="#relationship-to-paper-series"
+id="toc-relationship-to-paper-series"><span
+class="toc-section-number">2.3</span> Relationship to Paper
+Series</a></li>
+<li><a href="#paper-organization" id="toc-paper-organization"><span
+class="toc-section-number">2.4</span> Paper Organization</a></li>
+</ul></li>
+<li><a href="#sec:methodology" id="toc-sec:methodology"><span
+class="toc-section-number">3</span> Methodology: Implementation
+Details</a>
+<ul>
+<li><a href="#sec:pseudocode" id="toc-sec:pseudocode"><span
+class="toc-section-number">3.1</span> Pseudocode for Major
+Algorithms</a>
+<ul>
+<li><a href="#sec:alg-firewall" id="toc-sec:alg-firewall"><span
+class="toc-section-number">3.1.1</span> Algorithm 1: Cognitive
+Firewall</a></li>
+<li><a href="#sec:alg-sandbox" id="toc-sec:alg-sandbox"><span
+class="toc-section-number">3.1.2</span> Algorithm 2: Belief
+Sandboxing</a></li>
+<li><a href="#sec:alg-trust" id="toc-sec:alg-trust"><span
+class="toc-section-number">3.1.3</span> Algorithm 3: Trust
+Update</a></li>
+<li><a href="#sec:alg-tripwire" id="toc-sec:alg-tripwire"><span
+class="toc-section-number">3.1.4</span> Algorithm 4: Cognitive Tripwire
+Monitoring</a></li>
+<li><a href="#sec:alg-byzantine" id="toc-sec:alg-byzantine"><span
+class="toc-section-number">3.1.5</span> Algorithm 5: Byzantine
+Consensus</a></li>
+<li><a href="#sec:alg-drift" id="toc-sec:alg-drift"><span
+class="toc-section-number">3.1.6</span> Algorithm 6: Drift
+Detection</a></li>
+</ul></li>
+<li><a href="#sec:config-params" id="toc-sec:config-params"><span
+class="toc-section-number">3.2</span> Configuration Parameters</a>
+<ul>
+<li><a href="#sec:core-params" id="toc-sec:core-params"><span
+class="toc-section-number">3.2.1</span> Core Framework
+Parameters</a></li>
+<li><a href="#sec:trust-params" id="toc-sec:trust-params"><span
+class="toc-section-number">3.2.2</span> Trust Calculus
+Parameters</a></li>
+<li><a href="#sec:firewall-params" id="toc-sec:firewall-params"><span
+class="toc-section-number">3.2.3</span> Firewall Parameters</a></li>
+<li><a href="#sec:sandbox-params" id="toc-sec:sandbox-params"><span
+class="toc-section-number">3.2.4</span> Sandbox Parameters</a></li>
+<li><a href="#sec:tripwire-params" id="toc-sec:tripwire-params"><span
+class="toc-section-number">3.2.5</span> Tripwire Parameters</a></li>
+<li><a href="#sec:drift-params" id="toc-sec:drift-params"><span
+class="toc-section-number">3.2.6</span> Drift Detection
+Parameters</a></li>
+<li><a href="#sec:consensus-params" id="toc-sec:consensus-params"><span
+class="toc-section-number">3.2.7</span> Consensus Parameters</a></li>
+<li><a href="#sec:tuning-profiles" id="toc-sec:tuning-profiles"><span
+class="toc-section-number">3.2.8</span> Performance Tuning
+Profiles</a></li>
+</ul></li>
+<li><a href="#sec:framework-api" id="toc-sec:framework-api"><span
+class="toc-section-number">3.3</span> Framework API Reference</a>
+<ul>
+<li><a href="#sec:trust-api" id="toc-sec:trust-api"><span
+class="toc-section-number">3.3.1</span> Trust Module</a></li>
+<li><a href="#sec:firewall-api" id="toc-sec:firewall-api"><span
+class="toc-section-number">3.3.2</span> Firewall Module</a></li>
+<li><a href="#sec:consensus-api" id="toc-sec:consensus-api"><span
+class="toc-section-number">3.3.3</span> Consensus Module</a></li>
+<li><a href="#sec:detection-api" id="toc-sec:detection-api"><span
+class="toc-section-number">3.3.4</span> Detection Module</a></li>
+<li><a href="#sec:provenance-api" id="toc-sec:provenance-api"><span
+class="toc-section-number">3.3.5</span> Provenance Module</a></li>
+<li><a href="#sec:sandbox-api" id="toc-sec:sandbox-api"><span
+class="toc-section-number">3.3.6</span> Sandbox Module</a></li>
+<li><a href="#sec:tripwire-api" id="toc-sec:tripwire-api"><span
+class="toc-section-number">3.3.7</span> Tripwire Module</a></li>
+<li><a href="#sec:invariants-api" id="toc-sec:invariants-api"><span
+class="toc-section-number">3.3.8</span> Invariants Module</a></li>
+</ul></li>
+<li><a href="#sec:deployment-checklist"
+id="toc-sec:deployment-checklist"><span
+class="toc-section-number">3.4</span> Deployment Considerations</a>
+<ul>
+<li><a href="#sec:pre-deploy" id="toc-sec:pre-deploy"><span
+class="toc-section-number">3.4.1</span> Pre-Deployment</a></li>
+<li><a href="#sec:config-checklist" id="toc-sec:config-checklist"><span
+class="toc-section-number">3.4.2</span> Configuration</a></li>
+<li><a href="#sec:post-deploy" id="toc-sec:post-deploy"><span
+class="toc-section-number">3.4.3</span> Post-Deployment
+Verification</a></li>
+</ul></li>
+<li><a href="#sec:integration-examples"
+id="toc-sec:integration-examples"><span
+class="toc-section-number">3.5</span> Integration Examples</a>
+<ul>
+<li><a href="#sec:python-integration"
+id="toc-sec:python-integration"><span
+class="toc-section-number">3.5.1</span> Python Integration</a></li>
+<li><a href="#sec:yaml-config" id="toc-sec:yaml-config"><span
+class="toc-section-number">3.5.2</span> YAML Configuration</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#sec:attack-corpus" id="toc-sec:attack-corpus"><span
+class="toc-section-number">4</span> Attack Corpus</a>
+<ul>
+<li><a href="#sec:corpus-overview" id="toc-sec:corpus-overview"><span
+class="toc-section-number">4.1</span> Corpus Overview</a></li>
+<li><a href="#sec:corpus-stats" id="toc-sec:corpus-stats"><span
+class="toc-section-number">4.2</span> Full Attack Corpus Statistics</a>
+<ul>
+<li><a href="#sec:category-breakdown"
+id="toc-sec:category-breakdown"><span
+class="toc-section-number">4.2.1</span> Category Breakdown</a></li>
+<li><a href="#sec:injection-subcats"
+id="toc-sec:injection-subcats"><span
+class="toc-section-number">4.2.2</span> Prompt Injection
+Subcategories</a></li>
+<li><a href="#sec:trust-subcats" id="toc-sec:trust-subcats"><span
+class="toc-section-number">4.2.3</span> Trust Exploitation
+Subcategories</a></li>
+<li><a href="#sec:belief-subcats" id="toc-sec:belief-subcats"><span
+class="toc-section-number">4.2.4</span> Belief Manipulation
+Subcategories</a></li>
+<li><a href="#sec:coord-subcats" id="toc-sec:coord-subcats"><span
+class="toc-section-number">4.2.5</span> Coordination Attack
+Subcategories</a></li>
+<li><a href="#sec:source-stats" id="toc-sec:source-stats"><span
+class="toc-section-number">4.2.6</span> Detailed Statistics by
+Source</a></li>
+<li><a href="#sec:complexity-dist" id="toc-sec:complexity-dist"><span
+class="toc-section-number">4.2.7</span> Complexity Distribution</a></li>
+<li><a href="#sec:target-dist" id="toc-sec:target-dist"><span
+class="toc-section-number">4.2.8</span> Target Distribution</a></li>
+</ul></li>
+<li><a href="#sec:attack-examples" id="toc-sec:attack-examples"><span
+class="toc-section-number">4.3</span> Example Attacks by Category</a>
+<ul>
+<li><a href="#sec:ex-injection" id="toc-sec:ex-injection"><span
+class="toc-section-number">4.3.1</span> Category 1: Prompt
+Injection</a></li>
+<li><a href="#sec:ex-trust" id="toc-sec:ex-trust"><span
+class="toc-section-number">4.3.2</span> Category 2: Trust
+Exploitation</a></li>
+<li><a href="#sec:ex-belief" id="toc-sec:ex-belief"><span
+class="toc-section-number">4.3.3</span> Category 3: Belief
+Manipulation</a></li>
+<li><a href="#sec:ex-coord" id="toc-sec:ex-coord"><span
+class="toc-section-number">4.3.4</span> Category 4: Coordination
+Attacks</a></li>
+</ul></li>
+<li><a href="#sec:generation-methodology"
+id="toc-sec:generation-methodology"><span
+class="toc-section-number">4.4</span> Attack Generation Methodology</a>
+<ul>
+<li><a href="#sec:synthetic-generation"
+id="toc-sec:synthetic-generation"><span
+class="toc-section-number">4.4.1</span> Synthetic Attack
+Generation</a></li>
+<li><a href="#sec:red-team" id="toc-sec:red-team"><span
+class="toc-section-number">4.4.2</span> Red Team Exercise
+Protocol</a></li>
+<li><a href="#sec:qa" id="toc-sec:qa"><span
+class="toc-section-number">4.4.3</span> Quality Assurance</a></li>
+</ul></li>
+<li><a href="#sec:effectiveness-analysis"
+id="toc-sec:effectiveness-analysis"><span
+class="toc-section-number">4.5</span> Attack Effectiveness Analysis</a>
+<ul>
+<li><a href="#sec:success-by-defense"
+id="toc-sec:success-by-defense"><span
+class="toc-section-number">4.5.1</span> Success Rate by Defense
+Configuration</a></li>
+<li><a href="#sec:sophistication-corr"
+id="toc-sec:sophistication-corr"><span
+class="toc-section-number">4.5.2</span> Attack Sophistication
+Correlation</a></li>
+<li><a href="#sec:temporal-analysis"
+id="toc-sec:temporal-analysis"><span
+class="toc-section-number">4.5.3</span> Temporal Analysis</a></li>
+</ul></li>
+<li><a href="#sec:ethical-considerations"
+id="toc-sec:ethical-considerations"><span
+class="toc-section-number">4.6</span> Ethical Considerations</a>
+<ul>
+<li><a href="#sec:responsible-disclosure"
+id="toc-sec:responsible-disclosure"><span
+class="toc-section-number">4.6.1</span> Responsible Disclosure</a></li>
+<li><a href="#sec:dual-use" id="toc-sec:dual-use"><span
+class="toc-section-number">4.6.2</span> Dual-Use Considerations</a></li>
+<li><a href="#sec:human-subjects" id="toc-sec:human-subjects"><span
+class="toc-section-number">4.6.3</span> Human Subjects</a></li>
+<li><a href="#sec:ethics-approval" id="toc-sec:ethics-approval"><span
+class="toc-section-number">4.6.4</span> Research Ethics
+Approval</a></li>
+</ul></li>
+<li><a href="#sec:data-availability"
+id="toc-sec:data-availability"><span
+class="toc-section-number">4.7</span> Data Availability</a>
+<ul>
+<li><a href="#sec:public-resources" id="toc-sec:public-resources"><span
+class="toc-section-number">4.7.1</span> Public Resources</a></li>
+<li><a href="#sec:restricted-resources"
+id="toc-sec:restricted-resources"><span
+class="toc-section-number">4.7.2</span> Restricted Resources</a></li>
+<li><a href="#sec:access-request" id="toc-sec:access-request"><span
+class="toc-section-number">4.7.3</span> Access Request Process</a></li>
+</ul></li>
+<li><a href="#sec:corpus-references"
+id="toc-sec:corpus-references"><span
+class="toc-section-number">4.8</span> References</a></li>
+</ul></li>
+<li><a href="#sec:results" id="toc-sec:results"><span
+class="toc-section-number">5</span> Experimental Validation</a>
+<ul>
+<li><a href="#sec:exp-setup" id="toc-sec:exp-setup"><span
+class="toc-section-number">5.1</span> Experimental Setup</a>
+<ul>
+<li><a href="#target-architectures" id="toc-target-architectures"><span
+class="toc-section-number">5.1.1</span> Target Architectures</a></li>
+<li><a href="#attack-corpus" id="toc-attack-corpus"><span
+class="toc-section-number">5.1.2</span> Attack Corpus</a></li>
+</ul></li>
+<li><a href="#sec:key-findings" id="toc-sec:key-findings"><span
+class="toc-section-number">5.2</span> Key Findings</a>
+<ul>
+<li><a
+href="#finding-1-layered-defense-significantly-outperforms-single-mechanisms"
+id="toc-finding-1-layered-defense-significantly-outperforms-single-mechanisms"><span
+class="toc-section-number">5.2.1</span> Finding 1: Layered Defense
+Significantly Outperforms Single Mechanisms</a></li>
+<li><a href="#finding-2-trust-calculus-prevents-amplification-attacks"
+id="toc-finding-2-trust-calculus-prevents-amplification-attacks"><span
+class="toc-section-number">5.2.2</span> Finding 2: Trust Calculus
+Prevents Amplification Attacks</a></li>
+<li><a
+href="#finding-3-integrity-improvement-scales-across-architectures"
+id="toc-finding-3-integrity-improvement-scales-across-architectures"><span
+class="toc-section-number">5.2.3</span> Finding 3: Integrity Improvement
+Scales Across Architectures</a></li>
+<li><a
+href="#finding-4-performance-overhead-is-acceptable-for-security-contexts"
+id="toc-finding-4-performance-overhead-is-acceptable-for-security-contexts"><span
+class="toc-section-number">5.2.4</span> Finding 4: Performance Overhead
+Is Acceptable for Security Contexts</a></li>
+<li><a href="#finding-5-attack-type-specific-vulnerabilities-remain"
+id="toc-finding-5-attack-type-specific-vulnerabilities-remain"><span
+class="toc-section-number">5.2.5</span> Finding 5: Attack-Type Specific
+Vulnerabilities Remain</a></li>
+</ul></li>
+<li><a href="#interpretation" id="toc-interpretation"><span
+class="toc-section-number">5.3</span> Interpretation</a></li>
+</ul></li>
+<li><a href="#sec:extended-results" id="toc-sec:extended-results"><span
+class="toc-section-number">6</span> Supplementary: Extended Experimental
+Results</a>
+<ul>
+<li><a href="#sec:per-arch" id="toc-sec:per-arch"><span
+class="toc-section-number">6.1</span> Per-Architecture Breakdown</a>
+<ul>
+<li><a href="#sec:claude-code" id="toc-sec:claude-code"><span
+class="toc-section-number">6.1.1</span> Claude Code (Hierarchical
+Architecture)</a></li>
+<li><a href="#sec:autogpt" id="toc-sec:autogpt"><span
+class="toc-section-number">6.1.2</span> AutoGPT (Autonomous
+Architecture)</a></li>
+<li><a href="#sec:crewai" id="toc-sec:crewai"><span
+class="toc-section-number">6.1.3</span> CrewAI (Role-Based
+Architecture)</a></li>
+<li><a href="#sec:langgraph" id="toc-sec:langgraph"><span
+class="toc-section-number">6.1.4</span> LangGraph (Graph-Based
+Architecture)</a></li>
+<li><a href="#sec:metagpt" id="toc-sec:metagpt"><span
+class="toc-section-number">6.1.5</span> MetaGPT (SOP-Driven
+Architecture)</a></li>
+<li><a href="#sec:camel" id="toc-sec:camel"><span
+class="toc-section-number">6.1.6</span> Camel (Debate
+Architecture)</a></li>
+</ul></li>
+<li><a href="#sec:significance" id="toc-sec:significance"><span
+class="toc-section-number">6.2</span> Statistical Significance Tests</a>
+<ul>
+<li><a href="#sec:primary-tests" id="toc-sec:primary-tests"><span
+class="toc-section-number">6.2.1</span> Primary Hypothesis
+Tests</a></li>
+<li><a href="#sec:paired-comparisons"
+id="toc-sec:paired-comparisons"><span
+class="toc-section-number">6.2.2</span> Paired Comparisons (Bonferroni
+Corrected)</a></li>
+<li><a href="#sec:nonparametric" id="toc-sec:nonparametric"><span
+class="toc-section-number">6.2.3</span> Non-Parametric Tests</a></li>
+</ul></li>
+<li><a href="#sec:effect-sizes" id="toc-sec:effect-sizes"><span
+class="toc-section-number">6.3</span> Effect Sizes</a>
+<ul>
+<li><a href="#sec:cohens-d" id="toc-sec:cohens-d"><span
+class="toc-section-number">6.3.1</span> Cohen’s d (Standardized Mean
+Difference)</a></li>
+<li><a href="#sec:odds-ratios" id="toc-sec:odds-ratios"><span
+class="toc-section-number">6.3.2</span> Odds Ratios</a></li>
+<li><a href="#sec:nnt" id="toc-sec:nnt"><span
+class="toc-section-number">6.3.3</span> Number Needed to Treat
+(NNT)</a></li>
+</ul></li>
+<li><a href="#sec:confidence-intervals"
+id="toc-sec:confidence-intervals"><span
+class="toc-section-number">6.4</span> Confidence Intervals</a>
+<ul>
+<li><a href="#sec:detection-ci" id="toc-sec:detection-ci"><span
+class="toc-section-number">6.4.1</span> Detection Rate Confidence
+Intervals (95%)</a></li>
+<li><a href="#sec:arch-ci" id="toc-sec:arch-ci"><span
+class="toc-section-number">6.4.2</span> Per-Architecture Confidence
+Intervals</a></li>
+<li><a href="#sec:attack-ci" id="toc-sec:attack-ci"><span
+class="toc-section-number">6.4.3</span> Confidence Intervals by Attack
+Type</a></li>
+</ul></li>
+<li><a href="#sec:sensitivity" id="toc-sec:sensitivity"><span
+class="toc-section-number">6.5</span> Sensitivity Analysis</a>
+<ul>
+<li><a href="#sec:firewall-sensitivity"
+id="toc-sec:firewall-sensitivity"><span
+class="toc-section-number">6.5.1</span> Firewall Threshold
+Sensitivity</a></li>
+<li><a href="#sec:decay-sensitivity"
+id="toc-sec:decay-sensitivity"><span
+class="toc-section-number">6.5.2</span> Trust Decay Factor
+Sensitivity</a></li>
+<li><a href="#sec:corroboration-sensitivity"
+id="toc-sec:corroboration-sensitivity"><span
+class="toc-section-number">6.5.3</span> Corroboration Count
+Sensitivity</a></li>
+<li><a href="#sec:window-sensitivity"
+id="toc-sec:window-sensitivity"><span
+class="toc-section-number">6.5.4</span> Window Size Sensitivity (Drift
+Detection)</a></li>
+<li><a href="#sec:combined-sensitivity"
+id="toc-sec:combined-sensitivity"><span
+class="toc-section-number">6.5.5</span> Combined Parameter
+Sensitivity</a></li>
+<li><a href="#sec:robustness" id="toc-sec:robustness"><span
+class="toc-section-number">6.5.6</span> Robustness to Attack
+Distribution Shift</a></li>
+</ul></li>
+<li><a href="#sec:extended-ablation"
+id="toc-sec:extended-ablation"><span
+class="toc-section-number">6.6</span> Extended Ablation Study</a>
+<ul>
+<li><a href="#sec:component-removal"
+id="toc-sec:component-removal"><span
+class="toc-section-number">6.6.1</span> Component Removal
+Impact</a></li>
+<li><a href="#sec:minimal-config" id="toc-sec:minimal-config"><span
+class="toc-section-number">6.6.2</span> Minimal Viable
+Configuration</a></li>
+<li><a href="#sec:synergy" id="toc-sec:synergy"><span
+class="toc-section-number">6.6.3</span> Component Synergy
+Analysis</a></li>
+</ul></li>
+<li><a href="#sec:extended-scalability"
+id="toc-sec:extended-scalability"><span
+class="toc-section-number">6.7</span> Extended Scalability Analysis</a>
+<ul>
+<li><a href="#sec:agent-scaling" id="toc-sec:agent-scaling"><span
+class="toc-section-number">6.7.1</span> Agent Count Scaling</a></li>
+<li><a href="#sec:regression" id="toc-sec:regression"><span
+class="toc-section-number">6.7.2</span> Regression Analysis</a></li>
+<li><a href="#sec:volume-scaling" id="toc-sec:volume-scaling"><span
+class="toc-section-number">6.7.3</span> Message Volume Scaling</a></li>
+</ul></li>
+<li><a href="#sec:summary-stats" id="toc-sec:summary-stats"><span
+class="toc-section-number">6.8</span> Summary Statistics</a>
+<ul>
+<li><a href="#sec:overall-summary" id="toc-sec:overall-summary"><span
+class="toc-section-number">6.8.1</span> Overall Performance
+Summary</a></li>
+<li><a href="#sec:extended-key-findings"
+id="toc-sec:extended-key-findings"><span
+class="toc-section-number">6.8.2</span> Key Findings</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#sec:discussion" id="toc-sec:discussion"><span
+class="toc-section-number">7</span> Discussion</a>
+<ul>
+<li><a href="#synthesis-of-findings"
+id="toc-synthesis-of-findings"><span
+class="toc-section-number">7.1</span> Synthesis of Findings</a>
+<ul>
+<li><a href="#why-layered-defense-succeeds"
+id="toc-why-layered-defense-succeeds"><span
+class="toc-section-number">7.1.1</span> Why Layered Defense
+Succeeds</a></li>
+<li><a href="#architecture-specific-insights"
+id="toc-architecture-specific-insights"><span
+class="toc-section-number">7.1.2</span> Architecture-Specific
+Insights</a></li>
+</ul></li>
+<li><a href="#limitations" id="toc-limitations"><span
+class="toc-section-number">7.2</span> Limitations</a>
+<ul>
+<li><a href="#detection-gaps-remaining"
+id="toc-detection-gaps-remaining"><span
+class="toc-section-number">7.2.1</span> Detection Gaps
+Remaining</a></li>
+<li><a href="#scalability-constraints"
+id="toc-scalability-constraints"><span
+class="toc-section-number">7.2.2</span> Scalability Constraints</a></li>
+<li><a href="#generalization-limitations"
+id="toc-generalization-limitations"><span
+class="toc-section-number">7.2.3</span> Generalization
+Limitations</a></li>
+</ul></li>
+<li><a href="#relationship-to-prior-work"
+id="toc-relationship-to-prior-work"><span
+class="toc-section-number">7.3</span> Relationship to Prior
+Work</a></li>
+<li><a href="#future-directions" id="toc-future-directions"><span
+class="toc-section-number">7.4</span> Future Directions</a>
+<ul>
+<li><a href="#adaptive-defenses" id="toc-adaptive-defenses"><span
+class="toc-section-number">7.4.1</span> Adaptive Defenses</a></li>
+<li><a href="#emergent-behavior-security"
+id="toc-emergent-behavior-security"><span
+class="toc-section-number">7.4.2</span> Emergent Behavior
+Security</a></li>
+<li><a href="#cross-system-federation"
+id="toc-cross-system-federation"><span
+class="toc-section-number">7.4.3</span> Cross-System Federation</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#sec:conclusion" id="toc-sec:conclusion"><span
+class="toc-section-number">8</span> Conclusion</a>
+<ul>
+<li><a href="#summary-of-contributions"
+id="toc-summary-of-contributions"><span
+class="toc-section-number">8.1</span> Summary of Contributions</a></li>
+<li><a href="#key-findings-1" id="toc-key-findings-1"><span
+class="toc-section-number">8.2</span> Key Findings</a></li>
+<li><a href="#implications-for-practitioners"
+id="toc-implications-for-practitioners"><span
+class="toc-section-number">8.3</span> Implications for
+Practitioners</a></li>
+<li><a href="#paper-series-1" id="toc-paper-series-1"><span
+class="toc-section-number">8.4</span> Paper Series</a></li>
+</ul></li>
+<li><a href="#sec:notation-reference"
+id="toc-sec:notation-reference"><span
+class="toc-section-number">9</span> Notation Reference</a>
+<ul>
+<li><a href="#quick-reference" id="toc-quick-reference"><span
+class="toc-section-number">9.1</span> Quick Reference</a>
+<ul>
+<li><a href="#core-entities" id="toc-core-entities"><span
+class="toc-section-number">9.1.1</span> Core Entities</a></li>
+<li><a href="#trust-calculus" id="toc-trust-calculus"><span
+class="toc-section-number">9.1.2</span> Trust Calculus</a></li>
+<li><a href="#defense-mechanisms" id="toc-defense-mechanisms"><span
+class="toc-section-number">9.1.3</span> Defense Mechanisms</a></li>
+<li><a href="#consensus-and-coordination"
+id="toc-consensus-and-coordination"><span
+class="toc-section-number">9.1.4</span> Consensus and
+Coordination</a></li>
+</ul></li>
+<li><a href="#canonical-reference" id="toc-canonical-reference"><span
+class="toc-section-number">9.2</span> Canonical Reference</a></li>
+</ul></li>
+<li><a href="#sec:detection-algorithms"
+id="toc-sec:detection-algorithms"><span
+class="toc-section-number">10</span> Detection Algorithms</a>
+<ul>
+<li><a href="#roc-analysis-algorithms"
+id="toc-roc-analysis-algorithms"><span
+class="toc-section-number">10.1</span> ROC Analysis Algorithms</a>
+<ul>
+<li><a href="#algorithm-1-roc-curve-construction"
+id="toc-algorithm-1-roc-curve-construction"><span
+class="toc-section-number">10.1.1</span> Algorithm 1: ROC Curve
+Construction</a></li>
+</ul></li>
+<li><a href="#detector-performance-results"
+id="toc-detector-performance-results"><span
+class="toc-section-number">10.2</span> Detector Performance
+Results</a></li>
+<li><a href="#multi-detector-fusion-algorithm"
+id="toc-multi-detector-fusion-algorithm"><span
+class="toc-section-number">10.3</span> Multi-Detector Fusion
+Algorithm</a></li>
+<li><a href="#online-detection-algorithm"
+id="toc-online-detection-algorithm"><span
+class="toc-section-number">10.4</span> Online Detection
+Algorithm</a></li>
+<li><a href="#batch-detection-algorithm"
+id="toc-batch-detection-algorithm"><span
+class="toc-section-number">10.5</span> Batch Detection
+Algorithm</a></li>
+<li><a href="#false-positive-mitigation-results"
+id="toc-false-positive-mitigation-results"><span
+class="toc-section-number">10.6</span> False Positive Mitigation
+Results</a></li>
+<li><a href="#baseline-update-algorithm"
+id="toc-baseline-update-algorithm"><span
+class="toc-section-number">10.7</span> Baseline Update
+Algorithm</a></li>
+<li><a href="#sliding-window-monitoring-algorithm"
+id="toc-sliding-window-monitoring-algorithm"><span
+class="toc-section-number">10.8</span> Sliding Window Monitoring
+Algorithm</a></li>
+<li><a href="#summary" id="toc-summary"><span
+class="toc-section-number">10.9</span> Summary</a></li>
+</ul></li>
+<li><a href="#sec:benchmark-implementation"
+id="toc-sec:benchmark-implementation"><span
+class="toc-section-number">11</span> Benchmark Implementation
+Guidelines</a>
+<ul>
+<li><a href="#sec:test-environment" id="toc-sec:test-environment"><span
+class="toc-section-number">11.1</span> Test Environment
+Specification</a></li>
+<li><a href="#sec:metrics-framework"
+id="toc-sec:metrics-framework"><span
+class="toc-section-number">11.2</span> Metrics Framework</a></li>
+<li><a href="#implementation-reference"
+id="toc-implementation-reference"><span
+class="toc-section-number">11.3</span> Implementation Reference</a>
+<ul>
+<li><a href="#python-environment-setup"
+id="toc-python-environment-setup"><span
+class="toc-section-number">11.3.1</span> Python Environment
+Setup</a></li>
+<li><a href="#benchmark-runner" id="toc-benchmark-runner"><span
+class="toc-section-number">11.3.2</span> Benchmark Runner</a></li>
+<li><a href="#stigmergic-substrate-configuration"
+id="toc-stigmergic-substrate-configuration"><span
+class="toc-section-number">11.3.3</span> Stigmergic Substrate
+Configuration</a></li>
+</ul></li>
+<li><a href="#integration-with-cif-test-suite"
+id="toc-integration-with-cif-test-suite"><span
+class="toc-section-number">11.4</span> Integration with CIF Test
+Suite</a></li>
+<li><a href="#summary-1" id="toc-summary-1"><span
+class="toc-section-number">11.5</span> Summary</a></li>
+</ul></li>
+<li><a href="#sec:model-checking-tools"
+id="toc-sec:model-checking-tools"><span
+class="toc-section-number">12</span> Appendix: Model Checking Tool
+Configurations</a>
+<ul>
+<li><a href="#sec:nusmv-config" id="toc-sec:nusmv-config"><span
+class="toc-section-number">12.1</span> NuSMV Configuration</a></li>
+<li><a href="#sec:spin-config" id="toc-sec:spin-config"><span
+class="toc-section-number">12.2</span> SPIN Configuration</a></li>
+<li><a href="#sec:tla-config" id="toc-sec:tla-config"><span
+class="toc-section-number">12.3</span> TLA+ Configuration</a></li>
+<li><a href="#sec:verification-params"
+id="toc-sec:verification-params"><span
+class="toc-section-number">12.4</span> Verification Parameters</a></li>
+</ul></li>
+<li><a href="#sec:references" id="toc-sec:references"><span
+class="toc-section-number">13</span> References</a></li>
+</ul>
+</nav>
+<h1 data-number="1" id="abstract"><span
+class="header-section-number">1</span> Abstract</h1>
+<p>This paper provides computational validation of the <strong>Cognitive
+Integrity Framework (CIF)</strong> introduced in Part 1. We implement
+the complete defense suite—cognitive firewalls, belief sandboxes, trust
+calculus, and Byzantine-tolerant consensus—and evaluate performance
+across production multiagent architectures.</p>
+<h2 data-number="1.1" id="contributions"><span
+class="header-section-number">1.1</span> Contributions</h2>
+<ul>
+<li><strong>Attack Corpus</strong>: 950 cognitive attacks across four
+categories (prompt injection, trust exploitation, belief manipulation,
+coordination attacks)</li>
+<li><strong>Cross-Architecture Validation</strong>: Evaluation across
+Claude Code, AutoGPT, CrewAI, LangGraph, MetaGPT, and Camel</li>
+<li><strong>Detection Performance</strong>: 94% detection rate with
+layered defenses; 20-25% latency overhead</li>
+<li><strong>Statistical Analysis</strong>: Significance testing with
+large effect sizes (Cohen’s d &gt; 0.8), ablation studies, scalability
+benchmarks</li>
+</ul>
+<h2 data-number="1.2" id="key-findings"><span
+class="header-section-number">1.2</span> Key Findings</h2>
+<ol type="1">
+<li><strong>Composition Matters</strong>: No individual defense achieves
+acceptable protection; layered composition yields multiplicative
+detection improvement</li>
+<li><strong>Trust Decay Works</strong>: Bounded delegation (δ^d)
+prevents trust amplification across all architectures</li>
+<li><strong>Architecture Vulnerability</strong>: Peer-to-peer systems
+show largest relative improvement, confirming lateral movement
+analysis</li>
+</ol>
+<p>All notation follows definitions from Part 1 (Supplementary Section
+S03).</p>
+<h2 data-number="1.3" id="paper-series"><span
+class="header-section-number">1.3</span> Paper Series</h2>
+<p><strong>DOI</strong>: 10.5281/zenodo.18364128</p>
+<p>This is Part 2 of the <em>Cognitive Security for Multiagent
+Operators</em> series:</p>
+<ul>
+<li><strong>Part 1</strong> (DOI: 10.5281/zenodo.18364119): Formal
+foundations and theoretical analysis</li>
+<li><strong>Part 2</strong> (this paper): Computational validation and
+implementation</li>
+<li><strong>Part 3</strong> (DOI: 10.5281/zenodo.18364130): Practical
+deployment guidance</li>
+</ul>
+<hr />
+<h1 data-number="2" id="sec:intro"><span
+class="header-section-number">2</span> Introduction</h1>
+<h2 data-number="2.1" id="motivation-and-context"><span
+class="header-section-number">2.1</span> Motivation and Context</h2>
+<p>The Cognitive Integrity Framework (CIF) introduced in Part 1 of this
+series establishes formal foundations for securing multiagent AI
+operators against cognitive manipulation attacks. This companion paper
+provides comprehensive empirical validation, demonstrating that CIF’s
+theoretical constructs translate into practical, deployable protection
+mechanisms.</p>
+<h3 data-number="2.1.1" id="the-theory-practice-gap"><span
+class="header-section-number">2.1.1</span> The Theory-Practice Gap</h3>
+<p>Formal security guarantees, while essential for theoretical
+confidence, face a critical question: <em>do they work in practice?</em>
+The history of security research is replete with mechanisms that succeed
+in controlled settings but fail when confronting real adversaries,
+production workloads, and architectural constraints. The gap between
+theoretical security and practical deployment arises from several
+factors:</p>
+<ul>
+<li><strong>Adversarial adaptation</strong>: Real attackers probe
+defenses and evolve tactics; theoretical bounds assume fixed attack
+distributions</li>
+<li><strong>Implementation fidelity</strong>: Production systems
+introduce approximations, optimizations, and edge cases not captured in
+formal models</li>
+<li><strong>Performance constraints</strong>: Mechanisms that require
+prohibitive latency or compute remain theoretical curiosities</li>
+<li><strong>Architectural heterogeneity</strong>: Multiagent systems
+exhibit diverse topologies, protocols, and trust assumptions</li>
+</ul>
+<p>This paper bridges the theory-practice gap by subjecting CIF
+mechanisms to systematic empirical evaluation under realistic
+conditions.</p>
+<h3 data-number="2.1.2" id="the-practical-imperative"><span
+class="header-section-number">2.1.2</span> The Practical Imperative</h3>
+<p>As multiagent operators become pervasive in enterprise and consumer
+contexts—from Claude Code delegating to specialized coding agents to
+CrewAI orchestrating role-based teams—the need for validated security
+mechanisms becomes acute. While formal guarantees provide confidence in
+theoretical correctness, practitioners require evidence that these
+mechanisms:</p>
+<ol type="1">
+<li><strong>Scale</strong> to production workloads and agent counts</li>
+<li><strong>Generalize</strong> across diverse architectural
+patterns</li>
+<li><strong>Perform</strong> within acceptable latency and resource
+bounds</li>
+<li><strong>Detect</strong> the full spectrum of cognitive attack
+types</li>
+</ol>
+<h2 data-number="2.2" id="paper-contributions"><span
+class="header-section-number">2.2</span> Paper Contributions</h2>
+<figure id="fig:cif-comprehensive">
+<embed src="figures/cif_comprehensive.pdf" style="width:95.0%" />
+<figcaption aria-hidden="true">CIF Comprehensive Architecture. Overview
+of the Cognitive Integrity Framework showing the relationships between
+the five core defense mechanisms: Cognitive Firewall (input
+classification), Belief Sandbox (provisional belief isolation), Identity
+Tripwires (canary belief monitoring), Trust Calculus (bounded
+delegation), and Byzantine Consensus (coordination security). Arrows
+indicate information flow between components, with the firewall serving
+as the primary entry point and consensus providing collective decision
+validation.</figcaption>
+</figure>
+<p>This paper contributes:</p>
+<h2 data-number="2.3" id="relationship-to-paper-series"><span
+class="header-section-number">2.3</span> Relationship to Paper
+Series</h2>
+<p>This paper assumes familiarity with the formal framework developed in
+Part 1, particularly:</p>
+<ul>
+<li><strong>Trust Calculus</strong> (Section 3 (Trust Calculus, Part
+1)): Bounded delegation with <span
+class="math inline">\(\delta^d\)</span> decay</li>
+<li><strong>Defense Composition Algebra</strong> (Section 4 (Defense
+Composition, Part 1)): Series and parallel composition theorems</li>
+<li><strong>Integrity Properties</strong> (Section 5 (Integrity
+Properties, Part 1)): Belief consistency, goal preservation, trust
+boundedness</li>
+</ul>
+<p>All notation follows the canonical reference in Part 1 Appendix ().
+For practical deployment guidance including checklists and operational
+considerations, see Part 3.</p>
+<h2 data-number="2.4" id="paper-organization"><span
+class="header-section-number">2.4</span> Paper Organization</h2>
+<p>The remainder of this paper is structured as follows:</p>
+<p> presents implementation details for each defense mechanism.</p>
+<p> describes the 950-attack evaluation dataset with examples and
+generation methodology.</p>
+<p> details the six target architectures and evaluation protocol.</p>
+<p> presents detection performance, ablation studies, and scalability
+analysis.</p>
+<p> provides statistical significance testing and cross-architecture
+comparison.</p>
+<p> examines limitations, deployment considerations, and future
+work.</p>
+<p> summarizes contributions and identifies next steps.</p>
+<hr />
+<h1 data-number="3" id="sec:methodology"><span
+class="header-section-number">3</span> Methodology: Implementation
+Details</h1>
+<p>This section provides pseudocode for major algorithms (),
+configuration parameters (), framework API reference (), deployment
+considerations (), and integration examples ().</p>
+<blockquote>
+<p><strong>Cross-Reference Note</strong>: All algorithms in this section
+implement the formal definitions and theorems from Part 1 of this
+series. We cite specific theorems and definitions using the notation
+“(Part 1, Theorem X.Y)” to enable readers to trace implementations to
+their theoretical foundations.</p>
+</blockquote>
+<h2 data-number="3.1" id="sec:pseudocode"><span
+class="header-section-number">3.1</span> Pseudocode for Major
+Algorithms</h2>
+<h3 data-number="3.1.1" id="sec:alg-firewall"><span
+class="header-section-number">3.1.1</span> Algorithm 1: Cognitive
+Firewall</h3>
+<p>The cognitive firewall classifies incoming messages using a
+multi-stage detection pipeline. This algorithm implements the formal
+Cognitive Firewall definition from Part 1, Section 5.1, which specifies
+the three-stage filtering (<span class="math inline">\(F_{sig} \to
+F_{sem} \to F_{anom}\)</span>) with combined threat scoring (Part 1,
+Definition 5.1).</p>
+<h3 data-number="3.1.2" id="sec:alg-sandbox"><span
+class="header-section-number">3.1.2</span> Algorithm 2: Belief
+Sandboxing</h3>
+<p>Manages provisional beliefs with verification and promotion logic.
+This algorithm implements the Belief Sandboxing rules from Part 1,
+Section 5.2, including the sandboxing rule <span
+class="math inline">\(\mathcal{B}_{provisional} \gets
+\mathcal{B}_{provisional} \cup \{(\phi, \pi, TTL)\}\)</span> for
+unverified beliefs, and the promotion rule requiring <span
+class="math inline">\(\kappa\)</span>-corroboration (Part 1, Definition
+5.2 and Property 5.2).</p>
+<h3 data-number="3.1.3" id="sec:alg-trust"><span
+class="header-section-number">3.1.3</span> Algorithm 3: Trust
+Update</h3>
+<p>Implements the trust calculus with decay and reputation updates. This
+is a direct implementation of Part 1’s Trust Algebra (Section 3),
+including the bounded delegation with <span
+class="math inline">\(\delta^d\)</span> decay (Theorem 3.1: Trust
+Boundedness) and EMA-based reputation updates (Definition 3.3). The
+trust score is bounded by <span class="math inline">\(\delta^d\)</span>
+as proven in Part 1, ensuring that trust cannot be arbitrarily inflated
+through delegation chains.</p>
+<h3 data-number="3.1.4" id="sec:alg-tripwire"><span
+class="header-section-number">3.1.4</span> Algorithm 4: Cognitive
+Tripwire Monitoring</h3>
+<p>Continuously monitors canary beliefs for unauthorized modifications.
+Tripwires implement the runtime defense mechanism defined in Part 1,
+Section 5.3 (Definition 5.3: Cognitive Tripwire), which specifies canary
+beliefs <span class="math inline">\(\omega \in \mathcal{W}\)</span> that
+should remain stable under normal operation. Any deviation triggers
+alerts for investigation.</p>
+<h3 data-number="3.1.5" id="sec:alg-byzantine"><span
+class="header-section-number">3.1.5</span> Algorithm 5: Byzantine
+Consensus</h3>
+<p>Implements Byzantine fault-tolerant consensus for multi-agent
+decisions. This algorithm satisfies the Byzantine Agreement Requirement
+from Part 1, Section 5.5 (Theorem 5.3), ensuring that all honest agents
+agree on the same value when at most <span
+class="math inline">\(f\)</span> agents are Byzantine and <span
+class="math inline">\(n \geq 3f + 1\)</span>. The implementation follows
+the “send, echo, ready” pattern described in Part 1.</p>
+<h3 data-number="3.1.6" id="sec:alg-drift"><span
+class="header-section-number">3.1.6</span> Algorithm 6: Drift
+Detection</h3>
+<p>Monitors belief distributions for anomalous changes over time. This
+implements Part 1’s progressive drift detection (Section 6.1, Definition
+6.1), using KL divergence to detect cumulative shifts.</p>
+<h2 data-number="3.2" id="sec:config-params"><span
+class="header-section-number">3.2</span> Configuration Parameters</h2>
+<h3 data-number="3.2.1" id="sec:core-params"><span
+class="header-section-number">3.2.1</span> Core Framework
+Parameters</h3>
+
+<h3 data-number="3.2.2" id="sec:trust-params"><span
+class="header-section-number">3.2.2</span> Trust Calculus
+Parameters</h3>
+<p>: <span class="math inline">\(\alpha + \beta + \gamma = 1\)</span>
+(see the trust function equation (Part 1, Equation 5)).</p>
+<h3 data-number="3.2.3" id="sec:firewall-params"><span
+class="header-section-number">3.2.3</span> Firewall Parameters</h3>
+
+<h3 data-number="3.2.4" id="sec:sandbox-params"><span
+class="header-section-number">3.2.4</span> Sandbox Parameters</h3>
+
+<h3 data-number="3.2.5" id="sec:tripwire-params"><span
+class="header-section-number">3.2.5</span> Tripwire Parameters</h3>
+
+<h3 data-number="3.2.6" id="sec:drift-params"><span
+class="header-section-number">3.2.6</span> Drift Detection
+Parameters</h3>
+
+<h3 data-number="3.2.7" id="sec:consensus-params"><span
+class="header-section-number">3.2.7</span> Consensus Parameters</h3>
+
+<h3 data-number="3.2.8" id="sec:tuning-profiles"><span
+class="header-section-number">3.2.8</span> Performance Tuning
+Profiles</h3>
+
+<h2 data-number="3.3" id="sec:framework-api"><span
+class="header-section-number">3.3</span> Framework API Reference</h2>
+<p>This section documents the core framework modules that implement the
+theoretical constructs from Part 1. The complete source code is
+available in the companion repository.</p>
+<h3 data-number="3.3.1" id="sec:trust-api"><span
+class="header-section-number">3.3.1</span> Trust Module</h3>
+<p>The trust module implements bounded trust delegation with
+configurable decay.</p>
+<p><strong>Key Methods</strong>:</p>
+<ul>
+<li><code>TrustCalculus.compute_trust(base, reputation, context)</code>
+→ <span class="math inline">\([0, 1]\)</span></li>
+<li><code>TrustCalculus.delegate_trust(source_trust, target_trust, depth)</code>
+→ bounded trust</li>
+<li><code>TrustMatrix.get_delegation_trust(path)</code> → end-to-end
+path trust</li>
+<li><code>ReputationTracker.record_interaction(source, target, outcome, timestamp)</code></li>
+</ul>
+<h3 data-number="3.3.2" id="sec:firewall-api"><span
+class="header-section-number">3.3.2</span> Firewall Module</h3>
+<p>The firewall module implements multi-stage classification for
+cognitive attack detection.</p>
+<p><strong>Key Methods</strong>:</p>
+<ul>
+<li><code>CognitiveFirewall.classify(message)</code> → Classification
+enum</li>
+<li><code>CognitiveFirewall.process(message)</code> → (classification,
+processed_message)</li>
+<li><code>PatternDetector.score_injection(message)</code> → <span
+class="math inline">\([0, 1]\)</span></li>
+<li><code>SemanticSimilarityDetector.score_semantic_similarity(message)</code>
+→ <span class="math inline">\([0, 1]\)</span></li>
+</ul>
+<h3 data-number="3.3.3" id="sec:consensus-api"><span
+class="header-section-number">3.3.3</span> Consensus Module</h3>
+<p>The consensus module implements Byzantine-tolerant agreement
+protocols.</p>
+<p><strong>Key Methods</strong>:</p>
+<ul>
+<li><code>ByzantineConsensus.submit_vote(vote)</code> → None</li>
+<li><code>ByzantineConsensus.compute_consensus(proposition)</code> →
+(result, confidence)</li>
+<li><code>QuorumVerification.approve(action_id, agent_id)</code> → bool
+(True if quorum reached)</li>
+</ul>
+<h3 data-number="3.3.4" id="sec:detection-api"><span
+class="header-section-number">3.3.4</span> Detection Module</h3>
+<p>The detection module implements statistical anomaly and drift
+detection.</p>
+<h3 data-number="3.3.5" id="sec:provenance-api"><span
+class="header-section-number">3.3.5</span> Provenance Module</h3>
+<p>The provenance module implements information flow tracking with
+causal attribution.</p>
+<h3 data-number="3.3.6" id="sec:sandbox-api"><span
+class="header-section-number">3.3.6</span> Sandbox Module</h3>
+<p>The sandbox module implements belief partitioning for provisional
+information management.</p>
+<h3 data-number="3.3.7" id="sec:tripwire-api"><span
+class="header-section-number">3.3.7</span> Tripwire Module</h3>
+<p>The tripwire module implements canary belief monitoring for intrusion
+detection.</p>
+<h3 data-number="3.3.8" id="sec:invariants-api"><span
+class="header-section-number">3.3.8</span> Invariants Module</h3>
+<p>The invariants module implements runtime behavioral constraint
+checking.</p>
+<h2 data-number="3.4" id="sec:deployment-checklist"><span
+class="header-section-number">3.4</span> Deployment Considerations</h2>
+<h3 data-number="3.4.1" id="sec:pre-deploy"><span
+class="header-section-number">3.4.1</span> Pre-Deployment</h3>
+:
+:
+<p>Test GPU availability if using embeddings \end{itemize}</p>
+:
+<h3 data-number="3.4.2" id="sec:config-checklist"><span
+class="header-section-number">3.4.2</span> Configuration</h3>
+:
+:
+:
+:
+<h3 data-number="3.4.3" id="sec:post-deploy"><span
+class="header-section-number">3.4.3</span> Post-Deployment
+Verification</h3>
+:
+:
+:
+<h2 data-number="3.5" id="sec:integration-examples"><span
+class="header-section-number">3.5</span> Integration Examples</h2>
+<h3 data-number="3.5.1" id="sec:python-integration"><span
+class="header-section-number">3.5.1</span> Python Integration</h3>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> cif <span class="im">import</span> CognitiveFirewall, BeliefSandbox, TrustManager</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize components</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>firewall <span class="op">=</span> CognitiveFirewall(</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    tau_reject<span class="op">=</span><span class="fl">0.8</span>,</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    tau_quarantine<span class="op">=</span><span class="fl">0.5</span>,</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    pattern_db<span class="op">=</span><span class="st">&quot;patterns/injection.json&quot;</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>sandbox <span class="op">=</span> BeliefSandbox(</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    ttl_default<span class="op">=</span><span class="dv">3600</span>,</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    k_corroboration<span class="op">=</span><span class="dv">2</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>trust_mgr <span class="op">=</span> TrustManager(</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    alpha<span class="op">=</span><span class="fl">0.3</span>, beta<span class="op">=</span><span class="fl">0.5</span>, gamma<span class="op">=</span><span class="fl">0.2</span>,</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    delta<span class="op">=</span><span class="fl">0.8</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Process incoming message</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> process_message(msg, source):</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Firewall check</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    decision <span class="op">=</span> firewall.classify(msg)</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> decision <span class="op">==</span> <span class="st">&quot;REJECT&quot;</span>:</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">None</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Get trust score</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    trust <span class="op">=</span> trust_mgr.get_trust(source)</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Extract beliefs</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>    beliefs <span class="op">=</span> extract_beliefs(msg)</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> belief <span class="kw">in</span> beliefs:</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> decision <span class="op">==</span> <span class="st">&quot;QUARANTINE&quot;</span> <span class="kw">or</span> trust <span class="op">&lt;</span> <span class="fl">0.9</span>:</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>            sandbox.add(belief, source, trust)</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>            verified_beliefs.add(belief)</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> beliefs</span></code></pre></div>
+<h3 data-number="3.5.2" id="sec:yaml-config"><span
+class="header-section-number">3.5.2</span> YAML Configuration</h3>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cif</span><span class="kw">:</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">version</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;1.0&quot;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">trust</span><span class="kw">:</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">alpha</span><span class="kw">:</span><span class="at"> </span><span class="fl">0.3</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">beta</span><span class="kw">:</span><span class="at"> </span><span class="fl">0.5</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">gamma</span><span class="kw">:</span><span class="at"> </span><span class="fl">0.2</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">delta</span><span class="kw">:</span><span class="at"> </span><span class="fl">0.8</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">learning_rate</span><span class="kw">:</span><span class="at"> </span><span class="fl">0.1</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">firewall</span><span class="kw">:</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">enabled</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">tau_reject</span><span class="kw">:</span><span class="at"> </span><span class="fl">0.8</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">tau_quarantine</span><span class="kw">:</span><span class="at"> </span><span class="fl">0.5</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">weights</span><span class="kw">:</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">injection</span><span class="kw">:</span><span class="at"> </span><span class="fl">0.4</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">semantic</span><span class="kw">:</span><span class="at"> </span><span class="fl">0.35</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">anomaly</span><span class="kw">:</span><span class="at"> </span><span class="fl">0.25</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">sandbox</span><span class="kw">:</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">enabled</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">ttl_default</span><span class="kw">:</span><span class="at"> </span><span class="dv">3600</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">k_corroboration</span><span class="kw">:</span><span class="at"> </span><span class="dv">2</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">max_provisional</span><span class="kw">:</span><span class="at"> </span><span class="dv">1000</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">tripwires</span><span class="kw">:</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">enabled</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">epsilon_drift</span><span class="kw">:</span><span class="at"> </span><span class="fl">0.1</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">check_interval</span><span class="kw">:</span><span class="at"> </span><span class="dv">30</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">canaries</span><span class="kw">:</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">id</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;identity&quot;</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">belief</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;I am Agent-1&quot;</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">expected</span><span class="kw">:</span><span class="at"> </span><span class="fl">1.0</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">id</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;principal&quot;</span></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">belief</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;My principal is Alice&quot;</span></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">expected</span><span class="kw">:</span><span class="at"> </span><span class="fl">1.0</span></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">consensus</span><span class="kw">:</span></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">enabled</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">round_timeout</span><span class="kw">:</span><span class="at"> </span><span class="dv">5000</span></span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">max_rounds</span><span class="kw">:</span><span class="at"> </span><span class="dv">10</span></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">monitoring</span><span class="kw">:</span></span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">prometheus_port</span><span class="kw">:</span><span class="at"> </span><span class="dv">9090</span></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">log_level</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;INFO&quot;</span></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">alert_webhook</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;https://alerts.example.com/cif&quot;</span></span></code></pre></div>
+<hr />
+<h1 data-number="4" id="sec:attack-corpus"><span
+class="header-section-number">4</span> Attack Corpus</h1>
+<p>This supplementary material provides corpus overview (), detailed
+statistics (), example attacks by category (), generation methodology
+(), effectiveness analysis (), and ethical considerations ().</p>
+<h2 data-number="4.1" id="sec:corpus-overview"><span
+class="header-section-number">4.1</span> Corpus Overview</h2>
+<p>The attack corpus used for experimental validation comprises 950
+unique attack instances across four primary categories. This
+supplementary material provides detailed statistics, sanitized examples,
+generation methodology, and ethical considerations.</p>
+<h2 data-number="4.2" id="sec:corpus-stats"><span
+class="header-section-number">4.2</span> Full Attack Corpus
+Statistics</h2>
+<figure id="fig:comprehensive-taxonomy">
+<embed src="figures/comprehensive_taxonomy.pdf" style="width:95.0%" />
+<figcaption aria-hidden="true">Cognitive Attack Taxonomy. Hierarchical
+visualization of the 950-attack corpus organized by primary category
+(Prompt Injection, Trust Exploitation, Belief Manipulation, Coordination
+Attacks) and subcategory. Node size indicates attack count; color
+intensity indicates baseline success rate. The taxonomy reveals that
+prompt injection dominates in volume (500 attacks) while coordination
+attacks show highest baseline success against undefended
+systems.</figcaption>
+</figure>
+<h3 data-number="4.2.1" id="sec:category-breakdown"><span
+class="header-section-number">4.2.1</span> Category Breakdown</h3>
+
+<h3 data-number="4.2.2" id="sec:injection-subcats"><span
+class="header-section-number">4.2.2</span> Prompt Injection
+Subcategories</h3>
+<p>: Attacks embedded directly in user input attempting to override
+system instructions.</p>
+<p>: Attacks injected through external data sources (web content, API
+responses, documents).</p>
+<p>: Multi-layer attacks where outer content masks inner malicious
+payloads.</p>
+<h3 data-number="4.2.3" id="sec:trust-subcats"><span
+class="header-section-number">4.2.3</span> Trust Exploitation
+Subcategories</h3>
+
+<h3 data-number="4.2.4" id="sec:belief-subcats"><span
+class="header-section-number">4.2.4</span> Belief Manipulation
+Subcategories</h3>
+
+<h3 data-number="4.2.5" id="sec:coord-subcats"><span
+class="header-section-number">4.2.5</span> Coordination Attack
+Subcategories</h3>
+
+<h3 data-number="4.2.6" id="sec:source-stats"><span
+class="header-section-number">4.2.6</span> Detailed Statistics by
+Source</h3>
+
+<h3 data-number="4.2.7" id="sec:complexity-dist"><span
+class="header-section-number">4.2.7</span> Complexity Distribution</h3>
+
+<h3 data-number="4.2.8" id="sec:target-dist"><span
+class="header-section-number">4.2.8</span> Target Distribution</h3>
+<figure id="fig:attack-surface">
+<embed src="figures/attack_surface.pdf" style="width:90.0%" />
+<figcaption aria-hidden="true">Attack Surface Map. Visualization of
+cognitive attack entry points in multiagent systems. The diagram shows
+five primary attack surfaces: User Input (direct injection), Tool
+Outputs (indirect injection), Agent Communication (trust exploitation),
+Persistent Memory (belief poisoning), and External Triggers (timing
+attacks). Line thickness indicates attack frequency in our corpus; node
+color indicates CIF detection efficacy at each surface.</figcaption>
+</figure>
+<h2 data-number="4.3" id="sec:attack-examples"><span
+class="header-section-number">4.3</span> Example Attacks by
+Category</h2>
+<h3 data-number="4.3.1" id="sec:ex-injection"><span
+class="header-section-number">4.3.1</span> Category 1: Prompt
+Injection</h3>
+
+<h3 data-number="4.3.2" id="sec:ex-trust"><span
+class="header-section-number">4.3.2</span> Category 2: Trust
+Exploitation</h3>
+
+<h3 data-number="4.3.3" id="sec:ex-belief"><span
+class="header-section-number">4.3.3</span> Category 3: Belief
+Manipulation</h3>
+
+<h3 data-number="4.3.4" id="sec:ex-coord"><span
+class="header-section-number">4.3.4</span> Category 4: Coordination
+Attacks</h3>
+
+<h2 data-number="4.4" id="sec:generation-methodology"><span
+class="header-section-number">4.4</span> Attack Generation
+Methodology</h2>
+<h3 data-number="4.4.1" id="sec:synthetic-generation"><span
+class="header-section-number">4.4.1</span> Synthetic Attack
+Generation</h3>
+:
+<h3 data-number="4.4.2" id="sec:red-team"><span
+class="header-section-number">4.4.2</span> Red Team Exercise
+Protocol</h3>
+<p>: 8 security researchers (2–10 years experience)</p>
+<p>: 4 weeks</p>
+:
+<h3 data-number="4.4.3" id="sec:qa"><span
+class="header-section-number">4.4.3</span> Quality Assurance</h3>
+:
+<h2 data-number="4.5" id="sec:effectiveness-analysis"><span
+class="header-section-number">4.5</span> Attack Effectiveness
+Analysis</h2>
+<h3 data-number="4.5.1" id="sec:success-by-defense"><span
+class="header-section-number">4.5.1</span> Success Rate by Defense
+Configuration</h3>
+
+<h3 data-number="4.5.2" id="sec:sophistication-corr"><span
+class="header-section-number">4.5.2</span> Attack Sophistication
+Correlation</h3>
+<p><span class="math display">\[\begin{equation}
+\label{eq:sophistication-correlation}
+r_{sophistication, success} = 0.67 \quad (p &lt; 0.001)
+\end{equation}\]</span></p>
+<p>More sophisticated attacks have higher baseline success but show
+similar detection rates under CIF, suggesting defense robustness.</p>
+<h3 data-number="4.5.3" id="sec:temporal-analysis"><span
+class="header-section-number">4.5.3</span> Temporal Analysis</h3>
+<p>Older attacks detected at higher rates due to pattern database
+inclusion.</p>
+<h2 data-number="4.6" id="sec:ethical-considerations"><span
+class="header-section-number">4.6</span> Ethical Considerations</h2>
+<h3 data-number="4.6.1" id="sec:responsible-disclosure"><span
+class="header-section-number">4.6.1</span> Responsible Disclosure</h3>
+All novel attack vectors discovered during this research were:
+<h3 data-number="4.6.2" id="sec:dual-use"><span
+class="header-section-number">4.6.2</span> Dual-Use Considerations</h3>
+: The attack corpus represents a dual-use resource that could enable
+both defensive research and malicious exploitation. We address this
+through:
+<h3 data-number="4.6.3" id="sec:human-subjects"><span
+class="header-section-number">4.6.3</span> Human Subjects</h3>
+This research did not involve human subjects experimentation. All
+attacks were tested against:
+<h3 data-number="4.6.4" id="sec:ethics-approval"><span
+class="header-section-number">4.6.4</span> Research Ethics Approval</h3>
+This research was reviewed and determined to be exempt from IRB
+oversight as it did not involve human subjects. The board determined
+that:
+<h2 data-number="4.7" id="sec:data-availability"><span
+class="header-section-number">4.7</span> Data Availability</h2>
+<h3 data-number="4.7.1" id="sec:public-resources"><span
+class="header-section-number">4.7.1</span> Public Resources</h3>
+
+<h3 data-number="4.7.2" id="sec:restricted-resources"><span
+class="header-section-number">4.7.2</span> Restricted Resources</h3>
+
+<h3 data-number="4.7.3" id="sec:access-request"><span
+class="header-section-number">4.7.3</span> Access Request Process</h3>
+Researchers wishing to access the full attack corpus must:
+<h2 data-number="4.8" id="sec:corpus-references"><span
+class="header-section-number">4.8</span> References</h2>
+<p>[1] JailbreakBench: An Open Benchmark for Jailbreaking Large Language
+Models</p>
+<p>[2] PromptInject: A Dataset for Prompt Injection Attacks</p>
+<p>[3] TensorTrust: Interpretable and Accurate Prompt Injection
+Defense</p>
+<hr />
+<h1 data-number="5" id="sec:results"><span
+class="header-section-number">5</span> Experimental Validation</h1>
+<p>This section demonstrates the practical viability of CIF’s formal
+mechanisms through empirical evaluation across production multiagent
+architectures. We present experimental setup () and key findings ().
+Detailed statistical analysis, ablation studies, and scalability metrics
+are provided in .</p>
+<h2 data-number="5.1" id="sec:exp-setup"><span
+class="header-section-number">5.1</span> Experimental Setup</h2>
+<h3 data-number="5.1.1" id="target-architectures"><span
+class="header-section-number">5.1.1</span> Target Architectures</h3>
+<p>We evaluated CIF across six production multiagent systems
+representing diverse architectural patterns:</p>
+<h3 data-number="5.1.2" id="attack-corpus"><span
+class="header-section-number">5.1.2</span> Attack Corpus</h3>
+<p>We assembled a corpus of 950 cognitive attacks across four
+categories: prompt injection (500), trust exploitation (200), belief
+manipulation (150), and coordination attacks (100). Sources include
+published jailbreak datasets, custom adversarial prompts, red team
+exercises, and synthetic generation via adversarial models.</p>
+<h2 data-number="5.2" id="sec:key-findings"><span
+class="header-section-number">5.2</span> Key Findings</h2>
+<h3 data-number="5.2.1"
+id="finding-1-layered-defense-significantly-outperforms-single-mechanisms"><span
+class="header-section-number">5.2.1</span> Finding 1: Layered Defense
+Significantly Outperforms Single Mechanisms</h3>
+<p>The central empirical finding validates CIF’s layered approach. No
+single defense mechanism achieves acceptable protection, but their
+composition yields substantial improvement.</p>
+<figure id="fig:detection-performance">
+<embed src="figures/detection_performance.pdf" style="width:95.0%" />
+<figcaption aria-hidden="true">Detection Performance Comparison. Bar
+chart comparing detection rates across defense configurations (Baseline,
+Firewall-only, Sandbox-only, Tripwires-only, Full CIF) for each attack
+category (Prompt Injection, Trust Exploitation, Belief Manipulation,
+Coordination). Error bars show 95% confidence intervals. Full CIF
+consistently achieves <span class="math inline">\(&gt;90\%\)</span>
+detection across all categories, while individual mechanisms show
+significant gaps—validating the defense composition algebra (Part 1,
+Theorems 3.1-3.2).</figcaption>
+</figure>
+<p>The gap between firewall-only and full CIF is most pronounced for
+coordination and temporal attacks, which require multi-component
+detection. This validates the defense composition algebra (Section 4
+(Defense Composition, Part 1)): defenses targeting orthogonal attack
+surfaces compose multiplicatively.</p>
+<h3 data-number="5.2.2"
+id="finding-2-trust-calculus-prevents-amplification-attacks"><span
+class="header-section-number">5.2.2</span> Finding 2: Trust Calculus
+Prevents Amplification Attacks</h3>
+<figure id="fig:roc-curves">
+<embed src="figures/roc_curves.pdf" style="width:90.0%" />
+<figcaption aria-hidden="true">ROC Curves by Attack Category. Receiver
+Operating Characteristic curves showing the tradeoff between True
+Positive Rate (sensitivity) and False Positive Rate (1-specificity) for
+CIF detection across four attack categories. All categories achieve AUC
+<span class="math inline">\(&gt; 0.92\)</span>, with Prompt Injection
+showing the strongest discrimination (AUC = 0.97) and Coordination
+Attacks showing the widest confidence band due to smaller sample
+size.</figcaption>
+</figure>
+<p>Across all tested architectures, the bounded trust decay (<span
+class="math inline">\(\delta^d\)</span>) successfully prevented trust
+laundering and amplification attempts. In adversarial scenarios where
+attackers attempted to relay high-impact content through multiple
+trusted intermediaries, the exponential decay ensured that delegated
+trust remained below action thresholds.</p>
+<p>Critically, this held even when individual agents in the delegation
+chain were compromised—the trust bound is a guarantee independent of
+agent behavior.</p>
+<h3 data-number="5.2.3"
+id="finding-3-integrity-improvement-scales-across-architectures"><span
+class="header-section-number">5.2.3</span> Finding 3: Integrity
+Improvement Scales Across Architectures</h3>
+<p>CIF improved belief integrity scores substantially across all six
+architectures, with particularly strong results for systems with deeper
+delegation hierarchies (Camel, AutoGPT) where the trust calculus
+provides the greatest benefit.</p>
+<p>The peer-to-peer architectures (Camel) showed the largest relative
+improvement, consistent with our analysis that equal-trust topologies
+are most vulnerable to lateral movement attacks ().</p>
+<h3 data-number="5.2.4"
+id="finding-4-performance-overhead-is-acceptable-for-security-contexts"><span
+class="header-section-number">5.2.4</span> Finding 4: Performance
+Overhead Is Acceptable for Security Contexts</h3>
+<p>Full CIF deployment introduces latency overhead in the 20-25% range
+with memory requirements scaling with agent count. For security-critical
+deployments, this overhead is acceptable given the integrity improvement
+achieved.</p>
+<p>The overhead is dominated by the cognitive firewall (input
+classification) and Byzantine consensus (coordination). For environments
+where consensus is unnecessary, lighter configurations achieve
+comparable detection with lower overhead (Table 3 (Risk-Based
+Configuration, Part 1)).</p>
+<h3 data-number="5.2.5"
+id="finding-5-attack-type-specific-vulnerabilities-remain"><span
+class="header-section-number">5.2.5</span> Finding 5: Attack-Type
+Specific Vulnerabilities Remain</h3>
+<p>Despite strong overall performance, specific attack types remain
+challenging:</p>
+<p>These gaps define the frontier for future defense research.</p>
+<h2 data-number="5.3" id="interpretation"><span
+class="header-section-number">5.3</span> Interpretation</h2>
+<p>The empirical results validate that CIF’s formal mechanisms translate
+to practical protection. The key insight is not the specific detection
+rates achieved—which reflect current attack sophistication and will
+degrade as adversaries adapt—but rather the properties:</p>
+<p>These properties hold independent of specific detection thresholds
+and provide the foundation for long-term security assurance.</p>
+<p>For detailed statistical analysis including significance testing,
+confidence intervals, ablation studies, and scalability benchmarks, see
+the Extended Results ().</p>
+<hr />
+<h1 data-number="6" id="sec:extended-results"><span
+class="header-section-number">6</span> Supplementary: Extended
+Experimental Results</h1>
+<p>This supplementary material provides per-architecture breakdown (),
+statistical significance tests (), effect sizes (), confidence intervals
+(), sensitivity analysis (), extended ablation study (), and scalability
+analysis ().</p>
+<h2 data-number="6.1" id="sec:per-arch"><span
+class="header-section-number">6.1</span> Per-Architecture Breakdown</h2>
+<h3 data-number="6.1.1" id="sec:claude-code"><span
+class="header-section-number">6.1.1</span> Claude Code (Hierarchical
+Architecture)</h3>
+:
+<p><em>These results demonstrate that Claude Code’s hierarchical
+architecture provides strong structural protection: the orchestrator’s
+centralized context enables effective firewall filtering (0.89 direct
+injection detection), while unidirectional delegation limits lateral
+movement. The architecture’s main vulnerability appears in coordination
+attacks (0.88 with full CIF), where the lack of peer communication
+channels makes it harder to detect multi-agent manipulation patterns.
+The 210% improvement in sustained attack scenarios reflects the trust
+calculus preventing adversaries from gradually eroding orchestrator
+integrity.</em></p>
+<h3 data-number="6.1.2" id="sec:autogpt"><span
+class="header-section-number">6.1.2</span> AutoGPT (Autonomous
+Architecture)</h3>
+:
+<p><em>AutoGPT’s autonomous architecture with plugin-based tool access
+creates a distinctive vulnerability profile. The single-agent design
+makes direct injection highly detectable (0.91 firewall), but the plugin
+interface creates significant exposure to indirect attacks through tool
+responses—explaining the lower indirect injection detection (0.78
+firewall-only). The belief manipulation detection is notably strong
+(0.95 with CIF) because tripwires can monitor the agent’s persistent
+working memory for unauthorized changes. The 20% throughput reduction is
+higher than Claude Code due to the overhead of validating plugin
+interactions.</em></p>
+<h3 data-number="6.1.3" id="sec:crewai"><span
+class="header-section-number">6.1.3</span> CrewAI (Role-Based
+Architecture)</h3>
+:
+<p><em>CrewAI’s role-based architecture shows particularly strong trust
+exploitation detection (0.94 with CIF)—the highest among all
+architectures. This reflects the benefit of explicit role definitions:
+when an agent attempts to operate outside its assigned role, the
+deviation is structurally detectable. The tripwires mechanism (0.91 for
+trust exploitation) is especially effective because role boundaries
+provide natural canary placement points. Sequential task handoff also
+aids provenance tracking, as each role transition creates a clear
+attestation checkpoint.</em></p>
+<h3 data-number="6.1.4" id="sec:langgraph"><span
+class="header-section-number">6.1.4</span> LangGraph (Graph-Based
+Architecture)</h3>
+:
+<p><em>LangGraph achieves the highest overall detection rates (0.98
+direct injection, 0.96 indirect), benefiting from its explicit state
+machine architecture. The graph structure makes attack propagation paths
+formally traceable—each edge represents a potential attack vector that
+can be monitored. The state machine protocol also enables CIF’s
+invariant checking (INV-1 through INV-5) to be expressed as state
+transition constraints, catching violations that would be implicit in
+other architectures. The coordination attack detection (0.92) benefits
+from the graph’s visibility into multi-node interaction
+patterns.</em></p>
+<h3 data-number="6.1.5" id="sec:metagpt"><span
+class="header-section-number">6.1.5</span> MetaGPT (SOP-Driven
+Architecture)</h3>
+:
+<p><em>MetaGPT’s SOP-driven architecture presents a mixed security
+profile. The document-based communication creates natural sandboxing
+opportunities—each document can be quarantined and validated before
+affecting agent beliefs. However, the structured role interactions
+following Standard Operating Procedures make the system somewhat
+predictable to adversaries, reflected in lower detection rates compared
+to LangGraph. The shared document repository is both a strength
+(centralized monitoring) and weakness (single point of attack) for
+belief manipulation defense.</em></p>
+<h3 data-number="6.1.6" id="sec:camel"><span
+class="header-section-number">6.1.6</span> Camel (Debate
+Architecture)</h3>
+:
+<p><em>Camel’s debate architecture shows the most distinctive security
+characteristics. The adversarial design—where agents argue opposing
+positions—creates inherent resilience to some attack types: trust
+exploitation detection (0.92) benefits from agents naturally challenging
+each other’s claims. Paradoxically, the peer-to-peer equal-trust
+topology creates vulnerability to lateral movement, explaining the lower
+direct injection detection (0.83 firewall) compared to hierarchical
+systems. The coordination attack detection (0.93) is surprisingly strong
+because the debate transcript provides a complete audit trail of
+inter-agent influence. Camel showed the largest relative improvement
+with CIF deployment, validating that peer-to-peer architectures benefit
+most from structured trust calculus.</em></p>
+<h2 data-number="6.2" id="sec:significance"><span
+class="header-section-number">6.2</span> Statistical Significance
+Tests</h2>
+<h3 data-number="6.2.1" id="sec:primary-tests"><span
+class="header-section-number">6.2.1</span> Primary Hypothesis Tests</h3>
+<p></p>
+<p></p>
+<p></p>
+<h3 data-number="6.2.2" id="sec:paired-comparisons"><span
+class="header-section-number">6.2.2</span> Paired Comparisons
+(Bonferroni Corrected)</h3>
+<p>All pairwise architecture comparisons with <span
+class="math inline">\(\alpha_{corrected} = 0.05/15 =
+0.0033\)</span>:</p>
+<h3 data-number="6.2.3" id="sec:nonparametric"><span
+class="header-section-number">6.2.3</span> Non-Parametric Tests</h3>
+<p> (architecture differences): <span
+class="math display">\[\begin{equation}
+\label{eq:kruskal-wallis}
+H = 28.7, \quad df = 5, \quad p &lt; 0.0001
+\end{equation}\]</span></p>
+<h2 data-number="6.3" id="sec:effect-sizes"><span
+class="header-section-number">6.3</span> Effect Sizes</h2>
+<h3 data-number="6.3.1" id="sec:cohens-d"><span
+class="header-section-number">6.3.1</span> Cohen’s d (Standardized Mean
+Difference)</h3>
+
+<h3 data-number="6.3.2" id="sec:odds-ratios"><span
+class="header-section-number">6.3.2</span> Odds Ratios</h3>
+
+<h3 data-number="6.3.3" id="sec:nnt"><span
+class="header-section-number">6.3.3</span> Number Needed to Treat
+(NNT)</h3>
+<p>Attacks that need CIF protection to prevent one successful
+attack:</p>
+<h2 data-number="6.4" id="sec:confidence-intervals"><span
+class="header-section-number">6.4</span> Confidence Intervals</h2>
+<h3 data-number="6.4.1" id="sec:detection-ci"><span
+class="header-section-number">6.4.1</span> Detection Rate Confidence
+Intervals (95%)</h3>
+
+<h3 data-number="6.4.2" id="sec:arch-ci"><span
+class="header-section-number">6.4.2</span> Per-Architecture Confidence
+Intervals</h3>
+
+<h3 data-number="6.4.3" id="sec:attack-ci"><span
+class="header-section-number">6.4.3</span> Confidence Intervals by
+Attack Type</h3>
+
+<h2 data-number="6.5" id="sec:sensitivity"><span
+class="header-section-number">6.5</span> Sensitivity Analysis</h2>
+<h3 data-number="6.5.1" id="sec:firewall-sensitivity"><span
+class="header-section-number">6.5.1</span> Firewall Threshold
+Sensitivity</h3>
+<p>: <span class="math inline">\(\tau^* = 0.5\)</span> maximizes F1
+score.</p>
+<h3 data-number="6.5.2" id="sec:decay-sensitivity"><span
+class="header-section-number">6.5.2</span> Trust Decay Factor
+Sensitivity</h3>
+<figure id="fig:trust-decay-sensitivity">
+<embed src="figures/trust_decay.pdf" style="width:90.0%" />
+<figcaption aria-hidden="true">Trust Decay Sensitivity Analysis. Line
+plot showing the effect of trust decay parameter <span
+class="math inline">\(\delta\)</span> on detection rate (blue) and false
+positive rate (orange) across the range <span
+class="math inline">\([0.5, 0.95]\)</span>. The shaded region indicates
+the recommended operating range <span class="math inline">\(\delta \in
+[0.7, 0.8]\)</span> which balances security (high detection) with
+usability (low false positives). Lower <span
+class="math inline">\(\delta\)</span> values provide stronger security
+guarantees but limit legitimate delegation depth.</figcaption>
+</figure>
+<p>: <span class="math inline">\(\delta \in [0.7, 0.8]\)</span> balances
+security and usability.</p>
+<h3 data-number="6.5.3" id="sec:corroboration-sensitivity"><span
+class="header-section-number">6.5.3</span> Corroboration Count
+Sensitivity</h3>
+<p>: <span class="math inline">\(\kappa = 2\)</span> balances security
+and operational efficiency.</p>
+<h3 data-number="6.5.4" id="sec:window-sensitivity"><span
+class="header-section-number">6.5.4</span> Window Size Sensitivity
+(Drift Detection)</h3>
+<p>: Larger windows improve accuracy but increase detection latency.</p>
+<h3 data-number="6.5.5" id="sec:combined-sensitivity"><span
+class="header-section-number">6.5.5</span> Combined Parameter
+Sensitivity</h3>
+<p>: Firewall threshold and corroboration count show significant
+interaction. Higher thresholds require lower corroboration counts to
+maintain detection rates.</p>
+<h3 data-number="6.5.6" id="sec:robustness"><span
+class="header-section-number">6.5.6</span> Robustness to Attack
+Distribution Shift</h3>
+<p>: CIF generalizes well to novel attack types, with coordination
+attacks showing largest (but still acceptable) generalization gap.</p>
+<h2 data-number="6.6" id="sec:extended-ablation"><span
+class="header-section-number">6.6</span> Extended Ablation Study</h2>
+<figure id="fig:ablation-study">
+<embed src="figures/ablation_study.pdf" style="width:95.0%" />
+<figcaption aria-hidden="true">Ablation Study: Defense Component
+Contribution. Horizontal bar chart showing the detection rate impact of
+removing each CIF component from the full ensemble. The Cognitive
+Firewall contributes the largest marginal improvement (+13% TPR when
+added), followed by Tripwires (+9%) and Provenance Tracking (+7%). The
+synergy analysis reveals that Firewall + Tripwires show the strongest
+positive interaction, detecting complementary attack
+patterns.</figcaption>
+</figure>
+<h3 data-number="6.6.1" id="sec:component-removal"><span
+class="header-section-number">6.6.1</span> Component Removal Impact</h3>
+
+<h3 data-number="6.6.2" id="sec:minimal-config"><span
+class="header-section-number">6.6.2</span> Minimal Viable
+Configuration</h3>
+<p>Finding minimum component set for target TPR <span
+class="math inline">\(\geq 0.90\)</span>:</p>
+<p>: Minimal-C provides best latency/security trade-off for
+resource-constrained deployments.</p>
+<h3 data-number="6.6.3" id="sec:synergy"><span
+class="header-section-number">6.6.3</span> Component Synergy
+Analysis</h3>
+<p>Synergy score = Actual combined effect <span
+class="math inline">\(-\)</span> Sum of individual effects:</p>
+<p>: Firewall + Tripwires show strongest synergy, detecting
+complementary attack patterns.</p>
+<h2 data-number="6.7" id="sec:extended-scalability"><span
+class="header-section-number">6.7</span> Extended Scalability
+Analysis</h2>
+<h3 data-number="6.7.1" id="sec:agent-scaling"><span
+class="header-section-number">6.7.1</span> Agent Count Scaling</h3>
+
+<h3 data-number="6.7.2" id="sec:regression"><span
+class="header-section-number">6.7.2</span> Regression Analysis</h3>
+<p>: <span class="math inline">\(T_{detect} = \beta_0 + \beta_1 \cdot n
++ \beta_2 \cdot n^2\)</span></p>
+<p><span class="math inline">\(R^2 = 0.994\)</span>, indicating
+excellent fit.</p>
+<p>: <span class="math inline">\(M = \gamma_0 + \gamma_1 \cdot n +
+\gamma_2 \cdot n^2\)</span></p>
+<h3 data-number="6.7.3" id="sec:volume-scaling"><span
+class="header-section-number">6.7.3</span> Message Volume Scaling</h3>
+<p>: $$5000 messages/sec with current configuration.</p>
+<h2 data-number="6.8" id="sec:summary-stats"><span
+class="header-section-number">6.8</span> Summary Statistics</h2>
+<h3 data-number="6.8.1" id="sec:overall-summary"><span
+class="header-section-number">6.8.1</span> Overall Performance
+Summary</h3>
+
+<h3 data-number="6.8.2" id="sec:extended-key-findings"><span
+class="header-section-number">6.8.2</span> Key Findings</h3>
+<hr />
+<h1 data-number="7" id="sec:discussion"><span
+class="header-section-number">7</span> Discussion</h1>
+<h2 data-number="7.1" id="synthesis-of-findings"><span
+class="header-section-number">7.1</span> Synthesis of Findings</h2>
+<p>Our empirical evaluation across six production multiagent
+architectures validates the core theoretical claims of the Cognitive
+Integrity Framework (Part 1):</p>
+<h3 data-number="7.1.1" id="why-layered-defense-succeeds"><span
+class="header-section-number">7.1.1</span> Why Layered Defense
+Succeeds</h3>
+<figure id="fig:defense-composition">
+<embed src="figures/defense_composition.pdf" style="width:95.0%" />
+<figcaption aria-hidden="true">Defense Composition Architecture. Diagram
+illustrating the series and parallel composition of CIF defense
+mechanisms. The Cognitive Firewall provides the first line of defense
+(input filtering), followed by the Belief Sandbox (provisional
+isolation) and Tripwires (continuous monitoring) in series. Trust
+Calculus and Byzantine Consensus operate in parallel for delegation and
+coordination decisions. The multiplicative detection guarantee (Part 1,
+Theorems 3.1-3.2) emerges from the orthogonality of attack surfaces
+targeted by each layer.</figcaption>
+</figure>
+<p>The multiplicative composition of detection rates (Theorems 3.1-3.2
+in Part 1) explains the empirical observation that full CIF
+substantially outperforms individual mechanisms. Each defense targets a
+distinct attack surface:</p>
+<table>
+<thead>
+<tr>
+<th>Defense Layer</th>
+<th>Target Attack Surface</th>
+<th>Contribution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cognitive Firewall</td>
+<td>Input-based injection</td>
+<td>Blocks direct attacks</td>
+</tr>
+<tr>
+<td>Belief Sandbox</td>
+<td>Unverified content</td>
+<td>Contains propagation</td>
+</tr>
+<tr>
+<td>Tripwires</td>
+<td>Belief manipulation</td>
+<td>Detects subtle drift</td>
+</tr>
+<tr>
+<td>Trust Calculus</td>
+<td>Delegation abuse</td>
+<td>Bounds amplification</td>
+</tr>
+<tr>
+<td>Consensus</td>
+<td>Coordination attacks</td>
+<td>Ensures agreement integrity</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="7.1.2" id="architecture-specific-insights"><span
+class="header-section-number">7.1.2</span> Architecture-Specific
+Insights</h3>
+
+<h2 data-number="7.2" id="limitations"><span
+class="header-section-number">7.2</span> Limitations</h2>
+<h3 data-number="7.2.1" id="detection-gaps-remaining"><span
+class="header-section-number">7.2.1</span> Detection Gaps Remaining</h3>
+<p>Despite strong overall performance, specific attack types remain
+challenging:</p>
+<ul>
+<li><p><strong>Semantic equivalent attacks</strong>: Rephrased
+injections that preserve meaning evade pattern-matching defenses. Future
+work should incorporate semantic understanding into the
+firewall.</p></li>
+<li><p><strong>Progressive drift</strong>: Sub-threshold belief changes
+accumulate below detection windows. Longer observation windows trade off
+against response latency.</p></li>
+<li><p><strong>Orchestrator compromise</strong>: Outside our threat
+model assumption (honest orchestrator). Multi-orchestrator architectures
+provide potential mitigation.</p></li>
+</ul>
+<h3 data-number="7.2.2" id="scalability-constraints"><span
+class="header-section-number">7.2.2</span> Scalability Constraints</h3>
+<p>Our evaluation focused on systems with 3-10 agents. Scaling
+considerations include:</p>
+<ul>
+<li>Consensus latency grows quadratically with agent count</li>
+<li>Provenance depth in deep chains slows verification</li>
+<li>Memory requirements for full belief history</li>
+</ul>
+<h3 data-number="7.2.3" id="generalization-limitations"><span
+class="header-section-number">7.2.3</span> Generalization
+Limitations</h3>
+<p>Our attack corpus, while comprehensive (950 attacks), cannot
+represent all possible cognitive attacks. Detection rates should be
+interpreted as lower bounds; novel attack techniques will require
+defense evolution. For practical strategies on managing this residual
+risk, see the <strong>Risk Assessment Framework</strong> in Part 3.</p>
+<h2 data-number="7.3" id="relationship-to-prior-work"><span
+class="header-section-number">7.3</span> Relationship to Prior Work</h2>
+<p>CIF extends prior work in several directions:</p>
+<ul>
+<li><strong>Prompt injection defenses</strong>: Existing approaches
+focus on single-agent scenarios; CIF addresses inter-agent attack
+propagation</li>
+<li><strong>Byzantine fault tolerance</strong>: Classical BFT assumes
+crash or arbitrary faults; CIF addresses cognitive manipulation
+specifically</li>
+<li><strong>Trust frameworks</strong>: Prior trust systems lack the
+bounded delegation guarantees that prevent amplification</li>
+</ul>
+<h2 data-number="7.4" id="future-directions"><span
+class="header-section-number">7.4</span> Future Directions</h2>
+<h3 data-number="7.4.1" id="adaptive-defenses"><span
+class="header-section-number">7.4.1</span> Adaptive Defenses</h3>
+<p>Detection rates degrade as adversaries learn to evade (see detection
+degradation analysis in Part 1, Section 4). Future work should
+explore:</p>
+<ul>
+<li>Adversarial retraining of detection mechanisms</li>
+<li>Honeypot agents to detect novel techniques</li>
+<li>Formal safety margins for bounded detection degradation</li>
+</ul>
+<h3 data-number="7.4.2" id="emergent-behavior-security"><span
+class="header-section-number">7.4.2</span> Emergent Behavior
+Security</h3>
+<p>As multiagent systems scale, emergent collective behaviors become
+security-relevant:</p>
+<ul>
+<li>Formal characterization of “safe” emergent properties</li>
+<li>Detection of emergent coordination indicating compromise</li>
+<li>Sandboxing that preserves beneficial emergence</li>
+</ul>
+<h3 data-number="7.4.3" id="cross-system-federation"><span
+class="header-section-number">7.4.3</span> Cross-System Federation</h3>
+<p>Current CIF deployment assumes a single operator. Future work should
+address:</p>
+<ul>
+<li>Federated trust across organizational boundaries</li>
+<li>Cross-system provenance verification</li>
+<li>Regulatory compliance across jurisdictions</li>
+</ul>
+<hr />
+<h1 data-number="8" id="sec:conclusion"><span
+class="header-section-number">8</span> Conclusion</h1>
+<h2 data-number="8.1" id="summary-of-contributions"><span
+class="header-section-number">8.1</span> Summary of Contributions</h2>
+<p>This paper provided comprehensive empirical validation of the
+Cognitive Integrity Framework (CIF) introduced in Part 1 of this series.
+Our primary contributions:</p>
+<p><strong>Implementation</strong>: We implemented the complete CIF
+defense suite—cognitive firewalls, belief sandboxes, trust calculus with
+bounded delegation, tripwire detection, behavioral invariants, and
+Byzantine-tolerant consensus—demonstrating that the formal mechanisms
+translate into deployable code.</p>
+<p><strong>Attack Corpus</strong>: We assembled 950 cognitive attacks
+across four categories (prompt injection, trust exploitation, belief
+manipulation, coordination attacks), enabling reproducible security
+evaluation of multiagent systems.</p>
+<p><strong>Cross-Architecture Validation</strong>: We evaluated CIF
+across six production multiagent architectures (Claude Code, AutoGPT,
+CrewAI, LangGraph, MetaGPT, Camel), demonstrating that formal guarantees
+hold across diverse architectural patterns.</p>
+<p><strong>Statistical Rigor</strong>: We provided significance testing
+(<span class="math inline">\(p &lt; 0.0001\)</span> for primary
+hypotheses), effect sizes (Cohen’s <span class="math inline">\(d &gt;
+1.0\)</span> for all major comparisons), confidence intervals, and
+ablation studies establishing the robustness of our findings.</p>
+<h2 data-number="8.2" id="key-findings-1"><span
+class="header-section-number">8.2</span> Key Findings</h2>
+<ol type="1">
+<li><p><strong>Layered defense is essential</strong>: No single
+mechanism achieves acceptable protection; composition yields
+multiplicative improvement consistent with theoretical
+predictions.</p></li>
+<li><p><strong>Trust calculus prevents amplification</strong>: The <span
+class="math inline">\(\delta^d\)</span> decay bound successfully
+prevented trust laundering across all tested architectures—a structural
+guarantee independent of attacker sophistication.</p></li>
+<li><p><strong>Architecture matters</strong>: Peer-to-peer architectures
+show greatest improvement from CIF, consistent with their vulnerability
+to lateral movement attacks.</p></li>
+<li><p><strong>Performance overhead is acceptable</strong>: 20-25%
+latency overhead for full CIF deployment is appropriate for
+security-critical contexts.</p></li>
+</ol>
+<h2 data-number="8.3" id="implications-for-practitioners"><span
+class="header-section-number">8.3</span> Implications for
+Practitioners</h2>
+<p>The empirical results validate that CIF provides practical
+protection:</p>
+<ul>
+<li><strong>Deploy layered defenses</strong>: Configure all CIF
+components for security-critical deployments</li>
+<li><strong>Calibrate to architecture</strong>: Apply
+architecture-specific recommendations from </li>
+<li><strong>Monitor continuously</strong>: Detection rates degrade over
+time; ongoing vigilance is required</li>
+</ul>
+<p>For detailed deployment guidance, including human-actionable
+checklists and agent-readable guidelines, see Part 3 of this series.</p>
+<h2 data-number="8.4" id="paper-series-1"><span
+class="header-section-number">8.4</span> Paper Series</h2>
+<p>This is Part 2 of the <em>Cognitive Security for Multiagent
+Operators</em> series:</p>
+<ul>
+<li><strong>Part 1: Formal Foundations</strong> - Trust calculus,
+defense composition algebra, information-theoretic bounds</li>
+<li><strong>Part 2 (This Paper): Computational Validation</strong> -
+Implementation, attack corpus, empirical results</li>
+<li><strong>Part 3: Practical Guidance</strong> - Deployment checklists,
+operator posture, risk assessment</li>
+</ul>
+<p>Together, these papers provide a complete framework for
+understanding, implementing, and operating cognitive security in
+multiagent AI systems.</p>
+<hr />
+<h1 data-number="9" id="sec:notation-reference"><span
+class="header-section-number">9</span> Notation Reference</h1>
+<p>This paper uses notation from the Cognitive Integrity Framework (CIF)
+formal specification defined in Part 1 of this series.</p>
+<h2 data-number="9.1" id="quick-reference"><span
+class="header-section-number">9.1</span> Quick Reference</h2>
+<h3 data-number="9.1.1" id="core-entities"><span
+class="header-section-number">9.1.1</span> Core Entities</h3>
+<table>
+<thead>
+<tr>
+<th>Symbol</th>
+<th>Meaning</th>
+<th>Part 1 Reference</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="math inline">\(\mathcal{A}\)</span></td>
+<td>Agent set</td>
+<td>Definition 1</td>
+</tr>
+<tr>
+<td><span class="math inline">\(a_i\)</span></td>
+<td>Individual agent</td>
+<td>Definition 1</td>
+</tr>
+<tr>
+<td><span class="math inline">\(\mathcal{B}_i\)</span></td>
+<td>Belief function for agent <span
+class="math inline">\(i\)</span></td>
+<td>Definition 2</td>
+</tr>
+<tr>
+<td><span class="math inline">\(\mathcal{G}_i\)</span></td>
+<td>Goal set for agent <span class="math inline">\(i\)</span></td>
+<td>Definition 2</td>
+</tr>
+<tr>
+<td><span class="math inline">\(\mathcal{I}_i\)</span></td>
+<td>Intention set</td>
+<td>Table 1</td>
+</tr>
+<tr>
+<td><span class="math inline">\(\sigma_i^t\)</span></td>
+<td>Cognitive state at time <span class="math inline">\(t\)</span></td>
+<td>Definition 2</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="9.1.2" id="trust-calculus"><span
+class="header-section-number">9.1.2</span> Trust Calculus</h3>
+<table>
+<thead>
+<tr>
+<th>Symbol</th>
+<th>Meaning</th>
+<th>Part 1 Reference</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="math inline">\(\mathcal{T}_{i \to j}\)</span></td>
+<td>Trust from agent <span class="math inline">\(i\)</span> to <span
+class="math inline">\(j\)</span></td>
+<td>Definition 3</td>
+</tr>
+<tr>
+<td><span class="math inline">\(\delta\)</span></td>
+<td>Trust decay factor</td>
+<td>Definition 4</td>
+</tr>
+<tr>
+<td><span class="math inline">\(\otimes\)</span></td>
+<td>Trust delegation operator</td>
+<td>Definition 4</td>
+</tr>
+<tr>
+<td><span class="math inline">\(\oplus\)</span></td>
+<td>Trust aggregation operator</td>
+<td>Definition 4</td>
+</tr>
+<tr>
+<td><span class="math inline">\(\alpha, \beta, \gamma\)</span></td>
+<td>Trust weight parameters</td>
+<td>Equation 5</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="9.1.3" id="defense-mechanisms"><span
+class="header-section-number">9.1.3</span> Defense Mechanisms</h3>
+<table>
+<thead>
+<tr>
+<th>Symbol</th>
+<th>Meaning</th>
+<th>Part 1 Reference</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="math inline">\(D_i\)</span></td>
+<td>Defense mechanism <span class="math inline">\(i\)</span></td>
+<td>Definition 5</td>
+</tr>
+<tr>
+<td><span class="math inline">\(r_i\)</span></td>
+<td>Detection rate of defense <span
+class="math inline">\(i\)</span></td>
+<td>Definition 6</td>
+</tr>
+<tr>
+<td><span class="math inline">\(\tau_{\text{accept}}\)</span></td>
+<td>Firewall accept threshold</td>
+<td>Table 2</td>
+</tr>
+<tr>
+<td><span class="math inline">\(\tau_{\text{reject}}\)</span></td>
+<td>Firewall reject threshold</td>
+<td>Table 2</td>
+</tr>
+<tr>
+<td><span class="math inline">\(\epsilon_{\text{drift}}\)</span></td>
+<td>Drift detection threshold</td>
+<td>Equation 8</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="9.1.4" id="consensus-and-coordination"><span
+class="header-section-number">9.1.4</span> Consensus and
+Coordination</h3>
+<table>
+<thead>
+<tr>
+<th>Symbol</th>
+<th>Meaning</th>
+<th>Part 1 Reference</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="math inline">\(q\)</span></td>
+<td>Quorum threshold</td>
+<td>Definition 7</td>
+</tr>
+<tr>
+<td><span class="math inline">\(f\)</span></td>
+<td>Maximum Byzantine agents</td>
+<td>Theorem 1</td>
+</tr>
+<tr>
+<td><span class="math inline">\(n\)</span></td>
+<td>Total agent count</td>
+<td>Throughout</td>
+</tr>
+</tbody>
+</table>
+<h2 data-number="9.2" id="canonical-reference"><span
+class="header-section-number">9.2</span> Canonical Reference</h2>
+<p>For complete notation definitions, see:</p>
+<ul>
+<li>Part 1: <strong>Supplementary Section S03: Notation
+Reference</strong></li>
+</ul>
+<hr />
+<h1 data-number="10" id="sec:detection-algorithms"><span
+class="header-section-number">10</span> Detection Algorithms</h1>
+<p>This supplementary section presents detection algorithm
+implementations for the cognitive attack detection methods defined in
+Part 1. These algorithms operationalize the formal definitions from Part
+1, Section 5 into executable procedures.</p>
+<h2 data-number="10.1" id="roc-analysis-algorithms"><span
+class="header-section-number">10.1</span> ROC Analysis Algorithms</h2>
+<h3 data-number="10.1.1" id="algorithm-1-roc-curve-construction"><span
+class="header-section-number">10.1.1</span> Algorithm 1: ROC Curve
+Construction</h3>
+
+<h2 data-number="10.2" id="detector-performance-results"><span
+class="header-section-number">10.2</span> Detector Performance
+Results</h2>
+
+<h2 data-number="10.3" id="multi-detector-fusion-algorithm"><span
+class="header-section-number">10.3</span> Multi-Detector Fusion
+Algorithm</h2>
+
+<h2 data-number="10.4" id="online-detection-algorithm"><span
+class="header-section-number">10.4</span> Online Detection
+Algorithm</h2>
+
+<h2 data-number="10.5" id="batch-detection-algorithm"><span
+class="header-section-number">10.5</span> Batch Detection Algorithm</h2>
+
+<h2 data-number="10.6" id="false-positive-mitigation-results"><span
+class="header-section-number">10.6</span> False Positive Mitigation
+Results</h2>
+
+<h2 data-number="10.7" id="baseline-update-algorithm"><span
+class="header-section-number">10.7</span> Baseline Update Algorithm</h2>
+
+<h2 data-number="10.8" id="sliding-window-monitoring-algorithm"><span
+class="header-section-number">10.8</span> Sliding Window Monitoring
+Algorithm</h2>
+
+<h2 data-number="10.9" id="summary"><span
+class="header-section-number">10.9</span> Summary</h2>
+<p>These algorithms implement the detection methodology defined in Part
+1, providing: - ROC curve construction and analysis procedures -
+Multi-detector fusion strategies - Online and batch detection
+architectures - False positive mitigation techniques - Real-time
+monitoring loops</p>
+<p>For formal definitions and theoretical foundations, see Part 1,
+Section 5.</p>
+<hr />
+<h1 data-number="11" id="sec:benchmark-implementation"><span
+class="header-section-number">11</span> Benchmark Implementation
+Guidelines</h1>
+<p>This supplementary section provides implementation guidance for
+colony cognitive security benchmarks introduced in Part 1, Section
+S05.</p>
+<h2 data-number="11.1" id="sec:test-environment"><span
+class="header-section-number">11.1</span> Test Environment
+Specification</h2>
+<p>Colony CogSec benchmarks require test environments that support:</p>
+<ol type="1">
+<li><strong>Scalable agent populations</strong> — <span
+class="math inline">\(n \in \{10, 50, 100, 500, 1000\}\)</span></li>
+<li><strong>Configurable stigmergic substrates</strong> — Shared memory,
+message queues, artifact stores</li>
+<li><strong>Instrumented communication channels</strong> — Full message
+logging with timestamps</li>
+<li><strong>Controllable adversary injection</strong> — Precise Sybil
+insertion and signal poisoning</li>
+<li><strong>Collective function measurement</strong> — Aggregate outcome
+metrics beyond individual agent states</li>
+</ol>
+<h2 data-number="11.2" id="sec:metrics-framework"><span
+class="header-section-number">11.2</span> Metrics Framework</h2>
+<p>The <em>Colony CogSec Scorecard</em> integrates individual and
+collective metrics:</p>
+<h2 data-number="11.3" id="implementation-reference"><span
+class="header-section-number">11.3</span> Implementation Reference</h2>
+<h3 data-number="11.3.1" id="python-environment-setup"><span
+class="header-section-number">11.3.1</span> Python Environment
+Setup</h3>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create benchmark environment</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> venv cogsec-bench</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> cogsec-bench/bin/activate</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Install dependencies</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install numpy scipy networkx redis kafka-python</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Run benchmark suite</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> cogsec.benchmarks.colony <span class="at">--config</span> colony_configs.yaml</span></code></pre></div>
+<h3 data-number="11.3.2" id="benchmark-runner"><span
+class="header-section-number">11.3.2</span> Benchmark Runner</h3>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> cogsec.benchmarks <span class="im">import</span> ColonyBenchmark</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Configure benchmark</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>config <span class="op">=</span> {</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;n_agents&quot;</span>: <span class="dv">100</span>,</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;stigmergy&quot;</span>: <span class="st">&quot;redis&quot;</span>,</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;adversary_class&quot;</span>: <span class="st">&quot;omega_2&quot;</span>,</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;duration_steps&quot;</span>: <span class="dv">300</span>,</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Run recruitment poisoning benchmark</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>benchmark <span class="op">=</span> ColonyBenchmark(<span class="st">&quot;recruitment_poisoning&quot;</span>, config)</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> benchmark.run()</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute Colony CogSec Score</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>ccs <span class="op">=</span> benchmark.compute_ccs(</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    weights<span class="op">=</span>[<span class="fl">0.3</span>, <span class="fl">0.2</span>, <span class="fl">0.3</span>, <span class="fl">0.2</span>]</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;Colony CogSec Score: </span><span class="sc">{</span>ccs<span class="sc">:.3f}</span><span class="ss">&quot;</span>)</span></code></pre></div>
+<h3 data-number="11.3.3" id="stigmergic-substrate-configuration"><span
+class="header-section-number">11.3.3</span> Stigmergic Substrate
+Configuration</h3>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># stigmergy_config.yaml</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">substrate</span><span class="kw">:</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> redis</span><span class="co">  # or: kafka, filesystem, memory</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">connection</span><span class="kw">:</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">host</span><span class="kw">:</span><span class="at"> localhost</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">port</span><span class="kw">:</span><span class="at"> </span><span class="dv">6379</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="at">  </span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">markers</span><span class="kw">:</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> recruitment</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">decay_rate</span><span class="kw">:</span><span class="at"> </span><span class="fl">0.1</span><span class="co">  # per step</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">max_intensity</span><span class="kw">:</span><span class="at"> </span><span class="fl">1.0</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> alarm</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">decay_rate</span><span class="kw">:</span><span class="at"> </span><span class="fl">0.5</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">propagation</span><span class="kw">:</span><span class="at"> broadcast</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">logging</span><span class="kw">:</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">enabled</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">path</span><span class="kw">:</span><span class="at"> ./logs/stigmergy/</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">include_timestamps</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span></code></pre></div>
+<h2 data-number="11.4" id="integration-with-cif-test-suite"><span
+class="header-section-number">11.4</span> Integration with CIF Test
+Suite</h2>
+<p>The colony benchmarks integrate with the main CIF test suite:</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> cogsec.testing <span class="im">import</span> CIFTestSuite</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>suite <span class="op">=</span> CIFTestSuite(</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    project<span class="op">=</span><span class="st">&quot;cogsec_multiagent_2_computational&quot;</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Run individual agent tests</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>suite.run_agent_tests()</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Run colony benchmarks</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>suite.run_colony_benchmarks(</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    benchmarks<span class="op">=</span>[<span class="st">&quot;recruitment_poisoning&quot;</span>, <span class="st">&quot;sybil_infiltration&quot;</span>]</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate combined report</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>suite.generate_report(output<span class="op">=</span><span class="st">&quot;./reports/cif_full.pdf&quot;</span>)</span></code></pre></div>
+<h2 data-number="11.5" id="summary-1"><span
+class="header-section-number">11.5</span> Summary</h2>
+<p>This implementation guide enables reproduction of colony CogSec
+benchmark results. For formal definitions and theoretical foundations,
+see Part 1, Supplementary Section S05.</p>
+<hr />
+<h1 data-number="12" id="sec:model-checking-tools"><span
+class="header-section-number">12</span> Appendix: Model Checking Tool
+Configurations</h1>
+<p>This supplementary section provides executable configurations for
+formal verification tools referenced in Section 7 of Part 1 (Theoretical
+Foundations). These configurations implement the state space
+definitions, temporal properties, and safety invariants formally
+specified in Part 1.</p>
+<blockquote>
+<p><strong>Cross-Reference:</strong> For theoretical foundations
+including state space definitions (Definition 1, Section 4 of Part 1)
+and temporal property specifications (CTL/LTL formulas), see Part 1:
+Theoretical Foundations, Section 7.</p>
+</blockquote>
+<h2 data-number="12.1" id="sec:nusmv-config"><span
+class="header-section-number">12.1</span> NuSMV Configuration</h2>
+<p>NuSMV is a symbolic model checker supporting CTL and LTL
+specifications. The following configuration models the CIF trust
+dynamics and belief integrity properties.</p>
+<pre class="smv"><code>MODULE main
+VAR
+  -- Agent states
+  agents: array 0..N-1 of agent;
+  -- Trust matrix
+  trust: array 0..N-1 of array 0..N-1 of 0..100;
+  -- Global state
+  consensus_belief: {none, phi, not_phi};
+  attack_active: boolean;
+
+DEFINE
+  -- Belief integrity: no agent has compromised verified beliefs
+  belief_integrity := AG (
+    forall (i : 0..N-1) :
+      !agents[i].verified_compromised
+  );
+
+  -- Trust bounded: delegated trust &lt;= min of chain
+  trust_bounded := AG (
+    forall (i, j, k : 0..N-1) :
+      delegated_trust(i, j, k) &lt;= min(trust[i][j], trust[j][k])
+  );
+
+  -- No deadlock: system always has enabled transition
+  no_deadlock := AG (EX TRUE);
+
+  -- Eventual detection: attacks eventually detected
+  eventual_detection := AG (
+    attack_active -&gt; AF (attack_detected)
+  );
+
+SPEC belief_integrity;
+SPEC trust_bounded;
+SPEC no_deadlock;
+SPEC eventual_detection;</code></pre>
+<h2 data-number="12.2" id="sec:spin-config"><span
+class="header-section-number">12.2</span> SPIN Configuration</h2>
+<p>SPIN (Simple Promela INterpreter) verifies LTL properties over
+Promela models. The following configuration implements
+Byzantine-tolerant consensus and trust decay.</p>
+<pre class="promela"><code>#define N 5           // Number of agents
+#define F 1           // Byzantine threshold
+#define TAU 70        // Trust threshold (0-100)
+#define DELTA 90      // Decay factor (0-100, represents 0.9)
+#define MAX_BELIEFS 100
+
+typedef Agent {
+  byte beliefs[MAX_BELIEFS];
+  byte trust[N];
+  bool compromised;
+}
+
+Agent agents[N];
+bool attack_active = false;
+bool attack_detected = false;
+
+// Trust delegation with decay
+inline delegated_trust(i, j, k, result) {
+  byte t1 = agents[i].trust[j];
+  byte t2 = agents[j].trust[k];
+  byte min_t = (t1 &lt; t2) ? t1 : t2;
+  result = (min_t * DELTA) / 100;
+}
+
+// Byzantine consensus
+inline consensus(phi, result) {
+  byte count = 0;
+  byte i;
+  for (i : 0 .. N-1) {
+    if (agents[i].beliefs[phi] &gt; TAU) {
+      count++;
+    }
+  }
+  result = (count &gt; (2*N)/3);
+}
+
+// Safety property: trust never amplified
+ltl trust_no_amplify {
+  [] (forall (i, j, k : 0..N-1) :
+    delegated_trust(i,j,k) &lt;= min(trust[i][j], trust[j][k]))
+}
+
+// Liveness: attacks eventually detected
+ltl attack_detection {
+  [] (attack_active -&gt; &lt;&gt; attack_detected)
+}</code></pre>
+<h2 data-number="12.3" id="sec:tla-config"><span
+class="header-section-number">12.3</span> TLA+ Configuration</h2>
+<p>TLA+ (Temporal Logic of Actions) enables specification of concurrent
+systems with rich invariant checking. The following module formalizes
+CIF properties.</p>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode tla"><code class="sourceCode tlaplus"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>-------------------------------- <span class="kw">MODULE</span> CIF --------------------------------</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="kw">EXTENDS</span> Naturals, Sequences, FiniteSets</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="kw">CONSTANTS</span> N,           <span class="co">\* Number of agents</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>          F,           <span class="co">\* Byzantine threshold</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>          DELTA,       <span class="co">\* Trust decay factor (0-1)</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>          TAU          <span class="co">\* Trust threshold</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="kw">VARIABLES</span> beliefs,     <span class="co">\* beliefs[i][phi] = confidence</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>          trust,       <span class="co">\* trust[i][j] = trust value</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>          consensus,   <span class="co">\* Current consensus state</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>          attack       <span class="co">\* Attack state</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>TypeInvariant ==</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>  /\ beliefs \in [<span class="dv">1</span>..N -&gt; [PROPOSITIONS -&gt; [<span class="dv">0</span>..<span class="dv">100</span>]]]</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>  /\ trust \in [<span class="dv">1</span>..N -&gt; [<span class="dv">1</span>..N -&gt; [<span class="dv">0</span>..<span class="dv">100</span>]]]</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>  /\ consensus \in [PROPOSITIONS -&gt; {<span class="dv">0</span>, <span class="dv">1</span>, <span class="st">&quot;none&quot;</span>}]</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>  /\ attack \in BOOLEAN</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="co">\* Trust delegation with decay</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>DelegatedTrust(i, j, k) ==</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>  <span class="kw">LET</span> t1 == trust[i][j]</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>      t2 == trust[j][k]</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>      min_t == <span class="kw">IF</span> t1 &lt; t2 <span class="kw">THEN</span> t1 <span class="kw">ELSE</span> t2</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>  <span class="kw">IN</span> (min_t * DELTA)</span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a><span class="co">\* Safety: Trust never amplified through delegation</span></span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>TrustBounded ==</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>  \A i, j, k \in <span class="dv">1</span>..N :</span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>    DelegatedTrust(i, j, k) &lt;= MIN(trust[i][j], trust[j][k])</span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a><span class="co">\* Safety: Consensus beliefs not compromised</span></span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>ConsensusIntegrity ==</span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>  \A phi \in PROPOSITIONS :</span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>    consensus[phi] = <span class="dv">1</span> =&gt;</span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a>      Cardinality({i \in <span class="dv">1</span>..N : beliefs[i][phi] &gt; TAU}) &gt; (<span class="dv">2</span>*N) \div <span class="dv">3</span></span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a><span class="co">\* Liveness: Attacks eventually detected</span></span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a>AttackDetection ==</span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a>  attack =&gt; &lt;&gt;(detected)</span>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a><span class="co">\* Full specification</span></span>
+<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a>Spec == Init /\ [][Next]_vars /\ Fairness</span>
+<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a><span class="kw">THEOREM</span> Spec =&gt; []TypeInvariant</span>
+<span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a><span class="kw">THEOREM</span> Spec =&gt; []TrustBounded</span>
+<span id="cb9-47"><a href="#cb9-47" aria-hidden="true" tabindex="-1"></a><span class="kw">THEOREM</span> Spec =&gt; []ConsensusIntegrity</span>
+<span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a>=============================================================================</span></code></pre></div>
+<h2 data-number="12.4" id="sec:verification-params"><span
+class="header-section-number">12.4</span> Verification Parameters</h2>
+<p>The following parameters configure model checking execution. Values
+are chosen to balance verification completeness against computational
+feasibility.</p>
+<hr />
+<h1 data-number="13" id="sec:references"><span
+class="header-section-number">13</span> References</h1>
+<!-- References are managed via references.bib -->
+<!-- This file provides the section header for proper manuscript structure -->
+</body>
+</html>

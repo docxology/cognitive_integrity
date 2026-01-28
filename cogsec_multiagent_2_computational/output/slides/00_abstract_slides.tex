@@ -1,0 +1,182 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\documentclass[
+  ignorenonframetext,
+]{beamer}
+\newif\ifbibliography
+\usepackage{pgfpages}
+\setbeamertemplate{caption}[numbered]
+\setbeamertemplate{caption label separator}{: }
+\setbeamercolor{caption name}{fg=normal text.fg}
+\beamertemplatenavigationsymbolsempty
+% remove section numbering
+\setbeamertemplate{part page}{
+  \centering
+  \begin{beamercolorbox}[sep=16pt,center]{part title}
+    \usebeamerfont{part title}\insertpart\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{section page}{
+  \centering
+  \begin{beamercolorbox}[sep=12pt,center]{section title}
+    \usebeamerfont{section title}\insertsection\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{subsection page}{
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center]{subsection title}
+    \usebeamerfont{subsection title}\insertsubsection\par
+  \end{beamercolorbox}
+}
+% Prevent slide breaks in the middle of a paragraph
+\widowpenalties 1 10000
+\raggedbottom
+\AtBeginPart{
+  \frame{\partpage}
+}
+\AtBeginSection{
+  \ifbibliography
+  \else
+    \frame{\sectionpage}
+  \fi
+}
+\AtBeginSubsection{
+  \frame{\subsectionpage}
+}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\author{\texorpdfstring{}{}}
+\date{}
+
+\begin{document}
+
+\begin{frame}
+\vspace*{2cm}
+
+\begin{center}
+\begin{minipage}{0.7\textwidth}
+\centering
+\Large\itshape
+``The difference between theory and practice\\[0.3em]
+is larger in practice than in theory.''
+\vspace{1em}
+
+\normalsize\upshape
+--- Jan van de Snepscheut, Computer Scientist
+\end{minipage}
+\end{center}
+
+\vspace{2cm}
+\end{frame}
+
+\begin{frame}{Abstract}
+\protect\phantomsection\label{abstract}
+This paper provides computational validation of the \textbf{Cognitive
+Integrity Framework (CIF)} introduced in Part 1. We implement the
+complete defense suite---cognitive firewalls, belief sandboxes, trust
+calculus, and Byzantine-tolerant consensus---and evaluate performance
+across production multiagent architectures.
+
+\begin{block}{Contributions}
+\protect\phantomsection\label{contributions}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Attack Corpus}: 950 cognitive attacks across four categories
+  (prompt injection, trust exploitation, belief manipulation,
+  coordination attacks)
+\item
+  \textbf{Cross-Architecture Validation}: Evaluation across Claude Code,
+  AutoGPT, CrewAI, LangGraph, MetaGPT, and Camel
+\item
+  \textbf{Detection Performance}: 94\% detection rate with layered
+  defenses; 20-25\% latency overhead
+\item
+  \textbf{Statistical Analysis}: Significance testing with large effect
+  sizes (Cohen's d \textgreater{} 0.8), ablation studies, scalability
+  benchmarks
+\end{itemize}
+\end{block}
+
+\begin{block}{Key Findings}
+\protect\phantomsection\label{key-findings}
+\begin{enumerate}
+\tightlist
+\item
+  \textbf{Composition Matters}: No individual defense achieves
+  acceptable protection; layered composition yields multiplicative
+  detection improvement
+\item
+  \textbf{Trust Decay Works}: Bounded delegation (δ\^{}d) prevents trust
+  amplification across all architectures
+\item
+  \textbf{Architecture Vulnerability}: Peer-to-peer systems show largest
+  relative improvement, confirming lateral movement analysis
+\end{enumerate}
+
+All notation follows definitions from Part 1 (Supplementary Section
+S03).
+\end{block}
+
+\begin{block}{Paper Series}
+\protect\phantomsection\label{paper-series}
+\textbf{DOI}: 10.5281/zenodo.18364128
+
+This is Part 2 of the \emph{Cognitive Security for Multiagent Operators}
+series:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Part 1} (DOI: 10.5281/zenodo.18364119): Formal foundations and
+  theoretical analysis
+\item
+  \textbf{Part 2} (this paper): Computational validation and
+  implementation
+\item
+  \textbf{Part 3} (DOI: 10.5281/zenodo.18364130): Practical deployment
+  guidance
+\end{itemize}
+\end{block}
+\end{frame}
+
+\end{document}

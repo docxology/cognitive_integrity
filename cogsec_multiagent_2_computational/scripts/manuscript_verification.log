@@ -1,0 +1,19 @@
+2026-01-23 09:03:50,884 - INFO - Starting verification on /Users/4d/Documents/GitHub/template/projects/cogsec_multiagent/manuscript...
+2026-01-23 09:03:50,884 - INFO - Checking file existence...
+2026-01-23 09:03:50,884 - INFO - Verifying citations...
+2026-01-23 09:03:50,884 - INFO - Found 41 bibliography entries.
+2026-01-23 09:03:50,888 - INFO - Verifying definition labels and references...
+2026-01-23 09:03:50,889 - INFO - Verifying images and links...
+2026-01-23 09:03:50,889 - INFO - Checking style guidelines...
+2026-01-23 09:03:50,895 - WARNING - Potential hyperbole 'unique' in 03_formal_framework.md:127
+2026-01-23 09:03:50,925 - WARNING - Potential hyperbole 'unique' in S02_attack_corpus.md:7
+2026-01-23 09:03:50,928 - WARNING - Potential hyperbole 'clearly' in S02_attack_corpus.md:481
+2026-01-23 09:03:50,945 - INFO - ----------------------------------------
+2026-01-23 09:03:50,945 - INFO - Verification Summary:
+2026-01-23 09:03:50,945 - INFO - Files          : PASS
+2026-01-23 09:03:50,945 - INFO - Citations      : PASS
+2026-01-23 09:03:50,945 - INFO - Labels/Refs    : PASS
+2026-01-23 09:03:50,945 - INFO - Images/Links   : PASS
+2026-01-23 09:03:50,945 - INFO - Style          : PASS
+2026-01-23 09:03:50,945 - INFO - ----------------------------------------
+2026-01-23 09:03:50,945 - INFO - All checks passed successfully.

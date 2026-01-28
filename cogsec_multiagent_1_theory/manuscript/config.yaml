@@ -1,0 +1,54 @@
+paper:
+  title: "Cognitive Integrity Framework: Formal Foundations for Multiagent Security"
+  subtitle: "Part 1 of 3: Theoretical Foundations"
+  short_title: "CIF Theory"
+  version: "1.0"
+  type: "research"
+  series: "Cognitive Security for Multiagent Operators"
+  part: 1
+  doi: "10.5281/zenodo.18364119"
+  date: "2026-01-24"
+
+authors:
+  - name: "Daniel Ari Friedman"
+    email: "daniel@activeinference.institute"
+    orcid: "0000-0001-6232-9096"
+    affiliation: "Active Inference Institute"
+    corresponding: true
+
+keywords:
+  - cognitive security
+  - multiagent systems
+  - trust calculus
+  - defense composition algebra
+  - Byzantine fault tolerance
+  - formal verification
+  - cognitive integrity
+
+abstract: |
+  This paper presents the theoretical foundations of the Cognitive Integrity
+  Framework (CIF) for securing multiagent AI operators against cognitive
+  manipulation attacks. We formalize cognitive attack surfaces unique to
+  systems where agents reason about, influence, and delegate to other agents.
+  
+  Primary contributions: (1) Trust Calculus with δ-bounded delegation preventing
+  trust amplification attacks; (2) Defense Composition Algebra enabling formal
+  reasoning about layered security mechanisms; (3) Information-theoretic bounds
+  establishing fundamental stealth-impact tradeoffs for attackers; (4) Formal
+  verification framework proving safety properties including belief integrity,
+  trust boundedness, and goal preservation.
+  
+  The framework provides complete mathematical foundations for cognitive security
+  while maintaining correspondence with the OWASP Top 10 for Agentic Applications.
+  
+  This is Part 1 of a three-part series:
+  - Part 1 (this paper): Formal foundations and theoretical analysis
+  - Part 2 (DOI: 10.5281/zenodo.18364128): Computational validation and implementation
+  - Part 3 (DOI: 10.5281/zenodo.18364130): Practical deployment guidance
+
+llm:
+  translations:
+    enabled: true
+    languages: [zh, es, ar]
+  review:
+    enabled: true

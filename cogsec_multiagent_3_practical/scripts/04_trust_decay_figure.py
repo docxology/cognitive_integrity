@@ -1,0 +1,62 @@
+#!/usr/bin/env python3
+"""Generate trust decay curve visualization.
+
+Thin orchestrator script - business logic in src/visualization.py.
+"""
+
+from pathlib import Path
+
+import matplotlib.pyplot as plt
+
+import sys
+from pathlib import Path
+
+# Add project root to path for imports
+project_root = Path(__file__).parent.parent
+sys.path.insert(0, str(project_root))
+
+from src.visualization import (
+    get_trust_decay_data,
+    render_trust_decay,
+)
+
+
+def main() -> None:
+    """Generate trust decay figure with multiple delta values."""
+    # Create figure with subplots for different delta values
+    fig, axes = plt.subplots(1, 3, figsize=(15, 5))
+
+    deltas = [0.9, 0.85, 0.7]
+    titles = ["Conservative (δ=0.9)", "Standard (δ=0.85)", "Aggressive (δ=0.7)"]
+
+    for ax, delta, title in zip(axes, deltas, titles):
+        data = get_trust_decay_data(delta=delta, max_depth=10)
+        render_trust_decay(data, ax=ax)
+        ax.set_title(title, fontsize=12, fontweight="bold")
+
+    fig.suptitle(
+        "Trust Decay Comparison: Effect of δ Parameter",
+        fontsize=14,
+        fontweight="bold",
+        y=1.02,
+    )
+    fig.tight_layout()
+
+    # Save outputs
+    output_dir = project_root / "output" / "figures"
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    png_path = output_dir / "trust_decay.png"
+    pdf_path = output_dir / "trust_decay.pdf"
+
+    fig.savefig(png_path, dpi=150, bbox_inches="tight")
+    fig.savefig(pdf_path, bbox_inches="tight")
+    plt.close(fig)
+
+    # Print paths for manifest collection
+    print(str(png_path))
+    print(str(pdf_path))
+
+
+if __name__ == "__main__":
+    main()
