@@ -1,0 +1,283 @@
+\frametitle{Attack Corpus}
+\protect\phantomsection\label{sec:attack-corpus}
+This supplementary material provides corpus overview
+(\cref{sec:corpus-overview}), detailed statistics
+(\cref{sec:corpus-stats}), example attacks by category
+(\cref{sec:attack-examples}), generation methodology
+(\cref{sec:generation-methodology}), effectiveness analysis
+(\cref{sec:effectiveness-analysis}), and ethical considerations
+(\cref{sec:ethical-considerations}).
+
+\begin{block}{Corpus Overview}
+\protect\phantomsection\label{sec:corpus-overview}
+The attack corpus used for experimental validation comprises 950 unique
+attack instances across four primary categories. This supplementary
+material provides detailed statistics, sanitized examples, generation
+methodology, and ethical considerations.
+
+The attack corpus is generated programmatically via deterministic random
+seeds (seed=42 for all reported results). The attack taxonomy is defined
+as a Python enum (\texttt{AttackCategory} in
+\texttt{src/utils/types.py}) with 4 top-level categories and 12
+subcategories. No static data file is shipped; the corpus is regenerated
+on each evaluation run via \texttt{AttackCorpus.generate()} to ensure
+reproducibility. Researchers can serialize the corpus to JSON via
+\texttt{AttackCorpus.save()} for inspection.
+\end{block}
+
+\begin{block}{Full Attack Corpus Statistics}
+\protect\phantomsection\label{sec:corpus-stats}
+\begin{figure}
+\centering
+\includegraphics[width=0.95\linewidth,height=\textheight,keepaspectratio,alt={Cognitive Attack Taxonomy. Hierarchical visualization of the 950-attack corpus organized by primary category (Prompt Injection, Trust Exploitation, Belief Manipulation, Coordination Attacks) and subcategory. Node size indicates attack count; color intensity indicates baseline success rate against undefended systems. The taxonomy classifies attacks by five adversary capability classes (Part 1, Definition 4): \textbackslash Omega\_1 (passive eavesdropping), \textbackslash Omega\_2 (message injection), \textbackslash Omega\_3 (identity spoofing), \textbackslash Omega\_4 (belief manipulation), and \textbackslash Omega\_5 (coordinated multi-agent attacks). Prompt injection dominates in volume (500 attacks, 53\% of corpus) while coordination attacks show highest baseline success rate (82\%) due to their ability to exploit the absence of inter-agent verification. Generated deterministically with seed 42 via .}]{../figures/comprehensive_taxonomy.pdf}
+\caption{Cognitive Attack Taxonomy. Hierarchical visualization of the
+950-attack corpus organized by primary category (Prompt Injection, Trust
+Exploitation, Belief Manipulation, Coordination Attacks) and
+subcategory. Node size indicates attack count; color intensity indicates
+baseline success rate against undefended systems. The taxonomy
+classifies attacks by five adversary capability classes (Part 1,
+Definition 4): \(\Omega_1\) (passive eavesdropping), \(\Omega_2\)
+(message injection), \(\Omega_3\) (identity spoofing), \(\Omega_4\)
+(belief manipulation), and \(\Omega_5\) (coordinated multi-agent
+attacks). Prompt injection dominates in volume (500 attacks, 53\% of
+corpus) while coordination attacks show highest baseline success rate
+(82\%) due to their ability to exploit the absence of inter-agent
+verification. Generated deterministically with seed 42 via
+\texttt{AttackCorpus.generate()}.}\label{fig:comprehensive-taxonomy}
+\end{figure}
+
+The cognitive attack taxonomy (\cref{fig:comprehensive-taxonomy})
+organizes our 950-attack corpus into a hierarchical structure that
+reflects both the attack mechanisms and their relative prevalence in the
+wild.
+
+\begin{block}{Category Breakdown}
+\protect\phantomsection\label{sec:category-breakdown}
+\textbf{Table: Attack corpus composition by category.}
+\{\#tab:corpus-categories\}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}lllll@{}}
+\toprule\noalign{}
+Category & Total & Train & Test & Validation \\
+\midrule\noalign{}
+\endhead
+Prompt Injection & 500 & 350 & 100 & 50 \\
+Trust Exploitation & 200 & 140 & 40 & 20 \\
+Belief Manipulation & 150 & 105 & 30 & 15 \\
+Coordination Attacks & 100 & 70 & 20 & 10 \\
+\textbf{Total} & \textbf{950} & \textbf{665} & \textbf{190} &
+\textbf{95} \\
+\bottomrule\noalign{}
+\end{longtable}
+}
+\end{block}
+
+\begin{block}{Prompt Injection Subcategories}
+\protect\phantomsection\label{sec:injection-subcats}
+\textbf{Table: Prompt injection subcategory statistics.}
+\{\#tab:injection-subcats\}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}llll@{}}
+\toprule\noalign{}
+Subcategory & Count & Undefended Success Rate\(^*\) & CIF Success \\
+\midrule\noalign{}
+\endhead
+Direct injection & 200 & 78\% & 3\% \\
+Indirect injection & 200 & 65\% & 5\% \\
+Nested injection & 100 & 82\% & 7\% \\
+\bottomrule\noalign{}
+\end{longtable}
+}
+
+\(^*\)\textit{Undefended success rates represent attack effectiveness measured without any CIF defense mechanisms active.}
+
+\textbf{Direct Injection}: Attacks embedded directly in user input
+attempting to override system instructions.
+
+\textbf{Indirect Injection}: Attacks injected through external data
+sources (web content, API responses, documents).
+
+\textbf{Nested Injection}: Multi-layer attacks where outer content masks
+inner malicious payloads.
+\end{block}
+
+\begin{block}{Trust Exploitation Subcategories}
+\protect\phantomsection\label{sec:trust-subcats}
+\textbf{Table: Trust exploitation subcategory statistics.}
+\{\#tab:trust-subcats\}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}lll@{}}
+\toprule\noalign{}
+Subcategory & Count & Description \\
+\midrule\noalign{}
+\endhead
+Identity impersonation & 80 & Claiming to be trusted entity \\
+Trust inflation & 70 & Artificially boosting trust scores \\
+Delegation abuse & 50 & Exploiting delegation chains \\
+\bottomrule\noalign{}
+\end{longtable}
+}
+\end{block}
+
+\begin{block}{Belief Manipulation Subcategories}
+\protect\phantomsection\label{sec:belief-subcats}
+\textbf{Table: Belief manipulation subcategory statistics.}
+\{\#tab:belief-subcats\}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}lll@{}}
+\toprule\noalign{}
+Subcategory & Count & Description \\
+\midrule\noalign{}
+\endhead
+Direct belief injection & 60 & Asserting false facts \\
+Evidence fabrication & 50 & Creating fake supporting evidence \\
+Progressive drift & 40 & Gradual belief modification \\
+\bottomrule\noalign{}
+\end{longtable}
+}
+\end{block}
+
+\begin{block}{Coordination Attack Subcategories}
+\protect\phantomsection\label{sec:coord-subcats}
+\textbf{Table: Coordination attack subcategory statistics.}
+\{\#tab:coord-subcats\}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}lll@{}}
+\toprule\noalign{}
+Subcategory & Count & Description \\
+\midrule\noalign{}
+\endhead
+Sybil attacks & 40 & Fake agent injection \\
+Consensus poisoning & 35 & Corrupting multi-agent agreement \\
+Timing attacks & 25 & Exploiting synchronization \\
+\bottomrule\noalign{}
+\end{longtable}
+}
+\end{block}
+
+\begin{block}{Detailed Statistics by Source}
+\protect\phantomsection\label{sec:source-stats}
+\textbf{Table: Attack source distribution.} \{\#tab:attack-sources\}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}lll@{}}
+\toprule\noalign{}
+Source & Count & Percentage \\
+\midrule\noalign{}
+\endhead
+Published datasets & 320 & 33.7\% \\
+Red team exercises & 280 & 29.5\% \\
+Synthetic generation & 200 & 21.1\% \\
+Custom adversarial & 150 & 15.8\% \\
+\bottomrule\noalign{}
+\end{longtable}
+}
+
+\textbf{Table: Published dataset sources.} \{\#tab:dataset-sources\}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}lll@{}}
+\toprule\noalign{}
+Dataset & Attacks Used & Citation \\
+\midrule\noalign{}
+\endhead
+JailbreakBench & 150 & \cite{chao2024jailbreakbench} \\
+PromptInject & 80 & \cite{liu2023prompt} \\
+TensorTrust & 50 & \cite{toyer2024tensortrust} \\
+Custom academic & 40 & Various \\
+\bottomrule\noalign{}
+\end{longtable}
+}
+\end{block}
+
+\begin{block}{Complexity Distribution}
+\protect\phantomsection\label{sec:complexity-dist}
+\textbf{Table: Attack complexity distribution.}
+\{\#tab:complexity-dist\}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}llll@{}}
+\toprule\noalign{}
+Complexity Level & Count & Average Tokens & Detection Difficulty \\
+\midrule\noalign{}
+\endhead
+Low & 250 & 45 & Easy \\
+Medium & 400 & 120 & Moderate \\
+High & 200 & 280 & Hard \\
+Adversarial & 100 & 450 & Expert \\
+\bottomrule\noalign{}
+\end{longtable}
+}
+\end{block}
+
+\begin{block}{Target Distribution}
+\protect\phantomsection\label{sec:target-dist}
+\textbf{Table: Attack target distribution.} \{\#tab:target-dist\}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}lll@{}}
+\toprule\noalign{}
+Target & Count & Category \\
+\midrule\noalign{}
+\endhead
+Belief state & 280 & Epistemic \\
+Action execution & 250 & Behavioral \\
+Trust relationships & 220 & Social \\
+Temporal state & 100 & Persistence \\
+Goal alignment & 100 & Behavioral \\
+\bottomrule\noalign{}
+\end{longtable}
+}
+
+\begin{figure}
+\centering
+\includegraphics[width=0.9\linewidth,height=\textheight,keepaspectratio,alt={Attack Surface Map. Visualization of cognitive attack entry points in multiagent systems showing the five primary attack surfaces aligned to CIF defense layers: User Input (direct injection, countered by Cognitive Firewall), Tool Outputs (indirect injection, countered by Belief Sandbox + Firewall), Agent Communication (trust exploitation via delegation chains, countered by Trust Calculus with \textbackslash delta\^{}d decay), Persistent Memory (belief poisoning and progressive drift, countered by Tripwires + Drift Detection), and External Triggers (timing and coordination attacks, countered by Byzantine Consensus). Line thickness indicates attack frequency in our 950-attack corpus; node color indicates CIF detection efficacy at each surface (green \$\textgreater\$90\%, yellow 80-90\%, red \$\textless\$80\%). The diagram highlights that Agent Communication is both the highest-frequency and highest-risk surface in multiagent deployments---a gap that single-agent defenses do not address.}]{../figures/attack_surface.pdf}
+\caption{Attack Surface Map. Visualization of cognitive attack entry
+points in multiagent systems showing the five primary attack surfaces
+aligned to CIF defense layers: User Input (direct injection, countered
+by Cognitive Firewall), Tool Outputs (indirect injection, countered by
+Belief Sandbox + Firewall), Agent Communication (trust exploitation via
+delegation chains, countered by Trust Calculus with \(\delta^d\) decay),
+Persistent Memory (belief poisoning and progressive drift, countered by
+Tripwires + Drift Detection), and External Triggers (timing and
+coordination attacks, countered by Byzantine Consensus). Line thickness
+indicates attack frequency in our 950-attack corpus; node color
+indicates CIF detection efficacy at each surface (green
+\$\textgreater\$90\%, yellow 80-90\%, red \$\textless\$80\%). The
+diagram highlights that Agent Communication is both the
+highest-frequency and highest-risk surface in multiagent deployments---a
+gap that single-agent defenses do not
+address.}\label{fig:attack-surface}
+\end{figure}
+
+The attack surface map (\cref{fig:attack-surface}) visualizes how these
+attack categories map to distinct entry points in multiagent system
+architectures.
+\end{block}
+\end{block}
+
+\begin{block}{Detailed Attack Content}
+\protect\phantomsection\label{detailed-attack-content}
+The following subsections provide detailed attack examples, methodology,
+and ethical considerations:
+
+\begin{itemize}
+\item
+  \textbf{Attack Examples} (\cref{sec:attack-examples}): Sanitized
+  examples for all four categories --- prompt injection (direct,
+  indirect, nested), trust exploitation (impersonation, inflation,
+  delegation abuse), belief manipulation (injection, fabrication,
+  drift), and coordination attacks (Sybil, consensus poisoning, timing).
+  See \texttt{03b\_attack\_examples.md}.
+\item
+  \textbf{Methodology and Ethics} (\cref{sec:generation-methodology}):
+  Attack generation methodology, effectiveness analysis, ethical
+  considerations (responsible disclosure, dual-use, human subjects), and
+  data availability. See \texttt{03c\_attack\_ethics.md}.
+\end{itemize}
+\end{block}

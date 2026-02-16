@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>02b_configuration_parameters</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <script defer=""
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+</head>
+<body>
+<h1 id="sec:config-params">Framework Configuration Reference</h1>
+<p>This section documents configuration parameters for all CIF defense
+components. For algorithm pseudocode, see . Sensitivity analysis
+quantifying parameter impact is provided in .</p>
+<blockquote>
+<p><strong>Reproducibility</strong>: Default values were determined via
+<code>scripts/run_sensitivity_analysis.py</code> →
+<code>output/data/sensitivity_results.json</code>. Empirically validated
+ranges are reported across all six architecture types.</p>
+</blockquote>
+<h2 id="sec:core-params">Core Framework Parameters</h2>
+<p><strong>Table: Core framework configuration parameters.</strong>
+{#tab:core-params}</p>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Symbol</th>
+<th>Default</th>
+<th>Range</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Acceptance threshold</td>
+<td><span class="math inline">\(\tau_{accept}\)</span></td>
+<td>0.7</td>
+<td><span class="math inline">\((0, 1)\)</span></td>
+<td>Minimum belief confidence</td>
+</tr>
+<tr>
+<td>Trusted source threshold</td>
+<td><span class="math inline">\(\tau_{trusted}\)</span></td>
+<td>0.9</td>
+<td><span class="math inline">\((0, 1)\)</span></td>
+<td>Direct promotion threshold</td>
+</tr>
+<tr>
+<td>Corroboration count</td>
+<td><span class="math inline">\(\kappa\)</span></td>
+<td>2</td>
+<td><span class="math inline">\([1, n-1]\)</span></td>
+<td>Required confirmations</td>
+</tr>
+<tr>
+<td>Consistency threshold</td>
+<td><span class="math inline">\(\tau\)</span></td>
+<td>0.8</td>
+<td><span class="math inline">\((0, 1)\)</span></td>
+<td>Contradiction detection</td>
+</tr>
+<tr>
+<td>Random seed</td>
+<td><span class="math inline">\(s\)</span></td>
+<td>42</td>
+<td><span class="math inline">\(\mathbb{Z}^+\)</span></td>
+<td>Reproducibility seed</td>
+</tr>
+</tbody>
+</table>
+<h2 id="sec:trust-params">Trust Calculus Parameters</h2>
+<p><strong>Table: Trust calculus configuration parameters.</strong>
+{#tab:trust-params}</p>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Symbol</th>
+<th>Default</th>
+<th>Range</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Base trust weight</td>
+<td><span class="math inline">\(\alpha\)</span></td>
+<td>0.3</td>
+<td><span class="math inline">\([0, 1]\)</span></td>
+<td>Direct observation weight</td>
+</tr>
+<tr>
+<td>Reputation weight</td>
+<td><span class="math inline">\(\beta\)</span></td>
+<td>0.5</td>
+<td><span class="math inline">\([0, 1]\)</span></td>
+<td>Historical accuracy weight</td>
+</tr>
+<tr>
+<td>Context weight</td>
+<td><span class="math inline">\(\gamma\)</span></td>
+<td>0.2</td>
+<td><span class="math inline">\([0, 1]\)</span></td>
+<td>Task-specific weight</td>
+</tr>
+<tr>
+<td>Trust decay factor</td>
+<td><span class="math inline">\(\delta\)</span></td>
+<td>0.8</td>
+<td><span class="math inline">\((0, 1)\)</span></td>
+<td>Delegation chain decay</td>
+</tr>
+<tr>
+<td>Learning rate</td>
+<td><span class="math inline">\(\eta\)</span></td>
+<td>0.1</td>
+<td><span class="math inline">\((0, 1)\)</span></td>
+<td>Reputation update rate</td>
+</tr>
+<tr>
+<td>Penalty factor</td>
+<td><span class="math inline">\(\rho\)</span></td>
+<td>2.0</td>
+<td><span class="math inline">\([1, 5]\)</span></td>
+<td>Failure penalty multiplier</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Constraint</strong>: <span class="math inline">\(\alpha +
+\beta + \gamma = 1\)</span> (see Part 1, Equation 5). The default <span
+class="math inline">\(\alpha = 0.3\)</span>, <span
+class="math inline">\(\beta = 0.5\)</span>, <span
+class="math inline">\(\gamma = 0.2\)</span> weights direct observation,
+historical reputation, and contextual trust respectively.</p>
+<h2 id="sec:firewall-params">Firewall Parameters</h2>
+<p><strong>Table: Cognitive firewall configuration parameters.</strong>
+{#tab:firewall-params}</p>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Symbol</th>
+<th>Default</th>
+<th>Range</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Quarantine threshold</td>
+<td><span class="math inline">\(\tau_2\)</span></td>
+<td>0.5</td>
+<td><span class="math inline">\((0, 1)\)</span></td>
+<td>Sandbox routing</td>
+</tr>
+<tr>
+<td>Injection weight</td>
+<td><span class="math inline">\(w_1\)</span></td>
+<td>0.4</td>
+<td><span class="math inline">\([0, 1]\)</span></td>
+<td>Pattern match weight</td>
+</tr>
+<tr>
+<td>Semantic weight</td>
+<td><span class="math inline">\(w_2\)</span></td>
+<td>0.35</td>
+<td><span class="math inline">\([0, 1]\)</span></td>
+<td>Embedding similarity weight</td>
+</tr>
+<tr>
+<td>Anomaly weight</td>
+<td><span class="math inline">\(w_3\)</span></td>
+<td>0.25</td>
+<td><span class="math inline">\([0, 1]\)</span></td>
+<td>Isolation forest weight</td>
+</tr>
+</tbody>
+</table>
+<h2 id="sec:sandbox-params">Sandbox Parameters</h2>
+<p><strong>Table: Belief sandbox configuration parameters.</strong>
+{#tab:sandbox-params}</p>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Symbol</th>
+<th>Default</th>
+<th>Range</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Check interval</td>
+<td><span class="math inline">\(\tau_{check}\)</span></td>
+<td>60s</td>
+<td><span class="math inline">\([10, 600]\)</span></td>
+<td>Verification frequency</td>
+</tr>
+<tr>
+<td>Max provisional</td>
+<td><span class="math inline">\(N_{max}\)</span></td>
+<td>1000</td>
+<td><span class="math inline">\([100, 10000]\)</span></td>
+<td>Memory limit</td>
+</tr>
+</tbody>
+</table>
+<h2 id="sec:tripwire-params">Tripwire Parameters</h2>
+<p><strong>Table: Cognitive tripwire configuration parameters.</strong>
+{#tab:tripwire-params}</p>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Symbol</th>
+<th>Default</th>
+<th>Range</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Critical epsilon</td>
+<td><span class="math inline">\(\epsilon_{critical}\)</span></td>
+<td>0.05</td>
+<td><span class="math inline">\((0, 0.2)\)</span></td>
+<td>Critical alert threshold</td>
+</tr>
+<tr>
+<td>Warning epsilon</td>
+<td><span class="math inline">\(\epsilon_{warning}\)</span></td>
+<td>0.08</td>
+<td><span class="math inline">\((0, 0.3)\)</span></td>
+<td>Warning threshold</td>
+</tr>
+<tr>
+<td>Check interval</td>
+<td><span class="math inline">\(\tau_{tripwire}\)</span></td>
+<td>30s</td>
+<td><span class="math inline">\([5, 300]\)</span></td>
+<td>Monitoring frequency</td>
+</tr>
+<tr>
+<td>Canary tolerance</td>
+<td><span class="math inline">\(\epsilon_{canary}\)</span></td>
+<td>0.1</td>
+<td><span class="math inline">\((0, 0.5)\)</span></td>
+<td>Canary deviation tolerance</td>
+</tr>
+</tbody>
+</table>
+<h2 id="sec:drift-params">Drift Detection Parameters</h2>
+<p><strong>Table: Drift detection configuration parameters.</strong>
+{#tab:drift-params}</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Symbol</th>
+<th>Default</th>
+<th>Range</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>KL threshold</td>
+<td><span class="math inline">\(\theta_{drift}\)</span></td>
+<td>0.5</td>
+<td><span class="math inline">\((0, 2)\)</span></td>
+<td>Alert threshold</td>
+</tr>
+<tr>
+<td>Max delta weight</td>
+<td><span class="math inline">\(\lambda\)</span></td>
+<td>0.3</td>
+<td><span class="math inline">\([0, 1]\)</span></td>
+<td>Sudden change weight</td>
+</tr>
+<tr>
+<td>Smoothing factor</td>
+<td><span class="math inline">\(\alpha_{ema}\)</span></td>
+<td>0.1</td>
+<td><span class="math inline">\((0, 1)\)</span></td>
+<td>EMA decay</td>
+</tr>
+</tbody>
+</table>
+<h2 id="sec:consensus-params">Consensus Parameters</h2>
+<p><strong>Table: Byzantine consensus configuration parameters.</strong>
+{#tab:consensus-params}</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Symbol</th>
+<th>Default</th>
+<th>Range</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Max rounds</td>
+<td><span class="math inline">\(R_{max}\)</span></td>
+<td>10</td>
+<td><span class="math inline">\([3, 50]\)</span></td>
+<td>Termination limit</td>
+</tr>
+<tr>
+<td>Quorum fraction</td>
+<td><span class="math inline">\(q\)</span></td>
+<td>2/3</td>
+<td><span class="math inline">\((0.5, 1)\)</span></td>
+<td>Agreement threshold</td>
+</tr>
+</tbody>
+</table>
+<h2 id="sec:invariant-params">Invariant Parameters</h2>
+<p><strong>Table: Invariant enforcement configuration
+parameters.</strong> {#tab:invariant-params}</p>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Symbol</th>
+<th>Default</th>
+<th>Range</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Check interval</td>
+<td><span class="math inline">\(\tau_{inv}\)</span></td>
+<td>60s</td>
+<td><span class="math inline">\([10, 600]\)</span></td>
+<td>Invariant check frequency</td>
+</tr>
+</tbody>
+</table>
+<h2 id="sec:tuning-profiles">Deployment Profiles</h2>
+<p><strong>Table: Recommended configuration profiles by deployment
+scenario.</strong> {#tab:tuning-profiles}</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Profile</th>
+<th>Configuration</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Low latency</td>
+<td><span class="math inline">\(\tau_1 = 0.9\)</span>, <span
+class="math inline">\(w = 50\)</span>, <span
+class="math inline">\(T_{round} = 2000\)</span></td>
+</tr>
+<tr>
+<td>High throughput</td>
+<td><span class="math inline">\(N_{max} = 5000\)</span>, <span
+class="math inline">\(\tau_{check} = 120\)</span>, disable sandbox</td>
+</tr>
+<tr>
+<td>Byzantine-heavy</td>
+<td><span class="math inline">\(\delta = 0.6\)</span>, <span
+class="math inline">\(R_{max} = 20\)</span>, <span
+class="math inline">\(q = 0.75\)</span></td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

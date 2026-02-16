@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
@@ -176,58 +176,122 @@
 <body>
 <h1 id="sec:conclusion">Conclusion</h1>
 <h2 id="summary-of-contributions">Summary of Contributions</h2>
-<p>This paper provided comprehensive empirical validation of the
-Cognitive Integrity Framework (CIF) introduced in Part 1 of this series.
-Our primary contributions:</p>
+<p>This paper provided comprehensive simulation-based empirical
+validation of the Cognitive Integrity Framework (CIF) introduced in Part
+1 of this series. Our contributions span implementation, evaluation, and
+analysis:</p>
 <p><strong>Implementation</strong>: We implemented the complete CIF
 defense suite—cognitive firewalls, belief sandboxes, trust calculus with
 bounded delegation, tripwire detection, behavioral invariants, and
-Byzantine-tolerant consensus—demonstrating that the formal mechanisms
-translate into deployable code.</p>
+Byzantine-tolerant consensus—as production-ready Python modules with
+1,557 passing tests at 100% pass rate, demonstrating that the formal
+mechanisms translate into deployable, independently testable code.</p>
 <p><strong>Attack Corpus</strong>: We assembled 950 cognitive attacks
 across four categories (prompt injection, trust exploitation, belief
 manipulation, coordination attacks), enabling reproducible security
 evaluation of multiagent systems.</p>
-<p><strong>Cross-Architecture Validation</strong>: We evaluated CIF
-across six production multiagent architectures (Claude Code, AutoGPT,
-CrewAI, LangGraph, MetaGPT, Camel), demonstrating that formal guarantees
-hold across diverse architectural patterns.</p>
+<p><strong>Cross-Architecture Evaluation</strong>: We evaluated CIF’s
+detection architecture across six production multiagent topologies
+(Claude Code, AutoGPT, CrewAI, LangGraph, MetaGPT, Camel) using
+parametric architecture-aware simulation calibrated to published
+benchmarks. The simulation models each architecture’s topology and
+attack-surface exposure to produce detection rates that characterize
+CIF’s design-level protection properties.</p>
 <p><strong>Statistical Rigor</strong>: We provided significance testing
 (<span class="math inline">\(p &lt; 0.0001\)</span> for primary
 hypotheses), effect sizes (Cohen’s <span class="math inline">\(d &gt;
 1.0\)</span> for all major comparisons), confidence intervals, and
-ablation studies establishing the robustness of our findings.</p>
+ablation studies establishing the robustness of our findings under the
+simulation model.</p>
 <h2 id="key-findings">Key Findings</h2>
+<p>The simulation-based evaluation yields four principal findings, each
+reflecting CIF’s design-level detection properties under calibrated
+conditions:</p>
 <ol type="1">
 <li><p><strong>Layered defense is essential</strong>: No single
-mechanism achieves acceptable protection; composition yields
-multiplicative improvement consistent with theoretical
-predictions.</p></li>
+mechanism achieves acceptable protection in simulation; composition
+yields multiplicative improvement consistent with theoretical
+predictions from the defense composition algebra.</p></li>
 <li><p><strong>Trust calculus prevents amplification</strong>: The <span
 class="math inline">\(\delta^d\)</span> decay bound successfully
 prevented trust laundering across all tested architectures—a structural
-guarantee independent of attacker sophistication.</p></li>
+guarantee that holds independent of attacker sophistication and is
+verified both formally (Part 1) and through unit-tested
+implementation.</p></li>
 <li><p><strong>Architecture matters</strong>: Peer-to-peer architectures
-show greatest improvement from CIF, consistent with their vulnerability
-to lateral movement attacks.</p></li>
-<li><p><strong>Performance overhead is acceptable</strong>: 20-25%
-latency overhead for full CIF deployment is appropriate for
-security-critical contexts.</p></li>
+show greatest improvement from CIF in simulation, consistent with Part
+1’s prediction that equal-trust topologies are most vulnerable to
+lateral movement attacks.</p></li>
+<li><p><strong>Performance overhead is manageable</strong>: 20-25%
+estimated latency overhead for full CIF deployment was observed in
+simulation, with overhead dominated by the cognitive firewall and
+Byzantine consensus components.</p></li>
 </ol>
-<h2 id="implications-for-practitioners">Implications for
-Practitioners</h2>
-<p>The empirical results validate that CIF provides practical
-protection:</p>
-<ul>
-<li><strong>Deploy layered defenses</strong>: Configure all CIF
-components for security-critical deployments</li>
-<li><strong>Calibrate to architecture</strong>: Apply
-architecture-specific recommendations from </li>
-<li><strong>Monitor continuously</strong>: Detection rates degrade over
-time; ongoing vigilance is required</li>
-</ul>
-<p>For detailed deployment guidance, including human-actionable
-checklists and agent-readable guidelines, see Part 3 of this series.</p>
+<h2 id="observed-deployment-properties">Observed Deployment
+Properties</h2>
+<p>The evaluation data establishes four empirical properties relevant to
+deployment:</p>
+<ol type="1">
+<li><p><strong>Layered defense is necessary for high efficacy</strong>:
+No single mechanism exceeded 85% detection. The Minimal-C configuration
+(Firewall + Tripwires + Drift) achieved 90% at 12% overhead; full CIF
+reached 94% at 20–25% overhead ().</p></li>
+<li><p><strong>Defense efficacy is architecture-dependent</strong>:
+Tripwire-only deployments achieved 82% detection in hierarchical
+topologies but only 61% in peer-to-peer systems. Trust calculus with
+<span class="math inline">\(\delta \leq 0.8\)</span> was the dominant
+factor in peer-to-peer defense ().</p></li>
+<li><p><strong>Detection degrades against novel attacks</strong>:
+Cross-validation with held-out attack types showed 4–10% detection rate
+gaps, with coordination attacks exhibiting the largest generalization
+gap (<span class="math inline">\(-10\%\)</span>) ().</p></li>
+<li><p><strong>Byzantine tolerance requires <span
+class="math inline">\(n \geq 3f + 1\)</span></strong>: The minimum
+viable configuration for tolerating a single compromised agent (<span
+class="math inline">\(f = 1\)</span>) is <span class="math inline">\(n
+\geq 4\)</span> agents.</p></li>
+</ol>
+<p>Detailed deployment guidance, including configuration checklists and
+operational procedures derived from these findings, is provided in Part
+3 of this series.</p>
+<h2 id="alignment-with-emerging-standards">Alignment with Emerging
+Standards</h2>
+<p>CIF’s design anticipates and directly addresses the security risks
+codified by two major 2025–2026 standardization efforts.</p>
+<p>The <strong>OWASP Top 10 for Agentic Applications</strong> (2026)
+identifies 10 agentic-specific risks (ASI01–ASI10) . CIF’s defense
+mechanisms map systematically to these risks: the Cognitive Firewall
+counters Agent Goal Hijack (ASI01) by detecting and filtering prompt
+injections before they alter agent objectives; the Belief Sandbox
+addresses Tool Misuse and Exploitation (ASI02) by isolating unverified
+tool outputs before they propagate into the agent’s belief state; Trust
+Calculus with <span class="math inline">\(\delta^d\)</span> decay
+prevents Identity and Privilege Abuse (ASI03) by enforcing bounded
+delegation depth and decaying trust across privilege boundaries;
+Tripwire monitoring detects Memory and Context Poisoning (ASI06) by
+alerting on unauthorized belief modifications; and Byzantine Consensus
+mitigates Cascading Failures (ASI08) by requiring supermajority
+agreement before collective actions, preventing a single compromised
+agent from triggering system-wide degradation. This mapping demonstrates
+that CIF provides a unified formal framework for threats that OWASP
+currently lists as independent risks.</p>
+<p><strong>NIST’s Zero Trust Architecture for AI Agents</strong> extends
+SP 800-207’s ``never trust, always verify’’ principles to multi-agent
+environments . CIF operationalizes zero trust for cognitive
+interactions: every inter-agent message is evaluated by the firewall
+(continuous verification), beliefs from external sources are sandboxed
+(micro-segmentation), trust scores decay exponentially with delegation
+depth (least privilege), and provenance attestation provides
+cryptographic message origin tracking (continuous authentication).
+NIST’s Control Overlays for Securing AI Systems (COSAIS) initiative,
+which released its first annotated outline in January 2026 and published
+a concept paper on AI agent identity and authorization in February 2026,
+targets precisely the threat model that CIF formalizes—covering both
+single-agent and multi-agent AI system security controls.</p>
+<p>As these standards evolve from guidelines to compliance requirements,
+CIF provides both the formal underpinning and the validated
+implementation that organizations will need to demonstrate
+conformance.</p>
 <h2 id="paper-series">Paper Series</h2>
 <p>This is Part 2 of the <em>Cognitive Security for Multiagent
 Operators</em> series:</p>
@@ -242,5 +306,32 @@ operator posture, risk assessment</li>
 <p>Together, these papers provide a complete framework for
 understanding, implementing, and operating cognitive security in
 multiagent AI systems.</p>
+<h2 id="data-and-code-availability">Data and Code Availability</h2>
+<p>The CIF implementation (defense mechanisms, evaluation framework,
+analysis scripts) is available at &gt; (DOI: 10.5281/zenodo.18364128). A
+sanitized subset of the attack corpus suitable for reproducibility is
+included; the full corpus is available to verified researchers upon
+request (see ). All figures, tables, and statistical analyses can be
+reproduced using the provided scripts with the fixed random seed
+(42).</p>
+<h2 id="acknowledgments">Acknowledgments</h2>
+<p>The authors thank the eight security researchers who participated in
+the red team exercise, and the anonymous reviewers whose feedback
+strengthened this work. We acknowledge the open-source communities
+behind the multiagent frameworks evaluated in this study.</p>
+<h2 id="author-contributions">Author Contributions</h2>
+<p><strong>Daniel Ari Friedman</strong>: Conceptualization, Methodology,
+Software, Formal analysis, Investigation, Writing – Original Draft,
+Writing – Review &amp; Editing, Visualization.</p>
+<h2 id="competing-interests">Competing Interests</h2>
+<p>The authors declare no competing interests.</p>
+<h2 id="ethics-statement">Ethics Statement</h2>
+<p>This research was reviewed and determined exempt from IRB oversight
+as it did not involve human subjects. All attacks were tested against
+synthetic agent configurations in sandboxed environments. Novel attack
+vectors were disclosed to affected framework maintainers following a
+90-day responsible disclosure policy. Dual-use risks are mitigated
+through sanitization of published examples and restricted access to the
+full attack corpus (see ).</p>
 </body>
 </html>

@@ -40,11 +40,11 @@ def create_cif_comprehensive_figure(output_dir: Path) -> Path:
     # Title
     ax.text(
         8, 11.5, "COGNITIVE INTEGRITY FRAMEWORK (CIF)",
-        ha="center", va="center", fontsize=20, fontweight="bold", color=colors["header"],
+        ha="center", va="center", fontsize=24, fontweight="bold", color=colors["header"],
     )
     ax.text(
         8, 11.0, "Layered Defense Architecture for Multiagent AI Systems",
-        ha="center", va="center", fontsize=12, style="italic", color="#5D6D7E",
+        ha="center", va="center", fontsize=14, style="italic", color="#5D6D7E",
     )
 
     # Main frame
@@ -60,11 +60,10 @@ def create_cif_comprehensive_figure(output_dir: Path) -> Path:
         facecolor=colors["input"], edgecolor="black", linewidth=2, alpha=0.9,
     )
     ax.add_patch(input_box)
-    ax.text(1.7, 8.6, "INPUT", ha="center", va="center", fontsize=11, fontweight="bold", color="white")
-    ax.text(1.7, 8.2, "SOURCES", ha="center", va="center", fontsize=11, fontweight="bold", color="white")
-    ax.text(1.7, 7.6, "• User Prompts", ha="center", va="center", fontsize=9, color="white")
-    ax.text(1.7, 7.2, "• Tool Responses", ha="center", va="center", fontsize=9, color="white")
-    ax.text(1.7, 6.8, "• Agent Messages", ha="center", va="center", fontsize=9, color="white")
+    ax.text(1.7, 8.6, "INPUT\nSOURCES", ha="center", va="center", fontsize=12, fontweight="bold", color="white")
+    ax.text(1.7, 7.6, "• User Prompts", ha="center", va="center", fontsize=11, color="white")
+    ax.text(1.7, 7.2, "• Tool Responses", ha="center", va="center", fontsize=11, color="white")
+    ax.text(1.7, 6.8, "• Agent Messages", ha="center", va="center", fontsize=11, color="white")
 
     # Layer definitions
     layers = [
@@ -100,13 +99,13 @@ def create_cif_comprehensive_figure(output_dir: Path) -> Path:
         layer_box = FancyBboxPatch(
             (3.0, layer["y"]), 12.3, layer["height"],
             boxstyle="round,pad=0.02", facecolor=layer["color"],
-            edgecolor="black", linewidth=2, alpha=0.2,
+            edgecolor="black", linewidth=2, alpha=0.15,
         )
         ax.add_patch(layer_box)
 
 
         ax.text(3.3, layer["y"] + layer["height"] - 0.25,
-                layer["name"], fontsize=11, fontweight="bold", color=colors["header"])
+                layer["name"], fontsize=12, fontweight="bold", color=colors["header"])
 
         n_comp = len(layer["components"])
         comp_width = 3.6 if n_comp <= 3 else 2.7
@@ -122,22 +121,22 @@ def create_cif_comprehensive_figure(output_dir: Path) -> Path:
             )
             ax.add_patch(comp_box)
             ax.text(x + comp_width / 2, layer["y"] + layer["height"] - 0.6,
-                    name, ha="center", va="center", fontsize=10, fontweight="bold", color=colors["header"])
+                    name, ha="center", va="center", fontsize=11, fontweight="bold", color=colors["header"])
             ax.text(x + comp_width / 2, layer["y"] + layer["height"] / 2 - 0.1,
-                    desc, ha="center", va="center", fontsize=8, color="#5D6D7E")
+                    desc, ha="center", va="center", fontsize=10, color="#5D6D7E", linespacing=1.2)
             ax.text(x + comp_width / 2, layer["y"] + 0.4,
-                    formula, ha="center", va="center", fontsize=8, style="italic",
-                    color=layer["color"], fontfamily="monospace")
+                    formula, ha="center", va="center", fontsize=10, style="italic",
+                    color=layer["color"], fontfamily="monospace", weight='bold')
 
     # Key metrics box
     metrics_box = FancyBboxPatch((0.7, 1), 2, 2.5, boxstyle="round,pad=0.02",
                                   facecolor="#F8F9FA", edgecolor=colors["header"], linewidth=1.5)
     ax.add_patch(metrics_box)
-    ax.text(1.7, 3.2, "KEY METRICS", ha="center", va="center", fontsize=10, fontweight="bold", color=colors["header"])
-    ax.text(1.7, 2.7, "Detection: 94%", ha="center", va="center", fontsize=9, color="#648FFF", fontweight="bold")
-    ax.text(1.7, 2.3, "FPR: 6%", ha="center", va="center", fontsize=9, color=colors["defense"])
-    ax.text(1.7, 1.9, "Latency: +23%", ha="center", va="center", fontsize=9, color=colors["detection"])
-    ax.text(1.7, 1.5, "Integrity: +127%", ha="center", va="center", fontsize=9, color=colors["coordination"])
+    ax.text(1.7, 3.2, "KEY METRICS", ha="center", va="center", fontsize=11, fontweight="bold", color=colors["header"])
+    ax.text(1.7, 2.7, "Detection: 94%", ha="center", va="center", fontsize=10, color="#648FFF", fontweight="bold")
+    ax.text(1.7, 2.3, "FPR: 6%", ha="center", va="center", fontsize=10, color=colors["defense"])
+    ax.text(1.7, 1.9, "Latency: +23%", ha="center", va="center", fontsize=10, color=colors["detection"])
+    ax.text(1.7, 1.5, "Integrity: +127%", ha="center", va="center", fontsize=10, color=colors["coordination"])
 
     plt.tight_layout()
 

@@ -2,7 +2,7 @@
 
 # Detection Algorithms {#sec:detection-algorithms}
 
-This supplementary section presents detection algorithm implementations for the cognitive attack detection methods defined in Part 1. These algorithms operationalize the formal definitions from Part 1, Section 5 into executable procedures.
+This supplementary section presents detection algorithm implementations for the cognitive attack detection methods defined in Part 1. Where \cref{sec:pseudocode} (Section 2a) presents the six core defense mechanisms (Firewall, Sandbox, Trust, Tripwires, Consensus, Drift Detection), this supplement presents the *detection analytics pipeline* that evaluates their output---including ROC analysis, multi-detector fusion, online/batch detection architectures, and false positive mitigation.
 
 ## ROC Analysis Algorithms
 
@@ -29,37 +29,23 @@ This supplementary section presents detection algorithm implementations for the 
 
 ## Detector Performance Results
 
-\begin{table}[htbp]
-\centering
-\caption{Detector performance comparison via ROC metrics.}
-\label{tab:detector-roc}
-\begin{tabular}{@{}llllll@{}}
-\toprule
-Detector & AUC & Optimal $\tau$ & TPR@1\%FPR & TPR@5\%FPR \\
-\midrule
-Drift Score & 0.87 & 0.42 & 0.61 & 0.78 \\
-Deviation Score & 0.82 & 0.55 & 0.52 & 0.71 \\
-Provenance Check & 0.91 & 0.38 & 0.74 & 0.86 \\
-Firewall & 0.85 & 0.60 & 0.58 & 0.75 \\
-Tripwire & 0.79 & 0.45 & 0.48 & 0.65 \\
-Ensemble & \textbf{0.94} & 0.35 & \textbf{0.82} & \textbf{0.91} \\
-\bottomrule
-\end{tabular}
-\end{table}
+**Table: Detector performance comparison via ROC metrics.** {#tab:detector-roc}
 
-\begin{table}[htbp]
-\centering
-\caption{Empirical AUC with 95\% confidence intervals.}
-\label{tab:auc-ci}
-\begin{tabular}{@{}lll@{}}
-\toprule
-Detector & AUC & 95\% CI \\
-\midrule
-Drift Score & 0.87 & [0.84, 0.90] \\
-Ensemble & 0.94 & [0.92, 0.96] \\
-\bottomrule
-\end{tabular}
-\end{table}
+| Detector  | AUC  | F1-max $\tau$ | TPR@1\%FPR | TPR@5\%FPR |
+| --- | --- | --- | --- | --- |
+| Drift Score | 0.87 | 0.42 | 0.61 | 0.78 |
+| Deviation Score | 0.82 | 0.55 | 0.52 | 0.71 |
+| Provenance Check | 0.91 | 0.38 | 0.74 | 0.86 |
+| Firewall | 0.85 | 0.60 | 0.58 | 0.75 |
+| Tripwire | 0.79 | 0.45 | 0.48 | 0.65 |
+| Ensemble | **0.94** | 0.35 | **0.82** | **0.91** |
+
+**Table: Empirical AUC with 95\% confidence intervals.** {#tab:auc-ci}
+
+| Detector  | AUC  | 95\% CI |
+| --- | --- | --- |
+| Drift Score | 0.87 | [0.84, 0.90] |
+| Ensemble | 0.94 | [0.92, 0.96] |
 
 ## Multi-Detector Fusion Algorithm
 
@@ -74,7 +60,7 @@ Ensemble & 0.94 & [0.92, 0.96] \\
     \State $w \gets \text{LinearRegression}(S, y).\text{coef}$
     \State $w \gets \text{softmax}(w)$
     \State $f_{\text{fused}} \gets \lambda s: w \cdot s$
-\ElsIf{fusion\_type = ``voting''}
+\ElsIf{fusion\_type =``voting''}
     \State $(\tau^*, q^*) \gets \argmax_{\tau,q} \text{accuracy}(S, y, \tau, q)$
     \State $f_{\text{fused}} \gets \lambda s: \sum_i \mathbb{1}[s_i > \tau_i^*] \geq q^*$
 \ElsIf{fusion\_type = ``learned''}
@@ -86,22 +72,15 @@ Ensemble & 0.94 & [0.92, 0.96] \\
 \end{algorithmic}
 \end{algorithm}
 
-\begin{table}[htbp]
-\centering
-\caption{Fusion strategy performance comparison.}
-\label{tab:fusion-performance}
-\begin{tabular}{@{}lllll@{}}
-\toprule
-Fusion Strategy & AUC & FPR@90\%TPR & Latency \\
-\midrule
-Best Single (Provenance) & 0.91 & 8.2\% & 15ms \\
-Weighted Average & 0.93 & 5.4\% & 25ms \\
-Majority Voting & 0.92 & 6.1\% & 20ms \\
-Learned (MLP) & \textbf{0.94} & \textbf{4.2\%} & 30ms \\
-Learned (Attention) & \textbf{0.95} & \textbf{3.8\%} & 45ms \\
-\bottomrule
-\end{tabular}
-\end{table}
+**Table: Fusion strategy performance comparison.** {#tab:fusion-performance}
+
+| Fusion Strategy  | AUC  | FPR@90\%TPR | Latency |
+| --- | --- | --- | --- |
+| Best Single (Provenance) | 0.91 | 8.2\% | 15ms |
+| Weighted Average | 0.93 | 5.4\% | 25ms |
+| Majority Voting | 0.92 | 6.1\% | 20ms |
+| Learned (MLP) | **0.94** | **4.2\%** | 30ms |
+| Learned (Attention) | **0.95** | **3.8\%** | 45ms |
 
 ## Online Detection Algorithm
 
@@ -119,9 +98,9 @@ Learned (Attention) & \textbf{0.95} & \textbf{3.8\%} & 45ms \\
     \State $\text{score} \gets \|z\|$
     \If{$\text{score} > \theta$}
         \State $\text{emit\_alert}(m, \text{score})$
-        \State \textbf{yield} \textsc{quarantine}
+        \State **yield** \textsc{quarantine}
     \Else
-        \State \textbf{yield} \textsc{accept}
+        \State **yield** \textsc{accept}
     \EndIf
     \State $\text{window}.\text{push}(\text{features})$
 \EndLoop
@@ -148,40 +127,26 @@ Learned (Attention) & \textbf{0.95} & \textbf{3.8\%} & 45ms \\
 \end{algorithmic}
 \end{algorithm}
 
-\begin{table}[htbp]
-\centering
-\caption{Hybrid configuration trade-off analysis.}
-\label{tab:hybrid-tradeoffs}
-\begin{tabular}{@{}llll@{}}
-\toprule
-Configuration & Detection Rate & Latency & Cost \\
-\midrule
-Online Only & 87\% & 10ms & Low \\
-Batch Only & 94\% & N/A (forensic) & Medium \\
-Hybrid (hourly batch) & 92\% & 10ms + lag & Medium \\
-Hybrid (continuous) & \textbf{94\%} & 10ms & High \\
-\bottomrule
-\end{tabular}
-\end{table}
+**Table: Hybrid configuration trade-off analysis.** {#tab:hybrid-tradeoffs}
+
+| Configuration  | Detection Rate  | Latency | Cost |
+| --- | --- | --- | --- |
+| Online Only | 87\% | 10ms | Low |
+| Batch Only | 94\% | N/A (forensic) | Medium |
+| Hybrid (hourly batch) | 92\% | 10ms + lag | Medium |
+| Hybrid (continuous) | **94\%** | 10ms | High |
 
 ## False Positive Mitigation Results
 
-\begin{table}[htbp]
-\centering
-\caption{False positive root causes and mitigation strategies.}
-\label{tab:fp-root-causes}
-\begin{tabular}{@{}lllp{3cm}@{}}
-\toprule
-Cause & Frequency & Impact & Mitigation \\
-\midrule
-Benign novelty & 35\% & High & Incremental learning \\
-Threshold drift & 25\% & Medium & Adaptive thresholds \\
-Feature noise & 20\% & Low & Smoothing \\
-Label errors & 10\% & High & Label audit \\
-Distribution shift & 10\% & High & Domain adaptation \\
-\bottomrule
-\end{tabular}
-\end{table}
+**Table: False positive root causes and mitigation strategies.** {#tab:fp-root-causes}
+
+| Cause  | Frequency  | Impact | Mitigation |
+| --- | --- | --- | --- |
+| Benign novelty | 35\% | High | Incremental learning |
+| Threshold drift | 25\% | Medium | Adaptive thresholds |
+| Feature noise | 20\% | Low | Smoothing |
+| Label errors | 10\% | High | Label audit |
+| Distribution shift | 10\% | High | Domain adaptation |
 
 ## Baseline Update Algorithm
 
@@ -205,24 +170,17 @@ Distribution shift & 10\% & High & Domain adaptation \\
 \end{algorithmic}
 \end{algorithm}
 
-\begin{table}[htbp]
-\centering
-\caption{False positive mitigation strategy effectiveness.}
-\label{tab:fp-mitigation-results}
-\begin{tabular}{@{}llll@{}}
-\toprule
-Strategy & FPR Reduction & TPR Impact & Complexity \\
-\midrule
-Baseline & -- & -- & -- \\
-Confirmation Cascade & $-60\%$ & $-5\%$ & Medium \\
-Temporal Smoothing & $-40\%$ & $-3\%$ & Low \\
-Contextual Whitelist & $-50\%$ & $-2\%$ & Medium \\
-Incremental Learning & $-45\%$ & $+2\%$ & High \\
-Cost-Sensitive & $-30\%$ & Variable & Low \\
-\textbf{Combined} & $\mathbf{-75\%}$ & $\mathbf{-8\%}$ & High \\
-\bottomrule
-\end{tabular}
-\end{table}
+**Table: False positive mitigation strategy effectiveness.** {#tab:fp-mitigation-results}
+
+| Strategy  | FPR Reduction  | TPR Impact | Complexity |
+| --- | --- | --- | --- |
+| Baseline | -- | -- | -- |
+| Confirmation Cascade | $-60\%$ | $-5\%$ | Medium |
+| Temporal Smoothing | $-40\%$ | $-3\%$ | Low |
+| Contextual Whitelist | $-50\%$ | $-2\%$ | Medium |
+| Incremental Learning | $-45\%$ | $+2\%$ | High |
+| Cost-Sensitive | $-30\%$ | Variable | Low |
+| **Combined** | $\mathbf{-75\%}$ | $\mathbf{-8\%}$ | High |
 
 ## Sliding Window Monitoring Algorithm
 
@@ -247,13 +205,22 @@ Cost-Sensitive & $-30\%$ & Variable & Low \\
 \end{algorithmic}
 \end{algorithm}
 
+## Computational Complexity Summary {#sec:detection-complexity}
+
+**Table: Detection algorithm computational complexity.** {#tab:detection-complexity}
+
+| Algorithm | Time (per message) | Space | Suitable For |
+| --- | --- | --- | --- |
+| Online Detection (Alg.\ \ref{alg:online-detection}) | $O(d)$ | $O(w \cdot d)$ | Real-time streaming |
+| Batch Detection (Alg.\ \ref{alg:batch-detection}) | $O(n \cdot k)$ | $O(n \cdot d)$ | Forensic analysis |
+| Multi-Detector Fusion (Alg.\ \ref{alg:fusion}) | $O(k)$ | $O(k)$ | Score aggregation |
+| Baseline Update (Alg.\ \ref{alg:baseline-update}) | $O(d)$ | $O(d)$ | Continuous adaptation |
+| Sliding Window (Alg.\ \ref{alg:sliding-window}) | $O(d)$ | $O(w \cdot d)$ | Periodic monitoring |
+
+Where $d$ = feature dimension, $w$ = window size, $k$ = number of detectors, $n$ = history length.
+
 ## Summary
 
-These algorithms implement the detection methodology defined in Part 1, providing:
-- ROC curve construction and analysis procedures
-- Multi-detector fusion strategies
-- Online and batch detection architectures
-- False positive mitigation techniques
-- Real-time monitoring loops
+These algorithms implement the detection methodology defined in Part 1, providing: (1) ROC curve construction with Youden's J threshold optimization, (2) multi-detector fusion via weighted averaging, majority voting, or learned MLP/attention, (3) online and batch detection architectures with configurable latency/accuracy trade-offs, (4) false positive mitigation achieving 75\% FPR reduction with 8\% TPR cost, and (5) adaptive baseline update for non-stationary environments. The hybrid online+batch architecture (\cref{tab:hybrid-tradeoffs}) achieves the best detection-latency profile for production deployments.
 
 For formal definitions and theoretical foundations, see Part 1, Section 5.

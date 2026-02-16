@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.3.8)  28 JAN 2026 06:37
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.3.8)  16 FEB 2026 11:16
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -864,12 +864,92 @@ LaTeX Info: Redefining \microtypesetup on input line 3065.
 (/usr/local/texlive/2025/texmf-dist/tex/latex/parskip/parskip.sty
 Package: parskip 2021-03-14 v2.0h non-zero parskip adjustments
 )
+(/usr/local/texlive/2025/texmf-dist/tex/latex/tools/longtable.sty
+Package: longtable 2024-10-27 v4.22 Multi-page Table package (DPC)
+\LTleft=\skip70
+\LTright=\skip71
+\LTpre=\skip72
+\LTpost=\skip73
+\LTchunksize=\count372
+\LTcapwidth=\dimen303
+\LT@head=\box81
+\LT@firsthead=\box82
+\LT@foot=\box83
+\LT@lastfoot=\box84
+\LT@gbox=\box85
+\LT@cols=\count373
+\LT@rows=\count374
+\c@LT@tables=\count375
+\c@LT@chunks=\count376
+\LT@p@ftn=\toks48
+)
+(/usr/local/texlive/2025/texmf-dist/tex/latex/booktabs/booktabs.sty
+Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
+\heavyrulewidth=\dimen304
+\lightrulewidth=\dimen305
+\cmidrulewidth=\dimen306
+\belowrulesep=\dimen307
+\belowbottomsep=\dimen308
+\aboverulesep=\dimen309
+\abovetopsep=\dimen310
+\cmidrulesep=\dimen311
+\cmidrulekern=\dimen312
+\defaultaddspace=\dimen313
+\@cmidla=\count377
+\@cmidlb=\count378
+\@aboverulesep=\dimen314
+\@belowrulesep=\dimen315
+\@thisruleclass=\count379
+\@lastruleclass=\count380
+\@thisrulewidth=\dimen316
+)
+(/usr/local/texlive/2025/texmf-dist/tex/latex/tools/array.sty
+Package: array 2024/10/17 v2.6g Tabular extension package (FMi)
+\col@sep=\dimen317
+\ar@mcellbox=\box86
+\extrarowheight=\dimen318
+\NC@list=\toks49
+\extratabsurround=\skip74
+\backup@length=\skip75
+\ar@cellbox=\box87
+)
+\c@none=\count381
+
+(/usr/local/texlive/2025/texmf-dist/tex/latex/caption/caption.sty
+Package: caption 2023/08/05 v3.6o Customizing captions (AR)
+
+(/usr/local/texlive/2025/texmf-dist/tex/latex/caption/caption3.sty
+Package: caption3 2023/07/31 v2.4d caption3 kernel (AR)
+\caption@tempdima=\dimen319
+\captionmargin=\dimen320
+\caption@leftmargin=\dimen321
+\caption@rightmargin=\dimen322
+\caption@width=\dimen323
+\caption@indent=\dimen324
+\caption@parindent=\dimen325
+\caption@hangindent=\dimen326
+Package caption Info: beamer document class detected.
+
+(/usr/local/texlive/2025/texmf-dist/tex/latex/caption/caption-beamer.sto
+File: caption-beamer.sto 2022/01/06 v2.0c Adaption of the caption package to th
+e beamer document classes (AR)
+))
+\c@caption@flags=\count382
+\c@continuedfloat=\count383
+Package caption Info: hyperref package is loaded.
+Package caption Info: Hyperref support is turned off
+(caption)             because hyperref has stopped early.
+Package caption Info: longtable package is loaded.
+
+(/usr/local/texlive/2025/texmf-dist/tex/latex/caption/ltcaption.sty
+Package: ltcaption 2021/01/08 v1.4c longtable captions (AR)
+))
 (/usr/local/texlive/2025/texmf-dist/tex/latex/bookmark/bookmark.sty
 Package: bookmark 2023-12-10 v1.31 PDF bookmarks (HO)
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/bookmark/bkm-dvipdfm.def
 File: bkm-dvipdfm.def 2023-12-10 v1.31 bookmark driver for dvipdfm (HO)
-\BKM@id=\count372
+\BKM@id=\count384
 ))
 (/usr/local/texlive/2025/texmf-dist/tex/latex/xurl/xurl.sty
 Package: xurl 2022/01/09 v 0.10 modify URL breaks
@@ -878,26 +958,26 @@ Package: xurl 2022/01/09 v 0.10 modify URL breaks
 gent_2_computational/output/slides/S02_detection_algorithms_slides.aux)
 \openout1 = `S02_detection_algorithms_slides.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 90.
-LaTeX Font Info:    ... okay on input line 90.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 90.
-LaTeX Font Info:    ... okay on input line 90.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 90.
-LaTeX Font Info:    ... okay on input line 90.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 90.
-LaTeX Font Info:    ... okay on input line 90.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 90.
-LaTeX Font Info:    ... okay on input line 90.
-LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 90.
-LaTeX Font Info:    ... okay on input line 90.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 90.
-LaTeX Font Info:    ... okay on input line 90.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 90.
-LaTeX Font Info:    ... okay on input line 90.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 90.
-LaTeX Font Info:    ... okay on input line 90.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 90.
-LaTeX Font Info:    ... okay on input line 90.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 98.
+LaTeX Font Info:    ... okay on input line 98.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 98.
+LaTeX Font Info:    ... okay on input line 98.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 98.
+LaTeX Font Info:    ... okay on input line 98.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 98.
+LaTeX Font Info:    ... okay on input line 98.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 98.
+LaTeX Font Info:    ... okay on input line 98.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 98.
+LaTeX Font Info:    ... okay on input line 98.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 98.
+LaTeX Font Info:    ... okay on input line 98.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 98.
+LaTeX Font Info:    ... okay on input line 98.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 98.
+LaTeX Font Info:    ... okay on input line 98.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 98.
+LaTeX Font Info:    ... okay on input line 98.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: xetex
@@ -933,7 +1013,7 @@ LaTeX Font Info:    ... okay on input line 90.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-Package hyperref Info: Link coloring OFF on input line 90.
+Package hyperref Info: Link coloring OFF on input line 98.
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/translator/translator-basic-dicti
 onary-English.dict
@@ -960,19 +1040,19 @@ tionary-English.dict
 Dictionary: translator-theorem-dictionary, Language: English 
 )
 LaTeX Font Info:    Overwriting math alphabet `\mathrm' in version `normal'
-(Font)                  OT1/lmr/m/n --> TU/lmr/m/n on input line 90.
+(Font)                  OT1/lmr/m/n --> TU/lmr/m/n on input line 98.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
-(Font)                  OT1/lmr/m/it --> TU/lmr/m/it on input line 90.
+(Font)                  OT1/lmr/m/it --> TU/lmr/m/it on input line 98.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
-(Font)                  OT1/lmr/bx/n --> TU/lmr/bx/n on input line 90.
+(Font)                  OT1/lmr/bx/n --> TU/lmr/bx/n on input line 98.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
-(Font)                  OT1/lmss/m/n --> TU/lmss/m/n on input line 90.
+(Font)                  OT1/lmss/m/n --> TU/lmss/m/n on input line 98.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  OT1/lmss/bx/n --> TU/lmss/bx/n on input line 90.
+(Font)                  OT1/lmss/bx/n --> TU/lmss/bx/n on input line 98.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
-(Font)                  OT1/lmtt/m/n --> TU/lmtt/m/n on input line 90.
+(Font)                  OT1/lmtt/m/n --> TU/lmtt/m/n on input line 98.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  OT1/lmtt/m/n --> TU/lmtt/bx/n on input line 90.
+(Font)                  OT1/lmtt/m/n --> TU/lmtt/bx/n on input line 98.
 
 Package fontspec Info: 
 (fontspec)             latinmodern-math scale = 1.03015890977869.
@@ -1003,7 +1083,7 @@ allCapsFont={},Script=Math,BoldFont={latinmodern-math.otf}].
 =math;language=dflt;"
 
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(0)/m/n' will be
-(Font)              scaled to size 11.28015pt on input line 90.
+(Font)              scaled to size 11.28015pt on input line 98.
 
 Package fontspec Info: 
 (fontspec)             latinmodern-math scale = 1.03015890977869.
@@ -1046,17 +1126,17 @@ dern-math.otf]/OT:script=math;language=dflt;+ssty=1;"
 =math;language=dflt;"
 
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 11.28015pt on input line 90.
+(Font)              scaled to size 11.28015pt on input line 98.
 LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
-(Font)              `operators' in the math version `normal' on input line 90.
+(Font)              `operators' in the math version `normal' on input line 98.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
 (Font)                  OT1/lmr/m/n --> TU/latinmodern-math.otf(1)/m/n on input
- line 90.
+ line 98.
 LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
-(Font)              `operators' in the math version `bold' on input line 90.
+(Font)              `operators' in the math version `bold' on input line 98.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
 (Font)                  OT1/lmr/bx/n --> TU/latinmodern-math.otf(1)/b/n on inpu
-t line 90.
+t line 98.
 
 Package fontspec Info: 
 (fontspec)             latinmodern-math scale = 1.03015890977869.
@@ -1130,15 +1210,15 @@ nmodern-math.otf]/OT:script=math;language=dflt;+ssty=1;"
 t=math;language=dflt;"
 
 LaTeX Font Info:    Encoding `OMS' has changed to `TU' for symbol font
-(Font)              `symbols' in the math version `normal' on input line 90.
+(Font)              `symbols' in the math version `normal' on input line 98.
 LaTeX Font Info:    Overwriting symbol font `symbols' in version `normal'
 (Font)                  OMS/lmsy/m/n --> TU/latinmodern-math.otf(2)/m/n on inpu
-t line 90.
+t line 98.
 LaTeX Font Info:    Encoding `OMS' has changed to `TU' for symbol font
-(Font)              `symbols' in the math version `bold' on input line 90.
+(Font)              `symbols' in the math version `bold' on input line 98.
 LaTeX Font Info:    Overwriting symbol font `symbols' in version `bold'
 (Font)                  OMS/lmsy/b/n --> TU/latinmodern-math.otf(2)/b/n on inpu
-t line 90.
+t line 98.
 
 Package fontspec Info: 
 (fontspec)             latinmodern-math scale = 1.03015890977869.
@@ -1207,23 +1287,23 @@ t=math;language=dflt;"
 
 LaTeX Font Info:    Encoding `OMX' has changed to `TU' for symbol font
 (Font)              `largesymbols' in the math version `normal' on input line 9
-0.
+8.
 LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `normal'
 (Font)                  OMX/lmex/m/n --> TU/latinmodern-math.otf(3)/m/n on inpu
-t line 90.
+t line 98.
 LaTeX Font Info:    Encoding `OMX' has changed to `TU' for symbol font
-(Font)              `largesymbols' in the math version `bold' on input line 90.
+(Font)              `largesymbols' in the math version `bold' on input line 98.
 
 LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
 (Font)                  OMX/lmex/m/n --> TU/latinmodern-math.otf(3)/b/n on inpu
-t line 90.
-LaTeX Info: Redefining \microtypecontext on input line 90.
-Package microtype Info: Applying patch `item' on input line 90.
-Package microtype Info: Applying patch `toc' on input line 90.
-Package microtype Info: Applying patch `eqnum' on input line 90.
-Package microtype Info: Applying patch `footnote' on input line 90.
-Package microtype Info: Applying patch `verbatim' on input line 90.
-LaTeX Info: Redefining \microtypesetup on input line 90.
+t line 98.
+LaTeX Info: Redefining \microtypecontext on input line 98.
+Package microtype Info: Applying patch `item' on input line 98.
+Package microtype Info: Applying patch `toc' on input line 98.
+Package microtype Info: Applying patch `eqnum' on input line 98.
+Package microtype Info: Applying patch `footnote' on input line 98.
+Package microtype Info: Applying patch `verbatim' on input line 98.
+LaTeX Info: Redefining \microtypesetup on input line 98.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using protrusion set `basicmath'.
 Package microtype Info: No adjustment of tracking.
@@ -1233,6 +1313,8 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `lmss' (encoding: TU).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
+Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: End \AtBeginDocument code.
 
 (/Users/4d/Documents/GitHub/template/projects/cognitive_integrity/cogsec_multia
 gent_2_computational/output/slides/S02_detection_algorithms_slides.nav)
@@ -1240,6 +1322,19 @@ gent_2_computational/output/slides/S02_detection_algorithms_slides.nav)
 [1
 
 ]
+! Undefined control sequence.
+\beamer@doifinframe ...ned in Part 1. Where \cref 
+                                                  {sec:pseudocode} (Section ...
+l.429 \end{frame}
+                 
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <10.95> not available
+(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 429.
 
 ! LaTeX Error: Environment algorithm undefined.
 
@@ -1247,22 +1342,25 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.366 \end{frame}
+l.429 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
 
-! LaTeX Error: \caption outside figure or table.
+! Package caption Error: \caption outside float.
 
-See the LaTeX manual or LaTeX Companion for explanation.
+See the caption package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.366 \end{frame}
+l.429 \end{frame}
                  
-You're in trouble here.  Try typing  <return>  to proceed.
+If you do not understand this error, please take a closer look
+at the documentation of the `caption' package, especially the
+section about errors.
+Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
@@ -1272,7 +1370,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.366 \end{frame}
+l.429 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -1281,7 +1379,7 @@ or  <return>  to continue without it.
 ! Undefined control sequence.
 \beamer@doifinframe ... {algorithmic}[1] \Require 
                                                   Detector $D$, attack sampl...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1290,27 +1388,27 @@ spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 7.8961pt on input line 366.
+(Font)              scaled to size 7.8961pt on input line 429.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 5.64008pt on input line 366.
-LaTeX Font Info:    Trying to load font information for OML+lmm on input line 3
-66.
+(Font)              scaled to size 5.64008pt on input line 429.
+LaTeX Font Info:    Trying to load font information for OML+lmm on input line 4
+29.
 (/usr/local/texlive/2025/texmf-dist/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 11.28131pt on input line 366.
+(Font)              scaled to size 11.28131pt on input line 429.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 7.89691pt on input line 366.
+(Font)              scaled to size 7.89691pt on input line 429.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 5.64066pt on input line 366.
+(Font)              scaled to size 5.64066pt on input line 429.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 11.27914pt on input line 366.
+(Font)              scaled to size 11.27914pt on input line 429.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 7.8954pt on input line 366.
+(Font)              scaled to size 7.8954pt on input line 429.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 5.63957pt on input line 366.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 366
+(Font)              scaled to size 5.63957pt on input line 429.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 429
 .
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/amsfonts/umsa.fd
@@ -1319,7 +1417,7 @@ File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 (/usr/local/texlive/2025/texmf-dist/tex/latex/microtype/mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 366
+LaTeX Font Info:    Trying to load font information for U+msb on input line 429
 .
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/amsfonts/umsb.fd
@@ -1331,7 +1429,7 @@ File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 ! Undefined control sequence.
 \beamer@doifinframe ...hreshold count $n$ \Ensure 
                                                   ROC curve, AUC, optimal th...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1342,7 +1440,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...threshold $\tau ^*$ \State 
                                                   Compute scores: $S_{\text ...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1353,7 +1451,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ..._{\text {attack}}]$ \State 
                                                   Compute scores: $S_{\text ...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1364,7 +1462,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ..._{\text {benign}}]$ \State 
                                                   Generate thresholds: $T \g...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1380,7 +1478,7 @@ ern Roman (RS)
 ! Undefined control sequence.
 \beamer@doifinframe ...in (S), \max (S), n)$ \For 
                                                   {each $\tau \in T$} \State...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1391,7 +1489,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...{each $\tau \in T$} \State 
                                                   $\text {TPR}[\tau ] \gets ...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1402,7 +1500,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ..._{\text {attack}}|$ \State 
                                                   $\text {FPR}[\tau ] \gets ...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1413,7 +1511,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...{\text {benign}}|$ \EndFor 
                                                   \State $\text {AUC} \gets ...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1424,7 +1522,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...{benign}}|$ \EndFor \State 
                                                   $\text {AUC} \gets \int \t...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1435,7 +1533,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ..., d(\text {FPR})$ \Comment 
                                                   {Trapezoidal integration} ...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1446,7 +1544,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...zoidal integration} \State 
                                                   $\tau ^* \gets \argmax _\t...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1457,7 +1555,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...ate $\tau ^* \gets \argmax 
                                                   _\tau (\text {TPR}[\tau ] ...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1468,7 +1566,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...xt {FPR}[\tau ])$ \Comment 
                                                   {Youden's J} \State \Retur...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1479,7 +1577,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...omment {Youden's J} \State 
                                                   \Return $(\text {ROC}, \te...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1490,7 +1588,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...Youden's J} \State \Return 
                                                   $(\text {ROC}, \text {AUC}...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1499,103 +1597,42 @@ spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
 
-! LaTeX Error: \begin{beamercolorbox} on input line 366 ended by \end{algorithm
+! LaTeX Error: \begin{beamercolorbox} on input line 429 ended by \end{algorithm
 ic}.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.366 \end{frame}
+l.429 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
 
-! LaTeX Error: \begin{beamercolorbox} on input line 366 ended by \end{algorithm
+! LaTeX Error: \begin{beamercolorbox} on input line 429 ended by \end{algorithm
 }.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.366 \end{frame}
+l.429 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
-! Undefined control sequence.
-\beamer@doifinframe ...ar}{@{}llllll@{}} \toprule 
-                                                  Detector & AUC & Optimal $...
-l.366 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
 
-! Undefined control sequence.
-<recently read> \midrule 
-                         
-l.366 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<recently read> \bottomrule 
-                            
-l.366 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-
-Overfull \hbox (26.1131pt too wide) in paragraph at lines 366--366
- [] 
+Overfull \hbox (17.60556pt too wide) in alignment at lines 429--429
+ [] [] [] [] [] 
  []
 
-! Undefined control sequence.
-\beamer@doifinframe ...bular}{@{}lll@{}} \toprule 
-                                                  Detector & AUC & 95\% CI \...
-l.366 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
 
-! Undefined control sequence.
-<recently read> \midrule 
-                         
-l.366 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<recently read> \bottomrule 
-                            
-l.366 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
+Overfull \hbox (17.60556pt too wide) in alignment at lines 429--429
+ [] [] [] [] [] 
+ []
 
 
 ! LaTeX Error: Environment algorithm undefined.
@@ -1604,22 +1641,25 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.366 \end{frame}
+l.429 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
 
-! LaTeX Error: \caption outside figure or table.
+! Package caption Error: \caption outside float.
 
-See the LaTeX manual or LaTeX Companion for explanation.
+See the caption package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.366 \end{frame}
+l.429 \end{frame}
                  
-You're in trouble here.  Try typing  <return>  to proceed.
+If you do not understand this error, please take a closer look
+at the documentation of the `caption' package, especially the
+section about errors.
+Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
@@ -1629,7 +1669,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.366 \end{frame}
+l.429 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -1638,7 +1678,7 @@ or  <return>  to continue without it.
 ! Undefined control sequence.
 \beamer@doifinframe ... {algorithmic}[1] \Require 
                                                   Detectors $[D_1, \ldots , ...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1649,7 +1689,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ..., y)$, fusion type \Ensure 
                                                   Fusion function $f_{\text ...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1660,7 +1700,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...u _{\text {fused}}$ \State 
                                                   Generate scores: $S \gets ...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1671,7 +1711,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ... \text {detectors}]^T$ \If 
                                                   {fusion\_type = ``weighted...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1682,7 +1722,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...ype = ``weighted''} \State 
                                                   $w \gets \text {LinearRegr...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1693,7 +1733,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...S, y).\text {coef}$ \State 
                                                   $w \gets \text {softmax}(w...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1704,7 +1744,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...\text {softmax}(w)$ \State 
                                                   $f_{\text {fused}} \gets \...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1714,8 +1754,8 @@ and I'll forget about whatever was undefined.
 
 ! Undefined control sequence.
 \beamer@doifinframe ...ambda s: w \cdot s$ \ElsIf 
-                                                  {fusion\_type = ``voting''...
-l.366 \end{frame}
+                                                  {fusion\_type =``voting''}...
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1724,9 +1764,9 @@ spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
 ! Undefined control sequence.
-\beamer@doifinframe ..._type = ``voting''} \State 
+\beamer@doifinframe ...\_type =``voting''} \State 
                                                   $(\tau ^*, q^*) \gets \arg...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1737,7 +1777,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...tau ^*, q^*) \gets \argmax 
                                                   _{\tau ,q} \text {accuracy...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1748,7 +1788,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...y}(S, y, \tau , q)$ \State 
                                                   $f_{\text {fused}} \gets \...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1759,7 +1799,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...tau _i^*] \geq q^*$ \ElsIf 
                                                   {fusion\_type = ``learned'...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1770,7 +1810,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...type = ``learned''} \State 
                                                   Train MLP: $\theta ^* \get...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1781,7 +1821,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...: $\theta ^* \gets \argmin 
                                                   _\theta \mathcal {L}(S, y;...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1792,7 +1832,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...{L}(S, y; \theta )$ \State 
                                                   $f_{\text {fused}} \gets \...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1803,7 +1843,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...MLP}(s; \theta ^*)$ \EndIf 
                                                   \State Calibrate $\tau _{\...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1814,7 +1854,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ... \theta ^*)$ \EndIf \State 
                                                   Calibrate $\tau _{\text {f...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1825,7 +1865,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...$ on validation set \State 
                                                   \Return $(f_{\text {fused}...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1836,7 +1876,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...idation set \State \Return 
                                                   $(f_{\text {fused}}, \tau ...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1845,65 +1885,32 @@ spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
 
-! LaTeX Error: \begin{beamercolorbox} on input line 366 ended by \end{algorithm
+! LaTeX Error: \begin{beamercolorbox} on input line 429 ended by \end{algorithm
 ic}.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.366 \end{frame}
+l.429 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
 
-! LaTeX Error: \begin{beamercolorbox} on input line 366 ended by \end{algorithm
+! LaTeX Error: \begin{beamercolorbox} on input line 429 ended by \end{algorithm
 }.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.366 \end{frame}
+l.429 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
-
-! Undefined control sequence.
-\beamer@doifinframe ...lar}{@{}lllll@{}} \toprule 
-                                                  Fusion Strategy & AUC & FP...
-l.366 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<recently read> \midrule 
-                         
-l.366 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<recently read> \bottomrule 
-                            
-l.366 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
 
 
 ! LaTeX Error: Environment algorithm undefined.
@@ -1912,22 +1919,25 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.366 \end{frame}
+l.429 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
 
-! LaTeX Error: \caption outside figure or table.
+! Package caption Error: \caption outside float.
 
-See the LaTeX manual or LaTeX Companion for explanation.
+See the caption package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.366 \end{frame}
+l.429 \end{frame}
                  
-You're in trouble here.  Try typing  <return>  to proceed.
+If you do not understand this error, please take a closer look
+at the documentation of the `caption' package, especially the
+section about errors.
+Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
@@ -1937,7 +1947,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.366 \end{frame}
+l.429 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -1946,7 +1956,7 @@ or  <return>  to continue without it.
 ! Undefined control sequence.
 \beamer@doifinframe ... {algorithmic}[1] \Require 
                                                   Message stream, window siz...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1957,7 +1967,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...threshold $\theta $ \State 
                                                   Initialize: $\text {window...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1968,7 +1978,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...CircularBuffer}(w)$ \State 
                                                   Initialize: $\text {stats}...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1979,7 +1989,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...OnlineStatistics}()$ \Loop 
                                                   \Comment {For each message...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1990,7 +2000,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...tistics}()$ \Loop \Comment 
                                                   {For each message $m$ in s...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2001,7 +2011,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...sage $m$ in stream} \State 
                                                   $\text {features} \gets \t...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2012,7 +2022,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...\text {extract}(m)$ \State 
                                                   $\text {stats}.\text {upda...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2023,7 +2033,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...(\text {features})$ \State 
                                                   $z \gets (\text {features}...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2034,7 +2044,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...stats}.\text {std}$ \State 
                                                   $\text {score} \gets \|z\|...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2045,7 +2055,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...t {score} \gets \|z\|$ \If 
                                                   {$\text {score} > \theta $...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2056,7 +2066,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...{score} > \theta $} \State 
                                                   $\text {emit\_alert}(m, \t...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2066,8 +2076,8 @@ and I'll forget about whatever was undefined.
 
 ! Undefined control sequence.
 \beamer@doifinframe ...(m, \text {score})$ \State 
-                                                  \textbf {yield} \textsc {q...
-l.366 \end{frame}
+                                                  **yield** \textsc {quarant...
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2077,12 +2087,12 @@ and I'll forget about whatever was undefined.
 
 
 LaTeX Font Warning: Font shape `TU/lmss/m/sc' in size <10.95> not available
-(Font)              Font shape `TU/lmr/m/sc' tried instead on input line 366.
+(Font)              Font shape `TU/lmr/m/sc' tried instead on input line 429.
 
 ! Undefined control sequence.
 \beamer@doifinframe ...\textsc {quarantine} \Else 
-                                                  \State \textbf {yield} \te...
-l.366 \end{frame}
+                                                  \State **yield** \textsc {...
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2092,8 +2102,8 @@ and I'll forget about whatever was undefined.
 
 ! Undefined control sequence.
 \beamer@doifinframe ... {quarantine} \Else \State 
-                                                  \textbf {yield} \textsc {a...
-l.366 \end{frame}
+                                                  **yield** \textsc {accept}...
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2102,9 +2112,9 @@ spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
 ! Undefined control sequence.
-\beamer@doifinframe ...d} \textsc {accept} \EndIf 
+\beamer@doifinframe ...** \textsc {accept} \EndIf 
                                                   \State $\text {window}.\te...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2115,7 +2125,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...tsc {accept} \EndIf \State 
                                                   $\text {window}.\text {pus...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2126,7 +2136,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...text {features})$ \EndLoop 
                                                   \end {algorithmic} \end {a...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2135,28 +2145,28 @@ spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
 
-! LaTeX Error: \begin{beamercolorbox} on input line 366 ended by \end{algorithm
+! LaTeX Error: \begin{beamercolorbox} on input line 429 ended by \end{algorithm
 ic}.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.366 \end{frame}
+l.429 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
 
-! LaTeX Error: \begin{beamercolorbox} on input line 366 ended by \end{algorithm
+! LaTeX Error: \begin{beamercolorbox} on input line 429 ended by \end{algorithm
 }.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.366 \end{frame}
+l.429 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -2169,22 +2179,25 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.366 \end{frame}
+l.429 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
 
-! LaTeX Error: \caption outside figure or table.
+! Package caption Error: \caption outside float.
 
-See the LaTeX manual or LaTeX Companion for explanation.
+See the caption package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.366 \end{frame}
+l.429 \end{frame}
                  
-You're in trouble here.  Try typing  <return>  to proceed.
+If you do not understand this error, please take a closer look
+at the documentation of the `caption' package, especially the
+section about errors.
+Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
@@ -2194,7 +2207,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.366 \end{frame}
+l.429 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -2203,7 +2216,7 @@ or  <return>  to continue without it.
 ! Undefined control sequence.
 \beamer@doifinframe ... {algorithmic}[1] \Require 
                                                   Full interaction history $...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2214,7 +2227,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ..._1, \ldots , D_k]$ \Ensure 
                                                   Anomalies, attack patterns...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2225,7 +2238,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ... optimal thresholds \State 
                                                   $\text {features} \gets \t...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2236,7 +2249,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ... {extract\_all}(H)$ \State 
                                                   $\text {patterns} \gets \t...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2247,7 +2260,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...lyze\_sessions}(H)$ \State 
                                                   $\text {anomalies} \gets \...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2258,7 +2271,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...s}(\text {patterns})$ \For 
                                                   {each detector $D_i$} \Sta...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2269,7 +2282,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...ach detector $D_i$} \State 
                                                   $\text {scores}[D_i] \gets...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2280,7 +2293,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...\text {features})$ \EndFor 
                                                   \State $\text {attack\_pat...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2291,7 +2304,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...features})$ \EndFor \State 
                                                   $\text {attack\_patterns} ...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2302,7 +2315,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...H, \text {scores})$ \State 
                                                   $\tau ^* \gets \text {opti...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2313,7 +2326,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...}, \text {labels})$ \State 
                                                   \Return $(\text {anomalies...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2324,7 +2337,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ... {labels})$ \State \Return 
                                                   $(\text {anomalies}, \text...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2333,118 +2346,42 @@ spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
 
-! LaTeX Error: \begin{beamercolorbox} on input line 366 ended by \end{algorithm
+! LaTeX Error: \begin{beamercolorbox} on input line 429 ended by \end{algorithm
 ic}.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.366 \end{frame}
+l.429 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
 
-! LaTeX Error: \begin{beamercolorbox} on input line 366 ended by \end{algorithm
+! LaTeX Error: \begin{beamercolorbox} on input line 429 ended by \end{algorithm
 }.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.366 \end{frame}
+l.429 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
-! Undefined control sequence.
-\beamer@doifinframe ...ular}{@{}llll@{}} \toprule 
-                                                  Configuration & Detection ...
-l.366 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
 
-! Undefined control sequence.
-<recently read> \midrule 
-                         
-l.366 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<recently read> \bottomrule 
-                            
-l.366 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-
-Overfull \hbox (1.49652pt too wide) in paragraph at lines 366--366
- [] 
- []
-
-! Undefined control sequence.
-\beamer@doifinframe ...{@{}lllp{3cm}@{}} \toprule 
-                                                  Cause & Frequency & Impact...
-l.366 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<recently read> \midrule 
-                         
-l.366 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-
-Underfull \hbox (badness 1831) in paragraph at lines 366--366
-[]\TU/lmss/m/n/10.95 Incremental learn-
+Overfull \hbox (1.49652pt too wide) in alignment at lines 429--429
+ [] [] [] [] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 366--366
-[]\TU/lmss/m/n/10.95 Adaptive thresh-
+Overfull \hbox (1.49652pt too wide) in alignment at lines 429--429
+ [] [] [] [] 
  []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 366--366
-[]\TU/lmss/m/n/10.95 Domain adapta-
- []
-
-! Undefined control sequence.
-<recently read> \bottomrule 
-                            
-l.366 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
 
 
 ! LaTeX Error: Environment algorithm undefined.
@@ -2453,22 +2390,25 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.366 \end{frame}
+l.429 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
 
-! LaTeX Error: \caption outside figure or table.
+! Package caption Error: \caption outside float.
 
-See the LaTeX manual or LaTeX Companion for explanation.
+See the caption package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.366 \end{frame}
+l.429 \end{frame}
                  
-You're in trouble here.  Try typing  <return>  to proceed.
+If you do not understand this error, please take a closer look
+at the documentation of the `caption' package, especially the
+section about errors.
+Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
@@ -2478,7 +2418,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.366 \end{frame}
+l.429 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -2487,7 +2427,7 @@ or  <return>  to continue without it.
 ! Undefined control sequence.
 \beamer@doifinframe ... {algorithmic}[1] \Require 
                                                   Alert, feedback $\in \{\te...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2498,7 +2438,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ... learning rate $\eta $ \If 
                                                   {feedback = FP} \State $\m...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2509,7 +2449,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...\If {feedback = FP} \State 
                                                   $\mu \gets (1-\eta ) \cdot...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2520,7 +2460,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...t {alert.features}$ \State 
                                                   $\sigma ^2 \gets (1-\eta )...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2531,7 +2471,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...t.features} - \mu )^2$ \If 
                                                   {$\text {fp\_count} > \tex...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2542,7 +2482,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...t {fp\_threshold}$} \State 
                                                   $\theta \gets \theta \cdot...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2553,7 +2493,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...ot (1 + \Delta )$ \Comment 
                                                   {Raise threshold} \EndIf \...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2564,7 +2504,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...t {Raise threshold} \EndIf 
                                                   \Else \Comment {feedback =...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2575,7 +2515,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...se threshold} \EndIf \Else 
                                                   \Comment {feedback = TP} \...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2586,7 +2526,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...old} \EndIf \Else \Comment 
                                                   {feedback = TP} \State $\t...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2597,7 +2537,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...ent {feedback = TP} \State 
                                                   $\text {attack\_patterns}....
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2608,7 +2548,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...text {alert.pattern})$ \If 
                                                   {$\text {tp\_count} > \tex...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2619,7 +2559,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...t {tp\_threshold}$} \State 
                                                   $\theta \gets \theta \cdot...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2630,7 +2570,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...ot (1 - \Delta )$ \Comment 
                                                   {Lower threshold} \EndIf \...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2641,7 +2581,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...t {Lower threshold} \EndIf 
                                                   \EndIf \end {algorithmic} ...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2652,7 +2592,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...r threshold} \EndIf \EndIf 
                                                   \end {algorithmic} \end {a...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2661,69 +2601,41 @@ spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
 
-! LaTeX Error: \begin{beamercolorbox} on input line 366 ended by \end{algorithm
+! LaTeX Error: \begin{beamercolorbox} on input line 429 ended by \end{algorithm
 ic}.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.366 \end{frame}
+l.429 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
 
-! LaTeX Error: \begin{beamercolorbox} on input line 366 ended by \end{algorithm
+! LaTeX Error: \begin{beamercolorbox} on input line 429 ended by \end{algorithm
 }.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.366 \end{frame}
+l.429 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
-! Undefined control sequence.
-\beamer@doifinframe ...ular}{@{}llll@{}} \toprule 
-                                                  Strategy & FPR Reduction &...
-l.366 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
 
-! Undefined control sequence.
-<recently read> \midrule 
-                         
-l.366 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<recently read> \bottomrule 
-                            
-l.366 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
+Overfull \hbox (5.97508pt too wide) in alignment at lines 429--429
+ [] [] [] [] 
+ []
 
 
-Overfull \hbox (5.97508pt too wide) in paragraph at lines 366--366
- [] 
+Overfull \hbox (5.97508pt too wide) in alignment at lines 429--429
+ [] [] [] [] 
  []
 
 
@@ -2733,22 +2645,25 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.366 \end{frame}
+l.429 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
 
-! LaTeX Error: \caption outside figure or table.
+! Package caption Error: \caption outside float.
 
-See the LaTeX manual or LaTeX Companion for explanation.
+See the caption package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.366 \end{frame}
+l.429 \end{frame}
                  
-You're in trouble here.  Try typing  <return>  to proceed.
+If you do not understand this error, please take a closer look
+at the documentation of the `caption' package, especially the
+section about errors.
+Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
@@ -2758,7 +2673,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.366 \end{frame}
+l.429 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -2767,7 +2682,7 @@ or  <return>  to continue without it.
 ! Undefined control sequence.
 \beamer@doifinframe ... {algorithmic}[1] \Require 
                                                   Monitoring period $\tau $,...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2778,7 +2693,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ... threshold $\theta $ \Loop 
                                                   \Comment {Every $\tau $ un...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2789,7 +2704,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...d $\theta $ \Loop \Comment 
                                                   {Every $\tau $ units} \Sta...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2800,7 +2715,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...very $\tau $ units} \State 
                                                   Collect cognitive state sn...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2811,7 +2726,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...napshot $\sigma _i^t$ \For 
                                                   {each feature $k$} \State ...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2822,7 +2737,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ... {each feature $k$} \State 
                                                   $\mu [k] \gets \alpha \cdo...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2833,7 +2748,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...t f_k(\sigma _i^t)$ \State 
                                                   $\sigma ^2[k] \gets \alpha...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2844,7 +2759,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...i^t) - \mu [k])^2$ \EndFor 
                                                   \State Compute anomaly sco...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2855,7 +2770,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...\mu [k])^2$ \EndFor \State 
                                                   Compute anomaly scores \If...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2866,7 +2781,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...Compute anomaly scores \If 
                                                   {any score $> \theta $} \S...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2877,7 +2792,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ... score $> \theta $} \State 
                                                   Log alert with context \St...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2888,7 +2803,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ... alert with context \State 
                                                   Trigger response protocol ...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2899,7 +2814,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...r response protocol \EndIf 
                                                   \State Prune data older th...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2910,7 +2825,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...nse protocol \EndIf \State 
                                                   Prune data older than $w$ ...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2921,7 +2836,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...ta older than $w$ \EndLoop 
                                                   \end {algorithmic} \end {a...
-l.366 \end{frame}
+l.429 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2930,35 +2845,46 @@ spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
 
-! LaTeX Error: \begin{beamercolorbox} on input line 366 ended by \end{algorithm
+! LaTeX Error: \begin{beamercolorbox} on input line 429 ended by \end{algorithm
 ic}.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.366 \end{frame}
+l.429 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
 
-! LaTeX Error: \begin{beamercolorbox} on input line 366 ended by \end{algorithm
+! LaTeX Error: \begin{beamercolorbox} on input line 429 ended by \end{algorithm
 }.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.366 \end{frame}
+l.429 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
+! Undefined control sequence.
+\beamer@doifinframe ...+batch architecture (\cref 
+                                                  {tab:hybrid-tradeoffs}) ac...
+l.429 \end{frame}
+                 
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
 
-Overfull \vbox (1473.77531pt too high) detected at line 366
+
+Overfull \vbox (2052.8074pt too high) detected at line 429
  []
 
 
@@ -2984,13 +2910,13 @@ L3 programming layer <2025-01-18>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 29447 strings out of 473832
- 597017 string characters out of 5729482
- 1217956 words of memory out of 5000000
- 51964 multiletter control sequences out of 15000+600000
+ 31071 strings out of 473832
+ 627604 string characters out of 5729482
+ 1267091 words of memory out of 5000000
+ 53565 multiletter control sequences out of 15000+600000
  562420 words of font info for 74 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 128i,12n,123p,1141b,890s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 128i,11n,123p,1141b,900s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
 Output written on /Users/4d/Documents/GitHub/template/projects/cognitive_integr
 ity/cogsec_multiagent_2_computational/output/slides/S02_detection_algorithms_sl

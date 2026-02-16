@@ -1,7 +1,7 @@
 """
 Cognitive Security Framework for Multiagent Operators.
 
-Core modules:
+Core modules (in ``src.core``):
 - trust: Trust calculus with bounded delegation, reputation decay, context boosting
 - firewall: Cognitive firewall with multi-stage classification and semantic detection
 - tripwire: Canary belief monitoring
@@ -10,35 +10,114 @@ Core modules:
 - provenance: Information flow tracking with taint propagation
 - invariants: Behavioral invariant checking and runtime monitoring
 - sandbox: Belief sandboxing with verified/provisional partitions
+
+New packages:
+- composition: Defense composition algebra (pipelines, fusion)
+- attacks: 950-attack corpus with generators
+- architectures: Production multi-agent architecture adapters
+- evaluation: Experiment runner, metrics, ROC, benchmarks
+- statistics: Hypothesis testing, effect sizes, confidence intervals
+- ablation: Component removal and synergy studies
+- colony: Colony-level CogSec benchmarks
+- formal: Theorem validation and model checker specs
+- visualization: Publication-quality figures and LaTeX tables
+- data: Data generation and management
+- utils: Shared configuration, logging, timing, types
 """
 
+# Re-export all core symbols for backward compatibility.
+# Existing code using ``from trust import TrustCalculus`` or
+# ``from src import TrustCalculus`` continues to work unchanged.
+
 # Consensus module
-from .consensus import (ByzantineConsensus, CombinedByzantineConsensus,
-                        CombinedVote, ConfidenceByzantineConsensus,
-                        ConfidenceVote, ConsensusConfig, ConsensusResult,
-                        QuorumVerification, Vote, WeightedByzantineConsensus,
-                        WeightedVote)
+# Batch detection module
+from .core.batch_detection import BatchDetector
+from .core.consensus import (
+    ByzantineConsensus,
+    CombinedByzantineConsensus,
+    CombinedVote,
+    ConfidenceByzantineConsensus,
+    ConfidenceVote,
+    ConsensusConfig,
+    ConsensusResult,
+    QuorumVerification,
+    Vote,
+    WeightedByzantineConsensus,
+    WeightedVote,
+)
+
 # Detection module
-from .detection import AnomalyScorer, DetectionConfig, DriftDetector
+from .core.detection import (
+    AdaptiveBaseline,
+    AnomalyScorer,
+    DetectionConfig,
+    DriftDetector,
+    SlidingWindowMonitor,
+)
+
 # Firewall module
-from .firewall import (Classification, CognitiveFirewall, EmbeddingStub,
-                       EnhancedCognitiveFirewall, FirewallConfig,
-                       MultiStageClassifier, PatternDetector,
-                       SemanticSimilarityDetector)
+from .core.firewall import (
+    Classification,
+    ClassificationStage,
+    CognitiveFirewall,
+    EmbeddingStub,
+    EnhancedCognitiveFirewall,
+    FirewallConfig,
+    MultiStageClassifier,
+    PatternDetector,
+    SemanticSimilarityDetector,
+    TFIDFEmbedder,
+)
+
 # Invariants module
-from .invariants import (AgentAction, Invariant, InvariantChecker,
-                         InvariantSeverity, InvariantViolation, RuntimeMonitor)
+from .core.invariants import (
+    AgentAction,
+    Invariant,
+    InvariantChecker,
+    InvariantSeverity,
+    InvariantViolation,
+    RuntimeMonitor,
+)
+
+# Online detection module
+from .core.online_detection import CircularBuffer, OnlineDetector, OnlineStatistics
+
 # Provenance module
-from .provenance import (CausalAttribution, ProvenanceChain, ProvenanceGraph,
-                         ProvenanceRecord, TaintLabel)
+from .core.provenance import (
+    CausalAttribution,
+    ProvenanceChain,
+    ProvenanceGraph,
+    ProvenanceRecord,
+    TaintLabel,
+)
+
 # Sandbox module
-from .sandbox import (Belief, BeliefPartition, BeliefState, PromotionCriteria,
-                      SandboxConfig, SandboxManager)
+from .core.sandbox import (
+    Belief,
+    BeliefPartition,
+    BeliefState,
+    PromotionCriteria,
+    SandboxConfig,
+    SandboxManager,
+)
+
 # Tripwire module
-from .tripwire import Canary, CognitiveTripwire, TripwireAlert
+from .core.tripwire import Canary, CognitiveTripwire, TripwireAlert
+
 # Trust module
-from .trust import (ContextAwareTrust, ReputationTracker, TrustCalculus,
-                    TrustConfig, TrustMatrix, TrustMatrixWithDecay)
+from .core.trust import (
+    ContextAwareTrust,
+    InteractionRecord,
+    ReputationTracker,
+    TrustCalculus,
+    TrustConfig,
+    TrustMatrix,
+    TrustMatrixWithDecay,
+)
+
+# Evaluation module
+from .evaluation.metrics import DetectionMetrics
+from .evaluation.runner import ExperimentResult, ExperimentRunner
 
 __all__ = [
     # Trust
@@ -48,15 +127,18 @@ __all__ = [
     "ReputationTracker",
     "ContextAwareTrust",
     "TrustMatrixWithDecay",
+    "InteractionRecord",
     # Firewall
     "CognitiveFirewall",
     "Classification",
+    "ClassificationStage",
     "FirewallConfig",
     "PatternDetector",
     "EmbeddingStub",
     "SemanticSimilarityDetector",
     "MultiStageClassifier",
     "EnhancedCognitiveFirewall",
+    "TFIDFEmbedder",
     # Tripwire
     "CognitiveTripwire",
     "Canary",
@@ -65,6 +147,14 @@ __all__ = [
     "DriftDetector",
     "AnomalyScorer",
     "DetectionConfig",
+    "AdaptiveBaseline",
+    "SlidingWindowMonitor",
+    # Online Detection
+    "CircularBuffer",
+    "OnlineStatistics",
+    "OnlineDetector",
+    # Batch Detection
+    "BatchDetector",
     # Consensus
     "ByzantineConsensus",
     "QuorumVerification",
@@ -97,4 +187,8 @@ __all__ = [
     "PromotionCriteria",
     "SandboxManager",
     "SandboxConfig",
+    # Evaluation
+    "DetectionMetrics",
+    "ExperimentRunner",
+    "ExperimentResult",
 ]

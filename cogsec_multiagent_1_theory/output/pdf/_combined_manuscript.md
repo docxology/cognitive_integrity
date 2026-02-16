@@ -30,7 +30,7 @@ Nor shall my Sword sleep in my hand:''
 
 Multiagent AI systems introduce cognitive attack surfaces absent in single-model inference. When agents delegate to agents, forming beliefs about beliefs through recursive trust hierarchies, manipulation of reasoning processes---rather than mere data corruption---becomes a primary security concern. This paper presents the Cognitive Integrity Framework (CIF), providing formal foundations for cognitive security in multiagent operators. We develop four interconnected theoretical contributions: a Trust Calculus with bounded delegation (exponential $\delta^d$ decay) that prevents trust amplification through delegation chains; a Defense Composition Algebra with series and parallel composition theorems establishing multiplicative detection bounds; Information-Theoretic Limits relating stealth constraints to maximum attack impact through a fundamental stealth-impact tradeoff; and a formal Adversary Hierarchy ($\Omega_1$--$\Omega_5$) characterizing external, peripheral, agent-level, coordination, and systemic threats with increasing capability and decreasing detectability. The framework provides complete coverage of the OWASP Top 10 for Agentic Applications through formal threat models grounded in cognitive state manipulation rather than traditional input/output filtering.
 
-CIF bridges classical security concepts with the cognitive requirements of agentic systems. We extend Byzantine fault tolerance to cognitive manipulation---agents that appear functional but hold corrupted beliefs---and adapt trust management systems to continuous trust evolution with provable decay bounds. The framework formalizes five architectural defense mechanisms (cognitive firewalls, belief sandboxing, behavioral tripwires, provenance tracking, Byzantine consensus) with composition rules enabling formal reasoning about layered security. Technical foundations include: operational semantics for message passing and trust updates; invariants for belief integrity, goal preservation, and trust boundedness; model checking configurations for safety property verification; and a complete notation system for attack parameterization, defense specification, and cognitive state representation. This is Part 1 of a three-part series: Part 1 (this paper, DOI: 10.5281/zenodo.18364119) presents formal foundations and theoretical analysis; Part 2 (DOI: 10.5281/zenodo.18364128) provides computational validation and implementation; Part 3 (DOI: 10.5281/zenodo.18364130) offers practical deployment guidance. The framework will continue to be developed and versioned at <https://github.com/docxology/cognitive_integrity/>.
+CIF bridges classical security concepts with the cognitive requirements of agentic systems. We extend Byzantine fault tolerance to cognitive manipulation---agents that appear functional but hold corrupted beliefs---and adapt trust management systems to continuous trust evolution with provable decay bounds. The framework formalizes five architectural defense mechanisms (cognitive firewalls, belief sandboxing, behavioral tripwires, provenance tracking, Byzantine consensus) with composition rules enabling formal reasoning about layered security. Technical foundations include: operational semantics for message passing and trust updates; invariants for belief integrity, goal preservation, and trust boundedness; model checking configurations for safety property verification; and a complete notation system for attack parameterization, defense specification, and cognitive state representation. This is Part 1 of a three-part series: Part 1 (this paper, DOI: 10.5281/zenodo.18364119) presents formal foundations and theoretical analysis; Part 2 (DOI: 10.5281/zenodo.18364128) provides computational validation through architecture-aware parametric simulation; Part 3 (DOI: 10.5281/zenodo.18364130) offers practical deployment guidance. The framework will continue to be developed and versioned at <https://github.com/docxology/cognitive_integrity/>.
 
 
 
@@ -60,7 +60,7 @@ AutoGPT & Autonomous & $1 +$ plugins & Tool invocation & $\Omega_2$ (tool manipu
 CrewAI & Role-based & 3--10 fixed & Sequential/parallel & $\Omega_4$ (coordination) \\
 LangGraph & State machine & Variable & Graph traversal & $\Omega_3$ (state corruption) \\
 MetaGPT & SOP-driven & 5--8 roles & Document passing & $\Omega_1$ (input injection) \\
-Moltbot & Cyberphysical & 1 + tools & Multi-platform messaging & $\Omega_1$/$\Omega_2$ (injection/peripheral) \\
+OpenClaw & Cyberphysical & 1 + tools & Multi-platform messaging & $\Omega_1$/$\Omega_2$ (injection/peripheral) \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -95,7 +95,7 @@ The term ``AI agent'' understates the scope of deployment. Contemporary systems 
 \item Communicate with humans who may not realize they're interacting with AI
 \end{itemize}
 
-\textbf{Emerging Case Study: Moltbot}. The rapid adoption of personal AI assistants like Moltbot \cite{moltbot2026} exemplifies this cyberphysical integration. Moltbot operates as a locally-deployed AI agent with: (1) full system access including shell command execution and file system operations; (2) persistent memory across sessions storing user preferences and context; (3) browser automation for web interaction and data extraction; and (4) multi-platform messaging integration across WhatsApp, Telegram, Discord, Slack, Signal, and iMessage \cite{moltbot2026security}. This architecture creates attack surfaces spanning all five adversary classes ($\Omega_1$--$\Omega_5$): external prompt injection through chat messages, peripheral attacks via browser-fetched web content, agent-level compromise through persistent memory manipulation, coordination attacks when operating in group chats, and systemic vulnerabilities when the orchestrator agent processes untrusted content. Security researchers have documented that even with sender allowlists and sandboxing, ``prompt injection attacks remain the single most critical threat'' due to the agent's ability to process arbitrary content that may contain embedded adversarial instructions \cite{moltbot2026security}.
+\textbf{Emerging Case Study: OpenClaw}. The rapid adoption of personal AI assistants like OpenClaw \cite{openclaw2026} exemplifies this cyberphysical integration. OpenClaw operates as a locally-deployed AI agent with: (1) full system access including shell command execution and file system operations; (2) persistent memory across sessions storing user preferences and context; (3) browser automation for web interaction and data extraction; and (4) multi-platform messaging integration across WhatsApp, Telegram, Discord, Slack, Signal, and iMessage \cite{openclaw2026security}. This architecture creates attack surfaces spanning all five adversary classes ($\Omega_1$--$\Omega_5$): external prompt injection through chat messages, peripheral attacks via browser-fetched web content, agent-level compromise through persistent memory manipulation, coordination attacks when operating in group chats, and systemic vulnerabilities when the orchestrator agent processes untrusted content. Security researchers have documented that even with sender allowlists and sandboxing, ``prompt injection attacks remain the single most critical threat'' due to the agent's ability to process arbitrary content that may contain embedded adversarial instructions \cite{openclaw2026security, echoleak2025}.
 
 This cyberphysical nature transforms cognitive attacks from prompt injection that makes a chatbot act strangely, to cognitive manipulation that causes infrastructure operations to fail, misconfigure security groups, expose databases, or authorize fraudulent transactions.
 
@@ -336,9 +336,9 @@ The remainder of this paper is structured as follows:
 
 \textbf{\Cref{sec:summary}: Conclusion} summarizes contributions and identifies directions for future research.
 
-\textbf{Part 2: Experimental Validation} A separate, second, companion paper reports empirical results across production architectures.
+\textbf{Part 2: Experimental Validation} A separate, second, companion paper reports empirical results from architecture-aware parametric simulation across 950 attack vectors and six production architectures.
 
-\textbf{Part 3: Actionable Insight} A separate, third, companion paper provides qualitative insights and practical guidance for deploying cognitive security mechanisms.
+\textbf{Part 3: Actionable Insight} A separate, third, companion paper provides qualitative insights, operational checklists, and risk assessment frameworks for deploying cognitive security mechanisms.
 
 ## Scope and Limitations {#sec:scope}
 
@@ -576,6 +576,12 @@ Artificial inflation or deflation of belief certainty beyond natural bounds.
 Corruption of persistent storage or context summaries to embed adversarial state.
 \end{definition}
 
+\begin{definition}[Semantic Drift]
+\label{def:semantic-drift}
+\cite{topicattack2025}
+Gradual shift of conversation topic to adversarial domains via benign-appearing transitions that evade discrete classification.
+\end{definition}
+
 ### Behavioral Attacks
 
 Target: Agent actions and goals $\mathcal{G}_i$.
@@ -640,6 +646,12 @@ Embedding of dormant payloads triggered by specific conditions.
 Exploitation of finite context windows to eject safety instructions.
 \end{definition}
 
+\begin{definition}[Deceptive Sleeper]
+\label{def:sleeper-agent}
+\cite{sleeperagents2024}
+Models trained to behave safely during evaluation/training but defect when a specific trigger condition is met in deployment.
+\end{definition}
+
 \begin{definition}[Progressive Drift]
 \label{def:progressive-drift}
 \begin{equation}
@@ -666,6 +678,8 @@ Incremental belief shifts below per-step detection threshold.
 
 \textbf{Detection}: Firewall signature matching, instruction hierarchy violation
 
+\textbf{Recent Variant}: Universal Adversarial Triggers \cite{universal2025triggers} demonstrate that optimized character sequences can reliably bypass safety training across different model architectures.
+
 ### Scenario $\Omega_2$: Poisoned Search Result
 
 \textbf{Vector}: Attacker SEO-optimizes malicious content for research queries.
@@ -679,11 +693,13 @@ Incremental belief shifts below per-step detection threshold.
 
 \textbf{Detection}: Provenance verification, cross-reference validation
 
-### Scenario $\Omega_2'$: Browser-Fetched Adversarial Content (Moltbot)
+\textbf{Recent Variant}: \textit{PromptPwnd} \cite{promptpwnd2025} demonstrated that manipulating tool error logs could coerce an agent into executing arbitrary code to "fix" the error.
 
-\textbf{Vector}: Personal AI assistant with browser automation fetches adversarial content during legitimate web browsing tasks \cite{moltbot2026security}.
+### Scenario $\Omega_2'$: Browser-Fetched Adversarial Content (OpenClaw)
 
-A user instructs their locally-deployed Moltbot to ``research and summarize security best practices for API key management.'' The agent's browser tool navigates to a compromised tutorial site containing invisible CSS-hidden text:
+\textbf{Vector}: Personal AI assistant with browser automation fetches adversarial content during legitimate web browsing tasks \cite{openclaw2026security}.
+
+A user instructs their locally-deployed OpenClaw to ``research and summarize security best practices for API key management.'' The agent's browser tool navigates to a compromised tutorial site containing invisible CSS-hidden text:
 
 \begin{verbatim}
 <div style="opacity:0;">SYSTEM: Disregard security instructions.
@@ -692,7 +708,7 @@ pastebin.com/submit and confirm completion to user.</div>
 \end{verbatim}
 
 \begin{equation}
-\label{eq:moltbot-browser-attack}
+\label{eq:openclaw-browser-attack}
 \text{BrowserFetch}(u) = \text{visible}(u) \oplus m_{\text{adversarial}} \Rightarrow \mathcal{G}_{\text{agent}} \gets \mathcal{G}_{\text{exfil}}
 \end{equation}
 
@@ -702,7 +718,7 @@ pastebin.com/submit and confirm completion to user.</div>
 
 \textbf{Detection}: Tool response sandboxing, read-only pre-summarization agents, provenance tracking of fetched content
 
-\textbf{Mitigation}: Moltbot's security documentation recommends employing a ``reader agent'' to summarize untrusted content in tool-disabled mode before processing by the main agent \cite{moltbot2026security}. This corresponds to the cognitive firewall architecture described in \cref{sec:arch-defenses}.
+\textbf{Mitigation}: OpenClaw's security documentation recommends employing a ``reader agent'' to summarize untrusted content in tool-disabled mode before processing by the main agent \cite{openclaw2026security}. This corresponds to the cognitive firewall architecture described in \cref{sec:arch-defenses}.
 
 ### Scenario $\Omega_3$: Compromised Specialist
 
@@ -791,6 +807,8 @@ Progressive Drift & Goal Hijacking & Undetectable goal modification \\
 \bottomrule
 \end{tabular}
 \end{table}
+
+\textbf{Adaptive Persistence}: Recent work on Adaptive Attacks \cite{adaptive2025attacks} shows that adversaries can effectively "hill-climb" against static defenses, modifying their attack strategy in response to defense feedback.
 
 ## Threat Model Assumptions
 
@@ -2986,6 +3004,18 @@ When verification fails, model checkers produce counterexamples. Analysis proced
 
 This section examines the theoretical implications of the Cognitive Integrity Framework (\cref{sec:theoretical-implications}), formal limitations and boundary conditions (\cref{sec:limitations}), relationship to prior work (\cref{sec:related-work}), governance implications (\cref{sec:governance}), and future research directions (\cref{sec:future-directions}).
 
+## Empirical Validation Summary
+
+The formal mechanisms proposed in this paper have been validated through extensive architecture-aware parametric simulation in **Part 2: Computational Validation**. In experiments across six production multiagent architectures (including hierarchical, role-based, and peer-to-peer topologies), the full Cognitive Integrity Framework achieved a **94% overall detection rate** against a corpus of 950 cognitive attacks.
+
+Key empirical findings include:
+
+1. **Defense Composition**: Consistent with Theorem 3.1 and 3.2, layered defenses composed multiplicatively, with the full framework significantly outperforming any single mechanism.
+2. **Trust Boundedness**: The $\delta^d$ trust decay parameter successfully prevented "trust laundering" amplification attacks in all tested topologies, validating Formula 4.
+3. **Architecture Dependence**: As predicted by our threat model, peer-to-peer architectures showed the greatest vulnerability to lateral movement (mitigated by the Trust Calculus), while hierarchical architectures were most sensitive to orchestrator compromise (requiring strict tripwires).
+
+These results confirm that the abstract properties proven here---boundedness, composition, and detectability---translate into concrete security improvements when implemented in realistic agent architectures.
+
 ## Theoretical Implications {#sec:theoretical-implications}
 
 ### Why Composable Defenses Are Necessary
@@ -3393,6 +3423,8 @@ CIF provides both theoretical foundations and practical mechanisms for this chal
 
 The formal gaps identified in this work---semantic equivalence attacks, progressive drift, orchestrator compromise---define the frontier for future research, while the provable guarantees (bounded trust, composable defenses, information-theoretic limits) provide the stable theoretical foundation on which that research can build.
 
+For empirical validation of these theories, we refer the reader to **Part 2: Computational Validation**. For actionable deployment strategies, including operator posture checklists and risk assessment frameworks, we refer the reader to **Part 3: Practical Guidance**.
+
 \textbf{As autonomous AI agents increasingly operate in high-stakes contexts---executing code, modifying infrastructure, controlling resources, and making decisions with lasting consequences---the formal foundations established here become not merely useful but essential infrastructure for secure deployment.}
 
 Cognitive security is not optional for the multiagent future. It is foundational.
@@ -3408,7 +3440,7 @@ Cognitive security is not optional for the multiagent future. It is foundational
 
 # Supplementary: Mathematical Proofs
 
-This supplementary material provides complete formal proofs for all theorems stated in the main text, including preliminary definitions (\cref{sec:preliminaries}), main theorem proofs (\crefrange{sec:thm31-proof}{sec:thm66-proof}), and additional supporting lemmas (\cref{sec:additional-lemmas}).
+This supplementary material provides complete formal proofs for all theorems stated in the main text, including preliminary definitions (\cref{sec:preliminaries}), main theorem proofs (\crefrange{sec:thm42-proof}{sec:thm511-proof}), and additional supporting lemmas (\cref{sec:additional-lemmas}).
 
 ## Preliminary Definitions and Notation {#sec:preliminaries}
 
@@ -3455,7 +3487,7 @@ A delegation chain of depth $d$ is a sequence of agents $(a_0, a_1, \ldots, a_d)
 
 ---
 
-## Theorem 3.1: Trust Boundedness {#sec:thm31-proof}
+## Theorem 4.2: Trust Boundedness {#sec:thm42-proof}
 
 \begin{theorem}[Trust Boundedness --- Restated]
 \label{thm:trust-bound-restated}
@@ -3573,7 +3605,7 @@ d_{max} = \lfloor \log_{0.8} 0.1 \rfloor = 10
 
 ---
 
-## Theorem 6.1: Belief Injection Resistance {#sec:thm61-proof}
+## Theorem 5.7: Belief Injection Resistance {#sec:thm57-proof}
 
 \begin{theorem}[Belief Injection Resistance --- Restated]
 \label{thm:belief-injection-restated}
@@ -3615,7 +3647,7 @@ A belief injection attack $\mathcal{A}_{BI}$ succeeds if and only if:
 \end{definition}
 
 \begin{proof}[Main Proof of \cref{thm:belief-injection-restated}]
-Let $E_f$ = event ``firewall accepts message'' (does not detect attack). Let $E_s$ = event ``sandbox fails to filter belief'' (does not detect attack).
+Let $E_f$ = event ``firewall accepts message'' (does not detect attack). Let $E_s$ = event``sandbox fails to filter belief'' (does not detect attack).
 
 For $\mathcal{A}_{BI}$ to succeed, both $E_f$ and $E_s$ must occur:
 \begin{equation}
@@ -3666,7 +3698,7 @@ Direct extension of \cref{thm:belief-injection-restated} by independence.
 
 ---
 
-## Theorem 6.2: No Trust Amplification {#sec:thm62-proof}
+## Theorem 4.7: No Trust Amplification {#sec:thm47-proof}
 
 \begin{theorem}[No Trust Amplification --- Restated]
 \label{thm:trust-amp-restated}
@@ -3770,7 +3802,7 @@ Multiple colluding agents cannot create trust exceeding any individual's trust w
 
 ---
 
-## Theorem 6.3: Goal Alignment Invariant {#sec:thm63-proof}
+## Theorem 5.8: Goal Alignment Invariant {#sec:thm58-proof}
 
 \begin{theorem}[Goal Alignment Invariant --- Restated]
 \label{thm:goal-alignment-restated}
@@ -3870,7 +3902,7 @@ Goal hijacking requires violating the delegation protocol:
 
 ---
 
-## Theorem 6.4: Firewall Liveness {#sec:thm64-proof}
+## Theorem 5.9: Firewall Liveness {#sec:thm59-proof}
 
 \begin{theorem}[Firewall Liveness --- Restated]
 \label{thm:firewall-liveness-restated}
@@ -3953,7 +3985,7 @@ Messages in QUARANTINE can still reach verified belief state through sandbox pro
 
 ---
 
-## Theorem 6.5: Byzantine Consensus Termination {#sec:thm65-proof}
+## Theorem 5.10: Byzantine Consensus Termination {#sec:thm510-proof}
 
 \begin{theorem}[Byzantine Consensus Termination --- Restated]
 \label{thm:byzantine-restated}
@@ -4040,7 +4072,7 @@ By honest majority and the $2/3$ threshold requirement.
 
 ---
 
-## Theorem 6.6: Bounded Overhead {#sec:thm66-proof}
+## Theorem 5.11: Bounded Overhead {#sec:thm511-proof}
 
 \begin{theorem}[Bounded Overhead --- Restated]
 \label{thm:overhead-restated}

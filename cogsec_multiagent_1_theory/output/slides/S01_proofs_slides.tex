@@ -98,7 +98,7 @@
 This supplementary material provides complete formal proofs for all
 theorems stated in the main text, including preliminary definitions
 (\cref{sec:preliminaries}), main theorem proofs
-(\crefrange{sec:thm31-proof}{sec:thm66-proof}), and additional
+(\crefrange{sec:thm42-proof}{sec:thm511-proof}), and additional
 supporting lemmas (\cref{sec:additional-lemmas}).
 
 \begin{block}{Preliminary Definitions and Notation}
@@ -148,8 +148,8 @@ A delegation chain of depth $d$ is a sequence of agents $(a_0, a_1, \ldots, a_d)
 \end{frame}
 
 \begin{frame}
-\begin{block}{Theorem 3.1: Trust Boundedness}
-\protect\phantomsection\label{sec:thm31-proof}
+\begin{block}{Theorem 4.2: Trust Boundedness}
+\protect\phantomsection\label{sec:thm42-proof}
 \begin{theorem}[Trust Boundedness --- Restated]
 \label{thm:trust-bound-restated}
 For any delegation chain of depth $d$:
@@ -267,8 +267,8 @@ d_{max} = \lfloor \log_{0.8} 0.1 \rfloor = 10
 \end{frame}
 
 \begin{frame}
-\begin{block}{Theorem 6.1: Belief Injection Resistance}
-\protect\phantomsection\label{sec:thm61-proof}
+\begin{block}{Theorem 5.7: Belief Injection Resistance}
+\protect\phantomsection\label{sec:thm57-proof}
 \begin{theorem}[Belief Injection Resistance --- Restated]
 \label{thm:belief-injection-restated}
 Under CIF with firewall detection rate $r_f$ and sandboxing verification rate $r_s$:
@@ -309,7 +309,7 @@ A belief injection attack $\mathcal{A}_{BI}$ succeeds if and only if:
 \end{definition}
 
 \begin{proof}[Main Proof of \cref{thm:belief-injection-restated}]
-Let $E_f$ = event ``firewall accepts message'' (does not detect attack). Let $E_s$ = event ``sandbox fails to filter belief'' (does not detect attack).
+Let $E_f$ = event ``firewall accepts message'' (does not detect attack). Let $E_s$ = event``sandbox fails to filter belief'' (does not detect attack).
 
 For $\mathcal{A}_{BI}$ to succeed, both $E_f$ and $E_s$ must occur:
 \begin{equation}
@@ -361,8 +361,8 @@ Direct extension of \cref{thm:belief-injection-restated} by independence.
 \end{frame}
 
 \begin{frame}
-\begin{block}{Theorem 6.2: No Trust Amplification}
-\protect\phantomsection\label{sec:thm62-proof}
+\begin{block}{Theorem 4.7: No Trust Amplification}
+\protect\phantomsection\label{sec:thm47-proof}
 \begin{theorem}[No Trust Amplification --- Restated]
 \label{thm:trust-amp-restated}
 For any path $p = (a_0, a_1, \ldots, a_k)$ in the communication graph:
@@ -466,8 +466,8 @@ Multiple colluding agents cannot create trust exceeding any individual's trust w
 \end{frame}
 
 \begin{frame}
-\begin{block}{Theorem 6.3: Goal Alignment Invariant}
-\protect\phantomsection\label{sec:thm63-proof}
+\begin{block}{Theorem 5.8: Goal Alignment Invariant}
+\protect\phantomsection\label{sec:thm58-proof}
 \begin{theorem}[Goal Alignment Invariant --- Restated]
 \label{thm:goal-alignment-restated}
 If the system starts with aligned goals and all goal updates follow the delegation protocol:
@@ -567,8 +567,8 @@ Goal hijacking requires violating the delegation protocol:
 \end{frame}
 
 \begin{frame}
-\begin{block}{Theorem 6.4: Firewall Liveness}
-\protect\phantomsection\label{sec:thm64-proof}
+\begin{block}{Theorem 5.9: Firewall Liveness}
+\protect\phantomsection\label{sec:thm59-proof}
 \begin{theorem}[Firewall Liveness --- Restated]
 \label{thm:firewall-liveness-restated}
 CIF firewall preserves liveness for legitimate inputs:
@@ -651,8 +651,8 @@ Messages in QUARANTINE can still reach verified belief state through sandbox pro
 \end{frame}
 
 \begin{frame}
-\begin{block}{Theorem 6.5: Byzantine Consensus Termination}
-\protect\phantomsection\label{sec:thm65-proof}
+\begin{block}{Theorem 5.10: Byzantine Consensus Termination}
+\protect\phantomsection\label{sec:thm510-proof}
 \begin{theorem}[Byzantine Consensus Termination --- Restated]
 \label{thm:byzantine-restated}
 With $n \geq 3f + 1$ agents and at most $f$ Byzantine:
@@ -739,8 +739,8 @@ By honest majority and the $2/3$ threshold requirement.
 \end{frame}
 
 \begin{frame}
-\begin{block}{Theorem 6.6: Bounded Overhead}
-\protect\phantomsection\label{sec:thm66-proof}
+\begin{block}{Theorem 5.11: Bounded Overhead}
+\protect\phantomsection\label{sec:thm511-proof}
 \begin{theorem}[Bounded Overhead --- Restated]
 \label{thm:overhead-restated}
 CIF adds latency:

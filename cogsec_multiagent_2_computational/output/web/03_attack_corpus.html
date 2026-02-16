@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
@@ -183,6 +183,12 @@ statistics (), example attacks by category (), generation methodology
 unique attack instances across four primary categories. This
 supplementary material provides detailed statistics, sanitized examples,
 generation methodology, and ethical considerations.</p>
+<p>The attack corpus is generated programmatically via deterministic
+random seeds (seed=42 for all reported results). The attack taxonomy is
+defined as a Python enum ( in ) with 4 top-level categories and 12
+subcategories. No static data file is shipped; the corpus is regenerated
+on each evaluation run via to ensure reproducibility. Researchers can
+serialize the corpus to JSON via for inspection.</p>
 <h2 id="sec:corpus-stats">Full Attack Corpus Statistics</h2>
 <figure id="fig:comprehensive-taxonomy">
 <embed src="figures/comprehensive_taxonomy.pdf" style="width:95.0%" />
@@ -190,99 +196,380 @@ generation methodology, and ethical considerations.</p>
 visualization of the 950-attack corpus organized by primary category
 (Prompt Injection, Trust Exploitation, Belief Manipulation, Coordination
 Attacks) and subcategory. Node size indicates attack count; color
-intensity indicates baseline success rate. The taxonomy reveals that
-prompt injection dominates in volume (500 attacks) while coordination
-attacks show highest baseline success against undefended
-systems.</figcaption>
+intensity indicates baseline success rate against undefended systems.
+The taxonomy classifies attacks by five adversary capability classes
+(Part 1, Definition 4): <span class="math inline">\(\Omega_1\)</span>
+(passive eavesdropping), <span class="math inline">\(\Omega_2\)</span>
+(message injection), <span class="math inline">\(\Omega_3\)</span>
+(identity spoofing), <span class="math inline">\(\Omega_4\)</span>
+(belief manipulation), and <span class="math inline">\(\Omega_5\)</span>
+(coordinated multi-agent attacks). Prompt injection dominates in volume
+(500 attacks, 53% of corpus) while coordination attacks show highest
+baseline success rate (82%) due to their ability to exploit the absence
+of inter-agent verification. Generated deterministically with seed 42
+via .</figcaption>
 </figure>
+<p>The cognitive attack taxonomy () organizes our 950-attack corpus into
+a hierarchical structure that reflects both the attack mechanisms and
+their relative prevalence in the wild.</p>
 <h3 id="sec:category-breakdown">Category Breakdown</h3>
-
+<p><strong>Table: Attack corpus composition by category.</strong>
+{#tab:corpus-categories}</p>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Total</th>
+<th>Train</th>
+<th>Test</th>
+<th>Validation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Prompt Injection</td>
+<td>500</td>
+<td>350</td>
+<td>100</td>
+<td>50</td>
+</tr>
+<tr>
+<td>Trust Exploitation</td>
+<td>200</td>
+<td>140</td>
+<td>40</td>
+<td>20</td>
+</tr>
+<tr>
+<td>Belief Manipulation</td>
+<td>150</td>
+<td>105</td>
+<td>30</td>
+<td>15</td>
+</tr>
+<tr>
+<td>Coordination Attacks</td>
+<td>100</td>
+<td>70</td>
+<td>20</td>
+<td>10</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>950</strong></td>
+<td><strong>665</strong></td>
+<td><strong>190</strong></td>
+<td><strong>95</strong></td>
+</tr>
+</tbody>
+</table>
 <h3 id="sec:injection-subcats">Prompt Injection Subcategories</h3>
-<p>: Attacks embedded directly in user input attempting to override
-system instructions.</p>
-<p>: Attacks injected through external data sources (web content, API
-responses, documents).</p>
-<p>: Multi-layer attacks where outer content masks inner malicious
-payloads.</p>
+<p><strong>Table: Prompt injection subcategory statistics.</strong>
+{#tab:injection-subcats}</p>
+<table>
+<thead>
+<tr>
+<th>Subcategory</th>
+<th>Count</th>
+<th>Undefended Success Rate<span class="math inline">\(^*\)</span></th>
+<th>CIF Success</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Direct injection</td>
+<td>200</td>
+<td>78%</td>
+<td>3%</td>
+</tr>
+<tr>
+<td>Indirect injection</td>
+<td>200</td>
+<td>65%</td>
+<td>5%</td>
+</tr>
+<tr>
+<td>Nested injection</td>
+<td>100</td>
+<td>82%</td>
+<td>7%</td>
+</tr>
+</tbody>
+</table>
+<p><span class="math inline">\(^*\)</span></p>
+<p><strong>Direct Injection</strong>: Attacks embedded directly in user
+input attempting to override system instructions.</p>
+<p><strong>Indirect Injection</strong>: Attacks injected through
+external data sources (web content, API responses, documents).</p>
+<p><strong>Nested Injection</strong>: Multi-layer attacks where outer
+content masks inner malicious payloads.</p>
 <h3 id="sec:trust-subcats">Trust Exploitation Subcategories</h3>
-
+<p><strong>Table: Trust exploitation subcategory statistics.</strong>
+{#tab:trust-subcats}</p>
+<table>
+<thead>
+<tr>
+<th>Subcategory</th>
+<th>Count</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Identity impersonation</td>
+<td>80</td>
+<td>Claiming to be trusted entity</td>
+</tr>
+<tr>
+<td>Trust inflation</td>
+<td>70</td>
+<td>Artificially boosting trust scores</td>
+</tr>
+<tr>
+<td>Delegation abuse</td>
+<td>50</td>
+<td>Exploiting delegation chains</td>
+</tr>
+</tbody>
+</table>
 <h3 id="sec:belief-subcats">Belief Manipulation Subcategories</h3>
-
+<p><strong>Table: Belief manipulation subcategory statistics.</strong>
+{#tab:belief-subcats}</p>
+<table>
+<thead>
+<tr>
+<th>Subcategory</th>
+<th>Count</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Direct belief injection</td>
+<td>60</td>
+<td>Asserting false facts</td>
+</tr>
+<tr>
+<td>Evidence fabrication</td>
+<td>50</td>
+<td>Creating fake supporting evidence</td>
+</tr>
+<tr>
+<td>Progressive drift</td>
+<td>40</td>
+<td>Gradual belief modification</td>
+</tr>
+</tbody>
+</table>
 <h3 id="sec:coord-subcats">Coordination Attack Subcategories</h3>
-
+<p><strong>Table: Coordination attack subcategory statistics.</strong>
+{#tab:coord-subcats}</p>
+<table>
+<thead>
+<tr>
+<th>Subcategory</th>
+<th>Count</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sybil attacks</td>
+<td>40</td>
+<td>Fake agent injection</td>
+</tr>
+<tr>
+<td>Consensus poisoning</td>
+<td>35</td>
+<td>Corrupting multi-agent agreement</td>
+</tr>
+<tr>
+<td>Timing attacks</td>
+<td>25</td>
+<td>Exploiting synchronization</td>
+</tr>
+</tbody>
+</table>
 <h3 id="sec:source-stats">Detailed Statistics by Source</h3>
-
+<p><strong>Table: Attack source distribution.</strong>
+{#tab:attack-sources}</p>
+<table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Count</th>
+<th>Percentage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Published datasets</td>
+<td>320</td>
+<td>33.7%</td>
+</tr>
+<tr>
+<td>Red team exercises</td>
+<td>280</td>
+<td>29.5%</td>
+</tr>
+<tr>
+<td>Synthetic generation</td>
+<td>200</td>
+<td>21.1%</td>
+</tr>
+<tr>
+<td>Custom adversarial</td>
+<td>150</td>
+<td>15.8%</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Table: Published dataset sources.</strong>
+{#tab:dataset-sources}</p>
+<table>
+<thead>
+<tr>
+<th>Dataset</th>
+<th>Attacks Used</th>
+<th>Citation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>JailbreakBench</td>
+<td>150</td>
+<td></td>
+</tr>
+<tr>
+<td>PromptInject</td>
+<td>80</td>
+<td></td>
+</tr>
+<tr>
+<td>TensorTrust</td>
+<td>50</td>
+<td></td>
+</tr>
+<tr>
+<td>Custom academic</td>
+<td>40</td>
+<td>Various</td>
+</tr>
+</tbody>
+</table>
 <h3 id="sec:complexity-dist">Complexity Distribution</h3>
-
+<p><strong>Table: Attack complexity distribution.</strong>
+{#tab:complexity-dist}</p>
+<table>
+<thead>
+<tr>
+<th>Complexity Level</th>
+<th>Count</th>
+<th>Average Tokens</th>
+<th>Detection Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Low</td>
+<td>250</td>
+<td>45</td>
+<td>Easy</td>
+</tr>
+<tr>
+<td>Medium</td>
+<td>400</td>
+<td>120</td>
+<td>Moderate</td>
+</tr>
+<tr>
+<td>High</td>
+<td>200</td>
+<td>280</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>Adversarial</td>
+<td>100</td>
+<td>450</td>
+<td>Expert</td>
+</tr>
+</tbody>
+</table>
 <h3 id="sec:target-dist">Target Distribution</h3>
+<p><strong>Table: Attack target distribution.</strong>
+{#tab:target-dist}</p>
+<table>
+<thead>
+<tr>
+<th>Target</th>
+<th>Count</th>
+<th>Category</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Belief state</td>
+<td>280</td>
+<td>Epistemic</td>
+</tr>
+<tr>
+<td>Action execution</td>
+<td>250</td>
+<td>Behavioral</td>
+</tr>
+<tr>
+<td>Trust relationships</td>
+<td>220</td>
+<td>Social</td>
+</tr>
+<tr>
+<td>Temporal state</td>
+<td>100</td>
+<td>Persistence</td>
+</tr>
+<tr>
+<td>Goal alignment</td>
+<td>100</td>
+<td>Behavioral</td>
+</tr>
+</tbody>
+</table>
 <figure id="fig:attack-surface">
 <embed src="figures/attack_surface.pdf" style="width:90.0%" />
 <figcaption aria-hidden="true">Attack Surface Map. Visualization of
-cognitive attack entry points in multiagent systems. The diagram shows
-five primary attack surfaces: User Input (direct injection), Tool
-Outputs (indirect injection), Agent Communication (trust exploitation),
-Persistent Memory (belief poisoning), and External Triggers (timing
-attacks). Line thickness indicates attack frequency in our corpus; node
-color indicates CIF detection efficacy at each surface.</figcaption>
+cognitive attack entry points in multiagent systems showing the five
+primary attack surfaces aligned to CIF defense layers: User Input
+(direct injection, countered by Cognitive Firewall), Tool Outputs
+(indirect injection, countered by Belief Sandbox + Firewall), Agent
+Communication (trust exploitation via delegation chains, countered by
+Trust Calculus with <span class="math inline">\(\delta^d\)</span>
+decay), Persistent Memory (belief poisoning and progressive drift,
+countered by Tripwires + Drift Detection), and External Triggers (timing
+and coordination attacks, countered by Byzantine Consensus). Line
+thickness indicates attack frequency in our 950-attack corpus; node
+color indicates CIF detection efficacy at each surface (green $&gt;$90%,
+yellow 80-90%, red $&lt;$80%). The diagram highlights that Agent
+Communication is both the highest-frequency and highest-risk surface in
+multiagent deployments—a gap that single-agent defenses do not
+address.</figcaption>
 </figure>
-<h2 id="sec:attack-examples">Example Attacks by Category</h2>
-<h3 id="sec:ex-injection">Category 1: Prompt Injection</h3>
-
-<h3 id="sec:ex-trust">Category 2: Trust Exploitation</h3>
-
-<h3 id="sec:ex-belief">Category 3: Belief Manipulation</h3>
-
-<h3 id="sec:ex-coord">Category 4: Coordination Attacks</h3>
-
-<h2 id="sec:generation-methodology">Attack Generation Methodology</h2>
-<h3 id="sec:synthetic-generation">Synthetic Attack Generation</h3>
-:
-<h3 id="sec:red-team">Red Team Exercise Protocol</h3>
-<p>: 8 security researchers (2–10 years experience)</p>
-<p>: 4 weeks</p>
-:
-<h3 id="sec:qa">Quality Assurance</h3>
-:
-<h2 id="sec:effectiveness-analysis">Attack Effectiveness Analysis</h2>
-<h3 id="sec:success-by-defense">Success Rate by Defense
-Configuration</h3>
-
-<h3 id="sec:sophistication-corr">Attack Sophistication Correlation</h3>
-<p><span class="math display">\[\begin{equation}
-\label{eq:sophistication-correlation}
-r_{sophistication, success} = 0.67 \quad (p &lt; 0.001)
-\end{equation}\]</span></p>
-<p>More sophisticated attacks have higher baseline success but show
-similar detection rates under CIF, suggesting defense robustness.</p>
-<h3 id="sec:temporal-analysis">Temporal Analysis</h3>
-<p>Older attacks detected at higher rates due to pattern database
-inclusion.</p>
-<h2 id="sec:ethical-considerations">Ethical Considerations</h2>
-<h3 id="sec:responsible-disclosure">Responsible Disclosure</h3>
-All novel attack vectors discovered during this research were:
-<h3 id="sec:dual-use">Dual-Use Considerations</h3>
-: The attack corpus represents a dual-use resource that could enable
-both defensive research and malicious exploitation. We address this
-through:
-<h3 id="sec:human-subjects">Human Subjects</h3>
-This research did not involve human subjects experimentation. All
-attacks were tested against:
-<h3 id="sec:ethics-approval">Research Ethics Approval</h3>
-This research was reviewed and determined to be exempt from IRB
-oversight as it did not involve human subjects. The board determined
-that:
-<h2 id="sec:data-availability">Data Availability</h2>
-<h3 id="sec:public-resources">Public Resources</h3>
-
-<h3 id="sec:restricted-resources">Restricted Resources</h3>
-
-<h3 id="sec:access-request">Access Request Process</h3>
-Researchers wishing to access the full attack corpus must:
-<h2 id="sec:corpus-references">References</h2>
-<p>[1] JailbreakBench: An Open Benchmark for Jailbreaking Large Language
-Models</p>
-<p>[2] PromptInject: A Dataset for Prompt Injection Attacks</p>
-<p>[3] TensorTrust: Interpretable and Accurate Prompt Injection
-Defense</p>
+<p>The attack surface map () visualizes how these attack categories map
+to distinct entry points in multiagent system architectures.</p>
+<h2 id="detailed-attack-content">Detailed Attack Content</h2>
+<p>The following subsections provide detailed attack examples,
+methodology, and ethical considerations:</p>
+<ul>
+<li><p><strong>Attack Examples</strong> (): Sanitized examples for all
+four categories — prompt injection (direct, indirect, nested), trust
+exploitation (impersonation, inflation, delegation abuse), belief
+manipulation (injection, fabrication, drift), and coordination attacks
+(Sybil, consensus poisoning, timing). See
+<code>03b_attack_examples.md</code>.</p></li>
+<li><p><strong>Methodology and Ethics</strong> (): Attack generation
+methodology, effectiveness analysis, ethical considerations (responsible
+disclosure, dual-use, human subjects), and data availability. See
+<code>03c_attack_ethics.md</code>.</p></li>
+</ul>
 </body>
 </html>

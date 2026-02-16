@@ -1,0 +1,207 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\documentclass[
+  ignorenonframetext,
+]{beamer}
+\newif\ifbibliography
+\usepackage{pgfpages}
+\setbeamertemplate{caption}[numbered]
+\setbeamertemplate{caption label separator}{: }
+\setbeamercolor{caption name}{fg=normal text.fg}
+\beamertemplatenavigationsymbolsempty
+% remove section numbering
+\setbeamertemplate{part page}{
+  \centering
+  \begin{beamercolorbox}[sep=16pt,center]{part title}
+    \usebeamerfont{part title}\insertpart\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{section page}{
+  \centering
+  \begin{beamercolorbox}[sep=12pt,center]{section title}
+    \usebeamerfont{section title}\insertsection\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{subsection page}{
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center]{subsection title}
+    \usebeamerfont{subsection title}\insertsubsection\par
+  \end{beamercolorbox}
+}
+% Prevent slide breaks in the middle of a paragraph
+\widowpenalties 1 10000
+\raggedbottom
+\AtBeginPart{
+  \frame{\partpage}
+}
+\AtBeginSection{
+  \ifbibliography
+  \else
+    \frame{\sectionpage}
+  \fi
+}
+\AtBeginSubsection{
+  \frame{\subsectionpage}
+}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\author{\texorpdfstring{}{}}
+\date{}
+
+\begin{document}
+
+\begin{frame}{The Formal Foundation: Concepts from Paper 1}
+\protect\phantomsection\label{sec:theory-review}
+Part 3 builds directly on the formal framework established in Part 1.
+For clarity, we summarize the core definitions and theorems here,
+utilizing the notation defined in the formal manuscript.
+
+\begin{block}{1. The Adversary Hierarchy (\(\Omega\))}
+\protect\phantomsection\label{the-adversary-hierarchy-omega}
+Paper 1 formalized the ``Scope of Threat'' through a hierarchical
+taxonomy. This hierarchy allows precise definition of defensive scope.
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{\(\Omega_1\) (External)}: The adversary controls inputs (e.g.,
+  prompt injection). The agent's internal state is intact.
+\item
+  \textbf{\(\Omega_2\) (Peripheral)}: The adversary controls tools or
+  RAG data (e.g., poisoned retrieval). The agent's perception is
+  compromised.
+\item
+  \textbf{\(\Omega_3\) (Agent)}: The adversary controls the agent's
+  weights or context (e.g., identity implementation). The agent itself
+  is untrusted.
+\item
+  \textbf{\(\Omega_4\) (Coordination)}: The adversary controls a subset
+  of the swarm (e.g., Sybil agents). The consensus mechanism is under
+  attack.
+\item
+  \textbf{\(\Omega_5\) (Systemic)}: The adversary controls the
+  orchestrator or infrastructure. The system's rules are compromised.
+\end{itemize}
+
+The simulations in Part 2 demonstrated that defense difficulty scales
+non-linearly with this hierarchy. While \(\Omega_1\) attacks were
+consistently blocked by surface-level filters (96\%+), \(\Omega_4\)
+attacks required coordination-level protocols to detect (74\%).
+\end{block}
+
+\begin{block}{2. The Trust Calculus (\(T\))}
+\protect\phantomsection\label{the-trust-calculus-t}
+A central contribution of Paper 1 is the \textbf{Trust Calculus}, a
+formal system for reasoning about belief reliability. It defines Trust
+(\(T\)) not as a binary permission but as a continuous property of a
+belief \(b\), denoted as \(T(b) \in [0, 1]\).
+
+The formal definition of Trust Update (Theorem 3.1 in Paper 1)
+establishes that trust must decay across delegation chains:
+
+\begin{quote}
+\textbf{Theorem 3.1 (Trust Preservation)}: \emph{For any delegation
+chain \(C = \{a_1 \to a_2 \to \dots \to a_n\}\), the trust in the final
+output cannot exceed the trust of the weakest link, degraded by the
+distance from the source.}
+\[ T(result) \le \min_{i} T(a_i) \cdot \delta^{|C|} \] \emph{where
+\(\delta\) is the decay factor (\(0 < \delta < 1\)).}
+\end{quote}
+
+This theorem provides the mathematical basis for the ``Trust Decay''
+mechanism evaluated in Part 2. It ensures that uncertainty is preserved
+and amplified effectively as information travels through the network.
+\end{block}
+
+\begin{block}{3. The Cognitive Firewall (\(\Phi\))}
+\protect\phantomsection\label{the-cognitive-firewall-phi}
+The \textbf{Cognitive Firewall} is defined in Paper 1 as a function
+\(\Phi\) that maps inputs to decisions based on three verification
+layers:
+
+\begin{enumerate}
+\tightlist
+\item
+  \textbf{Syntactic Verification (\(V_{syn}\))}: Checks for structural
+  anomalies.
+\item
+  \textbf{Semantic Verification (\(V_{sem}\))}: Checks for meaning-level
+  violations.
+\item
+  \textbf{Pragmatic Verification (\(V_{prag}\))}: Checks for contextual
+  anomalies.
+\end{enumerate}
+
+In the Part 2 experiments, this modular structure was shown to be the
+primary defense against \(\Omega_1\) (External) attacks.
+\end{block}
+
+\begin{block}{4. The Stealth-Impact Tradeoff}
+\protect\phantomsection\label{the-stealth-impact-tradeoff}
+Paper 1 provides a theoretical bound on attack performance, formalized
+as the Stealth-Impact Tradeoff.
+
+\begin{quote}
+\textbf{Stealth-Impact Tradeoff}: \emph{For a given defense sensitivity
+\(\epsilon\), the probability of detection \(P(d)\) approaches 1 as the
+divergence of the attack behavior from the baseline increases.}
+\end{quote}
+
+This formalism suggests that catastrophic attacks are inherently easier
+to detect than subtle attacks. Part 2's data consistently validated
+this: High-impact attacks were detected 98\% of the time, while
+low-impact attacks were detected only 74\% of the time.
+\end{block}
+
+\begin{block}{5. Defense Composition}
+\protect\phantomsection\label{defense-composition}
+Finally, Paper 1 defines the \textbf{Composition Algebra}, determining
+how output probabilities of distinct modules interact. The key result is
+that orthogonal defenses compose multiplicatively.
+
+This ``Swiss Cheese Model'' was empirically validated in Part 2, where
+the full stack (97\% detection) significantly outperformed the sum of
+its parts.
+\end{block}
+\end{frame}
+
+\end{document}

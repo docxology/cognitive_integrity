@@ -1,0 +1,172 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\documentclass[
+  ignorenonframetext,
+]{beamer}
+\newif\ifbibliography
+\usepackage{pgfpages}
+\setbeamertemplate{caption}[numbered]
+\setbeamertemplate{caption label separator}{: }
+\setbeamercolor{caption name}{fg=normal text.fg}
+\beamertemplatenavigationsymbolsempty
+% remove section numbering
+\setbeamertemplate{part page}{
+  \centering
+  \begin{beamercolorbox}[sep=16pt,center]{part title}
+    \usebeamerfont{part title}\insertpart\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{section page}{
+  \centering
+  \begin{beamercolorbox}[sep=12pt,center]{section title}
+    \usebeamerfont{section title}\insertsection\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{subsection page}{
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center]{subsection title}
+    \usebeamerfont{subsection title}\insertsubsection\par
+  \end{beamercolorbox}
+}
+% Prevent slide breaks in the middle of a paragraph
+\widowpenalties 1 10000
+\raggedbottom
+\AtBeginPart{
+  \frame{\partpage}
+}
+\AtBeginSection{
+  \ifbibliography
+  \else
+    \frame{\sectionpage}
+  \fi
+}
+\AtBeginSubsection{
+  \frame{\subsectionpage}
+}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\author{\texorpdfstring{}{}}
+\date{}
+
+\begin{document}
+
+\begin{frame}
+\newpage
+\end{frame}
+
+\begin{frame}[fragile]{The Frontier: Where We Need You}
+\protect\phantomsection\label{sec:future}
+We have built the foundation and validated the core mechanics. However,
+the field is in its infancy. We have established valid trust metrics
+(Trust Calculus) and filtering mechanisms (Firewalls), but we lack
+standardized protocols for agent state persistence and identity
+federation---the agentic equivalents of cookies or OAuth.
+
+This is where you come in.
+
+The Cognitive Integrity Framework is open source, and the problems below
+are not just ``future research''---they are immediate engineering
+blockers that need to be solved.
+
+\begin{block}{1. The UX of Trust (Help Wanted)}
+\protect\phantomsection\label{the-ux-of-trust-help-wanted}
+\textbf{The Problem}: Currently, when an agent flag is raised
+(``Identity Violation''), it looks like a JSON error log. \textbf{The
+Need}: We need a ``Cognitive Dashboard'' for human operators. What does
+it look like to visualize the trust graph of 50 agents in real-time? How
+do we show ``Drift'' intuitively? \textbf{The Goal}: A React/Next.js
+dashboard that connects to the CIF Python SDK.
+\end{block}
+
+\begin{block}{2. Standardized Agent Identity (Protocol Design)}
+\protect\phantomsection\label{standardized-agent-identity-protocol-design}
+\textbf{The Problem}: Every framework (LangChain, CrewAI, AutoGPT)
+handles agent identity differently. \textbf{The Need}: A standard
+``Agent Passport'' protocol. A cryptographically verifiable identity
+token that an agent can carry across different frameworks. \textbf{The
+Goal}: An RFC-style spec for \texttt{x-agent-identity} headers.
+\end{block}
+
+\begin{block}{3. ``Eusocial'' Security (Advanced Research)}
+\protect\phantomsection\label{eusocial-security-advanced-research}
+\textbf{The Problem}: Our current consensus is Byzantine, but it's
+computationally expensive (\(O(n^2)\)). \textbf{The Need}: Insect
+colonies don't vote; they use pheromones. We need \textbf{Stigmergic
+Security Protocols} where agents leave ``trust trails'' in the
+environment. \textbf{The Goal}: A lightweight, scalable consensus
+algorithm modeled on ant colony immune responses.
+\end{block}
+
+\begin{block}{4. Benchmark Expansion}
+\protect\phantomsection\label{benchmark-expansion}
+\textbf{The Problem}: Our corpus has 950 attacks. Real-world capability
+is growing daily. \textbf{The Need}: We need more attacks. Specifically,
+we need \textbf{Multi-Modal Injection attacks} (audio/video) and
+\textbf{Tool-Use Hijacking} examples. \textbf{The Goal}: Pull
+Recommendations to the \texttt{cognitive\_integrity} repository adding
+new scenarios to \texttt{data/attacks/}.
+\end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+\begin{block}{Contributing}
+\protect\phantomsection\label{contributing}
+This is not a closed academic project. It is a living defense framework
+for the agentic future.
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Code}:
+  \href{https://github.com/docxology/cognitive_integrity}{github.com/docxology/cognitive\_integrity}
+\item
+  \textbf{Discussion}: Join the \texttt{discussions} tab on GitHub.
+\item
+  \textbf{Contribute}: We prioritize PRs that add \textbf{Adapters} for
+  new agent frameworks (e.g., Semantic Kernel, Microsoft AutoGen).
+\end{itemize}
+
+Let's build the immune system for the agentic web, together.
+\end{block}
+\end{frame}
+
+\end{document}

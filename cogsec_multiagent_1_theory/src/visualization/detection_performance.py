@@ -19,7 +19,7 @@ def create_detection_performance_figure(output_dir: Path) -> Path:
         output_dir.mkdir(parents=True, exist_ok=True)
     fig, axes = plt.subplots(1, 2, figsize=(14, 6))
 
-    # Colorblind-friendly color scheme (IBM Design)
+    # Colorblind-friendly color scheme (IBM Design) - Standardized
     colors = {
         "baseline": "#999999",
         "firewall": "#648FFF",  # Blue
@@ -27,6 +27,16 @@ def create_detection_performance_figure(output_dir: Path) -> Path:
         "tripwire": "#DC267F",  # Magenta
         "full_cif": "#FE6100",  # Orange
     }
+
+    # Increase font sizes globally for this figure
+    plt.rcParams.update({
+        'font.size': 12,
+        'axes.labelsize': 14,
+        'axes.titlesize': 14,
+        'xtick.labelsize': 11,
+        'ytick.labelsize': 12,
+        'legend.fontsize': 11
+    })
 
     # Panel A: Overall detection by defense configuration
     ax1 = axes[0]
@@ -46,20 +56,20 @@ def create_detection_performance_figure(output_dir: Path) -> Path:
     width = 0.25
 
     ax1.bar(
-        x - width, tpr, width, label="TPR (Recall)", color="#648FFF", edgecolor="black"
+        x - width, tpr, width, label="Recall (TPR)", color="#648FFF", edgecolor="black", linewidth=0.8
     )
-    ax1.bar(x, fpr, width, label="FPR", color="#DC267F", edgecolor="black")
-    ax1.bar(x + width, f1, width, label="F1 Score", color="#785EF0", edgecolor="black")
+    ax1.bar(x, fpr, width, label="False Positive Rate", color="#DC267F", edgecolor="black", linewidth=0.8)
+    ax1.bar(x + width, f1, width, label="F1 Score", color="#785EF0", edgecolor="black", linewidth=0.8)
 
-    ax1.set_ylabel("Rate (0-1)", fontsize=12)
+    ax1.set_ylabel("Metric Score (0-1)", fontweight='bold')
     ax1.set_title(
-        "A. Detection Metrics by Defense Configuration", fontsize=12, fontweight="bold"
+        "A. Detection Metrics by Defense Configuration", fontweight="bold", pad=15
     )
     ax1.set_xticks(x)
-    ax1.set_xticklabels(defenses, fontsize=9)
-    ax1.legend(loc="upper left", fontsize=9)
-    ax1.set_ylim(0, 1.1)
-    ax1.grid(True, alpha=0.3, axis="y")
+    ax1.set_xticklabels(defenses, rotation=0)
+    ax1.legend(loc="upper left", frameon=True, framealpha=0.9)
+    ax1.set_ylim(0, 1.15)
+    ax1.grid(True, alpha=0.2, axis="y")
 
     # Panel B: Detection rate by attack type
     ax2 = axes[1]
@@ -77,14 +87,20 @@ def create_detection_performance_figure(output_dir: Path) -> Path:
     x = np.arange(len(attack_types))
     width = 0.25
 
+    # Phantom bars for baseline to show it was tested but resulted in 0
     ax2.bar(
         x - width,
         baseline,
         width,
-        label="Baseline",
+        label="Baseline (No Defense)",
         color=colors["baseline"],
         edgecolor="black",
+        hatch='//',
+        alpha=0.3
     )
+    # Add annotation for baseline = 0
+    ax2.text(0 - width, 0.02, "0.0", ha="center", va="bottom", fontsize=8, color="#666")
+
     ax2.bar(
         x,
         firewall,
@@ -92,6 +108,7 @@ def create_detection_performance_figure(output_dir: Path) -> Path:
         label="Firewall Only",
         color=colors["firewall"],
         edgecolor="black",
+        linewidth=0.8
     )
     ax2.bar(
         x + width,
@@ -100,15 +117,16 @@ def create_detection_performance_figure(output_dir: Path) -> Path:
         label="Full CIF",
         color=colors["full_cif"],
         edgecolor="black",
+        linewidth=0.8
     )
 
-    ax2.set_ylabel("Detection Rate", fontsize=12)
-    ax2.set_title("B. Detection Rate by Attack Type", fontsize=12, fontweight="bold")
+    ax2.set_ylabel("Detection Rate", fontweight='bold')
+    ax2.set_title("B. Detection Rate by Attack Type", fontweight="bold", pad=15)
     ax2.set_xticks(x)
-    ax2.set_xticklabels(attack_types, fontsize=9)
-    ax2.legend(loc="upper right", fontsize=9)
-    ax2.set_ylim(0, 1.1)
-    ax2.grid(True, alpha=0.3, axis="y")
+    ax2.set_xticklabels(attack_types, rotation=0)
+    ax2.legend(loc="upper right", frameon=True, framealpha=0.9)
+    ax2.set_ylim(0, 1.15)
+    ax2.grid(True, alpha=0.2, axis="y")
 
     plt.tight_layout()
 

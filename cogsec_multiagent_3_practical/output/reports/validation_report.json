@@ -4,11 +4,9 @@
     "PDF validation": true,
     "Markdown validation": true,
     "Output structure": false,
-    "Figure registry": false
+    "Figure registry": true
   },
-  "figure_issues": [
-    "Figure registry not found but 6 figure reference(s) found in manuscript"
-  ],
+  "figure_issues": [],
   "output_statistics": {
     "detailed_validation": {
       "structure": {
@@ -179,11 +177,11 @@
     },
     "pdf": {
       "files": 8,
-      "size_mb": 0.5575342178344727
+      "size_mb": 0.29172515869140625
     },
     "figures": {
       "files": 12,
-      "size_mb": 0.7404689788818359
+      "size_mb": 0.7406177520751953
     },
     "data": {
       "files": 0,
@@ -192,9 +190,9 @@
   },
   "summary": {
     "total_checks": 4,
-    "passed": 2,
-    "failed": 2,
-    "figure_issues_count": 1,
+    "passed": 3,
+    "failed": 1,
+    "figure_issues_count": 0,
     "all_passed": false
   },
   "recommendations": [
@@ -203,12 +201,6 @@
       "issue": "Missing output directories",
       "action": "Ensure all analysis scripts completed successfully",
       "file": "projects/cognitive_integrity/cogsec_multiagent_3_practical/output/"
-    },
-    {
-      "priority": "medium",
-      "issue": "1 figure reference issue(s)",
-      "action": "Register missing figures or remove unused references",
-      "file": "projects/cognitive_integrity/cogsec_multiagent_3_practical/output/figures/figure_registry.json"
     }
   ]
 }

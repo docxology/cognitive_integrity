@@ -2,7 +2,7 @@
 
 import numpy as np
 import pytest
-from trust import TrustCalculus, TrustConfig, TrustMatrix
+from src import TrustCalculus, TrustConfig, TrustMatrix
 
 
 class TestTrustConfig:
@@ -38,9 +38,9 @@ class TestTrustCalculus:
         """Delegated trust cannot exceed min of inputs."""
         calc = TrustCalculus()
         delegated = calc.delegate_trust(source_trust=0.9, target_trust=0.7, depth=1)
-        # min(0.9, 0.7) * 0.9^1 = 0.7 * 0.9 = 0.63
+        # min(0.9, 0.7) * 0.8^1 = 0.7 * 0.8 = 0.56 (δ=0.8 per paper)
         assert delegated <= 0.7
-        assert np.isclose(delegated, 0.63)
+        assert np.isclose(delegated, 0.56)
 
     def test_delegate_trust_decays_with_depth(self):
         """Trust decays exponentially with depth."""
@@ -154,7 +154,7 @@ class TestReputationDecay:
 
     def test_reputation_decays_with_time(self):
         """Reputation decay causes recent interactions to dominate."""
-        from trust import ReputationTracker
+        from src import ReputationTracker
 
         # With decay, recent interactions should have more weight than old ones
         tracker = ReputationTracker(decay_rate=0.5)  # Higher decay rate
@@ -183,7 +183,7 @@ class TestReputationDecay:
 
     def test_recent_interactions_weighted_more(self):
         """Recent interactions have more weight than old ones."""
-        from trust import ReputationTracker
+        from src import ReputationTracker
 
         tracker = ReputationTracker(decay_rate=0.1)
 
@@ -198,7 +198,7 @@ class TestReputationDecay:
 
     def test_no_interactions_returns_default(self):
         """No recorded interactions returns default reputation."""
-        from trust import ReputationTracker
+        from src import ReputationTracker
 
         tracker = ReputationTracker()
         rep = tracker.get_reputation("unknown", "unknown", current_time=0.0)
@@ -207,7 +207,7 @@ class TestReputationDecay:
 
     def test_decay_rate_zero_no_decay(self):
         """Zero decay rate means no decay."""
-        from trust import ReputationTracker
+        from src import ReputationTracker
 
         tracker = ReputationTracker(decay_rate=0.0)
         tracker.record_interaction("a", "b", outcome=0.8, timestamp=0.0)
@@ -223,7 +223,7 @@ class TestContextAwareTrustBoosting:
 
     def test_context_boost_increases_trust(self):
         """Relevant context boosts trust."""
-        from trust import ContextAwareTrust
+        from src import ContextAwareTrust
 
         cat = ContextAwareTrust()
 
@@ -240,7 +240,7 @@ class TestContextAwareTrustBoosting:
 
     def test_no_expertise_no_boost(self):
         """Unknown context provides no boost."""
-        from trust import ContextAwareTrust
+        from src import ContextAwareTrust
 
         cat = ContextAwareTrust()
         cat.register_expertise("agent-1", "security", level=0.9)
@@ -256,7 +256,7 @@ class TestContextAwareTrustBoosting:
 
     def test_boost_is_bounded(self):
         """Trust boost cannot exceed 1.0."""
-        from trust import ContextAwareTrust
+        from src import ContextAwareTrust
 
         cat = ContextAwareTrust()
         cat.register_expertise("agent-1", "security", level=1.0)
@@ -269,7 +269,7 @@ class TestContextAwareTrustBoosting:
 
     def test_multiple_contexts(self):
         """Agents can have expertise in multiple contexts."""
-        from trust import ContextAwareTrust
+        from src import ContextAwareTrust
 
         cat = ContextAwareTrust()
         cat.register_expertise("agent-1", "security", level=0.9)
@@ -283,7 +283,7 @@ class TestContextAwareTrustBoosting:
 
     def test_context_similarity(self):
         """Similar contexts can provide partial boost."""
-        from trust import ContextAwareTrust
+        from src import ContextAwareTrust
 
         cat = ContextAwareTrust()
         cat.register_expertise("agent-1", "security", level=0.9)
@@ -303,7 +303,7 @@ class TestTrustMatrixWithDecay:
 
     def test_matrix_reputation_decay(self):
         """TrustMatrix integrates with reputation decay."""
-        from trust import TrustMatrixWithDecay
+        from src import TrustMatrixWithDecay
 
         matrix = TrustMatrixWithDecay(n_agents=3, decay_rate=0.5)
 
@@ -329,7 +329,7 @@ class TestTrustMatrixWithDecay:
 
     def test_matrix_context_boosting(self):
         """TrustMatrix integrates with context boosting."""
-        from trust import TrustMatrixWithDecay
+        from src import TrustMatrixWithDecay
 
         matrix = TrustMatrixWithDecay(n_agents=3, decay_rate=0.0)
         matrix.register_agent_expertise(1, "security", 0.9)

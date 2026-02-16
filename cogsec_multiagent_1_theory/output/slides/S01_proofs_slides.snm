@@ -6,7 +6,7 @@
 \beamer@slide {def:path-trust}{2}
 \beamer@slide {eq:path-trust}{2}
 \beamer@slide {def:delegation-chain}{2}
-\beamer@slide {sec:thm31-proof}{3}
+\beamer@slide {sec:thm42-proof}{3}
 \beamer@slide {thm:trust-bound-restated}{3}
 \beamer@slide {eq:trust-bound-restated}{3}
 \beamer@slide {lem:single-hop}{3}
@@ -25,7 +25,7 @@
 \beamer@slide {eq:trust-vanishing}{3}
 \beamer@slide {cor:practical-depth}{3}
 \beamer@slide {eq:practical-depth}{3}
-\beamer@slide {sec:thm61-proof}{4}
+\beamer@slide {sec:thm57-proof}{4}
 \beamer@slide {thm:belief-injection-restated}{4}
 \beamer@slide {eq:belief-injection-restated}{4}
 \beamer@slide {lem:defense-independence}{4}
@@ -37,7 +37,7 @@
 \beamer@slide {eq:numerical-bound}{4}
 \beamer@slide {cor:defense-stacking}{4}
 \beamer@slide {eq:defense-stacking}{4}
-\beamer@slide {sec:thm62-proof}{5}
+\beamer@slide {sec:thm47-proof}{5}
 \beamer@slide {thm:trust-amp-restated}{5}
 \beamer@slide {eq:trust-amp-restated}{5}
 \beamer@slide {lem:min-preservation}{5}
@@ -54,7 +54,7 @@
 \beamer@slide {cor:weakest-link}{5}
 \beamer@slide {eq:weakest-link}{5}
 \beamer@slide {cor:no-collusion}{5}
-\beamer@slide {sec:thm63-proof}{6}
+\beamer@slide {sec:thm58-proof}{6}
 \beamer@slide {thm:goal-alignment-restated}{6}
 \beamer@slide {eq:goal-alignment-restated}{6}
 \beamer@slide {def:goal-alignment}{6}
@@ -68,7 +68,7 @@
 \beamer@slide {cor:safety-protocol}{6}
 \beamer@slide {cor:hijack-necessary}{6}
 \beamer@slide {eq:hijack-necessary}{6}
-\beamer@slide {sec:thm64-proof}{7}
+\beamer@slide {sec:thm59-proof}{7}
 \beamer@slide {thm:firewall-liveness-restated}{7}
 \beamer@slide {eq:firewall-liveness-restated}{7}
 \beamer@slide {def:legitimate-message}{7}
@@ -82,7 +82,7 @@
 \beamer@slide {eq:64-proof-4}{7}
 \beamer@slide {cor:availability}{7}
 \beamer@slide {cor:quarantine-recovery}{7}
-\beamer@slide {sec:thm65-proof}{8}
+\beamer@slide {sec:thm510-proof}{8}
 \beamer@slide {thm:byzantine-restated}{8}
 \beamer@slide {eq:byzantine-restated}{8}
 \beamer@slide {lem:byzantine-bound}{8}
@@ -91,7 +91,7 @@
 \beamer@slide {lem:round-progression}{8}
 \beamer@slide {cor:concrete-rounds}{8}
 \beamer@slide {cor:consensus-safety}{8}
-\beamer@slide {sec:thm66-proof}{9}
+\beamer@slide {sec:thm511-proof}{9}
 \beamer@slide {thm:overhead-restated}{9}
 \beamer@slide {eq:overhead-restated}{9}
 \beamer@slide {def:processing-path}{9}

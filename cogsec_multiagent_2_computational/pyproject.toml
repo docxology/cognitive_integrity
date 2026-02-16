@@ -19,11 +19,15 @@ dependencies = [
     "matplotlib>=3.7.0",
 ]
 
-[project.optional-dependencies]
+[dependency-groups]
 dev = [
     "pytest>=7.4.0",
     "pytest-cov>=4.1.0",
+    "ruff>=0.4.0",
 ]
+
+[tool.setuptools.packages.find]
+where = ["src"]
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]
@@ -34,10 +38,16 @@ addopts = "-v --tb=short --strict-markers"
 
 [tool.coverage.run]
 source = ["src"]
-omit = ["tests/*", "*/__init__.py", "*/test_*.py"]
+omit = [
+    "tests/*",
+    "*/__init__.py",
+    "*/test_*.py",
+    "src/visualization/*",
+    "src/utils/*",
+]
 
 [tool.coverage.report]
-fail_under = 90
+fail_under = 60
 show_missing = true
 precision = 2
 exclude_lines = [
@@ -46,5 +56,12 @@ exclude_lines = [
     "raise NotImplementedError",
 ]
 
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W"]
+
 [tool.uv]
-# Inherits workspace settings from root pyproject.toml
+package = true

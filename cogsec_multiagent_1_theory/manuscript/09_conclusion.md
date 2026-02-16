@@ -160,6 +160,8 @@ CIF provides both theoretical foundations and practical mechanisms for this chal
 
 The formal gaps identified in this work---semantic equivalence attacks, progressive drift, orchestrator compromise---define the frontier for future research, while the provable guarantees (bounded trust, composable defenses, information-theoretic limits) provide the stable theoretical foundation on which that research can build.
 
+For empirical validation of these theories, we refer the reader to **Part 2: Computational Validation**. For actionable deployment strategies, including operator posture checklists and risk assessment frameworks, we refer the reader to **Part 3: Practical Guidance**.
+
 \textbf{As autonomous AI agents increasingly operate in high-stakes contexts---executing code, modifying infrastructure, controlling resources, and making decisions with lasting consequences---the formal foundations established here become not merely useful but essential infrastructure for secure deployment.}
 
 Cognitive security is not optional for the multiagent future. It is foundational.

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
@@ -180,6 +180,33 @@ Limitations, and Future Directions</h1>
 Integrity Framework (), formal limitations and boundary conditions (),
 relationship to prior work (), governance implications (), and future
 research directions ().</p>
+<h2 id="empirical-validation-summary">Empirical Validation Summary</h2>
+<p>The formal mechanisms proposed in this paper have been validated
+through extensive architecture-aware parametric simulation in
+<strong>Part 2: Computational Validation</strong>. In experiments across
+six production multiagent architectures (including hierarchical,
+role-based, and peer-to-peer topologies), the full Cognitive Integrity
+Framework achieved a <strong>94% overall detection rate</strong> against
+a corpus of 950 cognitive attacks.</p>
+<p>Key empirical findings include:</p>
+<ol type="1">
+<li><strong>Defense Composition</strong>: Consistent with Theorem 3.1
+and 3.2, layered defenses composed multiplicatively, with the full
+framework significantly outperforming any single mechanism.</li>
+<li><strong>Trust Boundedness</strong>: The <span
+class="math inline">\(\delta^d\)</span> trust decay parameter
+successfully prevented “trust laundering” amplification attacks in all
+tested topologies, validating Formula 4.</li>
+<li><strong>Architecture Dependence</strong>: As predicted by our threat
+model, peer-to-peer architectures showed the greatest vulnerability to
+lateral movement (mitigated by the Trust Calculus), while hierarchical
+architectures were most sensitive to orchestrator compromise (requiring
+strict tripwires).</li>
+</ol>
+<p>These results confirm that the abstract properties proven
+here—boundedness, composition, and detectability—translate into concrete
+security improvements when implemented in realistic agent
+architectures.</p>
 <h2 id="sec:theoretical-implications">Theoretical Implications</h2>
 <h3 id="why-composable-defenses-are-necessary">Why Composable Defenses
 Are Necessary</h3>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
@@ -298,6 +298,9 @@ suspended&#39;&#39;}) &gt; \tau\)</span></p>
 <p>: <span class="math inline">\(R_C = \text{Low}\)</span>, <span
 class="math inline">\(R_K = \text{Minimal}\)</span></p>
 <p>: Firewall signature matching, instruction hierarchy violation</p>
+<p>: Universal Adversarial Triggers demonstrate that optimized character
+sequences can reliably bypass safety training across different model
+architectures.</p>
 <h3 id="scenario-omega_2-poisoned-search-result">Scenario <span
 class="math inline">\(\Omega_2\)</span>: Poisoned Search Result</h3>
 <p>: Attacker SEO-optimizes malicious content for research queries.</p>
@@ -310,18 +313,20 @@ class="math inline">\(\Omega_2\)</span>: Poisoned Search Result</h3>
 <p>: <span class="math inline">\(R_C = \text{Medium}\)</span>, <span
 class="math inline">\(R_K = \text{Medium}\)</span></p>
 <p>: Provenance verification, cross-reference validation</p>
+<p>: demonstrated that manipulating tool error logs could coerce an
+agent into executing arbitrary code to “fix” the error.</p>
 <h3
-id="scenario-omega_2-browser-fetched-adversarial-content-moltbot">Scenario
+id="scenario-omega_2-browser-fetched-adversarial-content-openclaw">Scenario
 <span class="math inline">\(\Omega_2&#39;\)</span>: Browser-Fetched
-Adversarial Content (Moltbot)</h3>
+Adversarial Content (OpenClaw)</h3>
 <p>: Personal AI assistant with browser automation fetches adversarial
 content during legitimate web browsing tasks .</p>
-<p>A user instructs their locally-deployed Moltbot to ``research and
+<p>A user instructs their locally-deployed OpenClaw to ``research and
 summarize security best practices for API key management.’’ The agent’s
 browser tool navigates to a compromised tutorial site containing
 invisible CSS-hidden text:</p>
 <p><span class="math display">\[\begin{equation}
-\label{eq:moltbot-browser-attack}
+\label{eq:openclaw-browser-attack}
 \text{BrowserFetch}(u) = \text{visible}(u) \oplus m_{\text{adversarial}}
 \Rightarrow \mathcal{G}_{\text{agent}} \gets \mathcal{G}_{\text{exfil}}
 \end{equation}\]</span></p>
@@ -332,7 +337,7 @@ class="math inline">\(R_K = \text{Medium}\)</span>, <span
 class="math inline">\(R_A = 1\)</span> (single web page)</p>
 <p>: Tool response sandboxing, read-only pre-summarization agents,
 provenance tracking of fetched content</p>
-<p>: Moltbot’s security documentation recommends employing a ``reader
+<p>: OpenClaw’s security documentation recommends employing a ``reader
 agent’’ to summarize untrusted content in tool-disabled mode before
 processing by the main agent . This corresponds to the cognitive
 firewall architecture described in .</p>
@@ -370,7 +375,9 @@ class="math inline">\(\ref{sec:adversary-classes}\)</span>–<span
 class="math inline">\(\ref{sec:attack-taxonomy}\)</span>) with defense
 mechanisms detailed in .</p>
 <h2 id="attack-composition">Attack Composition</h2>
-
+<p>: Recent work on Adaptive Attacks shows that adversaries can
+effectively “hill-climb” against static defenses, modifying their attack
+strategy in response to defense feedback.</p>
 <h2 id="threat-model-assumptions">Threat Model Assumptions</h2>
 <figure id="fig:attack-surface">
 <embed src="figures/attack_surface.pdf" />

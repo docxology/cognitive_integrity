@@ -4,7 +4,7 @@ import time
 from datetime import datetime, timedelta
 
 import pytest
-from sandbox import (Belief, BeliefPartition, BeliefState, PromotionCriteria,
+from src import (Belief, BeliefPartition, BeliefState, PromotionCriteria,
                      SandboxConfig, SandboxManager)
 
 

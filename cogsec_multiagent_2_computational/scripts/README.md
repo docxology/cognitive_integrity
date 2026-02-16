@@ -1,45 +1,41 @@
-# Cognitive Security Scripts - Quick Reference
+# Cognitive Security Scripts
 
-Figure generation and data analysis scripts for the CIF manuscript.
+Figure generation, analysis, and verification scripts for CIF Paper 2.
 
-## Scripts
-
-| Script | Output | Description |
-|--------|--------|-------------|
-| `01_attack_surface_figure.py` | Attack surface visualization | Threat taxonomy diagram |
-| `02_trust_decay_figure.py` | Trust decay curves | Exponential decay visualization |
-| `03_detection_results_figure.py` | Detection performance | ROC/precision-recall curves |
-| `04_cif_architecture_figure.py` | System architecture | Component diagram |
-| `05_threat_taxonomy_figure.py` | Threat classification | Adversary classes |
-| `06_generate_data.py` | Experimental datasets | All analysis data |
-| `07_roc_curves_figure.py` | ROC analysis | Detection thresholds |
-| `08_scalability_figure.py` | Scalability metrics | Agent count vs performance |
-| `09_attack_timeline_figure.py` | Attack progression | Temporal analysis |
-| `10_defense_composition_figure.py` | Defense layers | Security stack |
-| `11_trust_network_figure.py` | Trust graph | Agent relationships |
-| `12_belief_sandbox_figure.py` | Sandbox state | Partition visualization |
-| `13_ablation_study_figure.py` | Component analysis | Feature importance |
-| `14_detection_performance_figure.py` | Detector comparison | Multi-detector analysis |
-| `15_fp_mitigation_figure.py` | False positive handling | Mitigation strategies |
-| `16_comprehensive_taxonomy_figure.py` | Full taxonomy | Attack categories |
-| `17_cif_comprehensive_figure.py` | Complete framework | Full system diagram |
-| `18_trust_calculus_figure.py` | Trust mathematics | Formula visualization |
-| `verify_manuscript.py` | Validation report | Cross-reference checks |
-
-## Quick Commands
+## Quick Start
 
 ```bash
-# Generate all experimental data
-python3 scripts/06_generate_data.py
+# Generate all 8 manuscript figures
+python3 scripts/generate_all_figures.py
 
-# Generate key figures
-python3 scripts/02_trust_decay_figure.py
-python3 scripts/03_detection_results_figure.py
-python3 scripts/04_cif_architecture_figure.py
+# Run all analysis
+python3 scripts/run_statistical_analysis.py
 
 # Verify manuscript
 python3 scripts/verify_manuscript.py
 ```
+
+## Manuscript Figures (8)
+
+| Script | Figure |
+|--------|--------|
+| `01_attack_surface_figure.py` | attack_surface.pdf |
+| `02_trust_decay_figure.py` | trust_decay.pdf |
+| `07_roc_curves_figure.py` | roc_curves.pdf |
+| `10_defense_composition_figure.py` | defense_composition.pdf |
+| `13_ablation_study_figure.py` | ablation_study.pdf |
+| `14_detection_performance_figure.py` | detection_performance.pdf |
+| `16_comprehensive_taxonomy_figure.py` | comprehensive_taxonomy.pdf |
+| `17_cif_comprehensive_figure.py` | cif_comprehensive.pdf |
+
+## Analysis Scripts
+
+| Script | Purpose |
+|--------|---------|
+| `run_ablation.py` | Component ablation study |
+| `run_cross_validation.py` | 5-fold cross-validation |
+| `run_full_evaluation.py` | Full 950-attack evaluation |
+| `run_statistical_analysis.py` | Hypothesis testing |
 
 ## Output Locations
 
@@ -47,4 +43,4 @@ python3 scripts/verify_manuscript.py
 - Data: `output/data/`
 - Reports: `output/reports/`
 
-## All scripts follow thin orchestrator pattern - import from src/, handle visualization only.
+All scripts follow thin orchestrator pattern - import from `src/`, handle visualization only.

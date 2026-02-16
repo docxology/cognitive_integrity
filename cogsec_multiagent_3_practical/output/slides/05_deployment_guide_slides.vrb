@@ -1,0 +1,116 @@
+\frametitle{Deployment Profiles: Evaluated Configurations from Part 2}
+\protect\phantomsection\label{sec:deployment}
+In Part 2, we evaluated specific configurations of the Cognitive
+Integrity Framework to understand how different tuning parameters
+affected security and performance outcomes. The following profiles are
+derived directly from the \textbf{Parameter Sensitivity Analysis} (Part
+2, Section 5.3) and \textbf{Architecture-Specific Results} (Part 2,
+Section 5.1).
+
+\begin{block}{Profile A: The ``Internal Tool'' Baseline (Low Latency)}
+\protect\phantomsection\label{profile-a-the-internal-tool-baseline-low-latency}
+This profile corresponds to the ``High Usability'' configuration tested
+in the sensitivity analysis (\(\delta=0.95\)). It is designed for
+low-risk, human-in-the-loop environments.
+
+\textbf{Configuration Parameters}:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Trust Decay (\(\delta\))}: \texttt{0.95}. Maintained
+  \textgreater50\% trust retention even after 13 delegation hops.
+\item
+  \textbf{Firewall Sensitivity}: Relaxed (\(\tau=0.9\)).
+\item
+  \textbf{Consensus}: Simple Majority.
+\end{itemize}
+
+\textbf{Observed Performance} (Sensitivity Table 5.2):
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Latency Overhead}: Minimal (\textasciitilde15\% baseline).
+\item
+  \textbf{Detection Rate}: \textbf{87\%} (vs 94\% optimal).
+\item
+  \textbf{Trade-off}: The high trust decay allows for fluid, deep
+  delegation chains but increases vulnerability to subtle trust
+  laundering (\(\Omega_4\)).
+\end{itemize}
+\end{block}
+
+\begin{block}{Profile B: The ``Customer Facing'' Baseline (Balanced)}
+\protect\phantomsection\label{profile-b-the-customer-facing-baseline-balanced}
+This profile corresponds to the \textbf{Empirically Optimal
+Configuration} identified in Part 2 (Table 5.6), which balances security
+guarantees with operational overhead.
+
+\textbf{Configuration Parameters}:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Trust Decay (\(\delta\))}: \texttt{0.80}. At this setting,
+  trust degrades to \textless50\% after 3 hops, strictly bounding the
+  ``radius of effective delegation.''
+\item
+  \textbf{Firewall Sensitivity}: Balanced (\(\tau=0.5\)).
+\item
+  \textbf{Consensus}: Variable (Architecture Dependent).
+\end{itemize}
+
+\textbf{Observed Performance} (Sensitivity Table 5.2):
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Latency Overhead}: Reduced detection latency
+  (\textasciitilde8.5s for drift detection).
+\item
+  \textbf{Detection Rate}: \textbf{94\%}.
+\item
+  \textbf{Resilience}: Maximizes the F1 score, providing the best
+  empirically observed trade-off between False Positives (0.06) and True
+  Positives.
+\end{itemize}
+\end{block}
+
+\begin{block}{Profile C: The ``Autonomous Operator'' Baseline (High
+Assurance)}
+\protect\phantomsection\label{profile-c-the-autonomous-operator-baseline-high-assurance}
+This profile corresponds to the ``Byzantine-Heavy'' configuration tested
+in Part 2 (Table 2.8). It is required for high-stakes, unsupervised
+environments.
+
+\textbf{Configuration Parameters}:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Trust Decay (\(\delta\))}: \texttt{0.60}. Aggressive decay.
+  Trust halves every 1.3 hops, enforcing a strictly flat command
+  structure.
+\item
+  \textbf{Firewall Sensitivity}: Strict (\(\tau=0.4\)).
+\item
+  \textbf{Consensus}: Byzantine Fault Tolerance (\(n \ge 3f+1\)).
+\end{itemize}
+
+\textbf{Observed Performance} (Sensitivity Table 5.3):
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Latency Overhead}: Significant (+35-48\% depending on
+  corroboration count).
+\item
+  \textbf{Detection Rate}: \textbf{95\%} (general) to \textbf{98\%}
+  (LangGraph-specific).
+\item
+  \textbf{Resilience}: Specifically tunes parameters to resist
+  coordination attacks (\(\Omega_4\)), accepting higher latency for a
+  near-zero semantic drift rate.
+\end{itemize}
+\end{block}

@@ -1,0 +1,110 @@
+{
+  "h1": {
+    "statistic": 2.9879598499176008,
+    "p_value": 0.0032867138077498632,
+    "significant": false
+  },
+  "h2": [
+    {
+      "name": "H2_firewall",
+      "p_value": 0.9999999999130567,
+      "significant": false
+    },
+    {
+      "name": "H2_trust_calculus",
+      "p_value": 0.9999999983427408,
+      "significant": false
+    },
+    {
+      "name": "H2_tripwire",
+      "p_value": 0.9999999684487335,
+      "significant": false
+    },
+    {
+      "name": "H2_detection",
+      "p_value": 0.9999999991802975,
+      "significant": false
+    },
+    {
+      "name": "H2_consensus",
+      "p_value": 0.9999999325147543,
+      "significant": false
+    },
+    {
+      "name": "H2_provenance",
+      "p_value": 0.9999992619107976,
+      "significant": false
+    },
+    {
+      "name": "H2_sandbox",
+      "p_value": 0.9999982442611953,
+      "significant": false
+    },
+    {
+      "name": "H2_invariants",
+      "p_value": 0.9999996782252633,
+      "significant": false
+    }
+  ],
+  "h3": [
+    {
+      "name": "H3_claude_code",
+      "p_value": 3.253450671906059e-30,
+      "significant": true
+    },
+    {
+      "name": "H3_autogpt",
+      "p_value": 7.879585264108201e-30,
+      "significant": true
+    },
+    {
+      "name": "H3_crewai",
+      "p_value": 1.4722188669080614e-29,
+      "significant": true
+    },
+    {
+      "name": "H3_langgraph",
+      "p_value": 1.047880528188465e-30,
+      "significant": true
+    },
+    {
+      "name": "H3_metagpt",
+      "p_value": 1.7037739339459317e-30,
+      "significant": true
+    },
+    {
+      "name": "H3_camel",
+      "p_value": 1.661908536278539e-29,
+      "significant": true
+    }
+  ],
+  "kruskal_wallis": {
+    "h": 48.962021072796915,
+    "p": 2.2592727421696517e-09
+  },
+  "cohens_d_cif_vs_baseline": 0.8609600980283788,
+  "assumptions": [
+    {
+      "test": "Shapiro-Wilk",
+      "group": "group_1",
+      "statistic": 0.8906466745717352,
+      "p_value": 0.013707152074268801,
+      "passed": 0.0
+    },
+    {
+      "test": "Shapiro-Wilk",
+      "group": "group_2",
+      "statistic": 0.9613504452999589,
+      "p_value": 0.46615406397705766,
+      "passed": 1.0
+    },
+    {
+      "test": "Levene",
+      "group": "all_groups",
+      "statistic": 21.719119472299358,
+      "p_value": 2.721061133504834e-05,
+      "passed": 0.0
+    }
+  ],
+  "assumptions_met": false
+}

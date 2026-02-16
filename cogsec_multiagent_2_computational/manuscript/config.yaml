@@ -19,11 +19,12 @@ authors:
 keywords:
   - cognitive security
   - multiagent systems
+  - cognitive manipulation attacks
+  - Byzantine fault tolerance
+  - trust calculus
   - empirical validation
   - attack corpus
-  - detection algorithms
-  - security benchmarks
-  - defense implementation
+  - defense composition
 
 abstract: |
   This paper presents computational validation of the Cognitive Integrity

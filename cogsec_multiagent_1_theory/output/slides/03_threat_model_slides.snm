@@ -34,6 +34,7 @@
 \beamer@slide {def:confidence-manip}{2}
 \beamer@slide {eq:confidence-manip}{2}
 \beamer@slide {def:memory-poison}{2}
+\beamer@slide {def:semantic-drift}{2}
 \beamer@slide {behavioral-attacks}{2}
 \beamer@slide {def:goal-hijacking}{2}
 \beamer@slide {eq:goal-hijacking}{2}
@@ -48,6 +49,7 @@
 \beamer@slide {fig:attack-timeline}{2}
 \beamer@slide {def:sleeper}{2}
 \beamer@slide {def:context-overflow}{2}
+\beamer@slide {def:sleeper-agent}{2}
 \beamer@slide {def:progressive-drift}{2}
 \beamer@slide {eq:progressive-drift}{2}
 \beamer@slide {attack-scenarios-by-class}{2}
@@ -55,8 +57,8 @@
 \beamer@slide {eq:nested-attack}{2}
 \beamer@slide {scenario-omega_2-poisoned-search-result}{2}
 \beamer@slide {eq:poisoned-search}{2}
-\beamer@slide {scenario-omega_2-browser-fetched-adversarial-content-moltbot}{2}
-\beamer@slide {eq:moltbot-browser-attack}{2}
+\beamer@slide {scenario-omega_2-browser-fetched-adversarial-content-openclaw}{2}
+\beamer@slide {eq:openclaw-browser-attack}{2}
 \beamer@slide {scenario-omega_3-compromised-specialist}{2}
 \beamer@slide {eq:compromised-specialist}{2}
 \beamer@slide {sec:omega4}{2}

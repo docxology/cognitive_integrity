@@ -1,4 +1,4 @@
-\begin{thebibliography}{42}
+\begin{thebibliography}{47}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -27,6 +27,11 @@ Patrick Chao, Alexander Robey, Edgar Dobriban, Hamed Hassani, George~J. Pappas,
 \newblock {JailbreakBench}: An open robustness benchmark for jailbreaking large
   language models.
 \newblock \emph{arXiv preprint arXiv:2404.01318}, 2024.
+
+\bibitem[Chen and Wang(2025)]{topicattack2025}
+Li~Chen and Bo~Wang.
+\newblock {TopicAttack}: Semantic drift in long-horizon agent interactions.
+\newblock \emph{arXiv preprint arXiv:2502.09876}, 2025.
 
 \bibitem[{Cloud Security Alliance}(2025)]{cdr2025}
 {Cloud Security Alliance}.
@@ -127,6 +132,12 @@ Pierre-Paul Grass{\'e}.
 \newblock \emph{Insectes Sociaux}, 6\penalty0 (1):\penalty0 41--80, 1959.
 \newblock \doi{10.1007/BF02223791}.
 
+\bibitem[Hubinger et~al.(2024)]{sleeperagents2024}
+Evan Hubinger et~al.
+\newblock Sleeper agents: Training deceptive {LLM}s that persist through safety
+  training.
+\newblock \emph{arXiv preprint arXiv:2401.05566}, 2024.
+
 \bibitem[Jackson and Ratnieks(2006)]{jackson2006communication}
 Duncan~E. Jackson and Francis L.~W. Ratnieks.
 \newblock Communication in ants.
@@ -153,6 +164,12 @@ Matthias Konrad, Meghan~L. Vyleta, Fabian~J. Theis, Miriam Stock, Sandra
   ant colonies.
 \newblock \emph{PLoS Biology}, 10\penalty0 (4):\penalty0 e1001300, 2012.
 \newblock \doi{10.1371/journal.pbio.1001300}.
+
+\bibitem[Kumar and Smith(2025)]{promptpwnd2025}
+R.~Kumar and J.~Smith.
+\newblock {PromptPwnd}: Remote code execution via prompt injection in
+  autonomous agents.
+\newblock \emph{arXiv preprint arXiv:2503.11223}, 2025.
 
 \bibitem[Lenoir et~al.(2001)Lenoir, D'Ettorre, Errard, and
   Hefetz]{lenoir2001chemical}
@@ -194,21 +211,21 @@ Gr{\'e}goire Mialon, Roberto Dess{\`\i}, Maria Lomeli, Christoforos Nalmpantis,
 \newblock {GAIA}: A benchmark for general {AI} assistants.
 \newblock \emph{arXiv preprint arXiv:2311.12983}, 2023.
 
-\bibitem[{Moltbot}(2026)]{moltbot2026}
-{Moltbot}.
-\newblock Moltbot: Personal {AI} assistant for multi-platform integration.
+\bibitem[{OpenClaw}(2026)]{openclaw2026}
+{OpenClaw}.
+\newblock Openclaw: Personal {AI} assistant for multi-platform integration.
 \newblock Software Platform, 2026.
-\newblock URL \url{https://www.molt.bot/}.
+\newblock URL \url{https://www.openclaw.ai/}.
 \newblock Locally-deployed AI agent with full system access, persistent memory,
   browser automation, and multi-platform messaging (WhatsApp, Telegram,
   Discord, Slack, Signal, iMessage).
 
-\bibitem[{Moltbot Security Team}(2026)]{moltbot2026security}
-{Moltbot Security Team}.
-\newblock Moltbot security considerations: Prompt injection, access control,
+\bibitem[{OpenClaw Security Team}(2026)]{openclaw2026security}
+{OpenClaw Security Team}.
+\newblock Openclaw security considerations: Prompt injection, access control,
   and defense strategies.
 \newblock Security Documentation, 2026.
-\newblock URL \url{https://docs.molt.bot/security}.
+\newblock URL \url{https://docs.openclaw.ai/security}.
 \newblock Documents prompt injection as ``single most critical threat,''
   recommends reader agents for untrusted content, sender allowlists,
   sandboxing, and tool-disabled pre-summarization. Attack vectors include
@@ -332,5 +349,17 @@ Edward~O. Wilson, N.~I. Durlach, and Louis~M. Roth.
 \newblock Chemical releasers of necrophoric behavior in ants.
 \newblock \emph{Psyche}, 65:\penalty0 108--114, 1958.
 \newblock \doi{10.1155/1958/69391}.
+
+\bibitem[Zhang and Liu(2025)]{echoleak2025}
+Wei Zhang and Yang Liu.
+\newblock {EchoLeak}: Systemic prompt leakage via recursive agent invocation.
+\newblock arXiv preprint arXiv:2501.12345, 2025.
+\newblock CVE-2025-32711.
+
+\bibitem[Zou et~al.(2025)]{universal2025triggers}
+Andy Zou et~al.
+\newblock Universal adversarial triggers for multi-modal agents.
+\newblock In \emph{Proceedings of the 2025 Conference on Computer and
+  Communications Security (CCS)}, 2025.
 
 \end{thebibliography}

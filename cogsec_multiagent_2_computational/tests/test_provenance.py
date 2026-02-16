@@ -1,10 +1,8 @@
 """Tests for provenance tracking and taint propagation."""
 
-from datetime import datetime, timedelta
+from datetime import datetime
 
-import pytest
-from provenance import (CausalAttribution, ProvenanceChain, ProvenanceGraph,
-                        ProvenanceRecord, TaintLabel)
+from src import CausalAttribution, ProvenanceChain, ProvenanceGraph, ProvenanceRecord, TaintLabel
 
 
 class TestTaintLabel:
@@ -57,7 +55,7 @@ class TestProvenanceRecord:
 
     def test_record_with_parent(self):
         """Records can reference parent records."""
-        parent = ProvenanceRecord(
+        ProvenanceRecord(
             belief_id="parent-1",
             content="Base fact",
             source=TaintLabel.SYSTEM_VERIFIED,
@@ -79,7 +77,7 @@ class TestProvenanceChain:
     def test_add_and_get_record(self):
         """Records can be added and retrieved."""
         chain = ProvenanceChain()
-        record = chain.add_belief(
+        chain.add_belief(
             belief_id="b1",
             content="Test belief",
             source=TaintLabel.PRINCIPAL_INPUT,
@@ -344,3 +342,257 @@ class TestTaintPropagation:
         )
 
         assert record.metadata["tool_name"] == "web_scraper"
+
+
+# ---------------------------------------------------------------------------
+# Extended ProvenanceGraph tests (diamond patterns, isolated nodes)
+# ---------------------------------------------------------------------------
+
+
+class TestProvenanceGraphExtended:
+    """Extended tests for ProvenanceGraph dependency analysis."""
+
+    def test_diamond_dependency(self):
+        """Diamond pattern: A->B, A->C, B->D, C->D. D depends on A, B, C."""
+        chain = ProvenanceChain()
+        chain.add_belief("A", "Root", TaintLabel.SYSTEM_VERIFIED, "sys")
+        chain.add_belief(
+            "B", "Left", TaintLabel.AGENT_INTERNAL, "ag", parent_ids=["A"]
+        )
+        chain.add_belief(
+            "C", "Right", TaintLabel.AGENT_INTERNAL, "ag", parent_ids=["A"]
+        )
+        chain.add_belief(
+            "D", "Merge", TaintLabel.AGENT_INTERNAL, "ag", parent_ids=["B", "C"]
+        )
+
+        graph = ProvenanceGraph(chain)
+
+        assert graph.depends_on("D", "A")
+        assert graph.depends_on("D", "B")
+        assert graph.depends_on("D", "C")
+        # A does not depend on D
+        assert not graph.depends_on("A", "D")
+
+    def test_get_dependents_diamond(self):
+        """In diamond pattern, get_dependents('A') includes B, C, D."""
+        chain = ProvenanceChain()
+        chain.add_belief("A", "Root", TaintLabel.SYSTEM_VERIFIED, "sys")
+        chain.add_belief(
+            "B", "Left", TaintLabel.AGENT_INTERNAL, "ag", parent_ids=["A"]
+        )
+        chain.add_belief(
+            "C", "Right", TaintLabel.AGENT_INTERNAL, "ag", parent_ids=["A"]
+        )
+        chain.add_belief(
+            "D", "Merge", TaintLabel.AGENT_INTERNAL, "ag", parent_ids=["B", "C"]
+        )
+
+        graph = ProvenanceGraph(chain)
+        dependents = graph.get_dependents("A")
+
+        assert "B" in dependents
+        assert "C" in dependents
+        assert "D" in dependents
+
+    def test_isolated_node_no_dependents(self):
+        """Isolated node with no children has empty dependents."""
+        chain = ProvenanceChain()
+        chain.add_belief("isolated", "Alone", TaintLabel.SYSTEM_VERIFIED, "sys")
+        chain.add_belief("other", "Other", TaintLabel.AGENT_INTERNAL, "ag")
+
+        graph = ProvenanceGraph(chain)
+        dependents = graph.get_dependents("isolated")
+
+        assert len(dependents) == 0
+
+
+# ---------------------------------------------------------------------------
+# Extended CausalAttribution tests (complex graphs, deep chains)
+# ---------------------------------------------------------------------------
+
+
+class TestCausalAttributionExtended:
+    """Extended tests for CausalAttribution with complex topologies."""
+
+    def test_complex_multi_source_graph(self):
+        """Two untrusted sources feed into a chain; both are identified."""
+        chain = ProvenanceChain()
+        chain.add_belief("bad1", "Untrusted A", TaintLabel.UNVERIFIED, "unk")
+        chain.add_belief("bad2", "Untrusted B", TaintLabel.WEB_CONTENT, "web")
+        chain.add_belief(
+            "merge1",
+            "First merge",
+            TaintLabel.AGENT_INTERNAL,
+            "ag",
+            parent_ids=["bad1"],
+        )
+        chain.add_belief(
+            "merge2",
+            "Second merge",
+            TaintLabel.AGENT_INTERNAL,
+            "ag",
+            parent_ids=["bad2"],
+        )
+        chain.add_belief(
+            "final",
+            "Final combination",
+            TaintLabel.AGENT_INTERNAL,
+            "ag",
+            parent_ids=["merge1", "merge2"],
+        )
+
+        attribution = CausalAttribution(chain)
+        sources = attribution.identify_untrusted_sources("final")
+
+        assert "bad1" in sources
+        assert "bad2" in sources
+
+    def test_attribution_all_trusted(self):
+        """All sources SYSTEM_VERIFIED: identify_untrusted_sources returns empty."""
+        chain = ProvenanceChain()
+        chain.add_belief("s1", "Sys1", TaintLabel.SYSTEM_VERIFIED, "sys")
+        chain.add_belief("s2", "Sys2", TaintLabel.SYSTEM_VERIFIED, "sys")
+        chain.add_belief(
+            "derived",
+            "Derived",
+            TaintLabel.PRINCIPAL_INPUT,
+            "principal",
+            parent_ids=["s1", "s2"],
+        )
+
+        attribution = CausalAttribution(chain)
+        sources = attribution.identify_untrusted_sources("derived")
+
+        assert len(sources) == 0
+
+    def test_deep_chain_taint(self):
+        """10-hop chain from UNVERIFIED source; taint preserved at hop 9."""
+        chain = ProvenanceChain()
+        chain.add_belief("origin", "Bad origin", TaintLabel.UNVERIFIED, "unk")
+
+        prev = "origin"
+        for i in range(10):
+            hop_id = f"hop-{i}"
+            chain.add_belief(
+                hop_id,
+                f"Hop {i}",
+                TaintLabel.AGENT_INTERNAL,
+                "ag",
+                parent_ids=[prev],
+            )
+            prev = hop_id
+
+        # Effective taint at the 10th hop (hop-9) should still be UNVERIFIED
+        taint = chain.get_effective_taint("hop-9")
+        assert taint == TaintLabel.UNVERIFIED
+
+    def test_report_multiple_untrusted(self):
+        """Three untrusted sources merging; report shows all three."""
+        chain = ProvenanceChain()
+        chain.add_belief("u1", "Unverified 1", TaintLabel.UNVERIFIED, "unk")
+        chain.add_belief("u2", "Web content", TaintLabel.WEB_CONTENT, "web")
+        chain.add_belief("u3", "Tool output", TaintLabel.TOOL_OUTPUT, "tool")
+        chain.add_belief(
+            "combined",
+            "All merged",
+            TaintLabel.AGENT_INTERNAL,
+            "ag",
+            parent_ids=["u1", "u2", "u3"],
+        )
+
+        attribution = CausalAttribution(chain)
+        report = attribution.generate_report("combined")
+
+        assert report["belief_id"] == "combined"
+        untrusted_ids = set(report["untrusted_sources"])
+        assert "u1" in untrusted_ids
+        assert "u2" in untrusted_ids
+        assert "u3" in untrusted_ids
+        assert len(untrusted_ids) == 3
+
+
+# ---------------------------------------------------------------------------
+# TaintLabel ordering and boundary tests
+# ---------------------------------------------------------------------------
+
+
+class TestTaintLevelOrdering:
+    """Tests for TaintLabel trust level ordering and boundaries."""
+
+    def test_all_taint_levels_defined(self):
+        """All 7 TaintLabel values exist."""
+        expected = {
+            "SYSTEM_VERIFIED",
+            "PRINCIPAL_INPUT",
+            "AGENT_INTERNAL",
+            "AGENT_EXTERNAL",
+            "TOOL_OUTPUT",
+            "WEB_CONTENT",
+            "UNVERIFIED",
+        }
+        actual = {label.name for label in TaintLabel}
+        assert actual == expected
+        assert len(actual) == 7
+
+    def test_trust_level_numeric(self):
+        """Each TaintLabel has a numeric trust_level attribute."""
+        for label in TaintLabel:
+            assert isinstance(label.trust_level, int)
+
+    def test_strict_ordering(self):
+        """Full strict ordering: SV > PI > AI > AE > TO > WC > UV."""
+        ordered = [
+            TaintLabel.SYSTEM_VERIFIED,
+            TaintLabel.PRINCIPAL_INPUT,
+            TaintLabel.AGENT_INTERNAL,
+            TaintLabel.AGENT_EXTERNAL,
+            TaintLabel.TOOL_OUTPUT,
+            TaintLabel.WEB_CONTENT,
+            TaintLabel.UNVERIFIED,
+        ]
+        for i in range(len(ordered) - 1):
+            assert ordered[i].trust_level > ordered[i + 1].trust_level, (
+                f"{ordered[i].name} should have higher trust than {ordered[i + 1].name}"
+            )
+
+    def test_is_trusted_boundary(self):
+        """Only SYSTEM_VERIFIED, PRINCIPAL_INPUT, AGENT_INTERNAL are trusted."""
+        trusted_expected = {
+            TaintLabel.SYSTEM_VERIFIED: True,
+            TaintLabel.PRINCIPAL_INPUT: True,
+            TaintLabel.AGENT_INTERNAL: True,
+            TaintLabel.AGENT_EXTERNAL: False,
+            TaintLabel.TOOL_OUTPUT: False,
+            TaintLabel.WEB_CONTENT: False,
+            TaintLabel.UNVERIFIED: False,
+        }
+        for label, expected in trusted_expected.items():
+            assert label.is_trusted == expected, (
+                f"{label.name}.is_trusted should be {expected}"
+            )
+
+
+# ---------------------------------------------------------------------------
+# Extended ProvenanceChain tests (edge cases)
+# ---------------------------------------------------------------------------
+
+
+class TestProvenanceChainExtended:
+    """Extended tests for ProvenanceChain edge cases."""
+
+    def test_get_record_nonexistent(self):
+        """get_record for a nonexistent ID returns None."""
+        chain = ProvenanceChain()
+        chain.add_belief("exists", "I exist", TaintLabel.SYSTEM_VERIFIED, "sys")
+
+        result = chain.get_record("nonexistent_id")
+        assert result is None
+
+    def test_ancestry_root_node(self):
+        """get_ancestry of root node (no parents) returns empty set."""
+        chain = ProvenanceChain()
+        chain.add_belief("root", "I am root", TaintLabel.SYSTEM_VERIFIED, "sys")
+
+        ancestry = chain.get_ancestry("root")
+        assert len(ancestry) == 0

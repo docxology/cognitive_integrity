@@ -1,0 +1,429 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\documentclass[
+  ignorenonframetext,
+]{beamer}
+\newif\ifbibliography
+\usepackage{pgfpages}
+\setbeamertemplate{caption}[numbered]
+\setbeamertemplate{caption label separator}{: }
+\setbeamercolor{caption name}{fg=normal text.fg}
+\beamertemplatenavigationsymbolsempty
+% remove section numbering
+\setbeamertemplate{part page}{
+  \centering
+  \begin{beamercolorbox}[sep=16pt,center]{part title}
+    \usebeamerfont{part title}\insertpart\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{section page}{
+  \centering
+  \begin{beamercolorbox}[sep=12pt,center]{section title}
+    \usebeamerfont{section title}\insertsection\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{subsection page}{
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center]{subsection title}
+    \usebeamerfont{subsection title}\insertsubsection\par
+  \end{beamercolorbox}
+}
+% Prevent slide breaks in the middle of a paragraph
+\widowpenalties 1 10000
+\raggedbottom
+\AtBeginPart{
+  \frame{\partpage}
+}
+\AtBeginSection{
+  \ifbibliography
+  \else
+    \frame{\sectionpage}
+  \fi
+}
+\AtBeginSubsection{
+  \frame{\subsectionpage}
+}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{longtable,booktabs,array}
+\newcounter{none} % for unnumbered tables
+\usepackage{calc} % for calculating minipage widths
+\usepackage{caption}
+% Make caption package work with longtable
+\makeatletter
+\def\fnum@table{\tablename~\thetable}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\author{\texorpdfstring{}{}}
+\date{}
+
+\begin{document}
+
+\begin{frame}
+\newpage
+\end{frame}
+
+\begin{frame}{Attack Corpus: Methodology and Ethical Considerations}
+\protect\phantomsection\label{sec:attack-methodology}
+This section documents the attack generation methodology, effectiveness
+analysis, ethical considerations, and data availability.
+
+\begin{block}{Attack Generation Methodology}
+\protect\phantomsection\label{sec:generation-methodology}
+\begin{block}{Synthetic Attack Generation}
+\protect\phantomsection\label{sec:synthetic-generation}
+\textbf{Process}:
+
+\begin{enumerate}
+\item **Template Creation**: Define attack structure templates for each category
+\item **Parameter Variation**: Systematically vary attack parameters
+\item **Constraint Satisfaction**: Ensure attacks satisfy category definitions
+\item **Deduplication**: Remove semantically equivalent attacks
+\item **Validation**: Human review of generated attacks
+\end{enumerate}
+
+\textbf{Table: Generation method statistics.} \{\#tab:generation-stats\}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}llll@{}}
+\toprule\noalign{}
+Method & Count & QA Pass Rate\(^*\) & Mean Sophistication \\
+\midrule\noalign{}
+\endhead
+Template instantiation & 420 & 91\% & 0.4 \\
+Parameter variation & 250 & 88\% & 0.5 \\
+Red team manual crafting & 150 & 95\% & 0.8 \\
+LLM-assisted mutation & 80 & 75\% & 0.7 \\
+Adversarial optimization & 50 & 82\% & 0.9 \\
+\bottomrule\noalign{}
+\end{longtable}
+}
+
+\(^*\)\textit{QA pass rate denotes the proportion of candidate attacks that passed quality assurance validation (measurability, reproducibility, category alignment), not attack efficacy against defended systems. Total candidates generated exceeded 1,200; 950 passed QA and were retained.}
+\end{block}
+
+\begin{block}{Red Team Exercise Protocol}
+\protect\phantomsection\label{sec:red-team}
+\textbf{Participants}: 8 security researchers (2--10 years experience)
+
+\textbf{Duration}: 4 weeks
+
+\textbf{Methodology}:
+
+\begin{enumerate}
+\item **Week 1**: Familiarization with target architectures
+\item **Week 2**: Independent attack development
+\item **Week 3**: Cross-team attack validation
+\item **Week 4**: Documentation and categorization
+\end{enumerate}
+\end{block}
+
+\begin{block}{Quality Assurance}
+\protect\phantomsection\label{sec:qa}
+\textbf{Table: Attack validation criteria.}
+\{\#tab:validation-criteria\}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}ll@{}}
+\toprule\noalign{}
+Criterion & Description \\
+\midrule\noalign{}
+\endhead
+Measurability & Success/failure unambiguously determinable \\
+Reproducibility & Attack produces consistent results \\
+Category alignment & Attack matches labeled category \\
+Non-trivial & Attack not detected by simple heuristics \\
+\bottomrule\noalign{}
+\end{longtable}
+}
+
+\textbf{Validation Process}:
+
+\begin{enumerate}
+\item Two independent reviewers per attack
+\item Disagreements resolved by third reviewer
+\item Inter-rater reliability: Cohen's $\kappa = 0.84$
+\end{enumerate}
+\end{block}
+\end{block}
+
+\begin{block}{Attack Effectiveness Analysis}
+\protect\phantomsection\label{sec:effectiveness-analysis}
+\begin{block}{Success Rate by Defense Configuration}
+\protect\phantomsection\label{sec:success-by-defense}
+\textbf{Table: Attack success rate by defense configuration.}
+\{\#tab:success-by-defense\}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}lllll@{}}
+\toprule\noalign{}
+Defense & Prompt Inj. & Trust Expl. & Belief Manip. & Coord. \\
+\midrule\noalign{}
+\endhead
+Firewall only & 15\% & 38\% & 29\% & 42\% \\
+Sandbox only & 35\% & 25\% & 31\% & 55\% \\
+Tripwires only & 22\% & 18\% & 8\% & 48\% \\
+Full CIF & 4\% & 9\% & 7\% & 11\% \\
+\bottomrule\noalign{}
+\end{longtable}
+}
+\end{block}
+
+\begin{block}{Attack Sophistication Correlation}
+\protect\phantomsection\label{sec:sophistication-corr}
+\begin{equation}
+\label{eq:sophistication-correlation}
+\rho_{sophistication, success} = 0.67 \quad (p < 0.001, \; n = 950)
+\end{equation}
+
+We report Spearman's rank correlation (\(\rho\)) rather than Pearson's
+\(r\) because sophistication levels (Low, Medium, High, Expert) are
+ordinal categories. More sophisticated attacks have higher baseline
+success but show similar detection rates under CIF, suggesting defense
+robustness.
+\end{block}
+
+\begin{block}{Temporal Analysis}
+\protect\phantomsection\label{sec:temporal-analysis}
+\textbf{Table: Detection rate by attack age.} \{\#tab:attack-age\}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}lll@{}}
+\toprule\noalign{}
+Attack Age & Detection Rate & \(n\) \\
+\midrule\noalign{}
+\endhead
+\(<\) 6 months & 91\% & 285 \\
+6--12 months & 94\% & 380 \\
+\(>\) 12 months & 96\% & 285 \\
+\bottomrule\noalign{}
+\end{longtable}
+}
+
+Older attacks are detected at higher rates due to pattern database
+inclusion. The 5-point gap between newest and oldest cohorts quantifies
+the advantage that known-signature detection provides and underscores
+the importance of continuous corpus expansion to maintain efficacy
+against novel techniques.
+\end{block}
+\end{block}
+
+\begin{block}{Ethical Considerations}
+\protect\phantomsection\label{sec:ethical-considerations}
+\begin{block}{Responsible Disclosure}
+\protect\phantomsection\label{sec:responsible-disclosure}
+All novel attack vectors discovered during this research were:
+
+\begin{enumerate}
+\item **Reported**: Communicated to affected framework maintainers
+\item **Embargoed**: 90-day disclosure window before publication
+\item **Mitigated**: Defenses provided alongside vulnerability reports
+\end{enumerate}
+
+\textbf{Table: Disclosure timeline.} \{\#tab:disclosure-timeline\}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Framework
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Date Reported
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Status
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Resolution
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+Framework A & 2025-06-15 & Acknowledged & Patched (v2.1.3) \\
+Framework B & 2025-06-22 & Acknowledged & In progress \\
+Framework C & 2025-07-01 & No response & Public disclosure (90-day
+window elapsed) \\
+Framework D & 2025-07-10 & Acknowledged & Mitigated via configuration
+change \\
+\bottomrule\noalign{}
+\end{longtable}
+}
+
+Framework names are anonymized per coordinated disclosure agreements.
+Specific vulnerability details are available to affected maintainers and
+will be published after all embargo periods expire.
+\end{block}
+
+\begin{block}{Dual-Use Considerations}
+\protect\phantomsection\label{sec:dual-use}
+\textbf{Risk Assessment}: The attack corpus represents a dual-use
+resource that could enable both defensive research and malicious
+exploitation. We address this through:
+
+\begin{enumerate}
+\item **Sanitization**: All published examples are non-functional
+\item **Partial Disclosure**: Full corpus available only to verified researchers
+\item **Access Controls**: Request-based access with institutional verification
+\item **Usage Tracking**: Audit log of corpus access
+\end{enumerate}
+
+\textbf{Table: Access control hierarchy.} \{\#tab:access-hierarchy\}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}lll@{}}
+\toprule\noalign{}
+Access Level & Scope & Requirement \\
+\midrule\noalign{}
+\endhead
+Researcher & Template structures & Institutional affiliation \\
+Full access & Complete corpus & IRB approval + NDA \\
+\bottomrule\noalign{}
+\end{longtable}
+}
+\end{block}
+
+\begin{block}{Defense Framework Dual-Use Considerations}
+\protect\phantomsection\label{sec:defense-dual-use}
+While the attack corpus dual-use considerations are addressed above, the
+defense framework itself presents distinct dual-use risks that warrant
+separate analysis.
+
+\textbf{Detection Algorithm Inversion Risk.} The detection algorithms
+documented in \cref{sec:detection-algorithms} could potentially be
+analyzed to design evasive attacks that remain below detection
+thresholds. An adversary with access to the full algorithm
+specifications could craft attacks that exploit known blind spots or
+systematically probe the feature space to identify classification
+boundaries. This risk is inherent to any published detection
+methodology.
+
+\textbf{Trust Calculus Parameter Exposure.} The trust decay parameter
+(\(\delta\)), delegation depth limits, and threshold configurations
+disclosed in this paper could enable adversaries to game the trust
+system if they know the exact values deployed in a target system.
+Attackers could craft delegation chains that remain just above trust
+thresholds or time their attacks to coincide with trust recovery
+periods.
+
+\textbf{Observed Mitigation Approaches.} Several approaches address
+these dual-use risks:
+
+\begin{enumerate}
+\item **API Abstraction**: Deploying CIF through an abstraction layer that hides internal parameters. Detection decisions exposed as binary outcomes (allowed/blocked) without revealing confidence scores or feature contributions.
+\item **Parameter Randomization**: Introducing slight randomization in threshold values and decay parameters across instances, reducing the exploitability of published defaults.
+\item **Adversarial Probing Detection**: Monitoring for patterns indicative of boundary probing (repeated near-threshold submissions, systematic parameter variation).
+\end{enumerate}
+
+The defense composition algebra (established in Part 1) remains valid
+regardless of specific parameter choices, ensuring that the theoretical
+guarantees hold even when operational parameters differ from published
+defaults. Specific deployment configurations are detailed in Part 3.
+\end{block}
+
+\begin{block}{Human Subjects}
+\protect\phantomsection\label{sec:human-subjects}
+This research did not involve human subjects experimentation. All
+attacks were tested against:
+
+\begin{itemize}
+\item Synthetic agent configurations
+\item Sandboxed environments
+\item No production systems with real users
+\end{itemize}
+\end{block}
+
+\begin{block}{Research Ethics Approval}
+\protect\phantomsection\label{sec:ethics-approval}
+This research was reviewed and determined to be exempt from IRB
+oversight as it did not involve human subjects. The board determined
+that:
+
+\begin{enumerate}
+\item No human subjects were involved
+\item Dual-use risks were adequately mitigated
+\item Responsible disclosure practices were followed
+\end{enumerate}
+\end{block}
+\end{block}
+
+\begin{block}{Data Availability}
+\protect\phantomsection\label{sec:data-availability}
+\begin{block}{Public Resources}
+\protect\phantomsection\label{sec:public-resources}
+\begin{itemize}
+\item Sanitized attack examples: This supplementary material
+\item Detection patterns: Available in paper repository
+\item Defense implementations: Available at DOI: 10.5281/zenodo.18364128
+\end{itemize}
+\end{block}
+
+\begin{block}{Restricted Resources}
+\protect\phantomsection\label{sec:restricted-resources}
+\begin{itemize}
+\item Full attack corpus: Available upon request
+\item Red team exercise data: Institution members only
+\item Unpublished vulnerabilities: Covered by disclosure agreements
+\end{itemize}
+\end{block}
+
+\begin{block}{Access Request Process}
+\protect\phantomsection\label{sec:access-request}
+Researchers wishing to access the full attack corpus must:
+
+\begin{enumerate}
+\item Submit institutional affiliation verification
+\item Provide IRB approval or exemption letter
+\item Sign data use agreement
+\item Agree to responsible use terms
+\end{enumerate}
+\end{block}
+\end{block}
+
+\begin{block}{References}
+\protect\phantomsection\label{sec:corpus-references}
+The attack corpus draws from JailbreakBench
+\cite{chao2024jailbreakbench}, PromptInject \cite{liu2023prompt}, and
+TensorTrust \cite{toyer2024tensortrust}.
+\end{block}
+\end{frame}
+
+\end{document}

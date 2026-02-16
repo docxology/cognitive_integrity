@@ -115,7 +115,7 @@ AutoGPT & Autonomous & $1 +$ plugins & Tool invocation & $\Omega_2$ (tool manipu
 CrewAI & Role-based & 3--10 fixed & Sequential/parallel & $\Omega_4$ (coordination) \\
 LangGraph & State machine & Variable & Graph traversal & $\Omega_3$ (state corruption) \\
 MetaGPT & SOP-driven & 5--8 roles & Document passing & $\Omega_1$ (input injection) \\
-Moltbot & Cyberphysical & 1 + tools & Multi-platform messaging & $\Omega_1$/$\Omega_2$ (injection/peripheral) \\
+OpenClaw & Cyberphysical & 1 + tools & Multi-platform messaging & $\Omega_1$/$\Omega_2$ (injection/peripheral) \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -161,15 +161,15 @@ Contemporary systems function as
 \item Communicate with humans who may not realize they're interacting with AI
 \end{itemize}
 
-\textbf{Emerging Case Study: Moltbot}. The rapid adoption of personal AI
-assistants like Moltbot \cite{moltbot2026} exemplifies this
-cyberphysical integration. Moltbot operates as a locally-deployed AI
+\textbf{Emerging Case Study: OpenClaw}. The rapid adoption of personal
+AI assistants like OpenClaw \cite{openclaw2026} exemplifies this
+cyberphysical integration. OpenClaw operates as a locally-deployed AI
 agent with: (1) full system access including shell command execution and
 file system operations; (2) persistent memory across sessions storing
 user preferences and context; (3) browser automation for web interaction
 and data extraction; and (4) multi-platform messaging integration across
 WhatsApp, Telegram, Discord, Slack, Signal, and iMessage
-\cite{moltbot2026security}. This architecture creates attack surfaces
+\cite{openclaw2026security}. This architecture creates attack surfaces
 spanning all five adversary classes (\(\Omega_1\)--\(\Omega_5\)):
 external prompt injection through chat messages, peripheral attacks via
 browser-fetched web content, agent-level compromise through persistent
@@ -179,7 +179,7 @@ untrusted content. Security researchers have documented that even with
 sender allowlists and sandboxing, ``prompt injection attacks remain the
 single most critical threat'\,' due to the agent's ability to process
 arbitrary content that may contain embedded adversarial instructions
-\cite{moltbot2026security}.
+\cite{openclaw2026security, echoleak2025}.
 
 This cyberphysical nature transforms cognitive attacks from prompt
 injection that makes a chatbot act strangely, to cognitive manipulation
@@ -579,11 +579,12 @@ deployment considerations, and connections to related work.
 identifies directions for future research.
 
 \textbf{Part 2: Experimental Validation} A separate, second, companion
-paper reports empirical results across production architectures.
+paper reports empirical results from architecture-aware parametric
+simulation across 950 attack vectors and six production architectures.
 
 \textbf{Part 3: Actionable Insight} A separate, third, companion paper
-provides qualitative insights and practical guidance for deploying
-cognitive security mechanisms.
+provides qualitative insights, operational checklists, and risk
+assessment frameworks for deploying cognitive security mechanisms.
 \end{frame}
 
 \begin{frame}{Scope and Limitations}

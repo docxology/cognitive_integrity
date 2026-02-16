@@ -134,8 +134,9 @@ class ManuscriptVerifier:
                 labels = self.label_pattern.findall(content)
                 defined_labels.update(labels)
 
-                # Pandoc labels {#label}
-                pandoc_labels = re.findall(r"\{#([^}]+)\}", content)
+                # Pandoc labels {#label} or {#label attr=...}
+                # Match #identifier at start of braces, stopping at space or }
+                pandoc_labels = re.findall(r"\{#([a-zA-Z0-9_:-]+)", content)
                 defined_labels.update(pandoc_labels)
 
         # pass 2: check refs
@@ -217,6 +218,101 @@ class ManuscriptVerifier:
 
         return status
 
+    def check_table_format(self) -> bool:
+        """Check for common markdown table formatting errors."""
+        logger.info("Checking table formatting...")
+        status = True
+
+        garbled_pattern = re.compile(r"\|\s*[lcr]+p\{")
+        # A line that starts with non-| content followed by | --- pattern
+        merged_header_sep = re.compile(r"^[^|]*\|[^|]+\|\s*\|?\s*---")
+
+        for md_file in self.md_files:
+            with open(md_file, "r", encoding="utf-8") as f:
+                lines = f.readlines()
+                in_table = False
+                for i, line in enumerate(lines):
+                    stripped = line.strip()
+
+                    # Check for garbled LaTeX table syntax
+                    if garbled_pattern.search(stripped):
+                        logger.warning(
+                            f"Garbled LaTeX table syntax in {md_file.name}:{i+1}: {stripped[:60]}"
+                        )
+                        status = False
+
+                    # Track table context
+                    if stripped.startswith("|"):
+                        in_table = True
+                    elif in_table and stripped == "":
+                        in_table = False
+
+                    # Check for table rows missing leading |
+                    if in_table and not stripped.startswith("|") and "|" in stripped and stripped and not stripped.startswith("*") and not stripped.startswith("#") and not stripped.startswith("-"):
+                        # Looks like a table row without leading |
+                        if re.match(r"^\S.*\|", stripped):
+                            logger.warning(
+                                f"Table row missing leading '|' in {md_file.name}:{i+1}: {stripped[:60]}"
+                            )
+                            status = False
+
+        return status
+
+    def check_duplicate_labels(self) -> bool:
+        """Warn when the same label appears in multiple files."""
+        logger.info("Checking for duplicate labels...")
+        status = True
+        label_locations: Dict[str, List[str]] = {}
+
+        for md_file in self.md_files:
+            with open(md_file, "r", encoding="utf-8") as f:
+                content = f.read()
+                # LaTeX labels
+                for label in self.label_pattern.findall(content):
+                    label_locations.setdefault(label, []).append(md_file.name)
+                # Pandoc labels (skip pure numbers — those are LaTeX \newcommand params)
+                for label in re.findall(r"\{#([a-zA-Z0-9_:-]+)", content):
+                    if not label.isdigit():
+                        label_locations.setdefault(label, []).append(md_file.name)
+
+        for label, files in label_locations.items():
+            if len(files) > 1:
+                logger.warning(
+                    f"Duplicate label '{label}' in: {', '.join(files)}"
+                )
+                status = False
+
+        return status
+
+    def check_figure_accessibility(self) -> bool:
+        """Verify figure references have meaningful alt text and captions."""
+        logger.info("Checking figure accessibility...")
+        status = True
+        MIN_CAPTION_LENGTH = 20
+
+        # Pattern matches ![alt](path) where alt might be empty
+        fig_pattern = re.compile(r"!\[([^\]]*)\]\(([^)]+)\)")
+
+        for md_file in self.md_files:
+            with open(md_file, "r", encoding="utf-8") as f:
+                content = f.read()
+                for match in fig_pattern.finditer(content):
+                    alt_text = match.group(1).strip()
+                    img_path = match.group(2).strip()
+
+                    if not alt_text:
+                        logger.warning(
+                            f"Empty alt text for image '{img_path}' in {md_file.name}"
+                        )
+                        status = False
+                    elif len(alt_text) < MIN_CAPTION_LENGTH:
+                        logger.warning(
+                            f"Short alt text ({len(alt_text)} chars) for image in {md_file.name}: '{alt_text[:40]}...'"
+                        )
+                        status = False
+
+        return status
+
     def run_all(self):
         """Run all verifications."""
         logger.info(f"Starting verification on {self.root_dir}...")
@@ -227,6 +323,9 @@ class ManuscriptVerifier:
             "Labels/Refs": self.check_labels_and_refs(),
             "Images/Links": self.check_images_and_links(),
             "Style": self.check_style(),
+            "Table Format": self.check_table_format(),
+            "Duplicate Labels": self.check_duplicate_labels(),
+            "Fig Accessibility": self.check_figure_accessibility(),
         }
 
         logger.info("-" * 40)
@@ -249,8 +348,14 @@ class ManuscriptVerifier:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Verify manuscript integrity.")
+    # Default to project's own manuscript directory (not CWD-relative)
+    project_dir = os.environ.get(
+        "PROJECT_DIR",
+        str(Path(__file__).resolve().parent.parent)
+    )
+    default_root = str(Path(project_dir) / "manuscript")
     parser.add_argument(
-        "--root", default="manuscript", help="Path to manuscript root directory."
+        "--root", default=default_root, help="Path to manuscript root directory."
     )
     args = parser.parse_args()
 

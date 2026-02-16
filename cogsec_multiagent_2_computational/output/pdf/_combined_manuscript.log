@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.3.8)  28 JAN 2026 06:38
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.3.8)  16 FEB 2026 11:16
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -186,42 +186,7 @@ LaTeX Font Info:    Redeclaring font encoding TS1 on input line 47.
 \g__um_primekern_muskip=\muskip18
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/unicode-math/unicode-math-table.t
-ex))) (/usr/local/texlive/2025/texmf-dist/tex/latex/lm/lmodern.sty
-Package: lmodern 2015/05/01 v1.6.1 Latin Modern Fonts
-LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
-(Font)                  OT1/cmr/m/n --> OT1/lmr/m/n on input line 22.
-LaTeX Font Info:    Overwriting symbol font `letters' in version `normal'
-(Font)                  OML/cmm/m/it --> OML/lmm/m/it on input line 23.
-LaTeX Font Info:    Overwriting symbol font `symbols' in version `normal'
-(Font)                  OMS/cmsy/m/n --> OMS/lmsy/m/n on input line 24.
-LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `normal'
-(Font)                  OMX/cmex/m/n --> OMX/lmex/m/n on input line 25.
-LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
-(Font)                  OT1/cmr/bx/n --> OT1/lmr/bx/n on input line 26.
-LaTeX Font Info:    Overwriting symbol font `letters' in version `bold'
-(Font)                  OML/cmm/b/it --> OML/lmm/b/it on input line 27.
-LaTeX Font Info:    Overwriting symbol font `symbols' in version `bold'
-(Font)                  OMS/cmsy/b/n --> OMS/lmsy/b/n on input line 28.
-LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
-(Font)                  OMX/cmex/m/n --> OMX/lmex/m/n on input line 29.
-LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
-(Font)                  OT1/cmr/bx/n --> OT1/lmr/bx/n on input line 31.
-LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
-(Font)                  OT1/cmss/m/n --> OT1/lmss/m/n on input line 32.
-LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
-(Font)                  OT1/cmr/m/it --> OT1/lmr/m/it on input line 33.
-LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
-(Font)                  OT1/cmtt/m/n --> OT1/lmtt/m/n on input line 34.
-LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `bold'
-(Font)                  OT1/cmr/bx/n --> OT1/lmr/bx/n on input line 35.
-LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  OT1/cmss/bx/n --> OT1/lmss/bx/n on input line 36.
-LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
-(Font)                  OT1/cmr/bx/it --> OT1/lmr/bx/it on input line 37.
-LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  OT1/cmtt/m/n --> OT1/lmtt/m/n on input line 38.
-)
-(/usr/local/texlive/2025/texmf-dist/tex/latex/upquote/upquote.sty
+ex))) (/usr/local/texlive/2025/texmf-dist/tex/latex/upquote/upquote.sty
 Package: upquote 2012/04/19 v1.3 upright-quote and grave-accent glyphs in verba
 tim
 
@@ -1144,45 +1109,45 @@ Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
 \Gm@layoutvoffset=\dimen317
 \Gm@dimlist=\toks56
 )
-Package hyperref Info: Option `colorlinks' set `true' on input line 223.
+Package hyperref Info: Option `colorlinks' set `true' on input line 226.
 
 (./_combined_manuscript.aux)
 \openout1 = `_combined_manuscript.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 229.
-LaTeX Font Info:    ... okay on input line 229.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 229.
-LaTeX Font Info:    ... okay on input line 229.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 229.
-LaTeX Font Info:    ... okay on input line 229.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 229.
-LaTeX Font Info:    ... okay on input line 229.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 229.
-LaTeX Font Info:    ... okay on input line 229.
-LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 229.
-LaTeX Font Info:    ... okay on input line 229.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 229.
-LaTeX Font Info:    ... okay on input line 229.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 229.
-LaTeX Font Info:    ... okay on input line 229.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 229.
-LaTeX Font Info:    ... okay on input line 229.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 229.
-LaTeX Font Info:    ... okay on input line 229.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 228.
+LaTeX Font Info:    ... okay on input line 228.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 228.
+LaTeX Font Info:    ... okay on input line 228.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 228.
+LaTeX Font Info:    ... okay on input line 228.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 228.
+LaTeX Font Info:    ... okay on input line 228.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 228.
+LaTeX Font Info:    ... okay on input line 228.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 228.
+LaTeX Font Info:    ... okay on input line 228.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 228.
+LaTeX Font Info:    ... okay on input line 228.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 228.
+LaTeX Font Info:    ... okay on input line 228.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 228.
+LaTeX Font Info:    ... okay on input line 228.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 228.
+LaTeX Font Info:    ... okay on input line 228.
 LaTeX Font Info:    Overwriting math alphabet `\mathrm' in version `normal'
-(Font)                  OT1/lmr/m/n --> TU/lmr/m/n on input line 229.
+(Font)                  OT1/cmr/m/n --> TU/lmr/m/n on input line 228.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
-(Font)                  OT1/lmr/m/it --> TU/lmr/m/it on input line 229.
+(Font)                  OT1/cmr/m/it --> TU/lmr/m/it on input line 228.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
-(Font)                  OT1/lmr/bx/n --> TU/lmr/bx/n on input line 229.
+(Font)                  OT1/cmr/bx/n --> TU/lmr/bx/n on input line 228.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
-(Font)                  OT1/lmss/m/n --> TU/lmss/m/n on input line 229.
+(Font)                  OT1/cmss/m/n --> TU/lmss/m/n on input line 228.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  OT1/lmss/bx/n --> TU/lmss/bx/n on input line 229.
+(Font)                  OT1/cmss/bx/n --> TU/lmss/bx/n on input line 228.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
-(Font)                  OT1/lmtt/m/n --> TU/lmtt/m/n on input line 229.
+(Font)                  OT1/cmtt/m/n --> TU/lmtt/m/n on input line 228.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  OT1/lmtt/m/n --> TU/lmtt/bx/n on input line 229.
+(Font)                  OT1/cmtt/m/n --> TU/lmtt/bx/n on input line 228.
 
 Package fontspec Info: 
 (fontspec)             latinmodern-math scale = 0.9999964596882403.
@@ -1213,7 +1178,7 @@ pt=math;language=dflt;"
 pt=math;language=dflt;"
 
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(0)/m/n' will be
-(Font)              scaled to size 10.0pt on input line 229.
+(Font)              scaled to size 10.0pt on input line 228.
 
 Package fontspec Info: 
 (fontspec)             latinmodern-math scale = 0.9999964596882403.
@@ -1256,18 +1221,18 @@ ath.otf]/OT:script=math;language=dflt;+ssty=1;"
 pt=math;language=dflt;"
 
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 10.0pt on input line 229.
+(Font)              scaled to size 10.0pt on input line 228.
 LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
-(Font)              `operators' in the math version `normal' on input line 229.
+(Font)              `operators' in the math version `normal' on input line 228.
 
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
-(Font)                  OT1/lmr/m/n --> TU/latinmodern-math.otf(1)/m/n on input
- line 229.
+(Font)                  OT1/cmr/m/n --> TU/latinmodern-math.otf(1)/m/n on input
+ line 228.
 LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
-(Font)              `operators' in the math version `bold' on input line 229.
+(Font)              `operators' in the math version `bold' on input line 228.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
-(Font)                  OT1/lmr/bx/n --> TU/latinmodern-math.otf(1)/b/n on inpu
-t line 229.
+(Font)                  OT1/cmr/bx/n --> TU/latinmodern-math.otf(1)/b/n on inpu
+t line 228.
 
 Package fontspec Info: 
 (fontspec)             latinmodern-math scale = 0.9999964596882403.
@@ -1341,15 +1306,15 @@ ript=math;language=dflt;"<6-8.5>s*[1.000096459334209]"[latinmodern-math.otf]/OT
 t=math;language=dflt;"
 
 LaTeX Font Info:    Encoding `OMS' has changed to `TU' for symbol font
-(Font)              `symbols' in the math version `normal' on input line 229.
+(Font)              `symbols' in the math version `normal' on input line 228.
 LaTeX Font Info:    Overwriting symbol font `symbols' in version `normal'
-(Font)                  OMS/lmsy/m/n --> TU/latinmodern-math.otf(2)/m/n on inpu
-t line 229.
+(Font)                  OMS/cmsy/m/n --> TU/latinmodern-math.otf(2)/m/n on inpu
+t line 228.
 LaTeX Font Info:    Encoding `OMS' has changed to `TU' for symbol font
-(Font)              `symbols' in the math version `bold' on input line 229.
+(Font)              `symbols' in the math version `bold' on input line 228.
 LaTeX Font Info:    Overwriting symbol font `symbols' in version `bold'
-(Font)                  OMS/lmsy/b/n --> TU/latinmodern-math.otf(2)/b/n on inpu
-t line 229.
+(Font)                  OMS/cmsy/b/n --> TU/latinmodern-math.otf(2)/b/n on inpu
+t line 228.
 
 Package fontspec Info: 
 (fontspec)             latinmodern-math scale = 0.9999964596882403.
@@ -1418,16 +1383,16 @@ pt=math;language=dflt;"
 
 LaTeX Font Info:    Encoding `OMX' has changed to `TU' for symbol font
 (Font)              `largesymbols' in the math version `normal' on input line 2
-29.
+28.
 LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `normal'
-(Font)                  OMX/lmex/m/n --> TU/latinmodern-math.otf(3)/m/n on inpu
-t line 229.
+(Font)                  OMX/cmex/m/n --> TU/latinmodern-math.otf(3)/m/n on inpu
+t line 228.
 LaTeX Font Info:    Encoding `OMX' has changed to `TU' for symbol font
-(Font)              `largesymbols' in the math version `bold' on input line 229
+(Font)              `largesymbols' in the math version `bold' on input line 228
 .
 LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
-(Font)                  OMX/lmex/m/n --> TU/latinmodern-math.otf(3)/b/n on inpu
-t line 229.
+(Font)                  OMX/cmex/m/n --> TU/latinmodern-math.otf(3)/b/n on inpu
+t line 228.
 
 
 Package unicode-math Warning: Using \overbracket and \underbracket from
@@ -1447,13 +1412,13 @@ Package unicode-math Warning: I'm going to overwrite the following commands
 (unicode-math)                colon-like commands, using them will lead to
 (unicode-math)                inconsistencies.
 
-LaTeX Info: Redefining \microtypecontext on input line 229.
-Package microtype Info: Applying patch `item' on input line 229.
-Package microtype Info: Applying patch `toc' on input line 229.
-Package microtype Info: Applying patch `eqnum' on input line 229.
-Package microtype Info: Applying patch `footnote' on input line 229.
-Package microtype Info: Applying patch `verbatim' on input line 229.
-LaTeX Info: Redefining \microtypesetup on input line 229.
+LaTeX Info: Redefining \microtypecontext on input line 228.
+Package microtype Info: Applying patch `item' on input line 228.
+Package microtype Info: Applying patch `toc' on input line 228.
+Package microtype Info: Applying patch `eqnum' on input line 228.
+Package microtype Info: Applying patch `footnote' on input line 228.
+Package microtype Info: Applying patch `verbatim' on input line 228.
+LaTeX Info: Redefining \microtypesetup on input line 228.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using protrusion set `basicmath'.
 Package microtype Info: No adjustment of tracking.
@@ -1469,7 +1434,7 @@ Package footnotehyper Info: Using the \@makefntext{} approach (see doc).
 (footnotehyper)    try sending the author a small illustrative document.
 (footnotehyper)    To turn off this message, add \footnotehyperwarnfalse
 (footnotehyper)    to the preamble.
-Package hyperref Info: Link coloring ON on input line 229.
+Package hyperref Info: Link coloring ON on input line 228.
 
 Package pgfplots notification 'compat/show suggested version=true': document ha
 s been generated with the most recent feature set (\pgfplotsset{compat=1.18}).
@@ -1509,38 +1474,32 @@ s been generated with the most recent feature set (\pgfplotsset{compat=1.18}).
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 12.0pt on input line 232.
+(Font)              scaled to size 12.0pt on input line 231.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 8.0pt on input line 232.
+(Font)              scaled to size 8.0pt on input line 231.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 6.0pt on input line 232.
-LaTeX Font Info:    Trying to load font information for OML+lmm on input line 2
-32.
-(/usr/local/texlive/2025/texmf-dist/tex/latex/lm/omllmm.fd
-File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-)
+(Font)              scaled to size 6.0pt on input line 231.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 12.0011pt on input line 232.
+(Font)              scaled to size 12.0011pt on input line 231.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 8.00073pt on input line 232.
+(Font)              scaled to size 8.00073pt on input line 231.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 6.00055pt on input line 232.
+(Font)              scaled to size 6.00055pt on input line 231.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 11.99872pt on input line 232.
+(Font)              scaled to size 11.99872pt on input line 231.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 7.99915pt on input line 232.
+(Font)              scaled to size 7.99915pt on input line 231.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 5.99936pt on input line 232.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 232
+(Font)              scaled to size 5.99936pt on input line 231.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 231
 .
-
 (/usr/local/texlive/2025/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
 (/usr/local/texlive/2025/texmf-dist/tex/latex/microtype/mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 232
+LaTeX Font Info:    Trying to load font information for U+msb on input line 231
 .
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/amsfonts/umsb.fd
@@ -1550,24 +1509,21 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 )
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 7.0pt on input line 247.
+(Font)              scaled to size 7.0pt on input line 246.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 5.0pt on input line 247.
+(Font)              scaled to size 5.0pt on input line 246.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 10.00092pt on input line 247.
+(Font)              scaled to size 10.00092pt on input line 246.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 7.00064pt on input line 247.
+(Font)              scaled to size 7.00064pt on input line 246.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 5.00046pt on input line 247.
+(Font)              scaled to size 5.00046pt on input line 246.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 9.99893pt on input line 247.
+(Font)              scaled to size 9.99893pt on input line 246.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 6.99925pt on input line 247.
+(Font)              scaled to size 6.99925pt on input line 246.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 4.99947pt on input line 247.
-
-Missing character: There is no δ (U+03B4) in font [lmroman10-regular]:mapping=t
-ex-text;!
+(Font)              scaled to size 4.99947pt on input line 246.
 
 
 [1
@@ -1575,42 +1531,15 @@ ex-text;!
 ]
 
 [2]
+
+[3]
 File: ../figures/cif_comprehensive.pdf Graphic file (type pdf)
 <use ../figures/cif_comprehensive.pdf>
 
 
-[3]
-
 [4]
 
-LaTeX Warning: Reference `sec:experimental-setup' on page 1 undefined on input 
-line 446.
-
-
-LaTeX Warning: Reference `sec:analysis' on page 1 undefined on input line 452.
-
-
-
 [5]
-Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
-put line 493.
-
-! Missing $ inserted.
-<inserted text> 
-                $
-l.533 
-      
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
-
-Overfull \hbox (78.75732pt too wide) in paragraph at lines 527--533
-[][][][] [][] [][][][][]$ \TU/lmr/m/n/10 for unverified beliefs, and the promot
-ion rule requiring $[][] [] [][][][][][][][][][][][][][][][][][][][] [][][][][]
-[][][][][][][][][][][][][][][][][][][][][][][][]$ 
- []
-
-
 
 [6]
 
@@ -1618,27 +1547,91 @@ ion rule requiring $[][] [] [][][][][][][][][][][][][][][][][][][][] [][][][][]
 
 [8]
 
+LaTeX Warning: Reference `tab:related-work-comparison' on page 1 undefined on i
+nput line 817.
+
+
+
 [9]
 
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.898 ... Trust Update (bounded delegation with \(
+                                                  \delta^d\) decay),
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+Overfull \hbox (67.65475pt too wide) in paragraph at lines 895--902
+\TU/lmr/m/n/10 cation), Belief Sandboxing (provisional isolation with $[][] [] 
+[][][][][][][][][][][][][][][][][][][][][][][][] [][][][][][][][][][][][][][][]
+[][][][][][][][][][][][][][][][][][][][]$
+ []
+
+
+
 [10]
+Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
+put line 952.
+
+Overfull \hbox (112.782pt too wide) in paragraph at lines 985--989
+[]\TU/lmr/bx/n/10 Implementation\TU/lmr/m/n/10 : \TU/lmtt/m/n/10 src/core/firew
+all.py \TU/lmr/m/n/10 — \TU/lmtt/m/n/10 CognitiveFirewall.classify()\TU/lmr/m/n
+/10 , \TU/lmtt/m/n/10 PatternDetector.score_injection()\TU/lmr/m/n/10 ,
+ []
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.1002 
+       
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+
+Overfull \hbox (6.15373pt too wide) in paragraph at lines 998--1002
+\TU/lmr/m/n/10 boxing rules, including the promotion rule requiring $[][] [] []
+[][][][][][][][][][][][][][][][][][][] [][][][][][][][][][][][][][][][][][][][]
+[][][][][][][][][]$ 
+ []
+
+
 
 [11]
+Overfull \hbox (81.282pt too wide) in paragraph at lines 1045--1049
+[]\TU/lmr/bx/n/10 Implementation\TU/lmr/m/n/10 : \TU/lmtt/m/n/10 src/core/sandb
+ox.py \TU/lmr/m/n/10 — \TU/lmtt/m/n/10 SandboxManager.add_provisional()\TU/lmr/
+m/n/10 , \TU/lmtt/m/n/10 SandboxManager.promote()\TU/lmr/m/n/10 ,
+ []
+
+
+Overfull \hbox (86.532pt too wide) in paragraph at lines 1101--1106
+[]\TU/lmr/bx/n/10 Implementation\TU/lmr/m/n/10 : \TU/lmtt/m/n/10 src/core/trust
+.py \TU/lmr/m/n/10 — \TU/lmtt/m/n/10 TrustCalculus.compute_trust()\TU/lmr/m/n/1
+0 , \TU/lmtt/m/n/10 TrustCalculus.delegate_trust()\TU/lmr/m/n/10 ,
+ []
+
+
 
 [12]
 
 [13]
-Underfull \hbox (badness 10000) in paragraph at lines 969--970
-[]|\TU/lmr/m/n/10 Three-tier classifier (AC-
+Overfull \hbox (91.782pt too wide) in paragraph at lines 1165--1169
+[]\TU/lmr/bx/n/10 Implementation\TU/lmr/m/n/10 : \TU/lmtt/m/n/10 src/core/tripw
+ire.py \TU/lmr/m/n/10 — \TU/lmtt/m/n/10 CognitiveTripwire.check()\TU/lmr/m/n/10
+ , \TU/lmtt/m/n/10 CognitiveTripwire.check_single()\TU/lmr/m/n/10 ,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 969--970
-\TU/lmr/m/n/10 CEPT/QUARANTINE/REJECT) with config-
- []
-
-
-Underfull \hbox (badness 1077) in paragraph at lines 969--970
-\TU/lmr/m/n/10 urable thresholds. Combines pattern matching,
+Overfull \hbox (97.032pt too wide) in paragraph at lines 1267--1270
+[]\TU/lmr/bx/n/10 Implementation\TU/lmr/m/n/10 : \TU/lmtt/m/n/10 src/core/detec
+tion.py \TU/lmr/m/n/10 — \TU/lmtt/m/n/10 DriftDetector.compute_drift()\TU/lmr/m
+/n/10 , \TU/lmtt/m/n/10 DriftDetector.is_anomalous()\TU/lmr/m/n/10 ,
  []
 
 
@@ -1647,29 +1640,74 @@ Underfull \hbox (badness 1077) in paragraph at lines 969--970
 
 [15]
 
-! LaTeX Error: Lonely \item--perhaps a missing list environment.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1142 
-       
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-Underfull \hbox (badness 10000) detected at line 1142
-[][]
+[16]
+Overfull \hbox (0.65pt too wide) in paragraph at lines 1284--1288
+[]\TU/lmr/bx/n/10 Reproducibility\TU/lmr/m/n/10 : Default values were determine
+d via \TU/lmtt/m/n/10 scripts/run_sensitivity_analysis.py
  []
 
+! Missing $ inserted.
+<inserted text> 
+                $
+l.1324 &
+         2 & \([1, n-1]\) & Required confirmations \\
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.1325 Consistency threshold & \(\tau) &
+                                         0.8 & \((0, 1)\) & Contradiction
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.1359 Base trust weight & \(\alpha) &
+                                       0.3 & \([0, 1]\) & Direct observation
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.1361 Reputation weight & \(\beta) &
+                                      0.5 & \([0, 1]\) & Historical accuracy
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.1363 Context weight & \(\gamma) &
+                                    0.2 & \([0, 1]\) & Task-specific weight \\
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.1366 Learning rate & \(\eta) &
+                                 0.1 & \((0, 1)\) & Reputation update rate \\
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
 
 
-[16]
 
 [17]
-LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 1226.
+! Missing $ inserted.
+<inserted text> 
+                $
+l.1504 Max delta weight & \(\lambda) &
+                                       0.3 & \([0, 1]\) & Sudden change
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
 
 
 [18]
@@ -1680,9 +1718,17 @@ File: ../figures/comprehensive_taxonomy.pdf Graphic file (type pdf)
 
 
 [20]
+
+[21]
 File: ../figures/attack_surface.pdf Graphic file (type pdf)
 <use ../figures/attack_surface.pdf>
 
+
+[22]
+
+[23]
+
+[24]
 
 ! LaTeX Error: Environment example undefined.
 
@@ -1690,19 +1736,12 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.1544 \begin{example}
+l.1892 \begin{example}
                       [Direct Injection]
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
-
-
-[21]
-
-[22]
-
-[23]
 
 ! LaTeX Error: \begin{document} ended by \end{example}.
 
@@ -1710,7 +1749,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.1562 \end{example}
+l.1910 \end{example}
                     
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -1723,7 +1762,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.1564 \begin{example}
+l.1912 \begin{example}
                       [Indirect Injection]
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -1736,7 +1775,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.1586 \end{example}
+l.1934 \end{example}
                     
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -1749,141 +1788,8 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.1588 \begin{example}
+l.1936 \begin{example}
                       [Nested Injection]
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
-! LaTeX Error: \begin{document} ended by \end{example}.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1607 \end{example}
-                    
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
-! LaTeX Error: Environment example undefined.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1611 \begin{example}
-                      [Identity Impersonation]
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
-
-[24]
-
-! LaTeX Error: \begin{document} ended by \end{example}.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1629 \end{example}
-                    
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
-! LaTeX Error: Environment example undefined.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1631 \begin{example}
-                      [Trust Inflation]
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
-! LaTeX Error: \begin{document} ended by \end{example}.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1649 \end{example}
-                    
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
-! LaTeX Error: Environment example undefined.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1651 \begin{example}
-                      [Delegation Abuse]
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
-! LaTeX Error: \begin{document} ended by \end{example}.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1670 \end{example}
-                    
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
-! LaTeX Error: Environment example undefined.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1674 \begin{example}
-                      [Direct Belief Injection]
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
-! LaTeX Error: \begin{document} ended by \end{example}.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1690 \end{example}
-                    
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
-! LaTeX Error: Environment example undefined.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1692 \begin{example}
-                      [Evidence Fabrication]
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
@@ -1898,7 +1804,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.1710 \end{example}
+l.1955 \end{example}
                     
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -1911,8 +1817,8 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.1712 \begin{example}
-                      [Progressive Drift]
+l.1959 \begin{example}
+                      [Identity Impersonation]
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
@@ -1924,7 +1830,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.1734 \end{example}
+l.1977 \end{example}
                     
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -1937,8 +1843,8 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.1738 \begin{example}
-                      [Sybil Attack]
+l.1979 \begin{example}
+                      [Trust Inflation]
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
@@ -1950,7 +1856,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.1756 \end{example}
+l.1997 \end{example}
                     
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -1963,8 +1869,8 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.1758 \begin{example}
-                      [Consensus Poisoning]
+l.1999 \begin{example}
+                      [Delegation Abuse]
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
@@ -1979,7 +1885,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.1777 \end{example}
+l.2018 \end{example}
                     
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -1992,7 +1898,140 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.1779 \begin{example}
+l.2022 \begin{example}
+                      [Direct Belief Injection]
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: \begin{document} ended by \end{example}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.2038 \end{example}
+                    
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: Environment example undefined.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.2040 \begin{example}
+                      [Evidence Fabrication]
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: \begin{document} ended by \end{example}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.2058 \end{example}
+                    
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: Environment example undefined.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.2060 \begin{example}
+                      [Progressive Drift]
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+
+[27]
+
+! LaTeX Error: \begin{document} ended by \end{example}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.2082 \end{example}
+                    
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: Environment example undefined.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.2086 \begin{example}
+                      [Sybil Attack]
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: \begin{document} ended by \end{example}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.2104 \end{example}
+                    
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: Environment example undefined.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.2106 \begin{example}
+                      [Consensus Poisoning]
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: \begin{document} ended by \end{example}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.2125 \end{example}
+                    
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: Environment example undefined.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.2127 \begin{example}
                       [Timing Attack]
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -2005,7 +2044,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.1797 \end{example}
+l.2145 \end{example}
                     
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -2013,18 +2052,19 @@ or  <return>  to continue without it.
 
 
 
-[27]
-
 [28]
+
+LaTeX Warning: Reference `tab:arch-ci' on page 1 undefined on input line 2222.
+
+
+LaTeX Warning: Reference `tab:architecture-insights' on page 1 undefined on inp
+ut line 2233.
+
+
 
 [29]
 
 [30]
-File: ../figures/detection_performance.pdf Graphic file (type pdf)
-<use ../figures/detection_performance.pdf>
-File: ../figures/roc_curves.pdf Graphic file (type pdf)
-<use ../figures/roc_curves.pdf>
-
 
 [31]
 
@@ -2033,10 +2073,63 @@ File: ../figures/roc_curves.pdf Graphic file (type pdf)
 [33]
 
 [34]
+Underfull \hbox (badness 1960) in paragraph at lines 2675--2679
+[]\TU/lmr/bx/n/10 Operational Definition of Detection. \TU/lmr/m/n/10 An attack
+ is classified as \TU/lmtt/m/n/10 detected[][] when the CIF
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 2675--2679
+\TU/lmtt/m/n/10 pipeline[]s aggregate confidence score exceeds the configured t
+hreshold ($\tau = 0.5$
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 2675--2679
+\TU/lmtt/m/n/10 by default). The confidence score combines firewall pattern-mat
+ching scores, sandbox
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 2675--2679
+\TU/lmtt/m/n/10 quarantine signals, tripwire alerts, and trust calculus violati
+ons via the learned fusion
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 2675--2679
+\TU/lmtt/m/n/10 operator (Section 2). Ground truth labels were assigned by two 
+independent annotators
+ []
+
+File: ../figures/detection_performance.pdf Graphic file (type pdf)
+<use ../figures/detection_performance.pdf>
+
+Overfull \hbox (0.11523pt too wide) in alignment at lines 2743--2761
+ [] [] [] [] [] [] [] 
+ []
+
+
+Overfull \hbox (0.11523pt too wide) in alignment at lines 2761--2763
+ [] [] [] [] [] [] [] 
+ []
+
+
+Overfull \hbox (0.11523pt too wide) in alignment at lines 2763--2775
+ [] [] [] [] [] [] [] 
+ []
 
 [35]
+File: ../figures/roc_curves.pdf Graphic file (type pdf)
+<use ../figures/roc_curves.pdf>
+
 
 [36]
+
+LaTeX Warning: Reference `tab:architecture-insights' on page 1 undefined on inp
+ut line 2876.
+
+
 
 [37]
 
@@ -2044,16 +2137,523 @@ File: ../figures/roc_curves.pdf Graphic file (type pdf)
 
 [39]
 
-[40]
+[40] [41]
 
-[41]
+[42]
+Underfull \hbox (badness 2941) in paragraph at lines 3268--3273
+[]\TU/lmr/bx/n/10 Sensitivity Analysis \TU/lmr/m/n/10 ([][]Section 13[][]): Fir
+ewall threshold, trust decay, corroboration count,
+ []
 
-LaTeX Warning: File `figures/trust_decay.pdf' not found on input line 2818.
+
+Underfull \hbox (badness 2368) in paragraph at lines 3268--3273
+\TU/lmr/m/n/10 window size, and combined parameter sensitivity analyses with co
+nfidence intervals. See
+ []
+
+
+
+[43]
+
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.3293 Detection Rate & 0.94 & \[0.92, 0.96\]
+                                              & +1 \\
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.3294 False Positive Rate & 0.06 & \[0.04, 0.08\]
+                                                   & +0.06 \\
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.3295 Precision & 0.94 & \[0.92, 0.96\]
+                                         & N/A \\
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.3296 F1 Score & 0.94 & \[0.92, 0.96\]
+                                        & N/A \\
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.3297 Latency Overhead & 23\% & \[20\%, 26\%\]
+                                                & N/A \\
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.3298 Throughput Ratio & 0.81 & \[0.78, 0.84\]
+                                                & N/A \\
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.3299 Memory Overhead & 67MB & \[58, 76\]
+                                           & N/A \\
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+
+[44]
+
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.3429 CIF detect vs Firewall & 4.8 & \[3.1, 7.4\]
+                                                   \\
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.3430 CIF detect vs Sandbox & 8.2 & \[5.4, 12.5\]
+                                                   \\
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+
+[45]
+
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.3495 Overall FPR & 0.06 & \[0.04, 0.08\]
+                                           & Wilson \\
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.3496 Precision & 0.94 & \[0.92, 0.96\]
+                                         & Wilson \\
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.3497 F1 Score & 0.94 & \[0.92, 0.96\]
+                                        & Bootstrap \\
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.3514 Claude Code & 0.94 & \[0.90, 0.97\]
+                                           & 0.06 & \[0.03, 0.10\] \\
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.3514 ...& \[0.90, 0.97\] & 0.06 & \[0.03, 0.10\]
+                                                   \\
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.3515 AutoGPT & 0.94 & \[0.90, 0.97\]
+                                       & 0.07 & \[0.04, 0.11\] \\
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.3515 ...& \[0.90, 0.97\] & 0.07 & \[0.04, 0.11\]
+                                                   \\
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.3516 CrewAI & 0.96 & \[0.93, 0.98\]
+                                      & 0.05 & \[0.03, 0.08\] \\
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.3516 ...& \[0.93, 0.98\] & 0.05 & \[0.03, 0.08\]
+                                                   \\
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.3517 LangGraph & 0.98 & \[0.95, 0.99\]
+                                         & 0.04 & \[0.02, 0.07\] \\
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.3517 ...& \[0.95, 0.99\] & 0.04 & \[0.02, 0.07\]
+                                                   \\
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.3518 MetaGPT & 0.95 & \[0.91, 0.97\]
+                                       & 0.06 & \[0.03, 0.10\] \\
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.3518 ...& \[0.91, 0.97\] & 0.06 & \[0.03, 0.10\]
+                                                   \\
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.3519 Camel & 0.92 & \[0.87, 0.95\]
+                                     & 0.08 & \[0.05, 0.12\] \\
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.3519 ...& \[0.87, 0.95\] & 0.08 & \[0.05, 0.12\]
+                                                   \\
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+[46]
+
+LaTeX Warning: Reference `tab:effect-sizes' on page 1 undefined on input line 3
+566.
+
+
+
+[47]
+! Missing $ inserted.
+<inserted text> 
+                $
+l.3607 \(\tau) &
+                 TPR & 95\% CI (TPR) & FPR & 95\% CI (FPR) & F1 \\
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.3612 0.4 & 0.97 & \[0.95, 0.98\]
+                                   & 0.12 & \[0.09, 0.15\] & 0.93 \\
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.3612 ...& \[0.95, 0.98\] & 0.12 & \[0.09, 0.15\]
+                                                   & 0.93 \\
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.3613 0.5 & 0.94 & \[0.92, 0.96\]
+                                   & 0.06 & \[0.04, 0.08\] & 0.94 \\
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.3613 ...& \[0.92, 0.96\] & 0.06 & \[0.04, 0.08\]
+                                                   & 0.94 \\
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.3614 0.6 & 0.91 & \[0.88, 0.93\]
+                                   & 0.04 & \[0.02, 0.06\] & 0.93 \\
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.3614 ...& \[0.88, 0.93\] & 0.04 & \[0.02, 0.06\]
+                                                   & 0.93 \\
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.3615 0.7 & 0.87 & \[0.84, 0.90\]
+                                   & 0.02 & \[0.01, 0.04\] & 0.92 \\
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.3615 ...& \[0.84, 0.90\] & 0.02 & \[0.01, 0.04\]
+                                                   & 0.92 \\
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.3616 0.8 & 0.82 & \[0.78, 0.85\]
+                                   & 0.01 & \[0.00, 0.02\] & 0.90 \\
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.3616 ...& \[0.78, 0.85\] & 0.01 & \[0.00, 0.02\]
+                                                   & 0.90 \\
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.3617 0.9 & 0.72 & \[0.67, 0.76\]
+                                   & 0.01 & \[0.00, 0.02\] & 0.84 \\
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.3617 ...& \[0.67, 0.76\] & 0.01 & \[0.00, 0.02\]
+                                                   & 0.84 \\
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+LaTeX Warning: File `figures/trust_decay.pdf' not found on input line 3628.
 
 ! Unable to load picture or PDF file 'figures/trust_decay.pdf'.
 <to be read again> 
                    }
-l.2818 ...gation depth.}]{figures/trust_decay.pdf}
+l.3628 ...gation depth.}]{figures/trust_decay.pdf}
                                                   
 The requested image couldn't be read because
 it was not a recognized image format.
@@ -2065,7 +2665,7 @@ See the graphics package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.2818 ...gation depth.}]{figures/trust_decay.pdf}
+l.3628 ...gation depth.}]{figures/trust_decay.pdf}
                                                   
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -2078,7 +2678,7 @@ See the graphics package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.2818 ...gation depth.}]{figures/trust_decay.pdf}
+l.3628 ...gation depth.}]{figures/trust_decay.pdf}
                                                   
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -2089,46 +2689,59 @@ File: figures/trust_decay.pdf Graphic file (type pdf)
 ! Unable to load picture or PDF file 'figures/trust_decay.pdf'.
 <to be read again> 
                    \GPT@clipend 
-l.2818 ...gation depth.}]{figures/trust_decay.pdf}
+l.3628 ...gation depth.}]{figures/trust_decay.pdf}
                                                   
 The requested image couldn't be read because
 it was not a recognized image format.
 
-
-
-[42]
-File: ../figures/ablation_study.pdf Graphic file (type pdf)
-<use ../figures/ablation_study.pdf>
-
-
-[43]
-
-[44]
-Missing character: There is no ∼ (U+223C) in font [lmroman10-regular]:mapping=t
-ex-text;!
-
-
-[45]
-
-[46]
-
-[47]
-File: ../figures/defense_composition.pdf Graphic file (type pdf)
-<use ../figures/defense_composition.pdf>
-
-
-[48]
-
-[49]
-
-[50]
-
-[51]
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.3470 \(\alpha, \beta, \gamma) &
-                                  Trust weight parameters & Equation 5 \\
+l.3674 \(\kappa) &
+                   Attack Bypass Rate & FPR & Latency Overhead \\
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+[48]
+
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.3690 increases to \(
+                      \kappa = 4\) and \(\kappa = 5\) yield smaller bypass
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+Overfull \hbox (120.22473pt too wide) in paragraph at lines 3686--3694
+\TU/lmr/m/n/10 diminishing-returns curve: increasing $[][][][][][][][][][][][][
+][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
+[][][][][][][][][][][][][][] [][][][][][][][][][][][][][][][][][][] []
+ []
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.3733 \(\tau_{firewall}\) & \(\kappa) &
+                                         4.12 & 0.017 & 0.04 \\
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.3734 \(\delta\) & \(\kappa) &
+                                1.89 & 0.154 & 0.02 \\
 I've inserted something that you may have forgotten.
 (See the <inserted text> above.)
 With luck, this will get me unwedged. But if you
@@ -2137,27 +2750,297 @@ my insertion and my current dilemma will both disappear.
 
 
 
+[49]
+! Missing $ inserted.
+<inserted text> 
+                $
+l.3798 \(\kappa) &
+                   2 & Balances corroboration security with latency;
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+Missing character: There is no ∼ (U+223C) in font [lmroman10-regular]:mapping=t
+ex-text;!
+
+
+[50]
+Overfull \hbox (59.03pt too wide) in paragraph at lines 3823--3828
+[]\TU/lmr/bx/n/10 Reproducibility\TU/lmr/m/n/10 : Ablation data from \TU/lmtt/m
+/n/10 scripts/run_ablation.py \TU/lmr/m/n/10 → \TU/lmtt/m/n/10 output/data/abla
+tion_results.json\TU/lmr/m/n/10 .
+ []
+
+
+Overfull \hbox (18.25499pt too wide) in paragraph at lines 3823--3828
+\TU/lmr/m/n/10 Scalability data from \TU/lmtt/m/n/10 scripts/run_colony_benchma
+rks.py \TU/lmr/m/n/10 → \TU/lmtt/m/n/10 output/data/colony_results.json\TU/lmr/
+m/n/10 . 
+ []
+
+File: ../figures/ablation_study.pdf Graphic file (type pdf)
+<use ../figures/ablation_study.pdf>
+
+Overfull \hbox (0.11523pt too wide) in alignment at lines 3867--3885
+ [] [] [] [] [] [] [] 
+ []
+
+
+Overfull \hbox (0.11523pt too wide) in alignment at lines 3885--3887
+ [] [] [] [] [] [] [] 
+ []
+
+
+Overfull \hbox (0.11523pt too wide) in alignment at lines 3887--3896
+ [] [] [] [] [] [] [] 
+ []
+
+[51]
+
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.3960 3 & 14ms & \[12, 17\]
+                             & 112MB & 78ms \\
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.3961 5 & 18ms & \[15, 22\]
+                             & 134MB & 112ms \\
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.3962 7 & 24ms & \[20, 29\]
+                             & 167MB & 189ms \\
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.3963 10 & 31ms & \[26, 38\]
+                              & 201MB & 287ms \\
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.3964 15 & 45ms & \[38, 54\]
+                              & 278MB & 456ms \\
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.3965 20 & 58ms & \[49, 70\]
+                              & 356MB & 634ms \\
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.3966 30 & 89ms & \[75, 106\]
+                               & 523MB & 1.1s \\
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.3967 50 & 142ms & \[120, 169\]
+                                 & 823MB & 1.8s \\
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.3968 100 & 312ms & \[265, 372\]
+                                  & 1.6GB & 4.2s \\
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+
 [52]
-Underfull \hbox (badness 7344) in paragraph at lines 3705--3706
-[]|\TU/lmr/m/n/10 Incremental learn-
- []
+
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.3988 ... (intercept) & 8.2 & 1.1 & \[6.0, 10.4\]
+                                                   &
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 3706--3707
-[]|\TU/lmr/m/n/10 Adaptive thresh-
- []
+! LaTeX Error: Bad math environment delimiter.
 
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.3990 ..._1\) (linear) & 1.8 & 0.3 & \[1.2, 2.4\]
+                                                   &
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.3992 ...atic) & 0.012 & 0.003 & \[0.006, 0.018\]
+                                                   &
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.4016 ...intercept) & 78.3 & 5.6 & \[67.1, 89.5\]
+                                                   &
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.4018 ...) (linear) & 12.4 & 1.2 & \[10.0, 14.8\]
+                                                   &
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.4020 ...atic) & 0.089 & 0.012 & \[0.065, 0.113\]
+                                                   &
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+Missing character: There is no ∼ (U+223C) in font [lmroman10-regular]:mapping=t
+ex-text;!
 
 
 [53]
+File: ../figures/defense_composition.pdf Graphic file (type pdf)
+<use ../figures/defense_composition.pdf>
+
+Overfull \hbox (6.1655pt too wide) in paragraph at lines 4135--4136
+\TU/lmr/bx/n/10 Table: Architecture vulnerability patterns and observed CIF def
+ense response. \TU/lmr/m/n/10 {#tab:architecture-
+ []
+
+
 
 [54]
 
 [55]
 
+LaTeX Warning: Reference `tab:arch-ci' on page 1 undefined on input line 4191.
+
+
+LaTeX Warning: Reference `tab:agent-scaling' on page 1 undefined on input line 
+4249.
+
+Missing character: There is no ∼ (U+223C) in font [lmroman10-regular]:mapping=t
+ex-text;!
+
+LaTeX Warning: Reference `tab:agent-scaling' on page 1 undefined on input line 
+4261.
+
+
+
 [56]
 
+LaTeX Warning: Reference `tab:component-removal' on page 1 undefined on input l
+ine 4352.
+
+Missing character: There is no ≤ (U+2264) in font [lmroman10-regular]:mapping=t
+ex-text;!
+
+
 [57]
+
+LaTeX Warning: Reference `tab:minimal-configs' on page 1 undefined on input lin
+e 4363.
+
+
 
 [58]
 
@@ -2165,11 +3048,151 @@ Underfull \hbox (badness 10000) in paragraph at lines 3706--3707
 
 [60]
 
+LaTeX Warning: Reference `tab:minimal-configs' on page 1 undefined on input lin
+e 4621.
+
+
+LaTeX Warning: Reference `tab:architecture-insights' on page 1 undefined on inp
+ut line 4627.
+
+
+
 [61]
 
 [62]
+
+[63]
+! Missing $ inserted.
+<inserted text> 
+                $
+l.4792 \(\alpha, \beta, \gamma) &
+                                  Trust weight parameters & Equation 5 \\
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+[64]
+
+[65]
+! Missing $ inserted.
+<inserted text> 
+                $
+l.4941 Detector & AUC & F1-max \(\tau) &
+                                         TPR@1\%FPR & TPR@5\%FPR \\
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.4966 Drift Score & 0.87 & \[0.84, 0.90\]
+                                           \\
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.4967 Ensemble & 0.94 & \[0.92, 0.96\]
+                                        \\
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+
+[66]
+Overfull \vbox (204.83575pt too high) has occurred while \output is active []
+
+
+
+[67] [68]
+
+LaTeX Warning: Reference `tab:hybrid-tradeoffs' on page 1 undefined on input li
+ne 5220.
+
+
+
+[69]
+
+[70]
+LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <10> not available
+(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 5354.
+
+
+[71]
+
+[72]
+
+[73]
+
+[74]
+
+[75]
+
+[76]
+
+[77]
+Underfull \hbox (badness 1024) in paragraph at lines 5803--5804
+[]\TU/lmr/bx/n/10 Table: Firewall module API: Classes for message classificatio
+n and threat detection.
+ []
+
+[78]
+Underfull \hbox (badness 2310) in paragraph at lines 5856--5857
+[]\TU/lmr/bx/n/10 Table: Consensus module API: Classes for Byzantine-tolerant m
+ultiagent decisions.
+ []
+
+
+
+[79]
+
+[80]
+
+[81]
+
+LaTeX Warning: Reference `tab:core-params' on page 1 undefined on input line 61
+17.
+
+
+LaTeX Warning: Reference `tab:firewall-params' on page 1 undefined on input lin
+e 6128.
+
+
+
+[82]
+
+LaTeX Warning: Reference `tab:tripwire-params' on page 1 undefined on input lin
+e 6137.
+
+
+LaTeX Warning: Reference `tab:consensus-params' on page 1 undefined on input li
+ne 6146.
+
+
+
+[83]
+
+[84]
+
+[85]
 ! Undefined control sequence.
-l.4176 \printbibliography
+l.6334 \printbibliography
                          
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2179,11 +3202,9 @@ and I'll forget about whatever was undefined.
 
 (./_combined_manuscript.bbl
 
-Package natbib Warning: Empty `thebibliography' environment on input line 8.
+[86])
 
-)
-
-[63] (./_combined_manuscript.aux)
+[87] (./_combined_manuscript.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
@@ -2194,12 +3215,12 @@ LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 46185 strings out of 473832
- 1074063 string characters out of 5729482
- 1770113 words of memory out of 5000000
- 68520 multiletter control sequences out of 15000+600000
- 565352 words of font info for 97 fonts, out of 8000000 for 9000
+ 46277 strings out of 473832
+ 1075896 string characters out of 5729482
+ 1768037 words of memory out of 5000000
+ 68615 multiletter control sequences out of 15000+600000
+ 564304 words of font info for 97 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 90i,12n,114p,1017b,577s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 90i,12n,114p,1290b,588s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on _combined_manuscript.pdf (63 pages).
+Output written on _combined_manuscript.pdf (87 pages).

@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.3.8)  28 JAN 2026 06:37
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.3.8)  16 FEB 2026 11:16
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -1245,27 +1245,27 @@ gent_2_computational/output/slides/07_conclusion_slides.nav)
 
 ]
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 7.8961pt on input line 124.
+(Font)              scaled to size 7.8961pt on input line 130.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 5.64008pt on input line 124.
+(Font)              scaled to size 5.64008pt on input line 130.
 LaTeX Font Info:    Trying to load font information for OML+lmm on input line 1
-24.
+30.
  (/usr/local/texlive/2025/texmf-dist/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 11.28131pt on input line 124.
+(Font)              scaled to size 11.28131pt on input line 130.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 7.89691pt on input line 124.
+(Font)              scaled to size 7.89691pt on input line 130.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 5.64066pt on input line 124.
+(Font)              scaled to size 5.64066pt on input line 130.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 11.27914pt on input line 124.
+(Font)              scaled to size 11.27914pt on input line 130.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 7.8954pt on input line 124.
+(Font)              scaled to size 7.8954pt on input line 130.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 5.63957pt on input line 124.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 124
+(Font)              scaled to size 5.63957pt on input line 130.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 130
 .
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/amsfonts/umsa.fd
@@ -1274,7 +1274,7 @@ File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 (/usr/local/texlive/2025/texmf-dist/tex/latex/microtype/mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 124
+LaTeX Font Info:    Trying to load font information for U+msb on input line 130
 .
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/amsfonts/umsb.fd
@@ -1283,7 +1283,26 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 (/usr/local/texlive/2025/texmf-dist/tex/latex/microtype/mt-msb.cfg
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 )
-Overfull \vbox (55.19545pt too high) detected at line 124
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
+(Font)              scaled to size 9.27136pt on input line 130.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
+(Font)              scaled to size 6.18091pt on input line 130.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
+(Font)              scaled to size 5.15076pt on input line 130.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
+(Font)              scaled to size 9.27232pt on input line 130.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
+(Font)              scaled to size 6.18155pt on input line 130.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
+(Font)              scaled to size 5.15129pt on input line 130.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
+(Font)              scaled to size 9.27054pt on input line 130.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
+(Font)              scaled to size 6.18036pt on input line 130.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
+(Font)              scaled to size 5.1503pt on input line 130.
+
+Overfull \vbox (177.96024pt too high) detected at line 130
  []
 
 
@@ -1291,14 +1310,84 @@ Overfull \vbox (55.19545pt too high) detected at line 124
 [3
 
 ]
+Overfull \vbox (55.1845pt too high) detected at line 161
+ []
+
+
 
 [4
 
 ]
 ! Undefined control sequence.
-\beamer@doifinframe ...recommendations from \cref 
+\beamer@doifinframe ...t 20--25\% overhead (\cref 
+                                                  {tab:minimal-configs}). \i...
+l.194 \end{frame}
+                 
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\beamer@doifinframe ...eer-to-peer defense (\cref 
                                                   {tab:architecture-insights...
-l.167 \end{frame}
+l.194 \end{frame}
+                 
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\beamer@doifinframe ...ion gap (\(-10\%\)) (\cref 
+                                                  {sec:robustness}). \item \...
+l.194 \end{frame}
+                 
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+Overfull \vbox (87.18066pt too high) detected at line 194
+ []
+
+
+
+[5
+
+]
+
+LaTeX Warning: Citation `owasp2025agentic' on page 6 undefined on input line 23
+5.
+
+
+LaTeX Warning: Citation `nist2025cosais' on page 6 undefined on input line 235.
+
+
+
+Overfull \vbox (291.0603pt too high) detected at line 235
+ []
+
+
+
+[6
+
+]
+LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <10.95> not available
+(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 257.
+
+
+[7
+
+]
+! Undefined control sequence.
+\beamer@doifinframe ...rs upon request (see \cref 
+                                                  {sec:access-request}). All...
+l.269 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1308,14 +1397,35 @@ and I'll forget about whatever was undefined.
 
 
 
-[5
+[8
 
 ]
-LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <10.95> not available
-(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 189.
+
+[9
+
+]
+
+[10
+
+]
+
+[11
+
+]
+! Undefined control sequence.
+\beamer@doifinframe ...l attack corpus (see \cref 
+                                                  {sec:dual-use}). \end {bea...
+l.300 \end{frame}
+                 
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
 
 
-[6
+
+[12
 
 ]
 \tf@nav=\write5
@@ -1334,16 +1444,20 @@ gent_2_computational/output/slides/07_conclusion_slides.aux)
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
  ***********
+
+
+LaTeX Warning: There were undefined references.
+
  ) 
 Here is how much of TeX's memory you used:
- 29313 strings out of 473832
- 592466 string characters out of 5729482
- 1126540 words of memory out of 5000000
- 51857 multiletter control sequences out of 15000+600000
- 562348 words of font info for 65 fonts, out of 8000000 for 9000
+ 29408 strings out of 473832
+ 594974 string characters out of 5729482
+ 1133120 words of memory out of 5000000
+ 51938 multiletter control sequences out of 15000+600000
+ 565261 words of font info for 85 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 128i,11n,123p,1130b,380s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 128i,11n,123p,1130b,679s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
 Output written on /Users/4d/Documents/GitHub/template/projects/cognitive_integr
-ity/cogsec_multiagent_2_computational/output/slides/07_conclusion_slides.pdf (6
- pages).
+ity/cogsec_multiagent_2_computational/output/slides/07_conclusion_slides.pdf (1
+2 pages).

@@ -2,7 +2,7 @@
 
 import numpy as np
 import pytest
-from consensus import (ByzantineConsensus, ConsensusConfig, ConsensusResult,
+from src import (ByzantineConsensus, ConsensusConfig, ConsensusResult,
                        QuorumVerification, Vote)
 
 
@@ -215,7 +215,7 @@ class TestWeightedVoting:
 
     def test_weighted_vote_creation(self):
         """Weighted votes include trust weight."""
-        from consensus import WeightedVote
+        from src import WeightedVote
 
         vote = WeightedVote(
             agent_id="agent-1", proposition="test", belief=0.9, trust_weight=0.8
@@ -224,7 +224,7 @@ class TestWeightedVoting:
 
     def test_weighted_consensus_basic(self):
         """Weighted consensus considers trust weights."""
-        from consensus import WeightedByzantineConsensus, WeightedVote
+        from src import WeightedByzantineConsensus, WeightedVote
 
         consensus = WeightedByzantineConsensus(n_agents=4)
 
@@ -245,7 +245,7 @@ class TestWeightedVoting:
 
     def test_trusted_agent_more_influence(self):
         """Trusted agents have more influence on outcome."""
-        from consensus import WeightedByzantineConsensus, WeightedVote
+        from src import WeightedByzantineConsensus, WeightedVote
 
         # Scenario: 1 trusted vs 2 untrusted
         consensus = WeightedByzantineConsensus(n_agents=3, max_byzantine=0)
@@ -271,7 +271,7 @@ class TestWeightedVoting:
 
     def test_equal_weights_same_as_unweighted(self):
         """Equal weights produce same result as unweighted."""
-        from consensus import WeightedByzantineConsensus, WeightedVote
+        from src import WeightedByzantineConsensus, WeightedVote
 
         consensus = WeightedByzantineConsensus(n_agents=4, max_byzantine=1)
 
@@ -289,7 +289,7 @@ class TestConfidenceBasedConsensus:
 
     def test_confidence_vote(self):
         """Votes include confidence level."""
-        from consensus import ConfidenceVote
+        from src import ConfidenceVote
 
         vote = ConfidenceVote(
             agent_id="agent-1", proposition="test", belief=0.9, confidence=0.8
@@ -298,7 +298,7 @@ class TestConfidenceBasedConsensus:
 
     def test_high_confidence_more_weight(self):
         """High confidence votes carry more weight."""
-        from consensus import ConfidenceByzantineConsensus, ConfidenceVote
+        from src import ConfidenceByzantineConsensus, ConfidenceVote
 
         consensus = ConfidenceByzantineConsensus(n_agents=3, max_byzantine=0)
 
@@ -322,7 +322,7 @@ class TestConfidenceBasedConsensus:
 
     def test_low_confidence_aggregated(self):
         """Low confidence across agents reduces certainty."""
-        from consensus import ConfidenceByzantineConsensus, ConfidenceVote
+        from src import ConfidenceByzantineConsensus, ConfidenceVote
 
         consensus = ConfidenceByzantineConsensus(n_agents=3, max_byzantine=0)
 
@@ -338,7 +338,7 @@ class TestConfidenceBasedConsensus:
 
     def test_confidence_affects_decision(self):
         """Low aggregate confidence can lead to UNDECIDED."""
-        from consensus import ConfidenceByzantineConsensus, ConfidenceVote
+        from src import ConfidenceByzantineConsensus, ConfidenceVote
 
         consensus = ConfidenceByzantineConsensus(
             n_agents=3, max_byzantine=0, min_aggregate_confidence=0.5
@@ -362,7 +362,7 @@ class TestCombinedWeightedConfidence:
 
     def test_combined_vote(self):
         """Votes can have both trust weight and confidence."""
-        from consensus import CombinedVote
+        from src import CombinedVote
 
         vote = CombinedVote(
             agent_id="agent-1",
@@ -376,7 +376,7 @@ class TestCombinedWeightedConfidence:
 
     def test_effective_weight(self):
         """Effective weight combines trust and confidence."""
-        from consensus import CombinedVote
+        from src import CombinedVote
 
         vote = CombinedVote(
             agent_id="agent-1",
@@ -391,7 +391,7 @@ class TestCombinedWeightedConfidence:
 
     def test_combined_consensus(self):
         """Combined consensus uses effective weights."""
-        from consensus import CombinedByzantineConsensus, CombinedVote
+        from src import CombinedByzantineConsensus, CombinedVote
 
         consensus = CombinedByzantineConsensus(n_agents=3, max_byzantine=0)
 

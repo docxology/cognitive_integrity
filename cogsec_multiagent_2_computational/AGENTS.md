@@ -9,6 +9,7 @@ Part 2 of the **Cognitive Security for Multiagent Operators** series. This proje
 ## Key Features & Capabilities
 
 ### Defense Mechanism Implementations
+
 - **Cognitive Firewall**: Pattern-based and semantic injection detection
 - **Belief Sandbox**: Provisional belief management with TTL
 - **Trust Calculus**: Bounded delegation with decay
@@ -18,12 +19,14 @@ Part 2 of the **Cognitive Security for Multiagent Operators** series. This proje
 - **Behavioral Invariants**: Runtime security constraint checking
 
 ### Attack Corpus (950 attacks)
+
 - **Prompt Injection** (500): Direct, indirect, nested variants
 - **Trust Exploitation** (200): Identity impersonation, delegation abuse
 - **Belief Manipulation** (150): Evidence fabrication, progressive drift
 - **Coordination Attacks** (100): Sybil, consensus poisoning, quorum manipulation
 
 ### Target Architectures (6 systems)
+
 - Claude Code (hierarchical)
 - AutoGPT (autonomous + plugins)
 - CrewAI (role-based)
@@ -69,22 +72,34 @@ cogsec_multiagent_2_computational/
 
 ```bash
 # Run all tests with 90%+ coverage requirement
-pytest tests/ -v --cov=src --cov-fail-under=90
+uv run pytest tests/ -v --cov=src --cov-report=term-missing
 
 # Run specific module tests
-pytest tests/test_trust.py -v
-pytest tests/test_firewall.py -v
+uv run pytest tests/test_trust.py -v
+uv run pytest tests/test_firewall.py -v
 
-# Generate all figures
-./run.sh --project cogsec_multiagent_2_computational --run-analysis
+# Run formal validation (7 theorems)
+uv run python scripts/run_formal_validation.py --seed 42
+
+# Run all 9 entry scripts
+uv run python scripts/run_full_evaluation.py --seed 42
+uv run python scripts/run_statistical_analysis.py --seed 42
+uv run python scripts/run_ablation.py --seed 42
+uv run python scripts/run_colony_benchmarks.py --seed 42
+uv run python scripts/run_sensitivity_analysis.py --seed 42
+uv run python scripts/generate_all_data.py --seed 42
+uv run python scripts/generate_all_figures.py
+uv run python scripts/generate_all_tables.py
 ```
 
 ## Notation Reference
 
 All notation follows the canonical definitions in:
-- `../cogsec_multiagent_1_theory/manuscript/S06_notation.md`
+
+- `../cogsec_multiagent_1_theory/manuscript/S03_notation.md`
 
 Key symbols used in this paper:
+
 - $\mathcal{T}_{i \to j}$: Trust from agent $i$ to agent $j$
 - $\delta$: Trust decay factor
 - $q$: Quorum threshold

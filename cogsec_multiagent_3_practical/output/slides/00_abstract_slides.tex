@@ -110,58 +110,54 @@ theory and practice. In practice, there is.''
 
 \begin{frame}{Abstract}
 \protect\phantomsection\label{abstract}
-This paper translates the \textbf{Cognitive Integrity Framework (CIF)}
-into actionable guidance for practitioners. Building on formal
-foundations (Part 1) and empirical validation (Part 2), we provide
-practical recommendations for securing multiagent AI deployments.
+Multiagent AI systems---autonomous coding assistants, research
+pipelines, financial decision engines---have moved from prototype to
+production in under two years. With them comes a new class of security
+concern: attacks that target not data or infrastructure but the
+\emph{reasoning processes} of AI agents. Prompt injections that
+propagate through delegation chains, trust relationships that launder
+adversarial influence, and coordination mechanisms vulnerable to
+strategic manipulation all represent cognitive attack surfaces absent
+from traditional security models.
 
-\begin{block}{Contributions}
-\protect\phantomsection\label{contributions}
-\begin{itemize}
-\tightlist
-\item
-  \textbf{Operator Posture Assessment}: Framework for evaluating
-  organizational cognitive security readiness
-\item
-  \textbf{Deployment Checklists}: Step-by-step guidance for
-  implementation and monitoring
-\item
-  \textbf{Agent Guidelines}: Machine-readable rules for AI system
-  self-monitoring
-\item
-  \textbf{Risk Assessment}: Threat modeling methodology for cognitive
-  attack surfaces
-\item
-  \textbf{Common Pitfalls}: Documented anti-patterns with specific
-  mitigations
-\end{itemize}
-\end{block}
+The \textbf{Cognitive Integrity Framework (CIF)}, presented across two
+companion papers, offers the first comprehensive formal and
+computational treatment of this problem. Part 1 establishes mathematical
+foundations: a trust calculus with provably bounded delegation, defense
+composition algebras with multiplicative detection guarantees, and
+information-theoretic limits on attack stealth. Part 2 provides
+computational validation: eight implemented defense modules (1,557
+passing tests), a 950-attack corpus spanning four threat categories, and
+parametric architecture-aware simulation across six production
+multiagent topologies.
 
-\begin{block}{Audience}
-\protect\phantomsection\label{audience}
-This guidance serves security practitioners, developers, operators, and
-compliance teams evaluating multiagent AI deployments. Technical
-prerequisites are minimal; readers seeking formal foundations should
-consult Part 1.
-\end{block}
-
-\begin{block}{Approach}
-\protect\phantomsection\label{approach}
-We prioritize clarity over comprehensiveness. Each section provides
-actionable recommendations with explicit pointers to Parts 1 and 2 for
-theoretical grounding and empirical evidence. Notation is used sparingly
-and always defined inline.
-\end{block}
+This paper is a qualitative review and practitioner's guide to the CIF
+series. We synthesize the key insights from both papers into accessible
+language, contextualize the formal results within the current deployment
+landscape, assess what the research has established and where gaps
+remain, and distill practical recommendations for teams building and
+operating multiagent AI systems. No formal prerequisites are assumed;
+readers seeking mathematical detail are referred to Parts 1 and 2.
 
 \begin{block}{Paper Series}
 \protect\phantomsection\label{paper-series}
 \textbf{DOI}: 10.5281/zenodo.18364130
 
 This is Part 3 of the \emph{Cognitive Security for Multiagent Operators}
-series: - \textbf{Part 1} (DOI: 10.5281/zenodo.18364119): Formal
-foundations and theoretical analysis - \textbf{Part 2} (DOI:
-10.5281/zenodo.18364128): Computational validation and implementation -
-\textbf{Part 3} (this paper): Practical deployment guidance
+series:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Part 1} (DOI: 10.5281/zenodo.18364119): Formal foundations and
+  theoretical analysis
+\item
+  \textbf{Part 2} (DOI: 10.5281/zenodo.18364128): Computational
+  validation and implementation
+\item
+  \textbf{Part 3} (this paper): Qualitative review and practitioner's
+  synthesis
+\end{itemize}
 \end{block}
 \end{frame}
 

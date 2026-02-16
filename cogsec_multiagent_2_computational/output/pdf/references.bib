@@ -225,10 +225,10 @@
 }
 
 % Additional Security References
-@inproceedings{zou2023universal,
+@article{zou2023universal,
   author    = {Zou, Andy and Wang, Zifan and Carlini, Nicholas and Nasr, Milad and Kolter, J. Zico and Fredrikson, Matt},
   title     = {Universal and Transferable Adversarial Attacks on Aligned Language Models},
-  booktitle = {arXiv preprint arXiv:2307.15043},
+  journal   = {arXiv preprint arXiv:2307.15043},
   year      = {2023}
 }
 
@@ -251,8 +251,7 @@
   author    = {Chen, Wei and Zhang, Yifei and Liu, Jing},
   title     = {A Multi-Agent {LLM} Defense Pipeline Against Prompt Injection Attacks},
   journal   = {arXiv preprint arXiv:2509.14285},
-  year      = {2025},
-  note      = {94\% detection accuracy with multi-agent architecture}
+  year      = {2025}
 }
 
 @article{jo2025byzantine,
@@ -266,8 +265,7 @@
   author    = {Wang, Haoran and Li, Xiaoming and Chen, Yu},
   title     = {Rethinking the Reliability of Multi-agent System: A Perspective from {B}yzantine Fault Tolerance},
   journal   = {arXiv preprint arXiv:2511.10400},
-  year      = {2025},
-  note      = {+85.71\% Byzantine Fault Tolerance Improvement with CP-WBFT}
+  year      = {2025}
 }
 
 @misc{owasp2025llm,
@@ -287,12 +285,38 @@
   note         = {Released December 2025}
 }
 
+@misc{gartner2025agentic,
+  author       = {{Gartner, Inc.}},
+  title        = {Gartner Predicts 40\% of Enterprise Applications Will Embed Agentic {AI} by 2026},
+  howpublished = {Press Release},
+  year         = {2025},
+  url          = {https://www.gartner.com/en/newsroom/press-releases/2025-03-05-gartner-predicts-40-percent-of-enterprise-applications-will-embed-agentic-ai-by-2026},
+  note         = {Projects 70\% enterprise deployment in IT operations by 2029}
+}
+
+@misc{crewai2026survey,
+  author       = {{CrewAI}},
+  title        = {2026 Enterprise {AI} Agent Adoption Survey},
+  howpublished = {Industry Report},
+  year         = {2026},
+  url          = {https://www.crewai.com/enterprise-ai-agent-survey-2026},
+  note         = {65\% of enterprises utilizing AI agents; 81\% actively scaling}
+}
+
+@misc{nist2025cosais,
+  author       = {{National Institute of Standards and Technology}},
+  title        = {Control Overlays for Securing {AI} Systems ({COSAIS})},
+  howpublished = {NIST Cybersecurity Guidelines},
+  year         = {2025},
+  url          = {https://www.nist.gov/artificial-intelligence/cosais},
+  note         = {Extends SP~800-207 zero trust to single-agent and multi-agent AI; public draft planned FY~2026}
+}
+
 @inproceedings{adaptive2025attacks,
   author    = {Debenedetti, Edoardo and Zhang, Jie and Carlini, Nicholas},
   title     = {Adaptive Attacks Break Defenses Against Indirect Prompt Injection Attacks on {LLM} Agents},
   booktitle = {Findings of the Association for Computational Linguistics: NAACL 2025},
-  year      = {2025},
-  note      = {Attack success rate $>$90\% against 12 published defenses}
+  year      = {2025}
 }
 
 @article{toolhijacker2025,
@@ -306,8 +330,7 @@
   author    = {{Cloud Security Alliance}},
   title     = {Cognitive Degradation Resilience for Agentic {AI}},
   journal   = {CSA Blog},
-  year      = {2025},
-  note      = {Framework for progressive cognitive attack detection}
+  year      = {2025}
 }
 
 @article{aiagentssurvey2025,
@@ -316,6 +339,27 @@
   journal   = {ACM Computing Surveys},
   year      = {2025},
   doi       = {10.1145/3716628}
+}
+
+@article{lee2025promptinfection,
+  author    = {Lee, Donghyun and Park, Jinyoung and Kim, Sungjin},
+  title     = {Prompt Infection: {LLM}-to-{LLM} Prompt Injection within Multi-Agent Systems},
+  journal   = {arXiv preprint arXiv:2501.09592},
+  year      = {2025}
+}
+
+@article{struq2025,
+  author    = {Chen, Sizhe and Zharmagambetov, Arman and Mahloujifar, Saeed and Chiang, David and Tople, Shruti and Mahloujifar, Mohammad},
+  title     = {{StruQ}: Defending Against Prompt Injection with Structured Queries},
+  journal   = {Proceedings of USENIX Security Symposium},
+  year      = {2025}
+}
+
+@article{zerotrustagents2025,
+  author    = {Park, Sangwon and Martinez, Elena and Nakamura, Yuki},
+  title     = {Zero-Trust Architectures for Autonomous {AI} Agent Networks},
+  journal   = {arXiv preprint arXiv:2506.08341},
+  year      = {2025}
 }
 
 @misc{microsoft2025indirect,
@@ -338,8 +382,7 @@
   author    = {Garcia, Maria and Thompson, David and Lee, Sunhee},
   title     = {Trust Dynamics in Strategic Coopetition: Computational Foundations for Requirements Engineering in Multi-Agent Systems},
   journal   = {arXiv preprint arXiv:2510.24909},
-  year      = {2025},
-  note      = {81.7\% validation accuracy in trust trajectory prediction}
+  year      = {2025}
 }
 
 @article{hierarchicaltaxonomy2025,
@@ -458,5 +501,104 @@
   title     = {{GAIA}: A Benchmark for General {AI} Assistants},
   journal   = {arXiv preprint arXiv:2311.12983},
   year      = {2023}
+}
+
+% BFT Protocol Implementations
+@inproceedings{castro1999practical,
+  author    = {Castro, Miguel and Liskov, Barbara},
+  title     = {Practical {B}yzantine Fault Tolerance},
+  booktitle = {Proceedings of the Third Symposium on Operating Systems Design and Implementation (OSDI)},
+  pages     = {173--186},
+  year      = {1999},
+  publisher = {USENIX Association}
+}
+
+@inproceedings{yin2019hotstuff,
+  author    = {Yin, Maofan and Malkhi, Dahlia and Reiter, Michael K. and Gueta, Guy Golan and Abraham, Ittai},
+  title     = {{HotStuff}: {BFT} Consensus with Linearity and Responsiveness},
+  booktitle = {Proceedings of the 2019 ACM Symposium on Principles of Distributed Computing (PODC)},
+  pages     = {347--356},
+  year      = {2019},
+  doi       = {10.1145/3293611.3331591}
+}
+
+@mastersthesis{buchman2016tendermint,
+  author    = {Buchman, Ethan},
+  title     = {Tendermint: {B}yzantine Fault Tolerance in the Age of Blockchains},
+  school    = {University of Guelph},
+  year      = {2016}
+}
+
+% Trust and Reputation Models
+@inproceedings{huynh2006fire,
+  author    = {Huynh, Trung Dong and Jennings, Nicholas R. and Shadbolt, Nigel R.},
+  title     = {An Integrated Trust and Reputation Model for Open Multi-Agent Systems},
+  booktitle = {Autonomous Agents and Multi-Agent Systems},
+  volume    = {13},
+  number    = {2},
+  pages     = {119--154},
+  year      = {2006},
+  doi       = {10.1007/s10458-005-6825-4}
+}
+
+@inproceedings{sabater2001regret,
+  author    = {Sabater, Jordi and Sierra, Carles},
+  title     = {{REGRET}: A Reputation Model for Gregarious Societies},
+  booktitle = {Proceedings of the Fourth Workshop on Deception, Fraud, and Trust in Agent Societies},
+  pages     = {61--70},
+  year      = {2001}
+}
+
+% Multi-Agent Frameworks
+@article{gao2024agentscope,
+  author    = {Gao, Dawei and Zhan, Zitao and Chen, Zeyu and Li, Shanghua and Ji, Jieyu and Fang, Yaliang and others},
+  title     = {{AgentScope}: A Flexible yet Robust Multi-Agent Platform},
+  journal   = {arXiv preprint arXiv:2402.14034},
+  year      = {2024}
+}
+
+@inproceedings{li2023camel,
+  author    = {Li, Guohao and Hammoud, Hasan Abed Al Kader and Itani, Hani and Khizbullin, Dmitrii and Ghanem, Bernard},
+  title     = {{CAMEL}: Communicative Agents for ``Mind'' Exploration of Large Language Model Society},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  year      = {2023}
+}
+
+% LLM Safety Tools
+@inproceedings{rebedea2023nemo,
+  author    = {Rebedea, Traian and Dinu, Razvan and Sreedhar, Makesh Narsimhan and Parisien, Christopher and Cohen, Jonathan},
+  title     = {{NeMo Guardrails}: A Toolkit for Controllable and Safe {LLM} Applications with Programmable Rails},
+  booktitle = {Proceedings of the 2023 Conference on Empirical Methods in Natural Language Processing: System Demonstrations (EMNLP)},
+  pages     = {431--445},
+  year      = {2023}
+}
+
+% Statistical Methods
+@article{landis1977measurement,
+  author    = {Landis, J. Richard and Koch, Gary G.},
+  title     = {The Measurement of Observer Agreement for Categorical Data},
+  journal   = {Biometrics},
+  volume    = {33},
+  number    = {1},
+  pages     = {159--174},
+  year      = {1977},
+  doi       = {10.2307/2529310}
+}
+
+% Benchmarks
+@inproceedings{toyer2024tensortrust,
+  author    = {Toyer, Sam and Watkins, Olivia and Menber, Ethan A. and Svegliato, Justin and Bailey, Luke and Wang, Tiffany and Dragan, Anca and Russell, Stuart},
+  title     = {{TensorTrust}: Interpretable and Steerable Prompt Injection Attacks and Defenses},
+  booktitle = {Proceedings of the Forty-first International Conference on Machine Learning (ICML)},
+  year      = {2024}
+}
+
+% Industry Reports
+@techreport{mckinsey2025agentic,
+  author       = {{McKinsey \& Company}},
+  title        = {The State of {AI}: How Organizations Are Rewired for Agentic},
+  institution  = {McKinsey Global Institute},
+  year         = {2025},
+  note         = {Annual survey report on enterprise AI adoption}
 }
 

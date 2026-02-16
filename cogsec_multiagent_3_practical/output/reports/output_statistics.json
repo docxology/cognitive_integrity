@@ -3,23 +3,23 @@
     "pdf": {
       "exists": true,
       "file_count": 8,
-      "size_mb": "0.56",
-      "total_size_bytes": 584617,
+      "size_mb": "0.29",
+      "total_size_bytes": 305896,
       "largest_files": [
         {
           "name": "cogsec_multiagent_3_practical_combined.pdf",
-          "size_mb": "0.27",
+          "size_mb": "0.11",
           "path": "pdf/cogsec_multiagent_3_practical_combined.pdf"
         },
         {
-          "name": "_combined_manuscript.tex",
-          "size_mb": "0.09",
-          "path": "pdf/_combined_manuscript.tex"
+          "name": "_combined_manuscript.log",
+          "size_mb": "0.06",
+          "path": "pdf/_combined_manuscript.log"
         },
         {
-          "name": "_combined_manuscript.log",
-          "size_mb": "0.07",
-          "path": "pdf/_combined_manuscript.log"
+          "name": "_combined_manuscript.tex",
+          "size_mb": "0.05",
+          "path": "pdf/_combined_manuscript.tex"
         }
       ],
       "extensions": {
@@ -36,23 +36,23 @@
     "web": {
       "exists": true,
       "file_count": 13,
-      "size_mb": "0.31",
-      "total_size_bytes": 322279,
+      "size_mb": "0.18",
+      "total_size_bytes": 191940,
       "largest_files": [
         {
           "name": "index.html",
-          "size_mb": "0.12",
+          "size_mb": "0.06",
           "path": "web/index.html"
         },
         {
           "name": "_combined_manuscript.md",
-          "size_mb": "0.06",
+          "size_mb": "0.03",
           "path": "web/_combined_manuscript.md"
         },
         {
-          "name": "02_operator_posture.html",
-          "size_mb": "0.02",
-          "path": "web/02_operator_posture.html"
+          "name": "06_common_pitfalls.html",
+          "size_mb": "0.01",
+          "path": "web/06_common_pitfalls.html"
         }
       ],
       "extensions": {
@@ -62,42 +62,42 @@
     },
     "slides": {
       "exists": true,
-      "file_count": 79,
-      "size_mb": "1.15",
-      "total_size_bytes": 1204569,
+      "file_count": 80,
+      "size_mb": "0.92",
+      "total_size_bytes": 962638,
       "largest_files": [
         {
-          "name": "02_operator_posture_slides.pdf",
-          "size_mb": "0.07",
-          "path": "slides/02_operator_posture_slides.pdf"
+          "name": "03_simulation_review_slides.log",
+          "size_mb": "0.05",
+          "path": "slides/03_simulation_review_slides.log"
         },
         {
-          "name": "06_risk_assessment_slides.pdf",
-          "size_mb": "0.06",
-          "path": "slides/06_risk_assessment_slides.pdf"
+          "name": "S01_notation_reference_slides.log",
+          "size_mb": "0.05",
+          "path": "slides/S01_notation_reference_slides.log"
         },
         {
-          "name": "03_human_checklist_slides.pdf",
-          "size_mb": "0.06",
-          "path": "slides/03_human_checklist_slides.pdf"
+          "name": "06_common_pitfalls_slides.log",
+          "size_mb": "0.05",
+          "path": "slides/06_common_pitfalls_slides.log"
         }
       ],
       "extensions": {
         ".nav": 11,
+        ".vrb": 3,
         ".pdf": 11,
-        ".snm": 11,
-        ".aux": 11,
-        ".log": 11,
         ".toc": 11,
         ".tex": 11,
-        ".vrb": 2
+        ".log": 11,
+        ".snm": 11,
+        ".aux": 11
       }
     },
     "figures": {
       "exists": true,
       "file_count": 12,
       "size_mb": "0.74",
-      "total_size_bytes": 776438,
+      "total_size_bytes": 776594,
       "largest_files": [
         {
           "name": "posture_radar.png",
@@ -132,11 +132,11 @@
       "exists": true,
       "file_count": 4,
       "size_mb": "0.01",
-      "total_size_bytes": 6371,
+      "total_size_bytes": 6077,
       "largest_files": [
         {
           "name": "validation_report.json",
-          "size_mb": "0.01",
+          "size_mb": "0.00",
           "path": "reports/validation_report.json"
         },
         {
@@ -175,7 +175,7 @@
       "exists": true,
       "file_count": 1,
       "size_mb": "0.01",
-      "total_size_bytes": 8486,
+      "total_size_bytes": 8488,
       "largest_files": [
         {
           "name": "pipeline.log",
@@ -188,15 +188,9 @@
       }
     }
   },
-  "total_files": 117,
-  "total_size_mb": 2.7682876586914062,
+  "total_files": 118,
+  "total_size_mb": 2.147324562072754,
   "largest_files": [
-    {
-      "name": "cogsec_multiagent_3_practical_combined.pdf",
-      "size_mb": "0.27",
-      "category": "pdf",
-      "path": "pdf/cogsec_multiagent_3_practical_combined.pdf"
-    },
     {
       "name": "posture_radar.png",
       "size_mb": "0.22",
@@ -204,10 +198,10 @@
       "path": "figures/posture_radar.png"
     },
     {
-      "name": "index.html",
-      "size_mb": "0.12",
-      "category": "web",
-      "path": "web/index.html"
+      "name": "cogsec_multiagent_3_practical_combined.pdf",
+      "size_mb": "0.11",
+      "category": "pdf",
+      "path": "pdf/cogsec_multiagent_3_practical_combined.pdf"
     },
     {
       "name": "trust_decay.png",
@@ -216,40 +210,46 @@
       "path": "figures/trust_decay.png"
     },
     {
-      "name": "_combined_manuscript.tex",
-      "size_mb": "0.09",
-      "category": "pdf",
-      "path": "pdf/_combined_manuscript.tex"
-    },
-    {
-      "name": "_combined_manuscript.log",
-      "size_mb": "0.07",
-      "category": "pdf",
-      "path": "pdf/_combined_manuscript.log"
-    },
-    {
-      "name": "02_operator_posture_slides.pdf",
-      "size_mb": "0.07",
-      "category": "slides",
-      "path": "slides/02_operator_posture_slides.pdf"
-    },
-    {
       "name": "risk_matrix.png",
       "size_mb": "0.07",
       "category": "figures",
       "path": "figures/risk_matrix.png"
     },
     {
-      "name": "_combined_manuscript.md",
+      "name": "_combined_manuscript.log",
       "size_mb": "0.06",
-      "category": "web",
-      "path": "web/_combined_manuscript.md"
+      "category": "pdf",
+      "path": "pdf/_combined_manuscript.log"
     },
     {
-      "name": "06_risk_assessment_slides.pdf",
+      "name": "index.html",
       "size_mb": "0.06",
+      "category": "web",
+      "path": "web/index.html"
+    },
+    {
+      "name": "_combined_manuscript.tex",
+      "size_mb": "0.05",
+      "category": "pdf",
+      "path": "pdf/_combined_manuscript.tex"
+    },
+    {
+      "name": "03_simulation_review_slides.log",
+      "size_mb": "0.05",
       "category": "slides",
-      "path": "slides/06_risk_assessment_slides.pdf"
+      "path": "slides/03_simulation_review_slides.log"
+    },
+    {
+      "name": "S01_notation_reference_slides.log",
+      "size_mb": "0.05",
+      "category": "slides",
+      "path": "slides/S01_notation_reference_slides.log"
+    },
+    {
+      "name": "06_common_pitfalls_slides.log",
+      "size_mb": "0.05",
+      "category": "slides",
+      "path": "slides/06_common_pitfalls_slides.log"
     }
   ],
   "missing_expected_files": [
@@ -266,22 +266,22 @@
     ".bbl": 1,
     ".html": 12,
     ".nav": 11,
-    ".snm": 11,
+    ".vrb": 3,
     ".toc": 11,
-    ".vrb": 2,
+    ".snm": 11,
     ".png": 6,
     ".json": 2
   },
   "sizes_by_category": {
-    "pdf": 0.5575342178344727,
-    "web": 0.30734920501708984,
-    "slides": 1.1487665176391602,
-    "figures": 0.7404689788818359,
+    "pdf": 0.29172515869140625,
+    "web": 0.18304824829101562,
+    "slides": 0.9180431365966797,
+    "figures": 0.7406177520751953,
     "data": 0.0,
-    "reports": 0.006075859069824219,
+    "reports": 0.005795478820800781,
     "simulations": 0.0,
     "llm": 0.0,
-    "logs": 0.008092880249023438
+    "logs": 0.00809478759765625
   },
   "pdf_files": 8,
   "figures": 12,

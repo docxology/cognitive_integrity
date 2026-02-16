@@ -6,7 +6,7 @@ This paper uses notation from the Cognitive Integrity Framework (CIF) formal spe
 
 ## Quick Reference
 
-### Core Entities
+### Core Entities (reproduced from Part 1, Table 1 for reader convenience)
 
 | Symbol | Meaning | Part 1 Reference |
 |--------|---------|------------------|
@@ -17,7 +17,7 @@ This paper uses notation from the Cognitive Integrity Framework (CIF) formal spe
 | $\mathcal{I}_i$ | Intention set | Table 1 |
 | $\sigma_i^t$ | Cognitive state at time $t$ | Definition 2 |
 
-### Trust Calculus
+### Trust Calculus (reproduced from Part 1, Table 2 for reader convenience)
 
 | Symbol | Meaning | Part 1 Reference |
 |--------|---------|------------------|
@@ -27,7 +27,7 @@ This paper uses notation from the Cognitive Integrity Framework (CIF) formal spe
 | $\oplus$ | Trust aggregation operator | Definition 4 |
 | $\alpha, \beta, \gamma$ | Trust weight parameters | Equation 5 |
 
-### Defense Mechanisms
+### Defense Mechanisms (reproduced from Part 1, Table 3 for reader convenience)
 
 | Symbol | Meaning | Part 1 Reference |
 |--------|---------|------------------|
@@ -37,7 +37,7 @@ This paper uses notation from the Cognitive Integrity Framework (CIF) formal spe
 | $\tau_{\text{reject}}$ | Firewall reject threshold | Table 2 |
 | $\epsilon_{\text{drift}}$ | Drift detection threshold | Equation 8 |
 
-### Consensus and Coordination
+### Consensus and Coordination (reproduced from Part 1, Table 4 for reader convenience)
 
 | Symbol | Meaning | Part 1 Reference |
 |--------|---------|------------------|
@@ -45,8 +45,28 @@ This paper uses notation from the Cognitive Integrity Framework (CIF) formal spe
 | $f$ | Maximum Byzantine agents | Theorem 1 |
 | $n$ | Total agent count | Throughout |
 
+### Threat Model (used in this paper's experimental design)
+
+| Symbol | Meaning | Reference |
+|--------|---------|-----------|
+| $n$ | Total agent count | \cref{sec:intro} |
+| $f$ | Maximum Byzantine agents | \cref{sec:intro}, Part 1 Theorem 1 |
+| $\mathcal{P}_{injection}$ | Injection pattern database | Algorithm 1 (\cref{sec:alg-firewall}) |
+| $\mathcal{B}_{verified}$ | Verified belief partition | Algorithm 2 (\cref{sec:alg-sandbox}) |
+| $\mathcal{B}_{provisional}$ | Provisional belief partition | Algorithm 2 (\cref{sec:alg-sandbox}) |
+| $\mathcal{W}$ | Tripwire (canary belief) set | Algorithm 4 (\cref{sec:alg-tripwire}) |
+| $D_{KL}$ | KL divergence drift score | Algorithm 6 (\cref{sec:alg-drift}) |
+
+### Evaluation Metrics (used in results sections)
+
+| Symbol | Meaning | Reference |
+|--------|---------|-----------|
+| TPR | True positive rate (sensitivity) | \cref{sec:results} |
+| FPR | False positive rate (1 $-$ specificity) | \cref{sec:results} |
+| $d$ | Cohen's $d$ effect size | \cref{sec:effect-sizes} |
+| OR | Odds ratio | \cref{sec:odds-ratios} |
+| NNT | Number needed to treat | \cref{sec:nnt} |
+
 ## Canonical Reference
 
-For complete notation definitions, see:
-
-- Part 1: **Supplementary Section S03: Notation Reference**
+For complete notation definitions, see Part 1: **Supplementary Section S03: Notation Reference**.

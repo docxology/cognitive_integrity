@@ -1,0 +1,419 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\documentclass[
+  ignorenonframetext,
+]{beamer}
+\newif\ifbibliography
+\usepackage{pgfpages}
+\setbeamertemplate{caption}[numbered]
+\setbeamertemplate{caption label separator}{: }
+\setbeamercolor{caption name}{fg=normal text.fg}
+\beamertemplatenavigationsymbolsempty
+% remove section numbering
+\setbeamertemplate{part page}{
+  \centering
+  \begin{beamercolorbox}[sep=16pt,center]{part title}
+    \usebeamerfont{part title}\insertpart\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{section page}{
+  \centering
+  \begin{beamercolorbox}[sep=12pt,center]{section title}
+    \usebeamerfont{section title}\insertsection\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{subsection page}{
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center]{subsection title}
+    \usebeamerfont{subsection title}\insertsubsection\par
+  \end{beamercolorbox}
+}
+% Prevent slide breaks in the middle of a paragraph
+\widowpenalties 1 10000
+\raggedbottom
+\AtBeginPart{
+  \frame{\partpage}
+}
+\AtBeginSection{
+  \ifbibliography
+  \else
+    \frame{\sectionpage}
+  \fi
+}
+\AtBeginSubsection{
+  \frame{\subsectionpage}
+}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{longtable,booktabs,array}
+\newcounter{none} % for unnumbered tables
+\usepackage{calc} % for calculating minipage widths
+\usepackage{caption}
+% Make caption package work with longtable
+\makeatletter
+\def\fnum@table{\tablename~\thetable}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\author{\texorpdfstring{}{}}
+\date{}
+
+\begin{document}
+
+\begin{frame}
+\newpage
+\end{frame}
+
+\begin{frame}{Common Pitfalls and What the Research Shows}
+\protect\phantomsection\label{sec:pitfalls}
+The CIF research identifies recurring failure modes in multiagent
+deployments. This section catalogs eight anti-patterns, each assessed
+through the lens of what Papers 1 and 2 contribute to understanding the
+problem and its mitigation.
+
+These pitfalls are ranked by severity. We prioritize critical and
+high-severity items as they represent verifiable vulnerabilities in the
+defense architecture.
+\end{frame}
+
+\begin{frame}
+\begin{block}{Pitfall 1: Implicit Trust (Critical)}
+\protect\phantomsection\label{pitfall-1-implicit-trust-critical}
+\textbf{The pattern}: Treating all inter-agent communication as trusted
+by default.
+
+\textbf{What the research shows}: Part 1's trust calculus exists
+specifically because implicit trust enables trust laundering attacks.
+Without explicit trust scores, a single compromised agent influences the
+entire system---adversarial content enters through a low-trust source
+and exits through a high-trust agent, with no mechanism to track or
+attenuate the trust transfer.
+
+Part 2's simulation confirms that trust exploitation attacks achieve
+their highest success rates against architectures without trust decay.
+The \(\delta^d\) mechanism isn't optional hardening---it's the
+structural foundation that prevents systemic compromise from local
+failures.
+
+\textbf{Mitigation Strategies}:
+
+\begin{enumerate}
+\tightlist
+\item
+  Implement explicit trust scoring on every inter-agent channel
+\item
+  Require minimum trust thresholds for consequential actions
+\item
+  Apply delegation decay (\(\delta < 1\)) at every hop
+\item
+  Verify source identity on every inter-agent message
+\end{enumerate}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Pitfall 2: Security as Afterthought (Critical)}
+\protect\phantomsection\label{pitfall-2-security-as-afterthought-critical}
+\textbf{The pattern}: Adding cognitive security after the architecture
+is finalized.
+
+\textbf{What the research shows}: Part 1's defense composition algebra
+demonstrates that security mechanisms compose best when designed
+together. Retrofitted defenses create integration gaps---bypass
+opportunities at the boundaries between the original architecture and
+the bolted-on security layer.
+
+Part 2's architecture-specific results show that systems with natural
+security affordances (LangGraph's explicit state transitions, CrewAI's
+role boundaries) outperform systems where security must be externally
+imposed. Architecture is security posture.
+
+\textbf{Mitigation Strategies}:
+
+\begin{enumerate}
+\tightlist
+\item
+  Define trust boundaries during architectural design, not deployment
+\item
+  Embed trust checks in delegation logic from the start
+\item
+  Build provenance tracking into belief management
+\item
+  Include cognitive security constraints in agent system prompts
+\end{enumerate}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Pitfall 3: Uncalibrated Thresholds (High)}
+\protect\phantomsection\label{pitfall-3-uncalibrated-thresholds-high}
+\textbf{The pattern}: Setting security thresholds without understanding
+the tradeoffs.
+
+\textbf{What the research shows}: Part 2's parametric simulation reveals
+that detection rates are highly sensitive to threshold configuration.
+The same defense module can range from too-strict (high false positive
+rate, operational friction) to too-permissive (attacks succeed
+undetected) depending on threshold settings.
+
+The risk-profile-based configuration in Section 5 provides calibrated
+starting points. But these are starting points---production thresholds
+should be tuned against representative attack samples from Part 2's
+corpus.
+
+\textbf{Mitigation Strategies}:
+
+\begin{enumerate}
+\tightlist
+\item
+  Assess risk profile before configuring (Section 5)
+\item
+  Test thresholds against representative attack samples
+\item
+  Monitor false positive/negative rates in production
+\item
+  Adjust based on operational feedback
+\end{enumerate}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Pitfall 4: Individual-Only Security (High)}
+\protect\phantomsection\label{pitfall-4-individual-only-security-high}
+\textbf{The pattern}: Focusing on single-agent security while ignoring
+multi-agent attack surfaces.
+
+\textbf{What the research shows}: Part 1's entire contribution is
+premised on the observation that multiagent systems introduce
+qualitatively new attack surfaces. The adversary hierarchy
+(\(\Omega_3\)--\(\Omega_5\)) specifically targets coordination,
+consensus, and systemic properties that don't exist in single-agent
+systems.
+
+Part 2's results show that coordination attacks (sybil, timing, quorum
+manipulation) are the \emph{hardest} to detect---precisely because they
+exploit emergent properties of the agent collective rather than
+vulnerabilities in individual agents.
+
+\textbf{Mitigation Strategies}:
+
+\begin{enumerate}
+\tightlist
+\item
+  Implement Byzantine consensus for critical collective decisions
+\item
+  Require agent authentication before counting votes
+\item
+  Monitor for unusual coordination patterns (simultaneous votes,
+  identical analyses)
+\item
+  Set quorum requirements assuming adversarial presence
+\end{enumerate}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Pitfall 5: Static Tripwires (Medium)}
+\protect\phantomsection\label{pitfall-5-static-tripwires-medium}
+\textbf{The pattern}: Deploying canary tripwires once without rotation.
+
+\textbf{What the research shows}: Part 1 notes that tripwire
+effectiveness depends on unpredictability. If an adversary can identify
+and avoid canary beliefs, the detection mechanism fails
+silently---giving false confidence in detection coverage.
+
+The analog in traditional security is static honeypots: effective
+initially but useless once adversaries learn to recognize them.
+
+\textbf{Mitigation Strategies}:
+
+\begin{enumerate}
+\tightlist
+\item
+  Implement automated canary rotation on a defined schedule
+\item
+  Vary placement across agents and belief categories
+\item
+  Monitor canary check patterns, not just modifications
+\item
+  Include non-obvious canaries that don't follow predictable naming
+  conventions
+\end{enumerate}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Pitfall 6: Ignoring Progressive Drift (Medium)}
+\protect\phantomsection\label{pitfall-6-ignoring-progressive-drift-medium}
+\textbf{The pattern}: Only alerting on large, sudden belief changes.
+
+\textbf{What the research shows}: Part 1's stealth-impact tradeoff
+theorem bounds \emph{per-interaction} impact but explicitly acknowledges
+that progressive drift---sub-threshold changes accumulating over
+time---is the hardest attack pattern to detect. The theorem doesn't rule
+out slow drift; it rules out sudden, invisible, high-impact attacks.
+
+Part 2's multi-turn social engineering category, which achieves the
+lowest detection rate (\textasciitilde73\%), partially exploits this
+gap: attacks spread across multiple turns avoid the concentrated
+statistical signature that single-turn attacks produce.
+
+\textbf{Mitigation Strategies}:
+
+\begin{enumerate}
+\tightlist
+\item
+  Use sliding window drift detection (not just per-update thresholds)
+\item
+  Track \emph{cumulative} drift, not just per-update delta
+\item
+  Periodic baseline comparison over extended time windows
+\item
+  Alert on \emph{trends} as well as absolute magnitude
+\end{enumerate}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Pitfall 7: Insufficient Logging (Medium)}
+\protect\phantomsection\label{pitfall-7-insufficient-logging-medium}
+\textbf{The pattern}: Retaining insufficient information for
+post-incident analysis.
+
+\textbf{What the research shows}: Part 1's provenance tracking and
+belief state representation are designed to produce a complete audit
+trail. Without this trail, incident responders cannot reconstruct attack
+paths, identify injection points, or assess the full scope of belief
+corruption.
+
+This is the cognitive security equivalent of running a production system
+without structured logging. When something goes wrong---and it
+will---the ability to investigate depends entirely on what was recorded.
+
+\textbf{Mitigation Strategies}:
+
+\begin{enumerate}
+\tightlist
+\item
+  Log all belief updates with provenance tags (source, trust level,
+  derivation chain)
+\item
+  Retain inter-agent message history
+\item
+  Take periodic cognitive state snapshots
+\item
+  Use structured logging formats that support causal analysis
+\end{enumerate}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Pitfall 8: Single-Orchestrator Reliance (High)}
+\protect\phantomsection\label{pitfall-8-single-orchestrator-reliance-high}
+\textbf{The pattern}: Relying entirely on one orchestrator's integrity
+without backup.
+
+\textbf{What the research shows}: Part 1's \(\Omega_5\) adversary
+class---systemic compromise---is defined precisely as orchestrator-level
+control. Section 4's Scenario 5 illustrates the consequences: the
+attacker controls the entity responsible for coordinating defense,
+rendering downstream defenses moot.
+
+Part 2's hierarchical architecture results confirm the pattern:
+hierarchical systems show strong \emph{average} detection because the
+orchestrator is a natural defense chokepoint, but they have the worst
+\emph{catastrophic} failure mode because that same chokepoint is a
+single point of failure.
+
+\textbf{Mitigation Strategies}:
+
+\begin{enumerate}
+\tightlist
+\item
+  Consider multi-orchestrator architectures for critical decisions
+\item
+  Monitor orchestrator behavior with the same rigor applied to worker
+  agents
+\item
+  Workers should verify orchestrator identity on critical commands
+\item
+  Implement orchestrator-specific tripwires with rotation
+\end{enumerate}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Summary Checklist}
+\protect\phantomsection\label{summary-checklist}
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Pitfall
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Assessment
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Status
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+Implicit trust & Trust scoring implemented? & \(\square\) \\
+Security afterthought & Security in initial architecture? &
+\(\square\) \\
+Uncalibrated thresholds & Thresholds tested against attacks? &
+\(\square\) \\
+Individual-only security & Byzantine consensus deployed? &
+\(\square\) \\
+Static tripwires & Canary rotation scheduled? & \(\square\) \\
+Ignoring drift & Progressive drift monitoring? & \(\square\) \\
+Insufficient logging & Full belief history retained? & \(\square\) \\
+Single orchestrator & Orchestrator monitored? & \(\square\) \\
+\bottomrule\noalign{}
+\end{longtable}
+}
+
+Address unchecked items before production deployment.
+\end{block}
+\end{frame}
+
+\end{document}

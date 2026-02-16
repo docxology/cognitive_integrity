@@ -26,12 +26,26 @@ def generate_trust_decay_figure(output_dir: Path) -> Path:
     setup_plotting()
     colors = get_color_palette()
 
-    fig, axes = plt.subplots(1, 2, figsize=(14, 5))
+    # Increase default font sizes for manuscript readability
+    plt.rcParams.update({
+        'font.size': 12,
+        'axes.labelsize': 14,
+        'axes.titlesize': 14,
+        'xtick.labelsize': 12,
+        'ytick.labelsize': 12,
+        'legend.fontsize': 11
+    })
+
+    fig, axes = plt.subplots(1, 2, figsize=(16, 6))  # Wider figure
 
     # Panel A: Trust decay curves for different delta values
     ax1 = axes[0]
     depths = np.arange(0, 21)
     decay_factors = [0.95, 0.9, 0.85, 0.8, 0.7]
+
+    # Use a sequential palette for decay factors
+    # Gradient from blue to purple
+    decay_colors = plt.cm.viridis(np.linspace(0.2, 0.8, len(decay_factors)))
 
     for i, delta in enumerate(decay_factors):
         config = TrustConfig(decay=delta)
@@ -41,80 +55,97 @@ def generate_trust_decay_figure(output_dir: Path) -> Path:
             depths,
             trust,
             "-o",
-            markersize=4,
-            color=colors[i % len(colors)],
+            markersize=6,
+            color=decay_colors[i],
             label=f"$\delta$ = {delta}",
-            linewidth=2,
+            linewidth=2.5,
+            alpha=0.9
         )
 
+    # Shaded region for "Low Trust"
+    ax1.fill_between(depths, 0, 0.1, color='gray', alpha=0.1, label="Untrusted Region (<0.1)")
+    
     ax1.axhline(
         y=0.1,
         color="gray",
         linestyle="--",
-        alpha=0.7,
-        label="Practical threshold (0.1)",
+        alpha=0.8,
+        linewidth=1.5,
     )
-    ax1.set_xlabel("Delegation Depth (d)")
-    ax1.set_ylabel("Trust (T)")
-    ax1.set_title("A. Trust Decay Over Delegation Depth")
-    ax1.legend(loc="upper right", frameon=True)
-    ax1.grid(True, alpha=0.3)
-    ax1.set_ylim(-0.05, 1.05)
+    
+    ax1.set_xlabel("Delegation Depth (d)", fontweight='bold')
+    ax1.set_ylabel("Trust Score (T)", fontweight='bold')
+    ax1.set_title("A. Trust Decay Over Delegation Depth", fontweight='bold', pad=15)
+    ax1.legend(loc="upper right", frameon=True, framealpha=0.9)
+    ax1.grid(True, alpha=0.2, linestyle='-')
+    ax1.set_ylim(-0.02, 1.05)
+    ax1.set_xlim(0, 20)
 
-    # Add annotation
-    ax1.annotate(
-        "Trust bounded by $\delta^d$",
-        xy=(10, 0.9**10),
-        xytext=(12, 0.5),
-        arrowprops=dict(arrowstyle="->", color="black"),
-        fontsize=10,
-        ha="center",
+    # Add mathematical annotation
+    ax1.text(
+        10, 0.6, 
+        r"$T(d) = T_0 \cdot \delta^d$", 
+        fontsize=14, 
+        color="#333",
+        bbox=dict(facecolor='white', alpha=0.8, edgecolor='none', pad=5)
     )
 
     # Panel B: Trust preservation under attack scenarios
     ax2 = axes[1]
 
-    scenarios = ["No Defense", "Firewall Only", "Trust Decay\n($\delta$=0.9)", "Full CIF"]
+    scenarios = ["No Defense", "Firewall\nOnly", "Trust Decay\n($\delta$=0.9)", "Full CIF"]
     initial_trust = [1.0, 1.0, 1.0, 1.0]
     after_attack = [0.15, 0.45, 0.72, 0.94]
 
     x = np.arange(len(scenarios))
     width = 0.35
 
+    # IBM Design Colors (Colorblind safe)
+    # Blue for Initial, Magenta for After Attack
+    c_initial = "#648FFF" 
+    c_after = "#DC267F"
+
     bars1 = ax2.bar(
         x - width / 2,
         initial_trust,
         width,
         label="Initial Trust",
-        color=colors[0],
-        alpha=0.8,
+        color=c_initial,
+        alpha=0.9,
+        edgecolor='black',
+        linewidth=1
     )
     bars2 = ax2.bar(
         x + width / 2,
         after_attack,
         width,
         label="After Attack",
-        color=colors[1],
-        alpha=0.8,
+        color=c_after,
+        alpha=0.9,
+        edgecolor='black',
+        linewidth=1
     )
 
-    ax2.set_ylabel("Trust Integrity")
-    ax2.set_title("B. Trust Preservation Under Attack")
+    ax2.set_ylabel("Trust Integrity Score", fontweight='bold')
+    ax2.set_title("B. Trust Preservation Under Attack", fontweight='bold', pad=15)
     ax2.set_xticks(x)
-    ax2.set_xticklabels(scenarios)
-    ax2.legend(loc="upper left", frameon=True)
+    ax2.set_xticklabels(scenarios, fontweight='bold')
+    ax2.legend(loc="upper left", frameon=True, framealpha=0.9)
     ax2.set_ylim(0, 1.15)
-    ax2.grid(True, alpha=0.3, axis="y")
+    ax2.grid(True, alpha=0.2, axis="y")
 
-    # Add percentage labels
+    # Add percentage labels with background for readability
     for bar, val in zip(bars2, after_attack):
+        height = bar.get_height()
         ax2.text(
             bar.get_x() + bar.get_width() / 2,
-            bar.get_height() + 0.02,
+            height + 0.02,
             f"{val*100:.0f}%",
             ha="center",
             va="bottom",
-            fontsize=9,
+            fontsize=11,
+            fontweight='bold',
+            color="#333"
         )
 
     # Ensure professional rendering
@@ -122,6 +153,8 @@ def generate_trust_decay_figure(output_dir: Path) -> Path:
     matplotlib.rcParams['pdf.fonttype'] = 42
     matplotlib.rcParams['ps.fonttype'] = 42
 
+    plt.tight_layout(pad=3.0)
+    
     save_figure(fig, output_dir, "trust_decay")
     plt.close()
     

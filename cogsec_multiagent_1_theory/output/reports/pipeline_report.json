@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-01-28T06:37:16.097638",
-  "total_duration": 80.71094369888306,
+  "timestamp": "2026-02-16T11:15:10.353690",
+  "total_duration": 90.33318567276001,
   "stages": [
     {
       "name": "Clean Output Directories",
       "exit_code": 0,
-      "duration": 0.02189493179321289,
+      "duration": 0.031958818435668945,
       "status": "passed",
       "output_files": [],
       "errors": [],
@@ -14,7 +14,7 @@
     {
       "name": "Environment Setup",
       "exit_code": 0,
-      "duration": 0.6314256191253662,
+      "duration": 0.8972768783569336,
       "status": "passed",
       "output_files": [],
       "errors": [],
@@ -23,7 +23,7 @@
     {
       "name": "Project Tests",
       "exit_code": 0,
-      "duration": 17.129513025283813,
+      "duration": 21.30014204978943,
       "status": "passed",
       "output_files": [],
       "errors": [],
@@ -32,7 +32,7 @@
     {
       "name": "Project Analysis",
       "exit_code": 0,
-      "duration": 14.354343891143799,
+      "duration": 18.108949899673462,
       "status": "passed",
       "output_files": [],
       "errors": [],
@@ -41,7 +41,7 @@
     {
       "name": "PDF Rendering",
       "exit_code": 0,
-      "duration": 47.74432611465454,
+      "duration": 48.92355298995972,
       "status": "passed",
       "output_files": [],
       "errors": [],
@@ -50,7 +50,7 @@
     {
       "name": "Output Validation",
       "exit_code": 0,
-      "duration": 0.4227430820465088,
+      "duration": 0.5448760986328125,
       "status": "passed",
       "output_files": [],
       "errors": [],
@@ -59,7 +59,7 @@
     {
       "name": "Copy Outputs",
       "exit_code": 0,
-      "duration": 0.40669703483581543,
+      "duration": 0.5264289379119873,
       "status": "passed",
       "output_files": [],
       "errors": [],
@@ -75,12 +75,12 @@
       "pdf": {
         "exists": true,
         "file_count": 9,
-        "size_mb": "1.68",
-        "total_size_bytes": 1766724,
+        "size_mb": "1.70",
+        "total_size_bytes": 1782468,
         "largest_files": [
           {
             "name": "cogsec_multiagent_1_theory_combined.pdf",
-            "size_mb": "0.89",
+            "size_mb": "0.90",
             "path": "pdf/cogsec_multiagent_1_theory_combined.pdf"
           },
           {
@@ -110,7 +110,7 @@
         "exists": true,
         "file_count": 16,
         "size_mb": "0.62",
-        "total_size_bytes": 645435,
+        "total_size_bytes": 653185,
         "largest_files": [
           {
             "name": "_combined_manuscript.md",
@@ -119,7 +119,7 @@
           },
           {
             "name": "index.html",
-            "size_mb": "0.19",
+            "size_mb": "0.20",
             "path": "web/index.html"
           },
           {
@@ -136,8 +136,8 @@
       "slides": {
         "exists": true,
         "file_count": 100,
-        "size_mb": "2.54",
-        "total_size_bytes": 2666946,
+        "size_mb": "2.55",
+        "total_size_bytes": 2676759,
         "largest_files": [
           {
             "name": "04_formal_framework_slides.pdf",
@@ -169,18 +169,18 @@
       "figures": {
         "exists": true,
         "file_count": 36,
-        "size_mb": "4.01",
-        "total_size_bytes": 4207791,
+        "size_mb": "4.30",
+        "total_size_bytes": 4505252,
         "largest_files": [
+          {
+            "name": "trust_decay.png",
+            "size_mb": "0.48",
+            "path": "figures/trust_decay.png"
+          },
           {
             "name": "trust_calculus_comprehensive.png",
             "size_mb": "0.47",
             "path": "figures/trust_calculus_comprehensive.png"
-          },
-          {
-            "name": "trust_decay.png",
-            "size_mb": "0.33",
-            "path": "figures/trust_decay.png"
           },
           {
             "name": "cif_architecture.png",
@@ -207,7 +207,7 @@
         "exists": true,
         "file_count": 6,
         "size_mb": "0.01",
-        "total_size_bytes": 14260,
+        "total_size_bytes": 14312,
         "largest_files": [
           {
             "name": "output_statistics.json",
@@ -265,25 +265,25 @@
       }
     },
     "total_files": 168,
-    "total_size_mb": 8.878664016723633,
+    "total_size_mb": 9.194158554077148,
     "largest_files": [
       {
         "name": "cogsec_multiagent_1_theory_combined.pdf",
-        "size_mb": "0.89",
+        "size_mb": "0.90",
         "category": "pdf",
         "path": "pdf/cogsec_multiagent_1_theory_combined.pdf"
+      },
+      {
+        "name": "trust_decay.png",
+        "size_mb": "0.48",
+        "category": "figures",
+        "path": "figures/trust_decay.png"
       },
       {
         "name": "trust_calculus_comprehensive.png",
         "size_mb": "0.47",
         "category": "figures",
         "path": "figures/trust_calculus_comprehensive.png"
-      },
-      {
-        "name": "trust_decay.png",
-        "size_mb": "0.33",
-        "category": "figures",
-        "path": "figures/trust_decay.png"
       },
       {
         "name": "04_formal_framework_slides.pdf",
@@ -316,16 +316,16 @@
         "path": "web/_combined_manuscript.md"
       },
       {
+        "name": "index.html",
+        "size_mb": "0.20",
+        "category": "web",
+        "path": "web/index.html"
+      },
+      {
         "name": "03_threat_model_slides.pdf",
         "size_mb": "0.20",
         "category": "slides",
         "path": "slides/03_threat_model_slides.pdf"
-      },
-      {
-        "name": "index.html",
-        "size_mb": "0.19",
-        "category": "web",
-        "path": "web/index.html"
       }
     ],
     "missing_expected_files": [
@@ -351,12 +351,12 @@
       ".txt": 1
     },
     "sizes_by_category": {
-      "pdf": 1.6848793029785156,
-      "web": 0.615534782409668,
-      "slides": 2.543397903442383,
-      "figures": 4.012862205505371,
+      "pdf": 1.6998939514160156,
+      "web": 0.6229257583618164,
+      "slides": 2.5527563095092773,
+      "figures": 4.296543121337891,
       "data": 0.0,
-      "reports": 0.013599395751953125,
+      "reports": 0.01364898681640625,
       "simulations": 0.0,
       "llm": 0.0,
       "logs": 0.008390426635742188

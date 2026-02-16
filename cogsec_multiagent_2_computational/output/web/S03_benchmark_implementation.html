@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
@@ -239,13 +239,22 @@
   type="text/javascript"></script>
 </head>
 <body>
-<h1 id="sec:benchmark-implementation">Benchmark Implementation
-Guidelines</h1>
-<p>This supplementary section provides implementation guidance for
-colony cognitive security benchmarks introduced in Part 1, Section
-S05.</p>
-<h2 id="sec:test-environment">Test Environment Specification</h2>
-<p>Colony CogSec benchmarks require test environments that support:</p>
+<h1 id="sec:benchmark-implementation">Colony Benchmark Design
+(Proposed)</h1>
+<p>This supplementary section presents the <em>design specification</em>
+for colony cognitive security benchmarks introduced in Part 1, Section
+S05. These benchmarks are proposed for future implementation; the
+current CIF codebase validates individual-agent and small-group defense
+mechanisms (3–10 agents) as described in the main text. The
+configurations below define the target infrastructure for scaling CIF
+evaluation to colony-scale populations (<span class="math inline">\(n
+&gt; 10\)</span>).</p>
+<blockquote>
+<p><strong>Status</strong>: The benchmark specifications in this section
+are <em>proposed designs</em>. The code snippets illustrate the intended
+API and are not yet implemented in the CIF repository. Colony-scale
+evaluation is an active area of future work (see ).</p>
+</blockquote>
 <ol type="1">
 <li><strong>Scalable agent populations</strong> — <span
 class="math inline">\(n \in \{10, 50, 100, 500, 1000\}\)</span></li>
@@ -258,6 +267,70 @@ insertion and signal poisoning</li>
 <li><strong>Collective function measurement</strong> — Aggregate outcome
 metrics beyond individual agent states</li>
 </ol>
+<p><strong>Table: Recommended colony CogSec benchmark
+configurations.</strong> {#tab:benchmark-configs}</p>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+</colgroup>
+<thead>
+<tr>
+<th><strong>Benchmark</strong></th>
+<th><strong>Min <span class="math inline">\(n\)</span></strong></th>
+<th><strong>Stigmergy</strong></th>
+<th><strong>Adversary</strong></th>
+<th><strong>Duration</strong></th>
+<th><strong>Metrics</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Recruitment Poisoning</td>
+<td>20</td>
+<td>Required</td>
+<td><span class="math inline">\(\Omega_2\)</span></td>
+<td>100 steps</td>
+<td>Diversion rate</td>
+</tr>
+<tr>
+<td>Sybil Infiltration</td>
+<td>50</td>
+<td>Optional</td>
+<td><span class="math inline">\(\Omega_4\)</span></td>
+<td>500 steps</td>
+<td>Trust ceiling</td>
+</tr>
+<tr>
+<td>Quorum Manipulation</td>
+<td>30</td>
+<td>Optional</td>
+<td><span class="math inline">\(\Omega_3\)</span></td>
+<td>200 steps</td>
+<td>Quorum corruption</td>
+</tr>
+<tr>
+<td>Belief Cascade</td>
+<td>100</td>
+<td>Optional</td>
+<td><span class="math inline">\(\Omega_2\)</span></td>
+<td>300 steps</td>
+<td>Penetration rate</td>
+</tr>
+<tr>
+<td>Emergent Misalignment</td>
+<td>50</td>
+<td>Required</td>
+<td>None</td>
+<td>1000 steps</td>
+<td>Goal deviation</td>
+</tr>
+</tbody>
+</table>
 <h2 id="sec:metrics-framework">Metrics Framework</h2>
 <p>The <em>Colony CogSec Scorecard</em> integrates individual and
 collective metrics:</p>
@@ -336,6 +409,30 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a hr
 <span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate combined report</span></span>
 <span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>suite.generate_report(output<span class="op">=</span><span class="st">&quot;./reports/cif_full.pdf&quot;</span>)</span></code></pre></div>
+<h2 id="sec:benchmark-validity">Benchmark Validity Considerations</h2>
+<p>Colony-scale benchmarks introduce considerations not present in
+individual-agent evaluation:</p>
+<ol type="1">
+<li><p><strong>Emergent behavior confounds</strong>: At <span
+class="math inline">\(n &gt; 50\)</span>, agent collectives may develop
+coordination patterns that affect both attack success and detection
+rates independently of CIF mechanisms. Benchmarks should include control
+runs without adversaries to establish behavioral baselines.</p></li>
+<li><p><strong>Stigmergic channel security</strong>: Shared memory
+substrates (Redis, message queues) introduce attack surfaces not present
+in direct communication models. The benchmark suite includes
+substrate-specific attack generators for each supported
+backend.</p></li>
+<li><p><strong>Temporal coupling</strong>: Colony dynamics evolve over
+hundreds of steps; snapshot metrics (single-point detection rate) may
+miss temporal patterns. The CCS metric addresses this through the
+Recovery component, but practitioners should also examine detection rate
+trajectories over the benchmark duration.</p></li>
+<li><p><strong>Scalability of ground truth</strong>: Manual annotation
+becomes infeasible at colony scale. The benchmark uses programmatic
+ground truth (attacks are generated with known labels) supplemented by
+automated consistency checks.</p></li>
+</ol>
 <h2 id="summary">Summary</h2>
 <p>This implementation guide enables reproduction of colony CogSec
 benchmark results. For formal definitions and theoretical foundations,

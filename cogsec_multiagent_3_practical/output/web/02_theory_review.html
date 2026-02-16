@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>02_theory_review</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <script defer=""
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+</head>
+<body>
+<h1 id="sec:theory-review">The Formal Foundation: Concepts from Paper
+1</h1>
+<p>Part 3 builds directly on the formal framework established in Part 1.
+For clarity, we summarize the core definitions and theorems here,
+utilizing the notation defined in the formal manuscript.</p>
+<h2 id="the-adversary-hierarchy-omega">1. The Adversary Hierarchy (<span
+class="math inline">\(\Omega\)</span>)</h2>
+<p>Paper 1 formalized the “Scope of Threat” through a hierarchical
+taxonomy. This hierarchy allows precise definition of defensive
+scope.</p>
+<ul>
+<li><strong><span class="math inline">\(\Omega_1\)</span>
+(External)</strong>: The adversary controls inputs (e.g., prompt
+injection). The agent’s internal state is intact.</li>
+<li><strong><span class="math inline">\(\Omega_2\)</span>
+(Peripheral)</strong>: The adversary controls tools or RAG data (e.g.,
+poisoned retrieval). The agent’s perception is compromised.</li>
+<li><strong><span class="math inline">\(\Omega_3\)</span>
+(Agent)</strong>: The adversary controls the agent’s weights or context
+(e.g., identity implementation). The agent itself is untrusted.</li>
+<li><strong><span class="math inline">\(\Omega_4\)</span>
+(Coordination)</strong>: The adversary controls a subset of the swarm
+(e.g., Sybil agents). The consensus mechanism is under attack.</li>
+<li><strong><span class="math inline">\(\Omega_5\)</span>
+(Systemic)</strong>: The adversary controls the orchestrator or
+infrastructure. The system’s rules are compromised.</li>
+</ul>
+<p>The simulations in Part 2 demonstrated that defense difficulty scales
+non-linearly with this hierarchy. While <span
+class="math inline">\(\Omega_1\)</span> attacks were consistently
+blocked by surface-level filters (96%+), <span
+class="math inline">\(\Omega_4\)</span> attacks required
+coordination-level protocols to detect (74%).</p>
+<h2 id="the-trust-calculus-t">2. The Trust Calculus (<span
+class="math inline">\(T\)</span>)</h2>
+<p>A central contribution of Paper 1 is the <strong>Trust
+Calculus</strong>, a formal system for reasoning about belief
+reliability. It defines Trust (<span class="math inline">\(T\)</span>)
+not as a binary permission but as a continuous property of a belief
+<span class="math inline">\(b\)</span>, denoted as <span
+class="math inline">\(T(b) \in [0, 1]\)</span>.</p>
+<p>The formal definition of Trust Update (Theorem 3.1 in Paper 1)
+establishes that trust must decay across delegation chains:</p>
+<blockquote>
+<p><strong>Theorem 3.1 (Trust Preservation)</strong>: <em>For any
+delegation chain <span class="math inline">\(C = \{a_1 \to a_2 \to \dots
+\to a_n\}\)</span>, the trust in the final output cannot exceed the
+trust of the weakest link, degraded by the distance from the
+source.</em> <span class="math display">\[ T(result) \le \min_{i} T(a_i)
+\cdot \delta^{|C|} \]</span> <em>where <span
+class="math inline">\(\delta\)</span> is the decay factor (<span
+class="math inline">\(0 &lt; \delta &lt; 1\)</span>).</em></p>
+</blockquote>
+<p>This theorem provides the mathematical basis for the “Trust Decay”
+mechanism evaluated in Part 2. It ensures that uncertainty is preserved
+and amplified effectively as information travels through the
+network.</p>
+<h2 id="the-cognitive-firewall-phi">3. The Cognitive Firewall (<span
+class="math inline">\(\Phi\)</span>)</h2>
+<p>The <strong>Cognitive Firewall</strong> is defined in Paper 1 as a
+function <span class="math inline">\(\Phi\)</span> that maps inputs to
+decisions based on three verification layers:</p>
+<ol type="1">
+<li><strong>Syntactic Verification (<span
+class="math inline">\(V_{syn}\)</span>)</strong>: Checks for structural
+anomalies.</li>
+<li><strong>Semantic Verification (<span
+class="math inline">\(V_{sem}\)</span>)</strong>: Checks for
+meaning-level violations.</li>
+<li><strong>Pragmatic Verification (<span
+class="math inline">\(V_{prag}\)</span>)</strong>: Checks for contextual
+anomalies.</li>
+</ol>
+<p>In the Part 2 experiments, this modular structure was shown to be the
+primary defense against <span class="math inline">\(\Omega_1\)</span>
+(External) attacks.</p>
+<h2 id="the-stealth-impact-tradeoff">4. The Stealth-Impact Tradeoff</h2>
+<p>Paper 1 provides a theoretical bound on attack performance,
+formalized as the Stealth-Impact Tradeoff.</p>
+<blockquote>
+<p><strong>Stealth-Impact Tradeoff</strong>: <em>For a given defense
+sensitivity <span class="math inline">\(\epsilon\)</span>, the
+probability of detection <span class="math inline">\(P(d)\)</span>
+approaches 1 as the divergence of the attack behavior from the baseline
+increases.</em></p>
+</blockquote>
+<p>This formalism suggests that catastrophic attacks are inherently
+easier to detect than subtle attacks. Part 2’s data consistently
+validated this: High-impact attacks were detected 98% of the time, while
+low-impact attacks were detected only 74% of the time.</p>
+<h2 id="defense-composition">5. Defense Composition</h2>
+<p>Finally, Paper 1 defines the <strong>Composition Algebra</strong>,
+determining how output probabilities of distinct modules interact. The
+key result is that orthogonal defenses compose multiplicatively.</p>
+<p>This “Swiss Cheese Model” was empirically validated in Part 2, where
+the full stack (97% detection) significantly outperformed the sum of its
+parts.</p>
+</body>
+</html>

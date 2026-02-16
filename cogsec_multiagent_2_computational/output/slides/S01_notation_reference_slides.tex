@@ -108,8 +108,9 @@ formal specification defined in Part 1 of this series.
 
 \begin{block}{Quick Reference}
 \protect\phantomsection\label{quick-reference}
-\begin{block}{Core Entities}
-\protect\phantomsection\label{core-entities}
+\begin{block}{Core Entities (reproduced from Part 1, Table 1 for reader
+convenience)}
+\protect\phantomsection\label{core-entities-reproduced-from-part-1-table-1-for-reader-convenience}
 {\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}lll@{}}
 \toprule\noalign{}
@@ -127,8 +128,9 @@ Symbol & Meaning & Part 1 Reference \\
 }
 \end{block}
 
-\begin{block}{Trust Calculus}
-\protect\phantomsection\label{trust-calculus}
+\begin{block}{Trust Calculus (reproduced from Part 1, Table 2 for reader
+convenience)}
+\protect\phantomsection\label{trust-calculus-reproduced-from-part-1-table-2-for-reader-convenience}
 {\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}lll@{}}
 \toprule\noalign{}
@@ -146,8 +148,9 @@ Symbol & Meaning & Part 1 Reference \\
 }
 \end{block}
 
-\begin{block}{Defense Mechanisms}
-\protect\phantomsection\label{defense-mechanisms}
+\begin{block}{Defense Mechanisms (reproduced from Part 1, Table 3 for
+reader convenience)}
+\protect\phantomsection\label{defense-mechanisms-reproduced-from-part-1-table-3-for-reader-convenience}
 {\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}lll@{}}
 \toprule\noalign{}
@@ -164,8 +167,9 @@ Symbol & Meaning & Part 1 Reference \\
 }
 \end{block}
 
-\begin{block}{Consensus and Coordination}
-\protect\phantomsection\label{consensus-and-coordination}
+\begin{block}{Consensus and Coordination (reproduced from Part 1, Table
+4 for reader convenience)}
+\protect\phantomsection\label{consensus-and-coordination-reproduced-from-part-1-table-4-for-reader-convenience}
 {\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}lll@{}}
 \toprule\noalign{}
@@ -179,17 +183,64 @@ Symbol & Meaning & Part 1 Reference \\
 \end{longtable}
 }
 \end{block}
+
+\begin{block}{Threat Model (used in this paper's experimental design)}
+\protect\phantomsection\label{threat-model-used-in-this-papers-experimental-design}
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.2857}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3214}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3929}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Symbol
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Meaning
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Reference
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\(n\) & Total agent count & \cref{sec:intro} \\
+\(f\) & Maximum Byzantine agents & \cref{sec:intro}, Part 1 Theorem 1 \\
+\(\mathcal{P}_{injection}\) & Injection pattern database & Algorithm 1
+(\cref{sec:alg-firewall}) \\
+\(\mathcal{B}_{verified}\) & Verified belief partition & Algorithm 2
+(\cref{sec:alg-sandbox}) \\
+\(\mathcal{B}_{provisional}\) & Provisional belief partition & Algorithm
+2 (\cref{sec:alg-sandbox}) \\
+\(\mathcal{W}\) & Tripwire (canary belief) set & Algorithm 4
+(\cref{sec:alg-tripwire}) \\
+\(D_{KL}\) & KL divergence drift score & Algorithm 6
+(\cref{sec:alg-drift}) \\
+\bottomrule\noalign{}
+\end{longtable}
+}
+\end{block}
+
+\begin{block}{Evaluation Metrics (used in results sections)}
+\protect\phantomsection\label{evaluation-metrics-used-in-results-sections}
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}lll@{}}
+\toprule\noalign{}
+Symbol & Meaning & Reference \\
+\midrule\noalign{}
+\endhead
+TPR & True positive rate (sensitivity) & \cref{sec:results} \\
+FPR & False positive rate (1 \(-\) specificity) & \cref{sec:results} \\
+\(d\) & Cohen's \(d\) effect size & \cref{sec:effect-sizes} \\
+OR & Odds ratio & \cref{sec:odds-ratios} \\
+NNT & Number needed to treat & \cref{sec:nnt} \\
+\bottomrule\noalign{}
+\end{longtable}
+}
+\end{block}
 \end{block}
 
 \begin{block}{Canonical Reference}
 \protect\phantomsection\label{canonical-reference}
-For complete notation definitions, see:
-
-\begin{itemize}
-\tightlist
-\item
-  Part 1: \textbf{Supplementary Section S03: Notation Reference}
-\end{itemize}
+For complete notation definitions, see Part 1: \textbf{Supplementary
+Section S03: Notation Reference}.
 \end{block}
 \end{frame}
 

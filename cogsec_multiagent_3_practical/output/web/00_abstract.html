@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
@@ -172,41 +172,44 @@
 </head>
 <body>
 <h1 id="abstract">Abstract</h1>
-<p>This paper translates the <strong>Cognitive Integrity Framework
-(CIF)</strong> into actionable guidance for practitioners. Building on
-formal foundations (Part 1) and empirical validation (Part 2), we
-provide practical recommendations for securing multiagent AI
-deployments.</p>
-<h2 id="contributions">Contributions</h2>
-<ul>
-<li><strong>Operator Posture Assessment</strong>: Framework for
-evaluating organizational cognitive security readiness</li>
-<li><strong>Deployment Checklists</strong>: Step-by-step guidance for
-implementation and monitoring</li>
-<li><strong>Agent Guidelines</strong>: Machine-readable rules for AI
-system self-monitoring</li>
-<li><strong>Risk Assessment</strong>: Threat modeling methodology for
-cognitive attack surfaces</li>
-<li><strong>Common Pitfalls</strong>: Documented anti-patterns with
-specific mitigations</li>
-</ul>
-<h2 id="audience">Audience</h2>
-<p>This guidance serves security practitioners, developers, operators,
-and compliance teams evaluating multiagent AI deployments. Technical
-prerequisites are minimal; readers seeking formal foundations should
-consult Part 1.</p>
-<h2 id="approach">Approach</h2>
-<p>We prioritize clarity over comprehensiveness. Each section provides
-actionable recommendations with explicit pointers to Parts 1 and 2 for
-theoretical grounding and empirical evidence. Notation is used sparingly
-and always defined inline.</p>
+<p>Multiagent AI systems—autonomous coding assistants, research
+pipelines, financial decision engines—have moved from prototype to
+production in under two years. With them comes a new class of security
+concern: attacks that target not data or infrastructure but the
+<em>reasoning processes</em> of AI agents. Prompt injections that
+propagate through delegation chains, trust relationships that launder
+adversarial influence, and coordination mechanisms vulnerable to
+strategic manipulation all represent cognitive attack surfaces absent
+from traditional security models.</p>
+<p>The <strong>Cognitive Integrity Framework (CIF)</strong>, presented
+across two companion papers, offers the first comprehensive formal and
+computational treatment of this problem. Part 1 establishes mathematical
+foundations: a trust calculus with provably bounded delegation, defense
+composition algebras with multiplicative detection guarantees, and
+information-theoretic limits on attack stealth. Part 2 provides
+computational validation: eight implemented defense modules (1,557
+passing tests), a 950-attack corpus spanning four threat categories, and
+parametric architecture-aware simulation across six production
+multiagent topologies.</p>
+<p>This paper is a qualitative review and practitioner’s guide to the
+CIF series. We synthesize the key insights from both papers into
+accessible language, contextualize the formal results within the current
+deployment landscape, assess what the research has established and where
+gaps remain, and distill practical recommendations for teams building
+and operating multiagent AI systems. No formal prerequisites are
+assumed; readers seeking mathematical detail are referred to Parts 1 and
+2.</p>
 <h2 id="paper-series">Paper Series</h2>
 <p><strong>DOI</strong>: 10.5281/zenodo.18364130</p>
 <p>This is Part 3 of the <em>Cognitive Security for Multiagent
-Operators</em> series: - <strong>Part 1</strong> (DOI:
-10.5281/zenodo.18364119): Formal foundations and theoretical analysis -
-<strong>Part 2</strong> (DOI: 10.5281/zenodo.18364128): Computational
-validation and implementation - <strong>Part 3</strong> (this paper):
-Practical deployment guidance</p>
+Operators</em> series:</p>
+<ul>
+<li><strong>Part 1</strong> (DOI: 10.5281/zenodo.18364119): Formal
+foundations and theoretical analysis</li>
+<li><strong>Part 2</strong> (DOI: 10.5281/zenodo.18364128):
+Computational validation and implementation</li>
+<li><strong>Part 3</strong> (this paper): Qualitative review and
+practitioner’s synthesis</li>
+</ul>
 </body>
 </html>

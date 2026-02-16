@@ -17,29 +17,18 @@ theory and practice. In practice, there is.''
 
 # Abstract
 
-This paper translates the **Cognitive Integrity Framework (CIF)** into actionable guidance for practitioners. Building on formal foundations (Part 1) and empirical validation (Part 2), we provide practical recommendations for securing multiagent AI deployments.
+Multiagent AI systems—autonomous coding assistants, research pipelines, financial decision engines—have moved from prototype to production in under two years. With them comes a new class of security concern: attacks that target not data or infrastructure but the *reasoning processes* of AI agents. Prompt injections that propagate through delegation chains, trust relationships that launder adversarial influence, and coordination mechanisms vulnerable to strategic manipulation all represent cognitive attack surfaces absent from traditional security models.
 
-## Contributions
+The **Cognitive Integrity Framework (CIF)**, presented across two companion papers, offers the first comprehensive formal and computational treatment of this problem. Part 1 establishes mathematical foundations: a trust calculus with provably bounded delegation, defense composition algebras with multiplicative detection guarantees, and information-theoretic limits on attack stealth. Part 2 provides computational validation: eight implemented defense modules (1,557 passing tests), a 950-attack corpus spanning four threat categories, and parametric architecture-aware simulation across six production multiagent topologies.
 
-- **Operator Posture Assessment**: Framework for evaluating organizational cognitive security readiness
-- **Deployment Checklists**: Step-by-step guidance for implementation and monitoring
-- **Agent Guidelines**: Machine-readable rules for AI system self-monitoring
-- **Risk Assessment**: Threat modeling methodology for cognitive attack surfaces
-- **Common Pitfalls**: Documented anti-patterns with specific mitigations
-
-## Audience
-
-This guidance serves security practitioners, developers, operators, and compliance teams evaluating multiagent AI deployments. Technical prerequisites are minimal; readers seeking formal foundations should consult Part 1.
-
-## Approach
-
-We prioritize clarity over comprehensiveness. Each section provides actionable recommendations with explicit pointers to Parts 1 and 2 for theoretical grounding and empirical evidence. Notation is used sparingly and always defined inline.
+This paper is a qualitative review and practitioner's guide to the CIF series. We synthesize the key insights from both papers into accessible language, contextualize the formal results within the current deployment landscape, assess what the research has established and where gaps remain, and distill practical recommendations for teams building and operating multiagent AI systems. No formal prerequisites are assumed; readers seeking mathematical detail are referred to Parts 1 and 2.
 
 ## Paper Series
 
 **DOI**: 10.5281/zenodo.18364130
 
 This is Part 3 of the *Cognitive Security for Multiagent Operators* series:
+
 - **Part 1** (DOI: 10.5281/zenodo.18364119): Formal foundations and theoretical analysis
 - **Part 2** (DOI: 10.5281/zenodo.18364128): Computational validation and implementation
-- **Part 3** (this paper): Practical deployment guidance
+- **Part 3** (this paper): Qualitative review and practitioner's synthesis

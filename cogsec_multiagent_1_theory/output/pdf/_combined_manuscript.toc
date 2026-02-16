@@ -29,31 +29,31 @@
 \contentsline {subsubsection}{\numberline {3.5.1}Epistemic Attacks}{20}{subsubsection.3.5.1}%
 \contentsline {subsubsection}{\numberline {3.5.2}Behavioral Attacks}{20}{subsubsection.3.5.2}%
 \contentsline {subsubsection}{\numberline {3.5.3}Social Attacks}{20}{subsubsection.3.5.3}%
-\contentsline {subsubsection}{\numberline {3.5.4}Temporal Attacks}{20}{subsubsection.3.5.4}%
+\contentsline {subsubsection}{\numberline {3.5.4}Temporal Attacks}{22}{subsubsection.3.5.4}%
 \contentsline {subsection}{\numberline {3.6}Attack Scenarios by Class}{22}{subsection.3.6}%
 \contentsline {subsubsection}{\numberline {3.6.1}Scenario \(\mitOmega _1\): Nested Instruction Attack}{22}{subsubsection.3.6.1}%
 \contentsline {subsubsection}{\numberline {3.6.2}Scenario \(\mitOmega _2\): Poisoned Search Result}{22}{subsubsection.3.6.2}%
-\contentsline {subsubsection}{\numberline {3.6.3}Scenario \(\mitOmega _2'\): Browser-Fetched Adversarial Content (Moltbot)}{22}{subsubsection.3.6.3}%
+\contentsline {subsubsection}{\numberline {3.6.3}Scenario \(\mitOmega _2'\): Browser-Fetched Adversarial Content (OpenClaw)}{22}{subsubsection.3.6.3}%
 \contentsline {subsubsection}{\numberline {3.6.4}Scenario \(\mitOmega _3\): Compromised Specialist}{23}{subsubsection.3.6.4}%
 \contentsline {subsubsection}{\numberline {3.6.5}Scenario \(\mitOmega _4\): Trust Inflation Attack}{23}{subsubsection.3.6.5}%
 \contentsline {subsection}{\numberline {3.7}Attack-Defense Quick Reference}{23}{subsection.3.7}%
 \contentsline {subsection}{\numberline {3.8}Attack Composition}{23}{subsection.3.8}%
-\contentsline {subsection}{\numberline {3.9}Threat Model Assumptions}{24}{subsection.3.9}%
-\contentsline {section}{\numberline {4}Cognitive Integrity Framework: Trust Calculus and Detection Bounds}{26}{section.4}%
-\contentsline {subsection}{\numberline {4.1}System Model}{26}{subsection.4.1}%
-\contentsline {subsection}{\numberline {4.2}Cognitive State}{26}{subsection.4.2}%
-\contentsline {subsubsection}{\numberline {4.2.1}State Transition Semantics}{27}{subsubsection.4.2.1}%
-\contentsline {subsection}{\numberline {4.3}Integrity Properties}{28}{subsection.4.3}%
-\contentsline {subsection}{\numberline {4.4}Trust Calculus}{28}{subsection.4.4}%
-\contentsline {subsubsection}{\numberline {4.4.1}Motivation: Why Bounded Trust Matters}{28}{subsubsection.4.4.1}%
-\contentsline {subsubsection}{\numberline {4.4.2}Formal Trust Model}{29}{subsubsection.4.4.2}%
-\contentsline {subsubsection}{\numberline {4.4.3}Trust Computation}{30}{subsubsection.4.4.3}%
-\contentsline {subsubsection}{\numberline {4.4.4}Trust Algebra}{30}{subsubsection.4.4.4}%
-\contentsline {subsubsection}{\numberline {4.4.5}Cross-Modality Trust}{31}{subsubsection.4.4.5}%
-\contentsline {subsubsection}{\numberline {4.4.6}Federated Trust}{33}{subsubsection.4.4.6}%
-\contentsline {subsubsection}{\numberline {4.4.7}Belief Update Semantics}{33}{subsubsection.4.4.7}%
-\contentsline {subsubsection}{\numberline {4.4.8}Sandboxed Belief Model}{34}{subsubsection.4.4.8}%
-\contentsline {subsection}{\numberline {4.5}Information-Theoretic Detection Bounds}{34}{subsection.4.5}%
+\contentsline {subsection}{\numberline {3.9}Threat Model Assumptions}{25}{subsection.3.9}%
+\contentsline {section}{\numberline {4}Cognitive Integrity Framework: Trust Calculus and Detection Bounds}{27}{section.4}%
+\contentsline {subsection}{\numberline {4.1}System Model}{27}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Cognitive State}{27}{subsection.4.2}%
+\contentsline {subsubsection}{\numberline {4.2.1}State Transition Semantics}{28}{subsubsection.4.2.1}%
+\contentsline {subsection}{\numberline {4.3}Integrity Properties}{29}{subsection.4.3}%
+\contentsline {subsection}{\numberline {4.4}Trust Calculus}{29}{subsection.4.4}%
+\contentsline {subsubsection}{\numberline {4.4.1}Motivation: Why Bounded Trust Matters}{29}{subsubsection.4.4.1}%
+\contentsline {subsubsection}{\numberline {4.4.2}Formal Trust Model}{30}{subsubsection.4.4.2}%
+\contentsline {subsubsection}{\numberline {4.4.3}Trust Computation}{31}{subsubsection.4.4.3}%
+\contentsline {subsubsection}{\numberline {4.4.4}Trust Algebra}{31}{subsubsection.4.4.4}%
+\contentsline {subsubsection}{\numberline {4.4.5}Cross-Modality Trust}{32}{subsubsection.4.4.5}%
+\contentsline {subsubsection}{\numberline {4.4.6}Federated Trust}{34}{subsubsection.4.4.6}%
+\contentsline {subsubsection}{\numberline {4.4.7}Belief Update Semantics}{34}{subsubsection.4.4.7}%
+\contentsline {subsubsection}{\numberline {4.4.8}Sandboxed Belief Model}{35}{subsubsection.4.4.8}%
+\contentsline {subsection}{\numberline {4.5}Information-Theoretic Detection Bounds}{35}{subsection.4.5}%
 \contentsline {section}{\numberline {5}Defense Mechanisms: Architectural, Runtime, and Coordination Layers}{39}{section.5}%
 \contentsline {subsection}{\numberline {5.1}Cognitive Security Operator Posture}{39}{subsection.5.1}%
 \contentsline {subsubsection}{\numberline {5.1.1}Definition and Principles}{39}{subsubsection.5.1.1}%
@@ -127,25 +127,26 @@
 \contentsline {subsubsection}{\numberline {7.5.4}Verification Results Summary}{59}{subsubsection.7.5.4}%
 \contentsline {subsubsection}{\numberline {7.5.5}Counterexample Analysis}{59}{subsubsection.7.5.5}%
 \contentsline {section}{\numberline {8}Discussion: Theoretical Implications, Limitations, and Future Directions}{61}{section.8}%
-\contentsline {subsection}{\numberline {8.1}Theoretical Implications}{61}{subsection.8.1}%
-\contentsline {subsubsection}{\numberline {8.1.1}Why Composable Defenses Are Necessary}{61}{subsubsection.8.1.1}%
-\contentsline {subsubsection}{\numberline {8.1.2}The Trust Boundedness Guarantee}{61}{subsubsection.8.1.2}%
-\contentsline {subsubsection}{\numberline {8.1.3}Information-Theoretic Detection Limits}{61}{subsubsection.8.1.3}%
-\contentsline {subsubsection}{\numberline {8.1.4}Architecture-Specific Vulnerability Patterns}{62}{subsubsection.8.1.4}%
-\contentsline {subsection}{\numberline {8.2}Formal Limitations}{62}{subsection.8.2}%
-\contentsline {subsubsection}{\numberline {8.2.1}Assumption Dependencies}{62}{subsubsection.8.2.1}%
-\contentsline {subsubsection}{\numberline {8.2.2}Scalability Constraints}{62}{subsubsection.8.2.2}%
-\contentsline {subsubsection}{\numberline {8.2.3}Inherent Detection Gaps}{62}{subsubsection.8.2.3}%
-\contentsline {subsection}{\numberline {8.3}Relationship to Prior Work}{63}{subsection.8.3}%
-\contentsline {subsection}{\numberline {8.4}Governance and Policy Implications}{63}{subsection.8.4}%
-\contentsline {subsubsection}{\numberline {8.4.1}The Regulatory Gap}{63}{subsubsection.8.4.1}%
-\contentsline {subsubsection}{\numberline {8.4.2}Recommendations for Policy}{64}{subsubsection.8.4.2}%
-\contentsline {subsection}{\numberline {8.5}Future Theoretical Directions}{64}{subsection.8.5}%
-\contentsline {subsubsection}{\numberline {8.5.1}Adaptive Defense Theory}{64}{subsubsection.8.5.1}%
-\contentsline {subsubsection}{\numberline {8.5.2}Cross-System Trust Federation}{64}{subsubsection.8.5.2}%
-\contentsline {subsubsection}{\numberline {8.5.3}Emergent Behavior Security}{64}{subsubsection.8.5.3}%
-\contentsline {subsubsection}{\numberline {8.5.4}Long-Horizon Agent Security}{64}{subsubsection.8.5.4}%
-\contentsline {subsubsection}{\numberline {8.5.5}The Cognitive Security Research Agenda}{65}{subsubsection.8.5.5}%
+\contentsline {subsection}{\numberline {8.1}Empirical Validation Summary}{61}{subsection.8.1}%
+\contentsline {subsection}{\numberline {8.2}Theoretical Implications}{61}{subsection.8.2}%
+\contentsline {subsubsection}{\numberline {8.2.1}Why Composable Defenses Are Necessary}{61}{subsubsection.8.2.1}%
+\contentsline {subsubsection}{\numberline {8.2.2}The Trust Boundedness Guarantee}{62}{subsubsection.8.2.2}%
+\contentsline {subsubsection}{\numberline {8.2.3}Information-Theoretic Detection Limits}{62}{subsubsection.8.2.3}%
+\contentsline {subsubsection}{\numberline {8.2.4}Architecture-Specific Vulnerability Patterns}{62}{subsubsection.8.2.4}%
+\contentsline {subsection}{\numberline {8.3}Formal Limitations}{62}{subsection.8.3}%
+\contentsline {subsubsection}{\numberline {8.3.1}Assumption Dependencies}{62}{subsubsection.8.3.1}%
+\contentsline {subsubsection}{\numberline {8.3.2}Scalability Constraints}{63}{subsubsection.8.3.2}%
+\contentsline {subsubsection}{\numberline {8.3.3}Inherent Detection Gaps}{63}{subsubsection.8.3.3}%
+\contentsline {subsection}{\numberline {8.4}Relationship to Prior Work}{63}{subsection.8.4}%
+\contentsline {subsection}{\numberline {8.5}Governance and Policy Implications}{64}{subsection.8.5}%
+\contentsline {subsubsection}{\numberline {8.5.1}The Regulatory Gap}{64}{subsubsection.8.5.1}%
+\contentsline {subsubsection}{\numberline {8.5.2}Recommendations for Policy}{64}{subsubsection.8.5.2}%
+\contentsline {subsection}{\numberline {8.6}Future Theoretical Directions}{64}{subsection.8.6}%
+\contentsline {subsubsection}{\numberline {8.6.1}Adaptive Defense Theory}{64}{subsubsection.8.6.1}%
+\contentsline {subsubsection}{\numberline {8.6.2}Cross-System Trust Federation}{64}{subsubsection.8.6.2}%
+\contentsline {subsubsection}{\numberline {8.6.3}Emergent Behavior Security}{65}{subsubsection.8.6.3}%
+\contentsline {subsubsection}{\numberline {8.6.4}Long-Horizon Agent Security}{65}{subsubsection.8.6.4}%
+\contentsline {subsubsection}{\numberline {8.6.5}The Cognitive Security Research Agenda}{65}{subsubsection.8.6.5}%
 \contentsline {section}{\numberline {9}Conclusion: Summary and Actionable Recommendations}{66}{section.9}%
 \contentsline {subsection}{\numberline {9.1}Summary}{66}{subsection.9.1}%
 \contentsline {subsubsection}{\numberline {9.1.1}Formal Contributions}{66}{subsubsection.9.1.1}%
@@ -159,13 +160,13 @@
 \contentsline {section}{\numberline {10}Supplementary: Mathematical Proofs}{71}{section.10}%
 \contentsline {subsection}{\numberline {10.1}Preliminary Definitions and Notation}{71}{subsection.10.1}%
 \contentsline {subsubsection}{\numberline {10.1.1}Notation Summary}{71}{subsubsection.10.1.1}%
-\contentsline {subsection}{\numberline {10.2}Theorem 3.1: Trust Boundedness}{71}{subsection.10.2}%
-\contentsline {subsection}{\numberline {10.3}Theorem 6.1: Belief Injection Resistance}{73}{subsection.10.3}%
-\contentsline {subsection}{\numberline {10.4}Theorem 6.2: No Trust Amplification}{74}{subsection.10.4}%
-\contentsline {subsection}{\numberline {10.5}Theorem 6.3: Goal Alignment Invariant}{75}{subsection.10.5}%
-\contentsline {subsection}{\numberline {10.6}Theorem 6.4: Firewall Liveness}{76}{subsection.10.6}%
-\contentsline {subsection}{\numberline {10.7}Theorem 6.5: Byzantine Consensus Termination}{77}{subsection.10.7}%
-\contentsline {subsection}{\numberline {10.8}Theorem 6.6: Bounded Overhead}{78}{subsection.10.8}%
+\contentsline {subsection}{\numberline {10.2}Theorem 4.2: Trust Boundedness}{71}{subsection.10.2}%
+\contentsline {subsection}{\numberline {10.3}Theorem 5.7: Belief Injection Resistance}{73}{subsection.10.3}%
+\contentsline {subsection}{\numberline {10.4}Theorem 4.7: No Trust Amplification}{74}{subsection.10.4}%
+\contentsline {subsection}{\numberline {10.5}Theorem 5.8: Goal Alignment Invariant}{75}{subsection.10.5}%
+\contentsline {subsection}{\numberline {10.6}Theorem 5.9: Firewall Liveness}{76}{subsection.10.6}%
+\contentsline {subsection}{\numberline {10.7}Theorem 5.10: Byzantine Consensus Termination}{77}{subsection.10.7}%
+\contentsline {subsection}{\numberline {10.8}Theorem 5.11: Bounded Overhead}{78}{subsection.10.8}%
 \contentsline {subsubsection}{\numberline {10.8.1}Numerical Instantiation}{78}{subsubsection.10.8.1}%
 \contentsline {subsection}{\numberline {10.9}Additional Lemmas}{79}{subsection.10.9}%
 \contentsline {subsection}{\numberline {10.10}Summary of Proof Techniques}{79}{subsection.10.10}%

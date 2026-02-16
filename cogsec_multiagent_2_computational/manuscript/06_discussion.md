@@ -4,13 +4,13 @@
 
 ## Synthesis of Findings
 
-Our empirical evaluation across six production multiagent architectures validates the core theoretical claims of the Cognitive Integrity Framework (Part 1):
+Our simulation-based evaluation across six multiagent architecture models validates the core theoretical claims of the Cognitive Integrity Framework established in Part 1. The 94\% overall detection rate achieved by the full CIF deployment represents a substantial improvement over any individual defense mechanism, confirming that the multiplicative composition theorems translate from formal proofs to practical protection. More importantly, the consistency of this result across architecturally diverse systems---from hierarchical orchestrator patterns to peer-to-peer topologies---suggests that CIF's formal abstractions capture genuine structural properties of multiagent security rather than artifacts of specific implementation choices. We now examine these findings in detail, beginning with the mechanisms underlying layered defense success.
 
 ### Why Layered Defense Succeeds
 
-![Defense Composition Architecture. Diagram illustrating the series and parallel composition of CIF defense mechanisms. The Cognitive Firewall provides the first line of defense (input filtering), followed by the Belief Sandbox (provisional isolation) and Tripwires (continuous monitoring) in series. Trust Calculus and Byzantine Consensus operate in parallel for delegation and coordination decisions. The multiplicative detection guarantee (Part 1, Theorems 3.1-3.2) emerges from the orthogonality of attack surfaces targeted by each layer.](figures/defense_composition.pdf){#fig:defense-composition width=95%}
+![Defense Composition Architecture. Diagram illustrating the series and parallel composition of CIF defense mechanisms. The Cognitive Firewall provides the first line of defense (input filtering), followed by the Belief Sandbox (provisional isolation) and Tripwires (continuous monitoring) in series. Trust Calculus and Byzantine Consensus operate in parallel for delegation and coordination decisions. The multiplicative detection guarantee (Part 1, Theorems 3.1-3.2) emerges from the orthogonality of attack surfaces targeted by each layer: series composition yields $P_{\\text{detect}} = 1 - \\prod_{i}(1 - r_i)$ computed via \\texttt{compute\\_series\\_detection\\_rate()}, while parallel composition uses max-score fusion via \\texttt{compute\\_parallel\\_detection\\_rate()}. The Venn overlap statistics in the accompanying table are dynamically computed from per-mechanism detection rates using these composition functions.](figures/defense_composition.pdf){#fig:defense-composition width=95%}
 
-The multiplicative composition of detection rates (Theorems 3.1-3.2 in Part 1) explains the empirical observation that full CIF substantially outperforms individual mechanisms. Each defense targets a distinct attack surface:
+The defense composition architecture (\cref{fig:defense-composition}) illustrates how the CIF defense mechanisms integrate into a coherent defense posture. The multiplicative composition of detection rates (Theorems 3.1-3.2 in Part 1) explains the empirical observation that full CIF substantially outperforms individual mechanisms. Each defense targets a distinct attack surface:
 
 | Defense Layer | Target Attack Surface | Contribution |
 |---------------|----------------------|--------------|
@@ -22,76 +22,109 @@ The multiplicative composition of detection rates (Theorems 3.1-3.2 in Part 1) e
 
 ### Architecture-Specific Insights
 
-\begin{table}[htbp]
-\centering
-\caption{Architecture vulnerability patterns and recommended mitigations.}
-\label{tab:architecture-insights}
-\begin{tabular}{@{}lll@{}}
-\toprule
-Architecture & Primary Vulnerability & CIF Mitigation \\
-\midrule
-Hierarchical & Orchestrator compromise cascades & Strong orchestrator tripwires \\
-Peer-to-peer & Lateral movement amplification & Byzantine consensus \\
-Role-based & Role impersonation & Attestation per transition \\
-State machine & State corruption & State hash verification \\
-\bottomrule
-\end{tabular}
-\end{table}
+**Table: Architecture vulnerability patterns and observed CIF defense response.** {#tab:architecture-insights}
 
-## Limitations
+| Architecture  | Primary Vulnerability  | Observed CIF Defense Mechanism |
+| --- | --- | --- |
+| Hierarchical | Orchestrator compromise cascades | Orchestrator-specific tripwires (82% detection) |
+| Peer-to-peer | Lateral movement amplification | Byzantine consensus + trust decay |
+| Role-based | Role impersonation | Attestation verification at role transitions |
+| State machine | State corruption | State hash verification (deterministic detection) |
 
-### Detection Gaps Remaining
+The architecture-specific results reveal that vulnerability patterns align closely with the structural properties predicted by Part 1's threat model analysis. Hierarchical architectures concentrate risk at the orchestrator: a single compromised orchestrator can cascade malicious instructions to all subordinate agents. Our evaluation shows that tripwire-only deployments achieve 82\% detection in hierarchical topologies but only 61\% in peer-to-peer systems, quantifying the architectural dependence of defense effectiveness.
 
-Despite strong overall performance, specific attack types remain challenging:
+Peer-to-peer architectures present the opposite profile. Without a central authority, lateral movement between agents is the primary threat vector. Trust amplification through delegation chains enables an attacker who compromises a single agent to gradually extend influence across the network. The trust calculus with $\delta^d$ decay directly addresses this: the exponential decay bound ensures that delegated trust diminishes with chain length, preventing unbounded amplification. Our results confirm that peer-to-peer topologies show the largest relative improvement (from 0\% baseline to 94\% with full CIF), consistent with the theoretical prediction that these architectures benefit most from formal trust bounds.
 
-- **Semantic equivalent attacks**: Rephrased injections that preserve meaning evade pattern-matching defenses. Future work should incorporate semantic understanding into the firewall.
+Role-based systems introduce impersonation as the primary risk. When agents assume specialized roles (researcher, writer, reviewer), an attacker who can assume a trusted role gains the permissions associated with that role. In our evaluation, attestation-based verification at role transitions detected 94\% of impersonation attempts (\cref{tab:arch-ci}). Unexpected role transitions served as reliable early indicators of compromise.
 
-- **Progressive drift**: Sub-threshold belief changes accumulate below detection windows. Longer observation windows trade off against response latency.
+## Limitations and Threats to Validity
 
-- **Orchestrator compromise**: Outside our threat model assumption (honest orchestrator). Multi-orchestrator architectures provide potential mitigation.
+### Residual Attack-Type Vulnerabilities
 
-### Scalability Constraints
+Despite strong overall performance, specific attack types remain challenging and merit detailed examination.
 
-Our evaluation focused on systems with 3-10 agents. Scaling considerations include:
+Semantic equivalent attacks pose the most significant residual risk. When an adversary rephrases a known injection to preserve its semantic intent while altering surface-level features, pattern-matching defenses fail to recognize the attack. Our evaluation shows that the CIF firewall's TF-IDF and embedding-based classifiers achieve 89\% detection on direct injections but only 72\% on semantically equivalent reformulations. This gap is not unique to CIF; it reflects a fundamental limitation of feature-based detection that also affects commercial tools such as Lakera Guard and LLM Guard. Incorporating large language model-based semantic analysis into the firewall classification pipeline represents the most promising mitigation, though it introduces additional latency and cost trade-offs.
 
-- Consensus latency grows quadratically with agent count
-- Provenance depth in deep chains slows verification
-- Memory requirements for full belief history
+Progressive drift attacks exploit the tension between detection sensitivity and observation window length. An attacker who modifies beliefs by amounts below the drift detection threshold ($\epsilon_{\text{drift}}$) in each interaction can accumulate significant deviation over many rounds. Our sliding window detector catches abrupt changes effectively but misses gradual drift that stays within per-step bounds. Extending the observation window improves drift detection but increases response latency proportionally; a 10x window extension, for example, requires maintaining 10x more historical state. Adaptive baseline approaches that adjust thresholds based on cumulative deviation, rather than per-step thresholds alone, offer a promising direction explored in our supplementary algorithms.
 
-### Generalization Limitations
+Orchestrator compromise falls outside our current threat model, which assumes an honest orchestrator. If the orchestrator itself is compromised, it can selectively disable defenses, suppress alerts, or manipulate the trust matrix directly. Multi-orchestrator architectures with cross-verification provide a potential mitigation, effectively applying Byzantine consensus principles to the orchestration layer itself. This extension requires careful attention to consistency guarantees and is an active area of our ongoing research.
 
-Our attack corpus, while comprehensive (950 attacks), cannot represent all possible cognitive attacks. Detection rates should be interpreted as lower bounds; novel attack techniques will require defense evolution. For practical strategies on managing this residual risk, see the **Risk Assessment Framework** in Part 3.
+### Scaling Beyond Ten Agents
+
+Our evaluation focused on systems with 3--10 agents, reflecting current production norms. Three bottlenecks constrain scaling:
+
+1. **Consensus latency**: Byzantine consensus requires all-to-all communication ($O(n^2)$ messages per round), reaching 4.2s at 100 agents (\cref{tab:agent-scaling}). Beyond $\sim$50 agents, hierarchical consensus (partitioning agents into committees with inter-committee agreement) or random committee selection is required.
+
+2. **Provenance chain depth**: Deeply nested delegation hierarchies slow verification as each link requires cryptographic validation. At delegation depth $>$10, provenance pruning (retaining only chain endpoints with Merkle commitments for intermediate links) becomes necessary.
+
+3. **Memory**: Trust matrix storage ($O(n^2)$) and belief history ($O(n \cdot t)$) dominate. At 100 agents, peak memory reaches 1.6 GB (\cref{tab:agent-scaling}). Sliding-window belief history and sparse trust representations can mitigate this.
+
+### Generalization Beyond the Evaluated Corpus and Architectures
+
+Our evaluation, while comprehensive within its scope, faces four categories of generalization limitations that practitioners should consider when extrapolating our results to their deployments.
+
+**Corpus Temporal Bias.** Our attack corpus (950 attacks across four categories) was assembled from published jailbreak datasets, custom adversarial prompts, red team exercises, and synthetic generation, but it necessarily reflects attack techniques known at the time of evaluation. The adversarial landscape evolves continuously; novel attack categories---such as attacks exploiting emergent behaviors in large-scale agent swarms, attacks that manipulate shared environmental state rather than direct communication channels, or attacks leveraging model-specific vulnerabilities discovered after our evaluation---may expose detection gaps not captured by our current corpus. Detection rates should therefore be interpreted as lower bounds on CIF's protective capability under the current threat landscape, rather than as guarantees of future performance against novel adversarial techniques.
+
+**Scale Testing Limits.** Our evaluation focused on systems with 3--10 agents, which reflects the majority of current production deployments but does not validate CIF performance at larger scales. Emerging applications in simulation, scientific discovery, and autonomous operations may involve 50--100+ agents, where consensus latency (quadratic in agent count), provenance chain depth, and belief history storage may introduce both performance degradation and novel attack surfaces not present at smaller scales. The composition theorems from Part 1 hold mathematically at any scale, but practical implementation constraints may force approximations (e.g., hierarchical consensus, provenance pruning) whose security implications remain untested.
+
+**LLM Behavior Variance.** Our simulation-based architecture adapters model topology and communication patterns but do not execute actual LLM inference. Language model behavior varies across model families (GPT-4, Claude, Gemini, Llama), fine-tuning approaches, temperature settings, and prompt formats in ways that may affect attack success rates and detection efficacy. CIF detection mechanisms rely on statistical patterns in agent communication; if production LLM outputs exhibit different distributional characteristics than our simulation assumptions, detection thresholds calibrated on our evaluation may require adjustment. Future work should validate CIF on live inference with diverse model backends.
+
+**Architecture Sampling.** The six architectures in our evaluation (hierarchical orchestrator, peer-to-peer, role-based teams, state machine, pipeline, and hybrid) represent dominant deployment patterns but do not exhaust the space of possible multiagent coordination topologies. Novel architectural paradigms---such as mixture-of-experts agents, recursive self-improvement loops, or dynamically reconfiguring topologies---may present vulnerability patterns not captured by our selected architectures. The composition algebra (Part 1) provides a principled basis for analyzing new architectures, but empirical validation on each novel topology is necessary before claiming coverage.
+
+The defense evolution strategy outlined in our adaptive defenses discussion and the practical **Risk Assessment Framework** in Part 3 provide concrete strategies for managing these residual generalization risks through ongoing corpus expansion, periodic defense retraining, and architecture-specific validation.
+
+### Simulation vs. Live Deployment Caveats
+
+Our simulation-based evaluation approach, while enabling systematic cross-architecture comparison at scale, introduces important caveats. The architecture adapters model topology and communication patterns but do not capture the full complexity of production deployments, including framework-specific quirks, version-dependent LLM behaviors, or real-world network conditions. The baseline detection rate of 0.00 reflects the absence of CIF components specifically, not the absence of all defenses---production frameworks include native safety features (e.g., Claude Code's permission gating, LangChain's guardrails) that would provide non-zero baseline protection. Future work should deploy CIF as middleware on live framework instances to measure marginal improvement over existing protections.
+
+Additionally, the R$^2$ values for our scaling regressions (0.994 for detection time) reflect the controlled simulation environment rather than the variance typical of production measurements. Practitioners should expect higher variance in real deployments.
+
+### Observed Cost-Benefit Profile
+
+The ablation data (\cref{tab:component-removal}) reveals a clear incremental cost-benefit curve. The firewall alone achieves 74\% detection; adding tripwires raises this to 85\%; the full defense stack achieves 94\% at 20--25\% latency overhead. The marginal detection gain per component (\cref{fig:ablation-study}) follows a diminishing-returns pattern: the firewall contributes $\Delta$TPR = +0.13, tripwires +0.09, provenance +0.07, with subsequent components contributing $\leq$0.06 each.
+
+The Minimal-C configuration (Firewall + Tripwires + Drift Detection) achieves 90\% detection at 12\% latency overhead (\cref{tab:minimal-configs}), representing the highest detection-to-overhead ratio observed. Without trust calculus, lateral movement attacks in peer-to-peer topologies succeed at rates exceeding 60\% even when other defenses are active. The practical deployment implications of these findings are explored in Part 3.
+
+### Threats to Validity
+
+Several threats to validity constrain the generalizability of our findings. Regarding internal validity, our simulation-based evaluation models architectural topology and communication patterns but does not execute actual LLM inference or production framework code. The detection rates therefore reflect CIF's ability to identify structural attack patterns rather than its performance against attacks that exploit specific LLM behaviors or framework vulnerabilities. A follow-up study deploying CIF as middleware on live framework instances is needed to establish ecological validity.
+
+External validity is bounded by our selection of six architectures. While these represent the dominant deployment patterns in current practice, novel architectural paradigms (such as large-scale swarm systems or hierarchical mixtures of experts) may present vulnerability patterns not captured by our evaluation. The 950-attack corpus, though comprehensive relative to existing benchmarks, cannot represent the full space of possible cognitive attacks; detection rates should be interpreted as lower bounds that may decrease when confronting genuinely novel attack techniques.
+
+Construct validity concerns center on the detection rate metric itself. A binary detected/undetected classification does not capture partial detection (e.g., an attack that is flagged but not blocked) or the severity of successful attacks. Future work should incorporate severity-weighted metrics and measure time-to-detection alongside binary classification. Statistical conclusion validity is supported by large sample sizes, significance testing with Bonferroni correction for multiple comparisons, and large effect sizes (Cohen's $d > 0.8$), but the controlled simulation environment produces lower variance than production measurements would exhibit.
+
+Researcher degrees of freedom present a further concern: the framework, attack corpus, evaluation methodology, and analysis were developed by a single research group. While we mitigate this through deterministic reproducibility (fixed seed, public code), pre-registered analysis protocols (all hypotheses stated before evaluation), and independent ground-truth labeling (Cohen's $\kappa = 0.84$ inter-rater agreement), independent replication by external teams is essential for establishing the robustness of these findings. We encourage the community to reproduce our results using the provided scripts and to evaluate CIF against independently developed attack corpora.
 
 ## Relationship to Prior Work
 
-CIF extends prior work in several directions:
+Our empirical results contextualize CIF's contributions relative to the related work surveyed in \cref{sec:related-work}. Three findings merit specific comparison.
 
-- **Prompt injection defenses**: Existing approaches focus on single-agent scenarios; CIF addresses inter-agent attack propagation
-- **Byzantine fault tolerance**: Classical BFT assumes crash or arbitrary faults; CIF addresses cognitive manipulation specifically
-- **Trust frameworks**: Prior trust systems lack the bounded delegation guarantees that prevent amplification
+First, CIF's cognitive firewall achieves 85\% detection on prompt injection when deployed alone---comparable to published detection rates for commercial single-agent tools such as NeMo Guardrails \cite{rebedea2023nemo} and Lakera Guard---but the full CIF stack reaches 96\% by composing the firewall with mechanisms targeting attack vectors that single-agent tools do not address (trust exploitation, belief manipulation, coordination). This validates the central thesis that multiagent security requires defenses beyond input filtering. A head-to-head comparison on standardized benchmarks (e.g., StrongReject) remains an important direction for future work.
 
-## Future Directions
+Second, our trust calculus with $\delta^d$ decay is, to our knowledge, the first formally verified bound on delegated trust in LLM-based agent systems. While classical trust frameworks (FIRE \cite{huynh2006fire}, REGRET \cite{sabater2001regret}) address trust propagation in distributed systems, none provide the exponential decay guarantee that our empirical results confirm prevents trust laundering across all six tested architectures.
 
-### Adaptive Defenses
+Third, CIF's adaptation of Byzantine consensus to semantic content (beliefs and trust assertions rather than transaction ordering) extends classical BFT \cite{lamport1982byzantine, castro1999practical} into a domain where ``Byzantine'' behavior manifests as belief poisoning and coordinated deception. Our 90\% detection rate on coordination attacks demonstrates practical viability of this adaptation.
 
-Detection rates degrade as adversaries learn to evade (see detection degradation analysis in Part 1, Section 4). Future work should explore:
+## Open Research Directions
 
-- Adversarial retraining of detection mechanisms
-- Honeypot agents to detect novel techniques
-- Formal safety margins for bounded detection degradation
+### Adversarial Retraining and Honeypot Agents
 
-### Emergent Behavior Security
+Detection rates inevitably degrade as adversaries learn to evade deployed defenses---a dynamic well-characterized by the arms race model in security research and formalized in Part 1's detection degradation analysis (Section 4). Our current evaluation uses a static attack corpus, which represents a snapshot of adversarial capability rather than an evolving threat. Future work should investigate adversarial retraining of CIF detection mechanisms, where the firewall and anomaly detectors are periodically retrained on attacks that successfully evade current configurations. This approach, analogous to adversarial training in machine learning robustness research, requires careful management of the retraining loop to prevent catastrophic forgetting of previously effective detection patterns.
 
-As multiagent systems scale, emergent collective behaviors become security-relevant:
+A second promising direction is the deployment of honeypot agents---intentionally vulnerable agents designed to attract and characterize novel attack techniques without risking production systems. By analyzing the attacks directed at honeypot agents, defenders can identify new attack categories and update detection signatures before these techniques are deployed against production agents. The formal framework from Part 1 provides a natural basis for honeypot design: a honeypot agent can advertise artificially high trust values or intentionally weak belief validation to attract trust exploitation and belief manipulation attempts.
 
-- Formal characterization of "safe" emergent properties
-- Detection of emergent coordination indicating compromise
-- Sandboxing that preserves beneficial emergence
+Finally, establishing formal safety margins for bounded detection degradation would allow practitioners to predict the window of effectiveness for a given defense configuration. If the expected degradation rate can be bounded, organizations can proactively schedule defense updates before detection rates fall below acceptable thresholds.
 
-### Cross-System Federation
+### Collective Invariants for Large-Scale Agent Populations
 
-Current CIF deployment assumes a single operator. Future work should address:
+As multiagent systems scale beyond the 3--10 agent range evaluated in this paper, emergent collective behaviors become both a powerful capability and a significant security concern. Agent collectives may develop communication patterns, specialization strategies, or coordination protocols that were not explicitly programmed---some beneficial, others potentially indicating compromise.
 
-- Federated trust across organizational boundaries
-- Cross-system provenance verification
-- Regulatory compliance across jurisdictions
+Three concrete research directions address this challenge. First, *collective invariants* extend CIF's per-agent behavioral invariants to population-level properties: for example, requiring that the entropy of the agent interaction graph remains within bounds (sudden decreases may indicate covert channel formation) or that the distribution of trust scores across the population does not become bimodal (which may indicate faction formation by compromised agents). Second, *emergent behavior fingerprinting* applies graph-theoretic anomaly detection to the evolving agent interaction network, flagging topological changes (new cliques, bridge nodes, spectral gap shifts) that correlate with coordination attacks in our corpus. Third, *safe emergence boundaries* formalize the conditions under which emergent behaviors preserve CIF's integrity guarantees---for instance, proving that if individual agents satisfy trust boundedness (Part 1, Theorem 4.2), then any emergent coordination pattern among honest agents also satisfies bounded collective trust, regardless of the specific strategy that emerges.
+
+These directions connect CIF to the broader complex systems literature and address the gap between individual-agent security (well-characterized by our current results) and population-level security (an open problem as agent counts grow).
+
+### Federated Trust Across Organizational Boundaries
+
+Current CIF deployment assumes a single operator controlling all agents within a trust domain. As multiagent systems increasingly span organizational boundaries---for example, when an enterprise agent collaborates with agents operated by partners, vendors, or customers---federated trust management becomes essential.
+
+Federated trust across organizational boundaries requires protocols for establishing, communicating, and decaying trust between agents that do not share a common trust authority. The trust calculus from Part 1 provides the mathematical foundation, but practical federation requires additional mechanisms for trust bootstrapping, cross-domain attestation, and handling trust domain conflicts. Cross-system provenance verification presents complementary challenges: verifying the provenance of information that has passed through agents outside one's trust domain requires cryptographic techniques (such as verifiable credentials or zero-knowledge proofs) that go beyond CIF's current provenance tracking. Regulatory compliance adds a further dimension, as different jurisdictions impose varying requirements on AI agent autonomy, data handling, and accountability. A federated CIF deployment must accommodate these constraints while maintaining coherent security guarantees across the federation.

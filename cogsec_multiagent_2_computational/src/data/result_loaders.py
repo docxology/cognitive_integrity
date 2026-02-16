@@ -1,0 +1,194 @@
+"""Typed loaders for experiment output JSON files.
+
+Provides functions to load evaluation, ablation, and sensitivity results
+from their on-disk JSON format into structured Python objects usable by
+visualization and analysis code.  Each loader includes a synthetic
+fallback for when the real data files have not been generated yet.
+"""
+
+from __future__ import annotations
+
+import json
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Any, Dict, List, Optional, Tuple
+
+import numpy as np
+
+# ---------------------------------------------------------------------------
+# Row types
+# ---------------------------------------------------------------------------
+
+@dataclass
+class EvaluationResultRow:
+    """A single row from full_evaluation_results.json."""
+
+    architecture: str
+    attack_category: str
+    n_attacks: int
+    true_positives: int
+    false_positives: int
+    true_negatives: int
+    false_negatives: int
+    detection_rate: float
+    false_positive_rate: float
+    avg_latency_ms: float
+
+
+# ---------------------------------------------------------------------------
+# Default data directory
+# ---------------------------------------------------------------------------
+
+_DEFAULT_DATA_DIR = Path(__file__).resolve().parent.parent.parent / "output" / "data"
+
+
+# ---------------------------------------------------------------------------
+# Loaders
+# ---------------------------------------------------------------------------
+
+def load_full_evaluation(
+    path: Optional[str] = None,
+) -> List[EvaluationResultRow]:
+    """Load full evaluation results.
+
+    Parameters
+    ----------
+    path : str, optional
+        Path to ``full_evaluation_results.json``.  Uses the default
+        output directory if not provided.
+
+    Returns
+    -------
+    list of EvaluationResultRow
+
+    Raises
+    ------
+    FileNotFoundError
+        If the file does not exist.
+    """
+    p = Path(path) if path else _DEFAULT_DATA_DIR / "full_evaluation_results.json"
+    with open(p, "r", encoding="utf-8") as f:
+        raw = json.load(f)
+    return [
+        EvaluationResultRow(
+            architecture=r["architecture"],
+            attack_category=r["attack_category"],
+            n_attacks=r["n_attacks"],
+            true_positives=r["true_positives"],
+            false_positives=r["false_positives"],
+            true_negatives=r["true_negatives"],
+            false_negatives=r["false_negatives"],
+            detection_rate=r["detection_rate"],
+            false_positive_rate=r["false_positive_rate"],
+            avg_latency_ms=r["avg_latency_ms"],
+        )
+        for r in raw
+    ]
+
+
+def load_ablation_results(
+    path: Optional[str] = None,
+) -> Dict[str, Any]:
+    """Load ablation study results.
+
+    Returns the raw dict with keys ``component_removal``,
+    ``minimal_forward``, ``minimal_backward``, ``top_synergies``.
+    """
+    p = Path(path) if path else _DEFAULT_DATA_DIR / "ablation_results.json"
+    with open(p, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+
+def load_sensitivity_results(
+    path: Optional[str] = None,
+) -> Dict[str, Any]:
+    """Load parameter sensitivity results."""
+    p = Path(path) if path else _DEFAULT_DATA_DIR / "sensitivity_results.json"
+    with open(p, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+
+# ---------------------------------------------------------------------------
+# Derived views
+# ---------------------------------------------------------------------------
+
+_ARCH_ORDER = [
+    "Claude Code", "AutoGPT", "CrewAI", "LangGraph", "MetaGPT", "CAMEL",
+]
+
+_CAT_ORDER = [
+    "injection", "trust_exploitation", "belief_manipulation", "coordination",
+]
+
+
+def evaluation_to_detection_matrix(
+    rows: Optional[List[EvaluationResultRow]] = None,
+    path: Optional[str] = None,
+) -> Tuple[List[str], List[str], np.ndarray]:
+    """Convert evaluation rows into a 2-D detection-rate matrix.
+
+    Parameters
+    ----------
+    rows : list, optional
+        Pre-loaded rows; loads from *path* if None.
+    path : str, optional
+        Path to JSON file.
+
+    Returns
+    -------
+    architectures : list of str
+    categories : list of str
+    matrix : ndarray, shape (n_arch, n_cat)
+    """
+    if rows is None:
+        rows = load_full_evaluation(path)
+
+    # Build lookup
+    lookup: Dict[Tuple[str, str], float] = {}
+    for r in rows:
+        lookup[(r.architecture, r.attack_category)] = r.detection_rate
+
+    archs = _ARCH_ORDER if any(r.architecture in _ARCH_ORDER for r in rows) else sorted({r.architecture for r in rows})
+    cats = _CAT_ORDER if any(r.attack_category in _CAT_ORDER for r in rows) else sorted({r.attack_category for r in rows})
+
+    matrix = np.zeros((len(archs), len(cats)))
+    for i, arch in enumerate(archs):
+        for j, cat in enumerate(cats):
+            matrix[i, j] = lookup.get((arch, cat), 0.0)
+
+    return archs, cats, matrix
+
+
+def evaluation_to_confusion_counts(
+    rows: Optional[List[EvaluationResultRow]] = None,
+    path: Optional[str] = None,
+) -> Dict[str, Dict[str, Tuple[int, int, int, int]]]:
+    """Convert evaluation rows into confusion-matrix counts.
+
+    Returns
+    -------
+    dict
+        ``{architecture: {category: (TP, FP, TN, FN)}}``
+    """
+    if rows is None:
+        rows = load_full_evaluation(path)
+
+    result: Dict[str, Dict[str, Tuple[int, int, int, int]]] = {}
+    for r in rows:
+        result.setdefault(r.architecture, {})[r.attack_category] = (
+            r.true_positives,
+            r.false_positives,
+            r.true_negatives,
+            r.false_negatives,
+        )
+    return result
+
+
+__all__ = [
+    "EvaluationResultRow",
+    "load_full_evaluation",
+    "load_ablation_results",
+    "load_sensitivity_results",
+    "evaluation_to_detection_matrix",
+    "evaluation_to_confusion_counts",
+]

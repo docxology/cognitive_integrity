@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
@@ -401,11 +401,11 @@ id="toc-scenario-omega_2-poisoned-search-result"><span
 class="toc-section-number">3.6.2</span> Scenario <span
 class="math inline">\(\Omega_2\)</span>: Poisoned Search Result</a></li>
 <li><a
-href="#scenario-omega_2-browser-fetched-adversarial-content-moltbot"
-id="toc-scenario-omega_2-browser-fetched-adversarial-content-moltbot"><span
+href="#scenario-omega_2-browser-fetched-adversarial-content-openclaw"
+id="toc-scenario-omega_2-browser-fetched-adversarial-content-openclaw"><span
 class="toc-section-number">3.6.3</span> Scenario <span
 class="math inline">\(\Omega_2&#39;\)</span>: Browser-Fetched
-Adversarial Content (Moltbot)</a></li>
+Adversarial Content (OpenClaw)</a></li>
 <li><a href="#scenario-omega_3-compromised-specialist"
 id="toc-scenario-omega_3-compromised-specialist"><span
 class="toc-section-number">3.6.4</span> Scenario <span
@@ -717,76 +717,80 @@ class="toc-section-number">7.5.5</span> Counterexample Analysis</a></li>
 class="toc-section-number">8</span> Discussion: Theoretical
 Implications, Limitations, and Future Directions</a>
 <ul>
+<li><a href="#empirical-validation-summary"
+id="toc-empirical-validation-summary"><span
+class="toc-section-number">8.1</span> Empirical Validation
+Summary</a></li>
 <li><a href="#sec:theoretical-implications"
 id="toc-sec:theoretical-implications"><span
-class="toc-section-number">8.1</span> Theoretical Implications</a>
+class="toc-section-number">8.2</span> Theoretical Implications</a>
 <ul>
 <li><a href="#why-composable-defenses-are-necessary"
 id="toc-why-composable-defenses-are-necessary"><span
-class="toc-section-number">8.1.1</span> Why Composable Defenses Are
+class="toc-section-number">8.2.1</span> Why Composable Defenses Are
 Necessary</a></li>
 <li><a href="#the-trust-boundedness-guarantee"
 id="toc-the-trust-boundedness-guarantee"><span
-class="toc-section-number">8.1.2</span> The Trust Boundedness
+class="toc-section-number">8.2.2</span> The Trust Boundedness
 Guarantee</a></li>
 <li><a href="#information-theoretic-detection-limits"
 id="toc-information-theoretic-detection-limits"><span
-class="toc-section-number">8.1.3</span> Information-Theoretic Detection
+class="toc-section-number">8.2.3</span> Information-Theoretic Detection
 Limits</a></li>
 <li><a href="#architecture-specific-vulnerability-patterns"
 id="toc-architecture-specific-vulnerability-patterns"><span
-class="toc-section-number">8.1.4</span> Architecture-Specific
+class="toc-section-number">8.2.4</span> Architecture-Specific
 Vulnerability Patterns</a></li>
 </ul></li>
 <li><a href="#sec:limitations" id="toc-sec:limitations"><span
-class="toc-section-number">8.2</span> Formal Limitations</a>
+class="toc-section-number">8.3</span> Formal Limitations</a>
 <ul>
 <li><a href="#assumption-dependencies"
 id="toc-assumption-dependencies"><span
-class="toc-section-number">8.2.1</span> Assumption Dependencies</a></li>
+class="toc-section-number">8.3.1</span> Assumption Dependencies</a></li>
 <li><a href="#scalability-constraints"
 id="toc-scalability-constraints"><span
-class="toc-section-number">8.2.2</span> Scalability Constraints</a></li>
+class="toc-section-number">8.3.2</span> Scalability Constraints</a></li>
 <li><a href="#inherent-detection-gaps"
 id="toc-inherent-detection-gaps"><span
-class="toc-section-number">8.2.3</span> Inherent Detection Gaps</a></li>
+class="toc-section-number">8.3.3</span> Inherent Detection Gaps</a></li>
 </ul></li>
 <li><a href="#sec:related-work" id="toc-sec:related-work"><span
-class="toc-section-number">8.3</span> Relationship to Prior
+class="toc-section-number">8.4</span> Relationship to Prior
 Work</a></li>
 <li><a href="#sec:governance" id="toc-sec:governance"><span
-class="toc-section-number">8.4</span> Governance and Policy
+class="toc-section-number">8.5</span> Governance and Policy
 Implications</a>
 <ul>
 <li><a href="#the-regulatory-gap" id="toc-the-regulatory-gap"><span
-class="toc-section-number">8.4.1</span> The Regulatory Gap</a></li>
+class="toc-section-number">8.5.1</span> The Regulatory Gap</a></li>
 <li><a href="#recommendations-for-policy"
 id="toc-recommendations-for-policy"><span
-class="toc-section-number">8.4.2</span> Recommendations for
+class="toc-section-number">8.5.2</span> Recommendations for
 Policy</a></li>
 </ul></li>
 <li><a href="#sec:future-directions"
 id="toc-sec:future-directions"><span
-class="toc-section-number">8.5</span> Future Theoretical Directions</a>
+class="toc-section-number">8.6</span> Future Theoretical Directions</a>
 <ul>
 <li><a href="#adaptive-defense-theory"
 id="toc-adaptive-defense-theory"><span
-class="toc-section-number">8.5.1</span> Adaptive Defense Theory</a></li>
+class="toc-section-number">8.6.1</span> Adaptive Defense Theory</a></li>
 <li><a href="#cross-system-trust-federation"
 id="toc-cross-system-trust-federation"><span
-class="toc-section-number">8.5.2</span> Cross-System Trust
+class="toc-section-number">8.6.2</span> Cross-System Trust
 Federation</a></li>
 <li><a href="#emergent-behavior-security"
 id="toc-emergent-behavior-security"><span
-class="toc-section-number">8.5.3</span> Emergent Behavior
+class="toc-section-number">8.6.3</span> Emergent Behavior
 Security</a></li>
 <li><a href="#long-horizon-agent-security"
 id="toc-long-horizon-agent-security"><span
-class="toc-section-number">8.5.4</span> Long-Horizon Agent
+class="toc-section-number">8.6.4</span> Long-Horizon Agent
 Security</a></li>
 <li><a href="#the-cognitive-security-research-agenda"
 id="toc-the-cognitive-security-research-agenda"><span
-class="toc-section-number">8.5.5</span> The Cognitive Security Research
+class="toc-section-number">8.6.5</span> The Cognitive Security Research
 Agenda</a></li>
 </ul></li>
 </ul></li>
@@ -832,26 +836,27 @@ Notation</a>
 <li><a href="#sec:notation" id="toc-sec:notation"><span
 class="toc-section-number">10.1.1</span> Notation Summary</a></li>
 </ul></li>
-<li><a href="#sec:thm31-proof" id="toc-sec:thm31-proof"><span
-class="toc-section-number">10.2</span> Theorem 3.1: Trust
+<li><a href="#sec:thm42-proof" id="toc-sec:thm42-proof"><span
+class="toc-section-number">10.2</span> Theorem 4.2: Trust
 Boundedness</a></li>
-<li><a href="#sec:thm61-proof" id="toc-sec:thm61-proof"><span
-class="toc-section-number">10.3</span> Theorem 6.1: Belief Injection
+<li><a href="#sec:thm57-proof" id="toc-sec:thm57-proof"><span
+class="toc-section-number">10.3</span> Theorem 5.7: Belief Injection
 Resistance</a></li>
-<li><a href="#sec:thm62-proof" id="toc-sec:thm62-proof"><span
-class="toc-section-number">10.4</span> Theorem 6.2: No Trust
+<li><a href="#sec:thm47-proof" id="toc-sec:thm47-proof"><span
+class="toc-section-number">10.4</span> Theorem 4.7: No Trust
 Amplification</a></li>
-<li><a href="#sec:thm63-proof" id="toc-sec:thm63-proof"><span
-class="toc-section-number">10.5</span> Theorem 6.3: Goal Alignment
+<li><a href="#sec:thm58-proof" id="toc-sec:thm58-proof"><span
+class="toc-section-number">10.5</span> Theorem 5.8: Goal Alignment
 Invariant</a></li>
-<li><a href="#sec:thm64-proof" id="toc-sec:thm64-proof"><span
-class="toc-section-number">10.6</span> Theorem 6.4: Firewall
+<li><a href="#sec:thm59-proof" id="toc-sec:thm59-proof"><span
+class="toc-section-number">10.6</span> Theorem 5.9: Firewall
 Liveness</a></li>
-<li><a href="#sec:thm65-proof" id="toc-sec:thm65-proof"><span
-class="toc-section-number">10.7</span> Theorem 6.5: Byzantine Consensus
+<li><a href="#sec:thm510-proof" id="toc-sec:thm510-proof"><span
+class="toc-section-number">10.7</span> Theorem 5.10: Byzantine Consensus
 Termination</a></li>
-<li><a href="#sec:thm66-proof" id="toc-sec:thm66-proof"><span
-class="toc-section-number">10.8</span> Theorem 6.6: Bounded Overhead</a>
+<li><a href="#sec:thm511-proof" id="toc-sec:thm511-proof"><span
+class="toc-section-number">10.8</span> Theorem 5.11: Bounded
+Overhead</a>
 <ul>
 <li><a href="#sec:numerical-instantiation"
 id="toc-sec:numerical-instantiation"><span
@@ -1122,10 +1127,10 @@ parameterization, defense specification, and cognitive state
 representation. This is Part 1 of a three-part series: Part 1 (this
 paper, DOI: 10.5281/zenodo.18364119) presents formal foundations and
 theoretical analysis; Part 2 (DOI: 10.5281/zenodo.18364128) provides
-computational validation and implementation; Part 3 (DOI:
-10.5281/zenodo.18364130) offers practical deployment guidance. The
-framework will continue to be developed and versioned at <a
-href="https://github.com/docxology/cognitive_integrity/"
+computational validation through architecture-aware parametric
+simulation; Part 3 (DOI: 10.5281/zenodo.18364130) offers practical
+deployment guidance. The framework will continue to be developed and
+versioned at <a href="https://github.com/docxology/cognitive_integrity/"
 class="uri">https://github.com/docxology/cognitive_integrity/</a>.</p>
 <hr />
 <h1 data-number="2"
@@ -1159,8 +1164,8 @@ class="header-section-number">2.2.2</span> Cyberphysical Cognitive
 Systems</h3>
 <p>The term ``AI agent’’ understates the scope of deployment.
 Contemporary systems function as —entities that:</p>
-<p>. The rapid adoption of personal AI assistants like Moltbot
-exemplifies this cyberphysical integration. Moltbot operates as a
+<p>. The rapid adoption of personal AI assistants like OpenClaw
+exemplifies this cyberphysical integration. OpenClaw operates as a
 locally-deployed AI agent with: (1) full system access including shell
 command execution and file system operations; (2) persistent memory
 across sessions storing user preferences and context; (3) browser
@@ -1408,10 +1413,12 @@ and describes model checking configuration.</p>
 related work.</p>
 <p> summarizes contributions and identifies directions for future
 research.</p>
-<p> A separate, second, companion paper reports empirical results across
-production architectures.</p>
-<p> A separate, third, companion paper provides qualitative insights and
-practical guidance for deploying cognitive security mechanisms.</p>
+<p> A separate, second, companion paper reports empirical results from
+architecture-aware parametric simulation across 950 attack vectors and
+six production architectures.</p>
+<p> A separate, third, companion paper provides qualitative insights,
+operational checklists, and risk assessment frameworks for deploying
+cognitive security mechanisms.</p>
 <h2 data-number="2.9" id="sec:scope"><span
 class="header-section-number">2.9</span> Scope and Limitations</h2>
 <p>: Attacks exploiting agent reasoning, trust, and coordination
@@ -1556,6 +1563,9 @@ suspended&#39;&#39;}) &gt; \tau\)</span></p>
 <p>: <span class="math inline">\(R_C = \text{Low}\)</span>, <span
 class="math inline">\(R_K = \text{Minimal}\)</span></p>
 <p>: Firewall signature matching, instruction hierarchy violation</p>
+<p>: Universal Adversarial Triggers demonstrate that optimized character
+sequences can reliably bypass safety training across different model
+architectures.</p>
 <h3 data-number="3.6.2"
 id="scenario-omega_2-poisoned-search-result"><span
 class="header-section-number">3.6.2</span> Scenario <span
@@ -1570,19 +1580,21 @@ class="math inline">\(\Omega_2\)</span>: Poisoned Search Result</h3>
 <p>: <span class="math inline">\(R_C = \text{Medium}\)</span>, <span
 class="math inline">\(R_K = \text{Medium}\)</span></p>
 <p>: Provenance verification, cross-reference validation</p>
+<p>: demonstrated that manipulating tool error logs could coerce an
+agent into executing arbitrary code to “fix” the error.</p>
 <h3 data-number="3.6.3"
-id="scenario-omega_2-browser-fetched-adversarial-content-moltbot"><span
+id="scenario-omega_2-browser-fetched-adversarial-content-openclaw"><span
 class="header-section-number">3.6.3</span> Scenario <span
 class="math inline">\(\Omega_2&#39;\)</span>: Browser-Fetched
-Adversarial Content (Moltbot)</h3>
+Adversarial Content (OpenClaw)</h3>
 <p>: Personal AI assistant with browser automation fetches adversarial
 content during legitimate web browsing tasks .</p>
-<p>A user instructs their locally-deployed Moltbot to ``research and
+<p>A user instructs their locally-deployed OpenClaw to ``research and
 summarize security best practices for API key management.’’ The agent’s
 browser tool navigates to a compromised tutorial site containing
 invisible CSS-hidden text:</p>
 <p><span class="math display">\[\begin{equation}
-\label{eq:moltbot-browser-attack}
+\label{eq:openclaw-browser-attack}
 \text{BrowserFetch}(u) = \text{visible}(u) \oplus m_{\text{adversarial}}
 \Rightarrow \mathcal{G}_{\text{agent}} \gets \mathcal{G}_{\text{exfil}}
 \end{equation}\]</span></p>
@@ -1593,7 +1605,7 @@ class="math inline">\(R_K = \text{Medium}\)</span>, <span
 class="math inline">\(R_A = 1\)</span> (single web page)</p>
 <p>: Tool response sandboxing, read-only pre-summarization agents,
 provenance tracking of fetched content</p>
-<p>: Moltbot’s security documentation recommends employing a ``reader
+<p>: OpenClaw’s security documentation recommends employing a ``reader
 agent’’ to summarize untrusted content in tool-disabled mode before
 processing by the main agent . This corresponds to the cognitive
 firewall architecture described in .</p>
@@ -1636,7 +1648,9 @@ class="math inline">\(\ref{sec:attack-taxonomy}\)</span>) with defense
 mechanisms detailed in .</p>
 <h2 data-number="3.8" id="attack-composition"><span
 class="header-section-number">3.8</span> Attack Composition</h2>
-
+<p>: Recent work on Adaptive Attacks shows that adversaries can
+effectively “hill-climb” against static defenses, modifying their attack
+strategy in response to defense feedback.</p>
 <h2 data-number="3.9" id="threat-model-assumptions"><span
 class="header-section-number">3.9</span> Threat Model Assumptions</h2>
 <figure id="fig:attack-surface">
@@ -2296,10 +2310,39 @@ Implications, Limitations, and Future Directions</h1>
 Integrity Framework (), formal limitations and boundary conditions (),
 relationship to prior work (), governance implications (), and future
 research directions ().</p>
-<h2 data-number="8.1" id="sec:theoretical-implications"><span
-class="header-section-number">8.1</span> Theoretical Implications</h2>
-<h3 data-number="8.1.1" id="why-composable-defenses-are-necessary"><span
-class="header-section-number">8.1.1</span> Why Composable Defenses Are
+<h2 data-number="8.1" id="empirical-validation-summary"><span
+class="header-section-number">8.1</span> Empirical Validation
+Summary</h2>
+<p>The formal mechanisms proposed in this paper have been validated
+through extensive architecture-aware parametric simulation in
+<strong>Part 2: Computational Validation</strong>. In experiments across
+six production multiagent architectures (including hierarchical,
+role-based, and peer-to-peer topologies), the full Cognitive Integrity
+Framework achieved a <strong>94% overall detection rate</strong> against
+a corpus of 950 cognitive attacks.</p>
+<p>Key empirical findings include:</p>
+<ol type="1">
+<li><strong>Defense Composition</strong>: Consistent with Theorem 3.1
+and 3.2, layered defenses composed multiplicatively, with the full
+framework significantly outperforming any single mechanism.</li>
+<li><strong>Trust Boundedness</strong>: The <span
+class="math inline">\(\delta^d\)</span> trust decay parameter
+successfully prevented “trust laundering” amplification attacks in all
+tested topologies, validating Formula 4.</li>
+<li><strong>Architecture Dependence</strong>: As predicted by our threat
+model, peer-to-peer architectures showed the greatest vulnerability to
+lateral movement (mitigated by the Trust Calculus), while hierarchical
+architectures were most sensitive to orchestrator compromise (requiring
+strict tripwires).</li>
+</ol>
+<p>These results confirm that the abstract properties proven
+here—boundedness, composition, and detectability—translate into concrete
+security improvements when implemented in realistic agent
+architectures.</p>
+<h2 data-number="8.2" id="sec:theoretical-implications"><span
+class="header-section-number">8.2</span> Theoretical Implications</h2>
+<h3 data-number="8.2.1" id="why-composable-defenses-are-necessary"><span
+class="header-section-number">8.2.1</span> Why Composable Defenses Are
 Necessary</h3>
 <p>The defense composition algebra (, ) formalizes a principle implicit
 in security practice: layered defenses provide multiplicative rather
@@ -2317,8 +2360,8 @@ class="math inline">\(-9\%\)</span>) and Provenance Tracking (<span
 class="math inline">\(-7\%\)</span>). No individual mechanism provides
 comparable detection rates to the full ensemble—confirming the
 multiplicative composition theorem ().</p>
-<h3 data-number="8.1.2" id="the-trust-boundedness-guarantee"><span
-class="header-section-number">8.1.2</span> The Trust Boundedness
+<h3 data-number="8.2.2" id="the-trust-boundedness-guarantee"><span
+class="header-section-number">8.2.2</span> The Trust Boundedness
 Guarantee</h3>
 <p>The bounded trust theorem () represents a structural guarantee
 against trust amplification attacks. Unlike detection-based defenses
@@ -2337,9 +2380,9 @@ flexibility, weaker bounds</li>
 </ul>
 <p>Organizations must calibrate this tradeoff based on their threat
 model ( in Part 3).</p>
-<h3 data-number="8.1.3"
+<h3 data-number="8.2.3"
 id="information-theoretic-detection-limits"><span
-class="header-section-number">8.1.3</span> Information-Theoretic
+class="header-section-number">8.2.3</span> Information-Theoretic
 Detection Limits</h3>
 <p>The stealth-impact fundamental limit () establishes that certain
 attacks are <em>provably</em> undetectable without unacceptable false
@@ -2350,23 +2393,23 @@ simply cannot be detected without additional information.</p>
 promise detection of all possible attacks. Instead, they should
 characterize the detection boundary and provide containment for attacks
 that cross it.</p>
-<h3 data-number="8.1.4"
+<h3 data-number="8.2.4"
 id="architecture-specific-vulnerability-patterns"><span
-class="header-section-number">8.1.4</span> Architecture-Specific
+class="header-section-number">8.2.4</span> Architecture-Specific
 Vulnerability Patterns</h3>
 <p>The formal framework reveals why different multiagent architectures
 exhibit different vulnerability profiles:</p>
 <p>These are structural properties of the architectures themselves, not
 implementation-specific weaknesses.</p>
-<h2 data-number="8.2" id="sec:limitations"><span
-class="header-section-number">8.2</span> Formal Limitations</h2>
-<h3 data-number="8.2.1" id="assumption-dependencies"><span
-class="header-section-number">8.2.1</span> Assumption Dependencies</h3>
+<h2 data-number="8.3" id="sec:limitations"><span
+class="header-section-number">8.3</span> Formal Limitations</h2>
+<h3 data-number="8.3.1" id="assumption-dependencies"><span
+class="header-section-number">8.3.1</span> Assumption Dependencies</h3>
 <p>The formal guarantees of CIF depend on specific assumptions.
 Violation of these assumptions degrades or eliminates security
 properties:</p>
-<h3 data-number="8.2.2" id="scalability-constraints"><span
-class="header-section-number">8.2.2</span> Scalability Constraints</h3>
+<h3 data-number="8.3.2" id="scalability-constraints"><span
+class="header-section-number">8.3.2</span> Scalability Constraints</h3>
 <p>The formal framework imposes scaling limitations:</p>
 <p><span class="math display">\[\begin{align}
 \label{eq:memory-scaling}
@@ -2379,8 +2422,8 @@ with moderate agent counts. Sparse trust representations or hierarchical
 trust structures may enable scaling to larger systems.</p>
 <p>Consensus latency () suggests that Byzantine consensus should be
 reserved for critical decisions rather than applied universally.</p>
-<h3 data-number="8.2.3" id="inherent-detection-gaps"><span
-class="header-section-number">8.2.3</span> Inherent Detection Gaps</h3>
+<h3 data-number="8.3.3" id="inherent-detection-gaps"><span
+class="header-section-number">8.3.3</span> Inherent Detection Gaps</h3>
 <p>Certain attack types are formally difficult to detect:</p>
 <ul>
 <li><strong>Semantic equivalence</strong>: Attacks preserving meaning
@@ -2393,8 +2436,8 @@ class="math inline">\(\Omega_4\)</span> threat model</li>
 </ul>
 <p>These are not implementation failures but formal limitations of the
 detection paradigm.</p>
-<h2 data-number="8.3" id="sec:related-work"><span
-class="header-section-number">8.3</span> Relationship to Prior Work</h2>
+<h2 data-number="8.4" id="sec:related-work"><span
+class="header-section-number">8.4</span> Relationship to Prior Work</h2>
 <p>CIF builds on and extends several research traditions:</p>
 <p><strong>Byzantine Fault Tolerance</strong>: Classical BFT (PBFT,
 etc.) assumes crash or arbitrary faults. CIF extends this to cognitive
@@ -2441,21 +2484,21 @@ opportunities for formal verification of pattern-based defenses using
 the mechanisms described in .</p>
 <p>The novel contribution is the integration of these concerns into a
 unified formal framework with composable guarantees.</p>
-<h2 data-number="8.4" id="sec:governance"><span
-class="header-section-number">8.4</span> Governance and Policy
+<h2 data-number="8.5" id="sec:governance"><span
+class="header-section-number">8.5</span> Governance and Policy
 Implications</h2>
-<h3 data-number="8.4.1" id="the-regulatory-gap"><span
-class="header-section-number">8.4.1</span> The Regulatory Gap</h3>
+<h3 data-number="8.5.1" id="the-regulatory-gap"><span
+class="header-section-number">8.5.1</span> The Regulatory Gap</h3>
 <p>Current AI regulation lacks cognitive security provisions:</p>
-<h3 data-number="8.4.2" id="recommendations-for-policy"><span
-class="header-section-number">8.4.2</span> Recommendations for
+<h3 data-number="8.5.2" id="recommendations-for-policy"><span
+class="header-section-number">8.5.2</span> Recommendations for
 Policy</h3>
 <p>We propose that regulators consider:</p>
-<h2 data-number="8.5" id="sec:future-directions"><span
-class="header-section-number">8.5</span> Future Theoretical
+<h2 data-number="8.6" id="sec:future-directions"><span
+class="header-section-number">8.6</span> Future Theoretical
 Directions</h2>
-<h3 data-number="8.5.1" id="adaptive-defense-theory"><span
-class="header-section-number">8.5.1</span> Adaptive Defense Theory</h3>
+<h3 data-number="8.6.1" id="adaptive-defense-theory"><span
+class="header-section-number">8.6.1</span> Adaptive Defense Theory</h3>
 <p>The detection degradation problem suggests a need for adaptive
 defenses. Formal treatment as a game-theoretic equilibrium:</p>
 <p><span class="math display">\[\begin{equation}
@@ -2465,8 +2508,8 @@ r(s_t, a_t)\right]
 \end{equation}\]</span></p>
 <p>requires solving the partial observability problem—defenders cannot
 directly observe attacker intent.</p>
-<h3 data-number="8.5.2" id="cross-system-trust-federation"><span
-class="header-section-number">8.5.2</span> Cross-System Trust
+<h3 data-number="8.6.2" id="cross-system-trust-federation"><span
+class="header-section-number">8.6.2</span> Cross-System Trust
 Federation</h3>
 <p>Extending trust calculus across organizational boundaries:</p>
 <p><span class="math display">\[\begin{equation}
@@ -2476,15 +2519,15 @@ Federation</h3>
 \end{equation}\]</span></p>
 <p>The primary challenge is trust calibration—mapping heterogeneous
 trust semantics across systems with different threat models.</p>
-<h3 data-number="8.5.3" id="emergent-behavior-security"><span
-class="header-section-number">8.5.3</span> Emergent Behavior
+<h3 data-number="8.6.3" id="emergent-behavior-security"><span
+class="header-section-number">8.6.3</span> Emergent Behavior
 Security</h3>
 <p>As multiagent systems scale, emergent collective behaviors become
 security-relevant. Open questions include:</p>
 <p>The colony cognitive security perspective developed in provides
 initial formal foundations for these questions.</p>
-<h3 data-number="8.5.4" id="long-horizon-agent-security"><span
-class="header-section-number">8.5.4</span> Long-Horizon Agent
+<h3 data-number="8.6.4" id="long-horizon-agent-security"><span
+class="header-section-number">8.6.4</span> Long-Horizon Agent
 Security</h3>
 <p>Agents operating over extended time horizons (days, weeks, months)
 face additional challenges:</p>
@@ -2493,9 +2536,9 @@ class="math inline">\(\mathcal{T}^{t} = \mathcal{T}^{t-1} \cdot
 \delta_{\text{time}}\)</span> where <span
 class="math inline">\(\delta_{\text{time}}\)</span> encodes trust decay
 over time.</p>
-<h3 data-number="8.5.5"
+<h3 data-number="8.6.5"
 id="the-cognitive-security-research-agenda"><span
-class="header-section-number">8.5.5</span> The Cognitive Security
+class="header-section-number">8.6.5</span> The Cognitive Security
 Research Agenda</h3>
 <p>We propose a research agenda organized by time horizon:</p>
 :
@@ -2712,6 +2755,11 @@ progressive drift, orchestrator compromise—define the frontier for
 future research, while the provable guarantees (bounded trust,
 composable defenses, information-theoretic limits) provide the stable
 theoretical foundation on which that research can build.</p>
+<p>For empirical validation of these theories, we refer the reader to
+<strong>Part 2: Computational Validation</strong>. For actionable
+deployment strategies, including operator posture checklists and risk
+assessment frameworks, we refer the reader to <strong>Part 3: Practical
+Guidance</strong>.</p>
 <p></p>
 <p>Cognitive security is not optional for the multiagent future. It is
 foundational.</p>
@@ -2728,32 +2776,32 @@ Notation</h2>
 <h3 data-number="10.1.1" id="sec:notation"><span
 class="header-section-number">10.1.1</span> Notation Summary</h3>
 <hr />
-<h2 data-number="10.2" id="sec:thm31-proof"><span
-class="header-section-number">10.2</span> Theorem 3.1: Trust
+<h2 data-number="10.2" id="sec:thm42-proof"><span
+class="header-section-number">10.2</span> Theorem 4.2: Trust
 Boundedness</h2>
 <hr />
-<h2 data-number="10.3" id="sec:thm61-proof"><span
-class="header-section-number">10.3</span> Theorem 6.1: Belief Injection
+<h2 data-number="10.3" id="sec:thm57-proof"><span
+class="header-section-number">10.3</span> Theorem 5.7: Belief Injection
 Resistance</h2>
 <hr />
-<h2 data-number="10.4" id="sec:thm62-proof"><span
-class="header-section-number">10.4</span> Theorem 6.2: No Trust
+<h2 data-number="10.4" id="sec:thm47-proof"><span
+class="header-section-number">10.4</span> Theorem 4.7: No Trust
 Amplification</h2>
 <hr />
-<h2 data-number="10.5" id="sec:thm63-proof"><span
-class="header-section-number">10.5</span> Theorem 6.3: Goal Alignment
+<h2 data-number="10.5" id="sec:thm58-proof"><span
+class="header-section-number">10.5</span> Theorem 5.8: Goal Alignment
 Invariant</h2>
 <hr />
-<h2 data-number="10.6" id="sec:thm64-proof"><span
-class="header-section-number">10.6</span> Theorem 6.4: Firewall
+<h2 data-number="10.6" id="sec:thm59-proof"><span
+class="header-section-number">10.6</span> Theorem 5.9: Firewall
 Liveness</h2>
 <hr />
-<h2 data-number="10.7" id="sec:thm65-proof"><span
-class="header-section-number">10.7</span> Theorem 6.5: Byzantine
+<h2 data-number="10.7" id="sec:thm510-proof"><span
+class="header-section-number">10.7</span> Theorem 5.10: Byzantine
 Consensus Termination</h2>
 <hr />
-<h2 data-number="10.8" id="sec:thm66-proof"><span
-class="header-section-number">10.8</span> Theorem 6.6: Bounded
+<h2 data-number="10.8" id="sec:thm511-proof"><span
+class="header-section-number">10.8</span> Theorem 5.11: Bounded
 Overhead</h2>
 <h3 data-number="10.8.1" id="sec:numerical-instantiation"><span
 class="header-section-number">10.8.1</span> Numerical Instantiation</h3>

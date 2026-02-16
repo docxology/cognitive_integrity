@@ -4,6 +4,18 @@
 
 This section examines the theoretical implications of the Cognitive Integrity Framework (\cref{sec:theoretical-implications}), formal limitations and boundary conditions (\cref{sec:limitations}), relationship to prior work (\cref{sec:related-work}), governance implications (\cref{sec:governance}), and future research directions (\cref{sec:future-directions}).
 
+## Empirical Validation Summary
+
+The formal mechanisms proposed in this paper have been validated through extensive architecture-aware parametric simulation in **Part 2: Computational Validation**. In experiments across six production multiagent architectures (including hierarchical, role-based, and peer-to-peer topologies), the full Cognitive Integrity Framework achieved a **94% overall detection rate** against a corpus of 950 cognitive attacks.
+
+Key empirical findings include:
+
+1. **Defense Composition**: Consistent with Theorem 3.1 and 3.2, layered defenses composed multiplicatively, with the full framework significantly outperforming any single mechanism.
+2. **Trust Boundedness**: The $\delta^d$ trust decay parameter successfully prevented "trust laundering" amplification attacks in all tested topologies, validating Formula 4.
+3. **Architecture Dependence**: As predicted by our threat model, peer-to-peer architectures showed the greatest vulnerability to lateral movement (mitigated by the Trust Calculus), while hierarchical architectures were most sensitive to orchestrator compromise (requiring strict tripwires).
+
+These results confirm that the abstract properties proven here---boundedness, composition, and detectability---translate into concrete security improvements when implemented in realistic agent architectures.
+
 ## Theoretical Implications {#sec:theoretical-implications}
 
 ### Why Composable Defenses Are Necessary

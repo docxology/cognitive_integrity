@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.3.8)  28 JAN 2026 06:36
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.3.8)  16 FEB 2026 11:14
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -1243,7 +1243,7 @@ gent_1_theory/output/slides/08_discussion_slides.nav)
 ! Undefined control sequence.
 \beamer@doifinframe ...Integrity Framework (\cref 
                                                   {sec:theoretical-implicati...
-l.463 \end{frame}
+l.499 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1254,7 +1254,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...boundary conditions (\cref 
                                                   {sec:limitations}), relati...
-l.463 \end{frame}
+l.499 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1265,7 +1265,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...nship to prior work (\cref 
                                                   {sec:related-work}), gover...
-l.463 \end{frame}
+l.499 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1276,7 +1276,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...rnance implications (\cref 
                                                   {sec:governance}), and fut...
-l.463 \end{frame}
+l.499 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1287,7 +1287,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...research directions (\cref 
                                                   {sec:future-directions}). ...
-l.463 \end{frame}
+l.499 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1295,10 +1295,49 @@ misspelled it (e.g., `\hobx'), type `I' and the correct
 spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
+(Font)              scaled to size 7.8961pt on input line 499.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
+(Font)              scaled to size 5.64008pt on input line 499.
+LaTeX Font Info:    Trying to load font information for OML+lmm on input line 4
+99.
+(/usr/local/texlive/2025/texmf-dist/tex/latex/lm/omllmm.fd
+File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
+(Font)              scaled to size 11.28131pt on input line 499.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
+(Font)              scaled to size 7.89691pt on input line 499.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
+(Font)              scaled to size 5.64066pt on input line 499.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
+(Font)              scaled to size 11.27914pt on input line 499.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
+(Font)              scaled to size 7.8954pt on input line 499.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
+(Font)              scaled to size 5.63957pt on input line 499.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 499
+.
+
+(/usr/local/texlive/2025/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+(/usr/local/texlive/2025/texmf-dist/tex/latex/microtype/mt-msa.cfg
+File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
+)
+LaTeX Font Info:    Trying to load font information for U+msb on input line 499
+.
+
+(/usr/local/texlive/2025/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
+(/usr/local/texlive/2025/texmf-dist/tex/latex/microtype/mt-msb.cfg
+File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
+)
 ! Undefined control sequence.
 \beamer@doifinframe ...composition algebra (\cref 
                                                   {thm:series-detection}, \c...
-l.463 \end{frame}
+l.499 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1309,7 +1348,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...m:series-detection}, \cref 
                                                   {thm:parallel-detection}) ...
-l.463 \end{frame}
+l.499 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1317,49 +1356,10 @@ misspelled it (e.g., `\hobx'), type `I' and the correct
 spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 7.8961pt on input line 463.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 5.64008pt on input line 463.
-LaTeX Font Info:    Trying to load font information for OML+lmm on input line 4
-63.
-(/usr/local/texlive/2025/texmf-dist/tex/latex/lm/omllmm.fd
-File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-)
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 11.28131pt on input line 463.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 7.89691pt on input line 463.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 5.64066pt on input line 463.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 11.27914pt on input line 463.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 7.8954pt on input line 463.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 5.63957pt on input line 463.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 463
-.
-
-(/usr/local/texlive/2025/texmf-dist/tex/latex/amsfonts/umsa.fd
-File: umsa.fd 2013/01/14 v3.01 AMS symbols A
-)
-(/usr/local/texlive/2025/texmf-dist/tex/latex/microtype/mt-msa.cfg
-File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
-)
-LaTeX Font Info:    Trying to load font information for U+msb on input line 463
-.
-
-(/usr/local/texlive/2025/texmf-dist/tex/latex/amsfonts/umsb.fd
-File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-)
-(/usr/local/texlive/2025/texmf-dist/tex/latex/microtype/mt-msb.cfg
-File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
-)
 ! Undefined control sequence.
 \beamer@doifinframe ...abular}{@{}ll@{}} \toprule 
                                                   Defense Layer & Target Att...
-l.463 \end{frame}
+l.499 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1370,7 +1370,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 <recently read> \midrule 
                          
-l.463 \end{frame}
+l.499 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1381,7 +1381,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 <recently read> \bottomrule 
                             
-l.463 \end{frame}
+l.499 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1392,7 +1392,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...composition theorem (\cref 
                                                   {thm:series-detection}). \...
-l.463 \end{frame}
+l.499 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1403,7 +1403,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...unded trust theorem (\cref 
                                                   {thm:trust-bounded}) repre...
-l.463 \end{frame}
+l.499 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1412,11 +1412,11 @@ spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
 LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <10.95> not available
-(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 463.
+(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 499.
 ! Undefined control sequence.
 \beamer@doifinframe ... their threat model (\cref 
                                                   {sec:operator-posture} in ...
-l.463 \end{frame}
+l.499 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1427,7 +1427,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...t fundamental limit (\cref 
                                                   {thm:stealth-impact}) esta...
-l.463 \end{frame}
+l.499 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1438,7 +1438,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...bular}{@{}lll@{}} \toprule 
                                                   Architecture & Theoretical...
-l.463 \end{frame}
+l.499 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1449,7 +1449,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 <recently read> \midrule 
                          
-l.463 \end{frame}
+l.499 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1460,7 +1460,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 <recently read> \bottomrule 
                             
-l.463 \end{frame}
+l.499 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1469,14 +1469,14 @@ spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
 
-Overfull \hbox (105.94974pt too wide) in paragraph at lines 463--463
+Overfull \hbox (105.94974pt too wide) in paragraph at lines 499--499
  [] 
  []
 
 ! Undefined control sequence.
 \beamer@doifinframe ...r}{@{}lp{5cm}@{}} \toprule 
                                                   Assumption & Guarantee Imp...
-l.463 \end{frame}
+l.499 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1487,7 +1487,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 <recently read> \midrule 
                          
-l.463 \end{frame}
+l.499 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1498,7 +1498,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...ine consensus fails (\cref 
                                                   {thm:byzantine-req}) \\ Au...
-l.463 \end{frame}
+l.499 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1507,14 +1507,14 @@ spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 463--463
+Underfull \hbox (badness 10000) in paragraph at lines 499--499
 []\TU/lmss/m/n/10.95 Byzantine consensus fails
  []
 
 ! Undefined control sequence.
 <recently read> \bottomrule 
                             
-l.463 \end{frame}
+l.499 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1525,7 +1525,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...dratic trust matrix (\cref 
                                                   {eq:memory-scaling}) limit...
-l.463 \end{frame}
+l.499 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1536,7 +1536,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...r Consensus latency (\cref 
                                                   {eq:consensus-scaling}) su...
-l.463 \end{frame}
+l.499 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1547,7 +1547,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...ccumulate over time (\cref 
                                                   {eq:progressive-drift}) \i...
-l.463 \end{frame}
+l.499 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1556,16 +1556,16 @@ spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
 
-LaTeX Warning: Citation `david2021aic' on page 2 undefined on input line 463.
+LaTeX Warning: Citation `david2021aic' on page 2 undefined on input line 499.
 
 
-LaTeX Warning: Citation `cogsecatlas2023' on page 2 undefined on input line 463
+LaTeX Warning: Citation `cogsecatlas2023' on page 2 undefined on input line 499
 .
 
 ! Undefined control sequence.
 \beamer@doifinframe ...hanisms described in \cref 
                                                   {sec:defense-mechanisms}. ...
-l.463 \end{frame}
+l.499 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1576,7 +1576,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...lp{4cm}p{4cm}@{}} \toprule 
                                                   Regulation & Current Focus...
-l.463 \end{frame}
+l.499 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1587,7 +1587,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 <recently read> \midrule 
                          
-l.463 \end{frame}
+l.499 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1596,19 +1596,19 @@ spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 463--463
+Underfull \hbox (badness 10000) in paragraph at lines 499--499
 []\TU/lmss/m/n/10.95 Limited multiagent-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 463--463
+Underfull \hbox (badness 10000) in paragraph at lines 499--499
 []\TU/lmss/m/n/10.95 Process-focused, not
  []
 
 ! Undefined control sequence.
 <recently read> \bottomrule 
                             
-l.463 \end{frame}
+l.499 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1617,14 +1617,14 @@ spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
 
-Overfull \hbox (9.19997pt too wide) in paragraph at lines 463--463
+Overfull \hbox (9.19997pt too wide) in paragraph at lines 499--499
  [] 
  []
 
 ! Undefined control sequence.
 \beamer@doifinframe ...\text {defense}} = \argmax 
                                                   *{\pi } \mathbb {E}\left [...
-l.463 \end{frame}
+l.499 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1635,7 +1635,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \beamer@doifinframe ...pective developed in \cref 
                                                   {sec:eusocial-cogsec} prov...
-l.463 \end{frame}
+l.499 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1644,7 +1644,7 @@ spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
 
-Overfull \vbox (3130.43706pt too high) detected at line 463
+Overfull \vbox (3465.06975pt too high) detected at line 499
  []
 
 
@@ -1674,10 +1674,10 @@ LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 29385 strings out of 473832
- 594446 string characters out of 5729482
- 1282766 words of memory out of 5000000
- 51925 multiletter control sequences out of 15000+600000
+ 29386 strings out of 473832
+ 594476 string characters out of 5729482
+ 1301508 words of memory out of 5000000
+ 51926 multiletter control sequences out of 15000+600000
  562380 words of font info for 69 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  128i,17n,123p,1123b,819s stack positions out of 10000i,1000n,20000p,200000b,200000s

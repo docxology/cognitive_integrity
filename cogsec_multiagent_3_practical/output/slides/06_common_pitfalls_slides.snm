@@ -1,0 +1,10 @@
+\beamer@slide {sec:pitfalls}{2}
+\beamer@slide {pitfall-1-implicit-trust-critical}{3}
+\beamer@slide {pitfall-2-security-as-afterthought-critical}{4}
+\beamer@slide {pitfall-3-uncalibrated-thresholds-high}{5}
+\beamer@slide {pitfall-4-individual-only-security-high}{6}
+\beamer@slide {pitfall-5-static-tripwires-medium}{7}
+\beamer@slide {pitfall-6-ignoring-progressive-drift-medium}{8}
+\beamer@slide {pitfall-7-insufficient-logging-medium}{9}
+\beamer@slide {pitfall-8-single-orchestrator-reliance-high}{10}
+\beamer@slide {summary-checklist}{11}

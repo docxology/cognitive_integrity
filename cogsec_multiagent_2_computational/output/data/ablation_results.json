@@ -1,0 +1,85 @@
+{
+  "component_removal": [
+    {
+      "removed": "trust_calculus",
+      "tpr": 0.9899190062007308,
+      "delta_tpr": -0.010080993799269189
+    },
+    {
+      "removed": "detection",
+      "tpr": 0.9995525819884785,
+      "delta_tpr": -0.0004474180115214832
+    },
+    {
+      "removed": "firewall",
+      "tpr": 1.0,
+      "delta_tpr": 0.0
+    },
+    {
+      "removed": "tripwire",
+      "tpr": 1.0,
+      "delta_tpr": 0.0
+    },
+    {
+      "removed": "consensus",
+      "tpr": 1.0,
+      "delta_tpr": 0.0
+    },
+    {
+      "removed": "provenance",
+      "tpr": 1.0,
+      "delta_tpr": 0.0
+    },
+    {
+      "removed": "sandbox",
+      "tpr": 1.0,
+      "delta_tpr": 0.0
+    },
+    {
+      "removed": "invariants",
+      "tpr": 1.0,
+      "delta_tpr": 0.0
+    }
+  ],
+  "minimal_forward": {
+    "components": [
+      "firewall",
+      "detection"
+    ],
+    "tpr": 0.9468215683833103
+  },
+  "minimal_backward": {
+    "components": [
+      "firewall",
+      "tripwire"
+    ],
+    "tpr": 0.939339516004701
+  },
+  "top_synergies": [
+    {
+      "a": "provenance",
+      "b": "sandbox",
+      "synergy": 0.23450141008089742
+    },
+    {
+      "a": "provenance",
+      "b": "invariants",
+      "synergy": 0.22147389754614688
+    },
+    {
+      "a": "consensus",
+      "b": "invariants",
+      "synergy": 0.2185327121206484
+    },
+    {
+      "a": "sandbox",
+      "b": "invariants",
+      "synergy": 0.21607605842281796
+    },
+    {
+      "a": "tripwire",
+      "b": "consensus",
+      "synergy": 0.21371311196614096
+    }
+  ]
+}

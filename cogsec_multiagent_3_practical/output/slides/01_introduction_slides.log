@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.3.8)  28 JAN 2026 06:38
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.3.8)  16 FEB 2026 11:17
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -1240,79 +1240,35 @@ gent_3_practical/output/slides/01_introduction_slides.nav)
 [1
 
 ]
+LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <10.95> not available
+(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 112.
+
 
 [2
 
 ]
-
-LaTeX Warning: Citation `waltzman2017weaponization' on page 3 undefined on inpu
-t line 128.
-
-
-LaTeX Warning: Citation `friedman2024cogsec' on page 3 undefined on input line 
-128.
-
-
-LaTeX Warning: Citation `cogsec2024atlas' on page 3 undefined on input line 128
-.
-
-LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <10.95> not available
-(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 128.
-
-LaTeX Warning: Citation `wu2023autogen' on page 3 undefined on input line 128.
-
-
-LaTeX Warning: Citation `hong2023metagpt' on page 3 undefined on input line 128
-.
-
-
-Overfull \vbox (123.19548pt too high) detected at line 128
- []
-
-
-
-[3
-
-]
-
-LaTeX Warning: Citation `owasp2025agentic' on page 4 undefined on input line 15
-6.
-
-
-LaTeX Warning: Citation `adaptive2025attacks' on page 4 undefined on input line
- 156.
-
-
-Overfull \vbox (95.98451pt too high) detected at line 156
- []
-
-
-
-[4
-
-]
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 7.8961pt on input line 188.
+(Font)              scaled to size 7.8961pt on input line 139.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 5.64008pt on input line 188.
+(Font)              scaled to size 5.64008pt on input line 139.
 LaTeX Font Info:    Trying to load font information for OML+lmm on input line 1
-88.
+39.
  (/usr/local/texlive/2025/texmf-dist/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 11.28131pt on input line 188.
+(Font)              scaled to size 11.28131pt on input line 139.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 7.89691pt on input line 188.
+(Font)              scaled to size 7.89691pt on input line 139.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 5.64066pt on input line 188.
+(Font)              scaled to size 5.64066pt on input line 139.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 11.27914pt on input line 188.
+(Font)              scaled to size 11.27914pt on input line 139.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 7.8954pt on input line 188.
+(Font)              scaled to size 7.8954pt on input line 139.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 5.63957pt on input line 188.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 188
+(Font)              scaled to size 5.63957pt on input line 139.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 139
 .
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/amsfonts/umsa.fd
@@ -1321,7 +1277,7 @@ File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 (/usr/local/texlive/2025/texmf-dist/tex/latex/microtype/mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 188
+LaTeX Font Info:    Trying to load font information for U+msb on input line 139
 .
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/amsfonts/umsb.fd
@@ -1330,28 +1286,16 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 (/usr/local/texlive/2025/texmf-dist/tex/latex/microtype/mt-msb.cfg
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 )
-Overfull \vbox (27.99544pt too high) detected at line 188
- []
 
+[3
 
+]
+
+[4
+
+]
 
 [5
-
-]
-Overfull \vbox (177.5955pt too high) detected at line 226
- []
-
-
-
-[6
-
-]
-Overfull \vbox (75.59546pt too high) detected at line 255
- []
-
-
-
-[7
 
 ]
 \tf@nav=\write5
@@ -1370,20 +1314,16 @@ gent_3_practical/output/slides/01_introduction_slides.aux)
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
  ***********
-
-
-LaTeX Warning: There were undefined references.
-
  ) 
 Here is how much of TeX's memory you used:
- 29306 strings out of 473832
- 592276 string characters out of 5729482
- 1129670 words of memory out of 5000000
- 51850 multiletter control sequences out of 15000+600000
+ 29299 strings out of 473832
+ 592139 string characters out of 5729482
+ 1125619 words of memory out of 5000000
+ 51843 multiletter control sequences out of 15000+600000
  562348 words of font info for 65 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  128i,11n,123p,1128b,391s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
 Output written on /Users/4d/Documents/GitHub/template/projects/cognitive_integr
-ity/cogsec_multiagent_3_practical/output/slides/01_introduction_slides.pdf (7 p
+ity/cogsec_multiagent_3_practical/output/slides/01_introduction_slides.pdf (5 p
 ages).

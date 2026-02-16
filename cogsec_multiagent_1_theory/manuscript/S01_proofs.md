@@ -2,7 +2,7 @@
 
 # Supplementary: Mathematical Proofs
 
-This supplementary material provides complete formal proofs for all theorems stated in the main text, including preliminary definitions (\cref{sec:preliminaries}), main theorem proofs (\crefrange{sec:thm31-proof}{sec:thm66-proof}), and additional supporting lemmas (\cref{sec:additional-lemmas}).
+This supplementary material provides complete formal proofs for all theorems stated in the main text, including preliminary definitions (\cref{sec:preliminaries}), main theorem proofs (\crefrange{sec:thm42-proof}{sec:thm511-proof}), and additional supporting lemmas (\cref{sec:additional-lemmas}).
 
 ## Preliminary Definitions and Notation {#sec:preliminaries}
 
@@ -49,7 +49,7 @@ A delegation chain of depth $d$ is a sequence of agents $(a_0, a_1, \ldots, a_d)
 
 ---
 
-## Theorem 3.1: Trust Boundedness {#sec:thm31-proof}
+## Theorem 4.2: Trust Boundedness {#sec:thm42-proof}
 
 \begin{theorem}[Trust Boundedness --- Restated]
 \label{thm:trust-bound-restated}
@@ -167,7 +167,7 @@ d_{max} = \lfloor \log_{0.8} 0.1 \rfloor = 10
 
 ---
 
-## Theorem 6.1: Belief Injection Resistance {#sec:thm61-proof}
+## Theorem 5.7: Belief Injection Resistance {#sec:thm57-proof}
 
 \begin{theorem}[Belief Injection Resistance --- Restated]
 \label{thm:belief-injection-restated}
@@ -209,7 +209,7 @@ A belief injection attack $\mathcal{A}_{BI}$ succeeds if and only if:
 \end{definition}
 
 \begin{proof}[Main Proof of \cref{thm:belief-injection-restated}]
-Let $E_f$ = event ``firewall accepts message'' (does not detect attack). Let $E_s$ = event ``sandbox fails to filter belief'' (does not detect attack).
+Let $E_f$ = event ``firewall accepts message'' (does not detect attack). Let $E_s$ = event``sandbox fails to filter belief'' (does not detect attack).
 
 For $\mathcal{A}_{BI}$ to succeed, both $E_f$ and $E_s$ must occur:
 \begin{equation}
@@ -260,7 +260,7 @@ Direct extension of \cref{thm:belief-injection-restated} by independence.
 
 ---
 
-## Theorem 6.2: No Trust Amplification {#sec:thm62-proof}
+## Theorem 4.7: No Trust Amplification {#sec:thm47-proof}
 
 \begin{theorem}[No Trust Amplification --- Restated]
 \label{thm:trust-amp-restated}
@@ -364,7 +364,7 @@ Multiple colluding agents cannot create trust exceeding any individual's trust w
 
 ---
 
-## Theorem 6.3: Goal Alignment Invariant {#sec:thm63-proof}
+## Theorem 5.8: Goal Alignment Invariant {#sec:thm58-proof}
 
 \begin{theorem}[Goal Alignment Invariant --- Restated]
 \label{thm:goal-alignment-restated}
@@ -464,7 +464,7 @@ Goal hijacking requires violating the delegation protocol:
 
 ---
 
-## Theorem 6.4: Firewall Liveness {#sec:thm64-proof}
+## Theorem 5.9: Firewall Liveness {#sec:thm59-proof}
 
 \begin{theorem}[Firewall Liveness --- Restated]
 \label{thm:firewall-liveness-restated}
@@ -547,7 +547,7 @@ Messages in QUARANTINE can still reach verified belief state through sandbox pro
 
 ---
 
-## Theorem 6.5: Byzantine Consensus Termination {#sec:thm65-proof}
+## Theorem 5.10: Byzantine Consensus Termination {#sec:thm510-proof}
 
 \begin{theorem}[Byzantine Consensus Termination --- Restated]
 \label{thm:byzantine-restated}
@@ -634,7 +634,7 @@ By honest majority and the $2/3$ threshold requirement.
 
 ---
 
-## Theorem 6.6: Bounded Overhead {#sec:thm66-proof}
+## Theorem 5.11: Bounded Overhead {#sec:thm511-proof}
 
 \begin{theorem}[Bounded Overhead --- Restated]
 \label{thm:overhead-restated}
@@ -823,4 +823,3 @@ Theorem & Primary Technique & Complexity \\
 \end{table}
 
 All proofs are constructive and provide explicit bounds useful for system implementation and analysis.
-

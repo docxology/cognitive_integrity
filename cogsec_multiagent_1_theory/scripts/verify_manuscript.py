@@ -11,6 +11,7 @@ Usage:
 """
 
 import argparse
+import os
 import sys
 from pathlib import Path
 
@@ -23,8 +24,14 @@ from src.verification import ManuscriptVerifier
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Verify manuscript integrity.")
+    # Default to project's own manuscript directory (not CWD-relative)
+    project_dir = os.environ.get(
+        "PROJECT_DIR",
+        str(Path(__file__).resolve().parent.parent)
+    )
+    default_root = str(Path(project_dir) / "manuscript")
     parser.add_argument(
-        "--root", default="manuscript", help="Path to manuscript root directory."
+        "--root", default=default_root, help="Path to manuscript root directory."
     )
     args = parser.parse_args()
 

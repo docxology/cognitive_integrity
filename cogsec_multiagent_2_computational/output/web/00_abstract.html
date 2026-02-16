@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
@@ -169,51 +169,45 @@
       vertical-align: middle;
     }
   </style>
+  <script defer=""
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
 </head>
 <body>
 <h1 id="abstract">Abstract</h1>
-<p>This paper provides computational validation of the <strong>Cognitive
-Integrity Framework (CIF)</strong> introduced in Part 1. We implement
-the complete defense suite—cognitive firewalls, belief sandboxes, trust
-calculus, and Byzantine-tolerant consensus—and evaluate performance
-across production multiagent architectures.</p>
-<h2 id="contributions">Contributions</h2>
-<ul>
-<li><strong>Attack Corpus</strong>: 950 cognitive attacks across four
-categories (prompt injection, trust exploitation, belief manipulation,
-coordination attacks)</li>
-<li><strong>Cross-Architecture Validation</strong>: Evaluation across
-Claude Code, AutoGPT, CrewAI, LangGraph, MetaGPT, and Camel</li>
-<li><strong>Detection Performance</strong>: 94% detection rate with
-layered defenses; 20-25% latency overhead</li>
-<li><strong>Statistical Analysis</strong>: Significance testing with
-large effect sizes (Cohen’s d &gt; 0.8), ablation studies, scalability
-benchmarks</li>
-</ul>
-<h2 id="key-findings">Key Findings</h2>
-<ol type="1">
-<li><strong>Composition Matters</strong>: No individual defense achieves
-acceptable protection; layered composition yields multiplicative
-detection improvement</li>
-<li><strong>Trust Decay Works</strong>: Bounded delegation (δ^d)
-prevents trust amplification across all architectures</li>
-<li><strong>Architecture Vulnerability</strong>: Peer-to-peer systems
-show largest relative improvement, confirming lateral movement
-analysis</li>
-</ol>
-<p>All notation follows definitions from Part 1 (Supplementary Section
-S03).</p>
-<h2 id="paper-series">Paper Series</h2>
-<p><strong>DOI</strong>: 10.5281/zenodo.18364128</p>
-<p>This is Part 2 of the <em>Cognitive Security for Multiagent
-Operators</em> series:</p>
-<ul>
-<li><strong>Part 1</strong> (DOI: 10.5281/zenodo.18364119): Formal
-foundations and theoretical analysis</li>
-<li><strong>Part 2</strong> (this paper): Computational validation and
-implementation</li>
-<li><strong>Part 3</strong> (DOI: 10.5281/zenodo.18364130): Practical
-deployment guidance</li>
-</ul>
+<p>The Cognitive Integrity Framework (CIF) introduced in Part 1 of this
+series establishes formal foundations for securing multiagent AI systems
+against cognitive manipulation attacks—adversarial inputs that exploit
+inter-agent communication to corrupt beliefs, inflate trust, or subvert
+coordination. Theoretical guarantees alone cannot ensure practical
+protection. This companion paper bridges the theory-practice gap through
+comprehensive computational validation: we implement the complete CIF
+defense suite (cognitive firewalls, belief sandboxes, identity
+tripwires, trust calculus with bounded delegation, and
+Byzantine-tolerant consensus) and evaluate detection performance across
+six production multiagent architectures (Claude Code, AutoGPT, CrewAI,
+LangGraph, MetaGPT, and Camel) using a 950-attack corpus spanning four
+categories with 12 subcategories. All experiments use simulation-based
+architecture adapters modeling topology and communication patterns of
+each target system; results are deterministically reproducible (seed =
+42).</p>
+<p>The layered CIF defense achieves 94% overall detection (95% CI:
+[0.92, 0.96]) across all six architectures, confirming the
+multiplicative composition theorems from Part 1. No single mechanism
+suffices: the firewall alone reaches 74%, while full composition yields
+compounding gains. Trust decay with bounded delegation (<span
+class="math inline">\(\delta^d\)</span>) prevents trust amplification
+across all architectures, and peer-to-peer topologies show the largest
+relative improvement, consistent with Part 1’s lateral movement
+analysis. Performance overhead of 20–25% latency was observed in
+simulation, a trade-off comparable to standard encryption for
+security-critical contexts. All primary hypotheses achieve <span
+class="math inline">\(p &lt; 0.001\)</span> with large effect sizes
+(Cohen’s <span class="math inline">\(d &gt; 0.8\)</span>), and ablation
+studies confirm non-redundant component contributions. This is Part 2 of
+the Cognitive Security for Multiagent Operators series (Part 1, DOI:
+10.5281/zenodo.18364119; Part 3, DOI: 10.5281/zenodo.18364130). Code and
+attack corpus generators are available at DOI:
+10.5281/zenodo.18364128.</p>
 </body>
 </html>

@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.3.8)  28 JAN 2026 06:38
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.3.8)  16 FEB 2026 11:17
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -1284,7 +1284,7 @@ File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 [1
 
 ]
-Overfull \vbox (235.0974pt too high) detected at line 166
+Overfull \vbox (294.49715pt too high) detected at line 162
  []
 
 
@@ -1310,13 +1310,13 @@ L3 programming layer <2025-01-18>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 29296 strings out of 473832
- 592117 string characters out of 5729482
- 1131303 words of memory out of 5000000
- 51837 multiletter control sequences out of 15000+600000
+ 29293 strings out of 473832
+ 592082 string characters out of 5729482
+ 1132233 words of memory out of 5000000
+ 51834 multiletter control sequences out of 15000+600000
  562364 words of font info for 67 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 128i,11n,123p,1124b,504s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 128i,11n,123p,1124b,519s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
 Output written on /Users/4d/Documents/GitHub/template/projects/cognitive_integr
 ity/cogsec_multiagent_3_practical/output/slides/00_abstract_slides.pdf (2 pages

@@ -1,14 +1,20 @@
-\newpage
-
 # Appendix: Model Checking Tool Configurations {#sec:model-checking-tools}
 
-This supplementary section provides executable configurations for formal verification tools referenced in Section 7 of Part 1 (Theoretical Foundations). These configurations implement the state space definitions, temporal properties, and safety invariants formally specified in Part 1.
+This supplementary section provides executable configurations for formal verification tools referenced in Section 7 of Part 1 (Theoretical Foundations). These configurations implement the state space definitions, temporal properties, and safety invariants formally specified in Part 1. Readers should consult Part 1, Section 7 for the underlying theory; the configurations below serve as practical reference implementations.
 
 > **Cross-Reference:** For theoretical foundations including state space definitions (Definition 1, Section 4 of Part 1) and temporal property specifications (CTL/LTL formulas), see Part 1: Theoretical Foundations, Section 7.
 
 ## NuSMV Configuration {#sec:nusmv-config}
 
 NuSMV is a symbolic model checker supporting CTL and LTL specifications. The following configuration models the CIF trust dynamics and belief integrity properties.
+
+> **Executable Verification**: These configurations can be generated and verified (if tools are installed) using the provided script:
+>
+> ```bash
+> python3 scripts/verify_formal_specs.py
+> ```
+>
+> This script generates the `.smv`, `.pml`, and `.tla` files to `output/formal/`.
 
 ```smv
 MODULE main
@@ -156,24 +162,31 @@ THEOREM Spec => []ConsensusIntegrity
 =============================================================================
 ```
 
+## Tool Selection Guide {#sec:tool-selection}
+
+**Table: Model checking tool selection by verification objective.** {#tab:tool-selection}
+
+| Objective | Recommended Tool | Rationale |
+| --- | --- | --- |
+| Trust boundedness | NuSMV (CTL) | AG quantification natural for invariant properties |
+| Consensus termination | SPIN (LTL) | Liveness properties ($\square \Diamond$) well-suited to Promela |
+| Full state space exploration | TLA+ (TLC) | Rich specification language for complex concurrent invariants |
+| Rapid prototyping | SPIN | Fastest compilation and verification cycle |
+| Production integration | NuSMV | Mature toolchain with counterexample visualization |
+
+All three tools verify the same four core properties (belief integrity, trust boundedness, no deadlock, eventual detection) but differ in expressiveness and verification efficiency. For deployments with $>$8 agents, symbolic model checking (NuSMV) is preferred over explicit state enumeration (SPIN) due to state space explosion.
+
 ## Verification Parameters {#sec:verification-params}
 
 The following parameters configure model checking execution. Values are chosen to balance verification completeness against computational feasibility.
 
-\begin{table}[htbp]
-\centering
-\caption{Model checking configuration parameters.}
-\label{tab:verification-config}
-\begin{tabular}{@{}lll@{}}
-\toprule
-Parameter & Value & Rationale \\
-\midrule
-$N$ (agents) & 5--10 & Representative of production \\
-$F$ (Byzantine) & $\lfloor (N-1)/3 \rfloor$ & Maximum tolerable \\
-$|\Phi|$ (propositions) & 100 & Typical belief set \\
-$d$ (provenance depth) & 5 & Typical delegation depth \\
-State bound & $10^8$ & Memory limit \\
-Time limit & 24 hours & Verification budget \\
-\bottomrule
-\end{tabular}
-\end{table}
+**Table: Model checking configuration parameters.** {#tab:verification-config}
+
+| Parameter | Value | Rationale |
+| :--- | :--- | :--- |
+| $N$ (agents) | 5--10 | Representative of production |
+| $F$ (Byzantine) | $\lfloor (N-1)/3 \rfloor$ | Maximum tolerable |
+| $|\Phi|$ (propositions) | 100 | Typical belief set |
+| $d$ (provenance depth) | 5 | Typical delegation depth |
+| State bound | $10^8$ | Memory limit |
+| Time limit | 24 hours | Verification budget |

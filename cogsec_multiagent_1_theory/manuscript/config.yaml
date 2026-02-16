@@ -2,7 +2,7 @@ paper:
   title: "Cognitive Integrity Framework: Formal Foundations for Multiagent Security"
   subtitle: "Part 1 of 3: Theoretical Foundations"
   short_title: "CIF Theory"
-  version: "1.0"
+  version: "2.0"
   type: "research"
   series: "Cognitive Security for Multiagent Operators"
   part: 1
@@ -30,17 +30,17 @@ abstract: |
   Framework (CIF) for securing multiagent AI operators against cognitive
   manipulation attacks. We formalize cognitive attack surfaces unique to
   systems where agents reason about, influence, and delegate to other agents.
-  
+
   Primary contributions: (1) Trust Calculus with δ-bounded delegation preventing
   trust amplification attacks; (2) Defense Composition Algebra enabling formal
   reasoning about layered security mechanisms; (3) Information-theoretic bounds
   establishing fundamental stealth-impact tradeoffs for attackers; (4) Formal
   verification framework proving safety properties including belief integrity,
   trust boundedness, and goal preservation.
-  
+
   The framework provides complete mathematical foundations for cognitive security
   while maintaining correspondence with the OWASP Top 10 for Agentic Applications.
-  
+
   This is Part 1 of a three-part series:
   - Part 1 (this paper): Formal foundations and theoretical analysis
   - Part 2 (DOI: 10.5281/zenodo.18364128): Computational validation and implementation

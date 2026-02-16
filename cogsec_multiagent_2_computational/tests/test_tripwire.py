@@ -1,7 +1,7 @@
 """Tests for cognitive tripwire system."""
 
 import pytest
-from tripwire import Canary, CognitiveTripwire, TripwireAlert
+from src import Canary, CognitiveTripwire, TripwireAlert
 
 
 class TestCanary:

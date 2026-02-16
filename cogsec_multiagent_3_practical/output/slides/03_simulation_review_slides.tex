@@ -1,0 +1,231 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\documentclass[
+  ignorenonframetext,
+]{beamer}
+\newif\ifbibliography
+\usepackage{pgfpages}
+\setbeamertemplate{caption}[numbered]
+\setbeamertemplate{caption label separator}{: }
+\setbeamercolor{caption name}{fg=normal text.fg}
+\beamertemplatenavigationsymbolsempty
+% remove section numbering
+\setbeamertemplate{part page}{
+  \centering
+  \begin{beamercolorbox}[sep=16pt,center]{part title}
+    \usebeamerfont{part title}\insertpart\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{section page}{
+  \centering
+  \begin{beamercolorbox}[sep=12pt,center]{section title}
+    \usebeamerfont{section title}\insertsection\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{subsection page}{
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center]{subsection title}
+    \usebeamerfont{subsection title}\insertsubsection\par
+  \end{beamercolorbox}
+}
+% Prevent slide breaks in the middle of a paragraph
+\widowpenalties 1 10000
+\raggedbottom
+\AtBeginPart{
+  \frame{\partpage}
+}
+\AtBeginSection{
+  \ifbibliography
+  \else
+    \frame{\sectionpage}
+  \fi
+}
+\AtBeginSubsection{
+  \frame{\subsectionpage}
+}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{longtable,booktabs,array}
+\newcounter{none} % for unnumbered tables
+\usepackage{calc} % for calculating minipage widths
+\usepackage{caption}
+% Make caption package work with longtable
+\makeatletter
+\def\fnum@table{\tablename~\thetable}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\author{\texorpdfstring{}{}}
+\date{}
+
+\begin{document}
+
+\begin{frame}[fragile]{The Evidence: What We Proved in Part 2}
+\protect\phantomsection\label{sec:paper2-review}
+Part 1 was the theory. Part 2 was the proof. We ran \textbf{1,557 tests}
+against \textbf{950 attack samples} across \textbf{6 production
+architectures}.
+
+Here is what the data says.
+
+\begin{block}{The Experimental Setup}
+\protect\phantomsection\label{the-experimental-setup}
+We tested the six most common multi-agent architectures found in
+production:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Claude Code} (Hierarchical)
+\item
+  \textbf{AutoGPT} (Autonomous Loop)
+\item
+  \textbf{CrewAI} (Role-Based Team)
+\item
+  \textbf{LangGraph} (State Machine)
+\item
+  \textbf{MetaGPT} (SOP-Driven)
+\item
+  \textbf{Camel} (Peer-to-Peer)
+\end{itemize}
+
+The test corpus included direct prompt injection, poisoned RAG contexts,
+deep trust exploitation, and multi-turn social engineering.
+\end{block}
+
+\begin{block}{Finding 1: Defense Layering vs.~Individual Efficacy}
+\protect\phantomsection\label{finding-1-defense-layering-vs.-individual-efficacy}
+\textbf{The Data}: Individual defenses (like just a firewall) stopped
+\textasciitilde60-70\% of attacks. The full CIF stack stopped
+\textbf{97\%}. \textbf{The Implication}: The defenses demonstrated
+orthogonal coverage. The firewall blocked inputs that the sandbox would
+have missed, and the sandbox identified anomalies that the trust
+calculus would have permitted. The data suggests that removing any
+single layer creates a statistically significant vulnerability gap.
+\end{block}
+
+\begin{block}{Finding 2: State Machine Determinism}
+\protect\phantomsection\label{finding-2-state-machine-determinism}
+\textbf{The Data}: \textbf{LangGraph} architectures achieved the highest
+detection rates (98\%). \textbf{The Mechanism}: In a state machine,
+valid transitions are explicitly defined. Attempts to move from an
+\texttt{Analyze} state to an \texttt{Execute} state without passing
+through \texttt{Verify} were caught immediately. \textbf{The
+Implication}: Explicit state definitions provide a ``security for free''
+effect, where the architecture itself enforces behavioral invariants
+that are difficult to bypass.
+\end{block}
+
+\begin{block}{Finding 3: Hierarchical Vulnerability}
+\protect\phantomsection\label{finding-3-hierarchical-vulnerability}
+\textbf{The Data}: \textbf{Claude Code} and \textbf{AutoGPT} styles were
+strong against external attacks but vulnerable to \textbf{Systemic
+(\(\Omega_5\))} compromise. \textbf{The Mechanism}: When the ``Boss''
+agent was tricked, it ordered ``Worker'' agents to execute malicious
+actions, and they complied. \textbf{The Implication}: Hierarchical
+systems exhibit a Single Point of Failure at the root. Security in these
+topologies requires worker-level tripwires that can reject orders even
+from authenticated superiors.
+\end{block}
+
+\begin{block}{Finding 4: Roles as Security Boundaries}
+\protect\phantomsection\label{finding-4-roles-as-security-boundaries}
+\textbf{The Data}: \textbf{CrewAI} performed exceptionally well against
+privilege escalation. \textbf{The Mechanism}: ``Roles'' acted as
+effective containers for capabilities. A ``Researcher'' agent lacked the
+tools to write code, rendering code-execution attacks against it inert.
+\textbf{The Implication}: Strict role definitions function as effective
+security boundaries, limiting the blast radius of a compromised agent.
+\end{block}
+
+\begin{block}{Finding 5: The Stealth-Impact Tradeoff}
+\protect\phantomsection\label{finding-5-the-stealth-impact-tradeoff}
+\textbf{The Data}: High-impact attacks were consistently easier to
+detect than low-impact nudges. \textbf{The Implication}:
+``Catastrophic'' takeover attempts generate significant noise in the
+system state. The primary challenge for defenders is not the sudden
+takeover, but the slow, subtle drift of agent beliefs over long time
+horizons.
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{A Note on the Numbers}
+\protect\phantomsection\label{a-note-on-the-numbers}
+The detection rates in Part 2 are derived from a calibrated parametric
+simulation, modeled on the architecture's topology. They represent the
+\emph{structural} security of the design.
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{97\% Detection} means: ``In a fully implemented system of this
+  topology, 97\% of these attack vectors violate a defined constraint.''
+\item
+  It does \textbf{not} mean: ``We have a magic Python script that
+  catches 97\% of all evil AI thoughts.''
+\end{itemize}
+
+We proved the \emph{architecture} works. The implementation fidelity is
+the variable for the builder.
+
+\begin{block}{Tripwire Configuration Data}
+\protect\phantomsection\label{tripwire-configuration-data}
+The simulations utilized the following tripwire densities to achieve the
+reported results:
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}lll@{}}
+\toprule\noalign{}
+Category & Count Used in Sim & Placement Strategy \\
+\midrule\noalign{}
+\endhead
+Identity canaries & 3+ per agent & Core identity beliefs \\
+Boundary canaries & 5+ per agent & Permission boundaries \\
+Principal canaries & 2+ per agent & Trust relationships \\
+Temporal canaries & 1 per agent & Session continuity \\
+\bottomrule\noalign{}
+\end{longtable}
+}
+\end{block}
+\end{block}
+\end{frame}
+
+\end{document}

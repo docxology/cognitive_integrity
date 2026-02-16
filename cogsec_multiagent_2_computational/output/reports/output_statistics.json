@@ -3,22 +3,22 @@
     "pdf": {
       "exists": true,
       "file_count": 8,
-      "size_mb": "0.91",
-      "total_size_bytes": 957652,
+      "size_mb": "1.30",
+      "total_size_bytes": 1359829,
       "largest_files": [
         {
           "name": "cogsec_multiagent_2_computational_combined.pdf",
-          "size_mb": "0.47",
+          "size_mb": "0.62",
           "path": "pdf/cogsec_multiagent_2_computational_combined.pdf"
         },
         {
           "name": "_combined_manuscript.tex",
-          "size_mb": "0.14",
+          "size_mb": "0.25",
           "path": "pdf/_combined_manuscript.tex"
         },
         {
           "name": "_combined_manuscript.md",
-          "size_mb": "0.12",
+          "size_mb": "0.19",
           "path": "pdf/_combined_manuscript.md"
         }
       ],
@@ -35,41 +35,41 @@
     },
     "web": {
       "exists": true,
-      "file_count": 15,
-      "size_mb": "0.38",
-      "total_size_bytes": 396920,
+      "file_count": 25,
+      "size_mb": "0.78",
+      "total_size_bytes": 820873,
       "largest_files": [
         {
           "name": "index.html",
-          "size_mb": "0.13",
+          "size_mb": "0.28",
           "path": "web/index.html"
         },
         {
           "name": "_combined_manuscript.md",
-          "size_mb": "0.12",
+          "size_mb": "0.19",
           "path": "web/_combined_manuscript.md"
         },
         {
-          "name": "02_methodology.html",
+          "name": "06_discussion.html",
           "size_mb": "0.03",
-          "path": "web/02_methodology.html"
+          "path": "web/06_discussion.html"
         }
       ],
       "extensions": {
-        ".md": 1,
-        ".html": 14
+        ".html": 24,
+        ".md": 1
       }
     },
     "slides": {
       "exists": true,
-      "file_count": 94,
-      "size_mb": "1.88",
-      "total_size_bytes": 1967896,
+      "file_count": 173,
+      "size_mb": "3.06",
+      "total_size_bytes": 3212540,
       "largest_files": [
         {
-          "name": "02_methodology_slides.log",
-          "size_mb": "0.15",
-          "path": "slides/02_methodology_slides.log"
+          "name": "02a_defense_algorithms_slides.log",
+          "size_mb": "0.13",
+          "path": "slides/02a_defense_algorithms_slides.log"
         },
         {
           "name": "03_attack_corpus_slides.pdf",
@@ -83,56 +83,74 @@
         }
       ],
       "extensions": {
-        ".nav": 13,
-        ".pdf": 13,
-        ".toc": 13,
-        ".tex": 13,
-        ".vrb": 3,
-        ".snm": 13,
-        ".aux": 13,
-        ".log": 13
+        ".nav": 23,
+        ".pdf": 23,
+        ".toc": 23,
+        ".tex": 23,
+        ".vrb": 12,
+        ".snm": 23,
+        ".aux": 23,
+        ".log": 23
       }
     },
     "figures": {
       "exists": true,
-      "file_count": 30,
-      "size_mb": "3.04",
-      "total_size_bytes": 3185910,
+      "file_count": 16,
+      "size_mb": "3.31",
+      "total_size_bytes": 3470754,
       "largest_files": [
         {
-          "name": "trust_calculus_comprehensive.png",
-          "size_mb": "0.41",
-          "path": "figures/trust_calculus_comprehensive.png"
-        },
-        {
           "name": "cif_comprehensive.png",
-          "size_mb": "0.30",
+          "size_mb": "0.58",
           "path": "figures/cif_comprehensive.png"
         },
         {
-          "name": "comprehensive_taxonomy.png",
-          "size_mb": "0.21",
-          "path": "figures/comprehensive_taxonomy.png"
+          "name": "defense_composition.png",
+          "size_mb": "0.51",
+          "path": "figures/defense_composition.png"
+        },
+        {
+          "name": "roc_curves.png",
+          "size_mb": "0.43",
+          "path": "figures/roc_curves.png"
         }
       ],
       "extensions": {
-        ".png": 15,
-        ".pdf": 15
+        ".png": 8,
+        ".pdf": 8
       }
     },
     "data": {
       "exists": true,
-      "file_count": 0,
-      "size_mb": "0.00",
-      "total_size_bytes": 0,
-      "largest_files": [],
-      "extensions": {}
+      "file_count": 12,
+      "size_mb": "0.03",
+      "total_size_bytes": 30455,
+      "largest_files": [
+        {
+          "name": "full_evaluation_results.json",
+          "size_mb": "0.01",
+          "path": "data/full_evaluation_results.json"
+        },
+        {
+          "name": "sensitivity_results.json",
+          "size_mb": "0.00",
+          "path": "data/sensitivity_results.json"
+        },
+        {
+          "name": "multi_seed_results.json",
+          "size_mb": "0.00",
+          "path": "data/multi_seed_results.json"
+        }
+      ],
+      "extensions": {
+        ".json": 12
+      }
     },
     "reports": {
       "exists": true,
       "file_count": 4,
       "size_mb": "0.01",
-      "total_size_bytes": 6027,
+      "total_size_bytes": 6110,
       "largest_files": [
         {
           "name": "validation_report.json",
@@ -175,7 +193,7 @@
       "exists": true,
       "file_count": 1,
       "size_mb": "0.01",
-      "total_size_bytes": 8499,
+      "total_size_bytes": 8522,
       "largest_files": [
         {
           "name": "pipeline.log",
@@ -188,62 +206,62 @@
       }
     }
   },
-  "total_files": 152,
-  "total_size_mb": 6.220726013183594,
+  "total_files": 239,
+  "total_size_mb": 8.496363639831543,
   "largest_files": [
     {
       "name": "cogsec_multiagent_2_computational_combined.pdf",
-      "size_mb": "0.47",
+      "size_mb": "0.62",
       "category": "pdf",
       "path": "pdf/cogsec_multiagent_2_computational_combined.pdf"
     },
     {
-      "name": "trust_calculus_comprehensive.png",
-      "size_mb": "0.41",
-      "category": "figures",
-      "path": "figures/trust_calculus_comprehensive.png"
-    },
-    {
       "name": "cif_comprehensive.png",
-      "size_mb": "0.30",
+      "size_mb": "0.58",
       "category": "figures",
       "path": "figures/cif_comprehensive.png"
     },
     {
-      "name": "comprehensive_taxonomy.png",
-      "size_mb": "0.21",
+      "name": "defense_composition.png",
+      "size_mb": "0.51",
       "category": "figures",
-      "path": "figures/comprehensive_taxonomy.png"
+      "path": "figures/defense_composition.png"
     },
     {
-      "name": "02_methodology_slides.log",
-      "size_mb": "0.15",
-      "category": "slides",
-      "path": "slides/02_methodology_slides.log"
-    },
-    {
-      "name": "_combined_manuscript.tex",
-      "size_mb": "0.14",
-      "category": "pdf",
-      "path": "pdf/_combined_manuscript.tex"
+      "name": "roc_curves.png",
+      "size_mb": "0.43",
+      "category": "figures",
+      "path": "figures/roc_curves.png"
     },
     {
       "name": "index.html",
-      "size_mb": "0.13",
+      "size_mb": "0.28",
       "category": "web",
       "path": "web/index.html"
     },
     {
+      "name": "_combined_manuscript.tex",
+      "size_mb": "0.25",
+      "category": "pdf",
+      "path": "pdf/_combined_manuscript.tex"
+    },
+    {
       "name": "_combined_manuscript.md",
-      "size_mb": "0.12",
+      "size_mb": "0.19",
       "category": "pdf",
       "path": "pdf/_combined_manuscript.md"
     },
     {
       "name": "_combined_manuscript.md",
-      "size_mb": "0.12",
+      "size_mb": "0.19",
       "category": "web",
       "path": "web/_combined_manuscript.md"
+    },
+    {
+      "name": "02a_defense_algorithms_slides.log",
+      "size_mb": "0.13",
+      "category": "slides",
+      "path": "slides/02a_defense_algorithms_slides.log"
     },
     {
       "name": "03_attack_corpus_slides.pdf",
@@ -257,33 +275,33 @@
   ],
   "file_counts_by_type": {
     ".md": 4,
-    ".log": 15,
-    ".aux": 14,
+    ".log": 25,
+    ".aux": 24,
     ".blg": 1,
     ".bib": 1,
-    ".tex": 14,
-    ".pdf": 29,
+    ".tex": 24,
+    ".pdf": 32,
     ".bbl": 1,
-    ".html": 14,
-    ".nav": 13,
-    ".toc": 13,
-    ".vrb": 3,
-    ".snm": 13,
-    ".png": 15,
-    ".json": 2
+    ".html": 24,
+    ".nav": 23,
+    ".toc": 23,
+    ".vrb": 12,
+    ".snm": 23,
+    ".png": 8,
+    ".json": 14
   },
   "sizes_by_category": {
-    "pdf": 0.9132881164550781,
-    "web": 0.37853240966796875,
-    "slides": 1.8767318725585938,
-    "figures": 3.038320541381836,
-    "data": 0.0,
-    "reports": 0.005747795104980469,
+    "pdf": 1.2968339920043945,
+    "web": 0.7828454971313477,
+    "slides": 3.0637168884277344,
+    "figures": 3.309968948364258,
+    "data": 0.029044151306152344,
+    "reports": 0.0058269500732421875,
     "simulations": 0.0,
     "llm": 0.0,
-    "logs": 0.008105278015136719
+    "logs": 0.008127212524414062
   },
   "pdf_files": 8,
-  "figures": 30,
-  "data_files": 0
+  "figures": 16,
+  "data_files": 12
 }

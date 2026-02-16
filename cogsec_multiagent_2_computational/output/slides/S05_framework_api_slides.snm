@@ -1,0 +1,9 @@
+\beamer@slide {overview}{3}
+\beamer@slide {sec:trust-module-api}{4}
+\beamer@slide {sec:firewall-api}{5}
+\beamer@slide {sec:consensus-api}{6}
+\beamer@slide {sec:detection-api}{7}
+\beamer@slide {sec:provenance-api}{8}
+\beamer@slide {sec:sandbox-api}{9}
+\beamer@slide {sec:tripwire-api}{10}
+\beamer@slide {sec:invariants-api}{11}

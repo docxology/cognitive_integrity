@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.3.8)  28 JAN 2026 06:37
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.3.8)  16 FEB 2026 11:15
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -186,42 +186,7 @@ LaTeX Font Info:    Redeclaring font encoding TS1 on input line 47.
 \g__um_primekern_muskip=\muskip18
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/unicode-math/unicode-math-table.t
-ex))) (/usr/local/texlive/2025/texmf-dist/tex/latex/lm/lmodern.sty
-Package: lmodern 2015/05/01 v1.6.1 Latin Modern Fonts
-LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
-(Font)                  OT1/cmr/m/n --> OT1/lmr/m/n on input line 22.
-LaTeX Font Info:    Overwriting symbol font `letters' in version `normal'
-(Font)                  OML/cmm/m/it --> OML/lmm/m/it on input line 23.
-LaTeX Font Info:    Overwriting symbol font `symbols' in version `normal'
-(Font)                  OMS/cmsy/m/n --> OMS/lmsy/m/n on input line 24.
-LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `normal'
-(Font)                  OMX/cmex/m/n --> OMX/lmex/m/n on input line 25.
-LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
-(Font)                  OT1/cmr/bx/n --> OT1/lmr/bx/n on input line 26.
-LaTeX Font Info:    Overwriting symbol font `letters' in version `bold'
-(Font)                  OML/cmm/b/it --> OML/lmm/b/it on input line 27.
-LaTeX Font Info:    Overwriting symbol font `symbols' in version `bold'
-(Font)                  OMS/cmsy/b/n --> OMS/lmsy/b/n on input line 28.
-LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
-(Font)                  OMX/cmex/m/n --> OMX/lmex/m/n on input line 29.
-LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
-(Font)                  OT1/cmr/bx/n --> OT1/lmr/bx/n on input line 31.
-LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
-(Font)                  OT1/cmss/m/n --> OT1/lmss/m/n on input line 32.
-LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
-(Font)                  OT1/cmr/m/it --> OT1/lmr/m/it on input line 33.
-LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
-(Font)                  OT1/cmtt/m/n --> OT1/lmtt/m/n on input line 34.
-LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `bold'
-(Font)                  OT1/cmr/bx/n --> OT1/lmr/bx/n on input line 35.
-LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  OT1/cmss/bx/n --> OT1/lmss/bx/n on input line 36.
-LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
-(Font)                  OT1/cmr/bx/it --> OT1/lmr/bx/it on input line 37.
-LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  OT1/cmtt/m/n --> OT1/lmtt/m/n on input line 38.
-)
-(/usr/local/texlive/2025/texmf-dist/tex/latex/upquote/upquote.sty
+ex))) (/usr/local/texlive/2025/texmf-dist/tex/latex/upquote/upquote.sty
 Package: upquote 2012/04/19 v1.3 upright-quote and grave-accent glyphs in verba
 tim
 
@@ -1144,45 +1109,45 @@ Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
 \Gm@layoutvoffset=\dimen317
 \Gm@dimlist=\toks56
 )
-Package hyperref Info: Option `colorlinks' set `true' on input line 229.
+Package hyperref Info: Option `colorlinks' set `true' on input line 232.
 
 (./_combined_manuscript.aux)
 \openout1 = `_combined_manuscript.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 235.
-LaTeX Font Info:    ... okay on input line 235.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 235.
-LaTeX Font Info:    ... okay on input line 235.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 235.
-LaTeX Font Info:    ... okay on input line 235.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 235.
-LaTeX Font Info:    ... okay on input line 235.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 235.
-LaTeX Font Info:    ... okay on input line 235.
-LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 235.
-LaTeX Font Info:    ... okay on input line 235.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 235.
-LaTeX Font Info:    ... okay on input line 235.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 235.
-LaTeX Font Info:    ... okay on input line 235.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 235.
-LaTeX Font Info:    ... okay on input line 235.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 235.
-LaTeX Font Info:    ... okay on input line 235.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 234.
+LaTeX Font Info:    ... okay on input line 234.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 234.
+LaTeX Font Info:    ... okay on input line 234.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 234.
+LaTeX Font Info:    ... okay on input line 234.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 234.
+LaTeX Font Info:    ... okay on input line 234.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 234.
+LaTeX Font Info:    ... okay on input line 234.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 234.
+LaTeX Font Info:    ... okay on input line 234.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 234.
+LaTeX Font Info:    ... okay on input line 234.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 234.
+LaTeX Font Info:    ... okay on input line 234.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 234.
+LaTeX Font Info:    ... okay on input line 234.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 234.
+LaTeX Font Info:    ... okay on input line 234.
 LaTeX Font Info:    Overwriting math alphabet `\mathrm' in version `normal'
-(Font)                  OT1/lmr/m/n --> TU/lmr/m/n on input line 235.
+(Font)                  OT1/cmr/m/n --> TU/lmr/m/n on input line 234.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
-(Font)                  OT1/lmr/m/it --> TU/lmr/m/it on input line 235.
+(Font)                  OT1/cmr/m/it --> TU/lmr/m/it on input line 234.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
-(Font)                  OT1/lmr/bx/n --> TU/lmr/bx/n on input line 235.
+(Font)                  OT1/cmr/bx/n --> TU/lmr/bx/n on input line 234.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
-(Font)                  OT1/lmss/m/n --> TU/lmss/m/n on input line 235.
+(Font)                  OT1/cmss/m/n --> TU/lmss/m/n on input line 234.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  OT1/lmss/bx/n --> TU/lmss/bx/n on input line 235.
+(Font)                  OT1/cmss/bx/n --> TU/lmss/bx/n on input line 234.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
-(Font)                  OT1/lmtt/m/n --> TU/lmtt/m/n on input line 235.
+(Font)                  OT1/cmtt/m/n --> TU/lmtt/m/n on input line 234.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  OT1/lmtt/m/n --> TU/lmtt/bx/n on input line 235.
+(Font)                  OT1/cmtt/m/n --> TU/lmtt/bx/n on input line 234.
 
 Package fontspec Info: 
 (fontspec)             latinmodern-math scale = 0.9999964596882403.
@@ -1213,7 +1178,7 @@ pt=math;language=dflt;"
 pt=math;language=dflt;"
 
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(0)/m/n' will be
-(Font)              scaled to size 10.0pt on input line 235.
+(Font)              scaled to size 10.0pt on input line 234.
 
 Package fontspec Info: 
 (fontspec)             latinmodern-math scale = 0.9999964596882403.
@@ -1256,18 +1221,18 @@ ath.otf]/OT:script=math;language=dflt;+ssty=1;"
 pt=math;language=dflt;"
 
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 10.0pt on input line 235.
+(Font)              scaled to size 10.0pt on input line 234.
 LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
-(Font)              `operators' in the math version `normal' on input line 235.
+(Font)              `operators' in the math version `normal' on input line 234.
 
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
-(Font)                  OT1/lmr/m/n --> TU/latinmodern-math.otf(1)/m/n on input
- line 235.
+(Font)                  OT1/cmr/m/n --> TU/latinmodern-math.otf(1)/m/n on input
+ line 234.
 LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
-(Font)              `operators' in the math version `bold' on input line 235.
+(Font)              `operators' in the math version `bold' on input line 234.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
-(Font)                  OT1/lmr/bx/n --> TU/latinmodern-math.otf(1)/b/n on inpu
-t line 235.
+(Font)                  OT1/cmr/bx/n --> TU/latinmodern-math.otf(1)/b/n on inpu
+t line 234.
 
 Package fontspec Info: 
 (fontspec)             latinmodern-math scale = 0.9999964596882403.
@@ -1341,15 +1306,15 @@ ript=math;language=dflt;"<6-8.5>s*[1.000096459334209]"[latinmodern-math.otf]/OT
 t=math;language=dflt;"
 
 LaTeX Font Info:    Encoding `OMS' has changed to `TU' for symbol font
-(Font)              `symbols' in the math version `normal' on input line 235.
+(Font)              `symbols' in the math version `normal' on input line 234.
 LaTeX Font Info:    Overwriting symbol font `symbols' in version `normal'
-(Font)                  OMS/lmsy/m/n --> TU/latinmodern-math.otf(2)/m/n on inpu
-t line 235.
+(Font)                  OMS/cmsy/m/n --> TU/latinmodern-math.otf(2)/m/n on inpu
+t line 234.
 LaTeX Font Info:    Encoding `OMS' has changed to `TU' for symbol font
-(Font)              `symbols' in the math version `bold' on input line 235.
+(Font)              `symbols' in the math version `bold' on input line 234.
 LaTeX Font Info:    Overwriting symbol font `symbols' in version `bold'
-(Font)                  OMS/lmsy/b/n --> TU/latinmodern-math.otf(2)/b/n on inpu
-t line 235.
+(Font)                  OMS/cmsy/b/n --> TU/latinmodern-math.otf(2)/b/n on inpu
+t line 234.
 
 Package fontspec Info: 
 (fontspec)             latinmodern-math scale = 0.9999964596882403.
@@ -1418,16 +1383,16 @@ pt=math;language=dflt;"
 
 LaTeX Font Info:    Encoding `OMX' has changed to `TU' for symbol font
 (Font)              `largesymbols' in the math version `normal' on input line 2
-35.
+34.
 LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `normal'
-(Font)                  OMX/lmex/m/n --> TU/latinmodern-math.otf(3)/m/n on inpu
-t line 235.
+(Font)                  OMX/cmex/m/n --> TU/latinmodern-math.otf(3)/m/n on inpu
+t line 234.
 LaTeX Font Info:    Encoding `OMX' has changed to `TU' for symbol font
-(Font)              `largesymbols' in the math version `bold' on input line 235
+(Font)              `largesymbols' in the math version `bold' on input line 234
 .
 LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
-(Font)                  OMX/lmex/m/n --> TU/latinmodern-math.otf(3)/b/n on inpu
-t line 235.
+(Font)                  OMX/cmex/m/n --> TU/latinmodern-math.otf(3)/b/n on inpu
+t line 234.
 
 
 Package unicode-math Warning: Using \overbracket and \underbracket from
@@ -1447,13 +1412,13 @@ Package unicode-math Warning: I'm going to overwrite the following commands
 (unicode-math)                colon-like commands, using them will lead to
 (unicode-math)                inconsistencies.
 
-LaTeX Info: Redefining \microtypecontext on input line 235.
-Package microtype Info: Applying patch `item' on input line 235.
-Package microtype Info: Applying patch `toc' on input line 235.
-Package microtype Info: Applying patch `eqnum' on input line 235.
-Package microtype Info: Applying patch `footnote' on input line 235.
-Package microtype Info: Applying patch `verbatim' on input line 235.
-LaTeX Info: Redefining \microtypesetup on input line 235.
+LaTeX Info: Redefining \microtypecontext on input line 234.
+Package microtype Info: Applying patch `item' on input line 234.
+Package microtype Info: Applying patch `toc' on input line 234.
+Package microtype Info: Applying patch `eqnum' on input line 234.
+Package microtype Info: Applying patch `footnote' on input line 234.
+Package microtype Info: Applying patch `verbatim' on input line 234.
+LaTeX Info: Redefining \microtypesetup on input line 234.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using protrusion set `basicmath'.
 Package microtype Info: No adjustment of tracking.
@@ -1469,7 +1434,7 @@ Package footnotehyper Info: Using the \@makefntext{} approach (see doc).
 (footnotehyper)    try sending the author a small illustrative document.
 (footnotehyper)    To turn off this message, add \footnotehyperwarnfalse
 (footnotehyper)    to the preamble.
-Package hyperref Info: Link coloring ON on input line 235.
+Package hyperref Info: Link coloring ON on input line 234.
 
 Package pgfplots notification 'compat/show suggested version=true': document ha
 s been generated with the most recent feature set (\pgfplotsset{compat=1.18}).
@@ -1509,38 +1474,32 @@ s been generated with the most recent feature set (\pgfplotsset{compat=1.18}).
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 12.0pt on input line 238.
+(Font)              scaled to size 12.0pt on input line 237.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 8.0pt on input line 238.
+(Font)              scaled to size 8.0pt on input line 237.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 6.0pt on input line 238.
-LaTeX Font Info:    Trying to load font information for OML+lmm on input line 2
-38.
-(/usr/local/texlive/2025/texmf-dist/tex/latex/lm/omllmm.fd
-File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-)
+(Font)              scaled to size 6.0pt on input line 237.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 12.0011pt on input line 238.
+(Font)              scaled to size 12.0011pt on input line 237.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 8.00073pt on input line 238.
+(Font)              scaled to size 8.00073pt on input line 237.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 6.00055pt on input line 238.
+(Font)              scaled to size 6.00055pt on input line 237.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 11.99872pt on input line 238.
+(Font)              scaled to size 11.99872pt on input line 237.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 7.99915pt on input line 238.
+(Font)              scaled to size 7.99915pt on input line 237.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 5.99936pt on input line 238.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 238
+(Font)              scaled to size 5.99936pt on input line 237.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 237
 .
-
 (/usr/local/texlive/2025/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
 (/usr/local/texlive/2025/texmf-dist/tex/latex/microtype/mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 238
+LaTeX Font Info:    Trying to load font information for U+msb on input line 237
 .
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/amsfonts/umsb.fd
@@ -1550,21 +1509,21 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 )
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 7.0pt on input line 253.
+(Font)              scaled to size 7.0pt on input line 252.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 5.0pt on input line 253.
+(Font)              scaled to size 5.0pt on input line 252.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 10.00092pt on input line 253.
+(Font)              scaled to size 10.00092pt on input line 252.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 7.00064pt on input line 253.
+(Font)              scaled to size 7.00064pt on input line 252.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 5.00046pt on input line 253.
+(Font)              scaled to size 5.00046pt on input line 252.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 9.99893pt on input line 253.
+(Font)              scaled to size 9.99893pt on input line 252.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 6.99925pt on input line 253.
+(Font)              scaled to size 6.99925pt on input line 252.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 4.99947pt on input line 253.
+(Font)              scaled to size 4.99947pt on input line 252.
 
 
 [1
@@ -1635,7 +1594,7 @@ File: ../figures/attack_timeline.pdf Graphic file (type pdf)
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.1196 
+l.1208 
        
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
@@ -1645,48 +1604,50 @@ you left one out. Proceed, with fingers crossed.
 [22]
 
 [23]
+
+[24]
 File: ../figures/attack_surface.pdf Graphic file (type pdf)
 <use ../figures/attack_surface.pdf>
 
 
-[24]
-
 [25]
-Underfull \hbox (badness 10000) in paragraph at lines 1449--1450
+
+[26]
+Underfull \hbox (badness 10000) in paragraph at lines 1475--1476
 []|\TU/lmr/m/n/10 Prioritized objectives where
  []
 
 
-Underfull \hbox (badness 1694) in paragraph at lines 1450--1451
+Underfull \hbox (badness 1694) in paragraph at lines 1476--1477
 []|\TU/lmr/m/n/10 Committed action sequence with
  []
 
 
-Underfull \hbox (badness 3861) in paragraph at lines 1451--1452
+Underfull \hbox (badness 3861) in paragraph at lines 1477--1478
 []|\TU/lmr/m/n/10 Interaction trace (events, times-
  []
 
 
 
-[26]
+[27]
 
 LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 1477.
-
-
-LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 1477.
+(Font)              using `TU/lmr/m/scsl' instead on input line 1503.
 
 
 LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 1477.
+(Font)              using `TU/lmr/m/scsl' instead on input line 1503.
 
 
 LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 1477.
+(Font)              using `TU/lmr/m/scsl' instead on input line 1503.
 
 
-Underfull \hbox (badness 2237) in paragraph at lines 1477--1478
+LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
+(Font)              using `TU/lmr/m/scsl' instead on input line 1503.
+
+
+Underfull \hbox (badness 2237) in paragraph at lines 1503--1504
 []\TU/lmr/bx/n/10 Definition 4.4 \TU/lmr/m/n/10 (Transition Relation)\TU/lmr/bx
 /n/10 . []\TU/lmr/m/it/10 State transitions follow the relation $[][] [] [][]$ 
 where
@@ -1694,14 +1655,14 @@ where
 
 
 
-[27]
-
 [28]
+
+[29]
 File: ../figures/trust_network.pdf Graphic file (type pdf)
 <use ../figures/trust_network.pdf>
 
 
-[29]
+[30]
 File: ../figures/trust_decay.pdf Graphic file (type pdf)
 <use ../figures/trust_decay.pdf>
 File: ../figures/trust_calculus_comprehensive.pdf Graphic file (type pdf)
@@ -1710,31 +1671,31 @@ File: ../figures/trust_calculus_comprehensive.pdf Graphic file (type pdf)
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.1779 
+l.1805 
        
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
 
 
-
-[30]
 
 [31]
 
 [32]
 
 [33]
+
+[34]
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.1968 
+l.1994 
        
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
 
 
 
-[34]
+[35]
 File: ../figures/cif_architecture.pdf Graphic file (type pdf)
 <use ../figures/cif_architecture.pdf>
 File: ../figures/cif_comprehensive.pdf Graphic file (type pdf)
@@ -1747,15 +1708,13 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.2114 \(
+l.2140 \(
          \mathcal{I} \subseteq \text{permitted}\). The detection layer
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
 
-
-[35]
 
 [36]
 
@@ -1766,46 +1725,46 @@ or  <return>  to continue without it.
 [39]
 
 [40]
-Underfull \hbox (badness 10000) in paragraph at lines 2286--2286
+Underfull \hbox (badness 10000) in paragraph at lines 2312--2312
 []|\TU/lmr/m/n/10 Track provenance for all high-
  []
 
 
-Underfull \hbox (badness 2351) in paragraph at lines 2288--2289
+Underfull \hbox (badness 2351) in paragraph at lines 2314--2315
 []|\TU/lmr/m/n/10 Permit recursive delegation without
  []
 
 
-Underfull \hbox (badness 1466) in paragraph at lines 2290--2291
+Underfull \hbox (badness 1466) in paragraph at lines 2316--2317
 []|\TU/lmr/m/n/10 Trust single-agent outputs for high-
  []
 
 
 LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 2306.
+(Font)              using `TU/lmr/m/scsl' instead on input line 2332.
 
 
 LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 2306.
+(Font)              using `TU/lmr/m/scsl' instead on input line 2332.
 
 
 LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 2306.
+(Font)              using `TU/lmr/m/scsl' instead on input line 2332.
 
 
 LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 2315.
+(Font)              using `TU/lmr/m/scsl' instead on input line 2341.
 
 
 LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 2316.
+(Font)              using `TU/lmr/m/scsl' instead on input line 2342.
 
 
 LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 2317.
+(Font)              using `TU/lmr/m/scsl' instead on input line 2343.
 
 
-Underfull \hbox (badness 1715) in paragraph at lines 2331--2332
+Underfull \hbox (badness 1715) in paragraph at lines 2357--2358
 []|\TU/lmr/m/n/10 Pattern matching + semantic
  []
 
@@ -1819,11 +1778,11 @@ File: ../figures/belief_sandbox.pdf Graphic file (type pdf)
 [42]
 
 LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 2408.
+(Font)              using `TU/lmr/m/scsl' instead on input line 2434.
 
 
 LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 2464.
+(Font)              using `TU/lmr/m/scsl' instead on input line 2490.
 
 
 
@@ -1847,15 +1806,15 @@ File: ../figures/defense_composition.pdf Graphic file (type pdf)
 [50]
 
 LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 3128.
+(Font)              using `TU/lmr/m/scsl' instead on input line 3154.
 
 
 LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 3129.
+(Font)              using `TU/lmr/m/scsl' instead on input line 3155.
 
 
 LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 3130.
+(Font)              using `TU/lmr/m/scsl' instead on input line 3156.
 
 
 
@@ -1883,7 +1842,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.3757 \end{quote}
+l.3783 \end{quote}
                   
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -1891,7 +1850,7 @@ If that doesn't work, type  X <return>  to quit.
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.3757 \end{quote}
+l.3783 \end{quote}
                   
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
@@ -1899,32 +1858,38 @@ you left one out. Proceed, with fingers crossed.
 
 
 [60]
+Underfull \hbox (badness 2495) in paragraph at lines 3831--3835
+[]\TU/lmr/m/n/10 These results confirm that the abstract properties proven here
+—boundedness, composition, and
+ []
+
+
 
 [61]
-Underfull \hbox (badness 2376) in paragraph at lines 3892--3893
+Underfull \hbox (badness 2376) in paragraph at lines 3955--3956
 []|$[][]$ \TU/lmr/m/n/10 attacks succeed; systemic
  []
 
 
 
 [62]
-Underfull \hbox (badness 1701) in paragraph at lines 4010--4011
+
+[63]
+Underfull \hbox (badness 1701) in paragraph at lines 4073--4074
 []|\TU/lmr/m/n/10 No inter-agent trust re-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 4011--4012
+Underfull \hbox (badness 10000) in paragraph at lines 4074--4075
 []|\TU/lmr/m/n/10 Limited multiagent-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 4012--4013
+Underfull \hbox (badness 10000) in paragraph at lines 4075--4076
 []|\TU/lmr/m/n/10 Process-focused, not
  []
 
 
-
-[63]
 
 [64]
 
@@ -1963,11 +1928,11 @@ Underfull \hbox (badness 10000) in paragraph at lines 4012--4013
 [81]
 
 Package natbib Warning: Citation `fernández-marín2006evolution' on page 82 unde
-fined on input line 5472.
+fined on input line 5540.
 
 
 Package natbib Warning: Citation `grüter2008dance' on page 82 undefined on inpu
-t line 5508.
+t line 5576.
 
 
 
@@ -1977,13 +1942,13 @@ t line 5508.
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.5600 
+l.5668 
        
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
 
 
-Overfull \hbox (20.93169pt too wide) in paragraph at lines 5596--5600
+Overfull \hbox (20.93169pt too wide) in paragraph at lines 5664--5668
 \TU/lmr/m/n/10 tion $[][][][][][][][][][][][][][][][][] [][][][][][][][][][][][
 ][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 [][][][][][][][][][][][][][][][][][][][][][][][][][][][][]$ 
@@ -2009,7 +1974,7 @@ Overfull \hbox (20.93169pt too wide) in paragraph at lines 5596--5600
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.6379 \(\alpha, \beta, \gamma) &
+l.6447 \(\alpha, \beta, \gamma) &
                                   Trust component weights
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
@@ -2017,7 +1982,7 @@ you left one out. Proceed, with fingers crossed.
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.6389 \(\eta) &
+l.6457 \(\eta) &
                  Learning rate (reputation update) & Trust configuration \\
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
@@ -2025,7 +1990,7 @@ you left one out. Proceed, with fingers crossed.
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.6429 ... & Provenance chain for belief \(\phi) &
+l.6497 ... & Provenance chain for belief \(\phi) &
                                                   
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
@@ -2033,7 +1998,7 @@ you left one out. Proceed, with fingers crossed.
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.6443 \(\kappa) &
+l.6511 \(\kappa) &
                    Corroboration threshold & \cref{sec:belief-update-rules} \\
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
@@ -2042,7 +2007,7 @@ you left one out. Proceed, with fingers crossed.
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.6474 \(\lambda) &
+l.6542 \(\lambda) &
                     Max delta weight in drift scoring &
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
@@ -2050,7 +2015,7 @@ you left one out. Proceed, with fingers crossed.
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.6482 ...rue Positive Rate at threshold \(\tau) &
+l.6550 ...rue Positive Rate at threshold \(\tau) &
                                                   
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
@@ -2058,7 +2023,7 @@ you left one out. Proceed, with fingers crossed.
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.6484 ...lse Positive Rate at threshold \(\tau) &
+l.6552 ...lse Positive Rate at threshold \(\tau) &
                                                   
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
@@ -2066,7 +2031,7 @@ you left one out. Proceed, with fingers crossed.
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.6486 ...lse Negative Rate at threshold \(\tau) &
+l.6554 ...lse Negative Rate at threshold \(\tau) &
                                                   
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
@@ -2074,7 +2039,7 @@ you left one out. Proceed, with fingers crossed.
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.6491 ...) & Provenance tags for belief \(\phi) &
+l.6559 ...) & Provenance tags for belief \(\phi) &
                                                   
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
@@ -2083,7 +2048,7 @@ you left one out. Proceed, with fingers crossed.
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.6639 \(\lambda) &
+l.6707 \(\lambda) &
                     Temporal decay constant (colonial trust) &
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
@@ -2091,7 +2056,7 @@ you left one out. Proceed, with fingers crossed.
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.6641 \(Q_\alpha) &
+l.6709 \(Q_\alpha) &
                      Cognitive quorum function for action \(\alpha) &
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
@@ -2099,7 +2064,7 @@ you left one out. Proceed, with fingers crossed.
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.6641 ...e quorum function for action \(\alpha) &
+l.6709 ...e quorum function for action \(\alpha) &
                                                   
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
@@ -2107,7 +2072,7 @@ you left one out. Proceed, with fingers crossed.
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.6673 \(\tau) &
+l.6741 \(\tau) &
                  Generic threshold parameter & Throughout \\
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
@@ -2117,13 +2082,13 @@ you left one out. Proceed, with fingers crossed.
 [95]
 
 [96]
-Overfull \hbox (3.63899pt too wide) in paragraph at lines 6746--6748
+Overfull \hbox (3.63899pt too wide) in paragraph at lines 6814--6816
 []\TU/lmr/m/n/10 Liu, Y., et al. (2023). Prompt Injection Attack Against LLM-In
 tegrated Applications. \TU/lmr/m/it/10 arXiv:2306.05499\TU/lmr/m/n/10 . 
  []
 
 
-Underfull \hbox (badness 1533) in paragraph at lines 6759--6761
+Underfull \hbox (badness 1533) in paragraph at lines 6827--6829
 []\TU/lmr/m/n/10 Askell, A., et al. (2021). A General Language Assistant as a L
 aboratory for Alignment.
  []
@@ -2136,25 +2101,27 @@ aboratory for Alignment.
 
 [99]
 
-[100])
+[100]
+
+[101])
 
 Package natbib Warning: There were undefined citations.
 
 
 
-[101] (./_combined_manuscript.aux)
+[102] (./_combined_manuscript.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 47248 strings out of 473832
- 1100711 string characters out of 5729482
- 1806813 words of memory out of 5000000
- 69568 multiletter control sequences out of 15000+600000
- 565408 words of font info for 104 fonts, out of 8000000 for 9000
+ 47217 strings out of 473832
+ 1100116 string characters out of 5729482
+ 1807106 words of memory out of 5000000
+ 69546 multiletter control sequences out of 15000+600000
+ 564336 words of font info for 101 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 90i,14n,114p,1017b,615s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 90i,14n,114p,1017b,616s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on _combined_manuscript.pdf (101 pages).
+Output written on _combined_manuscript.pdf (102 pages).

@@ -112,6 +112,14 @@
 \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{#1}}
 \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
 \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\usepackage{longtable,booktabs,array}
+\newcounter{none} % for unnumbered tables
+\usepackage{calc} % for calculating minipage widths
+\usepackage{caption}
+% Make caption package work with longtable
+\makeatletter
+\def\fnum@table{\tablename~\thetable}
+\makeatother
 \setlength{\emergencystretch}{3em} % prevent overfull lines
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
@@ -127,17 +135,15 @@
 
 \begin{document}
 
-\begin{frame}
-\newpage
-\end{frame}
-
 \begin{frame}[fragile]{Appendix: Model Checking Tool Configurations}
 \protect\phantomsection\label{sec:model-checking-tools}
 This supplementary section provides executable configurations for formal
 verification tools referenced in Section 7 of Part 1 (Theoretical
 Foundations). These configurations implement the state space
 definitions, temporal properties, and safety invariants formally
-specified in Part 1.
+specified in Part 1. Readers should consult Part 1, Section 7 for the
+underlying theory; the configurations below serve as practical reference
+implementations.
 
 \begin{quote}
 \textbf{Cross-Reference:} For theoretical foundations including state
@@ -151,6 +157,20 @@ Foundations, Section 7.
 NuSMV is a symbolic model checker supporting CTL and LTL specifications.
 The following configuration models the CIF trust dynamics and belief
 integrity properties.
+
+\begin{quote}
+\textbf{Executable Verification}: These configurations can be generated
+and verified (if tools are installed) using the provided script:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{python3}\NormalTok{ scripts/verify\_formal\_specs.py}
+\end{Highlighting}
+\end{Shaded}
+
+This script generates the \texttt{.smv}, \texttt{.pml}, and
+\texttt{.tla} files to \texttt{output/formal/}.
+\end{quote}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -311,29 +331,70 @@ CIF properties.
 \end{Shaded}
 \end{block}
 
+\begin{block}{Tool Selection Guide}
+\protect\phantomsection\label{sec:tool-selection}
+\textbf{Table: Model checking tool selection by verification objective.}
+\{\#tab:tool-selection\}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Objective
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Recommended Tool
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Rationale
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+Trust boundedness & NuSMV (CTL) & AG quantification natural for
+invariant properties \\
+Consensus termination & SPIN (LTL) & Liveness properties
+(\(\square \Diamond\)) well-suited to Promela \\
+Full state space exploration & TLA+ (TLC) & Rich specification language
+for complex concurrent invariants \\
+Rapid prototyping & SPIN & Fastest compilation and verification cycle \\
+Production integration & NuSMV & Mature toolchain with counterexample
+visualization \\
+\bottomrule\noalign{}
+\end{longtable}
+}
+
+All three tools verify the same four core properties (belief integrity,
+trust boundedness, no deadlock, eventual detection) but differ in
+expressiveness and verification efficiency. For deployments with
+\$\textgreater\$8 agents, symbolic model checking (NuSMV) is preferred
+over explicit state enumeration (SPIN) due to state space explosion.
+\end{block}
+
 \begin{block}{Verification Parameters}
 \protect\phantomsection\label{sec:verification-params}
 The following parameters configure model checking execution. Values are
 chosen to balance verification completeness against computational
 feasibility.
 
-\begin{table}[htbp]
-\centering
-\caption{Model checking configuration parameters.}
-\label{tab:verification-config}
-\begin{tabular}{@{}lll@{}}
-\toprule
+\textbf{Table: Model checking configuration parameters.}
+\{\#tab:verification-config\}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}lll@{}}
+\toprule\noalign{}
 Parameter & Value & Rationale \\
-\midrule
-$N$ (agents) & 5--10 & Representative of production \\
-$F$ (Byzantine) & $\lfloor (N-1)/3 \rfloor$ & Maximum tolerable \\
-$|\Phi|$ (propositions) & 100 & Typical belief set \\
-$d$ (provenance depth) & 5 & Typical delegation depth \\
-State bound & $10^8$ & Memory limit \\
+\midrule\noalign{}
+\endhead
+\(N\) (agents) & 5--10 & Representative of production \\
+\(F\) (Byzantine) & \(\lfloor (N-1)/3 \rfloor\) & Maximum tolerable \\
+\(|\Phi|\) (propositions) & 100 & Typical belief set \\
+\(d\) (provenance depth) & 5 & Typical delegation depth \\
+State bound & \(10^8\) & Memory limit \\
 Time limit & 24 hours & Verification budget \\
-\bottomrule
-\end{tabular}
-\end{table}
+\bottomrule\noalign{}
+\end{longtable}
+}
 \end{block}
 \end{frame}
 

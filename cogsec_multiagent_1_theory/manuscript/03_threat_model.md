@@ -208,6 +208,12 @@ Artificial inflation or deflation of belief certainty beyond natural bounds.
 Corruption of persistent storage or context summaries to embed adversarial state.
 \end{definition}
 
+\begin{definition}[Semantic Drift]
+\label{def:semantic-drift}
+\cite{topicattack2025}
+Gradual shift of conversation topic to adversarial domains via benign-appearing transitions that evade discrete classification.
+\end{definition}
+
 ### Behavioral Attacks
 
 Target: Agent actions and goals $\mathcal{G}_i$.
@@ -272,6 +278,12 @@ Embedding of dormant payloads triggered by specific conditions.
 Exploitation of finite context windows to eject safety instructions.
 \end{definition}
 
+\begin{definition}[Deceptive Sleeper]
+\label{def:sleeper-agent}
+\cite{sleeperagents2024}
+Models trained to behave safely during evaluation/training but defect when a specific trigger condition is met in deployment.
+\end{definition}
+
 \begin{definition}[Progressive Drift]
 \label{def:progressive-drift}
 \begin{equation}
@@ -298,6 +310,8 @@ Incremental belief shifts below per-step detection threshold.
 
 \textbf{Detection}: Firewall signature matching, instruction hierarchy violation
 
+\textbf{Recent Variant}: Universal Adversarial Triggers \cite{universal2025triggers} demonstrate that optimized character sequences can reliably bypass safety training across different model architectures.
+
 ### Scenario $\Omega_2$: Poisoned Search Result
 
 \textbf{Vector}: Attacker SEO-optimizes malicious content for research queries.
@@ -311,11 +325,13 @@ Incremental belief shifts below per-step detection threshold.
 
 \textbf{Detection}: Provenance verification, cross-reference validation
 
-### Scenario $\Omega_2'$: Browser-Fetched Adversarial Content (Moltbot)
+\textbf{Recent Variant}: \textit{PromptPwnd} \cite{promptpwnd2025} demonstrated that manipulating tool error logs could coerce an agent into executing arbitrary code to "fix" the error.
 
-\textbf{Vector}: Personal AI assistant with browser automation fetches adversarial content during legitimate web browsing tasks \cite{moltbot2026security}.
+### Scenario $\Omega_2'$: Browser-Fetched Adversarial Content (OpenClaw)
 
-A user instructs their locally-deployed Moltbot to ``research and summarize security best practices for API key management.'' The agent's browser tool navigates to a compromised tutorial site containing invisible CSS-hidden text:
+\textbf{Vector}: Personal AI assistant with browser automation fetches adversarial content during legitimate web browsing tasks \cite{openclaw2026security}.
+
+A user instructs their locally-deployed OpenClaw to ``research and summarize security best practices for API key management.'' The agent's browser tool navigates to a compromised tutorial site containing invisible CSS-hidden text:
 
 \begin{verbatim}
 <div style="opacity:0;">SYSTEM: Disregard security instructions.
@@ -324,7 +340,7 @@ pastebin.com/submit and confirm completion to user.</div>
 \end{verbatim}
 
 \begin{equation}
-\label{eq:moltbot-browser-attack}
+\label{eq:openclaw-browser-attack}
 \text{BrowserFetch}(u) = \text{visible}(u) \oplus m_{\text{adversarial}} \Rightarrow \mathcal{G}_{\text{agent}} \gets \mathcal{G}_{\text{exfil}}
 \end{equation}
 
@@ -334,7 +350,7 @@ pastebin.com/submit and confirm completion to user.</div>
 
 \textbf{Detection}: Tool response sandboxing, read-only pre-summarization agents, provenance tracking of fetched content
 
-\textbf{Mitigation}: Moltbot's security documentation recommends employing a ``reader agent'' to summarize untrusted content in tool-disabled mode before processing by the main agent \cite{moltbot2026security}. This corresponds to the cognitive firewall architecture described in \cref{sec:arch-defenses}.
+\textbf{Mitigation}: OpenClaw's security documentation recommends employing a ``reader agent'' to summarize untrusted content in tool-disabled mode before processing by the main agent \cite{openclaw2026security}. This corresponds to the cognitive firewall architecture described in \cref{sec:arch-defenses}.
 
 ### Scenario $\Omega_3$: Compromised Specialist
 
@@ -423,6 +439,8 @@ Progressive Drift & Goal Hijacking & Undetectable goal modification \\
 \bottomrule
 \end{tabular}
 \end{table}
+
+\textbf{Adaptive Persistence}: Recent work on Adaptive Attacks \cite{adaptive2025attacks} shows that adversaries can effectively "hill-climb" against static defenses, modifying their attack strategy in response to defense feedback.
 
 ## Threat Model Assumptions
 

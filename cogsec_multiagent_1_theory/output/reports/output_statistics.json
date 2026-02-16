@@ -3,12 +3,12 @@
     "pdf": {
       "exists": true,
       "file_count": 9,
-      "size_mb": "1.68",
-      "total_size_bytes": 1766724,
+      "size_mb": "1.70",
+      "total_size_bytes": 1782468,
       "largest_files": [
         {
           "name": "cogsec_multiagent_1_theory_combined.pdf",
-          "size_mb": "0.89",
+          "size_mb": "0.90",
           "path": "pdf/cogsec_multiagent_1_theory_combined.pdf"
         },
         {
@@ -38,7 +38,7 @@
       "exists": true,
       "file_count": 16,
       "size_mb": "0.62",
-      "total_size_bytes": 645435,
+      "total_size_bytes": 653185,
       "largest_files": [
         {
           "name": "_combined_manuscript.md",
@@ -47,7 +47,7 @@
         },
         {
           "name": "index.html",
-          "size_mb": "0.19",
+          "size_mb": "0.20",
           "path": "web/index.html"
         },
         {
@@ -64,8 +64,8 @@
     "slides": {
       "exists": true,
       "file_count": 100,
-      "size_mb": "2.54",
-      "total_size_bytes": 2666946,
+      "size_mb": "2.55",
+      "total_size_bytes": 2676759,
       "largest_files": [
         {
           "name": "04_formal_framework_slides.pdf",
@@ -97,18 +97,18 @@
     "figures": {
       "exists": true,
       "file_count": 36,
-      "size_mb": "4.01",
-      "total_size_bytes": 4207791,
+      "size_mb": "4.30",
+      "total_size_bytes": 4505252,
       "largest_files": [
+        {
+          "name": "trust_decay.png",
+          "size_mb": "0.48",
+          "path": "figures/trust_decay.png"
+        },
         {
           "name": "trust_calculus_comprehensive.png",
           "size_mb": "0.47",
           "path": "figures/trust_calculus_comprehensive.png"
-        },
-        {
-          "name": "trust_decay.png",
-          "size_mb": "0.33",
-          "path": "figures/trust_decay.png"
         },
         {
           "name": "cif_architecture.png",
@@ -135,7 +135,7 @@
       "exists": true,
       "file_count": 4,
       "size_mb": "0.01",
-      "total_size_bytes": 6373,
+      "total_size_bytes": 6424,
       "largest_files": [
         {
           "name": "validation_report.json",
@@ -192,25 +192,25 @@
     }
   },
   "total_files": 166,
-  "total_size_mb": 8.870865821838379,
+  "total_size_mb": 9.186359405517578,
   "largest_files": [
     {
       "name": "cogsec_multiagent_1_theory_combined.pdf",
-      "size_mb": "0.89",
+      "size_mb": "0.90",
       "category": "pdf",
       "path": "pdf/cogsec_multiagent_1_theory_combined.pdf"
+    },
+    {
+      "name": "trust_decay.png",
+      "size_mb": "0.48",
+      "category": "figures",
+      "path": "figures/trust_decay.png"
     },
     {
       "name": "trust_calculus_comprehensive.png",
       "size_mb": "0.47",
       "category": "figures",
       "path": "figures/trust_calculus_comprehensive.png"
-    },
-    {
-      "name": "trust_decay.png",
-      "size_mb": "0.33",
-      "category": "figures",
-      "path": "figures/trust_decay.png"
     },
     {
       "name": "04_formal_framework_slides.pdf",
@@ -243,16 +243,16 @@
       "path": "web/_combined_manuscript.md"
     },
     {
+      "name": "index.html",
+      "size_mb": "0.20",
+      "category": "web",
+      "path": "web/index.html"
+    },
+    {
       "name": "03_threat_model_slides.pdf",
       "size_mb": "0.20",
       "category": "slides",
       "path": "slides/03_threat_model_slides.pdf"
-    },
-    {
-      "name": "index.html",
-      "size_mb": "0.19",
-      "category": "web",
-      "path": "web/index.html"
     }
   ],
   "missing_expected_files": [
@@ -277,12 +277,12 @@
     ".csv": 1
   },
   "sizes_by_category": {
-    "pdf": 1.6848793029785156,
-    "web": 0.615534782409668,
-    "slides": 2.543397903442383,
-    "figures": 4.012862205505371,
+    "pdf": 1.6998939514160156,
+    "web": 0.6229257583618164,
+    "slides": 2.5527563095092773,
+    "figures": 4.296543121337891,
     "data": 0.0,
-    "reports": 0.006077766418457031,
+    "reports": 0.00612640380859375,
     "simulations": 0.0,
     "llm": 0.0,
     "logs": 0.008113861083984375

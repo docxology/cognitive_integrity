@@ -9,12 +9,14 @@ Part 3 of the **Cognitive Security for Multiagent Operators** series. This proje
 ## Content Focus
 
 ### Human-Actionable Guidance
+
 - **Operator Posture**: Assessment of cognitive security readiness
 - **Deployment Checklists**: Step-by-step security configuration
 - **Risk Assessment**: Threat modeling for cognitive attack surfaces
 - **Common Pitfalls**: Anti-patterns and mitigations
 
 ### Agent-Readable Guidelines
+
 - **Machine-Readable Checklists**: Structured guidance for AI agents
 - **Security Invariants**: Rules for agent self-monitoring
 - **Trust Boundaries**: Guidelines for inter-agent communication
@@ -34,7 +36,17 @@ cogsec_multiagent_3_practical/
 │   ├── 07_common_pitfalls.md
 │   ├── 08_conclusion.md
 │   └── S01_notation_reference.md
-└── output/                     # Generated PDF
+├── src/                        # Implementation modules
+│   ├── posture.py              # Five Pillars assessment + maturity scoring
+│   ├── checklists.py           # Pre-deployment, operational, incident response
+│   ├── agent_guidelines.py     # Security invariants + monitoring
+│   ├── deployment.py           # Risk profiles, architecture guidance
+│   ├── risk_assessment.py      # Attack surface mapping + threat modeling
+│   ├── pitfalls.py             # Anti-pattern catalog + remediation
+│   └── visualization.py       # Figure generation
+├── scripts/                    # Figure generation orchestrators
+├── tests/                      # Test suite (789 tests)
+└── output/                     # Generated PDF and figures
 ```
 
 ## Target Audience
@@ -47,7 +59,8 @@ cogsec_multiagent_3_practical/
 ## Notation Reference
 
 Minimal notation used; full definitions in:
-- `../cogsec_multiagent_1_theory/manuscript/S06_notation.md`
+
+- `../cogsec_multiagent_1_theory/manuscript/S03_notation.md`
 
 ## Usage
 
