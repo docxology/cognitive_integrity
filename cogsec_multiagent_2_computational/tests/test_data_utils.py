@@ -204,11 +204,11 @@ class TestDataGenerator:
         gen = DataGenerator(seed=42)
         data = gen.generate_detection_data()
         assert isinstance(data, DetectionData)
-        assert len(data.architectures) == 6
+        assert len(data.architectures) == 4
         assert len(data.categories) == 4
-        assert len(data.means) == 6
+        assert len(data.means) == 4
         assert len(data.means[0]) == 4
-        assert len(data.cis) == 6
+        assert len(data.cis) == 4
         assert data.seed == 42
 
     def test_detection_data_values_in_range(self):
@@ -920,15 +920,13 @@ class TestArchitectureType:
     """Tests for the ArchitectureType enum."""
 
     def test_all_architectures(self):
-        assert len(ArchitectureType) == 6
+        assert len(ArchitectureType) == 4
 
     def test_values(self):
         assert ArchitectureType.CLAUDE_CODE.value == "claude_code"
         assert ArchitectureType.AUTOGPT.value == "autogpt"
         assert ArchitectureType.CREWAI.value == "crewai"
         assert ArchitectureType.LANGGRAPH.value == "langgraph"
-        assert ArchitectureType.METAGPT.value == "metagpt"
-        assert ArchitectureType.CAMEL.value == "camel"
 
 
 class TestDefenseResult:
@@ -982,7 +980,7 @@ class TestExperimentConfig:
         assert ec.attack_corpus_size == 950
         assert ec.output_dir == "output"
         assert len(ec.agent_counts) == 10
-        assert len(ec.architectures) == 6
+        assert len(ec.architectures) == 4
 
     def test_custom(self):
         ec = ExperimentConfig(seed=99, n_runs=5)

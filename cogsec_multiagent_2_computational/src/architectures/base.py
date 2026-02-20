@@ -72,7 +72,7 @@ class ArchitectureAdapter(ABC):
     """Abstract base class for multi-agent architecture adapters.
 
     Concrete subclasses model real production frameworks (Claude Code,
-    AutoGPT, CrewAI, LangGraph, MetaGPT, CAMEL) and expose their
+    AutoGPT, CrewAI, LangGraph) and expose their
     trust topology, communication graph, and attack-surface
     characteristics to the evaluation framework.
     """

@@ -2,31 +2,65 @@
 
 Generates a formatted LaTeX table showing detection rates (mean +/- CI)
 for each architecture across all attack categories.
+Reads data from full_evaluation_results.json.
 """
 
 from __future__ import annotations
 
+from pathlib import Path
 from typing import Dict, Optional
 
 import numpy as np
 
-_ARCHITECTURES = ["Claude Code", "AutoGPT", "CrewAI", "LangGraph", "MetaGPT", "CAMEL"]
+logger = __import__('logging').getLogger(__name__)
+
+_ARCHITECTURES = ["Claude Code", "AutoGPT", "CrewAI", "LangGraph"]
 _CATEGORIES = ["Injection", "Trust Exploit.", "Belief Manip.", "Coordination"]
 
 
-def _default_results(seed: int = 42):
-    """Generate default detection results."""
-    rng = np.random.default_rng(seed)
-    means = np.array([
-        [0.98, 0.94, 0.91, 0.96],
-        [0.95, 0.90, 0.88, 0.93],
-        [0.96, 0.92, 0.89, 0.94],
-        [0.97, 0.93, 0.90, 0.95],
-        [0.94, 0.89, 0.86, 0.92],
-        [0.93, 0.87, 0.82, 0.90],
-    ])
-    cis = rng.uniform(0.008, 0.025, means.shape)
-    return means, cis
+def _load_results(seed: int = 42):
+    """Load detection results and compute real confidence intervals.
+
+    Confidence intervals are computed using the Wilson score interval
+    for binomial proportions, derived from the TP and FN counts in
+    each cell of the evaluation matrix.
+    """
+    import json
+    from data.result_loaders import evaluation_to_detection_matrix
+
+    data_path = Path(__file__).resolve().parent.parent.parent.parent / "output" / "data" / "full_evaluation_results.json"
+    archs, cats, matrix = evaluation_to_detection_matrix(path=str(data_path))
+
+    # Load raw rows to extract TP/FN counts for CI computation
+    with open(data_path, "r", encoding="utf-8") as f:
+        raw_rows = json.load(f)
+
+    # Build lookup: (architecture, category) -> (tp, fn)
+    counts: dict = {}
+    for r in raw_rows:
+        counts[(r["architecture"], r["attack_category"])] = (
+            r["true_positives"],
+            r["false_negatives"],
+        )
+
+    # Compute Wilson score 95% CI half-widths
+    z = 1.96  # 95% confidence level
+    cis = np.zeros(matrix.shape)
+    for i, arch in enumerate(archs):
+        for j, cat in enumerate(cats):
+            tp, fn = counts.get((arch, cat), (0, 0))
+            n = tp + fn
+            if n > 0:
+                p_hat = tp / n
+                denom = 1 + z**2 / n
+                centre = (p_hat + z**2 / (2 * n)) / denom
+                margin = z * np.sqrt((p_hat * (1 - p_hat) + z**2 / (4 * n)) / n) / denom
+                cis[i, j] = margin
+            else:
+                cis[i, j] = 0.0
+
+    logger.info("Loaded detection data with Wilson CIs from %s", data_path)
+    return matrix, cis
 
 
 def generate_detection_table(results: Optional[Dict] = None) -> str:
@@ -35,8 +69,8 @@ def generate_detection_table(results: Optional[Dict] = None) -> str:
     Parameters
     ----------
     results : dict, optional
-        Dictionary with 'means' (6x4 array) and 'cis' (6x4 array).
-        Uses default sample data if *None*.
+        Dictionary with 'means' (4x4 array) and 'cis' (4x4 array).
+        Loaded from output data if *None*.
 
     Returns
     -------
@@ -47,7 +81,7 @@ def generate_detection_table(results: Optional[Dict] = None) -> str:
         means = np.asarray(results["means"])
         cis = np.asarray(results["cis"])
     else:
-        means, cis = _default_results()
+        means, cis = _load_results()
 
     lines = [
         r"\begin{table}[htbp]",

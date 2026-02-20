@@ -1,0 +1,79 @@
+{
+  "model": "smollm2:135m-instruct-q4_K_S",
+  "timestamp": "2026-02-20T14:30:21.098631",
+  "source_pdf": "/Users/4d/Documents/GitHub/template/projects/cogsec_multiagent_1_theory/output/pdf/cogsec_multiagent_1_theory_combined.pdf",
+  "reviews_generated": [
+    "translation_zh",
+    "translation_es",
+    "translation_ar"
+  ],
+  "max_input_length": 500000,
+  "manuscript_metrics": {
+    "total_chars": 219857,
+    "total_words": 37475,
+    "total_tokens_est": 54964,
+    "truncated": false,
+    "truncated_chars": 219857
+  },
+  "review_metrics": {
+    "translation_zh": {
+      "input_chars": 219857,
+      "input_words": 37475,
+      "input_tokens_est": 54964,
+      "output_chars": 1453,
+      "output_words": 205,
+      "output_tokens_est": 363,
+      "generation_time_seconds": 2.14
+    },
+    "translation_es": {
+      "input_chars": 219857,
+      "input_words": 37475,
+      "input_tokens_est": 54964,
+      "output_chars": 290,
+      "output_words": 35,
+      "output_tokens_est": 72,
+      "generation_time_seconds": 1.26
+    },
+    "translation_ar": {
+      "input_chars": 219857,
+      "input_words": 37475,
+      "input_tokens_est": 54964,
+      "output_chars": 87617,
+      "output_words": 13354,
+      "output_tokens_est": 21904,
+      "generation_time_seconds": 60.23
+    }
+  },
+  "format_compliance": {
+    "overall_rate": 100.0,
+    "compliant_reviews": 3,
+    "total_reviews": 3,
+    "per_review": {
+      "translation_zh": {
+        "compliant": true,
+        "issues": [],
+        "conversational_phrases": 0
+      },
+      "translation_es": {
+        "compliant": true,
+        "issues": [],
+        "conversational_phrases": 0
+      },
+      "translation_ar": {
+        "compliant": true,
+        "issues": [],
+        "conversational_phrases": 0
+      }
+    }
+  },
+  "total_generation_time_seconds": 63.64,
+  "config": {
+    "temperature_summary": 0.3,
+    "temperature_review": 0.3,
+    "temperature_suggestions": 0.4,
+    "max_tokens": 16384,
+    "max_tokens_source": "default_config",
+    "timeout_seconds": 600.0,
+    "system_prompt": "manuscript_review"
+  }
+}

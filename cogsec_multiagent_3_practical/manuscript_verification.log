@@ -1072,3 +1072,19 @@
 2026-02-03 16:12:46,511 - INFO - Style          : PASS
 2026-02-03 16:12:46,511 - INFO - ----------------------------------------
 2026-02-03 16:12:46,511 - INFO - All checks passed successfully.
+2026-02-18 05:35:00,464 - INFO - Starting verification on /Users/4d/Documents/GitHub/template/projects/cognitive_integrity/cogsec_multiagent_3_practical/manuscript...
+2026-02-18 05:35:00,464 - INFO - Checking file existence...
+2026-02-18 05:35:00,464 - INFO - Verifying citations...
+2026-02-18 05:35:00,465 - INFO - Found 63 bibliography entries.
+2026-02-18 05:35:00,466 - INFO - Verifying definition labels and references...
+2026-02-18 05:35:00,467 - INFO - Verifying images and links...
+2026-02-18 05:35:00,467 - INFO - Checking style guidelines...
+2026-02-18 05:35:00,475 - INFO - ----------------------------------------
+2026-02-18 05:35:00,475 - INFO - Verification Summary:
+2026-02-18 05:35:00,475 - INFO - Files          : PASS
+2026-02-18 05:35:00,475 - INFO - Citations      : PASS
+2026-02-18 05:35:00,475 - INFO - Labels/Refs    : PASS
+2026-02-18 05:35:00,475 - INFO - Images/Links   : PASS
+2026-02-18 05:35:00,475 - INFO - Style          : PASS
+2026-02-18 05:35:00,475 - INFO - ----------------------------------------
+2026-02-18 05:35:00,475 - INFO - All checks passed successfully.

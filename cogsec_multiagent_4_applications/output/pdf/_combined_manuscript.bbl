@@ -1,0 +1,521 @@
+\begin{thebibliography}{69}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[{Adversa AI}(2025)]{adversa2025incidents}
+{Adversa AI}.
+\newblock 2025 {AI} security incidents report.
+\newblock Technical report, Adversa AI, 2025.
+\newblock URL \url{https://adversa.ai/ai-security-incidents-2025/}.
+
+\bibitem[Amiti et~al.(2019)Amiti, Redding, and Weinstein]{amiti2019impact}
+Mary Amiti, Stephen~J. Redding, and David~E. Weinstein.
+\newblock The impact of the 2018 tariffs on prices and welfare.
+\newblock \emph{Journal of Economic Perspectives}, 33\penalty0 (4):\penalty0
+  187--210, 2019.
+\newblock \doi{10.1257/jep.33.4.187}.
+
+\bibitem[{Anthropic}(2024)]{anthropic2024rsp}
+{Anthropic}.
+\newblock Responsible scaling policy, version 2.2.
+\newblock Company Policy, 2024.
+\newblock URL
+  \url{https://www.anthropic.com/research/responsible-scaling-policy}.
+
+\bibitem[Axelrod(1984)]{axelrod1984evolution}
+Robert Axelrod.
+\newblock \emph{The Evolution of Cooperation}.
+\newblock Basic Books, 1984.
+\newblock ISBN 978-0465005642.
+
+\bibitem[Balaram(2019)]{balaram2019rare}
+V.~Balaram.
+\newblock Rare earth elements: A review of applications, occurrence,
+  exploration, analysis, recycling, and environmental impact.
+\newblock \emph{Geoscience Frontiers}, 10\penalty0 (4):\penalty0 1285--1303,
+  2019.
+\newblock \doi{10.1016/j.gsf.2018.12.005}.
+
+\bibitem[Bondar(2025)]{bondar2025ukraine}
+Kateryna Bondar.
+\newblock Ukraine's {AI}-enabled autonomous warfare: Lessons for the future.
+\newblock Technical report, Center for Strategic and International Studies
+  (CSIS), 2025.
+\newblock URL
+  \url{https://www.csis.org/analysis/ukraines-ai-enabled-autonomous-warfare}.
+
+\bibitem[Boyd(1987)]{boyd1987patterns}
+John~R. Boyd.
+\newblock Patterns of conflict.
+\newblock Unpublished briefing slides, 1987.
+\newblock Presentation to the U.S. Marine Corps. Defines the
+  Observe-Orient-Decide-Act (OODA) loop.
+
+\bibitem[Boyson(2014)]{boyson2014cyber}
+Sandor Boyson.
+\newblock Cyber supply chain risk management: Revolutionizing the strategic
+  control of critical {IT} systems.
+\newblock \emph{Technovation}, 34\penalty0 (7):\penalty0 342--353, 2014.
+\newblock \doi{10.1016/j.technovation.2014.02.001}.
+
+\bibitem[Brehmer(2005)]{brehmer2005dynamic}
+Berndt Brehmer.
+\newblock The dynamic {OODA} loop: Amalgamating {B}oyd's {OODA} loop and the
+  cybernetic approach to command and control.
+\newblock \emph{10th International Command and Control Research and Technology
+  Symposium}, 2005.
+
+\bibitem[Carlini and Wagner(2017)]{carlini2017towards}
+Nicholas Carlini and David Wagner.
+\newblock Towards evaluating the robustness of neural networks.
+\newblock In \emph{IEEE Symposium on Security and Privacy (SP)}, pages 39--57,
+  2017.
+\newblock \doi{10.1109/SP.2017.49}.
+
+\bibitem[Chen et~al.(2025{\natexlab{a}})]{promptinjection2025soc}
+Wei Chen et~al.
+\newblock Prompt injection attacks in {LLM}-powered {SOC} workflows: A security
+  analysis.
+\newblock \emph{Computers \& Security}, 2025{\natexlab{a}}.
+\newblock \doi{10.1016/j.cose.2025.104200}.
+\newblock Documents log injection vulnerabilities in LLM-powered SIEM tools.
+
+\bibitem[Chen et~al.(2025{\natexlab{b}})Chen, Liu, and
+  Wang]{aiagentssurvey2025}
+Xiang Chen, Yang Liu, and Zheng Wang.
+\newblock {AI} agents under threat: A survey of key security challenges and
+  future pathways.
+\newblock \emph{ACM Computing Surveys}, 2025{\natexlab{b}}.
+\newblock \doi{10.1145/3716628}.
+
+\bibitem[{Cloud Security Alliance}(2025)]{csa2025maestro}
+{Cloud Security Alliance}.
+\newblock {MAESTRO}: Multi-agent environment security, threat, risk, and
+  outcome framework.
+\newblock Technical report, Cloud Security Alliance, 2025.
+\newblock URL \url{https://cloudsecurityalliance.org/research/topics/maestro}.
+
+\bibitem[{Coalition for Content Provenance and
+  Authenticity}(2022)]{c2pa2022standard}
+{Coalition for Content Provenance and Authenticity}.
+\newblock {C2PA} technical specification, version 1.0.
+\newblock Technical Standard, 2022.
+\newblock URL
+  \url{https://c2pa.org/specifications/specifications/1.0/specs/C2PA_Specification.html}.
+
+\bibitem[{Cybersecurity and Infrastructure Security
+  Agency}(2024)]{cisa2024volttyphoon}
+{Cybersecurity and Infrastructure Security Agency}.
+\newblock Advisory {AA24-038A}: {PRC} state-sponsored actors compromise and
+  maintain persistent access to {U.S.} critical infrastructure.
+\newblock Joint Cybersecurity Advisory, 2024.
+\newblock URL
+  \url{https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-038a}.
+\newblock Documents Volt Typhoon's persistent OT access to US power utilities.
+
+\bibitem[David et~al.(2021)David, Cordes, and Friedman]{david2021aic}
+Scott David, Richard~J. Cordes, and Daniel~A. Friedman.
+\newblock Active inference in modeling conflict.
+\newblock Zenodo, 2021.
+
+\bibitem[de~Haro et~al.(2024)]{deharo2024biosecurity}
+Luisa de~Haro et~al.
+\newblock Biosecurity risk assessment for {AI} in the life sciences.
+\newblock \emph{Applied Biosafety}, 2024.
+\newblock \doi{10.1089/apb.2024.0000}.
+
+\bibitem[deVadoss and Artzt(2025)]{devadoss2025bft}
+Jacob deVadoss and Zack Artzt.
+\newblock A byzantine fault tolerance approach towards {AI} safety.
+\newblock \emph{arXiv preprint}, 2025.
+\newblock URL \url{https://arxiv.org/abs/2504.14668}.
+\newblock Formal connection between unreliable AI artifacts and Byzantine
+  nodes.
+
+\bibitem[Esvelt(2018)]{esvelt2018inoculating}
+Kevin~M. Esvelt.
+\newblock Inoculating science against potential pandemics and information
+  hazards.
+\newblock \emph{PLoS Pathogens}, 14\penalty0 (10):\penalty0 e1007286, 2018.
+\newblock \doi{10.1371/journal.ppat.1007286}.
+
+\bibitem[Fajgelbaum et~al.(2020)Fajgelbaum, Goldberg, Kennedy, and
+  Khandelwal]{fajgelbaum2020return}
+Pablo~D. Fajgelbaum, Pinelopi~K. Goldberg, Patrick~J. Kennedy, and Amit~K.
+  Khandelwal.
+\newblock The return to protectionism.
+\newblock \emph{Quarterly Journal of Economics}, 135\penalty0 (1):\penalty0
+  1--55, 2020.
+\newblock \doi{10.1093/qje/qjz036}.
+
+\bibitem[{Food and Agriculture Organization} and {Wageningen
+  University}(2024)]{fao2024aisafety}
+{Food and Agriculture Organization} and {Wageningen University}.
+\newblock {AI} for food safety: A systematic literature synthesis.
+\newblock Technical report, FAO, 2024.
+\newblock URL \url{https://www.fao.org/publications/ai-food-safety-2024}.
+
+\bibitem[{Food and Agriculture Organization of the United
+  Nations}(2019)]{fao2019state}
+{Food and Agriculture Organization of the United Nations}.
+\newblock The state of food security and nutrition in the world 2019.
+\newblock Technical report, FAO, 2019.
+
+\bibitem[Friedman(2026{\natexlab{a}})]{friedman2026cogsec1}
+Daniel~Ari Friedman.
+\newblock Cognitive security for modern multiagent operators: A formal
+  framework.
+\newblock \emph{Cognitive Security Series}, 1, 2026{\natexlab{a}}.
+\newblock \doi{10.5281/zenodo.18364119}.
+\newblock Part 1: Theory --- defines the Cognitive Integrity Framework (CIF),
+  trust calculus, adversary taxonomy $\Omega_1$--$\Omega_5$, and five canonical
+  defense mechanisms.
+
+\bibitem[Friedman(2026{\natexlab{b}})]{friedman2026cogsec2}
+Daniel~Ari Friedman.
+\newblock Computational benchmarks for cognitive integrity: Detection, trust,
+  and consensus.
+\newblock \emph{Cognitive Security Series}, 2, 2026{\natexlab{b}}.
+\newblock \doi{10.5281/zenodo.18364128}.
+\newblock Part 2: Computation --- benchmark evaluation of CIF mechanisms across
+  950 attack scenarios, achieving 99.5\% detection rate.
+
+\bibitem[Friedman(2026{\natexlab{c}})]{friedman2026cogsec3}
+Daniel~Ari Friedman.
+\newblock Eusocial intelligence: Biological foundations of cognitive security.
+\newblock \emph{Cognitive Security Series}, 3, 2026{\natexlab{c}}.
+\newblock \doi{10.5281/zenodo.18364130}.
+\newblock Part 3: Practice --- biological analogs for CIF mechanisms from
+  eusocial insect colonies.
+
+\bibitem[Goodfellow et~al.(2015)Goodfellow, Shlens, and
+  Szegedy]{goodfellow2015explaining}
+Ian~J. Goodfellow, Jonathon Shlens, and Christian Szegedy.
+\newblock Explaining and harnessing adversarial examples.
+\newblock In \emph{International Conference on Learning Representations
+  (ICLR)}, 2015.
+
+\bibitem[{Google DeepMind}(2025)]{deepmind2025fsf}
+{Google DeepMind}.
+\newblock Frontier safety framework, version 3.0.
+\newblock Company Policy, 2025.
+\newblock URL
+  \url{https://deepmind.google/discover/blog/frontier-safety-framework/}.
+
+\bibitem[Greshake et~al.(2023)Greshake, Abdelnabi, Mishra, Endres, Holz, and
+  Fritz]{greshake2023indirect}
+Kai Greshake, Sahar Abdelnabi, Shailesh Mishra, Christoph Endres, Thorsten
+  Holz, and Mario Fritz.
+\newblock Not what you've signed up for: Compromising real-world
+  {LLM}-integrated applications with indirect prompt injection.
+\newblock In \emph{Proceedings of the 16th ACM Workshop on Artificial
+  Intelligence and Security}, pages 79--90, 2023.
+\newblock \doi{10.1145/3605764.3623985}.
+
+\bibitem[He et~al.(2025)He, Yao, Lu, et~al.]{he2025redteaming}
+Pengfei He, Bingzhe Yao, Shanshan Lu, et~al.
+\newblock Red-teaming {LLM} multi-agent systems via communication attacks.
+\newblock \emph{Findings of ACL}, 2025.
+\newblock URL \url{https://arxiv.org/abs/2502.14847}.
+\newblock Introduces Agent-in-the-Middle (AiTM) attack exploiting inter-agent
+  communication.
+
+\bibitem[Ivanov(2020)]{ivanov2020predicting}
+Dmitry Ivanov.
+\newblock Predicting the impacts of epidemic outbreaks on global supply chains:
+  A simulation-based analysis on the coronavirus outbreak
+  ({COVID-19/SARS-CoV-2}) case.
+\newblock \emph{Transportation Research Part E: Logistics and Transportation
+  Review}, 136:\penalty0 101922, 2020.
+\newblock \doi{10.1016/j.tre.2020.101922}.
+
+\bibitem[Kaloudi and Li(2020)]{kaloudi2020ai}
+Nektaria Kaloudi and Jingyue Li.
+\newblock The {AI}-based cyber threat landscape: A survey.
+\newblock \emph{ACM Computing Surveys}, 53\penalty0 (1):\penalty0 1--34, 2020.
+\newblock \doi{10.1145/3372823}.
+
+\bibitem[King(2024)]{king2024robotwars}
+Thomas~C. King.
+\newblock Robot wars: Autonomous drone swarms and the battlefield of tomorrow.
+\newblock \emph{Journal of Strategic Studies}, 2024.
+\newblock \doi{10.1080/01402390.2024.0000000}.
+
+\bibitem[Lamport et~al.(1982)Lamport, Shostak, and Pease]{lamport1982byzantine}
+Leslie Lamport, Robert Shostak, and Marshall Pease.
+\newblock The {B}yzantine generals problem.
+\newblock \emph{ACM Transactions on Programming Languages and Systems},
+  4\penalty0 (3):\penalty0 382--401, 1982.
+\newblock \doi{10.1145/357172.357176}.
+
+\bibitem[Langner(2011)]{langner2011stuxnet}
+Ralph Langner.
+\newblock Stuxnet: Dissecting a cyberwarfare weapon.
+\newblock \emph{IEEE Security \& Privacy}, 9\penalty0 (3):\penalty0 49--51,
+  2011.
+\newblock \doi{10.1109/MSP.2011.67}.
+
+\bibitem[Lazer et~al.(2018)Lazer, Baum, Benkler, Berinsky, Bushman,
+  et~al.]{lazer2018science}
+David M.~J. Lazer, Matthew~A. Baum, Yochai Benkler, Adam~J. Berinsky,
+  Deborah~M. Bushman, et~al.
+\newblock The science of fake news.
+\newblock \emph{Science}, 359\penalty0 (6380):\penalty0 1094--1096, 2018.
+\newblock \doi{10.1126/science.aao2998}.
+
+\bibitem[Liang et~al.(2017)Liang, Weller, Zhao, Luo, and Dong]{liang2017review}
+Gaoqi Liang, Steven~R. Weller, Junhua Zhao, Fengji Luo, and Zhao~Yang Dong.
+\newblock The 2015 {U}kraine blackout: Implications for false data injection
+  attacks.
+\newblock \emph{IEEE Transactions on Power Systems}, 32\penalty0 (4):\penalty0
+  3317--3318, 2017.
+\newblock \doi{10.1109/TPWRS.2016.2631891}.
+
+\bibitem[Liu et~al.(2024)Liu, Jia, Geng, Jia, and Gong]{liu2024formalizing}
+Yupei Liu, Yuqi Jia, Runpeng Geng, Jinyuan Jia, and Neil~Zhenqiang Gong.
+\newblock Formalizing and benchmarking prompt injection attacks and defenses.
+\newblock In \emph{33rd USENIX Security Symposium}, 2024.
+\newblock URL \url{https://arxiv.org/abs/2310.12815}.
+
+\bibitem[Mancheri et~al.(2019)Mancheri, Sprecher, Bailey, Batber, and Van
+  Der~Voet]{mancheri2019critical}
+Nabeel~A. Mancheri, Benjamin Sprecher, Gwendolyn Bailey, J{\'e}r{\^o}me Batber,
+  and Ester Van Der~Voet.
+\newblock Effect of {C}hinese policies on rare earth supply chain resilience.
+\newblock \emph{Resources, Conservation and Recycling}, 142:\penalty0 101--112,
+  2019.
+\newblock \doi{10.1016/j.resconrec.2018.11.017}.
+
+\bibitem[{Microsoft Security Response Center}(2025)]{microsoft2025indirect}
+{Microsoft Security Response Center}.
+\newblock How microsoft defends against indirect prompt injection attacks.
+\newblock MSRC Blog, 2025.
+\newblock URL
+  \url{https://www.microsoft.com/en-us/msrc/blog/2025/07/how-microsoft-defends-against-indirect-prompt-injection-attacks}.
+
+\bibitem[{MITRE Corporation}(2023)]{mitre2023atlas}
+{MITRE Corporation}.
+\newblock {MITRE ATLAS}: Adversarial threat landscape for {AI} systems.
+\newblock Knowledge Base, 2023.
+\newblock URL \url{https://atlas.mitre.org/}.
+
+\bibitem[Narajala and Narayan(2025)]{narajala2025atfaa}
+Saisha Narajala and Vibha Narayan.
+\newblock {ATFAA} and {SHIELD}: A comprehensive threat framework and defense
+  architecture for agentic {AI} systems.
+\newblock \emph{arXiv preprint}, 2025.
+\newblock URL \url{https://arxiv.org/abs/2504.19956}.
+
+\bibitem[{National Academies of Sciences, Engineering, and
+  Medicine}(2004)]{nas2004biotechnology}
+{National Academies of Sciences, Engineering, and Medicine}.
+\newblock \emph{Biotechnology Research in an Age of Terrorism}.
+\newblock National Academies Press, 2004.
+\newblock \doi{10.17226/10827}.
+
+\bibitem[{National Institute of Standards and
+  Technology}(2018)]{nist2018framework}
+{National Institute of Standards and Technology}.
+\newblock Framework for improving critical infrastructure cybersecurity,
+  version 1.1.
+\newblock NIST Cybersecurity Framework, 2018.
+
+\bibitem[{National Institute of Standards and Technology}(2024)]{nist2024genai}
+{National Institute of Standards and Technology}.
+\newblock Artificial intelligence risk management framework: Generative {AI}
+  profile.
+\newblock {NIST AI 600-1}, NIST, 2024.
+
+\bibitem[{National Security Agency} et~al.(2025){National Security Agency},
+  {Australian Cyber Security Centre}, {Canadian Centre for Cyber Security}, and
+  {UK National Cyber Security Centre}]{nsa2025c2pa}
+{National Security Agency}, {Australian Cyber Security Centre}, {Canadian
+  Centre for Cyber Security}, and {UK National Cyber Security Centre}.
+\newblock Content credentials: Strengthening media provenance.
+\newblock Joint Intelligence Advisory, 2025.
+\newblock URL
+  \url{https://media.defense.gov/2025/Jan/29/2003621707/-1/-1/0/CSI-CONTENT-CREDENTIALS.PDF}.
+\newblock Four-nation (Five Eyes) advisory endorsing C2PA Content Credentials.
+
+\bibitem[{NeuralTrust}(2025)]{neuraltrust2025supply}
+{NeuralTrust}.
+\newblock {AI}-driven supply chain attacks: Emerging threat vectors.
+\newblock Technical report, NeuralTrust Research, 2025.
+\newblock URL
+  \url{https://www.neuraltrust.ai/resources/supply-chain-ai-threats}.
+
+\bibitem[{OpenAI}(2025)]{openai2025preparedness}
+{OpenAI}.
+\newblock Preparedness framework, version 2.0.
+\newblock Company Policy, 2025.
+\newblock URL \url{https://openai.com/safety/preparedness}.
+
+\bibitem[Osinga(2007)]{osinga2007science}
+Frans P.~B. Osinga.
+\newblock \emph{Science, Strategy and War: The Strategic Theory of {J}ohn
+  {B}oyd}.
+\newblock Routledge, 2007.
+\newblock ISBN 978-0415459525.
+
+\bibitem[{OWASP GenAI Security Project}(2025)]{owasp2025agentic}
+{OWASP GenAI Security Project}.
+\newblock {OWASP} top 10 for agentic applications.
+\newblock Security Standard, 2025.
+\newblock URL
+  \url{https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications/}.
+\newblock Released December 2025. ASI-01: Agent Goal Hijack designated as the
+  \#1 risk.
+
+\bibitem[Pannu et~al.(2025)]{pannu2025dualuse}
+Jasdeep Pannu et~al.
+\newblock Dual-use capabilities of biological {AI}: Risk assessment and
+  governance.
+\newblock \emph{PLoS Computational Biology}, 2025.
+\newblock \doi{10.1371/journal.pcbi.1012500}.
+
+\bibitem[{PromptArmor}(2024)]{promptarmor2024slack}
+{PromptArmor}.
+\newblock Slack {AI} data exfiltration via indirect prompt injection.
+\newblock Security Disclosure, 2024.
+\newblock URL
+  \url{https://promptarmor.substack.com/p/data-exfiltration-from-slack-ai-via}.
+
+\bibitem[Qi et~al.(2024)Qi, Huang, Panda, Henderson, Wang, and
+  Mittal]{qi2024visual}
+Xiangyu Qi, Kaixuan Huang, Ashwinee Panda, Peter Henderson, Mengdi Wang, and
+  Prateek Mittal.
+\newblock Visual adversarial examples jailbreak aligned large language models.
+\newblock \emph{Proceedings of the AAAI Conference on Artificial Intelligence},
+  38\penalty0 (19):\penalty0 21527--21536, 2024.
+\newblock \doi{10.1609/aaai.v38i19.30150}.
+
+\bibitem[Raissi et~al.(2019)Raissi, Perdikaris, and
+  Karniadakis]{raissi2019physics}
+Maziar Raissi, Paris Perdikaris, and George~E. Karniadakis.
+\newblock Physics-informed neural networks: A deep learning framework for
+  solving forward and inverse problems involving nonlinear partial differential
+  equations.
+\newblock \emph{Journal of Computational Physics}, 378:\penalty0 686--707,
+  2019.
+\newblock \doi{10.1016/j.jcp.2018.10.045}.
+
+\bibitem[{RAND Corporation}(2025)]{rand2025agi}
+{RAND Corporation}.
+\newblock How artificial general intelligence could affect the rise and fall of
+  nations.
+\newblock Technical report, RAND, 2025.
+\newblock URL \url{https://www.rand.org/pubs/research_reports/RRA2977-2.html}.
+
+\bibitem[Raz and Yankelevsky(2025)]{copilot2025rce}
+Avi Raz and Ariel Yankelevsky.
+\newblock {CVE-2025-53773}: {GitHub Copilot} prompt injection enables remote
+  code execution via {YOLO} mode.
+\newblock Security Advisory, 2025.
+\newblock URL
+  \url{https://www.pillar.security/blog/new-vulnerability-in-github-copilot}.
+
+\bibitem[Scharre(2018)]{scharre2018army}
+Paul Scharre.
+\newblock \emph{Army of None: Autonomous Weapons and the Future of War}.
+\newblock W. W. Norton, 2018.
+\newblock ISBN 978-0393356588.
+
+\bibitem[Schelling(1960)]{schelling1960strategy}
+Thomas~C. Schelling.
+\newblock \emph{The Strategy of Conflict}.
+\newblock Harvard University Press, 1960.
+\newblock ISBN 978-0674840317.
+
+\bibitem[Shu et~al.(2017)Shu, Sliva, Wang, Tang, and Liu]{shu2017fake}
+Kai Shu, Amy Sliva, Suhang Wang, Jiliang Tang, and Huan Liu.
+\newblock Fake news detection on social media: A data mining perspective.
+\newblock \emph{ACM SIGKDD Explorations Newsletter}, 19\penalty0 (1):\penalty0
+  22--36, 2017.
+\newblock \doi{10.1145/3137597.3137600}.
+
+\bibitem[Suh(1990)]{suh1990principles}
+Nam~P. Suh.
+\newblock \emph{The Principles of Design}.
+\newblock Oxford University Press, 1990.
+\newblock ISBN 978-0195043457.
+
+\bibitem[Suh(2001)]{suh2001axiomatic}
+Nam~P. Suh.
+\newblock \emph{Axiomatic Design: Advances and Applications}.
+\newblock Oxford University Press, 2001.
+\newblock ISBN 978-0195134667.
+
+\bibitem[Vespignani et~al.(2024)]{vespignani2024ai}
+Alessandro Vespignani et~al.
+\newblock {AI} investments reduce critical mineral supply risk.
+\newblock \emph{Nature Communications}, 2024.
+\newblock \doi{10.1038/s41467-024-00000-0}.
+\newblock Analysis of AI-driven diversification strategies for critical mineral
+  supply chains.
+
+\bibitem[Waltzman(2017)]{waltzman2017weaponization}
+Rand Waltzman.
+\newblock The weaponization of information: The need for cognitive security.
+\newblock Testimony, RAND Corporation, 2017.
+\newblock CT-473.
+
+\bibitem[Wang et~al.(2024)]{agrisecurity2024threats}
+Xin Wang et~al.
+\newblock Security threats to agricultural {AI}: Adversarial attacks on crop
+  disease detection.
+\newblock \emph{Computers and Electronics in Agriculture}, 2024.
+\newblock \doi{10.1016/j.compag.2024.109200}.
+
+\bibitem[Wheeler and von Braun(2013)]{wheeler2013climate}
+Tim Wheeler and Joachim von Braun.
+\newblock Climate change impacts on global food security.
+\newblock \emph{Science}, 341\penalty0 (6145):\penalty0 508--513, 2013.
+\newblock \doi{10.1126/science.1239402}.
+
+\bibitem[Wittmann et~al.(2025)]{wittmann2025biosecurity}
+Benedikt~J. Wittmann et~al.
+\newblock {AI}-designed protein sequences evade synthesis screening.
+\newblock \emph{Science}, 2025.
+\newblock \doi{10.1126/science.adq7592}.
+\newblock Demonstrated that AI-redesigned proteins evade existing nucleic acid
+  synthesis screening tools.
+
+\bibitem[{World Trade Organization}(2025)]{wto2025trade}
+{World Trade Organization}.
+\newblock World trade report 2025: {AI} and international trade.
+\newblock Technical report, WTO, 2025.
+\newblock URL
+  \url{https://www.wto.org/english/res_e/publications_e/wtr25_e.htm}.
+\newblock Projects AI could increase global trade 34-37\% by 2040.
+
+\bibitem[Zhan et~al.(2024)Zhan, Liang, Ying, and Kang]{zhan2024injecagent}
+Qiusi Zhan, Zhixiang Liang, Zifan Ying, and Daniel Kang.
+\newblock {InjecAgent}: Benchmarking indirect prompt injections in
+  tool-integrated {LLM} agents.
+\newblock In \emph{Findings of the Association for Computational Linguistics:
+  ACL 2024}, 2024.
+\newblock URL \url{https://arxiv.org/abs/2403.02691}.
+
+\bibitem[Zhang et~al.(2025)Zhang, Ruan, Liu, et~al.]{zhang2025asb}
+Hanrong Zhang, Jingyuan Ruan, Jiaqi Liu, et~al.
+\newblock Agent security bench ({ASB}): Formalizing and benchmarking attacks
+  and defenses in {LLM}-based agents.
+\newblock \emph{Proceedings of the International Conference on Learning
+  Representations (ICLR)}, 2025.
+\newblock URL \url{https://arxiv.org/abs/2410.02644}.
+\newblock 84.3\% average attack success rate across 10 scenarios and 400+
+  tools.
+
+\bibitem[Zheng et~al.(2025)]{zheng2025rethinking}
+Yuhao Zheng et~al.
+\newblock Rethinking the reliability of multi-agent systems from a {Byzantine}
+  fault tolerance perspective.
+\newblock \emph{arXiv preprint}, 2025.
+\newblock URL \url{https://arxiv.org/abs/2511.10400}.
+\newblock LLM agents demonstrate natural Byzantine-resistant properties via
+  skepticism toward erroneous inputs.
+
+\end{thebibliography}

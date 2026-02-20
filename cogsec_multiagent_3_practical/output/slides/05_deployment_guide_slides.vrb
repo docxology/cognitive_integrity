@@ -26,7 +26,7 @@ low-risk, human-in-the-loop environments.
   \textbf{Consensus}: Simple Majority.
 \end{itemize}
 
-\textbf{Observed Performance} (Sensitivity Table 5.2):
+\textbf{Observed Performance} (Part 2, Parameter Sensitivity Analysis):
 
 \begin{itemize}
 \tightlist
@@ -44,8 +44,8 @@ low-risk, human-in-the-loop environments.
 \begin{block}{Profile B: The ``Customer Facing'' Baseline (Balanced)}
 \protect\phantomsection\label{profile-b-the-customer-facing-baseline-balanced}
 This profile corresponds to the \textbf{Empirically Optimal
-Configuration} identified in Part 2 (Table 5.6), which balances security
-guarantees with operational overhead.
+Configuration} identified in Part 2 (Architecture-Specific Results),
+which balances security guarantees with operational overhead.
 
 \textbf{Configuration Parameters}:
 
@@ -61,7 +61,7 @@ guarantees with operational overhead.
   \textbf{Consensus}: Variable (Architecture Dependent).
 \end{itemize}
 
-\textbf{Observed Performance} (Sensitivity Table 5.2):
+\textbf{Observed Performance} (Part 2, Parameter Sensitivity Analysis):
 
 \begin{itemize}
 \tightlist
@@ -81,8 +81,8 @@ guarantees with operational overhead.
 Assurance)}
 \protect\phantomsection\label{profile-c-the-autonomous-operator-baseline-high-assurance}
 This profile corresponds to the ``Byzantine-Heavy'' configuration tested
-in Part 2 (Table 2.8). It is required for high-stakes, unsupervised
-environments.
+in Part 2 (Byzantine Consensus Analysis). It is required for
+high-stakes, unsupervised environments.
 
 \textbf{Configuration Parameters}:
 
@@ -98,7 +98,7 @@ environments.
   \textbf{Consensus}: Byzantine Fault Tolerance (\(n \ge 3f+1\)).
 \end{itemize}
 
-\textbf{Observed Performance} (Sensitivity Table 5.3):
+\textbf{Observed Performance} (Part 2, Parameter Sensitivity Analysis):
 
 \begin{itemize}
 \tightlist

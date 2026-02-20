@@ -73,7 +73,7 @@ def main() -> None:
     summary = registry.summary()
     print(f"\nSummary: {summary}")
     total = sum(summary.values())
-    passed = summary.get("PASSED", 0)
+    passed = summary.get("passed", summary.get("PASSED", 0))
     print(f"Result: {passed}/{total} theorems validated")
 
     # Save

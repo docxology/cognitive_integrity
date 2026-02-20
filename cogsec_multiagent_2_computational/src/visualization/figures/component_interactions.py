@@ -2,6 +2,7 @@
 
 Diverging heatmap showing pairwise synergy scores between all 8 CIF
 components.  Positive = synergistic, negative = antagonistic.
+Reads data from ablation_results.json.
 """
 
 from __future__ import annotations
@@ -13,6 +14,8 @@ from matplotlib.figure import Figure
 
 from ..style import COLORS, FONTSIZE, apply_style, save_figure
 
+logger = __import__('logging').getLogger(__name__)
+
 _COMPONENTS = [
     "Firewall", "Detection", "Tripwire", "Trust",
     "Consensus", "Provenance", "Sandbox", "Invariants",
@@ -20,47 +23,22 @@ _COMPONENTS = [
 
 
 def _load_synergy_data() -> np.ndarray:
-    """Load synergy data from ablation results, with fallback."""
-    try:
-        from .data.result_loaders import load_ablation_results
-        data = load_ablation_results()
-        # Build matrix from top_synergies if available
-        if "top_synergies" in data:
-            matrix = np.zeros((8, 8))
-            name_map = {c.lower(): i for i, c in enumerate(_COMPONENTS)}
-            name_map["trust_calculus"] = 3  # alias
-            for s in data["top_synergies"]:
-                a_idx = name_map.get(s["a"], -1)
-                b_idx = name_map.get(s["b"], -1)
-                if a_idx >= 0 and b_idx >= 0:
-                    matrix[a_idx, b_idx] = s["synergy"]
-                    matrix[b_idx, a_idx] = s["synergy"]
-            if np.any(matrix != 0):
-                return matrix
-    except Exception:
-        pass
+    """Load synergy data from ablation_results.json."""
+    from data.result_loaders import load_ablation_results
+    data = load_ablation_results()
+    matrix = np.zeros((8, 8))
+    name_map = {c.lower(): i for i, c in enumerate(_COMPONENTS)}
+    name_map["trust_calculus"] = 3  # alias
 
-    # Synthetic fallback: realistic synergy matrix
-    rng = np.random.default_rng(42)
-    n = len(_COMPONENTS)
-    matrix = rng.normal(0.01, 0.015, size=(n, n))
+    if "top_synergies" in data:
+        for s in data["top_synergies"]:
+            a_idx = name_map.get(s["a"], -1)
+            b_idx = name_map.get(s["b"], -1)
+            if a_idx >= 0 and b_idx >= 0:
+                matrix[a_idx, b_idx] = s["synergy"]
+                matrix[b_idx, a_idx] = s["synergy"]
 
-    # Known strong synergies
-    matrix[0, 1] = matrix[1, 0] = 0.045  # Firewall + Detection
-    matrix[0, 2] = matrix[2, 0] = 0.032  # Firewall + Tripwire
-    matrix[3, 4] = matrix[4, 3] = 0.038  # Trust + Consensus
-    matrix[5, 7] = matrix[7, 5] = 0.028  # Provenance + Invariants
-    matrix[2, 3] = matrix[3, 2] = 0.025  # Tripwire + Trust
-
-    # Mild antagonisms
-    matrix[6, 0] = matrix[0, 6] = -0.008  # Sandbox vs Firewall
-    matrix[4, 6] = matrix[6, 4] = -0.005  # Consensus vs Sandbox
-
-    # Zero diagonal
-    np.fill_diagonal(matrix, 0.0)
-    # Symmetrize
-    matrix = (matrix + matrix.T) / 2
-    np.fill_diagonal(matrix, 0.0)
+    logger.info("Loaded synergy data from ablation_results.json")
     return matrix
 
 

@@ -19,7 +19,7 @@ Active Inference Institute
 
 - **Trust Calculus** with bounded delegation and δ^d decay (Paper 1)
 - **Defense Composition Algebra** for layered security reasoning (Paper 1)
-- **Computational Validation** across 950 attacks and 6 production architectures (Paper 2)
+- **Computational Validation** across 950 attacks and 4 production architectures (Paper 2)
 - **Actionable Deployment Framework** with checklists, guidelines, and risk assessment (Paper 3)
 
 ## Documentation

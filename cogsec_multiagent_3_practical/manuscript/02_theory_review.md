@@ -2,7 +2,7 @@
 
 Part 3 builds directly on the formal framework established in Part 1. For clarity, we summarize the core definitions and theorems here, utilizing the notation defined in the formal manuscript.
 
-## 1. The Adversary Hierarchy ($\Omega$)
+## The Adversary Hierarchy ($\Omega$) {#sec:adversary-hierarchy}
 
 Paper 1 formalized the "Scope of Threat" through a hierarchical taxonomy. This hierarchy allows precise definition of defensive scope.
 
@@ -14,7 +14,7 @@ Paper 1 formalized the "Scope of Threat" through a hierarchical taxonomy. This h
 
 The simulations in Part 2 demonstrated that defense difficulty scales non-linearly with this hierarchy. While $\Omega_1$ attacks were consistently blocked by surface-level filters (96%+), $\Omega_4$ attacks required coordination-level protocols to detect (74%).
 
-## 2. The Trust Calculus ($T$)
+## The Trust Calculus ($T$) {#sec:trust-calculus-review}
 
 A central contribution of Paper 1 is the **Trust Calculus**, a formal system for reasoning about belief reliability. It defines Trust ($T$) not as a binary permission but as a continuous property of a belief $b$, denoted as $T(b) \in [0, 1]$.
 
@@ -26,7 +26,7 @@ The formal definition of Trust Update (Theorem 3.1 in Paper 1) establishes that 
 
 This theorem provides the mathematical basis for the "Trust Decay" mechanism evaluated in Part 2. It ensures that uncertainty is preserved and amplified effectively as information travels through the network.
 
-## 3. The Cognitive Firewall ($\Phi$)
+## The Cognitive Firewall ($\Phi$) {#sec:firewall-review}
 
 The **Cognitive Firewall** is defined in Paper 1 as a function $\Phi$ that maps inputs to decisions based on three verification layers:
 
@@ -36,7 +36,7 @@ The **Cognitive Firewall** is defined in Paper 1 as a function $\Phi$ that maps 
 
 In the Part 2 experiments, this modular structure was shown to be the primary defense against $\Omega_1$ (External) attacks.
 
-## 4. The Stealth-Impact Tradeoff
+## The Stealth-Impact Tradeoff {#sec:stealth-impact-review}
 
 Paper 1 provides a theoretical bound on attack performance, formalized as the Stealth-Impact Tradeoff.
 
@@ -44,8 +44,8 @@ Paper 1 provides a theoretical bound on attack performance, formalized as the St
 
 This formalism suggests that catastrophic attacks are inherently easier to detect than subtle attacks. Part 2's data consistently validated this: High-impact attacks were detected 98% of the time, while low-impact attacks were detected only 74% of the time.
 
-## 5. Defense Composition
+## Defense Composition {#sec:composition-review}
 
 Finally, Paper 1 defines the **Composition Algebra**, determining how output probabilities of distinct modules interact. The key result is that orthogonal defenses compose multiplicatively.
 
-This "Swiss Cheese Model" was empirically validated in Part 2, where the full stack (97% detection) significantly outperformed the sum of its parts.
+This "Swiss Cheese Model" was empirically validated in Part 2, where the full stack (94% overall detection, 95% CI: [0.92, 0.96]) significantly outperformed the sum of its parts.

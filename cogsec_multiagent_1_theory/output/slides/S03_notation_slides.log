@@ -1,12 +1,12 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.3.8)  16 FEB 2026 11:14
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.3.8)  20 FEB 2026 14:27
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
-**/Users/4d/Documents/GitHub/template/projects/cognitive_integrity/cogsec_multi
-agent_1_theory/output/slides/S03_notation_slides.tex
+**/Users/4d/Documents/GitHub/template/projects/cogsec_multiagent_1_theory/outpu
+t/slides/S03_notation_slides.tex
 
-(/Users/4d/Documents/GitHub/template/projects/cognitive_integrity/cogsec_multia
-gent_1_theory/output/slides/S03_notation_slides.tex
+(/Users/4d/Documents/GitHub/template/projects/cogsec_multiagent_1_theory/output
+/slides/S03_notation_slides.tex
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
 (/usr/local/texlive/2025/texmf-dist/tex/latex/beamer/beamer.cls
@@ -954,8 +954,8 @@ File: bkm-dvipdfm.def 2023-12-10 v1.31 bookmark driver for dvipdfm (HO)
 (/usr/local/texlive/2025/texmf-dist/tex/latex/xurl/xurl.sty
 Package: xurl 2022/01/09 v 0.10 modify URL breaks
 )
-(/Users/4d/Documents/GitHub/template/projects/cognitive_integrity/cogsec_multia
-gent_1_theory/output/slides/S03_notation_slides.aux)
+(/Users/4d/Documents/GitHub/template/projects/cogsec_multiagent_1_theory/output
+/slides/S03_notation_slides.aux)
 \openout1 = `S03_notation_slides.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 98.
@@ -1316,8 +1316,8 @@ Package microtype Info: Loading generic protrusion settings for font family
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: End \AtBeginDocument code.
 
-(/Users/4d/Documents/GitHub/template/projects/cognitive_integrity/cogsec_multia
-gent_1_theory/output/slides/S03_notation_slides.nav)
+(/Users/4d/Documents/GitHub/template/projects/cogsec_multiagent_1_theory/output
+/slides/S03_notation_slides.nav)
 
 [1
 
@@ -2709,8 +2709,8 @@ Overfull \vbox (4111.67442pt too high) detected at line 554
 \openout7 = `S03_notation_slides.snm'.
 
 
-(/Users/4d/Documents/GitHub/template/projects/cognitive_integrity/cogsec_multia
-gent_1_theory/output/slides/S03_notation_slides.aux)
+(/Users/4d/Documents/GitHub/template/projects/cogsec_multiagent_1_theory/output
+/slides/S03_notation_slides.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
@@ -2718,13 +2718,12 @@ L3 programming layer <2025-01-18>
  ) 
 Here is how much of TeX's memory you used:
  31024 strings out of 473832
- 626379 string characters out of 5729482
+ 626159 string characters out of 5729482
  1367978 words of memory out of 5000000
  53528 multiletter control sequences out of 15000+600000
  562380 words of font info for 69 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 128i,14n,123p,1122b,819s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 128i,14n,123p,1102b,819s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on /Users/4d/Documents/GitHub/template/projects/cognitive_integr
-ity/cogsec_multiagent_1_theory/output/slides/S03_notation_slides.pdf (2 pages).
-
+Output written on /Users/4d/Documents/GitHub/template/projects/cogsec_multiagen
+t_1_theory/output/slides/S03_notation_slides.pdf (2 pages).

@@ -4,7 +4,7 @@
 
 This section documents configuration parameters for all CIF defense components. For algorithm pseudocode, see \cref{sec:methodology}. Sensitivity analysis quantifying parameter impact is provided in \cref{sec:sensitivity}.
 
-> **Reproducibility**: Default values were determined via `scripts/run_sensitivity_analysis.py` → `output/data/sensitivity_results.json`. Empirically validated ranges are reported across all six architecture types.
+> **Reproducibility**: Default values were determined via `scripts/run_sensitivity_analysis.py` → `output/data/sensitivity_results.json`. Empirically validated ranges are reported across all four architecture types.
 
 ## Core Framework Parameters {#sec:core-params}
 
@@ -41,8 +41,8 @@ This section documents configuration parameters for all CIF defense components. 
 | --- | --- | --- | --- | --- |
 | Quarantine threshold | $\tau_2$ | 0.5 | $(0, 1)$ | Sandbox routing |
 | Injection weight | $w_1$ | 0.4 | $[0, 1]$ | Pattern match weight |
-| Semantic weight | $w_2$ | 0.35 | $[0, 1]$ | Embedding similarity weight |
-| Anomaly weight | $w_3$ | 0.25 | $[0, 1]$ | Isolation forest weight |
+| Semantic weight | $w_2$ | 0.3 | $[0, 1]$ | Embedding similarity weight |
+| Anomaly weight | $w_3$ | 0.3 | $[0, 1]$ | Structural analysis weight |
 
 ## Sandbox Parameters {#sec:sandbox-params}
 
@@ -60,7 +60,7 @@ This section documents configuration parameters for all CIF defense components. 
 | Parameter | Symbol | Default | Range | Description |
 | --- | --- | --- | --- | --- |
 | Critical epsilon | $\epsilon_{critical}$ | 0.05 | $(0, 0.2)$ | Critical alert threshold |
-| Warning epsilon | $\epsilon_{warning}$ | 0.08 | $(0, 0.3)$ | Warning threshold |
+| Medium epsilon | $\epsilon_{medium}$ | 0.08 | $(0, 0.3)$ | Medium threshold |
 | Check interval | $\tau_{tripwire}$ | 30s | $[5, 300]$ | Monitoring frequency |
 | Canary tolerance | $\epsilon_{canary}$ | 0.1 | $(0, 0.5)$ | Canary deviation tolerance |
 
@@ -70,7 +70,7 @@ This section documents configuration parameters for all CIF defense components. 
 
 | Parameter | Symbol | Default | Range | Description |
 | --- | --- | --- | --- | --- |
-| KL threshold | $\theta_{drift}$ | 0.5 | $(0, 2)$ | Alert threshold |
+| KL threshold | $\theta_{drift}$ | 0.3 | $(0, 2)$ | Alert threshold |
 | Max delta weight | $\lambda$ | 0.3 | $[0, 1]$ | Sudden change weight |
 | Smoothing factor | $\alpha_{ema}$ | 0.1 | $(0, 1)$ | EMA decay |
 

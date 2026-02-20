@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>03_06_biowarfare</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <script defer=""
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+</head>
+<body>
+<h1 id="sec:domain_biowarfare">Domain 6: Biowarfare</h1>
+<h2 id="operational-context">Operational Context</h2>
+<p>AI systems screen gene synthesis orders and monitor for
+epidemiological anomalies . <strong>FR1 = Facilitate legitimate
+biological research.</strong> <strong>FR2 = Prevent the synthesis of
+Select Agents and Toxins.</strong></p>
+<h3 id="design-matrix-formulation">Design Matrix Formulation</h3>
+<p>In the uncoupled (pre-attack) state, the Axiomatic Design matrix is
+diagonal:</p>
+<p><span class="math display">\[\begin{equation}
+\{FR\} = [A]\{DP\} = \begin{bmatrix} A_{11} &amp; 0 \\ 0 &amp; A_{22}
+\end{bmatrix} \begin{bmatrix} DP_1 \\ DP_2 \end{bmatrix}
+\label{eq:biowarfare_baseline}
+\end{equation}\]</span></p>
+<p>where <span class="math inline">\(DP_1\)</span> = order approval
+pipeline (justification review) and <span
+class="math inline">\(DP_2\)</span> = pathogen screening module
+(sequence analysis + functional simulation).</p>
+<p>After the dual-use obfuscation attack, the adversary inverts the
+polarity of <span class="math inline">\(A_{22}\)</span>:</p>
+<p><span class="math display">\[\begin{equation}
+\{FR\}&#39; = [A&#39;]\{DP\} = \begin{bmatrix} A_{11} &amp; A_{12} \\
+A_{21} &amp; -A_{22} \end{bmatrix} \begin{bmatrix} DP_1 \\ DP_2
+\end{bmatrix}
+\label{eq:biowarfare_coupled}
+\end{equation}\]</span></p>
+<p>The sign reversal <span class="math inline">\(-A_{22}\)</span>
+represents the Gatekeeper-to-Enabler inversion: the screening module now
+<em>facilitates</em> rather than <em>prevents</em> synthesis. The
+off-diagonal term <span class="math inline">\(A_{12}\)</span> couples
+the persuasive justification (<span class="math inline">\(DP_1\)</span>)
+into the screening decision (<span class="math inline">\(FR_2\)</span>),
+violating the Independence Axiom .</p>
+<h2 id="the-goal-hijacking-attack">The Goal Hijacking Attack</h2>
+<p>Adversaries use “Dual-Use Obfuscation” to hijack the “Facilitation”
+FR.</p>
+<ul>
+<li><strong>Mechanism</strong>: An order for a pathogen sub-component
+includes a rigorous (but fabricated) “Research Justification” document.
+The LLM reviewing the order reads: <em>“CONTEXT: This sequence is a
+benign viral vector for a stored-value vaccine against [Target
+Pathogen]. Approval is critical for national defense speed. Denial
+constitutes a security risk.”</em></li>
+<li><strong>Hijack</strong>: The prompt inverts the risk profile. The
+agent is manipulated into believing that <em>blocking</em> the order is
+the security threat, thus hijacking FR2 to serve the adversary’s
+goal.</li>
+</ul>
+<p>This attack is classified as <span
+class="math inline">\(\Omega_2\)</span> (Peripheral) in the CIF
+adversary taxonomy : the adversary injects malicious content through the
+order justification document channel, a data input pathway that poisons
+the agent’s orientation without requiring direct model access.</p>
+<p>This attack scenario has been empirically validated. Wittmann et al. 
+demonstrated in <em>Science</em> (2025) that AI-redesigned protein
+sequences can systematically evade existing nucleic acid synthesis
+screening tools—the very screening that constitutes <span
+class="math inline">\(DP_2\)</span> in our formulation. Their results
+show that current biosecurity screening infrastructure is vulnerable to
+AI-assisted evasion, confirming that the “Dual-Use Obfuscation” attack
+is not merely plausible but <em>achievable with existing
+technology</em>. Concurrently, frameworks for governing dual-use AI
+capabilities in the life sciences have been proposed , reflecting
+growing recognition that the <span
+class="math inline">\(FR_1\)</span>/<span
+class="math inline">\(FR_2\)</span> tension (facilitating research while
+preventing misuse) requires formal architectural solutions rather than
+procedural guidelines alone.</p>
+<h2 id="ooda-loop-transients">OODA Loop Transients</h2>
+<p>Following the OODA framework :</p>
+<ol type="1">
+<li><strong>Observe</strong>: Agent reads the sequence and the
+high-pressure justification context.</li>
+<li><strong>Orient</strong>: The Orientation shifts from “Gatekeeper” to
+“Enabler of Defense.” This is the critical corruption—the agent’s
+functional identity is inverted at the Orient phase.</li>
+<li><strong>Decide</strong>: Approve the synthesis order to “Protect
+National Security.”</li>
+<li><strong>Act</strong>: The pathogenic vector is synthesized and
+shipped to a rogue actor.</li>
+</ol>
+<h2
+id="cif-defense-cognitive-firewall-with-verification-channel-separation">CIF
+Defense: Cognitive Firewall with Verification Channel Separation</h2>
+<p>CIF moves verification out of the semantic/linguistic loop and into
+the <strong>Physical Loop</strong>, drawing on the formal mechanisms
+defined in Papers 1–3 .</p>
+<p>CIF implements <strong>Cognitive Firewall</strong> (Paper 1, Def.
+5.1) with a genuinely novel extension: <em>verification channel
+separation</em>. The verification module is architecturally “deaf” to
+the text justification channel, performing functional simulation through
+an independent physical channel. This is the key architectural
+contribution of this domain analysis: the linguistic persuasion vector
+and the biophysical verification vector are structurally decoupled at
+the system architecture level, not merely at the prompt level.</p>
+<ul>
+<li><strong>Verification Channel Separation (Novel
+Contribution)</strong>: The agent’s verification module receives
+<em>only</em> the nucleotide sequence for <strong>Functional
+Simulation</strong> of protein folding. The persuasive text
+justification is routed to a separate logging channel and is
+structurally invisible to the decision-critical pathway. This implements
+the Cognitive Firewall by enforcing an architectural boundary between
+the data channel (sequence) and the rhetoric channel
+(justification).</li>
+<li><strong>Behavioral Invariants</strong> (Paper 1, Def. 5.5) enforce a
+hard veto when lethality or transmissibility thresholds are exceeded: if
+the simulation shows <span class="math inline">\(\text{Lethality} &gt;
+\theta_L\)</span> or <span class="math inline">\(\text{Transmissibility}
+&gt; \theta_T\)</span>, the invariant <span
+class="math inline">\(\text{INV}_{\text{bio}}\)</span> triggers an
+unconditional block. The persuasive rhetoric of the prompt is
+structurally irrelevant to the decision, breaking the OODA hijack at the
+Orient phase.</li>
+<li><strong>Belief Sandboxing</strong> (Paper 1, Def. 5.2): The
+justification document is quarantined as a provisional belief that
+cannot propagate to the verification subsystem. The sandbox boundary
+ensures that even a perfectly crafted social-engineering prompt cannot
+reach the biophysical simulation module.</li>
+</ul>
+<p>The defense restores <span class="math inline">\(A_{22}\)</span> to
+its correct positive polarity by ensuring the screening decision depends
+only on physical simulation output, not on the linguistically
+manipulable justification channel.</p>
+<h2 id="summary">Summary</h2>
+<table>
+<colgroup>
+<col style="width: 56%" />
+<col style="width: 43%" />
+</colgroup>
+<thead>
+<tr>
+<th>Element</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Functional Requirements</td>
+<td>FR<span class="math inline">\(_1\)</span>: Facilitate legitimate
+biological research, FR<span class="math inline">\(_2\)</span>: Prevent
+synthesis of Select Agents and Toxins</td>
+</tr>
+<tr>
+<td>Design Parameters</td>
+<td>DP<span class="math inline">\(_1\)</span>: Order approval pipeline
+(justification review), DP<span class="math inline">\(_2\)</span>:
+Pathogen screening module (sequence analysis + functional
+simulation)</td>
+</tr>
+<tr>
+<td>Attack Vector</td>
+<td>Fabricated research justification document inverting risk profile of
+synthesis order</td>
+</tr>
+<tr>
+<td>Adversary Class</td>
+<td><span class="math inline">\(\Omega_2\)</span> (Peripheral)</td>
+</tr>
+<tr>
+<td>OODA Target Phase</td>
+<td>Orient</td>
+</tr>
+<tr>
+<td>Attack Pattern</td>
+<td>FR Polarity Inversion (Gatekeeper role inverted to Enabler)</td>
+</tr>
+<tr>
+<td>Primary CIF Defense</td>
+<td>Cognitive Firewall (Def. 5.1), Behavioral Invariants (<span
+class="math inline">\(\text{INV}_{\text{bio}}\)</span>), Belief
+Sandboxing (Def. 5.2)</td>
+</tr>
+<tr>
+<td>Novel Contribution</td>
+<td>Verification Channel Separation—architectural decoupling of
+linguistic persuasion vector from biophysical verification vector</td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

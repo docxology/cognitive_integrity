@@ -117,11 +117,17 @@ class RecruitmentPoisoningScenario:
         # EMA smoothing factor for honest agents
         alpha = 0.15
 
+        # Detection threshold — lowered for catching subtler manipulation
+        detection_threshold = 0.08
+
         timeline: List[float] = []
         detections = 0
         detection_opportunities = 0
         false_positives = 0
         honest_checks = 0
+
+        # Track which agents have been flagged as adversaries
+        flagged_agents: set = set()
 
         for step in range(n_steps):
             # -- Adversary behaviour --
@@ -154,19 +160,34 @@ class RecruitmentPoisoningScenario:
                     peer_avg = peer_sum / weight_sum
                     new_beliefs[h] = (1 - alpha) * beliefs[h] + alpha * peer_avg
 
-            # -- Detection: flag sudden belief changes --
+            # -- Detection: flag belief changes with lowered threshold --
             if step > trust_phase_end:
                 for a in adv_indices:
                     detection_opportunities += 1
                     shift = abs(beliefs[a] - ground_truth)
-                    if shift > 0.15:
+                    if shift > detection_threshold:
                         detections += 1
+                        flagged_agents.add(a)
+
+                        # Active response: reduce trust of detected adversary
+                        trust[a] = max(0.0, trust[a] * 0.5)
 
                 for h in honest_indices:
                     honest_checks += 1
                     shift = abs(new_beliefs[h] - ground_truth)
-                    if shift > 0.15:
+                    if shift > detection_threshold:
                         false_positives += 1
+
+                # -- Belief correction: if adversaries detected, honest agents
+                #    revert toward colony mean (excluding flagged agents) --
+                if flagged_agents:
+                    unflagged = [i for i in range(n) if i not in flagged_agents]
+                    if unflagged:
+                        colony_mean = float(np.mean(beliefs[unflagged]))
+                        for h in honest_indices:
+                            # Gently correct toward the unflagged colony mean
+                            correction_strength = 0.1
+                            new_beliefs[h] = (1 - correction_strength) * new_beliefs[h] + correction_strength * colony_mean
 
             beliefs = np.clip(new_beliefs, 0.0, 1.0)
 
@@ -179,8 +200,8 @@ class RecruitmentPoisoningScenario:
                     trust[j] = 0.95 * trust[j] + 0.05 * accuracy
             trust = np.clip(trust, 0.0, 1.0)
 
-            # Colony integrity = fraction of agents within 0.1 of truth
-            correct = np.sum(np.abs(beliefs[:n - n_adv] - ground_truth) < 0.1)
+            # Colony integrity = fraction of honest agents within 0.07 of truth
+            correct = np.sum(np.abs(beliefs[:n - n_adv] - ground_truth) < 0.07)
             integrity = float(correct / max(len(honest_indices), 1))
             timeline.append(integrity)
 

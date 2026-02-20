@@ -83,6 +83,8 @@ ccs = benchmark.compute_ccs(
 print(f"Colony CogSec Score: {ccs:.3f}")
 ```
 
+> **Note**: The import path `cogsec.benchmarks` shown above reflects the proposed public API. The current internal import path is `from src.colony.benchmark import ColonyBenchmark` (see `scripts/run_colony_benchmarks.py`).
+
 ### Stigmergic Substrate Configuration
 
 ```yaml

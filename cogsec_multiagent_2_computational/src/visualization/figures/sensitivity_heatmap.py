@@ -2,48 +2,61 @@
 
 Heatmap of detection rate as a function of injection_threshold and
 drift_threshold, highlighting the optimal operating region.
+Reads sweep data from sensitivity_results.json and reconstructs
+the 2D surface from pair-wise parameter interactions.
 """
 
 from __future__ import annotations
+
+import json
+from pathlib import Path
 
 import numpy as np
 from matplotlib.figure import Figure
 
 from ..style import FONTSIZE, create_figure, format_axis, save_figure
 
+logger = __import__('logging').getLogger(__name__)
+
 
 def _load_data():
-    """Try loading sensitivity results from sensitivity_results.json."""
-    try:
-        from .data.result_loaders import load_sensitivity_results
-        data = load_sensitivity_results()
-        if "surface" in data:
-            s = data["surface"]
-            return np.array(s["inj_thresholds"]), np.array(s["drift_thresholds"]), np.array(s["rates"])
-    except Exception:
-        pass
-    return None
+    """Load sensitivity results and reconstruct 2D surface.
 
+    sensitivity_results.json contains 1D sweeps and a grid_best.
+    We reconstruct the 2D surface from the injection_threshold and
+    drift_threshold sweeps using their combined contribution model.
+    """
+    p = Path(__file__).resolve().parent.parent.parent.parent / "output" / "data" / "sensitivity_results.json"
+    with open(p) as f:
+        data = json.load(f)
 
-def _generate_sensitivity_surface(n: int = 20, seed: int = 42) -> tuple:
-    """Generate a 2D detection-rate surface over two parameter axes."""
-    rng = np.random.default_rng(seed)
+    # Extract 1D sweep data for injection and drift
+    sweeps = {s["parameter"]: s for s in data["sweeps"]}
+    inj = sweeps["injection_threshold"]
+    drift = sweeps["drift_threshold"]
 
-    inj_thresholds = np.linspace(0.3, 0.9, n)
-    drift_thresholds = np.linspace(0.1, 0.5, n)
+    inj_vals = np.array(inj["values"])
+    drift_vals = np.array(drift["values"])
+    inj_metrics = np.array(inj["metrics"])
+    drift_metrics = np.array(drift["metrics"])
 
-    inj_grid, drift_grid = np.meshgrid(inj_thresholds, drift_thresholds)
+    # Reconstruct 2D surface: combine 1D effects
+    # Rate(inj, drift) ≈ base + inj_effect(inj) + drift_effect(drift)
+    # where inj_effect = inj_metrics - mean(inj_metrics) and similarly for drift
+    inj_effect = inj_metrics - np.mean(inj_metrics)
+    drift_effect = drift_metrics - np.mean(drift_metrics)
+    base = np.mean(inj_metrics)
 
-    # Detection rate peaks around inj=0.65, drift=0.30
-    rate = (
-        0.98
-        - 1.2 * (inj_grid - 0.65) ** 2
-        - 2.0 * (drift_grid - 0.30) ** 2
-        + rng.normal(0, 0.005, inj_grid.shape)
-    )
-    rate = np.clip(rate, 0.70, 0.99)
+    # Construct 2D grid
+    n_inj = len(inj_vals)
+    n_drift = len(drift_vals)
+    rate = np.zeros((n_drift, n_inj))
+    for i in range(n_drift):
+        for j in range(n_inj):
+            rate[i, j] = np.clip(base + inj_effect[j] + drift_effect[i], 0.0, 1.0)
 
-    return inj_thresholds, drift_thresholds, rate
+    logger.info("Reconstructed 2D sensitivity surface from sweep data (%s)", p)
+    return inj_vals, drift_vals, rate
 
 
 def plot_sensitivity_heatmap(output_dir: str = "output/figures") -> Figure:
@@ -59,12 +72,7 @@ def plot_sensitivity_heatmap(output_dir: str = "output/figures") -> Figure:
     Figure
     """
     fig, ax = create_figure(width=7, height=5.5)
-
-    loaded = _load_data()
-    if loaded is not None:
-        inj_th, drift_th, rate = loaded
-    else:
-        inj_th, drift_th, rate = _generate_sensitivity_surface()
+    inj_th, drift_th, rate = _load_data()
 
     im = ax.imshow(
         rate,
@@ -79,8 +87,16 @@ def plot_sensitivity_heatmap(output_dir: str = "output/figures") -> Figure:
     cbar = fig.colorbar(im, ax=ax, fraction=0.046, pad=0.04)
     cbar.set_label("Detection Rate", fontsize=11)
 
-    # Mark optimal region
-    opt_inj, opt_drift = 0.65, 0.30
+    # Mark optimal region from grid_best
+    try:
+        p = Path(__file__).resolve().parent.parent.parent.parent / "output" / "data" / "sensitivity_results.json"
+        with open(p) as f:
+            data = json.load(f)
+        opt_inj = data["grid_best"]["injection"]
+        opt_drift = data["grid_best"]["drift"]
+    except (KeyError, FileNotFoundError):
+        opt_inj, opt_drift = 0.65, 0.30
+
     ax.plot(opt_inj, opt_drift, "w*", markersize=15, markeredgecolor="black", markeredgewidth=1.2, zorder=5)
     ax.annotate(
         f"Optimal\n({opt_inj:.2f}, {opt_drift:.2f})",

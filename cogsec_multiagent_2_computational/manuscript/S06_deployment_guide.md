@@ -104,26 +104,34 @@ Before deploying CIF in production environments, verify completion of all items:
 ### Python Integration {#sec:python-integration}
 
 ```python
-# Internal module paths (public API: `from cif import ...`)
-from core.firewall import CognitiveFirewall
-from core.sandbox import SandboxManager as BeliefSandbox
-from core.trust import TrustCalculus as TrustManager
+# Internal module paths
+from src.core.firewall import CognitiveFirewall, FirewallConfig
+from src.core.sandbox import SandboxManager, SandboxConfig, PromotionCriteria
+from src.core.trust import TrustCalculus, TrustConfig
 
 # Initialize components
 firewall = CognitiveFirewall(
-    tau_reject=0.8,
-    tau_quarantine=0.5,
-    pattern_db="patterns/injection.json"
+    config=FirewallConfig(
+        injection_threshold=0.8,
+        suspicious_threshold=0.5,
+    )
 )
 
-sandbox = BeliefSandbox(
-    ttl_default=3600,
-    k_corroboration=2
+sandbox = SandboxManager(
+    config=SandboxConfig(
+        default_ttl_seconds=3600.0,
+        max_provisional_beliefs=1000,
+    ),
+    promotion_criteria=PromotionCriteria(
+        min_corroborations=2,
+    ),
 )
 
-trust_mgr = TrustManager(
-    alpha=0.3, beta=0.5, gamma=0.2,
-    delta=0.8
+trust_calc = TrustCalculus(
+    config=TrustConfig(
+        alpha=0.3, beta=0.5, gamma=0.2,
+        decay=0.8,
+    )
 )
 
 # Process incoming message
@@ -134,13 +142,15 @@ def process_message(msg, source):
         return None
 
     # Get trust score
-    trust = trust_mgr.get_trust(source)
+    trust = trust_calc.compute_trust(
+        base=0.5, reputation=0.7, context=0.6
+    )
 
     # Extract beliefs
     beliefs = extract_beliefs(msg)
     for belief in beliefs:
         if decision == "QUARANTINE" or trust < 0.9:
-            sandbox.add(belief, source, trust)
+            sandbox.add_provisional(belief, source, trust)
         else:
             verified_beliefs.add(belief)
 
@@ -183,8 +193,8 @@ cif:
     tau_quarantine: 0.5
     weights:
       injection: 0.4
-      semantic: 0.35
-      anomaly: 0.25
+      semantic: 0.3
+      anomaly: 0.3
 
   sandbox:
     enabled: true

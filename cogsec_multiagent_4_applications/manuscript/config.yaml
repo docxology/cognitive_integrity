@@ -1,0 +1,49 @@
+paper:
+  title: "Cognitive Integrity in Critical Domains: A Multi-Sector Analysis"
+  subtitle: "Part 4: Applications of the Cognitive Integrity Framework"
+  version: "1.0"
+  date: "2026"
+  series: "Cognitive Security for Multiagent Operators"
+
+authors:
+  - name: "Daniel Ari Friedman"
+    orcid: "0000-0001-6232-9096"
+    email: "daniel@activeinference.institute"
+    affiliation: "Active Inference Institute"
+    corresponding: true
+
+publication:
+  doi: "" # To be assigned
+  journal: "Cognitive Security Series"
+  volume: "4"
+
+keywords:
+  - "cognitive security"
+  - "multiagent systems"
+  - "goal hijacking"
+  - "cognitive integrity framework"
+  - "OODA loop"
+  - "axiomatic design"
+  - "critical infrastructure"
+  - "supply chain security"
+  - "information warfare"
+  - "adversarial AI"
+
+metadata:
+  license: "CC BY 4.0"
+  language: "en"
+
+llm:
+  reviews:
+    enabled: true
+    types:
+      - executive_summary
+  translations:
+    enabled: true
+    languages:
+      - zh
+      - es
+      - ru
+      - hi
+      - fr
+      - de

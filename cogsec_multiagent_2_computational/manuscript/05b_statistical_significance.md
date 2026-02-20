@@ -18,7 +18,6 @@ We conducted *a priori* power analysis to ensure adequate sample sizes for detec
 | Per-attack-type | 0.5 | 64 | 100 | 0.89 |
 | Ablation studies | 0.5 | 64 | 950 | $>$0.99 |
 
-
 **Methodology**: Power calculations assumed $\alpha = 0.05$, desired power $= 0.80$, two-tailed tests. With 950 attacks in our corpus and observed effect sizes exceeding $d = 0.8$ for all primary comparisons, our study is well-powered. The smallest subgroup (timing attacks, $n = 33$) achieves power of 0.78 for detecting $d = 0.8$.
 
 ## Effect Sizes {#sec:effect-sizes}
@@ -34,7 +33,6 @@ We conducted *a priori* power analysis to ensure adequate sample sizes for detec
 | CIF vs Tripwires-only | 0.90 | Large |
 | CIF vs Invariants-only | 1.40 | Large |
 
-
 **Table: Effect size interpretation guidelines.** {#tab:effect-guidelines}
 
 | $d$ Value | Interpretation | Non-overlap \% |
@@ -44,7 +42,6 @@ We conducted *a priori* power analysis to ensure adequate sample sizes for detec
 | 1.2 | Very large | 62.2\% |
 | 2.0 | Huge | 81.1\% |
 
-
 ### Odds Ratios {#sec:odds-ratios}
 
 **Table: Odds ratios for detection comparisons.** {#tab:odds-ratios}
@@ -53,7 +50,6 @@ We conducted *a priori* power analysis to ensure adequate sample sizes for detec
 | --- | --- | --- |
 | CIF detect vs Firewall | 4.8 | [3.1, 7.4] |
 | CIF detect vs Sandbox | 8.2 | [5.4, 12.5] |
-
 
 ### Number Needed to Treat (NNT) {#sec:nnt}
 
@@ -70,7 +66,6 @@ The NNT metric, adapted from clinical epidemiology, quantifies how many attacks 
 
 Lower NNT indicates greater marginal benefit of full CIF deployment over the best available single mechanism. An NNT of 1.4 for injection attacks means that for roughly every 1.4 attacks encountered, full CIF prevents one additional successful attack that the best single mechanism would miss.
 
-
 ## Confidence Intervals {#sec:confidence-intervals}
 
 ### Overall Performance (95% CI) {#sec:detection-ci}
@@ -83,7 +78,6 @@ Lower NNT indicates greater marginal benefit of full CIF deployment over the bes
 | Precision | 0.94 | [0.92, 0.96] | Wilson |
 | F1 Score | 0.94 | [0.92, 0.96] | Bootstrap |
 
-
 ### Per-Architecture Confidence Intervals {#sec:arch-ci}
 
 **Table: Per-architecture TPR and FPR with 95\% confidence intervals.** {#tab:arch-ci}
@@ -94,9 +88,6 @@ Lower NNT indicates greater marginal benefit of full CIF deployment over the bes
 | AutoGPT | 0.94 | [0.90, 0.97] | 0.07 | [0.04, 0.11] |
 | CrewAI | 0.96 | [0.93, 0.98] | 0.05 | [0.03, 0.08] |
 | LangGraph | 0.98 | [0.95, 0.99] | 0.04 | [0.02, 0.07] |
-| MetaGPT | 0.95 | [0.91, 0.97] | 0.06 | [0.03, 0.10] |
-| Camel | 0.92 | [0.87, 0.95] | 0.08 | [0.05, 0.12] |
-
 
 ### By Attack Subcategory {#sec:attack-ci}
 
@@ -117,7 +108,6 @@ Lower NNT indicates greater marginal benefit of full CIF deployment over the bes
 | Consensus poisoning | 0.88 | 0.78 | 0.94 |
 | Timing attacks | 0.87 | 0.76 | 0.94 |
 
-
 ## Multiple Comparison Correction {#sec:bonferroni}
 
 **Multiple Comparison Correction.** All pairwise statistical comparisons employ Bonferroni correction to control the family-wise error rate (FWER). For hypothesis H2 (CIF outperforms each individual defense component), the corrected significance threshold is $\alpha_{\text{corrected}} = \alpha / m$, where $m$ is the number of component comparisons. With $m = 4$ primary comparisons (CIF vs.\ Firewall-only, Sandbox-only, Tripwires-only, Invariants-only), the corrected threshold at $\alpha = 0.05$ is $\alpha_{\text{corrected}} = 0.05 / 4 = 0.0125$. For the non-parametric Dunn post-hoc analysis across all defense configurations, $\binom{k}{2}$ pairwise comparisons are evaluated with Bonferroni-adjusted p-values (each raw p-value multiplied by the number of pairs, capped at 1.0). All reported p-values (\cref{tab:effect-sizes}) remain significant after correction, with all adjusted p-values satisfying $p < 0.001 \ll 0.0125$, confirming that the observed differences are not attributable to multiple testing artifacts. The correction is implemented programmatically via \texttt{bonferroni\_correct()} in \texttt{src/statistics/hypothesis.py} and Bonferroni-adjusted Dunn post-hoc tests in \texttt{src/statistics/nonparametric.py}, ensuring full reproducibility.
@@ -126,6 +116,6 @@ Lower NNT indicates greater marginal benefit of full CIF deployment over the bes
 
 \begin{enumerate}
 \item **Statistical Significance**: All comparisons show $p < 0.001$ with large effect sizes ($d > 0.8$), robust to Bonferroni correction for multiple comparisons
-\item **Architecture Generalization**: CIF performs consistently across all six architectures (range: 0.92--0.98)
+\item **Architecture Generalization**: CIF performs consistently across all four architectures (range: 0.94--0.98)
 \item **Attack Type Coverage**: Detection rates exceed 87\% for all attack subcategories
 \end{enumerate}

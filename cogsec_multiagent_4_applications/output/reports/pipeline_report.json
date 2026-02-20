@@ -1,0 +1,344 @@
+{
+  "timestamp": "2026-02-15T17:31:24.940289",
+  "total_duration": 44.74888777732849,
+  "stages": [
+    {
+      "name": "Clean Output Directories",
+      "exit_code": 0,
+      "duration": 0.031119823455810547,
+      "status": "passed",
+      "output_files": [],
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "name": "Environment Setup",
+      "exit_code": 0,
+      "duration": 0.5850398540496826,
+      "status": "passed",
+      "output_files": [],
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "name": "Project Tests",
+      "exit_code": 0,
+      "duration": 3.6870059967041016,
+      "status": "passed",
+      "output_files": [],
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "name": "Project Analysis",
+      "exit_code": 0,
+      "duration": 0.18338584899902344,
+      "status": "passed",
+      "output_files": [],
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "name": "PDF Rendering",
+      "exit_code": 0,
+      "duration": 39.20301127433777,
+      "status": "passed",
+      "output_files": [],
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "name": "Output Validation",
+      "exit_code": 0,
+      "duration": 0.5555069446563721,
+      "status": "passed",
+      "output_files": [],
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "name": "Copy Outputs",
+      "exit_code": 0,
+      "duration": 0.5038180351257324,
+      "status": "passed",
+      "output_files": [],
+      "errors": [],
+      "warnings": []
+    }
+  ],
+  "test_results": null,
+  "validation_results": null,
+  "performance_metrics": null,
+  "error_summary": null,
+  "output_statistics": {
+    "directories": {
+      "pdf": {
+        "exists": true,
+        "file_count": 8,
+        "size_mb": "0.19",
+        "total_size_bytes": 198816,
+        "largest_files": [
+          {
+            "name": "cogsec_multiagent_4_applications_combined.pdf",
+            "size_mb": "0.09",
+            "path": "pdf/cogsec_multiagent_4_applications_combined.pdf"
+          },
+          {
+            "name": "_combined_manuscript.log",
+            "size_mb": "0.03",
+            "path": "pdf/_combined_manuscript.log"
+          },
+          {
+            "name": "_combined_manuscript.tex",
+            "size_mb": "0.03",
+            "path": "pdf/_combined_manuscript.tex"
+          }
+        ],
+        "extensions": {
+          ".md": 1,
+          ".log": 1,
+          ".aux": 1,
+          ".blg": 1,
+          ".pdf": 1,
+          ".bib": 1,
+          ".tex": 1,
+          ".bbl": 1
+        }
+      },
+      "web": {
+        "exists": true,
+        "file_count": 17,
+        "size_mb": "0.16",
+        "total_size_bytes": 162600,
+        "largest_files": [
+          {
+            "name": "index.html",
+            "size_mb": "0.05",
+            "path": "web/index.html"
+          },
+          {
+            "name": "_combined_manuscript.md",
+            "size_mb": "0.02",
+            "path": "web/_combined_manuscript.md"
+          },
+          {
+            "name": "01_introduction.html",
+            "size_mb": "0.01",
+            "path": "web/01_introduction.html"
+          }
+        ],
+        "extensions": {
+          ".html": 16,
+          ".md": 1
+        }
+      },
+      "slides": {
+        "exists": true,
+        "file_count": 108,
+        "size_mb": "1.16",
+        "total_size_bytes": 1214265,
+        "largest_files": [
+          {
+            "name": "02_03_cyber_security_slides.log",
+            "size_mb": "0.05",
+            "path": "slides/02_03_cyber_security_slides.log"
+          },
+          {
+            "name": "02_04_drone_wars_slides.log",
+            "size_mb": "0.05",
+            "path": "slides/02_04_drone_wars_slides.log"
+          },
+          {
+            "name": "02_06_biowarfare_slides.log",
+            "size_mb": "0.05",
+            "path": "slides/02_06_biowarfare_slides.log"
+          }
+        ],
+        "extensions": {
+          ".nav": 15,
+          ".tex": 15,
+          ".toc": 15,
+          ".log": 15,
+          ".aux": 15,
+          ".pdf": 15,
+          ".snm": 15,
+          ".vrb": 3
+        }
+      },
+      "figures": {
+        "exists": true,
+        "file_count": 0,
+        "size_mb": "0.00",
+        "total_size_bytes": 0,
+        "largest_files": [],
+        "extensions": {}
+      },
+      "data": {
+        "exists": true,
+        "file_count": 0,
+        "size_mb": "0.00",
+        "total_size_bytes": 0,
+        "largest_files": [],
+        "extensions": {}
+      },
+      "reports": {
+        "exists": true,
+        "file_count": 6,
+        "size_mb": "0.01",
+        "total_size_bytes": 13291,
+        "largest_files": [
+          {
+            "name": "output_statistics.json",
+            "size_mb": "0.01",
+            "path": "reports/output_statistics.json"
+          },
+          {
+            "name": "validation_report.json",
+            "size_mb": "0.00",
+            "path": "reports/validation_report.json"
+          },
+          {
+            "name": "output_statistics.txt",
+            "size_mb": "0.00",
+            "path": "reports/output_statistics.txt"
+          }
+        ],
+        "extensions": {
+          ".json": 3,
+          ".txt": 1,
+          ".md": 2
+        }
+      },
+      "simulations": {
+        "exists": true,
+        "file_count": 0,
+        "size_mb": "0.00",
+        "total_size_bytes": 0,
+        "largest_files": [],
+        "extensions": {}
+      },
+      "llm": {
+        "exists": true,
+        "file_count": 0,
+        "size_mb": "0.00",
+        "total_size_bytes": 0,
+        "largest_files": [],
+        "extensions": {}
+      },
+      "logs": {
+        "exists": true,
+        "file_count": 1,
+        "size_mb": "0.01",
+        "total_size_bytes": 8782,
+        "largest_files": [
+          {
+            "name": "pipeline.log",
+            "size_mb": "0.01",
+            "path": "logs/pipeline.log"
+          }
+        ],
+        "extensions": {
+          ".log": 1
+        }
+      }
+    },
+    "total_files": 140,
+    "total_size_mb": 1.5237369537353516,
+    "largest_files": [
+      {
+        "name": "cogsec_multiagent_4_applications_combined.pdf",
+        "size_mb": "0.09",
+        "category": "pdf",
+        "path": "pdf/cogsec_multiagent_4_applications_combined.pdf"
+      },
+      {
+        "name": "index.html",
+        "size_mb": "0.05",
+        "category": "web",
+        "path": "web/index.html"
+      },
+      {
+        "name": "02_03_cyber_security_slides.log",
+        "size_mb": "0.05",
+        "category": "slides",
+        "path": "slides/02_03_cyber_security_slides.log"
+      },
+      {
+        "name": "02_04_drone_wars_slides.log",
+        "size_mb": "0.05",
+        "category": "slides",
+        "path": "slides/02_04_drone_wars_slides.log"
+      },
+      {
+        "name": "02_06_biowarfare_slides.log",
+        "size_mb": "0.05",
+        "category": "slides",
+        "path": "slides/02_06_biowarfare_slides.log"
+      },
+      {
+        "name": "_combined_manuscript.log",
+        "size_mb": "0.03",
+        "category": "pdf",
+        "path": "pdf/_combined_manuscript.log"
+      },
+      {
+        "name": "_combined_manuscript.tex",
+        "size_mb": "0.03",
+        "category": "pdf",
+        "path": "pdf/_combined_manuscript.tex"
+      },
+      {
+        "name": "_combined_manuscript.md",
+        "size_mb": "0.02",
+        "category": "web",
+        "path": "web/_combined_manuscript.md"
+      },
+      {
+        "name": "01_introduction.html",
+        "size_mb": "0.01",
+        "category": "web",
+        "path": "web/01_introduction.html"
+      },
+      {
+        "name": "output_statistics.json",
+        "size_mb": "0.01",
+        "category": "reports",
+        "path": "reports/output_statistics.json"
+      }
+    ],
+    "missing_expected_files": [
+      "cogsec_multiagent_4_applications_combined.pdf or project_combined.pdf"
+    ],
+    "file_counts_by_type": {
+      ".md": 4,
+      ".log": 17,
+      ".aux": 16,
+      ".blg": 1,
+      ".pdf": 16,
+      ".bib": 1,
+      ".tex": 16,
+      ".bbl": 1,
+      ".html": 16,
+      ".nav": 15,
+      ".toc": 15,
+      ".snm": 15,
+      ".vrb": 3,
+      ".json": 3,
+      ".txt": 1
+    },
+    "sizes_by_category": {
+      "pdf": 0.189605712890625,
+      "web": 0.15506744384765625,
+      "slides": 1.1580133438110352,
+      "figures": 0.0,
+      "data": 0.0,
+      "reports": 0.012675285339355469,
+      "simulations": 0.0,
+      "llm": 0.0,
+      "logs": 0.008375167846679688
+    },
+    "pdf_files": 8,
+    "figures": 0,
+    "data_files": 0
+  }
+}

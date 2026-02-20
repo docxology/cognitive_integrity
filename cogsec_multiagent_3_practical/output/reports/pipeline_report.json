@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-02-16T11:17:40.720400",
-  "total_duration": 46.4405779838562,
+  "timestamp": "2026-02-18T11:24:59.646613",
+  "total_duration": 45.00283098220825,
   "stages": [
     {
       "name": "Clean Output Directories",
       "exit_code": 0,
-      "duration": 0.024430036544799805,
+      "duration": 0.03448820114135742,
       "status": "passed",
       "output_files": [],
       "errors": [],
@@ -14,7 +14,7 @@
     {
       "name": "Environment Setup",
       "exit_code": 0,
-      "duration": 0.8093299865722656,
+      "duration": 0.6716649532318115,
       "status": "passed",
       "output_files": [],
       "errors": [],
@@ -23,7 +23,7 @@
     {
       "name": "Project Tests",
       "exit_code": 0,
-      "duration": 8.071591138839722,
+      "duration": 8.60828971862793,
       "status": "passed",
       "output_files": [],
       "errors": [],
@@ -32,7 +32,7 @@
     {
       "name": "Project Analysis",
       "exit_code": 0,
-      "duration": 4.089784622192383,
+      "duration": 3.92044734954834,
       "status": "passed",
       "output_files": [],
       "errors": [],
@@ -41,7 +41,7 @@
     {
       "name": "PDF Rendering",
       "exit_code": 0,
-      "duration": 32.383610248565674,
+      "duration": 30.911207914352417,
       "status": "passed",
       "output_files": [],
       "errors": [],
@@ -50,7 +50,7 @@
     {
       "name": "Output Validation",
       "exit_code": 0,
-      "duration": 0.5616550445556641,
+      "duration": 0.42508912086486816,
       "status": "passed",
       "output_files": [],
       "errors": [],
@@ -59,7 +59,7 @@
     {
       "name": "Copy Outputs",
       "exit_code": 0,
-      "duration": 0.5001769065856934,
+      "duration": 0.4316437244415283,
       "status": "passed",
       "output_files": [],
       "errors": [],
@@ -76,7 +76,7 @@
         "exists": true,
         "file_count": 8,
         "size_mb": "0.29",
-        "total_size_bytes": 305896,
+        "total_size_bytes": 307609,
         "largest_files": [
           {
             "name": "cogsec_multiagent_3_practical_combined.pdf",
@@ -108,8 +108,8 @@
       "web": {
         "exists": true,
         "file_count": 13,
-        "size_mb": "0.18",
-        "total_size_bytes": 191940,
+        "size_mb": "0.19",
+        "total_size_bytes": 194207,
         "largest_files": [
           {
             "name": "index.html",
@@ -118,7 +118,7 @@
           },
           {
             "name": "_combined_manuscript.md",
-            "size_mb": "0.03",
+            "size_mb": "0.04",
             "path": "web/_combined_manuscript.md"
           },
           {
@@ -136,7 +136,7 @@
         "exists": true,
         "file_count": 80,
         "size_mb": "0.92",
-        "total_size_bytes": 962638,
+        "total_size_bytes": 961253,
         "largest_files": [
           {
             "name": "03_simulation_review_slides.log",
@@ -204,7 +204,7 @@
         "exists": true,
         "file_count": 6,
         "size_mb": "0.01",
-        "total_size_bytes": 13859,
+        "total_size_bytes": 13855,
         "largest_files": [
           {
             "name": "output_statistics.json",
@@ -262,7 +262,7 @@
       }
     },
     "total_files": 120,
-    "total_size_mb": 2.155022621154785,
+    "total_size_mb": 2.1574935913085938,
     "largest_files": [
       {
         "name": "posture_radar.png",
@@ -347,12 +347,12 @@
       ".txt": 1
     },
     "sizes_by_category": {
-      "pdf": 0.29172515869140625,
-      "web": 0.18304824829101562,
-      "slides": 0.9180431365966797,
+      "pdf": 0.29335880279541016,
+      "web": 0.1852102279663086,
+      "slides": 0.916722297668457,
       "figures": 0.7406177520751953,
       "data": 0.0,
-      "reports": 0.013216972351074219,
+      "reports": 0.013213157653808594,
       "simulations": 0.0,
       "llm": 0.0,
       "logs": 0.008371353149414062

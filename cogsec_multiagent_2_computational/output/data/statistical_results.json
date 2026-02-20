@@ -1,110 +1,100 @@
 {
   "h1": {
-    "statistic": 2.9879598499176008,
-    "p_value": 0.0032867138077498632,
-    "significant": false
+    "statistic": 53.63675107082092,
+    "p_value": 2.8964556466678547e-21,
+    "significant": true
   },
   "h2": [
     {
-      "name": "H2_firewall",
-      "p_value": 0.9999999999130567,
-      "significant": false
+      "name": "Firewall",
+      "p_value": 1.0260616734182907e-08,
+      "significant": true
     },
     {
-      "name": "H2_trust_calculus",
-      "p_value": 0.9999999983427408,
-      "significant": false
+      "name": "Trust Calculus",
+      "p_value": 1.1950953450858309e-08,
+      "significant": true
     },
     {
-      "name": "H2_tripwire",
-      "p_value": 0.9999999684487335,
-      "significant": false
+      "name": "Tripwire",
+      "p_value": 5.739291177092244e-09,
+      "significant": true
     },
     {
-      "name": "H2_detection",
-      "p_value": 0.9999999991802975,
-      "significant": false
+      "name": "Detection",
+      "p_value": 5.99939617665731e-09,
+      "significant": true
     },
     {
-      "name": "H2_consensus",
-      "p_value": 0.9999999325147543,
-      "significant": false
+      "name": "Consensus",
+      "p_value": 3.978591797422607e-09,
+      "significant": true
     },
     {
-      "name": "H2_provenance",
-      "p_value": 0.9999992619107976,
-      "significant": false
+      "name": "Provenance",
+      "p_value": 1.1666191088663177e-08,
+      "significant": true
     },
     {
-      "name": "H2_sandbox",
-      "p_value": 0.9999982442611953,
-      "significant": false
+      "name": "Sandbox",
+      "p_value": 4.062426120825868e-09,
+      "significant": true
     },
     {
-      "name": "H2_invariants",
-      "p_value": 0.9999996782252633,
-      "significant": false
+      "name": "Invariants",
+      "p_value": 9.581683314198998e-09,
+      "significant": true
     }
   ],
   "h3": [
     {
-      "name": "H3_claude_code",
-      "p_value": 3.253450671906059e-30,
+      "name": "claude_code",
+      "p_value": 6.401115222707528e-11,
       "significant": true
     },
     {
-      "name": "H3_autogpt",
-      "p_value": 7.879585264108201e-30,
+      "name": "autogpt",
+      "p_value": 6.002810550498718e-11,
       "significant": true
     },
     {
-      "name": "H3_crewai",
-      "p_value": 1.4722188669080614e-29,
+      "name": "crewai",
+      "p_value": 2.8732558900589303e-10,
       "significant": true
     },
     {
-      "name": "H3_langgraph",
-      "p_value": 1.047880528188465e-30,
-      "significant": true
-    },
-    {
-      "name": "H3_metagpt",
-      "p_value": 1.7037739339459317e-30,
-      "significant": true
-    },
-    {
-      "name": "H3_camel",
-      "p_value": 1.661908536278539e-29,
+      "name": "langgraph",
+      "p_value": 2.144853703503543e-10,
       "significant": true
     }
   ],
-  "kruskal_wallis": {
-    "h": 48.962021072796915,
-    "p": 2.2592727421696517e-09
-  },
-  "cohens_d_cif_vs_baseline": 0.8609600980283788,
+  "cohens_d_cif_vs_baseline": 4.913994088398529,
   "assumptions": [
     {
       "test": "Shapiro-Wilk",
-      "group": "group_1",
-      "statistic": 0.8906466745717352,
-      "p_value": 0.013707152074268801,
-      "passed": 0.0
+      "group": "CIF",
+      "statistic": 0.9770342904646528,
+      "p_value": 0.5879799848774777,
+      "passed": true
     },
     {
       "test": "Shapiro-Wilk",
-      "group": "group_2",
-      "statistic": 0.9613504452999589,
-      "p_value": 0.46615406397705766,
-      "passed": 1.0
+      "group": "Baseline",
+      "statistic": 0.9560515235339945,
+      "p_value": 0.595867734978924,
+      "passed": true
     },
     {
       "test": "Levene",
-      "group": "all_groups",
-      "statistic": 21.719119472299358,
-      "p_value": 2.721061133504834e-05,
-      "passed": 0.0
+      "group": "CIF vs Baseline",
+      "statistic": 1.3216963768851344,
+      "p_value": 0.3626591579683242,
+      "passed": true
     }
   ],
-  "assumptions_met": false
+  "assumptions_met": true,
+  "kruskal_wallis": {
+    "h": 3.214023413742261,
+    "p": 0.34575189621676794
+  }
 }

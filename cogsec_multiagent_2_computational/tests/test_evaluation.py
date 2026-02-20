@@ -98,10 +98,11 @@ class _SimplePipeline:
 
 
 class _SimpleResult:
-    """Result object with a score attribute."""
+    """Result object with score and detected attributes."""
 
-    def __init__(self, score: float):
+    def __init__(self, score: float, detected: bool | None = None):
         self.score = score
+        self.detected = detected if detected is not None else (score > 0.5)
 
 
 class _ScalablePipeline:
@@ -225,9 +226,10 @@ class TestExperimentRunner:
 
         assert isinstance(result, ExperimentResult)
         assert result.n_attacks == 20
-        # Pipeline returns 0.8 score; with multiplier 1.0 and noise,
-        # most attacks should be detected (0.8 / 1.0 + noise > 0.5)
-        assert result.true_positives > 0
+        # Pipeline returns score=0.8 and detected=True for all samples.
+        # In pipeline-first mode, the runner uses the pipeline's verdict directly.
+        assert result.true_positives == 15  # all 15 attacks detected
+        assert result.false_positives == 5  # all 5 benign also flagged (score=0.8 > 0.5)
 
     def test_run_single_with_scores(self):
         """run_single_with_scores returns per-sample detection tuples."""

@@ -1,4 +1,4 @@
-# The Attack Landscape: Five Vectors {-}
+# The Attack Landscape: Five Vectors {#sec:attack-scenarios}
 
 This section details five concrete attack vectors from the Paper 2 corpus, illustrating the specific mechanism of action and the corresponding CIF defense layer.
 

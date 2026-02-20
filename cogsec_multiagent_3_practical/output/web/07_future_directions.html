@@ -174,63 +174,76 @@
   type="text/javascript"></script>
 </head>
 <body>
-<h1 id="sec:future">The Frontier: Where We Need You</h1>
-<p>We have built the foundation and validated the core mechanics.
-However, the field is in its infancy. We have established valid trust
-metrics (Trust Calculus) and filtering mechanisms (Firewalls), but we
-lack standardized protocols for agent state persistence and identity
-federation—the agentic equivalents of cookies or OAuth.</p>
-<p>This is where you come in.</p>
-<p>The Cognitive Integrity Framework is open source, and the problems
-below are not just “future research”—they are immediate engineering
-blockers that need to be solved.</p>
-<h2 id="the-ux-of-trust-help-wanted">1. The UX of Trust (Help
-Wanted)</h2>
-<p><strong>The Problem</strong>: Currently, when an agent flag is raised
-(“Identity Violation”), it looks like a JSON error log. <strong>The
-Need</strong>: We need a “Cognitive Dashboard” for human operators. What
-does it look like to visualize the trust graph of 50 agents in
-real-time? How do we show “Drift” intuitively? <strong>The
-Goal</strong>: A React/Next.js dashboard that connects to the CIF Python
-SDK.</p>
-<h2 id="standardized-agent-identity-protocol-design">2. Standardized
-Agent Identity (Protocol Design)</h2>
-<p><strong>The Problem</strong>: Every framework (LangChain, CrewAI,
-AutoGPT) handles agent identity differently. <strong>The Need</strong>:
-A standard “Agent Passport” protocol. A cryptographically verifiable
-identity token that an agent can carry across different frameworks.
-<strong>The Goal</strong>: An RFC-style spec for
-<code>x-agent-identity</code> headers.</p>
-<h2 id="eusocial-security-advanced-research">3. “Eusocial” Security
-(Advanced Research)</h2>
-<p><strong>The Problem</strong>: Our current consensus is Byzantine, but
-it’s computationally expensive (<span
-class="math inline">\(O(n^2)\)</span>). <strong>The Need</strong>:
-Insect colonies don’t vote; they use pheromones. We need
-<strong>Stigmergic Security Protocols</strong> where agents leave “trust
-trails” in the environment. <strong>The Goal</strong>: A lightweight,
-scalable consensus algorithm modeled on ant colony immune responses.</p>
+<h1 id="sec:future">Open Problems and Future Directions</h1>
+<p>The CIF series has established validated trust metrics (Trust
+Calculus) and filtering mechanisms (Firewalls), but the field remains
+nascent. Several foundational problems remain open, each representing
+both a research opportunity and an engineering requirement for
+production-grade cognitive security.</p>
+<h2 id="trust-visualization-and-operator-interfaces">1. Trust
+Visualization and Operator Interfaces</h2>
+<p><strong>The Problem</strong>: Current CIF alerts surface as
+structured log entries (e.g., “Identity Invariant Violation”). For
+operators managing systems with dozens of agents, this format is
+insufficient for situational awareness.</p>
+<p><strong>The Need</strong>: Real-time visualization of trust graphs,
+belief drift trends, and defense activation patterns. The challenge is
+presenting high-dimensional agent state in a way that supports rapid
+operator decision-making.</p>
+<p><strong>Research Direction</strong>: Dashboard architectures that
+connect to the CIF Python SDK, enabling real-time trust graph
+visualization and drift monitoring for production multiagent
+deployments.</p>
+<h2 id="standardized-agent-identity-protocols">2. Standardized Agent
+Identity Protocols</h2>
+<p><strong>The Problem</strong>: Each agent framework (LangChain,
+CrewAI, AutoGPT) handles agent identity differently, making
+cross-framework trust verification impractical.</p>
+<p><strong>The Need</strong>: A cryptographically verifiable identity
+protocol—an “Agent Passport”—that an agent can carry across frameworks.
+This would enable the trust calculus to operate in heterogeneous
+multi-framework deployments.</p>
+<p><strong>Research Direction</strong>: RFC-style specification for
+<code>x-agent-identity</code> headers with cryptographic
+attestation.</p>
+<h2 id="stigmergic-security-protocols">3. Stigmergic Security
+Protocols</h2>
+<p><strong>The Problem</strong>: Byzantine consensus mechanisms, while
+provably correct, incur <span class="math inline">\(O(n^2)\)</span>
+communication overhead. This limits their applicability in large-scale
+swarm deployments.</p>
+<p><strong>The Need</strong>: Lightweight consensus alternatives
+inspired by biological coordination. Insect colonies achieve collective
+immunity through indirect communication (pheromone trails) rather than
+direct voting.</p>
+<p><strong>Research Direction</strong>: Stigmergic security protocols
+where agents leave “trust trails” in shared environments, enabling
+scalable consensus without direct agent-to-agent messaging.</p>
 <h2 id="benchmark-expansion">4. Benchmark Expansion</h2>
-<p><strong>The Problem</strong>: Our corpus has 950 attacks. Real-world
-capability is growing daily. <strong>The Need</strong>: We need more
-attacks. Specifically, we need <strong>Multi-Modal Injection
-attacks</strong> (audio/video) and <strong>Tool-Use Hijacking</strong>
-examples. <strong>The Goal</strong>: Pull Recommendations to the
-<code>cognitive_integrity</code> repository adding new scenarios to
-<code>data/attacks/</code>.</p>
+<p><strong>The Problem</strong>: The current corpus contains 950 attack
+samples. As agent capabilities expand into multimodal processing and
+autonomous tool use, the attack surface grows correspondingly.</p>
+<p><strong>The Need</strong>: Expanded attack corpora covering
+multi-modal injection (audio/video), tool-use hijacking, and
+long-horizon social engineering campaigns that unfold over hundreds of
+interactions.</p>
+<p><strong>Research Direction</strong>: Community-driven expansion of
+the attack corpus at the <a
+href="https://github.com/docxology/cognitive_integrity">cognitive_integrity
+repository</a>, with particular emphasis on attack categories not yet
+represented.</p>
 <hr />
 <h2 id="contributing">Contributing</h2>
-<p>This is not a closed academic project. It is a living defense
-framework for the agentic future.</p>
+<p>The Cognitive Integrity Framework is an open-source project.
+Contributions are welcome, particularly:</p>
 <ul>
 <li><strong>Code</strong>: <a
 href="https://github.com/docxology/cognitive_integrity">github.com/docxology/cognitive_integrity</a></li>
-<li><strong>Discussion</strong>: Join the <code>discussions</code> tab
-on GitHub.</li>
-<li><strong>Contribute</strong>: We prioritize PRs that add
-<strong>Adapters</strong> for new agent frameworks (e.g., Semantic
-Kernel, Microsoft AutoGen).</li>
+<li><strong>Discussion</strong>: The <code>discussions</code> tab on
+GitHub serves as the primary forum.</li>
+<li><strong>Adapters</strong>: Contributions that extend CIF to
+additional agent frameworks (e.g., Semantic Kernel, Microsoft AutoGen)
+are especially valued.</li>
 </ul>
-<p>Let’s build the immune system for the agentic web, together.</p>
 </body>
 </html>

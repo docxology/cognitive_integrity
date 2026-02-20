@@ -1,0 +1,19 @@
+\frametitle{CIF Defense: Physical Simulation Grounding}
+\protect\phantomsection\label{cif-defense-physical-simulation-grounding}
+CIF moves verification out of the semantic/linguistic loop and into the
+\textbf{Physical Loop}.
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Semantics-Free Verification}: The agent's verification module
+  is ``deaf'' to the text justification. It performs a
+  \textbf{Functional Simulation} of the protein folding.
+\item
+  \textbf{Axiomatic Veto}: If the simulation shows
+  \texttt{Lethality\ \textgreater{}\ Threshold} or
+  \texttt{Transmissibility\ \textgreater{}\ Threshold}, the FR ``Prevent
+  Pathogen'' acts as a \textbf{Hard Veto}. The persuasive rhetoric of
+  the prompt is structurally irrelevant to the decision, breaking the
+  OODA hijack.
+\end{itemize}

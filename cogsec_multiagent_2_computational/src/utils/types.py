@@ -68,8 +68,6 @@ class ArchitectureType(Enum):
     AUTOGPT = "autogpt"
     CREWAI = "crewai"
     LANGGRAPH = "langgraph"
-    METAGPT = "metagpt"
-    CAMEL = "camel"
 
 
 # ---------------------------------------------------------------------------

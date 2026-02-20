@@ -4,20 +4,18 @@ This document details how the Cognitive Integrity Framework (CIF) was empiricall
 
 ## Target Architectures
 
-The framework was tested against six distinct multiagent architectural patterns to ensure generalizability. Adapters for these architectures are located in `src/architectures/`.
+The framework was tested against four distinct multiagent architectural patterns to ensure generalizability. Adapters for these architectures are located in `src/architectures/`.
 
-1. **Hierarchical (Orchestrator-Worker)**: Modeled on Enterprise RAG systems.
-    - *Implementation*: `src/architectures/hierarchical.py`
-2. **Peer-to-Peer (Swarm)**: Modeled on Decentralized Autonomous Organizations (DAOs).
-    - *Implementation*: `src/architectures/p2p.py`
-3. **Role-Based (Team)**: Modeled on CrewAI / ChatDev.
-    - *Implementation*: `src/architectures/role_based.py`
-4. **State Machine (Cyclic)**: Modeled on LangGraph.
-    - *Implementation*: `src/architectures/state_machine.py`
-5. **Pipeline (Linear)**: Modeled on Standard ETL/Processing chains.
-    - *Implementation*: `src/architectures/pipeline.py`
-6. **Hybrid (Complex)**: A composite of hierarchical and p2p elements.
-    - *Implementation*: `src/architectures/hybrid.py`
+1. **Claude Code (Hierarchical)**: Orchestrator-Worker pattern modeled on Enterprise RAG systems.
+    - *Implementation*: `src/architectures/claude_code.py`
+2. **AutoGPT (Autonomous)**: Autonomous agent with plugin-based tool access.
+    - *Implementation*: `src/architectures/autogpt.py`
+3. **CrewAI (Role-Based)**: Role-based team with sequential task handoff.
+    - *Implementation*: `src/architectures/crewai.py`
+4. **LangGraph (State Machine)**: Graph-based state machine protocol.
+    - *Implementation*: `src/architectures/langgraph.py`
+
+All adapters inherit from the base adapter at `src/architectures/base.py`.
 
 ## Attack Corpus
 
@@ -28,59 +26,87 @@ The evaluation used a comprehensive corpus of 950 cognitive attacks, generated t
 - **Belief Manipulation**: Planting false axioms or data.
 - **Coordination Subversion**: Disrupting consensus/voting.
 
-Corpus generation logic: `src/attacks/corpus_generator.py`
+Corpus generation logic: `src/attacks/corpus.py` (`AttackCorpus` class)
 
 ## Reproducing the Experiments
 
-All experiments are deterministic (seed=42).
+All experiments are deterministic (seed=42). Run from the project root directory.
 
-### 1. Run Full Evaluation
+### 1. Full Pipeline (Recommended)
 
-This script runs the entire experimental suite across all architectures and attack types.
+The `run.sh` script executes the complete pipeline via `execute_pipeline.py`:
 
 ```bash
-python projects/cognitive_integrity/cogsec_multiagent_2_computational/scripts/run_full_evaluation.py
+bash run.sh
+```
+
+This generates all data, figures, and tables in the `output/` directory.
+
+### 2. Run Full Evaluation
+
+Tests the entire attack corpus across all architectures:
+
+```bash
+python scripts/run_full_evaluation.py
 ```
 
 **Output**: `output/data/full_evaluation_results.json`
 
-### 2. Run Ablation Studies
+### 3. Run Ablation Studies
 
-This script tests the contribution of individual components (removing Firewall, Trust, etc. one by one).
+Tests the contribution of individual components (Firewall, Trust, Sandbox, etc.) by removing them one at a time:
 
 ```bash
-python projects/cognitive_integrity/cogsec_multiagent_2_computational/scripts/run_ablation.py
+python scripts/run_ablation.py
 ```
 
 **Output**: `output/data/ablation_results.json`
 
-### 3. Run Scalability Analysis
+### 4. Run Multi-Seed Stability Analysis
 
-This script measures performance overhead (latency/memory) as agent count increases.
-
-```bash
-python projects/cognitive_integrity/cogsec_multiagent_2_computational/scripts/run_scalability.py
-```
-
-**Output**: `output/data/scalability_results.json`
-
-### 4. Generate Figures
-
-Once data is generated, run this to produce the plots used in the manuscript.
+Measures detection rate stability across 30 random seeds, computing coefficient of variation (CV) for overall, per-architecture, and per-category metrics:
 
 ```bash
-python projects/cognitive_integrity/cogsec_multiagent_2_computational/scripts/generate_all_figures.py
+python scripts/run_multi_seed.py
 ```
 
-**Output**: `output/figures/*.png`
+**Output**: `output/data/multi_seed_results.json`
+
+### 5. Run Cross-Validation
+
+K-fold cross-validation of detection rates for statistical rigor:
+
+```bash
+python scripts/run_cross_validation.py
+```
+
+**Output**: `output/data/cross_validation_results.json`
+
+### 6. Run Colony Benchmarks
+
+Scalability tests measuring framework performance across increasing agent counts:
+
+```bash
+python scripts/run_colony_benchmarks.py
+```
+
+**Output**: `output/data/colony_results.json`
+
+### 7. Generate Figures
+
+Once data is generated, produce the plots used in the manuscript:
+
+```bash
+python scripts/generate_all_figures.py
+```
+
+**Output**: `output/figures/*.pdf`
 
 ## Validation Results Check
 
-You can compare your generated results with the canonical results in the repo:
-
-- `output/data/canonical_results.json` vs `output/data/full_evaluation_results.json`
+After generating results, compare key metrics (overall detection rate, per-architecture TPR, per-category breakdown) against the values reported in the manuscript Tables 1–3 to confirm reproducibility.
 
 ## Requirements
 
-- Python 3.10+
+- Python 3.12+
 - `numpy`, `scipy`, `matplotlib` (see `pyproject.toml`)

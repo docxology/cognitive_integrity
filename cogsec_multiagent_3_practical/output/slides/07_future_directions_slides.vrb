@@ -1,7 +1,7 @@
 \begin{block}{Contributing}
 \protect\phantomsection\label{contributing}
-This is not a closed academic project. It is a living defense framework
-for the agentic future.
+The Cognitive Integrity Framework is an open-source project.
+Contributions are welcome, particularly:
 
 \begin{itemize}
 \tightlist
@@ -9,11 +9,11 @@ for the agentic future.
   \textbf{Code}:
   \href{https://github.com/docxology/cognitive_integrity}{github.com/docxology/cognitive\_integrity}
 \item
-  \textbf{Discussion}: Join the \texttt{discussions} tab on GitHub.
+  \textbf{Discussion}: The \texttt{discussions} tab on GitHub serves as
+  the primary forum.
 \item
-  \textbf{Contribute}: We prioritize PRs that add \textbf{Adapters} for
-  new agent frameworks (e.g., Semantic Kernel, Microsoft AutoGen).
+  \textbf{Adapters}: Contributions that extend CIF to additional agent
+  frameworks (e.g., Semantic Kernel, Microsoft AutoGen) are especially
+  valued.
 \end{itemize}
-
-Let's build the immune system for the agentic web, together.
 \end{block}

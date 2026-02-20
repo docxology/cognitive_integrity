@@ -8,7 +8,7 @@ The rapid proliferation of multiagent AI systems has created novel attack surfac
 
 Industry adoption of multiagent architectures has accelerated dramatically. By late 2025, McKinsey found that 23\% of organizations were scaling agentic AI in some part of their enterprise, with an additional 39\% actively experimenting \cite{mckinsey2025agentic}. Gartner projects that 40\% of enterprise applications will incorporate task-specific AI agents by the end of 2026, up from under 5\% in 2025, with 70\% of enterprises deploying agentic AI in IT infrastructure operations by 2029 \cite{gartner2025agentic}. Enterprise deployments now routinely involve orchestrator agents delegating to specialized workers, peer-to-peer agent networks collaborating on complex tasks, and role-based teams where agents assume complementary personas. The OWASP Top 10 for LLM Applications \cite{owasp2025llm} and the newer OWASP Top 10 for Agentic Applications \cite{owasp2025agentic}---released in December 2025 with 10 agentic-specific risks (ASI01--ASI10) including Agent Goal Hijack and Unexpected Code Execution---identify prompt injection and excessive agency among the most critical risks. Yet current mitigation guidance addresses single-agent scenarios almost exclusively. As organizations move from experimental pilots to production deployments, the gap between available security tooling and the threat landscape continues to widen.
 
-The Cognitive Integrity Framework (CIF) introduced in Part 1 of this series addresses this gap by establishing formal foundations for securing multiagent AI operators against cognitive manipulation attacks. Part 1 defines a trust calculus with provably bounded delegation, defense composition algebras with multiplicative detection guarantees, and integrity properties that can be verified at runtime. This companion paper provides comprehensive simulation-based empirical validation: the CIF defense modules are implemented in production-ready Python (1,557 tests, 100\% pass rate) and evaluated through parametric architecture-aware simulation, demonstrating that CIF's theoretical constructs yield practical detection architectures across diverse multiagent patterns.
+The Cognitive Integrity Framework (CIF) introduced in Part 1 of this series addresses this gap by establishing formal foundations for securing multiagent AI operators against cognitive manipulation attacks. Part 1 defines a trust calculus with provably bounded delegation, defense composition algebras with multiplicative detection guarantees, and integrity properties that can be verified at runtime. This companion paper provides comprehensive simulation-based empirical validation: the CIF defense modules are implemented in production-ready Python (1,594 tests, 100\% pass rate) and evaluated through parametric architecture-aware simulation, demonstrating that CIF's theoretical constructs yield practical detection architectures across diverse multiagent patterns.
 
 ### Cognitive Manipulation Attacks: Definition
 
@@ -38,7 +38,7 @@ This paper addresses four primary research questions that together constitute a 
 
 RQ1: Do formally verified defense compositions achieve their theoretically predicted detection rates when implemented and tested against a realistic attack corpus? Part 1 establishes multiplicative composition guarantees; we test whether these bounds hold under implementation.
 
-RQ2: How does CIF detection performance vary across different multiagent architectural patterns? The six target architectures (hierarchical orchestrator, peer-to-peer, role-based, state machine, pipeline, and hybrid) represent the dominant deployment topologies, enabling systematic comparison.
+RQ2: How does CIF detection performance vary across different multiagent architectural patterns? The four target architectures (hierarchical orchestrator, autonomous mesh, role-based chain, and state-machine graph) represent the dominant deployment topologies, enabling systematic comparison.
 
 RQ3: What is the practical performance overhead of full CIF deployment, and does it remain within acceptable bounds for production use? We measure latency, memory, and computational cost across agent counts and attack loads.
 
@@ -65,7 +65,7 @@ Our analysis assumes a multiagent deliberation system where $n$ agents collabora
 \begin{enumerate}
 \item **Complete Implementation**: Defense mechanisms (firewall, sandbox, trust calculus, tripwires, Byzantine consensus) implemented in production-ready Python
 \item **Attack Corpus**: 950 attacks across four categories, enabling reproducible security evaluation
-\item **Cross-Architecture Validation**: Systematic evaluation across six production multiagent systems
+\item **Cross-Architecture Validation**: Systematic evaluation across four production multiagent systems
 \item **Statistical Analysis**: Significance testing, effect sizes, confidence intervals, and ablation studies
 \item **Scalability Characterization**: Performance overhead analysis across agent counts and attack loads
 \end{enumerate}
@@ -90,7 +90,7 @@ The remainder of this paper is structured as follows:
 
 **\Cref{sec:attack-corpus}**: Attack Corpus describes the 950-attack evaluation dataset with examples and generation methodology.
 
-**\Cref{sec:results}**: Experimental Validation details the experimental setup, six target architectures, evaluation protocol, and key findings.
+**\Cref{sec:results}**: Experimental Validation details the experimental setup, four target architectures, evaluation protocol, and key findings.
 
 **\Cref{sec:extended-results}**: Extended Results provides per-architecture breakdowns, statistical significance testing, sensitivity analysis, ablation studies, and scalability benchmarks.
 
@@ -100,7 +100,7 @@ The remainder of this paper is structured as follows:
 
 ### Supplementary Materials
 
-Six supplementary sections accompany this paper:
+Seven supplementary sections accompany this paper:
 
 - **S01: Notation Reference** --- Symbol definitions, conventions, and cross-references to Part 1 definitions (\cref{sec:notation-reference})
 - **S02: Detection Algorithms** --- Complete pseudocode for all detection mechanisms including cognitive firewall classification, sandbox promotion criteria, and tripwire monitoring (\cref{sec:detection-algorithms})
@@ -108,3 +108,4 @@ Six supplementary sections accompany this paper:
 - **S04: Model Checking** --- SPIN and NuSMV verification specifications for formal property validation (\cref{sec:model-checking-tools})
 - **S05: Framework API** --- Python API reference documentation for CIF integration (\cref{sec:framework-api})
 - **S06: Deployment Guide** --- Production deployment recommendations, operational checklists, and configuration guidance (\cref{sec:deployment})
+- **S07: Algorithm Pseudocode** --- Complete pseudocode for all six core CIF defense algorithms with implementation cross-references (\cref{sec:pseudocode-supplement})

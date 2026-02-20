@@ -9,121 +9,102 @@ from matplotlib.patches import Patch
 
 from ..style import FONTSIZE, SEMANTIC_COLORS, add_source_annotation, apply_style, save_figure
 
+logger = __import__('logging').getLogger(__name__)
+
 try:
     from ablation.minimal_config import MinimalConfigSearch
 except (ImportError, ModuleNotFoundError):
     MinimalConfigSearch = None
 
 
-def plot_ablation_study(output_dir: str | Path = "output/figures") -> plt.Figure:
-    """Generate ablation study figure."""
-    if isinstance(output_dir, str):
-        output_dir = Path(output_dir)
+def _load_ablation_data(output_dir: Path) -> tuple:
+    """Load ablation results from ablation_results.json."""
+    data_path = output_dir.parent / "data" / "ablation_results.json"
+    if not data_path.exists():
+        data_path = Path(__file__).resolve().parent.parent.parent.parent / "output" / "data" / "ablation_results.json"
+    with open(data_path, "r") as f:
+        data = json.load(f)
 
-    # Apply style
-    apply_style()
+    if "component_removal" in data:
+        removal_list = data["component_removal"]
+        if removal_list:
+            full_tpr = removal_list[0]["tpr"] + removal_list[0]["delta_tpr"]
+        else:
+            full_tpr = 0.965
 
-    if not output_dir.exists():
-        output_dir.mkdir(parents=True, exist_ok=True)
-    fig, ax = plt.subplots(figsize=(10, 6))
+        components = ["Full CIF"]
+        detection = [full_tpr]
+        delta = [0.0]
 
-    # Data logic (handling path relative to output_dir)
-    # output_dir is .../output/figures
-    # expected data path: .../output/data/ablation_study.json
-    # ensure output_dir.parent exists
-    data_path = output_dir.parent / "data" / "ablation_study.json"
-
-    if data_path.exists():
-        with open(data_path, "r") as f:
-            data = json.load(f)
-
-        # Sort keys to match expected order or just use them
-        keys = ["full_cif", "minus_firewall", "minus_sandbox", "minus_tripwires", "minus_invariants", "minus_trust_decay"]
-        # Ensure keys exist
-        keys = [k for k in keys if k in data]
-
+        for entry in removal_list:
+            label = f"− {entry['removed'].replace('_', ' ').title()}"
+            components.append(label)
+            detection.append(entry["tpr"])
+            delta.append(-abs(entry["delta_tpr"]))
+    else:
+        keys = [k for k in data.keys() if k != "metadata"]
         components = []
         detection = []
         delta = []
-
         for k in keys:
             label = "Full CIF" if k == "full_cif" else f"− {k.replace('minus_', '').replace('_', ' ').title()}"
             components.append(label)
             detection.append(data[k]["detection"])
             delta.append(data[k]["delta"])
 
-    else:
-        components = [
-            "Full CIF",
-            "− Firewall",
-            "− Sandbox",
-            "− Tripwires",
-            "− Invariants",
-            "− Trust Decay",
-        ]
-        detection = [0.94, 0.81, 0.88, 0.85, 0.89, 0.91]
-        delta = [0.0, -0.13, -0.06, -0.09, -0.05, -0.03]
+    logger.info("Loaded ablation data from %s", data_path)
+    return components, detection, delta
 
-    # Colorblind-friendly colors based on impact magnitude (using SEMANTIC mapping)
+
+def plot_ablation_study(output_dir: str | Path = "output/figures") -> plt.Figure:
+    """Generate ablation study figure from real ablation results."""
+    if isinstance(output_dir, str):
+        output_dir = Path(output_dir)
+
+    apply_style()
+    if not output_dir.exists():
+        output_dir.mkdir(parents=True, exist_ok=True)
+    fig, ax = plt.subplots(figsize=(10, 6))
+
+    components, detection, delta = _load_ablation_data(output_dir)
+
+    # Colorblind-friendly colors based on impact magnitude
     colors = []
     for d in delta:
         if d == 0:
-            colors.append(SEMANTIC_COLORS["firewall"])  # Blue for full/valid
+            colors.append(SEMANTIC_COLORS["firewall"])
         elif d <= -0.10:
-            colors.append(SEMANTIC_COLORS["tripwire"])  # Magenta - critical
+            colors.append(SEMANTIC_COLORS["tripwire"])
         elif d <= -0.07:
-            colors.append(SEMANTIC_COLORS["full_cif"])  # Orange - major
+            colors.append(SEMANTIC_COLORS["full_cif"])
         elif d <= -0.04:
-            colors.append(SEMANTIC_COLORS["invariants"])  # Yellow/Gold - moderate
+            colors.append(SEMANTIC_COLORS["invariants"])
         else:
-            colors.append(SEMANTIC_COLORS["sandbox"])  # Purple - minor
+            colors.append(SEMANTIC_COLORS["sandbox"])
 
     y_pos = np.arange(len(components))
     bars = ax.barh(y_pos, detection, color=colors, edgecolor="black", linewidth=1)
 
-    # Add detection values and deltas
     for i, (det, d) in enumerate(zip(detection, delta)):
-        ax.text(
-            det + 0.005, i, f"{det:.2f}", va="center", fontsize=10, fontweight="bold"
-        )
+        ax.text(det + 0.005, i, f"{det:.2f}", va="center", fontsize=10, fontweight="bold")
         if d != 0:
-            ax.text(
-                0.72,
-                i,
-                f"Δ = {d:+.2f}",
-                va="center",
-                fontsize=10,
-                color="#7F8C8D",
-                style="italic",
-            )
+            ax.text(0.72, i, f"Δ = {d:+.2f}", va="center", fontsize=10, color="#7F8C8D", style="italic")
 
     ax.set_yticks(y_pos)
     ax.set_yticklabels(components, fontsize=11)
     ax.set_xlabel("Detection Rate", fontsize=12)
-    ax.set_title(
-        "Ablation Study: Defense Component Contribution",
-        fontsize=14,
-        fontweight="bold",
-        pad=15,
-    )
+    ax.set_title("Ablation Study: Defense Component Contribution", fontsize=14, fontweight="bold", pad=15)
     ax.set_xlim(0.70, 1.0)
     ax.axvline(x=0.94, color=SEMANTIC_COLORS["firewall"], linestyle="--", alpha=0.5, linewidth=1.5)
     ax.grid(True, alpha=0.3, axis="x")
 
-    # Colorblind-friendly legend for impact severity
     legend_elements = [
         Patch(facecolor=SEMANTIC_COLORS["tripwire"], edgecolor="black", label="Critical (Δ ≤ −0.10)"),
-        Patch(
-            facecolor=SEMANTIC_COLORS["full_cif"], edgecolor="black", label="Major (−0.10 < Δ ≤ −0.07)"
-        ),
-        Patch(
-            facecolor=SEMANTIC_COLORS["invariants"], edgecolor="black", label="Moderate (−0.07 < Δ ≤ −0.04)"
-        ),
+        Patch(facecolor=SEMANTIC_COLORS["full_cif"], edgecolor="black", label="Major (−0.10 < Δ ≤ −0.07)"),
+        Patch(facecolor=SEMANTIC_COLORS["invariants"], edgecolor="black", label="Moderate (−0.07 < Δ ≤ −0.04)"),
         Patch(facecolor=SEMANTIC_COLORS["sandbox"], edgecolor="black", label="Minor (Δ > −0.04)"),
     ]
-    ax.legend(
-        handles=legend_elements, loc="lower right", fontsize=FONTSIZE["base"], title="Impact Severity"
-    )
+    ax.legend(handles=legend_elements, loc="lower right", fontsize=FONTSIZE["base"], title="Impact Severity")
 
     add_source_annotation(fig, "src/visualization/figures/ablation_study.py")
     save_figure(fig, "ablation_study", output_dir=output_dir)

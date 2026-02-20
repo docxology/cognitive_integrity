@@ -2,9 +2,13 @@
 
 Plots scalability data with a quadratic regression overlay on latency
 and a secondary y-axis for memory consumption.
+Reads data from scalability_data.json.
 """
 
 from __future__ import annotations
+
+import json
+from pathlib import Path
 
 import numpy as np
 from matplotlib.figure import Figure
@@ -16,20 +20,18 @@ from ..style import (
     save_figure,
 )
 
+logger = __import__('logging').getLogger(__name__)
 
-def _default_data():
-    """Generate realistic scalability measurements."""
-    rng = np.random.default_rng(42)
-    agents = np.array([2, 3, 5, 7, 10, 15, 20, 30, 50, 100])
 
-    # Latency: roughly quadratic with noise
-    latency = 5.0 + 0.02 * agents ** 2 + 1.5 * agents + rng.normal(0, 2, len(agents))
-    latency = np.maximum(latency, 5.0)
-
-    # Memory: roughly linear-ish with some overhead
-    memory = 50 + 8 * agents + 0.05 * agents ** 1.3 + rng.normal(0, 5, len(agents))
-    memory = np.maximum(memory, 50.0)
-
+def _load_data():
+    """Load scalability data from scalability_data.json."""
+    data_path = Path(__file__).resolve().parent.parent.parent.parent / "output" / "data" / "scalability_data.json"
+    with open(data_path, "r", encoding="utf-8") as f:
+        data = json.load(f)
+    agents = np.array(data["agent_counts"])
+    latency = np.array(data["latency_ms"])
+    memory = np.array(data["memory_mb"])
+    logger.info("Loaded scalability data: %d agent counts", len(agents))
     return agents, latency, memory
 
 
@@ -46,7 +48,7 @@ def plot_scalability(output_dir: str = "output/figures") -> Figure:
     Figure
     """
     fig, ax1 = create_figure()
-    agents, latency, memory = _default_data()
+    agents, latency, memory = _load_data()
 
     # Latency on left axis
     color_lat = COLORS["primary"]

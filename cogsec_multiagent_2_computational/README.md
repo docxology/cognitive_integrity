@@ -12,7 +12,7 @@ This paper provides **computational validation** of the Cognitive Integrity Fram
 
 - **Implementation**: Defense mechanisms (firewall, sandbox, trust, consensus)
 - **Attack Corpus**: 950 attacks across 4 categories
-- **Validation**: 6 production architectures (Claude Code, AutoGPT, CrewAI, LangGraph, MetaGPT, Camel)
+- **Validation**: 4 production architectures (Claude Code, AutoGPT, CrewAI, LangGraph)
 - **Analysis**: Statistical significance, ablation studies, scalability benchmarks
 
 ## Paper Series
@@ -90,7 +90,7 @@ uv run pytest tests/ -v --cov=src --cov-report=term-missing
 # Run formal validation (7 theorems)
 uv run python scripts/run_formal_validation.py --seed 42
 
-# Run full evaluation matrix (950 attacks x 6 architectures)
+# Run full evaluation matrix (950 attacks x 4 architectures)
 uv run python scripts/run_full_evaluation.py --seed 42
 
 # Run statistical analysis (H1/H2/H3 hypothesis tests)

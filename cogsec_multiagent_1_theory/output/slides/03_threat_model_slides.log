@@ -1,12 +1,12 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.3.8)  16 FEB 2026 11:14
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.3.8)  20 FEB 2026 14:27
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
-**/Users/4d/Documents/GitHub/template/projects/cognitive_integrity/cogsec_multi
-agent_1_theory/output/slides/03_threat_model_slides.tex
+**/Users/4d/Documents/GitHub/template/projects/cogsec_multiagent_1_theory/outpu
+t/slides/03_threat_model_slides.tex
 
-(/Users/4d/Documents/GitHub/template/projects/cognitive_integrity/cogsec_multia
-gent_1_theory/output/slides/03_threat_model_slides.tex
+(/Users/4d/Documents/GitHub/template/projects/cogsec_multiagent_1_theory/output
+/slides/03_threat_model_slides.tex
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
 (/usr/local/texlive/2025/texmf-dist/tex/latex/beamer/beamer.cls
@@ -876,8 +876,8 @@ File: bkm-dvipdfm.def 2023-12-10 v1.31 bookmark driver for dvipdfm (HO)
 (/usr/local/texlive/2025/texmf-dist/tex/latex/xurl/xurl.sty
 Package: xurl 2022/01/09 v 0.10 modify URL breaks
 )
-(/Users/4d/Documents/GitHub/template/projects/cognitive_integrity/cogsec_multia
-gent_1_theory/output/slides/03_threat_model_slides.aux)
+(/Users/4d/Documents/GitHub/template/projects/cogsec_multiagent_1_theory/output
+/slides/03_threat_model_slides.aux)
 \openout1 = `03_threat_model_slides.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 105.
@@ -1237,8 +1237,8 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
 
-(/Users/4d/Documents/GitHub/template/projects/cognitive_integrity/cogsec_multia
-gent_1_theory/output/slides/03_threat_model_slides.nav)
+(/Users/4d/Documents/GitHub/template/projects/cogsec_multiagent_1_theory/output
+/slides/03_threat_model_slides.nav)
 
 [1
 
@@ -1246,8 +1246,8 @@ gent_1_theory/output/slides/03_threat_model_slides.nav)
 \openout4 = `03_threat_model_slides.vrb'.
 
 
-(/Users/4d/Documents/GitHub/template/projects/cognitive_integrity/cogsec_multia
-gent_1_theory/output/slides/03_threat_model_slides.vrb
+(/Users/4d/Documents/GitHub/template/projects/cogsec_multiagent_1_theory/output
+/slides/03_threat_model_slides.vrb
 ! Undefined control sequence.
 l.5 (\cref
           {sec:adversary-classes}), characterize attack complexity
@@ -2020,8 +2020,8 @@ Overfull \vbox (5863.12004pt too high) detected at line 707
 \openout7 = `03_threat_model_slides.snm'.
 
 
-(/Users/4d/Documents/GitHub/template/projects/cognitive_integrity/cogsec_multia
-gent_1_theory/output/slides/03_threat_model_slides.aux)
+(/Users/4d/Documents/GitHub/template/projects/cogsec_multiagent_1_theory/output
+/slides/03_threat_model_slides.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
@@ -2033,13 +2033,12 @@ LaTeX Warning: There were undefined references.
  ) 
 Here is how much of TeX's memory you used:
  29697 strings out of 473832
- 604516 string characters out of 5729482
+ 604256 string characters out of 5729482
  1284188 words of memory out of 5000000
  52180 multiletter control sequences out of 15000+600000
  568244 words of font info for 114 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 128i,16n,123p,1125b,973s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 128i,16n,123p,1105b,973s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on /Users/4d/Documents/GitHub/template/projects/cognitive_integr
-ity/cogsec_multiagent_1_theory/output/slides/03_threat_model_slides.pdf (2 page
-s).
+Output written on /Users/4d/Documents/GitHub/template/projects/cogsec_multiagen
+t_1_theory/output/slides/03_threat_model_slides.pdf (2 pages).

@@ -2,7 +2,7 @@
 
 Tests cover:
 1. Base ArchitectureProfile creation and validation
-2. Each of 6 concrete adapters: profile properties, trust topology,
+2. Each of 4 concrete adapters: profile properties, trust topology,
    attack surface multiplier, agent roles, communication graphs
 3. Trust matrix mathematical properties (symmetry, bounds, diagonal)
 4. Delegation simulation with depth decay
@@ -17,11 +17,9 @@ import pytest
 
 from architectures.base import ArchitectureAdapter, ArchitectureProfile
 from architectures.autogpt import AutoGPTAdapter
-from architectures.camel import CamelAdapter
 from architectures.claude_code import ClaudeCodeAdapter
 from architectures.crewai import CrewAIAdapter
 from architectures.langgraph import LangGraphAdapter
-from architectures.metagpt import MetaGPTAdapter
 
 
 # -----------------------------------------------------------------------
@@ -450,130 +448,7 @@ class TestAutoGPTAdapter:
 
 
 # -----------------------------------------------------------------------
-# Section 5: CAMEL Adapter
-# -----------------------------------------------------------------------
-
-
-class TestCamelAdapter:
-    """Tests for the CamelAdapter (debate-style broadcast)."""
-
-    def setup_method(self):
-        self.adapter = CamelAdapter()
-
-    # -- Profile --
-
-    def test_profile_name(self):
-        assert self.adapter.profile.name == "CAMEL"
-
-    def test_profile_debate_topology(self):
-        assert self.adapter.profile.trust_topology == "debate"
-
-    def test_profile_no_central_orchestrator(self):
-        assert self.adapter.profile.has_central_orchestrator is False
-
-    def test_profile_broadcast_communication(self):
-        assert self.adapter.profile.communication_pattern == "broadcast"
-
-    def test_profile_agent_count_range(self):
-        assert self.adapter.profile.agent_count_range == (2, 6)
-
-    # -- Trust matrix --
-
-    def test_trust_matrix_two_debaters(self):
-        """Minimal 2-agent: proponent vs opponent, 0.6 mutual trust."""
-        T = self.adapter.create_trust_matrix(2)
-        assert T.shape == (2, 2)
-        assert T[0, 0] == 1.0
-        assert T[1, 1] == 1.0
-        assert T[0, 1] == pytest.approx(0.6)
-        assert T[1, 0] == pytest.approx(0.6)
-
-    def test_trust_matrix_with_judges(self):
-        """4-agent debate: 2 debaters + 2 judges."""
-        T = self.adapter.create_trust_matrix(4)
-        # Debater -> debater: 0.6
-        assert T[0, 1] == pytest.approx(0.6)
-        assert T[1, 0] == pytest.approx(0.6)
-        # Debater -> judge: 0.75
-        assert T[0, 2] == pytest.approx(0.75)
-        assert T[1, 3] == pytest.approx(0.75)
-        # Judge -> debater: 0.7
-        assert T[2, 0] == pytest.approx(0.7)
-        assert T[3, 1] == pytest.approx(0.7)
-        # Judge -> judge: 0.8
-        assert T[2, 3] == pytest.approx(0.8)
-        assert T[3, 2] == pytest.approx(0.8)
-
-    def test_trust_matrix_diagonal(self):
-        T = self.adapter.create_trust_matrix(4)
-        np.testing.assert_array_equal(np.diag(T), np.ones(4))
-
-    def test_trust_matrix_bounded(self):
-        T = self.adapter.create_trust_matrix(6)
-        assert np.all(T >= 0.0) and np.all(T <= 1.0)
-
-    # -- Agent roles --
-
-    def test_roles_two_agents(self):
-        roles = self.adapter.get_agent_roles(2)
-        assert roles == ["proponent", "opponent"]
-
-    def test_roles_with_judges(self):
-        roles = self.adapter.get_agent_roles(4)
-        assert roles == ["proponent", "opponent", "judge", "judge"]
-
-    def test_roles_count_matches(self):
-        for n in range(2, 7):
-            roles = self.adapter.get_agent_roles(n)
-            assert len(roles) == n
-
-    # -- Communication graph --
-
-    def test_broadcast_graph(self):
-        """Broadcast: all agents talk to all others (no self-loops)."""
-        G = self.adapter.get_communication_graph(4)
-        expected = np.ones((4, 4)) - np.eye(4)
-        np.testing.assert_array_equal(G, expected)
-
-    # -- Delegation --
-
-    def test_delegation_debater_to_debater(self):
-        assert self.adapter.simulate_delegation(0, 1, 1) == pytest.approx(0.6)
-
-    def test_delegation_debater_to_judge(self):
-        assert self.adapter.simulate_delegation(0, 2, 1) == pytest.approx(0.75)
-
-    def test_delegation_judge_to_debater(self):
-        assert self.adapter.simulate_delegation(2, 0, 1) == pytest.approx(0.7)
-
-    def test_delegation_judge_to_judge(self):
-        assert self.adapter.simulate_delegation(2, 3, 1) == pytest.approx(0.8)
-
-    def test_delegation_self(self):
-        assert self.adapter.simulate_delegation(0, 0, 1) == 1.0
-
-    def test_delegation_depth_zero(self):
-        assert self.adapter.simulate_delegation(0, 1, 0) == pytest.approx(0.0)
-
-    # -- Attack surface --
-
-    def test_attack_surface_neutral(self):
-        """Debate provides natural verification -- neutral surface."""
-        assert self.adapter.get_attack_surface_multiplier() == pytest.approx(1.0)
-
-    # -- Validation --
-
-    def test_rejects_single_agent(self):
-        with pytest.raises(ValueError, match="supports"):
-            self.adapter.create_trust_matrix(1)
-
-    def test_rejects_too_many_agents(self):
-        with pytest.raises(ValueError, match="supports"):
-            self.adapter.create_trust_matrix(7)
-
-
-# -----------------------------------------------------------------------
-# Section 6: CrewAI Adapter
+# Section 5: CrewAI Adapter
 # -----------------------------------------------------------------------
 
 
@@ -722,7 +597,7 @@ class TestCrewAIAdapter:
 
 
 # -----------------------------------------------------------------------
-# Section 7: LangGraph Adapter
+# Section 6: LangGraph Adapter
 # -----------------------------------------------------------------------
 
 
@@ -874,155 +749,7 @@ class TestLangGraphAdapter:
 
 
 # -----------------------------------------------------------------------
-# Section 8: MetaGPT Adapter
-# -----------------------------------------------------------------------
-
-
-class TestMetaGPTAdapter:
-    """Tests for the MetaGPTAdapter (SOP-driven chain)."""
-
-    def setup_method(self):
-        self.adapter = MetaGPTAdapter()
-
-    # -- Profile --
-
-    def test_profile_name(self):
-        assert self.adapter.profile.name == "MetaGPT"
-
-    def test_profile_sop_topology(self):
-        assert self.adapter.profile.trust_topology == "sop"
-
-    def test_profile_has_central_orchestrator(self):
-        assert self.adapter.profile.has_central_orchestrator is True
-
-    def test_profile_chain_communication(self):
-        assert self.adapter.profile.communication_pattern == "chain"
-
-    def test_profile_delegation_depth_3(self):
-        assert self.adapter.profile.delegation_depth == 3
-
-    def test_profile_agent_count_range(self):
-        assert self.adapter.profile.agent_count_range == (5, 8)
-
-    # -- Trust matrix --
-
-    def test_trust_matrix_adjacent_0_85(self):
-        T = self.adapter.create_trust_matrix(5)
-        for i in range(4):
-            assert T[i, i + 1] == pytest.approx(0.85)
-            assert T[i + 1, i] == pytest.approx(0.85)
-
-    def test_trust_matrix_distance_2_is_0_65(self):
-        T = self.adapter.create_trust_matrix(5)
-        assert T[0, 2] == pytest.approx(0.65)
-        assert T[2, 0] == pytest.approx(0.65)
-
-    def test_trust_matrix_distance_3_plus_is_0_45(self):
-        T = self.adapter.create_trust_matrix(5)
-        assert T[0, 3] == pytest.approx(0.45)
-        assert T[0, 4] == pytest.approx(0.45)
-
-    def test_trust_matrix_symmetric(self):
-        """SOP trust is symmetric: T[i,j] == T[j,i] for all i,j."""
-        T = self.adapter.create_trust_matrix(8)
-        np.testing.assert_array_equal(T, T.T)
-
-    def test_trust_matrix_diagonal(self):
-        T = self.adapter.create_trust_matrix(5)
-        np.testing.assert_array_equal(np.diag(T), np.ones(5))
-
-    def test_trust_matrix_bounded(self):
-        T = self.adapter.create_trust_matrix(8)
-        assert np.all(T >= 0.0) and np.all(T <= 1.0)
-
-    # -- Agent roles --
-
-    def test_roles_from_sop_chain(self):
-        """Roles assigned from the SOP role chain."""
-        roles = self.adapter.get_agent_roles(5)
-        assert roles == [
-            "product_manager", "architect", "engineer",
-            "qa_engineer", "designer",
-        ]
-
-    def test_roles_full_8(self):
-        roles = self.adapter.get_agent_roles(8)
-        expected = [
-            "product_manager", "architect", "engineer",
-            "qa_engineer", "designer", "project_lead",
-            "tech_writer", "devops",
-        ]
-        assert roles == expected
-
-    def test_roles_count(self):
-        for n in range(5, 9):
-            roles = self.adapter.get_agent_roles(n)
-            assert len(roles) == n
-
-    # -- Communication graph --
-
-    def test_sop_chain_neighbors(self):
-        G = self.adapter.get_communication_graph(5)
-        for i in range(4):
-            assert G[i, i + 1] == 1.0
-            assert G[i + 1, i] == 1.0
-
-    def test_sop_pm_connects_to_all(self):
-        """Product Manager (agent 0) has direct lines to all roles."""
-        G = self.adapter.get_communication_graph(5)
-        np.testing.assert_array_equal(G[0, 1:], np.ones(4))
-        np.testing.assert_array_equal(G[1:, 0], np.ones(4))
-
-    def test_communication_no_self_loops(self):
-        G = self.adapter.get_communication_graph(5)
-        np.testing.assert_array_equal(np.diag(G), np.zeros(5))
-
-    # -- Delegation --
-
-    def test_delegation_self(self):
-        assert self.adapter.simulate_delegation(0, 0, 3) == 1.0
-
-    def test_delegation_adjacent(self):
-        # SOP distance=1, base=0.85, hops=1 -> 0.85 * 0.78^0 = 0.85
-        result = self.adapter.simulate_delegation(0, 1, 3)
-        assert result == pytest.approx(0.85)
-
-    def test_delegation_distance_2(self):
-        # SOP distance=2, base=0.65, hops=2 -> 0.65 * 0.78^1 = 0.507
-        result = self.adapter.simulate_delegation(0, 2, 3)
-        assert result == pytest.approx(0.65 * 0.78)
-
-    def test_delegation_distance_3(self):
-        # SOP distance=3, base=0.45, hops=3 -> 0.45 * 0.78^2 = 0.27378
-        result = self.adapter.simulate_delegation(0, 3, 3)
-        assert result == pytest.approx(0.45 * 0.78**2)
-
-    def test_delegation_capped_at_depth(self):
-        """Delegation beyond max depth uses capped hops."""
-        # SOP distance=4, exceeds max_depth=3, effective_hops=3
-        result = self.adapter.simulate_delegation(0, 4, 3)
-        # base=0.45 (distance >= 3), effective_hops=3 -> 0.45 * 0.78^2
-        assert result == pytest.approx(0.45 * 0.78**2)
-
-    # -- Attack surface --
-
-    def test_attack_surface_reduced(self):
-        assert self.adapter.get_attack_surface_multiplier() == pytest.approx(0.8)
-        assert self.adapter.get_attack_surface_multiplier() < 1.0
-
-    # -- Validation --
-
-    def test_rejects_too_few_agents(self):
-        with pytest.raises(ValueError, match="supports"):
-            self.adapter.create_trust_matrix(4)
-
-    def test_rejects_too_many_agents(self):
-        with pytest.raises(ValueError, match="supports"):
-            self.adapter.create_trust_matrix(9)
-
-
-# -----------------------------------------------------------------------
-# Section 9: Cross-architecture comparison capabilities
+# Section 7: Cross-architecture comparison capabilities
 # -----------------------------------------------------------------------
 
 
@@ -1032,10 +759,8 @@ class TestCrossArchitectureComparison:
     ALL_ADAPTERS = [
         ClaudeCodeAdapter,
         AutoGPTAdapter,
-        CamelAdapter,
         CrewAIAdapter,
         LangGraphAdapter,
-        MetaGPTAdapter,
     ]
 
     def _instances(self):
@@ -1117,18 +842,14 @@ class TestCrossArchitectureComparison:
         """Architectures with central orchestrators have it flagged."""
         cc = ClaudeCodeAdapter()
         lg = LangGraphAdapter()
-        mg = MetaGPTAdapter()
         assert cc.profile.has_central_orchestrator is True
         assert lg.profile.has_central_orchestrator is True
-        assert mg.profile.has_central_orchestrator is True
 
     def test_flat_architectures_no_orchestrator(self):
         """Flat/debate architectures do not have a central orchestrator."""
         agpt = AutoGPTAdapter()
-        camel = CamelAdapter()
         crew = CrewAIAdapter()
         assert agpt.profile.has_central_orchestrator is False
-        assert camel.profile.has_central_orchestrator is False
         assert crew.profile.has_central_orchestrator is False
 
     def test_average_trust_varies_by_topology(self):
@@ -1142,7 +863,7 @@ class TestCrossArchitectureComparison:
             # Mean of off-diagonal entries
             mask = ~np.eye(n, dtype=bool)
             means[adapter.profile.name] = T[mask].mean()
-        # At least 3 distinct mean trust values among the 6 architectures
+        # At least 3 distinct mean trust values among the 4 architectures
         unique_means = set(round(v, 4) for v in means.values())
         assert len(unique_means) >= 3, (
             f"Expected diverse trust profiles, got {unique_means}"
@@ -1177,7 +898,7 @@ class TestCrossArchitectureComparison:
 
 
 # -----------------------------------------------------------------------
-# Section 10: Adapter creation and defense integration
+# Section 8: Adapter creation and defense integration
 # -----------------------------------------------------------------------
 
 
@@ -1185,28 +906,26 @@ class TestAdapterCreationAndIntegration:
     """Test adapter instantiation patterns and integration with trust matrices."""
 
     def test_all_adapters_instantiate(self):
-        """All 6 adapters can be instantiated without arguments."""
+        """All 4 adapters can be instantiated without arguments."""
         adapters = [
             AutoGPTAdapter(),
-            CamelAdapter(),
             ClaudeCodeAdapter(),
             CrewAIAdapter(),
             LangGraphAdapter(),
-            MetaGPTAdapter(),
         ]
-        assert len(adapters) == 6
+        assert len(adapters) == 4
 
     def test_adapter_profile_is_architecture_profile(self):
         """All adapter profiles are ArchitectureProfile instances."""
-        for cls in [AutoGPTAdapter, CamelAdapter, ClaudeCodeAdapter,
-                    CrewAIAdapter, LangGraphAdapter, MetaGPTAdapter]:
+        for cls in [AutoGPTAdapter, ClaudeCodeAdapter,
+                    CrewAIAdapter, LangGraphAdapter]:
             adapter = cls()
             assert isinstance(adapter.profile, ArchitectureProfile)
 
     def test_adapter_is_architecture_adapter(self):
         """All adapters are ArchitectureAdapter subclasses."""
-        for cls in [AutoGPTAdapter, CamelAdapter, ClaudeCodeAdapter,
-                    CrewAIAdapter, LangGraphAdapter, MetaGPTAdapter]:
+        for cls in [AutoGPTAdapter, ClaudeCodeAdapter,
+                    CrewAIAdapter, LangGraphAdapter]:
             adapter = cls()
             assert isinstance(adapter, ArchitectureAdapter)
 
@@ -1259,8 +978,6 @@ class TestAdapterCreationAndIntegration:
             "AutoGPT": AutoGPTAdapter(),
             "CrewAI": CrewAIAdapter(),
             "LangGraph": LangGraphAdapter(),
-            "MetaGPT": MetaGPTAdapter(),
-            "CAMEL": CamelAdapter(),
         }
         risks = {
             name: base_risk * a.get_attack_surface_multiplier()
@@ -1277,13 +994,13 @@ class TestAdapterCreationAndIntegration:
         Defense integration: compute effective trust along a multi-hop
         delegation path.
         """
-        adapter = MetaGPTAdapter()
-        # PM -> Architect -> Engineer (SOP chain)
-        pm_to_arch = adapter.simulate_delegation(0, 1, 1)
-        pm_to_eng = adapter.simulate_delegation(0, 2, 2)
+        adapter = ClaudeCodeAdapter()
+        # Orchestrator -> Worker1 -> Worker2 (hub-spoke chain)
+        direct = adapter.simulate_delegation(0, 1, 1)
+        transitive = adapter.simulate_delegation(0, 2, 2)
 
-        # Direct PM->Architect trust should exceed transitive PM->Engineer
-        assert pm_to_arch > pm_to_eng
+        # Direct delegation should exceed transitive delegation
+        assert direct > transitive
 
     def test_role_based_trust_segmentation(self):
         """Roles enable trust segmentation for defense policies.
@@ -1308,7 +1025,7 @@ class TestAdapterCreationAndIntegration:
 
 
 # -----------------------------------------------------------------------
-# Section 11: Architecture-specific configuration validation
+# Section 9: Architecture-specific configuration validation
 # -----------------------------------------------------------------------
 
 
@@ -1331,13 +1048,6 @@ class TestArchitectureSpecificValidation:
         assert T.shape == (1, 1)
         assert T[0, 0] == 1.0
 
-    def test_camel_minimum_two_debaters(self):
-        """CAMEL requires at least proponent and opponent."""
-        adapter = CamelAdapter()
-        T = adapter.create_trust_matrix(2)
-        roles = adapter.get_agent_roles(2)
-        assert "proponent" in roles
-        assert "opponent" in roles
 
     def test_crewai_minimum_three_roles(self):
         """CrewAI requires at least 3 agents for meaningful role separation."""
@@ -1346,14 +1056,6 @@ class TestArchitectureSpecificValidation:
         roles = adapter.get_agent_roles(3)
         assert len(set(roles)) == 3  # 3 distinct roles
 
-    def test_metagpt_minimum_five_sop_roles(self):
-        """MetaGPT requires at least 5 agents for the core SOP chain."""
-        adapter = MetaGPTAdapter()
-        T = adapter.create_trust_matrix(5)
-        roles = adapter.get_agent_roles(5)
-        expected_core = ["product_manager", "architect", "engineer",
-                         "qa_engineer", "designer"]
-        assert roles == expected_core
 
     def test_langgraph_scales_to_50(self):
         """LangGraph supports up to 50 agents for large state machines."""
@@ -1376,10 +1078,8 @@ class TestArchitectureSpecificValidation:
         configs = [
             (ClaudeCodeAdapter, 2, 20),
             (AutoGPTAdapter, 1, 5),
-            (CamelAdapter, 2, 6),
             (CrewAIAdapter, 3, 10),
             (LangGraphAdapter, 2, 50),
-            (MetaGPTAdapter, 5, 8),
         ]
         for cls, lo, hi in configs:
             adapter = cls()

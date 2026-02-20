@@ -38,34 +38,88 @@ Part 2 of the **Cognitive Security for Multiagent Operators** series. This proje
 
 ```
 cogsec_multiagent_2_computational/
-├── src/                        # Defense mechanism implementations
-│   ├── __init__.py
-│   ├── trust.py                # Trust calculus
-│   ├── firewall.py             # Cognitive firewall
-│   ├── consensus.py            # Byzantine consensus
-│   ├── tripwire.py             # Canary detection
-│   ├── provenance.py           # Provenance tracking
-│   ├── detection.py            # Anomaly detection
-│   ├── invariants.py           # Behavioral invariants
-│   └── sandbox.py              # Belief sandboxing
-├── scripts/                    # Figure generation (18 scripts)
-│   ├── 01_attack_surface_figure.py
-│   ├── 02_trust_decay_figure.py
-│   ├── ...
-│   ├── 06_generate_data.py     # Synthetic data generation
-│   └── verify_manuscript.py    # Manuscript validation
-├── tests/                      # Test suite (90%+ coverage)
+├── src/                        # Source code
+│   ├── core/                   # Defense mechanism implementations
+│   │   ├── firewall.py         # Cognitive firewall (multi-stage classifier)
+│   │   ├── sandbox.py          # Belief sandboxing (TTL, promotion)
+│   │   ├── trust.py            # Trust calculus (bounded delegation + decay)
+│   │   ├── consensus.py        # Byzantine consensus (n ≥ 3f+1)
+│   │   ├── tripwire.py         # Canary belief monitoring
+│   │   ├── provenance.py       # Information flow / taint tracking
+│   │   ├── detection.py        # Drift & anomaly detection
+│   │   ├── invariants.py       # Behavioral invariant checking
+│   │   ├── batch_detection.py  # Batch message analysis
+│   │   └── online_detection.py # Streaming anomaly detection
+│   ├── architectures/          # Target architecture adapters
+│   │   ├── base.py             # Abstract base class
+│   │   ├── claude_code.py      # Hierarchical (Claude Code)
+│   │   ├── autogpt.py          # Autonomous + plugins (AutoGPT)
+│   │   ├── crewai.py           # Role-based (CrewAI)
+│   │   ├── langgraph.py        # Graph-based (LangGraph)
+│   │   ├── metagpt.py          # SOP-driven (MetaGPT)
+│   │   └── camel.py            # Debate (Camel)
+│   ├── attacks/                # Attack corpus generation
+│   │   ├── corpus.py           # AttackCorpus.generate()
+│   │   ├── templates.py        # Attack prompt templates
+│   │   ├── validation.py       # Attack validity checks
+│   │   └── generators/         # Per-category generators
+│   ├── evaluation/             # Experiment orchestration & metrics
+│   ├── composition/            # Defense composition algebra
+│   ├── colony/                 # Colony benchmarks
+│   ├── statistics/             # Statistical analysis suite
+│   ├── formal/                 # Formal verification (theorem registry)
+│   ├── agents/                 # Simulated agent framework
+│   ├── ablation/               # Ablation study module
+│   ├── visualization/          # Figure generation
+│   ├── manuscript/             # Manuscript verifier & LaTeX converter
+│   ├── utils/                  # Shared types & helpers
+│   └── data/                   # Data loaders
+├── scripts/                    # Entry-point scripts (15)
+│   ├── run_full_evaluation.py  # Full CIF pipeline (6 archs × 950 attacks)
+│   ├── run_statistical_analysis.py  # Hypothesis tests & effect sizes
+│   ├── run_ablation.py         # Component ablation study
+│   ├── run_colony_benchmarks.py     # Colony-level benchmarks
+│   ├── run_sensitivity_analysis.py  # Parameter sensitivity sweeps
+│   ├── run_multi_seed.py       # Multi-seed stability analysis
+│   ├── run_cross_validation.py # K-fold cross-validation
+│   ├── run_formal_validation.py     # Formal theorem verification
+│   ├── run_llm_demo.py         # Live LLM integration demo
+│   ├── verify_formal_specs.py  # SMV/PML/TLA+ spec generation
+│   ├── verify_manuscript.py    # Manuscript consistency checks
+│   ├── generate_all_figures.py # All manuscript figures → output/figures/
+│   ├── generate_all_tables.py  # All manuscript tables
+│   ├── generate_all_data.py    # All experimental data → output/data/
+│   └── convert_latex_tables.py # LaTeX → Markdown table conversion
+├── tests/                      # Test suite (26 test files, 90%+ coverage)
 │   ├── conftest.py
-│   ├── test_consensus.py
-│   ├── test_detection.py
+│   ├── test_trust.py
 │   ├── test_firewall.py
-│   ├── test_invariants.py
-│   ├── test_provenance.py
-│   ├── test_sandbox.py
+│   ├── test_consensus.py
 │   ├── test_tripwire.py
-│   └── test_trust.py
-├── manuscript/                 # Paper content
-└── output/                     # Generated figures and results
+│   ├── test_provenance.py
+│   ├── test_detection.py
+│   ├── test_invariants.py
+│   ├── test_sandbox.py
+│   ├── test_attacks.py
+│   ├── test_architectures.py
+│   ├── test_colony.py
+│   ├── test_composition.py
+│   ├── test_evaluation.py
+│   ├── test_statistics.py
+│   ├── test_formal.py
+│   ├── test_ablation.py
+│   ├── test_agents.py
+│   ├── test_visualization.py
+│   ├── test_data_utils.py
+│   ├── test_corner_cases.py
+│   ├── test_integration.py
+│   ├── test_firewall_extended.py
+│   ├── test_batch_detection.py
+│   └── test_online_detection.py
+├── manuscript/                 # Paper content (26 files)
+└── output/                     # Generated figures and data
+    ├── figures/                # *.pdf figures
+    └── data/                   # *.json results
 ```
 
 ## Testing
@@ -81,15 +135,27 @@ uv run pytest tests/test_firewall.py -v
 # Run formal validation (7 theorems)
 uv run python scripts/run_formal_validation.py --seed 42
 
-# Run all 9 entry scripts
+# Run analysis scripts
 uv run python scripts/run_full_evaluation.py --seed 42
 uv run python scripts/run_statistical_analysis.py --seed 42
 uv run python scripts/run_ablation.py --seed 42
 uv run python scripts/run_colony_benchmarks.py --seed 42
 uv run python scripts/run_sensitivity_analysis.py --seed 42
+uv run python scripts/run_multi_seed.py --seed 42
+uv run python scripts/run_cross_validation.py --seed 42
+
+# Generate outputs
 uv run python scripts/generate_all_data.py --seed 42
 uv run python scripts/generate_all_figures.py
 uv run python scripts/generate_all_tables.py
+
+# Verification
+uv run python scripts/verify_formal_specs.py
+uv run python scripts/verify_manuscript.py
+uv run python scripts/convert_latex_tables.py
+
+# LLM demo (requires Ollama)
+uv run python scripts/run_llm_demo.py --provider ollama --model gemma3:4b
 ```
 
 ## Notation Reference
@@ -108,14 +174,17 @@ Key symbols used in this paper:
 ## Module Dependencies
 
 ```
-firewall.py ──> detection.py (anomaly scoring)
-consensus.py ──> (standalone)
-trust.py ──> (standalone, uses numpy)
-tripwire.py ──> (standalone, uses numpy)
-provenance.py ──> (standalone)
-invariants.py ──> (standalone)
-sandbox.py ──> (standalone)
-detection.py ──> (standalone, uses numpy)
+core/firewall.py ──> core/detection.py (anomaly scoring)
+core/consensus.py ──> (standalone)
+core/trust.py ──> (standalone, uses numpy)
+core/tripwire.py ──> (standalone, uses numpy)
+core/provenance.py ──> (standalone)
+core/invariants.py ──> (standalone)
+core/sandbox.py ──> (standalone)
+core/detection.py ──> (standalone, uses numpy)
+composition/adapters.py ──> core/* (wraps all defense modules)
+composition/pipeline.py ──> utils/types (DefenseResult)
+evaluation/runner.py ──> core/*, attacks/*, architectures/*
 ```
 
 ## Security Considerations

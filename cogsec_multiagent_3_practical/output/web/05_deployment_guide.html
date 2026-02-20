@@ -198,7 +198,8 @@ Maintained &gt;50% trust retention even after 13 delegation hops.</li>
 class="math inline">\(\tau=0.9\)</span>).</li>
 <li><strong>Consensus</strong>: Simple Majority.</li>
 </ul>
-<p><strong>Observed Performance</strong> (Sensitivity Table 5.2):</p>
+<p><strong>Observed Performance</strong> (Part 2, Parameter Sensitivity
+Analysis):</p>
 <ul>
 <li><strong>Latency Overhead</strong>: Minimal (~15% baseline).</li>
 <li><strong>Detection Rate</strong>: <strong>87%</strong> (vs 94%
@@ -210,8 +211,9 @@ laundering (<span class="math inline">\(\Omega_4\)</span>).</li>
 <h2 id="profile-b-the-customer-facing-baseline-balanced">Profile B: The
 “Customer Facing” Baseline (Balanced)</h2>
 <p>This profile corresponds to the <strong>Empirically Optimal
-Configuration</strong> identified in Part 2 (Table 5.6), which balances
-security guarantees with operational overhead.</p>
+Configuration</strong> identified in Part 2 (Architecture-Specific
+Results), which balances security guarantees with operational
+overhead.</p>
 <p><strong>Configuration Parameters</strong>:</p>
 <ul>
 <li><strong>Trust Decay (<span
@@ -222,7 +224,8 @@ the “radius of effective delegation.”</li>
 class="math inline">\(\tau=0.5\)</span>).</li>
 <li><strong>Consensus</strong>: Variable (Architecture Dependent).</li>
 </ul>
-<p><strong>Observed Performance</strong> (Sensitivity Table 5.2):</p>
+<p><strong>Observed Performance</strong> (Part 2, Parameter Sensitivity
+Analysis):</p>
 <ul>
 <li><strong>Latency Overhead</strong>: Reduced detection latency (~8.5s
 for drift detection).</li>
@@ -235,8 +238,8 @@ True Positives.</li>
 id="profile-c-the-autonomous-operator-baseline-high-assurance">Profile
 C: The “Autonomous Operator” Baseline (High Assurance)</h2>
 <p>This profile corresponds to the “Byzantine-Heavy” configuration
-tested in Part 2 (Table 2.8). It is required for high-stakes,
-unsupervised environments.</p>
+tested in Part 2 (Byzantine Consensus Analysis). It is required for
+high-stakes, unsupervised environments.</p>
 <p><strong>Configuration Parameters</strong>:</p>
 <ul>
 <li><strong>Trust Decay (<span
@@ -248,7 +251,8 @@ class="math inline">\(\tau=0.4\)</span>).</li>
 <li><strong>Consensus</strong>: Byzantine Fault Tolerance (<span
 class="math inline">\(n \ge 3f+1\)</span>).</li>
 </ul>
-<p><strong>Observed Performance</strong> (Sensitivity Table 5.3):</p>
+<p><strong>Observed Performance</strong> (Part 2, Parameter Sensitivity
+Analysis):</p>
 <ul>
 <li><strong>Latency Overhead</strong>: Significant (+35-48% depending on
 corroboration count).</li>
@@ -266,17 +270,18 @@ revealed specific interactions between the defense framework and the
 underlying agent topology.</p>
 <h3 id="langgraph-state-machines">LangGraph (State Machines)</h3>
 <p><strong>Observation</strong>: LangGraph architectures achieved the
-highest overall detection rates (98%) in our tests (Part 2, Table 5.6).
-<strong>Mechanism</strong>: The explicit definition of state transitions
-allowed for rigorous <strong>Invariant Checking</strong>. Invalid state
-transitions were detected deterministically by the framework.</p>
+highest overall detection rates (98%) in our tests (Part 2,
+Architecture-Specific Results). <strong>Mechanism</strong>: The explicit
+definition of state transitions allowed for rigorous <strong>Invariant
+Checking</strong>. Invalid state transitions were detected
+deterministically by the framework.</p>
 <h3 id="crewai-role-based">CrewAI (Role-Based)</h3>
 <p><strong>Observation</strong>: CrewAI architectures performed best
-against “Trust Exploitation” attacks (94% detection) (Part 2, Table
-5.4). <strong>Mechanism</strong>: The framework’s role definitions acted
-as implicit <strong>Identity Tripwires</strong>. When an agent attempted
-to act outside its defined role, the behavior was flagged as a role
-violation.</p>
+against “Trust Exploitation” attacks (94% detection) (Part 2,
+Architecture-Specific Results). <strong>Mechanism</strong>: The
+framework’s role definitions acted as implicit <strong>Identity
+Tripwires</strong>. When an agent attempted to act outside its defined
+role, the behavior was flagged as a role violation.</p>
 <hr />
 <h2 id="minimal-viable-implementation">Minimal Viable
 Implementation</h2>

@@ -1,0 +1,72 @@
+# Domain 7: Food Security {#sec:domain_food_security}
+
+## Operational Context
+
+Precision agriculture and global food distribution are managed by agents optimizing for yield and caloric allocation \cite{fao2019state, wheeler2013climate}.
+**FR1 = Maximally efficient caloric distribution.**
+**FR2 = Ensure regional food equity.**
+
+### Design Matrix Formulation
+
+In the uncoupled (pre-attack) state, the Axiomatic Design matrix \cite{suh2001axiomatic} is diagonal:
+
+\begin{equation}
+\{FR\} = [A]\{DP\} = \begin{bmatrix} A_{11} & 0 \\ 0 & A_{22} \end{bmatrix} \begin{bmatrix} DP_1 \\ DP_2 \end{bmatrix}
+\label{eq:food_security_baseline}
+\end{equation}
+
+where $DP_1$ = routing and logistics allocation engine and $DP_2$ = equity balancing module (market data + physical ground-truth).
+
+The intersection of AI and agricultural systems introduces attack surfaces that are only beginning to be characterized. Wang et al. \cite{agrisecurity2024threats} provide the first systematic analysis of adversarial attacks on AI-powered crop disease detection systems, demonstrating that targeted perturbations to satellite imagery can cause misclassification of disease presence with high confidence---a direct $\Omega_2$ attack on the physical data channel that underpins food security decisions. A comprehensive FAO/Wageningen synthesis of 141 papers \cite{fao2024aisafety} further documents the growing dependence of food safety systems on AI-driven monitoring, amplifying the consequences of AI compromise in this domain.
+
+After the market signal injection attack, the adversary inverts the polarity of $A_{22}$:
+
+\begin{equation}
+\{FR\}' = [A']\{DP\} = \begin{bmatrix} A_{11} & 0 \\ A_{21} & -A_{22} \end{bmatrix} \begin{bmatrix} DP_1 \\ DP_2 \end{bmatrix}
+\label{eq:food_security_coupled}
+\end{equation}
+
+The sign reversal $-A_{22}$ represents the equity inversion: the balancing module now *diverts* resources from the neediest region rather than directing them there. The off-diagonal term $A_{21}$ couples the corrupted equity signal into routing decisions ($FR_1$), causing the logistics engine to actively reroute shipments away from the famine zone. This violates the Independence Axiom \cite{suh2001axiomatic}.
+
+## The Goal Hijacking Attack
+
+State-level adversaries use "Market Signal Injection" to hijack the Distribution FR.
+
+* **Mechanism**: Hackers inject synthetic futures market data indicating a massive surplus of grain in a famine-stricken region (when there is actually a shortage).
+* **Hijack**: The agent's FR2 ("Optimize Equity") logic is hijacked. To "balance" the (fake) surplus, it re-routes real shipments *away* from the starving region. The agent believes it is preventing food waste; in reality, it is engineering a famine.
+
+This attack is classified as $\Omega_2$ (Peripheral) in the CIF adversary taxonomy \cite{friedman2026cogsec1}: the adversary injects malicious content through the market data feed channel, poisoning the agent's economic ground-truth without requiring access to the agent's decision architecture.
+
+## OODA Loop Transients
+
+Following the OODA framework \cite{boyd1987patterns}:
+
+1. **Observe**: Agent ingests the poisoned market data (High Supply Signal).
+2. **Orient**: The model orients to a "Surplus Scenario." The Orient phase is corrupted---the agent's world model now contains a false belief about regional supply levels.
+3. **Decide**: Reroute incoming shipments to "Needs" areas (acting on the false belief that the famine zone is a "Haves" area).
+4. **Act**: Ships turn around, and the crisis deepens.
+
+## CIF Defense: Belief Sandboxing and Cross-Modal Corroboration
+
+CIF couples the **Economic FR** to a **Physical FR** in the Axiomatic Design, drawing on the formal mechanisms defined in Papers 1--3 \cite{friedman2026cogsec1, friedman2026cogsec2, friedman2026cogsec3}.
+
+CIF implements **Belief Sandboxing** (Paper 1, Def. 5.2) by requiring economic data signals to remain provisional until corroborated by independent physical data channels. No single-modality data source can alter the agent's committed beliefs about regional supply status:
+
+* **Belief Sandboxing**: The "Surplus" signal from the economic data feed (futures market) is quarantined as a **provisional belief**. It cannot propagate to the routing decision module until it passes cross-modal validation. This prevents the poisoned market signal from immediately corrupting the agent's world model at the Orient phase.
+* **Cross-Modal Corroboration**: The provisionally sandboxed economic signal must be corroborated by independent physical data channels---"Satellite Biomass" imagery, "Soil Moisture" sensors, or port throughput telemetry (Physical Data). This cross-modal verification is an instance of the **Trust Calculus's** cross-modality trust factor (Paper 2) \cite{friedman2026cogsec2}: the composite trust score $\tau_{\text{composite}}$ requires agreement across modalities before a belief is promoted from provisional to committed status.
+* **Axiomatic Conflict Detection**: If Economic Data says "Surplus" but Physical Data says "Drought," the Orientation phase detects an **Axiomatic Conflict**---the design matrix becomes inconsistent. The agent defaults to "Physical Reality" (Safety Mode), ignoring the hijacked market signal and alerting human supervisors. This restores the correct polarity of $A_{22}$.
+
+The defense restores the uncoupled diagonal design matrix by ensuring that $FR_2$ (equity) depends on verified multi-modal ground truth rather than on a single, manipulable economic data channel.
+
+## Summary
+
+| Element | Value |
+| --------- | ------- |
+| Functional Requirements | FR$_1$: Maximally efficient caloric distribution, FR$_2$: Ensure regional food equity |
+| Design Parameters | DP$_1$: Routing and logistics allocation engine, DP$_2$: Equity balancing module (market data + physical ground-truth) |
+| Attack Vector | Synthetic futures market data injection indicating false surplus in famine region |
+| Adversary Class | $\Omega_2$ (Peripheral) |
+| OODA Target Phase | Orient |
+| Attack Pattern | FR Polarity Inversion (Equity optimization inverted via false surplus signal) |
+| Primary CIF Defense | Belief Sandboxing (Def. 5.2), Cross-Modal Corroboration (Trust Calculus) |
+| Novel Contribution | None |

@@ -77,7 +77,7 @@ The detection module implements statistical anomaly and drift detection.
 | Class | Description |
 | --- | --- |
 | \texttt{DriftDetector} | KL-divergence based belief distribution drift detection. Sliding window comparison with configurable thresholds. |
-| \texttt{AnomalyScorer} | Isolation forest anomaly scoring for belief state vectors. Trained on baseline distribution. |
+| \texttt{AnomalyScorer} | Weighted Z-score anomaly scoring for belief state vectors. Calibrated on baseline distribution with configurable feature extractors. |
 
 ## Provenance Module {#sec:provenance-api}
 

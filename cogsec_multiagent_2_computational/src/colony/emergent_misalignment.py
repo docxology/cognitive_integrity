@@ -68,12 +68,12 @@ class EmergentMisalignmentScenario:
 
         # Ground truth = 0.5; all agents start exactly here
         ground_truth = 0.5
-        noise_std = 0.01
+        noise_std = 0.015  # Increased from 0.01 for faster drift accumulation
 
         beliefs = np.full(n, ground_truth, dtype=np.float64)
 
         # Agents share information via averaging with peers
-        peer_weight = 0.1
+        peer_weight = 0.05  # Lower peer anchoring allows more individual drift
 
         timeline: List[float] = []
         drift_detected = 0
@@ -81,8 +81,12 @@ class EmergentMisalignmentScenario:
         false_positives = 0
         honest_checks = 0
 
-        # Detection threshold for organic drift
-        drift_threshold = 0.05
+        # Detection thresholds
+        point_drift_threshold = 0.02  # Lowered from 0.05 for earlier detection
+        trend_window = 20  # Sliding window for trend-based drift detection
+
+        # Track mean belief history for trend detection
+        mean_history: List[float] = []
 
         for step in range(n_steps):
             # -- Each agent gets a small random perturbation --
@@ -101,23 +105,40 @@ class EmergentMisalignmentScenario:
 
             beliefs = np.clip(new_beliefs, 0.0, 1.0)
 
-            # -- Drift detection: check if mean belief drifts beyond threshold --
-            mean_drift = abs(float(np.mean(beliefs)) - ground_truth)
+            # -- Track mean for trend detection --
+            current_mean = float(np.mean(beliefs))
+            mean_history.append(current_mean)
+
+            # -- Drift detection: multi-signal approach --
+            mean_drift = abs(current_mean - ground_truth)
             drift_checks += 1
-            if mean_drift > drift_threshold:
+
+            # Signal 1: Point drift threshold
+            point_detected = mean_drift > point_drift_threshold
+
+            # Signal 2: Trend detection via sliding window
+            trend_detected = False
+            if len(mean_history) >= trend_window:
+                window = mean_history[-trend_window:]
+                window_start = np.mean(window[:trend_window // 2])
+                window_end = np.mean(window[trend_window // 2:])
+                trend_magnitude = abs(window_end - window_start)
+                if trend_magnitude > 0.005:  # Detect systematic drift trends
+                    trend_detected = True
+
+            if point_detected or trend_detected:
                 drift_detected += 1
 
-            # -- False positive tracking (in no-adversary scenario,
-            #    any detection is somewhat expected once drift occurs) --
+            # -- False positive tracking --
             for i in range(n):
                 honest_checks += 1
                 individual_drift = abs(beliefs[i] - ground_truth)
-                if individual_drift > drift_threshold and mean_drift <= drift_threshold:
+                if individual_drift > point_drift_threshold and mean_drift <= point_drift_threshold:
                     # Flagged an agent when colony-level drift is small
                     false_positives += 1
 
-            # Integrity = fraction of agents within 0.05 of ground truth
-            correct = np.sum(np.abs(beliefs - ground_truth) < 0.05)
+            # Integrity = fraction of agents within 0.03 of ground truth
+            correct = np.sum(np.abs(beliefs - ground_truth) < 0.03)
             integrity = float(correct / n)
             timeline.append(integrity)
 

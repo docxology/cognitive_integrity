@@ -1,3 +1,5 @@
+\newpage
+
 # Why Cognitive Security Matters Now {#sec:introduction}
 
 ## The Operational Reality
@@ -17,9 +19,9 @@ This is not a theoretical warning about future doom. It is an engineering proble
 The Cognitive Integrity Framework (CIF) was developed to secure these systems, and the first two papers in this series demonstrated its efficacy.
 
 * **Part 1: Formal Foundations** proved that trust can be mathematically bounded. We defined the "Trust Calculus" which guarantees that no matter how clever an adversary is, they cannot amplify their influence through delegation chains.
-* **Part 2: Computational Validation** implemented this theory in Python and tested it against a corpus of 950 attacks across six production architectures.
+* **Part 2: Computational Validation** implemented this theory in Python and tested it against a corpus of 950 attacks across four production architectures.
 
-The result was **1,557 passing tests and a confirmed 97% detection rate** against direct injection attacks in fully defended configurations.
+The result was **1,594 passing tests and 94% overall detection** (95% CI: [0.92, 0.96]) across all attack categories and architectures, with direct injection detection reaching 96--98% in fully defended configurations.
 
 ## The Purpose of This Guide
 

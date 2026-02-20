@@ -4,11 +4,11 @@
     "n_agents": 20,
     "n_steps": 100,
     "n_adversaries": 2,
-    "detection_rate": 0.6271186440677966,
-    "false_positive_rate": 0.0,
+    "detection_rate": 0.8135593220338984,
+    "false_positive_rate": 0.06779661016949153,
     "resilience_score": 0.0,
-    "recovery_steps": 6,
-    "ccs_score": 0.5761355932203389
+    "recovery_steps": 8,
+    "ccs_score": 0.6145084745762712
   },
   {
     "scenario": "sybil_infiltration",
@@ -48,10 +48,10 @@
     "n_agents": 50,
     "n_steps": 1000,
     "n_adversaries": 0,
-    "detection_rate": 0.0,
-    "false_positive_rate": 0.02654,
-    "resilience_score": 0.84,
-    "recovery_steps": 3,
-    "ccs_score": 0.646092
+    "detection_rate": 0.561,
+    "false_positive_rate": 0.46598,
+    "resilience_score": 0.26,
+    "recovery_steps": 824,
+    "ccs_score": 0.38830400000000004
   }
 ]

@@ -4,7 +4,7 @@
       "exists": true,
       "file_count": 8,
       "size_mb": "0.29",
-      "total_size_bytes": 305896,
+      "total_size_bytes": 307609,
       "largest_files": [
         {
           "name": "cogsec_multiagent_3_practical_combined.pdf",
@@ -36,8 +36,8 @@
     "web": {
       "exists": true,
       "file_count": 13,
-      "size_mb": "0.18",
-      "total_size_bytes": 191940,
+      "size_mb": "0.19",
+      "total_size_bytes": 194207,
       "largest_files": [
         {
           "name": "index.html",
@@ -46,7 +46,7 @@
         },
         {
           "name": "_combined_manuscript.md",
-          "size_mb": "0.03",
+          "size_mb": "0.04",
           "path": "web/_combined_manuscript.md"
         },
         {
@@ -64,7 +64,7 @@
       "exists": true,
       "file_count": 80,
       "size_mb": "0.92",
-      "total_size_bytes": 962638,
+      "total_size_bytes": 961253,
       "largest_files": [
         {
           "name": "03_simulation_review_slides.log",
@@ -132,7 +132,7 @@
       "exists": true,
       "file_count": 4,
       "size_mb": "0.01",
-      "total_size_bytes": 6077,
+      "total_size_bytes": 6074,
       "largest_files": [
         {
           "name": "validation_report.json",
@@ -189,7 +189,7 @@
     }
   },
   "total_files": 118,
-  "total_size_mb": 2.147324562072754,
+  "total_size_mb": 2.149796485900879,
   "largest_files": [
     {
       "name": "posture_radar.png",
@@ -273,12 +273,12 @@
     ".json": 2
   },
   "sizes_by_category": {
-    "pdf": 0.29172515869140625,
-    "web": 0.18304824829101562,
-    "slides": 0.9180431365966797,
+    "pdf": 0.29335880279541016,
+    "web": 0.1852102279663086,
+    "slides": 0.916722297668457,
     "figures": 0.7406177520751953,
     "data": 0.0,
-    "reports": 0.005795478820800781,
+    "reports": 0.0057926177978515625,
     "simulations": 0.0,
     "llm": 0.0,
     "logs": 0.00809478759765625

@@ -1,24 +1,29 @@
 """LaTeX tables for scaling results and regression.
 
 Generates a table showing latency and memory measurements across agent
-counts with regression fit statistics.
+counts with regression fit statistics.  Reads from scalability_data.json.
 """
 
 from __future__ import annotations
 
+import json
+from pathlib import Path
 from typing import Dict, Optional
 
 import numpy as np
 
+logger = __import__('logging').getLogger(__name__)
 
-def _default_scalability_data(seed: int = 42):
-    """Generate default scalability measurements."""
-    rng = np.random.default_rng(seed)
-    agents = np.array([2, 3, 5, 7, 10, 15, 20, 30, 50, 100])
-    latency = 5.0 + 0.02 * agents ** 2 + 1.5 * agents + rng.normal(0, 2, len(agents))
-    latency = np.maximum(latency, 5.0)
-    memory = 50 + 8 * agents + 0.05 * agents ** 1.3 + rng.normal(0, 5, len(agents))
-    memory = np.maximum(memory, 50.0)
+
+def _load_scalability_data():
+    """Load scalability measurements from scalability_data.json."""
+    p = Path(__file__).resolve().parent.parent.parent.parent / "output" / "data" / "scalability_data.json"
+    with open(p, "r", encoding="utf-8") as f:
+        data = json.load(f)
+    agents = np.array(data["agent_counts"])
+    latency = np.array(data["latency_ms"])
+    memory = np.array(data["memory_mb"])
+    logger.info("Loaded scalability data from %s", p)
     return agents, latency, memory
 
 
@@ -29,7 +34,7 @@ def generate_scalability_table(results: Optional[Dict] = None) -> str:
     ----------
     results : dict, optional
         Dictionary with 'agents', 'latency', 'memory' arrays.
-        Uses default data if *None*.
+        Loaded from output data if *None*.
 
     Returns
     -------
@@ -41,7 +46,7 @@ def generate_scalability_table(results: Optional[Dict] = None) -> str:
         latency = np.asarray(results["latency"])
         memory = np.asarray(results["memory"])
     else:
-        agents, latency, memory = _default_scalability_data()
+        agents, latency, memory = _load_scalability_data()
 
     # Regression fit
     coeffs = np.polyfit(agents, latency, 2)

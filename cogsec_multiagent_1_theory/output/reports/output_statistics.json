@@ -4,7 +4,7 @@
       "exists": true,
       "file_count": 9,
       "size_mb": "1.70",
-      "total_size_bytes": 1782468,
+      "total_size_bytes": 1784040,
       "largest_files": [
         {
           "name": "cogsec_multiagent_1_theory_combined.pdf",
@@ -65,7 +65,7 @@
       "exists": true,
       "file_count": 100,
       "size_mb": "2.55",
-      "total_size_bytes": 2676759,
+      "total_size_bytes": 2675027,
       "largest_files": [
         {
           "name": "04_formal_framework_slides.pdf",
@@ -98,7 +98,7 @@
       "exists": true,
       "file_count": 36,
       "size_mb": "4.30",
-      "total_size_bytes": 4505252,
+      "total_size_bytes": 4505253,
       "largest_files": [
         {
           "name": "trust_decay.png",
@@ -135,11 +135,11 @@
       "exists": true,
       "file_count": 4,
       "size_mb": "0.01",
-      "total_size_bytes": 6424,
+      "total_size_bytes": 6166,
       "largest_files": [
         {
           "name": "validation_report.json",
-          "size_mb": "0.01",
+          "size_mb": "0.00",
           "path": "reports/validation_report.json"
         },
         {
@@ -168,21 +168,40 @@
     },
     "llm": {
       "exists": true,
-      "file_count": 0,
-      "size_mb": "0.00",
-      "total_size_bytes": 0,
-      "largest_files": [],
-      "extensions": {}
+      "file_count": 6,
+      "size_mb": "0.25",
+      "total_size_bytes": 257611,
+      "largest_files": [
+        {
+          "name": "combined_review.md",
+          "size_mb": "0.09",
+          "path": "llm/combined_review.md"
+        },
+        {
+          "name": "translation_ar.md",
+          "size_mb": "0.08",
+          "path": "llm/translation_ar.md"
+        },
+        {
+          "name": "executive_summary.md",
+          "size_mb": "0.07",
+          "path": "llm/executive_summary.md"
+        }
+      ],
+      "extensions": {
+        ".md": 5,
+        ".json": 1
+      }
     },
     "logs": {
       "exists": true,
       "file_count": 1,
-      "size_mb": "0.01",
-      "total_size_bytes": 8508,
+      "size_mb": "0.00",
+      "total_size_bytes": 4530,
       "largest_files": [
         {
           "name": "pipeline.log",
-          "size_mb": "0.01",
+          "size_mb": "0.00",
           "path": "logs/pipeline.log"
         }
       ],
@@ -191,8 +210,8 @@
       }
     }
   },
-  "total_files": 166,
-  "total_size_mb": 9.186359405517578,
+  "total_files": 172,
+  "total_size_mb": 9.427845001220703,
   "largest_files": [
     {
       "name": "cogsec_multiagent_1_theory_combined.pdf",
@@ -260,7 +279,7 @@
   ],
   "file_counts_by_type": {
     ".pdf": 30,
-    ".md": 4,
+    ".md": 9,
     ".log": 16,
     ".aux": 15,
     ".blg": 1,
@@ -273,19 +292,19 @@
     ".snm": 14,
     ".vrb": 2,
     ".png": 15,
-    ".json": 7,
+    ".json": 8,
     ".csv": 1
   },
   "sizes_by_category": {
-    "pdf": 1.6998939514160156,
+    "pdf": 1.7013931274414062,
     "web": 0.6229257583618164,
-    "slides": 2.5527563095092773,
-    "figures": 4.296543121337891,
+    "slides": 2.5511045455932617,
+    "figures": 4.296544075012207,
     "data": 0.0,
-    "reports": 0.00612640380859375,
+    "reports": 0.0058803558349609375,
     "simulations": 0.0,
-    "llm": 0.0,
-    "logs": 0.008113861083984375
+    "llm": 0.24567699432373047,
+    "logs": 0.0043201446533203125
   },
   "pdf_files": 9,
   "figures": 36,

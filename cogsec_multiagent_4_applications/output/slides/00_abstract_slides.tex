@@ -1,0 +1,141 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\documentclass[
+  ignorenonframetext,
+]{beamer}
+\newif\ifbibliography
+\usepackage{pgfpages}
+\setbeamertemplate{caption}[numbered]
+\setbeamertemplate{caption label separator}{: }
+\setbeamercolor{caption name}{fg=normal text.fg}
+\beamertemplatenavigationsymbolsempty
+% remove section numbering
+\setbeamertemplate{part page}{
+  \centering
+  \begin{beamercolorbox}[sep=16pt,center]{part title}
+    \usebeamerfont{part title}\insertpart\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{section page}{
+  \centering
+  \begin{beamercolorbox}[sep=12pt,center]{section title}
+    \usebeamerfont{section title}\insertsection\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{subsection page}{
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center]{subsection title}
+    \usebeamerfont{subsection title}\insertsubsection\par
+  \end{beamercolorbox}
+}
+% Prevent slide breaks in the middle of a paragraph
+\widowpenalties 1 10000
+\raggedbottom
+\AtBeginPart{
+  \frame{\partpage}
+}
+\AtBeginSection{
+  \ifbibliography
+  \else
+    \frame{\sectionpage}
+  \fi
+}
+\AtBeginSubsection{
+  \frame{\subsectionpage}
+}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\author{\texorpdfstring{}{}}
+\date{}
+
+\begin{document}
+
+\begin{frame}{Abstract}
+\protect\phantomsection\label{abstract}
+The Cognitive Integrity Framework (CIF) \cite{friedman2026cogsec1}
+establishes formal guarantees for the safe operation of multiagent AI
+systems through five canonical defense mechanisms: Cognitive Firewalls,
+Belief Sandboxing, Behavioral Invariants, Drift Detection, and Byzantine
+Consensus. Paper 2 of this series \cite{friedman2026cogsec2}
+demonstrated 99.5\% detection across 950 attack scenarios. However, the
+practical applicability of these mechanisms across diverse operational
+domains has not been systematically evaluated. This paper---Part 4 of
+the Cognitive Security series---addresses this gap.
+
+We present the \textbf{CIF-AD-OODA integration model}, combining CIF's
+defense mechanisms with Axiomatic Design (AD) theory
+\cite{suh2001axiomatic} and Boyd's OODA (Observe-Orient-Decide-Act) Loop
+\cite{boyd1987patterns} to analyze \textbf{Goal Hijacking}: an advanced
+form of indirect prompt injection that constitutes a \emph{teleological
+attack} on autonomous agency. Unlike conventional exploits targeting
+data confidentiality, Goal Hijacking corrupts the OODA Loop's
+\textbf{Orientation} phase, overriding an agent's Functional
+Requirements (FRs) while preserving the appearance of rational behavior.
+We model these attacks as ``fast OODA transients'' that introduce
+off-diagonal coupling in the agent's Design Matrix, violating Suh's
+Independence Axiom.
+
+Using a standardized five-step domain analysis template, we conduct a
+rigorous analysis across ten critical domains: (1) Rare Earth mining,
+(2) Nation-state alliances, (3) Cyber-security, (4) Drone warfare, (5)
+Supply chains, (6) Biowarfare, (7) Food security, (8) Trade wars, (9)
+Infrastructure, and (10) Information ecosystems. Cross-domain synthesis
+reveals three universal attack patterns---FR Polarity Inversion,
+Constraint Relaxation, and Context Boundary Violation---and confirms
+that all five CIF mechanisms provide adequate coverage across the domain
+portfolio. Three novel defense extensions emerge: \emph{verification
+channel separation} (Biowarfare), \emph{active perturbation probing}
+(Trade Wars), and \emph{physics-informed invariants} (Infrastructure).
+Retrospective analysis of six documented AI agent security incidents
+(2024--2025)---including production database destruction, remote code
+execution via prompt injection, and \$3.2M procurement fraud---validates
+the attack pattern taxonomy and confirms CIF defense applicability.
+These findings are corroborated by the OWASP Top 10 for Agentic
+Applications (2025) \cite{owasp2025agentic}, which designates Agent Goal
+Hijack as the primary risk for deployed agent systems. We demonstrate
+that without CIF-mediated \textbf{Drift Detection} and
+\textbf{Behavioral Invariants} stabilizing the Orientation phase,
+high-efficiency agents are liable to optimize for adversarial objectives
+under the guise of compliance.
+\end{frame}
+
+\end{document}

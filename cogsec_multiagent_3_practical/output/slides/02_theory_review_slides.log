@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.3.8)  16 FEB 2026 11:17
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.3.8)  18 FEB 2026 11:24
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -1304,7 +1304,7 @@ LaTeX Font Info:    Font shape `TU/lmss/bx/it' in size <10.95> not available
 File: mt-LatinModernRoman.cfg 2021/02/21 v1.1 microtype config. file: Latin Mod
 ern Roman (RS)
 )
-Overfull \vbox (774.73332pt too high) detected at line 205
+Overfull \vbox (774.86473pt too high) detected at line 205
  []
 
 
@@ -1332,7 +1332,7 @@ L3 programming layer <2025-01-18>
 Here is how much of TeX's memory you used:
  29483 strings out of 473832
  598598 string characters out of 5729482
- 1167629 words of memory out of 5000000
+ 1167804 words of memory out of 5000000
  51991 multiletter control sequences out of 15000+600000
  565294 words of font info for 90 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191

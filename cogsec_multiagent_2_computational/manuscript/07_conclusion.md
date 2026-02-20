@@ -6,11 +6,11 @@
 
 This paper provided comprehensive simulation-based empirical validation of the Cognitive Integrity Framework (CIF) introduced in Part 1 of this series. Our contributions span implementation, evaluation, and analysis:
 
-**Implementation**: We implemented the complete CIF defense suite---cognitive firewalls, belief sandboxes, trust calculus with bounded delegation, tripwire detection, behavioral invariants, and Byzantine-tolerant consensus---as production-ready Python modules with 1,557 passing tests at 100\% pass rate, demonstrating that the formal mechanisms translate into deployable, independently testable code.\footnote{Source code available at \url{<https://github.com/docxology/cognitive_integrity}> (DOI: 10.5281/zenodo.18364128)}
+**Implementation**: We implemented the complete CIF defense suite---cognitive firewalls, belief sandboxes, trust calculus with bounded delegation, tripwire detection, behavioral invariants, and Byzantine-tolerant consensus---as production-ready Python modules with 1,594 passing tests at 100\% pass rate, demonstrating that the formal mechanisms translate into deployable, independently testable code.\footnote{Source code available at \url{<https://github.com/docxology/cognitive_integrity}> (DOI: 10.5281/zenodo.18364128)}
 
 **Attack Corpus**: We assembled 950 cognitive attacks across four categories (prompt injection, trust exploitation, belief manipulation, coordination attacks), enabling reproducible security evaluation of multiagent systems.
 
-**Cross-Architecture Evaluation**: We evaluated CIF's detection architecture across six production multiagent topologies (Claude Code, AutoGPT, CrewAI, LangGraph, MetaGPT, Camel) using parametric architecture-aware simulation calibrated to published benchmarks. The simulation models each architecture's topology and attack-surface exposure to produce detection rates that characterize CIF's design-level protection properties.
+**Cross-Architecture Evaluation**: We evaluated CIF's detection architecture across four production multiagent topologies (Claude Code, AutoGPT, CrewAI, LangGraph) using parametric architecture-aware simulation calibrated to published benchmarks. The simulation models each architecture's topology and attack-surface exposure to produce detection rates that characterize CIF's design-level protection properties.
 
 **Statistical Rigor**: We provided significance testing ($p < 0.0001$ for primary hypotheses), effect sizes (Cohen's $d > 1.0$ for all major comparisons), confidence intervals, and ablation studies establishing the robustness of our findings under the simulation model.
 

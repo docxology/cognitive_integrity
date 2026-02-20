@@ -1,4 +1,4 @@
-# Cognitive Security Scripts - Agent Reference
+# Cognitive Security Scripts — Agent Reference
 
 Scripts for figure generation, data analysis, and manuscript verification for CIF Paper 2.
 
@@ -7,30 +7,42 @@ Scripts for figure generation, data analysis, and manuscript verification for CI
 | Script | Figure | Section |
 |--------|--------|---------|
 | `01_attack_surface_figure.py` | attack_surface.pdf | §3 Attack Corpus |
-| `02_trust_decay_figure.py` | trust_decay.pdf | §5 Results |
-| `07_roc_curves_figure.py` | roc_curves.pdf | §5 Results |
-| `10_defense_composition_figure.py` | defense_composition.pdf | §6 Discussion |
-| `13_ablation_study_figure.py` | ablation_study.pdf | §5 Results |
-| `14_detection_performance_figure.py` | detection_performance.pdf | §5 Results |
-| `16_comprehensive_taxonomy_figure.py` | comprehensive_taxonomy.pdf | §3 Attack Corpus |
-| `17_cif_comprehensive_figure.py` | cif_comprehensive.pdf | §5 Results |
+| `02_detection_performance_figure.py` | detection_performance.pdf | §4.1 Finding 1 |
+| `03_roc_analysis_figure.py` | roc_curves.pdf | §4.2 Finding 2 |
+| `04_trust_dynamics_figure.py` | trust_dynamics.pdf | §4.2 Trust Calculus |
+| `05_defense_composition_figure.py` | defense_composition.pdf | §2 Composition Algebra |
+| `06_architecture_comparison_figure.py` | architecture_comparison.pdf | §4.3 Finding 3 |
+| `07_scalability_figure.py` | scalability.pdf | §S4 Scalability |
+| `08_ablation_figure.py` | ablation.pdf | §S4 Ablation |
 
-## Analysis Scripts
+## Analysis Scripts (8 scripts)
 
-| Script | Purpose | Output |
-|--------|---------|--------|
-| `06_generate_data.py` | Generate experimental data | data/*.json |
-| `run_ablation.py` | Ablation study | data/ablation_results.json |
-| `run_cross_validation.py` | 5-fold CV | data/cross_validation_results.json |
-| `run_full_evaluation.py` | 950×6 evaluation | data/full_evaluation_results.json |
-| `run_multi_seed.py` | Multi-seed analysis | data/multi_seed_results.json |
-| `run_sensitivity_analysis.py` | Parameter sensitivity | data/sensitivity_results.json |
-| `run_statistical_analysis.py` | Hypothesis testing | data/statistical_results.json |
-| `run_formal_validation.py` | Formal validation | data/formal_validation_results.json |
-| `run_colony_benchmarks.py` | Benchmark data | data/colony_results.json |
-| `verify_manuscript.py` | Manuscript validation | Verification report |
+| Script | Purpose |
+|--------|---------|
+| `run_full_evaluation.py` | Full evaluation matrix (simulation/pipeline/LLM modes) |
+| `run_statistical_analysis.py` | Hypothesis tests (H1/H2/H3), effect sizes, assumptions |
+| `run_ablation.py` | Component removal, minimal config, pairwise synergy |
+| `run_sensitivity_analysis.py` | Parameter sweeps, sensitivity ranking, 2D grid search |
+| `run_cross_validation.py` | Stratified 5-fold cross-validation on attack corpus |
+| `run_multi_seed.py` | Multi-seed stability analysis (CV across 30 seeds) |
+| `run_colony_benchmarks.py` | Colony-level CogSec benchmark scoring (5 scenarios) |
+| `run_llm_demo.py` | Live LLM multiagent CIF evaluation via Ollama |
 
-## Orchestrators
+## Verification & Formal (3 scripts)
+
+| Script | Purpose |
+|--------|---------|
+| `run_formal_validation.py` | Validates Paper 1 theorems via NuSMV/SPIN/TLA+ |
+| `verify_formal_specs.py` | Generates and verifies formal specification files |
+| `verify_manuscript.py` | Checks citations, labels, refs, images, style, tables |
+
+## Utilities (1 script)
+
+| Script | Purpose |
+|--------|---------|
+| `convert_latex_tables.py` | Converts LaTeX tables in manuscript `.md` files to Markdown pipe tables |
+
+## Orchestrators (3 scripts)
 
 | Script | Purpose |
 |--------|---------|

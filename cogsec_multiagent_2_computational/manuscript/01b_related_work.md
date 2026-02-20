@@ -42,7 +42,7 @@ CIF's contribution is providing a unified, formally grounded defense framework a
 
 1. **Compositional defense algebra**: Formal theorems (Part 1) proving multiplicative detection guarantees for layered defenses
 2. **Bounded delegation trust**: The first formally verified trust calculus for LLM agent systems with provable bounds on trust amplification
-3. **Cross-architecture validation**: Empirical evidence that formal guarantees hold across six production architectures
+3. **Cross-architecture validation**: Empirical evidence that formal guarantees hold across four production architectures
 4. **Complete attack taxonomy**: A 950-attack corpus spanning the full cognitive attack surface with reproducible generation
 
 \Cref{tab:related-work-comparison} summarizes the key distinctions.
@@ -58,4 +58,4 @@ CIF's contribution is providing a unified, formally grounded defense framework a
 | Prompt Infection Defense \cite{lee2025promptinfection} | Partial | No | No | Yes | 1 |
 | Zero-Trust Agents \cite{zerotrustagents2025} | Yes | No | Partial | No | 2 |
 | OWASP Agentic \cite{owasp2025agentic} | Yes | No | No | No | N/A (guidelines) |
-| **CIF (this work)** | **Yes** | **Yes** | **Yes ($\delta^d$)** | **Yes (950)** | **6** |
+| **CIF (this work)** | **Yes** | **Yes** | **Yes ($\delta^d$)** | **Yes (950)** | **4** |

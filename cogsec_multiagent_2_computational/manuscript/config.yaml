@@ -31,17 +31,17 @@ abstract: |
   Framework (CIF) theoretical foundations established in Part 1. We provide
   complete implementations of defense mechanisms including cognitive firewalls,
   belief sandboxes, trust calculus, and Byzantine-tolerant consensus protocols.
-  
-  Evaluation across six production multiagent architectures (Claude Code, AutoGPT,
-  CrewAI, LangGraph, MetaGPT, Camel) using a corpus of 950 cognitive attacks
+
+  Evaluation across four production multiagent architectures (Claude Code, AutoGPT,
+  CrewAI, LangGraph) using a corpus of 950 cognitive attacks
   demonstrates: 94% detection rate with layered defenses; trust calculus preventing
   amplification attacks across all architectures; acceptable performance overhead
   (20-25% latency increase).
-  
+
   Statistical analysis confirms significance across all attack types with large
   effect sizes (Cohen's d > 0.8). Ablation studies quantify individual defense
   contributions. Scalability analysis characterizes overhead growth with agent count.
-  
+
   This is Part 2 of a three-part series:
   - Part 1 (DOI: 10.5281/zenodo.18364119): Formal foundations and theoretical analysis
   - Part 2 (this paper): Computational validation and implementation

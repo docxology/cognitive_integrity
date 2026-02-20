@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-02-16T11:15:10.353690",
-  "total_duration": 90.33318567276001,
+  "timestamp": "2026-02-20T14:30:22.452431",
+  "total_duration": 731.0377056598663,
   "stages": [
     {
       "name": "Clean Output Directories",
       "exit_code": 0,
-      "duration": 0.031958818435668945,
+      "duration": 0.0203859806060791,
       "status": "passed",
       "output_files": [],
       "errors": [],
@@ -14,7 +14,16 @@
     {
       "name": "Environment Setup",
       "exit_code": 0,
-      "duration": 0.8972768783569336,
+      "duration": 0.9493112564086914,
+      "status": "passed",
+      "output_files": [],
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "name": "Infrastructure Tests",
+      "exit_code": 0,
+      "duration": 509.72848892211914,
       "status": "passed",
       "output_files": [],
       "errors": [],
@@ -23,7 +32,7 @@
     {
       "name": "Project Tests",
       "exit_code": 0,
-      "duration": 21.30014204978943,
+      "duration": 25.05816411972046,
       "status": "passed",
       "output_files": [],
       "errors": [],
@@ -32,7 +41,7 @@
     {
       "name": "Project Analysis",
       "exit_code": 0,
-      "duration": 18.108949899673462,
+      "duration": 16.126082181930542,
       "status": "passed",
       "output_files": [],
       "errors": [],
@@ -41,7 +50,7 @@
     {
       "name": "PDF Rendering",
       "exit_code": 0,
-      "duration": 48.92355298995972,
+      "duration": 47.2331440448761,
       "status": "passed",
       "output_files": [],
       "errors": [],
@@ -50,7 +59,25 @@
     {
       "name": "Output Validation",
       "exit_code": 0,
-      "duration": 0.5448760986328125,
+      "duration": 0.4951820373535156,
+      "status": "passed",
+      "output_files": [],
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "name": "LLM Scientific Review",
+      "exit_code": 0,
+      "duration": 63.968364000320435,
+      "status": "passed",
+      "output_files": [],
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "name": "LLM Translations",
+      "exit_code": 0,
+      "duration": 66.634042263031,
       "status": "passed",
       "output_files": [],
       "errors": [],
@@ -59,7 +86,7 @@
     {
       "name": "Copy Outputs",
       "exit_code": 0,
-      "duration": 0.5264289379119873,
+      "duration": 0.8245408535003662,
       "status": "passed",
       "output_files": [],
       "errors": [],
@@ -76,7 +103,7 @@
         "exists": true,
         "file_count": 9,
         "size_mb": "1.70",
-        "total_size_bytes": 1782468,
+        "total_size_bytes": 1784040,
         "largest_files": [
           {
             "name": "cogsec_multiagent_1_theory_combined.pdf",
@@ -137,7 +164,7 @@
         "exists": true,
         "file_count": 100,
         "size_mb": "2.55",
-        "total_size_bytes": 2676759,
+        "total_size_bytes": 2675027,
         "largest_files": [
           {
             "name": "04_formal_framework_slides.pdf",
@@ -170,7 +197,7 @@
         "exists": true,
         "file_count": 36,
         "size_mb": "4.30",
-        "total_size_bytes": 4505252,
+        "total_size_bytes": 4505253,
         "largest_files": [
           {
             "name": "trust_decay.png",
@@ -207,7 +234,7 @@
         "exists": true,
         "file_count": 6,
         "size_mb": "0.01",
-        "total_size_bytes": 14312,
+        "total_size_bytes": 14536,
         "largest_files": [
           {
             "name": "output_statistics.json",
@@ -216,7 +243,7 @@
           },
           {
             "name": "validation_report.json",
-            "size_mb": "0.01",
+            "size_mb": "0.00",
             "path": "reports/validation_report.json"
           },
           {
@@ -241,21 +268,40 @@
       },
       "llm": {
         "exists": true,
-        "file_count": 0,
-        "size_mb": "0.00",
-        "total_size_bytes": 0,
-        "largest_files": [],
-        "extensions": {}
+        "file_count": 6,
+        "size_mb": "0.25",
+        "total_size_bytes": 257611,
+        "largest_files": [
+          {
+            "name": "combined_review.md",
+            "size_mb": "0.09",
+            "path": "llm/combined_review.md"
+          },
+          {
+            "name": "translation_ar.md",
+            "size_mb": "0.08",
+            "path": "llm/translation_ar.md"
+          },
+          {
+            "name": "executive_summary.md",
+            "size_mb": "0.07",
+            "path": "llm/executive_summary.md"
+          }
+        ],
+        "extensions": {
+          ".md": 5,
+          ".json": 1
+        }
       },
       "logs": {
         "exists": true,
         "file_count": 1,
-        "size_mb": "0.01",
-        "total_size_bytes": 8798,
+        "size_mb": "0.00",
+        "total_size_bytes": 4606,
         "largest_files": [
           {
             "name": "pipeline.log",
-            "size_mb": "0.01",
+            "size_mb": "0.00",
             "path": "logs/pipeline.log"
           }
         ],
@@ -264,8 +310,8 @@
         }
       }
     },
-    "total_files": 168,
-    "total_size_mb": 9.194158554077148,
+    "total_files": 174,
+    "total_size_mb": 9.43589973449707,
     "largest_files": [
       {
         "name": "cogsec_multiagent_1_theory_combined.pdf",
@@ -333,7 +379,7 @@
     ],
     "file_counts_by_type": {
       ".pdf": 30,
-      ".md": 4,
+      ".md": 9,
       ".log": 16,
       ".aux": 15,
       ".blg": 1,
@@ -346,23 +392,28 @@
       ".snm": 14,
       ".vrb": 2,
       ".png": 15,
-      ".json": 8,
+      ".json": 9,
       ".csv": 1,
       ".txt": 1
     },
     "sizes_by_category": {
-      "pdf": 1.6998939514160156,
+      "pdf": 1.7013931274414062,
       "web": 0.6229257583618164,
-      "slides": 2.5527563095092773,
-      "figures": 4.296543121337891,
+      "slides": 2.5511045455932617,
+      "figures": 4.296544075012207,
       "data": 0.0,
-      "reports": 0.01364898681640625,
+      "reports": 0.01386260986328125,
       "simulations": 0.0,
-      "llm": 0.0,
-      "logs": 0.008390426635742188
+      "llm": 0.24567699432373047,
+      "logs": 0.0043926239013671875
     },
     "pdf_files": 9,
     "figures": 36,
-    "data_files": 0
+    "data_files": 0,
+    "log_file": {
+      "exists": true,
+      "size": 4606,
+      "path": "/Users/4d/Documents/GitHub/template/projects/cogsec_multiagent_1_theory/output/logs/pipeline.log"
+    }
   }
 }

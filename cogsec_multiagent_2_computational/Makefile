@@ -7,7 +7,7 @@ SCRIPTS = scripts
 # Default: full reproducible pipeline
 all: data figures tables verify
 
-# Generate synthetic evaluation data
+# Generate seed datasets for schema validation
 data:
 	$(PYTHON) $(SCRIPTS)/generate_all_data.py
 

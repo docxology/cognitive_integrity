@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.3.8)  16 FEB 2026 11:17
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.3.8)  18 FEB 2026 11:24
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -1548,6 +1548,8 @@ LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
 [16]
 
 [17]
+
+[18]
 Missing character: There is no δ (U+03B4) in font [lmroman10-regular]:mapping=t
 ex-text;!
 Missing character: There is no δ (U+03B4) in font [lmroman10-regular]:mapping=t
@@ -1558,9 +1560,9 @@ Missing character: There is no ≥ (U+2265) in font [lmroman10-regular]:mapping=
 ex-text;!
 
 
-[18]
+[19]
 ! Undefined control sequence.
-l.1470 \printbibliography
+l.1488 \printbibliography
                          
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1574,7 +1576,7 @@ Package natbib Warning: Empty `thebibliography' environment on input line 8.
 
 )
 
-[19] (./_combined_manuscript.aux)
+[20] (./_combined_manuscript.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
@@ -1582,11 +1584,11 @@ L3 programming layer <2025-01-18>
  ) 
 Here is how much of TeX's memory you used:
  44910 strings out of 473832
- 1049568 string characters out of 5729482
- 1701949 words of memory out of 5000000
+ 1049576 string characters out of 5729482
+ 1701947 words of memory out of 5000000
  67279 multiletter control sequences out of 15000+600000
  564232 words of font info for 88 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  90i,7n,114p,1017b,491s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on _combined_manuscript.pdf (19 pages).
+Output written on _combined_manuscript.pdf (20 pages).

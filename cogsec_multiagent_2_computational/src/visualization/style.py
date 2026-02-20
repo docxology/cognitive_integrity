@@ -147,6 +147,7 @@ def add_source_annotation(fig: Figure, source_file: str) -> None:
     )
 
 
+
 def save_figure(
     fig: Figure,
     name: str,

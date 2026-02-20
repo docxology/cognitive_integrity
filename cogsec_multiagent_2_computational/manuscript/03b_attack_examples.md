@@ -287,7 +287,5 @@ Analysis of the attack corpus reveals several cross-cutting insights for defense
 | AutoGPT | Plugin-based trust exploitation | Plugin sandboxing + source taint analysis |
 | CrewAI | Role impersonation across handoffs | Role identity verification + attestation (94% detection, \cref{tab:arch-ci}) |
 | LangGraph | State transition manipulation | State machine invariants + hash verification (98% detection) |
-| MetaGPT | Document-passing injection | Content sanitization + provenance tracking |
-| Camel | Debate-based belief manipulation via lateral movement | Belief consistency checking + trust decay |
 
 For a synthesis of architecture-vulnerability patterns and their structural implications, see \cref{tab:architecture-insights} in the Discussion.

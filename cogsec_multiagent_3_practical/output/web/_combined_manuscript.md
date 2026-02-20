@@ -19,7 +19,7 @@ theory and practice. In practice, there is.''
 
 Multiagent AI systems—autonomous coding assistants, research pipelines, financial decision engines—have moved from prototype to production in under two years. With them comes a new class of security concern: attacks that target not data or infrastructure but the *reasoning processes* of AI agents. Prompt injections that propagate through delegation chains, trust relationships that launder adversarial influence, and coordination mechanisms vulnerable to strategic manipulation all represent cognitive attack surfaces absent from traditional security models.
 
-The **Cognitive Integrity Framework (CIF)**, presented across two companion papers, offers the first comprehensive formal and computational treatment of this problem. Part 1 establishes mathematical foundations: a trust calculus with provably bounded delegation, defense composition algebras with multiplicative detection guarantees, and information-theoretic limits on attack stealth. Part 2 provides computational validation: eight implemented defense modules (1,557 passing tests), a 950-attack corpus spanning four threat categories, and parametric architecture-aware simulation across six production multiagent topologies.
+The **Cognitive Integrity Framework (CIF)**, presented across two companion papers, offers the first comprehensive formal and computational treatment of this problem. Part 1 establishes mathematical foundations: a trust calculus with provably bounded delegation, defense composition algebras with multiplicative detection guarantees, and information-theoretic limits on attack stealth. Part 2 provides computational validation: eight implemented defense modules (1,594 passing tests), a 950-attack corpus spanning four threat categories, and parametric architecture-aware simulation across four production multiagent topologies.
 
 This paper is a qualitative review and practitioner's guide to the CIF series. We synthesize the key insights from both papers into accessible language, contextualize the formal results within the current deployment landscape, assess what the research has established and where gaps remain, and distill practical recommendations for teams building and operating multiagent AI systems. No formal prerequisites are assumed; readers seeking mathematical detail are referred to Parts 1 and 2.
 
@@ -58,9 +58,9 @@ This is not a theoretical warning about future doom. It is an engineering proble
 The Cognitive Integrity Framework (CIF) was developed to secure these systems, and the first two papers in this series demonstrated its efficacy.
 
 * **Part 1: Formal Foundations** proved that trust can be mathematically bounded. We defined the "Trust Calculus" which guarantees that no matter how clever an adversary is, they cannot amplify their influence through delegation chains.
-* **Part 2: Computational Validation** implemented this theory in Python and tested it against a corpus of 950 attacks across six production architectures.
+* **Part 2: Computational Validation** implemented this theory in Python and tested it against a corpus of 950 attacks across four production architectures.
 
-The result was **1,557 passing tests and a confirmed 97% detection rate** against direct injection attacks in fully defended configurations.
+The result was **1,594 passing tests and a 97% structural constraint satisfaction rate** against direct injection attacks in fully defended configurations.
 
 ## The Purpose of This Guide
 
@@ -138,7 +138,7 @@ This formalism suggests that catastrophic attacks are inherently easier to detec
 
 Finally, Paper 1 defines the **Composition Algebra**, determining how output probabilities of distinct modules interact. The key result is that orthogonal defenses compose multiplicatively.
 
-This "Swiss Cheese Model" was empirically validated in Part 2, where the full stack (97% detection) significantly outperformed the sum of its parts.
+This "Swiss Cheese Model" was empirically validated in Part 2, where the full stack (97% structural constraint satisfaction) significantly outperformed the sum of its parts.
 
 
 
@@ -148,20 +148,18 @@ This "Swiss Cheese Model" was empirically validated in Part 2, where the full st
 
 # The Evidence: What We Proved in Part 2 {#sec:paper2-review}
 
-Part 1 was the theory. Part 2 was the proof. We ran **1,557 tests** against **950 attack samples** across **6 production architectures**.
+Part 1 was the theory. Part 2 was the proof. We ran **1,594 tests** against **950 attack samples** across **four production architectures**.
 
 Here is what the data says.
 
 ## The Experimental Setup
 
-We tested the six most common multi-agent architectures found in production:
+We tested four common multi-agent architectures found in production:
 
 * **Claude Code** (Hierarchical)
 * **AutoGPT** (Autonomous Loop)
 * **CrewAI** (Role-Based Team)
 * **LangGraph** (State Machine)
-* **MetaGPT** (SOP-Driven)
-* **Camel** (Peer-to-Peer)
 
 The test corpus included direct prompt injection, poisoned RAG contexts, deep trust exploitation, and multi-turn social engineering.
 
@@ -335,7 +333,7 @@ This profile corresponds to the "High Usability" configuration tested in the sen
 * **Firewall Sensitivity**: Relaxed ($\tau=0.9$).
 * **Consensus**: Simple Majority.
 
-**Observed Performance** (Sensitivity Table 5.2):
+**Observed Performance** (Part 2, Parameter Sensitivity Analysis):
 
 * **Latency Overhead**: Minimal (~15% baseline).
 * **Detection Rate**: **87%** (vs 94% optimal).
@@ -343,7 +341,7 @@ This profile corresponds to the "High Usability" configuration tested in the sen
 
 ## Profile B: The "Customer Facing" Baseline (Balanced)
 
-This profile corresponds to the **Empirically Optimal Configuration** identified in Part 2 (Table 5.6), which balances security guarantees with operational overhead.
+This profile corresponds to the **Empirically Optimal Configuration** identified in Part 2 (Architecture-Specific Results), which balances security guarantees with operational overhead.
 
 **Configuration Parameters**:
 
@@ -351,7 +349,7 @@ This profile corresponds to the **Empirically Optimal Configuration** identified
 * **Firewall Sensitivity**: Balanced ($\tau=0.5$).
 * **Consensus**: Variable (Architecture Dependent).
 
-**Observed Performance** (Sensitivity Table 5.2):
+**Observed Performance** (Part 2, Parameter Sensitivity Analysis):
 
 * **Latency Overhead**: Reduced detection latency (~8.5s for drift detection).
 * **Detection Rate**: **94%**.
@@ -359,7 +357,7 @@ This profile corresponds to the **Empirically Optimal Configuration** identified
 
 ## Profile C: The "Autonomous Operator" Baseline (High Assurance)
 
-This profile corresponds to the "Byzantine-Heavy" configuration tested in Part 2 (Table 2.8). It is required for high-stakes, unsupervised environments.
+This profile corresponds to the "Byzantine-Heavy" configuration tested in Part 2 (Byzantine Consensus Analysis). It is required for high-stakes, unsupervised environments.
 
 **Configuration Parameters**:
 
@@ -367,7 +365,7 @@ This profile corresponds to the "Byzantine-Heavy" configuration tested in Part 2
 * **Firewall Sensitivity**: Strict ($\tau=0.4$).
 * **Consensus**: Byzantine Fault Tolerance ($n \ge 3f+1$).
 
-**Observed Performance** (Sensitivity Table 5.3):
+**Observed Performance** (Part 2, Parameter Sensitivity Analysis):
 
 * **Latency Overhead**: Significant (+35-48% depending on corroboration count).
 * **Detection Rate**: **95%** (general) to **98%** (LangGraph-specific).
@@ -381,12 +379,12 @@ Beyond the parameter profiles, Part 2's architecture adapters revealed specific 
 
 ### LangGraph (State Machines)
 
-**Observation**: LangGraph architectures achieved the highest overall detection rates (98%) in our tests (Part 2, Table 5.6).
+**Observation**: LangGraph architectures achieved the highest overall detection rates (98%) in our tests (Part 2, Architecture-Specific Results).
 **Mechanism**: The explicit definition of state transitions allowed for rigorous **Invariant Checking**. Invalid state transitions were detected deterministically by the framework.
 
 ### CrewAI (Role-Based)
 
-**Observation**: CrewAI architectures performed best against "Trust Exploitation" attacks (94% detection) (Part 2, Table 5.4).
+**Observation**: CrewAI architectures performed best against "Trust Exploitation" attacks (94% detection) (Part 2, Architecture-Specific Results).
 **Mechanism**: The framework's role definitions acted as implicit **Identity Tripwires**. When an agent attempted to act outside its defined role, the behavior was flagged as a role violation.
 
 ---
@@ -578,49 +576,51 @@ Address unchecked items before production deployment.
 
 \newpage
 
-# The Frontier: Where We Need You {#sec:future}
+# Open Problems and Future Directions {#sec:future}
 
-We have built the foundation and validated the core mechanics. However, the field is in its infancy. We have established valid trust metrics (Trust Calculus) and filtering mechanisms (Firewalls), but we lack standardized protocols for agent state persistence and identity federation---the agentic equivalents of cookies or OAuth.
+The CIF series has established validated trust metrics (Trust Calculus) and filtering mechanisms (Firewalls), but the field remains nascent. Several foundational problems remain open, each representing both a research opportunity and an engineering requirement for production-grade cognitive security.
 
-This is where you come in.
+## 1. Trust Visualization and Operator Interfaces
 
-The Cognitive Integrity Framework is open source, and the problems below are not just "future research"---they are immediate engineering blockers that need to be solved.
+**The Problem**: Current CIF alerts surface as structured log entries (e.g., "Identity Invariant Violation"). For operators managing systems with dozens of agents, this format is insufficient for situational awareness.
 
-## 1. The UX of Trust (Help Wanted)
+**The Need**: Real-time visualization of trust graphs, belief drift trends, and defense activation patterns. The challenge is presenting high-dimensional agent state in a way that supports rapid operator decision-making.
 
-**The Problem**: Currently, when an agent flag is raised ("Identity Violation"), it looks like a JSON error log.
-**The Need**: We need a "Cognitive Dashboard" for human operators. What does it look like to visualize the trust graph of 50 agents in real-time? How do we show "Drift" intuitively?
-**The Goal**: A React/Next.js dashboard that connects to the CIF Python SDK.
+**Research Direction**: Dashboard architectures that connect to the CIF Python SDK, enabling real-time trust graph visualization and drift monitoring for production multiagent deployments.
 
-## 2. Standardized Agent Identity (Protocol Design)
+## 2. Standardized Agent Identity Protocols
 
-**The Problem**: Every framework (LangChain, CrewAI, AutoGPT) handles agent identity differently.
-**The Need**: A standard "Agent Passport" protocol. A cryptographically verifiable identity token that an agent can carry across different frameworks.
-**The Goal**: An RFC-style spec for `x-agent-identity` headers.
+**The Problem**: Each agent framework (LangChain, CrewAI, AutoGPT) handles agent identity differently, making cross-framework trust verification impractical.
 
-## 3. "Eusocial" Security (Advanced Research)
+**The Need**: A cryptographically verifiable identity protocol---an "Agent Passport"---that an agent can carry across frameworks. This would enable the trust calculus to operate in heterogeneous multi-framework deployments.
 
-**The Problem**: Our current consensus is Byzantine, but it's computationally expensive ($O(n^2)$).
-**The Need**: Insect colonies don't vote; they use pheromones. We need **Stigmergic Security Protocols** where agents leave "trust trails" in the environment.
-**The Goal**: A lightweight, scalable consensus algorithm modeled on ant colony immune responses.
+**Research Direction**: RFC-style specification for `x-agent-identity` headers with cryptographic attestation.
+
+## 3. Stigmergic Security Protocols
+
+**The Problem**: Byzantine consensus mechanisms, while provably correct, incur $O(n^2)$ communication overhead. This limits their applicability in large-scale swarm deployments.
+
+**The Need**: Lightweight consensus alternatives inspired by biological coordination. Insect colonies achieve collective immunity through indirect communication (pheromone trails) rather than direct voting.
+
+**Research Direction**: Stigmergic security protocols where agents leave "trust trails" in shared environments, enabling scalable consensus without direct agent-to-agent messaging.
 
 ## 4. Benchmark Expansion
 
-**The Problem**: Our corpus has 950 attacks. Real-world capability is growing daily.
-**The Need**: We need more attacks. Specifically, we need **Multi-Modal Injection attacks** (audio/video) and **Tool-Use Hijacking** examples.
-**The Goal**: Pull Recommendations to the `cognitive_integrity` repository adding new scenarios to `data/attacks/`.
+**The Problem**: The current corpus contains 950 attack samples. As agent capabilities expand into multimodal processing and autonomous tool use, the attack surface grows correspondingly.
+
+**The Need**: Expanded attack corpora covering multi-modal injection (audio/video), tool-use hijacking, and long-horizon social engineering campaigns that unfold over hundreds of interactions.
+
+**Research Direction**: Community-driven expansion of the attack corpus at the [cognitive_integrity repository](https://github.com/docxology/cognitive_integrity), with particular emphasis on attack categories not yet represented.
 
 ---
 
 ## Contributing
 
-This is not a closed academic project. It is a living defense framework for the agentic future.
+The Cognitive Integrity Framework is an open-source project. Contributions are welcome, particularly:
 
 * **Code**: [github.com/docxology/cognitive_integrity](https://github.com/docxology/cognitive_integrity)
-* **Discussion**: Join the `discussions` tab on GitHub.
-* **Contribute**: We prioritize PRs that add **Adapters** for new agent frameworks (e.g., Semantic Kernel, Microsoft AutoGen).
-
-Let's build the immune system for the agentic web, together.
+* **Discussion**: The `discussions` tab on GitHub serves as the primary forum.
+* **Adapters**: Contributions that extend CIF to additional agent frameworks (e.g., Semantic Kernel, Microsoft AutoGen) are especially valued.
 
 
 
@@ -640,7 +640,7 @@ We proved that trust can be bounded. We proved that defenses can be composed alg
 
 ## The Code Works
 
-We validated these laws in code. 1,557 tests. 950 attacks. 97% detection. The system works. It is not hypothetical.
+We validated these laws in code. 1,594 tests. 950 attacks. 97% structural constraint satisfaction. The system works. It is not hypothetical.
 
 ## The Next Step is Yours
 

@@ -11,6 +11,14 @@ from __future__ import annotations
 
 import argparse
 import sys
+from pathlib import Path
+
+# When running as `python -m src`, sibling packages (utils, evaluation, etc.)
+# are not on sys.path by default.  Add the src/ directory so all internal
+# imports resolve correctly.
+_SRC_DIR = str(Path(__file__).resolve().parent)
+if _SRC_DIR not in sys.path:
+    sys.path.insert(0, _SRC_DIR)
 
 
 def cmd_evaluate(args: argparse.Namespace) -> None:

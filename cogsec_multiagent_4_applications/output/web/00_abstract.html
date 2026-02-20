@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>00_abstract</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+</head>
+<body>
+<h1 id="abstract">Abstract</h1>
+<p>The Cognitive Integrity Framework (CIF) establishes formal guarantees
+for the safe operation of multiagent AI systems through five canonical
+defense mechanisms: Cognitive Firewalls, Belief Sandboxing, Behavioral
+Invariants, Drift Detection, and Byzantine Consensus. Paper 2 of this
+series demonstrated 99.5% detection across 950 attack scenarios.
+However, the practical applicability of these mechanisms across diverse
+operational domains has not been systematically evaluated. This
+paper—Part 4 of the Cognitive Security series—addresses this gap.</p>
+<p>We present the <strong>CIF-AD-OODA integration model</strong>,
+combining CIF’s defense mechanisms with Axiomatic Design (AD) theory and
+Boyd’s OODA (Observe-Orient-Decide-Act) Loop to analyze <strong>Goal
+Hijacking</strong>: an advanced form of indirect prompt injection that
+constitutes a <em>teleological attack</em> on autonomous agency. Unlike
+conventional exploits targeting data confidentiality, Goal Hijacking
+corrupts the OODA Loop’s <strong>Orientation</strong> phase, overriding
+an agent’s Functional Requirements (FRs) while preserving the appearance
+of rational behavior. We model these attacks as “fast OODA transients”
+that introduce off-diagonal coupling in the agent’s Design Matrix,
+violating Suh’s Independence Axiom.</p>
+<p>Using a standardized five-step domain analysis template, we conduct a
+rigorous analysis across ten critical domains: (1) Rare Earth mining,
+(2) Nation-state alliances, (3) Cyber-security, (4) Drone warfare, (5)
+Supply chains, (6) Biowarfare, (7) Food security, (8) Trade wars, (9)
+Infrastructure, and (10) Information ecosystems. Cross-domain synthesis
+reveals three universal attack patterns—FR Polarity Inversion,
+Constraint Relaxation, and Context Boundary Violation—and confirms that
+all five CIF mechanisms provide adequate coverage across the domain
+portfolio. Three novel defense extensions emerge: <em>verification
+channel separation</em> (Biowarfare), <em>active perturbation
+probing</em> (Trade Wars), and <em>physics-informed invariants</em>
+(Infrastructure). Retrospective analysis of six documented AI agent
+security incidents (2024–2025)—including production database
+destruction, remote code execution via prompt injection, and $3.2M
+procurement fraud—validates the attack pattern taxonomy and confirms CIF
+defense applicability. These findings are corroborated by the OWASP Top
+10 for Agentic Applications (2025) , which designates Agent Goal Hijack
+as the primary risk for deployed agent systems. We demonstrate that
+without CIF-mediated <strong>Drift Detection</strong> and
+<strong>Behavioral Invariants</strong> stabilizing the Orientation
+phase, high-efficiency agents are liable to optimize for adversarial
+objectives under the guise of compliance.</p>
+</body>
+</html>

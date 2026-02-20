@@ -1,7 +1,7 @@
-"""Fig 3: 6x4 detection heatmap (architectures x attack categories).
+"""Fig 3: 4x4 detection heatmap (architectures x attack categories).
 
 Displays detection rates for each architecture-category pair as a
-color-annotated heatmap.
+color-annotated heatmap.  Reads data from full_evaluation_results.json.
 """
 
 from __future__ import annotations
@@ -13,24 +13,13 @@ from matplotlib.figure import Figure
 
 from ..style import create_figure, save_figure
 
-
-def _load_data() -> Optional[np.ndarray]:
-    """Try loading real detection data from full_evaluation_results.json."""
-    try:
-        from .data.result_loaders import evaluation_to_detection_matrix
-        archs, cats, matrix = evaluation_to_detection_matrix()
-        return matrix
-    except Exception:
-        return None
-
+logger = __import__('logging').getLogger(__name__)
 
 _ARCHITECTURES = [
     "Claude Code",
     "AutoGPT",
     "CrewAI",
     "LangGraph",
-    "MetaGPT",
-    "CAMEL",
 ]
 
 _CATEGORIES = [
@@ -41,31 +30,24 @@ _CATEGORIES = [
 ]
 
 
-def _default_data() -> np.ndarray:
-    """Generate realistic sample detection rates (6x4)."""
-    rng = np.random.default_rng(42)
-    base = np.array([
-        [0.98, 0.94, 0.91, 0.96],
-        [0.95, 0.90, 0.88, 0.93],
-        [0.96, 0.92, 0.89, 0.94],
-        [0.97, 0.93, 0.90, 0.95],
-        [0.94, 0.89, 0.86, 0.92],
-        [0.93, 0.87, 0.82, 0.90],
-    ])
-    noise = rng.normal(0, 0.005, base.shape)
-    return np.clip(base + noise, 0.82, 0.99)
+def _load_data() -> np.ndarray:
+    """Load real detection data from full_evaluation_results.json."""
+    from data.result_loaders import evaluation_to_detection_matrix
+    archs, cats, matrix = evaluation_to_detection_matrix()
+    logger.info("Loaded detection matrix from full_evaluation_results.json: %s", matrix.shape)
+    return matrix
 
 
 def plot_detection_heatmap(
     results: Optional[np.ndarray] = None,
     output_dir: str = "output/figures",
 ) -> Figure:
-    """Create the 6x4 detection heatmap (Fig 3).
+    """Create the 4x4 detection heatmap (Fig 3).
 
     Parameters
     ----------
-    results : ndarray, shape (6, 4), optional
-        Detection rate matrix.  Generated if *None*.
+    results : ndarray, shape (4, 4), optional
+        Detection rate matrix.  Loaded from output data if *None*.
     output_dir : str
         Directory for saved figure files.
 
@@ -75,8 +57,6 @@ def plot_detection_heatmap(
     """
     if results is None:
         results = _load_data()
-    if results is None:
-        results = _default_data()
 
     fig, ax = create_figure(width=7, height=5)
 

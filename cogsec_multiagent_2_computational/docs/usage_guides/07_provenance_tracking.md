@@ -2,13 +2,13 @@
 
 ## Concept
 
-**Provenance Tracking** maintains a causal history for every belief in the system. It answers the question "Where did this information come from?" and enables the system to:
+**Provenance Tracking** maintains a causal history for every belief in the system. It implements **taint propagation**: every belief inherits the trust level of its least-trusted ancestor. This enables the system to:
 
-1. Trace errors back to their source.
-2. Invalidate trees of beliefs if a root source is found to be compromised.
-3. Compute "Taint" propagation for untrusted inputs.
+1. Trace errors and misinformation back to their originating source.
+2. Invalidate entire trees of derived beliefs if a root source is compromised.
+3. Compute effective taint levels to enforce security policies (e.g., "no untrusted data in critical decisions").
 
-Formal Definition: *Part 2, Section 3.2 (Auxiliary)*
+Formal Definition: *Part 2, Section 3.2*
 
 ## Implementation
 
@@ -16,58 +16,96 @@ The core logic is implemented in `src/core/provenance.py`.
 
 ### Key Classes
 
-- `ProvenanceGraph`: Directed Acyclic Graph (DAG) storing belief dependencies.
-- `ProvenanceChain`: Linear history for simple beliefs.
-- `CausalAttribution`: Logic for assigning credit/blame to sources.
+- `ProvenanceChain`: Primary data structure — a directed acyclic graph (DAG) of belief derivations with taint propagation. Supports ancestry queries and effective taint computation.
+- `ProvenanceGraph`: Graph analysis wrapper around `ProvenanceChain`. Provides dependency checking, descendant queries, and contamination analysis.
+- `CausalAttribution`: Identifies which untrusted sources contributed to a potentially compromised belief. Generates attribution reports.
+- `TaintLabel`: Enum-like class with trust ordering — `SYSTEM_VERIFIED` (level 7, trusted), `PRINCIPAL_INPUT` (level 6), `VERIFIED_EXTERNAL` (level 5), `UNVERIFIED_EXTERNAL` (level 3), `ANONYMOUS` (level 1, untrusted), etc.
+- `ProvenanceRecord`: Dataclass — `belief_id`, `content`, `source` (TaintLabel), `agent_id`, `parent_ids`, `metadata`, `timestamp`.
 
 ## Usage Example
 
 ```python
-from src.core.provenance import ProvenanceGraph
-
-# 1. Initialize Graph
-graph = ProvenanceGraph()
-
-# 2. Record Event/Belief
-# node_id: unique ID for the information
-# sources: list of IDs that contributed to this info
-graph.add_node(
-    node_id="belief_101",
-    content="Sky is blue",
-    source_agent="Sensor_A"
+from core.provenance import (
+    ProvenanceChain, ProvenanceGraph, CausalAttribution, TaintLabel
 )
 
-# 3. Record Derived Information
-graph.add_node(
-    node_id="belief_102",
-    content="Sky is blue AND clear",
-    source_agent="Logic_Module",
-    dependencies=["belief_101"] # Derived from belief_101
+# 1. Initialize the provenance chain
+chain = ProvenanceChain()
+
+# 2. Record a root belief from a trusted source
+chain.add_belief(
+    belief_id="sensor-001",
+    content="Temperature is 72°F",
+    source=TaintLabel.SYSTEM_VERIFIED,
+    agent_id="Sensor_A",
 )
 
-# 4. Trace Provenance
-# Get all ancestors of belief_102
-history = graph.get_ancestry("belief_102")
-print("Ancestry:", history) 
-# Output: ['belief_101']
+# 3. Record a derived belief (depends on the root)
+chain.add_belief(
+    belief_id="conclusion-001",
+    content="Temperature is safe for operation",
+    source=TaintLabel.PRINCIPAL_INPUT,
+    agent_id="Logic_Module",
+    parent_ids=["sensor-001"],  # Derived from sensor-001
+)
 
-# 5. Handle Source Compromise
-# If Sensor_A is hacked, what is affected?
-affected_nodes = graph.get_descendants_of_source("Sensor_A")
-print("Compromised Nodes:", affected_nodes)
-# Output: ['belief_101', 'belief_102']
+# 4. Record a belief from an untrusted source
+chain.add_belief(
+    belief_id="external-001",
+    content="Weather forecast says 90°F tomorrow",
+    source=TaintLabel.UNVERIFIED_EXTERNAL,
+    agent_id="External_API",
+)
+
+# 5. A derived belief mixing trusted and untrusted sources
+chain.add_belief(
+    belief_id="plan-001",
+    content="Schedule cooling for tomorrow",
+    source=TaintLabel.PRINCIPAL_INPUT,
+    agent_id="Planner",
+    parent_ids=["conclusion-001", "external-001"],  # Mixed provenance
+)
+
+# 6. Trace ancestry
+ancestors = chain.get_ancestry("plan-001")
+print(f"Ancestors of plan-001: {ancestors}")
+# {'sensor-001', 'conclusion-001', 'external-001'}
+
+# 7. Get effective taint (minimum trust across all ancestors)
+taint = chain.get_effective_taint("plan-001")
+print(f"Effective taint: {taint} (trust level: {taint.trust_level})")
+# UNVERIFIED_EXTERNAL (level 3) — tainted by external-001
+
+# 8. Graph-based dependency analysis
+graph = ProvenanceGraph(chain)
+
+# Check if one belief depends on another
+depends = graph.depends_on("plan-001", "sensor-001")
+print(f"plan-001 depends on sensor-001: {depends}")  # True
+
+# Find all beliefs affected if a source is compromised
+contaminated = graph.get_contaminated_by("external-001")
+print(f"Contaminated by external-001: {contaminated}")
+# {'plan-001'}
+
+# 9. Causal attribution for compromise analysis
+attrib = CausalAttribution(chain)
+report = attrib.generate_report("plan-001")
+print(f"Untrusted sources: {report['untrusted_sources']}")
 ```
 
 ## Testing
 
-The provenance module is tested in `tests/core/test_provenance.py`, covering:
+The provenance module is tested in `tests/test_provenance.py`, covering:
 
-- Graph construction.
-- Ancestry/Descendant queries.
-- Cycle detection (preventing loops).
+- DAG construction and ancestry queries.
+- Taint propagation (conservative minimum trust).
+- Dependency and contamination analysis.
+- Cycle prevention.
+- Causal attribution reports.
 
 Run tests:
 
 ```bash
-pytest projects/cognitive_integrity/cogsec_multiagent_2_computational/tests/core/test_provenance.py
+pytest tests/test_provenance.py -v
 ```

@@ -12,7 +12,7 @@ This profile corresponds to the "High Usability" configuration tested in the sen
 * **Firewall Sensitivity**: Relaxed ($\tau=0.9$).
 * **Consensus**: Simple Majority.
 
-**Observed Performance** (Sensitivity Table 5.2):
+**Observed Performance** (Part 2, Parameter Sensitivity Analysis):
 
 * **Latency Overhead**: Minimal (~15% baseline).
 * **Detection Rate**: **87%** (vs 94% optimal).
@@ -20,7 +20,7 @@ This profile corresponds to the "High Usability" configuration tested in the sen
 
 ## Profile B: The "Customer Facing" Baseline (Balanced)
 
-This profile corresponds to the **Empirically Optimal Configuration** identified in Part 2 (Table 5.6), which balances security guarantees with operational overhead.
+This profile corresponds to the **Empirically Optimal Configuration** identified in Part 2 (Architecture-Specific Results), which balances security guarantees with operational overhead.
 
 **Configuration Parameters**:
 
@@ -28,7 +28,7 @@ This profile corresponds to the **Empirically Optimal Configuration** identified
 * **Firewall Sensitivity**: Balanced ($\tau=0.5$).
 * **Consensus**: Variable (Architecture Dependent).
 
-**Observed Performance** (Sensitivity Table 5.2):
+**Observed Performance** (Part 2, Parameter Sensitivity Analysis):
 
 * **Latency Overhead**: Reduced detection latency (~8.5s for drift detection).
 * **Detection Rate**: **94%**.
@@ -36,7 +36,7 @@ This profile corresponds to the **Empirically Optimal Configuration** identified
 
 ## Profile C: The "Autonomous Operator" Baseline (High Assurance)
 
-This profile corresponds to the "Byzantine-Heavy" configuration tested in Part 2 (Table 2.8). It is required for high-stakes, unsupervised environments.
+This profile corresponds to the "Byzantine-Heavy" configuration tested in Part 2 (Byzantine Consensus Analysis). It is required for high-stakes, unsupervised environments.
 
 **Configuration Parameters**:
 
@@ -44,7 +44,7 @@ This profile corresponds to the "Byzantine-Heavy" configuration tested in Part 2
 * **Firewall Sensitivity**: Strict ($\tau=0.4$).
 * **Consensus**: Byzantine Fault Tolerance ($n \ge 3f+1$).
 
-**Observed Performance** (Sensitivity Table 5.3):
+**Observed Performance** (Part 2, Parameter Sensitivity Analysis):
 
 * **Latency Overhead**: Significant (+35-48% depending on corroboration count).
 * **Detection Rate**: **95%** (general) to **98%** (LangGraph-specific).
@@ -58,12 +58,12 @@ Beyond the parameter profiles, Part 2's architecture adapters revealed specific 
 
 ### LangGraph (State Machines)
 
-**Observation**: LangGraph architectures achieved the highest overall detection rates (98%) in our tests (Part 2, Table 5.6).
+**Observation**: LangGraph architectures achieved the highest overall detection rates (98%) in our tests (Part 2, Architecture-Specific Results).
 **Mechanism**: The explicit definition of state transitions allowed for rigorous **Invariant Checking**. Invalid state transitions were detected deterministically by the framework.
 
 ### CrewAI (Role-Based)
 
-**Observation**: CrewAI architectures performed best against "Trust Exploitation" attacks (94% detection) (Part 2, Table 5.4).
+**Observation**: CrewAI architectures performed best against "Trust Exploitation" attacks (94% detection) (Part 2, Architecture-Specific Results).
 **Mechanism**: The framework's role definitions acted as implicit **Identity Tripwires**. When an agent attempted to act outside its defined role, the behavior was flagged as a role violation.
 
 ---
@@ -79,3 +79,34 @@ We also evaluated a "Minimal Viable Implementation" (MVI) to determine the basel
 3. **Tripwires**: One per agent.
 
 **Result**: Even this minimal setup shifted the success rate against low-effort attacks from 100% (Baseline) to <5%, providing a critical first line of defense.
+
+---
+
+## Alignment with Emerging Standards
+
+Practitioners deploying cognitive security must increasingly demonstrate compliance with industry and government standards. CIF's defense mechanisms map directly to two major 2025--2026 standardization efforts.
+
+### OWASP Top 10 for Agentic Applications (2026)
+
+The OWASP Agentic Top 10 identifies ten risks (ASI01--ASI10) specific to autonomous multiagent deployments. CIF addresses the majority through its layered defense architecture:
+
+| OWASP Risk | CIF Defense | Profile Coverage |
+| :--- | :--- | :--- |
+| ASI01: Agent Goal Hijack | Cognitive Firewall + Tripwires | All profiles |
+| ASI02: Tool Misuse/Exploitation | Belief Sandbox (tool output isolation) | Profiles B, C |
+| ASI03: Identity/Privilege Abuse | Trust Calculus ($\delta^d$ decay) | All profiles |
+| ASI06: Memory/Context Poisoning | Tripwire monitoring + Drift detection | Profiles B, C |
+| ASI07: Insecure Inter-Agent Comm. | Provenance attestation | Profiles B, C |
+| ASI08: Cascading Failures | Byzantine Consensus | Profile C |
+| ASI10: Rogue Agents | Full CIF stack | Profile C |
+
+### NIST Zero Trust Architecture for AI Agents
+
+NIST's extension of SP 800-207 to AI agents establishes "never trust, always verify" principles. CIF operationalizes zero trust for cognitive interactions:
+
+* **Continuous verification**: Every inter-agent message is evaluated by the Cognitive Firewall
+* **Micro-segmentation**: Beliefs from external sources are sandboxed before integration
+* **Least privilege**: Trust scores decay exponentially with delegation depth ($\delta^d$)
+* **Continuous authentication**: Provenance attestation provides cryptographic message origin tracking
+
+Profile A (Internal Tool) provides partial NIST alignment. Profile B (Customer Facing) achieves substantial compliance. Profile C (Autonomous Operator) provides full alignment with both OWASP and NIST standards.

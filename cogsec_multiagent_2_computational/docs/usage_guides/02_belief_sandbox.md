@@ -2,7 +2,7 @@
 
 ## Concept
 
-The **Belief Sandbox** partitions agent memory into "Verified" and "Provisional" states. It ensures that unverified information from low-trust sources cannot corrupt the agent's core knowledge base. Information is held in a provisional sandbox until it meets specific **Promotion Criteria** (e.g., multi-source corroboration, trust threshold, or verification challenge).
+The **Belief Sandbox** partitions agent memory into **Verified** and **Provisional** states. Unverified information from low-trust sources is held in the provisional partition until it meets specific **Promotion Criteria** (confidence threshold, corroboration count, or minimum age). Provisional beliefs expire via configurable TTL (Time-To-Live) to prevent stale unverified data from accumulating.
 
 Formal Definition: *Part 1, Definition 5.4, Property 5.2*
 
@@ -12,61 +12,73 @@ The core logic is implemented in `src/core/sandbox.py`.
 
 ### Key Classes
 
-- `SandboxManager`: Manages the two partitions and handles add/promote operations.
-- `BeliefPartition`: Data structure for holding beliefs (Verified vs. Provisional).
-- `PromotionCriteria`: Logic defining when a belief can be promoted.
+- `SandboxManager`: Top-level manager coordinating belief state, promotion criteria, and TTL expiration.
+- `BeliefState`: Manages two internal partitions (verified/provisional) with promote/demote operations.
+- `BeliefPartition`: Enum with values `VERIFIED` and `PROVISIONAL`.
+- `Belief`: Dataclass representing a belief — `belief_id`, `content`, `confidence`, `source_agent`, `corroboration_count`, `created_at`, `metadata`.
+- `PromotionCriteria`: Defines when a belief can be promoted — `min_confidence` (default 0.8), `min_corroborations` (default 0), `min_age_seconds` (default 0.0), plus optional `custom_check` callable.
+- `SandboxConfig`: TTL and capacity settings — `default_ttl_seconds` (default 3600), `max_provisional_beliefs`, `auto_cleanup_interval`.
 
 ## Usage Example
 
 ```python
-from src.core.sandbox import SandboxManager, PromotionCriteria
+from core.sandbox import (
+    SandboxManager, SandboxConfig, PromotionCriteria, Belief, BeliefPartition
+)
 
-# 1. Initialize the Sandbox Manager
-# Define promotion criteria: requires 2 independent sources OR high trust score (>0.9)
+# 1. Configure promotion criteria
 criteria = PromotionCriteria(
-    min_corroboration=2,
-    min_trust_score=0.9
+    min_confidence=0.8,       # Belief confidence must be >= 0.8
+    min_corroborations=2,     # Must be corroborated by 2+ sources
+    min_age_seconds=0.0,      # No minimum age requirement
 )
-sandbox = SandboxManager(promotion_criteria=criteria)
 
-# 2. Add a belief from a source
-belief_content = "Stock price of ACME is $150."
-source_agent = "Agent_B"
-source_trust = 0.6 # Medium trust
-
-# This will go to PROVISIONAL partition because trust < 0.9
-status = sandbox.add_belief(
-    content=belief_content,
-    source=source_agent,
-    trust_score=source_trust
+# 2. Configure sandbox TTL
+config = SandboxConfig(
+    default_ttl_seconds=3600,      # Provisional beliefs expire after 1 hour
+    max_provisional_beliefs=1000,
 )
-print(f"Belief Status: {status}") # "PROVISIONAL"
 
-# 3. Corroborate from a second source
-# This triggers promotion because min_corroboration=2 is met
-status_update = sandbox.add_belief(
-    content=belief_content,
-    source="Agent_C",
-    trust_score=0.7
+# 3. Initialize
+sandbox = SandboxManager(config=config, promotion_criteria=criteria)
+
+# 4. Add a provisional belief
+belief = Belief(
+    belief_id="b-001",
+    content="Stock price of ACME is $150.",
+    confidence=0.6,
+    source_agent="Agent_B",
 )
-print(f"Belief Status Update: {status_update}") # "VERIFIED"
+sandbox.add_provisional(belief, ttl_seconds=1800)  # Custom 30-min TTL
 
-# 4. Access Verified Beliefs
-verified_beliefs = sandbox.get_verified_beliefs()
-print("Verified Knowledge Base:", verified_beliefs)
+# Check partition
+partition = sandbox.state.get_partition("b-001")
+print(f"Belief partition: {partition}")  # BeliefPartition.PROVISIONAL
+
+# 5. Manually promote a belief (e.g., after corroboration)
+sandbox.promote("b-001")
+
+# 6. Access verified beliefs
+verified = sandbox.state.verified
+print(f"Verified beliefs: {[b.content for b in verified]}")
+
+# 7. Cleanup expired provisional beliefs
+expired_ids = sandbox.cleanup_expired()
+print(f"Expired beliefs removed: {expired_ids}")
 ```
 
 ## Testing
 
-The sandbox is tested in `tests/core/test_sandbox.py`, covering:
+The sandbox is tested in `tests/test_sandbox.py`, covering:
 
-- Partition separation.
-- Trusted source promotion.
-- Corroboration counting.
-- TTL (Time-To-Live) expiry for provisional beliefs.
+- Partition separation (verified vs. provisional).
+- Promotion criteria evaluation (confidence, corroboration, age, custom predicates).
+- TTL expiry and automatic cleanup.
+- Demote operations (verified → provisional).
+- Max provisional capacity enforcement.
 
 Run tests:
 
 ```bash
-pytest projects/cognitive_integrity/cogsec_multiagent_2_computational/tests/core/test_sandbox.py
+pytest tests/test_sandbox.py -v
 ```

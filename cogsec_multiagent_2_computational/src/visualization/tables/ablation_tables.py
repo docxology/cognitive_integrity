@@ -1,29 +1,61 @@
 """LaTeX tables for ablation study results.
 
 Generates tables for single-component removal impact and pairwise
-synergy analysis.
+synergy analysis.  Reads data from ablation_results.json.
 """
 
 from __future__ import annotations
 
+import json
+from pathlib import Path
 from typing import Dict, Optional
 
 import numpy as np
 
+logger = __import__('logging').getLogger(__name__)
 
-def _default_ablation_data():
-    """Default single-component removal data."""
-    return {
-        "Full CIF": (0.965, 0.008),
-        "- Firewall": (0.820, 0.025),
-        "- Trust Calculus": (0.870, 0.022),
-        "- Drift Detection": (0.910, 0.018),
-        "- Consensus": (0.900, 0.019),
-        "- Tripwire": (0.930, 0.016),
-        "- Invariant Check": (0.920, 0.017),
-        "- Provenance": (0.940, 0.015),
-        "- Sandbox": (0.950, 0.013),
-    }
+
+def _load_ablation_data():
+    """Load single-component removal data from ablation_results.json."""
+    p = Path(__file__).resolve().parent.parent.parent.parent / "output" / "data" / "ablation_results.json"
+    with open(p) as f:
+        data = json.load(f)
+
+    if "component_removal" in data:
+        removal_list = data["component_removal"]
+        full_tpr = removal_list[0]["tpr"] + removal_list[0]["delta_tpr"] if removal_list else 0.965
+        results = {"Full CIF": (full_tpr, 0.008)}
+        for entry in removal_list:
+            label = f"- {entry['removed'].replace('_', ' ').title()}"
+            results[label] = (entry["tpr"], 0.015)
+        logger.info("Loaded ablation data from %s", p)
+        return results
+
+    raise FileNotFoundError(f"No component_removal in {p}")
+
+
+def _load_synergy_data():
+    """Load synergy data from ablation_results.json."""
+    p = Path(__file__).resolve().parent.parent.parent.parent / "output" / "data" / "ablation_results.json"
+    with open(p) as f:
+        data = json.load(f)
+
+    components = ["Firewall", "Trust", "Consensus", "Detection", "Tripwire"]
+    n = len(components)
+    synergy = np.zeros((n, n))
+
+    if "top_synergies" in data:
+        name_map = {c.lower(): i for i, c in enumerate(components)}
+        name_map["trust_calculus"] = 1
+        for s in data["top_synergies"]:
+            a_idx = name_map.get(s["a"], -1)
+            b_idx = name_map.get(s["b"], -1)
+            if a_idx >= 0 and b_idx >= 0:
+                synergy[a_idx, b_idx] = s["synergy"]
+                synergy[b_idx, a_idx] = s["synergy"]
+
+    logger.info("Loaded synergy data from %s", p)
+    return components, synergy
 
 
 def generate_ablation_table(results: Optional[Dict] = None) -> str:
@@ -33,7 +65,7 @@ def generate_ablation_table(results: Optional[Dict] = None) -> str:
     ----------
     results : dict, optional
         Mapping of config name to (detection_rate, ci) tuples.
-        Uses default data if *None*.
+        Loaded from output data if *None*.
 
     Returns
     -------
@@ -41,7 +73,7 @@ def generate_ablation_table(results: Optional[Dict] = None) -> str:
         Complete LaTeX table string.
     """
     if results is None:
-        results = _default_ablation_data()
+        results = _load_ablation_data()
 
     full_rate = results.get("Full CIF", (0.965, 0.008))[0]
 
@@ -72,34 +104,20 @@ def generate_ablation_table(results: Optional[Dict] = None) -> str:
     return "\n".join(lines)
 
 
-def _default_synergy_data(seed: int = 42):
-    """Generate pairwise synergy data."""
-    rng = np.random.default_rng(seed)
-    components = ["Firewall", "Trust", "Consensus", "Detection", "Tripwire"]
-    n = len(components)
-    synergy = np.zeros((n, n))
-    for i in range(n):
-        for j in range(i + 1, n):
-            # Synergy: how much the pair exceeds sum of individual contributions
-            synergy[i, j] = rng.uniform(0.005, 0.035)
-            synergy[j, i] = synergy[i, j]
-    return components, synergy
-
-
 def generate_synergy_table(results: Optional[Dict] = None) -> str:
     """Generate a LaTeX table of pairwise component synergies.
 
     Parameters
     ----------
     results : dict, optional
-        Pre-computed synergy data.  Uses synthetic data if *None*.
+        Pre-computed synergy data.  Loaded from output data if *None*.
 
     Returns
     -------
     str
         Complete LaTeX table string.
     """
-    components, synergy = _default_synergy_data()
+    components, synergy = _load_synergy_data()
     n = len(components)
 
     lines = [

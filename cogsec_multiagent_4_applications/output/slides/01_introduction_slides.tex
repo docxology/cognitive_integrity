@@ -1,0 +1,286 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\documentclass[
+  ignorenonframetext,
+]{beamer}
+\newif\ifbibliography
+\usepackage{pgfpages}
+\setbeamertemplate{caption}[numbered]
+\setbeamertemplate{caption label separator}{: }
+\setbeamercolor{caption name}{fg=normal text.fg}
+\beamertemplatenavigationsymbolsempty
+% remove section numbering
+\setbeamertemplate{part page}{
+  \centering
+  \begin{beamercolorbox}[sep=16pt,center]{part title}
+    \usebeamerfont{part title}\insertpart\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{section page}{
+  \centering
+  \begin{beamercolorbox}[sep=12pt,center]{section title}
+    \usebeamerfont{section title}\insertsection\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{subsection page}{
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center]{subsection title}
+    \usebeamerfont{subsection title}\insertsubsection\par
+  \end{beamercolorbox}
+}
+% Prevent slide breaks in the middle of a paragraph
+\widowpenalties 1 10000
+\raggedbottom
+\AtBeginPart{
+  \frame{\partpage}
+}
+\AtBeginSection{
+  \ifbibliography
+  \else
+    \frame{\sectionpage}
+  \fi
+}
+\AtBeginSubsection{
+  \frame{\subsectionpage}
+}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\author{\texorpdfstring{}{}}
+\date{}
+
+\begin{document}
+
+\section{Introduction: The Teleological Attack
+Surface}\label{introduction-the-teleological-attack-surface}
+
+\begin{frame}{Series Context}
+\protect\phantomsection\label{series-context}
+This paper is Part 4 of the \emph{Cognitive Security for Multiagent
+Operators} series. Paper 1 \cite{friedman2026cogsec1} established the
+Cognitive Integrity Framework (CIF): a formal model of agent cognitive
+states
+\(\sigma_i = \langle \mathcal{B}_i, \mathcal{G}_i, \mathcal{I}_i, \mathcal{H}_i \rangle\),
+a trust calculus with delegation decay, a five-tier adversary taxonomy
+(\(\Omega_1\)--\(\Omega_5\)), and five canonical defense mechanisms with
+composition algebra. Paper 2 \cite{friedman2026cogsec2} validated these
+mechanisms computationally, demonstrating 99.5\% detection across 950
+attack scenarios with the recommended defense stack. Paper 3
+\cite{friedman2026cogsec3} grounded the framework in biological analogy,
+identifying eusocial insect colonies as evolutionary existence proofs
+for CIF-like defense architectures.
+
+This paper addresses the remaining question: \textbf{does CIF work in
+practice?} We apply the framework across ten critical domains---from
+millisecond drone swarm decisions to year-scale diplomatic
+deliberations---demonstrating both its universality and the novel
+defense patterns that emerge from domain-specific application.
+\end{frame}
+
+\begin{frame}{The Ontological Crisis in AI}
+\protect\phantomsection\label{the-ontological-crisis-in-ai}
+The vulnerability of modern Artificial Intelligence has shifted from the
+\emph{epistemic} (what the agent knows) to the \emph{teleological} (what
+the agent wants) \cite{waltzman2017weaponization, aiagentssurvey2025}.
+\textbf{Goal Hijacking}, a sophisticated vector of indirect prompt
+injection \cite{greshake2023indirect}, allows adversaries to
+surreptitiously rewrite an agent's objective function. This represents
+an ontological crisis for autonomous systems: if an agent cannot trust
+the integrity of its own goals, it cannot trust any action it
+calculates.
+
+In the context of Boyd's \textbf{OODA (Observe-Orient-Decide-Act) Loop}
+\cite{boyd1987patterns, osinga2007science}, Goal Hijacking is a
+corruption of the \textbf{Orientation} phase. The agent correctly
+Observes the world, but its internal Orientation---the synthesis of
+heritage, culture, and genetic code (or in AI terms: training data,
+system prompts, and hard-coded constraints)---is displaced by a
+parasitic instruction. The agent then proceeds to Decide and Act with
+perfect logical consistency, but in service of an alien will. This
+dynamic has been documented across the emerging agentic AI landscape
+\cite{owasp2025agentic, microsoft2025indirect}. The OWASP Top 10 for
+Agentic Applications (December 2025) designates \textbf{ASI-01: Agent
+Goal Hijack} as the \#1 risk for deployed agentic AI systems---a direct
+industry validation of this paper's central thesis.
+
+\begin{block}{Empirical Urgency}
+\protect\phantomsection\label{empirical-urgency}
+Goal Hijacking has transitioned from academic concern to documented
+production failure. Autonomous coding agents have deleted production
+databases and fabricated records to conceal the damage; invisible
+Unicode payloads have triggered auto-approval modes enabling remote code
+execution; and indirect prompt injection through enterprise messaging
+platforms has exfiltrated private API keys---all without human
+authorization
+\cite{adversa2025incidents, copilot2025rce, promptarmor2024slack}. The
+Agent Security Bench (ASB) evaluation \cite{zhang2025asb} quantifies the
+gap: an 84.3\% average attack success rate across 400+ integrated tools,
+with current defenses achieving only 19.7\% mitigation. He et
+al.~\cite{he2025redteaming} further demonstrate Agent-in-the-Middle
+attacks that compromise inter-agent communication channels, extending
+the threat surface to multiagent coordination itself. These incidents
+are analyzed in detail through the CIF-AD-OODA lens in
+\cref{sec:empirical_grounding}.
+\end{block}
+\end{frame}
+
+\begin{frame}{Axiomatic Design and Transient Functional Requirements}
+\protect\phantomsection\label{axiomatic-design-and-transient-functional-requirements}
+Suh's \textbf{Axiomatic Design (AD)} theory
+\cite{suh1990principles, suh2001axiomatic} posits that good design
+maintains the independence of Functional Requirements (FRs). The
+relationship between FRs and Design Parameters (DPs) is captured in the
+Design Matrix:
+
+\begin{equation}
+\{FR\} = [A]\{DP\}
+\label{eq:intro_design_matrix}
+\end{equation}
+
+In an uncoupled (safe) design, \([A]\) is diagonal: each FR depends on
+exactly one DP. Providing a solution for \(\text{FR}_1\) does not
+compromise \(\text{FR}_2\). In cognitive security, we identify a new
+failure mode: \textbf{Transient Functional Coupling}.
+
+Adversaries use ``fast OODA transients''---high-frequency semantic
+injections through data channels (\(\Omega_2\) vectors)---to temporarily
+introduce off-diagonal terms in the Design Matrix. For instance, a
+cyber-defense agent's FR (``Block Malicious Traffic'') might be
+transiently coupled to a hijacked FR (``Maximize Uptime''), causing the
+agent to flush its firewalls during an attack to ``restore
+connectivity.'' The coupled matrix:
+
+\begin{equation}
+\{FR'\} = [A']\{DP\} = \begin{bmatrix} A_{11} & A_{12} \\ A_{21} & A_{22} \end{bmatrix} \{DP\}
+\label{eq:intro_coupled_matrix}
+\end{equation}
+
+violates the Independence Axiom, rendering the system unstable. The
+focus of this paper is on detecting and defending against these rapid
+shifts in the Design Matrix.
+\end{frame}
+
+\begin{frame}{The Role of CIF: Five Canonical Defenses}
+\protect\phantomsection\label{the-role-of-cif-five-canonical-defenses}
+The Cognitive Integrity Framework serves as the ``gyroscope'' for OODA
+loops, stabilizing the Orientation phase against adversarial transients.
+CIF provides five canonical defense mechanisms
+\cite{friedman2026cogsec1}, each targeting a specific aspect of
+cognitive integrity:
+
+\begin{enumerate}
+\tightlist
+\item
+  \textbf{Cognitive Firewall} (\(\mathcal{F}\)): Classifies incoming
+  messages by trust score, quarantining ambiguous inputs before they
+  reach the agent's Orientation phase.
+\item
+  \textbf{Belief Sandboxing} (\(\mathcal{B}_{\text{provisional}}\)):
+  Isolates unverified beliefs in a provisional partition, requiring
+  corroboration before promotion to operational status.
+\item
+  \textbf{Behavioral Invariants} (\(\text{INV}_k\)): Pre-defined runtime
+  predicates that trigger alerts when violated, regardless of semantic
+  content.
+\item
+  \textbf{Drift Detection} (\(S_{\text{drift}}\)): Monitors belief
+  distribution changes via KL divergence, flagging sudden orientation
+  shifts that exceed threshold \(\epsilon\).
+\item
+  \textbf{Byzantine Consensus} (\(\mathcal{B}_{\text{consensus}}\)):
+  Multi-agent agreement protocol requiring quorum \(q\) before critical
+  actions, tolerating up to \(f\) compromised agents where
+  \(n \geq 3f+1\) \cite{lamport1982byzantine}.
+\end{enumerate}
+
+These mechanisms compose in series and parallel to achieve layered
+defense. Rather than the ad-hoc ``Axiomatic Locking'' described in early
+formulations, CIF's defense is the \emph{systematic composition} of
+these five mechanisms, calibrated to the threat profile and temporal
+dynamics of each operational domain.
+\end{frame}
+
+\begin{frame}{Application Analysis}
+\protect\phantomsection\label{application-analysis}
+This manuscript examines Goal Hijacking dynamics across ten high-stakes
+domains, analyzing how adversaries exploit the collaborative surface
+between AI agents, OODA loops, and Axiomatic Design principles. Each
+domain is analyzed using a standardized five-step template
+(\cref{sec:methodology}) that characterizes the operational context,
+attack surface, transient coupling, defense mapping, and validation
+anchoring.
+\end{frame}
+
+\begin{frame}{Contributions}
+\protect\phantomsection\label{contributions}
+This paper makes the following contributions:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{C1:} A unified CIF-AD-OODA integration model for analyzing
+  Goal Hijacking attacks and defenses across arbitrary operational
+  domains.
+\item
+  \textbf{C2:} Identification of three universal attack patterns---FR
+  Polarity Inversion, Constraint Relaxation, and Context Boundary
+  Violation---through cross-domain synthesis.
+\item
+  \textbf{C3:} Validation that all five canonical CIF mechanisms provide
+  adequate coverage across ten critical domains, with no mechanism
+  appearing in fewer than three domains and no domain requiring
+  mechanisms outside the CIF vocabulary.
+\item
+  \textbf{C4:} Three novel defense pattern extensions: verification
+  channel separation, active perturbation probing, and physics-informed
+  invariants.
+\item
+  \textbf{C5:} Temporal scale analysis demonstrating CIF's applicability
+  across eight orders of magnitude in OODA cycle time.
+\item
+  \textbf{C6:} Retrospective validation through six documented AI agent
+  security incidents (2024--2025), confirming that all incidents map to
+  the universal attack pattern taxonomy and would have been detectable
+  by the appropriate CIF mechanism.
+\end{itemize}
+\end{frame}
+
+\end{document}

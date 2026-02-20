@@ -1,0 +1,276 @@
+\newpage
+
+# Supplement S7: Algorithm Pseudocode {#sec:pseudocode-supplement}
+
+This supplement provides detailed pseudocode for all six core CIF defense algorithms referenced in Section 2.1 of the main text. Configuration parameters are documented separately in \cref{sec:config-params}. Framework API reference, deployment considerations, and integration examples are provided in Supplements S5 and S6.
+
+> **Cross-Reference Note**: All algorithms implement formal definitions from Part 1. We cite specific theorems using "(Part 1, Theorem N)" notation to enable traceability from implementation to theoretical foundations.
+
+> **Reproducibility**: Algorithm implementations are in `src/core/`. Run `pytest tests/` to verify behavior (1,594 tests, 100% pass rate).
+
+## Algorithm 1: Cognitive Firewall Classification {#sec:alg-firewall}
+
+The cognitive firewall classifies incoming messages using a multi-stage detection pipeline. This implements the formal Cognitive Firewall definition from Part 1, Section 5.2.1, specifying three-stage filtering ($F_{sig} \to F_{sem} \to F_{anom}$) with combined threat scoring (Part 1, Definition 5.3).
+
+\begin{algorithm}
+\caption{Cognitive Firewall Classification}
+\label{alg:firewall-impl}
+\begin{algorithmic}[1]
+\Require message $m$, context $ctx$
+\Ensure decision $\in \{\text{ACCEPT}, \text{QUARANTINE}, \text{REJECT}\}$
+\Function{Classify}{$m$, $ctx$}
+  \State \Comment{Stage 1: Pattern-based injection detection}
+  \State $S_{inj} \gets 0$
+  \For{each pattern $p \in \mathcal{P}_{injection}$}
+    \If{$\text{Match}(m, p)$}
+      \State $S_{inj} \gets S_{inj} + p.weight$
+    \EndIf
+  \EndFor
+  \State \Comment{Stage 2: Semantic analysis}
+  \State $\mathbf{e} \gets \text{Embed}(m)$
+  \State $S_{sem} \gets \text{CosineSim}(\mathbf{e}, \mathbf{c}_{attack})$
+  \State \Comment{Stage 3: Anomaly detection}
+  \State $S_{anom} \gets \text{IsolationForest.Score}(\text{Features}(m, ctx))$
+  \State \Comment{Combine scores}
+  \State $S_{combined} \gets w_1 \cdot S_{inj} + w_2 \cdot S_{sem} + w_3 \cdot S_{anom}$
+  \State \Comment{Decision logic}
+  \If{$S_{combined} > \tau_1$}
+    \State \Return REJECT
+  \ElsIf{$S_{combined} > \tau_2$}
+    \State \Return QUARANTINE
+  \Else
+    \State \Return ACCEPT
+  \EndIf
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+> **Implementation**: `src/core/firewall.py` — `CognitiveFirewall.classify()`, `PatternDetector.score_injection()`, `SemanticSimilarityDetector.score_semantic_similarity()`.
+
+> **Complexity**: $O(|m| \cdot |P|)$ for pattern matching, plus $O(d)$ for embedding lookup where $d$ is embedding dimension.
+
+## Algorithm 2: Belief Sandboxing {#sec:alg-sandbox}
+
+Manages provisional beliefs with verification and promotion logic. This implements Part 1, Section 5.2.2 sandboxing rules, including the promotion rule requiring $\kappa$-corroboration (Part 1, Definition 5.4 and Property 5.2).
+
+\begin{algorithm}
+\caption{Belief Sandbox Operations}
+\label{alg:sandbox-impl}
+\begin{algorithmic}[1]
+\Require belief $\phi$, source $s$, trust score $\mathcal{T}_s$
+\Ensure updated belief state
+\Function{AddBelief}{$\phi$, $s$, $\mathcal{T}_s$}
+  \State $\pi \gets \{source: s, timestamp: \text{Now}(), trust: \mathcal{T}_s, hash: \text{SHA256}(\phi)\}$
+  \If{$\mathcal{T}_s \geq \tau_{trusted}$}
+    \If{$\text{Consistent}(\mathcal{B}_{verified}, \phi)$}
+      \State $\mathcal{B}_{verified} \gets \mathcal{B}_{verified} \cup \{\phi\}$
+      \Return SUCCESS
+    \Else
+      \Return CONFLICT
+    \EndIf
+  \Else
+    \State $\mathcal{B}_{provisional} \gets \mathcal{B}_{provisional} \cup \{(\phi, \pi, TTL_{default})\}$
+    \Return PENDING
+  \EndIf
+\EndFunction
+\Function{PromotionCheck}{}
+  \For{each $(\phi, \pi, ttl) \in \mathcal{B}_{provisional}$}
+    \If{$ttl \leq 0$}
+      \State $\mathcal{B}_{provisional} \gets \mathcal{B}_{provisional} \setminus \{(\phi, \pi, ttl)\}$
+      \State **continue**
+    \EndIf
+    \If{$\neg V(\pi)$}
+      \State **continue**
+    \EndIf
+    \If{$\neg \text{Consistent}(\mathcal{B}_{verified}, \phi)$}
+      \State **continue**
+    \EndIf
+    \If{$|\text{Corroborate}(\phi)| \geq \kappa$}
+      \State $\mathcal{B}_{verified} \gets \mathcal{B}_{verified} \cup \{\phi\}$
+      \State $\mathcal{B}_{provisional} \gets \mathcal{B}_{provisional} \setminus \{(\phi, \pi, ttl)\}$
+    \EndIf
+  \EndFor
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+> **Implementation**: `src/core/sandbox.py` — `SandboxManager.add_provisional()`, `SandboxManager.promote()`, `PromotionCriteria.evaluate()`.
+
+> **Complexity**: $O(1)$ for `add_provisional`, $O(|\mathcal{B}_{prov}| \cdot \kappa)$ for promotion check. Memory: $O(N_{max})$ bounded by configuration.
+
+## Algorithm 3: Trust Update with Bounded Delegation {#sec:alg-trust}
+
+Implements the trust calculus with decay and reputation updates. This is a direct implementation of Part 1's Trust Algebra (Section 4), including bounded delegation with $\delta^d$ decay (Theorem 4.2: Trust Boundedness). Trust cannot be inflated through delegation chains.
+
+\begin{algorithm}
+\caption{Trust Update Operations}
+\label{alg:trust-impl}
+\begin{algorithmic}[1]
+\Require agents $i$, $j$, interaction result
+\Ensure updated trust score
+\Function{UpdateTrust}{$i$, $j$, result}
+  \State $T_{base} \gets \text{GetBaseTrust}(j)$
+  \State $T_{rep} \gets \text{GetReputation}(j)$
+  \State $T_{ctx} \gets \text{GetContextualTrust}(i, j)$
+  \If{$result.success$}
+    \State $\Delta \gets \eta \cdot (1 - T_{rep})$
+  \Else
+    \State $\Delta \gets -\eta \cdot T_{rep} \cdot \rho$
+  \EndIf
+  \State $T_{rep}^{new} \gets \text{Clip}(T_{rep} + \Delta, 0, 1)$
+  \State $\text{SetReputation}(j, T_{rep}^{new})$
+  \State $T_{combined} \gets \alpha \cdot T_{base} + \beta \cdot T_{rep}^{new} + \gamma \cdot T_{ctx}$
+  \If{$i \neq \text{DirectObserver}(j)$}
+    \State $d \gets \text{DelegationDepth}(i, j)$
+    \State $T_{combined} \gets T_{combined} \cdot \delta^d$
+  \EndIf
+  \Return $T_{combined}$
+\EndFunction
+\Function{GetTransitiveTrust}{$i$, $k$, path}
+  \State $T_{min} \gets 1.0$
+  \For{each $(a, b) \in \text{ConsecutivePairs}(path)$}
+    \State $T_{min} \gets \min(T_{min}, \mathcal{T}_{a \to b})$
+  \EndFor
+  \State $d \gets |path| - 1$
+  \Return $T_{min} \cdot \delta^d$
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+> **Implementation**: `src/core/trust.py` — `TrustCalculus.compute_trust()`, `TrustCalculus.delegate_trust()`, `TrustMatrix.get_delegation_trust()`, `ReputationTracker.get_reputation()`.
+
+> **Complexity**: $O(1)$ for direct trust lookup, $O(d)$ for transitive trust through depth-$d$ delegation chain. Trust matrix storage: $O(n^2)$ for $n$ agents.
+
+## Algorithm 4: Cognitive Tripwire Monitoring {#sec:alg-tripwire}
+
+Continuously monitors canary beliefs for unauthorized modifications. Tripwires implement Part 1, Section 5.3 (Definition 5.6: Canary Belief), specifying canary beliefs $\omega \in \mathcal{W}$ that remain stable under normal operation.
+
+\begin{algorithm}
+\caption{Tripwire Monitoring}
+\label{alg:tripwire-impl}
+\begin{algorithmic}[1]
+\Require agent state $\sigma$, tripwire set $\mathcal{W}$
+\Ensure alert status
+\Function{MonitorTripwires}{$\sigma$, $\mathcal{W}$}
+  \State $alerts \gets []$
+  \For{each $(\omega, p_{expected}) \in \mathcal{W}$}
+    \State $p_{actual} \gets \sigma.\mathcal{B}[\omega]$
+    \State $drift \gets |p_{actual} - p_{expected}|$
+    \If{$drift > \epsilon_{drift}$}
+      \State $severity \gets \text{ClassifySeverity}(drift)$
+      \State $alert \gets \{tripwire: \omega, expected: p_{expected}, actual: p_{actual},$
+      \State \quad\quad\quad\quad $drift: drift, timestamp: \text{Now}(), severity: severity\}$
+      \State $alerts.\text{append}(alert)$
+    \EndIf
+  \EndFor
+  \If{$|alerts| > 0$}
+    \State $\text{AggregateAlerts}(alerts)$
+    \State $\text{TriggerResponse}(alerts)$
+  \EndIf
+  \Return $alerts$
+\EndFunction
+\Function{ClassifySeverity}{$drift$}
+  \State \Comment{Uniform 4-tier severity based on drift magnitude}
+  \If{$drift > \epsilon_{critical}$}
+    \Return CRITICAL
+  \ElsIf{$drift > \epsilon_{high}$}
+    \Return HIGH
+  \ElsIf{$drift > \epsilon_{medium}$}
+    \Return MEDIUM
+  \Else
+    \Return LOW
+  \EndIf
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+> **Implementation**: `src/core/tripwire.py` — `CognitiveTripwire.check()`, `CognitiveTripwire.check_single()`, `TripwireAlert.severity`.
+
+> **Note**: Severity classification uses a uniform 4-tier system (LOW, MEDIUM, HIGH, CRITICAL) based solely on drift magnitude, independent of canary category. This aligns with the `Severity` IntEnum in `src/utils/types.py`.
+
+## Algorithm 5: Byzantine Consensus Protocol {#sec:alg-byzantine}
+
+Implements Byzantine fault-tolerant consensus for multi-agent decisions. This satisfies Part 1, Section 5.4.1 (Theorem 5.2), ensuring agreement when at most $f$ agents are Byzantine and $n \geq 3f + 1$.
+
+\begin{algorithm}
+\caption{Byzantine Consensus Protocol}
+\label{alg:byzantine-impl}
+\begin{algorithmic}[1]
+\Require agents $\mathcal{A}$, proposition $\phi$, max Byzantine $f$
+\Ensure consensus value or UNDECIDED
+\Function{Consensus}{$\mathcal{A}$, $\phi$}
+  \State $n \gets |\mathcal{A}|$
+  \Require $n \geq 3f + 1$
+  \State $votes \gets \{\}$
+  \State \Comment{Phase 1: Collect votes}
+  \For{each agent $a \in \mathcal{A}$}
+    \State $vote \gets a.\text{GetBelief}(\phi)$
+    \State $sig \gets a.\text{Sign}(vote)$
+    \State $\text{Broadcast}(\{agent: a, vote: vote, sig: sig\})$
+  \EndFor
+  \State \Comment{Phase 2: Echo round}
+  \For{each agent $a \in \mathcal{A}$}
+    \State $received \gets \text{CollectMessages}(timeout = T_{round})$
+    \State $verified \gets [m : m \in received \land \text{VerifySignature}(m)]$
+    \If{$|verified| \geq n - f$}
+      \State $majority \gets \text{MajorityValue}(verified)$
+      \State $\text{Broadcast}(\{agent: a, echo: majority\})$
+    \EndIf
+  \EndFor
+  \State \Comment{Phase 3: Decide}
+  \State $echoes \gets \text{CollectEchoes}(timeout = T_{round})$
+  \State $positive \gets |\{e : e.echo = \text{TRUE}\}|$
+  \State $negative \gets |\{e : e.echo = \text{FALSE}\}|$
+  \If{$positive > \frac{2n}{3}$}
+    \Return ACCEPT
+  \ElsIf{$negative > \frac{2n}{3}$}
+    \Return REJECT
+  \Else
+    \Return UNDECIDED
+  \EndIf
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+> **Implementation**: `src/core/consensus.py` — `ByzantineConsensus.compute_consensus()`, `WeightedByzantineConsensus.submit_vote()`, `QuorumVerification.approve()`.
+
+## Algorithm 6: Belief Drift Detection {#sec:alg-drift}
+
+Monitors belief distributions for anomalous changes over time using KL divergence. This implements Part 1's progressive drift detection (Section 6.1, Definition 6.1).
+
+\begin{algorithm}
+\caption{Belief Drift Detection}
+\label{alg:drift-impl}
+\begin{algorithmic}[1]
+\Require belief state $\mathcal{B}_{current}$, history $\mathcal{H}$, window $w$
+\Ensure drift score and alerts
+\Function{DetectDrift}{$\mathcal{B}_{current}$, $\mathcal{H}$, $w$}
+  \State $\mathcal{B}_{baseline} \gets \text{GetBaselineDistribution}(\mathcal{H}, w)$
+  \State \Comment{Compute KL divergence}
+  \State $D_{KL} \gets 0$
+  \For{each $\phi \in \text{Domain}(\mathcal{B}_{current})$}
+    \State $p \gets \mathcal{B}_{current}[\phi]$
+    \State $q \gets \mathcal{B}_{baseline}[\phi]$
+    \If{$p > 0 \land q > 0$}
+      \State $D_{KL} \gets D_{KL} + p \cdot \log(p / q)$
+    \EndIf
+  \EndFor
+  \State \Comment{Compute max delta}
+  \State $\Delta_{max} \gets 0$
+  \For{each $\phi \in \text{Domain}(\mathcal{B}_{current})$}
+    \State $\Delta \gets |\mathcal{B}_{current}[\phi] - \mathcal{B}_{baseline}[\phi]|$
+    \State $\Delta_{max} \gets \max(\Delta_{max}, \Delta)$
+  \EndFor
+  \State \Comment{Combined score}
+  \State $S_{drift} \gets D_{KL} + \lambda \cdot \Delta_{max}$
+  \If{$S_{drift} > \theta_{drift}$}
+    \State $alert \gets \{type: \text{DRIFT\_DETECTED}, score: S_{drift},$
+    \State \quad\quad\quad\quad $kl: D_{KL}, max\_delta: \Delta_{max}, timestamp: \text{Now}()\}$
+    \Return $(S_{drift}, [alert])$
+  \EndIf
+  \Return $(S_{drift}, [])$
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+> **Implementation**: `src/core/detection.py` — `DriftDetector.compute_drift()`, `DriftDetector.is_anomalous()`, `AnomalyScorer.score()`.

@@ -213,9 +213,9 @@ computational treatment of this problem. Part 1 establishes mathematical
 foundations: a trust calculus with provably bounded delegation, defense
 composition algebras with multiplicative detection guarantees, and
 information-theoretic limits on attack stealth. Part 2 provides
-computational validation: eight implemented defense modules (1,557
+computational validation: eight implemented defense modules (1,594
 passing tests), a 950-attack corpus spanning four threat categories, and
-parametric architecture-aware simulation across six production
+parametric architecture-aware simulation across four production
 multiagent topologies.
 
 This paper is a qualitative review and practitioner's guide to the CIF
@@ -288,13 +288,13 @@ efficacy.
   amplify their influence through delegation chains.
 \item
   \textbf{Part 2: Computational Validation} implemented this theory in
-  Python and tested it against a corpus of 950 attacks across six
+  Python and tested it against a corpus of 950 attacks across four
   production architectures.
 \end{itemize}
 
-The result was \textbf{1,557 passing tests and a confirmed 97\%
-detection rate} against direct injection attacks in fully defended
-configurations.
+The result was \textbf{1,594 passing tests and a 97\% structural
+constraint satisfaction rate} against direct injection attacks in fully
+defended configurations.
 
 \subsection{The Purpose of This Guide}\label{the-purpose-of-this-guide}
 
@@ -457,24 +457,23 @@ how output probabilities of distinct modules interact. The key result is
 that orthogonal defenses compose multiplicatively.
 
 This ``Swiss Cheese Model'' was empirically validated in Part 2, where
-the full stack (97\% detection) significantly outperformed the sum of
-its parts.
+the full stack (97\% structural constraint satisfaction) significantly
+outperformed the sum of its parts.
 
 \newpage
 
 \section{The Evidence: What We Proved in Part
 2}\label{sec:paper2-review}
 
-Part 1 was the theory. Part 2 was the proof. We ran \textbf{1,557 tests}
-against \textbf{950 attack samples} across \textbf{6 production
+Part 1 was the theory. Part 2 was the proof. We ran \textbf{1,594 tests}
+against \textbf{950 attack samples} across \textbf{four production
 architectures}.
 
 Here is what the data says.
 
 \subsection{The Experimental Setup}\label{the-experimental-setup}
 
-We tested the six most common multi-agent architectures found in
-production:
+We tested four common multi-agent architectures found in production:
 
 \begin{itemize}
 \tightlist
@@ -486,10 +485,6 @@ production:
   \textbf{CrewAI} (Role-Based Team)
 \item
   \textbf{LangGraph} (State Machine)
-\item
-  \textbf{MetaGPT} (SOP-Driven)
-\item
-  \textbf{Camel} (Peer-to-Peer)
 \end{itemize}
 
 The test corpus included direct prompt injection, poisoned RAG contexts,
@@ -787,7 +782,7 @@ low-risk, human-in-the-loop environments.
   \textbf{Consensus}: Simple Majority.
 \end{itemize}
 
-\textbf{Observed Performance} (Sensitivity Table 5.2):
+\textbf{Observed Performance} (Part 2, Parameter Sensitivity Analysis):
 
 \begin{itemize}
 \tightlist
@@ -805,8 +800,8 @@ low-risk, human-in-the-loop environments.
 (Balanced)}\label{profile-b-the-customer-facing-baseline-balanced}
 
 This profile corresponds to the \textbf{Empirically Optimal
-Configuration} identified in Part 2 (Table 5.6), which balances security
-guarantees with operational overhead.
+Configuration} identified in Part 2 (Architecture-Specific Results),
+which balances security guarantees with operational overhead.
 
 \textbf{Configuration Parameters}:
 
@@ -822,7 +817,7 @@ guarantees with operational overhead.
   \textbf{Consensus}: Variable (Architecture Dependent).
 \end{itemize}
 
-\textbf{Observed Performance} (Sensitivity Table 5.2):
+\textbf{Observed Performance} (Part 2, Parameter Sensitivity Analysis):
 
 \begin{itemize}
 \tightlist
@@ -841,8 +836,8 @@ guarantees with operational overhead.
 Assurance)}\label{profile-c-the-autonomous-operator-baseline-high-assurance}
 
 This profile corresponds to the ``Byzantine-Heavy'' configuration tested
-in Part 2 (Table 2.8). It is required for high-stakes, unsupervised
-environments.
+in Part 2 (Byzantine Consensus Analysis). It is required for
+high-stakes, unsupervised environments.
 
 \textbf{Configuration Parameters}:
 
@@ -858,7 +853,7 @@ environments.
   \textbf{Consensus}: Byzantine Fault Tolerance (\(n \ge 3f+1\)).
 \end{itemize}
 
-\textbf{Observed Performance} (Sensitivity Table 5.3):
+\textbf{Observed Performance} (Part 2, Parameter Sensitivity Analysis):
 
 \begin{itemize}
 \tightlist
@@ -887,18 +882,20 @@ agent topology.
 Machines)}\label{langgraph-state-machines}
 
 \textbf{Observation}: LangGraph architectures achieved the highest
-overall detection rates (98\%) in our tests (Part 2, Table 5.6).
-\textbf{Mechanism}: The explicit definition of state transitions allowed
-for rigorous \textbf{Invariant Checking}. Invalid state transitions were
-detected deterministically by the framework.
+overall detection rates (98\%) in our tests (Part 2,
+Architecture-Specific Results). \textbf{Mechanism}: The explicit
+definition of state transitions allowed for rigorous \textbf{Invariant
+Checking}. Invalid state transitions were detected deterministically by
+the framework.
 
 \subsubsection{CrewAI (Role-Based)}\label{crewai-role-based}
 
 \textbf{Observation}: CrewAI architectures performed best against
-``Trust Exploitation'' attacks (94\% detection) (Part 2, Table 5.4).
-\textbf{Mechanism}: The framework's role definitions acted as implicit
-\textbf{Identity Tripwires}. When an agent attempted to act outside its
-defined role, the behavior was flagged as a role violation.
+``Trust Exploitation'' attacks (94\% detection) (Part 2,
+Architecture-Specific Results). \textbf{Mechanism}: The framework's role
+definitions acted as implicit \textbf{Identity Tripwires}. When an agent
+attempted to act outside its defined role, the behavior was flagged as a
+role violation.
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
@@ -1256,64 +1253,84 @@ Address unchecked items before production deployment.
 
 \newpage
 
-\section{The Frontier: Where We Need You}\label{sec:future}
+\section{Open Problems and Future Directions}\label{sec:future}
 
-We have built the foundation and validated the core mechanics. However,
-the field is in its infancy. We have established valid trust metrics
-(Trust Calculus) and filtering mechanisms (Firewalls), but we lack
-standardized protocols for agent state persistence and identity
-federation---the agentic equivalents of cookies or OAuth.
+The CIF series has established validated trust metrics (Trust Calculus)
+and filtering mechanisms (Firewalls), but the field remains nascent.
+Several foundational problems remain open, each representing both a
+research opportunity and an engineering requirement for production-grade
+cognitive security.
 
-This is where you come in.
+\subsection{1. Trust Visualization and Operator
+Interfaces}\label{trust-visualization-and-operator-interfaces}
 
-The Cognitive Integrity Framework is open source, and the problems below
-are not just ``future research''---they are immediate engineering
-blockers that need to be solved.
+\textbf{The Problem}: Current CIF alerts surface as structured log
+entries (e.g., ``Identity Invariant Violation''). For operators managing
+systems with dozens of agents, this format is insufficient for
+situational awareness.
 
-\subsection{1. The UX of Trust (Help
-Wanted)}\label{the-ux-of-trust-help-wanted}
+\textbf{The Need}: Real-time visualization of trust graphs, belief drift
+trends, and defense activation patterns. The challenge is presenting
+high-dimensional agent state in a way that supports rapid operator
+decision-making.
 
-\textbf{The Problem}: Currently, when an agent flag is raised
-(``Identity Violation''), it looks like a JSON error log. \textbf{The
-Need}: We need a ``Cognitive Dashboard'' for human operators. What does
-it look like to visualize the trust graph of 50 agents in real-time? How
-do we show ``Drift'' intuitively? \textbf{The Goal}: A React/Next.js
-dashboard that connects to the CIF Python SDK.
+\textbf{Research Direction}: Dashboard architectures that connect to the
+CIF Python SDK, enabling real-time trust graph visualization and drift
+monitoring for production multiagent deployments.
 
-\subsection{2. Standardized Agent Identity (Protocol
-Design)}\label{standardized-agent-identity-protocol-design}
+\subsection{2. Standardized Agent Identity
+Protocols}\label{standardized-agent-identity-protocols}
 
-\textbf{The Problem}: Every framework (LangChain, CrewAI, AutoGPT)
-handles agent identity differently. \textbf{The Need}: A standard
-``Agent Passport'' protocol. A cryptographically verifiable identity
-token that an agent can carry across different frameworks. \textbf{The
-Goal}: An RFC-style spec for \texttt{x-agent-identity} headers.
+\textbf{The Problem}: Each agent framework (LangChain, CrewAI, AutoGPT)
+handles agent identity differently, making cross-framework trust
+verification impractical.
 
-\subsection{3. ``Eusocial'' Security (Advanced
-Research)}\label{eusocial-security-advanced-research}
+\textbf{The Need}: A cryptographically verifiable identity protocol---an
+``Agent Passport''---that an agent can carry across frameworks. This
+would enable the trust calculus to operate in heterogeneous
+multi-framework deployments.
 
-\textbf{The Problem}: Our current consensus is Byzantine, but it's
-computationally expensive (\(O(n^2)\)). \textbf{The Need}: Insect
-colonies don't vote; they use pheromones. We need \textbf{Stigmergic
-Security Protocols} where agents leave ``trust trails'' in the
-environment. \textbf{The Goal}: A lightweight, scalable consensus
-algorithm modeled on ant colony immune responses.
+\textbf{Research Direction}: RFC-style specification for
+\texttt{x-agent-identity} headers with cryptographic attestation.
+
+\subsection{3. Stigmergic Security
+Protocols}\label{stigmergic-security-protocols}
+
+\textbf{The Problem}: Byzantine consensus mechanisms, while provably
+correct, incur \(O(n^2)\) communication overhead. This limits their
+applicability in large-scale swarm deployments.
+
+\textbf{The Need}: Lightweight consensus alternatives inspired by
+biological coordination. Insect colonies achieve collective immunity
+through indirect communication (pheromone trails) rather than direct
+voting.
+
+\textbf{Research Direction}: Stigmergic security protocols where agents
+leave ``trust trails'' in shared environments, enabling scalable
+consensus without direct agent-to-agent messaging.
 
 \subsection{4. Benchmark Expansion}\label{benchmark-expansion}
 
-\textbf{The Problem}: Our corpus has 950 attacks. Real-world capability
-is growing daily. \textbf{The Need}: We need more attacks. Specifically,
-we need \textbf{Multi-Modal Injection attacks} (audio/video) and
-\textbf{Tool-Use Hijacking} examples. \textbf{The Goal}: Pull
-Recommendations to the \texttt{cognitive\_integrity} repository adding
-new scenarios to \texttt{data/attacks/}.
+\textbf{The Problem}: The current corpus contains 950 attack samples. As
+agent capabilities expand into multimodal processing and autonomous tool
+use, the attack surface grows correspondingly.
+
+\textbf{The Need}: Expanded attack corpora covering multi-modal
+injection (audio/video), tool-use hijacking, and long-horizon social
+engineering campaigns that unfold over hundreds of interactions.
+
+\textbf{Research Direction}: Community-driven expansion of the attack
+corpus at the
+\href{https://github.com/docxology/cognitive_integrity}{cognitive\_integrity
+repository}, with particular emphasis on attack categories not yet
+represented.
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
 \subsection{Contributing}\label{contributing}
 
-This is not a closed academic project. It is a living defense framework
-for the agentic future.
+The Cognitive Integrity Framework is an open-source project.
+Contributions are welcome, particularly:
 
 \begin{itemize}
 \tightlist
@@ -1321,13 +1338,13 @@ for the agentic future.
   \textbf{Code}:
   \href{https://github.com/docxology/cognitive_integrity}{github.com/docxology/cognitive\_integrity}
 \item
-  \textbf{Discussion}: Join the \texttt{discussions} tab on GitHub.
+  \textbf{Discussion}: The \texttt{discussions} tab on GitHub serves as
+  the primary forum.
 \item
-  \textbf{Contribute}: We prioritize PRs that add \textbf{Adapters} for
-  new agent frameworks (e.g., Semantic Kernel, Microsoft AutoGen).
+  \textbf{Adapters}: Contributions that extend CIF to additional agent
+  frameworks (e.g., Semantic Kernel, Microsoft AutoGen) are especially
+  valued.
 \end{itemize}
-
-Let's build the immune system for the agentic web, together.
 
 \newpage
 
@@ -1347,8 +1364,9 @@ constraints for secure cognitive systems.
 
 \subsection{The Code Works}\label{the-code-works}
 
-We validated these laws in code. 1,557 tests. 950 attacks. 97\%
-detection. The system works. It is not hypothetical.
+We validated these laws in code. 1,594 tests. 950 attacks. 97\%
+structural constraint satisfaction. The system works. It is not
+hypothetical.
 
 \subsection{The Next Step is Yours}\label{the-next-step-is-yours}
 

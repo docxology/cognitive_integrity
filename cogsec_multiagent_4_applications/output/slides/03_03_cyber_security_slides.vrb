@@ -1,0 +1,44 @@
+\frametitle{CIF Defense: Permission Boundaries and Quorum Verification}
+\protect\phantomsection\label{cif-defense-permission-boundaries-and-quorum-verification}
+\begin{block}{Permission Boundaries}
+\protect\phantomsection\label{permission-boundaries}
+CIF implements \textbf{Permission Boundaries} (Paper 1, Def. 5.5)
+\cite{friedman2026cogsec1} ensuring orthogonal agent authority. In
+Axiomatic Design, the \textbf{Independence Axiom} requires that the
+Design Parameter for Availability (\(DP_2\)) does not undermine the
+Design Parameter for Security (\(DP_1\)).
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Axiomatic Decoupling via Permission Boundaries}: CIF enforces
+  that the ``Emergency Recovery Agent'' is an orthogonal entity from the
+  ``Security Enforcement Agent.'' One cannot command the other. Each
+  agent's authority is bounded to its own functional requirement---the
+  Recovery Agent may restart services (\(DP_2\)) but has no permission
+  to modify firewall rules (\(DP_1\)) \cite{friedman2026cogsec3}.
+\end{itemize}
+\end{block}
+
+\begin{block}{Quorum Verification}
+\protect\phantomsection\label{quorum-verification}
+\textbf{Quorum Verification} (Paper 1, Def. 5.8)
+\cite{friedman2026cogsec1} requires cryptographic signatures from
+multiple independent agents before any Critical State Change is
+executed.
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Signed Policy Guards}: The command \texttt{iptables\ -F} is
+  flagged as a \textbf{Critical State Change}. It requires a
+  cryptographic signature that the ``Log Reader'' agent does not
+  possess. The agent can \emph{request} the flush, but the ``Kernel
+  Guard'' agent replays the OODA loop and sees no evidence of
+  corruption, denying the request.
+\item
+  \textbf{Restored Uncoupling}: By preventing the Recovery Agent from
+  unilaterally modifying security parameters, the off-diagonal terms are
+  forced to zero, restoring the Independence Axiom.
+\end{itemize}
+\end{block}

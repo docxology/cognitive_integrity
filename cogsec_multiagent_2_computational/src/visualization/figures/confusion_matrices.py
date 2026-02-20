@@ -1,7 +1,8 @@
-"""Fig 19: 2x3 confusion-matrix heatmap grid.
+"""Fig 19: 2x2 confusion-matrix heatmap grid.
 
-Displays confusion matrices for 6 architectures in a 2x3 subplot grid,
+Displays confusion matrices for 4 architectures in a 2x2 subplot grid,
 each showing TP/FP/TN/FN counts as an annotated heatmap.
+Reads data from full_evaluation_results.json.
 """
 
 from __future__ import annotations
@@ -14,38 +15,26 @@ from matplotlib.figure import Figure
 
 from ..style import COLORS, FONTSIZE, apply_style, save_figure
 
+logger = __import__('logging').getLogger(__name__)
+
 
 def _load_data() -> Dict[str, np.ndarray]:
-    """Load confusion counts from full_evaluation_results.json, with fallback."""
-    try:
-        from .data.result_loaders import evaluation_to_confusion_counts, load_full_evaluation
-        rows = load_full_evaluation()
-        counts = evaluation_to_confusion_counts(rows)
-        result = {}
-        for arch, cats in counts.items():
-            tp = fp = tn = fn = 0
-            for cat, (t, f, tn_, fn_) in cats.items():
-                tp += t; fp += f; tn += tn_; fn += fn_
-            result[arch] = np.array([[tp, fp], [fn, tn]])
-        return result
-    except Exception:
-        pass
-
-    # Synthetic fallback
-    rng = np.random.default_rng(42)
-    archs = ["Claude Code", "AutoGPT", "CrewAI", "LangGraph", "MetaGPT", "CAMEL"]
+    """Load confusion counts from full_evaluation_results.json."""
+    from data.result_loaders import evaluation_to_confusion_counts, load_full_evaluation
+    rows = load_full_evaluation()
+    counts = evaluation_to_confusion_counts(rows)
     result = {}
-    for i, arch in enumerate(archs):
-        base_tp = int(rng.integers(850, 930))
-        base_fp = int(rng.integers(5, 25))
-        base_fn = 950 - base_tp
-        base_tn = int(rng.integers(180, 200)) - base_fp
-        result[arch] = np.array([[base_tp, base_fp], [base_fn, base_tn]])
+    for arch, cats in counts.items():
+        tp = fp = tn = fn = 0
+        for cat, (t, f, tn_, fn_) in cats.items():
+            tp += t; fp += f; tn += tn_; fn += fn_
+        result[arch] = np.array([[tp, fp], [fn, tn]])
+    logger.info("Loaded confusion matrices for %d architectures", len(result))
     return result
 
 
 def plot_confusion_matrices(output_dir: str = "output/figures") -> Figure:
-    """Create the 2x3 confusion matrix grid (Fig 19).
+    """Create the 2x2 confusion matrix grid (Fig 19).
 
     Parameters
     ----------
@@ -58,15 +47,15 @@ def plot_confusion_matrices(output_dir: str = "output/figures") -> Figure:
     """
     apply_style()
     data = _load_data()
-    archs = list(data.keys())[:6]
+    archs = list(data.keys())[:4]
 
-    fig, axes = plt.subplots(2, 3, figsize=(12, 7))
+    fig, axes = plt.subplots(2, 2, figsize=(10, 7))
     fig.patch.set_facecolor(COLORS["background"])
 
     labels = [["TP", "FP"], ["FN", "TN"]]
 
     for idx, arch in enumerate(archs):
-        row, col = divmod(idx, 3)
+        row, col = divmod(idx, 2)
         ax = axes[row, col]
         cm = data[arch]
 

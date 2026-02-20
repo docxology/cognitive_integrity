@@ -1,0 +1,367 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\documentclass[
+  ignorenonframetext,
+]{beamer}
+\newif\ifbibliography
+\usepackage{pgfpages}
+\setbeamertemplate{caption}[numbered]
+\setbeamertemplate{caption label separator}{: }
+\setbeamercolor{caption name}{fg=normal text.fg}
+\beamertemplatenavigationsymbolsempty
+% remove section numbering
+\setbeamertemplate{part page}{
+  \centering
+  \begin{beamercolorbox}[sep=16pt,center]{part title}
+    \usebeamerfont{part title}\insertpart\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{section page}{
+  \centering
+  \begin{beamercolorbox}[sep=12pt,center]{section title}
+    \usebeamerfont{section title}\insertsection\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{subsection page}{
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center]{subsection title}
+    \usebeamerfont{subsection title}\insertsubsection\par
+  \end{beamercolorbox}
+}
+% Prevent slide breaks in the middle of a paragraph
+\widowpenalties 1 10000
+\raggedbottom
+\AtBeginPart{
+  \frame{\partpage}
+}
+\AtBeginSection{
+  \ifbibliography
+  \else
+    \frame{\sectionpage}
+  \fi
+}
+\AtBeginSubsection{
+  \frame{\subsectionpage}
+}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{longtable,booktabs,array}
+\newcounter{none} % for unnumbered tables
+\usepackage{calc} % for calculating minipage widths
+\usepackage{caption}
+% Make caption package work with longtable
+\makeatletter
+\def\fnum@table{\tablename~\thetable}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\author{\texorpdfstring{}{}}
+\date{}
+
+\begin{document}
+
+\begin{frame}{Methodology: The CIF-AD-OODA Integration Model}
+\protect\phantomsection\label{sec:methodology}
+This section establishes the analytical framework used to evaluate
+cognitive integrity threats across the ten critical domains examined in
+this paper. We integrate three complementary theoretical
+frameworks---the Cognitive Integrity Framework (CIF)
+\cite{friedman2026cogsec1}, Axiomatic Design (AD)
+\cite{suh1990principles, suh2001axiomatic}, and the OODA Loop
+\cite{boyd1987patterns}---into a unified model for analyzing Goal
+Hijacking attacks and their defenses.
+
+\begin{block}{Framework Integration}
+\protect\phantomsection\label{framework-integration}
+Each framework contributes a distinct analytical dimension:
+
+\textbf{The Cognitive Integrity Framework (CIF)} provides the defense
+mechanism vocabulary. Developed formally in Paper 1 of this series
+\cite{friedman2026cogsec1} and validated computationally in Paper 2
+\cite{friedman2026cogsec2}, CIF defines five canonical defense
+mechanisms that protect agent cognitive states
+\(\sigma_i = \langle \mathcal{B}_i, \mathcal{G}_i, \mathcal{I}_i, \mathcal{H}_i \rangle\)
+against adversarial manipulation. These mechanisms operate at the
+architectural, runtime, and coordination layers to maintain belief
+consistency, goal alignment, and provenance verifiability.
+
+\textbf{Axiomatic Design (AD)} provides the structural model. Suh's
+Independence Axiom \cite{suh2001axiomatic} states that a good design
+maintains the independence of Functional Requirements (FRs): solving for
+\(\text{FR}_1\) must not compromise \(\text{FR}_2\). We represent this
+as the Design Matrix equation:
+
+where \(\{FR\}\) is the vector of Functional Requirements, \(\{DP\}\) is
+the vector of Design Parameters, and \([A]\) is the Design Matrix. In an
+uncoupled (safe) design, \([A]\) is diagonal. Goal Hijacking attacks
+introduce off-diagonal terms, coupling previously independent
+requirements. \begin{equation}
+\{FR\} = [A]\{DP\}
+\label{eq:meth_design_matrix}
+\end{equation}
+
+\textbf{The OODA Loop} provides the temporal model. Boyd's
+Observe-Orient-Decide-Act cycle
+\cite{boyd1987patterns, osinga2007science} captures the decision-making
+process of autonomous agents. Goal Hijacking targets the \textbf{Orient}
+phase---the synthesis stage where agents integrate observations with
+prior knowledge, training data, and system prompts. By corrupting
+Orientation, adversaries redirect the downstream Decide and Act phases
+while preserving the illusion of rational behavior.
+
+The integration insight is that Goal Hijacking operates simultaneously
+across all three dimensions: it introduces transient coupling in the
+Design Matrix (AD), corrupts the Orient phase (OODA), and is detectable
+and defensible through the canonical mechanisms (CIF).
+\end{block}
+
+\begin{block}{CIF Defense Mechanisms}
+\protect\phantomsection\label{cif-defense-mechanisms}
+Paper 1 \cite{friedman2026cogsec1} defines five canonical defense
+mechanisms. We reproduce them here for reader convenience, as they form
+the defense vocabulary applied across all ten domains:
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.2973}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.4324}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.2703}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Mechanism
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Formal Notation
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Function
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\textbf{Cognitive Firewall} &
+\(\mathcal{F}(m) \to \{\text{accept}, \text{quarantine}, \text{reject}\}\)
+& Classifies incoming messages by trust score against threshold
+\(\tau\); quarantines ambiguous inputs for sandboxed evaluation \\
+\textbf{Belief Sandboxing} &
+\(\mathcal{B}_{\text{verified}} / \mathcal{B}_{\text{provisional}}\)
+partition & Isolates unverified beliefs from the agent's operational
+belief set; requires corroboration for promotion \\
+\textbf{Behavioral Invariants} & Predicates
+\(\text{INV}_k(\sigma_i) \in \{\text{true}, \text{false}\}\) &
+Pre-defined runtime checks (e.g., goal alignment, permission boundaries)
+that trigger alerts on violation \\
+\textbf{Drift Detection} &
+\(S_{\text{drift}} = \KL(\mathcal{B}_i^t \| \mathcal{B}_i^{t-1})\) &
+Monitors belief distribution changes via KL divergence; flags sudden
+shifts exceeding threshold \(\epsilon\) \\
+\textbf{Byzantine Consensus} & \(\mathcal{B}_{\text{consensus}}\) with
+quorum \(q\), requiring \(n \geq 3f+1\) & Multi-agent agreement protocol
+tolerating up to \(f\) compromised agents among \(n\) total \\
+\bottomrule\noalign{}
+\end{longtable}
+}
+
+These mechanisms compose in series and parallel to achieve layered
+defense. Paper 2 \cite{friedman2026cogsec2} demonstrates that the
+recommended defense stack achieves 99.5\% detection across 950 attack
+scenarios.
+\end{block}
+
+\begin{block}{Adversary Classification}
+\protect\phantomsection\label{adversary-classification}
+We adopt the five-tier adversary taxonomy from Paper 1
+\cite{friedman2026cogsec1}:
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1628}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1628}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.3023}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.3721}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Class
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Scope
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Access Level
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Example Vector
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\(\Omega_1\) & External & User input & Prompt manipulation, jailbreak
+attempts \\
+\(\Omega_2\) & Peripheral & Tool/API, data channels & Data poisoning,
+malicious web content, sensor spoofing \\
+\(\Omega_3\) & Agent-level & Single compromised agent & Goal hijacking
+of individual agent, compromised subagent \\
+\(\Omega_4\) & Coordination & Inter-agent channels & Trust manipulation,
+man-in-the-middle on agent communication \\
+\(\Omega_5\) & Systemic & Orchestrator & Framework compromise, training
+data manipulation \\
+\bottomrule\noalign{}
+\end{longtable}
+}
+
+A key observation across all ten domains analyzed in this paper is that
+the primary attack vector is consistently \(\Omega_2\) (Peripheral):
+adversaries inject malicious content through data channels---sensor
+readings, API responses, log files, market data, diplomatic
+cables---rather than through direct prompt manipulation. This reflects
+the operational reality that deployed multiagent systems in critical
+domains typically have hardened \(\Omega_1\) boundaries but remain
+vulnerable at the data ingestion layer. Notably, \(\Omega_4\)
+coordination attacks have been demonstrated empirically by He et
+al.~\cite{he2025redteaming}, who introduced the Agent-in-the-Middle
+(AiTM) attack exploiting inter-agent communication channels---a threat
+class that our \(\Omega_2\)-focused domain analysis acknowledges but
+does not examine in depth (see Limitations,
+\cref{sec:limitations_discussion}).
+\end{block}
+
+\begin{block}{Domain Analysis Template}
+\protect\phantomsection\label{domain-analysis-template}
+Each domain in this paper is analyzed using a standardized five-step
+procedure:
+
+\textbf{(i) Operational Characterization.} Identify the autonomous
+agents operating in the domain, their Functional Requirements
+(\(\text{FR}_k\)), Design Parameters (\(\text{DP}_k\)), and the baseline
+(uncoupled) Design Matrix \([A]\).
+
+\textbf{(ii) Attack Surface Analysis.} Describe the Goal Hijacking
+attack vector, classify it by adversary class \(\Omega_k\), and identify
+which OODA phase is targeted. Characterize the attack as one of three
+universal patterns: FR Polarity Inversion, Constraint Relaxation, or
+Context Boundary Violation.
+
+\textbf{(iii) Transient Coupling Analysis.} Show how the attack
+transforms the Design Matrix from uncoupled \([A]\) to coupled \([A']\)
+by introducing off-diagonal terms. Demonstrate that the coupling is
+\emph{transient}---induced by a fast OODA signal rather than a
+persistent structural flaw.
+
+\textbf{(iv) Defense Mapping.} Map the domain-specific defense strategy
+to one or more of the five canonical CIF mechanisms. Where
+domain-specific instantiations introduce genuinely novel patterns (e.g.,
+physics-informed invariants, verification channel separation), these are
+identified and elevated as contributions.
+
+\textbf{(v) Validation Anchoring.} Cross-reference the defense mapping
+to Paper 2's benchmark results \cite{friedman2026cogsec2}, confirming
+that the proposed CIF mechanisms have demonstrated efficacy against the
+relevant adversary class.
+\end{block}
+
+\begin{block}{Domain Selection Criteria}
+\protect\phantomsection\label{domain-selection-criteria}
+The ten domains were selected to ensure comprehensive coverage along
+three dimensions:
+
+\begin{enumerate}
+\item
+  \textbf{Adversary class coverage.} While all domains share
+  \(\Omega_2\) as the primary vector, the specific data channels
+  exploited span the full range: sensor data (Drones, Infrastructure),
+  API metadata (Supply Chain), market signals (Food Security, Trade
+  Wars), diplomatic communications (Nation-State), log files
+  (Cyber-Security), research documents (Biowarfare), geological surveys
+  (Rare Earth), and media content (Fake News).
+\item
+  \textbf{Temporal scale diversity.} The OODA loop operates at vastly
+  different time scales across domains: milliseconds (Drone swarm
+  consensus), seconds (Cyber-security incident response), hours (Supply
+  chain routing), days (Infrastructure grid management), weeks (Trade
+  policy), months (Nation-state diplomacy), and years (Rare Earth mining
+  operations). This diversity stress-tests CIF's temporal assumptions.
+\item
+  \textbf{CIF mechanism coverage.} All five canonical CIF mechanisms
+  appear across the domain portfolio, with each mechanism serving as the
+  primary defense in at least two domains (see Discussion,
+  \cref{sec:mechanism_coverage}).
+\end{enumerate}
+\end{block}
+
+\begin{block}{Scope and Assumptions}
+\protect\phantomsection\label{scope-and-assumptions}
+This analysis is qualitative and scenario-based. Each domain presents a
+representative attack scenario constructed from documented real-world
+incidents and known vulnerability classes, analyzed through the
+CIF-AD-OODA lens. We do not claim empirical validation of defense
+effectiveness in specific deployments---that requires domain-specific
+experimentation beyond the scope of a cross-domain survey. However, our
+methodology is informed by several concurrent frameworks: the MAESTRO
+framework \cite{csa2025maestro} provides complementary layered threat
+modeling for multi-agent architectures, NIST AI 600-1
+\cite{nist2024genai} establishes the GenAI-specific risk profile that
+our domain analysis extends to multiagent contexts, and the Agent
+Security Bench (ASB) \cite{zhang2025asb}---the most comprehensive
+benchmark to date with 10 scenarios, 400+ tools, and 27 attack/defense
+methods---provides empirical grounding for the defense gap (84.3\%
+attack success vs.~19.7\% defense success) that CIF's architectural
+approach seeks to close.
+
+We assume that the OODA loop, while a simplification of real-world
+decision processes, provides a useful abstraction for identifying the
+temporal dynamics of Goal Hijacking. More complex decision architectures
+(e.g., nested OODA loops, parallel processing streams) would require
+extensions to this model.
+
+Finally, we assume that domain-specific latency constraints---the time
+available for defense mechanisms to intervene before an attack
+completes---are addressable through appropriate engineering of CIF
+mechanism parameters (\(\tau\), \(\epsilon\), \(q\), \(\Delta t\)). The
+determination of optimal parameter values for each domain is left for
+future work.
+\end{block}
+
+\begin{block}{Application to Critical Domains}
+\protect\phantomsection\label{application-to-critical-domains}
+The following ten sections apply this five-step CIF-AD-OODA template to
+domains spanning resource extraction, geopolitics, cybersecurity,
+autonomous warfare, supply chains, biosecurity, food systems, trade
+policy, critical infrastructure, and information integrity. Each domain
+instantiates the framework against domain-specific adversary models,
+attack vectors, and defense compositions, demonstrating both the
+generality of the CIF-AD-OODA integration and the domain-specific
+adaptations required for effective cognitive security.
+\end{block}
+\end{frame}
+
+\end{document}

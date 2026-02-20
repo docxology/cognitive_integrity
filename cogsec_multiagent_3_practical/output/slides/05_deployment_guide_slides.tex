@@ -118,7 +118,7 @@ low-risk, human-in-the-loop environments.
   \textbf{Consensus}: Simple Majority.
 \end{itemize}
 
-\textbf{Observed Performance} (Sensitivity Table 5.2):
+\textbf{Observed Performance} (Part 2, Parameter Sensitivity Analysis):
 
 \begin{itemize}
 \tightlist
@@ -136,8 +136,8 @@ low-risk, human-in-the-loop environments.
 \begin{block}{Profile B: The ``Customer Facing'' Baseline (Balanced)}
 \protect\phantomsection\label{profile-b-the-customer-facing-baseline-balanced}
 This profile corresponds to the \textbf{Empirically Optimal
-Configuration} identified in Part 2 (Table 5.6), which balances security
-guarantees with operational overhead.
+Configuration} identified in Part 2 (Architecture-Specific Results),
+which balances security guarantees with operational overhead.
 
 \textbf{Configuration Parameters}:
 
@@ -153,7 +153,7 @@ guarantees with operational overhead.
   \textbf{Consensus}: Variable (Architecture Dependent).
 \end{itemize}
 
-\textbf{Observed Performance} (Sensitivity Table 5.2):
+\textbf{Observed Performance} (Part 2, Parameter Sensitivity Analysis):
 
 \begin{itemize}
 \tightlist
@@ -173,8 +173,8 @@ guarantees with operational overhead.
 Assurance)}
 \protect\phantomsection\label{profile-c-the-autonomous-operator-baseline-high-assurance}
 This profile corresponds to the ``Byzantine-Heavy'' configuration tested
-in Part 2 (Table 2.8). It is required for high-stakes, unsupervised
-environments.
+in Part 2 (Byzantine Consensus Analysis). It is required for
+high-stakes, unsupervised environments.
 
 \textbf{Configuration Parameters}:
 
@@ -190,7 +190,7 @@ environments.
   \textbf{Consensus}: Byzantine Fault Tolerance (\(n \ge 3f+1\)).
 \end{itemize}
 
-\textbf{Observed Performance} (Sensitivity Table 5.3):
+\textbf{Observed Performance} (Part 2, Parameter Sensitivity Analysis):
 
 \begin{itemize}
 \tightlist
@@ -218,19 +218,21 @@ agent topology.
 \begin{block}{LangGraph (State Machines)}
 \protect\phantomsection\label{langgraph-state-machines}
 \textbf{Observation}: LangGraph architectures achieved the highest
-overall detection rates (98\%) in our tests (Part 2, Table 5.6).
-\textbf{Mechanism}: The explicit definition of state transitions allowed
-for rigorous \textbf{Invariant Checking}. Invalid state transitions were
-detected deterministically by the framework.
+overall detection rates (98\%) in our tests (Part 2,
+Architecture-Specific Results). \textbf{Mechanism}: The explicit
+definition of state transitions allowed for rigorous \textbf{Invariant
+Checking}. Invalid state transitions were detected deterministically by
+the framework.
 \end{block}
 
 \begin{block}{CrewAI (Role-Based)}
 \protect\phantomsection\label{crewai-role-based}
 \textbf{Observation}: CrewAI architectures performed best against
-``Trust Exploitation'' attacks (94\% detection) (Part 2, Table 5.4).
-\textbf{Mechanism}: The framework's role definitions acted as implicit
-\textbf{Identity Tripwires}. When an agent attempted to act outside its
-defined role, the behavior was flagged as a role violation.
+``Trust Exploitation'' attacks (94\% detection) (Part 2,
+Architecture-Specific Results). \textbf{Mechanism}: The framework's role
+definitions acted as implicit \textbf{Identity Tripwires}. When an agent
+attempted to act outside its defined role, the behavior was flagged as a
+role violation.
 \end{block}
 \end{block}
 \end{frame}

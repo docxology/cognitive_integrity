@@ -1,7 +1,10 @@
 """Fig 10: Trust graph visualization (no networkx, pure matplotlib).
 
-Places agent nodes in a circular layout and draws trust-weighted edges
-between them with color encoding.
+This is an **illustrative/conceptual diagram** showing the trust-graph
+visualization pattern.  The trust matrix is generated to demonstrate
+the rendering approach, not to present empirical data.  Places agent
+nodes in a circular layout and draws trust-weighted edges between them
+with color encoding.
 """
 
 from __future__ import annotations

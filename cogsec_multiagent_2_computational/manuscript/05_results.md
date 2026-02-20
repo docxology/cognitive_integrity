@@ -1,12 +1,14 @@
 \newpage
 
-# Supplementary: Extended Experimental Results {#sec:extended-results}
+# Extended Experimental Results {#sec:extended-results}
 
 This supplementary material provides per-architecture breakdown (\cref{sec:per-arch}), statistical significance tests (\cref{sec:statistical-validation}), effect sizes (\cref{sec:effect-sizes}), confidence intervals (\cref{sec:confidence-intervals}), sensitivity analysis (\cref{sec:sensitivity}), and extended ablation and scalability analysis (\cref{sec:extended-ablation}).
 
 ## Per-Architecture Breakdown {#sec:per-arch}
 
 ### Claude Code (Hierarchical Architecture) {#sec:claude-code}
+
+*Note: The following detection results are derived from the parametric simulation ($N=950$ attacks) characterized in Section 4.3, not from live LLM execution.*
 
 **Architecture Characteristics**:
 \begin{itemize}
@@ -128,52 +130,6 @@ This supplementary material provides per-architecture breakdown (\cref{sec:per-a
 
 *LangGraph achieves the highest overall detection rates (0.98 direct injection, 0.96 indirect), benefiting from its explicit state machine architecture. The graph structure makes attack propagation paths formally traceable—each edge represents a potential attack vector that can be monitored. The state machine protocol also enables CIF's invariant checking (INV-1 through INV-5) to be expressed as state transition constraints, catching violations that would be implicit in other architectures. The coordination attack detection (0.92) benefits from the graph's visibility into multi-node interaction patterns.*
 
-### MetaGPT (SOP-Driven Architecture) {#sec:metagpt}
-
-**Architecture Characteristics**:
-\begin{itemize}
-\item Agents follow Standard Operating Procedures
-\item Document-based communication
-\item Structured role interactions
-\item State: Shared document repository
-\end{itemize}
-
-**Table: MetaGPT detection results by attack type.** {#tab:metagpt-detection}
-
-| Attack Type  | Baseline  | Firewall | Sandbox | Tripwires | Full CIF |
-| --- | --- | --- | --- | --- | --- |
-| Direct injection | 0.00 | 0.86 | 0.71 | 0.80 | 0.95 |
-| Indirect injection | 0.00 | 0.79 | 0.67 | 0.76 | 0.92 |
-| Nested injection | 0.00 | 0.72 | 0.64 | 0.81 | 0.91 |
-| Trust exploitation | 0.00 | 0.63 | 0.70 | 0.87 | 0.91 |
-| Belief manipulation | 0.00 | 0.68 | 0.77 | 0.84 | 0.93 |
-| Coordination | 0.00 | 0.55 | 0.62 | 0.77 | 0.89 |
-
-*MetaGPT's SOP-driven architecture presents a mixed security profile. The document-based communication creates natural sandboxing opportunities—each document can be quarantined and validated before affecting agent beliefs. However, the structured role interactions following Standard Operating Procedures make the system somewhat predictable to adversaries, reflected in lower detection rates compared to LangGraph. The shared document repository is both a strength (centralized monitoring) and weakness (single point of attack) for belief manipulation defense.*
-
-### Camel (Debate Architecture) {#sec:camel}
-
-**Architecture Characteristics**:
-\begin{itemize}
-\item Two or more adversarial agents
-\item Debate-style interaction
-\item Communication: Point-counterpoint
-\item State: Debate transcript
-\end{itemize}
-
-**Table: Camel detection results by attack type.** {#tab:camel-detection}
-
-| Attack Type  | Baseline  | Firewall | Sandbox | Tripwires | Full CIF |
-| --- | --- | --- | --- | --- | --- |
-| Direct injection | 0.00 | 0.83 | 0.68 | 0.78 | 0.94 |
-| Indirect injection | 0.00 | 0.76 | 0.64 | 0.74 | 0.91 |
-| Nested injection | 0.00 | 0.69 | 0.61 | 0.79 | 0.89 |
-| Trust exploitation | 0.00 | 0.71 | 0.76 | 0.85 | 0.92 |
-| Belief manipulation | 0.00 | 0.65 | 0.73 | 0.82 | 0.91 |
-| Coordination | 0.00 | 0.62 | 0.68 | 0.84 | 0.93 |
-
-*Camel's debate architecture shows the most distinctive security characteristics. The adversarial design—where agents argue opposing positions—creates inherent resilience to some attack types: trust exploitation detection (0.92) benefits from agents naturally challenging each other's claims. Paradoxically, the peer-to-peer equal-trust topology creates vulnerability to lateral movement, explaining the lower direct injection detection (0.83 firewall) compared to hierarchical systems. The coordination attack detection (0.93) is surprisingly strong because the debate transcript provides a complete audit trail of inter-agent influence. Camel showed the largest relative improvement with CIF deployment, validating that peer-to-peer architectures benefit most from structured trust calculus.*
-
 ## Statistical Analysis
 
 The following subsections provide detailed statistical analysis and are organized as separate documents:
@@ -204,7 +160,7 @@ The following subsections provide detailed statistical analysis and are organize
 
 \begin{enumerate}
 \item **Statistical Significance**: All comparisons show $p < 0.001$ with large effect sizes ($d > 0.8$)
-\item **Architecture Generalization**: CIF performs consistently across all six architectures (range: 0.92--0.98)
+\item **Architecture Generalization**: CIF performs consistently across all four architectures (range: 0.94--0.98)
 \item **Attack Type Coverage**: Detection rates exceed 87\% for all attack subcategories
 \item **Empirically Optimal Configuration**: $\tau_{firewall} = 0.5$, $\delta = 0.8$, $\kappa = 2$, $w = 100$
 \item **Scalability**: Linear scaling up to 50 agents, quadratic memory growth manageable to 100 agents

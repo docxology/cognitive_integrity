@@ -1,57 +1,78 @@
 {
-  "pipeline_start_time": 1771269220.009875,
-  "last_stage_completed": 7,
+  "pipeline_start_time": 1771625890.94755,
+  "last_stage_completed": 10,
   "stage_results": [
     {
       "name": "Clean Output Directories",
       "exit_code": 0,
-      "duration": 0.031958818435668945,
-      "timestamp": "2026-02-16 11:15:10",
+      "duration": 0.0203859806060791,
+      "timestamp": "2026-02-20 14:30:22",
       "completed": true
     },
     {
       "name": "Environment Setup",
       "exit_code": 0,
-      "duration": 0.8972768783569336,
-      "timestamp": "2026-02-16 11:15:10",
+      "duration": 0.9493112564086914,
+      "timestamp": "2026-02-20 14:30:22",
+      "completed": true
+    },
+    {
+      "name": "Infrastructure Tests",
+      "exit_code": 0,
+      "duration": 509.72848892211914,
+      "timestamp": "2026-02-20 14:30:22",
       "completed": true
     },
     {
       "name": "Project Tests",
       "exit_code": 0,
-      "duration": 21.30014204978943,
-      "timestamp": "2026-02-16 11:15:10",
+      "duration": 25.05816411972046,
+      "timestamp": "2026-02-20 14:30:22",
       "completed": true
     },
     {
       "name": "Project Analysis",
       "exit_code": 0,
-      "duration": 18.108949899673462,
-      "timestamp": "2026-02-16 11:15:10",
+      "duration": 16.126082181930542,
+      "timestamp": "2026-02-20 14:30:22",
       "completed": true
     },
     {
       "name": "PDF Rendering",
       "exit_code": 0,
-      "duration": 48.92355298995972,
-      "timestamp": "2026-02-16 11:15:10",
+      "duration": 47.2331440448761,
+      "timestamp": "2026-02-20 14:30:22",
       "completed": true
     },
     {
       "name": "Output Validation",
       "exit_code": 0,
-      "duration": 0.5448760986328125,
-      "timestamp": "2026-02-16 11:15:10",
+      "duration": 0.4951820373535156,
+      "timestamp": "2026-02-20 14:30:22",
+      "completed": true
+    },
+    {
+      "name": "LLM Scientific Review",
+      "exit_code": 0,
+      "duration": 63.968364000320435,
+      "timestamp": "2026-02-20 14:30:22",
+      "completed": true
+    },
+    {
+      "name": "LLM Translations",
+      "exit_code": 0,
+      "duration": 66.634042263031,
+      "timestamp": "2026-02-20 14:30:22",
       "completed": true
     },
     {
       "name": "Copy Outputs",
       "exit_code": 0,
-      "duration": 0.5264289379119873,
-      "timestamp": "2026-02-16 11:15:10",
+      "duration": 0.8245408535003662,
+      "timestamp": "2026-02-20 14:30:22",
       "completed": true
     }
   ],
-  "total_stages": 8,
-  "checkpoint_time": 1771269310.3470678
+  "total_stages": 10,
+  "checkpoint_time": 1771626622.001089
 }

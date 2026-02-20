@@ -56,7 +56,7 @@ class TestDataGeneration:
             assert hasattr(det, "categories")
             assert hasattr(det, "means")
             assert hasattr(det, "cis")
-            assert len(det.architectures) == 6
+            assert len(det.architectures) == 4
             assert len(det.categories) == 4
 
     def test_detection_categories_valid(self):
@@ -435,9 +435,9 @@ class TestCrossSubsystemIntegration:
             gen = DataGenerator(seed=42, output_dir=tmpdir)
             det = gen.generate_detection_data()
 
-            # Use detection means row 0 (Claude Code) vs row 5 (CAMEL) as paired samples
+            # Use detection means row 0 (Claude Code) vs row 3 (LangGraph) as paired samples
             row_best = np.array(det.means[0])
-            row_worst = np.array(det.means[5])
+            row_worst = np.array(det.means[3])
 
             t_stat, p_value = paired_ttest(row_best, row_worst)
             assert isinstance(t_stat, float)

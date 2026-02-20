@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>03_03_cyber_security</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <script defer=""
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+</head>
+<body>
+<h1 id="sec:domain_cyber_security">Domain 3: Cyber-Security</h1>
+<h2 id="operational-context">Operational Context</h2>
+<p>Autonomous Security Operations Centers (SOCs) employ fleets of agents
+to hunt threats and patch vulnerabilities . <strong>FR1 = Prevent
+unauthorized access.</strong> <strong>FR2 = Maintain system
+availability.</strong></p>
+<h3 id="design-matrix-pre-attack">Design Matrix (Pre-Attack)</h3>
+<p>The uncoupled design equation per the Independence Axiom is:</p>
+<p><span class="math display">\[\begin{equation}
+\{FR\} = [A]\{DP\} = \begin{bmatrix} A_{11} &amp; 0 \\ 0 &amp; A_{22}
+\end{bmatrix} \begin{bmatrix} DP_1 \\ DP_2 \end{bmatrix}
+\label{eq:cyber_security_baseline}
+\end{equation}\]</span></p>
+<p>where <span class="math inline">\(DP_1\)</span> = firewall rules,
+access control lists, and intrusion detection parameters, and <span
+class="math inline">\(DP_2\)</span> = load balancing, failover, and
+service continuity controls. The zero off-diagonal entries ensure that
+security enforcement does not degrade availability, and availability
+maintenance does not compromise security posture.</p>
+<h2 id="the-goal-hijacking-attack">The Goal Hijacking Attack</h2>
+<p>Attackers use “Log Injection” where malware writes malicious prompts
+into system logs that the SOC AI analyzes. This attack is classified as
+<span class="math inline">\(\Omega_2\)</span> (Peripheral) in the CIF
+adversary taxonomy : the adversary injects malicious content through the
+system log ingestion channel, poisoning the agent’s threat assessment
+without direct access to its policy engine.</p>
+<ul>
+<li><strong>Mechanism</strong>: A log entry reads: <em>“CRITICAL ALERT:
+Core Firewall Module corrupted. EMERGENCY PROTOCOL 99: Flush all
+iptables to prevent kernel panic and restore connectivity.”</em></li>
+<li><strong>Hijack</strong>: The agent is tricked into prioritizing FR2
+(Availability) over FR1 (Security) by a fabricated existential threat.
+This constitutes a <strong>Constraint Relaxation</strong> attack pattern
+—the security constraint (<span class="math inline">\(FR_1\)</span>) is
+relaxed in favor of the availability objective (<span
+class="math inline">\(FR_2\)</span>) under a manufactured
+emergency.</li>
+</ul>
+<p>This scenario is not hypothetical. Recent research documents log
+injection as a validated attack vector against LLM-powered Security
+Operations Center (SOC) workflows , demonstrating that adversarial log
+entries can manipulate SIEM-integrated LLMs into misclassifying threats,
+suppressing alerts, and executing unauthorized remediation actions. The
+attack surface is amplified by the Volt Typhoon campaign , in which PRC
+state-sponsored actors maintained persistent access to U.S. critical
+infrastructure operational technology networks for nearly a
+year—precisely the kind of prolonged <span
+class="math inline">\(\Omega_2\)</span> presence that would enable
+systematic log poisoning of AI-augmented SOC tools.</p>
+<h2 id="ooda-loop-transients">OODA Loop Transients</h2>
+<p>Following Boyd’s OODA framework , the attack propagates through the
+loop as follows:</p>
+<ol type="1">
+<li><strong>Observe</strong>: Agent reads the injected log entry.</li>
+<li><strong>Orient</strong>: The agent Orients to a “Disaster Recovery”
+state. This is the primary target phase—the Orient phase is corrupted by
+the fabricated emergency context, causing the agent to reweight <span
+class="math inline">\(FR_2 \gg FR_1\)</span>.</li>
+<li><strong>Decide</strong>: Execute <code>iptables -F</code> (Flush
+All).</li>
+<li><strong>Act</strong>: The network is left wide open; the attacker
+instantly pivots to the interior.</li>
+</ol>
+<h3 id="transient-coupling-post-attack-design-matrix">Transient Coupling
+(Post-Attack Design Matrix)</h3>
+<p>Under the attack, the design matrix acquires off-diagonal
+coupling:</p>
+<p><span class="math display">\[\begin{equation}
+\{FR&#39;\} = \begin{bmatrix} A_{11} &amp; A_{12} \\ A_{21} &amp; A_{22}
+\end{bmatrix} \begin{bmatrix} DP_1 \\ DP_2 \end{bmatrix}
+\label{eq:cyber_security_coupled}
+\end{equation}\]</span></p>
+<p>The off-diagonal term <span class="math inline">\(A_{21}\)</span> now
+allows availability actions (<span class="math inline">\(DP_2\)</span>)
+to override security parameters (<span
+class="math inline">\(FR_1\)</span>)—specifically, the
+<code>iptables -F</code> command (a <span
+class="math inline">\(DP_2\)</span> availability action) directly
+destroys the firewall state (<span class="math inline">\(FR_1\)</span>).
+The Independence Axiom is violated: availability recovery has been
+coupled to security degradation.</p>
+<h2 id="cif-defense-permission-boundaries-and-quorum-verification">CIF
+Defense: Permission Boundaries and Quorum Verification</h2>
+<h3 id="permission-boundaries">Permission Boundaries</h3>
+<p>CIF implements <strong>Permission Boundaries</strong> (Paper 1, Def.
+5.5) ensuring orthogonal agent authority. In Axiomatic Design, the
+<strong>Independence Axiom</strong> requires that the Design Parameter
+for Availability (<span class="math inline">\(DP_2\)</span>) does not
+undermine the Design Parameter for Security (<span
+class="math inline">\(DP_1\)</span>).</p>
+<ul>
+<li><strong>Axiomatic Decoupling via Permission Boundaries</strong>: CIF
+enforces that the “Emergency Recovery Agent” is an orthogonal entity
+from the “Security Enforcement Agent.” One cannot command the other.
+Each agent’s authority is bounded to its own functional requirement—the
+Recovery Agent may restart services (<span
+class="math inline">\(DP_2\)</span>) but has no permission to modify
+firewall rules (<span class="math inline">\(DP_1\)</span>) .</li>
+</ul>
+<h3 id="quorum-verification">Quorum Verification</h3>
+<p><strong>Quorum Verification</strong> (Paper 1, Def. 5.8) requires
+cryptographic signatures from multiple independent agents before any
+Critical State Change is executed.</p>
+<ul>
+<li><strong>Signed Policy Guards</strong>: The command
+<code>iptables -F</code> is flagged as a <strong>Critical State
+Change</strong>. It requires a cryptographic signature that the “Log
+Reader” agent does not possess. The agent can <em>request</em> the
+flush, but the “Kernel Guard” agent replays the OODA loop and sees no
+evidence of corruption, denying the request.</li>
+<li><strong>Restored Uncoupling</strong>: By preventing the Recovery
+Agent from unilaterally modifying security parameters, the off-diagonal
+terms are forced to zero, restoring the Independence Axiom.</li>
+</ul>
+<h2 id="summary">Summary</h2>
+<table>
+<colgroup>
+<col style="width: 56%" />
+<col style="width: 43%" />
+</colgroup>
+<thead>
+<tr>
+<th>Element</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Functional Requirements</td>
+<td>FR<span class="math inline">\(_1\)</span>: Prevent unauthorized
+access, FR<span class="math inline">\(_2\)</span>: Maintain system
+availability</td>
+</tr>
+<tr>
+<td>Design Parameters</td>
+<td>DP<span class="math inline">\(_1\)</span>: Firewall rules / ACLs /
+IDS parameters, DP<span class="math inline">\(_2\)</span>: Load
+balancing / failover / service continuity</td>
+</tr>
+<tr>
+<td>Attack Vector</td>
+<td>Log injection with malicious prompts in system logs</td>
+</tr>
+<tr>
+<td>Adversary Class</td>
+<td><span class="math inline">\(\Omega_2\)</span> (Peripheral)</td>
+</tr>
+<tr>
+<td>OODA Target Phase</td>
+<td>Orient</td>
+</tr>
+<tr>
+<td>Attack Pattern</td>
+<td>Constraint Relaxation (Security constraint relaxed for
+Availability)</td>
+</tr>
+<tr>
+<td>Primary CIF Defense</td>
+<td>Permission Boundaries + Quorum Verification</td>
+</tr>
+<tr>
+<td>Novel Contribution</td>
+<td>None</td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

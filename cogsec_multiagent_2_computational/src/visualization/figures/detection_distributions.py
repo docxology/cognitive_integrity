@@ -2,10 +2,12 @@
 
 Shows the full distribution of detection scores across architectures,
 revealing modality and spread differences not visible in summary stats.
+Reads data from full_evaluation_results.json.
 """
 
 from __future__ import annotations
 
+import logging
 from typing import Dict
 
 import numpy as np
@@ -13,23 +15,18 @@ from matplotlib.figure import Figure
 
 from ..style import COLORS, FONTSIZE, PALETTE, create_figure, format_axis, save_figure
 
+logger = logging.getLogger(__name__)
 
-def _generate_distributions(seed: int = 42) -> Dict[str, np.ndarray]:
-    """Generate synthetic detection score distributions."""
-    rng = np.random.default_rng(seed)
-    archs = {
-        "Claude Code": (0.97, 0.02),
-        "AutoGPT": (0.95, 0.03),
-        "CrewAI": (0.96, 0.025),
-        "LangGraph": (0.96, 0.025),
-        "MetaGPT": (0.94, 0.03),
-        "CAMEL": (0.93, 0.035),
-    }
-    result = {}
-    for name, (mean, std) in archs.items():
-        scores = np.clip(rng.normal(mean, std, size=200), 0.5, 1.0)
-        result[name] = scores
-    return result
+
+def _load_distributions() -> Dict[str, np.ndarray]:
+    """Load per-architecture detection scores from full_evaluation_results.json."""
+    from data.result_loaders import load_full_evaluation
+    rows = load_full_evaluation()
+    arch_scores: Dict[str, list] = {}
+    for r in rows:
+        arch_scores.setdefault(r.architecture, []).append(r.detection_rate)
+    logger.info("Loaded detection distributions for %d architectures", len(arch_scores))
+    return {k: np.array(v) for k, v in arch_scores.items()}
 
 
 def plot_detection_distributions(output_dir: str = "output/figures") -> Figure:
@@ -45,7 +42,7 @@ def plot_detection_distributions(output_dir: str = "output/figures") -> Figure:
     Figure
     """
     fig, ax = create_figure(width=9, height=5)
-    data = _generate_distributions()
+    data = _load_distributions()
 
     names = list(data.keys())
     values = [data[n] for n in names]
