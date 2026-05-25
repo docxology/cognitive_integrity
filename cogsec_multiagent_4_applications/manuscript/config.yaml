@@ -1,9 +1,12 @@
 paper:
   title: "Cognitive Integrity in Critical Domains: A Multi-Sector Analysis"
-  subtitle: "Part 4: Applications of the Cognitive Integrity Framework"
+  subtitle: "Part 4 of 4: Applications of the Cognitive Integrity Framework"
+  short_title: "CIF Applications"
   version: "1.0"
-  date: "2026"
+  type: "research"
   series: "Cognitive Security for Multiagent Operators"
+  part: 4
+  date: "2026"
 
 authors:
   - name: "Daniel Ari Friedman"
@@ -32,6 +35,26 @@ keywords:
 metadata:
   license: "CC BY 4.0"
   language: "en"
+
+abstract: |
+  This paper applies the Cognitive Integrity Framework (CIF) across ten critical
+  operational domains through the integrated CIF-AD-OODA analytical model,
+  combining CIF's five canonical defense mechanisms with Axiomatic Design and
+  Boyd's OODA loop to analyze Goal Hijacking: a teleological attack on autonomous
+  agency that corrupts the Orientation phase and violates Suh's Independence Axiom.
+
+  Cross-domain synthesis reveals three universal attack patterns (FR Polarity
+  Inversion, Constraint Relaxation, Context Boundary Violation) and three novel
+  defense extensions (verification channel separation, active perturbation probing,
+  physics-informed invariants). Retrospective analysis of six documented 2024--2025
+  AI agent security incidents validates the attack pattern taxonomy and confirms
+  CIF defense applicability.
+
+  This is Part 4 of a four-part series:
+  - Part 1 (DOI: 10.5281/zenodo.18364119): Formal foundations and theoretical analysis
+  - Part 2 (DOI: 10.5281/zenodo.18364128): Computational validation and implementation
+  - Part 3 (DOI: 10.5281/zenodo.18364130): Qualitative review and practitioner's deployment guidance
+  - Part 4 (this paper): Applications — CIF-AD-OODA integration and domain analyses
 
 llm:
   reviews:

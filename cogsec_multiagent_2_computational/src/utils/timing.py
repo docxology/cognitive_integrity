@@ -10,12 +10,12 @@ from __future__ import annotations
 import functools
 import time
 from dataclasses import dataclass, field
-from typing import Callable, Dict, List, Optional
+from typing import Any, Callable, Dict, List, Optional
 
 import numpy as np
 
 
-def timed(fn: Optional[Callable] = None, *, label: Optional[str] = None):
+def timed(fn: Optional[Callable] = None, *, label: Optional[str] = None) -> Any:
     """Decorator that records wall-clock execution time.
 
     The decorated function gains a ``last_latency_ms`` attribute holding
@@ -26,7 +26,7 @@ def timed(fn: Optional[Callable] = None, *, label: Optional[str] = None):
 
     def decorator(func: Callable) -> Callable:
         @functools.wraps(func)
-        def wrapper(*args, **kwargs):
+        def wrapper(*args: Any, **kwargs: Any) -> Any:
             start = time.perf_counter()
             try:
                 result = func(*args, **kwargs)

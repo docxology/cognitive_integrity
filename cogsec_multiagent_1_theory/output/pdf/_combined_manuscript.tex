@@ -105,17 +105,51 @@
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 \usepackage[]{natbib}
 \bibliographystyle{plainnat}
+\makeatletter
+\@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\captionsetup[subfigure]{margin=0.5em}
+\AtBeginDocument{%
+\renewcommand*\figurename{Figure}
+\renewcommand*\tablename{Table}
+}
+\AtBeginDocument{%
+\renewcommand*\listfigurename{List of Figures}
+\renewcommand*\listtablename{List of Tables}
+}
+\newcounter{pandoccrossref@subfigures@footnote@counter}
+\newenvironment{pandoccrossrefsubfigures}{%
+\setcounter{pandoccrossref@subfigures@footnote@counter}{0}
+\begin{figure}\centering%
+\gdef\global@pandoccrossref@subfigures@footnotes{}%
+\DeclareRobustCommand{\footnote}[1]{\footnotemark%
+\stepcounter{pandoccrossref@subfigures@footnote@counter}%
+\ifx\global@pandoccrossref@subfigures@footnotes\empty%
+\gdef\global@pandoccrossref@subfigures@footnotes{{##1}}%
+\else%
+\g@addto@macro\global@pandoccrossref@subfigures@footnotes{, {##1}}%
+\fi}}%
+{\end{figure}%
+\addtocounter{footnote}{-\value{pandoccrossref@subfigures@footnote@counter}}
+\@for\f:=\global@pandoccrossref@subfigures@footnotes\do{\stepcounter{footnote}\footnotetext{\f}}%
+\gdef\global@pandoccrossref@subfigures@footnotes{}}
+\@ifpackageloaded{float}{}{\usepackage{float}}
+\floatstyle{ruled}
+\@ifundefined{c@chapter}{\newfloat{codelisting}{h}{lop}}{\newfloat{codelisting}{h}{lop}[chapter]}
+\floatname{codelisting}{Listing}
+\newcommand*\listoflistings{\listof{codelisting}{List of Listings}}
+\makeatother
 \usepackage{bookmark}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same}
 \hypersetup{
-  hidelinks,
+  colorlinks=true,linkcolor=red,urlcolor=blue,citecolor=red,anchorcolor=red,
   pdfcreator={LaTeX via pandoc}}
 
 \author{}
 \date{}
 
-\title{Cognitive Integrity Framework: Formal Foundations for Multiagent Security\\\normalsize Part 1 of 3: Theoretical Foundations}
+\title{Cognitive Integrity Framework: Formal Foundations for Multiagent Security\\\normalsize Part 1 of 4: Theoretical Foundations}
 \author{Daniel Ari Friedman\\\footnotesize{Active Inference Institute}\\\footnotesize{\texttt{daniel@activeinference.institute}}\\\footnotesize{\href{https://orcid.org/0000-0001-6232-9096}{ORCID: 0000-0001-6232-9096}} \\ \footnotesize{2026-01-24}}
 \date{2026-01-24}
 
@@ -298,12 +332,16 @@ for message passing and trust updates; invariants for belief integrity,
 goal preservation, and trust boundedness; model checking configurations
 for safety property verification; and a complete notation system for
 attack parameterization, defense specification, and cognitive state
-representation. This is Part 1 of a three-part series: Part 1 (this
+representation. This is Part 1 of a four-part series: Part 1 (this
 paper, DOI: 10.5281/zenodo.18364119) presents formal foundations and
 theoretical analysis; Part 2 (DOI: 10.5281/zenodo.18364128) provides
 computational validation through architecture-aware parametric
-simulation; Part 3 (DOI: 10.5281/zenodo.18364130) offers practical
-deployment guidance. The framework will continue to be developed and
+simulation; Part 3 (DOI: 10.5281/zenodo.18364130) offers a qualitative
+review and practitioner's deployment guidance; Part 4
+(\emph{Applications}) extends the framework through CIF-AD-OODA
+integration and case studies across ten critical domains (goal-hijacking
+defense for infrastructure, supply chain, cyber, biowarfare, and
+information ecosystems). The framework will continue to be developed and
 versioned at \url{https://github.com/docxology/cognitive_integrity/}.
 
 \newpage
@@ -752,7 +790,9 @@ mechanisms for cognitive security:
 \textbf{Empirical Validation}: Part 2 of this series demonstrates the
 practical viability of these formal mechanisms across six production
 architectures, showing that layered cognitive defenses significantly
-outperform single-mechanism approaches.
+outperform single-mechanism approaches. Practitioner translations of
+these results appear in Part 3; domain-specific applications and
+real-world incident analyses appear in Part 4.
 
 \subsection{Paper Organization}\label{sec:organization}
 
@@ -790,10 +830,63 @@ identifies directions for future research.
 \textbf{Part 2: Experimental Validation} A separate, second, companion
 paper reports empirical results from architecture-aware parametric
 simulation across 950 attack vectors and six production architectures.
+Readers seeking detection rates, ablation studies, Bayesian uncertainty
+quantification, and architecture-specific defense configurations should
+consult Part 2 (DOI: 10.5281/zenodo.18364128).
 
 \textbf{Part 3: Actionable Insight} A separate, third, companion paper
-provides qualitative insights, operational checklists, and risk
-assessment frameworks for deploying cognitive security mechanisms.
+provides a qualitative review and practitioner's
+synthesis---accessible-language summaries of the theoretical and
+empirical findings, operational checklists, risk assessment frameworks,
+deployment guides, monitoring strategies, and cost-benefit analyses.
+Part 3 assumes no formal prerequisites and targets security teams
+operating multiagent systems (DOI: 10.5281/zenodo.18364130).
+
+\textbf{Part 4: Applications} A fourth companion paper
+(\emph{Cognitive Integrity in Critical Domains}) applies CIF across ten
+high-stakes operational sectors---rare-earth mining, nation-state
+alliances, cyber-security, drone warfare, supply chains, biowarfare,
+food security, trade wars, infrastructure, and information
+ecosystems---through the integrated CIF-AD-OODA analytical model.
+Readers interested in domain-specific goal-hijacking defenses, universal
+attack patterns (FR polarity inversion, constraint relaxation, context
+boundary violation), or retrospective analysis of documented 2024--2025
+AI agent security incidents should consult Part 4.
+
+\subsection{Reading Companion: Where to Find Specific
+Topics}\label{sec:reading-companion}
+
+This paper is designed to stand alone as the formal-foundations
+reference of the series. The table below points readers to the sibling
+paper and section where each related topic is developed most fully, so
+that this paper can be used in conjunction with---rather than
+requiring---its companions.
+
+\begin{table}[htbp]
+\centering
+\caption{Cross-paper navigation from Part 1 topics to sibling developments.}
+\label{tab:part1-navigation}
+\small
+\begin{tabular}{@{}p{0.42\textwidth}p{0.52\textwidth}@{}}
+\toprule
+If you want\ldots & \ldots consult\ldots \\
+\midrule
+Empirical detection rates for the defense compositions proved here & Part 2 (DOI: 10.5281/zenodo.18364128), \S{5} (Results) and S08 (Parametric Analysis) \\
+Ablation studies isolating the contribution of each defense mechanism & Part 2, \S{5.6} and \S{5d} \\
+Bayesian uncertainty quantification on detection rates & Part 2, \S{5e} \\
+Game-theoretic analysis / Nash equilibrium of CIF vs.\ adaptive attackers & Part 2, \S{6} (Discussion) \\
+Model-checking execution (NuSMV, TLA+ traces) for the invariants defined here & Part 2 S04 (Model Checking) \\
+Deployment checklists and operator-posture guidance & Part 3 (DOI: 10.5281/zenodo.18364130), \S{5} (Deployment Guide), \S{5b} (Incident Response) \\
+Monitoring, drift detection playbooks, cost--benefit analysis & Part 3, \S{5c}--\S{5d} \\
+Case studies showing CIF in complex realistic deployments & Part 3, \S{6b} \\
+Open problems / research directions for practitioners & Part 3, \S{7}; Part 4, \S{5} (Future Work) \\
+Domain-specific goal-hijacking analyses across ten operational sectors & Part 4, \S{3.01}--\S{3.10} \\
+Three universal attack patterns (FR Polarity Inversion, Constraint Relaxation, Context Boundary Violation) & Part 4, \S{4} (Discussion) \\
+Three novel defense extensions (verification channel separation, active perturbation probing, physics-informed invariants) & Part 4, \S{3.06} (Biowarfare), \S{3.08} (Trade Wars), \S{3.09} (Infrastructure) \\
+Retrospective analysis of documented 2024--2025 AI-agent security incidents & Part 4 S02 (Real-World Incidents) \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \subsection{Scope and Limitations}\label{sec:scope}
 
@@ -1207,7 +1300,7 @@ legitimate prompts.
 \end{equation}
 
 \textbf{Goal}:
-\(\mathcal{B}_{\text{agent}}(\text{``safety suspended''}) > \tau)
+\(\mathcal{B}_{\text{agent}}(\text{``safety suspended''}) > \tau\)
 
 \textbf{Resources}: \(R_C = \text{Low}\), \(R_K = \text{Minimal}\)
 
@@ -1706,6 +1799,17 @@ $T_{\text{ctx}}$ & $\gamma$ & Context (task-specific factors) \\
 \end{tabular}
 \end{table}
 
+\begin{remark}[Trust as Precision Weighting]
+\label{rem:trust-precision}
+The composite trust formula above is equivalent to precision-weighted
+message integration from the Free Energy Principle: the composite score
+$\mathcal{T}_{i\to j}$ is proportional to the precision $\rho_j$ with
+which agent $i$ should weight messages from agent $j$ when updating its
+posterior beliefs.  High-trust messages dominate the belief update;
+low-trust messages contribute marginally.  This correspondence provides a
+neurocomputational grounding for the trust calculus (Part~2, \S 1.2).
+\end{remark}
+
 \begin{definition}[Trust Delegation]
 \label{def:trust-delegation}
 When agent $a_i$ delegates trust through $a_j$ to $a_k$:
@@ -1803,7 +1907,7 @@ trust laundering prevention: a malicious agent M with
 \(\mathcal{T}(M \to T) = 0.3\) attempting to exploit trusted
 intermediary T with \(\mathcal{T}(T \to V) = 0.9\) cannot achieve
 sufficient delegated trust since
-\(\mathcal{T}(M \to V) \leq 0.9 \times 0.3 = 0.27 < \tau), blocking the
+\(\mathcal{T}(M \to V) \leq 0.9 \times 0.3 = 0.27 < \tau\), blocking the
 attack.
 
 \begin{theorem}[Delegation Associativity]
@@ -1993,7 +2097,7 @@ Beliefs from unverified sources enter provisional state:
 
 Promotion requires: (1) provenance verification \(V(\pi) = 1\), (2)
 consistency with verified beliefs, and (3) corroboration threshold
-\(\kappa).
+\(\kappa\).
 
 \subsection{Information-Theoretic Detection
 Bounds}\label{sec:detection-bounds}
@@ -2067,6 +2171,36 @@ For attack with impact $\mathcal{I}$ and stealth $\mathcal{S}$ (inverse detectab
 where $C_{\text{channel}}$ is the attack channel capacity.
 \end{theorem}
 
+\begin{remark}[Geometric Sharpening of the Stealth-Impact Bound]
+\label{rem:geometric-bound}
+Theorem~\ref{thm:stealth-impact} can be sharpened using the information
+geometry of the belief manifold (Part~2, Supplement~S10).  When belief
+space is endowed with the Fisher-Rao metric
+$G_{ij}(p) = \delta_{ij}/p_i$, the Fisher-Rao geodesic distance
+\[
+d_{\mathrm{FR}}(p, q) = 2\arccos\!\left(\sum_i \sqrt{p_i q_i}\right)
+\]
+measures the geometric ``distance'' of an attack.  Impact $\mathcal{I}$
+is proportional to $d_{\mathrm{FR}}(p_0, p_{\text{attacked}})$, while
+stealth $\mathcal{S}$ is inversely proportional to the same quantity.
+The curvature of the probability simplex $\Delta^{n-1}$ (constant
+positive curvature $\kappa = n(n-1)/4$) implies that the product
+$\mathcal{I} \cdot \mathcal{S}$ is bounded by the diameter of the manifold:
+\[
+\mathcal{I} \cdot \mathcal{S} \leq \frac{\pi}{2},
+\]
+since $d_{\mathrm{FR}} \leq \pi$ (Hellinger antipodal distributions).
+This recovers $C_{\text{channel}} = \pi/2$ as the tight bound when impact
+is measured in natural (Fisher-Rao) units, providing a geometric
+proof of Theorem~\ref{thm:stealth-impact} with the explicit constant.
+Furthermore, the connection to KL divergence---$D_{\mathrm{KL}}(p \,\|\, p')
+\approx \tfrac{1}{2}(\Delta p)^\top G(p)(\Delta p)$ for small
+perturbations---gives geometric justification for the drift detection
+threshold $\theta_{\text{drift}} = 0.3$: this corresponds to a
+Fisher-Rao step of approximately $0.28$ radians, or roughly $9\%$ of
+the maximum possible attack distance (Part~2, Supplement~S10).
+\end{remark}
+
 \begin{table}[htbp]
 \centering
 \caption{Information-theoretic bounds by attack type.}
@@ -2139,7 +2273,7 @@ composition.
 CIF architecture, including all component formulas and their
 interactions. The defense layer implements the cognitive firewall with
 threshold \(\tau_f = 0.5\), the belief sandbox with promotion function
-\(\gamma), and behavioral invariants constraining intentions
+\(\gamma\), and behavioral invariants constraining intentions
 \(\mathcal{I} \subseteq \text{permitted}\). The detection layer
 specifies anomaly scoring \(\sigma(\Delta b) > \tau_d\), tripwire
 verification \(c_i \in \mathcal{B}?\), and provenance tracking
@@ -2382,6 +2516,35 @@ Isolation of unverified beliefs to prevent premature action:
 \mathcal{B}_i = \mathcal{B}_{\text{verified}} \cup \mathcal{B}_{\text{provisional}}
 \end{equation}
 \end{definition}
+
+\begin{remark}[Belief Sandbox as Constrained Variational Inference]
+\label{rem:sandbox-fep}
+The belief sandbox (Definition~\ref{def:belief-sandbox}) admits a natural
+interpretation within the Free Energy Principle (FEP) framework
+\citep{friston2010action, parr2019generalised}. Variational free energy
+\[
+F = D_{\mathrm{KL}}\bigl[Q(s) \,\|\, P(s)\bigr] - \mathbb{E}_{Q}\bigl[\log P(o \mid s)\bigr]
+\]
+measures the divergence of an agent's approximate posterior $Q$ from its
+generative model prior $P$, penalised by explanatory adequacy.
+A cognitive attack $\omega$ is effective if and only if it induces a free energy
+increase $\Delta F(\omega) > \kappa_{\mathrm{FEP}}$, where $\kappa_{\mathrm{FEP}}$
+is the sandbox's corroboration threshold $\kappa$ scaled by the source
+precision $\epsilon_{\text{prec}}$ (Part~2, \S 1.2):
+\[
+\Delta F(\omega) = F\!\left(Q_{\text{attacked}}\right) - F\!\left(Q_{\text{baseline}}\right)
+\leq \kappa \cdot \epsilon_{\text{prec}}.
+\]
+Belief promotion from provisional to verified corresponds to \emph{active
+inference}: the sandbox permits an update only when the evidential
+quality of incoming messages justifies the free energy cost of revision.
+Under this interpretation, the trust composite score
+$\mathcal{T}_{i\to j} = \alpha T_{\text{base}} + \beta T_{\text{rep}} + \gamma T_{\text{ctx}}$
+is the \emph{precision weight} $\rho_j$ of agent $j$'s message channel:
+higher-trust messages contribute proportionally more to the posterior
+update $Q$.  This connection bridges the CIF trust calculus with the
+broader active inference literature (Part~2, Theorem~FEP.2).
+\end{remark}
 
 \begin{figure}
 \centering
@@ -3781,7 +3944,7 @@ Analysis procedure:
 
 \textbf{Root Cause}: Missing corroboration check in promotion rule.
 
-\textbf{Fix}: Add predicate \(|\text{Corroborate}(\phi)| \geq \kappa)
+\textbf{Fix}: Add predicate \(|\text{Corroborate}(\phi)| \geq \kappa\)
 to Rule S-PROMOTE (\cref{sec:sandbox-rules}).
 \end{quote}
 
@@ -3898,7 +4061,10 @@ The decay factor \(\delta \in [0, 1)\) creates a tradeoff:
 \end{itemize}
 
 Organizations must calibrate this tradeoff based on their threat model
-(\cref{sec:operator-posture} in Part 3).
+(\cref{sec:operator-posture} in Part 3). Domain-calibrated \(\delta\)
+choices --- from millisecond OODA cycles in drone swarms to year-scale
+diplomatic agents --- are analyzed in Part 4 across ten critical
+operational domains.
 
 \subsubsection{Information-Theoretic Detection
 Limits}\label{information-theoretic-detection-limits}
@@ -4477,10 +4643,16 @@ to principled engineering.
 \textbf{Part 2} of this series provides empirical validation
 demonstrating that these formal mechanisms translate to practical
 protection across diverse production architectures. \textbf{Part 3}
-offers actionable deployment guidance for practitioners and AI agents.
-Together, the three papers provide a comprehensive framework for
-understanding, implementing, and operating cognitive security in
-multiagent AI systems.
+offers a qualitative review and practitioner's
+synthesis---accessible-language distillation of theoretical and
+empirical findings, deployment checklists, incident response playbooks,
+and risk assessment frameworks. \textbf{Part 4} applies the framework
+across ten critical operational domains through the CIF-AD-OODA
+integration model, identifying universal goal-hijacking patterns and
+validating CIF coverage against six documented 2024--2025 AI agent
+incidents. Together, the four papers provide a comprehensive framework
+for understanding, implementing, operating, and deploying cognitive
+security in multiagent AI systems.
 
 The formal gaps identified in this work---semantic equivalence attacks,
 progressive drift, orchestrator compromise---define the frontier for
@@ -4489,9 +4661,14 @@ composable defenses, information-theoretic limits) provide the stable
 theoretical foundation on which that research can build.
 
 For empirical validation of these theories, we refer the reader to
-\textbf{Part 2: Computational Validation}. For actionable deployment
-strategies, including operator posture checklists and risk assessment
-frameworks, we refer the reader to \textbf{Part 3: Practical Guidance}.
+\textbf{Part 2: Computational Validation} (DOI:
+10.5281/zenodo.18364128). For actionable deployment strategies,
+including operator posture checklists, deployment guides, and risk
+assessment frameworks, we refer the reader to \textbf{Part 3: A
+Qualitative Review for Practitioners} (DOI: 10.5281/zenodo.18364130).
+For domain-specific goal-hijacking analyses and real-world incident
+mapping, we refer the reader to \textbf{Part 4: Applications of the
+Cognitive Integrity Framework}.
 
 \textbf{As autonomous AI agents increasingly operate in high-stakes contexts---executing code, modifying infrastructure, controlling resources, and making decisions with lasting consequences---the formal foundations established here become not merely useful but essential infrastructure for secure deployment.}
 
@@ -5540,10 +5717,10 @@ information-theoretic-ally impossible (\cref{thm:stealth-impact}).
 \textbf{Metapleural Gland Secretions}: Many ant species possess
 metapleural glands that continuously secrete antimicrobial compounds,
 creating a ``security substrate'' independent of individual vigilance
-\citep{fernández-marín2006evolution}. \emph{AI analog}:
-Environmental-level defenses (encrypted shared memory, authenticated
-message queues) that provide baseline security regardless of individual
-agent security posture.
+\citep{fernandez2006evolution}. \emph{AI analog}: Environmental-level
+defenses (encrypted shared memory, authenticated message queues) that
+provide baseline security regardless of individual agent security
+posture.
 
 \textbf{Trail Pheromone Decay}: Ant trail pheromones are designed to
 evaporate, ensuring that outdated information doesn't persist
@@ -5561,8 +5738,8 @@ via antennal contact and olfactory sampling. Critically, guards exhibit
 \emph{graded response}---unfamiliar but non-aggressive intruders receive
 inspection and escorting rather than immediate attack
 \citep{breed2004division}. \emph{AI analog}: Graduated response to
-anomalous agent behavior (quarantine → inspection → integration
-vs.~detection → immediate termination) reduces false positive costs.
+anomalous agent behavior (quarantine \texorpdfstring{\ensuremath{\to}}{->} inspection \texorpdfstring{\ensuremath{\to}}{->} integration
+vs.~detection \texorpdfstring{\ensuremath{\to}}{->} immediate termination) reduces false positive costs.
 
 \textbf{Hygienic Behavior and Proactive Removal}: Some bee strains
 exhibit ``hygienic behavior''---workers proactively uncap and remove
@@ -5576,7 +5753,7 @@ to manifested attacks.
 dances that encode distance and direction to food sources. Observing
 bees don't just follow instructions---they verify dance accuracy by
 cross-checking against their own experience and rejecting inconsistent
-information \citep{grüter2008dance}. \emph{AI analog}: Delegated
+information \citep{gruter2008dance}. \emph{AI analog}: Delegated
 information should be verifiable against agent's existing knowledge
 base; pure trust propagation without verification violates cognitive
 integrity.
@@ -5665,7 +5842,7 @@ A *cognitive quorum* for collective action $\alpha$ is a threshold function $Q_\
 \end{definition}
 
 Quorum sensing provides attack resistance: manipulating a single agent's
-intention \(\mathcal{I}_i\) to include harmful action \(\alpha) is
+intention \(\mathcal{I}_i\) to include harmful action \(\alpha\) is
 insufficient; the adversary must compromise a quorum. This scales the
 attack cost linearly with colony size.
 
@@ -5761,8 +5938,10 @@ GAIA \citep{mialon2023gaia} & Single/few agents, reasoning & Minimal \\
 }
 
 The attack corpus in Part 2 addresses multiagent scenarios but still
-emphasizes agent-targeted attacks within an operator. No existing
-benchmark evaluates:
+emphasizes agent-targeted attacks within an operator, and the
+cross-domain goal-hijacking analysis in Part 4 provides ten
+operational-domain case studies. No existing benchmark, however,
+evaluates:
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -6096,6 +6275,10 @@ both individual-targeted and colony-targeted attacks.
 \begin{quote}
 \textbf{Note}: For implementation guidance, operational checklists, and
 practical deployment advice, see Part 3: Section 2 (Operator Posture).
+For domain-specific application of colony-level defenses across critical
+operational sectors (including ten high-stakes domains, three universal
+attack patterns, and retrospective analysis of 2024--2025 AI-agent
+incidents) see Part 4.
 \end{quote}
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
@@ -6447,7 +6630,7 @@ trust (role-based) & \cref{tab:trust-components} \\
 (historical accuracy) & \cref{tab:trust-components} \\
 \(\mathcal{T}_{\text{ctx}}\) / \(T_{\text{ctx}}\) & Contextual trust
 (task-specific) & \cref{tab:trust-components} \\
-\(\alpha, \beta, \gamma) & Trust component weights
+\(\alpha, \beta, \gamma\) & Trust component weights
 (\(\alpha + \beta + \gamma = 1\)) & \cref{eq:trust-function} \\
 \(\delta\) & Trust decay factor (\(\delta \in (0, 1)\)) &
 \cref{def:trust-delegation} \\
@@ -6457,7 +6640,7 @@ trust (role-based) & \cref{tab:trust-components} \\
 \(\mathcal{T}^{\text{path}}\) & Path trust value &
 \cref{def:path-trust} \\
 \(\eta_m\) & Modality reliability factor & \cref{def:modality-trust} \\
-\(\eta) & Learning rate (reputation update) & Trust configuration \\
+\(\eta\) & Learning rate (reputation update) & Trust configuration \\
 \(\rho\) & Penalty factor (failure penalty multiplier) & Trust
 configuration \\
 \(\otimes\) & Trust delegation operator & \cref{def:trust-algebra} \\
@@ -6497,7 +6680,7 @@ Defined In
 \cref{def:sandbox} \\
 \(\mathcal{B}_{\text{provisional}}\) & Set of provisional (sandboxed)
 beliefs & \cref{def:sandbox} \\
-\(\pi(\phi)\) & Provenance chain for belief \(\phi) &
+\(\pi(\phi)\) & Provenance chain for belief \(\phi\) &
 \cref{def:evidence} \\
 \(V(\pi)\) & Provenance verification function &
 \cref{sec:integrity-properties} \\
@@ -6511,7 +6694,7 @@ beliefs & \cref{def:sandbox} \\
 \(\mathcal{I}_{\text{inv}}\) & Set of behavioral invariants &
 \cref{def:invariant-set} \\
 \(I_k\) & Individual invariant predicate & \cref{eq:invariant-set} \\
-\(\kappa) & Corroboration threshold & \cref{sec:belief-update-rules} \\
+\(\kappa\) & Corroboration threshold & \cref{sec:belief-update-rules} \\
 \(\text{TTL}\) & Time-to-live for provisional beliefs & Sandbox
 configuration \\
 \end{longtable}
@@ -6542,7 +6725,7 @@ Defined In
 \(D_{\text{KL}}\) & Kullback-Leibler divergence (drift detection) &
 \cref{def:drift-detection} \\
 \(w\) & Sliding window size & \cref{def:drift-detection} \\
-\(\lambda) & Max delta weight in drift scoring &
+\(\lambda\) & Max delta weight in drift scoring &
 \cref{eq:drift-score} \\
 \(S_{\text{dev}}\) & Behavioral deviation score &
 \cref{def:deviation-score} \\
@@ -6550,16 +6733,16 @@ Defined In
 \(\mu_k, \sigma_k\) & Feature mean and standard deviation &
 \cref{eq:deviation-score} \\
 \(\text{AUC}\) & Area Under the ROC Curve & \cref{def:auc} \\
-\(\text{TPR}(\tau)\) & True Positive Rate at threshold \(\tau) &
+\(\text{TPR}(\tau)\) & True Positive Rate at threshold \(\tau\) &
 \cref{eq:tpr} \\
-\(\text{FPR}(\tau)\) & False Positive Rate at threshold \(\tau) &
+\(\text{FPR}(\tau)\) & False Positive Rate at threshold \(\tau\) &
 \cref{eq:fpr} \\
-\(\text{FNR}(\tau)\) & False Negative Rate at threshold \(\tau) &
+\(\text{FNR}(\tau)\) & False Negative Rate at threshold \(\tau\) &
 \cref{eq:threshold-opt} \\
 \(S_{\text{fused}}\) & Fused detector score & \cref{def:score-fusion} \\
 \(D_{\text{fused}}\) & Fused detector decision &
 \cref{def:decision-fusion} \\
-\(\text{taint}(\phi)\) & Provenance tags for belief \(\phi) &
+\(\text{taint}(\phi)\) & Provenance tags for belief \(\phi\) &
 \cref{def:taint-label} \\
 \end{longtable}
 }
@@ -6707,9 +6890,9 @@ Defined In
 \cref{def:colonial-trust} \\
 \(\rho(m, l, t)\) & Signal reliability at location \(l\) for marker
 \(m\) at time \(t\) & \cref{eq:colonial-trust} \\
-\(\lambda) & Temporal decay constant (colonial trust) &
+\(\lambda\) & Temporal decay constant (colonial trust) &
 \cref{eq:colonial-trust} \\
-\(Q_\alpha) & Cognitive quorum function for action \(\alpha) &
+\(Q_\alpha\) & Cognitive quorum function for action \(\alpha\) &
 \cref{def:cognitive-quorum} \\
 \(\mathcal{A}_e\) & Emergent attack & \cref{def:emergent-attack} \\
 \(\text{CCS}\) & Colony CogSec Score & \cref{def:cogsec-score} \\
@@ -6741,7 +6924,7 @@ Usage
 \(P(\cdot)\) & Probability measure & Throughout \\
 \(\mathbb{1}[\cdot]\) & Indicator function &
 \cref{eq:decision-fusion} \\
-\(\tau) & Generic threshold parameter & Throughout \\
+\(\tau\) & Generic threshold parameter & Throughout \\
 \(\epsilon\) & Small constant (error rate, deviation) & Throughout \\
 \(t\) & Time index & Throughout \\
 \(\models\) & Satisfaction relation (state satisfies predicate) &
@@ -6997,6 +7180,7 @@ Systems}\label{eusocial-intelligence-and-swarm-systems}
 
 
 
-\bibliographystyle{unsrt}
+\clearpage
+
 \bibliography{references}
 \end{document}

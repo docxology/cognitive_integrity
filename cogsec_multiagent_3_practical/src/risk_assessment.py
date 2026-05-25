@@ -1,4 +1,6 @@
 """
+from __future__ import annotations
+
 Risk Assessment Framework for Cognitive Security.
 
 Implements Section 06 of the Practical Implementation Guide:

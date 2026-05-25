@@ -75,5 +75,5 @@ The firewall is tested in `tests/test_firewall.py` and `tests/test_firewall_exte
 Run tests:
 
 ```bash
-pytest tests/test_firewall.py tests/test_firewall_extended.py -v
+uv run pytest tests/test_firewall.py tests/test_firewall_extended.py -v
 ```

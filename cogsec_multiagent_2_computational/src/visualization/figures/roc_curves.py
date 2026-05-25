@@ -1,13 +1,21 @@
+"""Roc Curves module.
+
+Implements functionality for the Cognitive Integrity Framework.
+"""
+
 from __future__ import annotations
 
 from pathlib import Path
 
+import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
+from matplotlib.figure import Figure
 
 from evaluation.roc import compute_auc_from_points
 from ..style import FONTSIZE, SEMANTIC_COLORS, add_source_annotation, apply_style, save_figure
 
+matplotlib.use("Agg")
 logger = __import__('logging').getLogger(__name__)
 
 
@@ -43,10 +51,18 @@ def _load_roc_data(output_dir: Path) -> dict:
     return defense_rates
 
 
-def plot_roc_curves(output_dir: str | Path = "output/figures") -> tuple[Path, Path]:
+def plot_roc_curves(output_dir: str | Path = "output/figures") -> Figure:
     """Create ROC curves for each defense mechanism.
 
-    Uses real evaluation data from output/data/ JSON files.
+    Parameters
+    ----------
+    output_dir : str | Path
+        Directory where figures are saved.
+
+    Returns
+    -------
+    Figure
+        The created matplotlib figure.
     """
     if isinstance(output_dir, str):
         output_dir = Path(output_dir)

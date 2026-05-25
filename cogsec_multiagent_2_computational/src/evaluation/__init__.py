@@ -1,4 +1,6 @@
 """Evaluation framework for the Cognitive Security Framework.
+from __future__ import annotations
+
 
 Provides experiment orchestration, detection metrics, ROC analysis,
 latency/memory benchmarking, and agent-count scalability assessment.

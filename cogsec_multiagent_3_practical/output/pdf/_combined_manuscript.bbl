@@ -1,8 +1,24 @@
-\begin{thebibliography}{0}
+\begin{thebibliography}{2}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
   \providecommand{\doi}[1]{doi: #1}\else
   \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Debenedetti et~al.(2025)Debenedetti, Zhang, and
+  Carlini]{adaptive2025attacks}
+Edoardo Debenedetti, Jie Zhang, and Nicholas Carlini.
+\newblock Adaptive attacks break defenses against indirect prompt injection
+  attacks on {LLM} agents.
+\newblock In \emph{Findings of the Association for Computational Linguistics:
+  NAACL 2025}, 2025.
+\newblock Attack success rate $>$90\% against 12 published defenses.
+
+\bibitem[Friston(2010)]{friston2010free}
+Karl Friston.
+\newblock The free-energy principle: a unified brain theory?
+\newblock \emph{Nature Reviews Neuroscience}, 11\penalty0 (2):\penalty0
+  127--138, 2010.
+\newblock \doi{10.1038/nrn2787}.
 
 \end{thebibliography}

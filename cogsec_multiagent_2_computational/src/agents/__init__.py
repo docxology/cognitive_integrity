@@ -1,4 +1,6 @@
 """LLM-backed multiagent simulation for CIF evaluation.
+from __future__ import annotations
+
 
 Provides real LLM agents organized in architecture-specific topologies
 (Claude Code, AutoGPT, CrewAI, LangGraph) that process

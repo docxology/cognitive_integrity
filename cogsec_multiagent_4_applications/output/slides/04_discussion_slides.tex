@@ -97,8 +97,11 @@
 
 \begin{document}
 
-\begin{frame}{Discussion: Cross-Domain Analysis of Cognitive Integrity}
-\protect\phantomsection\label{discussion-cross-domain-analysis-of-cognitive-integrity}
+\section{Discussion: Cross-Domain Analysis of Cognitive
+Integrity}\label{discussion-cross-domain-analysis-of-cognitive-integrity}
+
+\begin{frame}[allowframebreaks]{Discussion: Cross-Domain Analysis of
+Cognitive Integrity}
 Our cross-domain analysis of ten critical sectors reveals that Goal
 Hijacking is not merely a linguistic exploit but a structural corruption
 of the OODA Loop \cite{boyd1987patterns}. In every case---from drone
@@ -108,8 +111,10 @@ signal that hijacked the agent's \textbf{Orientation} phase, rewriting
 its Functional Requirements in real-time. This section synthesizes the
 cross-domain findings, identifies universal attack patterns, evaluates
 CIF mechanism coverage, and acknowledges limitations.
+\end{frame}
 
-\begin{block}{4.1 Cross-Domain Attack Pattern Taxonomy}
+\begin{frame}[allowframebreaks]{4.1 Cross-Domain Attack Pattern
+Taxonomy}
 \protect\phantomsection\label{sec:attack_patterns}
 Three universal attack patterns emerge across the ten domains. Each
 pattern corresponds to a distinct manipulation of the Axiomatic Design
@@ -171,9 +176,10 @@ capabilities against its intended purpose. This is consistent with the
 Active Inference perspective on conflict \cite{david2021aic}, where
 adversaries exploit the agent's drive to minimize free energy by
 manipulating its generative model.
-\end{block}
+\end{frame}
 
-\begin{block}{4.2 The Independence Axiom Under Adversarial Pressure}
+\begin{frame}[allowframebreaks]{4.2 The Independence Axiom Under
+Adversarial Pressure}
 \protect\phantomsection\label{the-independence-axiom-under-adversarial-pressure}
 The Independence Axiom (\cref{sec:methodology}) requires that Functional
 Requirements remain independent---i.e., the Design Matrix \([A]\) stays
@@ -186,15 +192,19 @@ independent FRs become entangled.
 
 The CIF defense strategy maps directly to restoring independence. Paper
 1's defense composition algebra \cite{friedman2026cogsec1} provides the
-formal basis, with the recommended stack achieving 99.5\% detection
-across 950 attack scenarios \cite{friedman2026cogsec2}. The key insight
-from our cross-domain analysis is that different domains require
-different defense compositions, but the \emph{vocabulary} of defense
-mechanisms is universal---the five canonical CIF mechanisms established
-in \cref{sec:methodology} suffice to address all ten domains.
-\end{block}
+formal basis, with the recommended stack achieving 94--100\% detection
+at the parametric design ceiling across 950 attack scenarios and four
+production architectures \cite{friedman2026cogsec2}, and Paper 3
+\cite{friedman2026cogsec3} operationalizes this stack through deployment
+guides, monitoring, incident-response playbooks, and cost--benefit
+frameworks. The key insight from our cross-domain analysis is that
+different domains require different defense compositions, but the
+\emph{vocabulary} of defense mechanisms is universal---the five
+canonical CIF mechanisms established in \cref{sec:methodology} suffice
+to address all ten domains.
+\end{frame}
 
-\begin{block}{4.3 OODA Transient Dynamics}
+\begin{frame}[allowframebreaks]{4.3 OODA Transient Dynamics}
 \protect\phantomsection\label{ooda-transient-dynamics}
 Traditional engineering assumes Functional Requirements are static.
 Cyber-cognitive warfare proves they are dynamic variables. The
@@ -269,9 +279,9 @@ high-frequency (adversarial) signals while preserving low-frequency
 (legitimate) updates. This damping function is what the original draft
 termed ``Cognitive Damping''---more precisely described as the joint
 operation of Drift Detection and Behavioral Invariants.
-\end{block}
+\end{frame}
 
-\begin{block}{4.4 CIF Mechanism Coverage Analysis}
+\begin{frame}[allowframebreaks]{4.4 CIF Mechanism Coverage Analysis}
 \protect\phantomsection\label{sec:mechanism_coverage}
 A critical validation of the CIF framework is whether the five canonical
 mechanisms provide adequate coverage across diverse operational domains.
@@ -363,9 +373,9 @@ Key findings:
   Sandboxing (the boundary enforcement prevents cross-context
   contamination).
 \end{enumerate}
-\end{block}
+\end{frame}
 
-\begin{block}{4.5 Novel Defense Patterns}
+\begin{frame}[allowframebreaks]{4.5 Novel Defense Patterns}
 \protect\phantomsection\label{novel-defense-patterns}
 While the five canonical CIF mechanisms provide comprehensive coverage,
 three domains introduce genuinely novel instantiations that extend the
@@ -405,9 +415,10 @@ unforgeable---an adversary cannot fabricate sensor data that
 simultaneously satisfies conservation laws and achieves the desired
 hijack, without also providing the energy budget that real physics would
 require.
-\end{block}
+\end{frame}
 
-\begin{block}{4.6 Byzantine Fault Tolerance Validation}
+\begin{frame}[allowframebreaks]{4.6 Byzantine Fault Tolerance
+Validation}
 \protect\phantomsection\label{byzantine-fault-tolerance-validation}
 Paper 1's Byzantine Consensus mechanism
 (\(\mathcal{B}_{\text{consensus}}\)) \cite{friedman2026cogsec1} drew on
@@ -457,9 +468,9 @@ The emergence of BFT for AI Safety as an active research
 area---evidenced by a dedicated 2025 workshop and multiple concurrent
 publications---independently validates the trajectory established by
 Paper 1's adoption of Byzantine consensus as a canonical CIF mechanism.
-\end{block}
+\end{frame}
 
-\begin{block}{4.7 Comparison with Existing Frameworks}
+\begin{frame}[allowframebreaks]{4.7 Comparison with Existing Frameworks}
 \protect\phantomsection\label{comparison-with-existing-frameworks}
 The CIF-AD-OODA integration model exists within a rapidly evolving
 landscape of AI security frameworks. We compare with six established and
@@ -544,9 +555,10 @@ defenses (OWASP, ATLAS, NIST), layered architecture mapping without
 composition algebra (MAESTRO), or training-time alignment without
 deployment-time protection (industry frameworks). CIF's contribution is
 precisely this integration.
-\end{block}
+\end{frame}
 
-\begin{block}{4.8 Empirical Grounding: Real-World Incidents}
+\begin{frame}[allowframebreaks]{4.8 Empirical Grounding: Real-World
+Incidents}
 \protect\phantomsection\label{empirical-grounding-real-world-incidents}
 The scenario-based analysis in the domain case studies
 (\cref{sec:domain_rare_earth} through \cref{sec:domain_fake_news})
@@ -602,9 +614,9 @@ Three findings emerge from the retrospective analysis:
   degradation. This expands the scope of CIF beyond the adversarial
   model to include autonomous system reliability.
 \end{enumerate}
-\end{block}
+\end{frame}
 
-\begin{block}{4.9 Limitations}
+\begin{frame}[allowframebreaks]{4.9 Limitations}
 \protect\phantomsection\label{sec:limitations_discussion}
 Several limitations constrain the conclusions of this analysis:
 
@@ -665,7 +677,6 @@ Several limitations constrain the conclusions of this analysis:
   than the agents themselves, potentially circumventing the
   \(n \geq 3f+1\) guarantee.
 \end{enumerate}
-\end{block}
 \end{frame}
 
 \end{document}

@@ -89,15 +89,19 @@
 
 \begin{document}
 
-\begin{frame}{The Formal Foundation: Concepts from Paper 1}
-\protect\phantomsection\label{sec:theory-review}
-Part 3 builds directly on the formal framework established in Part 1.
-For clarity, we summarize the core definitions and theorems here,
-utilizing the notation defined in the formal manuscript.
+\section{The Formal Foundation: Concepts from Part
+1}\label{sec:theory-review}
 
-\begin{block}{1. The Adversary Hierarchy (\(\Omega\))}
-\protect\phantomsection\label{the-adversary-hierarchy-omega}
-Paper 1 formalized the ``Scope of Threat'' through a hierarchical
+\begin{frame}[allowframebreaks]{The Formal Foundation: Concepts from
+Part 1}
+Part 3 builds on the formal framework in Part 1. This section summarizes
+core definitions and theorems using the same notation as the Part 1
+manuscript.
+\end{frame}
+
+\begin{frame}[allowframebreaks]{The Adversary Hierarchy (\(\Omega\))}
+\protect\phantomsection\label{sec:adversary-hierarchy}
+Part 1 formalized the ``Scope of Threat'' through a hierarchical
 taxonomy. This hierarchy allows precise definition of defensive scope.
 
 \begin{itemize}
@@ -122,20 +126,21 @@ taxonomy. This hierarchy allows precise definition of defensive scope.
   orchestrator or infrastructure. The system's rules are compromised.
 \end{itemize}
 
-The simulations in Part 2 demonstrated that defense difficulty scales
-non-linearly with this hierarchy. While \(\Omega_1\) attacks were
-consistently blocked by surface-level filters (96\%+), \(\Omega_4\)
-attacks required coordination-level protocols to detect (74\%).
-\end{block}
+The simulations in Part 2 show defense difficulty rising non-linearly
+with this hierarchy: \(\Omega_1\) attacks are largely caught by
+surface-level filters (see Part 2 for category-level rates), while
+\(\Omega_4\) coordination attacks need quorum- and graph-level analysis
+and remain structurally harder to flag than single-channel injections.
+\end{frame}
 
-\begin{block}{2. The Trust Calculus (\(T\))}
-\protect\phantomsection\label{the-trust-calculus-t}
-A central contribution of Paper 1 is the \textbf{Trust Calculus}, a
+\begin{frame}[allowframebreaks]{The Trust Calculus (\(T\))}
+\protect\phantomsection\label{sec:trust-calculus-review}
+A central contribution of Part 1 is the \textbf{Trust Calculus}, a
 formal system for reasoning about belief reliability. It defines Trust
 (\(T\)) not as a binary permission but as a continuous property of a
 belief \(b\), denoted as \(T(b) \in [0, 1]\).
 
-The formal definition of Trust Update (Theorem 3.1 in Paper 1)
+The formal definition of Trust Update (Theorem 3.1 in Part 1)
 establishes that trust must decay across delegation chains:
 
 \begin{quote}
@@ -143,18 +148,25 @@ establishes that trust must decay across delegation chains:
 chain \(C = \{a_1 \to a_2 \to \dots \to a_n\}\), the trust in the final
 output cannot exceed the trust of the weakest link, degraded by the
 distance from the source.}
-\[ T(result) \le \min_{i} T(a_i) \cdot \delta^{|C|} \] \emph{where
-\(\delta\) is the decay factor (\(0 < \delta < 1\)).}
+\[ T(result) \le \min_{i} T(a_i) \cdot \delta^{\lvert C\rvert} \]
+\emph{where \(\delta\) is the decay factor (\(0 < \delta < 1\)).}
 \end{quote}
 
 This theorem provides the mathematical basis for the ``Trust Decay''
 mechanism evaluated in Part 2. It ensures that uncertainty is preserved
 and amplified effectively as information travels through the network.
-\end{block}
 
-\begin{block}{3. The Cognitive Firewall (\(\Phi\))}
-\protect\phantomsection\label{the-cognitive-firewall-phi}
-The \textbf{Cognitive Firewall} is defined in Paper 1 as a function
+\emph{In active inference terms, \(\delta\) is precision decay: each hop
+along a delegation chain attenuates channel precision. That matches
+precision-weighted belief updating---the same idea as weighting sensory
+evidence by reliability. Part 2 (FEP.1--FEP.2) states the correspondence
+between CIF's trust update rules and variational free energy for the
+shared generative-model setup used there.}
+\end{frame}
+
+\begin{frame}[allowframebreaks]{The Cognitive Firewall (\(\Phi\))}
+\protect\phantomsection\label{sec:firewall-review}
+The \textbf{Cognitive Firewall} is defined in Part 1 as a function
 \(\Phi\) that maps inputs to decisions based on three verification
 layers:
 
@@ -173,12 +185,12 @@ layers:
 
 In the Part 2 experiments, this modular structure was shown to be the
 primary defense against \(\Omega_1\) (External) attacks.
-\end{block}
+\end{frame}
 
-\begin{block}{4. The Stealth-Impact Tradeoff}
-\protect\phantomsection\label{the-stealth-impact-tradeoff}
-Paper 1 provides a theoretical bound on attack performance, formalized
-as the Stealth-Impact Tradeoff.
+\begin{frame}[allowframebreaks]{The Stealth-Impact Tradeoff}
+\protect\phantomsection\label{sec:stealth-impact-review}
+Part 1 provides a theoretical bound on attack performance, formalized as
+the Stealth-Impact Tradeoff.
 
 \begin{quote}
 \textbf{Stealth-Impact Tradeoff}: \emph{For a given defense sensitivity
@@ -190,17 +202,112 @@ This formalism suggests that catastrophic attacks are inherently easier
 to detect than subtle attacks. Part 2's data consistently validated
 this: High-impact attacks were detected 98\% of the time, while
 low-impact attacks were detected only 74\% of the time.
-\end{block}
+\end{frame}
 
-\begin{block}{5. Defense Composition}
-\protect\phantomsection\label{defense-composition}
-Finally, Paper 1 defines the \textbf{Composition Algebra}, determining
+\begin{frame}[allowframebreaks]{Defense Composition}
+\protect\phantomsection\label{sec:composition-review}
+Finally, Part 1 defines the \textbf{Composition Algebra}, determining
 how output probabilities of distinct modules interact. The key result is
 that orthogonal defenses compose multiplicatively.
 
 This ``Swiss Cheese Model'' was empirically validated in Part 2, where
-the full stack (97\% structural constraint satisfaction) significantly
-outperformed the sum of its parts.
+the full stack (94\% overall detection, 95\% CI: {[}0.92, 0.96{]})
+significantly outperformed the sum of its parts.
+\end{frame}
+
+\begin{frame}[allowframebreaks]{The Science Behind Belief Updates: Free
+Energy}
+\protect\phantomsection\label{sec:fep-connection}
+The Cognitive Integrity Framework's formal mechanisms have a deep
+connection to the \textbf{Free Energy Principle (FEP)}---the leading
+computational theory of how intelligent agents maintain coherent beliefs
+about their environment \cite{friston2010free}. Understanding this
+connection helps explain \emph{why} CIF's defenses work, not just
+\emph{that} they work.
+
+\begin{block}{What Is Free Energy?}
+\protect\phantomsection\label{what-is-free-energy}
+In computational neuroscience, \textbf{variational free energy} \(F\)
+measures how well an agent's internal model \(Q\) of the world matches
+reality:
+
+\[F = D_\text{KL}[Q \| P] - \mathbb{E}_Q[\log P(o | s)]\]
+
+The first term penalizes divergence from the prior; the second rewards
+accurate prediction of observations. Healthy cognition minimizes
+\(F\)---beliefs that minimize free energy are accurate, coherent, and
+resistant to manipulation.
+\end{block}
+
+\begin{block}{Attacks as Free Energy Increases}
+\protect\phantomsection\label{attacks-as-free-energy-increases}
+From the FEP perspective, \textbf{a cognitive attack is any intervention
+that forces an agent's free energy up}. Prompt injections, belief
+manipulation, and trust exploitation all work by injecting observations
+(or ``observations''---fabricated messages, false context) that drive
+the agent's belief state \(Q\) away from its prior \(P\) in ways that
+serve the attacker's goals rather than the agent's.
+
+CIF formalizes this in Part 2 (FEP.1): an attack \(\omega\) is detected
+when
+\(\Delta F(\omega) = F(Q_\text{attacked}) - F(Q_\text{baseline}) > \kappa_\text{FEP}\).
+The threshold \(\kappa_\text{FEP}\) is set by the precision of the
+agent's prior---agents with strong, well-calibrated priors (high
+precision) require larger perturbations to shift their beliefs, making
+them more attack-resistant.
+\end{block}
+
+\begin{block}{Trust as Precision Weighting}
+\protect\phantomsection\label{trust-as-precision-weighting}
+CIF's trust calculus (the \(\delta^d\) decay) has a natural
+interpretation under FEP: \textbf{trust score = precision weight}. When
+agent \(A\) receives a message from agent \(B\) with trust score
+\(T(B \to A)\), it should weight that message's evidence proportional to
+\(T(B \to A)\), treating it as an observation with precision
+\(\rho = T(B \to A)\). Trust decay across delegation chains
+(\(\delta^d\)) corresponds to precision attenuation in distal
+channels---the same mechanism that makes far-away sensory signals less
+reliable than proximal ones.
+\end{block}
+
+\begin{block}{The Belief Sandbox as Constrained Inference}
+\protect\phantomsection\label{the-belief-sandbox-as-constrained-inference}
+The belief sandbox (Part 1, Definition 5.4) has a direct FEP
+interpretation: it is \textbf{constrained variational inference} where
+the update is only accepted if
+\(\Delta F \leq \kappa \cdot \varepsilon_\text{precision}\). This is
+equivalent to requiring that accepted belief updates stay within a
+bounded geodesic radius on the statistical manifold of belief
+distributions---exactly Theorem CG.1 from Part 2.
+\end{block}
+
+\begin{block}{Practical Implication for Operators}
+\protect\phantomsection\label{practical-implication-for-operators}
+This connection is not just theoretical. It means:
+
+\begin{enumerate}
+\tightlist
+\item
+  \textbf{Emergent misalignment is the hardest problem} because it
+  minimizes \(\Delta F\) per agent: each individual belief shift is
+  sub-threshold, but the collective drift accumulates. This is precisely
+  why colony-scale monitoring is necessary---the FEP signal is
+  distributed across agents.
+\item
+  \textbf{Trust calibration is precision calibration}: operators who
+  carefully calibrate trust scores are effectively setting the precision
+  weighting of their agent network. Well-calibrated trust → robust
+  cognition.
+\item
+  \textbf{The Ω₅ miss rate (44\%) reflects FEP's fundamental challenge}:
+  systematic manipulation by a compromised orchestrator can shift the
+  agent's generative model \(P\) itself (not just \(Q\)), making the
+  baseline a moving target. This requires out-of-band verification
+  (human review, Byzantine quorum) rather than in-context detection.
+\end{enumerate}
+
+For the full mathematical treatment, see Part\textasciitilde2's
+theoretical-connections and information-geometry sections.
 \end{block}
 \end{frame}
 

@@ -108,9 +108,11 @@
 \newpage
 \end{frame}
 
-\begin{frame}{Defense Mechanisms: Architectural, Runtime, and
-Coordination Layers}
-\protect\phantomsection\label{sec:defense-mechanisms}
+\section{Defense Mechanisms: Architectural, Runtime, and Coordination
+Layers}\label{sec:defense-mechanisms}
+
+\begin{frame}[allowframebreaks]{Defense Mechanisms: Architectural,
+Runtime, and Coordination Layers}
 This section presents the defense mechanisms comprising CIF. We begin
 with the cognitive security operator posture
 (\cref{sec:operator-posture}), then organize specific defenses into
@@ -119,8 +121,9 @@ three categories: architectural (\cref{sec:arch-defenses}), runtime
 (\cref{sec:coord-defenses}). We analyze defense composition
 (\cref{sec:defense-composition}) and cost-benefit tradeoffs
 (\cref{sec:cost-benefit}).
+\end{frame}
 
-\begin{block}{Cognitive Security Operator Posture}
+\begin{frame}[allowframebreaks]{Cognitive Security Operator Posture}
 \protect\phantomsection\label{sec:operator-posture}
 Before examining specific defense mechanisms, we introduce the
 conceptual framework that guides their deployment: the
@@ -275,9 +278,9 @@ Temporal & Treat each session as potentially post-compromise & Assume temporal c
 \end{tabular}
 \end{table}
 \end{block}
-\end{block}
+\end{frame}
 
-\begin{block}{Architectural Defenses}
+\begin{frame}[allowframebreaks]{Architectural Defenses}
 \protect\phantomsection\label{sec:arch-defenses}
 \begin{block}{Cognitive Firewall}
 \protect\phantomsection\label{cognitive-firewall}
@@ -338,6 +341,35 @@ Isolation of unverified beliefs to prevent premature action:
 \end{equation}
 \end{definition}
 
+\begin{remark}[Belief Sandbox as Constrained Variational Inference]
+\label{rem:sandbox-fep}
+The belief sandbox (Definition~\ref{def:belief-sandbox}) admits a natural
+interpretation within the Free Energy Principle (FEP) framework
+\citep{friston2010action, parr2019generalised}. Variational free energy
+\[
+F = D_{\mathrm{KL}}\bigl[Q(s) \,\|\, P(s)\bigr] - \mathbb{E}_{Q}\bigl[\log P(o \mid s)\bigr]
+\]
+measures the divergence of an agent's approximate posterior $Q$ from its
+generative model prior $P$, penalised by explanatory adequacy.
+A cognitive attack $\omega$ is effective if and only if it induces a free energy
+increase $\Delta F(\omega) > \kappa_{\mathrm{FEP}}$, where $\kappa_{\mathrm{FEP}}$
+is the sandbox's corroboration threshold $\kappa$ scaled by the source
+precision $\epsilon_{\text{prec}}$ (Part~2, \S 1.2):
+\[
+\Delta F(\omega) = F\!\left(Q_{\text{attacked}}\right) - F\!\left(Q_{\text{baseline}}\right)
+\leq \kappa \cdot \epsilon_{\text{prec}}.
+\]
+Belief promotion from provisional to verified corresponds to \emph{active
+inference}: the sandbox permits an update only when the evidential
+quality of incoming messages justifies the free energy cost of revision.
+Under this interpretation, the trust composite score
+$\mathcal{T}_{i\to j} = \alpha T_{\text{base}} + \beta T_{\text{rep}} + \gamma T_{\text{ctx}}$
+is the \emph{precision weight} $\rho_j$ of agent $j$'s message channel:
+higher-trust messages contribute proportionally more to the posterior
+update $Q$.  This connection bridges the CIF trust calculus with the
+broader active inference literature (Part~2, Theorem~FEP.2).
+\end{remark}
+
 \begin{figure}
 \centering
 \pandocbounded{\includegraphics[keepaspectratio,alt={Belief Sandbox Architecture}]{../figures/belief_sandbox.pdf}}
@@ -373,9 +405,9 @@ Least-privilege enforcement across agent hierarchy:
 \end{equation}
 \end{definition}
 \end{block}
-\end{block}
+\end{frame}
 
-\begin{block}{Runtime Defenses}
+\begin{frame}[allowframebreaks]{Runtime Defenses}
 \protect\phantomsection\label{sec:runtime-defenses}
 \begin{block}{Cognitive Tripwires}
 \protect\phantomsection\label{cognitive-tripwires}
@@ -455,9 +487,9 @@ D_{\text{KL}}(\mathcal{B}_i^t \| \mathcal{B}_i^{t-w}) > \theta_{\text{drift}} \R
 where $w$ is the sliding window size.
 \end{definition}
 \end{block}
-\end{block}
+\end{frame}
 
-\begin{block}{Coordination Defenses}
+\begin{frame}[allowframebreaks]{Coordination Defenses}
 \protect\phantomsection\label{sec:coord-defenses}
 \begin{block}{Byzantine-Tolerant Consensus}
 \protect\phantomsection\label{byzantine-tolerant-consensus}
@@ -508,9 +540,9 @@ where $q = \lceil \frac{n + f + 1}{2} \rceil$.
 \item Track accuracy per agent for reputation
 \end{enumerate}
 \end{block}
-\end{block}
+\end{frame}
 
-\begin{block}{Defense Composition}
+\begin{frame}[allowframebreaks]{Defense Composition}
 \protect\phantomsection\label{sec:defense-composition}
 \begin{block}{Composition Algebra}
 \protect\phantomsection\label{composition-algebra}
@@ -611,9 +643,9 @@ P_{\text{detect}} = 1 - (1-0.80)(1-0.70)(1-0.60)(1-0.80) = 0.995
 \end{equation}
 \end{corollary}
 \end{block}
-\end{block}
+\end{frame}
 
-\begin{block}{Cost-Benefit Analysis}
+\begin{frame}[allowframebreaks]{Cost-Benefit Analysis}
 \protect\phantomsection\label{sec:cost-benefit}
 \begin{definition}[Defense Cost]
 \label{def:defense-cost}
@@ -714,7 +746,6 @@ Sandbox catches belief-layer attacks, Tripwire Monitors detect
 identity-layer exploits, and Anomaly Detection identifies behavioral
 drift. Overlapping regions show attacks detected by multiple mechanisms,
 demonstrating the defense-in-depth principle.
-\end{block}
 \end{block}
 \end{frame}
 

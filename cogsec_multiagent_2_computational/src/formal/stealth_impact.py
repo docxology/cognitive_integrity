@@ -2,7 +2,9 @@
 
 An attacker cannot simultaneously maximise both stealth (S) and
 impact (I).  Their product is bounded by a channel capacity constant
-C_channel.  This module validates the bound empirically.
+C_channel.  This module validates the bound empirically by simulating
+attack samples and verifying that the stealth-impact product never
+exceeds the channel capacity bound.
 """
 
 from __future__ import annotations
@@ -10,10 +12,17 @@ from __future__ import annotations
 from utils.random_seed import get_rng
 from .theorem_registry import TheoremResult, TheoremStatus
 
+C_CHANNEL_DEFAULT = 1.0
+N_TRIALS_DEFAULT = 500
+IMPACT_MIN = 0.1
+IMPACT_MAX = 1.0
+STEALTH_MIN = 0.1
+STEALTH_MAX = 1.0
+
 
 def validate_stealth_impact(
-    c_channel: float = 1.0,
-    n_trials: int = 500,
+    c_channel: float = C_CHANNEL_DEFAULT,
+    n_trials: int = N_TRIALS_DEFAULT,
     seed: int = 42,
     **kwargs,
 ) -> TheoremResult:
@@ -31,9 +40,8 @@ def validate_stealth_impact(
     max_product = 0.0
 
     for _ in range(n_trials):
-        # Random impact and stealth in (0, 1]
-        impact = rng.uniform(0.1, 1.0)
-        stealth = rng.uniform(0.1, 1.0)
+        impact = rng.uniform(IMPACT_MIN, IMPACT_MAX)
+        stealth = rng.uniform(STEALTH_MIN, STEALTH_MAX)
         product = impact * stealth
 
         # Simulate: attack only succeeds if product <= c_channel

@@ -1,4 +1,6 @@
 """Colony-level Cognitive Security benchmarks.
+from __future__ import annotations
+
 
 Re-exports all public symbols from the colony package:
 benchmark runner, scenario implementations, and scorecard utilities.

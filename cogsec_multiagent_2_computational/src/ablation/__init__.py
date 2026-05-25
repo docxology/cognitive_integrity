@@ -1,4 +1,6 @@
 """Ablation study package for the Cognitive Security Framework.
+from __future__ import annotations
+
 
 Re-exports all public classes from:
 - component_removal: Systematic leave-one-out and leave-k-out ablation

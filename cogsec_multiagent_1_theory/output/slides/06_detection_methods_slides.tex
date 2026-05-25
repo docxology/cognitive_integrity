@@ -93,9 +93,11 @@
 \newpage
 \end{frame}
 
-\begin{frame}{Detection Methods: Anomaly Detection, ROC Analysis, and
-Provenance Tracking}
-\protect\phantomsection\label{sec:detection-methods}
+\section{Detection Methods: Anomaly Detection, ROC Analysis, and
+Provenance Tracking}\label{sec:detection-methods}
+
+\begin{frame}[allowframebreaks]{Detection Methods: Anomaly Detection,
+ROC Analysis, and Provenance Tracking}
 This section presents the formal foundations for cognitive attack
 detection. We define anomaly detection metrics
 (\cref{sec:anomaly-detection}), ROC curve framework
@@ -109,8 +111,9 @@ and real-time monitoring architecture (\cref{sec:monitoring}).
 \textbf{Note}: For algorithm implementations and empirical performance
 results, see Part 2 of this series.
 \end{quote}
+\end{frame}
 
-\begin{block}{Anomaly Detection}
+\begin{frame}[allowframebreaks]{Anomaly Detection}
 \protect\phantomsection\label{sec:anomaly-detection}
 \begin{block}{Cognitive Drift Scoring}
 \protect\phantomsection\label{cognitive-drift-scoring}
@@ -168,9 +171,9 @@ P(\text{attack} \mid \mathbf{S}) = \sigma\left(\sum_d w_d \cdot S_d - b\right)
 where $\sigma$ is the sigmoid function and weights $(w_d, b)$ are learned from labeled examples.
 \end{definition}
 \end{block}
-\end{block}
+\end{frame}
 
-\begin{block}{ROC Curve Analysis}
+\begin{frame}[allowframebreaks]{ROC Curve Analysis}
 \protect\phantomsection\label{sec:roc-analysis}
 \begin{block}{Receiver Operating Characteristic Framework}
 \protect\phantomsection\label{receiver-operating-characteristic-framework}
@@ -231,9 +234,9 @@ where:
 \end{equation}
 \end{definition}
 \end{block}
-\end{block}
+\end{frame}
 
-\begin{block}{Multi-Detector Fusion}
+\begin{frame}[allowframebreaks]{Multi-Detector Fusion}
 \protect\phantomsection\label{sec:detector-fusion}
 \begin{block}{Fusion Strategies}
 \protect\phantomsection\label{fusion-strategies}
@@ -289,9 +292,9 @@ where $\bar{\delta}$ is the average pairwise diversity.
 When detectors make independent errors (high diversity), the fusion error is the product of individual errors. Error correlation reduces this benefit proportionally to $(1 - \bar{\delta})$.
 \end{proof}
 \end{block}
-\end{block}
+\end{frame}
 
-\begin{block}{Online vs.~Batch Detection}
+\begin{frame}[allowframebreaks]{Online vs.~Batch Detection}
 \protect\phantomsection\label{sec:online-batch}
 \begin{block}{Comparison Framework}
 \protect\phantomsection\label{comparison-framework}
@@ -343,9 +346,9 @@ Combines online and batch detection via feedback loop:
 \end{equation}
 \end{definition}
 \end{block}
-\end{block}
+\end{frame}
 
-\begin{block}{False Positive Mitigation}
+\begin{frame}[allowframebreaks]{False Positive Mitigation}
 \protect\phantomsection\label{sec:fp-mitigation}
 \begin{block}{Strategy 1: Confirmation Cascade}
 \protect\phantomsection\label{strategy-1-confirmation-cascade}
@@ -415,9 +418,9 @@ Optimize for total cost rather than accuracy:
 \end{equation}
 \end{definition}
 \end{block}
-\end{block}
+\end{frame}
 
-\begin{block}{Provenance Analysis}
+\begin{frame}[allowframebreaks]{Provenance Analysis}
 \protect\phantomsection\label{sec:provenance}
 \begin{block}{Information Flow Tracking}
 \protect\phantomsection\label{information-flow-tracking}
@@ -497,9 +500,9 @@ Temporal anomalies & Future timestamp forgery \\
 \end{tabular}
 \end{table}
 \end{block}
-\end{block}
+\end{frame}
 
-\begin{block}{Real-Time Monitoring}
+\begin{frame}[allowframebreaks]{Real-Time Monitoring}
 \protect\phantomsection\label{sec:monitoring}
 \begin{block}{Alert Aggregation}
 \protect\phantomsection\label{alert-aggregation}
@@ -560,7 +563,6 @@ Tripwires and Invariants provide stronger coverage for \(\Omega_3\)
 smoothing, and contextual whitelisting strategies reduce false positive
 rates by \(>80\%\) while maintaining \(>90\%\) true positive rates. See
 Part 2, \S\{5.4\} for quantitative analysis of each mitigation strategy.
-\end{block}
 \end{block}
 \end{frame}
 

@@ -101,20 +101,21 @@
 \newpage
 \end{frame}
 
-\begin{frame}{Common Pitfalls and What the Research Shows}
-\protect\phantomsection\label{sec:pitfalls}
+\section{Common Pitfalls and What the Research
+Shows}\label{sec:pitfalls}
+
+\begin{frame}[allowframebreaks]{Common Pitfalls and What the Research
+Shows}
 The CIF research identifies recurring failure modes in multiagent
 deployments. This section catalogs eight anti-patterns, each assessed
-through the lens of what Papers 1 and 2 contribute to understanding the
-problem and its mitigation.
+through what Parts 1 and 2 add to the problem and its mitigation.
 
 These pitfalls are ranked by severity. We prioritize critical and
 high-severity items as they represent verifiable vulnerabilities in the
 defense architecture.
 \end{frame}
 
-\begin{frame}
-\begin{block}{Pitfall 1: Implicit Trust (Critical)}
+\begin{frame}[allowframebreaks]{Pitfall 1: Implicit Trust (Critical)}
 \protect\phantomsection\label{pitfall-1-implicit-trust-critical}
 \textbf{The pattern}: Treating all inter-agent communication as trusted
 by default.
@@ -145,11 +146,10 @@ failures.
 \item
   Verify source identity on every inter-agent message
 \end{enumerate}
-\end{block}
 \end{frame}
 
-\begin{frame}
-\begin{block}{Pitfall 2: Security as Afterthought (Critical)}
+\begin{frame}[allowframebreaks]{Pitfall 2: Security as Afterthought
+(Critical)}
 \protect\phantomsection\label{pitfall-2-security-as-afterthought-critical}
 \textbf{The pattern}: Adding cognitive security after the architecture
 is finalized.
@@ -178,11 +178,10 @@ imposed. Architecture is security posture.
 \item
   Include cognitive security constraints in agent system prompts
 \end{enumerate}
-\end{block}
 \end{frame}
 
-\begin{frame}
-\begin{block}{Pitfall 3: Uncalibrated Thresholds (High)}
+\begin{frame}[allowframebreaks]{Pitfall 3: Uncalibrated Thresholds
+(High)}
 \protect\phantomsection\label{pitfall-3-uncalibrated-thresholds-high}
 \textbf{The pattern}: Setting security thresholds without understanding
 the tradeoffs.
@@ -211,11 +210,10 @@ corpus.
 \item
   Adjust based on operational feedback
 \end{enumerate}
-\end{block}
 \end{frame}
 
-\begin{frame}
-\begin{block}{Pitfall 4: Individual-Only Security (High)}
+\begin{frame}[allowframebreaks]{Pitfall 4: Individual-Only Security
+(High)}
 \protect\phantomsection\label{pitfall-4-individual-only-security-high}
 \textbf{The pattern}: Focusing on single-agent security while ignoring
 multi-agent attack surfaces.
@@ -246,11 +244,9 @@ vulnerabilities in individual agents.
 \item
   Set quorum requirements assuming adversarial presence
 \end{enumerate}
-\end{block}
 \end{frame}
 
-\begin{frame}
-\begin{block}{Pitfall 5: Static Tripwires (Medium)}
+\begin{frame}[allowframebreaks]{Pitfall 5: Static Tripwires (Medium)}
 \protect\phantomsection\label{pitfall-5-static-tripwires-medium}
 \textbf{The pattern}: Deploying canary tripwires once without rotation.
 
@@ -276,11 +272,10 @@ initially but useless once adversaries learn to recognize them.
   Include non-obvious canaries that don't follow predictable naming
   conventions
 \end{enumerate}
-\end{block}
 \end{frame}
 
-\begin{frame}
-\begin{block}{Pitfall 6: Ignoring Progressive Drift (Medium)}
+\begin{frame}[allowframebreaks]{Pitfall 6: Ignoring Progressive Drift
+(Medium)}
 \protect\phantomsection\label{pitfall-6-ignoring-progressive-drift-medium}
 \textbf{The pattern}: Only alerting on large, sudden belief changes.
 
@@ -308,11 +303,10 @@ statistical signature that single-turn attacks produce.
 \item
   Alert on \emph{trends} as well as absolute magnitude
 \end{enumerate}
-\end{block}
 \end{frame}
 
-\begin{frame}
-\begin{block}{Pitfall 7: Insufficient Logging (Medium)}
+\begin{frame}[allowframebreaks]{Pitfall 7: Insufficient Logging
+(Medium)}
 \protect\phantomsection\label{pitfall-7-insufficient-logging-medium}
 \textbf{The pattern}: Retaining insufficient information for
 post-incident analysis.
@@ -341,11 +335,10 @@ will---the ability to investigate depends entirely on what was recorded.
 \item
   Use structured logging formats that support causal analysis
 \end{enumerate}
-\end{block}
 \end{frame}
 
-\begin{frame}
-\begin{block}{Pitfall 8: Single-Orchestrator Reliance (High)}
+\begin{frame}[allowframebreaks]{Pitfall 8: Single-Orchestrator Reliance
+(High)}
 \protect\phantomsection\label{pitfall-8-single-orchestrator-reliance-high}
 \textbf{The pattern}: Relying entirely on one orchestrator's integrity
 without backup.
@@ -376,11 +369,9 @@ single point of failure.
 \item
   Implement orchestrator-specific tripwires with rotation
 \end{enumerate}
-\end{block}
 \end{frame}
 
-\begin{frame}
-\begin{block}{Summary Checklist}
+\begin{frame}[allowframebreaks]{Summary Checklist}
 \protect\phantomsection\label{summary-checklist}
 {\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}
@@ -413,7 +404,6 @@ Single orchestrator & Orchestrator monitored? & \(\square\) \\
 }
 
 Address unchecked items before production deployment.
-\end{block}
 \end{frame}
 
 \end{document}

@@ -1,4 +1,11 @@
+"""Threat Taxonomy module.
+
+Part of the Cognitive Integrity Framework.
+"""
+
 #!/usr/bin/env python3
+from __future__ import annotations
+
 """Threat taxonomy visualization module."""
 
 import os

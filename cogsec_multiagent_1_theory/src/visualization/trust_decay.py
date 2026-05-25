@@ -1,4 +1,6 @@
 """
+from __future__ import annotations
+
 Trust Decay Visualization Logic.
 
 Moves logic from script 02 to a reusable module.

@@ -2,11 +2,26 @@
 
 # Supplement S7: Algorithm Pseudocode {#sec:pseudocode-supplement}
 
-This supplement provides detailed pseudocode for all six core CIF defense algorithms referenced in Section 2.1 of the main text. Configuration parameters are documented separately in \cref{sec:config-params}. Framework API reference, deployment considerations, and integration examples are provided in Supplements S5 and S6.
+This supplement provides detailed pseudocode for all six core CIF defense algorithms referenced in Section 2.1 of the main text. Configuration parameters are documented separately in \cref{sec:config-params}. Framework API reference, deployment considerations, and integration examples are provided in Supplements S5, S6, and S9.
 
-> **Cross-Reference Note**: All algorithms implement formal definitions from Part 1. We cite specific theorems using "(Part 1, Theorem N)" notation to enable traceability from implementation to theoretical foundations.
+> **Cross-Reference Note**. All algorithms implement formal definitions from Part 1 \cite{friedman2026cogsec1} (DOI: 10.5281/zenodo.18364119). We cite specific theorems using "(Part 1, Theorem N)" notation to enable traceability from implementation to theoretical foundations. For deployment-facing pseudocode annotations (monitoring thresholds, incident-response triggers), see Part 3 \cite{friedman2026cogsec3} §5–§5d. For domain-calibrated instantiations of these algorithms across ten critical operational sectors, see Part 4 \cite{friedman2026cogsec4} §3.
 
-> **Reproducibility**: Algorithm implementations are in `src/core/`. Run `pytest tests/` to verify behavior (1,594 tests, 100% pass rate).
+> **Reproducibility**. Algorithm implementations are in [`src/core/`](../src/core/). Run `uv run pytest tests/` to verify behavior (see \cref{sec:framework-api} for the complete API surface and the suite's coverage target: 90%+ project code, no mocks). Every pseudocode block below has a corresponding Python implementation; the "Implementation" column of \cref{tab:alg-quickref} names the exact module.
+
+## Algorithm Quick Reference {#sec:alg-quickref}
+
+**Table: CIF defense algorithm quick reference — formal basis, complexity, and implementation.** {#tab:alg-quickref}
+
+| Algorithm | Formal Basis | Per-Message Complexity | Space | Implementation |
+| --- | --- | --- | --- | --- |
+| 1. Cognitive Firewall | Part 1, Def. 5.3 | $O(\|m\| \cdot \|\mathcal{P}\| + d)$ | $O(d + \|\mathcal{P}\|)$ | `src/core/firewall.py` |
+| 2. Belief Sandboxing | Part 1, Def. 5.4, Prop. 5.2 | $O(1)$ add; $O(\|\mathcal{B}_{prov}\| \cdot \kappa)$ promote | $O(N_{max})$ | `src/core/sandbox.py` |
+| 3. Trust Update | Part 1, Theorem 4.2 | $O(1)$ direct; $O(d)$ transitive | $O(n^2)$ matrix | `src/core/trust.py` |
+| 4. Tripwire Monitoring | Part 1, Def. 5.6 | $O(\|\mathcal{W}\|)$ | $O(\|\mathcal{W}\|)$ | `src/core/tripwire.py` |
+| 5. Byzantine Consensus | Part 1, Theorem 5.2 | $O(n^2)$ messages/round | $O(n)$ per agent | `src/core/consensus.py` |
+| 6. Drift Detection | Part 1, Def. 6.1 | $O(\|\text{domain}(\mathcal{B})\|)$ | $O(w \cdot \|\text{domain}\|)$ | `src/core/detection.py` |
+
+Where: $d$ = embedding dimension, $\|\mathcal{P}\|$ = pattern count, $\kappa$ = corroboration threshold, $n$ = agent count, $w$ = sliding window size, $N_{max}$ = sandbox capacity limit.
 
 ## Algorithm 1: Cognitive Firewall Classification {#sec:alg-firewall}
 
@@ -47,7 +62,9 @@ The cognitive firewall classifies incoming messages using a multi-stage detectio
 
 > **Implementation**: `src/core/firewall.py` — `CognitiveFirewall.classify()`, `PatternDetector.score_injection()`, `SemanticSimilarityDetector.score_semantic_similarity()`.
 
-> **Complexity**: $O(|m| \cdot |P|)$ for pattern matching, plus $O(d)$ for embedding lookup where $d$ is embedding dimension.
+> **Implementation Notes**: `Embed(m)` uses a 384-dimensional sentence embedding (all-MiniLM-L6-v2 via `sentence-transformers`; falls back to TF-IDF bag-of-words if the model is unavailable). `c_attack` is the centroid of known attack sample embeddings computed once at firewall initialization from the training corpus; it is updated via online mean when new confirmed attacks are added. `Features(m, ctx)` extracts 12 structural features: token count, punctuation density, imperative verb frequency, role-claim indicator count, context-window position (normalized 0–1), source trust score (from Trust Calculus), and 6 n-gram pattern hit counts for known injection patterns. See `src/core/firewall.py → FeatureExtractor.extract()` for the complete feature specification.
+
+> **Complexity**: $O(|m| \cdot |\mathcal{P}| + d)$ for pattern matching and embedding lookup, where $d$ is the embedding dimension and $|\mathcal{P}|$ is the pattern count. Space: $O(d + |\mathcal{P}|)$ for the attack centroid and pattern set.
 
 ## Algorithm 2: Belief Sandboxing {#sec:alg-sandbox}
 
@@ -96,6 +113,8 @@ Manages provisional beliefs with verification and promotion logic. This implemen
 
 > **Implementation**: `src/core/sandbox.py` — `SandboxManager.add_provisional()`, `SandboxManager.promote()`, `PromotionCriteria.evaluate()`.
 
+> **Implementation Note**: $V(\pi)$ denotes **provenance verification** — a cryptographic check confirming that the belief's recorded source $\pi.\mathit{source}$ is consistent with the message signature chain maintained by the Provenance Attestation module. Specifically, $V(\pi) = \text{True}$ iff (a) the source agent's signature on the message is valid, (b) the delegation chain from the source to the current agent is unbroken, and (c) the SHA-256 hash in $\pi.\mathit{hash}$ matches the belief content. Implemented in `src/core/provenance.py → ProvenanceTracker.verify()`. A belief whose provenance cannot be verified is evicted from $\mathcal{B}_{\text{provisional}}$ regardless of corroboration count.
+
 > **Complexity**: $O(1)$ for `add_provisional`, $O(|\mathcal{B}_{prov}| \cdot \kappa)$ for promotion check. Memory: $O(N_{max})$ bounded by configuration.
 
 ## Algorithm 3: Trust Update with Bounded Delegation {#sec:alg-trust}
@@ -139,7 +158,7 @@ Implements the trust calculus with decay and reputation updates. This is a direc
 
 > **Implementation**: `src/core/trust.py` — `TrustCalculus.compute_trust()`, `TrustCalculus.delegate_trust()`, `TrustMatrix.get_delegation_trust()`, `ReputationTracker.get_reputation()`.
 
-> **Complexity**: $O(1)$ for direct trust lookup, $O(d)$ for transitive trust through depth-$d$ delegation chain. Trust matrix storage: $O(n^2)$ for $n$ agents.
+> **Complexity**: $O(1)$ for direct trust lookup, $O(d)$ for transitive trust through depth-$d$ delegation chain. Trust matrix storage: $O(n^2)$ for $n$ agents — at 100 agents this is 10,000 float32 values ($\approx$40KB), which is negligible. At 1,000 agents the dense matrix reaches 4MB; sparse representations (storing only non-zero trust relationships) reduce this to $O(kn)$ for mean out-degree $k$. The Reputation tracker adds $O(n)$ storage per agent for interaction history.
 
 ## Algorithm 4: Cognitive Tripwire Monitoring {#sec:alg-tripwire}
 
@@ -233,6 +252,8 @@ Implements Byzantine fault-tolerant consensus for multi-agent decisions. This sa
 \end{algorithm}
 
 > **Implementation**: `src/core/consensus.py` — `ByzantineConsensus.compute_consensus()`, `WeightedByzantineConsensus.submit_vote()`, `QuorumVerification.approve()`.
+
+> **Complexity**: $O(n^2)$ messages per consensus round — each of $n$ agents broadcasts to all others in Phase 1 (vote collection) and Phase 2 (echo round), yielding $2n(n-1)$ total messages per round. Time complexity per round: $O(n^2 \cdot T_{sign} + n \cdot T_{verify})$ where $T_{sign}$ and $T_{verify}$ are signature generation and verification costs. Space per agent: $O(n)$ for vote and echo storage. The quadratic message complexity limits practical Byzantine consensus to $n \lesssim 50$ agents; hierarchical committee partitioning (partitioning agents into subcommittees of size $\leq 20$ with inter-committee agreement) is recommended above this threshold — see §\ref{sec:agent-scaling} for measured latency at 100 agents (4.2s consensus time).
 
 ## Algorithm 6: Belief Drift Detection {#sec:alg-drift}
 

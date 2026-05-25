@@ -2,102 +2,103 @@
   "directories": {
     "pdf": {
       "exists": true,
-      "file_count": 8,
-      "size_mb": "0.29",
-      "total_size_bytes": 307609,
+      "file_count": 10,
+      "size_mb": "0.63",
+      "total_size_bytes": 664842,
       "largest_files": [
         {
           "name": "cogsec_multiagent_3_practical_combined.pdf",
-          "size_mb": "0.11",
+          "size_mb": "0.22",
           "path": "pdf/cogsec_multiagent_3_practical_combined.pdf"
         },
         {
-          "name": "_combined_manuscript.log",
-          "size_mb": "0.06",
-          "path": "pdf/_combined_manuscript.log"
+          "name": "_combined_manuscript.tex",
+          "size_mb": "0.13",
+          "path": "pdf/_combined_manuscript.tex"
         },
         {
-          "name": "_combined_manuscript.tex",
-          "size_mb": "0.05",
-          "path": "pdf/_combined_manuscript.tex"
+          "name": "_combined_manuscript.md",
+          "size_mb": "0.10",
+          "path": "pdf/_combined_manuscript.md"
         }
       ],
       "extensions": {
         ".md": 1,
-        ".log": 1,
+        ".log": 2,
         ".aux": 1,
         ".blg": 1,
         ".bib": 1,
         ".tex": 1,
+        ".toc": 1,
         ".pdf": 1,
         ".bbl": 1
       }
     },
     "web": {
       "exists": true,
-      "file_count": 13,
-      "size_mb": "0.19",
-      "total_size_bytes": 194207,
+      "file_count": 18,
+      "size_mb": "0.44",
+      "total_size_bytes": 465371,
       "largest_files": [
         {
           "name": "index.html",
-          "size_mb": "0.06",
+          "size_mb": "0.16",
           "path": "web/index.html"
         },
         {
           "name": "_combined_manuscript.md",
-          "size_mb": "0.04",
+          "size_mb": "0.10",
           "path": "web/_combined_manuscript.md"
         },
         {
-          "name": "06_common_pitfalls.html",
-          "size_mb": "0.01",
-          "path": "web/06_common_pitfalls.html"
+          "name": "04b_subagent_hardening.html",
+          "size_mb": "0.02",
+          "path": "web/04b_subagent_hardening.html"
         }
       ],
       "extensions": {
-        ".html": 12,
+        ".html": 17,
         ".md": 1
       }
     },
     "slides": {
       "exists": true,
-      "file_count": 80,
-      "size_mb": "0.92",
-      "total_size_bytes": 961253,
+      "file_count": 119,
+      "size_mb": "1.87",
+      "total_size_bytes": 1960842,
       "largest_files": [
         {
+          "name": "05d_monitoring_guide_slides.log",
+          "size_mb": "0.07",
+          "path": "slides/05d_monitoring_guide_slides.log"
+        },
+        {
           "name": "03_simulation_review_slides.log",
-          "size_mb": "0.05",
+          "size_mb": "0.07",
           "path": "slides/03_simulation_review_slides.log"
         },
         {
-          "name": "S01_notation_reference_slides.log",
-          "size_mb": "0.05",
-          "path": "slides/S01_notation_reference_slides.log"
-        },
-        {
-          "name": "06_common_pitfalls_slides.log",
-          "size_mb": "0.05",
-          "path": "slides/06_common_pitfalls_slides.log"
+          "name": "05c_cost_benefit_slides.log",
+          "size_mb": "0.07",
+          "path": "slides/05c_cost_benefit_slides.log"
         }
       ],
       "extensions": {
-        ".nav": 11,
-        ".vrb": 3,
-        ".pdf": 11,
-        ".toc": 11,
-        ".tex": 11,
-        ".log": 11,
-        ".snm": 11,
-        ".aux": 11
+        ".nav": 16,
+        ".toc": 16,
+        ".vrb": 7,
+        ".tex": 16,
+        ".pdf": 16,
+        ".log": 16,
+        ".snm": 16,
+        ".aux": 16
       }
     },
     "figures": {
       "exists": true,
       "file_count": 12,
       "size_mb": "0.74",
-      "total_size_bytes": 776594,
+      "total_size_bytes": 776438,
       "largest_files": [
         {
           "name": "posture_radar.png",
@@ -130,9 +131,9 @@
     },
     "reports": {
       "exists": true,
-      "file_count": 4,
+      "file_count": 5,
       "size_mb": "0.01",
-      "total_size_bytes": 6074,
+      "total_size_bytes": 7345,
       "largest_files": [
         {
           "name": "validation_report.json",
@@ -140,19 +141,19 @@
           "path": "reports/validation_report.json"
         },
         {
+          "name": "diagnostics.json",
+          "size_mb": "0.00",
+          "path": "reports/diagnostics.json"
+        },
+        {
           "name": "test_results.json",
           "size_mb": "0.00",
           "path": "reports/test_results.json"
-        },
-        {
-          "name": "test_results.md",
-          "size_mb": "0.00",
-          "path": "reports/test_results.md"
         }
       ],
       "extensions": {
-        ".md": 2,
-        ".json": 2
+        ".json": 3,
+        ".md": 2
       }
     },
     "simulations": {
@@ -174,12 +175,12 @@
     "logs": {
       "exists": true,
       "file_count": 1,
-      "size_mb": "0.01",
-      "total_size_bytes": 8488,
+      "size_mb": "0.00",
+      "total_size_bytes": 2451,
       "largest_files": [
         {
           "name": "pipeline.log",
-          "size_mb": "0.01",
+          "size_mb": "0.00",
           "path": "logs/pipeline.log"
         }
       ],
@@ -188,9 +189,15 @@
       }
     }
   },
-  "total_files": 118,
-  "total_size_mb": 2.149796485900879,
+  "total_files": 165,
+  "total_size_mb": 3.6976709365844727,
   "largest_files": [
+    {
+      "name": "cogsec_multiagent_3_practical_combined.pdf",
+      "size_mb": "0.22",
+      "category": "pdf",
+      "path": "pdf/cogsec_multiagent_3_practical_combined.pdf"
+    },
     {
       "name": "posture_radar.png",
       "size_mb": "0.22",
@@ -198,10 +205,16 @@
       "path": "figures/posture_radar.png"
     },
     {
-      "name": "cogsec_multiagent_3_practical_combined.pdf",
-      "size_mb": "0.11",
+      "name": "index.html",
+      "size_mb": "0.16",
+      "category": "web",
+      "path": "web/index.html"
+    },
+    {
+      "name": "_combined_manuscript.tex",
+      "size_mb": "0.13",
       "category": "pdf",
-      "path": "pdf/cogsec_multiagent_3_practical_combined.pdf"
+      "path": "pdf/_combined_manuscript.tex"
     },
     {
       "name": "trust_decay.png",
@@ -210,80 +223,66 @@
       "path": "figures/trust_decay.png"
     },
     {
-      "name": "risk_matrix.png",
-      "size_mb": "0.07",
-      "category": "figures",
-      "path": "figures/risk_matrix.png"
-    },
-    {
-      "name": "_combined_manuscript.log",
-      "size_mb": "0.06",
+      "name": "_combined_manuscript.md",
+      "size_mb": "0.10",
       "category": "pdf",
-      "path": "pdf/_combined_manuscript.log"
+      "path": "pdf/_combined_manuscript.md"
     },
     {
-      "name": "index.html",
-      "size_mb": "0.06",
+      "name": "_combined_manuscript.md",
+      "size_mb": "0.10",
       "category": "web",
-      "path": "web/index.html"
+      "path": "web/_combined_manuscript.md"
     },
     {
-      "name": "_combined_manuscript.tex",
-      "size_mb": "0.05",
-      "category": "pdf",
-      "path": "pdf/_combined_manuscript.tex"
+      "name": "05d_monitoring_guide_slides.log",
+      "size_mb": "0.07",
+      "category": "slides",
+      "path": "slides/05d_monitoring_guide_slides.log"
     },
     {
       "name": "03_simulation_review_slides.log",
-      "size_mb": "0.05",
+      "size_mb": "0.07",
       "category": "slides",
       "path": "slides/03_simulation_review_slides.log"
     },
     {
-      "name": "S01_notation_reference_slides.log",
-      "size_mb": "0.05",
+      "name": "05c_cost_benefit_slides.log",
+      "size_mb": "0.07",
       "category": "slides",
-      "path": "slides/S01_notation_reference_slides.log"
-    },
-    {
-      "name": "06_common_pitfalls_slides.log",
-      "size_mb": "0.05",
-      "category": "slides",
-      "path": "slides/06_common_pitfalls_slides.log"
+      "path": "slides/05c_cost_benefit_slides.log"
     }
   ],
-  "missing_expected_files": [
-    "cogsec_multiagent_3_practical_combined.pdf or project_combined.pdf"
-  ],
-  "file_counts_by_type": {
-    ".md": 4,
-    ".log": 13,
-    ".aux": 12,
-    ".blg": 1,
-    ".bib": 1,
-    ".tex": 12,
-    ".pdf": 18,
-    ".bbl": 1,
-    ".html": 12,
-    ".nav": 11,
-    ".vrb": 3,
-    ".toc": 11,
-    ".snm": 11,
-    ".png": 6,
-    ".json": 2
-  },
+  "missing_expected_files": [],
   "sizes_by_category": {
-    "pdf": 0.29335880279541016,
-    "web": 0.1852102279663086,
-    "slides": 0.916722297668457,
-    "figures": 0.7406177520751953,
+    "pdf": 0.6340427398681641,
+    "web": 0.44381237030029297,
+    "slides": 1.870004653930664,
+    "figures": 0.7404689788818359,
     "data": 0.0,
-    "reports": 0.0057926177978515625,
+    "reports": 0.007004737854003906,
     "simulations": 0.0,
     "llm": 0.0,
-    "logs": 0.00809478759765625
+    "logs": 0.0023374557495117188
   },
-  "pdf_files": 8,
+  "file_counts_by_type": {
+    ".md": 4,
+    ".log": 19,
+    ".aux": 17,
+    ".blg": 1,
+    ".bib": 1,
+    ".tex": 17,
+    ".toc": 17,
+    ".pdf": 23,
+    ".bbl": 1,
+    ".html": 17,
+    ".nav": 16,
+    ".vrb": 7,
+    ".snm": 16,
+    ".png": 6,
+    ".json": 3
+  },
+  "pdf_files": 10,
   "figures": 12,
   "data_files": 0
 }

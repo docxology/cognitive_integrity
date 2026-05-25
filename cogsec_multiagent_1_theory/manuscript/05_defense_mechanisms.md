@@ -192,6 +192,35 @@ Isolation of unverified beliefs to prevent premature action:
 \end{equation}
 \end{definition}
 
+\begin{remark}[Belief Sandbox as Constrained Variational Inference]
+\label{rem:sandbox-fep}
+The belief sandbox (Definition~\ref{def:belief-sandbox}) admits a natural
+interpretation within the Free Energy Principle (FEP) framework
+\citep{friston2010action, parr2019generalised}. Variational free energy
+\[
+F = D_{\mathrm{KL}}\bigl[Q(s) \,\|\, P(s)\bigr] - \mathbb{E}_{Q}\bigl[\log P(o \mid s)\bigr]
+\]
+measures the divergence of an agent's approximate posterior $Q$ from its
+generative model prior $P$, penalised by explanatory adequacy.
+A cognitive attack $\omega$ is effective if and only if it induces a free energy
+increase $\Delta F(\omega) > \kappa_{\mathrm{FEP}}$, where $\kappa_{\mathrm{FEP}}$
+is the sandbox's corroboration threshold $\kappa$ scaled by the source
+precision $\epsilon_{\text{prec}}$ (Part~2, \S 1.2):
+\[
+\Delta F(\omega) = F\!\left(Q_{\text{attacked}}\right) - F\!\left(Q_{\text{baseline}}\right)
+\leq \kappa \cdot \epsilon_{\text{prec}}.
+\]
+Belief promotion from provisional to verified corresponds to \emph{active
+inference}: the sandbox permits an update only when the evidential
+quality of incoming messages justifies the free energy cost of revision.
+Under this interpretation, the trust composite score
+$\mathcal{T}_{i\to j} = \alpha T_{\text{base}} + \beta T_{\text{rep}} + \gamma T_{\text{ctx}}$
+is the \emph{precision weight} $\rho_j$ of agent $j$'s message channel:
+higher-trust messages contribute proportionally more to the posterior
+update $Q$.  This connection bridges the CIF trust calculus with the
+broader active inference literature (Part~2, Theorem~FEP.2).
+\end{remark}
+
 ![Belief Sandbox Architecture](figures/belief_sandbox.pdf){#fig:belief-sandbox}
 
 \Cref{fig:belief-sandbox} illustrates the sandbox architecture, showing how incoming beliefs are partitioned into verified and provisional sets based on source trust $\mathcal{T}_{i \to s}$ and provenance verification $V(\pi)$. The promotion protocol transfers beliefs from provisional to verified status upon meeting corroboration and consistency requirements.

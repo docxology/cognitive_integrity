@@ -18,14 +18,14 @@ This paper has applied the Cognitive Integrity Framework (CIF) \cite{friedman202
 
 ## Relationship to the Series
 
-This paper completes a four-part arc in the Cognitive Security series:
+This paper completes a four-part arc in the *Cognitive Security for Multiagent Operators* series:
 
-- **Paper 1** (Theory) \cite{friedman2026cogsec1} established the formal foundations: cognitive state model, trust calculus, adversary taxonomy ($\Omega_1$--$\Omega_5$), and five canonical defense mechanisms with composition algebra.
-- **Paper 2** (Computation) \cite{friedman2026cogsec2} provided computational validation: benchmark evaluation across 950 attack scenarios, demonstrating 99.5\% detection with the recommended defense stack.
-- **Paper 3** (Practice) \cite{friedman2026cogsec3} grounded the framework in biological analogy: eusocial insect colonies as existence proofs for CIF-like defense mechanisms evolved over millions of years.
-- **Paper 4** (Applications---this paper) demonstrates real-world applicability: CIF's formal mechanisms map to concrete defenses across ten high-stakes domains, and the cross-domain analysis yields new insights (universal attack patterns, novel defense extensions) not visible from any single domain.
+- **Paper 1: Formal Foundations** \cite{friedman2026cogsec1} (DOI: 10.5281/zenodo.18364119) established the formal foundations: cognitive state model $\sigma_i = \langle \mathcal{B}_i, \mathcal{G}_i, \mathcal{I}_i, \mathcal{H}_i \rangle$, trust calculus with $\delta^d$ bounded delegation, adversary taxonomy ($\Omega_1$--$\Omega_5$), information-theoretic stealth--impact bounds, and five canonical defense mechanisms with composition algebra. A supplementary chapter additionally develops the eusocial-colony analogy.
+- **Paper 2: Computational Validation** \cite{friedman2026cogsec2} (DOI: 10.5281/zenodo.18364128) provided computational validation: benchmark evaluation across 950 attack scenarios, ablation studies, Bayesian uncertainty quantification, and colony-scale benchmarks, with the recommended defense stack achieving 94--100\% detection in parametric simulation.
+- **Paper 3: A Qualitative Review for Practitioners** \cite{friedman2026cogsec3} (DOI: 10.5281/zenodo.18364130) translated the formal and empirical results into accessible engineering guidance: deployment guides, subagent-hardening patterns, incident-response playbooks, monitoring strategies, cost--benefit analysis, common pitfalls, case studies, and operator risk frameworks. No formal prerequisites assumed.
+- **Paper 4: Applications of the Cognitive Integrity Framework** (this paper) demonstrates real-world applicability: CIF's formal mechanisms map to concrete defenses across ten high-stakes operational domains via the integrated CIF-AD-OODA model, and the cross-domain analysis yields new insights (three universal attack patterns, three novel defense extensions) not visible from any single domain, with retrospective validation against six documented 2024--2025 AI agent security incidents.
 
-Together, the series establishes that cognitive integrity is not merely a theoretical concern but a *necessary engineering discipline* for deployed multiagent systems.
+Together, the series establishes that cognitive integrity is not merely a theoretical concern but a *necessary engineering discipline* for deployed multiagent systems. Readers seeking derivations or proofs should consult Part 1; readers seeking empirical measurement should consult Part 2; readers looking to deploy these defenses operationally should consult Part 3; readers evaluating CIF for a specific operational sector have just read the present work.
 
 ## Future Work
 

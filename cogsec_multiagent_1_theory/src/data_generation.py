@@ -1,4 +1,11 @@
+"""Data Generation module.
+
+Part of the Cognitive Integrity Framework.
+"""
+
 #!/usr/bin/env python3
+from __future__ import annotations
+
 """Data generation module for experimental results."""
 
 import os

@@ -2,9 +2,14 @@
 
 # Colony Benchmark Design (Proposed) {#sec:benchmark-implementation}
 
-This supplementary section presents the *design specification* for colony cognitive security benchmarks introduced in Part 1, Section S05. These benchmarks are proposed for future implementation; the current CIF codebase validates individual-agent and small-group defense mechanisms (3--10 agents) as described in the main text. The configurations below define the target infrastructure for scaling CIF evaluation to colony-scale populations ($n > 10$).
+This supplementary section presents the *design specification* for colony cognitive security benchmarks extending the individual-focused CIF in Part 1 \cite{friedman2026cogsec1} (see Part 1 S02 for the eusocial-colony analogy that motivates this benchmark direction). These benchmarks are proposed for scaling CIF evaluation beyond the main text's 3–10 agent deployments toward colony-scale populations ($n > 10$); implementations of the design below live in [`src/colony/`](../src/colony/), and the current codebase already exercises 20–100 agent scenarios via `scripts/run_colony_benchmarks.py`.
 
-> **Status**: The benchmark specifications in this section are *proposed designs*. The code snippets illustrate the intended API and are not yet implemented in the CIF repository. Colony-scale evaluation is an active area of future work (see \cref{sec:discussion}).
+> **Status.** The $n \geq 500$ benchmarks below are proposed extensions. The codebase currently validates at 20–100 agent scale (see §5 Results, colony tier); scaling to $n \in \{500, 1000\}$ is active future work (\cref{sec:discussion}).
+
+> **Cross-paper reading guide.**
+> • **Biological grounding** for colony-level defenses (stigmergic substrates, collective invariants) appears in Part 1 S02 *Eusocial CogSec* \cite{friedman2026cogsec1}.
+> • **Deployment patterns** for operating colony-scale systems (including Ω₅ playbooks for emergent drift) are in Part 3 \cite{friedman2026cogsec3} §5b Incident Response.
+> • **Domain applications** of colony-scale CIF to nation-state and infrastructure contexts appear in Part 4 \cite{friedman2026cogsec4} §3.02 and §3.09.
 
 1. **Scalable agent populations** — $n \in \{10, 50, 100, 500, 1000\}$
 2. **Configurable stigmergic substrates** — Shared memory, message queues, artifact stores
@@ -38,7 +43,7 @@ where:
 \text{DR}_c &= \text{Colony-level detection rate} \\
 \text{FPR}_c &= \text{Colony-level false positive rate} \\
 \text{Resilience} &= \frac{\mathcal{F}_c(\text{under attack})}{\mathcal{F}*c(\text{baseline})} \\
-\text{Recovery} &= \frac{1}{t*{\text{recovery}}} \text{ (normalized)}
+\text{Recovery} &= \max(0,\, 1 - t_{\text{recovery}} / t_{\max}) \text{ (normalized; } t_{\max} = 60\text{s default, configurable)}
 \end{align}
 with weights $w_i$ summing to 1.
 \end{definition}
@@ -49,14 +54,14 @@ with weights $w_i$ summing to 1.
 
 ```bash
 # Create benchmark environment
-python -m venv cogsec-bench
+uv venv cogsec-bench
 source cogsec-bench/bin/activate
 
 # Install dependencies
-pip install numpy scipy networkx redis kafka-python
+uv pip install numpy scipy networkx redis kafka-python
 
 # Run benchmark suite
-python -m cogsec.benchmarks.colony --config colony_configs.yaml
+uv run python -m cogsec.benchmarks.colony --config colony_configs.yaml
 ```
 
 ### Benchmark Runner

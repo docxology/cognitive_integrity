@@ -8,7 +8,7 @@ consensus decisions.
 
 from __future__ import annotations
 
-from typing import List
+from typing import Any, List
 
 import numpy as np
 
@@ -26,7 +26,7 @@ class SybilInfiltrationScenario:
     def name(self) -> str:
         return "sybil_infiltration"
 
-    def default_config(self):
+    def default_config(self) -> Any:
         """Return default colony configuration for this scenario."""
         try:
             from .benchmark import ColonyConfig
@@ -45,7 +45,7 @@ class SybilInfiltrationScenario:
                 seed: int = 42
             return _Cfg()
 
-    def run(self, config, rng: np.random.Generator):
+    def run(self, config: Any, rng: np.random.Generator) -> Any:
         """Run the sybil-infiltration simulation.
 
         Args:

@@ -4,9 +4,11 @@ Anomaly Detection for Cognitive Security.
 Implements drift detection and behavioral scoring.
 """
 
+from __future__ import annotations
+
 from collections import deque
 from dataclasses import dataclass
-from typing import Dict, List, Optional, Tuple
+from typing import Callable, Dict, List, Optional, Tuple
 
 import numpy as np
 
@@ -158,7 +160,7 @@ class FeatureExtractor:
     """Extracts behavioral features from agent state."""
 
     name: str
-    extract: callable
+    extract: Callable[[dict], float]
     baseline_mean: float = 0.0
     baseline_std: float = 1.0
 
@@ -176,7 +178,7 @@ class AnomalyScorer:
         self._history: Dict[str, deque] = {}
 
     def add_extractor(
-        self, name: str, extract_fn: callable, weight: float = 1.0
+        self, name: str, extract_fn: Callable[[dict], float], weight: float = 1.0
     ) -> None:
         """
         Add feature extractor.

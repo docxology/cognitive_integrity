@@ -101,14 +101,16 @@
 \newpage
 \end{frame}
 
-\begin{frame}{Notation Reference}
-\protect\phantomsection\label{sec:notation-reference}
+\section{Notation Reference}\label{sec:notation-reference}
+
+\begin{frame}[allowframebreaks]{Notation Reference}
 This paper intentionally minimizes mathematical notation to maximize
 accessibility. Where notation is used, it follows the Cognitive
 Integrity Framework (CIF) formal specification defined in Part 1 of this
 series.
+\end{frame}
 
-\begin{block}{Minimal Notation Used}
+\begin{frame}[allowframebreaks]{Minimal Notation Used}
 \protect\phantomsection\label{minimal-notation-used}
 {\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}
@@ -133,9 +135,9 @@ tolerated'' \\
 \bottomrule\noalign{}
 \end{longtable}
 }
-\end{block}
+\end{frame}
 
-\begin{block}{Trust Decay Explanation}
+\begin{frame}[allowframebreaks]{Trust Decay Explanation}
 \protect\phantomsection\label{trust-decay-explanation}
 When we write δ = 0.9, this means:
 
@@ -153,9 +155,9 @@ When we write δ = 0.9, this means:
 
 A lower δ (e.g., 0.85) means faster decay, providing more security but
 limiting delegation utility.
-\end{block}
+\end{frame}
 
-\begin{block}{Byzantine Tolerance Explanation}
+\begin{frame}[allowframebreaks]{Byzantine Tolerance Explanation}
 \protect\phantomsection\label{byzantine-tolerance-explanation}
 When we say n ≥ 3f + 1:
 
@@ -168,19 +170,16 @@ When we say n ≥ 3f + 1:
 \item
   To tolerate 3 malicious agents, need at least 10 agents
 \end{itemize}
-\end{block}
+\end{frame}
 
-\begin{block}{Full Notation Reference}
+\begin{frame}[fragile,allowframebreaks]{Full Notation Reference}
 \protect\phantomsection\label{full-notation-reference}
-For complete formal definitions of all CIF notation, see:
+For complete formal definitions of all CIF notation, see Part 1
+supplementary \textbf{S03}
+(\texttt{cogsec\_multiagent\_1\_theory/manuscript/S03\_notation.md} in
+this repository's cognitive\_integrity program tree).
 
-\begin{itemize}
-\tightlist
-\item
-  \textbf{Part 1: Supplementary Section S03: Notation Reference}
-\end{itemize}
-
-The formal specification includes \textasciitilde100 symbols covering:
+The Part 1 specification uses on the order of 100 symbols covering:
 
 \begin{itemize}
 \tightlist
@@ -195,7 +194,6 @@ The formal specification includes \textasciitilde100 symbols covering:
 \item
   Information-theoretic bounds
 \end{itemize}
-\end{block}
 \end{frame}
 
 \end{document}

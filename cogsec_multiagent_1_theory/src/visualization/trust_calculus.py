@@ -1,4 +1,11 @@
+"""Trust Calculus module.
+
+Part of the Cognitive Integrity Framework.
+"""
+
 #!/usr/bin/env python3
+from __future__ import annotations
+
 """Trust calculus visualization module."""
 
 import os

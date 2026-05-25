@@ -115,7 +115,7 @@ Eusocial insects have evolved sophisticated security mechanisms over 100+ millio
 
 **Chemical Recognition Thresholds**: Ant nestmate recognition operates on *threshold-based* hydrocarbon profile matching, not exact matching [@lenoir2001chemical]. This creates a tradeoff: strict thresholds reject legitimate workers after foraging (false positives), while loose thresholds admit parasites (false negatives). *AI analog*: Agent attestation systems must calibrate acceptance thresholds, recognizing that perfect recognition is information-theoretic\-ally impossible (\cref{thm:stealth-impact}).
 
-**Metapleural Gland Secretions**: Many ant species possess metapleural glands that continuously secrete antimicrobial compounds, creating a "security substrate" independent of individual vigilance [@fernández-marín2006evolution]. *AI analog*: Environmental-level defenses (encrypted shared memory, authenticated message queues) that provide baseline security regardless of individual agent security posture.
+**Metapleural Gland Secretions**: Many ant species possess metapleural glands that continuously secrete antimicrobial compounds, creating a "security substrate" independent of individual vigilance [@fernandez2006evolution]. *AI analog*: Environmental-level defenses (encrypted shared memory, authenticated message queues) that provide baseline security regardless of individual agent security posture.
 
 **Trail Pheromone Decay**: Ant trail pheromones are designed to evaporate, ensuring that outdated information doesn't persist indefinitely. Trails to depleted food sources naturally fade, preventing "legacy trust" in obsolete information [@jackson2006communication]. *AI analog*: Time-bounded trust in stigmergic markers (\cref{eq:colonial-trust}) is not a limitation but a feature.
 
@@ -125,7 +125,7 @@ Eusocial insects have evolved sophisticated security mechanisms over 100+ millio
 
 **Hygienic Behavior and Proactive Removal**: Some bee strains exhibit "hygienic behavior"---workers proactively uncap and remove brood cells containing diseased larvae *before* symptoms become visible, using olfactory detection of early infection markers [@spivak2001hygienic]. *AI analog*: Proactive monitoring for belief drift (\cref{def:tripwire-alert}) rather than reactive response to manifested attacks.
 
-**Waggle Dance Verification**: Bee foragers must perform waggle dances that encode distance and direction to food sources. Observing bees don't just follow instructions---they verify dance accuracy by cross-checking against their own experience and rejecting inconsistent information [@grüter2008dance]. *AI analog*: Delegated information should be verifiable against agent's existing knowledge base; pure trust propagation without verification violates cognitive integrity.
+**Waggle Dance Verification**: Bee foragers must perform waggle dances that encode distance and direction to food sources. Observing bees don't just follow instructions---they verify dance accuracy by cross-checking against their own experience and rejecting inconsistent information [@gruter2008dance]. *AI analog*: Delegated information should be verifiable against agent's existing knowledge base; pure trust propagation without verification violates cognitive integrity.
 
 **Absconding and Colony Fission**: When attack pressure exceeds defensive capacity (e.g., repeated Varroa mite infestation or persistent wasp attacks), bee colonies can *abandon* the compromised nest entirely, sacrificing resources to preserve the colony [@schneider2001economics]. *AI analog*: Graceful degradation plans that sacrifice specific subsystems or data stores to preserve core cognitive integrity.
 
@@ -249,7 +249,7 @@ Existing AI security benchmarks focus overwhelmingly on single-agent scenarios:
 | AgentBench [@liu2023agentbench] | Single agent, task completion | Minimal |
 | GAIA [@mialon2023gaia] | Single/few agents, reasoning | Minimal |
 
-The attack corpus in Part 2 addresses multiagent scenarios but still emphasizes agent-targeted attacks within an operator. No existing benchmark evaluates:
+The attack corpus in Part 2 addresses multiagent scenarios but still emphasizes agent-targeted attacks within an operator, and the cross-domain goal-hijacking analysis in Part 4 provides ten operational-domain case studies. No existing benchmark, however, evaluates:
 
 1. **Emergent collective resilience** — How do colonies absorb individual compromises?
 2. **Stigmergic attack surfaces** — How vulnerable is environment-mediated coordination?
@@ -480,7 +480,7 @@ Colony CogSec mechanisms integrate with the CIF defense stack (\cref{sec:defense
 
 The full CIF with colony extensions achieves defense in depth against both individual-targeted and colony-targeted attacks.
 
-> **Note**: For implementation guidance, operational checklists, and practical deployment advice, see Part 3: Section 2 (Operator Posture).
+> **Note**: For implementation guidance, operational checklists, and practical deployment advice, see Part 3: Section 2 (Operator Posture). For domain-specific application of colony-level defenses across critical operational sectors (including ten high-stakes domains, three universal attack patterns, and retrospective analysis of 2024--2025 AI-agent incidents) see Part 4.
 
 ---
 

@@ -1,4 +1,4 @@
-# Cognitive Integrity Framework: Computational Validation (Paper 2)
+# Cognitive Integrity Framework: Computational Validation (Part 2)
 
 Part 2 of the **Cognitive Security for Multiagent Operators** series.
 
@@ -8,11 +8,13 @@ Part 2 of the **Cognitive Security for Multiagent Operators** series.
 
 This paper provides **computational validation** of the Cognitive Integrity Framework (CIF) through implementation, benchmarking, and statistical analysis across production multiagent architectures.
 
+**Prerequisites:** Part 1 for notation ([`S03_notation.md`](../cogsec_multiagent_1_theory/manuscript/S03_notation.md)); Python and `uv` for tests and scripts.
+
 ## Primary Focus
 
 - **Implementation**: Defense mechanisms (firewall, sandbox, trust, consensus)
 - **Attack Corpus**: 950 attacks across 4 categories
-- **Validation**: 4 production architectures (Claude Code, AutoGPT, CrewAI, LangGraph)
+- **Validation**: Six target architectures (Claude Code, AutoGPT, CrewAI, LangGraph, MetaGPT, Camel); parametric ceiling analyses in this paper use the subset stated in the experimental setup (cross-part summaries should not substitute a different count — see methodology sections).
 - **Analysis**: Statistical significance, ablation studies, scalability benchmarks
 
 ## Paper Series
@@ -22,12 +24,13 @@ This paper provides **computational validation** of the Cognitive Integrity Fram
 | 1 | Formal Foundations | Theory, proofs, formalisms | **Published** | [10.5281/zenodo.18364119](https://doi.org/10.5281/zenodo.18364119) |
 | **2 (This)** | Computational Validation | Empirical results, algorithms | Preprint | [10.5281/zenodo.18364128](https://doi.org/10.5281/zenodo.18364128) |
 | 3 | Practical Guidance | Deployment checklists, guidelines | Preprint | [10.5281/zenodo.18364130](https://doi.org/10.5281/zenodo.18364130) |
+| 4 | [Applications](../cogsec_multiagent_4_applications/) | Ten-domain CIF-AD-OODA | Preprint | _DOI pending_ |
 
 ## Project Structure
 
 ```text
 cogsec_multiagent_2_computational/
-├── manuscript/           # Paper content (23 files)
+├── manuscript/           # Paper content (28 files)
 │   ├── 00_abstract.md
 │   ├── 01_introduction.md
 │   ├── 01b_related_work.md
@@ -90,7 +93,7 @@ uv run pytest tests/ -v --cov=src --cov-report=term-missing
 # Run formal validation (7 theorems)
 uv run python scripts/run_formal_validation.py --seed 42
 
-# Run full evaluation matrix (950 attacks x 4 architectures)
+# Run full evaluation matrix (950 attacks; six architecture adapters—see manuscript experimental setup for headline vs extended runs)
 uv run python scripts/run_full_evaluation.py --seed 42
 
 # Run statistical analysis (H1/H2/H3 hypothesis tests)
@@ -109,6 +112,14 @@ uv run python scripts/run_sensitivity_analysis.py --seed 42
 uv run python scripts/generate_all_data.py --seed 42
 uv run python scripts/generate_all_figures.py
 uv run python scripts/generate_all_tables.py
+```
+
+## Building the manuscript PDF
+
+From the template repository root:
+
+```bash
+./run.sh --render-pdf --project cognitive_integrity/cogsec_multiagent_2_computational
 ```
 
 ## Documentation
@@ -130,4 +141,4 @@ These manuscripts are designed to be built using the [docxology/template](https:
 
 ## Notation
 
-All notation follows the canonical definitions in Paper 1 (`cogsec_multiagent_1_theory/manuscript/S03_notation.md`).
+All notation follows the canonical definitions in Part 1: [`cogsec_multiagent_1_theory/manuscript/S03_notation.md`](../cogsec_multiagent_1_theory/manuscript/S03_notation.md).

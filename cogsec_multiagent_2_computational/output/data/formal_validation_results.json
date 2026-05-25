@@ -129,5 +129,64 @@
       "target": 0.23,
       "n_trials": 100
     }
+  },
+  {
+    "theorem_id": "CT.1",
+    "name": "Defense Category Laws",
+    "status": "passed",
+    "evidence": "left=True right=True assoc=True",
+    "details": {
+      "left_identity": true,
+      "right_identity": true,
+      "associativity": true
+    }
+  },
+  {
+    "theorem_id": "CT.2",
+    "name": "Categorical Product",
+    "status": "passed",
+    "evidence": "detected=True, score=0.800",
+    "details": {
+      "detected": true,
+      "score": 0.8
+    }
+  },
+  {
+    "theorem_id": "CT.3",
+    "name": "Monadic Detection Preservation",
+    "status": "passed",
+    "evidence": "short_circuit=True, laws={'left_identity': True, 'right_identity': True, 'associativity': True}",
+    "details": {
+      "short_circuit": true,
+      "left_identity": true,
+      "right_identity": true,
+      "associativity": true
+    }
+  },
+  {
+    "theorem_id": "FEP.1",
+    "name": "Attack-FEP Equivalence",
+    "status": "passed",
+    "evidence": "\u0394F=1.483, is_attack=True",
+    "details": {
+      "free_energy_baseline": 1.2039728043183804,
+      "free_energy_attacked": 2.687355801329752,
+      "free_energy_increase": 1.4833829970113717,
+      "kl_from_prior": 0.49463193721207277,
+      "entropy_change": -0.4946319372140727,
+      "is_attack": true
+    }
+  },
+  {
+    "theorem_id": "FEP.2",
+    "name": "Trust-Precision Duality",
+    "status": "passed",
+    "evidence": "composite_precision=1.000000, alpha+beta+gamma=1.000000",
+    "details": {
+      "alpha_precision": 0.3,
+      "beta_precision": 0.5,
+      "gamma_precision": 0.2,
+      "composite_precision": 1.0
+    }
   }
 ]

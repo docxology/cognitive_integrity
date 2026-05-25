@@ -1,89 +1,107 @@
-# Cognitive Security Scripts — Agent Reference
+# Cognitive Security Scripts — Agent Reference (Paper 2)
 
-Scripts for figure generation, data analysis, and manuscript verification for CIF Paper 2.
+Agent guidance for working with the thin-orchestrator scripts in `projects/cognitive_integrity/cogsec_multiagent_2_computational/scripts/`.
 
-## Manuscript Figures (8 scripts)
+## Series Position
 
-| Script | Figure | Section |
-|--------|--------|---------|
-| `01_attack_surface_figure.py` | attack_surface.pdf | §3 Attack Corpus |
-| `02_detection_performance_figure.py` | detection_performance.pdf | §4.1 Finding 1 |
-| `03_roc_analysis_figure.py` | roc_curves.pdf | §4.2 Finding 2 |
-| `04_trust_dynamics_figure.py` | trust_dynamics.pdf | §4.2 Trust Calculus |
-| `05_defense_composition_figure.py` | defense_composition.pdf | §2 Composition Algebra |
-| `06_architecture_comparison_figure.py` | architecture_comparison.pdf | §4.3 Finding 3 |
-| `07_scalability_figure.py` | scalability.pdf | §S4 Scalability |
-| `08_ablation_figure.py` | ablation.pdf | §S4 Ablation |
+Paper 2 (*Computational Validation*) is the second of four papers in the *Cognitive Security for Multiagent Operators* series. Scripts here produce the empirical evidence cited by the sibling papers. See [../README.md](../README.md) for the series map.
 
-## Analysis Scripts (8 scripts)
+When a script changes any result that siblings cite, update:
 
-| Script | Purpose |
-|--------|---------|
-| `run_full_evaluation.py` | Full evaluation matrix (simulation/pipeline/LLM modes) |
-| `run_statistical_analysis.py` | Hypothesis tests (H1/H2/H3), effect sizes, assumptions |
-| `run_ablation.py` | Component removal, minimal config, pairwise synergy |
-| `run_sensitivity_analysis.py` | Parameter sweeps, sensitivity ranking, 2D grid search |
-| `run_cross_validation.py` | Stratified 5-fold cross-validation on attack corpus |
-| `run_multi_seed.py` | Multi-seed stability analysis (CV across 30 seeds) |
-| `run_colony_benchmarks.py` | Colony-level CogSec benchmark scoring (5 scenarios) |
-| `run_llm_demo.py` | Live LLM multiagent CIF evaluation via Ollama |
+- `src.manuscript.verifier` expectations
+- `output/data/` headline JSON
+- Sibling cross-references (Part 1 §8, Part 3 §3, Part 4 §2)
 
-## Verification & Formal (3 scripts)
-
-| Script | Purpose |
-|--------|---------|
-| `run_formal_validation.py` | Validates Paper 1 theorems via NuSMV/SPIN/TLA+ |
-| `verify_formal_specs.py` | Generates and verifies formal specification files |
-| `verify_manuscript.py` | Checks citations, labels, refs, images, style, tables |
-
-## Utilities (1 script)
-
-| Script | Purpose |
-|--------|---------|
-| `convert_latex_tables.py` | Converts LaTeX tables in manuscript `.md` files to Markdown pipe tables |
-
-## Orchestrators (3 scripts)
-
-| Script | Purpose |
-|--------|---------|
-| `generate_all_data.py` | Run all data generation scripts |
-| `generate_all_figures.py` | Run all 8 figure scripts |
-| `generate_all_tables.py` | Run all table generation |
-
-## Thin Orchestrator Pattern
-
-All scripts follow the thin orchestrator pattern:
+## Thin-Orchestrator Contract (MANDATORY)
 
 ```python
 #!/usr/bin/env python3
-"""Script follows thin orchestrator pattern."""
+"""Thin orchestrator — imports from src/, handles only I/O + viz."""
 from pathlib import Path
-from src.module import compute  # Import from src
+from src.evaluation.runner import ExperimentRunner
 
 def main():
-    output_dir = Path("output/figures")
-    output_dir.mkdir(parents=True, exist_ok=True)
-    
-    # Use src methods for computation
-    results = compute()
-    
-    # Script handles only visualization/output
-    fig = visualize(results)
-    fig.savefig(output_dir / "figure.pdf")
-    print(output_dir / "figure.pdf")
+    out = Path("output/data")
+    out.mkdir(parents=True, exist_ok=True)
+    result = ExperimentRunner(seed=42).run_all()   # computation in src/
+    result.save(out / "experiment.json")
+    print(out / "experiment.json")                 # stdout path for manifest
 
 if __name__ == "__main__":
     main()
 ```
 
-**Required:**
+**Required**
 
-- All computation via `src/` imports
-- Scripts handle only I/O and visualization
-- Print output paths for manifest collection
+- All computation delegated to `src/` imports.
+- Scripts handle **only** I/O, visualization, logging, and manifest bookkeeping.
+- Print output paths to `stdout` for pipeline manifest collection.
+- Deterministic RNG (default `seed=42`, override via `--seed`).
+- Respect `MPLBACKEND=Agg` for headless matplotlib.
 
-**Forbidden:**
+**Forbidden**
 
-- Business logic in scripts
-- Algorithm implementation
-- Direct numerical computation
+- Business logic, algorithms, or direct numerical computation in scripts.
+- Mocks, `unittest.mock`, `MagicMock`, `mocker.patch` — no mocks anywhere in the project (test suite enforces this via `src.validation.no_mock_enforcer` in infrastructure).
+- Hard-coded paths outside the repo root.
+- `print` statements that are not paths (use `logging`).
+
+## Script Inventory (17 scripts — keep docs in sync)
+
+| Category | Scripts |
+| -------- | ------- |
+| Orchestrators | `generate_all_data.py`, `generate_all_figures.py`, `generate_all_tables.py` |
+| Analysis | `run_full_evaluation.py`, `run_statistical_analysis.py`, `run_ablation.py`, `run_sensitivity_analysis.py`, `run_cross_validation.py`, `run_multi_seed.py`, `run_colony_benchmarks.py`, `run_llm_demo.py`, `run_publication_suite.py` |
+| Verification | `run_formal_validation.py`, `verify_formal_specs.py`, `verify_manuscript.py` |
+| Utilities | `convert_latex_tables.py`, `z_inject_manuscript_values.py` |
+
+When adding a new script: (1) update this table, (2) update [scripts/README.md](README.md), (3) add a test in `tests/` that smoke-tests the script's CLI surface.
+
+## Manuscript-to-Script Anchor
+
+| Manuscript Claim | Producing Script |
+| ---------------- | ---------------- |
+| §5 overall detection rates | `run_full_evaluation.py`, `run_multi_seed.py` |
+| §5.6 / §5d ablation deltas | `run_ablation.py` |
+| §5b statistical significance (H1/H2/H3) | `run_statistical_analysis.py` |
+| §5c parameter sensitivity | `run_sensitivity_analysis.py` |
+| §5e Bayesian uncertainty | `run_multi_seed.py` |
+| Colony benchmarks (§5, §S03) | `run_colony_benchmarks.py` |
+| LLM-backed validation (Abstract, §5) | `run_llm_demo.py` |
+| Model-checking results (§S04) | `run_formal_validation.py`, `verify_formal_specs.py` |
+| Manuscript integrity (citations, refs) | `verify_manuscript.py` |
+| Auto-injected numerical values | `z_inject_manuscript_values.py` |
+
+## Live LLM Analysis
+
+`run_llm_demo.py` and the LLM branch of `run_publication_suite.py` are opt-in during automated renders. They run real Ollama-backed agents and can take several minutes when Ollama is available. To execute them intentionally:
+
+```bash
+COGSEC_RUN_LLM_ANALYSIS=1 uv run python scripts/run_llm_demo.py
+COGSEC_RUN_LLM_ANALYSIS=1 uv run python scripts/run_publication_suite.py
+```
+
+Without `COGSEC_RUN_LLM_ANALYSIS=1`, these scripts write a skip record and exit successfully so the manuscript render pipeline remains bounded and reproducible.
+
+## Cross-Paper Reference Discipline
+
+When a script changes headline numbers, agents must update **all** sibling papers' cross-references. Use `\cite{friedman2026cogsecN}` throughout:
+
+| Bibkey | Paper | Key Sections that Cite Paper 2 |
+| ------ | ----- | ------------------------------ |
+| `friedman2026cogsec1` | Part 1: Formal Foundations | §8 Discussion, §9 Conclusion |
+| `friedman2026cogsec3` | Part 3: A Qualitative Review for Practitioners | §3 Evidence, §5 Deployment, §6 Case Studies |
+| `friedman2026cogsec4` | Part 4: Applications | §2 Methodology (validation anchor), §4 Discussion |
+
+**DO NOT** mischaracterize Paper 3 as "biological" or "eusocial" — that content lives in Paper 1's S02 supplementary. Paper 3 is the practitioner's qualitative review.
+
+## CI / Verification
+
+Before committing a non-trivial script change, run:
+
+```bash
+uv run python scripts/verify_manuscript.py   # citations, refs, figures
+uv run pytest tests/ -x -q                   # smoke test suite
+```
+
+Expected: `verify_manuscript.py` prints **no warnings**; `pytest` passes with zero failures.

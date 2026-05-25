@@ -1,4 +1,11 @@
+"""Verification module.
+
+Part of the Cognitive Integrity Framework.
+"""
+
 #!/usr/bin/env python3
+from __future__ import annotations
+
 """
 Manuscript Verification Module
 ==============================

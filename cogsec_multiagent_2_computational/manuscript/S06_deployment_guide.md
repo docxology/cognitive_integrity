@@ -2,7 +2,7 @@
 
 # Supplementary: Deployment Guide and Integration {#sec:deployment}
 
-This supplementary material provides deployment considerations and integration examples for production CIF deployment.
+This supplementary material provides deployment considerations and integration examples for production CIF deployment. It complements --- and does not replace --- the dedicated practitioner's guidance in Part 3 (DOI: 10.5281/zenodo.18364130), which presents full deployment guides (\S{5}), incident-response playbooks (\S{5b}), monitoring strategies (\S{5d}), cost--benefit analysis (\S{5c}), and operator risk frameworks. For domain-calibrated deployment parameters across ten critical operational sectors (from millisecond-scale drone swarms to year-scale diplomatic agents), see Part 4.
 
 ## Production Deployment Checklist {#sec:production-checklist}
 
@@ -112,8 +112,8 @@ from src.core.trust import TrustCalculus, TrustConfig
 # Initialize components
 firewall = CognitiveFirewall(
     config=FirewallConfig(
-        injection_threshold=0.8,
-        suspicious_threshold=0.5,
+        tau_1=0.7,   # Hard-reject threshold; scores above this → REJECT
+        tau_2=0.5,   # Quarantine threshold; scores in (tau_2, tau_1] → QUARANTINE
     )
 )
 
@@ -189,8 +189,8 @@ cif:
 
   firewall:
     enabled: true
-    tau_reject: 0.8
-    tau_quarantine: 0.5
+    tau_1: 0.7        # Hard reject; inputs above this score are rejected outright
+    tau_2: 0.5        # Quarantine; inputs in (tau_2, tau_1] are sandboxed
     weights:
       injection: 0.4
       semantic: 0.3
@@ -204,7 +204,9 @@ cif:
 
   tripwires:
     enabled: true
-    epsilon_drift: 0.1
+    epsilon_critical: 0.30   # Drift above this → CRITICAL alert
+    epsilon_high: 0.20       # Drift in (epsilon_high, epsilon_critical] → HIGH
+    epsilon_medium: 0.08     # Drift in (epsilon_medium, epsilon_high] → MEDIUM
     check_interval: 30
     canaries:
       - id: "identity"

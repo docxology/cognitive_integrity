@@ -131,17 +131,20 @@
 \newpage
 \end{frame}
 
-\begin{frame}[fragile]{Formal Verification: Safety Properties and Model
-Checking}
-\protect\phantomsection\label{sec:formal-verification}
+\section{Formal Verification: Safety Properties and Model
+Checking}\label{sec:formal-verification}
+
+\begin{frame}[allowframebreaks]{Formal Verification: Safety Properties
+and Model Checking}
 This section establishes safety properties
 (\cref{sec:safety-properties}), proves invariant preservation lemmas
 (\cref{sec:invariant-lemmas}), demonstrates liveness guarantees
 (\cref{sec:liveness-properties}), derives complexity bounds
 (\cref{sec:complexity-bounds}), and presents model checking verification
 (\cref{sec:model-checking}).
+\end{frame}
 
-\begin{block}{Safety Properties}
+\begin{frame}[allowframebreaks]{Safety Properties}
 \protect\phantomsection\label{sec:safety-properties}
 \begin{block}{Belief Integrity}
 \protect\phantomsection\label{sec:belief-integrity-proof}
@@ -267,9 +270,9 @@ If the system starts with aligned goals and all goal updates follow the delegati
 ValidUpdate requires new goals derive from principal or valid delegation chain. By induction on time $t$, alignment is preserved at every step.
 \end{proof}
 \end{block}
-\end{block}
+\end{frame}
 
-\begin{block}{Invariant Preservation Lemmas}
+\begin{frame}[allowframebreaks]{Invariant Preservation Lemmas}
 \protect\phantomsection\label{sec:invariant-lemmas}
 \begin{lemma}[Belief Consistency Preservation]
 \label{lem:belief-consistency}
@@ -400,9 +403,9 @@ The decision rules cover all cases:
 
 Since $D_{inj}$ and $D_{sus}$ are defined for all messages, and the conditions are exhaustive, every message receives a classification.
 \end{proof}
-\end{block}
+\end{frame}
 
-\begin{block}{Liveness Properties}
+\begin{frame}[allowframebreaks]{Liveness Properties}
 \protect\phantomsection\label{sec:liveness-properties}
 \begin{block}{Non-Blocking}
 \protect\phantomsection\label{sec:non-blocking}
@@ -435,9 +438,9 @@ P(\text{consensus reached in } O(f+1) \text{ rounds}) = 1
 Standard Byzantine agreement result (Lamport et al., 1982). With honest majority $n \geq 3f + 1$, the PBFT protocol guarantees termination in $f+1$ rounds.
 \end{proof}
 \end{block}
-\end{block}
+\end{frame}
 
-\begin{block}{Complexity Bounds}
+\begin{frame}[allowframebreaks]{Complexity Bounds}
 \protect\phantomsection\label{sec:complexity-bounds}
 \begin{block}{Space Complexity}
 \protect\phantomsection\label{sec:space-complexity}
@@ -578,9 +581,9 @@ L_{CIF} \approx 10 + 5 \cdot 0.3 + 15 \cdot 0.2 = 10 + 1.5 + 3 = 14.5\text{ms}
 Compared to baseline $\approx 11.8\text{ms}$: overhead factor $\approx 1.23$ (23\%).
 \end{proof}
 \end{block}
-\end{block}
+\end{frame}
 
-\begin{block}{Formal Model Checking}
+\begin{frame}[fragile,allowframebreaks]{Formal Model Checking}
 \protect\phantomsection\label{sec:model-checking}
 \begin{block}{State Space Definition}
 \protect\phantomsection\label{sec:state-space}
@@ -721,7 +724,6 @@ Analysis procedure:
 \textbf{Fix}: Add predicate \(|\text{Corroborate}(\phi)| \geq \kappa\)
 to Rule S-PROMOTE (\cref{sec:sandbox-rules}).
 \end{quote}
-\end{block}
 \end{block}
 \end{frame}
 

@@ -96,7 +96,7 @@
 \section{Introduction: Cognitive Attack Surfaces in Multiagent
 Operators}\label{introduction-cognitive-attack-surfaces-in-multiagent-operators}
 
-\begin{frame}{The Multiagent Operator Paradigm}
+\begin{frame}[allowframebreaks]{The Multiagent Operator Paradigm}
 \protect\phantomsection\label{sec:paradigm}
 Modern AI deployment has shifted from single-model inference to
 \textbf{multiagent operators}---systems where a primary agent delegates
@@ -127,7 +127,7 @@ discipline of protecting agent reasoning processes---beliefs, goals, and
 trust relationships---from adversarial manipulation.
 \end{frame}
 
-\begin{frame}{The 2026 Multiagent Landscape}
+\begin{frame}[allowframebreaks]{The 2026 Multiagent Landscape}
 \protect\phantomsection\label{sec:landscape}
 \begin{block}{From Chatbots to Cognitive Operators}
 \protect\phantomsection\label{from-chatbots-to-cognitive-operators}
@@ -312,7 +312,7 @@ Temporal & Stateless per-request & Stateful, attack persistence \\
 \end{block}
 \end{frame}
 
-\begin{frame}{Motivating Incidents}
+\begin{frame}[allowframebreaks]{Motivating Incidents}
 \protect\phantomsection\label{sec:incidents}
 \textit{Note: The following are hypothetical scenarios constructed to illustrate attack patterns documented in the literature. They are not reports of actual incidents.}
 
@@ -403,7 +403,7 @@ internal security mechanisms reported nominal---the attack
 \end{block}
 \end{frame}
 
-\begin{frame}{Motivation from Recent Deployments}
+\begin{frame}[allowframebreaks]{Motivation from Recent Deployments}
 \protect\phantomsection\label{sec:motivation}
 The proliferation of multiagent AI systems introduces security
 considerations that the community is actively addressing. Early work on
@@ -452,7 +452,7 @@ systems, this boundary is fluid---agents must reason about the
 trustworthiness of other agents' reasoning.
 \end{frame}
 
-\begin{frame}{Problem Statement}
+\begin{frame}[allowframebreaks]{Problem Statement}
 \protect\phantomsection\label{sec:problem}
 Traditional security models address:
 
@@ -473,7 +473,7 @@ They fail to address:
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Research Questions}
+\begin{frame}[allowframebreaks]{Research Questions}
 \protect\phantomsection\label{sec:research-questions}
 This paper addresses four fundamental research questions, with emphasis
 on formal foundations:
@@ -512,7 +512,7 @@ undetectability, providing theoretical grounding for defense design
 (\cref{sec:detection-bounds}).
 \end{frame}
 
-\begin{frame}{Contributions}
+\begin{frame}[allowframebreaks]{Contributions}
 \protect\phantomsection\label{sec:contributions}
 This paper provides both theoretical foundations and practical
 mechanisms for cognitive security:
@@ -542,10 +542,12 @@ mechanisms for cognitive security:
 \textbf{Empirical Validation}: Part 2 of this series demonstrates the
 practical viability of these formal mechanisms across six production
 architectures, showing that layered cognitive defenses significantly
-outperform single-mechanism approaches.
+outperform single-mechanism approaches. Practitioner translations of
+these results appear in Part 3; domain-specific applications and
+real-world incident analyses appear in Part 4.
 \end{frame}
 
-\begin{frame}{Paper Organization}
+\begin{frame}[allowframebreaks]{Paper Organization}
 \protect\phantomsection\label{sec:organization}
 The remainder of this paper is structured as follows:
 
@@ -581,13 +583,67 @@ identifies directions for future research.
 \textbf{Part 2: Experimental Validation} A separate, second, companion
 paper reports empirical results from architecture-aware parametric
 simulation across 950 attack vectors and six production architectures.
+Readers seeking detection rates, ablation studies, Bayesian uncertainty
+quantification, and architecture-specific defense configurations should
+consult Part 2 (DOI: 10.5281/zenodo.18364128).
 
 \textbf{Part 3: Actionable Insight} A separate, third, companion paper
-provides qualitative insights, operational checklists, and risk
-assessment frameworks for deploying cognitive security mechanisms.
+provides a qualitative review and practitioner's
+synthesis---accessible-language summaries of the theoretical and
+empirical findings, operational checklists, risk assessment frameworks,
+deployment guides, monitoring strategies, and cost-benefit analyses.
+Part 3 assumes no formal prerequisites and targets security teams
+operating multiagent systems (DOI: 10.5281/zenodo.18364130).
+
+\textbf{Part 4: Applications} A fourth companion paper
+(\emph{Cognitive Integrity in Critical Domains}) applies CIF across ten
+high-stakes operational sectors---rare-earth mining, nation-state
+alliances, cyber-security, drone warfare, supply chains, biowarfare,
+food security, trade wars, infrastructure, and information
+ecosystems---through the integrated CIF-AD-OODA analytical model.
+Readers interested in domain-specific goal-hijacking defenses, universal
+attack patterns (FR polarity inversion, constraint relaxation, context
+boundary violation), or retrospective analysis of documented 2024--2025
+AI agent security incidents should consult Part 4.
 \end{frame}
 
-\begin{frame}{Scope and Limitations}
+\begin{frame}[allowframebreaks]{Reading Companion: Where to Find
+Specific Topics}
+\protect\phantomsection\label{sec:reading-companion}
+This paper is designed to stand alone as the formal-foundations
+reference of the series. The table below points readers to the sibling
+paper and section where each related topic is developed most fully, so
+that this paper can be used in conjunction with---rather than
+requiring---its companions.
+
+\begin{table}[htbp]
+\centering
+\caption{Cross-paper navigation from Part 1 topics to sibling developments.}
+\label{tab:part1-navigation}
+\small
+\begin{tabular}{@{}p{0.42\textwidth}p{0.52\textwidth}@{}}
+\toprule
+If you want\ldots & \ldots consult\ldots \\
+\midrule
+Empirical detection rates for the defense compositions proved here & Part 2 (DOI: 10.5281/zenodo.18364128), \S{5} (Results) and S08 (Parametric Analysis) \\
+Ablation studies isolating the contribution of each defense mechanism & Part 2, \S{5.6} and \S{5d} \\
+Bayesian uncertainty quantification on detection rates & Part 2, \S{5e} \\
+Game-theoretic analysis / Nash equilibrium of CIF vs.\ adaptive attackers & Part 2, \S{6} (Discussion) \\
+Model-checking execution (NuSMV, TLA+ traces) for the invariants defined here & Part 2 S04 (Model Checking) \\
+Deployment checklists and operator-posture guidance & Part 3 (DOI: 10.5281/zenodo.18364130), \S{5} (Deployment Guide), \S{5b} (Incident Response) \\
+Monitoring, drift detection playbooks, cost--benefit analysis & Part 3, \S{5c}--\S{5d} \\
+Case studies showing CIF in complex realistic deployments & Part 3, \S{6b} \\
+Open problems / research directions for practitioners & Part 3, \S{7}; Part 4, \S{5} (Future Work) \\
+Domain-specific goal-hijacking analyses across ten operational sectors & Part 4, \S{3.01}--\S{3.10} \\
+Three universal attack patterns (FR Polarity Inversion, Constraint Relaxation, Context Boundary Violation) & Part 4, \S{4} (Discussion) \\
+Three novel defense extensions (verification channel separation, active perturbation probing, physics-informed invariants) & Part 4, \S{3.06} (Biowarfare), \S{3.08} (Trade Wars), \S{3.09} (Infrastructure) \\
+Retrospective analysis of documented 2024--2025 AI-agent security incidents & Part 4 S02 (Real-World Incidents) \\
+\bottomrule
+\end{tabular}
+\end{table}
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Scope and Limitations}
 \protect\phantomsection\label{sec:scope}
 \textbf{In scope}: Attacks exploiting agent reasoning, trust, and
 coordination mechanisms in multiagent AI systems.

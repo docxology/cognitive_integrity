@@ -1,78 +1,64 @@
 {
-  "pipeline_start_time": 1771625890.94755,
-  "last_stage_completed": 10,
+  "pipeline_start_time": 1777255248.516642,
+  "last_stage_completed": 7,
   "stage_results": [
     {
       "name": "Clean Output Directories",
       "exit_code": 0,
-      "duration": 0.0203859806060791,
-      "timestamp": "2026-02-20 14:30:22",
-      "completed": true
+      "duration": 0.019147157669067383,
+      "timestamp": "2026-04-26 19:01:54",
+      "completed": true,
+      "status": ""
     },
     {
       "name": "Environment Setup",
       "exit_code": 0,
-      "duration": 0.9493112564086914,
-      "timestamp": "2026-02-20 14:30:22",
-      "completed": true
-    },
-    {
-      "name": "Infrastructure Tests",
-      "exit_code": 0,
-      "duration": 509.72848892211914,
-      "timestamp": "2026-02-20 14:30:22",
-      "completed": true
+      "duration": 3.296377182006836,
+      "timestamp": "2026-04-26 19:01:54",
+      "completed": true,
+      "status": ""
     },
     {
       "name": "Project Tests",
       "exit_code": 0,
-      "duration": 25.05816411972046,
-      "timestamp": "2026-02-20 14:30:22",
-      "completed": true
+      "duration": 4.511160135269165,
+      "timestamp": "2026-04-26 19:01:54",
+      "completed": true,
+      "status": ""
     },
     {
       "name": "Project Analysis",
       "exit_code": 0,
-      "duration": 16.126082181930542,
-      "timestamp": "2026-02-20 14:30:22",
-      "completed": true
+      "duration": 15.966163873672485,
+      "timestamp": "2026-04-26 19:01:54",
+      "completed": true,
+      "status": ""
     },
     {
       "name": "PDF Rendering",
       "exit_code": 0,
-      "duration": 47.2331440448761,
-      "timestamp": "2026-02-20 14:30:22",
-      "completed": true
+      "duration": 41.63858675956726,
+      "timestamp": "2026-04-26 19:01:54",
+      "completed": true,
+      "status": ""
     },
     {
       "name": "Output Validation",
       "exit_code": 0,
-      "duration": 0.4951820373535156,
-      "timestamp": "2026-02-20 14:30:22",
-      "completed": true
-    },
-    {
-      "name": "LLM Scientific Review",
-      "exit_code": 0,
-      "duration": 63.968364000320435,
-      "timestamp": "2026-02-20 14:30:22",
-      "completed": true
-    },
-    {
-      "name": "LLM Translations",
-      "exit_code": 0,
-      "duration": 66.634042263031,
-      "timestamp": "2026-02-20 14:30:22",
-      "completed": true
+      "duration": 0.4275498390197754,
+      "timestamp": "2026-04-26 19:01:54",
+      "completed": true,
+      "status": ""
     },
     {
       "name": "Copy Outputs",
       "exit_code": 0,
-      "duration": 0.8245408535003662,
-      "timestamp": "2026-02-20 14:30:22",
-      "completed": true
+      "duration": 0.3950541019439697,
+      "timestamp": "2026-04-26 19:01:54",
+      "completed": true,
+      "status": ""
     }
   ],
-  "total_stages": 10,
-  "checkpoint_time": 1771626622.001089
+  "total_stages": 8,
+  "checkpoint_time": 1777255314.77793
 }

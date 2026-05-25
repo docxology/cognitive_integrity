@@ -1,4 +1,6 @@
 """
+from __future__ import annotations
+
 Behavioral Invariant Checking for Multiagent Systems.
 
 Implements invariant predicates and runtime monitoring.

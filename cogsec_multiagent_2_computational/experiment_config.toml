@@ -1,0 +1,36 @@
+# ═══════════════════════════════════════════════════════════════════════
+# Experiment Configuration — Cognitive Integrity Framework (Part 2)
+# ═══════════════════════════════════════════════════════════════════════
+# This file is the SINGLE SOURCE OF TRUTH for all experiment parameters.
+# Scripts read these values as defaults, overridable via CLI arguments.
+#
+# For publication-quality runs, use [publication] section values.
+# For rapid iteration, use [llm] section values.
+# ═══════════════════════════════════════════════════════════════════════
+
+[simulation]
+# Parametric simulation (fast, no external deps)
+replicates = 1           # How many times to replicate 950-attack corpus
+seed = 42                # Global random seed for reproducibility
+
+[llm]
+# Real LLM evaluation via Ollama — used for rapid iteration
+sample_size = 5          # Attacks per category per architecture (5 = fast, ~80 calls)
+model = "gemma3:4b"      # Ollama model name
+timeout = 600            # Max seconds for entire LLM evaluation
+
+[pipeline]
+# CIF defense pipeline on raw text (no LLM, uses CIF adapters)
+enabled = true
+
+[publication]
+# Full-scale publication parameters — use for final manuscript data
+replicates = 11          # Produces N=10,450 parametric datapoints
+sample_size = 10         # Produces N=160 LLM datapoints
+seed = 42
+
+[manuscript]
+# Values auto-injected into manuscript by z_inject_manuscript_values.py
+# DO NOT EDIT — these are read-only references to the data files
+test_count_source = "pytest"
+data_dir = "output/data"

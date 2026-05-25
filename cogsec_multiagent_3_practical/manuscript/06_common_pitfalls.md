@@ -2,7 +2,7 @@
 
 # Common Pitfalls and What the Research Shows {#sec:pitfalls}
 
-The CIF research identifies recurring failure modes in multiagent deployments. This section catalogs eight anti-patterns, each assessed through the lens of what Papers 1 and 2 contribute to understanding the problem and its mitigation.
+The CIF research identifies recurring failure modes in multiagent deployments. This section catalogs eight anti-patterns, each assessed through what Parts 1 and 2 add to the problem and its mitigation.
 
 These pitfalls are ranked by severity. We prioritize critical and high-severity items as they represent verifiable vulnerabilities in the defense architecture.
 

@@ -107,5 +107,5 @@ The provenance module is tested in `tests/test_provenance.py`, covering:
 Run tests:
 
 ```bash
-pytest tests/test_provenance.py -v
+uv run pytest tests/test_provenance.py -v
 ```

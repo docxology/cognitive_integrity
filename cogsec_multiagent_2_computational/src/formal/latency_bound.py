@@ -2,6 +2,11 @@
 
 The Cognitive Integrity Framework adds at most 23% latency overhead
 relative to unprotected processing.
+
+This module simulates realistic CIF defense components (firewall, trust
+delegation, tripwire, detection, consensus, provenance, sandbox, invariant
+checks) and measures their combined impact on typical LLM agent processing
+latencies, validating the 23% overhead bound across 100 trials.
 """
 
 from __future__ import annotations
@@ -10,6 +15,19 @@ import numpy as np
 
 from utils.random_seed import get_rng
 from .theorem_registry import TheoremResult, TheoremStatus
+
+OVERHEAD_TARGET = 0.23
+BASE_TIME_MIN_MS = 30.0
+BASE_TIME_MAX_MS = 100.0
+FIREWALL_RANGE = (1.0, 2.5)
+TRUST_RANGE = (0.5, 1.2)
+TRIPWIRE_RANGE = (0.2, 0.6)
+DETECTION_RANGE = (0.5, 1.5)
+CONSENSUS_RANGE = (0.5, 1.2)
+PROVENANCE_RANGE = (0.3, 0.8)
+SANDBOX_RANGE = (0.2, 0.4)
+INVARIANTS_RANGE = (0.2, 0.4)
+P95_PERCENTILE = 95
 
 
 def validate_latency_bound(
@@ -28,27 +46,17 @@ def validate_latency_bound(
     overheads: list[float] = []
 
     for _ in range(n_trials):
-        # Baseline processing: 30-100 ms (typical LLM agent turn)
-        base_time = rng.uniform(30.0, 100.0)
+        base_time = rng.uniform(BASE_TIME_MIN_MS, BASE_TIME_MAX_MS)
 
-        # CIF overhead components (ms):
-        #   firewall:   1.0-2.5 ms
-        #   trust:      0.5-1.2 ms
-        #   tripwire:   0.2-0.6 ms
-        #   detection:  0.5-1.5 ms
-        #   consensus:  0.5-1.2 ms
-        #   provenance: 0.3-0.8 ms
-        #   sandbox:    0.2-0.4 ms
-        #   invariants: 0.2-0.4 ms
         cif_overhead = (
-            rng.uniform(1.0, 2.5)     # firewall
-            + rng.uniform(0.5, 1.2)   # trust
-            + rng.uniform(0.2, 0.6)   # tripwire
-            + rng.uniform(0.5, 1.5)   # detection
-            + rng.uniform(0.5, 1.2)   # consensus
-            + rng.uniform(0.3, 0.8)   # provenance
-            + rng.uniform(0.2, 0.4)   # sandbox
-            + rng.uniform(0.2, 0.4)   # invariants
+            rng.uniform(*FIREWALL_RANGE)
+            + rng.uniform(*TRUST_RANGE)
+            + rng.uniform(*TRIPWIRE_RANGE)
+            + rng.uniform(*DETECTION_RANGE)
+            + rng.uniform(*CONSENSUS_RANGE)
+            + rng.uniform(*PROVENANCE_RANGE)
+            + rng.uniform(*SANDBOX_RANGE)
+            + rng.uniform(*INVARIANTS_RANGE)
         )
 
         overhead_frac = cif_overhead / base_time
@@ -56,7 +64,7 @@ def validate_latency_bound(
 
     arr = np.array(overheads)
     mean_overhead = float(np.mean(arr))
-    p95_overhead = float(np.percentile(arr, 95))
+    p95_overhead = float(np.percentile(arr, P95_PERCENTILE))
     max_overhead = float(np.max(arr))
 
     passed = mean_overhead <= overhead_target

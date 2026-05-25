@@ -1,0 +1,38 @@
+"""Analysis modules: game theory, information geometry.
+from __future__ import annotations
+
+
+Game-theoretic and information-geometric analysis of CIF defense
+configurations.  Game theory yields Nash equilibria and arms-race
+dynamics; information geometry provides the Fisher-Rao metric on
+belief space used for geodesic attack paths and curvature-based
+defenses.
+"""
+
+from .game_theory import (
+    solve_zero_sum_game,
+    GameResult,
+    fictitious_play,
+    arms_race_simulation,
+    compute_cif_payoff_matrix,
+    minimax_regret,
+)
+from .information_geometry import (
+    StatisticalManifold,
+    geodesic_attack_path,
+    defense_as_curvature_constraint,
+    sensitivity_via_riemannian_metric,
+)
+
+__all__ = [
+    "solve_zero_sum_game",
+    "GameResult",
+    "fictitious_play",
+    "arms_race_simulation",
+    "compute_cif_payoff_matrix",
+    "minimax_regret",
+    "StatisticalManifold",
+    "geodesic_attack_path",
+    "defense_as_curvature_constraint",
+    "sensitivity_via_riemannian_metric",
+]

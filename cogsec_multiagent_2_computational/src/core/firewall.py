@@ -4,11 +4,13 @@ Cognitive Firewall for Input Classification.
 Classifies incoming messages as ACCEPT, QUARANTINE, or REJECT.
 """
 
+from __future__ import annotations
+
 import logging
 import re
 from dataclasses import dataclass
 from enum import Enum
-from typing import Dict, List, Optional, Set, Tuple
+from typing import Callable, Dict, List, Optional, Set, Tuple
 
 import numpy as np
 
@@ -442,7 +444,7 @@ class ClassificationStage:
     """A stage in the classification pipeline."""
 
     name: str
-    classifier: callable
+    classifier: Callable[[str], float]
     weight: float = 1.0
     can_reject: bool = True
 

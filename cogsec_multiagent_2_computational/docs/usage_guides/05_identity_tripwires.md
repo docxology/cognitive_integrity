@@ -96,5 +96,5 @@ The tripwire module is tested in `tests/test_tripwire.py`, covering:
 Run tests:
 
 ```bash
-pytest tests/test_tripwire.py -v
+uv run pytest tests/test_tripwire.py -v
 ```

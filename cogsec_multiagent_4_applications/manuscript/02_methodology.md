@@ -32,7 +32,7 @@ Paper 1 \cite{friedman2026cogsec1} defines five canonical defense mechanisms. We
 | **Drift Detection** | $S_{\text{drift}} = \KL(\mathcal{B}_i^t \| \mathcal{B}_i^{t-1})$ | Monitors belief distribution changes via KL divergence; flags sudden shifts exceeding threshold $\epsilon$ |
 | **Byzantine Consensus** | $\mathcal{B}_{\text{consensus}}$ with quorum $q$, requiring $n \geq 3f+1$ | Multi-agent agreement protocol tolerating up to $f$ compromised agents among $n$ total |
 
-These mechanisms compose in series and parallel to achieve layered defense. Paper 2 \cite{friedman2026cogsec2} demonstrates that the recommended defense stack achieves 99.5\% detection across 950 attack scenarios.
+These mechanisms compose in series and parallel to achieve layered defense. Paper 2 \cite{friedman2026cogsec2} demonstrates that the recommended defense stack achieves 94--100\% detection at the parametric design ceiling across 950 attack scenarios and four production multiagent architectures. Paper 3 \cite{friedman2026cogsec3} translates these results into deployment guidance, monitoring playbooks, and cost--benefit frameworks; readers seeking engineering guidance on instantiating the mechanisms below in production should consult Part 3.
 
 ## Adversary Classification
 
@@ -60,7 +60,7 @@ Each domain in this paper is analyzed using a standardized five-step procedure:
 
 **(iv) Defense Mapping.** Map the domain-specific defense strategy to one or more of the five canonical CIF mechanisms. Where domain-specific instantiations introduce genuinely novel patterns (e.g., physics-informed invariants, verification channel separation), these are identified and elevated as contributions.
 
-**(v) Validation Anchoring.** Cross-reference the defense mapping to Paper 2's benchmark results \cite{friedman2026cogsec2}, confirming that the proposed CIF mechanisms have demonstrated efficacy against the relevant adversary class.
+**(v) Validation Anchoring.** Cross-reference the defense mapping to Paper 2's benchmark results \cite{friedman2026cogsec2}, confirming that the proposed CIF mechanisms have demonstrated efficacy against the relevant adversary class. Where appropriate, we additionally anchor deployment-level considerations to Paper 3's operator posture and incident-response guidance \cite{friedman2026cogsec3}.
 
 ## Domain Selection Criteria
 

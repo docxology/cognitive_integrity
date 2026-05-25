@@ -283,9 +283,9 @@ Analysis of the attack corpus reveals several cross-cutting insights for defense
 
 | Architecture | Primary Vulnerability | Observed CIF Defense Response |
 | --- | --- | --- |
-| Claude Code | Orchestrator compromise cascades to workers | Orchestrator tripwires + delegation verification (82% hierarchical detection) |
+| Claude Code | Orchestrator compromise cascades to workers | Orchestrator tripwires + delegation verification (80\% LLM detection, \cref{tab:llm-multiagent}) |
 | AutoGPT | Plugin-based trust exploitation | Plugin sandboxing + source taint analysis |
-| CrewAI | Role impersonation across handoffs | Role identity verification + attestation (94% detection, \cref{tab:arch-ci}) |
-| LangGraph | State transition manipulation | State machine invariants + hash verification (98% detection) |
+| CrewAI | Role impersonation across handoffs | Role identity verification + attestation (100\% LLM detection, \cref{tab:llm-multiagent}) |
+| LangGraph | State transition manipulation | State machine invariants + hash verification (see \cref{sec:parametric-langgraph}) |
 
 For a synthesis of architecture-vulnerability patterns and their structural implications, see \cref{tab:architecture-insights} in the Discussion.

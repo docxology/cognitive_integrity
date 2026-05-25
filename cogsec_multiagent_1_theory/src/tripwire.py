@@ -1,4 +1,6 @@
 """
+from __future__ import annotations
+
 Cognitive Tripwire System.
 
 Embeds canary beliefs to detect manipulation.

@@ -289,3 +289,43 @@ def compute_sensitivity_index(
 
     # Sort descending by sensitivity
     return dict(sorted(index.items(), key=lambda kv: kv[1], reverse=True))
+
+
+def make_default_evaluate_fn(
+    rng: np.random.Generator,
+) -> Callable[[float, float, float, float], float]:
+    """Create a parameterized defense-threshold evaluation function.
+
+    Models the detection rate as a function of interaction effects
+    across injection_threshold, drift_threshold, trust_decay, and
+    consensus_quorum.  Small Gaussian noise is added via *rng*.
+
+    Parameters
+    ----------
+    rng : np.random.Generator
+        Seeded random number generator.
+
+    Returns
+    -------
+    callable
+        ``(injection_threshold, drift_threshold, trust_decay,
+        consensus_quorum) -> detection_rate``.
+    """
+    def evaluate(
+        injection_threshold: float = 0.7,
+        drift_threshold: float = 0.3,
+        trust_decay: float = 0.85,
+        consensus_quorum: float = 0.667,
+    ) -> float:
+        base = 0.85
+        inj_effect = -2.0 * (injection_threshold - 0.65) ** 2 + 0.10
+        drift_effect = -1.5 * (drift_threshold - 0.25) ** 2 + 0.06
+        trust_effect = -3.0 * (trust_decay - 0.85) ** 2 + 0.05
+        quorum_effect = -2.5 * (consensus_quorum - 0.667) ** 2 + 0.04
+
+        rate = base + inj_effect + drift_effect + trust_effect + quorum_effect
+        rate += rng.normal(0, 0.005)
+        return float(np.clip(rate, 0.0, 1.0))
+
+    return evaluate
+

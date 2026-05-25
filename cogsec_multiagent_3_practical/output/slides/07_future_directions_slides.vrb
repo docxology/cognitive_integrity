@@ -1,19 +1,28 @@
-\begin{block}{Contributing}
+\frametitle{Contributing}
 \protect\phantomsection\label{contributing}
-The Cognitive Integrity Framework is an open-source project.
-Contributions are welcome, particularly:
+The CIF codebases are open for extension. Useful starting points:
 
 \begin{itemize}
 \tightlist
 \item
-  \textbf{Code}:
-  \href{https://github.com/docxology/cognitive_integrity}{github.com/docxology/cognitive\_integrity}
+  \textbf{Code and discussion}:
+  \href{https://github.com/docxology/cognitive_integrity}{docxology/cognitive\_integrity
+  on GitHub} (repository \texttt{discussions} for design questions).
 \item
-  \textbf{Discussion}: The \texttt{discussions} tab on GitHub serves as
-  the primary forum.
+  \textbf{Adapters}: The Part\textasciitilde2 maturity scale has five
+  levels; moving adapters from Level 3 to Level\textasciitilde4--5
+  (Adaptive/Verified) is a high-leverage way to close the
+  empirical--parametric gap. Ports to additional frameworks (e.g.,
+  Semantic Kernel, Microsoft AutoGen) are welcome.
 \item
-  \textbf{Adapters}: Contributions that extend CIF to additional agent
-  frameworks (e.g., Semantic Kernel, Microsoft AutoGen) are especially
-  valued.
+  \textbf{Corpus}: The 950-attack set covers four categories; new
+  instances for emergent misalignment and orchestrator compromise,
+  following the Part\textasciitilde2 stratification, strengthen
+  evaluation.
+\item
+  \textbf{Theory / verification}: FEP- and information-geometry--based
+  monitoring (Direction 5--6) and extensions of the NuSMV/TLA+ specs
+  (Part\textasciitilde2, Supplementary S04) to consensus and provenance
+  are open. Formal proofs and measured evaluations belong in the same
+  repository and review process as code.
 \end{itemize}
-\end{block}

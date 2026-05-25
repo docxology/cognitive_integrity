@@ -1,4 +1,11 @@
+"""Cif Comprehensive module.
+
+Part of the Cognitive Integrity Framework.
+"""
+
 #!/usr/bin/env python3
+from __future__ import annotations
+
 """Comprehensive CIF architecture visualization module."""
 
 import os

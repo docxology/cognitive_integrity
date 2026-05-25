@@ -1,4 +1,11 @@
+"""Attack Timeline module.
+
+Part of the Cognitive Integrity Framework.
+"""
+
 #!/usr/bin/env python3
+from __future__ import annotations
+
 """Attack timeline visualization module."""
 
 import os

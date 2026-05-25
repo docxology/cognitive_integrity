@@ -2,10 +2,10 @@
 \beamer@slide {design-matrix-pre-attack}{2}
 \beamer@slide {eq:cyber_security_baseline}{2}
 \beamer@slide {the-goal-hijacking-attack}{3}
-\beamer@slide {ooda-loop-transients}{4}
-\beamer@slide {transient-coupling-post-attack-design-matrix}{4}
-\beamer@slide {eq:cyber_security_coupled}{4}
-\beamer@slide {cif-defense-permission-boundaries-and-quorum-verification}{5}
-\beamer@slide {permission-boundaries}{5}
-\beamer@slide {quorum-verification}{5}
-\beamer@slide {summary}{6}
+\beamer@slide {ooda-loop-transients}{5}
+\beamer@slide {transient-coupling-post-attack-design-matrix}{5}
+\beamer@slide {eq:cyber_security_coupled}{5}
+\beamer@slide {cif-defense-permission-boundaries-and-quorum-verification}{7}
+\beamer@slide {permission-boundaries}{7}
+\beamer@slide {quorum-verification}{7}
+\beamer@slide {summary}{9}

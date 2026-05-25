@@ -91,6 +91,7 @@
       color: #606060;
     }
     code {
+      white-space: pre-wrap;
       font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
       font-size: 85%;
       margin: 0;
@@ -154,7 +155,6 @@
     #TOC a:not(:hover) {
       text-decoration: none;
     }
-    code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
     div.columns{display: flex; gap: min(4vw, 1.5em);}
     div.column{flex: auto; overflow-x: auto;}
@@ -297,5 +297,91 @@ determine the baseline efficacy of the framework’s core components.</p>
 <p><strong>Result</strong>: Even this minimal setup shifted the success
 rate against low-effort attacks from 100% (Baseline) to &lt;5%,
 providing a critical first line of defense.</p>
+<hr />
+<h2 id="alignment-with-emerging-standards">Alignment with Emerging
+Standards</h2>
+<p>Practitioners deploying cognitive security must increasingly
+demonstrate compliance with industry and government standards. CIF’s
+defense mechanisms map directly to two major 2025–2026 standardization
+efforts.</p>
+<h3 id="owasp-top-10-for-agentic-applications-2026">OWASP Top 10 for
+Agentic Applications (2026)</h3>
+<p>The OWASP Agentic Top 10 identifies ten risks (ASI01–ASI10) specific
+to autonomous multiagent deployments. CIF addresses the majority through
+its layered defense architecture:</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: left;">OWASP Risk</th>
+<th style="text-align: left;">CIF Defense</th>
+<th style="text-align: left;">Profile Coverage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">ASI01: Agent Goal Hijack</td>
+<td style="text-align: left;">Cognitive Firewall + Tripwires</td>
+<td style="text-align: left;">All profiles</td>
+</tr>
+<tr>
+<td style="text-align: left;">ASI02: Tool Misuse/Exploitation</td>
+<td style="text-align: left;">Belief Sandbox (tool output
+isolation)</td>
+<td style="text-align: left;">Profiles B, C</td>
+</tr>
+<tr>
+<td style="text-align: left;">ASI03: Identity/Privilege Abuse</td>
+<td style="text-align: left;">Trust Calculus (<span
+class="math inline">\(\delta^d\)</span> decay)</td>
+<td style="text-align: left;">All profiles</td>
+</tr>
+<tr>
+<td style="text-align: left;">ASI06: Memory/Context Poisoning</td>
+<td style="text-align: left;">Tripwire monitoring + Drift detection</td>
+<td style="text-align: left;">Profiles B, C</td>
+</tr>
+<tr>
+<td style="text-align: left;">ASI07: Insecure Inter-Agent Comm.</td>
+<td style="text-align: left;">Provenance attestation</td>
+<td style="text-align: left;">Profiles B, C</td>
+</tr>
+<tr>
+<td style="text-align: left;">ASI08: Cascading Failures</td>
+<td style="text-align: left;">Byzantine Consensus</td>
+<td style="text-align: left;">Profile C</td>
+</tr>
+<tr>
+<td style="text-align: left;">ASI10: Rogue Agents</td>
+<td style="text-align: left;">Full CIF stack</td>
+<td style="text-align: left;">Profile C</td>
+</tr>
+</tbody>
+</table>
+<h3 id="nist-zero-trust-architecture-for-ai-agents">NIST Zero Trust
+Architecture for AI Agents</h3>
+<p>NIST’s extension of SP 800-207 to AI agents establishes “never trust,
+always verify” principles. CIF operationalizes zero trust for cognitive
+interactions:</p>
+<ul>
+<li><strong>Continuous verification</strong>: Every inter-agent message
+is evaluated by the Cognitive Firewall</li>
+<li><strong>Micro-segmentation</strong>: Beliefs from external sources
+are sandboxed before integration</li>
+<li><strong>Least privilege</strong>: Trust scores decay exponentially
+with delegation depth (<span
+class="math inline">\(\delta^d\)</span>)</li>
+<li><strong>Continuous authentication</strong>: Provenance attestation
+provides cryptographic message origin tracking</li>
+</ul>
+<p>Profile A (Internal Tool) provides partial NIST alignment. Profile B
+(Customer Facing) achieves substantial compliance. Profile C (Autonomous
+Operator) is the profile that maps most completely to the controls cited
+in the OWASP and NIST frameworks above; treat any mapping as design
+intent, not certification.</p>
 </body>
 </html>

@@ -1088,3 +1088,184 @@
 2026-02-18 05:35:00,475 - INFO - Style          : PASS
 2026-02-18 05:35:00,475 - INFO - ----------------------------------------
 2026-02-18 05:35:00,475 - INFO - All checks passed successfully.
+2026-04-19 14:43:11,222 - INFO - Starting verification on /Users/4d/Documents/GitHub/template/projects_in_progress/cognitive_integrity/cogsec_multiagent_3_practical/manuscript...
+2026-04-19 14:43:11,223 - INFO - Checking file existence...
+2026-04-19 14:43:11,223 - INFO - Verifying citations...
+2026-04-19 14:43:11,224 - INFO - Found 63 bibliography entries.
+2026-04-19 14:43:11,224 - WARNING - Missing citation key: 'friston2010free' in 02_theory_review.md
+2026-04-19 14:43:11,224 - INFO - Verifying definition labels and references...
+2026-04-19 14:43:11,225 - WARNING - Undefined reference: '\cref{sec:theoretical-connections}' in 02_theory_review.md
+2026-04-19 14:43:11,225 - WARNING - Undefined reference: '\cref{sec:information-geometry}' in 02_theory_review.md
+2026-04-19 14:43:11,225 - WARNING - Undefined reference: '\cref{sec:game-theory}' in 03_simulation_review.md
+2026-04-19 14:43:11,225 - WARNING - Undefined reference: '\cref{sec:architecture-gap}' in 03_simulation_review.md
+2026-04-19 14:43:11,225 - WARNING - Undefined reference: '\ref{sec:architecture-gap-analysis}' in 06b_case_studies.md
+2026-04-19 14:43:11,225 - WARNING - Undefined reference: '\cref{sec:theoretical-connections}' in 07_future_directions.md
+2026-04-19 14:43:11,225 - WARNING - Undefined reference: '\cref{sec:game-theory}' in 07_future_directions.md
+2026-04-19 14:43:11,225 - WARNING - Undefined reference: '\cref{sec:architecture-gap}' in 07_future_directions.md
+2026-04-19 14:43:11,226 - WARNING - Undefined reference: '\cref{tab:power-analysis-preregistration}' in 08_conclusion.md
+2026-04-19 14:43:11,226 - INFO - Verifying images and links...
+2026-04-19 14:43:11,226 - INFO - Checking style guidelines...
+2026-04-19 14:43:11,242 - INFO - ----------------------------------------
+2026-04-19 14:43:11,242 - INFO - Verification Summary:
+2026-04-19 14:43:11,242 - INFO - Files          : PASS
+2026-04-19 14:43:11,242 - INFO - Citations      : FAIL
+2026-04-19 14:43:11,242 - INFO - Labels/Refs    : FAIL
+2026-04-19 14:43:11,242 - INFO - Images/Links   : PASS
+2026-04-19 14:43:11,242 - INFO - Style          : PASS
+2026-04-19 14:43:11,242 - INFO - ----------------------------------------
+2026-04-19 14:43:11,242 - ERROR - Verification failed. See logs for details.
+2026-04-24 15:47:34,411 - INFO - Starting verification on /Users/4d/Documents/GitHub/template/projects/cognitive_integrity/cogsec_multiagent_3_practical/manuscript...
+2026-04-24 15:47:34,412 - INFO - Checking file existence...
+2026-04-24 15:47:34,412 - INFO - Verifying citations...
+2026-04-24 15:47:34,412 - INFO - Found 80 bibliography entries.
+2026-04-24 15:47:34,416 - INFO - Verifying definition labels and references...
+2026-04-24 15:47:34,417 - WARNING - Undefined reference: '\cref{sec:theoretical-connections}' in 02_theory_review.md
+2026-04-24 15:47:34,417 - WARNING - Undefined reference: '\cref{sec:information-geometry}' in 02_theory_review.md
+2026-04-24 15:47:34,417 - WARNING - Undefined reference: '\cref{sec:game-theory}' in 03_simulation_review.md
+2026-04-24 15:47:34,417 - WARNING - Undefined reference: '\cref{sec:architecture-gap-analysis}' in 03_simulation_review.md
+2026-04-24 15:47:34,417 - WARNING - Undefined reference: '\cref{sec:architecture-gap-analysis}' in 06b_case_studies.md
+2026-04-24 15:47:34,417 - WARNING - Undefined reference: '\cref{sec:theoretical-connections}' in 07_future_directions.md
+2026-04-24 15:47:34,417 - WARNING - Undefined reference: '\cref{sec:game-theory}' in 07_future_directions.md
+2026-04-24 15:47:34,417 - WARNING - Undefined reference: '\cref{sec:architecture-gap-analysis}' in 07_future_directions.md
+2026-04-24 15:47:34,417 - WARNING - Undefined reference: '\cref{tab:power-analysis-preregistration}' in 08_conclusion.md
+2026-04-24 15:47:34,417 - INFO - Verifying images and links...
+2026-04-24 15:47:34,418 - INFO - Checking style guidelines...
+2026-04-24 15:47:34,434 - INFO - ----------------------------------------
+2026-04-24 15:47:34,434 - INFO - Verification Summary:
+2026-04-24 15:47:34,434 - INFO - Files          : PASS
+2026-04-24 15:47:34,434 - INFO - Citations      : PASS
+2026-04-24 15:47:34,434 - INFO - Labels/Refs    : FAIL
+2026-04-24 15:47:34,434 - INFO - Images/Links   : PASS
+2026-04-24 15:47:34,434 - INFO - Style          : PASS
+2026-04-24 15:47:34,434 - INFO - ----------------------------------------
+2026-04-24 15:47:34,434 - ERROR - Verification failed. See logs for details.
+2026-04-24 16:22:43,600 - INFO - Starting verification on /Users/4d/Documents/GitHub/template/projects/cognitive_integrity/cogsec_multiagent_3_practical/manuscript...
+2026-04-24 16:22:43,601 - INFO - Checking file existence...
+2026-04-24 16:22:43,601 - INFO - Verifying citations...
+2026-04-24 16:22:43,602 - INFO - Found 80 bibliography entries.
+2026-04-24 16:22:43,605 - INFO - Verifying definition labels and references...
+2026-04-24 16:22:43,606 - WARNING - Undefined reference: '\cref{sec:theoretical-connections}' in 02_theory_review.md
+2026-04-24 16:22:43,606 - WARNING - Undefined reference: '\cref{sec:information-geometry}' in 02_theory_review.md
+2026-04-24 16:22:43,606 - WARNING - Undefined reference: '\cref{sec:game-theory}' in 03_simulation_review.md
+2026-04-24 16:22:43,606 - WARNING - Undefined reference: '\cref{sec:architecture-gap-analysis}' in 03_simulation_review.md
+2026-04-24 16:22:43,606 - WARNING - Undefined reference: '\cref{sec:architecture-gap-analysis}' in 06b_case_studies.md
+2026-04-24 16:22:43,606 - WARNING - Undefined reference: '\cref{sec:theoretical-connections}' in 07_future_directions.md
+2026-04-24 16:22:43,606 - WARNING - Undefined reference: '\cref{sec:game-theory}' in 07_future_directions.md
+2026-04-24 16:22:43,606 - WARNING - Undefined reference: '\cref{sec:architecture-gap-analysis}' in 07_future_directions.md
+2026-04-24 16:22:43,606 - WARNING - Undefined reference: '\cref{tab:power-analysis-preregistration}' in 08_conclusion.md
+2026-04-24 16:22:43,606 - INFO - Verifying images and links...
+2026-04-24 16:22:43,606 - INFO - Checking style guidelines...
+2026-04-24 16:22:43,622 - INFO - ----------------------------------------
+2026-04-24 16:22:43,622 - INFO - Verification Summary:
+2026-04-24 16:22:43,623 - INFO - Files          : PASS
+2026-04-24 16:22:43,623 - INFO - Citations      : PASS
+2026-04-24 16:22:43,623 - INFO - Labels/Refs    : FAIL
+2026-04-24 16:22:43,623 - INFO - Images/Links   : PASS
+2026-04-24 16:22:43,623 - INFO - Style          : PASS
+2026-04-24 16:22:43,623 - INFO - ----------------------------------------
+2026-04-24 16:22:43,623 - ERROR - Verification failed. See logs for details.
+2026-04-24 16:53:55,343 - INFO - Starting verification on /Users/4d/Documents/GitHub/template/projects/cognitive_integrity/cogsec_multiagent_3_practical/manuscript...
+2026-04-24 16:53:55,343 - INFO - Checking file existence...
+2026-04-24 16:53:55,343 - INFO - Verifying citations...
+2026-04-24 16:53:55,344 - INFO - Found 80 bibliography entries.
+2026-04-24 16:53:55,347 - INFO - Verifying definition labels and references...
+2026-04-24 16:53:55,348 - WARNING - Undefined reference: '\cref{sec:theoretical-connections}' in 02_theory_review.md
+2026-04-24 16:53:55,348 - WARNING - Undefined reference: '\cref{sec:information-geometry}' in 02_theory_review.md
+2026-04-24 16:53:55,348 - WARNING - Undefined reference: '\cref{sec:game-theory}' in 03_simulation_review.md
+2026-04-24 16:53:55,348 - WARNING - Undefined reference: '\cref{sec:architecture-gap-analysis}' in 03_simulation_review.md
+2026-04-24 16:53:55,348 - WARNING - Undefined reference: '\cref{sec:architecture-gap-analysis}' in 06b_case_studies.md
+2026-04-24 16:53:55,348 - WARNING - Undefined reference: '\cref{sec:theoretical-connections}' in 07_future_directions.md
+2026-04-24 16:53:55,348 - WARNING - Undefined reference: '\cref{sec:game-theory}' in 07_future_directions.md
+2026-04-24 16:53:55,348 - WARNING - Undefined reference: '\cref{sec:architecture-gap-analysis}' in 07_future_directions.md
+2026-04-24 16:53:55,348 - WARNING - Undefined reference: '\cref{tab:power-analysis-preregistration}' in 08_conclusion.md
+2026-04-24 16:53:55,348 - INFO - Verifying images and links...
+2026-04-24 16:53:55,349 - INFO - Checking style guidelines...
+2026-04-24 16:53:55,364 - INFO - ----------------------------------------
+2026-04-24 16:53:55,364 - INFO - Verification Summary:
+2026-04-24 16:53:55,364 - INFO - Files          : PASS
+2026-04-24 16:53:55,364 - INFO - Citations      : PASS
+2026-04-24 16:53:55,364 - INFO - Labels/Refs    : FAIL
+2026-04-24 16:53:55,364 - INFO - Images/Links   : PASS
+2026-04-24 16:53:55,364 - INFO - Style          : PASS
+2026-04-24 16:53:55,364 - INFO - ----------------------------------------
+2026-04-24 16:53:55,364 - ERROR - Verification failed. See logs for details.
+2026-04-24 16:55:14,655 - INFO - Starting verification on /Users/4d/Documents/GitHub/template/projects/cognitive_integrity/cogsec_multiagent_3_practical/manuscript...
+2026-04-24 16:55:14,656 - INFO - Checking file existence...
+2026-04-24 16:55:14,656 - INFO - Verifying citations...
+2026-04-24 16:55:14,656 - INFO - Found 80 bibliography entries.
+2026-04-24 16:55:14,656 - INFO - Verifying definition labels and references...
+2026-04-24 16:55:14,657 - INFO - Verifying images and links...
+2026-04-24 16:55:14,658 - INFO - Checking style guidelines...
+2026-04-24 16:55:14,673 - INFO - ----------------------------------------
+2026-04-24 16:55:14,673 - INFO - Verification Summary:
+2026-04-24 16:55:14,673 - INFO - Files          : PASS
+2026-04-24 16:55:14,673 - INFO - Citations      : PASS
+2026-04-24 16:55:14,673 - INFO - Labels/Refs    : PASS
+2026-04-24 16:55:14,673 - INFO - Images/Links   : PASS
+2026-04-24 16:55:14,673 - INFO - Style          : PASS
+2026-04-24 16:55:14,673 - INFO - ----------------------------------------
+2026-04-24 16:55:14,673 - INFO - All checks passed successfully.
+2026-04-24 16:55:33,165 - INFO - Starting verification on /Users/4d/Documents/GitHub/template/projects/cognitive_integrity/cogsec_multiagent_3_practical/manuscript...
+2026-04-24 16:55:33,165 - INFO - Checking file existence...
+2026-04-24 16:55:33,165 - INFO - Verifying citations...
+2026-04-24 16:55:33,166 - INFO - Found 80 bibliography entries.
+2026-04-24 16:55:33,168 - INFO - Verifying definition labels and references...
+2026-04-24 16:55:33,169 - INFO - Verifying images and links...
+2026-04-24 16:55:33,169 - INFO - Checking style guidelines...
+2026-04-24 16:55:33,185 - INFO - ----------------------------------------
+2026-04-24 16:55:33,185 - INFO - Verification Summary:
+2026-04-24 16:55:33,185 - INFO - Files          : PASS
+2026-04-24 16:55:33,185 - INFO - Citations      : PASS
+2026-04-24 16:55:33,185 - INFO - Labels/Refs    : PASS
+2026-04-24 16:55:33,185 - INFO - Images/Links   : PASS
+2026-04-24 16:55:33,185 - INFO - Style          : PASS
+2026-04-24 16:55:33,185 - INFO - ----------------------------------------
+2026-04-24 16:55:33,185 - INFO - All checks passed successfully.
+2026-04-25 13:13:11,578 - INFO - Starting verification on /Users/4d/Documents/GitHub/template/projects/cognitive_integrity/cogsec_multiagent_3_practical/manuscript...
+2026-04-25 13:13:11,578 - INFO - Checking file existence...
+2026-04-25 13:13:11,578 - INFO - Verifying citations...
+2026-04-25 13:13:11,579 - INFO - Found 80 bibliography entries.
+2026-04-25 13:13:11,581 - INFO - Verifying definition labels and references...
+2026-04-25 13:13:11,582 - INFO - Verifying images and links...
+2026-04-25 13:13:11,582 - INFO - Checking style guidelines...
+2026-04-25 13:13:11,598 - INFO - ----------------------------------------
+2026-04-25 13:13:11,598 - INFO - Verification Summary:
+2026-04-25 13:13:11,598 - INFO - Files          : PASS
+2026-04-25 13:13:11,598 - INFO - Citations      : PASS
+2026-04-25 13:13:11,598 - INFO - Labels/Refs    : PASS
+2026-04-25 13:13:11,598 - INFO - Images/Links   : PASS
+2026-04-25 13:13:11,598 - INFO - Style          : PASS
+2026-04-25 13:13:11,598 - INFO - ----------------------------------------
+2026-04-25 13:13:11,598 - INFO - All checks passed successfully.
+2026-04-26 17:20:55,740 - INFO - Starting verification on /Users/4d/Documents/GitHub/template/projects/cognitive_integrity/cogsec_multiagent_3_practical/manuscript...
+2026-04-26 17:20:55,742 - INFO - Checking file existence...
+2026-04-26 17:20:55,742 - INFO - Verifying citations...
+2026-04-26 17:20:55,742 - INFO - Found 80 bibliography entries.
+2026-04-26 17:20:55,748 - INFO - Verifying definition labels and references...
+2026-04-26 17:20:55,749 - INFO - Verifying images and links...
+2026-04-26 17:20:55,749 - INFO - Checking style guidelines...
+2026-04-26 17:20:55,765 - INFO - ----------------------------------------
+2026-04-26 17:20:55,766 - INFO - Verification Summary:
+2026-04-26 17:20:55,766 - INFO - Files          : PASS
+2026-04-26 17:20:55,766 - INFO - Citations      : PASS
+2026-04-26 17:20:55,766 - INFO - Labels/Refs    : PASS
+2026-04-26 17:20:55,766 - INFO - Images/Links   : PASS
+2026-04-26 17:20:55,766 - INFO - Style          : PASS
+2026-04-26 17:20:55,766 - INFO - ----------------------------------------
+2026-04-26 17:20:55,766 - INFO - All checks passed successfully.
+2026-04-26 19:04:27,497 - INFO - Starting verification on /Users/4d/Documents/GitHub/template/projects/cognitive_integrity/cogsec_multiagent_3_practical/manuscript...
+2026-04-26 19:04:27,497 - INFO - Checking file existence...
+2026-04-26 19:04:27,497 - INFO - Verifying citations...
+2026-04-26 19:04:27,498 - INFO - Found 80 bibliography entries.
+2026-04-26 19:04:27,501 - INFO - Verifying definition labels and references...
+2026-04-26 19:04:27,502 - INFO - Verifying images and links...
+2026-04-26 19:04:27,502 - INFO - Checking style guidelines...
+2026-04-26 19:04:27,517 - INFO - ----------------------------------------
+2026-04-26 19:04:27,517 - INFO - Verification Summary:
+2026-04-26 19:04:27,517 - INFO - Files          : PASS
+2026-04-26 19:04:27,517 - INFO - Citations      : PASS
+2026-04-26 19:04:27,517 - INFO - Labels/Refs    : PASS
+2026-04-26 19:04:27,518 - INFO - Images/Links   : PASS
+2026-04-26 19:04:27,518 - INFO - Style          : PASS
+2026-04-26 19:04:27,518 - INFO - ----------------------------------------
+2026-04-26 19:04:27,518 - INFO - All checks passed successfully.

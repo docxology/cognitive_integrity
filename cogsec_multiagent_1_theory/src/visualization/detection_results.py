@@ -1,4 +1,11 @@
+"""Detection Results module.
+
+Part of the Cognitive Integrity Framework.
+"""
+
 #!/usr/bin/env python3
+from __future__ import annotations
+
 """Detection results visualization module."""
 
 import os

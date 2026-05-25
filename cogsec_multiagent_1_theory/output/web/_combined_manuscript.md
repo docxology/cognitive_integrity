@@ -29,7 +29,7 @@ Nor shall my Sword sleep in my hand:''
 
 Multiagent AI systems introduce cognitive attack surfaces absent in single-model inference. When agents delegate to agents, forming beliefs about beliefs through recursive trust hierarchies, manipulation of reasoning processes---rather than mere data corruption---becomes a primary security concern. This paper presents the Cognitive Integrity Framework (CIF), providing formal foundations for cognitive security in multiagent operators. We develop four interconnected theoretical contributions: a Trust Calculus with bounded delegation (exponential $\delta^d$ decay) that prevents trust amplification through delegation chains; a Defense Composition Algebra with series and parallel composition theorems establishing multiplicative detection bounds; Information-Theoretic Limits relating stealth constraints to maximum attack impact through a fundamental stealth-impact tradeoff; and a formal Adversary Hierarchy ($\Omega_1$--$\Omega_5$) characterizing external, peripheral, agent-level, coordination, and systemic threats with increasing capability and decreasing detectability. The framework provides complete coverage of the OWASP Top 10 for Agentic Applications through formal threat models grounded in cognitive state manipulation rather than traditional input/output filtering.
 
-CIF bridges classical security concepts with the cognitive requirements of agentic systems. We extend Byzantine fault tolerance to cognitive manipulation---agents that appear functional but hold corrupted beliefs---and adapt trust management systems to continuous trust evolution with provable decay bounds. The framework formalizes five architectural defense mechanisms (cognitive firewalls, belief sandboxing, behavioral tripwires, provenance tracking, Byzantine consensus) with composition rules enabling formal reasoning about layered security. Technical foundations include: operational semantics for message passing and trust updates; invariants for belief integrity, goal preservation, and trust boundedness; model checking configurations for safety property verification; and a complete notation system for attack parameterization, defense specification, and cognitive state representation. This is Part 1 of a three-part series: Part 1 (this paper, DOI: 10.5281/zenodo.18364119) presents formal foundations and theoretical analysis; Part 2 (DOI: 10.5281/zenodo.18364128) provides computational validation through architecture-aware parametric simulation; Part 3 (DOI: 10.5281/zenodo.18364130) offers practical deployment guidance. The framework will continue to be developed and versioned at <https://github.com/docxology/cognitive_integrity/>.
+CIF bridges classical security concepts with the cognitive requirements of agentic systems. We extend Byzantine fault tolerance to cognitive manipulation---agents that appear functional but hold corrupted beliefs---and adapt trust management systems to continuous trust evolution with provable decay bounds. The framework formalizes five architectural defense mechanisms (cognitive firewalls, belief sandboxing, behavioral tripwires, provenance tracking, Byzantine consensus) with composition rules enabling formal reasoning about layered security. Technical foundations include: operational semantics for message passing and trust updates; invariants for belief integrity, goal preservation, and trust boundedness; model checking configurations for safety property verification; and a complete notation system for attack parameterization, defense specification, and cognitive state representation. This is Part 1 of a four-part series: Part 1 (this paper, DOI: 10.5281/zenodo.18364119) presents formal foundations and theoretical analysis; Part 2 (DOI: 10.5281/zenodo.18364128) provides computational validation through architecture-aware parametric simulation; Part 3 (DOI: 10.5281/zenodo.18364130) offers a qualitative review and practitioner's deployment guidance; Part 4 (\emph{Applications}) extends the framework through CIF-AD-OODA integration and case studies across ten critical domains (goal-hijacking defense for infrastructure, supply chain, cyber, biowarfare, and information ecosystems). The framework will continue to be developed and versioned at <https://github.com/docxology/cognitive_integrity/>.
 
 
 
@@ -314,7 +314,7 @@ This paper provides both theoretical foundations and practical mechanisms for co
 \item \textbf{The Cognitive Integrity Framework (CIF)}: An integrated approach combining architectural defenses, runtime monitoring, and Byzantine-tolerant coordination for multiagent systems (\cref{sec:system-model})
 \end{enumerate}
 
-\textbf{Empirical Validation}: Part 2 of this series demonstrates the practical viability of these formal mechanisms across six production architectures, showing that layered cognitive defenses significantly outperform single-mechanism approaches.
+\textbf{Empirical Validation}: Part 2 of this series demonstrates the practical viability of these formal mechanisms across six production architectures, showing that layered cognitive defenses significantly outperform single-mechanism approaches. Practitioner translations of these results appear in Part 3; domain-specific applications and real-world incident analyses appear in Part 4.
 
 ## Paper Organization {#sec:organization}
 
@@ -334,9 +334,41 @@ The remainder of this paper is structured as follows:
 
 \textbf{\Cref{sec:summary}: Conclusion} summarizes contributions and identifies directions for future research.
 
-\textbf{Part 2: Experimental Validation} A separate, second, companion paper reports empirical results from architecture-aware parametric simulation across 950 attack vectors and six production architectures.
+\textbf{Part 2: Experimental Validation} A separate, second, companion paper reports empirical results from architecture-aware parametric simulation across 950 attack vectors and six production architectures. Readers seeking detection rates, ablation studies, Bayesian uncertainty quantification, and architecture-specific defense configurations should consult Part 2 (DOI: 10.5281/zenodo.18364128).
 
-\textbf{Part 3: Actionable Insight} A separate, third, companion paper provides qualitative insights, operational checklists, and risk assessment frameworks for deploying cognitive security mechanisms.
+\textbf{Part 3: Actionable Insight} A separate, third, companion paper provides a qualitative review and practitioner's synthesis---accessible-language summaries of the theoretical and empirical findings, operational checklists, risk assessment frameworks, deployment guides, monitoring strategies, and cost-benefit analyses. Part 3 assumes no formal prerequisites and targets security teams operating multiagent systems (DOI: 10.5281/zenodo.18364130).
+
+\textbf{Part 4: Applications} A fourth companion paper (\emph{Cognitive Integrity in Critical Domains}) applies CIF across ten high-stakes operational sectors---rare-earth mining, nation-state alliances, cyber-security, drone warfare, supply chains, biowarfare, food security, trade wars, infrastructure, and information ecosystems---through the integrated CIF-AD-OODA analytical model. Readers interested in domain-specific goal-hijacking defenses, universal attack patterns (FR polarity inversion, constraint relaxation, context boundary violation), or retrospective analysis of documented 2024--2025 AI agent security incidents should consult Part 4.
+
+## Reading Companion: Where to Find Specific Topics {#sec:reading-companion}
+
+This paper is designed to stand alone as the formal-foundations reference of the series. The table below points readers to the sibling paper and section where each related topic is developed most fully, so that this paper can be used in conjunction with---rather than requiring---its companions.
+
+\begin{table}[htbp]
+\centering
+\caption{Cross-paper navigation from Part 1 topics to sibling developments.}
+\label{tab:part1-navigation}
+\small
+\begin{tabular}{@{}p{0.42\textwidth}p{0.52\textwidth}@{}}
+\toprule
+If you want\ldots & \ldots consult\ldots \\
+\midrule
+Empirical detection rates for the defense compositions proved here & Part 2 (DOI: 10.5281/zenodo.18364128), \S{5} (Results) and S08 (Parametric Analysis) \\
+Ablation studies isolating the contribution of each defense mechanism & Part 2, \S{5.6} and \S{5d} \\
+Bayesian uncertainty quantification on detection rates & Part 2, \S{5e} \\
+Game-theoretic analysis / Nash equilibrium of CIF vs.\ adaptive attackers & Part 2, \S{6} (Discussion) \\
+Model-checking execution (NuSMV, TLA+ traces) for the invariants defined here & Part 2 S04 (Model Checking) \\
+Deployment checklists and operator-posture guidance & Part 3 (DOI: 10.5281/zenodo.18364130), \S{5} (Deployment Guide), \S{5b} (Incident Response) \\
+Monitoring, drift detection playbooks, cost--benefit analysis & Part 3, \S{5c}--\S{5d} \\
+Case studies showing CIF in complex realistic deployments & Part 3, \S{6b} \\
+Open problems / research directions for practitioners & Part 3, \S{7}; Part 4, \S{5} (Future Work) \\
+Domain-specific goal-hijacking analyses across ten operational sectors & Part 4, \S{3.01}--\S{3.10} \\
+Three universal attack patterns (FR Polarity Inversion, Constraint Relaxation, Context Boundary Violation) & Part 4, \S{4} (Discussion) \\
+Three novel defense extensions (verification channel separation, active perturbation probing, physics-informed invariants) & Part 4, \S{3.06} (Biowarfare), \S{3.08} (Trade Wars), \S{3.09} (Infrastructure) \\
+Retrospective analysis of documented 2024--2025 AI-agent security incidents & Part 4 S02 (Real-World Incidents) \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 ## Scope and Limitations {#sec:scope}
 
@@ -1090,6 +1122,17 @@ $T_{\text{ctx}}$ & $\gamma$ & Context (task-specific factors) \\
 \end{tabular}
 \end{table}
 
+\begin{remark}[Trust as Precision Weighting]
+\label{rem:trust-precision}
+The composite trust formula above is equivalent to precision-weighted
+message integration from the Free Energy Principle: the composite score
+$\mathcal{T}_{i\to j}$ is proportional to the precision $\rho_j$ with
+which agent $i$ should weight messages from agent $j$ when updating its
+posterior beliefs.  High-trust messages dominate the belief update;
+low-trust messages contribute marginally.  This correspondence provides a
+neurocomputational grounding for the trust calculus (Part~2, \S 1.2).
+\end{remark}
+
 \begin{definition}[Trust Delegation]
 \label{def:trust-delegation}
 When agent $a_i$ delegates trust through $a_j$ to $a_k$:
@@ -1400,6 +1443,36 @@ For attack with impact $\mathcal{I}$ and stealth $\mathcal{S}$ (inverse detectab
 where $C_{\text{channel}}$ is the attack channel capacity.
 \end{theorem}
 
+\begin{remark}[Geometric Sharpening of the Stealth-Impact Bound]
+\label{rem:geometric-bound}
+Theorem~\ref{thm:stealth-impact} can be sharpened using the information
+geometry of the belief manifold (Part~2, Supplement~S10).  When belief
+space is endowed with the Fisher-Rao metric
+$G_{ij}(p) = \delta_{ij}/p_i$, the Fisher-Rao geodesic distance
+\[
+d_{\mathrm{FR}}(p, q) = 2\arccos\!\left(\sum_i \sqrt{p_i q_i}\right)
+\]
+measures the geometric ``distance'' of an attack.  Impact $\mathcal{I}$
+is proportional to $d_{\mathrm{FR}}(p_0, p_{\text{attacked}})$, while
+stealth $\mathcal{S}$ is inversely proportional to the same quantity.
+The curvature of the probability simplex $\Delta^{n-1}$ (constant
+positive curvature $\kappa = n(n-1)/4$) implies that the product
+$\mathcal{I} \cdot \mathcal{S}$ is bounded by the diameter of the manifold:
+\[
+\mathcal{I} \cdot \mathcal{S} \leq \frac{\pi}{2},
+\]
+since $d_{\mathrm{FR}} \leq \pi$ (Hellinger antipodal distributions).
+This recovers $C_{\text{channel}} = \pi/2$ as the tight bound when impact
+is measured in natural (Fisher-Rao) units, providing a geometric
+proof of Theorem~\ref{thm:stealth-impact} with the explicit constant.
+Furthermore, the connection to KL divergence---$D_{\mathrm{KL}}(p \,\|\, p')
+\approx \tfrac{1}{2}(\Delta p)^\top G(p)(\Delta p)$ for small
+perturbations---gives geometric justification for the drift detection
+threshold $\theta_{\text{drift}} = 0.3$: this corresponds to a
+Fisher-Rao step of approximately $0.28$ radians, or roughly $9\%$ of
+the maximum possible attack distance (Part~2, Supplement~S10).
+\end{remark}
+
 \begin{table}[htbp]
 \centering
 \caption{Information-theoretic bounds by attack type.}
@@ -1665,6 +1738,35 @@ Isolation of unverified beliefs to prevent premature action:
 \mathcal{B}_i = \mathcal{B}_{\text{verified}} \cup \mathcal{B}_{\text{provisional}}
 \end{equation}
 \end{definition}
+
+\begin{remark}[Belief Sandbox as Constrained Variational Inference]
+\label{rem:sandbox-fep}
+The belief sandbox (Definition~\ref{def:belief-sandbox}) admits a natural
+interpretation within the Free Energy Principle (FEP) framework
+\citep{friston2010action, parr2019generalised}. Variational free energy
+\[
+F = D_{\mathrm{KL}}\bigl[Q(s) \,\|\, P(s)\bigr] - \mathbb{E}_{Q}\bigl[\log P(o \mid s)\bigr]
+\]
+measures the divergence of an agent's approximate posterior $Q$ from its
+generative model prior $P$, penalised by explanatory adequacy.
+A cognitive attack $\omega$ is effective if and only if it induces a free energy
+increase $\Delta F(\omega) > \kappa_{\mathrm{FEP}}$, where $\kappa_{\mathrm{FEP}}$
+is the sandbox's corroboration threshold $\kappa$ scaled by the source
+precision $\epsilon_{\text{prec}}$ (Part~2, \S 1.2):
+\[
+\Delta F(\omega) = F\!\left(Q_{\text{attacked}}\right) - F\!\left(Q_{\text{baseline}}\right)
+\leq \kappa \cdot \epsilon_{\text{prec}}.
+\]
+Belief promotion from provisional to verified corresponds to \emph{active
+inference}: the sandbox permits an update only when the evidential
+quality of incoming messages justifies the free energy cost of revision.
+Under this interpretation, the trust composite score
+$\mathcal{T}_{i\to j} = \alpha T_{\text{base}} + \beta T_{\text{rep}} + \gamma T_{\text{ctx}}$
+is the \emph{precision weight} $\rho_j$ of agent $j$'s message channel:
+higher-trust messages contribute proportionally more to the posterior
+update $Q$.  This connection bridges the CIF trust calculus with the
+broader active inference literature (Part~2, Theorem~FEP.2).
+\end{remark}
 
 ![Belief Sandbox Architecture](figures/belief_sandbox.pdf){#fig:belief-sandbox}
 
@@ -3044,7 +3146,7 @@ The decay factor $\delta \in [0, 1)$ creates a tradeoff:
 - Lower $\delta$: Stronger security, limited delegation utility
 - Higher $\delta$: More delegation flexibility, weaker bounds
 
-Organizations must calibrate this tradeoff based on their threat model (\cref{sec:operator-posture} in Part 3).
+Organizations must calibrate this tradeoff based on their threat model (\cref{sec:operator-posture} in Part 3). Domain-calibrated $\delta$ choices --- from millisecond OODA cycles in drone swarms to year-scale diplomatic agents --- are analyzed in Part 4 across ten critical operational domains.
 
 ### Information-Theoretic Detection Limits
 
@@ -3410,11 +3512,11 @@ The shift from single-model inference to multiagent operators is not merely an e
 
 CIF provides both theoretical foundations and practical mechanisms for this challenge. The trust calculus offers provable guarantees against amplification attacks. The defense composition algebra enables principled reasoning about layered security. The information-theoretic bounds establish fundamental limits on adversary capabilities. Together, these formal contributions move cognitive security from ad-hoc defenses to principled engineering.
 
-**Part 2** of this series provides empirical validation demonstrating that these formal mechanisms translate to practical protection across diverse production architectures. **Part 3** offers actionable deployment guidance for practitioners and AI agents. Together, the three papers provide a comprehensive framework for understanding, implementing, and operating cognitive security in multiagent AI systems.
+**Part 2** of this series provides empirical validation demonstrating that these formal mechanisms translate to practical protection across diverse production architectures. **Part 3** offers a qualitative review and practitioner's synthesis---accessible-language distillation of theoretical and empirical findings, deployment checklists, incident response playbooks, and risk assessment frameworks. **Part 4** applies the framework across ten critical operational domains through the CIF-AD-OODA integration model, identifying universal goal-hijacking patterns and validating CIF coverage against six documented 2024--2025 AI agent incidents. Together, the four papers provide a comprehensive framework for understanding, implementing, operating, and deploying cognitive security in multiagent AI systems.
 
 The formal gaps identified in this work---semantic equivalence attacks, progressive drift, orchestrator compromise---define the frontier for future research, while the provable guarantees (bounded trust, composable defenses, information-theoretic limits) provide the stable theoretical foundation on which that research can build.
 
-For empirical validation of these theories, we refer the reader to **Part 2: Computational Validation**. For actionable deployment strategies, including operator posture checklists and risk assessment frameworks, we refer the reader to **Part 3: Practical Guidance**.
+For empirical validation of these theories, we refer the reader to **Part 2: Computational Validation** (DOI: 10.5281/zenodo.18364128). For actionable deployment strategies, including operator posture checklists, deployment guides, and risk assessment frameworks, we refer the reader to **Part 3: A Qualitative Review for Practitioners** (DOI: 10.5281/zenodo.18364130). For domain-specific goal-hijacking analyses and real-world incident mapping, we refer the reader to **Part 4: Applications of the Cognitive Integrity Framework**.
 
 \textbf{As autonomous AI agents increasingly operate in high-stakes contexts---executing code, modifying infrastructure, controlling resources, and making decisions with lasting consequences---the formal foundations established here become not merely useful but essential infrastructure for secure deployment.}
 
@@ -4375,7 +4477,7 @@ Eusocial insects have evolved sophisticated security mechanisms over 100+ millio
 
 **Chemical Recognition Thresholds**: Ant nestmate recognition operates on *threshold-based* hydrocarbon profile matching, not exact matching [@lenoir2001chemical]. This creates a tradeoff: strict thresholds reject legitimate workers after foraging (false positives), while loose thresholds admit parasites (false negatives). *AI analog*: Agent attestation systems must calibrate acceptance thresholds, recognizing that perfect recognition is information-theoretic\-ally impossible (\cref{thm:stealth-impact}).
 
-**Metapleural Gland Secretions**: Many ant species possess metapleural glands that continuously secrete antimicrobial compounds, creating a "security substrate" independent of individual vigilance [@fernández-marín2006evolution]. *AI analog*: Environmental-level defenses (encrypted shared memory, authenticated message queues) that provide baseline security regardless of individual agent security posture.
+**Metapleural Gland Secretions**: Many ant species possess metapleural glands that continuously secrete antimicrobial compounds, creating a "security substrate" independent of individual vigilance [@fernandez2006evolution]. *AI analog*: Environmental-level defenses (encrypted shared memory, authenticated message queues) that provide baseline security regardless of individual agent security posture.
 
 **Trail Pheromone Decay**: Ant trail pheromones are designed to evaporate, ensuring that outdated information doesn't persist indefinitely. Trails to depleted food sources naturally fade, preventing "legacy trust" in obsolete information [@jackson2006communication]. *AI analog*: Time-bounded trust in stigmergic markers (\cref{eq:colonial-trust}) is not a limitation but a feature.
 
@@ -4385,7 +4487,7 @@ Eusocial insects have evolved sophisticated security mechanisms over 100+ millio
 
 **Hygienic Behavior and Proactive Removal**: Some bee strains exhibit "hygienic behavior"---workers proactively uncap and remove brood cells containing diseased larvae *before* symptoms become visible, using olfactory detection of early infection markers [@spivak2001hygienic]. *AI analog*: Proactive monitoring for belief drift (\cref{def:tripwire-alert}) rather than reactive response to manifested attacks.
 
-**Waggle Dance Verification**: Bee foragers must perform waggle dances that encode distance and direction to food sources. Observing bees don't just follow instructions---they verify dance accuracy by cross-checking against their own experience and rejecting inconsistent information [@grüter2008dance]. *AI analog*: Delegated information should be verifiable against agent's existing knowledge base; pure trust propagation without verification violates cognitive integrity.
+**Waggle Dance Verification**: Bee foragers must perform waggle dances that encode distance and direction to food sources. Observing bees don't just follow instructions---they verify dance accuracy by cross-checking against their own experience and rejecting inconsistent information [@gruter2008dance]. *AI analog*: Delegated information should be verifiable against agent's existing knowledge base; pure trust propagation without verification violates cognitive integrity.
 
 **Absconding and Colony Fission**: When attack pressure exceeds defensive capacity (e.g., repeated Varroa mite infestation or persistent wasp attacks), bee colonies can *abandon* the compromised nest entirely, sacrificing resources to preserve the colony [@schneider2001economics]. *AI analog*: Graceful degradation plans that sacrifice specific subsystems or data stores to preserve core cognitive integrity.
 
@@ -4509,7 +4611,7 @@ Existing AI security benchmarks focus overwhelmingly on single-agent scenarios:
 | AgentBench [@liu2023agentbench] | Single agent, task completion | Minimal |
 | GAIA [@mialon2023gaia] | Single/few agents, reasoning | Minimal |
 
-The attack corpus in Part 2 addresses multiagent scenarios but still emphasizes agent-targeted attacks within an operator. No existing benchmark evaluates:
+The attack corpus in Part 2 addresses multiagent scenarios but still emphasizes agent-targeted attacks within an operator, and the cross-domain goal-hijacking analysis in Part 4 provides ten operational-domain case studies. No existing benchmark, however, evaluates:
 
 1. **Emergent collective resilience** — How do colonies absorb individual compromises?
 2. **Stigmergic attack surfaces** — How vulnerable is environment-mediated coordination?
@@ -4740,7 +4842,7 @@ Colony CogSec mechanisms integrate with the CIF defense stack (\cref{sec:defense
 
 The full CIF with colony extensions achieves defense in depth against both individual-targeted and colony-targeted attacks.
 
-> **Note**: For implementation guidance, operational checklists, and practical deployment advice, see Part 3: Section 2 (Operator Posture).
+> **Note**: For implementation guidance, operational checklists, and practical deployment advice, see Part 3: Section 2 (Operator Posture). For domain-specific application of colony-level defenses across critical operational sectors (including ten high-stakes domains, three universal attack patterns, and retrospective analysis of 2024--2025 AI-agent incidents) see Part 4.
 
 ---
 

@@ -91,6 +91,7 @@
       color: #606060;
     }
     code {
+      white-space: pre-wrap;
       font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
       font-size: 85%;
       margin: 0;
@@ -154,7 +155,6 @@
     #TOC a:not(:hover) {
       text-decoration: none;
     }
-    code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
     div.columns{display: flex; gap: min(4vw, 1.5em);}
     div.column{flex: auto; overflow-x: auto;}
@@ -402,7 +402,9 @@ mechanisms for cognitive security:</p>
 <p>: Part 2 of this series demonstrates the practical viability of these
 formal mechanisms across six production architectures, showing that
 layered cognitive defenses significantly outperform single-mechanism
-approaches.</p>
+approaches. Practitioner translations of these results appear in Part 3;
+domain-specific applications and real-world incident analyses appear in
+Part 4.</p>
 <h2 id="sec:organization">Paper Organization</h2>
 <p>The remainder of this paper is structured as follows:</p>
 <p> develops a comprehensive adversary taxonomy (<span
@@ -426,10 +428,33 @@ related work.</p>
 research.</p>
 <p> A separate, second, companion paper reports empirical results from
 architecture-aware parametric simulation across 950 attack vectors and
-six production architectures.</p>
-<p> A separate, third, companion paper provides qualitative insights,
-operational checklists, and risk assessment frameworks for deploying
-cognitive security mechanisms.</p>
+six production architectures. Readers seeking detection rates, ablation
+studies, Bayesian uncertainty quantification, and architecture-specific
+defense configurations should consult Part 2 (DOI:
+10.5281/zenodo.18364128).</p>
+<p> A separate, third, companion paper provides a qualitative review and
+practitioner’s synthesis—accessible-language summaries of the
+theoretical and empirical findings, operational checklists, risk
+assessment frameworks, deployment guides, monitoring strategies, and
+cost-benefit analyses. Part 3 assumes no formal prerequisites and
+targets security teams operating multiagent systems (DOI:
+10.5281/zenodo.18364130).</p>
+<p> A fourth companion paper () applies CIF across ten high-stakes
+operational sectors—rare-earth mining, nation-state alliances,
+cyber-security, drone warfare, supply chains, biowarfare, food security,
+trade wars, infrastructure, and information ecosystems—through the
+integrated CIF-AD-OODA analytical model. Readers interested in
+domain-specific goal-hijacking defenses, universal attack patterns (FR
+polarity inversion, constraint relaxation, context boundary violation),
+or retrospective analysis of documented 2024–2025 AI agent security
+incidents should consult Part 4.</p>
+<h2 id="sec:reading-companion">Reading Companion: Where to Find Specific
+Topics</h2>
+<p>This paper is designed to stand alone as the formal-foundations
+reference of the series. The table below points readers to the sibling
+paper and section where each related topic is developed most fully, so
+that this paper can be used in conjunction with—rather than
+requiring—its companions.</p>
 <h2 id="sec:scope">Scope and Limitations</h2>
 <p>: Attacks exploiting agent reasoning, trust, and coordination
 mechanisms in multiagent AI systems.</p>

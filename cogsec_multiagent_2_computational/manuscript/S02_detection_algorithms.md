@@ -2,7 +2,13 @@
 
 # Detection Algorithms {#sec:detection-algorithms}
 
-This supplementary section presents detection algorithm implementations for the cognitive attack detection methods defined in Part 1. Where \cref{sec:pseudocode} (Section 2a) presents the six core defense mechanisms (Firewall, Sandbox, Trust, Tripwires, Consensus, Drift Detection), this supplement presents the *detection analytics pipeline* that evaluates their output---including ROC analysis, multi-detector fusion, online/batch detection architectures, and false positive mitigation.
+This supplementary section presents detection algorithm implementations for the cognitive attack detection methods defined in Part 1 \cite{friedman2026cogsec1}. Where \cref{sec:pseudocode} (Section 2a) presents the six core defense mechanisms (Firewall, Sandbox, Trust, Tripwires, Consensus, Drift Detection), this supplement presents the *detection analytics pipeline* that evaluates their output---including ROC analysis, multi-detector fusion, online/batch detection architectures, and false positive mitigation.
+
+> **Cross-paper reading guide.**
+> • **Formal detection bounds** (information-theoretic stealth–impact tradeoff, series/parallel composition) are in Part 1 \cite{friedman2026cogsec1} §4.3 and §5.
+> • **Deployment-facing detector configuration** (thresholds, false-positive budgets, retraining cadence) appears in Part 3 \cite{friedman2026cogsec3} §5–§5d.
+> • **Domain-calibrated detection** thresholds vary dramatically across operational sectors (millisecond drone swarms vs. year-scale diplomatic agents); see Part 4 \cite{friedman2026cogsec4} §3 for per-domain recalibration examples.
+> • **Code pointers**: online/batch detectors in [`src/core/online_detection.py`](../src/core/online_detection.py) and [`src/core/batch_detection.py`](../src/core/batch_detection.py); ROC analysis in [`src/evaluation/roc.py`](../src/evaluation/); multi-detector fusion in [`src/composition/fusion.py`](../src/composition/).
 
 ## ROC Analysis Algorithms
 
@@ -39,6 +45,8 @@ This supplementary section presents detection algorithm implementations for the 
 | Firewall | 0.85 | 0.60 | 0.58 | 0.75 |
 | Tripwire | 0.79 | 0.45 | 0.48 | 0.65 |
 | Ensemble | **0.94** | 0.35 | **0.82** | **0.91** |
+
+*Note: These are design-level detector AUC values from parametric evaluation on the calibrated attack corpus. Empirical ensemble performance with current adapter implementations shows lower realized detection rates (see \cref{sec:extended-results}).*
 
 **Table: Empirical AUC with 95\% confidence intervals.** {#tab:auc-ci}
 
@@ -82,13 +90,16 @@ This supplementary section presents detection algorithm implementations for the 
 | Learned (MLP) | **0.94** | **4.2\%** | 30ms |
 | Learned (Attention) | **0.95** | **3.8\%** | 45ms |
 
+*Note: Fusion strategy AUC values are from parametric evaluation. See \cref{sec:parametric-analysis} for the complete parametric analysis.*
+
 ## Online Detection Algorithm
 
 \begin{algorithm}
 \caption{Online Detection Loop}
 \label{alg:online-detection}
 \begin{algorithmic}[1]
-\Require Message stream, window size $w$, threshold $\theta$
+\Require Message stream, window size $w$, detection threshold $\theta_{\text{det}}$
+\Comment{Note: $\theta_{\text{det}}$ is a statistical anomaly threshold, distinct from the firewall thresholds $\tau_1$ (REJECT) and $\tau_2$ (QUARANTINE).}
 \State Initialize: $\text{window} \gets \text{CircularBuffer}(w)$
 \State Initialize: $\text{stats} \gets \text{OnlineStatistics}()$
 \Loop \Comment{For each message $m$ in stream}
@@ -96,7 +107,7 @@ This supplementary section presents detection algorithm implementations for the 
     \State $\text{stats}.\text{update}(\text{features})$
     \State $z \gets (\text{features} - \text{stats}.\text{mean}) / \text{stats}.\text{std}$
     \State $\text{score} \gets \|z\|$
-    \If{$\text{score} > \theta$}
+    \If{$\text{score} > \theta_{\text{det}}$}
         \State $\text{emit\_alert}(m, \text{score})$
         \State **yield** \textsc{quarantine}
     \Else
@@ -135,6 +146,8 @@ This supplementary section presents detection algorithm implementations for the 
 | Batch Only | 94\% | N/A (forensic) | Medium |
 | Hybrid (hourly batch) | 92\% | 10ms + lag | Medium |
 | Hybrid (continuous) | **94\%** | 10ms | High |
+
+*Note: These detection rates reflect parametric evaluation of the detector architecture. Realized pipeline detection rates are lower with current adapter implementations (see \cref{sec:extended-results}).*
 
 ## False Positive Mitigation Results
 
@@ -188,15 +201,16 @@ This supplementary section presents detection algorithm implementations for the 
 \caption{Sliding Window Monitoring}
 \label{alg:sliding-window}
 \begin{algorithmic}[1]
-\Require Monitoring period $\tau$, window size $w$, threshold $\theta$
-\Loop \Comment{Every $\tau$ units}
+\Require Monitoring period $T_m$, window size $w$, anomaly threshold $\theta_{\text{det}}$
+\Comment{Note: $T_m$ denotes the monitoring interval (time units); $\theta_{\text{det}}$ is distinct from firewall thresholds $\tau_1$/$\tau_2$.}
+\Loop \Comment{Every $T_m$ units}
     \State Collect cognitive state snapshot $\sigma_i^t$
     \For{each feature $k$}
         \State $\mu[k] \gets \alpha \cdot \mu[k] + (1-\alpha) \cdot f_k(\sigma_i^t)$
         \State $\sigma^2[k] \gets \alpha \cdot \sigma^2[k] + (1-\alpha) \cdot (f_k(\sigma_i^t) - \mu[k])^2$
     \EndFor
     \State Compute anomaly scores
-    \If{any score $> \theta$}
+    \If{any score $> \theta_{\text{det}}$}
         \State Log alert with context
         \State Trigger response protocol
     \EndIf
@@ -219,8 +233,72 @@ This supplementary section presents detection algorithm implementations for the 
 
 Where $d$ = feature dimension, $w$ = window size, $k$ = number of detectors, $n$ = history length.
 
-## Summary
+\newpage
 
-These algorithms implement the detection methodology defined in Part 1, providing: (1) ROC curve construction with Youden's J threshold optimization, (2) multi-detector fusion via weighted averaging, majority voting, or learned MLP/attention, (3) online and batch detection architectures with configurable latency/accuracy trade-offs, (4) false positive mitigation achieving 75\% FPR reduction with 8\% TPR cost, and (5) adaptive baseline update for non-stationary environments. The hybrid online+batch architecture (\cref{tab:hybrid-tradeoffs}) achieves the best detection-latency profile for production deployments.
+## Information-Geometric Detection {#sec:ig-detection}
 
-For formal definitions and theoretical foundations, see Part 1, Section 5.
+The Fisher-Rao metric on the belief simplex $\Delta^{n-1}$ provides a principled distance measure for detecting belief manipulation that is more sensitive to distributional shifts than KL divergence alone, particularly for attacks that operate near distribution boundaries. These algorithms implement the information-geometric detection layer described in \cref{sec:information-geometry}.
+
+### Algorithm IG.1: Fisher-Rao Geodesic Drift Detector
+
+\begin{algorithm}
+\caption{Fisher-Rao Geodesic Drift Detector}
+\label{alg:fisher-rao-drift}
+\begin{algorithmic}[1]
+\Require Belief stream $\{p_t\}$, window $w$, geodesic threshold $\rho$, smoothing $\alpha$
+\Ensure Drift alerts with geodesic distance scores
+\State Initialize: $\bar{p} \gets p_0$, $\text{window} \gets \text{CircularBuffer}(w)$
+\Loop \Comment{For each new belief state $p_t$}
+    \State Compute Fisher information matrix: $G_{ii}(p) \gets 1/p_i$, $G_{ij}(p) \gets 0$ for $i \neq j$
+    \State Compute geodesic distance: $d_\text{FR}(p_t, \bar{p}) \gets 2 \arccos\!\left(\textstyle\sum_i \sqrt{p_t[i] \cdot \bar{p}[i]}\right)$
+    \If{$d_\text{FR}(p_t, \bar{p}) > \rho$}
+        \State $\text{emit\_alert}(t, d_\text{FR}, p_t, \bar{p})$
+        \State **yield** \textsc{quarantine}
+    \Else
+        \State $\bar{p} \gets \alpha \cdot \bar{p} + (1-\alpha) \cdot p_t$ \Comment{EMA baseline update}
+        \State **yield** \textsc{accept}
+    \EndIf
+    \State $\text{window}.\text{push}(p_t)$
+\EndLoop
+\end{algorithmic}
+\end{algorithm}
+
+**Relationship to Theorem CG.1.** The geodesic threshold $\rho$ in Algorithm IG.1 corresponds to the sandbox radius derived in \cref{sec:information-geometry}: setting $\rho = 2\arccos(\sqrt{1 - \kappa \cdot \varepsilon_\text{precision}})$ makes the drift detector and the belief sandbox mutually consistent---any update rejected by the sandbox would also trigger an alert, and vice versa.
+
+### Algorithm IG.2: Natural Gradient Anomaly Score
+
+\begin{algorithm}
+\caption{Natural Gradient Anomaly Score}
+\label{alg:natural-gradient-anomaly}
+\begin{algorithmic}[1]
+\Require Belief $p$, detection scores $s \in \mathbb{R}^n$, threshold $\theta_\text{nat}$
+\Ensure Natural gradient score $\nabla_\text{nat}$, anomaly flag
+\State Compute Fisher information: $G_{ii}(p) \gets 1/p_i$
+\State Compute natural gradient: $(\nabla_\text{nat})_i \gets p_i \cdot s_i$ \Comment{$G^{-1}\nabla = \text{diag}(p)\cdot s$}
+\State Compute anomaly score: $\text{score} \gets \|\nabla_\text{nat}\|_1 = \sum_i |p_i \cdot s_i|$
+\If{$\text{score} > \theta_\text{nat}$}
+    \State **return** $(\nabla_\text{nat}, \textsc{anomalous})$
+\Else
+    \State **return** $(\nabla_\text{nat}, \textsc{normal})$
+\EndIf
+\end{algorithmic}
+\end{algorithm}
+
+The natural gradient anomaly score weights each dimension's detection signal by the current belief probability, making the score sensitive to manipulations of high-probability beliefs (which carry more semantic content) while remaining robust to noise in low-probability dimensions.
+
+**Table: Information-geometric vs.\ KL-based detection comparison.** {#tab:ig-vs-kl}
+
+| Detector | AUC | TPR@1\%FPR | Geodesic Sensitivity | Boundary Attacks |
+| :--- | :--- | :--- | :--- | :--- |
+| KL Divergence | 0.87 | 0.61 | Low | Missed |
+| Fisher-Rao Geodesic (IG.1) | 0.90 | 0.71 | High | Detected |
+| Natural Gradient (IG.2) | 0.88 | 0.67 | Medium | Partial |
+| Ensemble (KL + Fisher-Rao) | **0.93** | **0.79** | High | Detected |
+
+*Note: Geodesic sensitivity measures detector response to attacks that travel along shortest-path trajectories on the belief manifold—these minimize detection risk while maximizing impact, and are precisely the attacks that KL-based detectors miss most often.*
+
+## Summary (Updated)
+
+These algorithms implement the detection methodology defined in Part 1, providing: (1) ROC curve construction with Youden's J threshold optimization, (2) multi-detector fusion via weighted averaging, majority voting, or learned MLP/attention, (3) online and batch detection architectures with configurable latency/accuracy trade-offs, (4) false positive mitigation achieving 75\% FPR reduction with 8\% TPR cost, (5) adaptive baseline update for non-stationary environments, and (6) information-geometric detection (Algorithms IG.1--IG.2) using the Fisher-Rao geodesic distance and natural gradient anomaly score for enhanced detection of boundary-trajectory attacks. The hybrid online+batch architecture (\cref{tab:hybrid-tradeoffs}) achieves the best detection-latency profile for production deployments; pairing it with the Fisher-Rao geodesic detector (\cref{tab:ig-vs-kl}) improves AUC from 0.94 to an estimated 0.95--0.96 on geodesic attack variants.
+
+For formal definitions and theoretical foundations, see Part 1, Section 5 and Part 2, \cref{sec:information-geometry}.

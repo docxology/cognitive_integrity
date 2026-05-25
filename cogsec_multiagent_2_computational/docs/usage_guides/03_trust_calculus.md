@@ -82,5 +82,5 @@ The trust calculus is tested in `tests/test_trust.py`, covering:
 Run tests:
 
 ```bash
-pytest tests/test_trust.py -v
+uv run pytest tests/test_trust.py -v
 ```

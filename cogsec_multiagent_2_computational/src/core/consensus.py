@@ -4,11 +4,17 @@ Byzantine-Tolerant Consensus for Multiagent Systems.
 Implements cognitive Byzantine agreement.
 """
 
+from __future__ import annotations
+
+import logging
 from dataclasses import dataclass
 from enum import Enum
 from typing import Dict, List, Optional, Set, Tuple
 
 import numpy as np
+
+# Module logger for tracking consensus decisions
+logger = logging.getLogger(__name__)
 
 
 class ConsensusResult(Enum):

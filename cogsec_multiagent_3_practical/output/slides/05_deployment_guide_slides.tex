@@ -74,6 +74,14 @@
 }{% if KOMA class
   \KOMAoptions{parskip=half}}
 \makeatother
+\usepackage{longtable,booktabs,array}
+\newcounter{none} % for unnumbered tables
+\usepackage{calc} % for calculating minipage widths
+\usepackage{caption}
+% Make caption package work with longtable
+\makeatletter
+\def\fnum@table{\tablename~\thetable}
+\makeatother
 \setlength{\emergencystretch}{3em} % prevent overfull lines
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
@@ -89,17 +97,21 @@
 
 \begin{document}
 
-\begin{frame}[fragile]{Deployment Profiles: Evaluated Configurations
-from Part 2}
-\protect\phantomsection\label{sec:deployment}
+\section{Deployment Profiles: Evaluated Configurations from Part
+2}\label{sec:deployment}
+
+\begin{frame}[allowframebreaks]{Deployment Profiles: Evaluated
+Configurations from Part 2}
 In Part 2, we evaluated specific configurations of the Cognitive
 Integrity Framework to understand how different tuning parameters
 affected security and performance outcomes. The following profiles are
 derived directly from the \textbf{Parameter Sensitivity Analysis} (Part
 2, Section 5.3) and \textbf{Architecture-Specific Results} (Part 2,
 Section 5.1).
+\end{frame}
 
-\begin{block}{Profile A: The ``Internal Tool'' Baseline (Low Latency)}
+\begin{frame}[fragile,allowframebreaks]{Profile A: The ``Internal Tool''
+Baseline (Low Latency)}
 \protect\phantomsection\label{profile-a-the-internal-tool-baseline-low-latency}
 This profile corresponds to the ``High Usability'' configuration tested
 in the sensitivity analysis (\(\delta=0.95\)). It is designed for
@@ -131,9 +143,10 @@ low-risk, human-in-the-loop environments.
   delegation chains but increases vulnerability to subtle trust
   laundering (\(\Omega_4\)).
 \end{itemize}
-\end{block}
+\end{frame}
 
-\begin{block}{Profile B: The ``Customer Facing'' Baseline (Balanced)}
+\begin{frame}[fragile,allowframebreaks]{Profile B: The ``Customer
+Facing'' Baseline (Balanced)}
 \protect\phantomsection\label{profile-b-the-customer-facing-baseline-balanced}
 This profile corresponds to the \textbf{Empirically Optimal
 Configuration} identified in Part 2 (Architecture-Specific Results),
@@ -167,10 +180,10 @@ which balances security guarantees with operational overhead.
   empirically observed trade-off between False Positives (0.06) and True
   Positives.
 \end{itemize}
-\end{block}
+\end{frame}
 
-\begin{block}{Profile C: The ``Autonomous Operator'' Baseline (High
-Assurance)}
+\begin{frame}[fragile,allowframebreaks]{Profile C: The ``Autonomous
+Operator'' Baseline (High Assurance)}
 \protect\phantomsection\label{profile-c-the-autonomous-operator-baseline-high-assurance}
 This profile corresponds to the ``Byzantine-Heavy'' configuration tested
 in Part 2 (Byzantine Consensus Analysis). It is required for
@@ -205,11 +218,9 @@ high-stakes, unsupervised environments.
   coordination attacks (\(\Omega_4\)), accepting higher latency for a
   near-zero semantic drift rate.
 \end{itemize}
-\end{block}
 \end{frame}
 
-\begin{frame}
-\begin{block}{Architecture-Specific Observations}
+\begin{frame}[allowframebreaks]{Architecture-Specific Observations}
 \protect\phantomsection\label{architecture-specific-observations}
 Beyond the parameter profiles, Part 2's architecture adapters revealed
 specific interactions between the defense framework and the underlying
@@ -234,11 +245,9 @@ definitions acted as implicit \textbf{Identity Tripwires}. When an agent
 attempted to act outside its defined role, the behavior was flagged as a
 role violation.
 \end{block}
-\end{block}
 \end{frame}
 
-\begin{frame}
-\begin{block}{Minimal Viable Implementation}
+\begin{frame}[allowframebreaks]{Minimal Viable Implementation}
 \protect\phantomsection\label{minimal-viable-implementation}
 We also evaluated a ``Minimal Viable Implementation'' (MVI) to determine
 the baseline efficacy of the framework's core components.
@@ -258,6 +267,79 @@ the baseline efficacy of the framework's core components.
 \textbf{Result}: Even this minimal setup shifted the success rate
 against low-effort attacks from 100\% (Baseline) to \textless5\%,
 providing a critical first line of defense.
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Alignment with Emerging Standards}
+\protect\phantomsection\label{alignment-with-emerging-standards}
+Practitioners deploying cognitive security must increasingly demonstrate
+compliance with industry and government standards. CIF's defense
+mechanisms map directly to two major 2025--2026 standardization efforts.
+
+\begin{block}{OWASP Top 10 for Agentic Applications (2026)}
+\protect\phantomsection\label{owasp-top-10-for-agentic-applications-2026}
+The OWASP Agentic Top 10 identifies ten risks (ASI01--ASI10) specific to
+autonomous multiagent deployments. CIF addresses the majority through
+its layered defense architecture:
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+OWASP Risk
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+CIF Defense
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Profile Coverage
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+ASI01: Agent Goal Hijack & Cognitive Firewall + Tripwires & All
+profiles \\
+ASI02: Tool Misuse/Exploitation & Belief Sandbox (tool output isolation)
+& Profiles B, C \\
+ASI03: Identity/Privilege Abuse & Trust Calculus (\(\delta^d\) decay) &
+All profiles \\
+ASI06: Memory/Context Poisoning & Tripwire monitoring + Drift detection
+& Profiles B, C \\
+ASI07: Insecure Inter-Agent Comm. & Provenance attestation & Profiles B,
+C \\
+ASI08: Cascading Failures & Byzantine Consensus & Profile C \\
+ASI10: Rogue Agents & Full CIF stack & Profile C \\
+\bottomrule\noalign{}
+\end{longtable}
+}
+\end{block}
+
+\begin{block}{NIST Zero Trust Architecture for AI Agents}
+\protect\phantomsection\label{nist-zero-trust-architecture-for-ai-agents}
+NIST's extension of SP 800-207 to AI agents establishes ``never trust,
+always verify'' principles. CIF operationalizes zero trust for cognitive
+interactions:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Continuous verification}: Every inter-agent message is
+  evaluated by the Cognitive Firewall
+\item
+  \textbf{Micro-segmentation}: Beliefs from external sources are
+  sandboxed before integration
+\item
+  \textbf{Least privilege}: Trust scores decay exponentially with
+  delegation depth (\(\delta^d\))
+\item
+  \textbf{Continuous authentication}: Provenance attestation provides
+  cryptographic message origin tracking
+\end{itemize}
+
+Profile A (Internal Tool) provides partial NIST alignment. Profile B
+(Customer Facing) achieves substantial compliance. Profile C (Autonomous
+Operator) is the profile that maps most completely to the controls cited
+in the OWASP and NIST frameworks above; treat any mapping as design
+intent, not certification.
 \end{block}
 \end{frame}
 

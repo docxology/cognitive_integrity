@@ -2,30 +2,30 @@
   "directories": {
     "pdf": {
       "exists": true,
-      "file_count": 9,
-      "size_mb": "1.70",
-      "total_size_bytes": 1784040,
+      "file_count": 10,
+      "size_mb": "1.78",
+      "total_size_bytes": 1866911,
       "largest_files": [
         {
           "name": "cogsec_multiagent_1_theory_combined.pdf",
-          "size_mb": "0.90",
+          "size_mb": "0.92",
           "path": "pdf/cogsec_multiagent_1_theory_combined.pdf"
         },
         {
           "name": "_combined_manuscript.tex",
-          "size_mb": "0.26",
+          "size_mb": "0.27",
           "path": "pdf/_combined_manuscript.tex"
         },
         {
           "name": "_combined_manuscript.md",
-          "size_mb": "0.23",
+          "size_mb": "0.24",
           "path": "pdf/_combined_manuscript.md"
         }
       ],
       "extensions": {
         ".pdf": 1,
         ".md": 1,
-        ".log": 1,
+        ".log": 2,
         ".aux": 1,
         ".blg": 1,
         ".bib": 1,
@@ -37,12 +37,12 @@
     "web": {
       "exists": true,
       "file_count": 16,
-      "size_mb": "0.62",
-      "total_size_bytes": 653185,
+      "size_mb": "0.64",
+      "total_size_bytes": 668171,
       "largest_files": [
         {
           "name": "_combined_manuscript.md",
-          "size_mb": "0.23",
+          "size_mb": "0.24",
           "path": "web/_combined_manuscript.md"
         },
         {
@@ -64,22 +64,22 @@
     "slides": {
       "exists": true,
       "file_count": 100,
-      "size_mb": "2.55",
-      "total_size_bytes": 2675027,
+      "size_mb": "2.85",
+      "total_size_bytes": 2991561,
       "largest_files": [
         {
           "name": "04_formal_framework_slides.pdf",
-          "size_mb": "0.32",
+          "size_mb": "0.34",
           "path": "slides/04_formal_framework_slides.pdf"
         },
         {
           "name": "03_threat_model_slides.pdf",
-          "size_mb": "0.20",
+          "size_mb": "0.16",
           "path": "slides/03_threat_model_slides.pdf"
         },
         {
           "name": "05_defense_mechanisms_slides.pdf",
-          "size_mb": "0.12",
+          "size_mb": "0.13",
           "path": "slides/05_defense_mechanisms_slides.pdf"
         }
       ],
@@ -98,7 +98,7 @@
       "exists": true,
       "file_count": 36,
       "size_mb": "4.30",
-      "total_size_bytes": 4505253,
+      "total_size_bytes": 4505283,
       "largest_files": [
         {
           "name": "trust_decay.png",
@@ -133,9 +133,9 @@
     },
     "reports": {
       "exists": true,
-      "file_count": 4,
+      "file_count": 5,
       "size_mb": "0.01",
-      "total_size_bytes": 6166,
+      "total_size_bytes": 8079,
       "largest_files": [
         {
           "name": "validation_report.json",
@@ -143,19 +143,19 @@
           "path": "reports/validation_report.json"
         },
         {
+          "name": "diagnostics.json",
+          "size_mb": "0.00",
+          "path": "reports/diagnostics.json"
+        },
+        {
           "name": "test_results.json",
           "size_mb": "0.00",
           "path": "reports/test_results.json"
-        },
-        {
-          "name": "test_results.md",
-          "size_mb": "0.00",
-          "path": "reports/test_results.md"
         }
       ],
       "extensions": {
-        ".md": 2,
-        ".json": 2
+        ".json": 3,
+        ".md": 2
       }
     },
     "simulations": {
@@ -168,36 +168,17 @@
     },
     "llm": {
       "exists": true,
-      "file_count": 6,
-      "size_mb": "0.25",
-      "total_size_bytes": 257611,
-      "largest_files": [
-        {
-          "name": "combined_review.md",
-          "size_mb": "0.09",
-          "path": "llm/combined_review.md"
-        },
-        {
-          "name": "translation_ar.md",
-          "size_mb": "0.08",
-          "path": "llm/translation_ar.md"
-        },
-        {
-          "name": "executive_summary.md",
-          "size_mb": "0.07",
-          "path": "llm/executive_summary.md"
-        }
-      ],
-      "extensions": {
-        ".md": 5,
-        ".json": 1
-      }
+      "file_count": 0,
+      "size_mb": "0.00",
+      "total_size_bytes": 0,
+      "largest_files": [],
+      "extensions": {}
     },
     "logs": {
       "exists": true,
       "file_count": 1,
       "size_mb": "0.00",
-      "total_size_bytes": 4530,
+      "total_size_bytes": 2457,
       "largest_files": [
         {
           "name": "pipeline.log",
@@ -210,12 +191,12 @@
       }
     }
   },
-  "total_files": 172,
-  "total_size_mb": 9.427845001220703,
+  "total_files": 168,
+  "total_size_mb": 9.577238082885742,
   "largest_files": [
     {
       "name": "cogsec_multiagent_1_theory_combined.pdf",
-      "size_mb": "0.90",
+      "size_mb": "0.92",
       "category": "pdf",
       "path": "pdf/cogsec_multiagent_1_theory_combined.pdf"
     },
@@ -233,7 +214,7 @@
     },
     {
       "name": "04_formal_framework_slides.pdf",
-      "size_mb": "0.32",
+      "size_mb": "0.34",
       "category": "slides",
       "path": "slides/04_formal_framework_slides.pdf"
     },
@@ -245,19 +226,19 @@
     },
     {
       "name": "_combined_manuscript.tex",
-      "size_mb": "0.26",
+      "size_mb": "0.27",
       "category": "pdf",
       "path": "pdf/_combined_manuscript.tex"
     },
     {
       "name": "_combined_manuscript.md",
-      "size_mb": "0.23",
+      "size_mb": "0.24",
       "category": "pdf",
       "path": "pdf/_combined_manuscript.md"
     },
     {
       "name": "_combined_manuscript.md",
-      "size_mb": "0.23",
+      "size_mb": "0.24",
       "category": "web",
       "path": "web/_combined_manuscript.md"
     },
@@ -269,18 +250,27 @@
     },
     {
       "name": "03_threat_model_slides.pdf",
-      "size_mb": "0.20",
+      "size_mb": "0.16",
       "category": "slides",
       "path": "slides/03_threat_model_slides.pdf"
     }
   ],
-  "missing_expected_files": [
-    "cogsec_multiagent_1_theory_combined.pdf or project_combined.pdf"
-  ],
+  "missing_expected_files": [],
+  "sizes_by_category": {
+    "pdf": 1.7804250717163086,
+    "web": 0.6372175216674805,
+    "slides": 2.8529748916625977,
+    "figures": 4.296572685241699,
+    "data": 0.0,
+    "reports": 0.007704734802246094,
+    "simulations": 0.0,
+    "llm": 0.0,
+    "logs": 0.0023431777954101562
+  },
   "file_counts_by_type": {
     ".pdf": 30,
-    ".md": 9,
-    ".log": 16,
+    ".md": 4,
+    ".log": 17,
     ".aux": 15,
     ".blg": 1,
     ".bib": 1,
@@ -295,18 +285,7 @@
     ".json": 8,
     ".csv": 1
   },
-  "sizes_by_category": {
-    "pdf": 1.7013931274414062,
-    "web": 0.6229257583618164,
-    "slides": 2.5511045455932617,
-    "figures": 4.296544075012207,
-    "data": 0.0,
-    "reports": 0.0058803558349609375,
-    "simulations": 0.0,
-    "llm": 0.24567699432373047,
-    "logs": 0.0043201446533203125
-  },
-  "pdf_files": 9,
+  "pdf_files": 10,
   "figures": 36,
   "data_files": 0
 }

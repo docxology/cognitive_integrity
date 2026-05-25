@@ -104,7 +104,7 @@
 \section{Supplementary: Eusocial Insect Intelligence and Colony
 Cognitive Security}\label{sec:eusocial-cogsec}
 
-\begin{frame}{Overview}
+\begin{frame}[allowframebreaks]{Overview}
 \protect\phantomsection\label{sec:eusocial-overview}
 This supplementary material introduces \emph{colony cognitive security}
 as a complementary paradigm to single-agent AI safety and alignment.
@@ -146,7 +146,7 @@ pathological outcomes (emergent misalignment).
 \end{block}
 \end{frame}
 
-\begin{frame}{Theoretical Foundations}
+\begin{frame}[allowframebreaks]{Theoretical Foundations}
 \protect\phantomsection\label{sec:eusocial-theory}
 \begin{block}{Stigmergy: Environment-Mediated Coordination}
 \protect\phantomsection\label{sec:stigmergy}
@@ -300,10 +300,10 @@ information-theoretic-ally impossible (\cref{thm:stealth-impact}).
 \textbf{Metapleural Gland Secretions}: Many ant species possess
 metapleural glands that continuously secrete antimicrobial compounds,
 creating a ``security substrate'' independent of individual vigilance
-{[}@fernández-marín2006evolution{]}. \emph{AI analog}:
-Environmental-level defenses (encrypted shared memory, authenticated
-message queues) that provide baseline security regardless of individual
-agent security posture.
+{[}@fernandez2006evolution{]}. \emph{AI analog}: Environmental-level
+defenses (encrypted shared memory, authenticated message queues) that
+provide baseline security regardless of individual agent security
+posture.
 
 \textbf{Trail Pheromone Decay}: Ant trail pheromones are designed to
 evaporate, ensuring that outdated information doesn't persist
@@ -337,7 +337,7 @@ to manifested attacks.
 dances that encode distance and direction to food sources. Observing
 bees don't just follow instructions---they verify dance accuracy by
 cross-checking against their own experience and rejecting inconsistent
-information {[}@grüter2008dance{]}. \emph{AI analog}: Delegated
+information {[}@gruter2008dance{]}. \emph{AI analog}: Delegated
 information should be verifiable against agent's existing knowledge
 base; pure trust propagation without verification violates cognitive
 integrity.
@@ -372,7 +372,8 @@ The most counterintuitive biological insights for AI security include:
 \end{block}
 \end{frame}
 
-\begin{frame}{Colony CogSec: Distinct Security Properties}
+\begin{frame}[allowframebreaks]{Colony CogSec: Distinct Security
+Properties}
 \protect\phantomsection\label{sec:colony-properties}
 Colony cognitive security addresses threats and defenses that emerge
 only at the collective level.
@@ -483,7 +484,7 @@ recognition systems without triggering individual alarm responses
 \end{block}
 \end{frame}
 
-\begin{frame}{The Benchmark Gap}
+\begin{frame}[allowframebreaks]{The Benchmark Gap}
 \protect\phantomsection\label{sec:benchmark-gap}
 \begin{block}{Current State of Multiagent Security Evaluation}
 \protect\phantomsection\label{sec:current-benchmarks}
@@ -519,8 +520,10 @@ GAIA {[}@mialon2023gaia{]} & Single/few agents, reasoning & Minimal \\
 }
 
 The attack corpus in Part 2 addresses multiagent scenarios but still
-emphasizes agent-targeted attacks within an operator. No existing
-benchmark evaluates:
+emphasizes agent-targeted attacks within an operator, and the
+cross-domain goal-hijacking analysis in Part 4 provides ten
+operational-domain case studies. No existing benchmark, however,
+evaluates:
 
 \begin{enumerate}
 \tightlist
@@ -561,7 +564,7 @@ third.
 \end{block}
 \end{frame}
 
-\begin{frame}{Proposed Colony CogSec Benchmarks}
+\begin{frame}[allowframebreaks]{Proposed Colony CogSec Benchmarks}
 \protect\phantomsection\label{sec:proposed-benchmarks}
 We propose five benchmark scenarios grounded in eusocial insect analogs,
 formalized using CIF notation.
@@ -765,7 +768,7 @@ The collective function produces outcomes that violate operator goals despite ea
 \end{block}
 \end{frame}
 
-\begin{frame}{Colony CogSec Metrics}
+\begin{frame}[allowframebreaks]{Colony CogSec Metrics}
 \protect\phantomsection\label{sec:colony-metrics}
 \begin{definition}[Colony CogSec Score]
 \label{def:cogsec-score}
@@ -791,7 +794,7 @@ Section S03.
 \end{quote}
 \end{frame}
 
-\begin{frame}{Design Principles}
+\begin{frame}[allowframebreaks]{Design Principles}
 \protect\phantomsection\label{sec:design-principles}
 Colony CogSec principles formalize the design constraints for collective
 cognitive security.
@@ -850,11 +853,15 @@ both individual-targeted and colony-targeted attacks.
 \begin{quote}
 \textbf{Note}: For implementation guidance, operational checklists, and
 practical deployment advice, see Part 3: Section 2 (Operator Posture).
+For domain-specific application of colony-level defenses across critical
+operational sectors (including ten high-stakes domains, three universal
+attack patterns, and retrospective analysis of 2024--2025 AI-agent
+incidents) see Part 4.
 \end{quote}
 \end{block}
 \end{frame}
 
-\begin{frame}{Relationship to Main Framework}
+\begin{frame}[allowframebreaks]{Relationship to Main Framework}
 \protect\phantomsection\label{sec:relationship-main}
 Colony CogSec complements rather than replaces the individual-focused
 CIF framework.
@@ -889,14 +896,14 @@ Collective impact cannot be both high and collectively undetectable, but the bou
 \end{block}
 \end{frame}
 
-\begin{frame}{This scaling effect explains why large colonies can
-exhibit resilience---the collective detection capacity grows with
-\(n\)---but also why large-scale emergent attacks can evade individual
-detection}
+\begin{frame}[allowframebreaks]{This scaling effect explains why large
+colonies can exhibit resilience---the collective detection capacity
+grows with \(n\)---but also why large-scale emergent attacks can evade
+individual detection}
 \protect\phantomsection\label{this-scaling-effect-explains-why-large-colonies-can-exhibit-resiliencethe-collective-detection-capacity-grows-with-nbut-also-why-large-scale-emergent-attacks-can-evade-individual-detection}
 \end{frame}
 
-\begin{frame}{Open Questions}
+\begin{frame}[allowframebreaks]{Open Questions}
 \protect\phantomsection\label{sec:eusocial-open-questions}
 Colony CogSec opens several research directions beyond the scope of this
 work, many inspired by specific biological phenomena that lack current
@@ -991,7 +998,7 @@ AI analogs.
 \end{block}
 \end{frame}
 
-\begin{frame}{References}
+\begin{frame}[allowframebreaks]{References}
 \protect\phantomsection\label{sec:eusocial-references}
 The following references supplement the main bibliography
 (\cref{sec:references}) with eusocial intelligence literature:
@@ -1024,7 +1031,7 @@ The following references supplement the main bibliography
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Proofs}
+\begin{frame}[allowframebreaks]{Proofs}
 \protect\phantomsection\label{sec:eusocial-proofs}
 \begin{block}{Proof of Theorem \ref{thm:redundancy-resilience}}
 \protect\phantomsection\label{sec:proof-redundancy-resilience}

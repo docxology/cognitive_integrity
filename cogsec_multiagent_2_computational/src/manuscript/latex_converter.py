@@ -1,4 +1,6 @@
 """
+from __future__ import annotations
+
 LaTeX Table Converter Module
 ============================
 

@@ -91,6 +91,7 @@
       color: #606060;
     }
     code {
+      white-space: pre-wrap;
       font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
       font-size: 85%;
       margin: 0;
@@ -154,7 +155,6 @@
     #TOC a:not(:hover) {
       text-decoration: none;
     }
-    code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
     div.columns{display: flex; gap: min(4vw, 1.5em);}
     div.column{flex: auto; overflow-x: auto;}
@@ -357,8 +357,12 @@ class="toc-section-number">2.6</span> Research Questions</a></li>
 class="toc-section-number">2.7</span> Contributions</a></li>
 <li><a href="#sec:organization" id="toc-sec:organization"><span
 class="toc-section-number">2.8</span> Paper Organization</a></li>
+<li><a href="#sec:reading-companion"
+id="toc-sec:reading-companion"><span
+class="toc-section-number">2.9</span> Reading Companion: Where to Find
+Specific Topics</a></li>
 <li><a href="#sec:scope" id="toc-sec:scope"><span
-class="toc-section-number">2.9</span> Scope and Limitations</a></li>
+class="toc-section-number">2.10</span> Scope and Limitations</a></li>
 </ul></li>
 <li><a href="#sec:threat-model" id="toc-sec:threat-model"><span
 class="toc-section-number">3</span> Threat Model: Adversary Classes,
@@ -1124,13 +1128,17 @@ updates; invariants for belief integrity, goal preservation, and trust
 boundedness; model checking configurations for safety property
 verification; and a complete notation system for attack
 parameterization, defense specification, and cognitive state
-representation. This is Part 1 of a three-part series: Part 1 (this
+representation. This is Part 1 of a four-part series: Part 1 (this
 paper, DOI: 10.5281/zenodo.18364119) presents formal foundations and
 theoretical analysis; Part 2 (DOI: 10.5281/zenodo.18364128) provides
 computational validation through architecture-aware parametric
-simulation; Part 3 (DOI: 10.5281/zenodo.18364130) offers practical
-deployment guidance. The framework will continue to be developed and
-versioned at <a href="https://github.com/docxology/cognitive_integrity/"
+simulation; Part 3 (DOI: 10.5281/zenodo.18364130) offers a qualitative
+review and practitioner’s deployment guidance; Part 4 () extends the
+framework through CIF-AD-OODA integration and case studies across ten
+critical domains (goal-hijacking defense for infrastructure, supply
+chain, cyber, biowarfare, and information ecosystems). The framework
+will continue to be developed and versioned at <a
+href="https://github.com/docxology/cognitive_integrity/"
 class="uri">https://github.com/docxology/cognitive_integrity/</a>.</p>
 <hr />
 <h1 data-number="2"
@@ -1390,7 +1398,9 @@ mechanisms for cognitive security:</p>
 <p>: Part 2 of this series demonstrates the practical viability of these
 formal mechanisms across six production architectures, showing that
 layered cognitive defenses significantly outperform single-mechanism
-approaches.</p>
+approaches. Practitioner translations of these results appear in Part 3;
+domain-specific applications and real-world incident analyses appear in
+Part 4.</p>
 <h2 data-number="2.8" id="sec:organization"><span
 class="header-section-number">2.8</span> Paper Organization</h2>
 <p>The remainder of this paper is structured as follows:</p>
@@ -1415,12 +1425,36 @@ related work.</p>
 research.</p>
 <p> A separate, second, companion paper reports empirical results from
 architecture-aware parametric simulation across 950 attack vectors and
-six production architectures.</p>
-<p> A separate, third, companion paper provides qualitative insights,
-operational checklists, and risk assessment frameworks for deploying
-cognitive security mechanisms.</p>
-<h2 data-number="2.9" id="sec:scope"><span
-class="header-section-number">2.9</span> Scope and Limitations</h2>
+six production architectures. Readers seeking detection rates, ablation
+studies, Bayesian uncertainty quantification, and architecture-specific
+defense configurations should consult Part 2 (DOI:
+10.5281/zenodo.18364128).</p>
+<p> A separate, third, companion paper provides a qualitative review and
+practitioner’s synthesis—accessible-language summaries of the
+theoretical and empirical findings, operational checklists, risk
+assessment frameworks, deployment guides, monitoring strategies, and
+cost-benefit analyses. Part 3 assumes no formal prerequisites and
+targets security teams operating multiagent systems (DOI:
+10.5281/zenodo.18364130).</p>
+<p> A fourth companion paper () applies CIF across ten high-stakes
+operational sectors—rare-earth mining, nation-state alliances,
+cyber-security, drone warfare, supply chains, biowarfare, food security,
+trade wars, infrastructure, and information ecosystems—through the
+integrated CIF-AD-OODA analytical model. Readers interested in
+domain-specific goal-hijacking defenses, universal attack patterns (FR
+polarity inversion, constraint relaxation, context boundary violation),
+or retrospective analysis of documented 2024–2025 AI agent security
+incidents should consult Part 4.</p>
+<h2 data-number="2.9" id="sec:reading-companion"><span
+class="header-section-number">2.9</span> Reading Companion: Where to
+Find Specific Topics</h2>
+<p>This paper is designed to stand alone as the formal-foundations
+reference of the series. The table below points readers to the sibling
+paper and section where each related topic is developed most fully, so
+that this paper can be used in conjunction with—rather than
+requiring—its companions.</p>
+<h2 data-number="2.10" id="sec:scope"><span
+class="header-section-number">2.10</span> Scope and Limitations</h2>
 <p>: Attacks exploiting agent reasoning, trust, and coordination
 mechanisms in multiagent AI systems.</p>
 :
@@ -1775,7 +1809,7 @@ class="math inline">\(\eta &lt; 1\)</span> reflects elevated adversarial
 risk in visual modalities.</p>
 <h3 data-number="4.4.2" id="formal-trust-model"><span
 class="header-section-number">4.4.2</span> Formal Trust Model</h3>
-<div class="figure"><img src="figures/trust_network.pdf" alt="figures/trust_network" style="max-width: 90%%; height: auto;"></div>
+<div class="figure"><img src="../figures/trust_network.pdf" alt="../figures/trust_network" style="max-width: 90%%; height: auto;"></div>
 <p> visualizes the trust relationships in a representative multiagent
 operator. Edge weights represent trust scores <span
 class="math inline">\(\mathcal{T}_{i \to j}\)</span>, with thicker edges
@@ -1800,12 +1834,12 @@ trust calculus: it establishes that trust cannot be “laundered” through
 delegation chains. No matter how an adversary routes content through
 trusted intermediaries, each hop reduces effective trust by factor <span
 class="math inline">\(\delta\)</span>.</em></p>
-<div class="figure"><img src="figures/trust_decay.pdf" alt="figures/trust_decay" style="max-width: 90%%; height: auto;"></div>
+<div class="figure"><img src="../figures/trust_decay.pdf" alt="../figures/trust_decay" style="max-width: 90%%; height: auto;"></div>
 <p> visualizes the exponential decay of trust across delegation depth
 for various decay factors <span class="math inline">\(\delta\)</span>,
 demonstrating how the bounded delegation mechanism () prevents trust
 amplification.</p>
-<div class="figure"><img src="figures/trust_calculus_comprehensive.pdf" alt="figures/trust_calculus_comprehensive" style="max-width: 1.0100%; height: auto;"></div>
+<div class="figure"><img src="../figures/trust_calculus_comprehensive.pdf" alt="../figures/trust_calculus_comprehensive" style="max-width: 1.0100%; height: auto;"></div>
 <p> presents the complete trust calculus mechanics across four panels.
 Panel A demonstrates the trust decay function <span
 class="math inline">\(\mathcal{T}(a \to c) \leq \delta^d \cdot
@@ -1912,12 +1946,12 @@ constraints on what is possible.</em></p>
 attackers: high-impact attacks are easier to detect, while stealthy
 attacks have limited effect. This is not a limitation of our defenses—it
 is a mathematical constraint that any attack must satisfy.</em></p>
-<div class="figure"><img src="figures/cif_architecture.pdf" alt="figures/cif_architecture" style="max-width: 1.0100%; height: auto;"></div>
+<div class="figure"><img src="../figures/cif_architecture.pdf" alt="../figures/cif_architecture" style="max-width: 1.0100%; height: auto;"></div>
 <p> presents the layered CIF architecture with architectural defenses
 (left), runtime defenses (center), and coordination mechanism (right).
 expands this to show data flow, attack interception points, and defense
 composition.</p>
-<div class="figure"><img src="figures/cif_comprehensive.pdf" alt="figures/cif_comprehensive" style="max-width: 1.0100%; height: auto;"></div>
+<div class="figure"><img src="../figures/cif_comprehensive.pdf" alt="../figures/cif_comprehensive" style="max-width: 1.0100%; height: auto;"></div>
 <p> provides a detailed view of the complete CIF architecture, including
 all component formulas and their interactions. The defense layer
 implements the cognitive firewall with threshold <span
@@ -2379,7 +2413,10 @@ security, limited delegation utility</li>
 flexibility, weaker bounds</li>
 </ul>
 <p>Organizations must calibrate this tradeoff based on their threat
-model ( in Part 3).</p>
+model ( in Part 3). Domain-calibrated <span
+class="math inline">\(\delta\)</span> choices — from millisecond OODA
+cycles in drone swarms to year-scale diplomatic agents — are analyzed in
+Part 4 across ten critical operational domains.</p>
 <h3 data-number="8.2.3"
 id="information-theoretic-detection-limits"><span
 class="header-section-number">8.2.3</span> Information-Theoretic
@@ -2746,20 +2783,30 @@ to principled engineering.</p>
 <p><strong>Part 2</strong> of this series provides empirical validation
 demonstrating that these formal mechanisms translate to practical
 protection across diverse production architectures. <strong>Part
-3</strong> offers actionable deployment guidance for practitioners and
-AI agents. Together, the three papers provide a comprehensive framework
-for understanding, implementing, and operating cognitive security in
-multiagent AI systems.</p>
+3</strong> offers a qualitative review and practitioner’s
+synthesis—accessible-language distillation of theoretical and empirical
+findings, deployment checklists, incident response playbooks, and risk
+assessment frameworks. <strong>Part 4</strong> applies the framework
+across ten critical operational domains through the CIF-AD-OODA
+integration model, identifying universal goal-hijacking patterns and
+validating CIF coverage against six documented 2024–2025 AI agent
+incidents. Together, the four papers provide a comprehensive framework
+for understanding, implementing, operating, and deploying cognitive
+security in multiagent AI systems.</p>
 <p>The formal gaps identified in this work—semantic equivalence attacks,
 progressive drift, orchestrator compromise—define the frontier for
 future research, while the provable guarantees (bounded trust,
 composable defenses, information-theoretic limits) provide the stable
 theoretical foundation on which that research can build.</p>
 <p>For empirical validation of these theories, we refer the reader to
-<strong>Part 2: Computational Validation</strong>. For actionable
-deployment strategies, including operator posture checklists and risk
-assessment frameworks, we refer the reader to <strong>Part 3: Practical
-Guidance</strong>.</p>
+<strong>Part 2: Computational Validation</strong> (DOI:
+10.5281/zenodo.18364128). For actionable deployment strategies,
+including operator posture checklists, deployment guides, and risk
+assessment frameworks, we refer the reader to <strong>Part 3: A
+Qualitative Review for Practitioners</strong> (DOI:
+10.5281/zenodo.18364130). For domain-specific goal-hijacking analyses
+and real-world incident mapping, we refer the reader to <strong>Part 4:
+Applications of the Cognitive Integrity Framework</strong>.</p>
 <p></p>
 <p>Cognitive security is not optional for the multiagent future. It is
 foundational.</p>
@@ -2963,7 +3010,7 @@ information-theoretic-ally impossible ().</p>
 possess metapleural glands that continuously secrete antimicrobial
 compounds, creating a “security substrate” independent of individual
 vigilance <span class="citation"
-data-cites="fernández-marín2006evolution">[@fernández-marín2006evolution]</span>.
+data-cites="fernandez2006evolution">[@fernandez2006evolution]</span>.
 <em>AI analog</em>: Environmental-level defenses (encrypted shared
 memory, authenticated message queues) that provide baseline security
 regardless of individual agent security posture.</p>
@@ -3000,7 +3047,7 @@ waggle dances that encode distance and direction to food sources.
 Observing bees don’t just follow instructions—they verify dance accuracy
 by cross-checking against their own experience and rejecting
 inconsistent information <span class="citation"
-data-cites="grüter2008dance">[@grüter2008dance]</span>. <em>AI
+data-cites="gruter2008dance">[@gruter2008dance]</span>. <em>AI
 analog</em>: Delegated information should be verifiable against agent’s
 existing knowledge base; pure trust propagation without verification
 violates cognitive integrity.</p>
@@ -3122,8 +3169,10 @@ data-cites="mialon2023gaia">[@mialon2023gaia]</span></td>
 </tbody>
 </table>
 <p>The attack corpus in Part 2 addresses multiagent scenarios but still
-emphasizes agent-targeted attacks within an operator. No existing
-benchmark evaluates:</p>
+emphasizes agent-targeted attacks within an operator, and the
+cross-domain goal-hijacking analysis in Part 4 provides ten
+operational-domain case studies. No existing benchmark, however,
+evaluates:</p>
 <ol type="1">
 <li><strong>Emergent collective resilience</strong> — How do colonies
 absorb individual compromises?</li>
@@ -3283,7 +3332,10 @@ both individual-targeted and colony-targeted attacks.</p>
 <blockquote>
 <p><strong>Note</strong>: For implementation guidance, operational
 checklists, and practical deployment advice, see Part 3: Section 2
-(Operator Posture).</p>
+(Operator Posture). For domain-specific application of colony-level
+defenses across critical operational sectors (including ten high-stakes
+domains, three universal attack patterns, and retrospective analysis of
+2024–2025 AI-agent incidents) see Part 4.</p>
 </blockquote>
 <hr />
 <h2 data-number="11.8" id="sec:relationship-main"><span

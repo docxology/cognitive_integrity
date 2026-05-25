@@ -1,10 +1,7 @@
-\beamer@slide {discussion-cross-domain-analysis-of-cognitive-integrity}{1}
-\beamer@slide {sec:attack_patterns}{1}
-\beamer@slide {the-independence-axiom-under-adversarial-pressure}{1}
-\beamer@slide {ooda-transient-dynamics}{1}
-\beamer@slide {sec:mechanism_coverage}{1}
-\beamer@slide {novel-defense-patterns}{1}
-\beamer@slide {byzantine-fault-tolerance-validation}{1}
-\beamer@slide {comparison-with-existing-frameworks}{1}
-\beamer@slide {empirical-grounding-real-world-incidents}{1}
-\beamer@slide {sec:limitations_discussion}{1}
+\beamer@slide {sec:attack_patterns}{3}
+\beamer@slide {the-independence-axiom-under-adversarial-pressure}{8}
+\beamer@slide {ooda-transient-dynamics}{10}
+\beamer@slide {sec:mechanism_coverage}{16}
+\beamer@slide {novel-defense-patterns}{20}
+\beamer@slide {byzantine-fault-tolerance-validation}{23}
+\beamer@slide {comparison-with-existing-frameworks}{27}

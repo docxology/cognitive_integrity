@@ -9,12 +9,14 @@ from __future__ import annotations
 
 from typing import Dict
 
+import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.figure import Figure
 
 from ..style import COLORS, FONTSIZE, apply_style, save_figure
 
+matplotlib.use("Agg")
 logger = __import__('logging').getLogger(__name__)
 
 

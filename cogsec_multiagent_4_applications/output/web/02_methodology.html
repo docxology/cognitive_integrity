@@ -91,6 +91,7 @@
       color: #606060;
     }
     code {
+      white-space: pre-wrap;
       font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
       font-size: 85%;
       margin: 0;
@@ -154,7 +155,6 @@
     #TOC a:not(:hover) {
       text-decoration: none;
     }
-    code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
     div.columns{display: flex; gap: min(4vw, 1.5em);}
     div.column{flex: auto; overflow-x: auto;}
@@ -282,7 +282,12 @@ class="math inline">\(n\)</span> total</td>
 </table>
 <p>These mechanisms compose in series and parallel to achieve layered
 defense. Paper 2 demonstrates that the recommended defense stack
-achieves 99.5% detection across 950 attack scenarios.</p>
+achieves 94–100% detection at the parametric design ceiling across 950
+attack scenarios and four production multiagent architectures. Paper 3
+translates these results into deployment guidance, monitoring playbooks,
+and cost–benefit frameworks; readers seeking engineering guidance on
+instantiating the mechanisms below in production should consult Part
+3.</p>
 <h2 id="adversary-classification">Adversary Classification</h2>
 <p>We adopt the five-tier adversary taxonomy from Paper 1 :</p>
 <table>
@@ -376,7 +381,9 @@ these are identified and elevated as contributions.</p>
 <p><strong>(v) Validation Anchoring.</strong> Cross-reference the
 defense mapping to Paper 2’s benchmark results , confirming that the
 proposed CIF mechanisms have demonstrated efficacy against the relevant
-adversary class.</p>
+adversary class. Where appropriate, we additionally anchor
+deployment-level considerations to Paper 3’s operator posture and
+incident-response guidance .</p>
 <h2 id="domain-selection-criteria">Domain Selection Criteria</h2>
 <p>The ten domains were selected to ensure comprehensive coverage along
 three dimensions:</p>

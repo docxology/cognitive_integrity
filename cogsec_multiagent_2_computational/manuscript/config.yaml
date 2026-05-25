@@ -1,6 +1,6 @@
 paper:
   title: "Cognitive Integrity Framework: Computational Validation"
-  subtitle: "Part 2 of 3: Implementation and Empirical Analysis"
+  subtitle: "Part 2 of 4: Implementation and Empirical Analysis"
   short_title: "CIF Validation"
   version: "1.0"
   type: "research"
@@ -30,26 +30,31 @@ abstract: |
   This paper presents computational validation of the Cognitive Integrity
   Framework (CIF) theoretical foundations established in Part 1. We provide
   complete implementations of defense mechanisms including cognitive firewalls,
-  belief sandboxes, trust calculus, and Byzantine-tolerant consensus protocols.
+  belief sandboxes, tripwires, drift and anomaly scoring, trust calculus with
+  bounded delegation, provenance tracking, and Byzantine-tolerant consensus.
 
-  Evaluation across four production multiagent architectures (Claude Code, AutoGPT,
-  CrewAI, LangGraph) using a corpus of 950 cognitive attacks
-  demonstrates: 94% detection rate with layered defenses; trust calculus preventing
-  amplification attacks across all architectures; acceptable performance overhead
-  (20-25% latency increase).
+  Multi-tier evaluation using a 950-attack corpus: real pipeline evaluation yields
+  mean 44.7% detection across 30 seeds (Claude Code); LLM-backed validation (N=10,
+  Gemma 3 4B) achieves 80-100% across two architectures; colony benchmarks show
+  81-100% on structured adversarial scenarios at 20-100 agent scale. Parametric
+  simulation establishes 94-100% design ceiling. Ablation studies identify the
+  Detection module as highest-contribution component (42% of pipeline detection).
 
-  Statistical analysis confirms significance across all attack types with large
-  effect sizes (Cohen's d > 0.8). Ablation studies quantify individual defense
-  contributions. Scalability analysis characterizes overhead growth with agent count.
-
-  This is Part 2 of a three-part series:
+  This is Part 2 of a four-part series:
   - Part 1 (DOI: 10.5281/zenodo.18364119): Formal foundations and theoretical analysis
   - Part 2 (this paper): Computational validation and implementation
-  - Part 3 (DOI: 10.5281/zenodo.18364130): Practical deployment guidance
+  - Part 3 (DOI: 10.5281/zenodo.18364130): Qualitative review and practitioner's deployment guidance
+  - Part 4: Applications --- CIF-AD-OODA integration and goal-hijacking analysis across ten critical domains
+
+metadata:
+  license: "Apache-2.0"
+  language: "en"
 
 llm:
   translations:
     enabled: true
     languages: [zh, es, ar]
-  review:
+  reviews:
     enabled: true
+    types:
+      - executive_summary

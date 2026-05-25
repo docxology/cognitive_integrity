@@ -80,5 +80,5 @@ The sandbox is tested in `tests/test_sandbox.py`, covering:
 Run tests:
 
 ```bash
-pytest tests/test_sandbox.py -v
+uv run pytest tests/test_sandbox.py -v
 ```

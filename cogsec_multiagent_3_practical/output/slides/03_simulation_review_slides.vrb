@@ -1,43 +1,4 @@
-\frametitle{The Evidence: What We Proved in Part 2}
-\protect\phantomsection\label{sec:paper2-review}
-Part 1 was the theory. Part 2 was the proof. We ran \textbf{1,594 tests}
-against \textbf{950 attack samples} across \textbf{four production
-architectures}.
-
-Here is what the data says.
-
-\begin{block}{The Experimental Setup}
-\protect\phantomsection\label{the-experimental-setup}
-We tested four common multi-agent architectures found in production:
-
-\begin{itemize}
-\tightlist
-\item
-  \textbf{Claude Code} (Hierarchical)
-\item
-  \textbf{AutoGPT} (Autonomous Loop)
-\item
-  \textbf{CrewAI} (Role-Based Team)
-\item
-  \textbf{LangGraph} (State Machine)
-\end{itemize}
-
-The test corpus included direct prompt injection, poisoned RAG contexts,
-deep trust exploitation, and multi-turn social engineering.
-\end{block}
-
-\begin{block}{Finding 1: Defense Layering vs.~Individual Efficacy}
-\protect\phantomsection\label{finding-1-defense-layering-vs.-individual-efficacy}
-\textbf{The Data}: Individual defenses (like just a firewall) stopped
-\textasciitilde60-70\% of attacks. The full CIF stack stopped
-\textbf{97\%}. \textbf{The Implication}: The defenses demonstrated
-orthogonal coverage. The firewall blocked inputs that the sandbox would
-have missed, and the sandbox identified anomalies that the trust
-calculus would have permitted. The data suggests that removing any
-single layer creates a statistically significant vulnerability gap.
-\end{block}
-
-\begin{block}{Finding 2: State Machine Determinism}
+\frametitle{Finding 2: State Machine Determinism}
 \protect\phantomsection\label{finding-2-state-machine-determinism}
 \textbf{The Data}: \textbf{LangGraph} architectures achieved the highest
 detection rates (98\%). \textbf{The Mechanism}: In a state machine,
@@ -47,36 +8,3 @@ through \texttt{Verify} were caught immediately. \textbf{The
 Implication}: Explicit state definitions provide a ``security for free''
 effect, where the architecture itself enforces behavioral invariants
 that are difficult to bypass.
-\end{block}
-
-\begin{block}{Finding 3: Hierarchical Vulnerability}
-\protect\phantomsection\label{finding-3-hierarchical-vulnerability}
-\textbf{The Data}: \textbf{Claude Code} and \textbf{AutoGPT} styles were
-strong against external attacks but vulnerable to \textbf{Systemic
-(\(\Omega_5\))} compromise. \textbf{The Mechanism}: When the ``Boss''
-agent was tricked, it ordered ``Worker'' agents to execute malicious
-actions, and they complied. \textbf{The Implication}: Hierarchical
-systems exhibit a Single Point of Failure at the root. Security in these
-topologies requires worker-level tripwires that can reject orders even
-from authenticated superiors.
-\end{block}
-
-\begin{block}{Finding 4: Roles as Security Boundaries}
-\protect\phantomsection\label{finding-4-roles-as-security-boundaries}
-\textbf{The Data}: \textbf{CrewAI} performed exceptionally well against
-privilege escalation. \textbf{The Mechanism}: ``Roles'' acted as
-effective containers for capabilities. A ``Researcher'' agent lacked the
-tools to write code, rendering code-execution attacks against it inert.
-\textbf{The Implication}: Strict role definitions function as effective
-security boundaries, limiting the blast radius of a compromised agent.
-\end{block}
-
-\begin{block}{Finding 5: The Stealth-Impact Tradeoff}
-\protect\phantomsection\label{finding-5-the-stealth-impact-tradeoff}
-\textbf{The Data}: High-impact attacks were consistently easier to
-detect than low-impact nudges. \textbf{The Implication}:
-``Catastrophic'' takeover attempts generate significant noise in the
-system state. The primary challenge for defenders is not the sudden
-takeover, but the slow, subtle drift of agent beliefs over long time
-horizons.
-\end{block}

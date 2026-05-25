@@ -91,6 +91,7 @@
       color: #606060;
     }
     code {
+      white-space: pre-wrap;
       font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
       font-size: 85%;
       margin: 0;
@@ -154,7 +155,6 @@
     #TOC a:not(:hover) {
       text-decoration: none;
     }
-    code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
     div.columns{display: flex; gap: min(4vw, 1.5em);}
     div.column{flex: auto; overflow-x: auto;}
@@ -175,9 +175,11 @@
 </head>
 <body>
 <h1 id="sec:paper2-review">The Evidence: What We Proved in Part 2</h1>
-<p>Part 1 was the theory. Part 2 was the proof. We ran <strong>1,594
-tests</strong> against <strong>950 attack samples</strong> across
-<strong>four production architectures</strong>.</p>
+<p>Part 1 supplies the formal apparatus. Part 2 supplies the empirical
+evaluation: tested CIF modules, a <strong>950-attack</strong> corpus,
+and an architecture-aware simulation over four headline topologies
+(Claude Code, AutoGPT, CrewAI, LangGraph), with broader adapter coverage
+documented in Part 2.</p>
 <p>Here is what the data says.</p>
 <h2 id="the-experimental-setup">The Experimental Setup</h2>
 <p>We tested four common multi-agent architectures found in
@@ -194,12 +196,14 @@ engineering.</p>
 <h2 id="finding-1-defense-layering-vs.-individual-efficacy">Finding 1:
 Defense Layering vs. Individual Efficacy</h2>
 <p><strong>The Data</strong>: Individual defenses (like just a firewall)
-stopped ~60-70% of attacks. The full CIF stack stopped
-<strong>97%</strong>. <strong>The Implication</strong>: The defenses
-demonstrated orthogonal coverage. The firewall blocked inputs that the
-sandbox would have missed, and the sandbox identified anomalies that the
-trust calculus would have permitted. The data suggests that removing any
-single layer creates a statistically significant vulnerability gap.</p>
+stopped ~60–70% of attacks. The full CIF stack achieved <strong>94%
+overall detection</strong> (95% CI: [0.92, 0.96]), with specific
+architectures reaching 97–98% for direct injection. <strong>The
+Implication</strong>: The defenses demonstrated orthogonal coverage. The
+firewall blocked inputs that the sandbox would have missed, and the
+sandbox identified anomalies that the trust calculus would have
+permitted. The data suggests that removing any single layer creates a
+statistically significant vulnerability gap.</p>
 <h2 id="finding-2-state-machine-determinism">Finding 2: State Machine
 Determinism</h2>
 <p><strong>The Data</strong>: <strong>LangGraph</strong> architectures
@@ -241,20 +245,130 @@ Implication</strong>: “Catastrophic” takeover attempts generate
 significant noise in the system state. The primary challenge for
 defenders is not the sudden takeover, but the slow, subtle drift of
 agent beliefs over long time horizons.</p>
+<h2
+id="finding-6-emergent-misalignment-is-the-nash-optimal-attack">Finding
+6: Emergent Misalignment Is the Nash-Optimal Attack</h2>
+<p>The colony benchmark reveals a striking pattern: <strong>emergent
+misalignment achieves the lowest detection rate (56.1%) at the highest
+false positive rate (46.6%)</strong> of any evaluated scenario. Part 2’s
+game-theoretic analysis explains why: in the zero-sum game between CIF
+and an adversary, emergent misalignment is the Nash-equilibrium attack
+strategy. It is the attacker’s best response to full CIF deployment.</p>
+<p>The game-theoretic payoff matrix shows that: - Full CIF achieves 94%
+detection against direct injection (Ω₁), 89% against trust exploitation
+(Ω₄) - Against emergent misalignment (distributed sub-threshold drift
+with no explicit adversaries), detection falls to 56.1% - A rational
+adversary, knowing CIF is deployed, will prefer emergent misalignment
+over direct injection</p>
+<p>This is not a failure of CIF—it is a consequence of its success. When
+explicit attacks are reliably detected, adversaries are forced toward
+the subtlest and most distributed manipulation strategies. The 56.1%
+detection rate on emergent misalignment represents the current frontier
+of defensive capability, not a gap in the framework’s design.</p>
+<p><strong>Operator implication</strong>: Deploy colony-scale entropy
+monitoring and schedule periodic manual behavioral audits (weekly for
+high-stakes deployments). The Ω₅ playbook (Part 3, ) provides the
+response protocol when drift accumulates despite in-context
+detection.</p>
+<h2 id="finding-7-the-implementation-gap-is-a-feature-not-a-bug">Finding
+7: The Implementation Gap Is a Feature, Not a Bug</h2>
+<p>The 49–88 percentage-point gap between the parametric ceiling
+(94–100%) and the empirical pipeline mean (44.8%) reflects
+<strong>adapter implementation maturity</strong>, not a failure of CIF’s
+formal architecture. Part~2 introduces a 5-level CMMI-style adapter
+maturity scale:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Level</th>
+<th style="text-align: left;">Name</th>
+<th style="text-align: left;">DR Range</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">Stub</td>
+<td style="text-align: left;">$$0%</td>
+<td style="text-align: left;">Interface placeholder only</td>
+</tr>
+<tr>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">Heuristic</td>
+<td style="text-align: left;">10–30%</td>
+<td style="text-align: left;">Pattern-matching rules</td>
+</tr>
+<tr>
+<td style="text-align: left;">3</td>
+<td style="text-align: left;">Statistical</td>
+<td style="text-align: left;">30–60%</td>
+<td style="text-align: left;">Calibrated thresholds</td>
+</tr>
+<tr>
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">Adaptive</td>
+<td style="text-align: left;">60–80%</td>
+<td style="text-align: left;">Online learning</td>
+</tr>
+<tr>
+<td style="text-align: left;">5</td>
+<td style="text-align: left;">Verified</td>
+<td style="text-align: left;">80–94%</td>
+<td style="text-align: left;">Formally certified</td>
+</tr>
+</tbody>
+</table>
+<p>The current Claude Code adapter is at Level 3 (Statistical),
+explaining the 44.8% mean. The roadmap projects +35–41 percentage points
+of improvement by advancing adapters to Level 5 for the primary attack
+categories. The parametric ceiling (94–100%) represents what Level-5
+adapters achieve—it is a design target, not an overclaim.</p>
+<p><strong>Operator implication</strong>: When deploying CIF, assess the
+maturity level of each adapter against your threat model. Level-3
+adapters (current) provide meaningful protection against unsophisticated
+Ω₁–Ω₂ attacks; Level-4–5 adapters (planned) are required for Ω₄–Ω₅
+protection. The gap is closeable—it is an engineering challenge, not a
+theoretical limitation.</p>
 <hr />
 <h2 id="a-note-on-the-numbers">A Note on the Numbers</h2>
 <p>The detection rates in Part 2 are derived from a calibrated
 parametric simulation, modeled on the architecture’s topology. They
 represent the <em>structural</em> security of the design.</p>
 <ul>
-<li><strong>97% Detection</strong> means: “In a fully implemented system
-of this topology, 97% of these attack vectors violate a defined
-constraint.”</li>
+<li><strong>94% Overall Detection</strong> means: “Across all
+architectures and attack categories, 94% of attack vectors are detected
+by the full CIF defense stack” (with architecture-specific rates ranging
+from 94–98%).</li>
 <li>It does <strong>not</strong> mean: “We have a magic Python script
-that catches 97% of all evil AI thoughts.”</li>
+that catches 94% of all evil AI thoughts.”</li>
 </ul>
 <p>We proved the <em>architecture</em> works. The implementation
 fidelity is the variable for the builder.</p>
+<blockquote>
+<p><strong>A Note on Three Numbers</strong>: Throughout this guide you
+will encounter three detection rates that may seem contradictory. They
+are not — they measure different things:</p>
+<ul>
+<li><strong>94–100%</strong> (parametric simulation, <span
+class="math inline">\(N=3{,}800\)</span>): CIF’s <strong>design-level
+detection ceiling</strong> — what the defense architecture achieves when
+adapters are fully mature (Level 5) and conditions match the calibrated
+model. This is the target, not the current reality.</li>
+<li><strong>44.8%</strong> [95% HDI: 41.3%, 48.3%] (multi-seed pipeline,
+30 seeds): The <strong>current empirical baseline</strong> for the
+Claude Code architecture with Level-3 adapters. This is what you get
+today, out of the box, before adapter tuning.</li>
+<li><strong>12.4%</strong> (ablation corpus, 100 attacks, all categories
+including hardest): The <strong>conservative floor</strong> — full
+pipeline performance on a corpus specifically designed to include
+difficult attacks. This represents the worst-case realistic
+estimate.</li>
+</ul>
+<p>All three numbers are correct. Use 44.8% for realistic planning, 94%
+as the achievable ceiling with mature adapters, and 12.4% as a
+conservative lower bound for adversarial threat modeling.</p>
+</blockquote>
 <h3 id="tripwire-configuration-data">Tripwire Configuration Data</h3>
 <p>The simulations utilized the following tripwire densities to achieve
 the reported results:</p>

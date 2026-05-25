@@ -1,100 +1,100 @@
 {
   "h1": {
-    "statistic": 53.63675107082092,
-    "p_value": 2.8964556466678547e-21,
+    "statistic": 230.23424060605103,
+    "p_value": 2.471154538324034e-28,
     "significant": true
   },
   "h2": [
     {
-      "name": "Firewall",
-      "p_value": 1.0260616734182907e-08,
+      "name": "H2_detection",
+      "p_value": 1.5259061741388059e-27,
       "significant": true
     },
     {
-      "name": "Trust Calculus",
-      "p_value": 1.1950953450858309e-08,
+      "name": "H2_tripwire",
+      "p_value": 9.730468160371165e-28,
       "significant": true
     },
     {
-      "name": "Tripwire",
-      "p_value": 5.739291177092244e-09,
+      "name": "H2_invariants",
+      "p_value": 4.3291636780060586e-27,
       "significant": true
     },
     {
-      "name": "Detection",
-      "p_value": 5.99939617665731e-09,
+      "name": "H2_firewall",
+      "p_value": 2.3121151963470216e-28,
       "significant": true
     },
     {
-      "name": "Consensus",
-      "p_value": 3.978591797422607e-09,
+      "name": "H2_trust_calculus",
+      "p_value": 4.5010675015095854e-26,
       "significant": true
     },
     {
-      "name": "Provenance",
-      "p_value": 1.1666191088663177e-08,
+      "name": "H2_provenance",
+      "p_value": 1.6024934809220818e-24,
       "significant": true
     },
     {
-      "name": "Sandbox",
-      "p_value": 4.062426120825868e-09,
+      "name": "H2_sandbox",
+      "p_value": 1.6600898737054436e-25,
       "significant": true
     },
     {
-      "name": "Invariants",
-      "p_value": 9.581683314198998e-09,
+      "name": "H2_consensus",
+      "p_value": 1.6194217541539848e-24,
       "significant": true
     }
   ],
   "h3": [
     {
-      "name": "claude_code",
-      "p_value": 6.401115222707528e-11,
+      "name": "H3_claude_code",
+      "p_value": 8.737794688926782e-07,
       "significant": true
     },
     {
-      "name": "autogpt",
-      "p_value": 6.002810550498718e-11,
+      "name": "H3_autogpt",
+      "p_value": 1.2333554256435067e-06,
       "significant": true
     },
     {
-      "name": "crewai",
-      "p_value": 2.8732558900589303e-10,
+      "name": "H3_crewai",
+      "p_value": 8.737794688926782e-07,
       "significant": true
     },
     {
-      "name": "langgraph",
-      "p_value": 2.144853703503543e-10,
+      "name": "H3_langgraph",
+      "p_value": 8.737794688926782e-07,
       "significant": true
     }
   ],
-  "cohens_d_cif_vs_baseline": 4.913994088398529,
+  "kruskal_wallis": {
+    "h": 14.65648854961833,
+    "p": 0.0021350270063801445
+  },
+  "cohens_d_cif_vs_baseline": 62.16995220958839,
   "assumptions": [
     {
       "test": "Shapiro-Wilk",
-      "group": "CIF",
-      "statistic": 0.9770342904646528,
-      "p_value": 0.5879799848774777,
-      "passed": true
+      "group": "group_1",
+      "statistic": 0.5327142487717799,
+      "p_value": 4.005501140362046e-06,
+      "passed": 0.0
     },
     {
       "test": "Shapiro-Wilk",
-      "group": "Baseline",
-      "statistic": 0.9560515235339945,
-      "p_value": 0.595867734978924,
-      "passed": true
+      "group": "group_2",
+      "statistic": 0.9292755512126045,
+      "p_value": 0.23742451010113858,
+      "passed": 1.0
     },
     {
       "test": "Levene",
-      "group": "CIF vs Baseline",
-      "statistic": 1.3216963768851344,
-      "p_value": 0.3626591579683242,
-      "passed": true
+      "group": "all_groups",
+      "statistic": 3.262574330800425,
+      "p_value": 0.08091991777525027,
+      "passed": 1.0
     }
   ],
-  "assumptions_met": true,
-  "kruskal_wallis": {
-    "h": 3.214023413742261,
-    "p": 0.34575189621676794
-  }
+  "assumptions_met": false
 }

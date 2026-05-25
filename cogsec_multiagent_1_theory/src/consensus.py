@@ -1,4 +1,6 @@
 """
+from __future__ import annotations
+
 Byzantine-Tolerant Consensus for Multiagent Systems.
 
 Implements cognitive Byzantine agreement.

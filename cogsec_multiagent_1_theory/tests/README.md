@@ -19,16 +19,16 @@ Test suite for all CIF security modules.
 
 ```bash
 # Run all tests
-pytest tests/ -v
+uv run pytest tests/ -v
 
 # Run specific module
-pytest tests/test_trust.py -v
+uv run pytest tests/test_trust.py -v
 
 # With coverage
-pytest tests/ --cov=src --cov-report=html
+uv run pytest tests/ --cov=src --cov-report=html
 
 # Run with output
-pytest tests/ -v -s
+uv run pytest tests/ -v -s
 ```
 
 ## Coverage Target

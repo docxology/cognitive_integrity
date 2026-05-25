@@ -95,5 +95,5 @@ The detection module is tested in `tests/test_detection.py`, covering:
 Run tests:
 
 ```bash
-pytest tests/test_detection.py -v
+uv run pytest tests/test_detection.py -v
 ```

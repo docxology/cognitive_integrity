@@ -250,22 +250,22 @@ mock_calc.compute_trust.return_value = 0.81
 
 ```bash
 # All tests with verbose output
-pytest tests/ -v
+uv run pytest tests/ -v
 
 # Single file
-pytest tests/test_trust.py -v
+uv run pytest tests/test_trust.py -v
 
 # Single test class
-pytest tests/test_trust.py::TestTrustCalculus -v
+uv run pytest tests/test_trust.py::TestTrustCalculus -v
 
 # Single test method
-pytest tests/test_trust.py::TestTrustCalculus::test_delegate_trust_bounded -v
+uv run pytest tests/test_trust.py::TestTrustCalculus::test_delegate_trust_bounded -v
 
 # With coverage report
-pytest tests/ --cov=src --cov-report=html --cov-fail-under=90
+uv run pytest tests/ --cov=src --cov-report=html --cov-fail-under=90
 
 # Show print output
-pytest tests/ -v -s
+uv run pytest tests/ -v -s
 ```
 
 ## Fixtures (conftest.py)

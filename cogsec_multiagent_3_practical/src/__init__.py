@@ -1,4 +1,6 @@
 """
+from __future__ import annotations
+
 Cognitive Security Framework - Practical Implementation Guide.
 
 Part 3 of the tripartite CIF series.

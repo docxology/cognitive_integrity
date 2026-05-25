@@ -1,3 +1,8 @@
+"""Defense Composition module.
+
+Implements functionality for the Cognitive Integrity Framework.
+"""
+
 from __future__ import annotations
 
 import logging

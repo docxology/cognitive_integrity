@@ -2,7 +2,9 @@
 
 # Notation Reference {#sec:notation-reference}
 
-This paper uses notation from the Cognitive Integrity Framework (CIF) formal specification defined in Part 1 of this series.
+This paper uses notation from the Cognitive Integrity Framework (CIF) formal specification defined in Part 1 of this series \cite{friedman2026cogsec1} (DOI: 10.5281/zenodo.18364119). The quick reference below reproduces the central symbols; for full definitions, proofs, and algebraic properties consult Part 1 §3 (System Model) and §4 (Trust Calculus). Paper 4 \cite{friedman2026cogsec4} S01 mirrors this table for domain-facing readers, and Paper 3 \cite{friedman2026cogsec3} §2 provides plain-language glosses.
+
+> **Code anchor.** Every symbol here has a concrete implementation in the [`src/`](../src/) package of this paper. The two rightmost columns of each table point to the Python module + class/function name, letting readers trace a formula to its executable realization.
 
 ## Quick Reference
 
@@ -35,7 +37,12 @@ This paper uses notation from the Cognitive Integrity Framework (CIF) formal spe
 | $r_i$ | Detection rate of defense $i$ | Definition 6 |
 | $\tau_{\text{accept}}$ | Firewall accept threshold | Table 2 |
 | $\tau_{\text{reject}}$ | Firewall reject threshold | Table 2 |
-| $\epsilon_{\text{drift}}$ | Drift detection threshold | Equation 8 |
+| $\tau_1$ | Hard-reject threshold (Part 2 implementation: $\tau_1 = 0.7$) | \cref{sec:firewall-api} |
+| $\tau_2$ | Quarantine threshold (Part 2 implementation: $\tau_2 = 0.5$); $\tau_2 < \tau_1$ required | \cref{sec:firewall-api} |
+| $\epsilon_{\text{drift}}$ | Drift detection threshold (generic) | Equation 8 |
+| $\epsilon_{\text{critical}}$ | Drift severity: CRITICAL ($\epsilon > 0.30$; default) | \cref{sec:deployment} |
+| $\epsilon_{\text{high}}$ | Drift severity: HIGH ($0.20 < \epsilon \leq 0.30$; default) | \cref{sec:deployment} |
+| $\epsilon_{\text{medium}}$ | Drift severity: MEDIUM ($0.08 < \epsilon \leq 0.20$; default) | \cref{sec:deployment} |
 
 ### Consensus and Coordination (reproduced from Part 1, Table 4 for reader convenience)
 
@@ -63,9 +70,9 @@ This paper uses notation from the Cognitive Integrity Framework (CIF) formal spe
 |--------|---------|-----------|
 | TPR | True positive rate (sensitivity) | \cref{sec:results} |
 | FPR | False positive rate (1 $-$ specificity) | \cref{sec:results} |
-| $d$ | Cohen's $d$ effect size | \cref{sec:effect-sizes} |
-| OR | Odds ratio | \cref{sec:odds-ratios} |
-| NNT | Number needed to treat | \cref{sec:nnt} |
+| $d$ | Cohen's $d$ effect size | \cref{sec:real-effect-sizes} |
+| OR | Odds ratio | \cref{sec:statistical-validation} |
+| NNT | Number needed to treat | \cref{sec:statistical-validation} |
 
 ## Canonical Reference
 

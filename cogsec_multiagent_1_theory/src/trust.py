@@ -1,4 +1,6 @@
 """
+from __future__ import annotations
+
 Trust Calculus for Multiagent Systems.
 
 Implements bounded trust delegation with decay guarantees.

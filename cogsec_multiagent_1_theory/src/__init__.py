@@ -1,4 +1,6 @@
 """
+from __future__ import annotations
+
 Cognitive Security Framework for Multiagent Operators.
 
 Core modules:

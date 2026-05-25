@@ -1,4 +1,6 @@
 """
+from __future__ import annotations
+
 Online Detection for Cognitive Security.
 
 Implements streaming anomaly detection (S-Algorithm 3) and

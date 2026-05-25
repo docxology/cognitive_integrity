@@ -14,7 +14,7 @@ from __future__ import annotations
 # benchmark.py; we import them lazily to keep the module self-contained.
 # ---------------------------------------------------------------------------
 from dataclasses import dataclass
-from typing import List
+from typing import Any, List
 
 import numpy as np
 
@@ -59,7 +59,7 @@ class RecruitmentPoisoningScenario:
     def name(self) -> str:
         return "recruitment_poisoning"
 
-    def default_config(self):
+    def default_config(self) -> Any:
         """Return default colony configuration for this scenario."""
         # Import here to avoid circular; benchmark.py imports this module
         try:
@@ -75,7 +75,7 @@ class RecruitmentPoisoningScenario:
     # Simulation
     # ------------------------------------------------------------------
 
-    def run(self, config, rng: np.random.Generator):
+    def run(self, config: Any, rng: np.random.Generator) -> Any:
         """Run the recruitment-poisoning simulation.
 
         Args:

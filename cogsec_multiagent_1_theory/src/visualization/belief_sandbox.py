@@ -1,4 +1,11 @@
+"""Belief Sandbox module.
+
+Part of the Cognitive Integrity Framework.
+"""
+
 #!/usr/bin/env python3
+from __future__ import annotations
+
 """Belief sandbox visualization module."""
 
 import os

@@ -1,4 +1,4 @@
-# Cognitive Security in Practice: Actionable Guidance (Paper 3)
+# Cognitive Security in Practice: Actionable Guidance (Part 3)
 
 Part 3 of the **Cognitive Security for Multiagent Operators** series.
 
@@ -6,7 +6,9 @@ Part 3 of the **Cognitive Security for Multiagent Operators** series.
 
 ## Overview
 
-This paper translates the Cognitive Integrity Framework (CIF) into **actionable guidance** for practitioners deploying multiagent AI systems. Prose-only format with minimal technical prerequisites.
+This paper translates the Cognitive Integrity Framework (CIF) into **actionable guidance** for practitioners deploying multiagent AI systems. Prose-first format with minimal formal prerequisites.
+
+**Prerequisites:** None required. Optional: [Part 1](../cogsec_multiagent_1_theory/) [`S03_notation.md`](../cogsec_multiagent_1_theory/manuscript/S03_notation.md) for full notation; this part’s [`S01_notation_reference.md`](manuscript/S01_notation_reference.md) is a short in-paper table. For benchmarks and code-level defenses, see [Part 2](../cogsec_multiagent_2_computational/).
 
 ## Primary Focus
 
@@ -15,7 +17,7 @@ This paper translates the Cognitive Integrity Framework (CIF) into **actionable 
 - **Agent Guidelines**: Machine-readable security invariants and self-monitoring protocols
 - **Deployment Configuration**: Risk-profile-based parameter selection with architecture guidance
 - **Risk Assessment**: Attack surface mapping, threat modeling, and worked examples
-- **Common Pitfalls**: Eight documented anti-patterns with detection and remediation
+- **Common Pitfalls**: Documented anti-patterns with detection and remediation
 
 ## Paper Series
 
@@ -24,52 +26,30 @@ This paper translates the Cognitive Integrity Framework (CIF) into **actionable 
 | 1 | Formal Foundations | Theory, proofs, formalisms | **Published** | [10.5281/zenodo.18364119](https://doi.org/10.5281/zenodo.18364119) |
 | 2 | Computational Validation | Empirical results, algorithms | Preprint | [10.5281/zenodo.18364128](https://doi.org/10.5281/zenodo.18364128) |
 | **3 (This)** | Practical Guidance | Deployment checklists, guidelines | Preprint | [10.5281/zenodo.18364130](https://doi.org/10.5281/zenodo.18364130) |
+| 4 | [Applications](../cogsec_multiagent_4_applications/) | Ten-domain CIF-AD-OODA | Preprint | _DOI pending_ |
 
 ## Project Structure
 
 ```text
 cogsec_multiagent_3_practical/
-├── manuscript/           # Paper content (prose-only)
+├── manuscript/
 │   ├── 00_abstract.md
 │   ├── 01_introduction.md
-│   ├── 02_operator_posture.md
-│   ├── 03_human_checklist.md
-│   ├── 04_agent_guidelines.md
-│   ├── 05_deployment.md
-│   ├── 06_risk_assessment.md
-│   ├── 07_common_pitfalls.md
-│   ├── 08_conclusion.md
-│   └── S01_notation_reference.md
-├── src/                  # Implementation modules
-│   ├── __init__.py           # Core types (RiskLevel, PostureLevel, ChecklistItem, etc.)
-│   ├── posture.py            # Five Pillars assessment + maturity scoring
-│   ├── checklists.py         # Pre-deployment, operational, incident response
-│   ├── agent_guidelines.py   # Security invariants + monitoring + response protocols
-│   ├── deployment.py         # Risk profiles, architecture guidance, scaling
-│   ├── risk_assessment.py    # Attack surface mapping + threat modeling
-│   ├── pitfalls.py           # Anti-pattern catalog + detection + remediation
-│   ├── integration.py        # Cross-module orchestrator + worked examples
-│   └── visualization.py      # Figure generation (radar, heatmap, bar, etc.)
-├── scripts/              # Figure generation orchestrators
-│   ├── 01_posture_radar_figure.py
-│   ├── 02_checklist_flowchart_figure.py
-│   ├── 03_risk_matrix_figure.py
-│   ├── 04_trust_decay_figure.py
-│   ├── 05_pitfall_severity_figure.py
-│   ├── 06_timeline_figure.py
-│   └── verify_manuscript.py
-├── tests/                # 90%+ coverage test suite
-│   ├── conftest.py
-│   ├── test_practical.py
-│   ├── test_visualization.py
-│   ├── test_posture.py
-│   ├── test_checklists.py
-│   ├── test_agent_guidelines.py
-│   ├── test_deployment.py
-│   ├── test_risk_assessment.py
-│   ├── test_pitfalls.py
-│   └── test_integration.py
-└── output/               # Generated figures and PDF
+│   ├── 02_theory_review.md
+│   ├── 03_simulation_review.md
+│   ├── 04_attack_scenarios.md, 04b_subagent_hardening.md
+│   ├── 05_deployment_guide.md, 05b_incident_response.md, 05c_cost_benefit.md, 05d_monitoring_guide.md
+│   ├── 06_common_pitfalls.md, 06b_case_studies.md
+│   ├── 07_future_directions.md, 08_conclusion.md
+│   ├── 99_references.md, S01_notation_reference.md
+│   ├── config.yaml, preamble.md, references.bib
+├── src/
+│   ├── posture.py, checklists.py, agent_guidelines.py, deployment.py
+│   ├── risk_assessment.py, pitfalls.py, integration.py, visualization.py
+│   └── __init__.py
+├── scripts/              # Figure orchestrators + verify_manuscript.py
+├── tests/
+└── output/
 ```
 
 ## Citation
@@ -87,17 +67,22 @@ cogsec_multiagent_3_practical/
 
 ## Usage
 
-```bash
-# Run full test suite
-python3 -m pytest projects/cognitive_integrity/cogsec_multiagent_3_practical/tests/ -v
+From the **template repository root**:
 
-# Run with coverage
-python3 -m pytest projects/cognitive_integrity/cogsec_multiagent_3_practical/tests/ \
+```bash
+uv run pytest projects/cognitive_integrity/cogsec_multiagent_3_practical/tests/ -v
+
+uv run pytest projects/cognitive_integrity/cogsec_multiagent_3_practical/tests/ \
     --cov=projects/cognitive_integrity/cogsec_multiagent_3_practical/src \
     --cov-fail-under=90 -v
 
-# Render PDF
-./run.sh --render-pdf --project cogsec_multiagent_3_practical
+./run.sh --render-pdf --project cognitive_integrity/cogsec_multiagent_3_practical
+```
+
+From this project directory:
+
+```bash
+uv run pytest tests/ -v --cov=src --cov-fail-under=90
 ```
 
 ## Repository

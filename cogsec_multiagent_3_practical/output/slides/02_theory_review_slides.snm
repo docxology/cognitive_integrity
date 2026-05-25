@@ -1,6 +1,11 @@
-\beamer@slide {sec:theory-review}{1}
-\beamer@slide {the-adversary-hierarchy-omega}{1}
-\beamer@slide {the-trust-calculus-t}{1}
-\beamer@slide {the-cognitive-firewall-phi}{1}
-\beamer@slide {the-stealth-impact-tradeoff}{1}
-\beamer@slide {defense-composition}{1}
+\beamer@slide {sec:adversary-hierarchy}{3}
+\beamer@slide {sec:trust-calculus-review}{5}
+\beamer@slide {sec:firewall-review}{7}
+\beamer@slide {sec:stealth-impact-review}{8}
+\beamer@slide {sec:composition-review}{9}
+\beamer@slide {sec:fep-connection}{10}
+\beamer@slide {what-is-free-energy}{10}
+\beamer@slide {attacks-as-free-energy-increases}{10}
+\beamer@slide {trust-as-precision-weighting}{10}
+\beamer@slide {the-belief-sandbox-as-constrained-inference}{10}
+\beamer@slide {practical-implication-for-operators}{10}

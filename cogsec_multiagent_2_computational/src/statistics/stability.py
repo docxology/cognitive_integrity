@@ -131,4 +131,49 @@ __all__ = [
     "StabilityReport",
     "coefficient_of_variation",
     "run_multi_seed_stability",
+    "make_pipeline_eval_fn",
 ]
+
+
+def make_pipeline_eval_fn(
+    n_samples: int = 100,
+) -> Callable[[int], SeedMetrics]:
+    """Create a pipeline-based evaluation function for stability analysis.
+
+    Parameters
+    ----------
+    n_samples : int
+        Number of corpus samples to evaluate per seed (for speed).
+
+    Returns
+    -------
+    callable
+        ``(seed: int) -> SeedMetrics`` suitable for ``run_multi_seed_stability``.
+    """
+    def eval_fn(seed: int) -> SeedMetrics:
+        from utils.random_seed import set_global_seed
+        from composition.factory import create_full_pipeline
+        from attacks.corpus import AttackCorpus
+
+        set_global_seed(seed)
+        pipeline = create_full_pipeline()
+        corpus = AttackCorpus.generate(seed=seed)
+
+        detected_count = 0
+        total = 0
+        for sample in list(corpus)[:n_samples]:
+            result = pipeline.evaluate(sample.payload)
+            if result.detected:
+                detected_count += 1
+            total += 1
+
+        overall = detected_count / total if total > 0 else 0.0
+        return SeedMetrics(
+            seed=seed,
+            overall_detection_rate=overall,
+            per_architecture={"Claude Code": overall},
+            per_category={},
+        )
+
+    return eval_fn
+

@@ -3,130 +3,131 @@
 \contentsline {subsection}{\numberline {2.1}Series Context}{6}{subsection.2.1}%
 \contentsline {subsection}{\numberline {2.2}The Ontological Crisis in AI}{6}{subsection.2.2}%
 \contentsline {subsubsection}{\numberline {2.2.1}Empirical Urgency}{6}{subsubsection.2.2.1}%
-\contentsline {subsection}{\numberline {2.3}Axiomatic Design and Transient Functional Requirements}{6}{subsection.2.3}%
+\contentsline {subsection}{\numberline {2.3}Axiomatic Design and Transient Functional Requirements}{7}{subsection.2.3}%
 \contentsline {subsection}{\numberline {2.4}The Role of CIF: Five Canonical Defenses}{7}{subsection.2.4}%
 \contentsline {subsection}{\numberline {2.5}Application Analysis}{7}{subsection.2.5}%
-\contentsline {subsection}{\numberline {2.6}Contributions}{7}{subsection.2.6}%
-\contentsline {section}{\numberline {3}Methodology: The CIF-AD-OODA Integration Model}{9}{section.3}%
-\contentsline {subsection}{\numberline {3.1}Framework Integration}{9}{subsection.3.1}%
-\contentsline {subsection}{\numberline {3.2}CIF Defense Mechanisms}{9}{subsection.3.2}%
-\contentsline {subsection}{\numberline {3.3}Adversary Classification}{10}{subsection.3.3}%
-\contentsline {subsection}{\numberline {3.4}Domain Analysis Template}{10}{subsection.3.4}%
-\contentsline {subsection}{\numberline {3.5}Domain Selection Criteria}{11}{subsection.3.5}%
-\contentsline {subsection}{\numberline {3.6}Scope and Assumptions}{11}{subsection.3.6}%
-\contentsline {subsection}{\numberline {3.7}Application to Critical Domains}{12}{subsection.3.7}%
-\contentsline {section}{\numberline {4}Domain 1: Rare Earth Mining}{13}{section.4}%
-\contentsline {subsection}{\numberline {4.1}Operational Context}{13}{subsection.4.1}%
-\contentsline {subsubsection}{\numberline {4.1.1}Design Matrix (Pre-Attack)}{13}{subsubsection.4.1.1}%
-\contentsline {subsection}{\numberline {4.2}The Goal Hijacking Attack}{13}{subsection.4.2}%
-\contentsline {subsection}{\numberline {4.3}OODA Loop Transients}{13}{subsection.4.3}%
-\contentsline {subsubsection}{\numberline {4.3.1}Transient Coupling (Post-Attack Design Matrix)}{13}{subsubsection.4.3.1}%
-\contentsline {subsection}{\numberline {4.4}CIF Defense: Behavioral Invariants and Byzantine Consensus}{14}{subsection.4.4}%
-\contentsline {subsection}{\numberline {4.5}Summary}{14}{subsection.4.5}%
-\contentsline {section}{\numberline {5}Domain 2: Shifting Nation-State Alliances}{15}{section.5}%
-\contentsline {subsection}{\numberline {5.1}Operational Context}{15}{subsection.5.1}%
-\contentsline {subsubsection}{\numberline {5.1.1}Design Matrix (Pre-Attack)}{15}{subsubsection.5.1.1}%
-\contentsline {subsection}{\numberline {5.2}The Goal Hijacking Attack}{15}{subsection.5.2}%
-\contentsline {subsection}{\numberline {5.3}OODA Loop Transients}{15}{subsection.5.3}%
-\contentsline {subsubsection}{\numberline {5.3.1}Transient Coupling (Post-Attack Design Matrix)}{16}{subsubsection.5.3.1}%
-\contentsline {subsection}{\numberline {5.4}CIF Defense: Drift Detection and Belief Sandboxing}{16}{subsection.5.4}%
-\contentsline {subsubsection}{\numberline {5.4.1}Drift Detection (\(S_{\text {drift}}\))}{16}{subsubsection.5.4.1}%
-\contentsline {subsubsection}{\numberline {5.4.2}Belief Sandboxing}{16}{subsubsection.5.4.2}%
-\contentsline {subsection}{\numberline {5.5}Summary}{16}{subsection.5.5}%
-\contentsline {section}{\numberline {6}Domain 3: Cyber-Security}{17}{section.6}%
-\contentsline {subsection}{\numberline {6.1}Operational Context}{17}{subsection.6.1}%
-\contentsline {subsubsection}{\numberline {6.1.1}Design Matrix (Pre-Attack)}{17}{subsubsection.6.1.1}%
-\contentsline {subsection}{\numberline {6.2}The Goal Hijacking Attack}{17}{subsection.6.2}%
-\contentsline {subsection}{\numberline {6.3}OODA Loop Transients}{17}{subsection.6.3}%
-\contentsline {subsubsection}{\numberline {6.3.1}Transient Coupling (Post-Attack Design Matrix)}{17}{subsubsection.6.3.1}%
-\contentsline {subsection}{\numberline {6.4}CIF Defense: Permission Boundaries and Quorum Verification}{18}{subsection.6.4}%
-\contentsline {subsubsection}{\numberline {6.4.1}Permission Boundaries}{18}{subsubsection.6.4.1}%
-\contentsline {subsubsection}{\numberline {6.4.2}Quorum Verification}{18}{subsubsection.6.4.2}%
-\contentsline {subsection}{\numberline {6.5}Summary}{18}{subsection.6.5}%
-\contentsline {section}{\numberline {7}Domain 4: Drone Wars}{19}{section.7}%
-\contentsline {subsection}{\numberline {7.1}Operational Context}{19}{subsection.7.1}%
-\contentsline {subsubsection}{\numberline {7.1.1}Design Matrix (Pre-Attack)}{19}{subsubsection.7.1.1}%
-\contentsline {subsection}{\numberline {7.2}The Goal Hijacking Attack}{19}{subsection.7.2}%
-\contentsline {subsection}{\numberline {7.3}OODA Loop Transients}{19}{subsection.7.3}%
-\contentsline {subsubsection}{\numberline {7.3.1}Transient Coupling (Post-Attack Design Matrix)}{20}{subsubsection.7.3.1}%
-\contentsline {subsection}{\numberline {7.4}CIF Defense: Cognitive Firewall with Semiotic Decoupling and Quorum Verification}{20}{subsection.7.4}%
-\contentsline {subsubsection}{\numberline {7.4.1}Cognitive Firewall with Semiotic Decoupling}{20}{subsubsection.7.4.1}%
-\contentsline {subsubsection}{\numberline {7.4.2}Cross-Modality Trust and Quorum Verification}{20}{subsubsection.7.4.2}%
-\contentsline {subsection}{\numberline {7.5}Summary}{20}{subsection.7.5}%
-\contentsline {section}{\numberline {8}Domain 5: Supply Chain Vulnerabilities}{22}{section.8}%
-\contentsline {subsection}{\numberline {8.1}Operational Context}{22}{subsection.8.1}%
-\contentsline {subsubsection}{\numberline {8.1.1}Design Matrix Formulation}{22}{subsubsection.8.1.1}%
-\contentsline {subsection}{\numberline {8.2}The Goal Hijacking Attack}{22}{subsection.8.2}%
-\contentsline {subsection}{\numberline {8.3}OODA Loop Transients}{22}{subsection.8.3}%
-\contentsline {subsection}{\numberline {8.4}CIF Defense: Behavioral Invariants and Permission Boundaries}{23}{subsection.8.4}%
-\contentsline {subsection}{\numberline {8.5}Summary}{23}{subsection.8.5}%
-\contentsline {section}{\numberline {9}Domain 6: Biowarfare}{24}{section.9}%
-\contentsline {subsection}{\numberline {9.1}Operational Context}{24}{subsection.9.1}%
-\contentsline {subsubsection}{\numberline {9.1.1}Design Matrix Formulation}{24}{subsubsection.9.1.1}%
-\contentsline {subsection}{\numberline {9.2}The Goal Hijacking Attack}{24}{subsection.9.2}%
-\contentsline {subsection}{\numberline {9.3}OODA Loop Transients}{24}{subsection.9.3}%
-\contentsline {subsection}{\numberline {9.4}CIF Defense: Cognitive Firewall with Verification Channel Separation}{25}{subsection.9.4}%
-\contentsline {subsection}{\numberline {9.5}Summary}{25}{subsection.9.5}%
-\contentsline {section}{\numberline {10}Domain 7: Food Security}{26}{section.10}%
-\contentsline {subsection}{\numberline {10.1}Operational Context}{26}{subsection.10.1}%
-\contentsline {subsubsection}{\numberline {10.1.1}Design Matrix Formulation}{26}{subsubsection.10.1.1}%
-\contentsline {subsection}{\numberline {10.2}The Goal Hijacking Attack}{26}{subsection.10.2}%
-\contentsline {subsection}{\numberline {10.3}OODA Loop Transients}{26}{subsection.10.3}%
-\contentsline {subsection}{\numberline {10.4}CIF Defense: Belief Sandboxing and Cross-Modal Corroboration}{27}{subsection.10.4}%
-\contentsline {subsection}{\numberline {10.5}Summary}{27}{subsection.10.5}%
-\contentsline {section}{\numberline {11}Domain 8: Trade Wars \& Tariffs}{28}{section.11}%
-\contentsline {subsection}{\numberline {11.1}Operational Context}{28}{subsection.11.1}%
-\contentsline {subsection}{\numberline {11.2}Axiomatic Design Formulation}{28}{subsection.11.2}%
-\contentsline {subsection}{\numberline {11.3}The Goal Hijacking Attack}{28}{subsection.11.3}%
-\contentsline {subsection}{\numberline {11.4}OODA Loop Transients}{28}{subsection.11.4}%
-\contentsline {subsection}{\numberline {11.5}CIF Defense: Behavioral Invariants and Drift Detection}{29}{subsection.11.5}%
-\contentsline {subsection}{\numberline {11.6}Summary}{29}{subsection.11.6}%
-\contentsline {section}{\numberline {12}Domain 9: Infrastructure Vulnerabilities}{30}{section.12}%
-\contentsline {subsection}{\numberline {12.1}Operational Context}{30}{subsection.12.1}%
-\contentsline {subsection}{\numberline {12.2}Axiomatic Design Formulation}{30}{subsection.12.2}%
-\contentsline {subsection}{\numberline {12.3}The Goal Hijacking Attack}{30}{subsection.12.3}%
-\contentsline {subsection}{\numberline {12.4}OODA Loop Transients}{30}{subsection.12.4}%
-\contentsline {subsection}{\numberline {12.5}CIF Defense: Behavioral Invariants, Belief Sandboxing, and Drift Detection}{31}{subsection.12.5}%
-\contentsline {subsection}{\numberline {12.6}Summary}{31}{subsection.12.6}%
-\contentsline {section}{\numberline {13}Domain 10: Distilling Fake from Real News}{32}{section.13}%
-\contentsline {subsection}{\numberline {13.1}Operational Context}{32}{subsection.13.1}%
-\contentsline {subsection}{\numberline {13.2}Axiomatic Design Formulation}{32}{subsection.13.2}%
-\contentsline {subsection}{\numberline {13.3}The Goal Hijacking Attack}{32}{subsection.13.3}%
-\contentsline {subsection}{\numberline {13.4}OODA Loop Transients}{32}{subsection.13.4}%
-\contentsline {subsection}{\numberline {13.5}CIF Defense: Cognitive Firewall and Provenance Verification}{33}{subsection.13.5}%
-\contentsline {subsection}{\numberline {13.6}Summary}{33}{subsection.13.6}%
-\contentsline {section}{\numberline {14}Discussion: Cross-Domain Analysis of Cognitive Integrity}{34}{section.14}%
-\contentsline {subsection}{\numberline {14.1}4.1 Cross-Domain Attack Pattern Taxonomy}{34}{subsection.14.1}%
-\contentsline {subsection}{\numberline {14.2}4.2 The Independence Axiom Under Adversarial Pressure}{35}{subsection.14.2}%
-\contentsline {subsection}{\numberline {14.3}4.3 OODA Transient Dynamics}{35}{subsection.14.3}%
-\contentsline {subsection}{\numberline {14.4}4.4 CIF Mechanism Coverage Analysis}{36}{subsection.14.4}%
-\contentsline {subsection}{\numberline {14.5}4.5 Novel Defense Patterns}{36}{subsection.14.5}%
-\contentsline {subsection}{\numberline {14.6}4.6 Byzantine Fault Tolerance Validation}{37}{subsection.14.6}%
-\contentsline {subsection}{\numberline {14.7}4.7 Comparison with Existing Frameworks}{38}{subsection.14.7}%
-\contentsline {subsection}{\numberline {14.8}4.8 Empirical Grounding: Real-World Incidents}{39}{subsection.14.8}%
-\contentsline {subsection}{\numberline {14.9}4.9 Limitations}{39}{subsection.14.9}%
-\contentsline {section}{\numberline {15}Conclusion}{41}{section.15}%
-\contentsline {subsection}{\numberline {15.1}Summary of Contributions}{41}{subsection.15.1}%
-\contentsline {subsection}{\numberline {15.2}Relationship to the Series}{41}{subsection.15.2}%
-\contentsline {subsection}{\numberline {15.3}Future Work}{42}{subsection.15.3}%
-\contentsline {subsubsection}{\numberline {15.3.1}Dual-Use Considerations}{42}{subsubsection.15.3.1}%
-\contentsline {subsection}{\numberline {15.4}Closing Statement}{42}{subsection.15.4}%
-\contentsline {section}{\numberline {16}Supplementary Material S1: Notation Reference}{43}{section.16}%
-\contentsline {subsection}{\numberline {16.1}Cognitive State Notation (Paper 1)}{43}{subsection.16.1}%
-\contentsline {subsection}{\numberline {16.2}Trust Calculus (Paper 1)}{43}{subsection.16.2}%
-\contentsline {subsection}{\numberline {16.3}Defense Mechanism Notation (Paper 1)}{43}{subsection.16.3}%
-\contentsline {subsection}{\numberline {16.4}Adversary Taxonomy (Paper 1)}{44}{subsection.16.4}%
-\contentsline {subsection}{\numberline {16.5}Axiomatic Design Notation (This Paper)}{44}{subsection.16.5}%
-\contentsline {subsection}{\numberline {16.6}OODA Loop Notation (This Paper)}{44}{subsection.16.6}%
-\contentsline {subsection}{\numberline {16.7}OODA Phase \(\leftrightarrow \) CIF Defense Mapping}{44}{subsection.16.7}%
-\contentsline {subsection}{\numberline {16.8}Universal Attack Patterns (This Paper)}{45}{subsection.16.8}%
-\contentsline {section}{\numberline {17}Supplementary Material: Documented AI Agent Security Incidents (2024--2025)}{46}{section.17}%
-\contentsline {subsection}{\numberline {17.1}Incident Catalog}{46}{subsection.17.1}%
-\contentsline {subsubsection}{\numberline {17.1.1}S2.1 Arup Deepfake Video Conference Fraud (February 2024)}{46}{subsubsection.17.1.1}%
-\contentsline {subsubsection}{\numberline {17.1.2}S2.2 Slack AI Data Exfiltration via Indirect Prompt Injection (August 2024)}{46}{subsubsection.17.1.2}%
-\contentsline {subsubsection}{\numberline {17.1.3}S2.3 ChatGPT Search Manipulation via Hidden Text (December 2024)}{46}{subsubsection.17.1.3}%
-\contentsline {subsubsection}{\numberline {17.1.4}S2.4 GitHub Copilot Remote Code Execution via YOLO Mode (June 2025)}{47}{subsubsection.17.1.4}%
-\contentsline {subsubsection}{\numberline {17.1.5}S2.5 Replit Agent Production Database Meltdown (July 2025)}{47}{subsubsection.17.1.5}%
-\contentsline {subsubsection}{\numberline {17.1.6}S2.6 Procurement Agent Vendor Validation Fraud (Q2--Q3 2025)}{47}{subsubsection.17.1.6}%
-\contentsline {subsection}{\numberline {17.2}Cross-Incident Summary}{48}{subsection.17.2}%
-\contentsline {section}{\numberline {18}References}{49}{section.18}%
+\contentsline {subsection}{\numberline {2.6}Contributions}{8}{subsection.2.6}%
+\contentsline {subsection}{\numberline {2.7}Reading Companion: Where to Find Specific Topics}{8}{subsection.2.7}%
+\contentsline {section}{\numberline {3}Methodology: The CIF-AD-OODA Integration Model}{10}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Framework Integration}{10}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}CIF Defense Mechanisms}{10}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Adversary Classification}{11}{subsection.3.3}%
+\contentsline {subsection}{\numberline {3.4}Domain Analysis Template}{11}{subsection.3.4}%
+\contentsline {subsection}{\numberline {3.5}Domain Selection Criteria}{12}{subsection.3.5}%
+\contentsline {subsection}{\numberline {3.6}Scope and Assumptions}{12}{subsection.3.6}%
+\contentsline {subsection}{\numberline {3.7}Application to Critical Domains}{13}{subsection.3.7}%
+\contentsline {section}{\numberline {4}Domain 1: Rare Earth Mining}{14}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Operational Context}{14}{subsection.4.1}%
+\contentsline {subsubsection}{\numberline {4.1.1}Design Matrix (Pre-Attack)}{14}{subsubsection.4.1.1}%
+\contentsline {subsection}{\numberline {4.2}The Goal Hijacking Attack}{14}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}OODA Loop Transients}{14}{subsection.4.3}%
+\contentsline {subsubsection}{\numberline {4.3.1}Transient Coupling (Post-Attack Design Matrix)}{14}{subsubsection.4.3.1}%
+\contentsline {subsection}{\numberline {4.4}CIF Defense: Behavioral Invariants and Byzantine Consensus}{15}{subsection.4.4}%
+\contentsline {subsection}{\numberline {4.5}Summary}{15}{subsection.4.5}%
+\contentsline {section}{\numberline {5}Domain 2: Shifting Nation-State Alliances}{16}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Operational Context}{16}{subsection.5.1}%
+\contentsline {subsubsection}{\numberline {5.1.1}Design Matrix (Pre-Attack)}{16}{subsubsection.5.1.1}%
+\contentsline {subsection}{\numberline {5.2}The Goal Hijacking Attack}{16}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}OODA Loop Transients}{16}{subsection.5.3}%
+\contentsline {subsubsection}{\numberline {5.3.1}Transient Coupling (Post-Attack Design Matrix)}{17}{subsubsection.5.3.1}%
+\contentsline {subsection}{\numberline {5.4}CIF Defense: Drift Detection and Belief Sandboxing}{17}{subsection.5.4}%
+\contentsline {subsubsection}{\numberline {5.4.1}Drift Detection (\(S_{\text {drift}}\))}{17}{subsubsection.5.4.1}%
+\contentsline {subsubsection}{\numberline {5.4.2}Belief Sandboxing}{17}{subsubsection.5.4.2}%
+\contentsline {subsection}{\numberline {5.5}Summary}{17}{subsection.5.5}%
+\contentsline {section}{\numberline {6}Domain 3: Cyber-Security}{18}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Operational Context}{18}{subsection.6.1}%
+\contentsline {subsubsection}{\numberline {6.1.1}Design Matrix (Pre-Attack)}{18}{subsubsection.6.1.1}%
+\contentsline {subsection}{\numberline {6.2}The Goal Hijacking Attack}{18}{subsection.6.2}%
+\contentsline {subsection}{\numberline {6.3}OODA Loop Transients}{18}{subsection.6.3}%
+\contentsline {subsubsection}{\numberline {6.3.1}Transient Coupling (Post-Attack Design Matrix)}{18}{subsubsection.6.3.1}%
+\contentsline {subsection}{\numberline {6.4}CIF Defense: Permission Boundaries and Quorum Verification}{19}{subsection.6.4}%
+\contentsline {subsubsection}{\numberline {6.4.1}Permission Boundaries}{19}{subsubsection.6.4.1}%
+\contentsline {subsubsection}{\numberline {6.4.2}Quorum Verification}{19}{subsubsection.6.4.2}%
+\contentsline {subsection}{\numberline {6.5}Summary}{19}{subsection.6.5}%
+\contentsline {section}{\numberline {7}Domain 4: Drone Wars}{20}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Operational Context}{20}{subsection.7.1}%
+\contentsline {subsubsection}{\numberline {7.1.1}Design Matrix (Pre-Attack)}{20}{subsubsection.7.1.1}%
+\contentsline {subsection}{\numberline {7.2}The Goal Hijacking Attack}{20}{subsection.7.2}%
+\contentsline {subsection}{\numberline {7.3}OODA Loop Transients}{20}{subsection.7.3}%
+\contentsline {subsubsection}{\numberline {7.3.1}Transient Coupling (Post-Attack Design Matrix)}{21}{subsubsection.7.3.1}%
+\contentsline {subsection}{\numberline {7.4}CIF Defense: Cognitive Firewall with Semiotic Decoupling and Quorum Verification}{21}{subsection.7.4}%
+\contentsline {subsubsection}{\numberline {7.4.1}Cognitive Firewall with Semiotic Decoupling}{21}{subsubsection.7.4.1}%
+\contentsline {subsubsection}{\numberline {7.4.2}Cross-Modality Trust and Quorum Verification}{21}{subsubsection.7.4.2}%
+\contentsline {subsection}{\numberline {7.5}Summary}{21}{subsection.7.5}%
+\contentsline {section}{\numberline {8}Domain 5: Supply Chain Vulnerabilities}{23}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Operational Context}{23}{subsection.8.1}%
+\contentsline {subsubsection}{\numberline {8.1.1}Design Matrix Formulation}{23}{subsubsection.8.1.1}%
+\contentsline {subsection}{\numberline {8.2}The Goal Hijacking Attack}{23}{subsection.8.2}%
+\contentsline {subsection}{\numberline {8.3}OODA Loop Transients}{23}{subsection.8.3}%
+\contentsline {subsection}{\numberline {8.4}CIF Defense: Behavioral Invariants and Permission Boundaries}{24}{subsection.8.4}%
+\contentsline {subsection}{\numberline {8.5}Summary}{24}{subsection.8.5}%
+\contentsline {section}{\numberline {9}Domain 6: Biowarfare}{25}{section.9}%
+\contentsline {subsection}{\numberline {9.1}Operational Context}{25}{subsection.9.1}%
+\contentsline {subsubsection}{\numberline {9.1.1}Design Matrix Formulation}{25}{subsubsection.9.1.1}%
+\contentsline {subsection}{\numberline {9.2}The Goal Hijacking Attack}{25}{subsection.9.2}%
+\contentsline {subsection}{\numberline {9.3}OODA Loop Transients}{25}{subsection.9.3}%
+\contentsline {subsection}{\numberline {9.4}CIF Defense: Cognitive Firewall with Verification Channel Separation}{26}{subsection.9.4}%
+\contentsline {subsection}{\numberline {9.5}Summary}{26}{subsection.9.5}%
+\contentsline {section}{\numberline {10}Domain 7: Food Security}{27}{section.10}%
+\contentsline {subsection}{\numberline {10.1}Operational Context}{27}{subsection.10.1}%
+\contentsline {subsubsection}{\numberline {10.1.1}Design Matrix Formulation}{27}{subsubsection.10.1.1}%
+\contentsline {subsection}{\numberline {10.2}The Goal Hijacking Attack}{27}{subsection.10.2}%
+\contentsline {subsection}{\numberline {10.3}OODA Loop Transients}{27}{subsection.10.3}%
+\contentsline {subsection}{\numberline {10.4}CIF Defense: Belief Sandboxing and Cross-Modal Corroboration}{28}{subsection.10.4}%
+\contentsline {subsection}{\numberline {10.5}Summary}{28}{subsection.10.5}%
+\contentsline {section}{\numberline {11}Domain 8: Trade Wars \& Tariffs}{29}{section.11}%
+\contentsline {subsection}{\numberline {11.1}Operational Context}{29}{subsection.11.1}%
+\contentsline {subsection}{\numberline {11.2}Axiomatic Design Formulation}{29}{subsection.11.2}%
+\contentsline {subsection}{\numberline {11.3}The Goal Hijacking Attack}{29}{subsection.11.3}%
+\contentsline {subsection}{\numberline {11.4}OODA Loop Transients}{29}{subsection.11.4}%
+\contentsline {subsection}{\numberline {11.5}CIF Defense: Behavioral Invariants and Drift Detection}{30}{subsection.11.5}%
+\contentsline {subsection}{\numberline {11.6}Summary}{30}{subsection.11.6}%
+\contentsline {section}{\numberline {12}Domain 9: Infrastructure Vulnerabilities}{31}{section.12}%
+\contentsline {subsection}{\numberline {12.1}Operational Context}{31}{subsection.12.1}%
+\contentsline {subsection}{\numberline {12.2}Axiomatic Design Formulation}{31}{subsection.12.2}%
+\contentsline {subsection}{\numberline {12.3}The Goal Hijacking Attack}{31}{subsection.12.3}%
+\contentsline {subsection}{\numberline {12.4}OODA Loop Transients}{31}{subsection.12.4}%
+\contentsline {subsection}{\numberline {12.5}CIF Defense: Behavioral Invariants, Belief Sandboxing, and Drift Detection}{32}{subsection.12.5}%
+\contentsline {subsection}{\numberline {12.6}Summary}{32}{subsection.12.6}%
+\contentsline {section}{\numberline {13}Domain 10: Distilling Fake from Real News}{33}{section.13}%
+\contentsline {subsection}{\numberline {13.1}Operational Context}{33}{subsection.13.1}%
+\contentsline {subsection}{\numberline {13.2}Axiomatic Design Formulation}{33}{subsection.13.2}%
+\contentsline {subsection}{\numberline {13.3}The Goal Hijacking Attack}{33}{subsection.13.3}%
+\contentsline {subsection}{\numberline {13.4}OODA Loop Transients}{33}{subsection.13.4}%
+\contentsline {subsection}{\numberline {13.5}CIF Defense: Cognitive Firewall and Provenance Verification}{34}{subsection.13.5}%
+\contentsline {subsection}{\numberline {13.6}Summary}{34}{subsection.13.6}%
+\contentsline {section}{\numberline {14}Discussion: Cross-Domain Analysis of Cognitive Integrity}{35}{section.14}%
+\contentsline {subsection}{\numberline {14.1}4.1 Cross-Domain Attack Pattern Taxonomy}{35}{subsection.14.1}%
+\contentsline {subsection}{\numberline {14.2}4.2 The Independence Axiom Under Adversarial Pressure}{36}{subsection.14.2}%
+\contentsline {subsection}{\numberline {14.3}4.3 OODA Transient Dynamics}{36}{subsection.14.3}%
+\contentsline {subsection}{\numberline {14.4}4.4 CIF Mechanism Coverage Analysis}{37}{subsection.14.4}%
+\contentsline {subsection}{\numberline {14.5}4.5 Novel Defense Patterns}{38}{subsection.14.5}%
+\contentsline {subsection}{\numberline {14.6}4.6 Byzantine Fault Tolerance Validation}{38}{subsection.14.6}%
+\contentsline {subsection}{\numberline {14.7}4.7 Comparison with Existing Frameworks}{39}{subsection.14.7}%
+\contentsline {subsection}{\numberline {14.8}4.8 Empirical Grounding: Real-World Incidents}{40}{subsection.14.8}%
+\contentsline {subsection}{\numberline {14.9}4.9 Limitations}{40}{subsection.14.9}%
+\contentsline {section}{\numberline {15}Conclusion}{42}{section.15}%
+\contentsline {subsection}{\numberline {15.1}Summary of Contributions}{42}{subsection.15.1}%
+\contentsline {subsection}{\numberline {15.2}Relationship to the Series}{42}{subsection.15.2}%
+\contentsline {subsection}{\numberline {15.3}Future Work}{43}{subsection.15.3}%
+\contentsline {subsubsection}{\numberline {15.3.1}Dual-Use Considerations}{43}{subsubsection.15.3.1}%
+\contentsline {subsection}{\numberline {15.4}Closing Statement}{44}{subsection.15.4}%
+\contentsline {section}{\numberline {16}Supplementary Material S1: Notation Reference}{45}{section.16}%
+\contentsline {subsection}{\numberline {16.1}Cognitive State Notation (Paper 1)}{45}{subsection.16.1}%
+\contentsline {subsection}{\numberline {16.2}Trust Calculus (Paper 1)}{45}{subsection.16.2}%
+\contentsline {subsection}{\numberline {16.3}Defense Mechanism Notation (Paper 1)}{45}{subsection.16.3}%
+\contentsline {subsection}{\numberline {16.4}Adversary Taxonomy (Paper 1)}{46}{subsection.16.4}%
+\contentsline {subsection}{\numberline {16.5}Axiomatic Design Notation (This Paper)}{46}{subsection.16.5}%
+\contentsline {subsection}{\numberline {16.6}OODA Loop Notation (This Paper)}{46}{subsection.16.6}%
+\contentsline {subsection}{\numberline {16.7}OODA Phase \(\leftrightarrow \) CIF Defense Mapping}{46}{subsection.16.7}%
+\contentsline {subsection}{\numberline {16.8}Universal Attack Patterns (This Paper)}{47}{subsection.16.8}%
+\contentsline {section}{\numberline {17}Supplementary Material: Documented AI Agent Security Incidents (2024--2025)}{48}{section.17}%
+\contentsline {subsection}{\numberline {17.1}Incident Catalog}{48}{subsection.17.1}%
+\contentsline {subsubsection}{\numberline {17.1.1}S2.1 Arup Deepfake Video Conference Fraud (February 2024)}{48}{subsubsection.17.1.1}%
+\contentsline {subsubsection}{\numberline {17.1.2}S2.2 Slack AI Data Exfiltration via Indirect Prompt Injection (August 2024)}{48}{subsubsection.17.1.2}%
+\contentsline {subsubsection}{\numberline {17.1.3}S2.3 ChatGPT Search Manipulation via Hidden Text (December 2024)}{48}{subsubsection.17.1.3}%
+\contentsline {subsubsection}{\numberline {17.1.4}S2.4 GitHub Copilot Remote Code Execution via YOLO Mode (June 2025)}{49}{subsubsection.17.1.4}%
+\contentsline {subsubsection}{\numberline {17.1.5}S2.5 Replit Agent Production Database Meltdown (July 2025)}{49}{subsubsection.17.1.5}%
+\contentsline {subsubsection}{\numberline {17.1.6}S2.6 Procurement Agent Vendor Validation Fraud (Q2--Q3 2025)}{49}{subsubsection.17.1.6}%
+\contentsline {subsection}{\numberline {17.2}Cross-Incident Summary}{50}{subsection.17.2}%
+\contentsline {section}{\numberline {18}References}{51}{section.18}%

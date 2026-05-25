@@ -100,7 +100,7 @@
 \section{Domain 9: Infrastructure
 Vulnerabilities}\label{sec:domain_infrastructure}
 
-\begin{frame}{Operational Context}
+\begin{frame}[allowframebreaks]{Operational Context}
 \protect\phantomsection\label{operational-context}
 Smart grid agents balance load and generation in real-time. \textbf{FR1
 = Maintain grid frequency at 60Hz.} \textbf{FR2 = Prevent equipment
@@ -112,7 +112,7 @@ inject false sensor telemetry through compromised IoT devices in the
 network periphery \cite{friedman2026cogsec1}.
 \end{frame}
 
-\begin{frame}{Axiomatic Design Formulation}
+\begin{frame}[allowframebreaks]{Axiomatic Design Formulation}
 \protect\phantomsection\label{axiomatic-design-formulation}
 The system has two functional requirements, yielding a \(2 \times 2\)
 Design Matrix \cite{suh2001axiomatic}:
@@ -145,7 +145,7 @@ coupling between frequency regulation and overload protection, violating
 the Independence Axiom \cite{suh2001axiomatic, friedman2026cogsec2}.
 \end{frame}
 
-\begin{frame}{The Goal Hijacking Attack}
+\begin{frame}[allowframebreaks]{The Goal Hijacking Attack}
 \protect\phantomsection\label{the-goal-hijacking-attack}
 Attackers use ``Sensor Masquerading'' to hijack the ``Load Shedding'' FR
 \cite{langner2011stuxnet, liang2017review}.
@@ -176,7 +176,7 @@ internet-exposed ICS devices increased by 40\%, and ransomware attacks
 on industrial targets rose 355\% between 2020 and 2025.
 \end{frame}
 
-\begin{frame}{OODA Loop Transients}
+\begin{frame}[allowframebreaks]{OODA Loop Transients}
 \protect\phantomsection\label{ooda-loop-transients}
 The attack propagates through the OODA loop \cite{boyd1987patterns} as
 follows:
@@ -199,8 +199,8 @@ follows:
 \end{enumerate}
 \end{frame}
 
-\begin{frame}{CIF Defense: Behavioral Invariants, Belief Sandboxing, and
-Drift Detection}
+\begin{frame}[allowframebreaks]{CIF Defense: Behavioral Invariants,
+Belief Sandboxing, and Drift Detection}
 \protect\phantomsection\label{cif-defense-behavioral-invariants-belief-sandboxing-and-drift-detection}
 CIF implements \textbf{Behavioral Invariants} (Paper 1, Def. 5.5)
 \cite{friedman2026cogsec1} with a partially novel extension:
@@ -243,7 +243,7 @@ synthetic transients characteristic of cyber-attacks.
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Summary}
+\begin{frame}[allowframebreaks]{Summary}
 \protect\phantomsection\label{summary}
 {\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}

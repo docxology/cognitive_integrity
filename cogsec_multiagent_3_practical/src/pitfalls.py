@@ -1,4 +1,6 @@
 """
+from __future__ import annotations
+
 Common Pitfall Catalog for Cognitive Security Deployments.
 
 Implements Section 07 of the Practical Implementation Guide:

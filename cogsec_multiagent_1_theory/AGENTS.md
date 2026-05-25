@@ -1,10 +1,10 @@
-# Cognitive Security for Multiagent Operators - Agent Reference
+# Cognitive Security for Multiagent Operators — Part 1 (Theory) — Agent Reference
 
-**This is an active project** in the `projects/` directory, discovered and executed by infrastructure discovery functions.
+**Location:** `projects/cognitive_integrity/cogsec_multiagent_1_theory/` (active nested program layout). Use qualified name `cognitive_integrity/cogsec_multiagent_1_theory` for `./run.sh` and `scripts/03_render_pdf.py`.
 
 ## Overview
 
-A research project implementing the Cognitive Integrity Framework (CIF) for securing multiagent AI systems against cognitive manipulation attacks. The framework provides formal security guarantees for trust relationships, belief integrity, and provenance verification in distributed AI agent swarms.
+Part 1 of the CIF series: formal foundations plus reference implementations of core mechanisms (trust, firewall, consensus, tripwire, provenance, sandbox, invariants, detection) and visualization helpers used for figures. Full empirical validation lives in Part 2.
 
 ## Key Features & Capabilities
 
@@ -68,42 +68,28 @@ A research project implementing the Cognitive Integrity Framework (CIF) for secu
 - **Corroboration Tracking**: Unique agent corroboration counts
 - **TTL Extension**: Extend provisional belief lifetime
 
-## Directory Structure
+## Directory structure
 
-```\nprojects/cogsec_multiagent_1_theory/
-├── src/                        # Core security modules
-│   ├── __init__.py             # Public API exports
-│   ├── trust.py                # Trust calculus implementation
-│   ├── firewall.py             # Cognitive firewall
-│   ├── consensus.py            # Byzantine consensus
-│   ├── tripwire.py             # Canary belief monitoring
-│   ├── provenance.py           # Information flow tracking
-│   ├── detection.py            # Anomaly detection
-│   ├── invariants.py           # Behavioral invariant checking
-│   ├── sandbox.py              # Belief sandboxing
-│   ├── AGENTS.md               # Technical documentation
-│   └── README.md               # Quick reference
-├── scripts/                    # Figure generation and analysis
-│   ├── 01-18_*_figure.py       # 18 figure generation scripts
-│   ├── verify_manuscript.py    # Manuscript validation
-│   ├── AGENTS.md               # Script documentation
-│   └── README.md               # Quick reference
-├── tests/                      # Test suite
-│   ├── conftest.py             # Pytest configuration
-│   ├── test_*.py               # Module tests (8 files)
-│   ├── AGENTS.md               # Test documentation
-│   └── README.md               # Quick reference
-├── manuscript/                 # Research content
-│   └── config.yaml             # Project metadata
-└── pyproject.toml              # Project configuration
+```text
+cogsec_multiagent_1_theory/
+├── manuscript/           # Paper (abstract through conclusion, S01–S03, references, preamble, config)
+├── src/
+│   ├── __init__.py
+│   ├── trust.py, firewall.py, consensus.py, tripwire.py, provenance.py
+│   ├── detection.py, invariants.py, sandbox.py
+│   ├── data_generation.py, verification.py
+│   └── visualization/    # Figure-oriented helpers (architecture, taxonomy, ROC, etc.)
+├── scripts/                # Figure scripts (numbered), verify_manuscript.py, AGENTS.md, README.md
+├── tests/                  # test_*.py, conftest.py, AGENTS.md, README.md
+├── pyproject.toml          # Part-local pytest / packaging (if present)
+└── output/                 # pdf, figures, reports (generated)
 ```
 
-## Installation/Setup
+Dependencies: repository root `uv sync` plus any extras declared in this part’s `pyproject.toml` when present.
 
-This project uses the root-level `pyproject.toml` for dependencies. Required packages:
+## Installation / setup
 
-- `numpy>=1.22` - Numerical computations
-- `pytest>=7.0` - Testing framework
+Use `uv sync` at the repository root. Typical packages: `numpy`, `pytest` (see root `pyproject.toml`).
 
 ## Usage Examples
 
@@ -227,17 +213,18 @@ violations = monitor.check_action(action)
 
 ## Testing
 
+From the **repository root**:
+
 ```bash
-# Run all tests
-pytest tests/ -v
+uv run pytest projects/cognitive_integrity/cogsec_multiagent_1_theory/tests/ -v
+uv run pytest projects/cognitive_integrity/cogsec_multiagent_1_theory/tests/test_trust.py -v
+```
 
-# Run specific module tests
-pytest tests/test_trust.py -v
-pytest tests/test_firewall.py -v
-pytest tests/test_consensus.py -v
+From this project directory:
 
-# With coverage
-pytest tests/ --cov=src --cov-report=html
+```bash
+uv run pytest tests/ -v
+uv run pytest tests/ --cov=src --cov-report=html
 ```
 
 ## Module Dependencies

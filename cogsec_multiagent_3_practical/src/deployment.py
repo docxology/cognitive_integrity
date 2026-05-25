@@ -1,4 +1,6 @@
 """
+from __future__ import annotations
+
 Deployment Configuration and Guidance for Cognitive Security.
 
 Implements Section 05 of the Practical Implementation Guide:

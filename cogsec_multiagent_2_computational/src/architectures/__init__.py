@@ -1,4 +1,6 @@
 """Multi-agent architecture adapters for the Cognitive Security Framework.
+from __future__ import annotations
+
 
 Provides abstract base classes and concrete adapters for four production
 multi-agent frameworks: Claude Code, AutoGPT, CrewAI, and LangGraph.

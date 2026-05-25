@@ -1,51 +1,47 @@
 {
-  "timestamp": null,
+  "timestamp": "2026-04-26T19:05:56.761296",
   "checks": {
     "PDF validation": true,
     "Markdown validation": true,
-    "Output structure": false,
+    "Output structure": true,
     "Figure registry": true
   },
   "figure_issues": [],
   "output_statistics": {
     "detailed_validation": {
       "structure": {
-        "valid": false,
+        "valid": true,
         "issues": [],
         "missing_files": [],
         "suspicious_sizes": [
-          "pdf/ directory is empty",
-          "web/ directory is empty",
-          "slides/ directory is empty",
           "figures/ directory is empty",
-          "data/ directory is empty",
-          "reports/ directory is empty"
+          "data/ directory is empty"
         ],
         "warnings": [],
         "directory_structure": {
           "project_combined_pdf": {
-            "exists": false,
-            "size_mb": 0.0,
-            "readable": false
+            "exists": true,
+            "size_mb": 0.3,
+            "readable": true
           },
           "pdf": {
             "exists": true,
-            "files": 0,
-            "size_mb": 0.0,
+            "files": 10,
+            "size_mb": 0.82,
             "readable": true,
             "optional": false
           },
           "web": {
             "exists": true,
-            "files": 0,
-            "size_mb": 0.0,
+            "files": 20,
+            "size_mb": 0.56,
             "readable": true,
             "optional": false
           },
           "slides": {
             "exists": true,
-            "files": 0,
-            "size_mb": 0.0,
+            "files": 128,
+            "size_mb": 2.13,
             "readable": true,
             "optional": false
           },
@@ -65,7 +61,7 @@
           },
           "reports": {
             "exists": true,
-            "files": 0,
+            "files": 2,
             "size_mb": 0.0,
             "readable": true,
             "optional": false
@@ -86,7 +82,7 @@
           },
           "logs": {
             "exists": true,
-            "files": 0,
+            "files": 1,
             "size_mb": 0.0,
             "readable": true,
             "optional": true
@@ -96,21 +92,21 @@
       "directories": {
         "pdf": {
           "exists": true,
-          "file_count": 0,
-          "size_mb": "0.00",
-          "largest_file": null
+          "file_count": 10,
+          "size_mb": "0.82",
+          "largest_file": "cogsec_multiagent_4_applications_combined.pdf"
         },
         "web": {
           "exists": true,
-          "file_count": 0,
-          "size_mb": "0.00",
-          "largest_file": null
+          "file_count": 20,
+          "size_mb": "0.56",
+          "largest_file": "index.html"
         },
         "slides": {
           "exists": true,
-          "file_count": 0,
-          "size_mb": "0.00",
-          "largest_file": null
+          "file_count": 128,
+          "size_mb": "2.13",
+          "largest_file": "04_discussion_slides.log"
         },
         "figures": {
           "exists": true,
@@ -126,9 +122,9 @@
         },
         "reports": {
           "exists": true,
-          "file_count": 0,
+          "file_count": 2,
           "size_mb": "0.00",
-          "largest_file": null
+          "largest_file": "test_results.json"
         },
         "simulations": {
           "exists": true,
@@ -144,40 +140,36 @@
         },
         "logs": {
           "exists": true,
-          "file_count": 0,
+          "file_count": 1,
           "size_mb": "0.00",
-          "largest_file": null
+          "largest_file": "pipeline.log"
         }
       },
       "file_counts": {
-        "pdf": 0,
-        "web": 0,
-        "slides": 0,
+        "pdf": 10,
+        "web": 20,
+        "slides": 128,
         "figures": 0,
         "data": 0,
-        "reports": 0,
+        "reports": 2,
         "simulations": 0,
         "llm": 0,
-        "logs": 0
+        "logs": 1
       },
-      "total_size_mb": 0.0,
+      "total_size_mb": 3.512202262878418,
       "issues_by_severity": {
         "critical": [],
-        "warning": [
-          "pdf/ directory is empty",
-          "web/ directory is empty",
-          "slides/ directory is empty",
+        "warning": [],
+        "info": [
           "figures/ directory is empty",
-          "data/ directory is empty",
-          "reports/ directory is empty"
-        ],
-        "info": []
+          "data/ directory is empty"
+        ]
       },
       "recommendations": []
     },
     "pdf": {
-      "files": 8,
-      "size_mb": 0.189605712890625
+      "files": 10,
+      "size_mb": 0.8176746368408203
     },
     "figures": {
       "files": 0,
@@ -190,17 +182,10 @@
   },
   "summary": {
     "total_checks": 4,
-    "passed": 3,
-    "failed": 1,
+    "passed": 4,
+    "failed": 0,
     "figure_issues_count": 0,
-    "all_passed": false
+    "all_passed": true
   },
-  "recommendations": [
-    {
-      "priority": "high",
-      "issue": "Missing output directories",
-      "action": "Ensure all analysis scripts completed successfully",
-      "file": "projects/cognitive_integrity/cogsec_multiagent_4_applications/output/"
-    }
-  ]
+  "recommendations": []
 }

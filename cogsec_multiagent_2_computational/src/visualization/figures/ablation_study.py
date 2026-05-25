@@ -1,14 +1,22 @@
+"""Ablation Study module.
+
+Implements functionality for the Cognitive Integrity Framework.
+"""
+
 from __future__ import annotations
 
 import json
 from pathlib import Path
 
+import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
+from matplotlib.figure import Figure
 from matplotlib.patches import Patch
 
 from ..style import FONTSIZE, SEMANTIC_COLORS, add_source_annotation, apply_style, save_figure
 
+matplotlib.use("Agg")
 logger = __import__('logging').getLogger(__name__)
 
 try:
@@ -56,8 +64,19 @@ def _load_ablation_data(output_dir: Path) -> tuple:
     return components, detection, delta
 
 
-def plot_ablation_study(output_dir: str | Path = "output/figures") -> plt.Figure:
-    """Generate ablation study figure from real ablation results."""
+def plot_ablation_study(output_dir: str | Path = "output/figures") -> Figure:
+    """Generate ablation study figure from real ablation results.
+
+    Parameters
+    ----------
+    output_dir : str | Path
+        Directory where figures are saved.
+
+    Returns
+    -------
+    Figure
+        The created matplotlib figure.
+    """
     if isinstance(output_dir, str):
         output_dir = Path(output_dir)
 

@@ -4,9 +4,15 @@ Cognitive Tripwire System.
 Embeds canary beliefs to detect manipulation.
 """
 
+from __future__ import annotations
+
 from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Callable, Dict, List, Optional
+
+_DRIFT_CRITICAL: float = 0.5
+_DRIFT_HIGH: float = 0.3
+_DRIFT_MEDIUM: float = 0.2
 
 
 @dataclass
@@ -49,11 +55,11 @@ class TripwireAlert:
     @property
     def severity(self) -> str:
         """Compute alert severity based on drift magnitude."""
-        if self.drift > 0.5:
+        if self.drift > _DRIFT_CRITICAL:
             return "CRITICAL"
-        elif self.drift > 0.3:
+        elif self.drift > _DRIFT_HIGH:
             return "HIGH"
-        elif self.drift > 0.2:
+        elif self.drift > _DRIFT_MEDIUM:
             return "MEDIUM"
         return "LOW"
 

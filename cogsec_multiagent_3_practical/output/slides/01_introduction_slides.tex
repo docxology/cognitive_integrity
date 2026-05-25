@@ -74,6 +74,14 @@
 }{% if KOMA class
   \KOMAoptions{parskip=half}}
 \makeatother
+\usepackage{longtable,booktabs,array}
+\newcounter{none} % for unnumbered tables
+\usepackage{calc} % for calculating minipage widths
+\usepackage{caption}
+% Make caption package work with longtable
+\makeatletter
+\def\fnum@table{\tablename~\thetable}
+\makeatother
 \setlength{\emergencystretch}{3em} % prevent overfull lines
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
@@ -89,9 +97,13 @@
 
 \begin{document}
 
+\begin{frame}
+\newpage
+\end{frame}
+
 \section{Why Cognitive Security Matters Now}\label{sec:introduction}
 
-\begin{frame}{The Operational Reality}
+\begin{frame}[allowframebreaks]{The Operational Reality}
 \protect\phantomsection\label{the-operational-reality}
 Something fundamental changed in how AI systems work, and the security
 community is catching up.
@@ -111,40 +123,56 @@ risk isn't just that an agent says something wrong, but that it
 \emph{believes} something wrong---and acts on it.
 \end{frame}
 
-\begin{frame}{The Good News: It's Solvable}
+\begin{frame}[allowframebreaks]{The Good News: It's Solvable}
 \protect\phantomsection\label{the-good-news-its-solvable}
 This is not a theoretical warning about future doom. It is an
 engineering problem with established solutions.
 
 The Cognitive Integrity Framework (CIF) was developed to secure these
-systems, and the first two papers in this series demonstrated its
-efficacy.
+systems, and the companion papers in this series demonstrate its
+efficacy from formal, computational, and applied angles.
 
 \begin{itemize}
 \tightlist
 \item
-  \textbf{Part 1: Formal Foundations} proved that trust can be
-  mathematically bounded. We defined the ``Trust Calculus'' which
-  guarantees that no matter how clever an adversary is, they cannot
-  amplify their influence through delegation chains.
+  \textbf{Part 1: Formal Foundations} (DOI: 10.5281/zenodo.18364119)
+  proved that trust can be mathematically bounded. We defined the
+  ``Trust Calculus'' which guarantees that no matter how clever an
+  adversary is, they cannot amplify their influence through delegation
+  chains. It also introduces the Defense Composition Algebra, the
+  five-tier adversary taxonomy (\(\Omega_1\)--\(\Omega_5\)), and
+  information-theoretic stealth-impact bounds.
 \item
-  \textbf{Part 2: Computational Validation} implemented this theory in
-  Python and tested it against a corpus of 950 attacks across four
-  production architectures.
+  \textbf{Part 2: Computational Validation} (DOI:
+  10.5281/zenodo.18364128) implemented this theory in Python and tested
+  it against a corpus of 950 attacks across four production
+  architectures, reporting ablation studies, Bayesian uncertainty
+  quantification, and colony-scale benchmarks at 20--100 agents.
+\item
+  \textbf{Part 4: Applications of the Cognitive Integrity Framework}
+  extends the framework via the integrated CIF-AD-OODA analytical model
+  and applies it across ten critical domains (rare-earth mining,
+  nation-state alliances, cyber-security, drone warfare, supply chain,
+  biowarfare, food security, trade wars, infrastructure, information
+  ecosystems), identifying three universal attack patterns and three
+  novel defense extensions.
 \end{itemize}
 
-The result was \textbf{1,594 passing tests and a 97\% structural
-constraint satisfaction rate} against direct injection attacks in fully
-defended configurations.
+The combined evidence: \textbf{1,594 passing tests and 94\% overall
+detection} (95\% CI: {[}0.92, 0.96{]}) across all attack categories and
+architectures (Part 2), with direct injection detection reaching
+96--98\% in fully defended configurations; plus CIF coverage validated
+across all ten operational domains in Part 4 with retrospective analysis
+of six documented 2024--2025 AI agent incidents.
 \end{frame}
 
-\begin{frame}{The Purpose of This Guide}
+\begin{frame}[allowframebreaks]{The Purpose of This Guide}
 \protect\phantomsection\label{the-purpose-of-this-guide}
-We wrote Part 1 for the theorists and Part 2 for the experimentalists.
-We wrote this paper---Part 3---to translate those findings into
-practice.
+We wrote Part 1 for the theorists, Part 2 for the experimentalists, and
+Part 4 for domain experts. We wrote this paper---Part 3---to translate
+those findings into deployable engineering practice.
 
-Our goal is to describe how the defenses validated in the previous
+Our goal is to describe how the defenses validated in the companion
 papers can be architected in production systems. We focus on the
 practical application of the formal proofs:
 
@@ -162,7 +190,7 @@ practical application of the formal proofs:
 \end{itemize}
 \end{frame}
 
-\begin{frame}{How to Use This Resource}
+\begin{frame}[allowframebreaks]{How to Use This Resource}
 \protect\phantomsection\label{how-to-use-this-resource}
 \begin{itemize}
 \tightlist
@@ -174,17 +202,83 @@ practical application of the formal proofs:
   detailing which architectures performed best against specific threats.
 \item
   \textbf{Section 4} analyzes the attack scenarios used in our testing
-  corpus.
+  corpus. For domain-specific attack patterns (FR Polarity Inversion,
+  Constraint Relaxation, Context Boundary Violation) and documented
+  real-world AI-agent incidents, see \textbf{Part 4}.
 \item
   \textbf{Section 5} presents the specific configuration profiles that
-  yielded the highest security margins in simulation.
+  yielded the highest security margins in simulation, with deployment
+  guides, incident response playbooks, monitoring, and cost--benefit
+  analysis.
 \item
   \textbf{Sections 6-7} discuss the limitations discovered during
-  testing and the open problems that remain.
+  testing and the open problems that remain; domain-specific case
+  studies and novel defense extensions (verification channel separation,
+  active perturbation probing, physics-informed invariants) are treated
+  in Part 4.
 \end{itemize}
 
 This paper serves as a report on the current state of cognitive security
 engineering, grounded in the data and definitions of the CIF series.
+Readers seeking derivations or proofs should consult Part 1; readers
+seeking empirical measurements should consult Part 2; readers evaluating
+CIF for a specific operational sector should consult Part 4.
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Reading Companion: Where to Find
+Specific Topics}
+\protect\phantomsection\label{sec:reading-companion}
+This paper is designed to stand alone as the practitioner's reference of
+the series. Where a concept or technique is developed more fully
+elsewhere, the table below points the way.
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5714}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.4286}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+If you want\ldots{}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\ldots consult\ldots{}
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+Formal definitions, proofs, and theorems (Trust Calculus, Defense
+Composition Algebra, stealth--impact bound) & \textbf{Part 1} (DOI:
+10.5281/zenodo.18364119), §§4--5, 7 \\
+Adversary taxonomy \(\Omega_1\)--\(\Omega_5\) formal characterization &
+\textbf{Part 1}, §3 \\
+Model-checked safety invariants + NuSMV/TLA+ specifications &
+\textbf{Part 1} §7, \textbf{Part 2} S04 \\
+Eusocial-colony analogy (biological existence proof for CIF-like
+architectures) & \textbf{Part 1} S02 \\
+950-attack corpus generation, examples, ethics & \textbf{Part 2} (DOI:
+10.5281/zenodo.18364128), §3 + S03 \\
+Detailed detection rates per architecture (Claude Code, AutoGPT, CrewAI,
+LangGraph) & \textbf{Part 2} §5 \\
+Ablation studies + Bayesian uncertainty & \textbf{Part 2} §5.6, §5e \\
+Parametric design-level ceiling (94--100\%) & \textbf{Part 2} S08 \\
+Game-theoretic adversarial analysis / Nash equilibrium & \textbf{Part 2}
+§6 \\
+Category-theoretic formalization + free-energy connections &
+\textbf{Part 2} §1c, S10 \\
+Framework API reference + pseudocode & \textbf{Part 2} S05, S07 \\
+Application of CIF to specific operational sectors (10 domains analyzed)
+& \textbf{Part 4}, §3.01--§3.10 \\
+Three universal attack patterns across domains (FR Polarity Inversion,
+Constraint Relaxation, Context Boundary Violation) & \textbf{Part 4}
+§4 \\
+Three novel defense extensions (verification channel separation, active
+perturbation probing, physics-informed invariants) & \textbf{Part 4}
+§3.06, §3.08, §3.09 \\
+Retrospective mapping of 2024--2025 AI-agent security incidents (Replit,
+Copilot RCE, Slack AI, \$3.2M procurement fraud, etc.) & \textbf{Part 4}
+S02 \\
+CIF-AD-OODA integration model for goal-hijacking & \textbf{Part 4} §2 \\
+\bottomrule\noalign{}
+\end{longtable}
+}
 \end{frame}
 
 \end{document}

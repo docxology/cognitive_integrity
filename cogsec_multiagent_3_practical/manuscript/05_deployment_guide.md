@@ -109,4 +109,4 @@ NIST's extension of SP 800-207 to AI agents establishes "never trust, always ver
 * **Least privilege**: Trust scores decay exponentially with delegation depth ($\delta^d$)
 * **Continuous authentication**: Provenance attestation provides cryptographic message origin tracking
 
-Profile A (Internal Tool) provides partial NIST alignment. Profile B (Customer Facing) achieves substantial compliance. Profile C (Autonomous Operator) provides full alignment with both OWASP and NIST standards.
+Profile A (Internal Tool) provides partial NIST alignment. Profile B (Customer Facing) achieves substantial compliance. Profile C (Autonomous Operator) is the profile that maps most completely to the controls cited in the OWASP and NIST frameworks above; treat any mapping as design intent, not certification.

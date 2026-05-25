@@ -1,4 +1,6 @@
 """Attack corpus generators for each category.
+from __future__ import annotations
+
 
 Each generator module produces deterministic attack samples given a
 numpy RNG, covering all 12 subcategories across 4 top-level categories.

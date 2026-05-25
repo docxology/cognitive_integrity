@@ -108,9 +108,11 @@
 \newpage
 \end{frame}
 
-\begin{frame}[fragile]{Threat Model: Adversary Classes, Attack
+\section{Threat Model: Adversary Classes, Attack Complexity, and
+Taxonomy}\label{sec:threat-model}
+
+\begin{frame}[allowframebreaks]{Threat Model: Adversary Classes, Attack
 Complexity, and Taxonomy}
-\protect\phantomsection\label{sec:threat-model}
 This section formalizes the adversary model for multiagent cognitive
 security. We define five adversary classes
 (\cref{sec:adversary-classes}), characterize attack complexity
@@ -118,8 +120,9 @@ security. We define five adversary classes
 (\cref{sec:detectability}), analyze adversarial capabilities
 (\cref{sec:capabilities}), and present a comprehensive attack taxonomy
 (\cref{sec:attack-taxonomy}).
+\end{frame}
 
-\begin{block}{Adversary Classes}
+\begin{frame}[allowframebreaks]{Adversary Classes}
 \protect\phantomsection\label{sec:adversary-classes}
 \begin{definition}[Adversary Class]
 \label{def:adversary-class}
@@ -147,9 +150,9 @@ Systemic & $\Omega_5$ & Orchestrator & Full control & Framework compromise \\
 We assume an honest orchestrator for \(\Omega_1\)--\(\Omega_4\); class
 \(\Omega_5\) attacks require physical or supply-chain compromise outside
 our threat model.
-\end{block}
+\end{frame}
 
-\begin{block}{Attack Complexity Analysis}
+\begin{frame}[allowframebreaks]{Attack Complexity Analysis}
 \protect\phantomsection\label{sec:attack-complexity}
 \begin{definition}[Resource Requirements]
 \label{def:resources}
@@ -202,9 +205,9 @@ $\Omega_5$ & Very High & Complete & All & Persistent & Variable & $O(2^n)$ \\
 \text{Complexity}(\Omega_1) < \text{Complexity}(\Omega_2) < \text{Complexity}(\Omega_3) < \text{Complexity}(\Omega_4) < \text{Complexity}(\Omega_5)
 \end{equation}
 \end{property}
-\end{block}
+\end{frame}
 
-\begin{block}{Detectability Analysis}
+\begin{frame}[allowframebreaks]{Detectability Analysis}
 \protect\phantomsection\label{sec:detectability}
 \begin{definition}[Detectability Score]
 \label{def:detectability}
@@ -220,9 +223,9 @@ where $\alpha + \beta + \gamma = 1$ and components are:
 \item $D_{\text{prov}} \in [0,1]$: Causal traceability
 \end{itemize}
 \end{definition}
-\end{block}
+\end{frame}
 
-\begin{block}{Adversarial Capabilities}
+\begin{frame}[allowframebreaks]{Adversarial Capabilities}
 \protect\phantomsection\label{sec:capabilities}
 \begin{definition}[Capability Set]
 \label{def:capability-set}
@@ -282,9 +285,9 @@ For adversary classes $\Omega_1$--$\Omega_4$, the orchestrator agent $a_0$ remai
 \forall k \in \{1,2,3,4\}: a_0 \notin \text{Compromised}(\Omega_k)
 \end{equation}
 \end{axiom}
-\end{block}
+\end{frame}
 
-\begin{block}{Attack Taxonomy}
+\begin{frame}[fragile,allowframebreaks]{Attack Taxonomy}
 \protect\phantomsection\label{sec:attack-taxonomy}
 We classify attacks into four dimensions: epistemic, behavioral, social,
 and temporal. \Cref{fig:threat-taxonomy} provides a visual overview of
@@ -487,9 +490,9 @@ Models trained to behave safely during evaluation/training but defect when a spe
 Incremental belief shifts below per-step detection threshold.
 \end{definition}
 \end{block}
-\end{block}
+\end{frame}
 
-\begin{block}{Attack Scenarios by Class}
+\begin{frame}[allowframebreaks]{Attack Scenarios by Class}
 \protect\phantomsection\label{attack-scenarios-by-class}
 \begin{block}{Scenario \(\Omega_1\): Nested Instruction Attack}
 \protect\phantomsection\label{scenario-omega_1-nested-instruction-attack}
@@ -603,9 +606,9 @@ set.
 
 \textbf{Detection}: Message authentication, trust velocity anomalies
 \end{block}
-\end{block}
+\end{frame}
 
-\begin{block}{Attack-Defense Quick Reference}
+\begin{frame}[allowframebreaks]{Attack-Defense Quick Reference}
 \protect\phantomsection\label{sec:attack-defense-reference}
 \Cref{tab:attack-defense-map} provides a navigational summary mapping
 attack categories to their cognitive targets and corresponding CIF
@@ -644,9 +647,9 @@ Progressive Drift & Cumulative $\sum \delta_t$ & Drift detection & CUSUM trackin
 \bottomrule
 \end{tabular}
 \end{table}
-\end{block}
+\end{frame}
 
-\begin{block}{Attack Composition}
+\begin{frame}[allowframebreaks]{Attack Composition}
 \protect\phantomsection\label{attack-composition}
 \begin{definition}[Attack Composition]
 \label{def:attack-composition}
@@ -676,9 +679,9 @@ Progressive Drift & Goal Hijacking & Undetectable goal modification \\
 \cite{adaptive2025attacks} shows that adversaries can effectively
 ``hill-climb'' against static defenses, modifying their attack strategy
 in response to defense feedback.
-\end{block}
+\end{frame}
 
-\begin{block}{Threat Model Assumptions}
+\begin{frame}[allowframebreaks]{Threat Model Assumptions}
 \protect\phantomsection\label{threat-model-assumptions}
 \begin{enumerate}
 \item Adversary knows system architecture (Kerckhoffs's principle)
@@ -703,7 +706,6 @@ control).}\label{fig:attack-surface}
 \Cref{fig:attack-surface} visualizes the attack surface across adversary
 classes \(\Omega_1\)--\(\Omega_5\), showing hierarchical agent structure
 and corresponding attack vectors.
-\end{block}
 \end{frame}
 
 \end{document}

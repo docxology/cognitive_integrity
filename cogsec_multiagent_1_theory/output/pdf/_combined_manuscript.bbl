@@ -1,4 +1,4 @@
-\begin{thebibliography}{47}
+\begin{thebibliography}{49}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -117,6 +117,16 @@ G{\'e}raldine~DG Debout, Bertrand Schatz, Mika{\"e}l Elias, and Doyle McKey.
   (2):\penalty0 319--348, 2007.
 \newblock \doi{10.1111/j.1095-8312.2007.00728.x}.
 
+\bibitem[Fern{\'a}ndez-Mar{\'\i}n et~al.(2006)Fern{\'a}ndez-Mar{\'\i}n,
+  Zimmerman, Rehner, and Wcislo]{fernandez2006evolution}
+Hermogenes Fern{\'a}ndez-Mar{\'\i}n, Jess~K. Zimmerman, Stephen~A. Rehner, and
+  William~T. Wcislo.
+\newblock Active use of the metapleural glands by ants in controlling fungal
+  infection.
+\newblock \emph{Proceedings of the Royal Society B}, 273\penalty0
+  (1594):\penalty0 1689--1695, 2006.
+\newblock \doi{10.1098/rspb.2006.3492}.
+
 \bibitem[Garcia et~al.(2025)Garcia, Thompson, and Lee]{trustdynamics2025}
 Maria Garcia, David Thompson, and Sunhee Lee.
 \newblock Trust dynamics in strategic coopetition: Computational foundations
@@ -131,6 +141,13 @@ Pierre-Paul Grass{\'e}.
   stigmergie.
 \newblock \emph{Insectes Sociaux}, 6\penalty0 (1):\penalty0 41--80, 1959.
 \newblock \doi{10.1007/BF02223791}.
+
+\bibitem[Gr{\"u}ter and Farina(2009)]{gruter2008dance}
+Christoph Gr{\"u}ter and Walter~M. Farina.
+\newblock The honeybee waggle dance: can we follow the steps?
+\newblock \emph{Trends in Ecology \& Evolution}, 24\penalty0 (5):\penalty0
+  242--247, 2009.
+\newblock \doi{10.1016/j.tree.2008.12.007}.
 
 \bibitem[Hubinger et~al.(2024)]{sleeperagents2024}
 Evan Hubinger et~al.

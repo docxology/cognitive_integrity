@@ -1,14 +1,19 @@
 """
+from __future__ import annotations
+
 Anomaly Detection for Cognitive Security.
 
 Implements drift detection and behavioral scoring.
 """
 
+import logging
 from collections import deque
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Tuple
 
 import numpy as np
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass
@@ -194,8 +199,8 @@ class AnomalyScorer:
                 if key not in self._history:
                     self._history[key] = deque(maxlen=self.config.window_size)
                 self._history[key].append(value)
-            except Exception:
-                pass  # Skip failed extractions
+            except (TypeError, ValueError, KeyError) as exc:
+                logger.debug("Extractor %s failed on agent %s: %s", extractor.name, agent_id, exc)
 
     def calibrate(self, agent_id: str) -> None:
         """Calibrate baselines for agent from history."""

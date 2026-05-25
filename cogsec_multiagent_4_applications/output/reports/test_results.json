@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-02-15T17:30:44.349024",
+  "timestamp": "2026-04-26T19:05:13.954049",
   "infrastructure": {},
   "project": {
     "passed": 1,
@@ -7,13 +7,13 @@
     "skipped": 0,
     "total": 1,
     "warnings": 0,
-    "exit_code": 1,
+    "exit_code": 0,
     "discovery_count": 1,
     "collection_errors": 0,
     "execution_phases": {
-      "setup": 0.36,
-      "collection": 0.36,
-      "execution": 0.36
+      "setup": 0.1,
+      "collection": 0.1,
+      "execution": 0.1
     },
     "test_categories": {},
     "coverage_percent": 100.0,
@@ -24,7 +24,25 @@
     "total_failed": 0,
     "total_skipped": 0,
     "total_tests": 1,
-    "all_passed": false,
+    "all_passed": true,
     "project_coverage": 100.0
+  },
+  "coverage_details": {
+    "project": {
+      "overall_coverage": 100.0,
+      "total_executed": 3,
+      "total_missing": 0,
+      "total_excluded": 0,
+      "total_lines": 3,
+      "file_coverage": {
+        "projects/cognitive_integrity/cogsec_multiagent_4_applications/src/identity.py": {
+          "coverage_percent": 100.0,
+          "executed_lines": 3,
+          "missing_lines": 0,
+          "excluded_lines": 0,
+          "total_lines": 3
+        }
+      }
+    }
   }
 }

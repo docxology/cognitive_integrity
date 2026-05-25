@@ -1,4 +1,11 @@
+"""Scalability module.
+
+Part of the Cognitive Integrity Framework.
+"""
+
 #!/usr/bin/env python3
+from __future__ import annotations
+
 """Scalability analysis visualization module."""
 
 import os
@@ -127,7 +134,7 @@ def create_scalability_figure(output_dir: Path) -> tuple[Path, Path]:
             p = np.polyfit(agent_counts**2, consensus_latency, 1)
             fit_vals = np.polyval(p, agent_counts**2)
             ax3.plot(agent_counts, fit_vals, "k--", alpha=0.3, label=r"Fit O(N$^2$)")
-        except:
+        except (np.linalg.LinAlgError, ValueError):
             pass
 
     ax3.set_xlabel("Number of Agents", fontsize=12, fontweight="bold")

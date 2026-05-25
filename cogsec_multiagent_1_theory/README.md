@@ -1,4 +1,4 @@
-# Cognitive Integrity Framework: Formal Foundations (Paper 1)
+# Cognitive Integrity Framework: Formal Foundations (Part 1)
 
 Part 1 of the **Cognitive Security for Multiagent Operators** series.
 
@@ -7,6 +7,8 @@ Part 1 of the **Cognitive Security for Multiagent Operators** series.
 ## Overview
 
 This paper presents the **theoretical foundations** of the Cognitive Integrity Framework (CIF) for securing multiagent AI operators against cognitive manipulation attacks.
+
+**Prerequisites:** Comfort with formal notation and security definitions; for empirical and implementation detail, read [Part 2](../cogsec_multiagent_2_computational/) ([claims traceability](../cogsec_multiagent_2_computational/docs/claims_traceability.md)).
 
 ## Primary Contributions
 
@@ -22,6 +24,7 @@ This paper presents the **theoretical foundations** of the Cognitive Integrity F
 | **1 (This)** | Formal Foundations | Theory, proofs, formalisms | **Published** | [10.5281/zenodo.18364119](https://doi.org/10.5281/zenodo.18364119) |
 | 2 | Computational Validation | Empirical results, algorithms | Preprint | [10.5281/zenodo.18364128](https://doi.org/10.5281/zenodo.18364128) |
 | 3 | Practical Guidance | Deployment checklists, guidelines | Preprint | [10.5281/zenodo.18364130](https://doi.org/10.5281/zenodo.18364130) |
+| 4 | [Applications](../cogsec_multiagent_4_applications/) | Ten-domain CIF-AD-OODA, goal hijacking | Preprint | _DOI pending_ |
 
 ## Project Structure
 
@@ -42,9 +45,10 @@ cogsec_multiagent_1_theory/
 │   ├── S02_eusocial_cogsec.md # Colony cognitive security
 │   ├── S03_notation.md       # CANONICAL notation reference
 │   └── references.bib
-├── src/                  # Minimal type definitions
-├── tests/                # Basic validation
-└── output/               # Generated PDF
+├── src/                  # CIF reference implementations + visualization helpers
+├── scripts/              # Figure and data scripts
+├── tests/                # Module and visualization tests
+└── output/               # Generated PDF, figures, reports
 ```
 
 ## Notation Reference
@@ -53,7 +57,7 @@ The **canonical notation** for the entire paper series is defined in:
 
 - `manuscript/S03_notation.md`
 
-Papers 2 and 3 reference this document for all symbol definitions.
+Parts 2 and 3 point here for full symbol definitions (Part 3 also ships a short `S01_notation_reference.md` for readers who stay in the operator paper).
 
 ## Citation
 
@@ -79,10 +83,13 @@ These manuscripts are designed to be built using the [docxology/template](https:
 
 ## Usage
 
-```bash
-# Render PDF
-./run.sh --render-pdf --project cogsec_multiagent_1_theory
+From the **template repository root**, use the qualified project name (see [`../README.md`](../README.md) — Location):
 
-# Run tests
-./run.sh --project cogsec_multiagent_1_theory --run-tests
+```bash
+./run.sh --render-pdf --project cognitive_integrity/cogsec_multiagent_1_theory
+# or
+uv run python scripts/03_render_pdf.py --project cognitive_integrity/cogsec_multiagent_1_theory
+
+uv run pytest projects/cognitive_integrity/cogsec_multiagent_1_theory/tests/ -v
+# or: ./run.sh --project cognitive_integrity/cogsec_multiagent_1_theory --project-tests
 ```

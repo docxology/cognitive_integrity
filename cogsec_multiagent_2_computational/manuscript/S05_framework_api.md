@@ -4,7 +4,14 @@
 
 ## Overview
 
-This supplementary material documents the core framework modules that implement the theoretical constructs from Part 1. The complete source code is available at: **<https://github.com/docxology/cognitive_integrity>**
+This supplementary material documents the core framework modules that implement the theoretical constructs from Part 1 \cite{friedman2026cogsec1}. The complete source code is available at \url{https://github.com/docxology/cognitive_integrity} (DOI: 10.5281/zenodo.18364128).
+
+> **Cross-paper reading guide.**
+> • For **formal definitions and theorems** of every construct referenced below, see Part 1 (DOI: 10.5281/zenodo.18364119) §3–§5.
+> • For **deployment guidance** on configuring these APIs in production (operator posture, monitoring, incident response), see Part 3 (DOI: 10.5281/zenodo.18364130) §5–§6.
+> • For **domain-specific application** of these mechanisms across ten critical sectors (infrastructure, supply chain, cyber, biowarfare, information ecosystems, etc.), see Part 4 §3.01–§3.10.
+> • A parallel **functional-style API** (free-function form rather than class form) is documented in §S09 Functional API of this paper; choose whichever style fits your integration context.
+> • Concrete **pseudocode** for every algorithm in this API appears in §S07 Algorithm Pseudocode.
 
 ## Trust Module {#sec:trust-module-api}
 
@@ -35,7 +42,7 @@ The firewall module implements multi-stage classification for cognitive attack d
 
 | Class | Description |
 | --- | --- |
-| \texttt{CognitiveFirewall} | Three-tier classifier (ACCEPT/QUARANTINE/REJECT) with configurable thresholds. Combines pattern matching, semantic analysis, and anomaly detection. |
+| \texttt{CognitiveFirewall} | Three-tier classifier (ACCEPT/QUARANTINE/REJECT) using dual thresholds: $\tau_1 = 0.7$ (REJECT, hard-reject; inputs scoring above this are blocked outright) and $\tau_2 = 0.5$ (QUARANTINE; inputs scoring in $(\tau_2, \tau_1]$ are sandboxed). Combines pattern matching, semantic analysis, and anomaly detection. |
 | \texttt{PatternDetector} | Heuristic pattern matching with 15 injection patterns and 20 suspicious indicators. Weighted scoring based on pattern severity. |
 | \texttt{SemanticSimilarityDetector} | Embedding-based similarity to known malicious patterns. Supports custom embedding models or hash-based fallback. |
 | \texttt{MultiStageClassifier} | Orchestrates multi-stage detection pipeline with configurable stage weights. |

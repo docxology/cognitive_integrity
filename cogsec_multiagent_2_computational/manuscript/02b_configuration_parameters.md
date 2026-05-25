@@ -39,10 +39,13 @@ This section documents configuration parameters for all CIF defense components. 
 
 | Parameter | Symbol | Default | Range | Description |
 | --- | --- | --- | --- | --- |
-| Quarantine threshold | $\tau_2$ | 0.5 | $(0, 1)$ | Sandbox routing |
+| Reject threshold | $\tau_1$ | 0.7 | $(\tau_2, 1)$ | Hard block; inputs above this score are rejected outright |
+| Quarantine threshold | $\tau_2$ | 0.5 | $(0, \tau_1)$ | Sandbox routing; inputs in $(\tau_2, \tau_1]$ are quarantined |
 | Injection weight | $w_1$ | 0.4 | $[0, 1]$ | Pattern match weight |
 | Semantic weight | $w_2$ | 0.3 | $[0, 1]$ | Embedding similarity weight |
 | Anomaly weight | $w_3$ | 0.3 | $[0, 1]$ | Structural analysis weight |
+
+**Threshold ordering constraint**: $\tau_1 > \tau_2$ is required; setting $\tau_1 = \tau_2$ collapses the three-tier decision (REJECT / QUARANTINE / ACCEPT) to binary REJECT/ACCEPT, eliminating the sandbox routing path entirely.
 
 ## Sandbox Parameters {#sec:sandbox-params}
 
@@ -59,10 +62,13 @@ This section documents configuration parameters for all CIF defense components. 
 
 | Parameter | Symbol | Default | Range | Description |
 | --- | --- | --- | --- | --- |
-| Critical epsilon | $\epsilon_{critical}$ | 0.05 | $(0, 0.2)$ | Critical alert threshold |
-| Medium epsilon | $\epsilon_{medium}$ | 0.08 | $(0, 0.3)$ | Medium threshold |
+| Critical threshold | $\epsilon_{critical}$ | 0.30 | $(0.2, 1.0)$ | Drift above this triggers CRITICAL alert |
+| High threshold | $\epsilon_{high}$ | 0.20 | $(0.1, 0.5)$ | Drift in $(\epsilon_{high}, \epsilon_{critical}]$ triggers HIGH |
+| Medium threshold | $\epsilon_{medium}$ | 0.08 | $(0, 0.2)$ | Drift in $(\epsilon_{medium}, \epsilon_{high}]$ triggers MEDIUM |
 | Check interval | $\tau_{tripwire}$ | 30s | $[5, 300]$ | Monitoring frequency |
-| Canary tolerance | $\epsilon_{canary}$ | 0.1 | $(0, 0.5)$ | Canary deviation tolerance |
+| Canary tolerance | $\epsilon_{canary}$ | 0.10 | $(0, 0.5)$ | Per-canary deviation tolerance |
+
+**Threshold ordering constraint**: $\epsilon_{critical} > \epsilon_{high} > \epsilon_{medium}$ is required for the `ClassifySeverity` cascade in Algorithm 4 (S7) to produce all four severity tiers. The `ClassifySeverity` function checks thresholds in descending order (CRITICAL first); violating this ordering makes HIGH or MEDIUM unreachable.
 
 ## Drift Detection Parameters {#sec:drift-params}
 

@@ -1,4 +1,6 @@
 """Formal verification module for the Cognitive Security Framework.
+from __future__ import annotations
+
 
 Re-exports theorem validation infrastructure and model checker spec
 generators for NuSMV, SPIN/Promela, and TLA+.

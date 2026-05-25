@@ -7,7 +7,7 @@ fraction of decisions that match the ground truth.
 
 from __future__ import annotations
 
-from typing import List
+from typing import Any, List
 
 import numpy as np
 
@@ -25,7 +25,7 @@ class QuorumManipulationScenario:
     def name(self) -> str:
         return "quorum_manipulation"
 
-    def default_config(self):
+    def default_config(self) -> Any:
         """Return default colony configuration for this scenario."""
         try:
             from .benchmark import ColonyConfig
@@ -44,7 +44,7 @@ class QuorumManipulationScenario:
                 seed: int = 42
             return _Cfg()
 
-    def run(self, config, rng: np.random.Generator):
+    def run(self, config: Any, rng: np.random.Generator) -> Any:
         """Run the quorum-manipulation simulation.
 
         Args:

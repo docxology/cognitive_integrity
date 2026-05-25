@@ -1,77 +1,68 @@
-# Cognitive Security in Practice - Agent Reference
+# Cognitive Security in Practice — Part 3 — Agent Reference
 
-**This is an active project** in the `projects/` directory, discovered and executed by infrastructure discovery functions.
+**Location:** `projects/cognitive_integrity/cogsec_multiagent_3_practical/`. Active nested project under program `cognitive_integrity/`; use qualified name `cognitive_integrity/cogsec_multiagent_3_practical` for `./run.sh` and `scripts/03_render_pdf.py`.
 
 ## Overview
 
-Part 3 of the **Cognitive Security for Multiagent Operators** series. This project provides actionable practical guidance for deploying cognitive security in multiagent AI systems.
+Part 3: actionable guidance for deploying cognitive security in multiagent AI systems (checklists, posture, risk, pitfalls, case studies).
 
-## Content Focus
+## Content focus
 
-### Human-Actionable Guidance
+### Human-actionable guidance
 
 - **Operator Posture**: Assessment of cognitive security readiness
-- **Deployment Checklists**: Step-by-step security configuration
+- **Deployment and operations**: Guides split across `05_*.md` and `05b`–`05d`
 - **Risk Assessment**: Threat modeling for cognitive attack surfaces
-- **Common Pitfalls**: Anti-patterns and mitigations
+- **Common Pitfalls**: Anti-patterns and mitigations (`06_common_pitfalls.md`, `06b_case_studies.md`)
 
-### Agent-Readable Guidelines
+### Agent-readable guidance
 
-- **Machine-Readable Checklists**: Structured guidance for AI agents
-- **Security Invariants**: Rules for agent self-monitoring
+- **Security Invariants and monitoring**: Implemented in `src/agent_guidelines.py`; manuscript coverage is distributed across the deployment and operations sections (see `05_*.md` and related body sections).
 - **Trust Boundaries**: Guidelines for inter-agent communication
 
-## Directory Structure
+## Directory structure
 
-```
+```text
 cogsec_multiagent_3_practical/
-├── manuscript/                 # Paper content (prose-only)
-│   ├── 00_abstract.md
-│   ├── 01_introduction.md
-│   ├── 02_operator_posture.md
-│   ├── 03_human_checklist.md
-│   ├── 04_agent_guidelines.md
-│   ├── 05_deployment.md
-│   ├── 06_risk_assessment.md
-│   ├── 07_common_pitfalls.md
-│   ├── 08_conclusion.md
-│   └── S01_notation_reference.md
-├── src/                        # Implementation modules
-│   ├── posture.py              # Five Pillars assessment + maturity scoring
-│   ├── checklists.py           # Pre-deployment, operational, incident response
-│   ├── agent_guidelines.py     # Security invariants + monitoring
-│   ├── deployment.py           # Risk profiles, architecture guidance
-│   ├── risk_assessment.py      # Attack surface mapping + threat modeling
-│   ├── pitfalls.py             # Anti-pattern catalog + remediation
-│   └── visualization.py       # Figure generation
-├── scripts/                    # Figure generation orchestrators
-├── tests/                      # Test suite (789 tests)
-└── output/                     # Generated PDF and figures
+├── manuscript/
+│   ├── 00_abstract.md, 01_introduction.md
+│   ├── 02_theory_review.md, 03_simulation_review.md
+│   ├── 04_attack_scenarios.md, 04b_subagent_hardening.md
+│   ├── 05_deployment_guide.md, 05b_incident_response.md, 05c_cost_benefit.md, 05d_monitoring_guide.md
+│   ├── 06_common_pitfalls.md, 06b_case_studies.md
+│   ├── 07_future_directions.md, 08_conclusion.md
+│   ├── 99_references.md, S01_notation_reference.md
+│   └── config.yaml, preamble.md, references.bib
+├── src/                        # posture, checklists, agent_guidelines, deployment, risk_assessment, pitfalls, integration, visualization
+├── scripts/
+├── tests/
+└── output/
 ```
 
-## Target Audience
+## Target audience
 
 - Security practitioners assessing multiagent deployments
 - Developers building agentic AI applications
 - AI system operators managing cognitive security
-- Compliance teams evaluating AI risk
+- Compliance teams evaluating AI risk frameworks
 
-## Notation Reference
+## Notation reference
 
-Minimal notation used; full definitions in:
+Minimal notation in Part 3; full definitions:
 
 - `../cogsec_multiagent_1_theory/manuscript/S03_notation.md`
 
 ## Usage
 
+From the template repository root:
+
 ```bash
-# Render PDF
-./run.sh --render-pdf --project cogsec_multiagent_3_practical
+./run.sh --render-pdf --project cognitive_integrity/cogsec_multiagent_3_practical
+uv run pytest projects/cognitive_integrity/cogsec_multiagent_3_practical/tests/ -v
 ```
 
-## Guidelines for Editing
+## Guidelines for editing
 
-- **Prose-Only**: No code blocks in manuscript
-- **Actionable**: Every section should have concrete steps
-- **Accessible**: Minimal technical prerequisites
-- **Cross-Referenced**: Link to Papers 1 and 2 for depth
+- **Prose-first**: Keep manuscript sections actionable; follow project conventions for code in `src/` vs manuscript.
+- **Actionable**: Each major section should yield concrete steps where appropriate.
+- **Cross-referenced**: Link to Parts 1–2 for formal and empirical depth; Part 4 for domain applications.

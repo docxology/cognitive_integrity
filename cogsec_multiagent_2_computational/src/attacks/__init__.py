@@ -1,4 +1,6 @@
 """Attack corpus and generators for the Cognitive Security Framework.
+from __future__ import annotations
+
 
 Provides a 950-sample attack corpus covering 4 top-level categories
 (injection, trust exploitation, belief manipulation, coordination)

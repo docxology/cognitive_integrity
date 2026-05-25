@@ -1,4 +1,6 @@
 """
+from __future__ import annotations
+
 Human-Actionable Checklists for Cognitive Security.
 
 Implements Section 03 of the Practical Implementation Guide:

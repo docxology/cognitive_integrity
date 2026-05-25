@@ -1,30 +1,867 @@
 {
-  "timestamp": "2026-02-18T12:53:49.198314",
+  "timestamp": "2026-04-26T19:02:45.989725",
   "infrastructure": {},
   "project": {
-    "passed": 1594,
+    "passed": 1700,
     "failed": 0,
     "skipped": 0,
-    "total": 1594,
-    "warnings": 3,
+    "total": 1700,
+    "warnings": 0,
     "exit_code": 0,
-    "discovery_count": 1594,
+    "discovery_count": 1700,
     "collection_errors": 0,
     "execution_phases": {
-      "setup": 36.91,
-      "collection": 36.91,
-      "execution": 36.91
+      "setup": 35.47,
+      "collection": 35.47,
+      "execution": 35.47
     },
     "test_categories": {},
-    "coverage_percent": 91.93687851275399,
+    "coverage_percent": 90.97164109716411,
     "failed_tests": []
   },
   "summary": {
-    "total_passed": 1594,
+    "total_passed": 1700,
     "total_failed": 0,
     "total_skipped": 0,
-    "total_tests": 1594,
-    "all_passed": false,
-    "project_coverage": 91.93687851275399
+    "total_tests": 1700,
+    "all_passed": true,
+    "project_coverage": 90.97164109716411
+  },
+  "coverage_details": {
+    "project": {
+      "overall_coverage": 92.56795504071567,
+      "total_executed": 8071,
+      "total_missing": 646,
+      "total_excluded": 2,
+      "total_lines": 8719,
+      "file_coverage": {
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/__main__.py": {
+          "coverage_percent": 44.827586206896555,
+          "executed_lines": 26,
+          "missing_lines": 30,
+          "excluded_lines": 2,
+          "total_lines": 58
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/ablation/component_removal.py": {
+          "coverage_percent": 100.0,
+          "executed_lines": 60,
+          "missing_lines": 0,
+          "excluded_lines": 0,
+          "total_lines": 60
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/ablation/minimal_config.py": {
+          "coverage_percent": 98.55072463768117,
+          "executed_lines": 68,
+          "missing_lines": 1,
+          "excluded_lines": 0,
+          "total_lines": 69
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/ablation/runner.py": {
+          "coverage_percent": 0.0,
+          "executed_lines": 0,
+          "missing_lines": 69,
+          "excluded_lines": 0,
+          "total_lines": 69
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/ablation/synergy.py": {
+          "coverage_percent": 100.0,
+          "executed_lines": 63,
+          "missing_lines": 0,
+          "excluded_lines": 0,
+          "total_lines": 63
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/agents/llm_agent.py": {
+          "coverage_percent": 91.57894736842105,
+          "executed_lines": 87,
+          "missing_lines": 8,
+          "excluded_lines": 0,
+          "total_lines": 95
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/agents/multiagent_system.py": {
+          "coverage_percent": 91.91919191919192,
+          "executed_lines": 91,
+          "missing_lines": 8,
+          "excluded_lines": 0,
+          "total_lines": 99
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/analysis/game_theory.py": {
+          "coverage_percent": 95.41284403669725,
+          "executed_lines": 104,
+          "missing_lines": 5,
+          "excluded_lines": 0,
+          "total_lines": 109
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/analysis/information_geometry.py": {
+          "coverage_percent": 91.17647058823529,
+          "executed_lines": 93,
+          "missing_lines": 9,
+          "excluded_lines": 0,
+          "total_lines": 102
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/architectures/autogpt.py": {
+          "coverage_percent": 100.0,
+          "executed_lines": 38,
+          "missing_lines": 0,
+          "excluded_lines": 0,
+          "total_lines": 38
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/architectures/base.py": {
+          "coverage_percent": 87.75510204081633,
+          "executed_lines": 43,
+          "missing_lines": 6,
+          "excluded_lines": 0,
+          "total_lines": 49
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/architectures/claude_code.py": {
+          "coverage_percent": 100.0,
+          "executed_lines": 34,
+          "missing_lines": 0,
+          "excluded_lines": 0,
+          "total_lines": 34
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/architectures/crewai.py": {
+          "coverage_percent": 97.77777777777777,
+          "executed_lines": 44,
+          "missing_lines": 1,
+          "excluded_lines": 0,
+          "total_lines": 45
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/architectures/langgraph.py": {
+          "coverage_percent": 100.0,
+          "executed_lines": 53,
+          "missing_lines": 0,
+          "excluded_lines": 0,
+          "total_lines": 53
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/attacks/corpus.py": {
+          "coverage_percent": 100.0,
+          "executed_lines": 105,
+          "missing_lines": 0,
+          "excluded_lines": 0,
+          "total_lines": 105
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/attacks/generators/belief_manipulation.py": {
+          "coverage_percent": 100.0,
+          "executed_lines": 60,
+          "missing_lines": 0,
+          "excluded_lines": 0,
+          "total_lines": 60
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/attacks/generators/coordination.py": {
+          "coverage_percent": 100.0,
+          "executed_lines": 62,
+          "missing_lines": 0,
+          "excluded_lines": 0,
+          "total_lines": 62
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/attacks/generators/injection.py": {
+          "coverage_percent": 100.0,
+          "executed_lines": 102,
+          "missing_lines": 0,
+          "excluded_lines": 0,
+          "total_lines": 102
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/attacks/generators/trust_exploitation.py": {
+          "coverage_percent": 100.0,
+          "executed_lines": 69,
+          "missing_lines": 0,
+          "excluded_lines": 0,
+          "total_lines": 69
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/attacks/templates.py": {
+          "coverage_percent": 100.0,
+          "executed_lines": 51,
+          "missing_lines": 0,
+          "excluded_lines": 0,
+          "total_lines": 51
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/attacks/validation.py": {
+          "coverage_percent": 98.64864864864865,
+          "executed_lines": 73,
+          "missing_lines": 1,
+          "excluded_lines": 0,
+          "total_lines": 74
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/colony/belief_cascade.py": {
+          "coverage_percent": 88.39285714285714,
+          "executed_lines": 99,
+          "missing_lines": 13,
+          "excluded_lines": 0,
+          "total_lines": 112
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/colony/benchmark.py": {
+          "coverage_percent": 95.0,
+          "executed_lines": 57,
+          "missing_lines": 3,
+          "excluded_lines": 0,
+          "total_lines": 60
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/colony/emergent_misalignment.py": {
+          "coverage_percent": 85.18518518518519,
+          "executed_lines": 69,
+          "missing_lines": 12,
+          "excluded_lines": 0,
+          "total_lines": 81
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/colony/quorum_manipulation.py": {
+          "coverage_percent": 83.09859154929578,
+          "executed_lines": 59,
+          "missing_lines": 12,
+          "excluded_lines": 0,
+          "total_lines": 71
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/colony/recruitment_poisoning.py": {
+          "coverage_percent": 94.9579831932773,
+          "executed_lines": 113,
+          "missing_lines": 6,
+          "excluded_lines": 0,
+          "total_lines": 119
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/colony/scorecard.py": {
+          "coverage_percent": 97.5609756097561,
+          "executed_lines": 40,
+          "missing_lines": 1,
+          "excluded_lines": 0,
+          "total_lines": 41
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/colony/sybil_infiltration.py": {
+          "coverage_percent": 83.11688311688312,
+          "executed_lines": 64,
+          "missing_lines": 13,
+          "excluded_lines": 0,
+          "total_lines": 77
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/composition/adapters.py": {
+          "coverage_percent": 99.56521739130434,
+          "executed_lines": 229,
+          "missing_lines": 1,
+          "excluded_lines": 0,
+          "total_lines": 230
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/composition/algebra.py": {
+          "coverage_percent": 89.52380952380953,
+          "executed_lines": 94,
+          "missing_lines": 11,
+          "excluded_lines": 0,
+          "total_lines": 105
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/composition/factory.py": {
+          "coverage_percent": 100.0,
+          "executed_lines": 21,
+          "missing_lines": 0,
+          "excluded_lines": 0,
+          "total_lines": 21
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/composition/fusion.py": {
+          "coverage_percent": 99.28571428571429,
+          "executed_lines": 139,
+          "missing_lines": 1,
+          "excluded_lines": 0,
+          "total_lines": 140
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/composition/pipeline.py": {
+          "coverage_percent": 97.84946236559139,
+          "executed_lines": 91,
+          "missing_lines": 2,
+          "excluded_lines": 0,
+          "total_lines": 93
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/core/batch_detection.py": {
+          "coverage_percent": 98.4126984126984,
+          "executed_lines": 62,
+          "missing_lines": 1,
+          "excluded_lines": 0,
+          "total_lines": 63
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/core/consensus.py": {
+          "coverage_percent": 89.90825688073394,
+          "executed_lines": 196,
+          "missing_lines": 22,
+          "excluded_lines": 0,
+          "total_lines": 218
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/core/detection.py": {
+          "coverage_percent": 96.95652173913044,
+          "executed_lines": 223,
+          "missing_lines": 7,
+          "excluded_lines": 0,
+          "total_lines": 230
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/core/firewall.py": {
+          "coverage_percent": 94.3089430894309,
+          "executed_lines": 232,
+          "missing_lines": 14,
+          "excluded_lines": 0,
+          "total_lines": 246
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/core/invariants.py": {
+          "coverage_percent": 95.3125,
+          "executed_lines": 122,
+          "missing_lines": 6,
+          "excluded_lines": 0,
+          "total_lines": 128
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/core/monad.py": {
+          "coverage_percent": 93.4065934065934,
+          "executed_lines": 85,
+          "missing_lines": 6,
+          "excluded_lines": 0,
+          "total_lines": 91
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/core/online_detection.py": {
+          "coverage_percent": 100.0,
+          "executed_lines": 75,
+          "missing_lines": 0,
+          "excluded_lines": 0,
+          "total_lines": 75
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/core/provenance.py": {
+          "coverage_percent": 94.33962264150944,
+          "executed_lines": 150,
+          "missing_lines": 9,
+          "excluded_lines": 0,
+          "total_lines": 159
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/core/sandbox.py": {
+          "coverage_percent": 91.2751677852349,
+          "executed_lines": 136,
+          "missing_lines": 13,
+          "excluded_lines": 0,
+          "total_lines": 149
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/core/tripwire.py": {
+          "coverage_percent": 97.70114942528735,
+          "executed_lines": 85,
+          "missing_lines": 2,
+          "excluded_lines": 0,
+          "total_lines": 87
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/core/trust.py": {
+          "coverage_percent": 97.22222222222221,
+          "executed_lines": 140,
+          "missing_lines": 4,
+          "excluded_lines": 0,
+          "total_lines": 144
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/data/generate.py": {
+          "coverage_percent": 100.0,
+          "executed_lines": 186,
+          "missing_lines": 0,
+          "excluded_lines": 0,
+          "total_lines": 186
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/data/loaders.py": {
+          "coverage_percent": 100.0,
+          "executed_lines": 15,
+          "missing_lines": 0,
+          "excluded_lines": 0,
+          "total_lines": 15
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/data/result_loaders.py": {
+          "coverage_percent": 98.18181818181819,
+          "executed_lines": 54,
+          "missing_lines": 1,
+          "excluded_lines": 0,
+          "total_lines": 55
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/data/schema.py": {
+          "coverage_percent": 100.0,
+          "executed_lines": 51,
+          "missing_lines": 0,
+          "excluded_lines": 0,
+          "total_lines": 51
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/evaluation/benchmark.py": {
+          "coverage_percent": 80.0,
+          "executed_lines": 64,
+          "missing_lines": 16,
+          "excluded_lines": 0,
+          "total_lines": 80
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/evaluation/llm_evaluator.py": {
+          "coverage_percent": 0.0,
+          "executed_lines": 0,
+          "missing_lines": 48,
+          "excluded_lines": 0,
+          "total_lines": 48
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/evaluation/metrics.py": {
+          "coverage_percent": 98.55072463768117,
+          "executed_lines": 68,
+          "missing_lines": 1,
+          "excluded_lines": 0,
+          "total_lines": 69
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/evaluation/precision_recall.py": {
+          "coverage_percent": 97.05882352941177,
+          "executed_lines": 66,
+          "missing_lines": 2,
+          "excluded_lines": 0,
+          "total_lines": 68
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/evaluation/roc.py": {
+          "coverage_percent": 97.10144927536231,
+          "executed_lines": 67,
+          "missing_lines": 2,
+          "excluded_lines": 0,
+          "total_lines": 69
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/evaluation/runner.py": {
+          "coverage_percent": 97.71428571428571,
+          "executed_lines": 171,
+          "missing_lines": 4,
+          "excluded_lines": 0,
+          "total_lines": 175
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/evaluation/scalability.py": {
+          "coverage_percent": 93.42105263157895,
+          "executed_lines": 71,
+          "missing_lines": 5,
+          "excluded_lines": 0,
+          "total_lines": 76
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/formal/byzantine_guarantees.py": {
+          "coverage_percent": 100.0,
+          "executed_lines": 37,
+          "missing_lines": 0,
+          "excluded_lines": 0,
+          "total_lines": 37
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/formal/category_theory.py": {
+          "coverage_percent": 97.70114942528735,
+          "executed_lines": 85,
+          "missing_lines": 2,
+          "excluded_lines": 0,
+          "total_lines": 87
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/formal/composition_proofs.py": {
+          "coverage_percent": 96.22641509433963,
+          "executed_lines": 51,
+          "missing_lines": 2,
+          "excluded_lines": 0,
+          "total_lines": 53
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/formal/free_energy.py": {
+          "coverage_percent": 86.77685950413223,
+          "executed_lines": 105,
+          "missing_lines": 16,
+          "excluded_lines": 0,
+          "total_lines": 121
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/formal/latency_bound.py": {
+          "coverage_percent": 100.0,
+          "executed_lines": 30,
+          "missing_lines": 0,
+          "excluded_lines": 0,
+          "total_lines": 30
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/formal/nusmv_spec.py": {
+          "coverage_percent": 91.30434782608695,
+          "executed_lines": 21,
+          "missing_lines": 2,
+          "excluded_lines": 0,
+          "total_lines": 23
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/formal/spec_verifier.py": {
+          "coverage_percent": 0.0,
+          "executed_lines": 0,
+          "missing_lines": 60,
+          "excluded_lines": 0,
+          "total_lines": 60
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/formal/spin_spec.py": {
+          "coverage_percent": 87.5,
+          "executed_lines": 21,
+          "missing_lines": 3,
+          "excluded_lines": 0,
+          "total_lines": 24
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/formal/stealth_impact.py": {
+          "coverage_percent": 95.83333333333334,
+          "executed_lines": 23,
+          "missing_lines": 1,
+          "excluded_lines": 0,
+          "total_lines": 24
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/formal/theorem_registry.py": {
+          "coverage_percent": 100.0,
+          "executed_lines": 117,
+          "missing_lines": 0,
+          "excluded_lines": 0,
+          "total_lines": 117
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/formal/tla_spec.py": {
+          "coverage_percent": 100.0,
+          "executed_lines": 18,
+          "missing_lines": 0,
+          "excluded_lines": 0,
+          "total_lines": 18
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/formal/trust_bounds.py": {
+          "coverage_percent": 88.23529411764706,
+          "executed_lines": 30,
+          "missing_lines": 4,
+          "excluded_lines": 0,
+          "total_lines": 34
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/manuscript/injector.py": {
+          "coverage_percent": 98.9655172413793,
+          "executed_lines": 287,
+          "missing_lines": 3,
+          "excluded_lines": 0,
+          "total_lines": 290
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/manuscript/latex_converter.py": {
+          "coverage_percent": 96.29629629629629,
+          "executed_lines": 52,
+          "missing_lines": 2,
+          "excluded_lines": 0,
+          "total_lines": 54
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/manuscript/verifier.py": {
+          "coverage_percent": 86.95652173913044,
+          "executed_lines": 160,
+          "missing_lines": 24,
+          "excluded_lines": 0,
+          "total_lines": 184
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/statistics/analysis_runner.py": {
+          "coverage_percent": 0.0,
+          "executed_lines": 0,
+          "missing_lines": 61,
+          "excluded_lines": 0,
+          "total_lines": 61
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/statistics/anova.py": {
+          "coverage_percent": 100.0,
+          "executed_lines": 58,
+          "missing_lines": 0,
+          "excluded_lines": 0,
+          "total_lines": 58
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/statistics/assumptions.py": {
+          "coverage_percent": 100.0,
+          "executed_lines": 30,
+          "missing_lines": 0,
+          "excluded_lines": 0,
+          "total_lines": 30
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/statistics/bayesian.py": {
+          "coverage_percent": 97.11538461538461,
+          "executed_lines": 101,
+          "missing_lines": 3,
+          "excluded_lines": 0,
+          "total_lines": 104
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/statistics/confidence.py": {
+          "coverage_percent": 100.0,
+          "executed_lines": 51,
+          "missing_lines": 0,
+          "excluded_lines": 0,
+          "total_lines": 51
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/statistics/cross_validation.py": {
+          "coverage_percent": 100.0,
+          "executed_lines": 81,
+          "missing_lines": 0,
+          "excluded_lines": 0,
+          "total_lines": 81
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/statistics/effect_size.py": {
+          "coverage_percent": 97.26027397260275,
+          "executed_lines": 71,
+          "missing_lines": 2,
+          "excluded_lines": 0,
+          "total_lines": 73
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/statistics/hypothesis.py": {
+          "coverage_percent": 100.0,
+          "executed_lines": 57,
+          "missing_lines": 0,
+          "excluded_lines": 0,
+          "total_lines": 57
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/statistics/nonparametric.py": {
+          "coverage_percent": 96.36363636363636,
+          "executed_lines": 53,
+          "missing_lines": 2,
+          "excluded_lines": 0,
+          "total_lines": 55
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/statistics/regression.py": {
+          "coverage_percent": 100.0,
+          "executed_lines": 54,
+          "missing_lines": 0,
+          "excluded_lines": 0,
+          "total_lines": 54
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/statistics/sensitivity.py": {
+          "coverage_percent": 89.8989898989899,
+          "executed_lines": 89,
+          "missing_lines": 10,
+          "excluded_lines": 0,
+          "total_lines": 99
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/statistics/stability.py": {
+          "coverage_percent": 74.24242424242425,
+          "executed_lines": 49,
+          "missing_lines": 17,
+          "excluded_lines": 0,
+          "total_lines": 66
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/utils/config.py": {
+          "coverage_percent": 100.0,
+          "executed_lines": 59,
+          "missing_lines": 0,
+          "excluded_lines": 0,
+          "total_lines": 59
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/utils/logging_setup.py": {
+          "coverage_percent": 100.0,
+          "executed_lines": 19,
+          "missing_lines": 0,
+          "excluded_lines": 0,
+          "total_lines": 19
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/utils/random_seed.py": {
+          "coverage_percent": 93.33333333333333,
+          "executed_lines": 14,
+          "missing_lines": 1,
+          "excluded_lines": 0,
+          "total_lines": 15
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/utils/timing.py": {
+          "coverage_percent": 100.0,
+          "executed_lines": 44,
+          "missing_lines": 0,
+          "excluded_lines": 0,
+          "total_lines": 44
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/utils/types.py": {
+          "coverage_percent": 100.0,
+          "executed_lines": 57,
+          "missing_lines": 0,
+          "excluded_lines": 0,
+          "total_lines": 57
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/visualization/figures/ablation_study.py": {
+          "coverage_percent": 81.70731707317073,
+          "executed_lines": 67,
+          "missing_lines": 15,
+          "excluded_lines": 0,
+          "total_lines": 82
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/visualization/figures/attack_surface.py": {
+          "coverage_percent": 98.48484848484848,
+          "executed_lines": 65,
+          "missing_lines": 1,
+          "excluded_lines": 0,
+          "total_lines": 66
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/visualization/figures/attack_timeline.py": {
+          "coverage_percent": 81.25,
+          "executed_lines": 52,
+          "missing_lines": 12,
+          "excluded_lines": 0,
+          "total_lines": 64
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/visualization/figures/belief_sandbox.py": {
+          "coverage_percent": 100.0,
+          "executed_lines": 35,
+          "missing_lines": 0,
+          "excluded_lines": 0,
+          "total_lines": 35
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/visualization/figures/cif_architecture.py": {
+          "coverage_percent": 100.0,
+          "executed_lines": 40,
+          "missing_lines": 0,
+          "excluded_lines": 0,
+          "total_lines": 40
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/visualization/figures/cif_comprehensive.py": {
+          "coverage_percent": 98.68421052631578,
+          "executed_lines": 75,
+          "missing_lines": 1,
+          "excluded_lines": 0,
+          "total_lines": 76
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/visualization/figures/component_interactions.py": {
+          "coverage_percent": 100.0,
+          "executed_lines": 49,
+          "missing_lines": 0,
+          "excluded_lines": 0,
+          "total_lines": 49
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/visualization/figures/comprehensive_taxonomy.py": {
+          "coverage_percent": 98.46153846153847,
+          "executed_lines": 64,
+          "missing_lines": 1,
+          "excluded_lines": 0,
+          "total_lines": 65
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/visualization/figures/confusion_matrices.py": {
+          "coverage_percent": 100.0,
+          "executed_lines": 49,
+          "missing_lines": 0,
+          "excluded_lines": 0,
+          "total_lines": 49
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/visualization/figures/defense_composition.py": {
+          "coverage_percent": 98.4126984126984,
+          "executed_lines": 62,
+          "missing_lines": 1,
+          "excluded_lines": 0,
+          "total_lines": 63
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/visualization/figures/detection_distributions.py": {
+          "coverage_percent": 100.0,
+          "executed_lines": 43,
+          "missing_lines": 0,
+          "excluded_lines": 0,
+          "total_lines": 43
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/visualization/figures/detection_performance.py": {
+          "coverage_percent": 98.78048780487805,
+          "executed_lines": 81,
+          "missing_lines": 1,
+          "excluded_lines": 0,
+          "total_lines": 82
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/visualization/figures/detection_results.py": {
+          "coverage_percent": 100.0,
+          "executed_lines": 33,
+          "missing_lines": 0,
+          "excluded_lines": 0,
+          "total_lines": 33
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/visualization/figures/fp_mitigation.py": {
+          "coverage_percent": 100.0,
+          "executed_lines": 43,
+          "missing_lines": 0,
+          "excluded_lines": 0,
+          "total_lines": 43
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/visualization/figures/precision_recall_curves.py": {
+          "coverage_percent": 100.0,
+          "executed_lines": 51,
+          "missing_lines": 0,
+          "excluded_lines": 0,
+          "total_lines": 51
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/visualization/figures/roc_curves.py": {
+          "coverage_percent": 88.46153846153845,
+          "executed_lines": 69,
+          "missing_lines": 9,
+          "excluded_lines": 0,
+          "total_lines": 78
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/visualization/figures/scalability.py": {
+          "coverage_percent": 100.0,
+          "executed_lines": 44,
+          "missing_lines": 0,
+          "excluded_lines": 0,
+          "total_lines": 44
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/visualization/figures/sensitivity_heatmap.py": {
+          "coverage_percent": 95.91836734693877,
+          "executed_lines": 47,
+          "missing_lines": 2,
+          "excluded_lines": 0,
+          "total_lines": 49
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/visualization/figures/threat_taxonomy.py": {
+          "coverage_percent": 100.0,
+          "executed_lines": 35,
+          "missing_lines": 0,
+          "excluded_lines": 0,
+          "total_lines": 35
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/visualization/figures/trust_calculus.py": {
+          "coverage_percent": 100.0,
+          "executed_lines": 41,
+          "missing_lines": 0,
+          "excluded_lines": 0,
+          "total_lines": 41
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/visualization/figures/trust_decay.py": {
+          "coverage_percent": 98.0,
+          "executed_lines": 49,
+          "missing_lines": 1,
+          "excluded_lines": 0,
+          "total_lines": 50
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/visualization/figures/trust_network.py": {
+          "coverage_percent": 97.77777777777777,
+          "executed_lines": 44,
+          "missing_lines": 1,
+          "excluded_lines": 0,
+          "total_lines": 45
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/visualization/style.py": {
+          "coverage_percent": 100.0,
+          "executed_lines": 37,
+          "missing_lines": 0,
+          "excluded_lines": 0,
+          "total_lines": 37
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/visualization/tables/ablation_tables.py": {
+          "coverage_percent": 98.48484848484848,
+          "executed_lines": 65,
+          "missing_lines": 1,
+          "excluded_lines": 0,
+          "total_lines": 66
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/visualization/tables/assumption_tables.py": {
+          "coverage_percent": 100.0,
+          "executed_lines": 16,
+          "missing_lines": 0,
+          "excluded_lines": 0,
+          "total_lines": 16
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/visualization/tables/corpus_tables.py": {
+          "coverage_percent": 100.0,
+          "executed_lines": 24,
+          "missing_lines": 0,
+          "excluded_lines": 0,
+          "total_lines": 24
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/visualization/tables/cross_validation_tables.py": {
+          "coverage_percent": 100.0,
+          "executed_lines": 18,
+          "missing_lines": 0,
+          "excluded_lines": 0,
+          "total_lines": 18
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/visualization/tables/detection_tables.py": {
+          "coverage_percent": 93.75,
+          "executed_lines": 45,
+          "missing_lines": 3,
+          "excluded_lines": 0,
+          "total_lines": 48
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/visualization/tables/scalability_tables.py": {
+          "coverage_percent": 90.32258064516128,
+          "executed_lines": 28,
+          "missing_lines": 3,
+          "excluded_lines": 0,
+          "total_lines": 31
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/visualization/tables/stability_tables.py": {
+          "coverage_percent": 100.0,
+          "executed_lines": 21,
+          "missing_lines": 0,
+          "excluded_lines": 0,
+          "total_lines": 21
+        },
+        "projects/cognitive_integrity/cogsec_multiagent_2_computational/src/visualization/tables/statistical_tables.py": {
+          "coverage_percent": 92.10526315789474,
+          "executed_lines": 35,
+          "missing_lines": 3,
+          "excluded_lines": 0,
+          "total_lines": 38
+        }
+      }
+    }
   }
 }

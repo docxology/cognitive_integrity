@@ -1,3 +1,8 @@
+"""Attack Surface module.
+
+Implements functionality for the Cognitive Integrity Framework.
+"""
+
 from __future__ import annotations
 
 from pathlib import Path

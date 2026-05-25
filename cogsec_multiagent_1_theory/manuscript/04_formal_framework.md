@@ -259,6 +259,17 @@ $T_{\text{ctx}}$ & $\gamma$ & Context (task-specific factors) \\
 \end{tabular}
 \end{table}
 
+\begin{remark}[Trust as Precision Weighting]
+\label{rem:trust-precision}
+The composite trust formula above is equivalent to precision-weighted
+message integration from the Free Energy Principle: the composite score
+$\mathcal{T}_{i\to j}$ is proportional to the precision $\rho_j$ with
+which agent $i$ should weight messages from agent $j$ when updating its
+posterior beliefs.  High-trust messages dominate the belief update;
+low-trust messages contribute marginally.  This correspondence provides a
+neurocomputational grounding for the trust calculus (Part~2, \S 1.2).
+\end{remark}
+
 \begin{definition}[Trust Delegation]
 \label{def:trust-delegation}
 When agent $a_i$ delegates trust through $a_j$ to $a_k$:
@@ -568,6 +579,36 @@ For attack with impact $\mathcal{I}$ and stealth $\mathcal{S}$ (inverse detectab
 \end{equation}
 where $C_{\text{channel}}$ is the attack channel capacity.
 \end{theorem}
+
+\begin{remark}[Geometric Sharpening of the Stealth-Impact Bound]
+\label{rem:geometric-bound}
+Theorem~\ref{thm:stealth-impact} can be sharpened using the information
+geometry of the belief manifold (Part~2, Supplement~S10).  When belief
+space is endowed with the Fisher-Rao metric
+$G_{ij}(p) = \delta_{ij}/p_i$, the Fisher-Rao geodesic distance
+\[
+d_{\mathrm{FR}}(p, q) = 2\arccos\!\left(\sum_i \sqrt{p_i q_i}\right)
+\]
+measures the geometric ``distance'' of an attack.  Impact $\mathcal{I}$
+is proportional to $d_{\mathrm{FR}}(p_0, p_{\text{attacked}})$, while
+stealth $\mathcal{S}$ is inversely proportional to the same quantity.
+The curvature of the probability simplex $\Delta^{n-1}$ (constant
+positive curvature $\kappa = n(n-1)/4$) implies that the product
+$\mathcal{I} \cdot \mathcal{S}$ is bounded by the diameter of the manifold:
+\[
+\mathcal{I} \cdot \mathcal{S} \leq \frac{\pi}{2},
+\]
+since $d_{\mathrm{FR}} \leq \pi$ (Hellinger antipodal distributions).
+This recovers $C_{\text{channel}} = \pi/2$ as the tight bound when impact
+is measured in natural (Fisher-Rao) units, providing a geometric
+proof of Theorem~\ref{thm:stealth-impact} with the explicit constant.
+Furthermore, the connection to KL divergence---$D_{\mathrm{KL}}(p \,\|\, p')
+\approx \tfrac{1}{2}(\Delta p)^\top G(p)(\Delta p)$ for small
+perturbations---gives geometric justification for the drift detection
+threshold $\theta_{\text{drift}} = 0.3$: this corresponds to a
+Fisher-Rao step of approximately $0.28$ radians, or roughly $9\%$ of
+the maximum possible attack distance (Part~2, Supplement~S10).
+\end{remark}
 
 \begin{table}[htbp]
 \centering

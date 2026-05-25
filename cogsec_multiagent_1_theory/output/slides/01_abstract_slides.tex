@@ -89,8 +89,9 @@
 
 \begin{document}
 
-\begin{frame}{Abstract}
-\protect\phantomsection\label{abstract}
+\section{Abstract}\label{abstract}
+
+\begin{frame}[allowframebreaks]{Abstract}
 Multiagent AI systems introduce cognitive attack surfaces absent in
 single-model inference. When agents delegate to agents, forming beliefs
 about beliefs through recursive trust hierarchies, manipulation of
@@ -124,12 +125,16 @@ for message passing and trust updates; invariants for belief integrity,
 goal preservation, and trust boundedness; model checking configurations
 for safety property verification; and a complete notation system for
 attack parameterization, defense specification, and cognitive state
-representation. This is Part 1 of a three-part series: Part 1 (this
+representation. This is Part 1 of a four-part series: Part 1 (this
 paper, DOI: 10.5281/zenodo.18364119) presents formal foundations and
 theoretical analysis; Part 2 (DOI: 10.5281/zenodo.18364128) provides
 computational validation through architecture-aware parametric
-simulation; Part 3 (DOI: 10.5281/zenodo.18364130) offers practical
-deployment guidance. The framework will continue to be developed and
+simulation; Part 3 (DOI: 10.5281/zenodo.18364130) offers a qualitative
+review and practitioner's deployment guidance; Part 4
+(\emph{Applications}) extends the framework through CIF-AD-OODA
+integration and case studies across ten critical domains (goal-hijacking
+defense for infrastructure, supply chain, cyber, biowarfare, and
+information ecosystems). The framework will continue to be developed and
 versioned at \url{https://github.com/docxology/cognitive_integrity/}.
 \end{frame}
 

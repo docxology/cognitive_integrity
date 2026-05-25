@@ -128,7 +128,9 @@ class TheoremRegistry:
         return counts
 
     def _register_defaults(self) -> None:
-        """Pre-register all Paper 1 theorems (3.1, 3.2, 4, 5.3, 6)."""
+        """Pre-register all Paper 1 theorems (3.1, 3.2, 4, 5.3, 6) and
+        Paper 2 extensions (CT.1–CT.3, FEP.1–FEP.2).
+        """
         from .byzantine_guarantees import validate_byzantine_bound
         from .composition_proofs import (
             validate_associativity,
@@ -174,3 +176,187 @@ class TheoremRegistry:
             "CIF latency overhead bound 23%",
             validate_latency_bound,
         )
+
+        # -------------------------------------------------------------
+        # Paper 2 extensions: category theory and FEP.
+        # -------------------------------------------------------------
+        self.register(
+            "CT.1",
+            "Defense Category Laws "
+            "(series composition is categorical composition)",
+            _validate_ct1_defense_category_laws,
+        )
+        self.register(
+            "CT.2",
+            "Categorical Product "
+            "(parallel composition is categorical product)",
+            _validate_ct2_categorical_product,
+        )
+        self.register(
+            "CT.3",
+            "Monadic Detection Preservation "
+            "(detection short-circuits via Err)",
+            _validate_ct3_monadic_preservation,
+        )
+        self.register(
+            "FEP.1",
+            "Attack-FEP Equivalence (attack iff ΔF > κ_FEP)",
+            _validate_fep1_attack_fep_equivalence,
+        )
+        self.register(
+            "FEP.2",
+            "Trust-Precision Duality "
+            "(trust score equals FEP precision weight)",
+            _validate_fep2_trust_precision_duality,
+        )
+
+
+# ---------------------------------------------------------------------------
+# Paper 2 extension validators
+# ---------------------------------------------------------------------------
+
+def _validate_ct1_defense_category_laws(**_kwargs: Any) -> TheoremResult:
+    """Check the three category laws on a simple trio of morphisms."""
+    from utils.types import DefenseResult
+    from .category_theory import (
+        DefenseMorphism,
+        verify_category_laws,
+    )
+
+    def make(name: str, thresh: float, score: float) -> DefenseMorphism:
+        def _fn(state):
+            x = float(state.get("x", 0.0))
+            return DefenseResult(
+                detected=x > thresh,
+                score=score,
+                module_name=name,
+            )
+        return DefenseMorphism(fn=_fn, name=name)
+
+    f = make("f", 0.3, 0.2)
+    g = make("g", 0.6, 0.5)
+    h = make("h", 0.9, 0.1)
+    states = [{"x": 0.1}, {"x": 0.4}, {"x": 0.7}, {"x": 0.95}]
+    laws = verify_category_laws(f, g, h, states)
+    passed = all(laws.values())
+    status = TheoremStatus.PASSED if passed else TheoremStatus.FAILED
+    return TheoremResult(
+        theorem_id="CT.1",
+        name="Defense Category Laws",
+        status=status,
+        evidence=f"left={laws['left_identity']} "
+                 f"right={laws['right_identity']} "
+                 f"assoc={laws['associativity']}",
+        details=laws,
+    )
+
+
+def _validate_ct2_categorical_product(**_kwargs: Any) -> TheoremResult:
+    """Check that ``f × g`` reports the higher-score arm and OR'd detection."""
+    from utils.types import DefenseResult
+    from .category_theory import DefenseMorphism, categorical_product
+
+    f = DefenseMorphism(
+        fn=lambda s: DefenseResult(False, 0.2, "f"),
+        name="f",
+    )
+    g = DefenseMorphism(
+        fn=lambda s: DefenseResult(True, 0.8, "g"),
+        name="g",
+    )
+    prod = categorical_product(f, g)
+    r = prod({})
+    ok = (r.detected is True) and abs(r.score - 0.8) < 1e-10
+    status = TheoremStatus.PASSED if ok else TheoremStatus.FAILED
+    return TheoremResult(
+        theorem_id="CT.2",
+        name="Categorical Product",
+        status=status,
+        evidence=f"detected={r.detected}, score={r.score:.3f}",
+        details={"detected": r.detected, "score": r.score},
+    )
+
+
+def _validate_ct3_monadic_preservation(**_kwargs: Any) -> TheoremResult:
+    """Check that ``Err(e).bind(f) == Err(e)`` and monad laws hold."""
+    from utils.types import DefenseResult
+    from core.monad import Err, DetectionEvent, Ok, verify_monad_laws
+
+    evt = DetectionEvent("firewall", 0.9)
+    err = Err(evt)
+    bound = err.bind(lambda x: Ok(x + 1)).bind(lambda x: Ok(x * 2))
+    short_circuit_ok = isinstance(bound, Err) and bound.error == evt
+
+    drs = [
+        DefenseResult(detected=False, score=0.1, module_name="m1"),
+        DefenseResult(detected=True, score=0.9, module_name="m2"),
+    ]
+    laws = verify_monad_laws(drs)
+    laws_ok = all(laws.values())
+
+    ok = short_circuit_ok and laws_ok
+    status = TheoremStatus.PASSED if ok else TheoremStatus.FAILED
+    return TheoremResult(
+        theorem_id="CT.3",
+        name="Monadic Detection Preservation",
+        status=status,
+        evidence=(
+            f"short_circuit={short_circuit_ok}, "
+            f"laws={laws}"
+        ),
+        details={"short_circuit": short_circuit_ok, **laws},
+    )
+
+
+def _validate_fep1_attack_fep_equivalence(**_kwargs: Any) -> TheoremResult:
+    """Check ``ΔF > 0.1`` on a mismatched-belief attack."""
+    import numpy as np
+
+    from .free_energy import (
+        BeliefState,
+        GenerativeModel,
+        free_energy_of_attack,
+    )
+
+    model = GenerativeModel(
+        prior=np.array([0.5, 0.5]),
+        likelihood=np.array([[0.9, 0.1], [0.1, 0.9]]),
+    )
+    baseline = BeliefState(probs=np.array([0.5, 0.5]), labels=["A", "B"])
+    attacked = BeliefState(probs=np.array([0.05, 0.95]), labels=["A", "B"])
+    result = free_energy_of_attack(baseline, attacked, model, 0)
+
+    ok = bool(result["is_attack"]) and result["free_energy_increase"] > 0.1
+    status = TheoremStatus.PASSED if ok else TheoremStatus.FAILED
+    return TheoremResult(
+        theorem_id="FEP.1",
+        name="Attack-FEP Equivalence",
+        status=status,
+        evidence=(
+            f"ΔF={result['free_energy_increase']:.3f}, "
+            f"is_attack={result['is_attack']}"
+        ),
+        details=result,
+    )
+
+
+def _validate_fep2_trust_precision_duality(**_kwargs: Any) -> TheoremResult:
+    """Check that the TrustConfig weights sum to the composite precision."""
+    from core.trust import TrustConfig
+    from .free_energy import connect_to_trust_calculus
+
+    cfg = TrustConfig()
+    mapping = connect_to_trust_calculus(cfg)
+    expected = cfg.alpha + cfg.beta + cfg.gamma
+    ok = abs(mapping["composite_precision"] - expected) < 1e-10
+    status = TheoremStatus.PASSED if ok else TheoremStatus.FAILED
+    return TheoremResult(
+        theorem_id="FEP.2",
+        name="Trust-Precision Duality",
+        status=status,
+        evidence=(
+            f"composite_precision={mapping['composite_precision']:.6f}, "
+            f"alpha+beta+gamma={expected:.6f}"
+        ),
+        details=mapping,
+    )

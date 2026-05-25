@@ -52,7 +52,7 @@ The decay factor $\delta \in [0, 1)$ creates a tradeoff:
 - Lower $\delta$: Stronger security, limited delegation utility
 - Higher $\delta$: More delegation flexibility, weaker bounds
 
-Organizations must calibrate this tradeoff based on their threat model (\cref{sec:operator-posture} in Part 3).
+Organizations must calibrate this tradeoff based on their threat model (\cref{sec:operator-posture} in Part 3). Domain-calibrated $\delta$ choices --- from millisecond OODA cycles in drone swarms to year-scale diplomatic agents --- are analyzed in Part 4 across ten critical operational domains.
 
 ### Information-Theoretic Detection Limits
 

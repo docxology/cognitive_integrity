@@ -11,6 +11,8 @@ import numpy as np
 from utils.random_seed import get_rng
 from .theorem_registry import TheoremResult, TheoremStatus
 
+_SIMULATION_ATTACKS: int = 10_000  # Monte-Carlo sample size for composition theorems
+
 
 def validate_series_composition(
     n_modules: int = 5,
@@ -36,8 +38,8 @@ def validate_series_composition(
         p_miss_theoretical = float(np.prod(1.0 - rates))
         combined_theoretical = 1.0 - p_miss_theoretical
 
-        # Empirical: simulate 10000 attacks
-        n_attacks = 10000
+        # Empirical: simulate _SIMULATION_ATTACKS attacks
+        n_attacks = _SIMULATION_ATTACKS
         detected = np.zeros(n_attacks, dtype=bool)
         for r in rates:
             module_detections = rng.random(n_attacks) < r

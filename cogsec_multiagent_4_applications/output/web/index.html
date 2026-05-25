@@ -91,6 +91,7 @@
       color: #606060;
     }
     code {
+      white-space: pre-wrap;
       font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
       font-size: 85%;
       margin: 0;
@@ -154,7 +155,6 @@
     #TOC a:not(:hover) {
       text-decoration: none;
     }
-    code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
     div.columns{display: flex; gap: min(4vw, 1.5em);}
     div.column{flex: auto; overflow-x: auto;}
@@ -311,6 +311,10 @@ Defenses</a></li>
 class="toc-section-number">2.5</span> Application Analysis</a></li>
 <li><a href="#contributions" id="toc-contributions"><span
 class="toc-section-number">2.6</span> Contributions</a></li>
+<li><a href="#sec:reading-companion"
+id="toc-sec:reading-companion"><span
+class="toc-section-number">2.7</span> Reading Companion: Where to Find
+Specific Topics</a></li>
 </ul></li>
 <li><a href="#sec:methodology" id="toc-sec:methodology"><span
 class="toc-section-number">3</span> Methodology: The CIF-AD-OODA
@@ -803,10 +807,14 @@ class="header-section-number">1</span> Abstract</h1>
 for the safe operation of multiagent AI systems through five canonical
 defense mechanisms: Cognitive Firewalls, Belief Sandboxing, Behavioral
 Invariants, Drift Detection, and Byzantine Consensus. Paper 2 of this
-series demonstrated 99.5% detection across 950 attack scenarios.
-However, the practical applicability of these mechanisms across diverse
-operational domains has not been systematically evaluated. This
-paper—Part 4 of the Cognitive Security series—addresses this gap.</p>
+series demonstrated 94–100% detection at the parametric ceiling across
+950 attack scenarios and four production multiagent architectures, and
+Paper 3 translated these results into accessible deployment guidance,
+incident-response playbooks, and operator risk frameworks. However, the
+practical applicability of these mechanisms across diverse operational
+domains has not been systematically evaluated. This paper—Part 4 of the
+<em>Cognitive Security for Multiagent Operators</em> series—addresses
+this gap.</p>
 <p>We present the <strong>CIF-AD-OODA integration model</strong>,
 combining CIF’s defense mechanisms with Axiomatic Design (AD) theory and
 Boyd’s OODA (Observe-Orient-Decide-Act) Loop to analyze <strong>Goal
@@ -840,6 +848,19 @@ without CIF-mediated <strong>Drift Detection</strong> and
 <strong>Behavioral Invariants</strong> stabilizing the Orientation
 phase, high-efficiency agents are liable to optimize for adversarial
 objectives under the guise of compliance.</p>
+<p><strong>Paper Series.</strong> This is Part 4 of the four-part
+<em>Cognitive Security for Multiagent Operators</em> series: Part 1
+(DOI: 10.5281/zenodo.18364119) develops the formal foundations (trust
+calculus, defense composition algebra, adversary taxonomy,
+information-theoretic stealth–impact bounds, and model-checked
+invariants); Part 2 (DOI: 10.5281/zenodo.18364128) provides
+computational validation across production multiagent architectures;
+Part 3 (DOI: 10.5281/zenodo.18364130) presents a qualitative review and
+practitioner’s deployment guide; Part 4 (this paper) applies the
+framework across ten critical operational domains through the integrated
+CIF-AD-OODA model. Readers seeking derivations should consult Part 1;
+readers seeking empirical measurements, Part 2; readers seeking
+deployment guidance, Part 3.</p>
 <hr />
 <h1 data-number="2"
 id="introduction-the-teleological-attack-surface"><span
@@ -848,23 +869,48 @@ Attack Surface</h1>
 <h2 data-number="2.1" id="series-context"><span
 class="header-section-number">2.1</span> Series Context</h2>
 <p>This paper is Part 4 of the <em>Cognitive Security for Multiagent
-Operators</em> series. Paper 1 established the Cognitive Integrity
-Framework (CIF): a formal model of agent cognitive states <span
+Operators</em> series, which progresses from theory to computation to
+practice to applied deployment:</p>
+<ul>
+<li><strong>Paper 1: Formal Foundations</strong> (DOI:
+10.5281/zenodo.18364119) establishes the Cognitive Integrity Framework
+(CIF): a formal model of agent cognitive states <span
 class="math inline">\(\sigma_i = \langle \mathcal{B}_i, \mathcal{G}_i,
 \mathcal{I}_i, \mathcal{H}_i \rangle\)</span>, a trust calculus with
-delegation decay, a five-tier adversary taxonomy (<span
+delegation decay (<span class="math inline">\(\delta^d\)</span>), the
+Defense Composition Algebra, the five-tier adversary taxonomy (<span
 class="math inline">\(\Omega_1\)</span>–<span
-class="math inline">\(\Omega_5\)</span>), and five canonical defense
-mechanisms with composition algebra. Paper 2 validated these mechanisms
-computationally, demonstrating 99.5% detection across 950 attack
-scenarios with the recommended defense stack. Paper 3 grounded the
-framework in biological analogy, identifying eusocial insect colonies as
-evolutionary existence proofs for CIF-like defense architectures.</p>
-<p>This paper addresses the remaining question: <strong>does CIF work in
-practice?</strong> We apply the framework across ten critical
-domains—from millisecond drone swarm decisions to year-scale diplomatic
-deliberations—demonstrating both its universality and the novel defense
-patterns that emerge from domain-specific application.</p>
+class="math inline">\(\Omega_5\)</span>), information-theoretic
+stealth–impact bounds, and model-checked safety invariants. A
+supplementary chapter (S02) additionally develops the eusocial-colony
+analogy as an evolutionary existence proof for CIF-like defense
+architectures.</li>
+<li><strong>Paper 2: Computational Validation</strong> (DOI:
+10.5281/zenodo.18364128) validated these mechanisms computationally
+across a 950-attack corpus and four production multiagent architectures,
+reporting ablation studies, Bayesian uncertainty quantification, and
+colony-scale benchmarks; the recommended defense stack achieves 94–100%
+detection in parametric simulation and 80–100% under LLM-backed
+evaluation.</li>
+<li><strong>Paper 3: A Qualitative Review for Practitioners</strong>
+(DOI: 10.5281/zenodo.18364130) translates the theoretical and empirical
+results into accessible engineering guidance: deployment guides,
+subagent-hardening patterns, incident-response playbooks, monitoring
+strategies, cost–benefit analysis, common pitfalls, case studies, and
+operator risk frameworks. It assumes no formal prerequisites.</li>
+<li><strong>Paper 4: Applications of the Cognitive Integrity
+Framework</strong> (this paper) addresses the remaining question:
+<strong>does CIF work in practice across diverse operational
+domains?</strong> We apply the framework across ten critical
+sectors—from millisecond drone swarm decisions to year-scale diplomatic
+deliberations—through the integrated CIF-AD-OODA analytical model,
+demonstrating universality and uncovering novel defense patterns visible
+only at the cross-domain scale.</li>
+</ul>
+<p>Together, Papers 1–4 provide a complete stack: Paper 1 defines
+<em>what</em> CIF is; Paper 2 shows that it <em>works</em>; Paper 3
+shows <em>how to deploy it</em>; Paper 4 shows <em>where</em> it applies
+and <em>how</em> domain specifics extend it.</p>
 <h2 data-number="2.2" id="the-ontological-crisis-in-ai"><span
 class="header-section-number">2.2</span> The Ontological Crisis in
 AI</h2>
@@ -1007,6 +1053,13 @@ AI agent security incidents (2024–2025), confirming that all incidents
 map to the universal attack pattern taxonomy and would have been
 detectable by the appropriate CIF mechanism.</li>
 </ul>
+<h2 data-number="2.7" id="sec:reading-companion"><span
+class="header-section-number">2.7</span> Reading Companion: Where to
+Find Specific Topics</h2>
+<p>This paper is designed to stand alone as the applied, domain-facing
+reference of the series. Where a formal construct, empirical
+measurement, or engineering technique is developed more fully elsewhere,
+the table below points the way.</p>
 <hr />
 <h1 data-number="3" id="sec:methodology"><span
 class="header-section-number">3</span> Methodology: The CIF-AD-OODA
@@ -1119,7 +1172,12 @@ class="math inline">\(n\)</span> total</td>
 </table>
 <p>These mechanisms compose in series and parallel to achieve layered
 defense. Paper 2 demonstrates that the recommended defense stack
-achieves 99.5% detection across 950 attack scenarios.</p>
+achieves 94–100% detection at the parametric design ceiling across 950
+attack scenarios and four production multiagent architectures. Paper 3
+translates these results into deployment guidance, monitoring playbooks,
+and cost–benefit frameworks; readers seeking engineering guidance on
+instantiating the mechanisms below in production should consult Part
+3.</p>
 <h2 data-number="3.3" id="adversary-classification"><span
 class="header-section-number">3.3</span> Adversary Classification</h2>
 <p>We adopt the five-tier adversary taxonomy from Paper 1 :</p>
@@ -1215,7 +1273,9 @@ these are identified and elevated as contributions.</p>
 <p><strong>(v) Validation Anchoring.</strong> Cross-reference the
 defense mapping to Paper 2’s benchmark results , confirming that the
 proposed CIF mechanisms have demonstrated efficacy against the relevant
-adversary class.</p>
+adversary class. Where appropriate, we additionally anchor
+deployment-level considerations to Paper 3’s operator posture and
+incident-response guidance .</p>
 <h2 data-number="3.5" id="domain-selection-criteria"><span
 class="header-section-number">3.5</span> Domain Selection Criteria</h2>
 <p>The ten domains were selected to ensure comprehensive coverage along
@@ -3211,10 +3271,13 @@ FR is overridden by a fabricated “Restore Availability” urgency,
 independent FRs become entangled.</p>
 <p>The CIF defense strategy maps directly to restoring independence.
 Paper 1’s defense composition algebra provides the formal basis, with
-the recommended stack achieving 99.5% detection across 950 attack
-scenarios . The key insight from our cross-domain analysis is that
-different domains require different defense compositions, but the
-<em>vocabulary</em> of defense mechanisms is universal—the five
+the recommended stack achieving 94–100% detection at the parametric
+design ceiling across 950 attack scenarios and four production
+architectures , and Paper 3 operationalizes this stack through
+deployment guides, monitoring, incident-response playbooks, and
+cost–benefit frameworks. The key insight from our cross-domain analysis
+is that different domains require different defense compositions, but
+the <em>vocabulary</em> of defense mechanisms is universal—the five
 canonical CIF mechanisms established in suffice to address all ten
 domains.</p>
 <h2 data-number="14.3" id="ooda-transient-dynamics"><span
@@ -3828,29 +3891,48 @@ S2).</p>
 <h2 data-number="15.2" id="relationship-to-the-series"><span
 class="header-section-number">15.2</span> Relationship to the
 Series</h2>
-<p>This paper completes a four-part arc in the Cognitive Security
-series:</p>
+<p>This paper completes a four-part arc in the <em>Cognitive Security
+for Multiagent Operators</em> series:</p>
 <ul>
-<li><strong>Paper 1</strong> (Theory) established the formal
-foundations: cognitive state model, trust calculus, adversary taxonomy
-(<span class="math inline">\(\Omega_1\)</span>–<span
-class="math inline">\(\Omega_5\)</span>), and five canonical defense
-mechanisms with composition algebra.</li>
-<li><strong>Paper 2</strong> (Computation) provided computational
-validation: benchmark evaluation across 950 attack scenarios,
-demonstrating 99.5% detection with the recommended defense stack.</li>
-<li><strong>Paper 3</strong> (Practice) grounded the framework in
-biological analogy: eusocial insect colonies as existence proofs for
-CIF-like defense mechanisms evolved over millions of years.</li>
-<li><strong>Paper 4</strong> (Applications—this paper) demonstrates
-real-world applicability: CIF’s formal mechanisms map to concrete
-defenses across ten high-stakes domains, and the cross-domain analysis
-yields new insights (universal attack patterns, novel defense
-extensions) not visible from any single domain.</li>
+<li><strong>Paper 1: Formal Foundations</strong> (DOI:
+10.5281/zenodo.18364119) established the formal foundations: cognitive
+state model <span class="math inline">\(\sigma_i = \langle
+\mathcal{B}_i, \mathcal{G}_i, \mathcal{I}_i, \mathcal{H}_i
+\rangle\)</span>, trust calculus with <span
+class="math inline">\(\delta^d\)</span> bounded delegation, adversary
+taxonomy (<span class="math inline">\(\Omega_1\)</span>–<span
+class="math inline">\(\Omega_5\)</span>), information-theoretic
+stealth–impact bounds, and five canonical defense mechanisms with
+composition algebra. A supplementary chapter additionally develops the
+eusocial-colony analogy.</li>
+<li><strong>Paper 2: Computational Validation</strong> (DOI:
+10.5281/zenodo.18364128) provided computational validation: benchmark
+evaluation across 950 attack scenarios, ablation studies, Bayesian
+uncertainty quantification, and colony-scale benchmarks, with the
+recommended defense stack achieving 94–100% detection in parametric
+simulation.</li>
+<li><strong>Paper 3: A Qualitative Review for Practitioners</strong>
+(DOI: 10.5281/zenodo.18364130) translated the formal and empirical
+results into accessible engineering guidance: deployment guides,
+subagent-hardening patterns, incident-response playbooks, monitoring
+strategies, cost–benefit analysis, common pitfalls, case studies, and
+operator risk frameworks. No formal prerequisites assumed.</li>
+<li><strong>Paper 4: Applications of the Cognitive Integrity
+Framework</strong> (this paper) demonstrates real-world applicability:
+CIF’s formal mechanisms map to concrete defenses across ten high-stakes
+operational domains via the integrated CIF-AD-OODA model, and the
+cross-domain analysis yields new insights (three universal attack
+patterns, three novel defense extensions) not visible from any single
+domain, with retrospective validation against six documented 2024–2025
+AI agent security incidents.</li>
 </ul>
 <p>Together, the series establishes that cognitive integrity is not
 merely a theoretical concern but a <em>necessary engineering
-discipline</em> for deployed multiagent systems.</p>
+discipline</em> for deployed multiagent systems. Readers seeking
+derivations or proofs should consult Part 1; readers seeking empirical
+measurement should consult Part 2; readers looking to deploy these
+defenses operationally should consult Part 3; readers evaluating CIF for
+a specific operational sector have just read the present work.</p>
 <h2 data-number="15.3" id="future-work"><span
 class="header-section-number">15.3</span> Future Work</h2>
 <p>Several directions emerge from this analysis:</p>

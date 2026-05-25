@@ -102,9 +102,14 @@ class TestTheoremRegistry:
     """Tests for TheoremRegistry: registration, lookup, validation."""
 
     def test_default_theorems_registered(self):
-        """Registry auto-registers the 7 default validators on init."""
+        """Registry auto-registers Paper 1 + Paper 2 default validators on init."""
         registry = TheoremRegistry()
-        expected_ids = {"3.1", "3.2a", "3.2b", "3.2c", "4", "5.3", "6"}
+        expected_ids = {
+            # Paper 1
+            "3.1", "3.2a", "3.2b", "3.2c", "4", "5.3", "6",
+            # Paper 2 extensions (category theory + FEP)
+            "CT.1", "CT.2", "CT.3", "FEP.1", "FEP.2",
+        }
         actual_ids = set(registry._validators.keys())
         assert expected_ids == actual_ids
 
@@ -933,7 +938,8 @@ class TestRegistryIntegration:
         """Summary reports all theorems as passed."""
         registry = TheoremRegistry()
         summary = registry.summary()
-        assert summary["passed"] == 7
+        # 7 Paper 1 theorems + 5 Paper 2 extensions (CT.1-3, FEP.1-2).
+        assert summary["passed"] == 12
         assert summary["failed"] == 0
         assert summary["error"] == 0
 

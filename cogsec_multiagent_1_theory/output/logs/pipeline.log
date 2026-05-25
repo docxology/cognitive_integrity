@@ -1,63 +1,31 @@
-[2026-02-20 14:18:10,967] [INFO] Recreated pipeline log file: /Users/4d/Documents/GitHub/template/projects/cogsec_multiagent_1_theory/output/logs/pipeline.log
-[2026-02-20 14:18:10,967] [INFO] ✓ Stage 1 completed successfully (0.0s)
-[2026-02-20 14:18:10,968] [INFO] 
-[2026-02-20 14:18:10,968] [INFO] [2/10] Environment Setup (20% complete)
-[2026-02-20 14:18:10,968] [INFO]   Elapsed: 0s | ETA: 0s
-[2026-02-20 14:18:10,968] [INFO] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-[2026-02-20 14:18:10,968] [INFO] Running environment setup...
-[2026-02-20 14:18:11,917] [INFO] ✓ Stage 2 completed successfully (0.9s)
-[2026-02-20 14:18:11,917] [INFO] 
-[2026-02-20 14:18:11,917] [INFO] [3/10] Infrastructure Tests (30% complete)
-[2026-02-20 14:18:11,917] [INFO]   Elapsed: 0s | ETA: 2s
-[2026-02-20 14:18:11,917] [INFO] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-[2026-02-20 14:18:11,918] [INFO] Running infrastructure tests...
-✓ Test message
-✗ Test message
-  Test message
-⚠ Test message
-[2026-02-20 14:26:41,646] [INFO] ✓ Stage 3 completed successfully (509.7s)
-[2026-02-20 14:26:41,652] [INFO] 
-[2026-02-20 14:26:41,652] [INFO] [4/10] Project Tests (40% complete)
-[2026-02-20 14:26:41,652] [INFO]   Elapsed: 8m 30s | ETA: 12m 46s
-[2026-02-20 14:26:41,652] [INFO] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-[2026-02-20 14:26:41,656] [INFO] Running project tests...
-[2026-02-20 14:27:06,710] [INFO] ✓ Stage 4 completed successfully (25.1s)
-[2026-02-20 14:27:06,711] [INFO] 
-[2026-02-20 14:27:06,711] [INFO] [5/10] Project Analysis (50% complete)
-[2026-02-20 14:27:06,711] [INFO]   Elapsed: 8m 55s | ETA: 8m 55s
-[2026-02-20 14:27:06,711] [INFO] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-[2026-02-20 14:27:06,712] [INFO] Running project analysis...
-[2026-02-20 14:27:22,837] [INFO] ✓ Stage 5 completed successfully (16.1s)
-[2026-02-20 14:27:22,840] [INFO] 
-[2026-02-20 14:27:22,840] [INFO] [6/10] PDF Rendering (60% complete)
-[2026-02-20 14:27:22,840] [INFO]   Elapsed: 9m 11s | ETA: 6m 7s
-[2026-02-20 14:27:22,840] [INFO] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-[2026-02-20 14:27:22,840] [INFO] Running PDF rendering...
-[2026-02-20 14:28:10,073] [INFO] ✓ Stage 6 completed successfully (47.2s)
-[2026-02-20 14:28:10,074] [INFO] 
-[2026-02-20 14:28:10,074] [INFO] [7/10] Output Validation (70% complete)
-[2026-02-20 14:28:10,074] [INFO]   Elapsed: 9m 59s | ETA: 4m 16s
-[2026-02-20 14:28:10,074] [INFO] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-[2026-02-20 14:28:10,075] [INFO] Running output validation...
-[2026-02-20 14:28:10,569] [INFO] ✓ Stage 7 completed successfully (0.5s)
-[2026-02-20 14:28:10,570] [INFO] 
-[2026-02-20 14:28:10,570] [INFO] [8/10] LLM Scientific Review (80% complete)
-[2026-02-20 14:28:10,570] [INFO]   Elapsed: 9m 59s | ETA: 2m 29s
-[2026-02-20 14:28:10,570] [INFO] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-[2026-02-20 14:28:10,570] [INFO] Running LLM scientific review...
-[2026-02-20 14:29:14,538] [INFO] ✓ Stage 8 completed successfully (64.0s)
-[2026-02-20 14:29:14,540] [INFO] 
-[2026-02-20 14:29:14,540] [INFO] [9/10] LLM Translations (90% complete)
-[2026-02-20 14:29:14,540] [INFO]   Elapsed: 11m 3s | ETA: 1m 13s
-[2026-02-20 14:29:14,540] [INFO] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-[2026-02-20 14:29:14,541] [INFO] Running LLM translations...
-[2026-02-20 14:30:21,174] [INFO] ✓ Stage 9 completed successfully (66.6s)
-[2026-02-20 14:30:21,176] [INFO] 
-[2026-02-20 14:30:21,176] [INFO] [10/10] Copy Outputs (100% complete)
-[2026-02-20 14:30:21,176] [INFO]   Elapsed: 12m 10s | ETA: 0s
-[2026-02-20 14:30:21,176] [INFO] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-[2026-02-20 14:30:21,177] [INFO] Running output copying...
-[2026-02-20 14:30:22,000] [INFO] ✓ Stage 10 completed successfully (0.8s)
-[2026-02-20 14:30:22,452] [INFO] [infrastructure.reporting.pipeline_reporter] Pipeline report (JSON) saved: /Users/4d/Documents/GitHub/template/projects/cogsec_multiagent_1_theory/output/reports/pipeline_report.json
-[2026-02-20 14:30:22,453] [INFO] [infrastructure.reporting.pipeline_reporter] Pipeline report (Markdown) saved: /Users/4d/Documents/GitHub/template/projects/cogsec_multiagent_1_theory/output/reports/pipeline_report.md
-[2026-02-20 14:30:22,453] [INFO] [infrastructure.reporting.pipeline_reporter] Pipeline report (HTML) saved: /Users/4d/Documents/GitHub/template/projects/cogsec_multiagent_1_theory/output/reports/pipeline_report.html
+[2026-04-26 19:00:48,535] [INFO] ✓ Stage 1 completed successfully (0.0s)
+[2026-04-26 19:00:48,536] [INFO] 
+[2026-04-26 19:00:48,536] [INFO] [2/8] Environment Setup (25% complete)
+[2026-04-26 19:00:48,536] [INFO]   Elapsed: 0s | ETA: 0s
+[2026-04-26 19:00:48,536] [INFO] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[2026-04-26 19:00:51,832] [INFO] ✓ Stage 2 completed successfully (3.3s)
+[2026-04-26 19:00:51,832] [INFO] 
+[2026-04-26 19:00:51,833] [INFO] [3/8] Project Tests (37% complete)
+[2026-04-26 19:00:51,833] [INFO]   Elapsed: 3s | ETA: 5s
+[2026-04-26 19:00:51,833] [INFO] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[2026-04-26 19:00:56,344] [INFO] ✓ Stage 3 completed successfully (4.5s)
+[2026-04-26 19:00:56,344] [INFO] 
+[2026-04-26 19:00:56,345] [INFO] [4/8] Project Analysis (50% complete)
+[2026-04-26 19:00:56,345] [INFO]   Elapsed: 7s | ETA: 7s
+[2026-04-26 19:00:56,345] [INFO] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[2026-04-26 19:01:12,311] [INFO] ✓ Stage 4 completed successfully (16.0s)
+[2026-04-26 19:01:12,312] [INFO] 
+[2026-04-26 19:01:12,312] [INFO] [5/8] PDF Rendering (62% complete)
+[2026-04-26 19:01:12,312] [INFO]   Elapsed: 23s | ETA: 14s
+[2026-04-26 19:01:12,312] [INFO] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[2026-04-26 19:01:53,950] [INFO] ✓ Stage 5 completed successfully (41.6s)
+[2026-04-26 19:01:53,951] [INFO] 
+[2026-04-26 19:01:53,951] [INFO] [6/8] Output Validation (75% complete)
+[2026-04-26 19:01:53,951] [INFO]   Elapsed: 1m 5s | ETA: 21s
+[2026-04-26 19:01:53,951] [INFO] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[2026-04-26 19:01:54,379] [INFO] ✓ Stage 6 completed successfully (0.4s)
+[2026-04-26 19:01:54,379] [INFO] 
+[2026-04-26 19:01:54,379] [INFO] [7/8] Copy Outputs (87% complete)
+[2026-04-26 19:01:54,379] [INFO]   Elapsed: 1m 5s | ETA: 9s
+[2026-04-26 19:01:54,379] [INFO] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[2026-04-26 19:01:54,775] [INFO] ✓ Stage 7 completed successfully (0.4s)

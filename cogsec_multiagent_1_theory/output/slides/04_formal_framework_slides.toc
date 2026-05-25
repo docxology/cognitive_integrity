@@ -1,0 +1,1 @@
+\beamer@sectionintoc {1}{Cognitive Integrity Framework: Trust Calculus and Detection Bounds}{2}{0}{1}

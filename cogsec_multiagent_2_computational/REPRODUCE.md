@@ -3,7 +3,7 @@
 ## System Requirements
 
 - Python 3.10+
-- [uv](https://docs.astral.sh/uv/) (recommended) or pip
+- [uv](https://docs.astral.sh/uv/)
 
 ## Installation
 
@@ -13,8 +13,7 @@ git clone https://github.com/docxology/cognitive_integrity.git
 cd cognitive_integrity/cogsec_multiagent_2_computational
 
 # Install dependencies
-uv pip install -e ".[dev]"
-# or: pip install -e ".[dev]"
+uv sync --extra dev
 ```
 
 ## Full Pipeline

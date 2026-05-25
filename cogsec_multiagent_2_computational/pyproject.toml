@@ -17,12 +17,14 @@ dependencies = [
     "numpy>=1.24.0",
     "scipy>=1.10.0",
     "matplotlib>=3.7.0",
+    "requests>=2.33.1",
 ]
 
 [dependency-groups]
 dev = [
     "pytest>=7.4.0",
     "pytest-cov>=4.1.0",
+    "pytest-httpserver>=1.1.5",
     "ruff>=0.4.0",
 ]
 

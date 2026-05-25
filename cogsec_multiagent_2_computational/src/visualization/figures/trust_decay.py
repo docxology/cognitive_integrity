@@ -1,3 +1,8 @@
+"""Trust Decay module.
+
+Implements functionality for the Cognitive Integrity Framework.
+"""
+
 from __future__ import annotations
 
 from pathlib import Path
@@ -5,10 +10,7 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
 
-try:
-    from core.trust import TrustCalculus, TrustConfig
-except (ImportError, ModuleNotFoundError):
-    from src.core.trust import TrustCalculus, TrustConfig
+from core.trust import TrustCalculus, TrustConfig
 from ..style import FONTSIZE, PALETTE, SEMANTIC_COLORS, add_source_annotation, apply_style, save_figure
 
 

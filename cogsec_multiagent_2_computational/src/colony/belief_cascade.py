@@ -8,11 +8,28 @@ colony integrity over time.
 
 from __future__ import annotations
 
-from typing import List
+from typing import Any, List
 
 import numpy as np
 
 from .scorecard import compute_ccs, compute_recovery_steps, compute_resilience
+
+# Network topology parameters
+SMALL_WORLD_K = 6  # Each node connects to k/2 neighbours on each side
+SMALL_WORLD_REWIRE_P = 0.1  # Rewiring probability for small-world construction
+
+# Belief dynamics parameters
+GROUND_TRUTH_BELIEF = 0.5  # Target belief value for honest agents
+ADVERSARY_TARGET_BELIEF = 0.95  # Target belief value for adversaries
+BELIEF_UPDATE_WEIGHT = 0.2  # How much neighbours influence each other
+BELIEF_NOISE_SIGMA = 0.02  # Standard deviation of belief noise for honest agents
+ADVERSARY_NOISE_SIGMA = 0.01  # Standard deviation of belief noise for adversaries
+
+# Timing and detection parameters
+ADVERSARY_ACTIVATION_STEP = 30  # When adversaries start injecting false beliefs
+BELIEF_DEVIATION_THRESHOLD = 0.2  # Threshold for detecting belief deviation
+INTEGRITY_TARGET_THRESHOLD = 0.1  # Distance threshold for integrity computation
+RECOVERY_INTEGRITY_THRESHOLD = 0.9  # Integrity threshold for recovery evaluation
 
 
 def _build_small_world_adjacency(
@@ -74,7 +91,7 @@ class BeliefCascadeScenario:
     def name(self) -> str:
         return "belief_cascade"
 
-    def default_config(self):
+    def default_config(self) -> Any:
         """Return default colony configuration for this scenario."""
         try:
             from .benchmark import ColonyConfig
@@ -93,7 +110,7 @@ class BeliefCascadeScenario:
                 seed: int = 42
             return _Cfg()
 
-    def run(self, config, rng: np.random.Generator):
+    def run(self, config: Any, rng: np.random.Generator) -> Any:
         """Run the belief-cascade simulation.
 
         Args:
@@ -114,25 +131,25 @@ class BeliefCascadeScenario:
         n_adv = config.n_adversaries
         n_steps = config.n_steps
 
-        # Build small-world network (k=6 neighbours, rewire p=0.1)
-        adj = _build_small_world_adjacency(n, k=6, p=0.1, rng=rng)
+        # Build small-world network
+        adj = _build_small_world_adjacency(n, k=SMALL_WORLD_K, p=SMALL_WORLD_REWIRE_P, rng=rng)
 
         # Pick adversary positions: highest-degree nodes
         degrees = adj.sum(axis=1)
         adv_indices = set(np.argsort(degrees)[-n_adv:].tolist())
         honest_indices = set(range(n)) - adv_indices
 
-        # Ground truth = 0.5; adversary target = 0.95
-        ground_truth = 0.5
-        adversary_target = 0.95
+        # Ground truth and adversary target beliefs
+        ground_truth = GROUND_TRUTH_BELIEF
+        adversary_target = ADVERSARY_TARGET_BELIEF
 
         beliefs = np.full(n, ground_truth, dtype=np.float64)
-        beliefs += rng.normal(0, 0.02, size=n)
+        beliefs += rng.normal(0, BELIEF_NOISE_SIGMA, size=n)
         beliefs = np.clip(beliefs, 0.0, 1.0)
 
-        # Adversaries become active at step 30
-        adv_active_step = 30
-        update_weight = 0.2  # How much neighbours influence each other
+        # Adversaries become active at configured step
+        adv_active_step = ADVERSARY_ACTIVATION_STEP
+        update_weight = BELIEF_UPDATE_WEIGHT
 
         timeline: List[float] = []
         detections = 0
@@ -144,9 +161,9 @@ class BeliefCascadeScenario:
             # -- Adversary behaviour --
             for a in adv_indices:
                 if step >= adv_active_step:
-                    beliefs[a] = adversary_target + rng.normal(0, 0.01)
+                    beliefs[a] = adversary_target + rng.normal(0, ADVERSARY_NOISE_SIGMA)
                 else:
-                    beliefs[a] = ground_truth + rng.normal(0, 0.02)
+                    beliefs[a] = ground_truth + rng.normal(0, BELIEF_NOISE_SIGMA)
 
             beliefs = np.clip(beliefs, 0.0, 1.0)
 
@@ -163,19 +180,19 @@ class BeliefCascadeScenario:
             if step >= adv_active_step:
                 for a in adv_indices:
                     detection_opportunities += 1
-                    if abs(beliefs[a] - ground_truth) > 0.2:
+                    if abs(beliefs[a] - ground_truth) > BELIEF_DEVIATION_THRESHOLD:
                         detections += 1
 
                 for h in honest_indices:
                     honest_checks += 1
-                    if abs(new_beliefs[h] - ground_truth) > 0.2:
+                    if abs(new_beliefs[h] - ground_truth) > BELIEF_DEVIATION_THRESHOLD:
                         false_positives += 1
 
             beliefs = np.clip(new_beliefs, 0.0, 1.0)
 
-            # Integrity = fraction of honest agents within 0.1 of truth
+            # Integrity = fraction of honest agents within threshold of truth
             honest_list = sorted(honest_indices)
-            correct = np.sum(np.abs(beliefs[honest_list] - ground_truth) < 0.1)
+            correct = np.sum(np.abs(beliefs[honest_list] - ground_truth) < INTEGRITY_TARGET_THRESHOLD)
             integrity = float(correct / max(len(honest_indices), 1))
             timeline.append(integrity)
 
@@ -183,7 +200,7 @@ class BeliefCascadeScenario:
         dr = detections / max(detection_opportunities, 1)
         fpr = false_positives / max(honest_checks, 1)
         res = compute_resilience(timeline, adversary_start_step=adv_active_step)
-        rec = compute_recovery_steps(timeline, threshold=0.9)
+        rec = compute_recovery_steps(timeline, threshold=RECOVERY_INTEGRITY_THRESHOLD)
         ccs = compute_ccs(dr, fpr, res, rec, n_steps)
 
         return ColonyResult(

@@ -1,6 +1,23 @@
 # Cognitive Security for Multiagent Operators
 
-A tripartite manuscript series establishing the theoretical foundations, computational validation, and practical deployment guidance for cognitive security in multiagent AI systems.
+A four-part manuscript series establishing the theoretical foundations, computational validation, practical deployment guidance, and applied domain analyses for cognitive security in multiagent AI systems.
+
+## Location in this repository
+
+This program is under **`projects/cognitive_integrity/`** as an active nested project group. For `./run.sh` and `scripts/03_render_pdf.py`, pass the **qualified project name**:
+
+`cognitive_integrity/cogsec_multiagent_<N>_<suffix>`
+
+The qualified name keeps each paper's outputs under `output/cognitive_integrity/<paper>/`.
+
+## Who should start where
+
+| Reader | Start here |
+| ------ | ---------- |
+| Formal definitions, proofs, adversary taxonomy | [Part 1: Formal Foundations](cogsec_multiagent_1_theory/) |
+| Empirical results, implementation, reproducibility | [Part 2: Computational Validation](cogsec_multiagent_2_computational/) — evidence spine: [claims traceability](cogsec_multiagent_2_computational/docs/claims_traceability.md), [framework validation](cogsec_multiagent_2_computational/docs/framework_validation.md) |
+| Deployment, checklists, operator guidance (minimal math) | [Part 3: A Qualitative Review for Practitioners](cogsec_multiagent_3_practical/) |
+| Sector-specific applications, goal hijacking, incident retrospective | [Part 4: Applications](cogsec_multiagent_4_applications/) |
 
 ## Paper Series
 
@@ -8,37 +25,57 @@ A tripartite manuscript series establishing the theoretical foundations, computa
 |------|-------|--------|-----|
 | 1 | [Formal Foundations](cogsec_multiagent_1_theory/) | **Published** | [10.5281/zenodo.18364119](https://doi.org/10.5281/zenodo.18364119) |
 | 2 | [Computational Validation](cogsec_multiagent_2_computational/) | Preprint | [10.5281/zenodo.18364128](https://doi.org/10.5281/zenodo.18364128) |
-| 3 | [Practical Guidance](cogsec_multiagent_3_practical/) | Preprint | [10.5281/zenodo.18364130](https://doi.org/10.5281/zenodo.18364130) |
+| 3 | [A Qualitative Review for Practitioners](cogsec_multiagent_3_practical/) | Preprint | [10.5281/zenodo.18364130](https://doi.org/10.5281/zenodo.18364130) |
+| 4 | [Applications: Critical-Domain Analyses](cogsec_multiagent_4_applications/) | Preprint | _DOI pending_ |
+
+### Reading order
+
+- **Start with Part 1** if you want definitions, theorems, and the formal trust / defense / adversary apparatus.
+- **Start with Part 2** if you want empirical evidence — the 950-attack corpus, ablation studies, Bayesian uncertainty, parametric ceilings (exact architecture set and ceiling definition are in Part 2 methodology).
+- **Start with Part 3** if you are deploying CIF and need engineering guidance without formal prerequisites.
+- **Start with Part 4** if you are evaluating CIF for a specific operational sector (infrastructure, supply chain, cyber, biowarfare, information ecosystems, etc.) and want domain-calibrated goal-hijacking defenses.
+
+Each paper stands alone but explicitly points readers to the most relevant sections of its siblings.
 
 ## Author
 
-**Daniel Ari Friedman**
+**Daniel Ari Friedman**  
 Active Inference Institute
 
 ## Key Contributions
 
-- **Trust Calculus** with bounded delegation and δ^d decay (Paper 1)
-- **Defense Composition Algebra** for layered security reasoning (Paper 1)
-- **Computational Validation** across 950 attacks and 4 production architectures (Paper 2)
-- **Actionable Deployment Framework** with checklists, guidelines, and risk assessment (Paper 3)
+- **Trust Calculus** with bounded delegation and δ^d decay (Part 1)
+- **Defense Composition Algebra** for layered security reasoning (Part 1)
+- **Computational validation** over a 950-attack corpus (Part 2; architecture set and parametric ceiling definitions are in that manuscript’s methodology)
+- **Operator-facing synthesis** with checklists, risk framing, and deployment guidance (Part 3)
+- **CIF-AD-OODA integration** and ten-domain applied analysis of goal hijacking (Part 4)
+- **Three universal attack patterns** — FR Polarity Inversion, Constraint Relaxation, Context Boundary Violation (Part 4)
+- **Three defense extensions** in the Part 4 study — verification channel separation, active perturbation probing, physics-informed invariants
 
 ## Documentation
 
-Comprehensive technical documentation for the CIF codebase is available in [`cogsec_multiagent_2_computational/docs/`](cogsec_multiagent_2_computational/docs/):
+Technical documentation for the CIF implementation lives in [`cogsec_multiagent_2_computational/docs/`](cogsec_multiagent_2_computational/docs/):
 
 - [Claims Traceability](cogsec_multiagent_2_computational/docs/claims_traceability.md) — Manuscript-to-code mapping
 - [Usage Guides](cogsec_multiagent_2_computational/docs/usage_guides/) — Per-component guides (Firewall, Sandbox, Trust, Consensus, Tripwires, Drift Detection, Provenance, Invariants)
 - [Framework Validation](cogsec_multiagent_2_computational/docs/framework_validation.md) — Experiment reproduction guide
 
+## Figures and accessible outputs
+
+For manuscripts: use explicit figure captions in markdown; where markdown allows `alt` text for images, set meaningful alt text so HTML builds remain readable without the image. Spot-check combined HTML under each part’s `output/web/` after changing figures.
+
 ## Citation
 
+Part 1 (example; see Zenodo for each part’s record):
+
 ```bibtex
-@article{friedman2026cogsec,
+@article{friedman2026cogsec1,
   author = {Friedman, Daniel Ari},
-  title = {Cognitive Security for Multiagent Operators: A Tripartite Framework},
+  title = {Cognitive Integrity Framework: Formal Foundations for Securing Multiagent AI Operators},
   year = {2026},
   doi = {10.5281/zenodo.18364119},
-  publisher = {Zenodo}
+  publisher = {Zenodo},
+  note = {Part 1 of four: Cognitive Security for Multiagent Operators}
 }
 ```
 
@@ -49,16 +86,26 @@ Comprehensive technical documentation for the CIF codebase is available in [`cog
 
 ## Building
 
-```bash
-# Render any paper as PDF
-./run.sh --render-pdf --project cogsec_multiagent_1_theory
-./run.sh --render-pdf --project cogsec_multiagent_2_computational
-./run.sh --render-pdf --project cogsec_multiagent_3_practical
+From the **repository root** (with `uv sync` already run):
 
-# Run tests (Papers 2 & 3)
-python3 -m pytest projects/cognitive_integrity/cogsec_multiagent_2_computational/tests/ -v
-python3 -m pytest projects/cognitive_integrity/cogsec_multiagent_3_practical/tests/ -v
+```bash
+# Render any paper as PDF (qualified names required for the nested layout)
+./run.sh --render-pdf --project cognitive_integrity/cogsec_multiagent_1_theory
+./run.sh --render-pdf --project cognitive_integrity/cogsec_multiagent_2_computational
+./run.sh --render-pdf --project cognitive_integrity/cogsec_multiagent_3_practical
+./run.sh --render-pdf --project cognitive_integrity/cogsec_multiagent_4_applications
+
+# Or directly:
+uv run python scripts/03_render_pdf.py --project cognitive_integrity/cogsec_multiagent_1_theory
+
+# Run tests (examples; run from repo root)
+uv run pytest projects/cognitive_integrity/cogsec_multiagent_1_theory/tests/ -v
+uv run pytest projects/cognitive_integrity/cogsec_multiagent_2_computational/tests/ -q
+uv run pytest projects/cognitive_integrity/cogsec_multiagent_3_practical/tests/ -v
+uv run pytest projects/cognitive_integrity/cogsec_multiagent_4_applications/tests/ -v
 ```
+
+Part 2’s tests import `scipy` (declared in that part’s `pyproject.toml`). If collection fails with `ModuleNotFoundError: scipy`, run `uv sync` from `cogsec_multiagent_2_computational/` so its dependencies are installed, then re-run pytest from the repo root as above.
 
 ## License
 

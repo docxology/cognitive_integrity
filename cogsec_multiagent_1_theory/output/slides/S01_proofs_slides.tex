@@ -93,15 +93,18 @@
 \newpage
 \end{frame}
 
-\begin{frame}{Supplementary: Mathematical Proofs}
-\protect\phantomsection\label{supplementary-mathematical-proofs}
+\section{Supplementary: Mathematical
+Proofs}\label{supplementary-mathematical-proofs}
+
+\begin{frame}[allowframebreaks]{Supplementary: Mathematical Proofs}
 This supplementary material provides complete formal proofs for all
 theorems stated in the main text, including preliminary definitions
 (\cref{sec:preliminaries}), main theorem proofs
 (\crefrange{sec:thm42-proof}{sec:thm511-proof}), and additional
 supporting lemmas (\cref{sec:additional-lemmas}).
+\end{frame}
 
-\begin{block}{Preliminary Definitions and Notation}
+\begin{frame}[allowframebreaks]{Preliminary Definitions and Notation}
 \protect\phantomsection\label{sec:preliminaries}
 \begin{block}{Notation Summary}
 \protect\phantomsection\label{sec:notation}
@@ -144,11 +147,9 @@ The trust along path $p = (a_0, \ldots, a_k)$ is defined as:
 A delegation chain of depth $d$ is a sequence of agents $(a_0, a_1, \ldots, a_d)$ where agent $a_i$ delegates authority to $a_{i+1}$.
 \end{definition}
 \end{block}
-\end{block}
 \end{frame}
 
-\begin{frame}
-\begin{block}{Theorem 4.2: Trust Boundedness}
+\begin{frame}[allowframebreaks]{Theorem 4.2: Trust Boundedness}
 \protect\phantomsection\label{sec:thm42-proof}
 \begin{theorem}[Trust Boundedness --- Restated]
 \label{thm:trust-bound-restated}
@@ -263,11 +264,10 @@ With $\delta = 0.8$ and minimum actionable trust $\tau_{min} = 0.1$:
 d_{max} = \lfloor \log_{0.8} 0.1 \rfloor = 10
 \end{equation}
 \end{corollary}
-\end{block}
 \end{frame}
 
-\begin{frame}
-\begin{block}{Theorem 5.7: Belief Injection Resistance}
+\begin{frame}[allowframebreaks]{Theorem 5.7: Belief Injection
+Resistance}
 \protect\phantomsection\label{sec:thm57-proof}
 \begin{theorem}[Belief Injection Resistance --- Restated]
 \label{thm:belief-injection-restated}
@@ -357,11 +357,9 @@ P(\text{attack succeeds}) = \prod_{i=1}^{n} (1 - r_i)
 \begin{proof}
 Direct extension of \cref{thm:belief-injection-restated} by independence.
 \end{proof}
-\end{block}
 \end{frame}
 
-\begin{frame}
-\begin{block}{Theorem 4.7: No Trust Amplification}
+\begin{frame}[allowframebreaks]{Theorem 4.7: No Trust Amplification}
 \protect\phantomsection\label{sec:thm47-proof}
 \begin{theorem}[No Trust Amplification --- Restated]
 \label{thm:trust-amp-restated}
@@ -462,11 +460,9 @@ Trust through any path is bounded by the least trusted edge:
 \label{cor:no-collusion}
 Multiple colluding agents cannot create trust exceeding any individual's trust with the target.
 \end{corollary}
-\end{block}
 \end{frame}
 
-\begin{frame}
-\begin{block}{Theorem 5.8: Goal Alignment Invariant}
+\begin{frame}[allowframebreaks]{Theorem 5.8: Goal Alignment Invariant}
 \protect\phantomsection\label{sec:thm58-proof}
 \begin{theorem}[Goal Alignment Invariant --- Restated]
 \label{thm:goal-alignment-restated}
@@ -563,11 +559,9 @@ Goal hijacking requires violating the delegation protocol:
 \neg\text{Aligned}(\mathcal{G}_i^t) \Rightarrow \exists t' < t: \neg\text{ValidUpdate}(\mathcal{G}_i^{t'}, \mathcal{G}_i^{t'+1})
 \end{equation}
 \end{corollary}
-\end{block}
 \end{frame}
 
-\begin{frame}
-\begin{block}{Theorem 5.9: Firewall Liveness}
+\begin{frame}[allowframebreaks]{Theorem 5.9: Firewall Liveness}
 \protect\phantomsection\label{sec:thm59-proof}
 \begin{theorem}[Firewall Liveness --- Restated]
 \label{thm:firewall-liveness-restated}
@@ -647,11 +641,10 @@ With $\epsilon_{fp} = 0.06$, at least 94\% of legitimate messages are accepted.
 \label{cor:quarantine-recovery}
 Messages in QUARANTINE can still reach verified belief state through sandbox promotion, further improving effective availability.
 \end{corollary}
-\end{block}
 \end{frame}
 
-\begin{frame}
-\begin{block}{Theorem 5.10: Byzantine Consensus Termination}
+\begin{frame}[allowframebreaks]{Theorem 5.10: Byzantine Consensus
+Termination}
 \protect\phantomsection\label{sec:thm510-proof}
 \begin{theorem}[Byzantine Consensus Termination --- Restated]
 \label{thm:byzantine-restated}
@@ -735,11 +728,9 @@ All honest agents decide on the same value (agreement property).
 \begin{proof}
 By honest majority and the $2/3$ threshold requirement.
 \end{proof}
-\end{block}
 \end{frame}
 
-\begin{frame}
-\begin{block}{Theorem 5.11: Bounded Overhead}
+\begin{frame}[allowframebreaks]{Theorem 5.11: Bounded Overhead}
 \protect\phantomsection\label{sec:thm511-proof}
 \begin{theorem}[Bounded Overhead --- Restated]
 \label{thm:overhead-restated}
@@ -835,11 +826,9 @@ L_{CIF}^{max} = L_{firewall} + L_{sandbox} + L_{verify}
 To minimize overhead, prioritize reducing $P_q$ (quarantine rate) through improved firewall precision.
 \end{corollary}
 \end{block}
-\end{block}
 \end{frame}
 
-\begin{frame}
-\begin{block}{Additional Lemmas}
+\begin{frame}[allowframebreaks]{Additional Lemmas}
 \protect\phantomsection\label{sec:additional-lemmas}
 \begin{lemma}[Provenance Chain Integrity]
 \label{lem:provenance-chain}
@@ -905,11 +894,9 @@ E[T_{rep}^t] \to \mu \text{ as } t \to \infty
 
 By the strong law of large numbers, $T_{rep}^t \to \mu$ almost surely.
 \end{proof}
-\end{block}
 \end{frame}
 
-\begin{frame}
-\begin{block}{Summary of Proof Techniques}
+\begin{frame}[allowframebreaks]{Summary of Proof Techniques}
 \protect\phantomsection\label{sec:proof-summary}
 \begin{table}[htbp]
 \centering
@@ -932,7 +919,6 @@ Theorem & Primary Technique & Complexity \\
 
 All proofs are constructive and provide explicit bounds useful for
 system implementation and analysis.
-\end{block}
 \end{frame}
 
 \end{document}

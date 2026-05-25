@@ -1,4 +1,11 @@
+"""Defense Composition module.
+
+Part of the Cognitive Integrity Framework.
+"""
+
 #!/usr/bin/env python3
+from __future__ import annotations
+
 """Defense composition visualization module."""
 
 import os

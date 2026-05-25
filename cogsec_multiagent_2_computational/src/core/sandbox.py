@@ -4,10 +4,14 @@ Belief Sandboxing for Multiagent Systems.
 Implements verified/provisional partitions with TTL management.
 """
 
+from __future__ import annotations
+
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from enum import Enum
 from typing import Callable, Dict, List, Optional, Set
+
+_SOON_EXPIRY_SECONDS: float = 60.0
 
 
 class BeliefPartition(Enum):
@@ -329,7 +333,7 @@ class SandboxManager:
         soon_expiring = sum(
             1
             for expiry in self._ttl_registry.values()
-            if (expiry - now).total_seconds() < 60
+            if (expiry - now).total_seconds() < _SOON_EXPIRY_SECONDS
         )
 
         return {

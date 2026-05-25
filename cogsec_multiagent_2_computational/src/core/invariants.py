@@ -4,6 +4,8 @@ Behavioral Invariant Checking for Multiagent Systems.
 Implements invariant predicates and runtime monitoring.
 """
 
+from __future__ import annotations
+
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import IntEnum

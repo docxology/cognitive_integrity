@@ -1,4 +1,6 @@
 """
+from __future__ import annotations
+
 Operator Posture Assessment for Cognitive Security.
 
 Implements Section 02 of the Practical Implementation Guide:

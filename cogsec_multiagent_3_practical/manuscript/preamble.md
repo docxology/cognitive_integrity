@@ -2,7 +2,7 @@
 
 # LaTeX Preamble
 
-This file contains LaTeX packages and commands for the Cognitive Security Framework manuscript.
+This file contains LaTeX packages and commands for the Cognitive Integrity Framework (Part 3) manuscript.
 
 ```latex
 % Core mathematical packages

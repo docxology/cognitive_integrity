@@ -30,15 +30,15 @@ Figure generation and data analysis scripts for the CIF manuscript.
 
 ```bash
 # Generate all experimental data
-python3 scripts/06_generate_data.py
+uv run python scripts/06_generate_data.py
 
 # Generate key figures
-python3 scripts/02_trust_decay_figure.py
-python3 scripts/03_detection_results_figure.py
-python3 scripts/04_cif_architecture_figure.py
+uv run python scripts/02_trust_decay_figure.py
+uv run python scripts/03_detection_results_figure.py
+uv run python scripts/04_cif_architecture_figure.py
 
 # Verify manuscript
-python3 scripts/verify_manuscript.py
+uv run python scripts/verify_manuscript.py
 ```
 
 ## Output Locations

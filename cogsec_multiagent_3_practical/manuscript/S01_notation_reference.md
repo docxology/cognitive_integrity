@@ -33,11 +33,9 @@ When we say n ≥ 3f + 1:
 
 ## Full Notation Reference
 
-For complete formal definitions of all CIF notation, see:
+For complete formal definitions of all CIF notation, see Part 1 supplementary **S03** (`cogsec_multiagent_1_theory/manuscript/S03_notation.md` in this repository’s cognitive_integrity program tree).
 
-- **Part 1: Supplementary Section S03: Notation Reference**
-
-The formal specification includes ~100 symbols covering:
+The Part 1 specification uses on the order of 100 symbols covering:
 
 - Agent cognitive state
 - Trust calculus operations

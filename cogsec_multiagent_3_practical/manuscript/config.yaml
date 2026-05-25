@@ -1,6 +1,6 @@
 paper:
   title: "Cognitive Integrity Framework: A Qualitative Review"
-  subtitle: "Part 3 of 3: Synthesizing Theory and Computation for Practitioners"
+  subtitle: "Part 3 of 4: Synthesizing Theory and Computation for Practitioners"
   short_title: "CIF Review"
   version: "2.0"
   type: "review"
@@ -27,24 +27,24 @@ keywords:
   - agentic AI security
 
 abstract: |
-  This paper provides a qualitative review and practitioner's synthesis of the
-  Cognitive Integrity Framework (CIF), presented across two companion papers.
-  Part 1 establishes formal foundations for cognitive security in multiagent AI
-  systems: bounded trust calculus, defense composition algebras, and
-  information-theoretic limits on attack stealth. Part 2 provides computational
-  validation through implemented defense modules and parametric architecture-aware
-  simulation across four production topologies.
+  This paper (Part 3) is a qualitative review and operator's synthesis of the
+  Cognitive Integrity Framework (CIF), developed in Parts 1, 2, and 4: formal
+  foundations, computational validation, and applied analysis. Part 1 gives
+  bounded trust calculus, defense composition algebras, and information-theoretic
+  limits on attack stealth. Part 2 provides implemented defense modules and
+  parametric architecture-aware simulation across four production topologies. Part
+  4 applies the framework across ten critical operational domains via the
+  integrated CIF-AD-OODA model.
 
-  This review synthesizes key insights from both papers into accessible language,
-  contextualizes formal results within the current deployment landscape, assesses
-  what the research establishes and where gaps remain, and distills practical
-  recommendations for teams building and operating multiagent AI systems.
-  Technical but accessible — no formal prerequisites assumed.
+  The review distills that material into accessible language, situates formal
+  results against deployment practice, and gives practical guidance for teams
+  building and operating multiagent AI systems. No formal prerequisites assumed.
 
-  This is Part 3 of a three-part series:
+  This is Part 3 of a four-part series:
   - Part 1 (DOI: 10.5281/zenodo.18364119): Formal foundations and theoretical analysis
   - Part 2 (DOI: 10.5281/zenodo.18364128): Computational validation and implementation
   - Part 3 (this paper): Qualitative review and practitioner's synthesis
+  - Part 4: Applications --- CIF-AD-OODA integration and domain analyses (rare-earth mining, nation-state alliances, cyber-security, drone warfare, supply chains, biowarfare, food security, trade wars, infrastructure, information ecosystems)
 
 llm:
   translations:

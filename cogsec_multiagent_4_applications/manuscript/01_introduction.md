@@ -2,9 +2,14 @@
 
 ## Series Context
 
-This paper is Part 4 of the *Cognitive Security for Multiagent Operators* series. Paper 1 \cite{friedman2026cogsec1} established the Cognitive Integrity Framework (CIF): a formal model of agent cognitive states $\sigma_i = \langle \mathcal{B}_i, \mathcal{G}_i, \mathcal{I}_i, \mathcal{H}_i \rangle$, a trust calculus with delegation decay, a five-tier adversary taxonomy ($\Omega_1$--$\Omega_5$), and five canonical defense mechanisms with composition algebra. Paper 2 \cite{friedman2026cogsec2} validated these mechanisms computationally, demonstrating 99.5\% detection across 950 attack scenarios with the recommended defense stack. Paper 3 \cite{friedman2026cogsec3} grounded the framework in biological analogy, identifying eusocial insect colonies as evolutionary existence proofs for CIF-like defense architectures.
+This paper is Part 4 of the *Cognitive Security for Multiagent Operators* series, which progresses from theory to computation to practice to applied deployment:
 
-This paper addresses the remaining question: **does CIF work in practice?** We apply the framework across ten critical domains---from millisecond drone swarm decisions to year-scale diplomatic deliberations---demonstrating both its universality and the novel defense patterns that emerge from domain-specific application.
+- **Paper 1: Formal Foundations** \cite{friedman2026cogsec1} (DOI: 10.5281/zenodo.18364119) establishes the Cognitive Integrity Framework (CIF): a formal model of agent cognitive states $\sigma_i = \langle \mathcal{B}_i, \mathcal{G}_i, \mathcal{I}_i, \mathcal{H}_i \rangle$, a trust calculus with delegation decay ($\delta^d$), the Defense Composition Algebra, the five-tier adversary taxonomy ($\Omega_1$--$\Omega_5$), information-theoretic stealth--impact bounds, and model-checked safety invariants. A supplementary chapter (S02) additionally develops the eusocial-colony analogy as an evolutionary existence proof for CIF-like defense architectures.
+- **Paper 2: Computational Validation** \cite{friedman2026cogsec2} (DOI: 10.5281/zenodo.18364128) validated these mechanisms computationally across a 950-attack corpus and four production multiagent architectures, reporting ablation studies, Bayesian uncertainty quantification, and colony-scale benchmarks; the recommended defense stack achieves 94--100\% detection in parametric simulation and 80--100\% under LLM-backed evaluation.
+- **Paper 3: A Qualitative Review for Practitioners** \cite{friedman2026cogsec3} (DOI: 10.5281/zenodo.18364130) translates the theoretical and empirical results into accessible engineering guidance: deployment guides, subagent-hardening patterns, incident-response playbooks, monitoring strategies, cost--benefit analysis, common pitfalls, case studies, and operator risk frameworks. It assumes no formal prerequisites.
+- **Paper 4: Applications of the Cognitive Integrity Framework** (this paper) addresses the remaining question: **does CIF work in practice across diverse operational domains?** We apply the framework across ten critical sectors---from millisecond drone swarm decisions to year-scale diplomatic deliberations---through the integrated CIF-AD-OODA analytical model, demonstrating universality and uncovering novel defense patterns visible only at the cross-domain scale.
+
+Together, Papers 1--4 provide a complete stack: Paper 1 defines *what* CIF is; Paper 2 shows that it *works*; Paper 3 shows *how to deploy it*; Paper 4 shows *where* it applies and *how* domain specifics extend it.
 
 ## The Ontological Crisis in AI
 
@@ -62,3 +67,36 @@ This paper makes the following contributions:
 - **C4:** Three novel defense pattern extensions: verification channel separation, active perturbation probing, and physics-informed invariants.
 - **C5:** Temporal scale analysis demonstrating CIF's applicability across eight orders of magnitude in OODA cycle time.
 - **C6:** Retrospective validation through six documented AI agent security incidents (2024--2025), confirming that all incidents map to the universal attack pattern taxonomy and would have been detectable by the appropriate CIF mechanism.
+
+## Reading Companion: Where to Find Specific Topics {#sec:reading-companion}
+
+This paper is designed to stand alone as the applied, domain-facing reference of the series. Where a formal construct, empirical measurement, or engineering technique is developed more fully elsewhere, the table below points the way.
+
+\begin{table}[htbp]
+\centering
+\caption{Cross-paper navigation from Part 4 topics to sibling developments.}
+\label{tab:part4-navigation}
+\small
+\begin{tabular}{@{}p{0.42\textwidth}p{0.52\textwidth}@{}}
+\toprule
+If you want\ldots & \ldots consult\ldots \\
+\midrule
+Formal definition of the cognitive state $\sigma_i = \langle \mathcal{B}_i, \mathcal{G}_i, \mathcal{I}_i, \mathcal{H}_i \rangle$ & Part 1 \cite{friedman2026cogsec1}, \S{3} (System Model) \\
+Trust Calculus, $\delta^d$ decay theorem, no-amplification guarantee & Part 1, \S{4} (Trust Calculus) \\
+Defense Composition Algebra (series/parallel theorems) & Part 1, \S{5} \\
+Information-theoretic stealth--impact bounds & Part 1, \S{4.3} \\
+Adversary taxonomy $\Omega_1$--$\Omega_5$ formal characterization & Part 1, \S{3} \\
+Model-checked safety invariants + NuSMV/TLA+ specifications & Part 1, \S{7}; Part 2 S04 \\
+Eusocial-colony analogy as existence proof for CIF-like architectures & Part 1 S02 \\
+Empirical detection rates for the defenses applied in this paper & Part 2 \cite{friedman2026cogsec2}, \S{5} + S08 (Parametric Analysis) \\
+Ablation studies isolating per-mechanism contribution & Part 2, \S{5.6}, \S{5d} \\
+Bayesian uncertainty on detection rates & Part 2, \S{5e} \\
+Game-theoretic adversarial analysis / Nash equilibrium & Part 2, \S{6} \\
+Category-theoretic formalization + free-energy / information-geometric connections & Part 2, \S{1c}, S10 \\
+Framework API reference + pseudocode for the five CIF mechanisms & Part 2, S05, S07 \\
+Deployment guides, subagent hardening, incident response playbooks, monitoring, cost--benefit & Part 3 \cite{friedman2026cogsec3}, \S{5}--\S{6} \\
+Accessible-language summaries of the formal and empirical results & Part 3, \S{2}--\S{3} \\
+Common pitfalls in deploying CIF, case studies, operator risk frameworks & Part 3, \S{5c}, \S{6}, \S{6b} \\
+\bottomrule
+\end{tabular}
+\end{table}

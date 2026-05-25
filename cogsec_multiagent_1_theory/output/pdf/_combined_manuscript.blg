@@ -1,53 +1,49 @@
-This is BibTeX, Version 0.99d (TeX Live 2025)
+This is BibTeX, Version 0.99e (TeX Live 2026)
 Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: _combined_manuscript.aux
 The style file: plainnat.bst
-Illegal, another \bibstyle command---line 1794 of file _combined_manuscript.aux
- : \bibstyle
- :          {unsrt}
-I'm skipping whatever remains of this command
 Database file #1: references.bib
-Warning--I didn't find a database entry for "fernández-marín2006evolution"
-Warning--I didn't find a database entry for "grüter2008dance"
-You've used 47 entries,
+Warning--I didn't find a database entry for "friston2010action"
+Warning--I didn't find a database entry for "parr2019generalised"
+You've used 49 entries,
             2773 wiz_defined-function locations,
-            875 strings with 15904 characters,
-and the built_in function-call counts, 23176 in all, are:
-= -- 1994
-> -- 1684
-< -- 20
-+ -- 569
-- -- 522
-* -- 1936
-:= -- 3714
-add.period$ -- 182
-call.type$ -- 47
-change.case$ -- 304
-chr.to.int$ -- 47
-cite$ -- 94
-duplicate$ -- 944
-empty$ -- 1689
-format.name$ -- 589
-if$ -- 4754
+            891 strings with 16346 characters,
+and the built_in function-call counts, 24234 in all, are:
+= -- 2095
+> -- 1744
+< -- 21
++ -- 589
+- -- 540
+* -- 2033
+:= -- 3876
+add.period$ -- 190
+call.type$ -- 49
+change.case$ -- 316
+chr.to.int$ -- 49
+cite$ -- 98
+duplicate$ -- 985
+empty$ -- 1772
+format.name$ -- 611
+if$ -- 4973
 int.to.chr$ -- 1
 int.to.str$ -- 1
-missing$ -- 44
-newline$ -- 283
-num.names$ -- 188
-pop$ -- 616
+missing$ -- 46
+newline$ -- 295
+num.names$ -- 196
+pop$ -- 634
 preamble$ -- 1
-purify$ -- 261
+purify$ -- 271
 quote$ -- 0
-skip$ -- 757
+skip$ -- 789
 stack$ -- 0
-substring$ -- 537
-swap$ -- 60
+substring$ -- 597
+swap$ -- 62
 text.length$ -- 1
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 492
+type$ -- 514
 warning$ -- 0
-while$ -- 175
+while$ -- 185
 width$ -- 0
-write$ -- 670
-(There was 1 error message)
+write$ -- 700
+(There were 2 warnings)

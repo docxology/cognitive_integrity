@@ -1,10 +1,10 @@
 # Cognitive Integrity Framework: Computational Validation - Agent Reference
 
-**This is an active project** in the `projects/` directory, discovered and executed by infrastructure discovery functions.
+**Location:** `projects/cognitive_integrity/cogsec_multiagent_2_computational/`. Active nested project under the program `cognitive_integrity/`; use qualified name `cognitive_integrity/cogsec_multiagent_2_computational` for pipeline and PDF scripts.
 
 ## Overview
 
-Part 2 of the **Cognitive Security for Multiagent Operators** series. This project provides computational validation of the Cognitive Integrity Framework (CIF) through implementation, benchmarking, and statistical analysis.
+Part 2 of the **Cognitive Security for Multiagent Operators** series. Computational validation of CIF through implementation, benchmarking, and statistical analysis. Claims-to-code mapping: `docs/claims_traceability.md`; reproduction: `docs/framework_validation.md`.
 
 ## Key Features & Capabilities
 
@@ -36,7 +36,7 @@ Part 2 of the **Cognitive Security for Multiagent Operators** series. This proje
 
 ## Directory Structure
 
-```
+```text
 cogsec_multiagent_2_computational/
 ├── src/                        # Source code
 │   ├── core/                   # Defense mechanism implementations
@@ -74,7 +74,7 @@ cogsec_multiagent_2_computational/
 │   ├── manuscript/             # Manuscript verifier & LaTeX converter
 │   ├── utils/                  # Shared types & helpers
 │   └── data/                   # Data loaders
-├── scripts/                    # Entry-point scripts (15)
+├── scripts/                    # Entry-point scripts (17)
 │   ├── run_full_evaluation.py  # Full CIF pipeline (6 archs × 950 attacks)
 │   ├── run_statistical_analysis.py  # Hypothesis tests & effect sizes
 │   ├── run_ablation.py         # Component ablation study
@@ -84,39 +84,16 @@ cogsec_multiagent_2_computational/
 │   ├── run_cross_validation.py # K-fold cross-validation
 │   ├── run_formal_validation.py     # Formal theorem verification
 │   ├── run_llm_demo.py         # Live LLM integration demo
+│   ├── run_publication_suite.py     # Full publication-quality analysis
 │   ├── verify_formal_specs.py  # SMV/PML/TLA+ spec generation
 │   ├── verify_manuscript.py    # Manuscript consistency checks
 │   ├── generate_all_figures.py # All manuscript figures → output/figures/
 │   ├── generate_all_tables.py  # All manuscript tables
 │   ├── generate_all_data.py    # All experimental data → output/data/
-│   └── convert_latex_tables.py # LaTeX → Markdown table conversion
-├── tests/                      # Test suite (26 test files, 90%+ coverage)
-│   ├── conftest.py
-│   ├── test_trust.py
-│   ├── test_firewall.py
-│   ├── test_consensus.py
-│   ├── test_tripwire.py
-│   ├── test_provenance.py
-│   ├── test_detection.py
-│   ├── test_invariants.py
-│   ├── test_sandbox.py
-│   ├── test_attacks.py
-│   ├── test_architectures.py
-│   ├── test_colony.py
-│   ├── test_composition.py
-│   ├── test_evaluation.py
-│   ├── test_statistics.py
-│   ├── test_formal.py
-│   ├── test_ablation.py
-│   ├── test_agents.py
-│   ├── test_visualization.py
-│   ├── test_data_utils.py
-│   ├── test_corner_cases.py
-│   ├── test_integration.py
-│   ├── test_firewall_extended.py
-│   ├── test_batch_detection.py
-│   └── test_online_detection.py
-├── manuscript/                 # Paper content (26 files)
+│   ├── convert_latex_tables.py # LaTeX → Markdown table conversion
+│   └── z_inject_manuscript_values.py # Auto-inject values into manuscript
+├── tests/                      # 36 test_*.py modules + conftest; 90%+ coverage (see glob in repo)
+├── manuscript/                 # Paper content (28 files)
 └── output/                     # Generated figures and data
     ├── figures/                # *.pdf figures
     └── data/                   # *.json results
@@ -173,7 +150,7 @@ Key symbols used in this paper:
 
 ## Module Dependencies
 
-```
+```text
 core/firewall.py ──> core/detection.py (anomaly scoring)
 core/consensus.py ──> (standalone)
 core/trust.py ──> (standalone, uses numpy)

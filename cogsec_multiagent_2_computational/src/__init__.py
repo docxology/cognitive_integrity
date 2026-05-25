@@ -1,4 +1,6 @@
 """
+from __future__ import annotations
+
 Cognitive Security Framework for Multiagent Operators.
 
 Core modules (in ``src.core``):
@@ -24,6 +26,18 @@ New packages:
 - data: Data generation and management
 - utils: Shared configuration, logging, timing, types
 """
+
+# Many sibling modules use absolute imports (``from utils.timing import ...``)
+# that only resolve when ``src/`` is on ``sys.path``.  When the package is
+# executed as ``python -m src``, sibling packages are not available by default,
+# so we insert the package directory onto ``sys.path`` before triggering any
+# transitive imports below.
+import sys as _sys
+from pathlib import Path as _Path
+
+_SRC_DIR = str(_Path(__file__).resolve().parent)
+if _SRC_DIR not in _sys.path:
+    _sys.path.insert(0, _SRC_DIR)
 
 # Re-export all core symbols for backward compatibility.
 # Existing code using ``from trust import TrustCalculus`` or

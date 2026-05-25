@@ -1,4 +1,6 @@
 """Statistical analysis package for the Cognitive Security Framework.
+from __future__ import annotations
+
 
 Re-exports all public classes and functions from:
 - hypothesis: H1/H2/H3 hypothesis tests

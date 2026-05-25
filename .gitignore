@@ -6,9 +6,10 @@ __pycache__/
 dist/
 build/
 
-# Virtual environments
+# Virtual environments (use repo root .venv via uv; nested venvs must not be committed)
 .venv/
 venv/
+**/.venv/
 
 # IDE
 .idea/
@@ -23,3 +24,17 @@ Thumbs.db
 
 # Jupyter
 .ipynb_checkpoints/
+
+# Tests / tooling
+**/.pytest_cache/
+**/.ruff_cache/
+**/.mypy_cache/
+htmlcov/
+.coverage
+.coverage.*
+
+# Project-local verification logs (regenerable)
+**/manuscript_verification.log
+
+# Generated project outputs
+**/output/

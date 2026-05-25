@@ -166,30 +166,43 @@ Pablo~D. Fajgelbaum, Pinelopi~K. Goldberg, Patrick~J. Kennedy, and Amit~K.
 
 \bibitem[Friedman(2026{\natexlab{a}})]{friedman2026cogsec1}
 Daniel~Ari Friedman.
-\newblock Cognitive security for modern multiagent operators: A formal
-  framework.
-\newblock \emph{Cognitive Security Series}, 1, 2026{\natexlab{a}}.
+\newblock Cognitive integrity framework: Formal foundations for multiagent
+  security.
+\newblock \emph{Cognitive Security for Multiagent Operators}, 1,
+  2026{\natexlab{a}}.
 \newblock \doi{10.5281/zenodo.18364119}.
-\newblock Part 1: Theory --- defines the Cognitive Integrity Framework (CIF),
-  trust calculus, adversary taxonomy $\Omega_1$--$\Omega_5$, and five canonical
-  defense mechanisms.
+\newblock Part 1: Theoretical Foundations --- defines the Cognitive Integrity
+  Framework (CIF), the Trust Calculus with $\delta^d$ bounded delegation, the
+  Defense Composition Algebra, the adversary taxonomy $\Omega_1$--$\Omega_5$,
+  information-theoretic stealth--impact bounds, five canonical defense
+  mechanisms, and model-checked safety invariants. A supplementary chapter
+  develops the eusocial-colony analogy as an evolutionary existence proof for
+  CIF-like architectures.
 
 \bibitem[Friedman(2026{\natexlab{b}})]{friedman2026cogsec2}
 Daniel~Ari Friedman.
-\newblock Computational benchmarks for cognitive integrity: Detection, trust,
-  and consensus.
-\newblock \emph{Cognitive Security Series}, 2, 2026{\natexlab{b}}.
+\newblock Cognitive integrity framework: Computational validation.
+\newblock \emph{Cognitive Security for Multiagent Operators}, 2,
+  2026{\natexlab{b}}.
 \newblock \doi{10.5281/zenodo.18364128}.
-\newblock Part 2: Computation --- benchmark evaluation of CIF mechanisms across
-  950 attack scenarios, achieving 99.5\% detection rate.
+\newblock Part 2: Implementation and Empirical Analysis --- computational
+  validation of CIF mechanisms across a 950-attack corpus, multi-tier
+  evaluation (pipeline / LLM / colony), ablation studies, Bayesian uncertainty
+  quantification, and parametric simulation across four production multiagent
+  architectures (Claude Code, AutoGPT, CrewAI, LangGraph) with 94--100\%
+  detection at the design-level ceiling.
 
 \bibitem[Friedman(2026{\natexlab{c}})]{friedman2026cogsec3}
 Daniel~Ari Friedman.
-\newblock Eusocial intelligence: Biological foundations of cognitive security.
-\newblock \emph{Cognitive Security Series}, 3, 2026{\natexlab{c}}.
+\newblock Cognitive integrity framework: A qualitative review.
+\newblock \emph{Cognitive Security for Multiagent Operators}, 3,
+  2026{\natexlab{c}}.
 \newblock \doi{10.5281/zenodo.18364130}.
-\newblock Part 3: Practice --- biological analogs for CIF mechanisms from
-  eusocial insect colonies.
+\newblock Part 3: A Qualitative Review for Practitioners ---
+  accessible-language synthesis of Parts 1 and 2, deployment guides,
+  subagent-hardening patterns, incident-response playbooks, cost--benefit
+  analysis, monitoring guidance, common pitfalls, case studies, and operator
+  risk frameworks. No formal prerequisites assumed.
 
 \bibitem[Goodfellow et~al.(2015)Goodfellow, Shlens, and
   Szegedy]{goodfellow2015explaining}

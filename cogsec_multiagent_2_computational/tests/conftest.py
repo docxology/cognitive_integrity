@@ -18,6 +18,38 @@ if ROOT not in sys.path:
 import pytest
 from pathlib import Path
 
+
+# ---------------------------------------------------------------------------
+# Auto-skip requires_ollama when Ollama is unreachable
+# ---------------------------------------------------------------------------
+
+def _ollama_available() -> bool:
+    """Probe Ollama server once and cache result."""
+    try:
+        import requests
+        resp = requests.get("http://localhost:11434/api/tags", timeout=2)
+        return resp.status_code == 200
+    except Exception:
+        return False
+
+
+_OLLAMA_UP: bool | None = None
+
+
+def pytest_collection_modifyitems(config, items):
+    """Auto-skip tests marked `requires_ollama` when Ollama is not running."""
+    global _OLLAMA_UP  # noqa: PLW0603
+    if _OLLAMA_UP is None:
+        _OLLAMA_UP = _ollama_available()
+
+    if _OLLAMA_UP:
+        return  # Ollama is up — run all tests
+
+    skip_marker = pytest.mark.skip(reason="Ollama not running at localhost:11434")
+    for item in items:
+        if "requires_ollama" in item.keywords:
+            item.add_marker(skip_marker)
+
 # Try to import DataGenerator, preventing import errors if src is not yet importable or during collection
 try:
     from src.data.generate import DataGenerator
@@ -42,8 +74,17 @@ def ensure_test_data():
     required_files = ["full_evaluation_results.json", "ablation_results.json"]
     missing = not output_dir.exists() or not all((output_dir / f).exists() for f in required_files)
     
+    # If a real-data sentinel exists, the pipeline has already produced results.
+    # Do NOT overwrite with DataGenerator synthetic data — that would corrupt
+    # published figures with fabricated values.
+    sentinel = output_dir / ".real_data_marker"
+    if sentinel.exists():
+        return  # Real pipeline/simulation data present; skip synthetic generation.
+
     if missing:
         print("\n[conftest] Generating missing test data in output/data/...")
+        print("[conftest] NOTE: This is synthetic data for schema/test validation.")
+        print("[conftest]       Run scripts/run_full_evaluation.py to produce real data.")
         output_dir.mkdir(parents=True, exist_ok=True)
         # Use str(output_dir) to ensure compatibility if expecting string
         generator = DataGenerator(output_dir=str(output_dir))

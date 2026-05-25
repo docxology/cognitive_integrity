@@ -4,7 +4,19 @@
 
 ## Synthesis of Findings
 
-Our simulation-based evaluation across four multiagent architecture models validates the core theoretical claims of the Cognitive Integrity Framework established in Part 1. The 94\% overall detection rate achieved by the full CIF deployment represents a substantial improvement over any individual defense mechanism, confirming that the multiplicative composition theorems translate from formal proofs to practical protection. More importantly, the consistency of this result across architecturally diverse systems---from hierarchical orchestrator patterns to graph-based state machines---suggests that CIF's formal abstractions capture genuine structural properties of multiagent security rather than artifacts of specific implementation choices. We now examine these findings in detail, beginning with the mechanisms underlying layered defense success.
+**Empirical Results at a Glance:**
+
+| Evaluation Mode | Key Metric | Value | Section |
+| --- | --- | --- | --- |
+| Multi-seed pipeline ($N=30$, Claude Code) | Mean detection rate | 44.8\% [CI: 43.4\%, 46.2\%] | §\ref{sec:multi-seed} |
+| Real ablation (100-attack corpus) | Full pipeline TPR | 12.4\%; Detection module $=$ 42\% of detection | §\ref{sec:extended-ablation} |
+| LLM multiagent ($N=10$, Gemma 3 4B) | Detection across 2 architectures | 80--100\% | §\ref{sec:llm-validation-results} |
+| Colony benchmarks (20--100 agents) | Structured / emergent scenarios | 81--100\% / 56.1\% | §\ref{sec:colony-results} |
+| Parametric simulation ($N=3{,}800$) | Design-level ceiling | 94--100\% | §\ref{sec:parametric-analysis} |
+
+The wide variation across evaluation modes (12--100\%) reflects the distinction between CIF's design-level coverage properties (parametric ceiling) and current adapter implementation maturity (pipeline/LLM results). The structural guarantees are consistent across modes.
+
+Our multi-tier evaluation validates the core theoretical claims of the Cognitive Integrity Framework established in Part 1, while honestly characterizing the gap between design-level properties and current implementation maturity. The full CIF defense pipeline achieves a mean detection rate of 44.7\% [95\% CI: 43.1\%, 46.3\%] across 30 random seeds on the Claude Code architecture, with ablation studies confirming a full-pipeline TPR of $\sim$12\% on the 100-attack evaluation corpus. Preliminary LLM-backed validation ($N=10$, Gemma 3 4B) yields 80--100\% detection across two architecture topologies, and colony benchmarks demonstrate 81--100\% detection on structured adversarial scenarios at 20--100 agent scale. The parametric simulation (\cref{sec:parametric-analysis}) establishes a design-level ceiling of 94--100\%, confirming that CIF's layered architecture has substantially higher coverage potential than the current adapters realize. More importantly, the consistency of the structural guarantees across evaluation modes---trust decay preventing amplification (100\% sybil detection in colony benchmarks), layered composition providing meaningful improvement over individual mechanisms (top 3 components account for 59\% of detection)---suggests that CIF's formal abstractions capture genuine structural properties of multiagent security. We now examine these findings in detail.
 
 ### Why Layered Defense Succeeds
 
@@ -35,13 +47,13 @@ The architecture-specific results reveal that vulnerability patterns align close
 
 Peer-to-peer architectures present the opposite profile. Without a central authority, lateral movement between agents is the primary threat vector. Trust amplification through delegation chains enables an attacker who compromises a single agent to gradually extend influence across the network. The trust calculus with $\delta^d$ decay directly addresses this: the exponential decay bound ensures that delegated trust diminishes with chain length, preventing unbounded amplification. Our results confirm that peer-to-peer topologies show the largest relative improvement (from 0\% baseline to 94\% with full CIF), consistent with the theoretical prediction that these architectures benefit most from formal trust bounds.
 
-Role-based systems introduce impersonation as the primary risk. When agents assume specialized roles (researcher, writer, reviewer), an attacker who can assume a trusted role gains the permissions associated with that role. In our evaluation, attestation-based verification at role transitions detected 94\% of impersonation attempts (\cref{tab:arch-ci}). Unexpected role transitions served as reliable early indicators of compromise.
+Role-based systems introduce impersonation as the primary risk. When agents assume specialized roles (researcher, writer, reviewer), an attacker who can assume a trusted role gains the permissions associated with that role. In our evaluation, attestation-based verification at role transitions detected 94\% of impersonation attempts (\cref{tab:architecture-insights}). Unexpected role transitions served as reliable early indicators of compromise.
 
 ## Limitations and Threats to Validity
 
 ### Residual Attack-Type Vulnerabilities
 
-Despite strong overall performance, specific attack types remain challenging and merit detailed examination.
+Despite differentiated performance across evaluation modes, specific attack types remain challenging and merit detailed examination.
 
 Semantic equivalent attacks pose the most significant residual risk. When an adversary rephrases a known injection to preserve its semantic intent while altering surface-level features, pattern-matching defenses fail to recognize the attack. Our evaluation shows that the CIF firewall's TF-IDF and embedding-based classifiers achieve 89\% detection on direct injections but only 72\% on semantically equivalent reformulations. This gap is not unique to CIF; it reflects a fundamental limitation of feature-based detection that also affects commercial tools such as Lakera Guard and LLM Guard. Incorporating large language model-based semantic analysis into the firewall classification pipeline represents the most promising mitigation, though it introduces additional latency and cost trade-offs.
 
@@ -71,7 +83,7 @@ Our evaluation, while comprehensive within its scope, faces four categories of g
 
 **Architecture Sampling.** The four architectures in our evaluation (hierarchical orchestrator, autonomous mesh, role-based teams, and state machine) represent dominant deployment patterns but do not exhaust the space of possible multiagent coordination topologies. Novel architectural paradigms---such as mixture-of-experts agents, debate-based systems, SOP-driven pipelines, recursive self-improvement loops, or dynamically reconfiguring topologies---may present vulnerability patterns not captured by our selected architectures. The composition algebra (Part 1) provides a principled basis for analyzing new architectures, but empirical validation on each novel topology is necessary before claiming coverage.
 
-The defense evolution strategy outlined in our adaptive defenses discussion and the practical **Risk Assessment Framework** in Part 3 provide concrete strategies for managing these residual generalization risks through ongoing corpus expansion, periodic defense retraining, and architecture-specific validation.
+The defense evolution strategy outlined in our adaptive defenses discussion and the practical **Risk Assessment Framework** in Part 3 provide concrete strategies for managing these residual generalization risks through ongoing corpus expansion, periodic defense retraining, and architecture-specific validation. Part 4 complements this with domain-calibrated threat profiles --- showing how attack distributions differ systematically across operational sectors (e.g., millisecond OODA cycles in drone swarms vs. year-scale cycles in diplomatic agents) and how CIF's temporal parameters must be recalibrated accordingly.
 
 ### Simulation vs. Live Deployment Caveats
 
@@ -81,9 +93,9 @@ Additionally, the R$^2$ values for our scaling regressions (0.994 for detection 
 
 ### Observed Cost-Benefit Profile
 
-The ablation data (\cref{tab:component-removal}) reveals a clear incremental cost-benefit curve. The firewall alone achieves 74\% detection; adding tripwires raises this to 85\%; the full defense stack achieves 94\% at 20--25\% latency overhead. The marginal detection gain per component (\cref{fig:ablation-study}) follows a diminishing-returns pattern: the firewall contributes $\Delta$TPR = +0.13, tripwires +0.09, provenance +0.07, with subsequent components contributing $\leq$0.06 each.
+The ablation data (\cref{tab:component-removal}) reveals a clear incremental cost-benefit curve for the current adapter implementations. The Detection module alone contributes $\Delta\text{TPR} \approx -0.052$ (about 42\% of full-pipeline TPR on the ablation corpus); Tripwires and Invariants are the next-largest removal effects. The top three harmful removals (Detection, Tripwires, Invariants) together account for about 82\% of the summed negative $\Delta\text{TPR}$ magnitude in this run. The Tripwire + Detection pair shows the strongest synergy ($\approx +0.025$, \cref{tab:real-synergy}), combining canary-belief monitoring with text-feature analysis.
 
-The Minimal-C configuration (Firewall + Tripwires + Drift Detection) achieves 90\% detection at 12\% latency overhead (\cref{tab:minimal-configs}), representing the highest detection-to-overhead ratio observed. Without trust calculus, lateral movement attacks in peer-to-peer topologies succeed at rates exceeding 60\% even when other defenses are active. The practical deployment implications of these findings are explored in Part 3.
+The gap between the full pipeline TPR ($\sim$12\% on the 100-attack ablation corpus, $\sim$45\% mean across 30 seeds) and the parametric ceiling (94--100\%; \cref{sec:parametric-analysis}) quantifies the adapter implementation gap. The lower-ranked components currently show modest marginal contribution ($\Delta\text{TPR}$ between $-0.005$ and $-0.009$) on the evaluation corpus, suggesting that the attack distribution does not sufficiently exercise these mechanisms---or that their current adapter implementations require further tuning. The practical deployment implications of these findings are explored in Part 3.
 
 ### Threats to Validity
 
@@ -94,6 +106,8 @@ External validity is bounded by our selection of four architectures. While these
 Construct validity concerns center on the detection rate metric itself. A binary detected/undetected classification does not capture partial detection (e.g., an attack that is flagged but not blocked) or the severity of successful attacks. Future work should incorporate severity-weighted metrics and measure time-to-detection alongside binary classification. Statistical conclusion validity is supported by large sample sizes, significance testing with Bonferroni correction for multiple comparisons, and large effect sizes (Cohen's $d > 0.8$), but the controlled simulation environment produces lower variance than production measurements would exhibit.
 
 Researcher degrees of freedom present a further concern: the framework, attack corpus, evaluation methodology, and analysis were developed by a single research group. While we mitigate this through deterministic reproducibility (fixed seed, public code), pre-registered analysis protocols (all hypotheses stated before evaluation), and independent ground-truth labeling (Cohen's $\kappa = 0.84$ inter-rater agreement), independent replication by external teams is essential for establishing the robustness of these findings. We encourage the community to reproduce our results using the provided scripts and to evaluate CIF against independently developed attack corpora.
+
+*Bayesian Reanalysis.* The primary statistical claims in this paper (detection rates, confidence intervals) were originally computed using frequentist methods (Wilson intervals, two-proportion $z$-tests). A full Bayesian reanalysis using Beta-Binomial posteriors (\cref{sec:bayesian-uncertainty}) confirms all directional findings but reveals important underpowering: the LLM validation ($N = 5$--$10$ per architecture) provides only $\pm 13$ to $\pm 18$ percentage points of precision at the observed 80\% detection rate. We report Bayes factors for the key claims---most consequentially, the empirical-parametric gap on direct injection yields $\mathrm{BF}_{10} \gg 10^{6}$, decisive evidence that the gap is structural rather than statistical. Future replications should target $N \geq 246$ per architecture for adequately powered LLM validation.
 
 ## Relationship to Prior Work
 
@@ -106,6 +120,20 @@ Second, our trust calculus with $\delta^d$ decay is, to our knowledge, the first
 Third, CIF's adaptation of Byzantine consensus to semantic content (beliefs and trust assertions rather than transaction ordering) extends classical BFT \cite{lamport1982byzantine, castro1999practical} into a domain where ``Byzantine'' behavior manifests as belief poisoning and coordinated deception. Our 90\% detection rate on coordination attacks demonstrates practical viability of this adaptation.
 
 ## Open Research Directions
+
+### Game-Theoretic Arms Race Dynamics {#sec:game-theory-analysis}
+
+The CIF evaluation admits a two-player zero-sum formulation (\cref{sec:game-theory}) in which the attacker selects from the six attack categories and the defender selects from six defense configurations. Solving this game numerically with the empirical payoff matrix (\cref{tab:payoff-matrix}) identifies a unique pure-strategy Nash equilibrium at $(d^* = \text{Full CIF}, a^* = \text{Emergent Misalignment})$ with game value $v^* \approx 0.56$. Full CIF weakly dominates every proper subset configuration column-wise, so no mixed defense strategy improves on deploying the complete stack---a finding that simplifies operational planning considerably: practitioners do not need to stochastically alternate between defense configurations at current adapter maturity.
+
+The static Nash analysis, however, assumes a fixed attack distribution and fixed defender capability. Running the arms-race simulation (\texttt{arms\_race\_simulation()} in \texttt{src/analysis/game\_theory.py}) under adversarial adaptation reveals that without defender retraining the effective detection rate degrades at approximately 2\% per attacker adaptation cycle. Periodic defender retraining every five cycles with 3 pp recovery per event stabilizes the long-run equilibrium at $\sim 0.52$---a 4 pp degradation from the static Nash value but a stable operating regime. Without any defender maintenance, the arms race asymptotes toward zero detection over approximately 30 cycles, consistent with the degradation bounds derived in Part 1, Section 4.
+
+The practical implication crosses two axes. First, configuration: Full CIF is the dominant pure strategy, so deployment planning reduces to deciding \emph{when} (not \emph{what}) to update. Second, cadence: cognitive security is a maintenance practice, not a one-shot deployment. Organizations that treat CIF as a deployed-and-done capability will observe steadily degrading detection rates; organizations that schedule retraining in step with the attacker adaptation cycle will operate near the Nash equilibrium indefinitely. The operational recommendations in Part 3 map this finding to concrete retraining cadences.
+
+### Free Energy Interpretation of Residual Emergent Misalignment {#sec:fep-discussion}
+
+The 56.1\% detection rate for emergent misalignment is both the weakest CIF result and the most interesting from a theoretical standpoint. Under the Free Energy Principle framing (\cref{sec:free-energy-principle}), an emergent misalignment attack is a \emph{distributed, low-precision} adversarial event: no single agent's free energy spikes dramatically in any single interaction, but the collective belief state drifts as the ensemble of agents exchanges low-magnitude, individually-subthreshold updates. The current \texttt{DriftDetector} uses a single per-agent KL threshold (\cref{thm:attack-fep} instantiated at the individual level), which is well-suited for concentrated attacks that raise one agent's free energy above $\kappa_{\mathrm{FEP}}$ but systematically misses the distributed low-amplitude signal of collective drift.
+
+A high-dimensional FEP formulation decomposes the collective free energy $F_{\text{coll}} = \sum_j F[Q_j]$ into per-belief-dimension components and monitors the structured change across the decomposition rather than the per-agent aggregate. A second-moment monitor---tracking the covariance of $\Delta F$ across agents rather than its per-agent mean---is particularly well-matched to emergent misalignment: coordinated subthreshold drift produces a characteristic covariance signature even when no individual $\Delta F$ exceeds its detection threshold. This observation points toward the clearest open research direction to emerge from our evaluation: collective free-energy monitoring across the agent network, formalized via the active-inference precision-weighting machinery and implemented as a cross-agent covariance detector in \texttt{src/core/detection.py}.
 
 ### Adversarial Retraining and Honeypot Agents
 

@@ -93,15 +93,22 @@
 \newpage
 \end{frame}
 
-\begin{frame}[fragile]{Open Problems and Future Directions}
-\protect\phantomsection\label{sec:future}
+\section{Open Problems and Future Directions}\label{sec:future}
+
+\begin{frame}[allowframebreaks]{Open Problems and Future Directions}
 The CIF series has established validated trust metrics (Trust Calculus)
 and filtering mechanisms (Firewalls), but the field remains nascent.
 Several foundational problems remain open, each representing both a
 research opportunity and an engineering requirement for production-grade
-cognitive security.
+cognitive security. The directions below focus on deployment-facing
+gaps; for domain-facing open problems (controlled experimentation per
+sector, cross-domain attacks, per-domain CIF parameters, automated
+domain analysis, higher-class adversaries in
+\(\Omega_3\)--\(\Omega_5\)), see Part 4's Future Work.
+\end{frame}
 
-\begin{block}{1. Trust Visualization and Operator Interfaces}
+\begin{frame}[allowframebreaks]{1. Trust Visualization and Operator
+Interfaces}
 \protect\phantomsection\label{trust-visualization-and-operator-interfaces}
 \textbf{The Problem}: Current CIF alerts surface as structured log
 entries (e.g., ``Identity Invariant Violation''). For operators managing
@@ -116,9 +123,10 @@ decision-making.
 \textbf{Research Direction}: Dashboard architectures that connect to the
 CIF Python SDK, enabling real-time trust graph visualization and drift
 monitoring for production multiagent deployments.
-\end{block}
+\end{frame}
 
-\begin{block}{2. Standardized Agent Identity Protocols}
+\begin{frame}[fragile,allowframebreaks]{2. Standardized Agent Identity
+Protocols}
 \protect\phantomsection\label{standardized-agent-identity-protocols}
 \textbf{The Problem}: Each agent framework (LangChain, CrewAI, AutoGPT)
 handles agent identity differently, making cross-framework trust
@@ -131,9 +139,9 @@ multi-framework deployments.
 
 \textbf{Research Direction}: RFC-style specification for
 \texttt{x-agent-identity} headers with cryptographic attestation.
-\end{block}
+\end{frame}
 
-\begin{block}{3. Stigmergic Security Protocols}
+\begin{frame}[allowframebreaks]{3. Stigmergic Security Protocols}
 \protect\phantomsection\label{stigmergic-security-protocols}
 \textbf{The Problem}: Byzantine consensus mechanisms, while provably
 correct, incur \(O(n^2)\) communication overhead. This limits their
@@ -147,9 +155,9 @@ voting.
 \textbf{Research Direction}: Stigmergic security protocols where agents
 leave ``trust trails'' in shared environments, enabling scalable
 consensus without direct agent-to-agent messaging.
-\end{block}
+\end{frame}
 
-\begin{block}{4. Benchmark Expansion}
+\begin{frame}[allowframebreaks]{4. Benchmark Expansion}
 \protect\phantomsection\label{benchmark-expansion}
 \textbf{The Problem}: The current corpus contains 950 attack samples. As
 agent capabilities expand into multimodal processing and autonomous tool
@@ -164,29 +172,117 @@ corpus at the
 \href{https://github.com/docxology/cognitive_integrity}{cognitive\_integrity
 repository}, with particular emphasis on attack categories not yet
 represented.
-\end{block}
 \end{frame}
 
-\begin{frame}[fragile]
-\begin{block}{Contributing}
+\begin{frame}[allowframebreaks]{5. Collective Free Energy Monitoring}
+\protect\phantomsection\label{collective-free-energy-monitoring}
+The most pressing open problem in cognitive security is detecting
+\textbf{emergent misalignment}---the collective drift of agent beliefs
+without any single agent behaving explicitly maliciously. The FEP
+connection developed in Part 2 suggests a natural generalization:
+monitor the \textbf{colony-level variational free energy}
+\(F_\text{colony} = \sum_i F_i + F_\text{coordination}\), where the
+coordination term penalizes inconsistency between agents' generative
+models.
+
+Research directions include: (a) defining tractable approximations to
+\(F_\text{colony}\) that can be computed from inter-agent message logs;
+(b) identifying the FEP signature of emergent misalignment as distinct
+from legitimate belief updating; (c) designing sampling strategies that
+detect distributed drift without requiring \(O(n^2)\) pairwise
+comparisons. A system that monitors collective free energy would push
+the emergent misalignment detection rate from the current 56.1\% toward
+the 90\%+ achieved against explicit adversaries.
+\end{frame}
+
+\begin{frame}[allowframebreaks]{6. Information-Geometric Adversarial
+Robustness}
+\protect\phantomsection\label{information-geometric-adversarial-robustness}
+The Fisher-Rao geodesic distance provides a natural metric for
+\textbf{adversarial robustness certification}: a defense is
+\(\rho\)-robust if no belief manipulation within geodesic radius
+\(\rho\) of the benign manifold can cause misclassification. This is
+analogous to \(\ell_p\)-norm robustness in image classification but
+geometrically appropriate for probability distributions.
+
+Research directions include: (a) computing tight geodesic robustness
+certificates for each CIF defense module; (b) designing adversarial
+training procedures that maximize geodesic robustness (analogous to PGD
+training but using natural gradient steps); (c) establishing whether
+geodesic certification is composable---whether a \(\rho\)-robust
+Firewall and \(\rho\)-robust Sandbox yield a \(\rho'\)-robust
+composition with characterizable \(\rho'\). This direction connects CIF
+to the certified robustness literature in adversarial machine learning.
+\end{frame}
+
+\begin{frame}[allowframebreaks]{7. Game-Theoretic Adaptive Defense}
+\protect\phantomsection\label{game-theoretic-adaptive-defense}
+Part 2's game-theoretic analysis establishes the Nash equilibrium for
+the current CIF payoff matrix, but the payoff matrix itself changes as
+both attackers and defenders improve. An \textbf{adaptive defense} that
+continuously re-estimates the Nash equilibrium and adjusts defense
+configurations accordingly would maintain optimality as the threat
+landscape evolves.
+
+Research directions include: (a) online learning algorithms for updating
+the Nash payoff matrix from observed attack distributions; (b)
+regret-minimization guarantees for adaptive defense strategies under
+adversarial non-stationarity; (c) decentralized Nash re-estimation in
+colony deployments where each agent observes only its local attack
+distribution. The arms race simulation (Part 2) suggests that adaptive
+defenders can maintain positive value even as attackers improve---the
+key is re-estimation latency.
+\end{frame}
+
+\begin{frame}[allowframebreaks]{8. Categorical Security Abstractions}
+\protect\phantomsection\label{categorical-security-abstractions}
+The DefenseCategory (CT.1--CT.3) formalizes CIF's composition rules, but
+a richer categorical vocabulary could enable \textbf{composable security
+APIs} for multiagent frameworks. If defense modules are morphisms in a
+well-defined category, then new defense pipelines can be constructed
+from verified components with composition-level security
+guarantees---analogous to how type systems provide
+correctness-by-construction.
+
+Research directions include: (a) defining a monoidal category of defense
+mechanisms where the tensor product represents parallel composition and
+the monoid identity represents the null defense; (b) identifying
+functors from CIF's DefenseCategory to other categorical representations
+of security (information-flow, access control, temporal logic); (c)
+building a library of verified categorical defense components from which
+operators can compose custom pipelines with formal guarantees. This
+direction connects CIF to the emerging field of categorical
+cybersecurity and compositional security verification.
+\end{frame}
+
+\begin{frame}[fragile,allowframebreaks]{Contributing}
 \protect\phantomsection\label{contributing}
-The Cognitive Integrity Framework is an open-source project.
-Contributions are welcome, particularly:
+The CIF codebases are open for extension. Useful starting points:
 
 \begin{itemize}
 \tightlist
 \item
-  \textbf{Code}:
-  \href{https://github.com/docxology/cognitive_integrity}{github.com/docxology/cognitive\_integrity}
+  \textbf{Code and discussion}:
+  \href{https://github.com/docxology/cognitive_integrity}{docxology/cognitive\_integrity
+  on GitHub} (repository \texttt{discussions} for design questions).
 \item
-  \textbf{Discussion}: The \texttt{discussions} tab on GitHub serves as
-  the primary forum.
+  \textbf{Adapters}: The Part\textasciitilde2 maturity scale has five
+  levels; moving adapters from Level 3 to Level\textasciitilde4--5
+  (Adaptive/Verified) is a high-leverage way to close the
+  empirical--parametric gap. Ports to additional frameworks (e.g.,
+  Semantic Kernel, Microsoft AutoGen) are welcome.
 \item
-  \textbf{Adapters}: Contributions that extend CIF to additional agent
-  frameworks (e.g., Semantic Kernel, Microsoft AutoGen) are especially
-  valued.
+  \textbf{Corpus}: The 950-attack set covers four categories; new
+  instances for emergent misalignment and orchestrator compromise,
+  following the Part\textasciitilde2 stratification, strengthen
+  evaluation.
+\item
+  \textbf{Theory / verification}: FEP- and information-geometry--based
+  monitoring (Direction 5--6) and extensions of the NuSMV/TLA+ specs
+  (Part\textasciitilde2, Supplementary S04) to consensus and provenance
+  are open. Formal proofs and measured evaluations belong in the same
+  repository and review process as code.
 \end{itemize}
-\end{block}
 \end{frame}
 
 \end{document}

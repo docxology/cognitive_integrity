@@ -91,6 +91,7 @@
       color: #606060;
     }
     code {
+      white-space: pre-wrap;
       font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
       font-size: 85%;
       margin: 0;
@@ -154,7 +155,6 @@
     #TOC a:not(:hover) {
       text-decoration: none;
     }
-    code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
     div.columns{display: flex; gap: min(4vw, 1.5em);}
     div.column{flex: auto; overflow-x: auto;}
@@ -178,23 +178,48 @@
 Teleological Attack Surface</h1>
 <h2 id="series-context">Series Context</h2>
 <p>This paper is Part 4 of the <em>Cognitive Security for Multiagent
-Operators</em> series. Paper 1 established the Cognitive Integrity
-Framework (CIF): a formal model of agent cognitive states <span
+Operators</em> series, which progresses from theory to computation to
+practice to applied deployment:</p>
+<ul>
+<li><strong>Paper 1: Formal Foundations</strong> (DOI:
+10.5281/zenodo.18364119) establishes the Cognitive Integrity Framework
+(CIF): a formal model of agent cognitive states <span
 class="math inline">\(\sigma_i = \langle \mathcal{B}_i, \mathcal{G}_i,
 \mathcal{I}_i, \mathcal{H}_i \rangle\)</span>, a trust calculus with
-delegation decay, a five-tier adversary taxonomy (<span
+delegation decay (<span class="math inline">\(\delta^d\)</span>), the
+Defense Composition Algebra, the five-tier adversary taxonomy (<span
 class="math inline">\(\Omega_1\)</span>–<span
-class="math inline">\(\Omega_5\)</span>), and five canonical defense
-mechanisms with composition algebra. Paper 2 validated these mechanisms
-computationally, demonstrating 99.5% detection across 950 attack
-scenarios with the recommended defense stack. Paper 3 grounded the
-framework in biological analogy, identifying eusocial insect colonies as
-evolutionary existence proofs for CIF-like defense architectures.</p>
-<p>This paper addresses the remaining question: <strong>does CIF work in
-practice?</strong> We apply the framework across ten critical
-domains—from millisecond drone swarm decisions to year-scale diplomatic
-deliberations—demonstrating both its universality and the novel defense
-patterns that emerge from domain-specific application.</p>
+class="math inline">\(\Omega_5\)</span>), information-theoretic
+stealth–impact bounds, and model-checked safety invariants. A
+supplementary chapter (S02) additionally develops the eusocial-colony
+analogy as an evolutionary existence proof for CIF-like defense
+architectures.</li>
+<li><strong>Paper 2: Computational Validation</strong> (DOI:
+10.5281/zenodo.18364128) validated these mechanisms computationally
+across a 950-attack corpus and four production multiagent architectures,
+reporting ablation studies, Bayesian uncertainty quantification, and
+colony-scale benchmarks; the recommended defense stack achieves 94–100%
+detection in parametric simulation and 80–100% under LLM-backed
+evaluation.</li>
+<li><strong>Paper 3: A Qualitative Review for Practitioners</strong>
+(DOI: 10.5281/zenodo.18364130) translates the theoretical and empirical
+results into accessible engineering guidance: deployment guides,
+subagent-hardening patterns, incident-response playbooks, monitoring
+strategies, cost–benefit analysis, common pitfalls, case studies, and
+operator risk frameworks. It assumes no formal prerequisites.</li>
+<li><strong>Paper 4: Applications of the Cognitive Integrity
+Framework</strong> (this paper) addresses the remaining question:
+<strong>does CIF work in practice across diverse operational
+domains?</strong> We apply the framework across ten critical
+sectors—from millisecond drone swarm decisions to year-scale diplomatic
+deliberations—through the integrated CIF-AD-OODA analytical model,
+demonstrating universality and uncovering novel defense patterns visible
+only at the cross-domain scale.</li>
+</ul>
+<p>Together, Papers 1–4 provide a complete stack: Paper 1 defines
+<em>what</em> CIF is; Paper 2 shows that it <em>works</em>; Paper 3
+shows <em>how to deploy it</em>; Paper 4 shows <em>where</em> it applies
+and <em>how</em> domain specifics extend it.</p>
 <h2 id="the-ontological-crisis-in-ai">The Ontological Crisis in AI</h2>
 <p>The vulnerability of modern Artificial Intelligence has shifted from
 the <em>epistemic</em> (what the agent knows) to the
@@ -330,5 +355,11 @@ AI agent security incidents (2024–2025), confirming that all incidents
 map to the universal attack pattern taxonomy and would have been
 detectable by the appropriate CIF mechanism.</li>
 </ul>
+<h2 id="sec:reading-companion">Reading Companion: Where to Find Specific
+Topics</h2>
+<p>This paper is designed to stand alone as the applied, domain-facing
+reference of the series. Where a formal construct, empirical
+measurement, or engineering technique is developed more fully elsewhere,
+the table below points the way.</p>
 </body>
 </html>

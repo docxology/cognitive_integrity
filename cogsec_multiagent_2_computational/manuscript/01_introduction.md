@@ -8,7 +8,7 @@ The rapid proliferation of multiagent AI systems has created novel attack surfac
 
 Industry adoption of multiagent architectures has accelerated dramatically. By late 2025, McKinsey found that 23\% of organizations were scaling agentic AI in some part of their enterprise, with an additional 39\% actively experimenting \cite{mckinsey2025agentic}. Gartner projects that 40\% of enterprise applications will incorporate task-specific AI agents by the end of 2026, up from under 5\% in 2025, with 70\% of enterprises deploying agentic AI in IT infrastructure operations by 2029 \cite{gartner2025agentic}. Enterprise deployments now routinely involve orchestrator agents delegating to specialized workers, peer-to-peer agent networks collaborating on complex tasks, and role-based teams where agents assume complementary personas. The OWASP Top 10 for LLM Applications \cite{owasp2025llm} and the newer OWASP Top 10 for Agentic Applications \cite{owasp2025agentic}---released in December 2025 with 10 agentic-specific risks (ASI01--ASI10) including Agent Goal Hijack and Unexpected Code Execution---identify prompt injection and excessive agency among the most critical risks. Yet current mitigation guidance addresses single-agent scenarios almost exclusively. As organizations move from experimental pilots to production deployments, the gap between available security tooling and the threat landscape continues to widen.
 
-The Cognitive Integrity Framework (CIF) introduced in Part 1 of this series addresses this gap by establishing formal foundations for securing multiagent AI operators against cognitive manipulation attacks. Part 1 defines a trust calculus with provably bounded delegation, defense composition algebras with multiplicative detection guarantees, and integrity properties that can be verified at runtime. This companion paper provides comprehensive simulation-based empirical validation: the CIF defense modules are implemented in production-ready Python (1,594 tests, 100\% pass rate) and evaluated through parametric architecture-aware simulation, demonstrating that CIF's theoretical constructs yield practical detection architectures across diverse multiagent patterns.
+The Cognitive Integrity Framework (CIF) introduced in Part 1 of this series addresses this gap by establishing formal foundations for securing multiagent AI operators against cognitive manipulation attacks. Part 1 defines a trust calculus with bounded delegation, defense composition algebras with multiplicative detection guarantees, and integrity properties that can be verified at runtime. This companion paper provides simulation-based empirical validation: the CIF defense modules are implemented as tested Python modules and evaluated through parametric architecture-aware simulation, demonstrating that CIF's theoretical constructs yield practical detection architectures across diverse multiagent patterns.
 
 ### Cognitive Manipulation Attacks: Definition
 
@@ -63,7 +63,7 @@ Our analysis assumes a multiagent deliberation system where $n$ agents collabora
 \Cref{fig:cif-comprehensive} illustrates the complete CIF architecture, showing how the eight core modules integrate to provide layered protection. This paper contributes:
 
 \begin{enumerate}
-\item **Complete Implementation**: Defense mechanisms (firewall, sandbox, trust calculus, tripwires, Byzantine consensus) implemented in production-ready Python
+\item **Complete Implementation**: All eight defense mechanisms---cognitive firewall, belief sandbox, cognitive tripwires, belief drift detector, anomaly scorer, trust calculus, Byzantine consensus, and provenance attestation---implemented as tested Python modules
 \item **Attack Corpus**: 950 attacks across four categories, enabling reproducible security evaluation
 \item **Cross-Architecture Validation**: Systematic evaluation across four production multiagent systems
 \item **Statistical Analysis**: Significance testing, effect sizes, confidence intervals, and ablation studies
@@ -78,7 +78,7 @@ This paper assumes familiarity with the formal framework developed in Part 1, pa
 - **Defense Composition Algebra** (Section 5 of Part 1): Series and parallel composition theorems
 - **Integrity Properties** (Section 7 of Part 1): Belief consistency, goal preservation, trust boundedness
 
-All notation follows the canonical reference in Part 1 Appendix (\cref{sec:notation-reference}). For practical deployment guidance including checklists and operational considerations, see Part 3.
+All notation follows the canonical reference in Part 1 Appendix (\cref{sec:notation-reference}). For practical deployment guidance including checklists, incident-response playbooks, monitoring, and operational considerations, see Part 3 (DOI: 10.5281/zenodo.18364130). For domain-specific application of these mechanisms across critical operational sectors (infrastructure, supply chain, cyber-security, biowarfare, information ecosystems, and more) through the integrated CIF-AD-OODA model and retrospective analysis of documented AI-agent incidents, see Part 4.
 
 ## Paper Organization
 
@@ -86,7 +86,7 @@ The remainder of this paper is structured as follows:
 
 **\Cref{sec:related-work}**: Related Work positions CIF relative to prompt injection defenses, Byzantine fault tolerance, trust systems, and multiagent safety research.
 
-**\Cref{sec:methodology}**: Methodology: Implementation Details describes the architectural realization of CIF and presents pseudocode for each of the six defense mechanisms.
+**\Cref{sec:methodology}**: Methodology: Implementation Details describes the architectural realization of CIF and presents pseudocode for the six primary defense algorithms (Supplement S7); the full eight-module pipeline (including anomaly scoring and provenance) appears in \cref{sec:pipeline-architecture}.
 
 **\Cref{sec:attack-corpus}**: Attack Corpus describes the 950-attack evaluation dataset with examples and generation methodology.
 
@@ -100,7 +100,7 @@ The remainder of this paper is structured as follows:
 
 ### Supplementary Materials
 
-Seven supplementary sections accompany this paper:
+Eight supplementary sections accompany this paper:
 
 - **S01: Notation Reference** --- Symbol definitions, conventions, and cross-references to Part 1 definitions (\cref{sec:notation-reference})
 - **S02: Detection Algorithms** --- Complete pseudocode for all detection mechanisms including cognitive firewall classification, sandbox promotion criteria, and tripwire monitoring (\cref{sec:detection-algorithms})
@@ -108,4 +108,27 @@ Seven supplementary sections accompany this paper:
 - **S04: Model Checking** --- SPIN and NuSMV verification specifications for formal property validation (\cref{sec:model-checking-tools})
 - **S05: Framework API** --- Python API reference documentation for CIF integration (\cref{sec:framework-api})
 - **S06: Deployment Guide** --- Production deployment recommendations, operational checklists, and configuration guidance (\cref{sec:deployment})
-- **S07: Algorithm Pseudocode** --- Complete pseudocode for all six core CIF defense algorithms with implementation cross-references (\cref{sec:pseudocode-supplement})
+- **S07: Algorithm Pseudocode** --- Complete pseudocode for the six primary CIF algorithms (Firewall, Sandbox, Trust, Tripwires, Consensus, Drift); anomaly scoring and provenance follow the interfaces in \cref{sec:pipeline-architecture} (\cref{sec:pseudocode-supplement})
+- **S08: Parametric Simulation Analysis** --- Design-level detection ceiling, sensitivity sweep across firewall thresholds and trust decay parameters, and recommended configurations (\cref{sec:parametric-analysis})
+
+## Reading Companion: Where to Find Specific Topics {#sec:reading-companion}
+
+This paper is designed to stand alone as the empirical-validation reference of the series. The table below points readers to the sibling paper and section where each related topic is developed most fully.
+
+**Table: Cross-paper navigation from Part 2 topics to sibling developments.** {#tab:part2-navigation}
+
+| If you want\ldots | \ldots consult\ldots |
+| --- | --- |
+| Trust Calculus definitions, $\delta^d$ decay theorems, no-amplification guarantee | Part 1 (DOI: 10.5281/zenodo.18364119), \S{4} (Trust Calculus) |
+| Defense Composition Algebra (series/parallel composition theorems) | Part 1, \S{5} |
+| Information-theoretic stealth--impact bounds | Part 1, \S{4.3}, Theorem "stealth--impact" |
+| Adversary taxonomy $\Omega_1$--$\Omega_5$ formal characterization | Part 1, \S{3} |
+| Model-checked safety invariants (specifications) | Part 1, \S{7} |
+| Eusocial-colony analogy (evolutionary existence proof for CIF-like architectures) | Part 1 S02 (Eusocial CogSec) |
+| Deployment guides, subagent hardening, incident response, monitoring, cost--benefit | Part 3 (DOI: 10.5281/zenodo.18364130), \S{5}--\S{6} |
+| Accessible-language explanations of these empirical results for non-specialists | Part 3, \S{3} (Evidence) |
+| Operator risk frameworks + common pitfalls | Part 3, \S{5c}, \S{6} |
+| Domain-specific application of these results in ten operational sectors | Part 4, \S{3.01}--\S{3.10} |
+| Three universal attack patterns (FR Polarity Inversion, Constraint Relaxation, Context Boundary Violation) across domains | Part 4, \S{4} |
+| Retrospective analysis of documented 2024--2025 AI-agent security incidents | Part 4 S02 |
+

@@ -91,6 +91,7 @@
       color: #606060;
     }
     code {
+      white-space: pre-wrap;
       font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
       font-size: 85%;
       margin: 0;
@@ -154,7 +155,6 @@
     #TOC a:not(:hover) {
       text-decoration: none;
     }
-    code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
     div.columns{display: flex; gap: min(4vw, 1.5em);}
     div.column{flex: auto; overflow-x: auto;}
@@ -193,25 +193,42 @@ isn’t just that an agent says something wrong, but that it
 <p>This is not a theoretical warning about future doom. It is an
 engineering problem with established solutions.</p>
 <p>The Cognitive Integrity Framework (CIF) was developed to secure these
-systems, and the first two papers in this series demonstrated its
-efficacy.</p>
+systems, and the companion papers in this series demonstrate its
+efficacy from formal, computational, and applied angles.</p>
 <ul>
-<li><strong>Part 1: Formal Foundations</strong> proved that trust can be
-mathematically bounded. We defined the “Trust Calculus” which guarantees
-that no matter how clever an adversary is, they cannot amplify their
-influence through delegation chains.</li>
-<li><strong>Part 2: Computational Validation</strong> implemented this
-theory in Python and tested it against a corpus of 950 attacks across
-four production architectures.</li>
+<li><strong>Part 1: Formal Foundations</strong> (DOI:
+10.5281/zenodo.18364119) proved that trust can be mathematically
+bounded. We defined the “Trust Calculus” which guarantees that no matter
+how clever an adversary is, they cannot amplify their influence through
+delegation chains. It also introduces the Defense Composition Algebra,
+the five-tier adversary taxonomy (<span
+class="math inline">\(\Omega_1\)</span>–<span
+class="math inline">\(\Omega_5\)</span>), and information-theoretic
+stealth-impact bounds.</li>
+<li><strong>Part 2: Computational Validation</strong> (DOI:
+10.5281/zenodo.18364128) implemented this theory in Python and tested it
+against a corpus of 950 attacks across four production architectures,
+reporting ablation studies, Bayesian uncertainty quantification, and
+colony-scale benchmarks at 20–100 agents.</li>
+<li><strong>Part 4: Applications of the Cognitive Integrity
+Framework</strong> extends the framework via the integrated CIF-AD-OODA
+analytical model and applies it across ten critical domains (rare-earth
+mining, nation-state alliances, cyber-security, drone warfare, supply
+chain, biowarfare, food security, trade wars, infrastructure,
+information ecosystems), identifying three universal attack patterns and
+three novel defense extensions.</li>
 </ul>
-<p>The result was <strong>1,594 passing tests and a 97% structural
-constraint satisfaction rate</strong> against direct injection attacks
-in fully defended configurations.</p>
+<p>The combined evidence: <strong>1,594 passing tests and 94% overall
+detection</strong> (95% CI: [0.92, 0.96]) across all attack categories
+and architectures (Part 2), with direct injection detection reaching
+96–98% in fully defended configurations; plus CIF coverage validated
+across all ten operational domains in Part 4 with retrospective analysis
+of six documented 2024–2025 AI agent incidents.</p>
 <h2 id="the-purpose-of-this-guide">The Purpose of This Guide</h2>
-<p>We wrote Part 1 for the theorists and Part 2 for the
-experimentalists. We wrote this paper—Part 3—to translate those findings
-into practice.</p>
-<p>Our goal is to describe how the defenses validated in the previous
+<p>We wrote Part 1 for the theorists, Part 2 for the experimentalists,
+and Part 4 for domain experts. We wrote this paper—Part 3—to translate
+those findings into deployable engineering practice.</p>
+<p>Our goal is to describe how the defenses validated in the companion
 papers can be architected in production systems. We focus on the
 practical application of the formal proofs:</p>
 <ul>
@@ -231,14 +248,119 @@ Part 1, providing the necessary vocabulary.</li>
 2, detailing which architectures performed best against specific
 threats.</li>
 <li><strong>Section 4</strong> analyzes the attack scenarios used in our
-testing corpus.</li>
+testing corpus. For domain-specific attack patterns (FR Polarity
+Inversion, Constraint Relaxation, Context Boundary Violation) and
+documented real-world AI-agent incidents, see <strong>Part
+4</strong>.</li>
 <li><strong>Section 5</strong> presents the specific configuration
-profiles that yielded the highest security margins in simulation.</li>
+profiles that yielded the highest security margins in simulation, with
+deployment guides, incident response playbooks, monitoring, and
+cost–benefit analysis.</li>
 <li><strong>Sections 6-7</strong> discuss the limitations discovered
-during testing and the open problems that remain.</li>
+during testing and the open problems that remain; domain-specific case
+studies and novel defense extensions (verification channel separation,
+active perturbation probing, physics-informed invariants) are treated in
+Part 4.</li>
 </ul>
 <p>This paper serves as a report on the current state of cognitive
 security engineering, grounded in the data and definitions of the CIF
-series.</p>
+series. Readers seeking derivations or proofs should consult Part 1;
+readers seeking empirical measurements should consult Part 2; readers
+evaluating CIF for a specific operational sector should consult Part
+4.</p>
+<h2 id="sec:reading-companion">Reading Companion: Where to Find Specific
+Topics</h2>
+<p>This paper is designed to stand alone as the practitioner’s reference
+of the series. Where a concept or technique is developed more fully
+elsewhere, the table below points the way.</p>
+<table>
+<colgroup>
+<col style="width: 57%" />
+<col style="width: 42%" />
+</colgroup>
+<thead>
+<tr>
+<th>If you want…</th>
+<th>…consult…</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Formal definitions, proofs, and theorems (Trust Calculus, Defense
+Composition Algebra, stealth–impact bound)</td>
+<td><strong>Part 1</strong> (DOI: 10.5281/zenodo.18364119), §§4–5,
+7</td>
+</tr>
+<tr>
+<td>Adversary taxonomy <span
+class="math inline">\(\Omega_1\)</span>–<span
+class="math inline">\(\Omega_5\)</span> formal characterization</td>
+<td><strong>Part 1</strong>, §3</td>
+</tr>
+<tr>
+<td>Model-checked safety invariants + NuSMV/TLA+ specifications</td>
+<td><strong>Part 1</strong> §7, <strong>Part 2</strong> S04</td>
+</tr>
+<tr>
+<td>Eusocial-colony analogy (biological existence proof for CIF-like
+architectures)</td>
+<td><strong>Part 1</strong> S02</td>
+</tr>
+<tr>
+<td>950-attack corpus generation, examples, ethics</td>
+<td><strong>Part 2</strong> (DOI: 10.5281/zenodo.18364128), §3 +
+S03</td>
+</tr>
+<tr>
+<td>Detailed detection rates per architecture (Claude Code, AutoGPT,
+CrewAI, LangGraph)</td>
+<td><strong>Part 2</strong> §5</td>
+</tr>
+<tr>
+<td>Ablation studies + Bayesian uncertainty</td>
+<td><strong>Part 2</strong> §5.6, §5e</td>
+</tr>
+<tr>
+<td>Parametric design-level ceiling (94–100%)</td>
+<td><strong>Part 2</strong> S08</td>
+</tr>
+<tr>
+<td>Game-theoretic adversarial analysis / Nash equilibrium</td>
+<td><strong>Part 2</strong> §6</td>
+</tr>
+<tr>
+<td>Category-theoretic formalization + free-energy connections</td>
+<td><strong>Part 2</strong> §1c, S10</td>
+</tr>
+<tr>
+<td>Framework API reference + pseudocode</td>
+<td><strong>Part 2</strong> S05, S07</td>
+</tr>
+<tr>
+<td>Application of CIF to specific operational sectors (10 domains
+analyzed)</td>
+<td><strong>Part 4</strong>, §3.01–§3.10</td>
+</tr>
+<tr>
+<td>Three universal attack patterns across domains (FR Polarity
+Inversion, Constraint Relaxation, Context Boundary Violation)</td>
+<td><strong>Part 4</strong> §4</td>
+</tr>
+<tr>
+<td>Three novel defense extensions (verification channel separation,
+active perturbation probing, physics-informed invariants)</td>
+<td><strong>Part 4</strong> §3.06, §3.08, §3.09</td>
+</tr>
+<tr>
+<td>Retrospective mapping of 2024–2025 AI-agent security incidents
+(Replit, Copilot RCE, Slack AI, $3.2M procurement fraud, etc.)</td>
+<td><strong>Part 4</strong> S02</td>
+</tr>
+<tr>
+<td>CIF-AD-OODA integration model for goal-hijacking</td>
+<td><strong>Part 4</strong> §2</td>
+</tr>
+</tbody>
+</table>
 </body>
 </html>

@@ -76,5 +76,5 @@ The consensus module is tested in `tests/test_consensus.py`, covering:
 Run tests:
 
 ```bash
-pytest tests/test_consensus.py -v
+uv run pytest tests/test_consensus.py -v
 ```

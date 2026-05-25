@@ -97,8 +97,11 @@
 
 \begin{document}
 
-\begin{frame}{Methodology: The CIF-AD-OODA Integration Model}
-\protect\phantomsection\label{sec:methodology}
+\section{Methodology: The CIF-AD-OODA Integration
+Model}\label{sec:methodology}
+
+\begin{frame}[allowframebreaks]{Methodology: The CIF-AD-OODA Integration
+Model}
 This section establishes the analytical framework used to evaluate
 cognitive integrity threats across the ten critical domains examined in
 this paper. We integrate three complementary theoretical
@@ -107,8 +110,9 @@ frameworks---the Cognitive Integrity Framework (CIF)
 \cite{suh1990principles, suh2001axiomatic}, and the OODA Loop
 \cite{boyd1987patterns}---into a unified model for analyzing Goal
 Hijacking attacks and their defenses.
+\end{frame}
 
-\begin{block}{Framework Integration}
+\begin{frame}[allowframebreaks]{Framework Integration}
 \protect\phantomsection\label{framework-integration}
 Each framework contributes a distinct analytical dimension:
 
@@ -150,9 +154,9 @@ The integration insight is that Goal Hijacking operates simultaneously
 across all three dimensions: it introduces transient coupling in the
 Design Matrix (AD), corrupts the Orient phase (OODA), and is detectable
 and defensible through the canonical mechanisms (CIF).
-\end{block}
+\end{frame}
 
-\begin{block}{CIF Defense Mechanisms}
+\begin{frame}[allowframebreaks]{CIF Defense Mechanisms}
 \protect\phantomsection\label{cif-defense-mechanisms}
 Paper 1 \cite{friedman2026cogsec1} defines five canonical defense
 mechanisms. We reproduce them here for reader convenience, as they form
@@ -198,11 +202,15 @@ tolerating up to \(f\) compromised agents among \(n\) total \\
 
 These mechanisms compose in series and parallel to achieve layered
 defense. Paper 2 \cite{friedman2026cogsec2} demonstrates that the
-recommended defense stack achieves 99.5\% detection across 950 attack
-scenarios.
-\end{block}
+recommended defense stack achieves 94--100\% detection at the parametric
+design ceiling across 950 attack scenarios and four production
+multiagent architectures. Paper 3 \cite{friedman2026cogsec3} translates
+these results into deployment guidance, monitoring playbooks, and
+cost--benefit frameworks; readers seeking engineering guidance on
+instantiating the mechanisms below in production should consult Part 3.
+\end{frame}
 
-\begin{block}{Adversary Classification}
+\begin{frame}[allowframebreaks]{Adversary Classification}
 \protect\phantomsection\label{adversary-classification}
 We adopt the five-tier adversary taxonomy from Paper 1
 \cite{friedman2026cogsec1}:
@@ -253,9 +261,9 @@ al.~\cite{he2025redteaming}, who introduced the Agent-in-the-Middle
 class that our \(\Omega_2\)-focused domain analysis acknowledges but
 does not examine in depth (see Limitations,
 \cref{sec:limitations_discussion}).
-\end{block}
+\end{frame}
 
-\begin{block}{Domain Analysis Template}
+\begin{frame}[allowframebreaks]{Domain Analysis Template}
 \protect\phantomsection\label{domain-analysis-template}
 Each domain in this paper is analyzed using a standardized five-step
 procedure:
@@ -286,10 +294,12 @@ identified and elevated as contributions.
 \textbf{(v) Validation Anchoring.} Cross-reference the defense mapping
 to Paper 2's benchmark results \cite{friedman2026cogsec2}, confirming
 that the proposed CIF mechanisms have demonstrated efficacy against the
-relevant adversary class.
-\end{block}
+relevant adversary class. Where appropriate, we additionally anchor
+deployment-level considerations to Paper 3's operator posture and
+incident-response guidance \cite{friedman2026cogsec3}.
+\end{frame}
 
-\begin{block}{Domain Selection Criteria}
+\begin{frame}[allowframebreaks]{Domain Selection Criteria}
 \protect\phantomsection\label{domain-selection-criteria}
 The ten domains were selected to ensure comprehensive coverage along
 three dimensions:
@@ -316,9 +326,9 @@ three dimensions:
   primary defense in at least two domains (see Discussion,
   \cref{sec:mechanism_coverage}).
 \end{enumerate}
-\end{block}
+\end{frame}
 
-\begin{block}{Scope and Assumptions}
+\begin{frame}[allowframebreaks]{Scope and Assumptions}
 \protect\phantomsection\label{scope-and-assumptions}
 This analysis is qualitative and scenario-based. Each domain presents a
 representative attack scenario constructed from documented real-world
@@ -349,9 +359,9 @@ completes---are addressable through appropriate engineering of CIF
 mechanism parameters (\(\tau\), \(\epsilon\), \(q\), \(\Delta t\)). The
 determination of optimal parameter values for each domain is left for
 future work.
-\end{block}
+\end{frame}
 
-\begin{block}{Application to Critical Domains}
+\begin{frame}[allowframebreaks]{Application to Critical Domains}
 \protect\phantomsection\label{application-to-critical-domains}
 The following ten sections apply this five-step CIF-AD-OODA template to
 domains spanning resource extraction, geopolitics, cybersecurity,
@@ -361,7 +371,6 @@ instantiates the framework against domain-specific adversary models,
 attack vectors, and defense compositions, demonstrating both the
 generality of the CIF-AD-OODA integration and the domain-specific
 adaptations required for effective cognitive security.
-\end{block}
 \end{frame}
 
 \end{document}

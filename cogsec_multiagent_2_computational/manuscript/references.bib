@@ -1,4 +1,48 @@
 % References for Cognitive Security for Modern Multiagent Operators
+% Part 2: Computational Validation
+
+% ============================================================
+% SERIES CROSS-REFERENCES (Parts 1--4)
+% ============================================================
+
+@article{friedman2026cogsec1,
+  author    = {Friedman, Daniel Ari},
+  title     = {Cognitive Integrity Framework: Formal Foundations for Multiagent Security},
+  journal   = {Cognitive Security for Multiagent Operators},
+  volume    = {1},
+  year      = {2026},
+  doi       = {10.5281/zenodo.18364119},
+  note      = {Part 1: Theoretical Foundations --- Trust Calculus with $\delta^d$ bounded delegation, Defense Composition Algebra, adversary taxonomy $\Omega_1$--$\Omega_5$, information-theoretic stealth--impact bounds, five canonical defense mechanisms, and model-checked safety invariants. Reference point for all formal apparatus used in the present paper.}
+}
+
+@article{friedman2026cogsec2,
+  author    = {Friedman, Daniel Ari},
+  title     = {Cognitive Integrity Framework: Computational Validation},
+  journal   = {Cognitive Security for Multiagent Operators},
+  volume    = {2},
+  year      = {2026},
+  doi       = {10.5281/zenodo.18364128},
+  note      = {Part 2 (this paper): Implementation and Empirical Analysis --- 950-attack corpus, multi-tier evaluation (pipeline / LLM / colony), ablation studies, Bayesian uncertainty, and parametric architecture-aware simulation across four production multiagent topologies.}
+}
+
+@article{friedman2026cogsec3,
+  author    = {Friedman, Daniel Ari},
+  title     = {Cognitive Integrity Framework: A Qualitative Review},
+  journal   = {Cognitive Security for Multiagent Operators},
+  volume    = {3},
+  year      = {2026},
+  doi       = {10.5281/zenodo.18364130},
+  note      = {Part 3: A Qualitative Review for Practitioners --- accessible-language synthesis of the theoretical and empirical results, deployment guides, incident-response playbooks, monitoring, cost--benefit analysis, and operator risk frameworks.}
+}
+
+@article{friedman2026cogsec4,
+  author    = {Friedman, Daniel Ari},
+  title     = {Cognitive Integrity in Critical Domains: A Multi-Sector Analysis},
+  journal   = {Cognitive Security for Multiagent Operators},
+  volume    = {4},
+  year      = {2026},
+  note      = {Part 4: Applications of the Cognitive Integrity Framework --- CIF-AD-OODA integration model applied across ten critical domains, three universal attack patterns, three novel defense extensions, and retrospective analysis of documented 2024--2025 AI-agent security incidents. DOI pending.}
+}
 
 % Foundational Works
 @article{lamport1982byzantine,
@@ -608,4 +652,172 @@
   title     = {Gemma 3 Technical Report},
   journal   = {arXiv preprint arXiv:2503.19786},
   year      = {2025}
+}
+
+% -- Added for Paper 2 CIF cross-references (information theory, active inference, categorical ML) --
+
+@article{wyner1975wiretap,
+  author    = {Wyner, Aaron D.},
+  title     = {The Wire-Tap Channel},
+  journal   = {Bell System Technical Journal},
+  volume    = {54},
+  number    = {8},
+  pages     = {1355--1387},
+  year      = {1975},
+  doi       = {10.1002/j.1538-7305.1975.tb02040.x}
+}
+
+@article{maurer1993secret,
+  author    = {Maurer, Ueli M.},
+  title     = {Secret Key Agreement by Public Discussion from Common Information},
+  journal   = {IEEE Transactions on Information Theory},
+  volume    = {39},
+  number    = {3},
+  pages     = {733--742},
+  year      = {1993},
+  doi       = {10.1109/18.256484}
+}
+
+@book{csiszar2011information,
+  author    = {Csisz{\'a}r, Imre and K{\"o}rner, J{\'a}nos},
+  title     = {Information Theory: Coding Theorems for Discrete Memoryless Systems},
+  edition   = {2nd},
+  publisher = {Cambridge University Press},
+  year      = {2011},
+  doi       = {10.1017/CBO9780511921889}
+}
+
+@book{fong2019seven,
+  author    = {Fong, Brendan and Spivak, David I.},
+  title     = {An Invitation to Applied Category Theory: Seven Sketches in Compositionality},
+  publisher = {Cambridge University Press},
+  year      = {2019},
+  doi       = {10.1017/9781108668804}
+}
+
+@article{hedges2018morphisms,
+  author    = {Hedges, Jules},
+  title     = {Morphisms of Open Games},
+  journal   = {Electronic Notes in Theoretical Computer Science},
+  volume    = {341},
+  pages     = {151--177},
+  year      = {2018},
+  doi       = {10.1016/j.entcs.2018.11.008}
+}
+
+@article{friston2017active,
+  author    = {Friston, Karl and FitzGerald, Thomas and Rigoli, Francesco and Schwartenbeck, Philipp and Pezzulo, Giovanni},
+  title     = {Active Inference: A Process Theory},
+  journal   = {Neural Computation},
+  volume    = {29},
+  number    = {1},
+  pages     = {1--49},
+  year      = {2017},
+  doi       = {10.1162/NECO_a_00912}
+}
+
+@article{dacosta2020active,
+  author    = {Da Costa, Lancelot and Parr, Thomas and Sajid, Noor and Veselic, S{\'e}bastien and Neacsu, Victorita and Friston, Karl},
+  title     = {Active Inference on Discrete State-Spaces: A Synthesis},
+  journal   = {Journal of Mathematical Psychology},
+  volume    = {99},
+  pages     = {102447},
+  year      = {2020},
+  doi       = {10.1016/j.jmp.2020.102447}
+}
+
+@article{parr2019generalised,
+  author    = {Parr, Thomas and Markovic, Dimitrije and Kiebel, Stefan J. and Friston, Karl J.},
+  title     = {Neuronal Message Passing Using Generalised Free Energy},
+  journal   = {Scientific Reports},
+  volume    = {9},
+  pages     = {1889},
+  year      = {2019},
+  doi       = {10.1038/s41598-018-38246-3}
+}
+
+@article{friston2010free,
+  author    = {Friston, Karl},
+  title     = {The Free-Energy Principle: A Unified Brain Theory?},
+  journal   = {Nature Reviews Neuroscience},
+  volume    = {11},
+  number    = {2},
+  pages     = {127--138},
+  year      = {2010},
+  doi       = {10.1038/nrn2787}
+}
+
+@article{friston2022free,
+  author    = {Friston, Karl and Da Costa, Lancelot and Sajid, Noor and Heins, Conor and Ueltzh{\"o}ffer, Kai and Pavliotis, Grigorios A. and Parr, Thomas},
+  title     = {The Free Energy Principle Made Simpler but Not Too Simple},
+  journal   = {Physics Reports},
+  volume    = {1024},
+  pages     = {1--29},
+  year      = {2023},
+  doi       = {10.1016/j.physrep.2023.07.001}
+}
+
+@article{amari1998natural,
+  author    = {Amari, Shun-ichi},
+  title     = {Natural Gradient Works Efficiently in Learning},
+  journal   = {Neural Computation},
+  volume    = {10},
+  number    = {2},
+  pages     = {251--276},
+  year      = {1998},
+  doi       = {10.1162/089976698300017746}
+}
+
+@book{amari2000methods,
+  author    = {Amari, Shun-ichi and Nagaoka, Hiroshi},
+  title     = {Methods of Information Geometry},
+  publisher = {American Mathematical Society \& Oxford University Press},
+  series    = {Translations of Mathematical Monographs},
+  volume    = {191},
+  year      = {2000}
+}
+
+@book{cencov1982statistical,
+  author    = {{\v{C}}encov, Nikolai N.},
+  title     = {Statistical Decision Rules and Optimal Inference},
+  publisher = {American Mathematical Society},
+  series    = {Translations of Mathematical Monographs},
+  volume    = {53},
+  year      = {1982}
+}
+
+@misc{wlaschin2014railway,
+  author       = {Wlaschin, Scott},
+  title        = {Railway Oriented Programming: Error Handling in Functional Languages},
+  year         = {2014},
+  howpublished = {Functional Programming Design Patterns talk},
+  url          = {https://fsharpforfunandprofit.com/rop/}
+}
+
+@misc{pep544,
+  author       = {Levkivskyi, Ivan and Pradeep, Shantanu and Korobov, Jelle Zijlstra and Shannon, Nathaniel J. Smith and van Rossum, Guido},
+  title        = {{PEP} 544 -- Protocols: Structural Subtyping (Static Duck Typing)},
+  year         = {2017},
+  howpublished = {Python Enhancement Proposal},
+  url          = {https://peps.python.org/pep-0544/}
+}
+
+@article{kass1995bayes,
+  author  = {Kass, Robert E. and Raftery, Adrian E.},
+  title   = {Bayes Factors},
+  journal = {Journal of the American Statistical Association},
+  volume  = {90},
+  number  = {430},
+  pages   = {773--795},
+  year    = {1995},
+  doi     = {10.1080/01621459.1995.10476572}
+}
+
+@article{cruttwell2022categorical,
+  author    = {Cruttwell, G. S. H. and Gavranovi{\'c}, Bruno and Ghani, Neil and Wilson, Paul and Zanasi, Fabio},
+  title     = {Categorical Foundations of Gradient-Based Learning},
+  journal   = {Proceedings of the 31st European Symposium on Programming (ESOP)},
+  pages     = {1--28},
+  year      = {2022},
+  doi       = {10.1007/978-3-030-99336-8_1}
 }

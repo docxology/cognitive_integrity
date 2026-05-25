@@ -91,6 +91,7 @@
       color: #606060;
     }
     code {
+      white-space: pre-wrap;
       font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
       font-size: 85%;
       margin: 0;
@@ -154,7 +155,6 @@
     #TOC a:not(:hover) {
       text-decoration: none;
     }
-    code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
     div.columns{display: flex; gap: min(4vw, 1.5em);}
     div.column{flex: auto; overflow-x: auto;}
@@ -176,10 +176,14 @@
 for the safe operation of multiagent AI systems through five canonical
 defense mechanisms: Cognitive Firewalls, Belief Sandboxing, Behavioral
 Invariants, Drift Detection, and Byzantine Consensus. Paper 2 of this
-series demonstrated 99.5% detection across 950 attack scenarios.
-However, the practical applicability of these mechanisms across diverse
-operational domains has not been systematically evaluated. This
-paper—Part 4 of the Cognitive Security series—addresses this gap.</p>
+series demonstrated 94–100% detection at the parametric ceiling across
+950 attack scenarios and four production multiagent architectures, and
+Paper 3 translated these results into accessible deployment guidance,
+incident-response playbooks, and operator risk frameworks. However, the
+practical applicability of these mechanisms across diverse operational
+domains has not been systematically evaluated. This paper—Part 4 of the
+<em>Cognitive Security for Multiagent Operators</em> series—addresses
+this gap.</p>
 <p>We present the <strong>CIF-AD-OODA integration model</strong>,
 combining CIF’s defense mechanisms with Axiomatic Design (AD) theory and
 Boyd’s OODA (Observe-Orient-Decide-Act) Loop to analyze <strong>Goal
@@ -213,5 +217,18 @@ without CIF-mediated <strong>Drift Detection</strong> and
 <strong>Behavioral Invariants</strong> stabilizing the Orientation
 phase, high-efficiency agents are liable to optimize for adversarial
 objectives under the guise of compliance.</p>
+<p><strong>Paper Series.</strong> This is Part 4 of the four-part
+<em>Cognitive Security for Multiagent Operators</em> series: Part 1
+(DOI: 10.5281/zenodo.18364119) develops the formal foundations (trust
+calculus, defense composition algebra, adversary taxonomy,
+information-theoretic stealth–impact bounds, and model-checked
+invariants); Part 2 (DOI: 10.5281/zenodo.18364128) provides
+computational validation across production multiagent architectures;
+Part 3 (DOI: 10.5281/zenodo.18364130) presents a qualitative review and
+practitioner’s deployment guide; Part 4 (this paper) applies the
+framework across ten critical operational domains through the integrated
+CIF-AD-OODA model. Readers seeking derivations should consult Part 1;
+readers seeking empirical measurements, Part 2; readers seeking
+deployment guidance, Part 3.</p>
 </body>
 </html>

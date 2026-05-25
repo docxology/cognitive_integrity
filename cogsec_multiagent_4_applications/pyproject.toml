@@ -1,0 +1,40 @@
+# CogSec Multiagent Part 4 (Applications) — project-local pytest/coverage
+# Required for pipeline: scripts/01_run_tests.py passes --cov-config here.
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cogsec-multiagent-applications"
+version = "1.0.0"
+description = "CIF applications across ten operational domains (Part 4)"
+authors = [
+    {name = "Daniel Ari Friedman", email = "daniel@activeinference.institute"},
+]
+requires-python = ">=3.10"
+dependencies = []
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short --strict-markers"
+
+[tool.coverage.run]
+source = ["src"]
+omit = ["tests/*", "*/__init__.py", "*/test_*.py"]
+
+[tool.coverage.report]
+fail_under = 90
+show_missing = true
+precision = 2
+exclude_lines = [
+    "pragma: no cover",
+    "if __name__ == .__main__.:",
+    "raise NotImplementedError",
+]
+
+[tool.uv]
+package = true

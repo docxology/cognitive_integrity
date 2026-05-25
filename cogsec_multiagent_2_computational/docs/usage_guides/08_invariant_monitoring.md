@@ -84,11 +84,11 @@ action = AgentAction(
     action_type="write_file",
     parameters={"path": "/etc/config", "is_system_file": True},
 )
-new_violations = monitor.monitor_action(action)
+new_violations = monitor.check_action(action)
 
 # Query monitoring stats
 stats = monitor.get_stats()
-print(f"Total actions: {stats['total_actions']}, Violations: {stats['total_violations']}")
+print(f"Total checks: {stats['total_checks']}, Violations: {stats['total_violations']}")
 
 # Filter violations by severity
 critical = monitor.get_violations_by_severity(InvariantSeverity.CRITICAL)
@@ -107,5 +107,5 @@ The invariants module is tested in `tests/test_invariants.py`, covering:
 Run tests:
 
 ```bash
-pytest tests/test_invariants.py -v
+uv run pytest tests/test_invariants.py -v
 ```

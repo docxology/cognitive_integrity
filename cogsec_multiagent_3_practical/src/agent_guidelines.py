@@ -1,4 +1,6 @@
 """
+from __future__ import annotations
+
 Agent-Readable Security Guidelines for Cognitive Security.
 
 Implements Section 04 of the Practical Implementation Guide:

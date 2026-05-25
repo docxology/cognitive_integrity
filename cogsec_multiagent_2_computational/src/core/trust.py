@@ -4,6 +4,8 @@ Trust Calculus for Multiagent Systems.
 Implements bounded trust delegation with decay guarantees.
 """
 
+from __future__ import annotations
+
 import logging
 from dataclasses import dataclass
 from typing import Dict, List, Optional, Tuple

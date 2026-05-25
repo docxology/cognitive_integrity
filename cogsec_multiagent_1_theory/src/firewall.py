@@ -1,4 +1,6 @@
 """
+from __future__ import annotations
+
 Cognitive Firewall for Input Classification.
 
 Classifies incoming messages as ACCEPT, QUARANTINE, or REJECT.
