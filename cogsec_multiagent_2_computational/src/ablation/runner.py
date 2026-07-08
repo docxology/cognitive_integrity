@@ -12,8 +12,8 @@ from typing import Any
 
 import numpy as np
 
-from composition.factory import create_full_pipeline, create_pipeline_without
 from attacks.corpus import AttackCorpus
+from composition.factory import create_pipeline_without
 
 logger = logging.getLogger(__name__)
 

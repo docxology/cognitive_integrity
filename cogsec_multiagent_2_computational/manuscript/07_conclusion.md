@@ -26,7 +26,7 @@ This paper provided computational validation of the Cognitive Integrity Framewor
 
 The multi-tier evaluation yields four principal findings:
 
-1. **Layered defense is essential**: Ablation studies confirm that no single component accounts for a majority of detection. The top three components by marginal removal cost (Detection, Tripwires, Invariants) account for about 82\% of the summed harmful $\Delta\text{TPR}$ from component removal on the ablation corpus, and the Tripwire + Detection pair exhibits the strongest synergy ($\approx +0.025$ beyond additive prediction).
+1. **Layered defense is essential**: Ablation studies confirm that no single component accounts for a majority of detection. The top three components by marginal removal cost (Detection, Tripwires, Invariants) account for about 82\% of the summed harmful $\Delta\text{TPR}$ from component removal on the ablation corpus, and the Firewall + Detection pair exhibits the strongest synergy ($\approx +0.026$ beyond additive prediction).
 
 2. **Trust calculus prevents amplification**: The $\delta^d$ decay bound successfully prevented trust laundering across all evaluation modes---a structural guarantee verified formally (Part 1), through unit-tested implementation, and through colony-scale simulation (100\% sybil detection at 0\% FPR with 50 agents and 4 adversaries).
 
@@ -62,14 +62,13 @@ As these standards evolve from guidelines to compliance requirements, CIF provid
 
 ## Paper Series
 
-This is Part 2 of the four-part *Cognitive Security for Multiagent Operators* series:
+This is Part 2 of the three-part *Cognitive Security for Multiagent Operators* series:
 
 - **Part 1: Formal Foundations** (DOI: 10.5281/zenodo.18364119) --- Trust calculus with $\delta^d$ bounded delegation, defense composition algebra, information-theoretic stealth-impact bounds, five-tier adversary taxonomy ($\Omega_1$--$\Omega_5$), and model-checked safety invariants. Readers seeking definitions of the formal apparatus validated here should start with Part 1.
 - **Part 2 (this paper): Computational Validation** --- Implementation, attack corpus, empirical results across pipeline / LLM / colony evaluation tiers, category-theoretic formalization, free-energy connections, information-geometric adversarial geometry, game-theoretic analysis, and Bayesian uncertainty quantification.
-- **Part 3: A Qualitative Review for Practitioners** (DOI: 10.5281/zenodo.18364130) --- Accessible-language synthesis of Parts 1 and 2, deployment guides, incident response playbooks, cost-benefit analysis, subagent-hardening patterns, monitoring guidance, common pitfalls, case studies, and operator risk frameworks.
-- **Part 4: Applications of the Cognitive Integrity Framework** --- CIF-AD-OODA integration model applied across ten critical domains (rare-earth mining, nation-state alliances, cyber-security, drone warfare, supply chain, biowarfare, food security, trade wars, infrastructure, information ecosystems). Identifies three universal attack patterns (FR Polarity Inversion, Constraint Relaxation, Context Boundary Violation) and three novel defense extensions (verification channel separation, active perturbation probing, physics-informed invariants), with retrospective analysis of six documented 2024--2025 AI agent incidents.
+- **Part 3+4: Practical Applications and Deployment Guide** (DOI: 10.5281/zenodo.18364130) --- Unified practitioner guidance and cross-domain CIF-AD-OODA applications. Combines accessible-language synthesis of Parts 1 and 2, deployment guides, incident response playbooks, cost-benefit analysis, and operator risk frameworks with ten critical domain analyses (rare-earth mining, nation-state alliances, cyber-security, drone warfare, supply chain, biowarfare, food security, trade wars, infrastructure, information ecosystems). Identifies three universal attack patterns (FR Polarity Inversion, Constraint Relaxation, Context Boundary Violation) and three novel defense extensions (verification channel separation, active perturbation probing, physics-informed invariants), with retrospective analysis of six documented 2024--2025 AI agent incidents.
 
-Together, these four papers provide a complete framework for understanding (Part 1), implementing and measuring (Part 2), operating and deploying (Part 3), and applying (Part 4) cognitive security in multiagent AI systems. Readers seeking the formal machinery behind this paper's metrics should consult Part 1; readers looking to act on these results operationally should move to Part 3; readers evaluating CIF for specific domains should consult Part 4.
+Together, these three papers provide a complete framework for understanding (Part 1), implementing and measuring (Part 2), and deploying and applying (Part 3+4) cognitive security in multiagent AI systems. Readers seeking the formal machinery behind this paper's metrics should consult Part 1; readers looking to act on these results operationally or evaluate CIF for specific domains should consult Part 3+4.
 
 ## Data and Code Availability
 

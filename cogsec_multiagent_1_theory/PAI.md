@@ -24,7 +24,9 @@ This project implements the **Cognitive Integrity Framework (CIF)** - a formal s
 
 ### Example PAI Usage
 ```python
-from projects.cogsec_multiagent.src import TrustCalculus, CognitiveFirewall
+# After installing the package (pip install -e ".[dev]" from this project root)
+from src.trust import TrustCalculus
+from src.firewall import CognitiveFirewall
 
 # Validate external input
 firewall = CognitiveFirewall()

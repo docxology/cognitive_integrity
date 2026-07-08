@@ -52,7 +52,7 @@ def plot_detection_distributions(output_dir: str = "output/figures") -> Figure:
                           showmedians=True, showextrema=False)
 
     # Color the violins
-    for i, pc in enumerate(parts["bodies"]):
+    for i, pc in enumerate(parts["bodies"]):  # type: ignore[arg-type, var-annotated]
         pc.set_facecolor(PALETTE[i % len(PALETTE)])
         pc.set_edgecolor("black")
         pc.set_alpha(0.7)

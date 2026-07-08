@@ -171,7 +171,7 @@ def plot_attack_surface(output_dir: str | Path = "output/figures") -> plt.Figure
     ax.text(
         9.15, 6.8, "• Web APIs", ha="center", va="center", fontsize=FONTSIZE["small"], color="white"
     )
-    ax.text(9.15, 6.4, "• Tools", ha="center", va="center", fontsize=FONTSIZE["small"], color="white")
+    ax.text(9.15, 6.4, "• Tools", ha="center", va="center", fontsize=FONTSIZE["small"], color="white")  # noqa: E501
     ax.text(9.15, 6.0, "(Ω₂)", ha="center", va="center", fontsize=FONTSIZE["small"], color="white")
 
     # Shared state (bottom)
@@ -292,7 +292,7 @@ def plot_attack_surface(output_dir: str | Path = "output/figures") -> plt.Figure
         (9.2, 3.4, "Defense: CognitiveTripwire.check()", SEMANTIC_COLORS["tripwire"]),
         (6.5, 1.0, "Defense: ProvenanceChain.get_effective_taint()", SEMANTIC_COLORS["anomaly"]),
     ]
-    for x, y, label, color in cif_annotations:
+    for x, y, label, color in cif_annotations:  # type: ignore[assignment]
         ax.text(
             x, y, label,
             fontsize=FONTSIZE["small"], fontstyle="italic",

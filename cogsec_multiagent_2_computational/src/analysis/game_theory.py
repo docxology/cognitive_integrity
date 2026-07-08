@@ -20,7 +20,6 @@ from typing import List, Tuple
 import numpy as np
 from scipy.optimize import linprog
 
-
 # ---------------------------------------------------------------------------
 # Result container
 # ---------------------------------------------------------------------------
@@ -101,7 +100,7 @@ def solve_zero_sum_game(
     b_eq = np.array([1.0], dtype=float)
 
     bounds: List[Tuple[float | None, float | None]] = (
-        [(0.0, None)] * n_defenses + [(None, None)]
+        [(0.0, None)] * n_defenses + [(None, None)]  # type: ignore[assignment]
     )
 
     res = linprog(

@@ -118,8 +118,8 @@ def run_llm_evaluation(
     except Exception as e:
         raise RuntimeError(f"Cannot reach Ollama at localhost:11434: {e}") from e
 
-    from agents.multiagent_system import MultiAgentSystem
     from agents.llm_agent import OllamaConfig
+    from agents.multiagent_system import MultiAgentSystem
 
     llm_config = OllamaConfig(model=model, seed=seed)
     rng = np.random.default_rng(seed)

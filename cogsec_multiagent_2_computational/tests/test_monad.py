@@ -13,7 +13,6 @@ real (trivially deterministic) defense modules.
 
 from __future__ import annotations
 
-import os
 import sys
 from pathlib import Path
 
@@ -23,6 +22,7 @@ if str(ROOT) not in sys.path:
 
 import pytest
 
+from src.composition.pipeline import DefenseModule
 from src.core.monad import (
     DetectionEvent,
     Err,
@@ -35,9 +35,7 @@ from src.core.monad import (
     sequence,
     verify_monad_laws,
 )
-from src.composition.pipeline import DefenseModule
 from src.utils.types import DefenseResult
-
 
 # ---------------------------------------------------------------------------
 # Deterministic DefenseModule fixtures

@@ -44,9 +44,7 @@ class TrustCalculus:
     def __init__(self, config: Optional[TrustConfig] = None):
         self.config = config or TrustConfig()
 
-    def compute_trust(
-        self, base_trust: float, reputation: float, context_trust: float
-    ) -> float:
+    def compute_trust(self, base_trust: float, reputation: float, context_trust: float) -> float:
         """
         Compute composite trust score.
 
@@ -64,9 +62,7 @@ class TrustCalculus:
             + self.config.gamma * context_trust
         )
 
-    def delegate_trust(
-        self, source_trust: float, target_trust: float, depth: int = 1
-    ) -> float:
+    def delegate_trust(self, source_trust: float, target_trust: float, depth: int = 1) -> float:
         """
         Compute delegated trust with decay.
 
@@ -145,9 +141,7 @@ class TrustMatrix:
             learning_rate: Update weight
         """
         current = self._reputation[source, target]
-        self._reputation[source, target] = (
-            1 - learning_rate
-        ) * current + learning_rate * outcome
+        self._reputation[source, target] = (1 - learning_rate) * current + learning_rate * outcome
 
     def set_context_trust(self, source: int, target: int, context_trust: float) -> None:
         """Set task-specific context trust."""
@@ -222,13 +216,9 @@ class ReputationTracker:
         if key not in self._interactions:
             self._interactions[key] = []
 
-        self._interactions[key].append(
-            InteractionRecord(outcome=outcome, timestamp=timestamp)
-        )
+        self._interactions[key].append(InteractionRecord(outcome=outcome, timestamp=timestamp))
 
-    def get_reputation(
-        self, source_id: str, target_id: str, current_time: float
-    ) -> float:
+    def get_reputation(self, source_id: str, target_id: str, current_time: float) -> float:
         """
         Get time-decayed reputation.
 
@@ -280,9 +270,7 @@ class ContextAwareTrust:
         """
         self.max_boost = max_boost
         self._expertise: Dict[str, Dict[str, float]] = {}  # agent -> context -> level
-        self._context_similarity: Dict[str, Dict[str, float]] = (
-            {}
-        )  # context -> similar -> score
+        self._context_similarity: Dict[str, Dict[str, float]] = {}  # context -> similar -> score
 
     def register_expertise(self, agent_id: str, context: str, level: float) -> None:
         """
@@ -297,9 +285,7 @@ class ContextAwareTrust:
             self._expertise[agent_id] = {}
         self._expertise[agent_id][context] = np.clip(level, 0.0, 1.0)
 
-    def register_context_similarity(
-        self, context1: str, context2: str, similarity: float
-    ) -> None:
+    def register_context_similarity(self, context1: str, context2: str, similarity: float) -> None:
         """
         Register similarity between contexts.
 
@@ -343,9 +329,7 @@ class ContextAwareTrust:
 
         return 0.0
 
-    def boost_for_context(
-        self, agent_id: str, base_trust: float, context: str
-    ) -> float:
+    def boost_for_context(self, agent_id: str, base_trust: float, context: str) -> float:
         """
         Boost trust based on context expertise.
 
@@ -409,9 +393,7 @@ class TrustMatrixWithDecay(TrustMatrix):
         source_id = self._agent_id_map.get(source, f"agent-{source}")
         target_id = self._agent_id_map.get(target, f"agent-{target}")
 
-        self.reputation_tracker.record_interaction(
-            source_id, target_id, outcome, timestamp
-        )
+        self.reputation_tracker.record_interaction(source_id, target_id, outcome, timestamp)
 
     def get_trust_at_time(self, source: int, target: int, current_time: float) -> float:
         """
@@ -429,9 +411,7 @@ class TrustMatrixWithDecay(TrustMatrix):
         target_id = self._agent_id_map.get(target, f"agent-{target}")
 
         # Get time-decayed reputation
-        reputation = self.reputation_tracker.get_reputation(
-            source_id, target_id, current_time
-        )
+        reputation = self.reputation_tracker.get_reputation(source_id, target_id, current_time)
 
         return self.calculus.compute_trust(
             self._base[source, target], reputation, self._context[source, target]

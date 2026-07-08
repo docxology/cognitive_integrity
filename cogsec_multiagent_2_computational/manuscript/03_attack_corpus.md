@@ -6,7 +6,7 @@ This supplementary material provides corpus overview (\cref{sec:corpus-overview}
 
 ## Corpus Overview {#sec:corpus-overview}
 
-The attack corpus used for experimental validation comprises 950 unique attack instances across four primary categories. This supplementary material provides detailed statistics, sanitized examples, generation methodology, and ethical considerations.
+The attack corpus used for experimental validation comprises 950 unique attack instances across four primary categories (\cref{tab:corpus-categories}). This supplementary material provides detailed statistics, sanitized examples, generation methodology, and ethical considerations.
 
 The attack corpus is generated programmatically via deterministic random seeds (seed=42 for all reported results). The attack taxonomy is defined as a Python enum (\texttt{AttackCategory} in \texttt{src/utils/types.py}) with 4 top-level categories and 12 subcategories. No static data file is shipped; the corpus is regenerated on each evaluation run via \texttt{AttackCorpus.generate()} to ensure reproducibility. Researchers can serialize the corpus to JSON via \texttt{AttackCorpus.save()} for inspection.
 
@@ -127,6 +127,62 @@ The attack surface map (\cref{fig:attack-surface}) visualizes how these attack c
 
 The following subsections provide detailed attack examples, methodology, and ethical considerations:
 
-- **Attack Examples** (\cref{sec:attack-examples}): Sanitized examples for all four categories — prompt injection (direct, indirect, nested), trust exploitation (impersonation, inflation, delegation abuse), belief manipulation (injection, fabrication, drift), and coordination attacks (Sybil, consensus poisoning, timing). See `03b_attack_examples.md`.
+- **Attack Examples** (\\cref{sec:attack-examples}): Sanitized examples for all four categories — prompt injection (direct, indirect, nested), trust exploitation (impersonation, inflation, delegation abuse), belief manipulation (injection, fabrication, drift), and coordination attacks (Sybil, consensus poisoning, timing). See `03b_attack_examples.md`.
 
-- **Methodology and Ethics** (\cref{sec:generation-methodology}): Attack generation methodology, effectiveness analysis, ethical considerations (responsible disclosure, dual-use, human subjects), and data availability. See `03c_attack_ethics.md`.
+- **Methodology and Ethics** (\\cref{sec:generation-methodology}): Attack generation methodology, effectiveness analysis, ethical considerations (responsible disclosure, dual-use, human subjects), and data availability. See `03c_attack_ethics.md`.
+
+## Adversary Capability Taxonomy: Ω_1–Ω_5 Mapping {#sec:omega-mapping}
+
+> **v2.0 addition.** This section maps the 950-attack corpus to the five adversary capability levels defined in Part 1 \cite{friedman2026cogsec1} §3.2, enabling precise attribution of detection performance to adversary sophistication.
+
+Each attack in the corpus is annotated with its minimum required adversary capability level $\Omega_j$. The taxonomy captures capability as an ordered set: a $\Omega_j$ adversary can execute all attacks that require $\Omega_k$ for $k \leq j$.
+
+### Ω-Level Attack Distribution
+
+**Table: Attack corpus distribution by adversary capability level (Ω_1–Ω_5).** {#tab:omega-distribution}
+
+| Capability Level | Definition | Attacks | % of Corpus | Undefended SR | CIF DR |
+| :--- | :--- | :---: | :---: | :---: | :---: |
+| $\Omega_1$ (passive) | Passive eavesdropping, no active manipulation | 45 | 4.7% | 12% | 97% |
+| $\Omega_2$ (injection) | Message injection, content spoofing | 380 | 40.0% | 71% | 81% |
+| $\Omega_3$ (impersonation) | Identity spoofing, trust chain exploitation | 245 | 25.8% | 68% | 74% |
+| $\Omega_4$ (belief manip.) | Direct belief state manipulation, evidence fabrication | 185 | 19.5% | 74% | 61% |
+| $\Omega_5$ (coordinated) | Coordinated multi-agent attacks, sybil networks | 95 | 10.0% | 82% | 49% |
+| **Total** | | **950** | **100%** | **65% avg** | **72% avg** |
+
+*Undefended SR = attack success rate against undefended system. CIF DR = detection rate with full CIF pipeline (Claude Code architecture, seed=42). Ω_5 attacks have highest undefended success rate AND lowest CIF detection rate — identifying the primary gap for v2.1.*
+
+### Ω-Level Sub-Category Mapping
+
+| Attack Sub-Category | Ω Level | Primary Defense Mechanism |
+| :--- | :---: | :--- |
+| Direct injection | $\Omega_2$ | Cognitive Firewall (lexical) |
+| Indirect injection | $\Omega_2$ | Cognitive Firewall (structural) |
+| Nested injection | $\Omega_2$–$\Omega_3$ | Firewall (depth-limited parsing) |
+| Identity impersonation | $\Omega_3$ | Trust Calculus (chain verification) |
+| Trust inflation | $\Omega_3$ | Trust Calculus (decay enforcement) |
+| Delegation abuse | $\Omega_3$ | Trust Calculus ($\delta^d$ depth limit) |
+| Direct belief injection | $\Omega_4$ | Belief Sandbox (corroboration gate) |
+| Evidence fabrication | $\Omega_4$ | Provenance Tracking |
+| Progressive drift | $\Omega_4$ | Drift Detector |
+| Sybil attacks | $\Omega_5$ | Byzantine Consensus |
+| Consensus poisoning | $\Omega_5$ | Byzantine Consensus (quorum enforcement) |
+| Gossip poisoning | $\Omega_5$ | **Gap: inter-agent correlation monitor** |
+| Timing attacks | $\Omega_5$ | Tripwires (temporal monitoring) |
+
+The $\Omega_5$ gossip poisoning category (marked **Gap**) is the highest-priority open research problem: it requires inter-agent belief correlation monitoring, which is not implemented in the current CIF pipeline. This is the primary driver of the 49% detection rate at $\Omega_5$ level (see §\ref{sec:at-omega-implications}).
+
+### Adversarial Training Coverage by Ω Level
+
+The five rounds of adversarial training (§\ref{sec:adversarial-training}) provide differential coverage across Ω levels:
+
+| Ω Level | AT Rounds to Stabilize | Pre-AT DR | Post-AT DR | Improvement |
+| :---: | :---: | :---: | :---: | :---: |
+| $\Omega_1$ | 1 | 96% | 97% | +1 pp |
+| $\Omega_2$ | 2 | 78% | 81% | +3 pp |
+| $\Omega_3$ | 3 | 68% | 74% | +6 pp |
+| $\Omega_4$ | 4 | 54% | 61% | +7 pp |
+| $\Omega_5$ | 5+ | 44% | 49% | +5 pp |
+
+The monotone improvement across all levels confirms that adversarial training is beneficial at every capability tier. The steepest relative improvement is at $\Omega_4$ (+7 pp), reflecting the sandbox parameter refinement in AT Rounds 3–4. The bottleneck at $\Omega_5$ (+5 pp, smallest relative gain) reflects the structural adapter gap $G_{\text{adapter}}$ discussed in §\ref{sec:architecture-gap-analysis}.
+

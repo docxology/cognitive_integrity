@@ -12,8 +12,7 @@ from dataclasses import dataclass, field
 from enum import Enum
 from typing import Any
 
-from . import RiskLevel, AssessmentResult
-
+from . import AssessmentResult, RiskLevel
 
 # =============================================================================
 # Enums
@@ -529,8 +528,7 @@ class ThreatModelWorksheet:
             "immediate_count": sum(
                 1
                 for s in self.scenarios
-                if s.risk_score
-                and s.risk_score.priority == MitigationPriority.IMMEDIATE
+                if s.risk_score and s.risk_score.priority == MitigationPriority.IMMEDIATE
             ),
             "total_gaps": sum(len(s.mitigation_gaps) for s in self.scenarios),
         }

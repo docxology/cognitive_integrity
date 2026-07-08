@@ -3,9 +3,14 @@
 import time
 from datetime import datetime, timedelta
 
-import pytest
-from sandbox import (Belief, BeliefPartition, BeliefState, PromotionCriteria,
-                     SandboxConfig, SandboxManager)
+from sandbox import (
+    Belief,
+    BeliefPartition,
+    BeliefState,
+    PromotionCriteria,
+    SandboxConfig,
+    SandboxManager,
+)
 
 
 class TestBelief:
@@ -21,9 +26,7 @@ class TestBelief:
 
     def test_belief_with_source(self):
         """Beliefs can track their source."""
-        belief = Belief(
-            belief_id="b1", content="Fact", confidence=0.8, source_agent="agent-1"
-        )
+        belief = Belief(belief_id="b1", content="Fact", confidence=0.8, source_agent="agent-1")
         assert belief.source_agent == "agent-1"
 
 
@@ -137,9 +140,7 @@ class TestPromotionCriteria:
         assert criteria.evaluate(new_belief) is False
 
         # Old belief should meet criteria
-        old_belief = Belief(
-            "b2", "Old", 0.8, created_at=datetime.now() - timedelta(seconds=20)
-        )
+        old_belief = Belief("b2", "Old", 0.8, created_at=datetime.now() - timedelta(seconds=20))
         assert criteria.evaluate(old_belief) is True
 
     def test_custom_predicate(self):
@@ -148,9 +149,7 @@ class TestPromotionCriteria:
         def must_have_source(belief: Belief) -> bool:
             return belief.source_agent is not None
 
-        criteria = PromotionCriteria(
-            min_confidence=0.5, custom_predicates=[must_have_source]
-        )
+        criteria = PromotionCriteria(min_confidence=0.5, custom_predicates=[must_have_source])
 
         no_source = Belief("b1", "Anonymous", 0.9)
         with_source = Belief("b2", "Sourced", 0.9, source_agent="agent-1")
@@ -214,9 +213,7 @@ class TestSandboxManager:
     def test_auto_promotion_on_criteria(self):
         """Beliefs auto-promote when meeting criteria."""
         criteria = PromotionCriteria(min_confidence=0.8)
-        manager = SandboxManager(
-            SandboxConfig(default_ttl_seconds=60), promotion_criteria=criteria
-        )
+        manager = SandboxManager(SandboxConfig(default_ttl_seconds=60), promotion_criteria=criteria)
 
         # High confidence belief
         high = Belief("high", "High confidence", 0.95)
@@ -231,9 +228,7 @@ class TestSandboxManager:
     def test_no_auto_promote_below_threshold(self):
         """Low confidence beliefs stay provisional."""
         criteria = PromotionCriteria(min_confidence=0.8)
-        manager = SandboxManager(
-            SandboxConfig(default_ttl_seconds=60), promotion_criteria=criteria
-        )
+        manager = SandboxManager(SandboxConfig(default_ttl_seconds=60), promotion_criteria=criteria)
 
         low = Belief("low", "Low confidence", 0.5)
         manager.add_provisional(low)

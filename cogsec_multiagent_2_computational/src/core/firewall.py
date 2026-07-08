@@ -88,7 +88,7 @@ class PatternDetector:
             return 0.0
 
         score = 0.0
-        message_lower = message.lower()
+        message.lower()
 
         # Pattern matching (weighted)
         for pattern in self._injection_re:

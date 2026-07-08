@@ -13,7 +13,8 @@ import numpy as np
 from matplotlib.figure import Figure
 
 from evaluation.roc import compute_auc_from_points
-from ..style import FONTSIZE, SEMANTIC_COLORS, add_source_annotation, apply_style, save_figure
+
+from ..style import SEMANTIC_COLORS, add_source_annotation, apply_style, save_figure
 
 matplotlib.use("Agg")
 logger = __import__('logging').getLogger(__name__)
@@ -41,7 +42,7 @@ def _load_roc_data(output_dir: Path) -> dict:
 
     # Build ROC-like curves from detection rates at different thresholds
     # Each row has detection_rate and false_positive_rate per architecture-category pair
-    defense_rates = {}
+    defense_rates: dict[str, dict[str, list]] = {}
     for r in rows:
         defense_rates.setdefault("full_cif", {"tpr": [], "fpr": []})
         defense_rates["full_cif"]["tpr"].append(r.detection_rate)

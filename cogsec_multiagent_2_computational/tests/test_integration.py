@@ -120,7 +120,7 @@ class TestDefensePipeline:
 
     def test_firewall_classifies_benign(self):
         """Firewall accepts benign messages."""
-        from core.firewall import CognitiveFirewall, Classification
+        from core.firewall import Classification, CognitiveFirewall
 
         fw = CognitiveFirewall()
         result = fw.classify("Please summarize this document for me.")
@@ -128,7 +128,7 @@ class TestDefensePipeline:
 
     def test_firewall_detects_injection(self):
         """Firewall detects obvious injection attempts."""
-        from core.firewall import CognitiveFirewall, FirewallConfig, Classification
+        from core.firewall import Classification, CognitiveFirewall, FirewallConfig
 
         fw = CognitiveFirewall(FirewallConfig(injection_threshold=0.5))
         result = fw.classify(
@@ -140,7 +140,7 @@ class TestDefensePipeline:
 
     def test_sandbox_add_and_promote(self):
         """Sandbox accepts provisional beliefs and supports promotion checks."""
-        from core.sandbox import SandboxManager, SandboxConfig, Belief
+        from core.sandbox import Belief, SandboxConfig, SandboxManager
 
         mgr = SandboxManager(SandboxConfig())
         belief = Belief(
@@ -154,7 +154,7 @@ class TestDefensePipeline:
 
     def test_tripwire_detects_drift(self):
         """Tripwire detects canary belief modifications."""
-        from core.tripwire import CognitiveTripwire, Canary
+        from core.tripwire import Canary, CognitiveTripwire
 
         tripwire = CognitiveTripwire()
         canary = Canary(
@@ -168,8 +168,8 @@ class TestDefensePipeline:
 
     def test_full_pipeline_flow(self):
         """Full pipeline: firewall -> sandbox -> tripwire processes a message."""
-        from core.firewall import CognitiveFirewall, Classification
-        from core.sandbox import SandboxManager, SandboxConfig, Belief
+        from core.firewall import Classification, CognitiveFirewall
+        from core.sandbox import Belief, SandboxConfig, SandboxManager
         from core.tripwire import CognitiveTripwire
 
         fw = CognitiveFirewall()
@@ -250,8 +250,9 @@ class TestStatisticalPipeline:
 
     def test_hypothesis_testing(self):
         """Paired t-test produces valid (t_stat, p_value) tuple."""
-        import numpy as np
         from statistics.hypothesis import paired_ttest
+
+        import numpy as np
 
         np.random.seed(42)
         baseline = np.random.beta(2, 8, size=100)
@@ -264,8 +265,9 @@ class TestStatisticalPipeline:
 
     def test_effect_size(self):
         """Cohen's d computes correctly and returns EffectSizeResult."""
-        import numpy as np
         from statistics.effect_size import cohens_d
+
+        import numpy as np
 
         np.random.seed(42)
         a = np.random.normal(0, 1, 100)
@@ -360,11 +362,11 @@ class TestModuleExports:
     def test_core_exports(self):
         """Core module exports are importable."""
         from src import (
-            TrustCalculus,
+            ByzantineConsensus,
             CognitiveFirewall,
             CognitiveTripwire,
-            ByzantineConsensus,
             SandboxManager,
+            TrustCalculus,
         )
         assert TrustCalculus is not None
         assert CognitiveFirewall is not None
@@ -374,7 +376,7 @@ class TestModuleExports:
 
     def test_evaluation_exports(self):
         """Evaluation module exports are importable."""
-        from src import DetectionMetrics, ExperimentRunner, ExperimentResult
+        from src import DetectionMetrics, ExperimentResult, ExperimentRunner
         assert DetectionMetrics is not None
         assert ExperimentRunner is not None
         assert ExperimentResult is not None
@@ -382,10 +384,10 @@ class TestModuleExports:
     def test_statistics_exports(self):
         """Statistics module exports key functions."""
         from statistics import (
-            paired_ttest,
             cohens_d,
-            wilson_ci,
             hypothesis_test,
+            paired_ttest,
+            wilson_ci,
         )
         assert callable(paired_ttest)
         assert callable(cohens_d)
@@ -397,9 +399,6 @@ class TestModuleExports:
         from data import (
             DataGenerator,
             DetectionData,
-            ScalabilityData,
-            AblationData,
-            ColonyData,
         )
         assert DataGenerator is not None
         assert DetectionData is not None
@@ -427,9 +426,11 @@ class TestCrossSubsystemIntegration:
 
     def test_data_to_statistics_pipeline(self):
         """Generated data feeds correctly into statistical analysis."""
-        import numpy as np
-        from data.generate import DataGenerator
         from statistics.hypothesis import paired_ttest
+
+        import numpy as np
+
+        from data.generate import DataGenerator
 
         with tempfile.TemporaryDirectory() as tmpdir:
             gen = DataGenerator(seed=42, output_dir=tmpdir)
@@ -445,9 +446,9 @@ class TestCrossSubsystemIntegration:
 
     def test_firewall_then_sandbox_then_tripwire(self):
         """Messages flow through all three defense layers in sequence."""
-        from core.firewall import CognitiveFirewall, Classification
-        from core.sandbox import SandboxManager, SandboxConfig, Belief
-        from core.tripwire import CognitiveTripwire, Canary
+        from core.firewall import Classification, CognitiveFirewall
+        from core.sandbox import Belief, SandboxConfig, SandboxManager
+        from core.tripwire import CognitiveTripwire
 
         fw = CognitiveFirewall()
         sandbox = SandboxManager(SandboxConfig())

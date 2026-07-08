@@ -117,7 +117,7 @@ class ExperimentRunner:
         Returns:
             An ``ExperimentResult`` summarising the experiment.
         """
-        multiplier = architecture_adapter.get_attack_surface_multiplier()
+        architecture_adapter.get_attack_surface_multiplier()
         arch_name = architecture_adapter.profile.name
 
         tp = fp = tn = fn = 0
@@ -125,7 +125,7 @@ class ExperimentRunner:
 
         for sample in attack_samples:
             is_attack = sample.get("is_attack", True)
-            category = sample.get("category", "direct_injection")
+            sample.get("category", "direct_injection")
 
             t0 = time.perf_counter()
             detected, score = self._simulate_detection(
@@ -191,7 +191,7 @@ class ExperimentRunner:
         result : ExperimentResult
         per_sample : list of (detected, score)
         """
-        multiplier = architecture_adapter.get_attack_surface_multiplier()
+        architecture_adapter.get_attack_surface_multiplier()
         arch_name = architecture_adapter.profile.name
 
         tp = fp = tn = fn = 0
@@ -200,7 +200,7 @@ class ExperimentRunner:
 
         for sample in attack_samples:
             is_attack = sample.get("is_attack", True)
-            category = sample.get("category", "direct_injection")
+            sample.get("category", "direct_injection")
 
             t0 = time.perf_counter()
             detected, score = self._simulate_detection(

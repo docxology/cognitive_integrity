@@ -9,20 +9,19 @@ import pytest
 
 from src import AssessmentResult, RiskLevel
 from src.pitfalls import (
-    PitfallID,
+    PitfallCatalog,
     PitfallCategory,
+    PitfallChecklist,
+    PitfallChecklistEntry,
+    PitfallDefinition,
+    PitfallDetector,
+    PitfallID,
     PitfallIndicator,
     PitfallMitigation,
-    PitfallDefinition,
-    PitfallCatalog,
-    PitfallDetector,
-    PitfallChecklistEntry,
-    PitfallChecklist,
-    RemediationStep,
     RemediationPlan,
+    RemediationStep,
     generate_remediation_plan,
 )
-
 
 # =============================================================================
 # Enum Tests
@@ -459,10 +458,7 @@ class TestPitfallChecklist:
     def test_assess_valid_pitfall(self) -> None:
         """assess() marks pitfall as assessed and detected."""
         self.checklist.assess(PitfallID.IMPLICIT_TRUST, detected=True)
-        entry = next(
-            e for e in self.checklist.entries
-            if e.pitfall_id == PitfallID.IMPLICIT_TRUST
-        )
+        entry = next(e for e in self.checklist.entries if e.pitfall_id == PitfallID.IMPLICIT_TRUST)
         assert entry.assessed is True
         assert entry.detected is True
         assert entry.mitigated is False
@@ -475,8 +471,7 @@ class TestPitfallChecklist:
             mitigated=True,
         )
         entry = next(
-            e for e in self.checklist.entries
-            if e.pitfall_id == PitfallID.STATIC_TRIPWIRES
+            e for e in self.checklist.entries if e.pitfall_id == PitfallID.STATIC_TRIPWIRES
         )
         assert entry.assessed is True
         assert entry.detected is True
@@ -485,10 +480,7 @@ class TestPitfallChecklist:
     def test_assess_not_detected(self) -> None:
         """assess() can mark pitfall as not detected."""
         self.checklist.assess(PitfallID.IGNORING_DRIFT, detected=False)
-        entry = next(
-            e for e in self.checklist.entries
-            if e.pitfall_id == PitfallID.IGNORING_DRIFT
-        )
+        entry = next(e for e in self.checklist.entries if e.pitfall_id == PitfallID.IGNORING_DRIFT)
         assert entry.assessed is True
         assert entry.detected is False
 
@@ -895,9 +887,7 @@ class TestEdgeCases:
         for pitfall in detected:
             checklist.assess(pitfall.id, detected=True)
         for pid in PitfallID:
-            entry = next(
-                (e for e in checklist.entries if e.pitfall_id == pid), None
-            )
+            entry = next((e for e in checklist.entries if e.pitfall_id == pid), None)
             if entry and not entry.assessed:
                 checklist.assess(pid, detected=False)
         assert checklist.all_assessed() is True
@@ -936,9 +926,9 @@ class TestEdgeCases:
     def test_multiple_categories_detected(self) -> None:
         """Detect pitfalls from all three categories simultaneously."""
         checklist = PitfallChecklist()
-        checklist.assess(PitfallID.IMPLICIT_TRUST, detected=True)       # security
-        checklist.assess(PitfallID.IGNORING_DRIFT, detected=True)       # operational
-        checklist.assess(PitfallID.STATIC_TRIPWIRES, detected=True)     # design
+        checklist.assess(PitfallID.IMPLICIT_TRUST, detected=True)  # security
+        checklist.assess(PitfallID.IGNORING_DRIFT, detected=True)  # operational
+        checklist.assess(PitfallID.STATIC_TRIPWIRES, detected=True)  # design
         result = checklist.evaluate()
         assert result.risk_level == RiskLevel.CRITICAL
         assert len(result.findings) >= 3  # at least 3 detected + unassessed

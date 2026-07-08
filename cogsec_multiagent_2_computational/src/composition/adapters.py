@@ -17,8 +17,8 @@ import time
 from collections import Counter
 from typing import Any, Dict, List, Optional
 
-from utils.types import DefenseResult
 from composition.pipeline import DefenseModule
+from utils.types import DefenseResult
 
 __all__ = [
     "FirewallAdapter",

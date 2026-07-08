@@ -17,8 +17,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 
-from utils.random_seed import set_global_seed
 from statistics.analysis_runner import load_real_data, run_full_analysis
+
+from utils.random_seed import set_global_seed
 
 
 def main() -> None:

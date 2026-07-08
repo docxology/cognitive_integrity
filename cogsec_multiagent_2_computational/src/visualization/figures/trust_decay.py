@@ -11,7 +11,15 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from core.trust import TrustCalculus, TrustConfig
-from ..style import FONTSIZE, PALETTE, SEMANTIC_COLORS, add_source_annotation, apply_style, save_figure
+
+from ..style import (
+    FONTSIZE,
+    PALETTE,
+    SEMANTIC_COLORS,
+    add_source_annotation,
+    apply_style,
+    save_figure,
+)
 
 
 def plot_trust_decay(output_dir: str | Path = "output/figures") -> plt.Figure:
@@ -83,7 +91,7 @@ def plot_trust_decay(output_dir: str | Path = "output/figures") -> plt.Figure:
     x = np.arange(len(scenarios))
     width = 0.35
 
-    bars1 = ax2.bar(
+    ax2.bar(
         x - width / 2,
         initial_trust,
         width,

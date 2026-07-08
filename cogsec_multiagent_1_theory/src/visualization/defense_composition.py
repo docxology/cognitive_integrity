@@ -16,8 +16,7 @@ from pathlib import Path
 
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
-import numpy as np
-from matplotlib.patches import Circle, FancyBboxPatch
+from matplotlib.patches import Circle
 
 
 def create_defense_composition_figure(output_dir: Path) -> tuple[Path, Path]:
@@ -59,9 +58,7 @@ def create_defense_composition_figure(output_dir: Path) -> tuple[Path, Path]:
 
     # Draw circles with transparency
     for (x, y), radius, color, label in circles:
-        circle = Circle(
-            (x, y), radius, facecolor=color, edgecolor="black", linewidth=2, alpha=0.4
-        )
+        circle = Circle((x, y), radius, facecolor=color, edgecolor="black", linewidth=2, alpha=0.4)
         ax.add_patch(circle)
 
     # Add labels for each defense (outside circles)
@@ -94,9 +91,7 @@ def create_defense_composition_figure(output_dir: Path) -> tuple[Path, Path]:
     ]
 
     for x, y, label, size in unique_attacks:
-        ax.text(
-            x, y, label, ha="center", va="center", fontsize=9, style="italic", alpha=0.9
-        )
+        ax.text(x, y, label, ha="center", va="center", fontsize=9, style="italic", alpha=0.9)
 
     # Pairwise overlaps
     overlap_attacks = [
@@ -163,9 +158,7 @@ def create_defense_composition_figure(output_dir: Path) -> tuple[Path, Path]:
             alpha=0.7,
         )
         ax.add_patch(rect)
-        ax.text(
-            -2.55 + i * 1.6, legend_y + 0.1, label, ha="left", va="center", fontsize=9
-        )
+        ax.text(-2.55 + i * 1.6, legend_y + 0.1, label, ha="left", va="center", fontsize=9)
 
     plt.tight_layout()
 
@@ -173,9 +166,7 @@ def create_defense_composition_figure(output_dir: Path) -> tuple[Path, Path]:
     output_png = output_dir / "defense_composition.png"
     output_pdf = output_dir / "defense_composition.pdf"
 
-    plt.savefig(
-        output_png, dpi=150, bbox_inches="tight", facecolor="white", edgecolor="none"
-    )
+    plt.savefig(output_png, dpi=150, bbox_inches="tight", facecolor="white", edgecolor="none")
     plt.savefig(output_pdf, bbox_inches="tight", facecolor="white", edgecolor="none")
     plt.close()
 

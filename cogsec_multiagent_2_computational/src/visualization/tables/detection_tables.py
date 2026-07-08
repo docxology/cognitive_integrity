@@ -26,9 +26,10 @@ def _load_results(seed: int = 42):
     each cell of the evaluation matrix.
     """
     import json
+
     from data.result_loaders import evaluation_to_detection_matrix
 
-    data_path = Path(__file__).resolve().parent.parent.parent.parent / "output" / "data" / "full_evaluation_results.json"
+    data_path = Path(__file__).resolve().parent.parent.parent.parent / "output" / "data" / "full_evaluation_results.json"  # noqa: E501
     archs, cats, matrix = evaluation_to_detection_matrix(path=str(data_path))
 
     # Load raw rows to extract TP/FN counts for CI computation
@@ -53,7 +54,7 @@ def _load_results(seed: int = 42):
             if n > 0:
                 p_hat = tp / n
                 denom = 1 + z**2 / n
-                centre = (p_hat + z**2 / (2 * n)) / denom
+                (p_hat + z**2 / (2 * n)) / denom
                 margin = z * np.sqrt((p_hat * (1 - p_hat) + z**2 / (4 * n)) / n) / denom
                 cis[i, j] = margin
             else:

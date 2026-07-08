@@ -12,8 +12,7 @@ from dataclasses import dataclass, field
 from enum import Enum
 from typing import Any
 
-from . import RiskLevel, AssessmentResult
-
+from . import RiskLevel
 
 # =============================================================================
 # Risk Profiles
@@ -535,23 +534,33 @@ class ScalingAdvisor:
 
         self.latency_budgets = [
             LatencyBudget(
-                "Firewall", 5, 10,
+                "Firewall",
+                5,
+                10,
                 "Batch classification for bulk inputs",
             ),
             LatencyBudget(
-                "Trust computation", 1, 2,
+                "Trust computation",
+                1,
+                2,
                 "Cache trust scores for stable relationships",
             ),
             LatencyBudget(
-                "Sandbox lookup", 0.1, 1,
+                "Sandbox lookup",
+                0.1,
+                1,
                 "Rarely a bottleneck",
             ),
             LatencyBudget(
-                "Tripwire check", 1, 5,
+                "Tripwire check",
+                1,
+                5,
                 "Sample rather than check all beliefs",
             ),
             LatencyBudget(
-                "Consensus", 50, 200,
+                "Consensus",
+                50,
+                200,
                 "Reserve for critical decisions only",
             ),
         ]
@@ -569,9 +578,7 @@ class ScalingAdvisor:
             ValueError: If agent_count < 2
         """
         if agent_count < 2:
-            raise ValueError(
-                "Agent count must be at least 2 for multiagent system"
-            )
+            raise ValueError("Agent count must be at least 2 for multiagent system")
 
         for tier in self.tiers:
             if tier.max_agents is None or agent_count <= tier.max_agents:
@@ -629,15 +636,13 @@ class TrustDecayAnalyzer:
             ValueError: If parameters out of range
         """
         if not 0 <= initial_trust <= 1:
-            raise ValueError(
-                f"initial_trust must be 0-1, got {initial_trust}"
-            )
+            raise ValueError(f"initial_trust must be 0-1, got {initial_trust}")
         if not 0 < delta < 1:
             raise ValueError(f"delta must be (0,1), got {delta}")
         if depth < 0:
             raise ValueError(f"depth must be non-negative, got {depth}")
 
-        return initial_trust * (delta ** depth)
+        return initial_trust * (delta**depth)
 
     @staticmethod
     def practical_depth_limit(
@@ -661,9 +666,7 @@ class TrustDecayAnalyzer:
         if not 0 < delta < 1:
             raise ValueError(f"delta must be (0,1), got {delta}")
         if not 0 < threshold < 1:
-            raise ValueError(
-                f"threshold must be (0,1), got {threshold}"
-            )
+            raise ValueError(f"threshold must be (0,1), got {threshold}")
 
         import math
 
@@ -693,11 +696,9 @@ class TrustDecayAnalyzer:
 
         result: dict[str, dict[str, Any]] = {}
         for name, delta in profiles.items():
-            practical_limit = int(
-                math.ceil(math.log(0.1) / math.log(delta))
-            )
+            practical_limit = int(math.ceil(math.log(0.1) / math.log(delta)))
             half_trust_depth = math.log(0.5) / math.log(delta)
-            trust_at_4 = delta ** 4
+            trust_at_4 = delta**4
 
             result[name] = {
                 "delta": delta,

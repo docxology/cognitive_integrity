@@ -87,3 +87,18 @@ This connection is not just theoretical. It means:
 3. **The Ω₅ miss rate (44%) reflects FEP's fundamental challenge**: systematic manipulation by a compromised orchestrator can shift the agent's generative model $P$ itself (not just $Q$), making the baseline a moving target. This requires out-of-band verification (human review, Byzantine quorum) rather than in-context detection.
 
 For the full mathematical treatment, see Part~2's theoretical-connections and information-geometry sections.
+
+## Category-Theoretic Formalization of Defense Composition {#sec:category-theory-crossref}
+
+Part 2 (§1c, §2c) extends the composition algebra of Part 1 into a full category-theoretic framework. This formalization is relevant to practitioners because it provides *structural guarantees* — not just empirical observations — about how CIF defenses combine.
+
+**The Defense Category $\calD$** (Part 2, Definition CT.1): The CIF defense suite forms a category whose objects are cognitive states $\cogstate{} \in \Sigma$ and whose morphisms are detection functions $f : \cogstate{} \to \mathrm{DefenseResult}$. The composition rule formalizes *short-circuit detection*: once any module fires, subsequent modules do not override the event.
+
+**Three key theorems** (Part 2, Theorems CT.1–CT.3):
+- **CT.1 (Category Laws)**: Defense composition satisfies identity and associativity — the algebraic scaffold that makes multi-layer defenses predictable.
+- **CT.2 (Categorical Product)**: Parallel composition is the categorical product in $\calD$, with max-score fusion as the universal construction — recovering Part 1's parallel composition rule from first principles.
+- **CT.3 (Functor Preservation)**: Any defense-preserving transformation (e.g., architecture adapter) that maps morphisms while preserving composition structure cannot reduce the composite detection rate below the guarantee of Theorem 3.1.
+
+**Practical value for operators**: The categorical framing enables *type-checked composition* (incompatible modules are refused at composition time), *empirical law verification* (the `verify_category_laws()` function in Part 2's `src/formal/category_theory.py` validates the laws against randomly sampled morphism triples), and a unified framework for reasoning about series and parallel configurations. When designing a new CIF deployment, the Defense Category $\calD$ provides the structural language to specify *what it means* for two defense modules to compose correctly.
+
+Part 2 also provides a **composable visualization engine** (`DefenseGraph`, `CategoryDiagram`, `LatticeViz`, `OperadPlot`, `MonadFlow`, `LensDiagram`) and an **interactive CIF Composer web UI** (`output/web/cif_composer.html`) — a self-contained HTML/JS/D3 application with 8-module palette, live metric computation based on Theorems 3.1/3.2, category law verification, 4 deployment presets, and Python/JSON/SVG export. Operators can use the Composer to explore deployment configurations before committing to a production layout.

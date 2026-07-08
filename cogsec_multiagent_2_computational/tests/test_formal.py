@@ -3,7 +3,8 @@
 Tests cover all nine source files in src/formal/:
 - theorem_registry: TheoremRegistry, TheoremResult, TheoremStatus
 - byzantine_guarantees: validate_byzantine_bound
-- composition_proofs: validate_series_composition, validate_parallel_composition, validate_associativity
+- composition_proofs: validate_series_composition, validate_parallel_composition,
+    validate_associativity
 - latency_bound: validate_latency_bound
 - nusmv_spec: generate_nusmv_spec, parse_nusmv_result
 - spin_spec: generate_promela_spec, parse_spin_result
@@ -17,20 +18,19 @@ All tests use real data and computation. No mocks.
 import numpy as np
 import pytest
 
-from formal.theorem_registry import TheoremRegistry, TheoremResult, TheoremStatus
 from formal.byzantine_guarantees import validate_byzantine_bound
 from formal.composition_proofs import (
-    validate_series_composition,
-    validate_parallel_composition,
     validate_associativity,
+    validate_parallel_composition,
+    validate_series_composition,
 )
 from formal.latency_bound import validate_latency_bound
 from formal.nusmv_spec import generate_nusmv_spec, parse_nusmv_result
 from formal.spin_spec import generate_promela_spec, parse_spin_result
 from formal.stealth_impact import validate_stealth_impact
+from formal.theorem_registry import TheoremRegistry, TheoremResult, TheoremStatus
 from formal.tla_spec import generate_tla_spec, parse_tla_result
 from formal.trust_bounds import validate_trust_bound
-
 
 # ---------------------------------------------------------------------------
 # Section 1: TheoremResult and TheoremStatus (dataclass / enum basics)

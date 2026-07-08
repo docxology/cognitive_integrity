@@ -14,9 +14,7 @@ os.environ["MPLBACKEND"] = "Agg"
 
 from pathlib import Path
 
-import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
-import numpy as np
 from matplotlib.patches import Circle, FancyBboxPatch
 
 
@@ -204,7 +202,9 @@ def create_threat_taxonomy_figure(output_dir: Path) -> Path:
         x = 2.5 + i * 3.5
         circle = Circle((x, legend_y), 0.25, facecolor=color, edgecolor="black", linewidth=1.5)
         ax.add_patch(circle)
-        ax.text(x + 0.45, legend_y, f"{level}: {desc}", fontsize=14, va="center", fontweight="medium")
+        ax.text(
+            x + 0.45, legend_y, f"{level}: {desc}", fontsize=14, va="center", fontweight="medium"
+        )
 
     # Title
     ax.text(
@@ -227,9 +227,7 @@ def create_threat_taxonomy_figure(output_dir: Path) -> Path:
         facecolor="white",
         edgecolor="none",
     )
-    plt.savefig(
-        output_path_pdf, bbox_inches="tight", facecolor="white", edgecolor="none"
-    )
+    plt.savefig(output_path_pdf, bbox_inches="tight", facecolor="white", edgecolor="none")
     plt.close()
 
     print(str(output_path_png))

@@ -148,8 +148,8 @@ def evaluation_to_detection_matrix(
     for r in rows:
         lookup[(r.architecture, r.attack_category)] = r.detection_rate
 
-    archs = _ARCH_ORDER if any(r.architecture in _ARCH_ORDER for r in rows) else sorted({r.architecture for r in rows})
-    cats = _CAT_ORDER if any(r.attack_category in _CAT_ORDER for r in rows) else sorted({r.attack_category for r in rows})
+    archs = _ARCH_ORDER if any(r.architecture in _ARCH_ORDER for r in rows) else sorted({r.architecture for r in rows})  # noqa: E501
+    cats = _CAT_ORDER if any(r.attack_category in _CAT_ORDER for r in rows) else sorted({r.attack_category for r in rows})  # noqa: E501
 
     matrix = np.zeros((len(archs), len(cats)))
     for i, arch in enumerate(archs):

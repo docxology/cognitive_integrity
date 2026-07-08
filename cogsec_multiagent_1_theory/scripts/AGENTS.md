@@ -162,6 +162,18 @@ Mathematical visualization:
 - Decay curves
 - Delegation bounds
 
+### 19_cif_ad_coupling_figure.py
+CIF-AD coupling matrix visualization:
+- Action-Delegation phase mapping
+- Attack surface coverage across OODA phases
+- Defense portfolio optimization
+
+### 20_ooda_phase_figure.py
+OODA phase diagram:
+- Observe-Orient-Decide-Act cycle
+- CIF defense integration at each phase
+- Attack vector mapping to OODA transitions
+
 ### verify_manuscript.py
 Manuscript validation:
 - Figure cross-references

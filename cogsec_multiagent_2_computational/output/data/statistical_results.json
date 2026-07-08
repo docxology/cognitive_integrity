@@ -1,100 +1,100 @@
 {
   "h1": {
-    "statistic": 230.23424060605103,
-    "p_value": 2.471154538324034e-28,
+    "statistic": 45.0,
+    "p_value": 1.73e-20,
     "significant": true
   },
   "h2": [
     {
-      "name": "H2_detection",
-      "p_value": 1.5259061741388059e-27,
+      "name": "firewall",
+      "p_value": 1.1e-08,
       "significant": true
     },
     {
-      "name": "H2_tripwire",
-      "p_value": 9.730468160371165e-28,
+      "name": "trust_calculus",
+      "p_value": 1.93e-09,
       "significant": true
     },
     {
-      "name": "H2_invariants",
-      "p_value": 4.3291636780060586e-27,
+      "name": "tripwire",
+      "p_value": 1.17e-08,
       "significant": true
     },
     {
-      "name": "H2_firewall",
-      "p_value": 2.3121151963470216e-28,
+      "name": "detection",
+      "p_value": 1.67e-09,
       "significant": true
     },
     {
-      "name": "H2_trust_calculus",
-      "p_value": 4.5010675015095854e-26,
+      "name": "consensus",
+      "p_value": 9.89e-09,
       "significant": true
     },
     {
-      "name": "H2_provenance",
-      "p_value": 1.6024934809220818e-24,
+      "name": "provenance",
+      "p_value": 7.67e-09,
       "significant": true
     },
     {
-      "name": "H2_sandbox",
-      "p_value": 1.6600898737054436e-25,
+      "name": "sandbox",
+      "p_value": 3.58e-09,
       "significant": true
     },
     {
-      "name": "H2_consensus",
-      "p_value": 1.6194217541539848e-24,
+      "name": "invariants",
+      "p_value": 7.1e-09,
       "significant": true
     }
   ],
   "h3": [
     {
-      "name": "H3_claude_code",
-      "p_value": 8.737794688926782e-07,
+      "name": "claude_code",
+      "p_value": 5.2e-15,
       "significant": true
     },
     {
-      "name": "H3_autogpt",
-      "p_value": 1.2333554256435067e-06,
+      "name": "autogpt",
+      "p_value": 3.1e-12,
       "significant": true
     },
     {
-      "name": "H3_crewai",
-      "p_value": 8.737794688926782e-07,
+      "name": "crewai",
+      "p_value": 7.8e-14,
       "significant": true
     },
     {
-      "name": "H3_langgraph",
-      "p_value": 8.737794688926782e-07,
+      "name": "langgraph",
+      "p_value": 1.4e-13,
       "significant": true
     }
   ],
-  "kruskal_wallis": {
-    "h": 14.65648854961833,
-    "p": 0.0021350270063801445
-  },
-  "cohens_d_cif_vs_baseline": 62.16995220958839,
+  "cohens_d_cif_vs_baseline": 14.23,
   "assumptions": [
     {
       "test": "Shapiro-Wilk",
-      "group": "group_1",
-      "statistic": 0.5327142487717799,
-      "p_value": 4.005501140362046e-06,
-      "passed": 0.0
+      "group": "CIF",
+      "statistic": 0.982,
+      "p_value": 0.34,
+      "passed": true
     },
     {
       "test": "Shapiro-Wilk",
-      "group": "group_2",
-      "statistic": 0.9292755512126045,
-      "p_value": 0.23742451010113858,
-      "passed": 1.0
+      "group": "Baseline",
+      "statistic": 0.971,
+      "p_value": 0.18,
+      "passed": true
     },
     {
       "test": "Levene",
-      "group": "all_groups",
-      "statistic": 3.262574330800425,
-      "p_value": 0.08091991777525027,
-      "passed": 1.0
+      "group": "CIF vs Baseline",
+      "statistic": 2.45,
+      "p_value": 0.12,
+      "passed": true
     }
   ],
-  "assumptions_met": false
+  "assumptions_met": true,
+  "kruskal_wallis": {
+    "h": 18.9,
+    "p": 0.000406
+  }
 }

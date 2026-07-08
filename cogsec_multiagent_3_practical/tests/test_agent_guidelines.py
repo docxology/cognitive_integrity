@@ -31,8 +31,6 @@ from src.agent_guidelines import (
     generate_yaml_rules,
     get_response_protocols,
 )
-from src import RiskLevel, AssessmentResult
-
 
 # =============================================================================
 # Enum Tests

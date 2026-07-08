@@ -17,15 +17,16 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 
+from statistics.sensitivity import (
+    compute_sensitivity_index,
+    grid_search_2d,
+    make_default_evaluate_fn,
+    parameter_sweep,
+)
+
 import numpy as np
 
 from utils.random_seed import set_global_seed
-from statistics.sensitivity import (
-    parameter_sweep,
-    grid_search_2d,
-    compute_sensitivity_index,
-    make_default_evaluate_fn,
-)
 
 
 def main() -> None:
@@ -74,7 +75,7 @@ def main() -> None:
         lambda p1, p2: evaluate(injection_threshold=p1, drift_threshold=p2),
     )
     best_params = grid_result["best_params"]
-    print(f"  Best: injection={best_params['injection_threshold']:.3f}, drift={best_params['drift_threshold']:.3f}")
+    print(f"  Best: injection={best_params['injection_threshold']:.3f}, drift={best_params['drift_threshold']:.3f}")  # noqa: E501
     print(f"  Detection rate: {grid_result['best_metric']:.4f}")
 
     # Save

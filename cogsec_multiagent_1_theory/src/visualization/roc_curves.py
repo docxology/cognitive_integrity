@@ -54,6 +54,7 @@ def create_roc_curves_figure(output_dir: Path) -> tuple[Path, Path]:
     firewall_fpr, firewall_tpr = None, None
     if data_path.exists():
         import json
+
         with open(data_path, "r") as f:
             data = json.load(f)
             if "firewall" in data:
@@ -124,7 +125,7 @@ def create_roc_curves_figure(output_dir: Path) -> tuple[Path, Path]:
         "-",
         color=colors["sandbox"],
         linewidth=2.5,
-        label=f"Belief Sandbox (AUC={auc_sandbox:.3f})",
+        label=f"Belief Sandbox (Theoretical, AUC={auc_sandbox:.3f})",
     )
 
     ax.plot(
@@ -133,7 +134,7 @@ def create_roc_curves_figure(output_dir: Path) -> tuple[Path, Path]:
         "-",
         color=colors["tripwire"],
         linewidth=2.5,
-        label=f"Tripwire Monitor (AUC={auc_tripwire:.3f})",
+        label=f"Tripwire Monitor (Theoretical, AUC={auc_tripwire:.3f})",
     )
 
     ax.plot(
@@ -142,7 +143,7 @@ def create_roc_curves_figure(output_dir: Path) -> tuple[Path, Path]:
         "-",
         color=colors["anomaly"],
         linewidth=2.5,
-        label=f"Anomaly Detection (AUC={auc_anomaly:.3f})",
+        label=f"Anomaly Detection (Theoretical, AUC={auc_anomaly:.3f})",
     )
 
     ax.plot(
@@ -151,7 +152,7 @@ def create_roc_curves_figure(output_dir: Path) -> tuple[Path, Path]:
         "-",
         color=colors["full_cif"],
         linewidth=3,
-        label=f"Full CIF (AUC={auc_full_cif:.3f})",
+        label=f"Full CIF (Theoretical, AUC={auc_full_cif:.3f})",
     )
 
     # Random classifier baseline
@@ -232,9 +233,7 @@ def create_roc_curves_figure(output_dir: Path) -> tuple[Path, Path]:
     output_png = output_dir / "roc_curves.png"
     output_pdf = output_dir / "roc_curves.pdf"
 
-    plt.savefig(
-        output_png, dpi=150, bbox_inches="tight", facecolor="white", edgecolor="none"
-    )
+    plt.savefig(output_png, dpi=150, bbox_inches="tight", facecolor="white", edgecolor="none")
     plt.savefig(output_pdf, bbox_inches="tight", facecolor="white", edgecolor="none")
     plt.close()
 

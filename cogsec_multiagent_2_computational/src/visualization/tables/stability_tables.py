@@ -18,14 +18,16 @@ def generate_stability_table() -> str:
     Reads from multi_seed_results.json.  Raises FileNotFoundError
     if the data file is not available.
     """
-    p = Path(__file__).resolve().parent.parent.parent.parent / "output" / "data" / "multi_seed_results.json"
+    p = Path(__file__).resolve().parent.parent.parent.parent / "output" / "data" / "multi_seed_results.json"  # noqa: E501
     with open(p) as f:
         data = json.load(f)
 
     threshold = data.get("cv_threshold", 0.05)
+    checkmark = "\\checkmark"
+    texttimes = "\\texttimes"
     rows = [
         f"  Overall & {data['overall_cv']:.4f} & {threshold:.2f} & "
-        f"{'\\checkmark' if data['overall_cv'] <= threshold else '\\texttimes'} \\\\"
+        f"{checkmark if data['overall_cv'] <= threshold else texttimes} \\\\"
     ]
     for arch, cv in sorted(data.get("per_architecture_cv", {}).items()):
         stable = "\\checkmark" if cv <= threshold else "\\texttimes"

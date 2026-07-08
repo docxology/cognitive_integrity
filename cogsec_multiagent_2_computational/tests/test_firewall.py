@@ -1,8 +1,6 @@
 """Tests for cognitive firewall."""
 
-import pytest
-from src import (Classification, CognitiveFirewall, FirewallConfig,
-                      PatternDetector)
+from src import Classification, CognitiveFirewall, FirewallConfig, PatternDetector
 
 
 class TestPatternDetector:
@@ -171,6 +169,7 @@ class TestSemanticSimilarityDetector:
     def test_cosine_similarity(self):
         """Cosine similarity computes correctly."""
         import numpy as np
+
         from src import SemanticSimilarityDetector
 
         detector = SemanticSimilarityDetector()

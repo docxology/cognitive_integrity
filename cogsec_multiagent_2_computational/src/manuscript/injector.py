@@ -215,7 +215,7 @@ def inject_results(gt: dict, manuscript_dir: Path, dry_run: bool = False) -> boo
 
     # Multi-seed CV
     ms_cv = f"{gt['multi_seed_cv']:.3f}"
-    text = re.sub(r"Coefficient of Variation\s*\|\s*\d+\.\d+", f"Coefficient of Variation | {ms_cv}", text)
+    text = re.sub(r"Coefficient of Variation\s*\|\s*\d+\.\d+", f"Coefficient of Variation | {ms_cv}", text)  # noqa: E501
 
     # Multi-seed min/max
     ms_min = f"{gt['multi_seed_min_dr']:.2f}"
@@ -264,7 +264,7 @@ def inject_ablation(gt: dict, manuscript_dir: Path, dry_run: bool = False) -> bo
     original = text
 
     det_delta = abs(gt["detection_delta"])
-    text = re.sub(r"\\Delta\\text\{TPR\}\s*=\s*-[\d.]+\)", f"\\\\Delta\\\\text{{TPR}} = -{det_delta:.3f})", text)
+    text = re.sub(r"\\Delta\\text\{TPR\}\s*=\s*-[\d.]+\)", f"\\\\Delta\\\\text{{TPR}} = -{det_delta:.3f})", text)  # noqa: E501
 
     components = gt["ablation_components"]
     caption_parts = []
@@ -278,7 +278,7 @@ def inject_ablation(gt: dict, manuscript_dir: Path, dry_run: bool = False) -> bo
     syn_val = gt["top_synergy"]["synergy"]
     syn_a = gt["top_synergy"]["a"].replace("_", " ").title()
     syn_b = gt["top_synergy"]["b"].replace("_", " ").title()
-    text = re.sub(r"strongest positive synergy \(\$\+[\d.]+\$", f"strongest positive synergy ($+{syn_val:.3f}$", text)
+    text = re.sub(r"strongest positive synergy \(\$\+[\d.]+\$", f"strongest positive synergy ($+{syn_val:.3f}$", text)  # noqa: E501
     text = re.sub(
         r"The [A-Z][a-z]+ \+ [A-Z][a-z]+ pair exhibits the strongest",
         f"The {syn_a} + {syn_b} pair exhibits the strongest",
@@ -290,7 +290,7 @@ def inject_ablation(gt: dict, manuscript_dir: Path, dry_run: bool = False) -> bo
         if c["removed"] == "detection":
             name_display = "Detection module"
         old_pattern = rf"\| {re.escape(name_display)}\s*\|\s*[\d.]+\s*\|\s*\$[-+]?[\d.]+\$"
-        delta_str = f"-{abs(c['delta_tpr']):.3f}" if c['delta_tpr'] < 0 else f"-{abs(c['delta_tpr']):.3f}"
+        delta_str = f"-{abs(c['delta_tpr']):.3f}" if c['delta_tpr'] < 0 else f"-{abs(c['delta_tpr']):.3f}"  # noqa: E501
         new_row = f"| {name_display} | {c['tpr']:.3f} | ${delta_str}$"
         text = re.sub(old_pattern, new_row, text, flags=re.IGNORECASE)
 
@@ -326,7 +326,7 @@ def inject_discussion(gt: dict, manuscript_dir: Path, dry_run: bool = False) -> 
     original = text
 
     det_delta = abs(gt["detection_delta"])
-    text = re.sub(r"\\Delta\\text\{TPR\}\s*=\s*-[\d.]+\)", f"\\\\Delta\\\\text{{TPR}} = -{det_delta:.3f})", text)
+    text = re.sub(r"\\Delta\\text\{TPR\}\s*=\s*-[\d.]+\)", f"\\\\Delta\\\\text{{TPR}} = -{det_delta:.3f})", text)  # noqa: E501
 
     # Multi-seed mean DR
     ms_pct = format_pct(gt["multi_seed_mean_dr"], 1)
@@ -456,7 +456,7 @@ def inject_statistical(gt: dict, manuscript_dir: Path, dry_run: bool = False) ->
     text = re.sub(r"CV\s*\|\s*\d+\.\d+\s*\|", f"CV | {ms_cv} |", text)
 
     # Detection delta in ablation effect sizes
-    det_delta = gt["detection_delta"]
+    gt["detection_delta"]
     text = re.sub(
         r"None \(full pipeline\)\s*\|\s*\d+\.\d+",
         f"None (full pipeline) | {gt['full_pipeline_tpr']:.3f}",
@@ -541,13 +541,13 @@ def inject_all(
     gt = load_ground_truth(data_dir)
 
     logger.info("=== Ground Truth Values ===")
-    logger.info(f"  [PARAMETRIC] Overall DR: {format_pct(gt['parametric_overall_dr_mean'])}% (N={gt['parametric_n']})")
+    logger.info(f"  [PARAMETRIC] Overall DR: {format_pct(gt['parametric_overall_dr_mean'])}% (N={gt['parametric_n']})")  # noqa: E501
     logger.info(f"  [PARAMETRIC] AutoGPT DR: {format_pct(gt['parametric_autogpt_dr_mean'])}% "
                 f"[{format_pct(gt['parametric_autogpt_dr_min'])}–{format_pct(gt['parametric_autogpt_dr_max'])}%]")
-    logger.info(f"  [REAL] Multi-seed mean DR: {format_pct(gt['multi_seed_mean_dr'])}% (N={gt['multi_seed_n']} seeds)")
-    logger.info(f"  [REAL] Multi-seed range: {format_pct(gt['multi_seed_min_dr'])}–{format_pct(gt['multi_seed_max_dr'])}%")
-    logger.info(f"  [REAL] LLM Claude Code DR: {format_pct(gt['llm_claude_dr'])}% (N={gt.get('llm_n_per_arch', 5)})")
-    logger.info(f"  [REAL] LLM CrewAI DR: {format_pct(gt['llm_crewai_dr'])}% (N={gt.get('llm_n_per_arch', 5)})")
+    logger.info(f"  [REAL] Multi-seed mean DR: {format_pct(gt['multi_seed_mean_dr'])}% (N={gt['multi_seed_n']} seeds)")  # noqa: E501
+    logger.info(f"  [REAL] Multi-seed range: {format_pct(gt['multi_seed_min_dr'])}–{format_pct(gt['multi_seed_max_dr'])}%")  # noqa: E501
+    logger.info(f"  [REAL] LLM Claude Code DR: {format_pct(gt['llm_claude_dr'])}% (N={gt.get('llm_n_per_arch', 5)})")  # noqa: E501
+    logger.info(f"  [REAL] LLM CrewAI DR: {format_pct(gt['llm_crewai_dr'])}% (N={gt.get('llm_n_per_arch', 5)})")  # noqa: E501
     logger.info(f"  [REAL] Ablation Detection Δ: {gt['detection_delta']:+.3f}")
     logger.info(f"  [REAL] Ablation Firewall Δ: {gt['firewall_delta']:+.3f}")
     logger.info(f"  [REAL] Top synergy: {gt['top_synergy']['a']}+{gt['top_synergy']['b']} "

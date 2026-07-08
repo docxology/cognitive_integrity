@@ -244,7 +244,7 @@ class LLMAgent:
         }
 
         if self.config.seed is not None:
-            payload["options"]["seed"] = self.config.seed
+            payload["options"]["seed"] = self.config.seed  # type: ignore[index]
 
         try:
             response = requests.post(

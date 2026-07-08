@@ -11,11 +11,12 @@ from dataclasses import dataclass, field
 from enum import Enum
 
 # Import shared types from package
-from . import RiskLevel, PostureLevel, AssessmentResult
+from . import AssessmentResult, PostureLevel, RiskLevel
 
 
 class PillarType(Enum):
     """The Five Pillars of Cognitive Security Posture."""
+
     TRUST_BOUNDARY = "trust_boundary"
     BELIEF_PROVENANCE = "belief_provenance"
     DELEGATION_HYGIENE = "delegation_hygiene"
@@ -35,6 +36,7 @@ class AssessmentQuestion:
         score: Response score 0-5 (0=not assessed)
         notes: Optional assessor notes
     """
+
     id: str
     pillar: PillarType
     text: str
@@ -55,6 +57,7 @@ class PillarAssessment:
         gaps: Identified gaps (questions scoring below threshold)
         recommendations: Specific recommendations for improvement
     """
+
     pillar: PillarType
     score: float
     max_score: float
@@ -84,104 +87,134 @@ class FivePillarsAssessment:
     def _load_defaults(self) -> None:
         """Load the 20 default assessment questions from manuscript."""
         # Trust Boundary Awareness
-        self.questions.extend([
-            AssessmentQuestion(
-                id="TB-1", pillar=PillarType.TRUST_BOUNDARY,
-                text="Have you documented all trust relationships in your architecture, including implicit assumptions?"
-            ),
-            AssessmentQuestion(
-                id="TB-2", pillar=PillarType.TRUST_BOUNDARY,
-                text="For each trust assumption, what would happen if it were violated? Could an attacker escalate privileges, corrupt beliefs, or damage high-value assets?"
-            ),
-            AssessmentQuestion(
-                id="TB-3", pillar=PillarType.TRUST_BOUNDARY,
-                text="How would you detect a trust violation? Do you have monitoring in place, or would violations be invisible until damage manifests?"
-            ),
-            AssessmentQuestion(
-                id="TB-4", pillar=PillarType.TRUST_BOUNDARY,
-                text="What mechanisms limit damage from trust exploitation? Can a compromised trust relationship cascade through the system, or is blast radius contained?"
-            ),
-        ])
+        self.questions.extend(
+            [
+                AssessmentQuestion(
+                    id="TB-1",
+                    pillar=PillarType.TRUST_BOUNDARY,
+                    text="Have you documented all trust relationships in your architecture, including implicit assumptions?",
+                ),
+                AssessmentQuestion(
+                    id="TB-2",
+                    pillar=PillarType.TRUST_BOUNDARY,
+                    text="For each trust assumption, what would happen if it were violated? Could an attacker escalate privileges, corrupt beliefs, or damage high-value assets?",
+                ),
+                AssessmentQuestion(
+                    id="TB-3",
+                    pillar=PillarType.TRUST_BOUNDARY,
+                    text="How would you detect a trust violation? Do you have monitoring in place, or would violations be invisible until damage manifests?",
+                ),
+                AssessmentQuestion(
+                    id="TB-4",
+                    pillar=PillarType.TRUST_BOUNDARY,
+                    text="What mechanisms limit damage from trust exploitation? Can a compromised trust relationship cascade through the system, or is blast radius contained?",
+                ),
+            ]
+        )
 
         # Belief Provenance
-        self.questions.extend([
-            AssessmentQuestion(
-                id="BP-1", pillar=PillarType.BELIEF_PROVENANCE,
-                text="Can you trace the origin of any belief an agent holds? Given a statement an agent makes or an action it takes, can you identify the inputs that led to that conclusion?"
-            ),
-            AssessmentQuestion(
-                id="BP-2", pillar=PillarType.BELIEF_PROVENANCE,
-                text="How trustworthy is each upstream source? Do you distinguish between beliefs derived from verified databases, unverified web content, user assertions, and other agent outputs?"
-            ),
-            AssessmentQuestion(
-                id="BP-3", pillar=PillarType.BELIEF_PROVENANCE,
-                text="Could an adversary have influenced the belief chain? What would an attack path look like, and would your monitoring detect it?"
-            ),
-            AssessmentQuestion(
-                id="BP-4", pillar=PillarType.BELIEF_PROVENANCE,
-                text="Do you discount multi-hop information appropriately? Beliefs that have passed through multiple summarization steps should carry less weight than direct observations."
-            ),
-        ])
+        self.questions.extend(
+            [
+                AssessmentQuestion(
+                    id="BP-1",
+                    pillar=PillarType.BELIEF_PROVENANCE,
+                    text="Can you trace the origin of any belief an agent holds? Given a statement an agent makes or an action it takes, can you identify the inputs that led to that conclusion?",
+                ),
+                AssessmentQuestion(
+                    id="BP-2",
+                    pillar=PillarType.BELIEF_PROVENANCE,
+                    text="How trustworthy is each upstream source? Do you distinguish between beliefs derived from verified databases, unverified web content, user assertions, and other agent outputs?",
+                ),
+                AssessmentQuestion(
+                    id="BP-3",
+                    pillar=PillarType.BELIEF_PROVENANCE,
+                    text="Could an adversary have influenced the belief chain? What would an attack path look like, and would your monitoring detect it?",
+                ),
+                AssessmentQuestion(
+                    id="BP-4",
+                    pillar=PillarType.BELIEF_PROVENANCE,
+                    text="Do you discount multi-hop information appropriately? Beliefs that have passed through multiple summarization steps should carry less weight than direct observations.",
+                ),
+            ]
+        )
 
         # Delegation Hygiene
-        self.questions.extend([
-            AssessmentQuestion(
-                id="DH-1", pillar=PillarType.DELEGATION_HYGIENE,
-                text="Do you implement trust decay across delegation hops? The trust associated with information or requests should diminish as they pass through intermediaries."
-            ),
-            AssessmentQuestion(
-                id="DH-2", pillar=PillarType.DELEGATION_HYGIENE,
-                text="Is there a maximum delegation depth? Can an agent delegate to an agent that delegates to another agent indefinitely, or is recursion bounded?"
-            ),
-            AssessmentQuestion(
-                id="DH-3", pillar=PillarType.DELEGATION_HYGIENE,
-                text="Can delegated authority exceed direct authority? If Agent A can only perform read operations, can it delegate a write operation to Agent B?"
-            ),
-            AssessmentQuestion(
-                id="DH-4", pillar=PillarType.DELEGATION_HYGIENE,
-                text="Do you verify delegation chains? Can you audit who originated a delegated task and what transformations occurred along the way?"
-            ),
-        ])
+        self.questions.extend(
+            [
+                AssessmentQuestion(
+                    id="DH-1",
+                    pillar=PillarType.DELEGATION_HYGIENE,
+                    text="Do you implement trust decay across delegation hops? The trust associated with information or requests should diminish as they pass through intermediaries.",
+                ),
+                AssessmentQuestion(
+                    id="DH-2",
+                    pillar=PillarType.DELEGATION_HYGIENE,
+                    text="Is there a maximum delegation depth? Can an agent delegate to an agent that delegates to another agent indefinitely, or is recursion bounded?",
+                ),
+                AssessmentQuestion(
+                    id="DH-3",
+                    pillar=PillarType.DELEGATION_HYGIENE,
+                    text="Can delegated authority exceed direct authority? If Agent A can only perform read operations, can it delegate a write operation to Agent B?",
+                ),
+                AssessmentQuestion(
+                    id="DH-4",
+                    pillar=PillarType.DELEGATION_HYGIENE,
+                    text="Do you verify delegation chains? Can you audit who originated a delegated task and what transformations occurred along the way?",
+                ),
+            ]
+        )
 
         # Coordination Integrity
-        self.questions.extend([
-            AssessmentQuestion(
-                id="CI-1", pillar=PillarType.COORDINATION_INTEGRITY,
-                text="Do critical decisions require Byzantine-tolerant consensus? Protocols that tolerate up to f failures require n >= 3f + 1 agents."
-            ),
-            AssessmentQuestion(
-                id="CI-2", pillar=PillarType.COORDINATION_INTEGRITY,
-                text="Is agent identity verified before counting votes? Can an attacker trivially create additional voting agents?"
-            ),
-            AssessmentQuestion(
-                id="CI-3", pillar=PillarType.COORDINATION_INTEGRITY,
-                text="Do quorum requirements account for potential adversaries? If you assume 10% of agents might be compromised, is your quorum threshold set accordingly?"
-            ),
-            AssessmentQuestion(
-                id="CI-4", pillar=PillarType.COORDINATION_INTEGRITY,
-                text="Are coordination protocols time-bounded appropriately? Can an attacker delay messages to manipulate outcomes?"
-            ),
-        ])
+        self.questions.extend(
+            [
+                AssessmentQuestion(
+                    id="CI-1",
+                    pillar=PillarType.COORDINATION_INTEGRITY,
+                    text="Do critical decisions require Byzantine-tolerant consensus? Protocols that tolerate up to f failures require n >= 3f + 1 agents.",
+                ),
+                AssessmentQuestion(
+                    id="CI-2",
+                    pillar=PillarType.COORDINATION_INTEGRITY,
+                    text="Is agent identity verified before counting votes? Can an attacker trivially create additional voting agents?",
+                ),
+                AssessmentQuestion(
+                    id="CI-3",
+                    pillar=PillarType.COORDINATION_INTEGRITY,
+                    text="Do quorum requirements account for potential adversaries? If you assume 10% of agents might be compromised, is your quorum threshold set accordingly?",
+                ),
+                AssessmentQuestion(
+                    id="CI-4",
+                    pillar=PillarType.COORDINATION_INTEGRITY,
+                    text="Are coordination protocols time-bounded appropriately? Can an attacker delay messages to manipulate outcomes?",
+                ),
+            ]
+        )
 
         # Continuous Monitoring
-        self.questions.extend([
-            AssessmentQuestion(
-                id="CM-1", pillar=PillarType.CONTINUOUS_MONITORING,
-                text="Do you monitor cognitive integrity metrics continuously? Metrics such as belief consistency, trust relationship stability, and delegation patterns should be tracked."
-            ),
-            AssessmentQuestion(
-                id="CM-2", pillar=PillarType.CONTINUOUS_MONITORING,
-                text="Can you detect drift from baseline behavior? Gradual manipulation that stays below individual-event thresholds may be visible as aggregate drift."
-            ),
-            AssessmentQuestion(
-                id="CM-3", pillar=PillarType.CONTINUOUS_MONITORING,
-                text="Do you have incident response procedures for cognitive attacks? When manipulation is detected, do your teams know how to contain, investigate, and remediate?"
-            ),
-            AssessmentQuestion(
-                id="CM-4", pillar=PillarType.CONTINUOUS_MONITORING,
-                text="Do you conduct regular adversarial testing? Red team exercises that specifically target cognitive attack surfaces reveal gaps that theoretical analysis misses."
-            ),
-        ])
+        self.questions.extend(
+            [
+                AssessmentQuestion(
+                    id="CM-1",
+                    pillar=PillarType.CONTINUOUS_MONITORING,
+                    text="Do you monitor cognitive integrity metrics continuously? Metrics such as belief consistency, trust relationship stability, and delegation patterns should be tracked.",
+                ),
+                AssessmentQuestion(
+                    id="CM-2",
+                    pillar=PillarType.CONTINUOUS_MONITORING,
+                    text="Can you detect drift from baseline behavior? Gradual manipulation that stays below individual-event thresholds may be visible as aggregate drift.",
+                ),
+                AssessmentQuestion(
+                    id="CM-3",
+                    pillar=PillarType.CONTINUOUS_MONITORING,
+                    text="Do you have incident response procedures for cognitive attacks? When manipulation is detected, do your teams know how to contain, investigate, and remediate?",
+                ),
+                AssessmentQuestion(
+                    id="CM-4",
+                    pillar=PillarType.CONTINUOUS_MONITORING,
+                    text="Do you conduct regular adversarial testing? Red team exercises that specifically target cognitive attack surfaces reveal gaps that theoretical analysis misses.",
+                ),
+            ]
+        )
 
     def set_score(self, question_id: str, score: int, notes: str = "") -> None:
         """Set score for a specific question.
@@ -226,17 +259,13 @@ class FivePillarsAssessment:
         """
         questions = self.get_pillar_questions(pillar)
         if not questions:
-            return PillarAssessment(
-                pillar=pillar, score=0.0, max_score=0.0, raw_score=0.0
-            )
+            return PillarAssessment(pillar=pillar, score=0.0, max_score=0.0, raw_score=0.0)
 
         weighted_score = sum(q.score * q.weight for q in questions)
         max_possible = sum(5.0 * q.weight for q in questions)
         normalized = weighted_score / max_possible if max_possible > 0 else 0.0
 
-        gaps = [
-            f"{q.id}: {q.text}" for q in questions if q.score < 3
-        ]
+        gaps = [f"{q.id}: {q.text}" for q in questions if q.score < 3]
 
         recommendations = []
         if normalized < 0.5:
@@ -312,8 +341,10 @@ class FivePillarsAssessment:
             routes["04"] = "Detection scored low - cognitive tripwire implementations needed"
         if assessments[PillarType.DELEGATION_HYGIENE].score < 0.6:
             routes["05"] = "Bounding scored low - delegation parameter configuration needed"
-        if (assessments[PillarType.COORDINATION_INTEGRITY].score < 0.6 or
-            assessments[PillarType.CONTINUOUS_MONITORING].score < 0.6):
+        if (
+            assessments[PillarType.COORDINATION_INTEGRITY].score < 0.6
+            or assessments[PillarType.CONTINUOUS_MONITORING].score < 0.6
+        ):
             routes["06"] = "Consensus/monitoring scored low - threat modeling methodology needed"
 
         # Always recommend pitfalls review
@@ -329,6 +360,7 @@ class FivePillarsAssessment:
 
 class MaturityDimension(Enum):
     """Six dimensions for maturity assessment."""
+
     TRUST_MAPPING = "trust_mapping"
     DETECTION = "detection"
     BOUNDING = "bounding"
@@ -339,10 +371,11 @@ class MaturityDimension(Enum):
 
 class MaturityLevel(Enum):
     """Organizational maturity levels."""
-    REACTIVE = "reactive"          # Below 12
-    DEVELOPING = "developing"      # 12-17
-    MANAGED = "managed"            # 18-23
-    PROACTIVE = "proactive"        # 24-30
+
+    REACTIVE = "reactive"  # Below 12
+    DEVELOPING = "developing"  # 12-17
+    MANAGED = "managed"  # 18-23
+    PROACTIVE = "proactive"  # 24-30
 
 
 @dataclass
@@ -356,6 +389,7 @@ class MaturityAssessment:
         interpretation: Text interpretation of the score
         priority_dimensions: Dimensions needing most attention
     """
+
     dimension_scores: dict[MaturityDimension, int]
     total_score: int
     maturity_level: MaturityLevel
@@ -425,8 +459,7 @@ def compute_maturity(scores: dict[MaturityDimension, int]) -> MaturityAssessment
     else:
         level = MaturityLevel.REACTIVE
         interpretation = (
-            "Significant risk exposure. Begin immediately with trust mapping "
-            "and basic monitoring."
+            "Significant risk exposure. Begin immediately with trust mapping and basic monitoring."
         )
 
     # Identify priority dimensions (scoring 2 or below)
@@ -463,6 +496,7 @@ class PostureReport:
         capabilities_present: Operational capabilities present
         capabilities_missing: Operational capabilities missing
     """
+
     pillar_assessments: dict[PillarType, PillarAssessment]
     maturity: MaturityAssessment
     overall_score: float
@@ -499,6 +533,7 @@ def determine_posture_level(score: float) -> PostureLevel:
 
 class CapabilityName(Enum):
     """Operational capabilities from manuscript."""
+
     STIGMERGIC_AUDIT = "stigmergic_audit_trail"
     QUORUM_GATES = "quorum_gates"
     COLLECTIVE_ANOMALY = "collective_anomaly_detection"
@@ -518,6 +553,7 @@ class CapabilityDefinition:
         guidance: How to implement it
         present: Whether the capability is present
     """
+
     name: CapabilityName
     purpose: str
     guidance: str
@@ -635,12 +671,8 @@ class CapabilityChecker:
         else:
             risk_level = RiskLevel.CRITICAL
 
-        findings = [
-            f"Missing: {cap.name.value} - {cap.purpose}" for cap in missing
-        ]
-        recommendations = [
-            f"Implement {cap.name.value}: {cap.guidance}" for cap in missing
-        ]
+        findings = [f"Missing: {cap.name.value} - {cap.purpose}" for cap in missing]
+        recommendations = [f"Implement {cap.name.value}: {cap.guidance}" for cap in missing]
 
         return AssessmentResult(
             passed=score >= 0.7,

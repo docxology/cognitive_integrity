@@ -25,10 +25,8 @@ from __future__ import annotations
 
 import logging
 import time
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, Tuple
-
-import numpy as np
 
 from .llm_agent import AgentMessage, AgentResponse, LLMAgent, OllamaConfig
 

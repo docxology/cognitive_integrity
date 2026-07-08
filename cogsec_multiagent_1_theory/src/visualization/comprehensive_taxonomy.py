@@ -14,10 +14,8 @@ os.environ["MPLBACKEND"] = "Agg"
 
 from pathlib import Path
 
-import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
-import numpy as np
-from matplotlib.patches import Circle, FancyBboxPatch, Polygon, Rectangle
+from matplotlib.patches import FancyBboxPatch, Rectangle
 
 
 def create_comprehensive_taxonomy_figure(output_dir: Path) -> Path:
@@ -262,11 +260,11 @@ def create_comprehensive_taxonomy_figure(output_dir: Path) -> Path:
         bar_color = (
             "#648FFF"
             if cls["detection"] >= 0.8
-            else "#FFB000" if cls["detection"] >= 0.6 else "#DC267F"
+            else "#FFB000"
+            if cls["detection"] >= 0.6
+            else "#DC267F"
         )
-        bar_fill = Rectangle(
-            (x + 0.2, 1.6), bar_width, 0.3, facecolor=bar_color, edgecolor="none"
-        )
+        bar_fill = Rectangle((x + 0.2, 1.6), bar_width, 0.3, facecolor=bar_color, edgecolor="none")
         ax.add_patch(bar_fill)
         ax.text(
             x + col_width / 2,
@@ -368,9 +366,7 @@ def create_comprehensive_taxonomy_figure(output_dir: Path) -> Path:
         facecolor="white",
         edgecolor="none",
     )
-    plt.savefig(
-        output_path_pdf, bbox_inches="tight", facecolor="white", edgecolor="none"
-    )
+    plt.savefig(output_path_pdf, bbox_inches="tight", facecolor="white", edgecolor="none")
     plt.close()
 
     print(str(output_path_png))

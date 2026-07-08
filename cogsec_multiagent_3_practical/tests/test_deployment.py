@@ -12,31 +12,24 @@ Tests cover:
 - Edge cases and ValueError handling
 """
 
-import math
-
 import pytest
 
 from src import RiskLevel
 from src.deployment import (
     ArchitectureAdvisor,
-    ArchitectureGuidance,
     ArchitectureRisk,
     ArchitectureType,
     ConsensusConfig,
-    DeploymentConfig,
     DeploymentConfigurator,
     FirewallConfig,
     IntegrationGuidance,
     IntegrationPattern,
-    LatencyBudget,
     MonitoringConfig,
     RiskProfile,
     ScalingAdvisor,
-    ScalingTier,
     TrustDecayAnalyzer,
     get_integration_patterns,
 )
-
 
 # =============================================================================
 # Enum Tests
@@ -335,61 +328,73 @@ class TestDeploymentConfigurator:
     def test_recommend_profile_low_risk(self):
         """Test recommendation for low-risk characteristics."""
         configurator = DeploymentConfigurator()
-        profile = configurator.recommend_profile({
-            "autonomous": False,
-            "sensitive_data": False,
-            "customer_facing": False,
-            "human_oversight": True,
-        })
+        profile = configurator.recommend_profile(
+            {
+                "autonomous": False,
+                "sensitive_data": False,
+                "customer_facing": False,
+                "human_oversight": True,
+            }
+        )
         assert profile == RiskProfile.LOW
 
     def test_recommend_profile_medium_risk(self):
         """Test recommendation for medium-risk characteristics."""
         configurator = DeploymentConfigurator()
-        profile = configurator.recommend_profile({
-            "autonomous": False,
-            "sensitive_data": True,
-            "customer_facing": True,
-            "human_oversight": True,
-        })
+        profile = configurator.recommend_profile(
+            {
+                "autonomous": False,
+                "sensitive_data": True,
+                "customer_facing": True,
+                "human_oversight": True,
+            }
+        )
         assert profile == RiskProfile.MEDIUM
 
     def test_recommend_profile_high_risk(self):
         """Test recommendation for high-risk characteristics."""
         configurator = DeploymentConfigurator()
-        profile = configurator.recommend_profile({
-            "autonomous": True,
-            "sensitive_data": True,
-            "complex_delegation": True,
-            "human_oversight": False,
-        })
+        profile = configurator.recommend_profile(
+            {
+                "autonomous": True,
+                "sensitive_data": True,
+                "complex_delegation": True,
+                "human_oversight": False,
+            }
+        )
         assert profile == RiskProfile.HIGH
 
     def test_recommend_profile_autonomous_pushes_high(self):
         """Test that autonomous flag strongly pushes toward HIGH."""
         configurator = DeploymentConfigurator()
-        profile = configurator.recommend_profile({
-            "autonomous": True,
-            "complex_delegation": True,
-            "human_oversight": False,
-        })
+        profile = configurator.recommend_profile(
+            {
+                "autonomous": True,
+                "complex_delegation": True,
+                "human_oversight": False,
+            }
+        )
         assert profile == RiskProfile.HIGH
 
     def test_recommend_profile_human_oversight_reduces_risk(self):
         """Test that human_oversight reduces the risk score."""
         configurator = DeploymentConfigurator()
         # Without oversight
-        no_oversight = configurator.recommend_profile({
-            "sensitive_data": True,
-            "customer_facing": True,
-            "human_oversight": False,
-        })
+        no_oversight = configurator.recommend_profile(
+            {
+                "sensitive_data": True,
+                "customer_facing": True,
+                "human_oversight": False,
+            }
+        )
         # With oversight
-        with_oversight = configurator.recommend_profile({
-            "sensitive_data": True,
-            "customer_facing": True,
-            "human_oversight": True,
-        })
+        with_oversight = configurator.recommend_profile(
+            {
+                "sensitive_data": True,
+                "customer_facing": True,
+                "human_oversight": True,
+            }
+        )
         # human_oversight=True should yield same or lower risk
         risk_order = {RiskProfile.LOW: 0, RiskProfile.MEDIUM: 1, RiskProfile.HIGH: 2}
         assert risk_order[with_oversight] <= risk_order[no_oversight]
@@ -418,9 +423,7 @@ class TestArchitectureAdvisor:
 
     def test_hierarchical_guidance(self):
         """Test hierarchical architecture guidance content."""
-        guidance = ArchitectureAdvisor().get_guidance(
-            ArchitectureType.HIERARCHICAL
-        )
+        guidance = ArchitectureAdvisor().get_guidance(ArchitectureType.HIERARCHICAL)
         assert guidance.architecture == ArchitectureType.HIERARCHICAL
         assert "orchestrator" in guidance.description.lower()
         assert len(guidance.risks) == 3
@@ -428,101 +431,71 @@ class TestArchitectureAdvisor:
 
     def test_hierarchical_examples(self):
         """Test hierarchical architecture examples list."""
-        guidance = ArchitectureAdvisor().get_guidance(
-            ArchitectureType.HIERARCHICAL
-        )
+        guidance = ArchitectureAdvisor().get_guidance(ArchitectureType.HIERARCHICAL)
         assert "Claude Code" in guidance.examples
         assert "AutoGPT" in guidance.examples
 
     def test_hierarchical_has_critical_risk(self):
         """Test hierarchical architecture includes CRITICAL cascade risk."""
-        guidance = ArchitectureAdvisor().get_guidance(
-            ArchitectureType.HIERARCHICAL
-        )
-        critical_risks = [
-            r for r in guidance.risks if r.severity == RiskLevel.CRITICAL
-        ]
+        guidance = ArchitectureAdvisor().get_guidance(ArchitectureType.HIERARCHICAL)
+        critical_risks = [r for r in guidance.risks if r.severity == RiskLevel.CRITICAL]
         assert len(critical_risks) >= 1
         assert "cascade" in critical_risks[0].description.lower()
 
     def test_peer_to_peer_guidance(self):
         """Test peer-to-peer architecture guidance content."""
-        guidance = ArchitectureAdvisor().get_guidance(
-            ArchitectureType.PEER_TO_PEER
-        )
+        guidance = ArchitectureAdvisor().get_guidance(ArchitectureType.PEER_TO_PEER)
         assert guidance.architecture == ArchitectureType.PEER_TO_PEER
         assert "lateral" in guidance.description.lower()
         assert len(guidance.risks) == 3
 
     def test_peer_to_peer_examples(self):
         """Test peer-to-peer architecture examples list."""
-        guidance = ArchitectureAdvisor().get_guidance(
-            ArchitectureType.PEER_TO_PEER
-        )
+        guidance = ArchitectureAdvisor().get_guidance(ArchitectureType.PEER_TO_PEER)
         assert "Camel" in guidance.examples
 
     def test_peer_to_peer_sybil_risk(self):
         """Test peer-to-peer includes sybil attack risk."""
-        guidance = ArchitectureAdvisor().get_guidance(
-            ArchitectureType.PEER_TO_PEER
-        )
-        sybil_risks = [
-            r for r in guidance.risks if "sybil" in r.description.lower()
-        ]
+        guidance = ArchitectureAdvisor().get_guidance(ArchitectureType.PEER_TO_PEER)
+        sybil_risks = [r for r in guidance.risks if "sybil" in r.description.lower()]
         assert len(sybil_risks) == 1
 
     def test_role_based_guidance(self):
         """Test role-based architecture guidance content."""
-        guidance = ArchitectureAdvisor().get_guidance(
-            ArchitectureType.ROLE_BASED
-        )
+        guidance = ArchitectureAdvisor().get_guidance(ArchitectureType.ROLE_BASED)
         assert guidance.architecture == ArchitectureType.ROLE_BASED
         assert "role" in guidance.description.lower()
         assert len(guidance.risks) == 3
 
     def test_role_based_examples(self):
         """Test role-based architecture examples list."""
-        guidance = ArchitectureAdvisor().get_guidance(
-            ArchitectureType.ROLE_BASED
-        )
+        guidance = ArchitectureAdvisor().get_guidance(ArchitectureType.ROLE_BASED)
         assert "CrewAI" in guidance.examples
 
     def test_role_based_impersonation_risk(self):
         """Test role-based includes role impersonation risk."""
-        guidance = ArchitectureAdvisor().get_guidance(
-            ArchitectureType.ROLE_BASED
-        )
+        guidance = ArchitectureAdvisor().get_guidance(ArchitectureType.ROLE_BASED)
         impersonation_risks = [
-            r for r in guidance.risks
-            if "impersonation" in r.description.lower()
+            r for r in guidance.risks if "impersonation" in r.description.lower()
         ]
         assert len(impersonation_risks) == 1
 
     def test_state_machine_guidance(self):
         """Test state machine architecture guidance content."""
-        guidance = ArchitectureAdvisor().get_guidance(
-            ArchitectureType.STATE_MACHINE
-        )
+        guidance = ArchitectureAdvisor().get_guidance(ArchitectureType.STATE_MACHINE)
         assert guidance.architecture == ArchitectureType.STATE_MACHINE
         assert "state" in guidance.description.lower()
         assert len(guidance.risks) == 3
 
     def test_state_machine_examples(self):
         """Test state machine architecture examples list."""
-        guidance = ArchitectureAdvisor().get_guidance(
-            ArchitectureType.STATE_MACHINE
-        )
+        guidance = ArchitectureAdvisor().get_guidance(ArchitectureType.STATE_MACHINE)
         assert "LangGraph" in guidance.examples
 
     def test_state_machine_corruption_risk(self):
         """Test state machine includes state corruption risk."""
-        guidance = ArchitectureAdvisor().get_guidance(
-            ArchitectureType.STATE_MACHINE
-        )
-        corruption_risks = [
-            r for r in guidance.risks
-            if "corruption" in r.description.lower()
-        ]
+        guidance = ArchitectureAdvisor().get_guidance(ArchitectureType.STATE_MACHINE)
+        corruption_risks = [r for r in guidance.risks if "corruption" in r.description.lower()]
         assert len(corruption_risks) == 1
 
     def test_get_all_risks_total_count(self):
@@ -665,9 +638,7 @@ class TestScalingAdvisor:
     def test_latency_budget_firewall(self):
         """Test firewall latency budget is 5-10ms."""
         advisor = ScalingAdvisor()
-        firewall = [
-            b for b in advisor.latency_budgets if b.component == "Firewall"
-        ]
+        firewall = [b for b in advisor.latency_budgets if b.component == "Firewall"]
         assert len(firewall) == 1
         assert firewall[0].typical_ms_low == 5
         assert firewall[0].typical_ms_high == 10
@@ -675,10 +646,7 @@ class TestScalingAdvisor:
     def test_latency_budget_trust_computation(self):
         """Test trust computation latency budget is 1-2ms."""
         advisor = ScalingAdvisor()
-        trust = [
-            b for b in advisor.latency_budgets
-            if b.component == "Trust computation"
-        ]
+        trust = [b for b in advisor.latency_budgets if b.component == "Trust computation"]
         assert len(trust) == 1
         assert trust[0].typical_ms_low == 1
         assert trust[0].typical_ms_high == 2
@@ -686,20 +654,14 @@ class TestScalingAdvisor:
     def test_latency_budget_sandbox_lookup(self):
         """Test sandbox lookup latency budget is <1ms."""
         advisor = ScalingAdvisor()
-        sandbox = [
-            b for b in advisor.latency_budgets
-            if b.component == "Sandbox lookup"
-        ]
+        sandbox = [b for b in advisor.latency_budgets if b.component == "Sandbox lookup"]
         assert len(sandbox) == 1
         assert sandbox[0].typical_ms_high <= 1
 
     def test_latency_budget_tripwire_check(self):
         """Test tripwire check latency budget is 1-5ms."""
         advisor = ScalingAdvisor()
-        tripwire = [
-            b for b in advisor.latency_budgets
-            if b.component == "Tripwire check"
-        ]
+        tripwire = [b for b in advisor.latency_budgets if b.component == "Tripwire check"]
         assert len(tripwire) == 1
         assert tripwire[0].typical_ms_low == 1
         assert tripwire[0].typical_ms_high == 5
@@ -707,10 +669,7 @@ class TestScalingAdvisor:
     def test_latency_budget_consensus(self):
         """Test consensus latency budget is 50-200ms."""
         advisor = ScalingAdvisor()
-        consensus = [
-            b for b in advisor.latency_budgets
-            if b.component == "Consensus"
-        ]
+        consensus = [b for b in advisor.latency_budgets if b.component == "Consensus"]
         assert len(consensus) == 1
         assert consensus[0].typical_ms_low == 50
         assert consensus[0].typical_ms_high == 200
@@ -718,10 +677,7 @@ class TestScalingAdvisor:
     def test_consensus_dominates_latency(self):
         """Test that consensus is the largest latency component."""
         advisor = ScalingAdvisor()
-        consensus = [
-            b for b in advisor.latency_budgets
-            if b.component == "Consensus"
-        ][0]
+        consensus = [b for b in advisor.latency_budgets if b.component == "Consensus"][0]
         for budget in advisor.latency_budgets:
             if budget.component != "Consensus":
                 assert budget.typical_ms_high < consensus.typical_ms_low
@@ -753,19 +709,19 @@ class TestTrustDecayAnalyzer:
     def test_effective_trust_low_profile_depth_4(self):
         """Test low profile: delta=0.95 at depth 4."""
         result = TrustDecayAnalyzer.effective_trust(1.0, 0.95, 4)
-        expected = 0.95 ** 4
+        expected = 0.95**4
         assert result == pytest.approx(expected)
 
     def test_effective_trust_medium_profile_depth_4(self):
         """Test medium profile: delta=0.9 at depth 4."""
         result = TrustDecayAnalyzer.effective_trust(1.0, 0.9, 4)
-        expected = 0.9 ** 4
+        expected = 0.9**4
         assert result == pytest.approx(expected)
 
     def test_effective_trust_partial_initial(self):
         """Test with initial trust less than 1.0."""
         result = TrustDecayAnalyzer.effective_trust(0.8, 0.9, 3)
-        expected = 0.8 * (0.9 ** 3)
+        expected = 0.8 * (0.9**3)
         assert result == pytest.approx(expected)
 
     def test_effective_trust_zero_initial(self):
@@ -831,7 +787,7 @@ class TestTrustDecayAnalyzer:
         """Test that trust at practical limit is indeed below threshold."""
         delta = 0.85
         limit = TrustDecayAnalyzer.practical_depth_limit(delta)
-        trust_at_limit = delta ** limit
+        trust_at_limit = delta**limit
         assert trust_at_limit < 0.1
 
     def test_practical_depth_limit_verify_one_before_is_above(self):
@@ -1068,3 +1024,36 @@ class TestEdgeCases:
         assert guidance.components == []
         assert guidance.pros == []
         assert guidance.cons == []
+
+
+# =============================================================================
+# Additional coverage tests for uncovered lines
+# =============================================================================
+
+
+class TestUncoveredLinesDeployment:
+    """Tests targeting previously uncovered lines in deployment.py."""
+
+    def test_get_tier_large_agent_count_falls_back_to_last_tier(self):
+        """Line 589: get_tier falls back to tiers[-1] for agent counts above all explicit ranges.
+
+        The last ScalingTier has max_agents=None (unlimited). When agent_count
+        exceeds all upper bounds that have an explicit max_agents, the loop
+        exhausts without returning and falls back to ``return self.tiers[-1]``.
+        With the default tiers, an agent count of 5000 exceeds tier 3's max of
+        1000, but tier 4 has max_agents=None and min_agents=1000.  However, the
+        loop condition ``tier.max_agents is None`` causes early return on tier 4
+        before reaching the fallback.  We therefore set all tiers' max_agents to
+        finite values so the fallback line is exercised.
+        """
+        advisor = ScalingAdvisor()
+        # Cap the last tier so no tier matches an extremely large agent count,
+        # forcing the post-loop fallback to execute.
+        advisor.tiers[-1].max_agents = 2000
+        advisor.tiers[-1].min_agents = 1001
+        # With max_agents=2000 and the loop checking ``agent_count <= tier.max_agents``,
+        # an agent_count of 9999 won't satisfy any tier → hits the fallback return.
+        result = advisor.get_tier(9999)
+        # The fallback always returns the last tier element.
+        assert result is advisor.tiers[-1]
+

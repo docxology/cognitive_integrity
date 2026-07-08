@@ -29,7 +29,6 @@ The cognitive firewall classifies incoming messages using a multi-stage detectio
 
 \begin{algorithm}
 \caption{Cognitive Firewall Classification}
-\label{alg:firewall-impl}
 \begin{algorithmic}[1]
 \Require message $m$, context $ctx$
 \Ensure decision $\in \{\text{ACCEPT}, \text{QUARANTINE}, \text{REJECT}\}$
@@ -59,6 +58,7 @@ The cognitive firewall classifies incoming messages using a multi-stage detectio
 \EndFunction
 \end{algorithmic}
 \end{algorithm}
+{#alg:firewall-impl}
 
 > **Implementation**: `src/core/firewall.py` — `CognitiveFirewall.classify()`, `PatternDetector.score_injection()`, `SemanticSimilarityDetector.score_semantic_similarity()`.
 
@@ -72,7 +72,6 @@ Manages provisional beliefs with verification and promotion logic. This implemen
 
 \begin{algorithm}
 \caption{Belief Sandbox Operations}
-\label{alg:sandbox-impl}
 \begin{algorithmic}[1]
 \Require belief $\phi$, source $s$, trust score $\mathcal{T}_s$
 \Ensure updated belief state
@@ -110,6 +109,7 @@ Manages provisional beliefs with verification and promotion logic. This implemen
 \EndFunction
 \end{algorithmic}
 \end{algorithm}
+{#alg:sandbox-impl}
 
 > **Implementation**: `src/core/sandbox.py` — `SandboxManager.add_provisional()`, `SandboxManager.promote()`, `PromotionCriteria.evaluate()`.
 
@@ -123,7 +123,6 @@ Implements the trust calculus with decay and reputation updates. This is a direc
 
 \begin{algorithm}
 \caption{Trust Update Operations}
-\label{alg:trust-impl}
 \begin{algorithmic}[1]
 \Require agents $i$, $j$, interaction result
 \Ensure updated trust score
@@ -155,6 +154,7 @@ Implements the trust calculus with decay and reputation updates. This is a direc
 \EndFunction
 \end{algorithmic}
 \end{algorithm}
+{#alg:trust-impl}
 
 > **Implementation**: `src/core/trust.py` — `TrustCalculus.compute_trust()`, `TrustCalculus.delegate_trust()`, `TrustMatrix.get_delegation_trust()`, `ReputationTracker.get_reputation()`.
 
@@ -166,7 +166,6 @@ Continuously monitors canary beliefs for unauthorized modifications. Tripwires i
 
 \begin{algorithm}
 \caption{Tripwire Monitoring}
-\label{alg:tripwire-impl}
 \begin{algorithmic}[1]
 \Require agent state $\sigma$, tripwire set $\mathcal{W}$
 \Ensure alert status
@@ -202,6 +201,7 @@ Continuously monitors canary beliefs for unauthorized modifications. Tripwires i
 \EndFunction
 \end{algorithmic}
 \end{algorithm}
+{#alg:tripwire-impl}
 
 > **Implementation**: `src/core/tripwire.py` — `CognitiveTripwire.check()`, `CognitiveTripwire.check_single()`, `TripwireAlert.severity`.
 
@@ -213,7 +213,6 @@ Implements Byzantine fault-tolerant consensus for multi-agent decisions. This sa
 
 \begin{algorithm}
 \caption{Byzantine Consensus Protocol}
-\label{alg:byzantine-impl}
 \begin{algorithmic}[1]
 \Require agents $\mathcal{A}$, proposition $\phi$, max Byzantine $f$
 \Ensure consensus value or UNDECIDED
@@ -250,6 +249,7 @@ Implements Byzantine fault-tolerant consensus for multi-agent decisions. This sa
 \EndFunction
 \end{algorithmic}
 \end{algorithm}
+{#alg:byzantine-impl}
 
 > **Implementation**: `src/core/consensus.py` — `ByzantineConsensus.compute_consensus()`, `WeightedByzantineConsensus.submit_vote()`, `QuorumVerification.approve()`.
 
@@ -261,7 +261,6 @@ Monitors belief distributions for anomalous changes over time using KL divergenc
 
 \begin{algorithm}
 \caption{Belief Drift Detection}
-\label{alg:drift-impl}
 \begin{algorithmic}[1]
 \Require belief state $\mathcal{B}_{current}$, history $\mathcal{H}$, window $w$
 \Ensure drift score and alerts
@@ -293,5 +292,6 @@ Monitors belief distributions for anomalous changes over time using KL divergenc
 \EndFunction
 \end{algorithmic}
 \end{algorithm}
+{#alg:drift-impl}
 
 > **Implementation**: `src/core/detection.py` — `DriftDetector.compute_drift()`, `DriftDetector.is_anomalous()`, `AnomalyScorer.score()`.

@@ -36,14 +36,16 @@ def create_detection_performance_figure(output_dir: Path) -> Path:
     }
 
     # Increase font sizes globally for this figure
-    plt.rcParams.update({
-        'font.size': 12,
-        'axes.labelsize': 14,
-        'axes.titlesize': 14,
-        'xtick.labelsize': 11,
-        'ytick.labelsize': 12,
-        'legend.fontsize': 11
-    })
+    plt.rcParams.update(
+        {
+            "font.size": 12,
+            "axes.labelsize": 14,
+            "axes.titlesize": 14,
+            "xtick.labelsize": 11,
+            "ytick.labelsize": 12,
+            "legend.fontsize": 11,
+        }
+    )
 
     # Panel A: Overall detection by defense configuration
     ax1 = axes[0]
@@ -63,15 +65,29 @@ def create_detection_performance_figure(output_dir: Path) -> Path:
     width = 0.25
 
     ax1.bar(
-        x - width, tpr, width, label="Recall (TPR)", color="#648FFF", edgecolor="black", linewidth=0.8
+        x - width,
+        tpr,
+        width,
+        label="Recall (TPR)",
+        color="#648FFF",
+        edgecolor="black",
+        linewidth=0.8,
     )
-    ax1.bar(x, fpr, width, label="False Positive Rate", color="#DC267F", edgecolor="black", linewidth=0.8)
-    ax1.bar(x + width, f1, width, label="F1 Score", color="#785EF0", edgecolor="black", linewidth=0.8)
+    ax1.bar(
+        x,
+        fpr,
+        width,
+        label="False Positive Rate",
+        color="#DC267F",
+        edgecolor="black",
+        linewidth=0.8,
+    )
+    ax1.bar(
+        x + width, f1, width, label="F1 Score", color="#785EF0", edgecolor="black", linewidth=0.8
+    )
 
-    ax1.set_ylabel("Metric Score (0-1)", fontweight='bold')
-    ax1.set_title(
-        "A. Detection Metrics by Defense Configuration", fontweight="bold", pad=15
-    )
+    ax1.set_ylabel("Metric Score (0-1)", fontweight="bold")
+    ax1.set_title("A. Detection Metrics by Defense Configuration", fontweight="bold", pad=15)
     ax1.set_xticks(x)
     ax1.set_xticklabels(defenses, rotation=0)
     ax1.legend(loc="upper left", frameon=True, framealpha=0.9)
@@ -102,8 +118,8 @@ def create_detection_performance_figure(output_dir: Path) -> Path:
         label="Baseline (No Defense)",
         color=colors["baseline"],
         edgecolor="black",
-        hatch='//',
-        alpha=0.3
+        hatch="//",
+        alpha=0.3,
     )
     # Add annotation for baseline = 0
     ax2.text(0 - width, 0.02, "0.0", ha="center", va="bottom", fontsize=8, color="#666")
@@ -115,7 +131,7 @@ def create_detection_performance_figure(output_dir: Path) -> Path:
         label="Firewall Only",
         color=colors["firewall"],
         edgecolor="black",
-        linewidth=0.8
+        linewidth=0.8,
     )
     ax2.bar(
         x + width,
@@ -124,10 +140,10 @@ def create_detection_performance_figure(output_dir: Path) -> Path:
         label="Full CIF",
         color=colors["full_cif"],
         edgecolor="black",
-        linewidth=0.8
+        linewidth=0.8,
     )
 
-    ax2.set_ylabel("Detection Rate", fontweight='bold')
+    ax2.set_ylabel("Detection Rate", fontweight="bold")
     ax2.set_title("B. Detection Rate by Attack Type", fontweight="bold", pad=15)
     ax2.set_xticks(x)
     ax2.set_xticklabels(attack_types, rotation=0)
@@ -148,9 +164,7 @@ def create_detection_performance_figure(output_dir: Path) -> Path:
         facecolor="white",
         edgecolor="none",
     )
-    plt.savefig(
-        output_path_pdf, bbox_inches="tight", facecolor="white", edgecolor="none"
-    )
+    plt.savefig(output_path_pdf, bbox_inches="tight", facecolor="white", edgecolor="none")
     plt.close()
 
     print(str(output_path_png))

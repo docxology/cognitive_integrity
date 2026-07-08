@@ -123,7 +123,7 @@ def two_way_anova(
             f"({factor1_levels}, {factor2_levels})"
         )
 
-    N = a * b * n  # total observations
+    a * b * n  # total observations
     grand_mean = data.mean()
 
     # SS total

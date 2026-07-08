@@ -7,8 +7,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "cogsec-multiagent-computational"
-version = "1.0.0"
-description = "Computational Validation of the Cognitive Integrity Framework"
+version = "2.0.0"
+description = "Cognitive Integrity Framework: Computational Validation and Empirical Analysis (Second Edition)"
 authors = [
     {name = "Daniel Ari Friedman", email = "daniel@activeinference.institute"}
 ]
@@ -18,6 +18,7 @@ dependencies = [
     "scipy>=1.10.0",
     "matplotlib>=3.7.0",
     "requests>=2.33.1",
+    "hypothesis>=6.156.1",
 ]
 
 [dependency-groups]
@@ -26,6 +27,7 @@ dev = [
     "pytest-cov>=4.1.0",
     "pytest-httpserver>=1.1.5",
     "ruff>=0.4.0",
+    "hypothesis>=6.0.0",
 ]
 
 [tool.setuptools.packages.find]
@@ -67,6 +69,25 @@ target-version = "py310"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "W"]
+
+[tool.ruff.lint.per-file-ignores]
+# These files manipulate sys.path before importing project modules — E402 is intentional.
+"src/__init__.py" = ["E402"]
+"scripts/*.py" = ["E402"]
+"tests/conftest.py" = ["E402"]
+"tests/test_agents.py" = ["E402"]
+"tests/test_bayesian.py" = ["E402"]
+"tests/test_category_theory.py" = ["E402"]
+"tests/test_free_energy.py" = ["E402"]
+"tests/test_game_theory.py" = ["E402"]
+"tests/test_information_geometry.py" = ["E402"]
+"tests/test_monad.py" = ["E402"]
+
+[tool.mypy]
+mypy_path = "src"
+explicit_package_bases = true
+ignore_missing_imports = true
+exclude = ["src/__main__.py"]
 
 [tool.uv]
 package = true

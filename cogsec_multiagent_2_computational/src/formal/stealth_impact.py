@@ -10,6 +10,7 @@ exceeds the channel capacity bound.
 from __future__ import annotations
 
 from utils.random_seed import get_rng
+
 from .theorem_registry import TheoremResult, TheoremStatus
 
 C_CHANNEL_DEFAULT = 1.0

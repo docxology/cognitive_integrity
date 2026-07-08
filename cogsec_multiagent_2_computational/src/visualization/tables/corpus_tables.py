@@ -57,13 +57,13 @@ def generate_corpus_table() -> str:
 
     # Category subtotals
     lines.append(r"\midrule")
-    cat_totals = {}
+    cat_totals: dict[str, int] = {}
     for cat, _, count in _CORPUS:
         cat_totals[cat] = cat_totals.get(cat, 0) + count
 
     for cat, total in cat_totals.items():
         pct = total / _TOTAL * 100
-        lines.append(f"\\textbf{{{cat}}} & \\textit{{Subtotal}} & \\textbf{{{total}}} & \\textbf{{{pct:.1f}\\%}} \\\\")
+        lines.append(f"\\textbf{{{cat}}} & \\textit{{Subtotal}} & \\textbf{{{total}}} & \\textbf{{{pct:.1f}\\%}} \\\\")  # noqa: E501
 
     lines.extend([
         r"\midrule",

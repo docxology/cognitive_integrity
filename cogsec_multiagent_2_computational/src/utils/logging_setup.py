@@ -38,7 +38,7 @@ def setup_logging(
     if fmt is None:
         fmt = "%(asctime)s | %(levelname)-8s | %(name)s | %(message)s"
 
-    handler = logging.StreamHandler(stream or sys.stderr)
+    handler = logging.StreamHandler(stream or sys.stderr)  # type: ignore[arg-type]
     handler.setFormatter(logging.Formatter(fmt, datefmt="%Y-%m-%d %H:%M:%S"))
 
     root = logging.getLogger("cogsec")

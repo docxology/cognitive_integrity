@@ -1,16 +1,17 @@
-"""
 from __future__ import annotations
 
+"""
 Cognitive Firewall for Input Classification.
 
 Classifies incoming messages as ACCEPT, QUARANTINE, or REJECT.
 """
 
+import hashlib
 import logging
 import re
 from dataclasses import dataclass
 from enum import Enum
-from typing import Dict, List, Optional, Set, Tuple
+from typing import Callable, Dict, List, Optional, Tuple
 
 import numpy as np
 
@@ -70,12 +71,8 @@ class PatternDetector:
     ]
 
     def __init__(self):
-        self._injection_re = [
-            re.compile(p, re.IGNORECASE) for p in self.INJECTION_PATTERNS
-        ]
-        self._suspicious_re = [
-            re.compile(p, re.IGNORECASE) for p in self.SUSPICIOUS_PATTERNS
-        ]
+        self._injection_re = [re.compile(p, re.IGNORECASE) for p in self.INJECTION_PATTERNS]
+        self._suspicious_re = [re.compile(p, re.IGNORECASE) for p in self.SUSPICIOUS_PATTERNS]
 
     def score_injection(self, message: str) -> float:
         """
@@ -88,8 +85,6 @@ class PatternDetector:
             return 0.0
 
         score = 0.0
-        message_lower = message.lower()
-
         # Pattern matching (weighted)
         for pattern in self._injection_re:
             if pattern.search(message):
@@ -261,7 +256,6 @@ class EmbeddingStub:
         """
         # Create deterministic pseudo-embedding based on text hash
         # This allows similar texts to have somewhat similar embeddings
-        import hashlib
 
         text_lower = text.lower()
         words = text_lower.split()
@@ -368,7 +362,7 @@ class ClassificationStage:
     """A stage in the classification pipeline."""
 
     name: str
-    classifier: callable
+    classifier: Callable[..., float]
     weight: float = 1.0
     can_reject: bool = True
 
@@ -422,9 +416,7 @@ class MultiStageClassifier:
                 self._structural_stage,
                 self.weights.get("structural", 0.3),
             ),
-            ClassificationStage(
-                "pattern", self._pattern_stage, self.weights.get("pattern", 0.4)
-            ),
+            ClassificationStage("pattern", self._pattern_stage, self.weights.get("pattern", 0.4)),
             ClassificationStage(
                 "semantic", self._semantic_stage, self.weights.get("semantic", 0.3)
             ),
@@ -466,9 +458,7 @@ class MultiStageClassifier:
                 score += 0.2
 
         # Non-printable characters
-        non_printable = sum(
-            1 for c in message if not c.isprintable() and c not in "\n\t\r"
-        )
+        non_printable = sum(1 for c in message if not c.isprintable() and c not in "\n\t\r")
         if non_printable > 0:
             score += 0.3
 
@@ -524,9 +514,7 @@ class MultiStageClassifier:
                 return {
                     "classification": Classification.REJECT,
                     "stage_results": stage_results,
-                    "aggregate_score": (
-                        weighted_sum / total_weight if total_weight > 0 else score
-                    ),
+                    "aggregate_score": (weighted_sum / total_weight if total_weight > 0 else score),
                     "rejected_at_stage": stage.name,
                 }
 
@@ -555,9 +543,7 @@ class EnhancedCognitiveFirewall(CognitiveFirewall):
     including semantic similarity detection.
     """
 
-    def __init__(
-        self, config: Optional[FirewallConfig] = None, use_semantic: bool = False
-    ):
+    def __init__(self, config: Optional[FirewallConfig] = None, use_semantic: bool = False):
         """
         Initialize enhanced firewall.
 

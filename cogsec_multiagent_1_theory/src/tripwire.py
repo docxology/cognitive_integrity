@@ -10,8 +10,6 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Callable, Dict, List, Optional
 
-import numpy as np
-
 
 @dataclass
 class Canary:
@@ -95,9 +93,7 @@ class CognitiveTripwire:
             )
         )
 
-    def add_boundary_canary(
-        self, forbidden_action: str, expected_belief: float = 0.0
-    ) -> None:
+    def add_boundary_canary(self, forbidden_action: str, expected_belief: float = 0.0) -> None:
         """Add capability boundary canary."""
         self.add_canary(
             Canary(
@@ -108,9 +104,7 @@ class CognitiveTripwire:
             )
         )
 
-    def add_principal_canary(
-        self, principal_name: str, expected_belief: float = 1.0
-    ) -> None:
+    def add_principal_canary(self, principal_name: str, expected_belief: float = 1.0) -> None:
         """Add principal authority canary."""
         self.add_canary(
             Canary(
@@ -121,9 +115,7 @@ class CognitiveTripwire:
             )
         )
 
-    def add_temporal_canary(
-        self, session_id: str, expected_belief: float = 1.0
-    ) -> None:
+    def add_temporal_canary(self, session_id: str, expected_belief: float = 1.0) -> None:
         """Add session/temporal canary."""
         self.add_canary(
             Canary(
@@ -161,9 +153,7 @@ class CognitiveTripwire:
 
         return triggered
 
-    def check_single(
-        self, proposition: str, actual_belief: float
-    ) -> Optional[TripwireAlert]:
+    def check_single(self, proposition: str, actual_belief: float) -> Optional[TripwireAlert]:
         """
         Check single canary.
 
@@ -176,9 +166,7 @@ class CognitiveTripwire:
         canary = self._canaries[proposition]
         if not canary.check(actual_belief):
             drift = abs(actual_belief - canary.expected_belief)
-            alert = TripwireAlert(
-                canary=canary, actual_belief=actual_belief, drift=drift
-            )
+            alert = TripwireAlert(canary=canary, actual_belief=actual_belief, drift=drift)
             self._alerts.append(alert)
             return alert
 
@@ -229,9 +217,7 @@ class CognitiveTripwire:
         Used to prevent adversarial learning of canary positions.
         """
         # Remove old canaries in category
-        self._canaries = {
-            p: c for p, c in self._canaries.items() if c.category != category
-        }
+        self._canaries = {p: c for p, c in self._canaries.items() if c.category != category}
 
         # Add new canaries
         for canary in new_canaries:

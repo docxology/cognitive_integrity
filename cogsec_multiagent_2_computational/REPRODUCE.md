@@ -13,7 +13,7 @@ git clone https://github.com/docxology/cognitive_integrity.git
 cd cognitive_integrity/cogsec_multiagent_2_computational
 
 # Install dependencies
-uv sync --extra dev
+uv sync
 ```
 
 ## Full Pipeline

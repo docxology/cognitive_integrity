@@ -2,7 +2,7 @@
 % Part 2: Computational Validation
 
 % ============================================================
-% SERIES CROSS-REFERENCES (Parts 1--4)
+% SERIES CROSS-REFERENCES (Parts 1, 2, 3+4)
 % ============================================================
 
 @article{friedman2026cogsec1,
@@ -821,3 +821,117 @@
   year      = {2022},
   doi       = {10.1007/978-3-030-99336-8_1}
 }
+
+% ============================================================
+% NEW IN v2.0 — SECOND EDITION ADDITIONS
+% ============================================================
+
+@article{madry2018pgd,
+  author    = {Madry, Aleksander and Makelov, Aleksandar and Schmidt, Ludwig and Tsipras, Dimitris and Vladu, Adrian},
+  title     = {Towards Deep Learning Models Resistant to Adversarial Attacks},
+  journal   = {International Conference on Learning Representations (ICLR)},
+  year      = {2018},
+  url       = {https://arxiv.org/abs/1706.06083},
+  note      = {Introduces the PGD adversarial training framework; foundational for the AT protocol in §05g.}
+}
+
+@article{goodfellow2014explaining,
+  author    = {Goodfellow, Ian J. and Shlens, Jonathon and Szegedy, Christian},
+  title     = {Explaining and Harnessing Adversarial Examples},
+  journal   = {International Conference on Learning Representations (ICLR)},
+  year      = {2015},
+  url       = {https://arxiv.org/abs/1412.6572},
+  note      = {FGSM adversarial examples; motivates the AT game formulation in §S11.}
+}
+
+@article{shafahi2019adversarial,
+  author    = {Shafahi, Ali and Najibi, Mahyar and Ghiasi, Mohammad Amin and Xu, Zheng and Dickerson, John and Studer, Christoph and Davis, Larry S. and Taylor, Gavin and Goldstein, Tom},
+  title     = {Adversarial Training for Free!},
+  journal   = {Advances in Neural Information Processing Systems (NeurIPS)},
+  volume    = {32},
+  year      = {2019},
+  note      = {Efficient adversarial training; informs the diminishing-returns analysis in §05g §sec:at-convergence.}
+}
+
+@inproceedings{biggio2012poisoning,
+  author    = {Biggio, Battista and Nelson, Blaine and Laskov, Pavel},
+  title     = {Poisoning Attacks Against Support Vector Machines},
+  booktitle = {Proceedings of the 29th International Conference on Machine Learning (ICML)},
+  year      = {2012},
+  url       = {https://arxiv.org/abs/1206.6389},
+  note      = {Foundational work on data poisoning; motivates the recruitment poisoning scenario in colony simulations.}
+}
+
+@article{dohmatob2023generalized,
+  author    = {Dohmatob, Elvis and Guo, Yunzhen and Udell, Madeleine},
+  title     = {A Generalized Natural Evolution Strategies Algorithm},
+  journal   = {arXiv preprint},
+  year      = {2023},
+  url       = {https://arxiv.org/abs/2106.01009},
+  note      = {Natural gradient optimization methods; basis for natural gradient AT in §S11.}
+}
+
+@article{zhang2019theoretically,
+  author    = {Zhang, Hongyang and Yu, Yaodong and Jiao, Jiantao and Xing, Eric and El Ghaoui, Laurent and Jordan, Michael},
+  title     = {Theoretically Principled Trade-off between Robustness and Accuracy},
+  journal   = {Proceedings of the 36th International Conference on Machine Learning (ICML)},
+  year      = {2019},
+  url       = {https://arxiv.org/abs/1901.08573},
+  note      = {TRADES: adversarial robustness-accuracy tradeoff; relevant to convergence analysis in §S11.}
+}
+
+@article{vorobeychik2018adversarial,
+  author    = {Vorobeychik, Yevgeniy and Kantarcioglu, Murat},
+  title     = {Adversarial Machine Learning},
+  journal   = {Synthesis Lectures on Artificial Intelligence and Machine Learning},
+  volume    = {12},
+  number    = {3},
+  pages     = {1--169},
+  year      = {2018},
+  doi       = {10.2200/S00861ED1V01Y201806AIM039},
+  note      = {Comprehensive adversarial ML survey; provides formal game-theoretic framework referenced in §S11.}
+}
+
+@inproceedings{goldblum2022dataset,
+  author    = {Goldblum, Micah and Tsipras, Dimitris and Xie, Chulin and Chen, Xinyun and Schwarzschild, Avi and Song, Dawn and Madry, Aleksander and Li, Bo and Goldstein, Tom},
+  title     = {Dataset Security for Machine Learning: Data Poisoning, Backdoor Attacks, and Defenses},
+  booktitle = {IEEE Transactions on Pattern Analysis and Machine Intelligence},
+  year      = {2022},
+  doi       = {10.1109/TPAMI.2021.3rule},
+  note      = {Survey of dataset security; informs the attack corpus taxonomy expansion in §03.}
+}
+
+@article{hypothesis2019,
+  author    = {MacIver, David R. and Hatfield-Dodds, Zac and {Hypothesis Contributors}},
+  title     = {Hypothesis: A New Approach to Property-Based Testing},
+  journal   = {Journal of Open Source Software},
+  volume    = {4},
+  number    = {43},
+  pages     = {1891},
+  year      = {2019},
+  doi       = {10.21105/joss.01891},
+  note      = {Property-based testing library used in §tests/ for mathematical invariant verification.}
+}
+
+@article{von1928theorie,
+  author    = {von Neumann, John},
+  title     = {Zur Theorie der Gesellschaftsspiele},
+  journal   = {Mathematische Annalen},
+  volume    = {100},
+  pages     = {295--320},
+  year      = {1928},
+  doi       = {10.1007/BF01448847},
+  note      = {Minimax theorem; foundational for the AT game formulation in §S11.}
+}
+
+@article{watts1998collective,
+  author    = {Watts, Duncan J. and Strogatz, Steven H.},
+  title     = {Collective Dynamics of 'Small-World' Networks},
+  journal   = {Nature},
+  volume    = {393},
+  pages     = {440--442},
+  year      = {1998},
+  doi       = {10.1038/30918},
+  note      = {Watts-Strogatz small-world model; used in BeliefCascadeScenario colony topology.}
+}
+

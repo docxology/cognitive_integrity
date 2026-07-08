@@ -6,6 +6,7 @@ Implements functionality for the Cognitive Integrity Framework.
 from __future__ import annotations
 
 from pathlib import Path
+from typing import Any
 
 import matplotlib.pyplot as plt
 from matplotlib.patches import FancyBboxPatch
@@ -95,7 +96,7 @@ def plot_cif_comprehensive(output_dir: str | Path = "output/figures") -> plt.Fig
     # --- Layer definitions ---
     # Each component: (display_name, class.method, formula)
     # All map to real src/core/ implementations
-    layers = [
+    layers: list[Any] = [
         {
             "name": "DEFENSE LAYER",
             "y": 8.8,
@@ -104,7 +105,7 @@ def plot_cif_comprehensive(output_dir: str | Path = "output/figures") -> plt.Fig
             "components": [
                 ("Cognitive Firewall", "firewall.py\nCognitiveFirewall.classify()", "τ_f = 0.5"),
                 ("Belief Sandbox", "sandbox.py\nSandboxManager.promote()", "γ → promotion"),
-                ("Behavioral Invariants", "invariants.py\nInvariantChecker.check_all()", "I ⊆ permitted"),
+                ("Behavioral Invariants", "invariants.py\nInvariantChecker.check_all()", "I ⊆ permitted"),  # noqa: E501
             ],
         },
         {
@@ -115,7 +116,7 @@ def plot_cif_comprehensive(output_dir: str | Path = "output/figures") -> plt.Fig
             "components": [
                 ("Drift Detection", "detection.py\nDriftDetector.compute_drift()", "σ(Δb) > τ_d"),
                 ("Tripwire Monitor", "tripwire.py\nCognitiveTripwire.check()", "c_i ∈ B?"),
-                ("Provenance Tracker", "provenance.py\nProvenanceChain.get_taint()", "P: B → sources"),
+                ("Provenance Tracker", "provenance.py\nProvenanceChain.get_taint()", "P: B → sources"),  # noqa: E501
             ],
         },
         {
@@ -136,8 +137,8 @@ def plot_cif_comprehensive(output_dir: str | Path = "output/figures") -> plt.Fig
             "color": colors["coordination"],
             "components": [
                 ("Trust Calculus", "trust.py\nTrustCalculus.delegate_trust()", "T(a→c) ≤ δ^d"),
-                ("Byzantine Consensus", "consensus.py\nByzantineConsensus\n.compute_consensus()", "BFT: n≥3f+1"),
-                ("Quorum Verification", "consensus.py\nQuorumVerification.approve()", "Byzantine tolerance"),
+                ("Byzantine Consensus", "consensus.py\nByzantineConsensus\n.compute_consensus()", "BFT: n≥3f+1"),  # noqa: E501
+                ("Quorum Verification", "consensus.py\nQuorumVerification.approve()", "Byzantine tolerance"),  # noqa: E501
             ],
         },
     ]

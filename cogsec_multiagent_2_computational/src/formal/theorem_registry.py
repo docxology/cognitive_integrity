@@ -218,6 +218,7 @@ class TheoremRegistry:
 def _validate_ct1_defense_category_laws(**_kwargs: Any) -> TheoremResult:
     """Check the three category laws on a simple trio of morphisms."""
     from utils.types import DefenseResult
+
     from .category_theory import (
         DefenseMorphism,
         verify_category_laws,
@@ -254,6 +255,7 @@ def _validate_ct1_defense_category_laws(**_kwargs: Any) -> TheoremResult:
 def _validate_ct2_categorical_product(**_kwargs: Any) -> TheoremResult:
     """Check that ``f × g`` reports the higher-score arm and OR'd detection."""
     from utils.types import DefenseResult
+
     from .category_theory import DefenseMorphism, categorical_product
 
     f = DefenseMorphism(
@@ -279,8 +281,8 @@ def _validate_ct2_categorical_product(**_kwargs: Any) -> TheoremResult:
 
 def _validate_ct3_monadic_preservation(**_kwargs: Any) -> TheoremResult:
     """Check that ``Err(e).bind(f) == Err(e)`` and monad laws hold."""
+    from core.monad import DetectionEvent, Err, Ok, verify_monad_laws
     from utils.types import DefenseResult
-    from core.monad import Err, DetectionEvent, Ok, verify_monad_laws
 
     evt = DetectionEvent("firewall", 0.9)
     err = Err(evt)
@@ -343,6 +345,7 @@ def _validate_fep1_attack_fep_equivalence(**_kwargs: Any) -> TheoremResult:
 def _validate_fep2_trust_precision_duality(**_kwargs: Any) -> TheoremResult:
     """Check that the TrustConfig weights sum to the composite precision."""
     from core.trust import TrustConfig
+
     from .free_energy import connect_to_trust_calculus
 
     cfg = TrustConfig()

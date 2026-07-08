@@ -17,7 +17,7 @@ from pathlib import Path
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
 import numpy as np
-from matplotlib.patches import FancyArrowPatch, FancyBboxPatch, Rectangle
+from matplotlib.patches import FancyBboxPatch
 
 
 def create_attack_timeline_figure(output_dir: Path) -> tuple[Path, Path]:
@@ -172,9 +172,7 @@ def create_attack_timeline_figure(output_dir: Path) -> tuple[Path, Path]:
     response_mask = (time_points >= 55) & (time_points < 72)
     t_response = time_points[response_mask] - 55
     integrity[response_mask] = (
-        0.45
-        + 0.4 * (t_response / 17)
-        + np.random.normal(0, 0.02, np.sum(response_mask))
+        0.45 + 0.4 * (t_response / 17) + np.random.normal(0, 0.02, np.sum(response_mask))
     )
 
     # Recovery: back to normal
@@ -235,9 +233,7 @@ def create_attack_timeline_figure(output_dir: Path) -> tuple[Path, Path]:
         rotation=0,
     )
     ax.text(2, metric_y_base, "0.0", ha="right", va="center", fontsize=9)
-    ax.text(
-        2, metric_y_base + metric_height, "1.0", ha="right", va="center", fontsize=9
-    )
+    ax.text(2, metric_y_base + metric_height, "1.0", ha="right", va="center", fontsize=9)
 
     # Add second metric: Trust level
     trust_y_base = 7
@@ -266,9 +262,7 @@ def create_attack_timeline_figure(output_dir: Path) -> tuple[Path, Path]:
 
     scaled_trust = trust_y_base + trust * trust_height
 
-    ax.fill_between(
-        time_points, trust_y_base, scaled_trust, alpha=0.3, color=colors["response"]
-    )
+    ax.fill_between(time_points, trust_y_base, scaled_trust, alpha=0.3, color=colors["response"])
     ax.plot(time_points, scaled_trust, "-", color=colors["response"], linewidth=2)
 
     ax.text(
@@ -304,20 +298,14 @@ def create_attack_timeline_figure(output_dir: Path) -> tuple[Path, Path]:
 
     # Legend
     legend_elements = [
-        mpatches.Patch(
-            facecolor=colors["normal"], edgecolor="black", label="Normal Operation"
-        ),
-        mpatches.Patch(
-            facecolor=colors["attack"], edgecolor="black", label="Attack Phase"
-        ),
+        mpatches.Patch(facecolor=colors["normal"], edgecolor="black", label="Normal Operation"),
+        mpatches.Patch(facecolor=colors["attack"], edgecolor="black", label="Attack Phase"),
         mpatches.Patch(
             facecolor=colors["detection"],
             edgecolor="black",
             label="Detection & Analysis",
         ),
-        mpatches.Patch(
-            facecolor=colors["response"], edgecolor="black", label="Response Execution"
-        ),
+        mpatches.Patch(facecolor=colors["response"], edgecolor="black", label="Response Execution"),
         mpatches.Patch(
             facecolor=colors["recovery"],
             edgecolor="black",
@@ -340,9 +328,7 @@ def create_attack_timeline_figure(output_dir: Path) -> tuple[Path, Path]:
     output_png = output_dir / "attack_timeline.png"
     output_pdf = output_dir / "attack_timeline.pdf"
 
-    plt.savefig(
-        output_png, dpi=150, bbox_inches="tight", facecolor="white", edgecolor="none"
-    )
+    plt.savefig(output_png, dpi=150, bbox_inches="tight", facecolor="white", edgecolor="none")
     plt.savefig(output_pdf, bbox_inches="tight", facecolor="white", edgecolor="none")
     plt.close()
 

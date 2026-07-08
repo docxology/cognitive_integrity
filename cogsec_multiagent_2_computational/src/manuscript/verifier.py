@@ -18,7 +18,6 @@ Features:
 
 import logging
 import re
-import sys
 from pathlib import Path
 from typing import Dict, List, Set
 
@@ -69,7 +68,7 @@ class ManuscriptVerifier:
 
     def get_bib_keys(self) -> Set[str]:
         """Extract keys from references.bib."""
-        keys = set()
+        keys: Set[str] = set()
         if not self.bib_file.exists():
             return keys
 
@@ -210,7 +209,7 @@ class ManuscriptVerifier:
 
         garbled_pattern = re.compile(r"\|\s*[lcr]+p\{")
         # A line that starts with non-| content followed by | --- pattern
-        merged_header_sep = re.compile(r"^[^|]*\|[^|]+\|\s*\|?\s*---")
+        re.compile(r"^[^|]*\|[^|]+\|\s*\|?\s*---")
 
         for md_file in self.md_files:
             with open(md_file, "r", encoding="utf-8") as f:
@@ -245,7 +244,7 @@ class ManuscriptVerifier:
                         # Looks like a table row without leading |
                         if re.match(r"^\S.*\|", stripped):
                             logger.warning(
-                                f"Table row missing leading '|' in {md_file.name}:{i+1}: {stripped[:60]}"
+                                f"Table row missing leading '|' in {md_file.name}:{i+1}: {stripped[:60]}"  # noqa: E501
                             )
                             status = False
 
@@ -300,7 +299,7 @@ class ManuscriptVerifier:
                         status = False
                     elif len(alt_text) < MIN_CAPTION_LENGTH:
                         logger.warning(
-                            f"Short alt text ({len(alt_text)} chars) for image in {md_file.name}: '{alt_text[:40]}...'"
+                            f"Short alt text ({len(alt_text)} chars) for image in {md_file.name}: '{alt_text[:40]}...'"  # noqa: E501
                         )
                         status = False
 

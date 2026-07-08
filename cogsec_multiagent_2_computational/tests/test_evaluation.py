@@ -12,7 +12,6 @@ All tests use real data and computation -- no mocks.
 """
 
 import math
-import time
 
 import numpy as np
 import pytest
@@ -43,7 +42,6 @@ from evaluation.scalability import (
     ScalingModel,
 )
 from utils.types import ExperimentConfig
-
 
 # ---------------------------------------------------------------------------
 # Helpers: lightweight real objects (no mocks)
@@ -637,7 +635,6 @@ class TestPrecisionRecall:
     def test_perfect_scores_give_high_ap(self):
         """When positives always score higher than negatives, AP is near 1."""
         rng = np.random.default_rng(42)
-        n = 200
         y_true = np.array([1] * 100 + [0] * 100)
         # Positives score 0.8-1.0, negatives score 0.0-0.2
         scores = np.concatenate([
@@ -949,15 +946,16 @@ class TestScalabilityBenchmark:
 
     def test_latency_increases_with_agents(self):
         """Latency at higher agent count is at least as high as at lower."""
-        counts = [2, 10, 50]
-        bench = ScalabilityBenchmark(agent_counts=counts, n_timing_runs=5)
+        counts = [2, 50, 200]
+        bench = ScalabilityBenchmark(agent_counts=counts, n_timing_runs=20)
 
         def pipeline_factory(adapter, n_agents):
             return _ScalablePipeline(n_agents)
 
         result = bench.run(_SimpleAdapter, pipeline_factory)
 
-        # With O(n^2) matrix multiply, 50 agents should be slower than 2
+        # With O(n^2) matrix multiply, 200 agents should be slower than 2
+        # Use a larger agent ratio and more runs to overcome CPU caching/warmup noise
         assert result.latencies_ms[-1] > result.latencies_ms[0]
 
     def test_fit_scaling_model_returns_model(self):

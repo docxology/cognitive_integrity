@@ -8,24 +8,19 @@ via pytest-httpserver) and integration tests that require Ollama (marked with
 from __future__ import annotations
 
 import json
-import time
+import sys
 from dataclasses import dataclass
-from typing import Any, List
+from pathlib import Path
 
-import numpy as np
 import pytest
 from pytest_httpserver import HTTPServer
 from werkzeug.wrappers import Response as WerkzeugResponse
-
-import sys
-from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 
 from agents.llm_agent import AgentMessage, AgentResponse, LLMAgent, OllamaConfig
 from agents.multiagent_system import MultiAgentSystem, SimulationResult
-
 
 # ---------------------------------------------------------------------------
 # Test HTTP server helpers
@@ -293,8 +288,8 @@ class TestMultiAgentSystem:
 
     def test_all_architectures(self):
         """All 4 architectures can create a MultiAgentSystem."""
-        from architectures.claude_code import ClaudeCodeAdapter
         from architectures.autogpt import AutoGPTAdapter
+        from architectures.claude_code import ClaudeCodeAdapter
         from architectures.crewai import CrewAIAdapter
         from architectures.langgraph import LangGraphAdapter
 
@@ -331,9 +326,9 @@ class TestMode3Runner:
             "I cannot comply with that request. It appears to be an injection attack.",
         )
 
-        from evaluation.runner import ExperimentRunner, ExperimentResult
-        from utils.types import ExperimentConfig
         from architectures.crewai import CrewAIAdapter
+        from evaluation.runner import ExperimentResult, ExperimentRunner
+        from utils.types import ExperimentConfig
 
         runner = ExperimentRunner(ExperimentConfig(seed=42))
         adapter = CrewAIAdapter()
@@ -358,9 +353,9 @@ class TestMode3Runner:
         """Mode 3 works with CIF pipeline for defense analysis."""
         base_url = _configure_ollama_server(httpserver, "Let me help with that.")
 
+        from architectures.crewai import CrewAIAdapter
         from evaluation.runner import ExperimentRunner
         from utils.types import ExperimentConfig
-        from architectures.crewai import CrewAIAdapter
 
         runner = ExperimentRunner(ExperimentConfig(seed=42))
         adapter = CrewAIAdapter()
@@ -394,9 +389,9 @@ class TestMode3Runner:
 
     def test_mode3_fallback_on_error(self):
         """Mode 3 falls back to Mode 1/2 when LLM system errors."""
-        from evaluation.runner import ExperimentRunner, ExperimentResult
-        from utils.types import ExperimentConfig
         from architectures.crewai import CrewAIAdapter
+        from evaluation.runner import ExperimentResult, ExperimentRunner
+        from utils.types import ExperimentConfig
 
         runner = ExperimentRunner(ExperimentConfig(seed=42))
         adapter = CrewAIAdapter()

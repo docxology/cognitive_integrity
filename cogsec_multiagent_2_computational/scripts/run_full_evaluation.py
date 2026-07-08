@@ -20,7 +20,6 @@ import argparse
 import json
 import logging
 import sys
-import time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -28,14 +27,14 @@ sys.path.insert(0, str(ROOT / "src"))
 
 import numpy as np
 
-from utils.random_seed import set_global_seed
-from utils.types import ExperimentConfig
-from evaluation.runner import ExperimentRunner
-from attacks.corpus import AttackCorpus
-from architectures.claude_code import ClaudeCodeAdapter
 from architectures.autogpt import AutoGPTAdapter
+from architectures.claude_code import ClaudeCodeAdapter
 from architectures.crewai import CrewAIAdapter
 from architectures.langgraph import LangGraphAdapter
+from attacks.corpus import AttackCorpus
+from evaluation.runner import ExperimentRunner
+from utils.random_seed import set_global_seed
+from utils.types import ExperimentConfig
 
 logger = logging.getLogger(__name__)
 
@@ -70,7 +69,7 @@ def main() -> None:
     args = parser.parse_args()
 
     if args.mode == "llm":
-        logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(name)s] %(levelname)s: %(message)s")
+        logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(name)s] %(levelname)s: %(message)s")  # noqa: E501
 
     set_global_seed(args.seed)
     output_dir = ROOT / args.output
@@ -127,7 +126,7 @@ def main() -> None:
                 partial.unlink()
             import datetime as _dt
             marker = output_dir / ".real_data_marker"
-            marker.write_text(f"mode={args.mode} seed={args.seed} generated={_dt.datetime.now().isoformat()}\n")
+            marker.write_text(f"mode={args.mode} seed={args.seed} generated={_dt.datetime.now().isoformat()}\n")  # noqa: E501
 
     config = ExperimentConfig(seed=args.seed)
     runner = ExperimentRunner(config)

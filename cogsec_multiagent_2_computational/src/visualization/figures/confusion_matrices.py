@@ -29,7 +29,10 @@ def _load_data() -> Dict[str, np.ndarray]:
     for arch, cats in counts.items():
         tp = fp = tn = fn = 0
         for cat, (t, f, tn_, fn_) in cats.items():
-            tp += t; fp += f; tn += tn_; fn += fn_
+            tp += t
+            fp += f
+            tn += tn_
+            fn += fn_
         result[arch] = np.array([[tp, fp], [fn, tn]])
     logger.info("Loaded confusion matrices for %d architectures", len(result))
     return result
@@ -61,7 +64,7 @@ def plot_confusion_matrices(output_dir: str = "output/figures") -> Figure:
         ax = axes[row, col]
         cm = data[arch]
 
-        im = ax.imshow(cm, cmap="Blues", aspect="equal")
+        ax.imshow(cm, cmap="Blues", aspect="equal")
 
         for i in range(2):
             for j in range(2):
@@ -80,6 +83,6 @@ def plot_confusion_matrices(output_dir: str = "output/figures") -> Figure:
         ax.set_title(arch, fontsize=11, fontweight="bold")
 
     fig.suptitle("Confusion Matrices by Architecture", fontsize=14, fontweight="bold", y=0.98)
-    fig.tight_layout(rect=[0, 0, 1, 0.95])
+    fig.tight_layout(rect=(0, 0, 1, 0.95))
     save_figure(fig, "fig19_confusion_matrices", output_dir=output_dir)
     return fig

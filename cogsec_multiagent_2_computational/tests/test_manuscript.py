@@ -1,17 +1,13 @@
 """Tests for the manuscript package: verifier and latex_converter."""
 
-import os
 import re
 import textwrap
 
-import pytest
-
-from manuscript.verifier import ManuscriptVerifier
 from manuscript.latex_converter import (
     convert_file,
     convert_latex_table_to_markdown,
 )
-
+from manuscript.verifier import ManuscriptVerifier
 
 # ── ManuscriptVerifier ──────────────────────────────────────────────────
 

@@ -34,7 +34,6 @@ from src.formal.category_theory import (
 )
 from src.utils.types import DefenseResult
 
-
 # ---------------------------------------------------------------------------
 # Fixtures: deterministic morphisms on scalar cognitive states
 # ---------------------------------------------------------------------------
@@ -101,7 +100,7 @@ def test_compose_short_circuits_on_first_detection():
     assert call_counter["g_calls"] == 0
 
     # f does not detect at x = 0.2; g should be called.
-    r2 = composed({"x": 0.2})
+    composed({"x": 0.2})
     assert call_counter["g_calls"] == 1
 
 

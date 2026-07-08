@@ -27,14 +27,16 @@ def main() -> None:
     output_dir = str(ROOT / args.output)
     os.makedirs(output_dir, exist_ok=True)
 
-    from visualization.figures import attack_surface
-    from visualization.figures import trust_decay
-    from visualization.figures import roc_curves
-    from visualization.figures import defense_composition
-    from visualization.figures import ablation_study
-    from visualization.figures import detection_performance
-    from visualization.figures import comprehensive_taxonomy
-    from visualization.figures import cif_comprehensive
+    from visualization.figures import (
+        ablation_study,
+        attack_surface,
+        cif_comprehensive,
+        comprehensive_taxonomy,
+        defense_composition,
+        detection_performance,
+        roc_curves,
+        trust_decay,
+    )
 
     # 8 manuscript-referenced figures only
     figures = [

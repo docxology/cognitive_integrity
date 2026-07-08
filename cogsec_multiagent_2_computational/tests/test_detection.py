@@ -3,7 +3,6 @@
 import numpy as np
 import pytest
 
-from src import AnomalyScorer, DetectionConfig, DriftDetector
 from core.detection import (
     AdaptiveBaseline,
     SlidingWindowMonitor,
@@ -12,6 +11,7 @@ from core.detection import (
     communication_volume_extractor,
     goal_stability_extractor,
 )
+from src import AnomalyScorer, DetectionConfig, DriftDetector
 
 
 class TestDriftDetector:

@@ -319,7 +319,7 @@ class WeightedByzantineConsensus(ByzantineConsensus):
         super().__init__(n_agents, max_byzantine, config)
         self._weighted_votes: Dict[str, List[WeightedVote]] = {}
 
-    def submit_vote(self, vote: WeightedVote) -> None:
+    def submit_vote(self, vote: WeightedVote) -> None:  # type: ignore[override]
         """
         Submit weighted vote.
 
@@ -413,7 +413,7 @@ class ConfidenceByzantineConsensus(ByzantineConsensus):
         self._confidence_votes: Dict[str, List[ConfidenceVote]] = {}
         self.min_aggregate_confidence = min_aggregate_confidence
 
-    def submit_vote(self, vote: ConfidenceVote) -> None:
+    def submit_vote(self, vote: ConfidenceVote) -> None:  # type: ignore[override]
         """
         Submit confidence vote.
 
@@ -549,7 +549,7 @@ class CombinedByzantineConsensus(ByzantineConsensus):
         super().__init__(n_agents, max_byzantine, config)
         self._combined_votes: Dict[str, List[CombinedVote]] = {}
 
-    def submit_vote(self, vote: CombinedVote) -> None:
+    def submit_vote(self, vote: CombinedVote) -> None:  # type: ignore[override]
         """
         Submit combined vote.
 

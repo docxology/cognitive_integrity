@@ -31,7 +31,6 @@ from src.risk_assessment import (
     ThreatScenario,
 )
 
-
 # =============================================================================
 # Enum Tests
 # =============================================================================
@@ -539,12 +538,14 @@ class TestAttackSurfaceMapper:
     def test_get_immediate_priorities_empty(self):
         """get_immediate_priorities returns empty list when no immediate threats."""
         mapper = AttackSurfaceMapper()
-        mapper.add_threat_scenario(ThreatScenario(
-            name="Low",
-            description="Not urgent",
-            impact_level=ImpactLevel.LOW,
-            likelihood_level=LikelihoodLevel.LOW,
-        ))
+        mapper.add_threat_scenario(
+            ThreatScenario(
+                name="Low",
+                description="Not urgent",
+                impact_level=ImpactLevel.LOW,
+                likelihood_level=LikelihoodLevel.LOW,
+            )
+        )
         assert mapper.get_immediate_priorities() == []
 
     def test_evaluate_empty_mapper(self):
@@ -561,12 +562,14 @@ class TestAttackSurfaceMapper:
     def test_evaluate_low_risk(self):
         """Evaluate with only low-risk scenarios passes."""
         mapper = AttackSurfaceMapper()
-        mapper.add_threat_scenario(ThreatScenario(
-            name="Minor Issue",
-            description="Negligible risk",
-            impact_level=ImpactLevel.LOW,
-            likelihood_level=LikelihoodLevel.LOW,
-        ))
+        mapper.add_threat_scenario(
+            ThreatScenario(
+                name="Minor Issue",
+                description="Negligible risk",
+                impact_level=ImpactLevel.LOW,
+                likelihood_level=LikelihoodLevel.LOW,
+            )
+        )
         result = mapper.evaluate()
         assert result.passed is True
         assert result.risk_level == RiskLevel.LOW
@@ -575,13 +578,15 @@ class TestAttackSurfaceMapper:
     def test_evaluate_high_risk_with_immediate(self):
         """Evaluate with immediate-priority scenarios fails."""
         mapper = AttackSurfaceMapper()
-        mapper.add_threat_scenario(ThreatScenario(
-            name="Critical Threat",
-            description="Must fix now",
-            impact_level=ImpactLevel.CRITICAL,
-            likelihood_level=LikelihoodLevel.VERY_HIGH,
-            mitigation_gaps=["No defenses deployed"],
-        ))
+        mapper.add_threat_scenario(
+            ThreatScenario(
+                name="Critical Threat",
+                description="Must fix now",
+                impact_level=ImpactLevel.CRITICAL,
+                likelihood_level=LikelihoodLevel.VERY_HIGH,
+                mitigation_gaps=["No defenses deployed"],
+            )
+        )
         result = mapper.evaluate()
         assert result.passed is False
         assert result.risk_level == RiskLevel.CRITICAL
@@ -591,12 +596,14 @@ class TestAttackSurfaceMapper:
     def test_evaluate_medium_risk(self):
         """Evaluate assigns MEDIUM risk for moderate scores."""
         mapper = AttackSurfaceMapper()
-        mapper.add_threat_scenario(ThreatScenario(
-            name="Moderate Threat",
-            description="Manageable",
-            impact_level=ImpactLevel.MEDIUM,
-            likelihood_level=LikelihoodLevel.MEDIUM,
-        ))
+        mapper.add_threat_scenario(
+            ThreatScenario(
+                name="Moderate Threat",
+                description="Manageable",
+                impact_level=ImpactLevel.MEDIUM,
+                likelihood_level=LikelihoodLevel.MEDIUM,
+            )
+        )
         result = mapper.evaluate()
         assert result.risk_level == RiskLevel.MEDIUM
         assert result.passed is True  # No immediate priorities
@@ -604,12 +611,14 @@ class TestAttackSurfaceMapper:
     def test_evaluate_high_risk_level(self):
         """Evaluate assigns HIGH risk for scores in 8-11 range."""
         mapper = AttackSurfaceMapper()
-        mapper.add_threat_scenario(ThreatScenario(
-            name="Serious Threat",
-            description="High risk but not immediate",
-            impact_level=ImpactLevel.CRITICAL,
-            likelihood_level=LikelihoodLevel.MEDIUM,
-        ))
+        mapper.add_threat_scenario(
+            ThreatScenario(
+                name="Serious Threat",
+                description="High risk but not immediate",
+                impact_level=ImpactLevel.CRITICAL,
+                likelihood_level=LikelihoodLevel.MEDIUM,
+            )
+        )
         result = mapper.evaluate()
         # CRITICAL(4) * MEDIUM(2) = 8 -> HIGH risk level
         assert result.risk_level == RiskLevel.HIGH
@@ -618,12 +627,14 @@ class TestAttackSurfaceMapper:
         """Evaluate caps findings at top 5 scenarios."""
         mapper = AttackSurfaceMapper()
         for i in range(8):
-            mapper.add_threat_scenario(ThreatScenario(
-                name=f"Threat {i}",
-                description=f"Scenario {i}",
-                impact_level=ImpactLevel.MEDIUM,
-                likelihood_level=LikelihoodLevel.MEDIUM,
-            ))
+            mapper.add_threat_scenario(
+                ThreatScenario(
+                    name=f"Threat {i}",
+                    description=f"Scenario {i}",
+                    impact_level=ImpactLevel.MEDIUM,
+                    likelihood_level=LikelihoodLevel.MEDIUM,
+                )
+            )
         result = mapper.evaluate()
         assert len(result.findings) <= 5
 
@@ -631,13 +642,15 @@ class TestAttackSurfaceMapper:
         """Evaluate caps recommendations at 10."""
         mapper = AttackSurfaceMapper()
         for i in range(6):
-            mapper.add_threat_scenario(ThreatScenario(
-                name=f"Threat {i}",
-                description=f"Scenario {i}",
-                impact_level=ImpactLevel.MEDIUM,
-                likelihood_level=LikelihoodLevel.MEDIUM,
-                mitigation_gaps=[f"Gap A-{i}", f"Gap B-{i}", f"Gap C-{i}"],
-            ))
+            mapper.add_threat_scenario(
+                ThreatScenario(
+                    name=f"Threat {i}",
+                    description=f"Scenario {i}",
+                    impact_level=ImpactLevel.MEDIUM,
+                    likelihood_level=LikelihoodLevel.MEDIUM,
+                    mitigation_gaps=[f"Gap A-{i}", f"Gap B-{i}", f"Gap C-{i}"],
+                )
+            )
         result = mapper.evaluate()
         assert len(result.recommendations) <= 10
 
@@ -645,27 +658,33 @@ class TestAttackSurfaceMapper:
         """Evaluate correctly normalizes score from 0-16 range to 0-1."""
         mapper = AttackSurfaceMapper()
         # Score 8: normalized = 1.0 - 8/16 = 0.5
-        mapper.add_threat_scenario(ThreatScenario(
-            name="Half Risk",
-            description="Middle score",
-            impact_level=ImpactLevel.CRITICAL,
-            likelihood_level=LikelihoodLevel.MEDIUM,
-        ))
+        mapper.add_threat_scenario(
+            ThreatScenario(
+                name="Half Risk",
+                description="Middle score",
+                impact_level=ImpactLevel.CRITICAL,
+                likelihood_level=LikelihoodLevel.MEDIUM,
+            )
+        )
         result = mapper.evaluate()
         assert result.score == pytest.approx(0.5)
 
     def test_evaluate_mitigation_gaps_in_recommendations(self):
         """Evaluate includes mitigation gaps in recommendations."""
         mapper = AttackSurfaceMapper()
-        mapper.add_threat_scenario(ThreatScenario(
-            name="Gappy Threat",
-            description="Has gaps",
-            impact_level=ImpactLevel.MEDIUM,
-            likelihood_level=LikelihoodLevel.LOW,
-            mitigation_gaps=["Fix the firewall", "Add monitoring"],
-        ))
+        mapper.add_threat_scenario(
+            ThreatScenario(
+                name="Gappy Threat",
+                description="Has gaps",
+                impact_level=ImpactLevel.MEDIUM,
+                likelihood_level=LikelihoodLevel.LOW,
+                mitigation_gaps=["Fix the firewall", "Add monitoring"],
+            )
+        )
         result = mapper.evaluate()
-        gap_recs = [r for r in result.recommendations if "Fix the firewall" in r or "Add monitoring" in r]
+        gap_recs = [
+            r for r in result.recommendations if "Fix the firewall" in r or "Add monitoring" in r
+        ]
         assert len(gap_recs) == 2
 
 
@@ -752,20 +771,24 @@ class TestThreatModelWorksheet:
         ws.add_entry_point(ep1)
         ws.add_entry_point(ep2)
 
-        ws.add_scenario(ThreatScenario(
-            name="Immediate Threat",
-            description="Urgent",
-            impact_level=ImpactLevel.CRITICAL,
-            likelihood_level=LikelihoodLevel.HIGH,
-            mitigation_gaps=["Gap 1", "Gap 2"],
-        ))
-        ws.add_scenario(ThreatScenario(
-            name="Normal Threat",
-            description="Routine",
-            impact_level=ImpactLevel.LOW,
-            likelihood_level=LikelihoodLevel.LOW,
-            mitigation_gaps=["Gap 3"],
-        ))
+        ws.add_scenario(
+            ThreatScenario(
+                name="Immediate Threat",
+                description="Urgent",
+                impact_level=ImpactLevel.CRITICAL,
+                likelihood_level=LikelihoodLevel.HIGH,
+                mitigation_gaps=["Gap 1", "Gap 2"],
+            )
+        )
+        ws.add_scenario(
+            ThreatScenario(
+                name="Normal Threat",
+                description="Routine",
+                impact_level=ImpactLevel.LOW,
+                likelihood_level=LikelihoodLevel.LOW,
+                mitigation_gaps=["Gap 3"],
+            )
+        )
 
         summary = ws.summary()
         assert summary["system_name"] == "TestBot"
@@ -832,7 +855,9 @@ class TestCommonAttackScenarios:
         """Progressive belief drift scenario is correctly configured."""
         scenario = CommonAttackScenarios.progressive_belief_drift()
         assert scenario.name == "Progressive Belief Drift"
-        assert "threshold" in scenario.description.lower() or "drift" in scenario.description.lower()
+        assert (
+            "threshold" in scenario.description.lower() or "drift" in scenario.description.lower()
+        )
         assert len(scenario.attack_steps) == 4
         assert len(scenario.detection_points) == 3
         assert scenario.impact_level == ImpactLevel.CRITICAL
@@ -1064,7 +1089,9 @@ class TestEdgeCases:
 
     def test_worksheet_mutable_lists(self):
         """ThreatModelWorksheet lists are independently mutable."""
-        sd = SystemDescription(name="S", architecture_type="flat", agent_count=1, risk_profile="low")
+        sd = SystemDescription(
+            name="S", architecture_type="flat", agent_count=1, risk_profile="low"
+        )
         ws1 = ThreatModelWorksheet(system=sd)
         ws2 = ThreatModelWorksheet(system=sd)
         ws1.add_entry_point(EntryPoint(type=EntryPointType.USER_INPUT, name="EP"))
@@ -1081,11 +1108,13 @@ class TestEdgeCases:
     def test_evaluate_score_floor_at_zero(self):
         """Evaluate score cannot go below 0.0."""
         mapper = AttackSurfaceMapper()
-        mapper.add_threat_scenario(ThreatScenario(
-            name="Maximum Risk",
-            description="Worst case",
-            impact_level=ImpactLevel.CRITICAL,
-            likelihood_level=LikelihoodLevel.VERY_HIGH,
-        ))
+        mapper.add_threat_scenario(
+            ThreatScenario(
+                name="Maximum Risk",
+                description="Worst case",
+                impact_level=ImpactLevel.CRITICAL,
+                likelihood_level=LikelihoodLevel.VERY_HIGH,
+            )
+        )
         result = mapper.evaluate()
         assert result.score >= 0.0

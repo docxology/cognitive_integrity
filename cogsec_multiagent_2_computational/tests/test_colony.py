@@ -8,22 +8,21 @@ All tests use real data and computation with deterministic seeds.
 No mocks are used anywhere.
 """
 
-import pytest
 import numpy as np
+import pytest
 
+from colony.belief_cascade import BeliefCascadeScenario, _build_small_world_adjacency
+from colony.benchmark import ColonyBenchmark, ColonyConfig, ColonyResult
+from colony.emergent_misalignment import EmergentMisalignmentScenario
+from colony.quorum_manipulation import QuorumManipulationScenario
+from colony.recruitment_poisoning import RecruitmentPoisoningScenario
 from colony.scorecard import (
     CCSWeights,
     compute_ccs,
     compute_recovery_steps,
     compute_resilience,
 )
-from colony.belief_cascade import BeliefCascadeScenario, _build_small_world_adjacency
-from colony.benchmark import ColonyBenchmark, ColonyConfig, ColonyResult, ColonyScenario
-from colony.emergent_misalignment import EmergentMisalignmentScenario
-from colony.quorum_manipulation import QuorumManipulationScenario
-from colony.recruitment_poisoning import RecruitmentPoisoningScenario
 from colony.sybil_infiltration import SybilInfiltrationScenario
-
 
 # =========================================================================
 # Section 1: Scorecard tests

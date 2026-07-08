@@ -6,7 +6,7 @@ Cognitive Integrity Framework (CIF) defenses are active, not passive. Effective 
 
 Monitoring plays two roles. First, it provides **real-time visibility** into the defensive posture — are attacks being detected? Are rejection rates climbing? Second, it provides **calibration feedback** — is the false positive rate acceptable? Are thresholds still appropriate for current traffic? Without both, CIF drifts silently from its target operating point.
 
-> **Domain-calibrated thresholds.** The thresholds presented below reflect baseline settings suitable for common deployments. Part 4 (*Applications of the Cognitive Integrity Framework*) shows how these thresholds must shift across operational sectors — from millisecond OODA cycles in drone swarms (\S{3.04}) to year-scale diplomatic agents (\S{3.02}) — and introduces three domain-specific monitoring extensions (verification channel separation, active perturbation probing, physics-informed invariants) in \S{3.06}, \S{3.08}, and \S{3.09} respectively. Consult Part 4 before finalizing thresholds for a specific sector.
+> **Domain-calibrated thresholds.** The thresholds presented below reflect baseline settings suitable for common deployments. The Applications section §9--§10 of this unified paper shows how these thresholds must shift across operational sectors — from millisecond OODA cycles in drone swarms (§9.04) to year-scale diplomatic agents (§9.02) — and introduces three domain-specific monitoring extensions (verification channel separation, active perturbation probing, physics-informed invariants) in §9.06, §9.08, and §9.09 respectively. Consult §9--§10 before finalizing thresholds for a specific sector.
 
 ## Core Metrics
 

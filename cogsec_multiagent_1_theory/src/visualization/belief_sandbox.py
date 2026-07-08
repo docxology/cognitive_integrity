@@ -16,9 +16,7 @@ from pathlib import Path
 
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
-import numpy as np
-from matplotlib.patches import (Circle, FancyArrowPatch, FancyBboxPatch,
-                                Rectangle)
+from matplotlib.patches import FancyBboxPatch
 
 
 def create_belief_sandbox_figure(output_dir: Path) -> tuple[Path, Path]:
@@ -75,9 +73,7 @@ def create_belief_sandbox_figure(output_dir: Path) -> tuple[Path, Path]:
             va="center",
             fontsize=11,
             fontweight="bold",
-            color=(
-                "white" if color not in [colors["box"], colors["rejected"]] else "black"
-            ),
+            color=("white" if color not in [colors["box"], colors["rejected"]] else "black"),
         )
         if sublabel:
             ax.text(
@@ -88,17 +84,13 @@ def create_belief_sandbox_figure(output_dir: Path) -> tuple[Path, Path]:
                 va="center",
                 fontsize=9,
                 style="italic",
-                color=(
-                    "white"
-                    if color not in [colors["box"], colors["rejected"]]
-                    else "gray"
-                ),
+                color=("white" if color not in [colors["box"], colors["rejected"]] else "gray"),
             )
 
     def draw_arrow(x1, y1, x2, y2, label=None, curved=False):
         """Draw an arrow between points."""
         if curved:
-            style = f"arc3,rad=0.3"
+            style = "arc3,rad=0.3"
         else:
             style = "arc3,rad=0"
 
@@ -106,9 +98,7 @@ def create_belief_sandbox_figure(output_dir: Path) -> tuple[Path, Path]:
             "",
             xy=(x2, y2),
             xytext=(x1, y1),
-            arrowprops=dict(
-                arrowstyle="->", color=colors["arrow"], connectionstyle=style, lw=2
-            ),
+            arrowprops=dict(arrowstyle="->", color=colors["arrow"], connectionstyle=style, lw=2),
         )
         if label:
             mid_x = (x1 + x2) / 2
@@ -297,12 +287,8 @@ def create_belief_sandbox_figure(output_dir: Path) -> tuple[Path, Path]:
 
     # Legend
     legend_elements = [
-        mpatches.Patch(
-            facecolor=colors["input"], edgecolor="black", label="Input Stage"
-        ),
-        mpatches.Patch(
-            facecolor=colors["firewall"], edgecolor="black", label="Firewall Stage"
-        ),
+        mpatches.Patch(facecolor=colors["input"], edgecolor="black", label="Input Stage"),
+        mpatches.Patch(facecolor=colors["firewall"], edgecolor="black", label="Firewall Stage"),
         mpatches.Patch(
             facecolor=colors["sandbox"],
             edgecolor="black",
@@ -314,12 +300,8 @@ def create_belief_sandbox_figure(output_dir: Path) -> tuple[Path, Path]:
             edgecolor="black",
             label="Verification Stage",
         ),
-        mpatches.Patch(
-            facecolor=colors["verified"], edgecolor="black", label="Verified State"
-        ),
-        mpatches.Patch(
-            facecolor=colors["rejected"], edgecolor="black", label="Rejected/Expired"
-        ),
+        mpatches.Patch(facecolor=colors["verified"], edgecolor="black", label="Verified State"),
+        mpatches.Patch(facecolor=colors["rejected"], edgecolor="black", label="Rejected/Expired"),
     ]
 
     ax.legend(
@@ -338,9 +320,7 @@ def create_belief_sandbox_figure(output_dir: Path) -> tuple[Path, Path]:
     output_png = output_dir / "belief_sandbox.png"
     output_pdf = output_dir / "belief_sandbox.pdf"
 
-    plt.savefig(
-        output_png, dpi=150, bbox_inches="tight", facecolor="white", edgecolor="none"
-    )
+    plt.savefig(output_png, dpi=150, bbox_inches="tight", facecolor="white", edgecolor="none")
     plt.savefig(output_pdf, bbox_inches="tight", facecolor="white", edgecolor="none")
     plt.close()
 

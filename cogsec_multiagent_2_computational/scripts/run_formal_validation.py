@@ -17,17 +17,17 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 
-from utils.random_seed import set_global_seed
+from formal.byzantine_guarantees import validate_byzantine_bound
+from formal.composition_proofs import (
+    validate_associativity,
+    validate_parallel_composition,
+    validate_series_composition,
+)
+from formal.latency_bound import validate_latency_bound
+from formal.stealth_impact import validate_stealth_impact
 from formal.theorem_registry import TheoremRegistry, TheoremStatus
 from formal.trust_bounds import validate_trust_bound
-from formal.composition_proofs import (
-    validate_series_composition,
-    validate_parallel_composition,
-    validate_associativity,
-)
-from formal.byzantine_guarantees import validate_byzantine_bound
-from formal.stealth_impact import validate_stealth_impact
-from formal.latency_bound import validate_latency_bound
+from utils.random_seed import set_global_seed
 
 
 def main() -> None:

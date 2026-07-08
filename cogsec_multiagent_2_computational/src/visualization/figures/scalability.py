@@ -25,7 +25,7 @@ logger = __import__('logging').getLogger(__name__)
 
 def _load_data():
     """Load scalability data from scalability_data.json."""
-    data_path = Path(__file__).resolve().parent.parent.parent.parent / "output" / "data" / "scalability_data.json"
+    data_path = Path(__file__).resolve().parent.parent.parent.parent / "output" / "data" / "scalability_data.json"  # noqa: E501
     with open(data_path, "r", encoding="utf-8") as f:
         data = json.load(f)
     agents = np.array(data["agent_counts"])
@@ -52,7 +52,7 @@ def plot_scalability(output_dir: str = "output/figures") -> Figure:
 
     # Latency on left axis
     color_lat = COLORS["primary"]
-    ax1.plot(agents, latency, "o-", color=color_lat, linewidth=2, markersize=6, label="Latency (ms)")
+    ax1.plot(agents, latency, "o-", color=color_lat, linewidth=2, markersize=6, label="Latency (ms)")  # noqa: E501
     ax1.set_xlabel("Agent Count", fontsize=12)
     ax1.set_ylabel("Latency (ms)", fontsize=12, color=color_lat)
     ax1.tick_params(axis="y", labelcolor=color_lat)

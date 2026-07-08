@@ -4,8 +4,6 @@ import subprocess
 import sys
 from pathlib import Path
 
-import pytest
-
 
 class TestMainCLI:
     """Test the __main__.py argument parsing and dispatch."""
@@ -91,6 +89,7 @@ class TestCmdFiguresIntegration:
     def test_figures_runs_to_completion(self, tmp_path):
         """cmd_figures generates at least one output file."""
         import argparse
+
         from src.__main__ import cmd_figures
 
         args = argparse.Namespace(output=str(tmp_path))

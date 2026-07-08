@@ -1,6 +1,6 @@
-"""
 from __future__ import annotations
 
+"""
 Belief Sandboxing for Multiagent Systems.
 
 Implements verified/provisional partitions with TTL management.
@@ -212,9 +212,7 @@ class SandboxManager:
         self._ttl_registry: Dict[str, datetime] = {}  # belief_id -> expiry time
         self._corroborators: Dict[str, Set[str]] = {}  # belief_id -> agent IDs
 
-    def add_provisional(
-        self, belief: Belief, ttl_seconds: Optional[float] = None
-    ) -> None:
+    def add_provisional(self, belief: Belief, ttl_seconds: Optional[float] = None) -> None:
         """
         Add a belief to provisional partition with TTL.
 
@@ -225,9 +223,7 @@ class SandboxManager:
         self.state.add_provisional(belief)
 
         # Set TTL
-        ttl = (
-            ttl_seconds if ttl_seconds is not None else self.config.default_ttl_seconds
-        )
+        ttl = ttl_seconds if ttl_seconds is not None else self.config.default_ttl_seconds
         expiry = datetime.now() + timedelta(seconds=ttl)
         self._ttl_registry[belief.belief_id] = expiry
 
@@ -329,9 +325,7 @@ class SandboxManager:
         """Get sandbox statistics."""
         now = datetime.now()
         soon_expiring = sum(
-            1
-            for expiry in self._ttl_registry.values()
-            if (expiry - now).total_seconds() < 60
+            1 for expiry in self._ttl_registry.values() if (expiry - now).total_seconds() < 60
         )
 
         return {

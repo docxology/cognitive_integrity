@@ -110,3 +110,25 @@ NIST's extension of SP 800-207 to AI agents establishes "never trust, always ver
 * **Continuous authentication**: Provenance attestation provides cryptographic message origin tracking
 
 Profile A (Internal Tool) provides partial NIST alignment. Profile B (Customer Facing) achieves substantial compliance. Profile C (Autonomous Operator) is the profile that maps most completely to the controls cited in the OWASP and NIST frameworks above; treat any mapping as design intent, not certification.
+
+---
+
+## CIF Composer: Interactive Deployment Planning Tool {#sec:cif-composer}
+
+Part 2 ships an **interactive CIF Composer web UI** (`output/web/cif_composer.html`) that can assist deployment planning before committing to a production configuration. The Composer is a self-contained HTML/JS/D3 application requiring no server — open it directly in a browser from the Part 2 repository.
+
+**Key capabilities**:
+
+| Feature | Description |
+| :--- | :--- |
+| 8-module palette | Drag-and-drop Cognitive Firewall, Belief Sandbox, Tripwires, Drift Detection, Trust Calculus, Provenance, Byzantine Consensus, Invariant Checker |
+| Canvas composition | Wire modules in series, parallel, or hybrid configurations visually |
+| Live metric computation | Detects and computes composite detection rate in real time using Theorems 3.1/3.2 from Part 1 |
+| Category law verification | Verifies the Defense Category $\calD$ laws (identity, associativity) for the current pipeline composition |
+| 4 deployment presets | Loads Profiles A, B, C, and the Minimal Viable Implementation (MVI) directly |
+| Export | Generates Python SDK configuration code, JSON pipeline spec, and SVG diagram of the composed architecture |
+| Category Explorer tab | 9 interactive D3 diagrams for commutative diagrams, Hasse lattices, operadic trees, Kleisli flows, and lens diagrams |
+
+**Workflow for operators**: (1) Open `output/web/cif_composer.html` from the Part 2 repository. (2) Load the profile preset closest to your deployment context (Profile A/B/C). (3) Customize by adding, removing, or reordering modules. (4) Observe the live detection rate estimate and verify category laws. (5) Export the Python configuration and paste into your deployment scaffold. This replaces manual parameter lookup in tables with an interactive, law-verified design session.
+
+> **Note**: The Composer's detection rate estimates are derived from the parametric simulation in Part 2. They reflect fully-mature (Level-5) adapter performance. For current Level-3 adapter baselines, apply the adapter-maturity discount discussed in §3.

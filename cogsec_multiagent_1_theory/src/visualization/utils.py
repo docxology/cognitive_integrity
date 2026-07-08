@@ -15,23 +15,25 @@ import seaborn as sns
 def setup_plotting() -> None:
     """Apply publication-quality rcParams (serif fonts, 300 DPI, whitegrid)."""
     sns.set_theme(style="whitegrid")
-    plt.rcParams.update({
-        "font.family": "serif",
-        "font.serif": ["Times New Roman", "DejaVu Serif"],
-        "font.size": 14,
-        "axes.labelsize": 14,
-        "axes.titlesize": 16,
-        "axes.titleweight": "bold",
-        "legend.fontsize": 12,
-        "xtick.labelsize": 12,
-        "ytick.labelsize": 12,
-        "figure.titlesize": 18,
-        "figure.dpi": 300,
-        "lines.linewidth": 2,
-        "savefig.dpi": 300,
-        "savefig.bbox": "tight",
-        "savefig.pad_inches": 0.1,
-    })
+    plt.rcParams.update(
+        {
+            "font.family": "serif",
+            "font.serif": ["Times New Roman", "DejaVu Serif"],
+            "font.size": 14,
+            "axes.labelsize": 14,
+            "axes.titlesize": 16,
+            "axes.titleweight": "bold",
+            "legend.fontsize": 12,
+            "xtick.labelsize": 12,
+            "ytick.labelsize": 12,
+            "figure.titlesize": 18,
+            "figure.dpi": 300,
+            "lines.linewidth": 2,
+            "savefig.dpi": 300,
+            "savefig.bbox": "tight",
+            "savefig.pad_inches": 0.1,
+        }
+    )
 
 
 def get_color_palette() -> list[str]:

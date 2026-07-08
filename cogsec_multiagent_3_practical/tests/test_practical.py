@@ -7,8 +7,6 @@ Tests cover:
 - ChecklistItem and AssessmentResult data classes
 """
 
-import pytest
-
 from src import (
     AssessmentResult,
     ChecklistItem,
@@ -203,9 +201,7 @@ class TestAssessmentResult:
 
     def test_assessment_result_defaults(self):
         """Test assessment result default values."""
-        result = AssessmentResult(
-            passed=True, score=0.95, risk_level=RiskLevel.LOW
-        )
+        result = AssessmentResult(passed=True, score=0.95, risk_level=RiskLevel.LOW)
         assert result.findings == []
         assert result.recommendations == []
 

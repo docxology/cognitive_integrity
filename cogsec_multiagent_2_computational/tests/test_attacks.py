@@ -13,22 +13,18 @@ from typing import Dict, List
 import numpy as np
 import pytest
 
-from attacks.corpus import AttackCorpus, AttackSample, _CATEGORY_PREFIX, _TOP_CATEGORY_MAP
-from attacks.templates import (
-    AttackTemplate,
-    expand_template,
-    get_all_templates,
-    _injection_templates,
-    _trust_exploitation_templates,
-    _belief_manipulation_templates,
-    _coordination_templates,
+from attacks.corpus import _CATEGORY_PREFIX, _TOP_CATEGORY_MAP, AttackCorpus, AttackSample
+from attacks.generators.belief_manipulation import (
+    generate_all_belief_manipulation,
+    generate_belief_drift,
+    generate_belief_fabrication,
+    generate_belief_injection,
 )
-from attacks.validation import (
-    EXPECTED_DISTRIBUTION,
-    EXPECTED_SUBCATEGORY_DISTRIBUTION,
-    EXPECTED_TOTAL,
-    ValidationReport,
-    validate_corpus,
+from attacks.generators.coordination import (
+    generate_all_coordination,
+    generate_consensus_poisoning,
+    generate_sybil_attacks,
+    generate_timing_attacks,
 )
 from attacks.generators.injection import (
     generate_all_injection,
@@ -38,24 +34,26 @@ from attacks.generators.injection import (
 )
 from attacks.generators.trust_exploitation import (
     generate_all_trust_exploitation,
+    generate_delegation_abuse,
     generate_impersonation,
     generate_trust_inflation,
-    generate_delegation_abuse,
 )
-from attacks.generators.belief_manipulation import (
-    generate_all_belief_manipulation,
-    generate_belief_drift,
-    generate_belief_fabrication,
-    generate_belief_injection,
+from attacks.templates import (
+    AttackTemplate,
+    _belief_manipulation_templates,
+    _coordination_templates,
+    _injection_templates,
+    _trust_exploitation_templates,
+    expand_template,
+    get_all_templates,
 )
-from attacks.generators.coordination import (
-    generate_all_coordination,
-    generate_sybil_attacks,
-    generate_consensus_poisoning,
-    generate_timing_attacks,
+from attacks.validation import (
+    EXPECTED_DISTRIBUTION,
+    EXPECTED_SUBCATEGORY_DISTRIBUTION,
+    ValidationReport,
+    validate_corpus,
 )
 from utils.types import AttackCategory
-
 
 # ---------------------------------------------------------------------------
 # Fixtures

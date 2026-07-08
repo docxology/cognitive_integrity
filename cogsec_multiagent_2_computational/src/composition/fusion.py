@@ -214,15 +214,15 @@ class LearnedFusion(FusionStrategy):
         # Numerically stable sigmoid using masking to prevent overflow
         result = np.zeros_like(x)
         mask = x >= 0
-        
+
         # For x >= 0: 1 / (1 + exp(-x))
         z_pos = np.exp(-x[mask])
         result[mask] = 1.0 / (1.0 + z_pos)
-        
+
         # For x < 0: exp(x) / (1 + exp(x))
         z_neg = np.exp(x[~mask])
         result[~mask] = z_neg / (1.0 + z_neg)
-        
+
         return result
 
     @staticmethod

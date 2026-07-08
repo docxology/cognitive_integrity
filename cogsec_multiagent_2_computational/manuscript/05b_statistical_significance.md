@@ -8,7 +8,7 @@ This section establishes the statistical validity of our empirical findings thro
 
 ## Pipeline Detection Rate Distribution {#sec:pipeline-distribution}
 
-Across 30 random seeds on the Claude Code architecture, the full CIF defense pipeline achieved the following detection rate distribution:
+Across 30 random seeds on the Claude Code architecture, the full CIF defense pipeline achieved the following detection rate distribution (\cref{tab:pipeline-distribution}):
 
 **Table: Pipeline detection rate distribution (Claude Code, 30 seeds).** {#tab:pipeline-distribution}
 
@@ -28,7 +28,7 @@ The coefficient of variation (CV = 0.097) exceeds the 0.05 stability threshold, 
 
 ### Ablation Effect Sizes
 
-We quantify the marginal contribution of each defense component using the real ablation data ($N=100$ attacks, prototype pipeline):
+We quantify the marginal contribution of each defense component using the real ablation data ($N=100$ attacks, prototype pipeline) in \cref{tab:real-component-effects}:
 
 **Table: Component removal impact with effect sizes (real pipeline).** {#tab:real-component-effects}
 
@@ -38,7 +38,7 @@ We quantify the marginal contribution of each defense component using the real a
 | Detection module | 0.071 | $\approx -0.052$ | Largest drop ($\approx 42\%$ of baseline TPR) |
 | Tripwire | 0.113 | $\approx -0.011$ | Second largest |
 | Invariants | 0.113 | $\approx -0.010$ | Third largest |
-| Firewall | 0.114 | $\approx -0.009$ | Fourth |
+| Firewall | 0.105 | $\approx -0.019$ | Fourth |
 | Trust Calculus | 0.117 | $\approx -0.007$ | Fifth |
 | Provenance | 0.123 | $\approx -0.001$ | Small marginal harm when removed |
 | Sandbox | 0.124 | $\approx +0.000$ | On this corpus, small increase when removed |
@@ -48,23 +48,25 @@ We quantify the marginal contribution of each defense component using the real a
 
 ### Synergy Effect Sizes (Real Pipeline)
 
+\cref{tab:real-synergy} reports synergy scores for the top component pairs, where synergy = actual combined effect minus the sum of individual effects.
+
 **Table: Component pair synergy scores (real pipeline, ablation data).** {#tab:real-synergy}
 
 | Pair | Synergy Score | Interpretation |
 | --- | --- | --- |
-| Tripwire + Detection | $\approx +0.025$ | Strongest: canary monitoring + statistical |
-| Firewall + Detection | $\approx +0.023$ | Pattern-based + statistical |
+| Firewall + Detection | $\approx +0.026$ | Strongest: injection patterns + statistical |
+| Firewall + Trust Calculus | $\approx +0.018$ | Injection patterns + authority claim detection |
 | Provenance + Invariants | $\approx +0.009$ | Attribution + policy checks |
 | Firewall + Invariants | $\approx +0.009$ | Injection patterns + policy checks |
 | Tripwire + Invariants | $\approx +0.008$ | Canary monitoring + policy checks |
 
-Synergy scores measure the detection improvement of the pair beyond the sum of their individual effects. The Tripwire + Detection pair exhibits the strongest synergy ($\approx +0.025$), confirming that canary monitoring and text-feature analysis detect complementary attack patterns on this corpus.
+Synergy scores measure the detection improvement of the pair beyond the sum of their individual effects. The Firewall + Detection pair exhibits the strongest synergy ($\approx +0.026$), confirming that injection pattern filtering and text-feature analysis detect complementary attack patterns on this corpus.
 
 ## Confidence Intervals (Empirical) {#sec:empirical-ci}
 
 ### LLM Validation Confidence Intervals
 
-Given the small sample sizes ($N=5$ per architecture), we report exact binomial confidence intervals:
+Given the small sample sizes ($N=5$ per architecture), we report exact binomial confidence intervals (\cref{tab:llm-ci}):
 
 **Table: LLM validation detection rates with exact binomial 95\% CI.** {#tab:llm-ci}
 
@@ -77,6 +79,8 @@ Given the small sample sizes ($N=5$ per architecture), we report exact binomial 
 
 ### Multi-Seed Pipeline Confidence Intervals
 
+\cref{tab:multi-seed-ci} summarizes the mean pipeline detection rate with a 95\% confidence interval computed from the 30-seed sample.
+
 **Table: Multi-seed pipeline summary with 95\% CI (30 seeds, Claude Code).** {#tab:multi-seed-ci}
 
 | Metric | Estimate | 95\% CI (t-distribution) |
@@ -87,6 +91,8 @@ Given the small sample sizes ($N=5$ per architecture), we report exact binomial 
 The 95\% confidence interval for the mean pipeline detection rate is [0.434, 0.462], based on 30 seeds with a t-distribution correction. This provides a reliable estimate of expected pipeline performance on the Claude Code architecture with the current adapter implementations.
 
 ## Power Analysis {#sec:real-power-analysis}
+
+\cref{tab:real-power} summarizes the statistical power available for each primary empirical comparison.
 
 **Table: Power analysis for primary empirical comparisons.** {#tab:real-power}
 
@@ -107,7 +113,7 @@ For the ablation analysis comparing 8 component removals against the full pipeli
 \begin{enumerate}
 \item **Pipeline detection**: Mean 44.8\% [95\% CI: 43.4\%, 46.2\%] across 30 seeds (Claude Code), with CV = 0.097 indicating moderate seed sensitivity.
 \item **Component hierarchy**: Detection module ($\Delta\text{TPR} \approx -0.052$) is the dominant contributor, followed by Tripwires and Invariants ($\approx -0.011$ and $\approx -0.010$). The top three harmful removals account for about 82\% of the summed negative $\Delta\text{TPR}$ magnitude.
-\item **Synergy**: Tripwire + Detection shows strongest synergy ($\approx +0.025$), confirming complementary detection patterns on the ablation corpus.
+\item **Synergy**: Firewall + Detection shows strongest synergy ($\approx +0.026$), confirming complementary detection patterns on the ablation corpus.
 \item **LLM validation underpowered**: $N=5$ per architecture yields very wide CIs (e.g., [0.28, 0.99] for Claude Code), necessitating expansion for reliable architecture-level conclusions.
 \item **Parametric reference**: Design-level parametric analysis (\cref{sec:parametric-analysis}) achieves 94--100\% detection, establishing the coverage ceiling for fully-realized adapter implementations.
 \end{enumerate}

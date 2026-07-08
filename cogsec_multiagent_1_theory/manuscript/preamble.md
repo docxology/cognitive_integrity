@@ -43,6 +43,8 @@ This file contains LaTeX packages and commands for the Cognitive Security Framew
 \crefname{observation}{Observation}{Observations}
 \crefname{formalization}{Formalization}{Formalizations}
 \crefname{principle}{Principle}{Principles}
+\crefname{axiom}{Axiom}{Axioms}
+\crefname{remark}{Remark}{Remarks}
 
 % Theorem environments with consistent numbering
 \newtheorem{definition}{Definition}[section]
@@ -54,6 +56,9 @@ This file contains LaTeX packages and commands for the Cognitive Security Framew
 \newtheorem{observation}[theorem]{Observation}
 \newtheorem{formalization}[theorem]{Formalization}
 \newtheorem{principle}[theorem]{Principle}
+\newtheorem{remark}[theorem]{Remark}
+
+% End of theorem environment declarations
 
 % Math operators
 \DeclareMathOperator*{\argmax}{arg\,max}
@@ -117,4 +122,14 @@ This file contains LaTeX packages and commands for the Cognitive Security Framew
     urlcolor=red,
     citecolor=red
 }
+
+% List of Figures and List of Tables in TOC
+\usepackage[titles]{tocloft}
+```
+
+After the table of contents, include:
+
+```latex
+\listoffigures
+\listoftables
 ```

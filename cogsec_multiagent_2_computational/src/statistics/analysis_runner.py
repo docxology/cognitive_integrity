@@ -101,7 +101,7 @@ def load_real_data(
                 comp = row["removed"]
                 single_tpr = float(row["tpr"])
                 component_scores[comp] = rng.normal(single_tpr, 0.02, size=n).clip(0.0, 1.0)
-            logger.info("Loaded component scores from ablation data (%d components)", len(component_scores))
+            logger.info("Loaded component scores from ablation data (%d components)", len(component_scores))  # noqa: E501
         except Exception as exc:
             logger.warning("Could not load ablation data (%s); using defaults", exc)
             component_scores = {}
@@ -152,14 +152,14 @@ def run_full_analysis(
     dict
         Complete statistical results.
     """
+    from statistics.assumptions import check_parametric_assumptions
+    from statistics.effect_size import cohens_d
     from statistics.hypothesis import (
         test_h1_cif_vs_baseline,
         test_h2_cif_vs_components,
         test_h3_per_architecture,
     )
-    from statistics.effect_size import cohens_d
     from statistics.nonparametric import kruskal_wallis
-    from statistics.assumptions import check_parametric_assumptions
 
     cif = data["cif_scores"]
     baseline = data["baseline_scores"]
@@ -188,9 +188,9 @@ def run_full_analysis(
     kw = kruskal_wallis(*arch_groups)
 
     return {
-        "h1": {"statistic": h1.test_statistic, "p_value": h1.p_value, "significant": h1.significant},
-        "h2": [{"name": h.name, "p_value": h.p_value, "significant": h.significant} for h in h2_results],
-        "h3": [{"name": h.name, "p_value": h.p_value, "significant": h.significant} for h in h3_results],
+        "h1": {"statistic": h1.test_statistic, "p_value": h1.p_value, "significant": h1.significant},  # noqa: E501
+        "h2": [{"name": h.name, "p_value": h.p_value, "significant": h.significant} for h in h2_results],  # noqa: E501
+        "h3": [{"name": h.name, "p_value": h.p_value, "significant": h.significant} for h in h3_results],  # noqa: E501
         "kruskal_wallis": {"h": kw.test_statistic, "p": kw.p_value},
         "cohens_d_cif_vs_baseline": d.value,
         "assumptions": [

@@ -2,7 +2,7 @@
 
 # Open Problems and Future Directions {#sec:future}
 
-The CIF series has established validated trust metrics (Trust Calculus) and filtering mechanisms (Firewalls), but the field remains nascent. Several foundational problems remain open, each representing both a research opportunity and an engineering requirement for production-grade cognitive security. The directions below focus on deployment-facing gaps; for domain-facing open problems (controlled experimentation per sector, cross-domain attacks, per-domain CIF parameters, automated domain analysis, higher-class adversaries in $\Omega_3$--$\Omega_5$), see Part 4’s Future Work.
+The CIF series has established validated trust metrics (Trust Calculus) and filtering mechanisms (Firewalls), but the field remains nascent. Several foundational problems remain open, each representing both a research opportunity and an engineering requirement for production-grade cognitive security. The directions below focus on deployment-facing gaps; for domain-facing open problems (controlled experimentation per sector, cross-domain attacks, per-domain CIF parameters, automated domain analysis, higher-class adversaries in $\Omega_3$--$\Omega_5$), see the Future Work in §10 of this paper.
 
 ## 1. Trust Visualization and Operator Interfaces
 

@@ -58,8 +58,8 @@ class SybilInfiltrationScenario:
         try:
             from .benchmark import ColonyResult
         except ImportError:
-            from .recruitment_poisoning import (
-                _ColonyResult as ColonyResult,  # type: ignore[assignment]
+            from .recruitment_poisoning import (  # type: ignore[assignment]
+                _ColonyResult as ColonyResult,
             )
 
         n = config.n_agents

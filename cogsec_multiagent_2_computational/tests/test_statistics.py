@@ -8,9 +8,6 @@ NO MOCKS. All tests use real data, real computation, deterministic seeds.
 
 import math
 
-import numpy as np
-import pytest
-
 # ---------------------------------------------------------------------------
 # ANOVA imports
 # ---------------------------------------------------------------------------
@@ -71,8 +68,14 @@ from statistics.hypothesis import (
     HypothesisResult,
     bonferroni_correct,
     paired_ttest,
+)
+from statistics.hypothesis import (
     test_h1_cif_vs_baseline as h1_cif_vs_baseline,
+)
+from statistics.hypothesis import (
     test_h2_cif_vs_components as h2_cif_vs_components,
+)
+from statistics.hypothesis import (
     test_h3_per_architecture as h3_per_architecture,
 )
 
@@ -120,6 +123,8 @@ from statistics.stability import (
     run_multi_seed_stability,
 )
 
+import numpy as np
+import pytest
 
 # ===========================================================================
 # 1. ANOVA TESTS
@@ -1721,7 +1726,7 @@ class TestRunMultiSeedStability:
 
     def test_unstable_pipeline(self):
         """A noisy pipeline is flagged as unstable."""
-        rng = np.random.default_rng(42)
+        np.random.default_rng(42)
 
         def noisy_eval(seed):
             # Deliberately noisy: CV > 5%

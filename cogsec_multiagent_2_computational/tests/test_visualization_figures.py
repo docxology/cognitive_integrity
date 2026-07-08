@@ -4,15 +4,14 @@ Each function is called with a temp output directory.  We verify it
 returns a matplotlib Figure (or paths for ROC) and closes cleanly.
 """
 
-import os
 
 import matplotlib
+
 matplotlib.use("Agg")
 
 import matplotlib.pyplot as plt
 import pytest
 from matplotlib.figure import Figure
-
 
 # ── Figure smoke tests ──────────────────────────────────────────────────
 

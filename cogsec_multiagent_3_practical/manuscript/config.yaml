@@ -1,13 +1,13 @@
 paper:
-  title: "Cognitive Integrity Framework: A Qualitative Review"
-  subtitle: "Part 3 of 4: Synthesizing Theory and Computation for Practitioners"
-  short_title: "CIF Review"
+  title: "Cognitive Integrity Framework: Practical Applications and Deployment Guide"
+  subtitle: "Part 3+4 (Unified): Practitioner Guidance and Cross-Domain CIF-AD-OODA Applications"
+  short_title: "CIF Practical & Applications"
   version: "2.0"
   type: "review"
   series: "Cognitive Security for Multiagent Operators"
-  part: 3
+  part: "3+4"
   doi: "10.5281/zenodo.18364130"
-  date: "2026-02-15"
+  date: "2026-07-05"
 
 authors:
   - name: "Daniel Ari Friedman"
@@ -25,30 +25,111 @@ keywords:
   - defense composition
   - deployment guidance
   - agentic AI security
+  - goal hijacking
+  - cognitive integrity framework
+  - OODA loop
+  - axiomatic design
+  - critical infrastructure
+  - supply chain security
+  - information warfare
+  - adversarial AI
+  - cross-domain analysis
+  - category theory
+  - composable defenses
 
 abstract: |
-  This paper (Part 3) is a qualitative review and operator's synthesis of the
-  Cognitive Integrity Framework (CIF), developed in Parts 1, 2, and 4: formal
-  foundations, computational validation, and applied analysis. Part 1 gives
-  bounded trust calculus, defense composition algebras, and information-theoretic
-  limits on attack stealth. Part 2 provides implemented defense modules and
-  parametric architecture-aware simulation across four production topologies. Part
-  4 applies the framework across ten critical operational domains via the
-  integrated CIF-AD-OODA model.
+  This unified paper (originally Parts 3 and 4 of the Cognitive Security for Multiagent
+  Operators series) combines the practitioner deployment guide with a rigorous cross-domain
+  application of the Cognitive Integrity Framework (CIF).
 
-  The review distills that material into accessible language, situates formal
-  results against deployment practice, and gives practical guidance for teams
-  building and operating multiagent AI systems. No formal prerequisites assumed.
+  **Practitioner Guidance (§1–§8).** Translates the formal results of Parts 1 and 2 into
+  accessible engineering guidance: operator posture assessment, human oversight checklists,
+  agent security invariants, deployment configuration, risk assessment, attack scenarios,
+  subagent hardening, incident-response playbooks, monitoring strategies, cost–benefit
+  analysis, common pitfalls, case studies, and operator risk frameworks.
 
-  This is Part 3 of a four-part series:
+  **Cross-Domain Applications (§9–§10).** The CIF-AD-OODA integration model is applied
+  to analyze Goal Hijacking across ten critical domains. Cross-domain synthesis reveals
+  three universal attack patterns and three novel defense extensions.
+
+  This is Part 3+4 of a three-part series:
   - Part 1 (DOI: 10.5281/zenodo.18364119): Formal foundations and theoretical analysis
   - Part 2 (DOI: 10.5281/zenodo.18364128): Computational validation and implementation
-  - Part 3 (this paper): Qualitative review and practitioner's synthesis
-  - Part 4: Applications --- CIF-AD-OODA integration and domain analyses (rare-earth mining, nation-state alliances, cyber-security, drone warfare, supply chains, biowarfare, food security, trade wars, infrastructure, information ecosystems)
+  - Part 3+4 (this paper): Practitioner guidance and cross-domain CIF-AD-OODA applications
+
+series:
+  structure: "3-part"
+  parts:
+    - number: 1
+      title: "Formal Foundations"
+      doi: "10.5281/zenodo.18364119"
+      short: "Part 1"
+    - number: 2
+      title: "Computational Validation (Second Edition)"
+      doi: "10.5281/zenodo.18364128"
+      short: "Part 2"
+    - number: "3+4"
+      title: "Practitioner Guide and Cross-Domain Applications (this paper)"
+      doi: "10.5281/zenodo.18364130"
+      short: "Part 3+4"
+
+figures:
+  ooda_loop_overview:
+    path: "figures/ooda_loop_overview.png"
+    caption: "Boyd's OODA Loop showing Observe-Orient-Decide-Act phases. Goal Hijacking targets the Orient phase, corrupting the synthesis stage where agents integrate observations with prior knowledge."
+    label: "fig:ooda-overview"
+    width: "0.80\\linewidth"
+  design_matrix_uncoupled:
+    path: "figures/design_matrix_uncoupled.png"
+    caption: "Axiomatic Design Matrix $[A]$ in uncoupled (safe) configuration. The diagonal structure indicates that each Functional Requirement $\\text{FR}_k$ is controlled by exactly one Design Parameter $\\text{DP}_k$ without cross-coupling."
+    label: "fig:design-matrix-uncoupled"
+    width: "0.60\\linewidth"
+  design_matrix_coupled:
+    path: "figures/design_matrix_coupled.png"
+    caption: "Axiomatic Design Matrix $[A']$ after Goal Hijacking attack introduces off-diagonal coupling terms. The transient coupling violates Suh's Independence Axiom, enabling adversarial redirection of Functional Requirements."
+    label: "fig:design-matrix-coupled"
+    width: "0.60\\linewidth"
+  cif_defense_stack:
+    path: "figures/cif_defense_stack.png"
+    caption: "CIF five-mechanism defense stack deployed in production: Cognitive Firewall (input layer), Belief Sandbox (isolation layer), Behavioral Invariants (runtime monitoring), Drift Detection (temporal monitoring), Byzantine Consensus (coordination layer). Each layer targets a distinct attack surface."
+    label: "fig:cif-defense-stack"
+    width: "0.85\\linewidth"
+  deployment_profiles:
+    path: "figures/deployment_profiles.png"
+    caption: "Comparison of three CIF deployment profiles (A: Internal Tool, B: Customer-Facing, C: Autonomous Operator) across detection rate, latency overhead, and resilience dimensions. Profile B represents the empirically optimal balance point from Part 2 evaluation."
+    label: "fig:deployment-profiles"
+    width: "0.80\\linewidth"
+  trust_decay_comparison:
+    path: "figures/trust_decay_comparison.png"
+    caption: "Trust retention across delegation chain depth for three decay factors ($\\delta \\in \\{0.60, 0.80, 0.95\\}$). Profiles C, B, and A respectively. At $\\delta=0.80$, trust drops below 50\\% after 3 hops, enforcing practical delegation bounds."
+    label: "fig:trust-decay-comparison"
+    width: "0.75\\linewidth"
+  domain_analysis_template:
+    path: "figures/domain_analysis_template.png"
+    caption: "Five-step CIF-AD-OODA domain analysis template: (i) Operational Characterization, (ii) Attack Surface Analysis, (iii) Transient Coupling Analysis, (iv) Defense Mapping, (v) Validation Anchoring. Applied uniformly across all ten critical domains."
+    label: "fig:domain-analysis-template"
+    width: "0.85\\linewidth"
+  universal_attack_patterns:
+    path: "figures/universal_attack_patterns.png"
+    caption: "Three universal Goal Hijacking attack patterns identified through cross-domain analysis. FR Polarity Inversion (5/10 domains) co-opts agent capabilities; Constraint Relaxation (3/10) removes operational bounds; Context Boundary Violation (2/10) exploits trust zone boundaries."
+    label: "fig:universal-attack-patterns"
+    width: "0.80\\linewidth"
+  mechanism_coverage_matrix:
+    path: "figures/mechanism_coverage_matrix.png"
+    caption: "CIF mechanism coverage matrix across ten domains. Each cell indicates whether the mechanism serves as primary (P) or supporting (S) defense in the domain. All five mechanisms appear across the portfolio; no single mechanism suffices alone."
+    label: "fig:mechanism-coverage"
+    width: "0.90\\linewidth"
+  incident_timeline:
+    path: "figures/incident_timeline.png"
+    caption: "Timeline of six documented AI agent security incidents (2024–2025) analyzed in Supplementary Material S3. All incidents map to one of the three universal attack patterns identified through cross-domain analysis."
+    label: "fig:incident-timeline"
+    width: "0.85\\linewidth"
 
 llm:
   translations:
     enabled: true
-    languages: [zh, es, ar]
+    languages: [zh, es, ar, ru, hi, fr, de]
   review:
     enabled: true
+    types:
+      - executive_summary

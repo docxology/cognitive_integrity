@@ -10,5 +10,3 @@ Adapters for 4 production multiagent architectures.
 | `autogpt.py` | AutoGPT | Autonomous |
 | `crewai.py` | CrewAI | Role-based |
 | `langgraph.py` | LangGraph | Graph-based |
-| `metagpt.py` | MetaGPT | SOP-driven |
-| `camel.py` | CAMEL | Debate |

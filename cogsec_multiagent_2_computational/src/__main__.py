@@ -23,11 +23,44 @@ if _SRC_DIR not in sys.path:
 
 def cmd_evaluate(args: argparse.Namespace) -> None:
     """Run evaluation experiments."""
+    from .attacks.corpus import AttackCorpus
     from .evaluation.runner import ExperimentRunner
+    from .utils.types import ExperimentConfig
 
-    runner = ExperimentRunner(seed=args.seed)
-    result = runner.run()
-    print(f"Evaluation complete: TPR={result.tpr:.3f}, FPR={result.fpr:.3f}")
+    try:
+        from .architectures.autogpt import AutoGPTAdapter
+        from .architectures.claude_code import ClaudeCodeAdapter
+        from .architectures.crewai import CrewAIAdapter
+        from .architectures.langgraph import LangGraphAdapter
+        adapters = [ClaudeCodeAdapter(), AutoGPTAdapter(), CrewAIAdapter(), LangGraphAdapter()]
+    except (ImportError, ModuleNotFoundError):
+        from .architectures.claude_code import ClaudeCodeAdapter
+        adapters = [ClaudeCodeAdapter()]
+
+    config = ExperimentConfig(seed=args.seed)
+    runner = ExperimentRunner(config)
+
+    corpus = AttackCorpus.generate(seed=args.seed)
+    corpus_dict = {}
+    for cat in ["injection", "trust_exploitation", "belief_manipulation", "coordination"]:
+        samples = corpus.by_top_category(cat)
+        corpus_dict[cat] = [
+            {"category": s.subcategory, "content": s.payload, "is_attack": True}
+            for s in samples
+        ]
+
+    results = runner.run_full_matrix(adapters, corpus_dict, pipeline=None)
+
+    if results:
+        total_tp = sum(r.true_positives for r in results)
+        total_fn = sum(r.false_negatives for r in results)
+        total_fp = sum(r.false_positives for r in results)
+        total_tn = sum(r.true_negatives for r in results)
+        tpr = total_tp / (total_tp + total_fn) if (total_tp + total_fn) > 0 else 0.0
+        fpr = total_fp / (total_fp + total_tn) if (total_fp + total_tn) > 0 else 0.0
+        print(f"Evaluation complete: TPR={tpr:.3f}, FPR={fpr:.3f}")
+    else:
+        print("Evaluation complete: no results produced")
 
 
 def cmd_figures(args: argparse.Namespace) -> None:

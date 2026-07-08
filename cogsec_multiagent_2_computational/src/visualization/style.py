@@ -7,10 +7,11 @@ module in the visualization package.
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Dict, List, Optional, Sequence, Tuple, Union
+from typing import Dict, List, Literal, Optional, Sequence, Tuple, Union, overload
 
 import matplotlib
 import matplotlib.pyplot as plt
+import numpy
 from matplotlib.axes import Axes
 from matplotlib.figure import Figure
 
@@ -40,12 +41,12 @@ PALETTE: List[str] = [
 ]
 
 FONTSIZE: Dict[str, int] = {
-    "tiny": 8,
-    "small": 10,
-    "note": 11,
-    "base": 12,
-    "large": 14,
-    "title": 16,
+    "tiny": 6,
+    "small": 8,
+    "note": 9,
+    "base": 10,
+    "large": 12,
+    "title": 14,
 }
 
 # Semantic color mapping for consistency across figures
@@ -86,28 +87,71 @@ SEMANTIC_COLORS: Dict[str, str] = {
 def apply_style() -> None:
     """Configure matplotlib rcParams for publication-quality output."""
     matplotlib.rcParams.update({
-        "font.family": "sans-serif", # Switch to sans-serif for better screen/digital reading
+        # Use DejaVu Sans for maximum Unicode coverage (subscripts, math symbols, etc.)
+        "font.family": "sans-serif",
         "font.sans-serif": ["DejaVu Sans", "Arial", "Helvetica"],
-        "font.size": 12,
-        "axes.labelsize": 14,
-        "axes.titlesize": 16,
+        "font.size": 10,
+        "axes.labelsize": 11,
+        "axes.titlesize": 12,
         "figure.dpi": 300,
         "savefig.dpi": 300,
+        # Don't use constrained_layout — figures call tight_layout() directly
+        "figure.constrained_layout.use": False,
+        "figure.autolayout": False,
+        # Subtle grid with lighter alpha
         "axes.grid": True,
-        "grid.alpha": 0.3,
+        "grid.alpha": 0.2,
+        "grid.linestyle": "--",
         "axes.spines.top": False,
         "axes.spines.right": False,
-        "legend.framealpha": 0.95,
+        "axes.spines.left": True,
+        "axes.spines.bottom": True,
+        "axes.edgecolor": "0.6",
+        "axes.linewidth": 0.8,
+        # Tighter tick settings
+        "xtick.major.size": 3,
+        "ytick.major.size": 3,
+        "xtick.minor.size": 1.5,
+        "ytick.minor.size": 1.5,
+        "xtick.labelsize": 9,
+        "ytick.labelsize": 9,
+        "xtick.direction": "in",
+        "ytick.direction": "in",
+        # Legend
+        "legend.framealpha": 0.9,
         "legend.edgecolor": "0.8",
-        "xtick.labelsize": 11,
-        "ytick.labelsize": 11,
-        "legend.fontsize": 11,
+        "legend.fontsize": 9,
+        "legend.fancybox": False,
+        "legend.frameon": True,
+        # Lines
+        "lines.linewidth": 1.5,
+        "lines.markersize": 5,
+        # Patches (bars, boxes)
+        "patch.force_edgecolor": True,
+        "patch.edgecolor": "white",
+        "patch.linewidth": 0.5,
     })
 
 
 # ---------------------------------------------------------------------------
 # Figure creation helpers
 # ---------------------------------------------------------------------------
+
+@overload
+def create_figure(
+    width: float = ...,
+    height: float = ...,
+    n_rows: Literal[1] = ...,
+    n_cols: Literal[1] = ...,
+) -> Tuple[Figure, Axes]: ...
+
+@overload
+def create_figure(
+    width: float = ...,
+    height: float = ...,
+    n_rows: int = ...,
+    n_cols: int = ...,
+) -> Tuple[Figure, Union[Axes, "numpy.ndarray"]]: ...
 
 def create_figure(
     width: float = 6.5,
@@ -151,7 +195,7 @@ def add_source_annotation(fig: Figure, source_file: str) -> None:
 def save_figure(
     fig: Figure,
     name: str,
-    output_dir: str = "output/figures",
+    output_dir: str | Path = "output/figures",
     formats: Sequence[str] = ("pdf", "png"),
 ) -> List[str]:
     """Save *fig* in multiple formats and return the list of saved paths."""

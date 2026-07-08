@@ -5,7 +5,6 @@ Comprehensive tests targeting 90%+ coverage.
 All tests use real data - no mocks.
 """
 
-import numpy as np
 import pytest
 from matplotlib import pyplot as plt
 
@@ -28,7 +27,6 @@ from src.visualization import (
     render_timeline,
     render_trust_decay,
 )
-
 
 # =============================================================================
 # Data Class Tests
@@ -248,9 +246,7 @@ class TestDeploymentPhasesData:
     def test_total_checks_count(self) -> None:
         """Test total checks count in metadata."""
         data = get_deployment_phases_data()
-        assert data.data["total_checks"] == sum(
-            len(p.checks) for p in data.data["phases"]
-        )
+        assert data.data["total_checks"] == sum(len(p.checks) for p in data.data["phases"])
 
 
 class TestRenderChecklistFlowchart:
@@ -514,8 +510,10 @@ class TestTimelineData:
 
         # Check phases don't overlap and are sequential
         for i in range(len(phases) - 1):
-            assert phases[i].end <= phases[i + 1].start or \
-                   abs(phases[i].end - phases[i + 1].start) < 0.01
+            assert (
+                phases[i].end <= phases[i + 1].start
+                or abs(phases[i].end - phases[i + 1].start) < 0.01
+            )
 
     def test_timeline_covers_full_range(self) -> None:
         """Test that timeline phases cover 0 to 1."""

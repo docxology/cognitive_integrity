@@ -13,6 +13,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from composition.algebra import compute_series_detection_rate
+
 from ..style import FONTSIZE, SEMANTIC_COLORS, add_source_annotation, apply_style, save_figure
 
 logger = logging.getLogger(__name__)
@@ -22,7 +23,7 @@ def _load_detection_data(output_dir: Path) -> dict:
     """Load generated detection data from the pipeline output."""
     data_path = output_dir.parent / "data" / "detection_data.json"
     if not data_path.exists():
-        data_path = Path(__file__).resolve().parent.parent.parent.parent / "output" / "data" / "detection_data.json"
+        data_path = Path(__file__).resolve().parent.parent.parent.parent / "output" / "data" / "detection_data.json"  # noqa: E501
     with open(data_path) as f:
         data = json.load(f)
     logger.info("Loaded detection data from %s", data_path)
@@ -70,7 +71,7 @@ def plot_detection_performance(output_dir: str | Path = "output/figures") -> plt
     # Load real evaluation data for Panel A
     eval_data_path = output_dir.parent / "data" / "full_evaluation_results.json"
     if not eval_data_path.exists():
-        eval_data_path = Path(__file__).resolve().parent.parent.parent.parent / "output" / "data" / "full_evaluation_results.json"
+        eval_data_path = Path(__file__).resolve().parent.parent.parent.parent / "output" / "data" / "full_evaluation_results.json"  # noqa: E501
     from data.result_loaders import evaluation_to_detection_matrix
     archs, cats, matrix = evaluation_to_detection_matrix(path=str(eval_data_path))
     arch_means = [float(matrix[i].mean()) for i in range(len(archs))]
@@ -83,9 +84,9 @@ def plot_detection_performance(output_dir: str | Path = "output/figures") -> plt
     x = np.arange(len(defenses))
     width = 0.25
 
-    ax1.bar(x - width, tpr, width, label="TPR (Recall)", color=SEMANTIC_COLORS["firewall"], edgecolor="black")
+    ax1.bar(x - width, tpr, width, label="TPR (Recall)", color=SEMANTIC_COLORS["firewall"], edgecolor="black")  # noqa: E501
     ax1.bar(x, fpr, width, label="FPR", color=SEMANTIC_COLORS["tripwire"], edgecolor="black")
-    ax1.bar(x + width, f1, width, label="F1 Score", color=SEMANTIC_COLORS["sandbox"], edgecolor="black")
+    ax1.bar(x + width, f1, width, label="F1 Score", color=SEMANTIC_COLORS["sandbox"], edgecolor="black")  # noqa: E501
 
     ax1.annotate(
         f"Theoretical: {theoretical_cif:.2f}",
@@ -127,9 +128,9 @@ def plot_detection_performance(output_dir: str | Path = "output/figures") -> plt
     x = np.arange(len(attack_types))
     width = 0.25
 
-    ax2.bar(x - width, baseline, width, label="Baseline", color=colors["baseline"], edgecolor="black")
+    ax2.bar(x - width, baseline, width, label="Baseline", color=colors["baseline"], edgecolor="black")  # noqa: E501
     ax2.bar(x, firewall, width, label="Firewall Only", color=colors["firewall"], edgecolor="black")
-    ax2.bar(x + width, full_cif_vals, width, label="Full CIF", color=colors["full_cif"], edgecolor="black")
+    ax2.bar(x + width, full_cif_vals, width, label="Full CIF", color=colors["full_cif"], edgecolor="black")  # noqa: E501
 
     ax2.set_ylabel("Detection Rate", fontsize=12)
     ax2.set_title("B. Detection Rate by Attack Type", fontsize=12, fontweight="bold")

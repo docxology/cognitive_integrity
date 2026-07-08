@@ -11,6 +11,28 @@ This paper intentionally minimizes mathematical notation to maximize accessibili
 | δ | Trust decay factor | "Delegated trust decreases by this factor at each step" |
 | n | Agent count | "Number of agents in the system" |
 | f | Byzantine agents | "Maximum number of malicious agents tolerated" |
+| $[A]$ | Design Matrix | Maps Functional Requirements to Defense Provisions |
+| $\{FR\}$ | Functional Requirements | What the system must protect |
+| $\{DP\}$ | Defense Provisions | What CIF mechanisms provide |
+| $\Omega_k$ | Adversary class $k$ | Capability tier (1=passive, 2=injection, 3=spoofing, 4=belief manipulation, 5=coordinated) |
+
+## CIF-AD-OODA Notation
+
+The cross-domain analysis (Sections 9c–9l) uses the CIF-AD-OODA methodology:
+
+- **Design Matrix** $[A]$: A matrix where rows represent Functional Requirements ($FR$) and columns represent Defense Provisions ($DP$). Each entry $A_{ij}$ indicates whether defense $j$ covers requirement $i$.
+- **Transient Coupling** $[A']$: The coupling matrix during an active attack, showing which defenses are bypassed.
+- **Adversary Classes** $\Omega_1$–$\Omega_5$: Five capability tiers from passive eavesdropping ($\Omega_1$) through coordinated multi-agent attacks ($\Omega_5$), as defined in Part 1, Section 3.
+
+### Three Universal Attack Patterns
+
+Across all ten domains, attacks reduce to three canonical patterns:
+
+| Pattern | Description | Defense |
+|---------|-------------|---------|
+| FR Polarity Inversion | Attacker flips a Functional Requirement's sign (e.g., "don't share secrets" → "share secrets") | Cognitive Firewall + Belief Sandbox |
+| Constraint Relaxation | Attacker weakens a safety constraint's boundary | Invariant Monitor + Tripwire |
+| Context Boundary Violation | Attacker exploits scope leakage between agent contexts | Provenance Tracking + Trust Calculus |
 
 ## Trust Decay Explanation
 

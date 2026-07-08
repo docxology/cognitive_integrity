@@ -1,6 +1,6 @@
-"""
 from __future__ import annotations
 
+"""
 Anomaly Detection for Cognitive Security.
 
 Implements drift detection and behavioral scoring.
@@ -8,8 +8,8 @@ Implements drift detection and behavioral scoring.
 
 import logging
 from collections import deque
-from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Tuple
+from dataclasses import dataclass
+from typing import Callable, Dict, List, Optional, Tuple
 
 import numpy as np
 
@@ -51,8 +51,7 @@ class DriftDetector:
         """Calibrate baseline from collected observations."""
         if len(self._history) < self.config.baseline_samples:
             raise ValueError(
-                f"Need {self.config.baseline_samples} samples, "
-                f"have {len(self._history)}"
+                f"Need {self.config.baseline_samples} samples, have {len(self._history)}"
             )
 
         # Stack observations (assuming consistent keys)
@@ -77,9 +76,7 @@ class DriftDetector:
 
         return float(np.sum(p * np.log(p / q)))
 
-    def compute_drift(
-        self, current: Dict[str, float], window: int = 10
-    ) -> Tuple[float, float]:
+    def compute_drift(self, current: Dict[str, float], window: int = 10) -> Tuple[float, float]:
         """
         Compute drift from recent history.
 
@@ -152,7 +149,7 @@ class FeatureExtractor:
     """Extracts behavioral features from agent state."""
 
     name: str
-    extract: callable
+    extract: Callable[[dict], float]
     baseline_mean: float = 0.0
     baseline_std: float = 1.0
 
@@ -170,7 +167,7 @@ class AnomalyScorer:
         self._history: Dict[str, deque] = {}
 
     def add_extractor(
-        self, name: str, extract_fn: callable, weight: float = 1.0
+        self, name: str, extract_fn: Callable[[dict], float], weight: float = 1.0
     ) -> None:
         """
         Add feature extractor.
@@ -206,10 +203,7 @@ class AnomalyScorer:
         """Calibrate baselines for agent from history."""
         for extractor, _ in self._extractors:
             key = f"{agent_id}:{extractor.name}"
-            if (
-                key in self._history
-                and len(self._history[key]) >= self.config.baseline_samples
-            ):
+            if key in self._history and len(self._history[key]) >= self.config.baseline_samples:
                 values = np.array(list(self._history[key]))
                 extractor.baseline_mean = float(np.mean(values))
                 extractor.baseline_std = float(np.std(values)) + 1e-6
@@ -240,14 +234,12 @@ class AnomalyScorer:
 
                 total_score += weight * z
                 total_weight += weight
-            except Exception:
-                pass
+            except (TypeError, ValueError, KeyError, ZeroDivisionError) as exc:
+                logger.debug("Extractor %s failed: %s", extractor.name, exc)
 
         return total_score / total_weight if total_weight > 0 else 0.0
 
-    def is_anomalous(
-        self, agent_id: str, state: dict
-    ) -> Tuple[bool, float, Dict[str, float]]:
+    def is_anomalous(self, agent_id: str, state: dict) -> Tuple[bool, float, Dict[str, float]]:
         """
         Check if agent state is anomalous.
 
@@ -265,8 +257,8 @@ class AnomalyScorer:
                 feature_scores[extractor.name] = z
                 total_score += weight * z
                 total_weight += weight
-            except Exception:
-                pass
+            except (TypeError, ValueError, KeyError, ZeroDivisionError) as exc:
+                logger.debug("Extractor %s failed: %s", extractor.name, exc)
 
         score = total_score / total_weight if total_weight > 0 else 0.0
         threshold = self.config.sigma_multiplier

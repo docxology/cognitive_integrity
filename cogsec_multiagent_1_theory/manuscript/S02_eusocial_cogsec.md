@@ -76,6 +76,7 @@ An emergent collective function $\mathcal{F}_c$ is *non-decomposable* if there e
 \begin{equation}
 \mathcal{F}*c(\mathcal{E}^T, \{\sigma_i^T\}) = f\left(\sum*{i=1}^n g(\sigma_i^T)\right)
 \end{equation}
+{#eq:non-decomposability}
 for any agent-level function $g$. The collective behavior requires knowledge of interaction structure, not just aggregated individual states.
 \end{property}
 
@@ -249,7 +250,7 @@ Existing AI security benchmarks focus overwhelmingly on single-agent scenarios:
 | AgentBench [@liu2023agentbench] | Single agent, task completion | Minimal |
 | GAIA [@mialon2023gaia] | Single/few agents, reasoning | Minimal |
 
-The attack corpus in Part 2 addresses multiagent scenarios but still emphasizes agent-targeted attacks within an operator, and the cross-domain goal-hijacking analysis in Part 4 provides ten operational-domain case studies. No existing benchmark, however, evaluates:
+The attack corpus in Part 2 addresses multiagent scenarios but still emphasizes agent-targeted attacks within an operator, and the cross-domain goal-hijacking analysis in Part 3 \cite{friedman2026cogsec3} provides ten operational-domain case studies. No existing benchmark, however, evaluates:
 
 1. **Emergent collective resilience** — How do colonies absorb individual compromises?
 2. **Stigmergic attack surfaces** — How vulnerable is environment-mediated coordination?
@@ -290,6 +291,7 @@ Let $\mathcal{E}(l_{\text{target}}, m_{\text{recruit}}, t)$ be the recruitment s
 \begin{equation}
 \mathcal{E}'(l_{\text{malicious}}, m_{\text{recruit}}, t) = \mathcal{E}(l_{\text{target}}, m_{\text{recruit}}, t) + \epsilon
 \end{equation}
+{#eq:recruitment-signal-injection}
 where $\epsilon > 0$ is chosen to divert fraction $f$ of responding agents.
 
 **Success metric:** Fraction of agent-actions directed to $l_{\text{malicious}}$ vs. $l_{\text{target}}$.
@@ -316,10 +318,12 @@ Adversary creates agent set $\mathcal{A}_{\text{sybil}} = \{s_1, \ldots, s_k\}$ 
 \begin{equation}
 \mathcal{T}*{i \to s_j}(t_0) = \tau*{\text{init}} \quad \forall a_i \in \mathcal{A}, s_j \in \mathcal{A}*{\text{sybil}}
 \end{equation}
+{#eq:sybil-initial-trust}
 Sybils behave cooperatively for period $\Delta t_{\text{trust}}$, building:
 \begin{equation}
 \mathcal{T}*{i \to s_j}(t_0 + \Delta t_{\text{trust}}) = \tau_{\text{init}} + \sum_{k=1}^{m} \Delta\mathcal{T}_k
 \end{equation}
+{#eq:sybil-trust-accumulation}
 At time $t_{\text{attack}}$, sybils coordinate malicious action.
 
 **Success metric:** Damage inflicted before detection, normalized by trust-building duration.
@@ -346,11 +350,13 @@ For collective action $\alpha$ with quorum threshold $Q_\alpha = q$, adversary t
 \begin{equation}
 \forall a_i \in \mathcal{A}_{\text{target}}: \mathcal{I}_i \gets \mathcal{I}_i \setminus \{\alpha\}
 \end{equation}
+{#eq:quorum-prevention}
 
 **False quorum:**
 \begin{equation}
 \forall a_i \in \mathcal{A}_{\text{target}}: \mathcal{I}_i \gets \mathcal{I}*i \cup \{\alpha*{\text{malicious}}\}
 \end{equation}
+{#eq:false-quorum-injection}
 
 **Success metric:** Probability of achieving manipulation goal given adversary budget $B$.
 \end{formalization}
@@ -376,6 +382,7 @@ Propagation dynamics follow:
 \begin{equation}
 \mathcal{B}*i(\phi*{\text{attack}}, t+1) = (1-\gamma)\mathcal{B}*i(\phi*{\text{attack}}, t) + \gamma \cdot \text{Agg}\left(\{\mathcal{B}*j(\phi*{\text{attack}}, t) : j \in \mathcal{N}(i)\}\right)
 \end{equation}
+{#eq:belief-cascade-propagation}
 where $\gamma$ is the social influence weight and $\text{Agg}$ is the belief aggregation function.
 
 **Success metric:** Final belief penetration $|\{a_i : \mathcal{B}_i(\phi_{\text{attack}}) > \tau\}| / n$ given seed set size.
@@ -402,6 +409,7 @@ Given operator goals $\mathcal{G}_{\mathcal{O}} = \{g_1, \ldots, g_m\}$ and indi
 \begin{equation}
 \forall a_i \in \mathcal{A}: \text{LocallyRational}(R, \sigma_i) = \text{true} \quad \land \quad \mathcal{F}*c(R, \{\sigma_i\}) \not\models \mathcal{G}*{\mathcal{O}}
 \end{equation}
+{#eq:emergent-misalignment-condition}
 
 The collective function produces outcomes that violate operator goals despite each agent acting rationally according to its rules.
 
@@ -465,6 +473,7 @@ Extend the trust decay principle (\cref{thm:trust-bounded}) to stigmergic contex
 \begin{equation}
 \mathcal{T}(m, t) = \mathcal{T}(m, t_0) \cdot \exp(-\lambda(t - t_0))
 \end{equation}
+{#eq:stigmergic-trust-decay}
 \end{principle}
 
 ### Integration with CIF Defenses {#sec:cif-integration}
@@ -480,7 +489,7 @@ Colony CogSec mechanisms integrate with the CIF defense stack (\cref{sec:defense
 
 The full CIF with colony extensions achieves defense in depth against both individual-targeted and colony-targeted attacks.
 
-> **Note**: For implementation guidance, operational checklists, and practical deployment advice, see Part 3: Section 2 (Operator Posture). For domain-specific application of colony-level defenses across critical operational sectors (including ten high-stakes domains, three universal attack patterns, and retrospective analysis of 2024--2025 AI-agent incidents) see Part 4.
+> **Note**: For implementation guidance, operational checklists, and practical deployment advice, see Part 3 \cite{friedman2026cogsec3}: Section 2 (Operator Posture). For domain-specific application of colony-level defenses across critical operational sectors (including ten high-stakes domains, three universal attack patterns, and retrospective analysis of 2024--2025 AI-agent incidents) see Part 3, §3.
 
 ---
 
@@ -578,21 +587,25 @@ For the collective function to be preserved, the honest agents must contribute s
 \begin{equation}
 \sum_{i \in \text{honest}} I_i \geq H(\mathcal{F}_c)
 \end{equation}
+{#eq:honest-info-sufficiency}
 
 Each honest agent contributes at most $H_{\max}$ bits. With $(1-f)n$ honest agents:
 \begin{equation}
 (1-f) \cdot n \cdot H_{\max} \geq H(\mathcal{F}_c)
 \end{equation}
+{#eq:honest-agent-capacity}
 
 Additionally, Byzantine consensus requires honest majority for any voting-based aggregation:
 \begin{equation}
 (1-f)n > 2fn \implies f < \frac{1}{3}
 \end{equation}
+{#eq:byzantine-honest-majority}
 
 Combining these constraints:
 \begin{equation}
 f < \min\left(\frac{1}{3}, 1 - \frac{H(\mathcal{F}*c)}{n \cdot H*{\max}}\right) = \frac{1}{3} \cdot \left(1 - \frac{H(\mathcal{F}*c)}{n \cdot H*{\max}}\right)
 \end{equation}
+{#eq:byzantine-info-combined}
 
 where the final equality holds when the information constraint is binding (typical for complex collective functions). \qed
 \end{proof}

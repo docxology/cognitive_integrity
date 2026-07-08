@@ -7,8 +7,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "cogsec-multiagent-theory"
-version = "1.0.0"
-description = "Formal Foundations of the Cognitive Integrity Framework"
+version = "2.0.0"
+description = "Formal Foundations of the Cognitive Integrity Framework (Second Edition)"
 authors = [
     {name = "Daniel Ari Friedman", email = "daniel@activeinference.institute"}
 ]
@@ -24,6 +24,7 @@ dependencies = [
 dev = [
     "pytest>=7.4.0",
     "pytest-cov>=4.1.0",
+    "hypothesis>=6.0.0",
 ]
 
 [tool.pytest.ini_options]
@@ -46,6 +47,29 @@ exclude_lines = [
     "if __name__ == .__main__.:",
     "raise NotImplementedError",
 ]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W"]
+
+[tool.ruff.lint.per-file-ignores]
+"scripts/*" = ["E402"]
+"tests/conftest.py" = ["E402"]
+"src/data_generation.py" = ["E402"]
+"src/visualization/*" = ["E402"]
+"src/verification.py" = ["E402"]
+"src/__init__.py" = ["E402"]
+"src/consensus.py" = ["E402"]
+"src/detection.py" = ["E402"]
+"src/firewall.py" = ["E402"]
+"src/invariants.py" = ["E402"]
+"src/sandbox.py" = ["E402"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
 
 [tool.uv]
 # Inherits workspace settings from root pyproject.toml

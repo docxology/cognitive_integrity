@@ -11,6 +11,7 @@ from __future__ import annotations
 import numpy as np
 
 from core.trust import TrustCalculus, TrustConfig
+
 from .theorem_registry import TheoremResult, TheoremStatus
 
 DECAY_FACTOR_DEFAULT = 0.85

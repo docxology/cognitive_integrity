@@ -1,13 +1,13 @@
 paper:
-  title: "Cognitive Integrity Framework: Computational Validation"
-  subtitle: "Part 2 of 4: Implementation and Empirical Analysis"
-  short_title: "CIF Validation"
-  version: "1.0"
+  title: "Cognitive Integrity Framework: Computational Validation and Empirical Analysis (Second Edition)"
+  subtitle: "Part 2 of 3: Implementation, Empirical Analysis, and Adversarial Evaluation"
+  short_title: "CIF Validation v2"
+  version: "2.0"
   type: "research"
   series: "Cognitive Security for Multiagent Operators"
   part: 2
   doi: "10.5281/zenodo.18364128"
-  date: "2026-01-24"
+  date: "2026-07-06"
 
 authors:
   - name: "Daniel Ari Friedman"
@@ -25,30 +25,119 @@ keywords:
   - empirical validation
   - attack corpus
   - defense composition
+  - adversarial training
+  - red-teaming
+  - information geometry
+  - Fisher information metric
+  - colony simulation
+  - property-based testing
+  - category theory
+  - symmetric monoidal category
+  - defense lattice
+  - operad
+  - Kan extensions
+  - pipeline monad
+  - profunctor optics
+  - figure registry
+  - composable visualization
 
 abstract: |
-  This paper presents computational validation of the Cognitive Integrity
-  Framework (CIF) theoretical foundations established in Part 1. We provide
-  complete implementations of defense mechanisms including cognitive firewalls,
-  belief sandboxes, tripwires, drift and anomaly scoring, trust calculus with
-  bounded delegation, provenance tracking, and Byzantine-tolerant consensus.
+  This paper presents comprehensive computational validation of the Cognitive Integrity
+  Framework (CIF) theoretical foundations established in Part 1 (DOI: 10.5281/zenodo.18364119).
+  We provide complete implementations of defense mechanisms including cognitive firewalls,
+  belief sandboxes, tripwires, drift and anomaly scoring, trust calculus with bounded
+  delegation, provenance tracking, and Byzantine-tolerant consensus, extended in this
+  Second Edition with adversarial training modules, red-teaming infrastructure, and
+  expanded colony simulations at 100+ agent scale.
 
-  Multi-tier evaluation using a 950-attack corpus: real pipeline evaluation yields
-  mean 44.7% detection across 30 seeds (Claude Code); LLM-backed validation (N=10,
-  Gemma 3 4B) achieves 80-100% across two architectures; colony benchmarks show
-  81-100% on structured adversarial scenarios at 20-100 agent scale. Parametric
-  simulation establishes 94-100% design ceiling. Ablation studies identify the
-  Detection module as highest-contribution component (42% of pipeline detection).
+  Multi-tier evaluation using a 950-attack corpus (expanded with Ω_1–Ω_5 taxonomy):
+  real pipeline evaluation yields mean 44.7% detection across 30 seeds (Claude Code);
+  LLM-backed validation (N=10, Gemma 3 4B) achieves 80-100% across two architectures;
+  colony benchmarks show 81-100% on structured adversarial scenarios at 20-100 agent
+  scale (extended to 500 agents in stress tests). Parametric simulation establishes
+  94-100% design ceiling. Ablation studies identify the Detection module as highest-
+  contribution component (42% of pipeline detection).
 
-  This is Part 2 of a four-part series:
+  New in v2.0: (1) expanded attack taxonomy with full Ω_1–Ω_5 adversary capability
+  classification; (2) adversarial training evaluation with red-teaming pipelines;
+  (3) Fisher information metric derivations in S10 with natural gradient attack analysis;
+  (4) property-based test suite with Hypothesis library achieving 95%+ coverage;
+  (5) stress tests for colony simulations at 100–500 agent scale; (6) extended TLA+,
+  Promela/SPIN, and SMV/NuSMV specifications for defense composition algebra;
+  (7) category-theoretic foundations (§8): defense lattice with 7-axiom verification,
+  symmetric monoidal category, operad, enriched category, pipeline monad, Kan extensions,
+  and lens/optic profunctor; (8) figure/table auto-numbering registry with sequential
+  LaTeX labels; (9) composable visualization engine and CIF Composer v2 web UI (S12).
+
+  This is Part 2 of a three-part series:
   - Part 1 (DOI: 10.5281/zenodo.18364119): Formal foundations and theoretical analysis
-  - Part 2 (this paper): Computational validation and implementation
-  - Part 3 (DOI: 10.5281/zenodo.18364130): Qualitative review and practitioner's deployment guidance
-  - Part 4: Applications --- CIF-AD-OODA integration and goal-hijacking analysis across ten critical domains
+  - Part 2 (this paper): Computational validation and implementation (Second Edition)
+  - Part 3+4 merged (DOI: 10.5281/zenodo.18364130): Unified practitioner guidance and cross-domain applications
 
 metadata:
   license: "Apache-2.0"
   language: "en"
+  edition: 2
+  changelog: |
+    v2.0 (2026-07-05): Second Edition — adversarial training, red-teaming,
+    expanded colony simulations (100-500 agents), Fisher information metric
+    derivations in S10, property-based tests with Hypothesis, stress tests,
+    extended formal verification (TLA+/Promela/SMV), Ω_1–Ω_5 attack taxonomy,
+    new manuscript sections (05g_adversarial_training, 05h_redteam_evaluation),
+    new supplement S11 (adversarial training theory), updated references.
+    New in this revision: §8 category-theoretic foundations (defense lattice,
+    symmetric monoidal category, operad, enriched category, pipeline monad, Kan
+    extensions, lens/optic profunctor), figure/table auto-numbering registry
+    (scripts/generate_figure_registry.py, src/manuscript/figure_registry.py),
+    auto_number_figures.py script, S12 composable visualization supplement,
+    preamble updated with tikz-cd/stmaryrd/tocloft + listoffigures/listoftables,
+    config.yaml extended with category theory / visualization keywords.
+
+sections:
+  main:
+    - "00_abstract"
+    - "01_introduction"
+    - "01b_related_work"
+    - "01c_theoretical_connections"
+    - "02_methodology"
+    - "02a_defense_algorithms"
+    - "02b_configuration_parameters"
+    - "02c_composability_algebra"
+    - "03_attack_corpus"
+    - "03b_attack_examples"
+    - "03c_attack_ethics"
+    - "04_experimental_setup"
+    - "05_results"
+    - "05b_statistical_significance"
+    - "05c_sensitivity_analysis"
+    - "05d_ablation_and_scalability"
+    - "05e_bayesian_uncertainty"
+    - "05f_architecture_gap_analysis"
+    - "05g_adversarial_training"
+    - "05h_redteam_evaluation"
+    - "06_discussion"
+    - "07_conclusion"
+    - "08_category_theoretic_foundations"
+    - "99_references"
+  supplements:
+    - "S01_notation_reference"
+    - "S02_detection_algorithms"
+    - "S03_benchmark_implementation"
+    - "S04_model_checking"
+    - "S05_framework_api"
+    - "S06_deployment_guide"
+    - "S07_algorithm_pseudocode"
+    - "S08_parametric_analysis"
+    - "S09_functional_api"
+    - "S10_information_geometry"
+    - "S11_adversarial_training_theory"
+    - "S12_composable_visualization"
+
+figure_registry:
+  output_path: "output/data/figure_registry.json"
+  generate_script: "scripts/generate_figure_registry.py"
+  auto_number_script: "scripts/auto_number_figures.py"
+  module: "src/manuscript/figure_registry.py"
 
 llm:
   translations:
@@ -58,3 +147,4 @@ llm:
     enabled: true
     types:
       - executive_summary
+      - v2_changes_summary

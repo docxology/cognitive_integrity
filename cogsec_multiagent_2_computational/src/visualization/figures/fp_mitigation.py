@@ -69,7 +69,7 @@ def plot_fp_mitigation(output_dir: str = "output/figures") -> Figure:
             heights.append(fp_rates[i - 1] - fp_rates[i])
             colors.append(PALETTE[i % len(PALETTE)])
 
-    bars = ax.bar(x, heights, bottom=bottoms, color=colors, edgecolor="white", linewidth=1.0, width=0.6)
+    ax.bar(x, heights, bottom=bottoms, color=colors, edgecolor="white", linewidth=1.0, width=0.6)
 
     # Connection lines between waterfall steps
     for i in range(n - 2):
@@ -90,12 +90,12 @@ def plot_fp_mitigation(output_dir: str = "output/figures") -> Figure:
         )
 
     # Annotate final value
-    ax.text(x[-1], fp_rates[-1] + 0.003, f"{fp_rates[-1]:.1%}", ha="center", va="bottom", fontsize=FONTSIZE["small"], fontweight="bold", color=COLORS["secondary"])
-    ax.text(x[0], fp_rates[0] + 0.003, f"{fp_rates[0]:.1%}", ha="center", va="bottom", fontsize=FONTSIZE["small"], fontweight="bold", color=COLORS["neutral"])
+    ax.text(x[-1], fp_rates[-1] + 0.003, f"{fp_rates[-1]:.1%}", ha="center", va="bottom", fontsize=FONTSIZE["small"], fontweight="bold", color=COLORS["secondary"])  # noqa: E501
+    ax.text(x[0], fp_rates[0] + 0.003, f"{fp_rates[0]:.1%}", ha="center", va="bottom", fontsize=FONTSIZE["small"], fontweight="bold", color=COLORS["neutral"])  # noqa: E501
 
     ax.set_xticks(x)
     ax.set_xticklabels(labels, fontsize=FONTSIZE["small"], rotation=30, ha="right")
-    format_axis(ax, xlabel="", ylabel="False Positive Rate", title="False Positive Reduction: Incremental Defense Layers")
+    format_axis(ax, xlabel="", ylabel="False Positive Rate", title="False Positive Reduction: Incremental Defense Layers")  # noqa: E501
     ax.set_ylim(0, 0.18)
 
     fig.tight_layout()

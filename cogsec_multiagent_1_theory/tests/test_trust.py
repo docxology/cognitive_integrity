@@ -2,6 +2,7 @@
 
 import numpy as np
 import pytest
+
 from trust import TrustCalculus, TrustConfig, TrustMatrix
 
 
@@ -261,9 +262,7 @@ class TestContextAwareTrustBoosting:
         cat = ContextAwareTrust()
         cat.register_expertise("agent-1", "security", level=1.0)
 
-        boosted = cat.boost_for_context(
-            agent_id="agent-1", base_trust=0.95, context="security"
-        )
+        boosted = cat.boost_for_context(agent_id="agent-1", base_trust=0.95, context="security")
 
         assert boosted <= 1.0
 
@@ -293,9 +292,7 @@ class TestContextAwareTrustBoosting:
         boosted = cat.boost_for_context("agent-1", 0.5, "cybersecurity")
 
         assert boosted > 0.5  # Some boost
-        assert boosted < cat.boost_for_context(
-            "agent-1", 0.5, "security"
-        )  # Less than exact match
+        assert boosted < cat.boost_for_context("agent-1", 0.5, "security")  # Less than exact match
 
 
 class TestTrustMatrixWithDecay:

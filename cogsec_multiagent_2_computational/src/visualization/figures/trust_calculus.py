@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import matplotlib.pyplot as plt
 import numpy as np
+from matplotlib.axes import Axes
 from matplotlib.figure import Figure
 
 from ..style import COLORS, FONTSIZE, PALETTE, create_figure, format_axis, save_figure
@@ -25,7 +26,13 @@ def plot_trust_calculus(output_dir: str = "output/figures") -> Figure:
     -------
     Figure
     """
-    fig, (ax_chain, ax_bar) = create_figure(width=9, height=6, n_rows=2, n_cols=1)
+    from typing import cast as _cast
+
+    import numpy as _np
+    fig, _axes = create_figure(width=9, height=6, n_rows=2, n_cols=1)
+    _axes_arr = _cast("_np.ndarray[tuple[int], _np.dtype[_np.object_]]", _axes)
+    ax_chain: Axes = _axes_arr[0]
+    ax_bar: Axes = _axes_arr[1]
 
     agents = ["Agent A", "Agent B", "Agent C", "Agent D"]
     edge_trust = [0.90, 0.85, 0.80]
@@ -45,8 +52,8 @@ def plot_trust_calculus(output_dir: str = "output/figures") -> Figure:
     for i, (agent, x) in enumerate(zip(agents, xs)):
         circle = plt.Circle((x, y), 0.06, fc=PALETTE[i], ec="white", lw=2, zorder=5)
         ax_chain.add_patch(circle)
-        ax_chain.text(x, y, agent.split()[-1], ha="center", va="center", fontsize=10, fontweight="bold", color="white", zorder=6)
-        ax_chain.text(x, y - 0.12, agent, ha="center", va="top", fontsize=FONTSIZE["small"], color="#333")
+        ax_chain.text(x, y, agent.split()[-1], ha="center", va="center", fontsize=10, fontweight="bold", color="white", zorder=6)  # noqa: E501
+        ax_chain.text(x, y - 0.12, agent, ha="center", va="top", fontsize=FONTSIZE["small"], color="#333")  # noqa: E501
 
     for i in range(n - 1):
         x0, x1 = xs[i] + 0.06, xs[i + 1] - 0.06
@@ -69,11 +76,11 @@ def plot_trust_calculus(output_dir: str = "output/figures") -> Figure:
     ax_bar.bar(x_pos, cumulative, color=colors, edgecolor="white", width=0.5)
 
     for i, (xp, val) in enumerate(zip(x_pos, cumulative)):
-        ax_bar.text(xp, val + 0.02, f"{val:.3f}", ha="center", fontsize=FONTSIZE["base"], fontweight="bold")
+        ax_bar.text(float(xp), val + 0.02, f"{val:.3f}", ha="center", fontsize=FONTSIZE["base"], fontweight="bold")  # noqa: E501
 
     ax_bar.set_xticks(x_pos)
     ax_bar.set_xticklabels([f"Hop {i}" for i in range(n)], fontsize=FONTSIZE["base"])
-    format_axis(ax_bar, xlabel="Delegation Hop", ylabel="Cumulative Trust", title="(b) Cumulative Trust (Never Amplifies)")
+    format_axis(ax_bar, xlabel="Delegation Hop", ylabel="Cumulative Trust", title="(b) Cumulative Trust (Never Amplifies)")  # noqa: E501
     ax_bar.set_ylim(0, 1.15)
 
     # Decay annotation

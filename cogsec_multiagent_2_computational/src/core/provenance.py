@@ -291,7 +291,7 @@ class CausalAttribution:
         Returns:
             Set of untrusted source belief IDs
         """
-        untrusted = set()
+        untrusted: set[str] = set()
         record = self._chain.get_record(belief_id)
 
         if not record:

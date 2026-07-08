@@ -1,9 +1,14 @@
 """Tests for anomaly detection."""
 
 import numpy as np
-import pytest
-from detection import (AnomalyScorer, DetectionConfig, DriftDetector,
-                       action_frequency_extractor, belief_volatility_extractor)
+
+from detection import (
+    AnomalyScorer,
+    DetectionConfig,
+    DriftDetector,
+    action_frequency_extractor,
+    belief_volatility_extractor,
+)
 
 
 class TestDriftDetector:
@@ -135,9 +140,7 @@ class TestAnomalyScorer:
         scorer.add_extractor("belief_vol", belief_volatility_extractor)
 
         for _ in range(10):
-            scorer.observe(
-                "agent-1", {"action_count": 10, "time_delta": 1.0, "belief_changes": 2}
-            )
+            scorer.observe("agent-1", {"action_count": 10, "time_delta": 1.0, "belief_changes": 2})
 
         scorer.calibrate("agent-1")
 
@@ -190,3 +193,148 @@ class TestFeatureExtractors:
         state = {"belief_changes": 5}
         vol = belief_volatility_extractor(state)
         assert vol == 5
+
+
+# ---------------------------------------------------------------------------
+# Additional edge-case tests for detection.py to boost coverage above 90%
+# ---------------------------------------------------------------------------
+
+
+class TestDriftDetectorEdgeCases:
+    """Edge-case tests targeting uncovered lines in DriftDetector."""
+
+    def test_calibrate_baseline_insufficient_samples_raises(self):
+        """calibrate_baseline raises ValueError with <50 samples (lines 52-54)."""
+        config = DetectionConfig(baseline_samples=50)
+        detector = DriftDetector(config)
+
+        # Add fewer than 50 observations
+        for i in range(10):
+            detector.add_observation({"a": float(i)})
+
+        import pytest
+
+        with pytest.raises(ValueError, match="Need 50 samples"):
+            detector.calibrate_baseline()
+
+    def test_compute_drift_empty_hist_values_mismatched_keys(self):
+        """compute_drift returns (0.0, 0.0) when no hist values match key length (line 101)."""
+        detector = DriftDetector()
+
+        # Add observations with 2 keys
+        for _ in range(15):
+            detector.add_observation({"x": 0.5, "y": 0.5})
+
+        # Query with a current state that has 3 keys — mismatches all stored observations
+        kl, delta = detector.compute_drift({"a": 0.5, "b": 0.5, "c": 0.5}, window=10)
+        assert kl == 0.0
+        assert delta == 0.0
+
+    def test_get_drift_history_returns_empty_when_less_than_2(self):
+        """get_drift_history returns [] when history has fewer than 2 entries (line 133)."""
+        detector = DriftDetector()
+
+        # Only 1 observation
+        detector.add_observation({"a": 0.5})
+        history = detector.get_drift_history()
+        assert history == []
+
+    def test_get_drift_history_empty_detector(self):
+        """get_drift_history returns [] for a fresh detector with no observations."""
+        detector = DriftDetector()
+        history = detector.get_drift_history()
+        assert history == []
+
+
+class TestAnomalyScorerEdgeCases:
+    """Edge-case tests targeting uncovered lines in AnomalyScorer."""
+
+    def test_observe_exception_handler_silently_skips(self):
+        """observe() swallows TypeError/ValueError/KeyError from extractor (lines 199-200)."""
+        scorer = AnomalyScorer()
+
+        # Extractor that always raises TypeError
+        def bad_extractor(state):
+            raise TypeError("boom")
+
+        scorer.add_extractor("bad", bad_extractor)
+
+        # Should not raise – the exception is swallowed
+        scorer.observe("agent-1", {"some_key": 1.0})
+        # History for this extractor/agent should be empty
+        key = "agent-1:bad"
+        if key in scorer._history:
+            assert len(scorer._history[key]) == 0
+
+    def test_score_no_extractors_returns_zero(self):
+        """score() with no extractors has total_weight=0 → returns 0.0 (line 240)."""
+        scorer = AnomalyScorer()
+        # No extractors added
+        result = scorer.score("agent-1", {"action_count": 5, "time_delta": 1.0})
+        assert result == 0.0
+
+    def test_score_exception_in_extractor_skips_weight(self):
+        """score() skips extractors that raise, total_weight stays 0 → 0.0 (lines 237-238)."""
+        scorer = AnomalyScorer()
+
+        def raising_extractor(state):
+            raise KeyError("missing")
+
+        scorer.add_extractor("raiser", raising_extractor, weight=1.0)
+
+        # Both score paths: extractor raises → total_weight=0 → 0.0
+        result = scorer.score("agent-1", {})
+        assert result == 0.0
+
+    def test_is_anomalous_exception_in_extractor_skips(self):
+        """is_anomalous() gracefully skips extractors that raise (lines 260-261)."""
+        scorer = AnomalyScorer()
+
+        def raising_extractor(state):
+            raise ZeroDivisionError("oops")
+
+        scorer.add_extractor("raiser", raising_extractor, weight=1.0)
+
+        is_anom, score, features = scorer.is_anomalous("agent-1", {})
+        # No extractor succeeded → score=0, not anomalous
+        assert not is_anom
+        assert score == 0.0
+        assert features == {}
+
+    def test_is_anomalous_no_extractors_returns_false(self):
+        """is_anomalous() with no extractors returns (False, 0.0, {})."""
+        scorer = AnomalyScorer()
+        is_anom, score, features = scorer.is_anomalous("agent-1", {})
+        assert is_anom is False
+        assert score == 0.0
+        assert features == {}
+
+
+class TestStandardExtractors:
+    """Tests for communication_volume_extractor and goal_stability_extractor."""
+
+    def test_communication_volume_extractor(self):
+        """communication_volume_extractor sums sent + received (line 282)."""
+        from detection import communication_volume_extractor
+
+        state = {"messages_sent": 5, "messages_received": 3}
+        assert communication_volume_extractor(state) == 8
+
+    def test_communication_volume_extractor_defaults(self):
+        """communication_volume_extractor handles missing keys → 0."""
+        from detection import communication_volume_extractor
+
+        assert communication_volume_extractor({}) == 0
+
+    def test_goal_stability_extractor(self):
+        """goal_stability_extractor returns goal_changes (line 287)."""
+        from detection import goal_stability_extractor
+
+        state = {"goal_changes": 2}
+        assert goal_stability_extractor(state) == 2
+
+    def test_goal_stability_extractor_default(self):
+        """goal_stability_extractor defaults to 0 when key absent."""
+        from detection import goal_stability_extractor
+
+        assert goal_stability_extractor({}) == 0

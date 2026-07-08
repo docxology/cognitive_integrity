@@ -17,7 +17,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 
-from statistics.stability import run_multi_seed_stability, make_pipeline_eval_fn
+from statistics.stability import make_pipeline_eval_fn, run_multi_seed_stability
 
 
 def main() -> None:

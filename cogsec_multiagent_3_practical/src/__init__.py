@@ -1,17 +1,25 @@
 """
 from __future__ import annotations
 
-Cognitive Security Framework - Practical Implementation Guide.
+Cognitive Security Framework — Practical Implementation and Applications Guide.
 
-Part 3 of the tripartite CIF series.
+This is the unified Part 3+4 package of the Cognitive Security for Multiagent
+Operators series. It combines:
+  - Practitioner guidance: operator posture assessment, checklists, deployment,
+    risk assessment, incident response, pitfalls, and case studies (Part 3).
+  - Cross-domain CIF-AD-OODA analysis across 10 critical sectors via the
+    integrated CIF–Axiomatic Design–OODA Loop model, including three universal
+    attack patterns and novel defense extensions (§9–§10, originally Part 4, now unified).
 
-This module provides practical tools and utilities for implementing
-cognitive security in multiagent systems, including:
-- Operator posture assessment tools
-- Human oversight checklists
-- Agent guideline validation
-- Deployment readiness checks
-- Risk assessment utilities
+Modules:
+  posture             — Operator posture assessment (five pillars)
+  checklists          — Pre-deployment, operational, and incident-response checklists
+  agent_guidelines    — Machine-readable security invariants and self-monitoring
+  deployment          — Risk-profile-based parameter selection and configuration
+  risk_assessment     — Attack surface mapping and threat modeling
+  pitfalls            — Anti-pattern catalog with detection and remediation
+  visualization       — Figure generation utilities
+  identity            — Package identity and merge provenance metadata
 """
 
 from dataclasses import dataclass, field
@@ -110,9 +118,7 @@ class OperatorPostureAssessment:
             risk_level = RiskLevel.CRITICAL
 
         findings = [
-            f"Incomplete: {item.description}"
-            for item in required_items
-            if not item.completed
+            f"Incomplete: {item.description}" for item in required_items if not item.completed
         ]
 
         recommendations = []

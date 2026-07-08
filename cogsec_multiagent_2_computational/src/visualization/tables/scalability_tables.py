@@ -17,7 +17,7 @@ logger = __import__('logging').getLogger(__name__)
 
 def _load_scalability_data():
     """Load scalability measurements from scalability_data.json."""
-    p = Path(__file__).resolve().parent.parent.parent.parent / "output" / "data" / "scalability_data.json"
+    p = Path(__file__).resolve().parent.parent.parent.parent / "output" / "data" / "scalability_data.json"  # noqa: E501
     with open(p, "r", encoding="utf-8") as f:
         data = json.load(f)
     agents = np.array(data["agent_counts"])
@@ -73,7 +73,7 @@ def generate_scalability_table(results: Optional[Dict] = None) -> str:
 
     lines.extend([
         r"\midrule",
-        f"\\multicolumn{{4}}{{l}}{{Quadratic fit: $L = {coeffs[0]:.4f}n^2 + {coeffs[1]:.2f}n + {coeffs[2]:.1f}$, $R^2 = {r_squared:.4f}$}} \\\\",
+        f"\\multicolumn{{4}}{{l}}{{Quadratic fit: $L = {coeffs[0]:.4f}n^2 + {coeffs[1]:.2f}n + {coeffs[2]:.1f}$, $R^2 = {r_squared:.4f}$}} \\\\",  # noqa: E501
         r"\bottomrule",
         r"\end{tabular}",
         r"\end{table}",

@@ -97,7 +97,7 @@ def plot_belief_sandbox(output_dir: str = "output/figures") -> Figure:
             connectionstyle="arc3,rad=-0.8",
         ),
     )
-    ax.text(0.37, 0.66, "update", ha="center", fontsize=FONTSIZE["small"], style="italic", color=COLORS["warning"])
+    ax.text(0.37, 0.66, "update", ha="center", fontsize=FONTSIZE["small"], style="italic", color=COLORS["warning"])  # noqa: E501
 
     # Entry arrow
     ax.annotate(

@@ -30,7 +30,6 @@ import numpy as np
 from scipy import stats
 from scipy.special import betaln, gammaln
 
-
 # ---------------------------------------------------------------------------
 # Beta posterior
 # ---------------------------------------------------------------------------

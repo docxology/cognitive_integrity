@@ -10,7 +10,7 @@ Eight documented anti-patterns with detection, assessment, and remediation.
 from dataclasses import dataclass, field
 from enum import Enum
 
-from . import RiskLevel, AssessmentResult
+from . import AssessmentResult, RiskLevel
 
 
 class PitfallID(Enum):
@@ -136,105 +136,57 @@ class PitfallCatalog:
             PitfallDefinition(
                 id=PitfallID.IMPLICIT_TRUST,
                 name="Implicit Trust",
-                pattern=(
-                    "Treating all inter-agent communication as trusted by default"
-                ),
+                pattern=("Treating all inter-agent communication as trusted by default"),
                 category=PitfallCategory.SECURITY,
                 severity=5,
                 indicators=[
-                    PitfallIndicator(
-                        "No source verification on agent messages"
-                    ),
-                    PitfallIndicator(
-                        "All agents have equal authority regardless of role"
-                    ),
-                    PitfallIndicator(
-                        "Delegation without bounds or decay"
-                    ),
+                    PitfallIndicator("No source verification on agent messages"),
+                    PitfallIndicator("All agents have equal authority regardless of role"),
+                    PitfallIndicator("Delegation without bounds or decay"),
                 ],
                 mitigations=[
-                    PitfallMitigation(
-                        "Implement explicit trust scoring on inter-agent channels"
-                    ),
-                    PitfallMitigation(
-                        "Require minimum trust thresholds for consequential actions"
-                    ),
-                    PitfallMitigation(
-                        "Apply delegation decay (delta < 1 per hop)"
-                    ),
-                    PitfallMitigation(
-                        "Verify source on every inter-agent message"
-                    ),
+                    PitfallMitigation("Implement explicit trust scoring on inter-agent channels"),
+                    PitfallMitigation("Require minimum trust thresholds for consequential actions"),
+                    PitfallMitigation("Apply delegation decay (delta < 1 per hop)"),
+                    PitfallMitigation("Verify source on every inter-agent message"),
                 ],
                 manuscript_reference="Section 07, Pitfall 1",
             ),
             PitfallDefinition(
                 id=PitfallID.SECURITY_AFTERTHOUGHT,
                 name="Security as Afterthought",
-                pattern=(
-                    "Adding cognitive security after architecture is finalized"
-                ),
+                pattern=("Adding cognitive security after architecture is finalized"),
                 category=PitfallCategory.SECURITY,
                 severity=5,
                 indicators=[
-                    PitfallIndicator(
-                        "Security checks only at external interfaces"
-                    ),
-                    PitfallIndicator(
-                        "Core agent logic has no security awareness"
-                    ),
-                    PitfallIndicator(
-                        "Belief provenance untracked"
-                    ),
+                    PitfallIndicator("Security checks only at external interfaces"),
+                    PitfallIndicator("Core agent logic has no security awareness"),
+                    PitfallIndicator("Belief provenance untracked"),
                 ],
                 mitigations=[
-                    PitfallMitigation(
-                        "Design cognitive security into architecture from the start"
-                    ),
-                    PitfallMitigation(
-                        "Embed trust checks in delegation logic"
-                    ),
-                    PitfallMitigation(
-                        "Build provenance tracking into belief management"
-                    ),
-                    PitfallMitigation(
-                        "Include security constraints in agent system prompts"
-                    ),
+                    PitfallMitigation("Design cognitive security into architecture from the start"),
+                    PitfallMitigation("Embed trust checks in delegation logic"),
+                    PitfallMitigation("Build provenance tracking into belief management"),
+                    PitfallMitigation("Include security constraints in agent system prompts"),
                 ],
                 manuscript_reference="Section 07, Pitfall 2",
             ),
             PitfallDefinition(
                 id=PitfallID.UNCALIBRATED_THRESHOLDS,
                 name="Uncalibrated Thresholds",
-                pattern=(
-                    "Setting security thresholds without understanding tradeoffs"
-                ),
+                pattern=("Setting security thresholds without understanding tradeoffs"),
                 category=PitfallCategory.OPERATIONAL,
                 severity=4,
                 indicators=[
-                    PitfallIndicator(
-                        "Thresholds copied from examples without adjustment"
-                    ),
-                    PitfallIndicator(
-                        "Same thresholds for all contexts"
-                    ),
-                    PitfallIndicator(
-                        "No testing against representative attacks"
-                    ),
+                    PitfallIndicator("Thresholds copied from examples without adjustment"),
+                    PitfallIndicator("Same thresholds for all contexts"),
+                    PitfallIndicator("No testing against representative attacks"),
                 ],
                 mitigations=[
-                    PitfallMitigation(
-                        "Assess risk profile before configuring (see Section 6)"
-                    ),
-                    PitfallMitigation(
-                        "Test thresholds against representative attack samples"
-                    ),
-                    PitfallMitigation(
-                        "Monitor false positive/negative rates in production"
-                    ),
-                    PitfallMitigation(
-                        "Adjust based on operational feedback"
-                    ),
+                    PitfallMitigation("Assess risk profile before configuring (see Section 6)"),
+                    PitfallMitigation("Test thresholds against representative attack samples"),
+                    PitfallMitigation("Monitor false positive/negative rates in production"),
+                    PitfallMitigation("Adjust based on operational feedback"),
                 ],
                 manuscript_reference="Section 07, Pitfall 3",
             ),
@@ -242,178 +194,100 @@ class PitfallCatalog:
                 id=PitfallID.INDIVIDUAL_ONLY,
                 name="Individual-Only Security",
                 pattern=(
-                    "Focusing on single-agent security while ignoring "
-                    "multi-agent attack surfaces"
+                    "Focusing on single-agent security while ignoring multi-agent attack surfaces"
                 ),
                 category=PitfallCategory.SECURITY,
                 severity=4,
                 indicators=[
-                    PitfallIndicator(
-                        "No consensus mechanism for critical decisions"
-                    ),
-                    PitfallIndicator(
-                        "Agent count changes without verification"
-                    ),
-                    PitfallIndicator(
-                        "No Sybil resistance"
-                    ),
+                    PitfallIndicator("No consensus mechanism for critical decisions"),
+                    PitfallIndicator("Agent count changes without verification"),
+                    PitfallIndicator("No Sybil resistance"),
                 ],
                 mitigations=[
                     PitfallMitigation(
-                        "Implement Byzantine consensus for critical "
-                        "collective decisions"
+                        "Implement Byzantine consensus for critical collective decisions"
                     ),
-                    PitfallMitigation(
-                        "Require agent authentication before vote counting"
-                    ),
-                    PitfallMitigation(
-                        "Monitor for unusual coordination patterns"
-                    ),
-                    PitfallMitigation(
-                        "Apply quorum requirements assuming adversarial presence"
-                    ),
+                    PitfallMitigation("Require agent authentication before vote counting"),
+                    PitfallMitigation("Monitor for unusual coordination patterns"),
+                    PitfallMitigation("Apply quorum requirements assuming adversarial presence"),
                 ],
                 manuscript_reference="Section 07, Pitfall 4",
             ),
             PitfallDefinition(
                 id=PitfallID.STATIC_TRIPWIRES,
                 name="Static Tripwires",
-                pattern=(
-                    "Deploying canary tripwires once without rotation"
-                ),
+                pattern=("Deploying canary tripwires once without rotation"),
                 category=PitfallCategory.DESIGN,
                 severity=4,
                 indicators=[
-                    PitfallIndicator(
-                        "Same canary values since deployment"
-                    ),
-                    PitfallIndicator(
-                        "No rotation schedule"
-                    ),
-                    PitfallIndicator(
-                        "Predictable canary locations"
-                    ),
+                    PitfallIndicator("Same canary values since deployment"),
+                    PitfallIndicator("No rotation schedule"),
+                    PitfallIndicator("Predictable canary locations"),
                 ],
                 mitigations=[
-                    PitfallMitigation(
-                        "Implement automated canary rotation"
-                    ),
-                    PitfallMitigation(
-                        "Vary placement across agents and belief categories"
-                    ),
-                    PitfallMitigation(
-                        "Monitor canary check patterns, not just modifications"
-                    ),
-                    PitfallMitigation(
-                        "Include non-obvious canaries"
-                    ),
+                    PitfallMitigation("Implement automated canary rotation"),
+                    PitfallMitigation("Vary placement across agents and belief categories"),
+                    PitfallMitigation("Monitor canary check patterns, not just modifications"),
+                    PitfallMitigation("Include non-obvious canaries"),
                 ],
                 manuscript_reference="Section 07, Pitfall 5",
             ),
             PitfallDefinition(
                 id=PitfallID.IGNORING_DRIFT,
                 name="Ignoring Progressive Drift",
-                pattern=(
-                    "Only alerting on large, sudden belief changes"
-                ),
+                pattern=("Only alerting on large, sudden belief changes"),
                 category=PitfallCategory.OPERATIONAL,
                 severity=3,
                 indicators=[
-                    PitfallIndicator(
-                        "High threshold for drift alerts"
-                    ),
-                    PitfallIndicator(
-                        "No long-term drift tracking"
-                    ),
-                    PitfallIndicator(
-                        "Static baseline"
-                    ),
+                    PitfallIndicator("High threshold for drift alerts"),
+                    PitfallIndicator("No long-term drift tracking"),
+                    PitfallIndicator("Static baseline"),
                 ],
                 mitigations=[
-                    PitfallMitigation(
-                        "Use sliding window drift detection"
-                    ),
-                    PitfallMitigation(
-                        "Track cumulative drift, not just per-update delta"
-                    ),
-                    PitfallMitigation(
-                        "Periodic baseline comparison"
-                    ),
-                    PitfallMitigation(
-                        "Alert on trend as well as absolute magnitude"
-                    ),
+                    PitfallMitigation("Use sliding window drift detection"),
+                    PitfallMitigation("Track cumulative drift, not just per-update delta"),
+                    PitfallMitigation("Periodic baseline comparison"),
+                    PitfallMitigation("Alert on trend as well as absolute magnitude"),
                 ],
                 manuscript_reference="Section 07, Pitfall 6",
             ),
             PitfallDefinition(
                 id=PitfallID.INSUFFICIENT_LOGGING,
                 name="Insufficient Logging",
-                pattern=(
-                    "Retaining insufficient information for "
-                    "post-incident analysis"
-                ),
+                pattern=("Retaining insufficient information for post-incident analysis"),
                 category=PitfallCategory.OPERATIONAL,
                 severity=3,
                 indicators=[
-                    PitfallIndicator(
-                        "Only final decisions logged"
-                    ),
-                    PitfallIndicator(
-                        "No belief state history"
-                    ),
-                    PitfallIndicator(
-                        "Inter-agent messages disposed after processing"
-                    ),
+                    PitfallIndicator("Only final decisions logged"),
+                    PitfallIndicator("No belief state history"),
+                    PitfallIndicator("Inter-agent messages disposed after processing"),
                 ],
                 mitigations=[
-                    PitfallMitigation(
-                        "Log all belief updates with provenance tags"
-                    ),
-                    PitfallMitigation(
-                        "Retain inter-agent message history"
-                    ),
-                    PitfallMitigation(
-                        "Periodic cognitive state snapshots"
-                    ),
-                    PitfallMitigation(
-                        "Structured logging for causal analysis"
-                    ),
+                    PitfallMitigation("Log all belief updates with provenance tags"),
+                    PitfallMitigation("Retain inter-agent message history"),
+                    PitfallMitigation("Periodic cognitive state snapshots"),
+                    PitfallMitigation("Structured logging for causal analysis"),
                 ],
                 manuscript_reference="Section 07, Pitfall 7",
             ),
             PitfallDefinition(
                 id=PitfallID.SINGLE_ORCHESTRATOR,
                 name="Single-Orchestrator Reliance",
-                pattern=(
-                    "Relying entirely on orchestrator integrity without backup"
-                ),
+                pattern=("Relying entirely on orchestrator integrity without backup"),
                 category=PitfallCategory.DESIGN,
                 severity=2,
                 indicators=[
-                    PitfallIndicator(
-                        "Single orchestrator for entire system"
-                    ),
-                    PitfallIndicator(
-                        "No orchestrator monitoring"
-                    ),
-                    PitfallIndicator(
-                        "Workers unconditionally trust orchestrator"
-                    ),
+                    PitfallIndicator("Single orchestrator for entire system"),
+                    PitfallIndicator("No orchestrator monitoring"),
+                    PitfallIndicator("Workers unconditionally trust orchestrator"),
                 ],
                 mitigations=[
                     PitfallMitigation(
-                        "Consider multi-orchestrator architectures "
-                        "for critical decisions"
+                        "Consider multi-orchestrator architectures for critical decisions"
                     ),
-                    PitfallMitigation(
-                        "Monitor orchestrator behavior with same rigor as agents"
-                    ),
-                    PitfallMitigation(
-                        "Workers verify orchestrator identity on critical commands"
-                    ),
-                    PitfallMitigation(
-                        "Implement orchestrator-specific tripwires"
-                    ),
+                    PitfallMitigation("Monitor orchestrator behavior with same rigor as agents"),
+                    PitfallMitigation("Workers verify orchestrator identity on critical commands"),
+                    PitfallMitigation("Implement orchestrator-specific tripwires"),
                 ],
                 manuscript_reference="Section 07, Pitfall 8",
             ),
@@ -436,9 +310,7 @@ class PitfallCatalog:
                 return p
         raise ValueError(f"Pitfall '{pitfall_id}' not found")
 
-    def get_by_category(
-        self, category: PitfallCategory
-    ) -> list[PitfallDefinition]:
+    def get_by_category(self, category: PitfallCategory) -> list[PitfallDefinition]:
         """Get all pitfalls in a category.
 
         Args:
@@ -449,9 +321,7 @@ class PitfallCatalog:
         """
         return [p for p in self.pitfalls if p.category == category]
 
-    def get_by_severity(
-        self, min_severity: int = 1
-    ) -> list[PitfallDefinition]:
+    def get_by_severity(self, min_severity: int = 1) -> list[PitfallDefinition]:
         """Get pitfalls at or above a severity level.
 
         Args:
@@ -548,9 +418,7 @@ class PitfallDetector:
         Returns:
             List of detected pitfalls (with at least one indicator present)
         """
-        return [
-            p for p in self.catalog.pitfalls if self.detect_pitfall(p)
-        ]
+        return [p for p in self.catalog.pitfalls if self.detect_pitfall(p)]
 
 
 @dataclass
@@ -646,9 +514,7 @@ class PitfallChecklist:
         Returns:
             List of detected-but-unmitigated entries
         """
-        return [
-            e for e in self.entries if e.detected and not e.mitigated
-        ]
+        return [e for e in self.entries if e.detected and not e.mitigated]
 
     def all_assessed(self) -> bool:
         """Check if all pitfalls have been assessed.
@@ -680,9 +546,7 @@ class PitfallChecklist:
             AssessmentResult with scoring and findings
         """
         if not self.entries:
-            return AssessmentResult(
-                passed=True, score=1.0, risk_level=RiskLevel.LOW
-            )
+            return AssessmentResult(passed=True, score=1.0, risk_level=RiskLevel.LOW)
 
         assessed_count = sum(1 for e in self.entries if e.assessed)
         assessment_score = assessed_count / len(self.entries)
@@ -693,9 +557,7 @@ class PitfallChecklist:
         max_unmitigated_severity = 0
         for entry in detected_unmitigated:
             pitfall = self.catalog.get_by_id(entry.pitfall_id)
-            max_unmitigated_severity = max(
-                max_unmitigated_severity, pitfall.severity
-            )
+            max_unmitigated_severity = max(max_unmitigated_severity, pitfall.severity)
 
         if max_unmitigated_severity >= 5:
             risk_level = RiskLevel.CRITICAL
@@ -706,29 +568,20 @@ class PitfallChecklist:
         else:
             risk_level = RiskLevel.LOW
 
-        findings = [
-            f"Detected: {e.pitfall_name} (unmitigated)"
-            for e in detected_unmitigated
-        ]
+        findings = [f"Detected: {e.pitfall_name} (unmitigated)" for e in detected_unmitigated]
         unassessed = self.get_unassessed()
         if unassessed:
-            findings.extend(
-                [f"Not assessed: {e.pitfall_name}" for e in unassessed]
-            )
+            findings.extend([f"Not assessed: {e.pitfall_name}" for e in unassessed])
 
         recommendations: list[str] = []
         for entry in detected_unmitigated:
             pitfall = self.catalog.get_by_id(entry.pitfall_id)
             for mit in pitfall.mitigations:
                 if not mit.implemented:
-                    recommendations.append(
-                        f"{pitfall.name}: {mit.description}"
-                    )
+                    recommendations.append(f"{pitfall.name}: {mit.description}")
 
         return AssessmentResult(
-            passed=(
-                len(detected_unmitigated) == 0 and self.all_assessed()
-            ),
+            passed=(len(detected_unmitigated) == 0 and self.all_assessed()),
             score=assessment_score,
             risk_level=risk_level,
             findings=findings,

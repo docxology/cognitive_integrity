@@ -13,6 +13,13 @@ Theorem 3.2 (Parallel Composition):
         majority:  sum of terms where >n/2 modules detect
         weighted:  depends on weight vector and threshold
 
+Corollary 3.3 (Hybrid Two-Stage Composition):
+    For a two-stage pipeline where the fast stage uses max-fusion parallel
+    composition and the deep stage uses series composition:
+        R_hybrid = 1 - (1 - R_fast)(1 - R_deep)
+    where R_fast = 1 - prod(1 - r_i) for fast-stage rates and
+    R_deep = 1 - prod(1 - r_j) for deep-stage rates.
+
 This module provides constructor functions for building composed
 pipelines and helper functions for computing theoretical detection rates.
 """
@@ -234,6 +241,203 @@ def _weighted_normal_approx(
 
 
 # ---------------------------------------------------------------------------
+# Extended composition algebra (Corollary 3.3 + helpers)
+# ---------------------------------------------------------------------------
+
+def compute_hybrid_detection_rate(
+    fast_rates: List[float],
+    deep_rates: List[float],
+) -> float:
+    """Compute the combined detection rate for a two-stage hybrid pipeline.
+
+    Implements Corollary 3.3:
+
+    .. math::
+
+        R_{\\text{hybrid}} = 1 - (1 - R_{\\text{fast}})(1 - R_{\\text{deep}})
+
+    The fast stage uses max-fusion (parallel) and the deep stage uses series
+    composition.  The two stages are treated as statistically independent, so
+    the combined miss rate is the product of the per-stage miss rates.
+
+    Args:
+        fast_rates: Per-module detection rates for the fast (parallel) stage.
+            Each rate must be in [0, 1].
+        deep_rates: Per-module detection rates for the deep (series) stage.
+            Each rate must be in [0, 1].
+
+    Returns:
+        Combined detection rate in [0, 1].
+
+    Raises:
+        ValueError: If any rate is outside [0, 1].
+
+    Examples:
+        >>> compute_hybrid_detection_rate([0.91, 0.88], [0.79, 0.76, 0.70])
+        0.9998...
+    """
+    for i, r in enumerate(fast_rates):
+        if not 0.0 <= r <= 1.0:
+            raise ValueError(f"fast_rates[{i}] out of bounds: {r} (must be in [0, 1])")
+    for j, r in enumerate(deep_rates):
+        if not 0.0 <= r <= 1.0:
+            raise ValueError(f"deep_rates[{j}] out of bounds: {r} (must be in [0, 1])")
+
+    r_fast = compute_series_detection_rate(fast_rates) if fast_rates else 0.0
+    r_deep = compute_series_detection_rate(deep_rates) if deep_rates else 0.0
+    return 1.0 - (1.0 - r_fast) * (1.0 - r_deep)
+
+
+def compute_weighted_parallel_detection_rate(
+    rates: List[float],
+    weights: List[float],
+    threshold: float = 0.5,
+) -> float:
+    """Compute the detection rate for weighted parallel fusion.
+
+    Models each module as a Bernoulli(rᵢ) random variable Xᵢ and computes
+    the probability that the weighted sum Y = Σ wᵢ Xᵢ exceeds ``threshold``
+    via a Gaussian (normal) approximation:
+
+    .. math::
+
+        P(Y > \\theta) \\approx 1 - \\Phi\\!\\left(
+            \\frac{\\theta - \\mu}{\\sigma}
+        \\right)
+
+    where :math:`\\mu = \\sum_i w_i r_i` and
+    :math:`\\sigma^2 = \\sum_i w_i^2 r_i (1-r_i)`.
+
+    Args:
+        rates: Per-module detection rates, each in [0, 1].
+        weights: Non-negative weights for each module.  Need not sum to 1
+            (they are used as-is, not normalised).  Must have the same
+            length as ``rates``.
+        threshold: Detection threshold θ for the weighted sum (default 0.5).
+
+    Returns:
+        Approximate detection probability in [0, 1].
+
+    Raises:
+        ValueError: If lengths differ, any rate is outside [0, 1], or any
+            weight is negative.
+
+    Examples:
+        >>> compute_weighted_parallel_detection_rate([0.9, 0.8], [0.6, 0.4])
+        0.96...
+    """
+    if len(rates) != len(weights):
+        raise ValueError(
+            f"rates and weights must have the same length "
+            f"(got {len(rates)} and {len(weights)})"
+        )
+    for i, r in enumerate(rates):
+        if not 0.0 <= r <= 1.0:
+            raise ValueError(f"rates[{i}] out of bounds: {r} (must be in [0, 1])")
+    for j, w in enumerate(weights):
+        if w < 0.0:
+            raise ValueError(f"weights[{j}] is negative: {w}")
+
+    if not rates:
+        return 0.0
+
+    return _weighted_normal_approx(rates, threshold=threshold, weights=weights)
+
+
+def compute_optimal_ordering(rates: List[float]) -> List[int]:
+    """Find the optimal module ordering for series composition.
+
+    For series pipelines that short-circuit on first detection the optimal
+    ordering is determined by the *gain-per-latency* heuristic.  When
+    latency information is not available we fall back to ordering modules by
+    decreasing detection rate — placing the highest-rate module first gives
+    the fastest expected early-exit.
+
+    The ordering maximises the *expected number of early exits*, which for
+    equal-latency modules is equivalent to sorting by descending rᵢ.
+
+    .. note::
+        This function only returns an ordering (a permutation of indices).
+        The combined detection rate is invariant to ordering under the
+        series formula (Theorem 3.1), but latency-to-first-detection is not.
+
+    Args:
+        rates: Per-module detection rates in [0, 1].
+
+    Returns:
+        List of module indices sorted from highest to lowest detection rate
+        (i.e. the index of the best module is first).
+
+    Raises:
+        ValueError: If any rate is outside [0, 1].
+
+    Examples:
+        >>> compute_optimal_ordering([0.70, 0.91, 0.85])
+        [1, 2, 0]
+    """
+    for i, r in enumerate(rates):
+        if not 0.0 <= r <= 1.0:
+            raise ValueError(f"rates[{i}] out of bounds: {r} (must be in [0, 1])")
+
+    return sorted(range(len(rates)), key=lambda i: rates[i], reverse=True)
+
+
+def latency_estimate(
+    modules: List[str],
+    strategy: str,
+    latency_map: Optional[Dict[str, float]] = None,
+    deep_modules: Optional[List[str]] = None,
+) -> float:
+    """Estimate total pipeline latency given a strategy.
+
+    Latency models:
+
+    - **series**:   L = Σ l_i   (modules execute sequentially)
+    - **parallel**: L = max(l_i) (modules execute concurrently)
+    - **hybrid**:   L = max(l_fast) + Σ(l_deep)
+
+    Args:
+        modules: Ordered list of module names.
+        strategy: One of ``'series'``, ``'parallel'``, ``'hybrid'``.
+        latency_map: Mapping from module name to latency in ms.  Falls back
+            to a default of 20 ms per module when a name is missing.
+        deep_modules: For ``'hybrid'``: names of the deep-stage modules.
+
+    Returns:
+        Estimated total latency in milliseconds.
+
+    Raises:
+        ValueError: If strategy is unknown.
+
+    Examples:
+        >>> latency_estimate(["Firewall", "Detection"], "series",
+        ...                  latency_map={"Firewall": 12, "Detection": 18})
+        30.0
+    """
+    _default_latency = 20.0
+    lm = latency_map or {}
+
+    def _lat(name: str) -> float:
+        return lm.get(name, _default_latency)
+
+    fast_lats = [_lat(m) for m in modules]
+
+    if strategy == "series":
+        return sum(fast_lats)
+    elif strategy == "parallel":
+        return max(fast_lats) if fast_lats else 0.0
+    elif strategy == "hybrid":
+        deep_lats = [_lat(m) for m in (deep_modules or [])]
+        fast_max = max(fast_lats) if fast_lats else 0.0
+        deep_sum = sum(deep_lats)
+        return fast_max + deep_sum
+    else:
+        raise ValueError(
+            f"Unknown strategy: {strategy!r} (expected 'series', 'parallel', 'hybrid')"
+        )
+
+
+# ---------------------------------------------------------------------------
 # Empirical validation
 # ---------------------------------------------------------------------------
 
@@ -298,7 +502,7 @@ def validate_composition_theorem(
     series_pipe = SeriesPipeline(modules)
     series_detections = 0
     for message, context in test_data:
-        result = series_pipe.evaluate(message, context)
+        result = series_pipe.evaluate(message, context)  # type: ignore[assignment]
         if result.detected:
             series_detections += 1
     series_empirical = series_detections / n_samples
@@ -307,7 +511,7 @@ def validate_composition_theorem(
     parallel_pipe = ParallelPipeline(modules, fusion=MaxScoreFusion(threshold=0.5))
     parallel_detections = 0
     for message, context in test_data:
-        result = parallel_pipe.evaluate(message, context)
+        result = parallel_pipe.evaluate(message, context)  # type: ignore[assignment]
         if result.detected:
             parallel_detections += 1
     parallel_empirical = parallel_detections / n_samples

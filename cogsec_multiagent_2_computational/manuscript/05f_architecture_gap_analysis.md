@@ -10,6 +10,7 @@ For a fixed architecture $A$ and attack category $\adversary{}$, define the obse
 \begin{equation}
 \mathrm{Gap}(A, \adversary{}) = \mathrm{DR}_{\text{parametric}}(A, \adversary{}) - \mathrm{DR}_{\text{empirical}}(A, \adversary{}).
 \end{equation}
+{#eq:architecture-gap}
 We decompose this quantity into three non-overlapping components:
 
 \begin{enumerate}
@@ -22,7 +23,7 @@ The total gap decomposes additively: $G_{\text{total}} = G_{\text{adapter}} + G_
 
 ## Adapter Maturity Scale {#sec:maturity-scale}
 
-We adopt a 5-level maturity rubric modeled on the Capability Maturity Model Integration (CMMI) scale but specialized to defense-module adapters. Each level implies a typical range of marginal TPR contribution and a typical dominant failure mode.
+We adopt a 5-level maturity rubric modeled on the Capability Maturity Model Integration (CMMI) scale but specialized to defense-module adapters (\cref{tab:maturity-rubric}). Each level implies a typical range of marginal TPR contribution and a typical dominant failure mode.
 
 **Table: Adapter maturity rubric and typical marginal TPR contribution.** {#tab:maturity-rubric}
 
@@ -42,7 +43,7 @@ Using the ablation contributions from \cref{sec:extended-ablation}, each CIF mod
 | Module | Level | Evidence | Primary Failure Mode |
 | --- | --- | --- | --- |
 | Detection | 3 | $\Delta\mathrm{TPR} = -0.052$; statistical features | B (threshold) |
-| Firewall | 2--3 | $\Delta\mathrm{TPR} \approx -0.009$; pattern matching | A (feature) |
+| Firewall | 2--3 | $\Delta\mathrm{TPR} \approx -0.019$; pattern matching | A (feature) |
 | Trust Calculus | 2 | $\Delta\mathrm{TPR} = -0.015$; limited adaptation | B (threshold) |
 | Tripwires | 3 | $\Delta\mathrm{TPR} = -0.011$; canary monitoring | A (feature) |
 | Consensus | 1--2 | $\Delta\mathrm{TPR} = -0.009$; uncalibrated | D (adapter hook) |

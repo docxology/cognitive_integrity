@@ -54,7 +54,7 @@ The game-theoretic payoff matrix shows that:
 
 This is not a failure of CIF—it is a consequence of its success. When explicit attacks are reliably detected, adversaries are forced toward the subtlest and most distributed manipulation strategies. The 56.1\% detection rate on emergent misalignment represents the current frontier of defensive capability, not a gap in the framework's design.
 
-**Operator implication**: Deploy colony-scale entropy monitoring and schedule periodic manual behavioral audits (weekly for high-stakes deployments). The Ω₅ playbook (Part 3, \cref{sec:incident-response}) provides the response protocol when drift accumulates despite in-context detection.
+**Operator implication**: Deploy colony-scale entropy monitoring and schedule periodic manual behavioral audits (weekly for high-stakes deployments). The Ω₅ playbook (\cref{sec:incident-response}) provides the response protocol when drift accumulates despite in-context detection.
 
 ## Finding 7: The Implementation Gap Is a Feature, Not a Bug
 

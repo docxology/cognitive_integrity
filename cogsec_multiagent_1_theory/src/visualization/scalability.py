@@ -53,11 +53,12 @@ def create_scalability_figure(output_dir: Path) -> tuple[Path, Path]:
     if not data_path.exists():
         print(f"Data file not found: {data_path}")
         return output_dir / "error.png", output_dir / "error.pdf"
-        
+
     import json
+
     with open(data_path, "r") as f:
         data = json.load(f)
-        
+
     # Extract arrays
     agent_counts = np.array([d["agent_count"] for d in data])
     detection_latency = np.array([d["detection_time_ms"] for d in data])
@@ -83,7 +84,7 @@ def create_scalability_figure(output_dir: Path) -> tuple[Path, Path]:
         "--",
         color=colors["tripwire"],
         label="Theoretical O(N)",
-        alpha=0.5
+        alpha=0.5,
     )
 
     ax1.set_xlabel("Number of Agents", fontsize=12, fontweight="bold")
@@ -126,7 +127,7 @@ def create_scalability_figure(output_dir: Path) -> tuple[Path, Path]:
         markersize=8,
         label="Consensus (Measured)",
     )
-    
+
     # Theoretical O(N^2) fit for reference
     if len(agent_counts) > 2:
         try:
@@ -151,9 +152,7 @@ def create_scalability_figure(output_dir: Path) -> tuple[Path, Path]:
     output_png = output_dir / "scalability_analysis.png"
     output_pdf = output_dir / "scalability_analysis.pdf"
 
-    plt.savefig(
-        output_png, dpi=150, bbox_inches="tight", facecolor="white", edgecolor="none"
-    )
+    plt.savefig(output_png, dpi=150, bbox_inches="tight", facecolor="white", edgecolor="none")
     plt.savefig(output_pdf, bbox_inches="tight", facecolor="white", edgecolor="none")
     plt.close()
 

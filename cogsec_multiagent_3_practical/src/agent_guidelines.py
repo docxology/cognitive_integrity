@@ -21,9 +21,6 @@ from typing import Any
 
 import numpy as np
 
-from . import RiskLevel, AssessmentResult
-
-
 # =============================================================================
 # Invariant System
 # =============================================================================
@@ -418,30 +415,36 @@ class SecurityInvariantChecker:
         results: list[InvariantCheckResult] = []
 
         if "source_trust" in context and "required_trust" in context:
-            results.append(self.check_source_verification(
-                context["source_trust"], context["required_trust"]
-            ))
+            results.append(
+                self.check_source_verification(context["source_trust"], context["required_trust"])
+            )
 
         if "delegated_permission" in context and "delegator_permission" in context:
-            results.append(self.check_delegation_bounds(
-                context["delegated_permission"], context["delegator_permission"]
-            ))
+            results.append(
+                self.check_delegation_bounds(
+                    context["delegated_permission"], context["delegator_permission"]
+                )
+            )
 
         if "beliefs" in context:
-            results.append(self.check_belief_consistency(
-                context["beliefs"],
-                context.get("confidence_threshold", 0.7),
-            ))
+            results.append(
+                self.check_belief_consistency(
+                    context["beliefs"],
+                    context.get("confidence_threshold", 0.7),
+                )
+            )
 
         if "initial_canaries" in context and "current_canaries" in context:
-            results.append(self.check_identity_integrity(
-                context["initial_canaries"], context["current_canaries"]
-            ))
+            results.append(
+                self.check_identity_integrity(
+                    context["initial_canaries"], context["current_canaries"]
+                )
+            )
 
         if "goals" in context and "authorized_sources" in context:
-            results.append(self.check_goal_alignment(
-                context["goals"], context["authorized_sources"]
-            ))
+            results.append(
+                self.check_goal_alignment(context["goals"], context["authorized_sources"])
+            )
 
         return results
 
@@ -710,9 +713,7 @@ class CoordinationIntegrityMonitor:
             - ``"participation_rate"``: float (0-1)
         """
         quorum_met = participating_agents >= self.min_quorum
-        participation_rate = (
-            participating_agents / total_agents if total_agents > 0 else 0.0
-        )
+        participation_rate = participating_agents / total_agents if total_agents > 0 else 0.0
         return {
             "quorum_met": quorum_met,
             "participating": participating_agents,
@@ -916,22 +917,26 @@ def generate_yaml_rules() -> str:
 
     checker = SecurityInvariantChecker()
     for inv_id, defn in checker.definitions.items():
-        lines.extend([
-            f"    - id: {inv_id.value}",
-            f"      name: {defn.name.lower().replace(' ', '_')}",
-            f"      check: {defn.check_description}",
-            f"      violation_action: {defn.violation_action.value}",
-        ])
+        lines.extend(
+            [
+                f"    - id: {inv_id.value}",
+                f"      name: {defn.name.lower().replace(' ', '_')}",
+                f"      check: {defn.check_description}",
+                f"      violation_action: {defn.violation_action.value}",
+            ]
+        )
 
-    lines.extend([
-        "  monitoring:",
-        "    - type: belief_drift",
-        "      frequency: on_external_input",
-        "    - type: trust_anomaly",
-        "      frequency: on_agent_communication",
-        "    - type: coordination_integrity",
-        "      frequency: before_multi_agent_decision",
-    ])
+    lines.extend(
+        [
+            "  monitoring:",
+            "    - type: belief_drift",
+            "      frequency: on_external_input",
+            "    - type: trust_anomaly",
+            "      frequency: on_agent_communication",
+            "    - type: coordination_integrity",
+            "      frequency: before_multi_agent_decision",
+        ]
+    )
 
     return "\n".join(lines)
 

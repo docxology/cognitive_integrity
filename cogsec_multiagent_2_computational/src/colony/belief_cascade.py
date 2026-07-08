@@ -123,8 +123,8 @@ class BeliefCascadeScenario:
         try:
             from .benchmark import ColonyResult
         except ImportError:
-            from .recruitment_poisoning import (
-                _ColonyResult as ColonyResult,  # type: ignore[assignment]
+            from .recruitment_poisoning import (  # type: ignore[assignment]
+                _ColonyResult as ColonyResult,
             )
 
         n = config.n_agents
@@ -192,7 +192,7 @@ class BeliefCascadeScenario:
 
             # Integrity = fraction of honest agents within threshold of truth
             honest_list = sorted(honest_indices)
-            correct = np.sum(np.abs(beliefs[honest_list] - ground_truth) < INTEGRITY_TARGET_THRESHOLD)
+            correct = np.sum(np.abs(beliefs[honest_list] - ground_truth) < INTEGRITY_TARGET_THRESHOLD)  # noqa: E501
             integrity = float(correct / max(len(honest_indices), 1))
             timeline.append(integrity)
 

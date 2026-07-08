@@ -1,6 +1,6 @@
 # Cognitive Security for Multiagent Operators
 
-A four-part manuscript series establishing the theoretical foundations, computational validation, practical deployment guidance, and applied domain analyses for cognitive security in multiagent AI systems.
+A three-part manuscript series establishing the theoretical foundations, computational validation, and unified practical/applications guidance for cognitive security in multiagent AI systems. Parts 3 and 4 were merged into a single comprehensive paper.
 
 ## Location in this repository
 
@@ -14,26 +14,23 @@ The qualified name keeps each paper's outputs under `output/cognitive_integrity/
 
 | Reader | Start here |
 | ------ | ---------- |
-| Formal definitions, proofs, adversary taxonomy | [Part 1: Formal Foundations](cogsec_multiagent_1_theory/) |
-| Empirical results, implementation, reproducibility | [Part 2: Computational Validation](cogsec_multiagent_2_computational/) — evidence spine: [claims traceability](cogsec_multiagent_2_computational/docs/claims_traceability.md), [framework validation](cogsec_multiagent_2_computational/docs/framework_validation.md) |
-| Deployment, checklists, operator guidance (minimal math) | [Part 3: A Qualitative Review for Practitioners](cogsec_multiagent_3_practical/) |
-| Sector-specific applications, goal hijacking, incident retrospective | [Part 4: Applications](cogsec_multiagent_4_applications/) |
+| Formal definitions, proofs, adversary taxonomy | [Part 1 v2: Formal Foundations](cogsec_multiagent_1_theory/) |
+| Empirical results, adversarial training, reproducibility | [Part 2 v2: Computational Validation](cogsec_multiagent_2_computational/) — evidence spine: [claims traceability](cogsec_multiagent_2_computational/docs/claims_traceability.md), [framework validation](cogsec_multiagent_2_computational/docs/framework_validation.md) |
+| Deployment, checklists, operator guidance, cross-domain applications (minimal math) | [Part 3+4: Practical Guide + Applications](cogsec_multiagent_3_practical/) |
 
 ## Paper Series
 
 | Part | Title | Status | DOI |
 |------|-------|--------|-----|
-| 1 | [Formal Foundations](cogsec_multiagent_1_theory/) | **Published** | [10.5281/zenodo.18364119](https://doi.org/10.5281/zenodo.18364119) |
-| 2 | [Computational Validation](cogsec_multiagent_2_computational/) | Preprint | [10.5281/zenodo.18364128](https://doi.org/10.5281/zenodo.18364128) |
-| 3 | [A Qualitative Review for Practitioners](cogsec_multiagent_3_practical/) | Preprint | [10.5281/zenodo.18364130](https://doi.org/10.5281/zenodo.18364130) |
-| 4 | [Applications: Critical-Domain Analyses](cogsec_multiagent_4_applications/) | Preprint | _DOI pending_ |
+| 1 v2 | [Formal Foundations](cogsec_multiagent_1_theory/) (Second Edition) | **v2.0** | [10.5281/zenodo.18364119](https://doi.org/10.5281/zenodo.18364119) |
+| 2 v2 | [Computational Validation](cogsec_multiagent_2_computational/) (Second Edition) | Preprint | [10.5281/zenodo.18364128](https://doi.org/10.5281/zenodo.18364128) |
+| 3+4 merged | [Practical Applications and Deployment Guide](cogsec_multiagent_3_practical/) (Parts 3+4 Unified) | Preprint | [10.5281/zenodo.18364130](https://doi.org/10.5281/zenodo.18364130) |
 
 ### Reading order
 
 - **Start with Part 1** if you want definitions, theorems, and the formal trust / defense / adversary apparatus.
 - **Start with Part 2** if you want empirical evidence — the 950-attack corpus, ablation studies, Bayesian uncertainty, parametric ceilings (exact architecture set and ceiling definition are in Part 2 methodology).
-- **Start with Part 3** if you are deploying CIF and need engineering guidance without formal prerequisites.
-- **Start with Part 4** if you are evaluating CIF for a specific operational sector (infrastructure, supply chain, cyber, biowarfare, information ecosystems, etc.) and want domain-calibrated goal-hijacking defenses.
+- **Start with Part 3+4 (merged)** if you are deploying CIF and need engineering guidance without formal prerequisites or are evaluating CIF for a specific operational sector (infrastructure, supply chain, cyber, biowarfare, information ecosystems, etc.).
 
 Each paper stands alone but explicitly points readers to the most relevant sections of its siblings.
 
@@ -46,11 +43,11 @@ Active Inference Institute
 
 - **Trust Calculus** with bounded delegation and δ^d decay (Part 1)
 - **Defense Composition Algebra** for layered security reasoning (Part 1)
-- **Computational validation** over a 950-attack corpus (Part 2; architecture set and parametric ceiling definitions are in that manuscript’s methodology)
+- **Computational validation** over a 950-attack corpus (Part 2; architecture set and parametric ceiling definitions are in that manuscript's methodology)
 - **Operator-facing synthesis** with checklists, risk framing, and deployment guidance (Part 3)
-- **CIF-AD-OODA integration** and ten-domain applied analysis of goal hijacking (Part 4)
-- **Three universal attack patterns** — FR Polarity Inversion, Constraint Relaxation, Context Boundary Violation (Part 4)
-- **Three defense extensions** in the Part 4 study — verification channel separation, active perturbation probing, physics-informed invariants
+- **CIF-AD-OODA integration** and ten-domain applied analysis of goal hijacking (Part 3+4)
+- **Three universal attack patterns** — FR Polarity Inversion, Constraint Relaxation, Context Boundary Violation (Part 3+4)
+- **Three defense extensions** in the cross-domain study — verification channel separation, active perturbation probing, physics-informed invariants
 
 ## Documentation
 
@@ -62,11 +59,11 @@ Technical documentation for the CIF implementation lives in [`cogsec_multiagent_
 
 ## Figures and accessible outputs
 
-For manuscripts: use explicit figure captions in markdown; where markdown allows `alt` text for images, set meaningful alt text so HTML builds remain readable without the image. Spot-check combined HTML under each part’s `output/web/` after changing figures.
+For manuscripts: use explicit figure captions in markdown; where markdown allows `alt` text for images, set meaningful alt text so HTML builds remain readable without the image. Spot-check combined HTML under each part's `output/web/` after changing figures.
 
 ## Citation
 
-Part 1 (example; see Zenodo for each part’s record):
+Part 1 (example; see Zenodo for each part's record):
 
 ```bibtex
 @article{friedman2026cogsec1,
@@ -75,7 +72,7 @@ Part 1 (example; see Zenodo for each part’s record):
   year = {2026},
   doi = {10.5281/zenodo.18364119},
   publisher = {Zenodo},
-  note = {Part 1 of four: Cognitive Security for Multiagent Operators}
+  note = {Part 1 of three: Cognitive Security for Multiagent Operators}
 }
 ```
 
@@ -93,7 +90,6 @@ From the **repository root** (with `uv sync` already run):
 ./run.sh --render-pdf --project cognitive_integrity/cogsec_multiagent_1_theory
 ./run.sh --render-pdf --project cognitive_integrity/cogsec_multiagent_2_computational
 ./run.sh --render-pdf --project cognitive_integrity/cogsec_multiagent_3_practical
-./run.sh --render-pdf --project cognitive_integrity/cogsec_multiagent_4_applications
 
 # Or directly:
 uv run python scripts/03_render_pdf.py --project cognitive_integrity/cogsec_multiagent_1_theory
@@ -102,10 +98,9 @@ uv run python scripts/03_render_pdf.py --project cognitive_integrity/cogsec_mult
 uv run pytest projects/cognitive_integrity/cogsec_multiagent_1_theory/tests/ -v
 uv run pytest projects/cognitive_integrity/cogsec_multiagent_2_computational/tests/ -q
 uv run pytest projects/cognitive_integrity/cogsec_multiagent_3_practical/tests/ -v
-uv run pytest projects/cognitive_integrity/cogsec_multiagent_4_applications/tests/ -v
 ```
 
-Part 2’s tests import `scipy` (declared in that part’s `pyproject.toml`). If collection fails with `ModuleNotFoundError: scipy`, run `uv sync` from `cogsec_multiagent_2_computational/` so its dependencies are installed, then re-run pytest from the repo root as above.
+Part 2's tests import `scipy` (declared in that part's `pyproject.toml`). If collection fails with `ModuleNotFoundError: scipy`, run `uv sync` from `cogsec_multiagent_2_computational/` so its dependencies are installed, then re-run pytest from the repo root as above.
 
 ## License
 

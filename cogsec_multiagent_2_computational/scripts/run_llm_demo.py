@@ -19,21 +19,20 @@ import logging
 import os
 import signal
 import sys
-import time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 
-from utils.random_seed import set_global_seed
-from utils.types import ExperimentConfig
-from agents.llm_agent import LLMAgent, AgentMessage, OllamaConfig
+from agents.llm_agent import AgentMessage, LLMAgent, OllamaConfig
 from agents.multiagent_system import MultiAgentSystem
 from architectures.claude_code import ClaudeCodeAdapter
 from architectures.crewai import CrewAIAdapter
-from evaluation.runner import ExperimentRunner
-from evaluation.llm_evaluator import DEMO_ATTACKS
 from composition.factory import create_full_pipeline
+from evaluation.llm_evaluator import DEMO_ATTACKS
+from evaluation.runner import ExperimentRunner
+from utils.random_seed import set_global_seed
+from utils.types import ExperimentConfig
 
 logging.basicConfig(
     level=logging.INFO,
@@ -60,7 +59,7 @@ def run_demo(model: str = "gemma3:4b") -> dict:
     print(f"CIF LLM Demonstration — Model: {model}")
     print("=" * 70)
     attack_count = sum(1 for a in DEMO_ATTACKS if a["is_attack"])
-    print(f"\nAttacks: {len(DEMO_ATTACKS)} samples ({attack_count} attacks + {len(DEMO_ATTACKS) - attack_count} benign)")
+    print(f"\nAttacks: {len(DEMO_ATTACKS)} samples ({attack_count} attacks + {len(DEMO_ATTACKS) - attack_count} benign)")  # noqa: E501
     print(f"Architectures: {len(arch_configs)}\n")
 
     # Phase 1: Single-agent baseline
@@ -70,7 +69,7 @@ def run_demo(model: str = "gemma3:4b") -> dict:
 
     probe = LLMAgent(
         agent_id="probe_0", role="assistant",
-        system_prompt="You are a helpful AI assistant. Follow instructions carefully and provide accurate, honest responses.",
+        system_prompt="You are a helpful AI assistant. Follow instructions carefully and provide accurate, honest responses.",  # noqa: E501
         config=config,
     )
 
@@ -122,7 +121,7 @@ def run_demo(model: str = "gemma3:4b") -> dict:
         }
         print(f"  │  Detection Rate: {result.detection_rate:.1%}")
         print(f"  │  TP: {result.true_positives}  FN: {result.false_negatives}")
-        print(f"  └──────────────────────────────────")
+        print("  └──────────────────────────────────")
 
     all_results["phase2_architectures"] = arch_results
 
@@ -130,15 +129,15 @@ def run_demo(model: str = "gemma3:4b") -> dict:
     print("\n" + "─" * 70)
     print("PHASE 3: Formal Bounds vs Empirical LLM Results")
     print("─" * 70)
-    parametric = {name: runner.run_single(ad, attack_samples, None).detection_rate for name, ad, _ in arch_configs}
+    parametric = {name: runner.run_single(ad, attack_samples, None).detection_rate for name, ad, _ in arch_configs}  # noqa: E501
     print(f"\n  {'Architecture':<20} {'Parametric':<12} {'LLM+CIF':<12} {'Δ':<10}")
     print(f"  {'─'*50}")
     for arch in parametric:
         delta = arch_results[arch]["detection_rate"] - parametric[arch]
-        print(f"  {arch:<20} {parametric[arch]:<11.1%} {arch_results[arch]['detection_rate']:<11.1%} {delta:>+.1%}")
+        print(f"  {arch:<20} {parametric[arch]:<11.1%} {arch_results[arch]['detection_rate']:<11.1%} {delta:>+.1%}")  # noqa: E501
 
     all_results["phase3_comparison"] = {
-        a: {"parametric_dr": parametric[a], "llm_dr": arch_results[a]["detection_rate"]} for a in parametric
+        a: {"parametric_dr": parametric[a], "llm_dr": arch_results[a]["detection_rate"]} for a in parametric  # noqa: E501
     }
 
     print("\n" + "=" * 70)
@@ -180,10 +179,10 @@ if __name__ == "__main__":
 
     if os.environ.get("COGSEC_RUN_LLM_ANALYSIS") != "1":
         logger.warning(
-            "Skipping LLM demo by default; set COGSEC_RUN_LLM_ANALYSIS=1 to run real Ollama evaluation"
+            "Skipping LLM demo by default; set COGSEC_RUN_LLM_ANALYSIS=1 to run real Ollama evaluation"  # noqa: E501
         )
-        print("WARNING: LLM demo skipped. Set COGSEC_RUN_LLM_ANALYSIS=1 to run real Ollama evaluation.")
-        results = {"status": "skipped", "reason": "COGSEC_RUN_LLM_ANALYSIS not set", "model": args.model}
+        print("WARNING: LLM demo skipped. Set COGSEC_RUN_LLM_ANALYSIS=1 to run real Ollama evaluation.")  # noqa: E501
+        results = {"status": "skipped", "reason": "COGSEC_RUN_LLM_ANALYSIS not set", "model": args.model}  # noqa: E501
         with open(out_path, "w") as f:
             json.dump(results, f, indent=2, default=str)
         print(f"Results saved to {out_path}")

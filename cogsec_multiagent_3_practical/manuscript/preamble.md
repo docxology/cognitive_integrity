@@ -1,8 +1,8 @@
-\newpage
+\\newpage
 
 # LaTeX Preamble
 
-This file contains LaTeX packages and commands for the Cognitive Integrity Framework (Part 3) manuscript.
+This file contains LaTeX packages and commands for the Cognitive Integrity Framework (Part 3+4) manuscript.
 
 ```latex
 % Core mathematical packages
@@ -19,16 +19,50 @@ This file contains LaTeX packages and commands for the Cognitive Integrity Frame
 \usepackage{array}
 \usepackage{longtable}
 
-% Graphics
+% Graphics and floats
 \usepackage{graphicx}
 \usepackage{tikz}
 \usepackage{pgfplots}
 \usetikzlibrary{shapes,arrows,positioning,calc,fit,backgrounds}
 \pgfplotsset{compat=1.18}
+\usepackage{float}
+\floatplacement{figure}{H}
+
+% Typography and layout
+\usepackage{microtype}
+\usepackage{setspace}
+\setstretch{1.15}
+
+% Page layout (slightly smaller margins for academic journal style)
+\usepackage[a4paper, margin=2.5cm]{geometry}
+
+% Running headers/footers
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhead[L]{\small\itshape{CIF Practical \& Applications}}
+\fancyhead[R]{\small\thepage}
+\fancyfoot{}
+
+% Caption formatting
+\usepackage{caption}
+\captionsetup{font=small, labelfont=bf, margin=10pt}
+
+% Colored boxes for callouts
+\usepackage{tcolorbox}
+\tcbuselibrary{skins,breakable}
 
 % Cross-referencing with smart naming
 \usepackage{hyperref}
 \usepackage[capitalise,noabbrev,nameinlink]{cleveref}
+
+% Hyperlink styling
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue!70!black,
+    filecolor=blue!70!black,
+    urlcolor=teal!80!black,
+    citecolor=teal!80!black
+}
 
 % Configure cleveref for custom environments
 \crefname{definition}{Definition}{Definitions}
@@ -100,15 +134,7 @@ This file contains LaTeX packages and commands for the Cognitive Integrity Frame
 % QED symbol
 \renewcommand{\qedsymbol}{$\blacksquare$}
 
-% Page Layout (Slightly smaller margins)
-\usepackage[margin=1in]{geometry}
-
-% Hyperlink Styling
-\hypersetup{
-    colorlinks=true,
-    linkcolor=red,
-    filecolor=red,
-    urlcolor=red,
-    citecolor=red
-}
+% Lists of figures and tables (placed after TOC in rendered PDF)
+\listoffigures
+\listoftables
 ```

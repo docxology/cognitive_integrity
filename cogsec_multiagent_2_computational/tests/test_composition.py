@@ -13,33 +13,9 @@ NO MOCKS. All tests use real data and computation with deterministic seeds.
 
 from __future__ import annotations
 
-import math
-
 import numpy as np
 import pytest
 
-from composition.pipeline import (
-    DefenseModule,
-    HybridPipeline,
-    ParallelPipeline,
-    PipelineResult,
-    SeriesPipeline,
-)
-from composition.fusion import (
-    AttentionFusion,
-    FusionStrategy,
-    LearnedFusion,
-    MajorityVotingFusion,
-    MaxScoreFusion,
-    WeightedAverageFusion,
-)
-from composition.algebra import (
-    compute_parallel_detection_rate,
-    compute_series_detection_rate,
-    parallel_compose,
-    series_compose,
-    validate_composition_theorem,
-)
 from composition.adapters import (
     ConsensusAdapter,
     DetectionAdapter,
@@ -51,6 +27,13 @@ from composition.adapters import (
     TrustAdapter,
     _clamp,
 )
+from composition.algebra import (
+    compute_parallel_detection_rate,
+    compute_series_detection_rate,
+    parallel_compose,
+    series_compose,
+    validate_composition_theorem,
+)
 from composition.factory import (
     CANONICAL_ORDER,
     MODULE_REGISTRY,
@@ -58,8 +41,22 @@ from composition.factory import (
     create_module_dict,
     create_pipeline_without,
 )
+from composition.fusion import (
+    AttentionFusion,
+    FusionStrategy,
+    LearnedFusion,
+    MajorityVotingFusion,
+    MaxScoreFusion,
+    WeightedAverageFusion,
+)
+from composition.pipeline import (
+    DefenseModule,
+    HybridPipeline,
+    ParallelPipeline,
+    PipelineResult,
+    SeriesPipeline,
+)
 from utils.types import DefenseResult
-
 
 # ===================================================================
 # Helpers -- concrete DefenseModule stubs for pipeline/fusion tests
@@ -516,7 +513,7 @@ class TestDetectionAdapter:
         adapter = DetectionAdapter()
         for msg in ["", "a", "a" * 10000, "!@#$%^&*()" * 100]:
             result = adapter.evaluate(msg)
-            assert 0.0 <= result.score <= 1.0, f"Score {result.score} out of bounds for msg len {len(msg)}"
+            assert 0.0 <= result.score <= 1.0, f"Score {result.score} out of bounds for msg len {len(msg)}"  # noqa: E501
 
     def test_latency_recorded(self):
         """Latency is recorded in the result."""

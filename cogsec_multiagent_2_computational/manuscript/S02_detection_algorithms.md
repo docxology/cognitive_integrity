@@ -16,7 +16,6 @@ This supplementary section presents detection algorithm implementations for the 
 
 \begin{algorithm}
 \caption{ROC Curve Construction}
-\label{alg:roc-construction}
 \begin{algorithmic}[1]
 \Require Detector $D$, attack samples $X_{\text{attack}}$, benign samples $X_{\text{benign}}$, threshold count $n$
 \Ensure ROC curve, AUC, optimal threshold $\tau^*$
@@ -32,6 +31,7 @@ This supplementary section presents detection algorithm implementations for the 
 \State \Return $(\text{ROC}, \text{AUC}, \tau^*)$
 \end{algorithmic}
 \end{algorithm}
+{#alg:roc-construction}
 
 ## Detector Performance Results
 
@@ -79,6 +79,7 @@ This supplementary section presents detection algorithm implementations for the 
 \State \Return $(f_{\text{fused}}, \tau_{\text{fused}})$
 \end{algorithmic}
 \end{algorithm}
+{#alg:multi-detector-fusion}
 
 **Table: Fusion strategy performance comparison.** {#tab:fusion-performance}
 
@@ -96,7 +97,6 @@ This supplementary section presents detection algorithm implementations for the 
 
 \begin{algorithm}
 \caption{Online Detection Loop}
-\label{alg:online-detection}
 \begin{algorithmic}[1]
 \Require Message stream, window size $w$, detection threshold $\theta_{\text{det}}$
 \Comment{Note: $\theta_{\text{det}}$ is a statistical anomaly threshold, distinct from the firewall thresholds $\tau_1$ (REJECT) and $\tau_2$ (QUARANTINE).}
@@ -117,12 +117,12 @@ This supplementary section presents detection algorithm implementations for the 
 \EndLoop
 \end{algorithmic}
 \end{algorithm}
+{#alg:online-detection}
 
 ## Batch Detection Algorithm
 
 \begin{algorithm}
 \caption{Batch Detection Analysis}
-\label{alg:batch-detection}
 \begin{algorithmic}[1]
 \Require Full interaction history $H$, detectors $[D_1, \ldots, D_k]$
 \Ensure Anomalies, attack patterns, optimal thresholds
@@ -137,6 +137,7 @@ This supplementary section presents detection algorithm implementations for the 
 \State \Return $(\text{anomalies}, \text{attack\_patterns}, \tau^*)$
 \end{algorithmic}
 \end{algorithm}
+{#alg:batch-detection}
 
 **Table: Hybrid configuration trade-off analysis.** {#tab:hybrid-tradeoffs}
 
@@ -165,7 +166,6 @@ This supplementary section presents detection algorithm implementations for the 
 
 \begin{algorithm}
 \caption{Online Baseline Update}
-\label{alg:baseline-update}
 \begin{algorithmic}[1]
 \Require Alert, feedback $\in \{\text{FP}, \text{TP}\}$, learning rate $\eta$
 \If{feedback = FP}
@@ -182,6 +182,7 @@ This supplementary section presents detection algorithm implementations for the 
 \EndIf
 \end{algorithmic}
 \end{algorithm}
+{#alg:baseline-update}
 
 **Table: False positive mitigation strategy effectiveness.** {#tab:fp-mitigation-results}
 
@@ -199,7 +200,6 @@ This supplementary section presents detection algorithm implementations for the 
 
 \begin{algorithm}
 \caption{Sliding Window Monitoring}
-\label{alg:sliding-window}
 \begin{algorithmic}[1]
 \Require Monitoring period $T_m$, window size $w$, anomaly threshold $\theta_{\text{det}}$
 \Comment{Note: $T_m$ denotes the monitoring interval (time units); $\theta_{\text{det}}$ is distinct from firewall thresholds $\tau_1$/$\tau_2$.}
@@ -218,6 +218,7 @@ This supplementary section presents detection algorithm implementations for the 
 \EndLoop
 \end{algorithmic}
 \end{algorithm}
+{#alg:sliding-window}
 
 ## Computational Complexity Summary {#sec:detection-complexity}
 
@@ -243,7 +244,6 @@ The Fisher-Rao metric on the belief simplex $\Delta^{n-1}$ provides a principled
 
 \begin{algorithm}
 \caption{Fisher-Rao Geodesic Drift Detector}
-\label{alg:fisher-rao-drift}
 \begin{algorithmic}[1]
 \Require Belief stream $\{p_t\}$, window $w$, geodesic threshold $\rho$, smoothing $\alpha$
 \Ensure Drift alerts with geodesic distance scores
@@ -262,6 +262,7 @@ The Fisher-Rao metric on the belief simplex $\Delta^{n-1}$ provides a principled
 \EndLoop
 \end{algorithmic}
 \end{algorithm}
+{#alg:fisher-rao-drift}
 
 **Relationship to Theorem CG.1.** The geodesic threshold $\rho$ in Algorithm IG.1 corresponds to the sandbox radius derived in \cref{sec:information-geometry}: setting $\rho = 2\arccos(\sqrt{1 - \kappa \cdot \varepsilon_\text{precision}})$ makes the drift detector and the belief sandbox mutually consistent---any update rejected by the sandbox would also trigger an alert, and vice versa.
 
@@ -283,6 +284,7 @@ The Fisher-Rao metric on the belief simplex $\Delta^{n-1}$ provides a principled
 \EndIf
 \end{algorithmic}
 \end{algorithm}
+{#alg:natural-gradient}
 
 The natural gradient anomaly score weights each dimension's detection signal by the current belief probability, making the score sensitive to manipulations of high-probability beliefs (which carry more semantic content) while remaining robust to noise in low-probability dimensions.
 

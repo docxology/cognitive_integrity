@@ -17,13 +17,12 @@ No mocks.
 
 import json
 import logging
-import time
 
 import numpy as np
 import pytest
 
 from data.generate import DataGenerator
-from data.loaders import load_json, load_detection_data, load_scalability_data
+from data.loaders import load_detection_data, load_json, load_scalability_data
 from data.result_loaders import (
     EvaluationResultRow,
     evaluation_to_confusion_counts,
@@ -33,7 +32,7 @@ from data.result_loaders import (
     load_sensitivity_results,
 )
 from data.schema import AblationData, ColonyData, DetectionData, ScalabilityData
-from utils.config import FrameworkConfig, load_config, _parse_simple_yaml
+from utils.config import FrameworkConfig, _parse_simple_yaml, load_config
 from utils.logging_setup import get_logger
 from utils.random_seed import get_rng, set_global_seed
 from utils.timing import LatencyAccumulator, timed
@@ -46,7 +45,6 @@ from utils.types import (
     MetricResult,
     Severity,
 )
-
 
 # ===========================================================================
 # data.schema tests

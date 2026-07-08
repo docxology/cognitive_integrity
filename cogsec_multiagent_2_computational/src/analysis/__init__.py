@@ -10,17 +10,17 @@ defenses.
 """
 
 from .game_theory import (
-    solve_zero_sum_game,
     GameResult,
-    fictitious_play,
     arms_race_simulation,
     compute_cif_payoff_matrix,
+    fictitious_play,
     minimax_regret,
+    solve_zero_sum_game,
 )
 from .information_geometry import (
     StatisticalManifold,
-    geodesic_attack_path,
     defense_as_curvature_constraint,
+    geodesic_attack_path,
     sensitivity_via_riemannian_metric,
 )
 

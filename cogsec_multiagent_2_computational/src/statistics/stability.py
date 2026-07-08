@@ -151,9 +151,9 @@ def make_pipeline_eval_fn(
         ``(seed: int) -> SeedMetrics`` suitable for ``run_multi_seed_stability``.
     """
     def eval_fn(seed: int) -> SeedMetrics:
-        from utils.random_seed import set_global_seed
-        from composition.factory import create_full_pipeline
         from attacks.corpus import AttackCorpus
+        from composition.factory import create_full_pipeline
+        from utils.random_seed import set_global_seed
 
         set_global_seed(seed)
         pipeline = create_full_pipeline()

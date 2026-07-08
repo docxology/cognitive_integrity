@@ -16,6 +16,7 @@ from composition.algebra import (
     compute_parallel_detection_rate,
     compute_series_detection_rate,
 )
+
 from ..style import FONTSIZE, SEMANTIC_COLORS, add_source_annotation, apply_style, save_figure
 
 logger = logging.getLogger(__name__)
@@ -92,7 +93,7 @@ def plot_defense_composition(output_dir: str | Path = "output/figures") -> plt.F
 
     for x, y, label, size in unique_attacks:
         ax.text(
-            x, y, label, ha="center", va="center", fontsize=FONTSIZE["base"], style="italic", alpha=0.9
+            x, y, label, ha="center", va="center", fontsize=FONTSIZE["base"], style="italic", alpha=0.9  # noqa: E501
         )
 
     # Pairwise overlaps
@@ -171,7 +172,7 @@ def plot_defense_composition(output_dir: str | Path = "output/figures") -> plt.F
 
             if i == 0:  # Header
                 ax.text(
-                    x, y, cell, ha="center", va="center", fontsize=FONTSIZE["base"], fontweight="bold"
+                    x, y, cell, ha="center", va="center", fontsize=FONTSIZE["base"], fontweight="bold"  # noqa: E501
                 )
             elif i == len(stats_data) - 1:  # Full CIF row
                 ax.text(
@@ -207,7 +208,7 @@ def plot_defense_composition(output_dir: str | Path = "output/figures") -> plt.F
         )
         ax.add_patch(rect)
         ax.text(
-            -2.55 + i * 1.6, legend_y + 0.1, label, ha="left", va="center", fontsize=FONTSIZE["base"]
+            -2.55 + i * 1.6, legend_y + 0.1, label, ha="left", va="center", fontsize=FONTSIZE["base"]  # noqa: E501
         )
 
     # Show composition formula

@@ -156,11 +156,14 @@ def render_posture_radar(data: FigureData, ax: plt.Axes | None = None) -> plt.Fi
     threshold_values = list(thresholds.values())
 
     for i, (name, val) in enumerate(zip(threshold_names, threshold_values)):
-        circle = plt.Circle(
-            (0, 0), val, transform=ax.transData + ax.transAxes, alpha=0.1, color=threshold_colors[i]
-        )
         # Use fill_between for radar
-        ax.fill(angles, [val] * (num_vars + 1), alpha=0.1, color=threshold_colors[i], label=f"{name.title()} ({val:.0%})")
+        ax.fill(
+            angles,
+            [val] * (num_vars + 1),
+            alpha=0.1,
+            color=threshold_colors[i],
+            label=f"{name.title()} ({val:.0%})",
+        )
 
     # Plot data
     ax.plot(angles, values_closed, "o-", linewidth=2, color="#1f77b4", markersize=8)
@@ -437,7 +440,7 @@ def render_risk_matrix(data: FigureData, ax: plt.Axes | None = None) -> plt.Figu
     norm = plt.Normalize(vmin=1, vmax=5)
 
     # Draw heatmap
-    im = ax.imshow(risk_colors, cmap=cmap, norm=norm, aspect="auto")
+    ax.imshow(risk_colors, cmap=cmap, norm=norm, aspect="auto")
 
     # Add grid lines
     ax.set_xticks(np.arange(-0.5, 5, 1), minor=True)

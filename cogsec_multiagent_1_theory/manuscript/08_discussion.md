@@ -6,13 +6,14 @@ This section examines the theoretical implications of the Cognitive Integrity Fr
 
 ## Empirical Validation Summary
 
-The formal mechanisms proposed in this paper have been validated through extensive architecture-aware parametric simulation in **Part 2: Computational Validation**. In experiments across six production multiagent architectures (including hierarchical, role-based, and peer-to-peer topologies), the full Cognitive Integrity Framework achieved a **94% overall detection rate** against a corpus of 950 cognitive attacks.
+The formal mechanisms proposed in this paper have been validated through extensive architecture-aware parametric simulation in **Part 2: Computational Validation** \cite{friedman2026cogsec2}. In experiments across six production multiagent architectures (including hierarchical, role-based, and peer-to-peer topologies), the parametric simulation establishes a design-level detection ceiling of **94--100\%** against a corpus of 950 cognitive attacks; the prototype pipeline achieves a mean detection rate of **44.7\%** [CI: 43.4\%, 46.2\%] across 30 random seeds (Part 2, \S{5.1}).
 
 Key empirical findings include:
 
-1. **Defense Composition**: Consistent with Theorem 3.1 and 3.2, layered defenses composed multiplicatively, with the full framework significantly outperforming any single mechanism.
-2. **Trust Boundedness**: The $\delta^d$ trust decay parameter successfully prevented "trust laundering" amplification attacks in all tested topologies, validating Formula 4.
+1. **Defense Composition**: Consistent with Theorem 3.1 and 3.2, layered defenses composed multiplicatively, with the full framework significantly outperforming any single mechanism. Ablation studies (Part 2, \S{5.6}) confirm that removing the Detection module causes the largest detection rate drop, followed by Tripwires and Invariants.
+2. **Trust Boundedness**: The $\delta^d$ trust decay parameter successfully prevented ``trust laundering'' amplification attacks in all tested topologies, validating Formula 4.
 3. **Architecture Dependence**: As predicted by our threat model, peer-to-peer architectures showed the greatest vulnerability to lateral movement (mitigated by the Trust Calculus), while hierarchical architectures were most sensitive to orchestrator compromise (requiring strict tripwires).
+4. **Adversarial Training**: Five rounds of adversarial training on the Claude Code architecture improved hardened detection rates from 38.9\% to 48.1\%, with the round-to-round gain showing geometric decay toward a Nash equilibrium of approximately 50.5\% --- confirming that the bottleneck is adapter implementation maturity, not the defense algorithm quality (Part 2, \S{5g}).
 
 These results confirm that the abstract properties proven here---boundedness, composition, and detectability---translate into concrete security improvements when implemented in realistic agent architectures.
 
@@ -52,7 +53,7 @@ The decay factor $\delta \in [0, 1)$ creates a tradeoff:
 - Lower $\delta$: Stronger security, limited delegation utility
 - Higher $\delta$: More delegation flexibility, weaker bounds
 
-Organizations must calibrate this tradeoff based on their threat model (\cref{sec:operator-posture} in Part 3). Domain-calibrated $\delta$ choices --- from millisecond OODA cycles in drone swarms to year-scale diplomatic agents --- are analyzed in Part 4 across ten critical operational domains.
+Organizations must calibrate this tradeoff based on their threat model (\cref{sec:operator-posture} in Part 3). Domain-calibrated $\delta$ choices --- from millisecond OODA cycles in drone swarms to year-scale diplomatic agents --- are analyzed in Part 3 \cite{friedman2026cogsec3} across ten critical operational domains.
 
 ### Information-Theoretic Detection Limits
 

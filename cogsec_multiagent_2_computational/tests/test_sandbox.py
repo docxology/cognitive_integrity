@@ -3,9 +3,14 @@
 import time
 from datetime import datetime, timedelta
 
-import pytest
-from src import (Belief, BeliefPartition, BeliefState, PromotionCriteria,
-                     SandboxConfig, SandboxManager)
+from src import (
+    Belief,
+    BeliefPartition,
+    BeliefState,
+    PromotionCriteria,
+    SandboxConfig,
+    SandboxManager,
+)
 
 
 class TestBelief:

@@ -12,22 +12,21 @@ Tests cover:
 
 import pytest
 
-from src import ChecklistItem, AssessmentResult, RiskLevel
+from src import AssessmentResult, ChecklistItem, RiskLevel
 from src.checklists import (
-    ChecklistPhase,
     ChecklistCategory,
-    OperationalFrequency,
-    IncidentSeverity,
-    EnhancedChecklistItem,
-    PreDeploymentChecklist,
-    OperationalChecklist,
-    IncidentResponseChecklist,
-    TrustParameter,
-    FirewallThreshold,
-    TripwireConfig,
+    ChecklistPhase,
     ConfigurationReference,
+    EnhancedChecklistItem,
+    FirewallThreshold,
+    IncidentResponseChecklist,
+    IncidentSeverity,
+    OperationalChecklist,
+    OperationalFrequency,
+    PreDeploymentChecklist,
+    TripwireConfig,
+    TrustParameter,
 )
-
 
 # =============================================================================
 # Enum Tests
@@ -101,12 +100,8 @@ class TestEnhancedChecklistItem:
 
     def test_creation_with_defaults(self):
         """Test creating an enhanced item with default values."""
-        base = ChecklistItem(
-            id="test-001", category="testing", description="A test item"
-        )
-        enhanced = EnhancedChecklistItem(
-            item=base, phase=ChecklistPhase.PRE_DEPLOYMENT
-        )
+        base = ChecklistItem(id="test-001", category="testing", description="A test item")
+        enhanced = EnhancedChecklistItem(item=base, phase=ChecklistPhase.PRE_DEPLOYMENT)
         assert enhanced.item is base
         assert enhanced.phase == ChecklistPhase.PRE_DEPLOYMENT
         assert enhanced.category == ""
@@ -116,9 +111,7 @@ class TestEnhancedChecklistItem:
 
     def test_creation_with_all_fields(self):
         """Test creating an enhanced item with all fields populated."""
-        base = ChecklistItem(
-            id="test-002", category="testing", description="Full item"
-        )
+        base = ChecklistItem(id="test-002", category="testing", description="Full item")
         enhanced = EnhancedChecklistItem(
             item=base,
             phase=ChecklistPhase.OPERATIONAL,
@@ -134,24 +127,16 @@ class TestEnhancedChecklistItem:
 
     def test_completed_property_getter(self):
         """Test that completed property delegates to underlying item."""
-        base = ChecklistItem(
-            id="test-003", category="testing", description="Getter test"
-        )
-        enhanced = EnhancedChecklistItem(
-            item=base, phase=ChecklistPhase.PRE_DEPLOYMENT
-        )
+        base = ChecklistItem(id="test-003", category="testing", description="Getter test")
+        enhanced = EnhancedChecklistItem(item=base, phase=ChecklistPhase.PRE_DEPLOYMENT)
         assert enhanced.completed is False
         base.completed = True
         assert enhanced.completed is True
 
     def test_completed_property_setter(self):
         """Test that setting completed propagates to underlying item."""
-        base = ChecklistItem(
-            id="test-004", category="testing", description="Setter test"
-        )
-        enhanced = EnhancedChecklistItem(
-            item=base, phase=ChecklistPhase.PRE_DEPLOYMENT
-        )
+        base = ChecklistItem(id="test-004", category="testing", description="Setter test")
+        enhanced = EnhancedChecklistItem(item=base, phase=ChecklistPhase.PRE_DEPLOYMENT)
         enhanced.completed = True
         assert base.completed is True
         assert enhanced.completed is True
@@ -164,9 +149,7 @@ class TestEnhancedChecklistItem:
             description="Reset test",
             completed=True,
         )
-        enhanced = EnhancedChecklistItem(
-            item=base, phase=ChecklistPhase.PRE_DEPLOYMENT
-        )
+        enhanced = EnhancedChecklistItem(item=base, phase=ChecklistPhase.PRE_DEPLOYMENT)
         assert enhanced.completed is True
         enhanced.completed = False
         assert base.completed is False
@@ -717,9 +700,9 @@ class TestIncidentResponseChecklist:
         for item in checklist.get_phase_items(IncidentSeverity.RECOVERY):
             checklist.complete_item(item.item.id)
         timeline = checklist.get_timeline()
-        assert timeline[0]["complete"] is True   # immediate
+        assert timeline[0]["complete"] is True  # immediate
         assert timeline[1]["complete"] is False  # investigation
-        assert timeline[2]["complete"] is True   # recovery
+        assert timeline[2]["complete"] is True  # recovery
         assert timeline[3]["complete"] is False  # post_incident
 
 

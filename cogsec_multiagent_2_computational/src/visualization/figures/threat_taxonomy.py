@@ -46,7 +46,7 @@ def _draw_node(ax, x, y, text, color, fontsize=FONTSIZE["small"], width=0.14, he
         alpha=0.9,
     )
     ax.add_patch(rect)
-    ax.text(x, y, text, ha="center", va="center", fontsize=fontsize, fontweight="bold", color="white")
+    ax.text(x, y, text, ha="center", va="center", fontsize=fontsize, fontweight="bold", color="white")  # noqa: E501
 
 
 def plot_threat_taxonomy(output_dir: str = "output/figures") -> Figure:
@@ -68,7 +68,7 @@ def plot_threat_taxonomy(output_dir: str = "output/figures") -> Figure:
 
     # Root node
     root_x, root_y = 0.50, 0.90
-    _draw_node(ax, root_x, root_y, "Attack Taxonomy\n(950 total)", "#333333", fontsize=10, width=0.18, height=0.08)
+    _draw_node(ax, root_x, root_y, "Attack Taxonomy\n(950 total)", "#333333", fontsize=10, width=0.18, height=0.08)  # noqa: E501
 
     categories = list(_TAXONOMY.keys())
     cat_colors = [PALETTE[0], PALETTE[1], PALETTE[3], PALETTE[4]]
@@ -85,7 +85,7 @@ def plot_threat_taxonomy(output_dir: str = "output/figures") -> Figure:
             "", xy=(cx, cat_y + 0.04), xytext=(root_x, root_y - 0.04),
             arrowprops=dict(arrowstyle="-|>", color=color, lw=1.8),
         )
-        _draw_node(ax, cx, cat_y, cat_name, color, fontsize=FONTSIZE["base"], width=0.18, height=0.08)
+        _draw_node(ax, cx, cat_y, cat_name, color, fontsize=FONTSIZE["base"], width=0.18, height=0.08)  # noqa: E501
 
         # Subcategories
         sub_y_start = 0.42
@@ -97,7 +97,7 @@ def plot_threat_taxonomy(output_dir: str = "output/figures") -> Figure:
             )
             _draw_node(ax, cx, sy, sub_name, color, fontsize=7, width=0.18, height=0.05)
 
-    ax.set_title("Attack Taxonomy: 4 Categories, 12 Subcategories, 950 Attacks", fontsize=13, pad=10)
+    ax.set_title("Attack Taxonomy: 4 Categories, 12 Subcategories, 950 Attacks", fontsize=13, pad=10)  # noqa: E501
     fig.tight_layout()
     save_figure(fig, "fig05_threat_taxonomy", output_dir=output_dir)
     return fig

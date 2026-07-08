@@ -14,18 +14,16 @@ os.environ["MPLBACKEND"] = "Agg"
 
 from pathlib import Path
 
-import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
-import numpy as np
-from matplotlib.patches import FancyBboxPatch, Rectangle
+from matplotlib.patches import FancyBboxPatch
 
-from src.visualization.utils import setup_plotting, save_figure
+from src.visualization.utils import save_figure, setup_plotting
 
 
 def create_cif_architecture_figure(output_dir: Path) -> Path:
     """
     Create Cognitive Integrity Framework architecture diagram.
-    
+
     Shows the three-layer defense architecture:
     - Layer 1 (Architectural): Cognitive Firewall, Belief Sandbox, Trust Calculus
     - Layer 2 (Runtime): Tripwires, Invariant verification, Drift detection
@@ -33,22 +31,22 @@ def create_cif_architecture_figure(output_dir: Path) -> Path:
     """
     if not output_dir.exists():
         output_dir.mkdir(parents=True, exist_ok=True)
-    
+
     # Set up styling
     setup_plotting()
-    
+
     fig, ax = plt.subplots(1, 1, figsize=(14, 10))
     ax.set_xlim(0, 14)
     ax.set_ylim(0, 10)
     ax.axis("off")
-    
+
     # Color scheme (colorblind-friendly IBM Design)
     colors = {
         "header": "#2C3E50",
-        "defense": "#648FFF",      # Blue
-        "detection": "#785EF0",    # Purple
-        "agent": "#FFB000",        # Yellow
-        "coordination": "#DC267F", # Magenta
+        "defense": "#648FFF",  # Blue
+        "detection": "#785EF0",  # Purple
+        "agent": "#FFB000",  # Yellow
+        "coordination": "#DC267F",  # Magenta
         "component": "#F8F9FA",
     }
 
@@ -194,9 +192,7 @@ def create_cif_architecture_figure(output_dir: Path) -> Path:
     )
 
     # Add arrows between layers
-    arrow_props = dict(
-        arrowstyle="->", color=colors["header"], connectionstyle="arc3,rad=0", lw=2
-    )
+    arrow_props = dict(arrowstyle="->", color=colors["header"], connectionstyle="arc3,rad=0", lw=2)
 
     # Defense -> Detection
     ax.annotate("", xy=(7, 7.0), xytext=(7, 7.2), arrowprops=arrow_props)
@@ -206,10 +202,14 @@ def create_cif_architecture_figure(output_dir: Path) -> Path:
 
     # Agent -> Coordination
     ax.annotate("", xy=(7, 2.6), xytext=(7, 2.8), arrowprops=arrow_props)
-    
+
     # Add defense synergy annotation (from ablation study: Firewall + Tripwires = +9%)
-    ax.annotate("", xy=(11.5, 7.5), xytext=(11.5, 5.5),
-                arrowprops=dict(arrowstyle="<->", color="#888", linestyle="--", lw=1.5))
+    ax.annotate(
+        "",
+        xy=(11.5, 7.5),
+        xytext=(11.5, 5.5),
+        arrowprops=dict(arrowstyle="<->", color="#888", linestyle="--", lw=1.5),
+    )
     ax.text(12.2, 6.5, "Synergy\\n+9%", fontsize=8, color="#666", ha="left", va="center")
 
     # Add data flow annotation
@@ -232,7 +232,7 @@ def create_cif_architecture_figure(output_dir: Path) -> Path:
     )
 
     plt.tight_layout()
-    
+
     # Save outputs
     output_path_pdf = save_figure(fig, output_dir, "cif_architecture")
     plt.close()

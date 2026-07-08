@@ -6,6 +6,7 @@ Implements functionality for the Cognitive Integrity Framework.
 from __future__ import annotations
 
 from pathlib import Path
+from typing import Any
 
 import matplotlib.pyplot as plt
 from matplotlib.patches import FancyBboxPatch, Rectangle
@@ -16,10 +17,10 @@ try:
     from attacks.corpus import AttackCorpus
     _corpus = AttackCorpus.generate(seed=42)
     _CORPUS_COUNTS = {
-        "injection": sum(1 for a in _corpus.attacks if a.category == "injection"),
-        "trust_exploitation": sum(1 for a in _corpus.attacks if a.category == "trust_exploitation"),
-        "belief_manipulation": sum(1 for a in _corpus.attacks if a.category == "belief_manipulation"),
-        "coordination": sum(1 for a in _corpus.attacks if a.category == "coordination"),
+        "injection": sum(1 for a in _corpus.attacks if a.category == "injection"),  # type: ignore[attr-defined, misc]
+        "trust_exploitation": sum(1 for a in _corpus.attacks if a.category == "trust_exploitation"),  # type: ignore[attr-defined, misc]  # noqa: E501
+        "belief_manipulation": sum(1 for a in _corpus.attacks if a.category == "belief_manipulation"),  # type: ignore[attr-defined, misc]  # noqa: E501
+        "coordination": sum(1 for a in _corpus.attacks if a.category == "coordination"),  # type: ignore[attr-defined, misc]
     }
 except (ImportError, ModuleNotFoundError, Exception):
     _CORPUS_COUNTS = {
@@ -86,7 +87,7 @@ def plot_comprehensive_taxonomy(output_dir: str | Path = "output/figures") -> pl
     start_x = 0.8
 
     # Data for each adversary class
-    classes = [
+    classes: list[Any] = [
         {
             "symbol": "Ω₁",
             "name": "EXTERNAL",

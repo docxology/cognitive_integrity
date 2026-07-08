@@ -1,9 +1,8 @@
 """Tests for Byzantine consensus."""
 
-import numpy as np
 import pytest
-from src import (ByzantineConsensus, ConsensusConfig, ConsensusResult,
-                       QuorumVerification, Vote)
+
+from src import ByzantineConsensus, ConsensusResult, QuorumVerification, Vote
 
 
 class TestByzantineConsensus:

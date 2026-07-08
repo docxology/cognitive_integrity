@@ -68,6 +68,8 @@ Our analysis assumes a multiagent deliberation system where $n$ agents collabora
 \item **Cross-Architecture Validation**: Systematic evaluation across four production multiagent systems
 \item **Statistical Analysis**: Significance testing, effect sizes, confidence intervals, and ablation studies
 \item **Scalability Characterization**: Performance overhead analysis across agent counts and attack loads
+\item **Category-Theoretic Foundations** (§\ref{sec:category-theoretic-foundations}): Defense lattice, symmetric monoidal category, operad, enriched category, pipeline monad, Kan extensions, and lens/optic formalization---with all structures verified in \texttt{src/formal/category\_theory\_advanced.py}
+\item **Figure Registry and Auto-Numbering**: Machine-readable \texttt{output/data/figure\_registry.json} with sequential \LaTeX{} labels for all figures and tables
 \end{enumerate}
 
 ## Relationship to Paper Series
@@ -100,7 +102,7 @@ The remainder of this paper is structured as follows:
 
 ### Supplementary Materials
 
-Eight supplementary sections accompany this paper:
+Eight supplementary sections accompany this paper, with S09–S12 added or expanded in this Second Edition:
 
 - **S01: Notation Reference** --- Symbol definitions, conventions, and cross-references to Part 1 definitions (\cref{sec:notation-reference})
 - **S02: Detection Algorithms** --- Complete pseudocode for all detection mechanisms including cognitive firewall classification, sandbox promotion criteria, and tripwire monitoring (\cref{sec:detection-algorithms})
@@ -110,6 +112,10 @@ Eight supplementary sections accompany this paper:
 - **S06: Deployment Guide** --- Production deployment recommendations, operational checklists, and configuration guidance (\cref{sec:deployment})
 - **S07: Algorithm Pseudocode** --- Complete pseudocode for the six primary CIF algorithms (Firewall, Sandbox, Trust, Tripwires, Consensus, Drift); anomaly scoring and provenance follow the interfaces in \cref{sec:pipeline-architecture} (\cref{sec:pseudocode-supplement})
 - **S08: Parametric Simulation Analysis** --- Design-level detection ceiling, sensitivity sweep across firewall thresholds and trust decay parameters, and recommended configurations (\cref{sec:parametric-analysis})
+- **S09: Functional API** --- Functional-style API for CIF pipeline composition (\cref{sec:s09-functional-api})
+- **S10: Information Geometry** --- Fisher information metric derivations and natural gradient attack analysis (\cref{sec:information-geometry})
+- **S11: Adversarial Training Theory** --- Theoretical foundations for the AT protocol: convergence guarantees and information-geometric connections (\cref{sec:adversarial-training-theory})
+- **S12: Composable Visualization** --- Interactive diagram engine for categorical defense structures; CIF Composer web UI (\cref{sec:composable-visualization})
 
 ## Reading Companion: Where to Find Specific Topics {#sec:reading-companion}
 

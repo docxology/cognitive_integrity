@@ -8,7 +8,7 @@ The parameter sensitivity analysis---characterizing how CIF performance varies w
 
 ## Summary of Optimal Configuration
 
-The parametric analysis identifies the following parameter configuration as F1-maximizing. These values are used as defaults in the real pipeline evaluation:
+The parametric analysis identifies the following parameter configuration as F1-maximizing (\cref{tab:default-config}). These values are used as defaults in the real pipeline evaluation:
 
 **Table: Default parameter configuration (from parametric optimization).** {#tab:default-config}
 

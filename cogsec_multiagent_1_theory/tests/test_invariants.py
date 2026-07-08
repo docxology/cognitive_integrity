@@ -2,9 +2,14 @@
 
 from datetime import datetime
 
-import pytest
-from invariants import (AgentAction, Invariant, InvariantChecker,
-                        InvariantSeverity, InvariantViolation, RuntimeMonitor)
+from invariants import (
+    AgentAction,
+    Invariant,
+    InvariantChecker,
+    InvariantSeverity,
+    InvariantViolation,
+    RuntimeMonitor,
+)
 
 
 class TestInvariant:

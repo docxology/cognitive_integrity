@@ -26,7 +26,7 @@ def _load_data():
     We reconstruct the 2D surface from the injection_threshold and
     drift_threshold sweeps using their combined contribution model.
     """
-    p = Path(__file__).resolve().parent.parent.parent.parent / "output" / "data" / "sensitivity_results.json"
+    p = Path(__file__).resolve().parent.parent.parent.parent / "output" / "data" / "sensitivity_results.json"  # noqa: E501
     with open(p) as f:
         data = json.load(f)
 
@@ -79,7 +79,7 @@ def plot_sensitivity_heatmap(output_dir: str = "output/figures") -> Figure:
         cmap="RdYlGn",
         aspect="auto",
         origin="lower",
-        extent=[inj_th[0], inj_th[-1], drift_th[0], drift_th[-1]],
+        extent=(inj_th[0], inj_th[-1], drift_th[0], drift_th[-1]),
         vmin=0.70,
         vmax=0.99,
     )
@@ -89,7 +89,7 @@ def plot_sensitivity_heatmap(output_dir: str = "output/figures") -> Figure:
 
     # Mark optimal region from grid_best
     try:
-        p = Path(__file__).resolve().parent.parent.parent.parent / "output" / "data" / "sensitivity_results.json"
+        p = Path(__file__).resolve().parent.parent.parent.parent / "output" / "data" / "sensitivity_results.json"  # noqa: E501
         with open(p) as f:
             data = json.load(f)
         opt_inj = data["grid_best"]["injection"]
@@ -97,7 +97,7 @@ def plot_sensitivity_heatmap(output_dir: str = "output/figures") -> Figure:
     except (KeyError, FileNotFoundError):
         opt_inj, opt_drift = 0.65, 0.30
 
-    ax.plot(opt_inj, opt_drift, "w*", markersize=15, markeredgecolor="black", markeredgewidth=1.2, zorder=5)
+    ax.plot(opt_inj, opt_drift, "w*", markersize=15, markeredgecolor="black", markeredgewidth=1.2, zorder=5)  # noqa: E501
     ax.annotate(
         f"Optimal\n({opt_inj:.2f}, {opt_drift:.2f})",
         xy=(opt_inj, opt_drift),

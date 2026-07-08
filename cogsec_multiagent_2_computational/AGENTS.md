@@ -1,38 +1,50 @@
-# Cognitive Integrity Framework: Computational Validation - Agent Reference
+# Cognitive Integrity Framework: Computational Validation and Empirical Analysis (Second Edition) - Agent Reference
 
 **Location:** `projects/cognitive_integrity/cogsec_multiagent_2_computational/`. Active nested project under the program `cognitive_integrity/`; use qualified name `cognitive_integrity/cogsec_multiagent_2_computational` for pipeline and PDF scripts.
 
+**Version: 2.0.0 (2026-07-05)** | **DOI:** [10.5281/zenodo.18364128](https://doi.org/10.5281/zenodo.18364128)
+
 ## Overview
 
-Part 2 of the **Cognitive Security for Multiagent Operators** series. Computational validation of CIF through implementation, benchmarking, and statistical analysis. Claims-to-code mapping: `docs/claims_traceability.md`; reproduction: `docs/framework_validation.md`.
+Part 2 of the **Cognitive Security for Multiagent Operators** series. Computational validation of CIF through implementation, benchmarking, statistical analysis, adversarial training, and red-team evaluation. Claims-to-code mapping: `docs/claims_traceability.md`; reproduction: `docs/framework_validation.md`.
+
+**v2.0 New Modules:** `src/redteam/` (adversarial training, red-teaming); `src/formal/extended_specs.py` (TLA+/Promela/SMV v2 generators). New tests: `tests/test_colony_stress.py`, `tests/test_property_based.py`, `tests/test_redteam.py`.
 
 ## Key Features & Capabilities
 
 ### Defense Mechanism Implementations
 
 - **Cognitive Firewall**: Pattern-based and semantic injection detection
-- **Belief Sandbox**: Provisional belief management with TTL
-- **Trust Calculus**: Bounded delegation with decay
-- **Byzantine Consensus**: Fault-tolerant multi-agent agreement
-- **Tripwire Detection**: Canary belief monitoring
+- **Belief Sandbox**: Provisional belief management with TTL and corroboration gate
+- **Trust Calculus**: Bounded delegation with decay (δ^d depth limit)
+- **Byzantine Consensus**: Fault-tolerant multi-agent agreement (n ≥ 3f+1)
+- **Tripwire Detection**: Canary belief monitoring at high-probability (≥0.9) beliefs
 - **Provenance Tracking**: Information flow with taint labels
 - **Behavioral Invariants**: Runtime security constraint checking
 
-### Attack Corpus (950 attacks)
+### Attack Corpus (950 attacks, Ω_1–Ω_5 mapped)
 
-- **Prompt Injection** (500): Direct, indirect, nested variants
-- **Trust Exploitation** (200): Identity impersonation, delegation abuse
-- **Belief Manipulation** (150): Evidence fabrication, progressive drift
-- **Coordination Attacks** (100): Sybil, consensus poisoning, quorum manipulation
+- **Ω_1 Passive** (45): Eavesdropping, channel interception
+- **Ω_2 Injection** (380): Direct, indirect, nested prompt injection
+- **Ω_3 Impersonation** (245): Identity spoofing, trust inflation, delegation abuse
+- **Ω_4 Belief Manip.** (185): Evidence fabrication, progressive drift, direct injection
+- **Ω_5 Coordinated** (95): Sybil, consensus poisoning, gossip, quorum flooding
 
-### Target Architectures (6 systems)
+### Adversarial Training & Red-Teaming (NEW v2.0)
 
-- Claude Code (hierarchical)
-- AutoGPT (autonomous + plugins)
-- CrewAI (role-based)
-- LangGraph (graph-based)
-- MetaGPT (SOP-driven)
-- Camel (debate)
+- **AdversarialTrainer**: 5-round iterative AT with threshold refinement
+- **AdversarialGenerator**: Conditioned attack generation per Ω level
+- **AttackMutator**: 12 mutation operators (semantic, structural, trust, coordination)
+- **NashEquilibriumEstimator**: Geometric series convergence projection
+- **Multi-stage campaigns**: 5 campaign scenarios spanning 3–7 agents
+
+### Colony Simulations (100–500 agent scale)
+
+- **BeliefCascadeScenario**: Small-world network belief propagation
+- **SybilInfiltrationScenario**: Sybil identity injection
+- **QuorumManipulationScenario**: Quorum flooding attacks
+- **EmergentMisalignmentScenario**: Emergent misalignment dynamics
+- **Stress tests**: 23 tests at 100–500 agent scale
 
 ## Directory Structure
 

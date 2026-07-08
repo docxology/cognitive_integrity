@@ -18,7 +18,7 @@ def generate_assumption_table() -> str:
     Reads from statistical_results.json.  Raises FileNotFoundError if
     the data file is not available.
     """
-    p = Path(__file__).resolve().parent.parent.parent.parent / "output" / "data" / "statistical_results.json"
+    p = Path(__file__).resolve().parent.parent.parent.parent / "output" / "data" / "statistical_results.json"  # noqa: E501
     with open(p) as f:
         data = json.load(f)
 

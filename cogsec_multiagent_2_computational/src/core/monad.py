@@ -317,7 +317,7 @@ def verify_monad_laws(test_results: List[DefenseResult]) -> Dict[str, bool]:
 
         # Associativity (again on the actual lifted monad).
         lhs = m.bind(f).bind(g)
-        rhs = m.bind(lambda x, f=f, g=g: f(x).bind(g))
+        rhs = m.bind(lambda x, f=f, g=g: f(x).bind(g))  # type: ignore[misc]
         if not _approx_equal_result(lhs, rhs):
             associativity = False
 

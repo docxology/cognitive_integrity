@@ -17,7 +17,7 @@ logger = __import__('logging').getLogger(__name__)
 
 def _load_ablation_data():
     """Load single-component removal data from ablation_results.json."""
-    p = Path(__file__).resolve().parent.parent.parent.parent / "output" / "data" / "ablation_results.json"
+    p = Path(__file__).resolve().parent.parent.parent.parent / "output" / "data" / "ablation_results.json"  # noqa: E501
     with open(p) as f:
         data = json.load(f)
 
@@ -36,7 +36,7 @@ def _load_ablation_data():
 
 def _load_synergy_data():
     """Load synergy data from ablation_results.json."""
-    p = Path(__file__).resolve().parent.parent.parent.parent / "output" / "data" / "ablation_results.json"
+    p = Path(__file__).resolve().parent.parent.parent.parent / "output" / "data" / "ablation_results.json"  # noqa: E501
     with open(p) as f:
         data = json.load(f)
 

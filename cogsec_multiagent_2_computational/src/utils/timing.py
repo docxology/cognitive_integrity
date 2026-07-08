@@ -32,11 +32,11 @@ def timed(fn: Optional[Callable] = None, *, label: Optional[str] = None) -> Any:
                 result = func(*args, **kwargs)
             finally:
                 elapsed = (time.perf_counter() - start) * 1000.0
-                wrapper.last_latency_ms = elapsed
+                wrapper.last_latency_ms = elapsed  # type: ignore[attr-defined]
             return result
 
-        wrapper.last_latency_ms = 0.0
-        wrapper._timed_label = label or func.__qualname__
+        wrapper.last_latency_ms = 0.0  # type: ignore[attr-defined]
+        wrapper._timed_label = label or func.__qualname__  # type: ignore[attr-defined]
         return wrapper
 
     if fn is not None:

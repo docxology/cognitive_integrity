@@ -65,15 +65,15 @@ def plot_cif_architecture(output_dir: str = "output/figures") -> Figure:
 
     # Layer 1 - Input Layer
     layer1_y = 0.78
-    _draw_block(ax, 0.30, layer1_y, 0.40, 0.12, "Cognitive Firewall\n(Input Layer)", COLORS["primary"], fontsize=11)
-    ax.text(0.50, layer1_y + 0.15, "Incoming Messages", ha="center", fontsize=10, style="italic", color=COLORS["neutral"])
+    _draw_block(ax, 0.30, layer1_y, 0.40, 0.12, "Cognitive Firewall\n(Input Layer)", COLORS["primary"], fontsize=11)  # noqa: E501
+    ax.text(0.50, layer1_y + 0.15, "Incoming Messages", ha="center", fontsize=10, style="italic", color=COLORS["neutral"])  # noqa: E501
     _draw_arrow(ax, 0.50, 0.95, 0.50, layer1_y + 0.12, color=COLORS["neutral"])
 
     # Layer 2 - Reasoning Layer
     layer2_y = 0.52
     _draw_block(ax, 0.12, layer2_y, 0.30, 0.12, "Trust Calculus", PALETTE[0], fontsize=10)
     _draw_block(ax, 0.58, layer2_y, 0.30, 0.12, "Byzantine Consensus", PALETTE[4], fontsize=10)
-    ax.text(0.50, layer2_y + 0.14, "Reasoning Layer", ha="center", fontsize=11, fontweight="bold", color="#333")
+    ax.text(0.50, layer2_y + 0.14, "Reasoning Layer", ha="center", fontsize=11, fontweight="bold", color="#333")  # noqa: E501
 
     # Arrows from Layer 1 to Layer 2
     _draw_arrow(ax, 0.40, layer1_y, 0.27, layer2_y + 0.12)
@@ -92,7 +92,7 @@ def plot_cif_architecture(output_dir: str = "output/figures") -> Figure:
     for (label, mx, mw), c in zip(modules, colors):
         _draw_block(ax, mx, layer3_y, mw, 0.10, label, c, fontsize=FONTSIZE["base"])
 
-    ax.text(0.50, layer3_y + 0.13, "Monitoring Layer", ha="center", fontsize=11, fontweight="bold", color="#333")
+    ax.text(0.50, layer3_y + 0.13, "Monitoring Layer", ha="center", fontsize=11, fontweight="bold", color="#333")  # noqa: E501
 
     # Arrows from Layer 2 to Layer 3
     _draw_arrow(ax, 0.27, layer2_y, 0.27, layer3_y + 0.10)
@@ -100,7 +100,7 @@ def plot_cif_architecture(output_dir: str = "output/figures") -> Figure:
     _draw_arrow(ax, 0.50, layer2_y, 0.50, layer3_y + 0.10)
 
     # Output arrow
-    ax.text(0.50, layer3_y - 0.07, "Secure Agent Response", ha="center", fontsize=10, style="italic", color=COLORS["secondary"])
+    ax.text(0.50, layer3_y - 0.07, "Secure Agent Response", ha="center", fontsize=10, style="italic", color=COLORS["secondary"])  # noqa: E501
     _draw_arrow(ax, 0.50, layer3_y, 0.50, layer3_y - 0.04, color=COLORS["secondary"])
 
     ax.set_title("Cognitive Integrity Framework (CIF) Architecture", fontsize=14, pad=15)

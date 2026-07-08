@@ -1,12 +1,12 @@
-"""
 from __future__ import annotations
 
+"""
 Byzantine-Tolerant Consensus for Multiagent Systems.
 
 Implements cognitive Byzantine agreement.
 """
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from enum import Enum
 from typing import Dict, List, Optional, Set, Tuple
 
@@ -90,9 +90,7 @@ class ByzantineConsensus:
             self._votes[vote.proposition] = []
 
         # Update or add vote
-        existing = [
-            v for v in self._votes[vote.proposition] if v.agent_id == vote.agent_id
-        ]
+        existing = [v for v in self._votes[vote.proposition] if v.agent_id == vote.agent_id]
         if existing:
             self._votes[vote.proposition].remove(existing[0])
 
@@ -120,12 +118,8 @@ class ByzantineConsensus:
             return ConsensusResult.UNDECIDED, n_votes / self.n_agents
 
         # Count accepting and rejecting votes
-        accept_count = sum(
-            1 for v in votes if v.belief > self.config.acceptance_threshold
-        )
-        reject_count = sum(
-            1 for v in votes if v.belief < self.config.rejection_threshold
-        )
+        accept_count = sum(1 for v in votes if v.belief > self.config.acceptance_threshold)
+        reject_count = sum(1 for v in votes if v.belief < self.config.rejection_threshold)
 
         # Check for consensus
         threshold = self.n_agents * self.config.quorum_fraction
@@ -161,16 +155,12 @@ class ByzantineConsensus:
 
         if result == ConsensusResult.ACCEPT:
             # Average of accepting votes
-            accepting = [
-                v.belief for v in votes if v.belief > self.config.acceptance_threshold
-            ]
+            accepting = [v.belief for v in votes if v.belief > self.config.acceptance_threshold]
             return float(np.mean(accepting)) if accepting else None
 
         if result == ConsensusResult.REJECT:
             # Average of rejecting votes
-            rejecting = [
-                v.belief for v in votes if v.belief < self.config.rejection_threshold
-            ]
+            rejecting = [v.belief for v in votes if v.belief < self.config.rejection_threshold]
             return float(np.mean(rejecting)) if rejecting else None
 
         return None
@@ -192,18 +182,12 @@ class ByzantineConsensus:
         votes = self._votes[proposition]
 
         return {
-            "accept": sum(
-                1 for v in votes if v.belief > self.config.acceptance_threshold
-            ),
-            "reject": sum(
-                1 for v in votes if v.belief < self.config.rejection_threshold
-            ),
+            "accept": sum(1 for v in votes if v.belief > self.config.acceptance_threshold),
+            "reject": sum(1 for v in votes if v.belief < self.config.rejection_threshold),
             "uncertain": sum(
                 1
                 for v in votes
-                if self.config.rejection_threshold
-                <= v.belief
-                <= self.config.acceptance_threshold
+                if self.config.rejection_threshold <= v.belief <= self.config.acceptance_threshold
             ),
         }
 
@@ -322,9 +306,7 @@ class WeightedByzantineConsensus(ByzantineConsensus):
 
         # Update or add
         existing = [
-            v
-            for v in self._weighted_votes[vote.proposition]
-            if v.agent_id == vote.agent_id
+            v for v in self._weighted_votes[vote.proposition] if v.agent_id == vote.agent_id
         ]
         if existing:
             self._weighted_votes[vote.proposition].remove(existing[0])
@@ -416,9 +398,7 @@ class ConfidenceByzantineConsensus(ByzantineConsensus):
 
         # Update or add
         existing = [
-            v
-            for v in self._confidence_votes[vote.proposition]
-            if v.agent_id == vote.agent_id
+            v for v in self._confidence_votes[vote.proposition] if v.agent_id == vote.agent_id
         ]
         if existing:
             self._confidence_votes[vote.proposition].remove(existing[0])
@@ -548,9 +528,7 @@ class CombinedByzantineConsensus(ByzantineConsensus):
 
         # Update or add
         existing = [
-            v
-            for v in self._combined_votes[vote.proposition]
-            if v.agent_id == vote.agent_id
+            v for v in self._combined_votes[vote.proposition] if v.agent_id == vote.agent_id
         ]
         if existing:
             self._combined_votes[vote.proposition].remove(existing[0])

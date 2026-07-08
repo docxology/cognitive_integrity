@@ -19,13 +19,12 @@ Usage:
 """
 
 import argparse
-import glob
 import logging
 import os
 import re
 import sys
 from pathlib import Path
-from typing import Dict, List, Pattern, Set, Tuple
+from typing import Set
 
 # Configure logging
 logging.basicConfig(
@@ -112,9 +111,7 @@ class ManuscriptVerifier:
                     keys = [k.strip() for k in citation.split(",")]
                     for key in keys:
                         if key not in valid_keys:
-                            logger.warning(
-                                f"Missing citation key: '{key}' in {md_file.name}"
-                            )
+                            logger.warning(f"Missing citation key: '{key}' in {md_file.name}")
                             status = False
 
         return status
@@ -124,8 +121,6 @@ class ManuscriptVerifier:
         logger.info("Verifying definition labels and references...")
         status = True
         defined_labels = set()
-        used_refs = []
-
         # pass 1: collect labels
         for md_file in self.md_files:
             with open(md_file, "r", encoding="utf-8") as f:
@@ -182,9 +177,7 @@ class ManuscriptVerifier:
                         target_rel = md_file.parent / clean_path
                         if not target_rel.exists():
                             # Try figures dir relative to manuscript root
-                            target_figs = (
-                                self.root_dir / "figures" / Path(clean_path).name
-                            )
+                            target_figs = self.root_dir / "figures" / Path(clean_path).name
                             if not target_figs.exists():
                                 # Try output/figures directory (generated figures)
                                 target_output = output_figures_dir / Path(clean_path).name
@@ -206,14 +199,54 @@ class ManuscriptVerifier:
                 lines = f.readlines()
                 for i, line in enumerate(lines):
                     for word in self.hyperbole_words:
-                        if re.search(
-                            r"\b" + re.escape(word) + r"\b", line, re.IGNORECASE
-                        ):
+                        if re.search(r"\b" + re.escape(word) + r"\b", line, re.IGNORECASE):
                             logger.warning(
-                                f"Potential hyperbole '{word}' in {md_file.name}:{i+1}"
+                                f"Potential hyperbole '{word}' in {md_file.name}:{i + 1}"
                             )
                             # Warn only, don't fail build generally, but return True for now
                             # to indicate 'style warnings found' if we wanted stricter checks.
+
+        return status
+
+    def check_domain_content(self) -> bool:
+        """Verify domain application sections have required structural elements."""
+        logger.info("Checking domain section content...")
+        status = True
+
+        domain_files = sorted(self.root_dir.glob("09c_*.md"))
+        domain_files += sorted(self.root_dir.glob("09d_*.md"))
+        domain_files += sorted(self.root_dir.glob("09e_*.md"))
+        domain_files += sorted(self.root_dir.glob("09f_*.md"))
+        domain_files += sorted(self.root_dir.glob("09g_*.md"))
+        domain_files += sorted(self.root_dir.glob("09h_*.md"))
+        domain_files += sorted(self.root_dir.glob("09i_*.md"))
+        domain_files += sorted(self.root_dir.glob("09j_*.md"))
+        domain_files += sorted(self.root_dir.glob("09k_*.md"))
+        domain_files += sorted(self.root_dir.glob("09l_*.md"))
+
+        if not domain_files:
+            logger.warning("No domain section files found (09c–09l).")
+            return True  # Don't fail if this is not the applications paper
+
+        required_elements = [
+            "Adversary Class",
+            "Attack Pattern",
+            "OODA",
+        ]
+
+        for domain_file in domain_files:
+            with open(domain_file, "r", encoding="utf-8") as f:
+                content = f.read()
+
+            for element in required_elements:
+                if element not in content:
+                    logger.warning(
+                        f"Domain {domain_file.name} missing required element: '{element}'"
+                    )
+                    status = False
+
+        if status:
+            logger.info(f"  All {len(domain_files)} domain sections have required elements.")
 
         return status
 
@@ -227,6 +260,7 @@ class ManuscriptVerifier:
             "Labels/Refs": self.check_labels_and_refs(),
             "Images/Links": self.check_images_and_links(),
             "Style": self.check_style(),
+            "Domain Content": self.check_domain_content(),
         }
 
         logger.info("-" * 40)
@@ -250,14 +284,9 @@ class ManuscriptVerifier:
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Verify manuscript integrity.")
     # Default to project's own manuscript directory (not CWD-relative)
-    project_dir = os.environ.get(
-        "PROJECT_DIR",
-        str(Path(__file__).resolve().parent.parent)
-    )
+    project_dir = os.environ.get("PROJECT_DIR", str(Path(__file__).resolve().parent.parent))
     default_root = str(Path(project_dir) / "manuscript")
-    parser.add_argument(
-        "--root", default=default_root, help="Path to manuscript root directory."
-    )
+    parser.add_argument("--root", default=default_root, help="Path to manuscript root directory.")
     args = parser.parse_args()
 
     verifier = ManuscriptVerifier(args.root)

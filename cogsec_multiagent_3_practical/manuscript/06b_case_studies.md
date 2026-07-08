@@ -4,7 +4,7 @@
 
 The five attack vectors in \cref{sec:attack-scenarios} illustrated the Cognitive Integrity Framework (CIF) defense mechanics in isolation. These case studies show CIF operating in complex, realistic deployments where multiple attack vectors interact, defenses succeed partially, and recovery requires coordination. Each case study follows a single scenario from attacker initial access through full resolution, highlighting which CIF mechanisms caught which phase of the attack — and which did not.
 
-> **Companion analysis in Part 4.** Part 4 (*Applications of the Cognitive Integrity Framework*) presents ten domain studies (rare-earth mining, nation-state alliances, cyber-security, drone warfare, supply chains, biowarfare, food security, trade wars, infrastructure, information ecosystems), each through a CIF-AD-OODA five-step template: operational context, attack surface, transient coupling, defense mapping, validation anchoring. For sector-specific deployment, read Part 4 after the scenarios below.
+> **Companion analysis in §9--§10.** The Applications section of this unified paper (§9--§10) presents ten domain studies (rare-earth mining, nation-state alliances, cyber-security, drone warfare, supply chains, biowarfare, food security, trade wars, infrastructure, information ecosystems), each through a CIF-AD-OODA five-step template: operational context, attack surface, transient coupling, defense mapping, validation anchoring. For sector-specific deployment, consult §9--§10 after the scenarios below.
 
 ---
 

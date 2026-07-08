@@ -24,11 +24,10 @@ parameters, firewall thresholds, and tripwire configurations against
 manuscript-specified recommended values and ranges.
 """
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from enum import Enum
 
-from . import ChecklistItem, AssessmentResult, RiskLevel
-
+from . import AssessmentResult, ChecklistItem, RiskLevel
 
 # =============================================================================
 # Enums
@@ -181,13 +180,11 @@ class PreDeploymentChecklist:
             ),
             (
                 "arch-003",
-                "Agent authentication implemented: All agents have "
-                "verifiable identity",
+                "Agent authentication implemented: All agents have verifiable identity",
             ),
             (
                 "arch-004",
-                "Permission boundaries defined: Each agent has explicit "
-                "action restrictions",
+                "Permission boundaries defined: Each agent has explicit action restrictions",
             ),
         ]
         for id_, desc in arch_items:
@@ -207,8 +204,7 @@ class PreDeploymentChecklist:
         defense_items = [
             (
                 "def-001",
-                "Cognitive firewall enabled: Input classification active "
-                "for all external content",
+                "Cognitive firewall enabled: Input classification active for all external content",
             ),
             (
                 "def-002",
@@ -217,13 +213,11 @@ class PreDeploymentChecklist:
             ),
             (
                 "def-003",
-                "Tripwires planted: Canary beliefs placed to detect "
-                "manipulation",
+                "Tripwires planted: Canary beliefs placed to detect manipulation",
             ),
             (
                 "def-004",
-                "Invariants defined: Core security constraints specified "
-                "and monitored",
+                "Invariants defined: Core security constraints specified and monitored",
             ),
         ]
         for id_, desc in defense_items:
@@ -243,23 +237,19 @@ class PreDeploymentChecklist:
         monitor_items = [
             (
                 "mon-001",
-                "Drift detection active: Belief distribution monitoring "
-                "enabled",
+                "Drift detection active: Belief distribution monitoring enabled",
             ),
             (
                 "mon-002",
-                "Alert thresholds configured: Warning and critical levels "
-                "set appropriately",
+                "Alert thresholds configured: Warning and critical levels set appropriately",
             ),
             (
                 "mon-003",
-                "Logging comprehensive: All agent decisions and belief "
-                "updates recorded",
+                "Logging comprehensive: All agent decisions and belief updates recorded",
             ),
             (
                 "mon-004",
-                "Dashboards available: Real-time visibility into "
-                "cognitive state",
+                "Dashboards available: Real-time visibility into cognitive state",
             ),
         ]
         for id_, desc in monitor_items:
@@ -279,23 +269,19 @@ class PreDeploymentChecklist:
         ir_items = [
             (
                 "ir-001",
-                "Response procedures documented: Steps for cognitive "
-                "attack response defined",
+                "Response procedures documented: Steps for cognitive attack response defined",
             ),
             (
                 "ir-002",
-                "Quarantine capability ready: Ability to isolate "
-                "compromised agents",
+                "Quarantine capability ready: Ability to isolate compromised agents",
             ),
             (
                 "ir-003",
-                "Rollback mechanism tested: Can restore to known-good "
-                "cognitive state",
+                "Rollback mechanism tested: Can restore to known-good cognitive state",
             ),
             (
                 "ir-004",
-                "Escalation path clear: Who to contact for cognitive "
-                "security incidents",
+                "Escalation path clear: Who to contact for cognitive security incidents",
             ),
         ]
         for id_, desc in ir_items:
@@ -311,9 +297,7 @@ class PreDeploymentChecklist:
                 )
             )
 
-    def get_category_items(
-        self, category: ChecklistCategory
-    ) -> list[EnhancedChecklistItem]:
+    def get_category_items(self, category: ChecklistCategory) -> list[EnhancedChecklistItem]:
         """Get all items for a specific category.
 
         Args:
@@ -419,11 +403,7 @@ class PreDeploymentChecklist:
         else:
             risk_level = RiskLevel.CRITICAL
 
-        findings = [
-            f"Incomplete: {i.item.description}"
-            for i in required
-            if not i.completed
-        ]
+        findings = [f"Incomplete: {i.item.description}" for i in required if not i.completed]
 
         recommendations: list[str] = []
         gate = self.phase_gate_check()
@@ -480,26 +460,21 @@ class OperationalChecklist:
             ),
             (
                 "daily-002",
-                "Verify tripwire integrity: Confirm canary beliefs "
-                "unchanged",
+                "Verify tripwire integrity: Confirm canary beliefs unchanged",
             ),
             (
                 "daily-003",
-                "Check trust metrics: Monitor for unexpected trust "
-                "score changes",
+                "Check trust metrics: Monitor for unexpected trust score changes",
             ),
             (
                 "daily-004",
-                "Review failed consensus: Investigate any Byzantine "
-                "fault indications",
+                "Review failed consensus: Investigate any Byzantine fault indications",
             ),
         ]
         for id_, desc in daily_items:
             self.items.append(
                 EnhancedChecklistItem(
-                    item=ChecklistItem(
-                        id=id_, category="daily", description=desc
-                    ),
+                    item=ChecklistItem(id=id_, category="daily", description=desc),
                     phase=ChecklistPhase.OPERATIONAL,
                     category=OperationalFrequency.DAILY.value,
                 )
@@ -509,31 +484,25 @@ class OperationalChecklist:
         weekly_items = [
             (
                 "weekly-001",
-                "Analyze attack patterns: Review blocked injection "
-                "attempts",
+                "Analyze attack patterns: Review blocked injection attempts",
             ),
             (
                 "weekly-002",
-                "Audit delegation chains: Check for unusual delegation "
-                "patterns",
+                "Audit delegation chains: Check for unusual delegation patterns",
             ),
             (
                 "weekly-003",
-                "Verify invariant compliance: Confirm no invariant "
-                "violations",
+                "Verify invariant compliance: Confirm no invariant violations",
             ),
             (
                 "weekly-004",
-                "Update threat intel: Incorporate new attack techniques "
-                "into defenses",
+                "Update threat intel: Incorporate new attack techniques into defenses",
             ),
         ]
         for id_, desc in weekly_items:
             self.items.append(
                 EnhancedChecklistItem(
-                    item=ChecklistItem(
-                        id=id_, category="weekly", description=desc
-                    ),
+                    item=ChecklistItem(id=id_, category="weekly", description=desc),
                     phase=ChecklistPhase.OPERATIONAL,
                     category=OperationalFrequency.WEEKLY.value,
                 )
@@ -545,11 +514,7 @@ class OperationalChecklist:
         Returns:
             List of items with daily frequency.
         """
-        return [
-            i
-            for i in self.items
-            if i.category == OperationalFrequency.DAILY.value
-        ]
+        return [i for i in self.items if i.category == OperationalFrequency.DAILY.value]
 
     def get_weekly_items(self) -> list[EnhancedChecklistItem]:
         """Get all weekly checklist items.
@@ -557,11 +522,7 @@ class OperationalChecklist:
         Returns:
             List of items with weekly frequency.
         """
-        return [
-            i
-            for i in self.items
-            if i.category == OperationalFrequency.WEEKLY.value
-        ]
+        return [i for i in self.items if i.category == OperationalFrequency.WEEKLY.value]
 
     def complete_item(self, item_id: str) -> None:
         """Mark an operational item as completed.
@@ -657,31 +618,25 @@ class IncidentResponseChecklist:
         immediate_items = [
             (
                 "imm-001",
-                "Preserve evidence: Capture current cognitive state "
-                "before any changes",
+                "Preserve evidence: Capture current cognitive state before any changes",
             ),
             (
                 "imm-002",
-                "Assess scope: Identify which agents and beliefs may "
-                "be affected",
+                "Assess scope: Identify which agents and beliefs may be affected",
             ),
             (
                 "imm-003",
-                "Contain spread: Isolate affected agents from "
-                "propagating beliefs",
+                "Contain spread: Isolate affected agents from propagating beliefs",
             ),
             (
                 "imm-004",
-                "Notify stakeholders: Alert security team and relevant "
-                "operators",
+                "Notify stakeholders: Alert security team and relevant operators",
             ),
         ]
         for id_, desc in immediate_items:
             self.items.append(
                 EnhancedChecklistItem(
-                    item=ChecklistItem(
-                        id=id_, category="immediate", description=desc
-                    ),
+                    item=ChecklistItem(id=id_, category="immediate", description=desc),
                     phase=ChecklistPhase.INCIDENT_RESPONSE,
                     category=IncidentSeverity.IMMEDIATE.value,
                 )
@@ -691,13 +646,11 @@ class IncidentResponseChecklist:
         investigation_items = [
             (
                 "inv-001",
-                "Trace provenance: Follow belief origins to identify "
-                "injection point",
+                "Trace provenance: Follow belief origins to identify injection point",
             ),
             (
                 "inv-002",
-                "Identify attack vector: Determine how adversarial "
-                "content entered",
+                "Identify attack vector: Determine how adversarial content entered",
             ),
             (
                 "inv-003",
@@ -705,16 +658,13 @@ class IncidentResponseChecklist:
             ),
             (
                 "inv-004",
-                "Check for persistence: Verify attack does not survive "
-                "agent restart",
+                "Check for persistence: Verify attack does not survive agent restart",
             ),
         ]
         for id_, desc in investigation_items:
             self.items.append(
                 EnhancedChecklistItem(
-                    item=ChecklistItem(
-                        id=id_, category="investigation", description=desc
-                    ),
+                    item=ChecklistItem(id=id_, category="investigation", description=desc),
                     phase=ChecklistPhase.INCIDENT_RESPONSE,
                     category=IncidentSeverity.INVESTIGATION.value,
                 )
@@ -724,18 +674,15 @@ class IncidentResponseChecklist:
         recovery_items = [
             (
                 "rec-001",
-                "Restore clean state: Reset affected beliefs to verified "
-                "baseline",
+                "Restore clean state: Reset affected beliefs to verified baseline",
             ),
             (
                 "rec-002",
-                "Strengthen defenses: Update detection patterns based "
-                "on attack",
+                "Strengthen defenses: Update detection patterns based on attack",
             ),
             (
                 "rec-003",
-                "Verify integrity: Confirm cognitive state passes all "
-                "tripwires",
+                "Verify integrity: Confirm cognitive state passes all tripwires",
             ),
             (
                 "rec-004",
@@ -745,9 +692,7 @@ class IncidentResponseChecklist:
         for id_, desc in recovery_items:
             self.items.append(
                 EnhancedChecklistItem(
-                    item=ChecklistItem(
-                        id=id_, category="recovery", description=desc
-                    ),
+                    item=ChecklistItem(id=id_, category="recovery", description=desc),
                     phase=ChecklistPhase.INCIDENT_RESPONSE,
                     category=IncidentSeverity.RECOVERY.value,
                 )
@@ -757,13 +702,11 @@ class IncidentResponseChecklist:
         post_items = [
             (
                 "post-001",
-                "Root cause analysis: Complete investigation of attack "
-                "chain",
+                "Root cause analysis: Complete investigation of attack chain",
             ),
             (
                 "post-002",
-                "Defense improvements: Implement countermeasures for "
-                "attack type",
+                "Defense improvements: Implement countermeasures for attack type",
             ),
             (
                 "post-003",
@@ -771,16 +714,13 @@ class IncidentResponseChecklist:
             ),
             (
                 "post-004",
-                "Update procedures: Revise checklists based on incident "
-                "learnings",
+                "Update procedures: Revise checklists based on incident learnings",
             ),
         ]
         for id_, desc in post_items:
             self.items.append(
                 EnhancedChecklistItem(
-                    item=ChecklistItem(
-                        id=id_, category="post_incident", description=desc
-                    ),
+                    item=ChecklistItem(id=id_, category="post_incident", description=desc),
                     phase=ChecklistPhase.INCIDENT_RESPONSE,
                     category=IncidentSeverity.POST_INCIDENT.value,
                 )
@@ -798,9 +738,7 @@ class IncidentResponseChecklist:
         self.activated = True
         self.activation_reason = reason
 
-    def get_phase_items(
-        self, severity: IncidentSeverity
-    ) -> list[EnhancedChecklistItem]:
+    def get_phase_items(self, severity: IncidentSeverity) -> list[EnhancedChecklistItem]:
         """Get items for a specific incident phase.
 
         Args:
@@ -1012,16 +950,12 @@ class ConfigurationReference:
             FirewallThreshold(
                 name="Quarantine lower",
                 recommended=0.3,
-                risk_tradeoff=(
-                    "Narrower range = faster decisions, less nuance"
-                ),
+                risk_tradeoff=("Narrower range = faster decisions, less nuance"),
             ),
             FirewallThreshold(
                 name="Quarantine upper",
                 recommended=0.7,
-                risk_tradeoff=(
-                    "Narrower range = faster decisions, less nuance"
-                ),
+                risk_tradeoff=("Narrower range = faster decisions, less nuance"),
             ),
         ]
 
@@ -1069,9 +1003,7 @@ class ConfigurationReference:
         issues: list[str] = []
 
         if abs(alpha + beta + gamma - 1.0) > 0.01:
-            issues.append(
-                f"Weights must sum to 1.0, got {alpha + beta + gamma:.2f}"
-            )
+            issues.append(f"Weights must sum to 1.0, got {alpha + beta + gamma:.2f}")
 
         for name, value, param in [
             ("alpha", alpha, self.trust_params[0]),
@@ -1104,15 +1036,12 @@ class ConfigurationReference:
 
         if not param.range_min <= delta <= param.range_max:
             issues.append(
-                f"delta={delta} outside recommended range "
-                f"[{param.range_min}, {param.range_max}]"
+                f"delta={delta} outside recommended range [{param.range_min}, {param.range_max}]"
             )
 
         return len(issues) == 0, issues
 
-    def validate_firewall(
-        self, accept: float, reject: float
-    ) -> tuple[bool, list[str]]:
+    def validate_firewall(self, accept: float, reject: float) -> tuple[bool, list[str]]:
         """Validate firewall thresholds.
 
         Checks three conditions:
@@ -1136,15 +1065,11 @@ class ConfigurationReference:
         if not 0 <= reject <= 1:
             issues.append(f"Reject threshold must be 0-1, got {reject}")
         if accept >= reject:
-            issues.append(
-                f"Accept ({accept}) must be less than reject ({reject})"
-            )
+            issues.append(f"Accept ({accept}) must be less than reject ({reject})")
 
         return len(issues) == 0, issues
 
-    def validate_tripwire_counts(
-        self, counts: dict[str, int]
-    ) -> tuple[bool, list[str]]:
+    def validate_tripwire_counts(self, counts: dict[str, int]) -> tuple[bool, list[str]]:
         """Validate tripwire canary counts against recommendations.
 
         Each canary category has a minimum recommended count. Missing
@@ -1164,8 +1089,7 @@ class ConfigurationReference:
             actual = counts.get(config.category, 0)
             if actual < config.recommended_count:
                 issues.append(
-                    f"{config.category}: {actual} < "
-                    f"{config.recommended_count} recommended"
+                    f"{config.category}: {actual} < {config.recommended_count} recommended"
                 )
 
         return len(issues) == 0, issues

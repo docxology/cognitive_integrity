@@ -675,3 +675,169 @@ Lagrangian optimization maximizing expected detection subject to budget constrai
 \end{figure}
 
 \Cref{fig:cif-comprehensive} provides a detailed view of the complete CIF architecture, including all component formulas and their interactions. The defense layer implements the cognitive firewall with threshold $\tau_f = 0.5$, the belief sandbox with promotion function $\gamma$, and behavioral invariants constraining intentions $\mathcal{I} \subseteq \text{permitted}$. The detection layer specifies anomaly scoring $\sigma(\Delta b) > \tau_d$, tripwire verification $c_i \in \mathcal{B}?$, and provenance tracking $P: \mathcal{B} \to \text{sources}$. The coordination layer encodes the trust calculus $\mathcal{T}: \mathcal{A} \times \mathcal{A} \to [0,1]$ with $\delta$-bounded decay, k-of-n quorum protocols, and Byzantine fault tolerance ($n \geq 3f + 1$). For empirical validation of detection rates and performance overhead, see Part 2 of this series.
+
+## CIF-AD Integration: Action-Delegation Coupling {#sec:cif-ad-coupling}
+
+*The Cognitive Integrity Framework provides static structural guarantees (trust bounds, belief consistency). But multiagent operators are dynamic: agents act, delegate, and observe outcomes. This section formalizes how CIF integrates with the Action-Delegation (AD) cycle to provide continuous runtime security guarantees.*
+
+### The Action-Delegation Cycle
+
+\begin{definition}[Action-Delegation Cycle]
+\label{def:ad-cycle}
+The Action-Delegation (AD) cycle for agent $a_i$ at time $t$ is:
+\begin{equation}
+\label{eq:ad-cycle}
+\text{AD}_i^t: \sigma_i^t \xrightarrow{\text{plan}} \mathcal{I}_i^t \xrightarrow{\text{delegate}} \langle a_j, \text{task}_j \rangle \xrightarrow{\text{execute}} \mathcal{H}_i^{t+1} \xrightarrow{\text{update}} \sigma_i^{t+1}
+\end{equation}
+comprising: cognitive state assessment, intention formation, delegation decision, execution observation, and state update.
+\end{definition}
+
+Each phase of the AD cycle introduces distinct attack surfaces that CIF must protect:
+
+\begin{table}[htbp]
+\centering
+\caption{AD cycle phases and corresponding CIF defenses.}
+\label{tab:ad-cif-mapping}
+\begin{tabular}{@{}lllp{4cm}@{}}
+\toprule
+AD Phase & Attack Surface & CIF Mechanism & Formal Guarantee \\
+\midrule
+Plan & Goal injection & Invariant enforcement & $\mathcal{G}_i \subseteq \mathcal{G}_{\text{principal}}$ \\
+Delegate & Trust exploitation & Trust calculus & $\mathcal{T}^{\text{del}} \leq \delta^d$ \\
+Execute & Result tampering & Provenance tracking & $V(\pi(\phi)) = 1$ \\
+Observe & Evidence fabrication & Belief sandbox & $\mathcal{B}_{\text{prov}}$ isolation \\
+Update & Drift induction & KL drift detection & $D_{\text{KL}} < \theta_{\text{drift}}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+### CIF-AD Coupling Matrix
+
+\begin{definition}[CIF-AD Coupling Matrix]
+\label{def:cif-ad-matrix}
+The coupling matrix $\mathbf{M}_{\text{AD}} \in \mathbb{R}^{5 \times 5}$ quantifies the degree to which each CIF defense addresses each AD phase:
+\begin{equation}
+\label{eq:cif-ad-matrix}
+[\mathbf{M}_{\text{AD}}]_{ij} = \text{Coverage}(\text{Defense}_i, \text{Phase}_j) \in [0,1]
+\end{equation}
+\end{definition}
+
+\begin{table}[htbp]
+\centering
+\caption{CIF-AD coupling matrix: coverage of each defense mechanism across AD cycle phases.}
+\label{tab:cif-ad-matrix}
+\begin{tabular}{@{}llllll@{}}
+\toprule
+Defense & Plan & Delegate & Execute & Observe & Update \\
+\midrule
+Cognitive Firewall & 0.80 & 0.40 & 0.20 & 0.90 & 0.30 \\
+Belief Sandbox & 0.50 & 0.30 & 0.30 & 0.85 & 0.70 \\
+Trust Calculus & 0.30 & 0.95 & 0.20 & 0.10 & 0.20 \\
+Tripwires + Invariants & 0.90 & 0.20 & 0.80 & 0.40 & 0.60 \\
+Byzantine Consensus & 0.20 & 0.70 & 0.90 & 0.30 & 0.50 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{theorem}[CIF-AD Full Coverage]
+\label{thm:cif-ad-coverage}
+The CIF defense stack provides non-zero coverage for every AD cycle phase:
+\begin{equation}
+\label{eq:cif-ad-coverage}
+\forall j \in \{1,\ldots,5\}: \max_i [\mathbf{M}_{\text{AD}}]_{ij} > 0
+\end{equation}
+Moreover, the minimum column coverage exceeds $\tau_{\text{cov}} = 0.50$ for every phase.
+\end{theorem}
+
+\begin{proof}
+By inspection of Table~\ref{tab:cif-ad-matrix}: minimum column maxima are Plan (0.90), Delegate (0.95), Execute (0.90), Observe (0.90), Update (0.70). All exceed $\tau_{\text{cov}} = 0.50$.
+\end{proof}
+
+## CIF-OODA Integration: Temporal Security Across Decision Cycles {#sec:cif-ooda}
+
+*The OODA loop (Observe-Orient-Decide-Act) models how agents process information and take action over time. Cognitive attacks often target specific OODA phases to corrupt decision-making while minimizing detectable footprint. This section formalizes the OODA-phase attack model and CIF's phase-specific defenses.*
+
+### OODA Loop Formalization
+
+\begin{definition}[OODA State Machine]
+\label{def:ooda-state}
+Agent $a_i$'s OODA loop is a state machine:
+\begin{equation}
+\label{eq:ooda-state}
+\text{OODA}_i = (Q, q_0, \Sigma, \delta_{\text{OODA}})
+\end{equation}
+where $Q = \{\text{Observe}, \text{Orient}, \text{Decide}, \text{Act}\}$ are states, $q_0 = \text{Observe}$ is the initial state, $\Sigma = \mathcal{M} \cup \text{Events}$ is the input alphabet, and $\delta_{\text{OODA}}: Q \times \Sigma \to Q$ is the transition function.
+\end{definition}
+
+The OODA loop maps to cognitive state components:
+\begin{align}
+\label{eq:ooda-mapping}
+\text{Observe} &\leftrightarrow \mathcal{H}_i \text{ (history accumulation)} \\
+\text{Orient} &\leftrightarrow \mathcal{B}_i \text{ (belief update)} \\
+\text{Decide} &\leftrightarrow \mathcal{G}_i, \mathcal{I}_i \text{ (goal selection, intention formation)} \\
+\text{Act} &\leftrightarrow \text{Actions}(a_i) \text{ (execution)}
+\end{align}
+
+### Phase-Specific Attack Taxonomy
+
+\begin{definition}[OODA Phase Attack]
+\label{def:ooda-phase-attack}
+An attack $\mathcal{A}_{\text{OODA}}^{(q)}$ targets OODA phase $q \in Q$:
+\begin{equation}
+\label{eq:ooda-attack}
+\mathcal{A}_{\text{OODA}}^{(q)}: \text{Corrupt}(\sigma_i \mid q) \text{ such that } \text{OODA}_i \text{ produces adversarial outcome at } \text{Act}
+\end{equation}
+\end{definition}
+
+\begin{table}[htbp]
+\centering
+\caption{OODA phase attacks and CIF defenses.}
+\label{tab:ooda-attacks}
+\begin{tabular}{@{}lp{4cm}p{4cm}l@{}}
+\toprule
+OODA Phase & Attack Vector & CIF Defense & Detection Mechanism \\
+\midrule
+Observe & Sensor spoofing, tool injection & Provenance verification & Source taint labels \\
+Orient & Belief injection, semantic drift & Belief sandbox, drift detection & KL divergence monitoring \\
+Decide & Goal hijacking, constraint removal & Invariant checking & Goal alignment verification \\
+Act & Permission escalation, side effects & Permission boundaries & Action audit logging \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+### OODA Temporal Coupling
+
+\begin{definition}[OODA Cycle Time]
+\label{def:ooda-cycle-time}
+The OODA cycle time $\tau_{\text{OODA}}$ is the duration from Observe initiation to Act completion. The CIF monitoring overhead must satisfy:
+\begin{equation}
+\label{eq:ooda-overhead}
+\tau_{\text{CIF}} \leq \epsilon_{\text{OODA}} \cdot \tau_{\text{OODA}}
+\end{equation}
+where $\epsilon_{\text{OODA}} \in (0, 0.1)$ is the maximum tolerable overhead fraction.
+\end{definition}
+
+\begin{property}[OODA-CIF Latency Compatibility]
+\label{prop:ooda-latency}
+The CIF defense stack (Table~\ref{tab:defense-stack}) with total latency $L_{\text{total}} \leq 141$ms satisfies the overhead constraint for OODA cycles $\tau_{\text{OODA}} \geq 1.41$s (human-scale operations). For faster OODA cycles (drone swarms: $\tau \approx 100$ms), subset selection is required:
+\begin{equation}
+\label{eq:ooda-subset}
+\mathcal{D}^* = \argmax_{\mathcal{D}' \subseteq \mathcal{D}} P_{\text{detect}}(\mathcal{D}') \quad \text{s.t.} \quad L(\mathcal{D}') \leq \epsilon_{\text{OODA}} \cdot \tau_{\text{OODA}}
+\end{equation}
+\end{property}
+
+### Integrative Security Guarantee
+
+\begin{theorem}[CIF-OODA Security Invariant]
+\label{thm:cif-ooda-invariant}
+Under CIF-OODA integration, an agent completes each OODA cycle with cognitive integrity preserved with probability:
+\begin{equation}
+\label{eq:cif-ooda-guarantee}
+P(\text{Integrity}(a_i^{t+1}) \mid \text{Integrity}(a_i^t)) \geq 1 - \prod_{d \in \mathcal{D}} (1 - P_d^{\text{OODA}})
+\end{equation}
+where $P_d^{\text{OODA}}$ is the detection probability of defense $d$ across all four OODA phases.
+\end{theorem}
+
+\begin{proof}
+Integrity is violated only if an attack passes all defenses in all OODA phases it targets. By defense independence (Lemma~\ref{lem:defense-independence}), the probability of passing all defenses is $\prod_d (1 - P_d^{\text{OODA}})$. Integrity is preserved with complementary probability.
+\end{proof}

@@ -15,9 +15,9 @@ ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
 
-import pytest
 from pathlib import Path
 
+import pytest
 
 # ---------------------------------------------------------------------------
 # Auto-skip requires_ollama when Ollama is unreachable
@@ -50,7 +50,7 @@ def pytest_collection_modifyitems(config, items):
         if "requires_ollama" in item.keywords:
             item.add_marker(skip_marker)
 
-# Try to import DataGenerator, preventing import errors if src is not yet importable or during collection
+# Try to import DataGenerator, preventing import errors if src is not yet importable or during collection  # noqa: E501
 try:
     from src.data.generate import DataGenerator
 except ImportError:
@@ -59,7 +59,7 @@ except ImportError:
 @pytest.fixture(scope="session", autouse=True)
 def ensure_test_data():
     """Ensure test data exists in output/data before running tests.
-    
+
     The pipeline cleans output/ directories before running tests, so we need
     to regenerate the data if it's missing to avoid FileNotFoundError in
     visualization tests.
@@ -69,11 +69,11 @@ def ensure_test_data():
 
     # Use absolute path so tests work regardless of CWD
     output_dir = Path(__file__).resolve().parent.parent / "output" / "data"
-    
+
     # Check if key files exist
     required_files = ["full_evaluation_results.json", "ablation_results.json"]
     missing = not output_dir.exists() or not all((output_dir / f).exists() for f in required_files)
-    
+
     # If a real-data sentinel exists, the pipeline has already produced results.
     # Do NOT overwrite with DataGenerator synthetic data — that would corrupt
     # published figures with fabricated values.

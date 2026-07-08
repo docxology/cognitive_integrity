@@ -81,9 +81,7 @@ def create_fp_mitigation_figure(output_dir: Path) -> Path:
         )
 
     ax1.set_ylabel("Rate", fontsize=12)
-    ax1.set_title(
-        "A. FPR Reduction Through Verification Pipeline", fontsize=12, fontweight="bold"
-    )
+    ax1.set_title("A. FPR Reduction Through Verification Pipeline", fontsize=12, fontweight="bold")
     ax1.set_xticks(x)
     ax1.set_xticklabels(stages, fontsize=9)
     ax1.legend(loc="center right", fontsize=10)
@@ -140,7 +138,8 @@ def create_fp_mitigation_figure(output_dir: Path) -> Path:
         alpha=0.7,
     )  # Purple
     ax2.annotate(
-        f"Optimal τ = {thresholds[optimal_idx]:.1f}\nTPR={tpr_curve[optimal_idx]:.2f}, FPR={fpr_curve[optimal_idx]:.2f}",
+        f"Optimal τ = {thresholds[optimal_idx]:.1f}\n"
+        f"TPR={tpr_curve[optimal_idx]:.2f}, FPR={fpr_curve[optimal_idx]:.2f}",
         xy=(thresholds[optimal_idx], tpr_curve[optimal_idx]),
         xytext=(0.65, 0.85),
         fontsize=10,
@@ -162,7 +161,7 @@ def create_fp_mitigation_figure(output_dir: Path) -> Path:
 
     # Combined legend
     lines = [line1, line2]
-    labels = [l.get_label() for l in lines]
+    labels = [line.get_label() for line in lines]
     ax2.legend(lines, labels, loc="center right", fontsize=10)
 
     plt.tight_layout()
@@ -178,9 +177,7 @@ def create_fp_mitigation_figure(output_dir: Path) -> Path:
         facecolor="white",
         edgecolor="none",
     )
-    plt.savefig(
-        output_path_pdf, bbox_inches="tight", facecolor="white", edgecolor="none"
-    )
+    plt.savefig(output_path_pdf, bbox_inches="tight", facecolor="white", edgecolor="none")
     plt.close()
 
     print(str(output_path_png))

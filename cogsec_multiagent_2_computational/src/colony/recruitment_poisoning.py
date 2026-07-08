@@ -88,7 +88,7 @@ class RecruitmentPoisoningScenario:
         try:
             from .benchmark import ColonyResult
         except ImportError:
-            ColonyResult = _ColonyResult  # type: ignore[misc]
+            ColonyResult = _ColonyResult  # type: ignore[misc, assignment]
 
         n = config.n_agents
         n_adv = config.n_adversaries
@@ -187,7 +187,7 @@ class RecruitmentPoisoningScenario:
                         for h in honest_indices:
                             # Gently correct toward the unflagged colony mean
                             correction_strength = 0.1
-                            new_beliefs[h] = (1 - correction_strength) * new_beliefs[h] + correction_strength * colony_mean
+                            new_beliefs[h] = (1 - correction_strength) * new_beliefs[h] + correction_strength * colony_mean  # noqa: E501
 
             beliefs = np.clip(new_beliefs, 0.0, 1.0)
 

@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 def _load_statistical_results():
     """Load statistical results from statistical_results.json."""
-    p = Path(__file__).resolve().parent.parent.parent.parent / "output" / "data" / "statistical_results.json"
+    p = Path(__file__).resolve().parent.parent.parent.parent / "output" / "data" / "statistical_results.json"  # noqa: E501
     with open(p, "r", encoding="utf-8") as f:
         data = json.load(f)
     logger.info("Loaded statistical results from %s", p)

@@ -1,9 +1,8 @@
 """Tests for Byzantine consensus."""
 
-import numpy as np
 import pytest
-from consensus import (ByzantineConsensus, ConsensusConfig, ConsensusResult,
-                       QuorumVerification, Vote)
+
+from consensus import ByzantineConsensus, ConsensusResult, QuorumVerification, Vote
 
 
 class TestByzantineConsensus:
@@ -33,9 +32,7 @@ class TestByzantineConsensus:
                 Vote(agent_id=f"agent-{i}", proposition="sky is blue", belief=0.9)
             )
         # 1 agent rejects
-        consensus.submit_vote(
-            Vote(agent_id="agent-3", proposition="sky is blue", belief=0.2)
-        )
+        consensus.submit_vote(Vote(agent_id="agent-3", proposition="sky is blue", belief=0.2))
 
         result, confidence = consensus.compute_consensus("sky is blue")
         assert result == ConsensusResult.ACCEPT
@@ -51,9 +48,7 @@ class TestByzantineConsensus:
                 Vote(agent_id=f"agent-{i}", proposition="moon is cheese", belief=0.1)
             )
         # 1 agent accepts
-        consensus.submit_vote(
-            Vote(agent_id="agent-3", proposition="moon is cheese", belief=0.9)
-        )
+        consensus.submit_vote(Vote(agent_id="agent-3", proposition="moon is cheese", belief=0.9))
 
         result, _ = consensus.compute_consensus("moon is cheese")
         assert result == ConsensusResult.REJECT
@@ -217,9 +212,7 @@ class TestWeightedVoting:
         """Weighted votes include trust weight."""
         from consensus import WeightedVote
 
-        vote = WeightedVote(
-            agent_id="agent-1", proposition="test", belief=0.9, trust_weight=0.8
-        )
+        vote = WeightedVote(agent_id="agent-1", proposition="test", belief=0.9, trust_weight=0.8)
         assert vote.trust_weight == 0.8
 
     def test_weighted_consensus_basic(self):
@@ -229,9 +222,7 @@ class TestWeightedVoting:
         consensus = WeightedByzantineConsensus(n_agents=4)
 
         # High trust agent accepts
-        consensus.submit_vote(
-            WeightedVote("trusted", "prop", belief=0.9, trust_weight=0.9)
-        )
+        consensus.submit_vote(WeightedVote("trusted", "prop", belief=0.9, trust_weight=0.9))
 
         # Low trust agents reject
         for i in range(3):
@@ -251,17 +242,11 @@ class TestWeightedVoting:
         consensus = WeightedByzantineConsensus(n_agents=3, max_byzantine=0)
 
         # Highly trusted accepts
-        consensus.submit_vote(
-            WeightedVote("trusted", "prop", belief=0.9, trust_weight=0.9)
-        )
+        consensus.submit_vote(WeightedVote("trusted", "prop", belief=0.9, trust_weight=0.9))
 
         # Less trusted rejects
-        consensus.submit_vote(
-            WeightedVote("less-trusted-1", "prop", belief=0.1, trust_weight=0.3)
-        )
-        consensus.submit_vote(
-            WeightedVote("less-trusted-2", "prop", belief=0.1, trust_weight=0.3)
-        )
+        consensus.submit_vote(WeightedVote("less-trusted-1", "prop", belief=0.1, trust_weight=0.3))
+        consensus.submit_vote(WeightedVote("less-trusted-2", "prop", belief=0.1, trust_weight=0.3))
 
         # Get weighted average belief
         avg = consensus.get_weighted_average("prop")
@@ -276,9 +261,7 @@ class TestWeightedVoting:
         consensus = WeightedByzantineConsensus(n_agents=4, max_byzantine=1)
 
         for i in range(4):
-            consensus.submit_vote(
-                WeightedVote(f"agent-{i}", "prop", belief=0.8, trust_weight=1.0)
-            )
+            consensus.submit_vote(WeightedVote(f"agent-{i}", "prop", belief=0.8, trust_weight=1.0))
 
         avg = consensus.get_weighted_average("prop")
         assert abs(avg - 0.8) < 0.01
@@ -291,9 +274,7 @@ class TestConfidenceBasedConsensus:
         """Votes include confidence level."""
         from consensus import ConfidenceVote
 
-        vote = ConfidenceVote(
-            agent_id="agent-1", proposition="test", belief=0.9, confidence=0.8
-        )
+        vote = ConfidenceVote(agent_id="agent-1", proposition="test", belief=0.9, confidence=0.8)
         assert vote.confidence == 0.8
 
     def test_high_confidence_more_weight(self):
@@ -303,17 +284,11 @@ class TestConfidenceBasedConsensus:
         consensus = ConfidenceByzantineConsensus(n_agents=3, max_byzantine=0)
 
         # High confidence accept
-        consensus.submit_vote(
-            ConfidenceVote("agent-1", "prop", belief=0.9, confidence=0.95)
-        )
+        consensus.submit_vote(ConfidenceVote("agent-1", "prop", belief=0.9, confidence=0.95))
 
         # Low confidence rejects
-        consensus.submit_vote(
-            ConfidenceVote("agent-2", "prop", belief=0.1, confidence=0.2)
-        )
-        consensus.submit_vote(
-            ConfidenceVote("agent-3", "prop", belief=0.1, confidence=0.2)
-        )
+        consensus.submit_vote(ConfidenceVote("agent-2", "prop", belief=0.1, confidence=0.2))
+        consensus.submit_vote(ConfidenceVote("agent-3", "prop", belief=0.1, confidence=0.2))
 
         avg = consensus.get_confidence_weighted_average("prop")
 
@@ -328,9 +303,7 @@ class TestConfidenceBasedConsensus:
 
         # All low confidence
         for i in range(3):
-            consensus.submit_vote(
-                ConfidenceVote(f"agent-{i}", "prop", belief=0.9, confidence=0.2)
-            )
+            consensus.submit_vote(ConfidenceVote(f"agent-{i}", "prop", belief=0.9, confidence=0.2))
 
         # Aggregate confidence should be low
         agg_confidence = consensus.get_aggregate_confidence("prop")
@@ -346,9 +319,7 @@ class TestConfidenceBasedConsensus:
 
         # All low confidence, even if agreeing
         for i in range(3):
-            consensus.submit_vote(
-                ConfidenceVote(f"agent-{i}", "prop", belief=0.9, confidence=0.2)
-            )
+            consensus.submit_vote(ConfidenceVote(f"agent-{i}", "prop", belief=0.9, confidence=0.2))
 
         result, _ = consensus.compute_consensus("prop")
 
@@ -397,23 +368,17 @@ class TestCombinedWeightedConfidence:
 
         # High trust, high confidence accept
         consensus.submit_vote(
-            CombinedVote(
-                "agent-1", "prop", belief=0.9, trust_weight=0.9, confidence=0.9
-            )
+            CombinedVote("agent-1", "prop", belief=0.9, trust_weight=0.9, confidence=0.9)
         )
 
         # Low trust, low confidence reject
         consensus.submit_vote(
-            CombinedVote(
-                "agent-2", "prop", belief=0.1, trust_weight=0.3, confidence=0.3
-            )
+            CombinedVote("agent-2", "prop", belief=0.1, trust_weight=0.3, confidence=0.3)
         )
 
         # Medium trust, medium confidence reject
         consensus.submit_vote(
-            CombinedVote(
-                "agent-3", "prop", belief=0.1, trust_weight=0.5, confidence=0.5
-            )
+            CombinedVote("agent-3", "prop", belief=0.1, trust_weight=0.5, confidence=0.5)
         )
 
         avg = consensus.get_combined_weighted_average("prop")
@@ -423,3 +388,208 @@ class TestCombinedWeightedConfidence:
         # Agent-3's effective weight: 0.25
         # Weighted avg should favor agent-1
         assert avg > 0.5
+
+
+# ---------------------------------------------------------------------------
+# Additional edge-case tests to boost coverage above 90%
+# ---------------------------------------------------------------------------
+
+
+class TestByzantineConsensusEdgeCases:
+    """Edge-case tests targeting uncovered lines in ByzantineConsensus."""
+
+    def test_get_belief_undecided_returns_none(self):
+        """get_belief returns None when consensus is UNDECIDED (line 150)."""
+        consensus = ByzantineConsensus(n_agents=10)
+
+        # Only 2 votes – far below quorum; consensus will be UNDECIDED
+        consensus.submit_vote(Vote("a1", "prop", 0.9))
+        consensus.submit_vote(Vote("a2", "prop", 0.1))
+
+        belief = consensus.get_belief("prop")
+        assert belief is None
+
+    def test_get_belief_reject_path(self):
+        """get_belief returns average of rejecting votes (lines 161-164)."""
+        consensus = ByzantineConsensus(n_agents=4)
+
+        # 3/4 agents strongly reject
+        for i in range(3):
+            consensus.submit_vote(Vote(f"a{i}", "prop", 0.1))
+        # 1 agent weakly accepts – not enough for accept quorum
+        consensus.submit_vote(Vote("a3", "prop", 0.9))
+
+        result, _ = consensus.compute_consensus("prop")
+        # Verify we hit the REJECT path
+        assert result == ConsensusResult.REJECT
+
+        belief = consensus.get_belief("prop")
+        assert belief is not None
+        assert belief < 0.3  # Average of rejecting votes
+
+    def test_get_vote_distribution_no_votes_for_proposition(self):
+        """get_vote_distribution returns zeros for unknown proposition (line 180)."""
+        consensus = ByzantineConsensus(n_agents=4)
+
+        dist = consensus.get_vote_distribution("nonexistent_prop")
+        assert dist == {"accept": 0, "reject": 0, "uncertain": 0}
+
+    def test_reset_single_clears_decided_too(self):
+        """reset(prop) clears both _votes and _decided for that proposition."""
+        consensus = ByzantineConsensus(n_agents=4)
+
+        for i in range(4):
+            consensus.submit_vote(Vote(f"a{i}", "decided_prop", 0.9))
+        consensus.compute_consensus("decided_prop")
+        assert consensus.is_decided("decided_prop")
+
+        # Reset only that proposition
+        consensus.reset("decided_prop")
+        assert "decided_prop" not in consensus._votes
+        assert not consensus.is_decided("decided_prop")
+
+
+class TestWeightedByzantineEdgeCases:
+    """Edge-case tests for WeightedByzantineConsensus uncovered paths."""
+
+    def test_get_weighted_average_no_proposition(self):
+        """get_weighted_average returns 0.5 for unknown proposition (line 327)."""
+        from consensus import WeightedByzantineConsensus
+
+        consensus = WeightedByzantineConsensus(n_agents=4)
+        avg = consensus.get_weighted_average("nonexistent")
+        assert avg == 0.5
+
+    def test_get_weighted_average_zero_total_weight(self):
+        """get_weighted_average returns 0.5 when all trust_weights are 0 (line 335)."""
+        from consensus import WeightedByzantineConsensus, WeightedVote
+
+        consensus = WeightedByzantineConsensus(n_agents=4)
+        # All votes have zero trust_weight
+        for i in range(4):
+            consensus.submit_vote(WeightedVote(f"a{i}", "prop", belief=0.8, trust_weight=0.0))
+
+        avg = consensus.get_weighted_average("prop")
+        assert avg == 0.5
+
+    def test_weighted_vote_update_replaces_previous(self):
+        """Re-submitting weighted vote from same agent replaces the old one (line 312)."""
+        from consensus import WeightedByzantineConsensus, WeightedVote
+
+        consensus = WeightedByzantineConsensus(n_agents=4)
+        consensus.submit_vote(WeightedVote("a1", "prop", belief=0.9, trust_weight=0.9))
+        # Same agent updates belief
+        consensus.submit_vote(WeightedVote("a1", "prop", belief=0.2, trust_weight=0.9))
+
+        # Only one weighted vote should remain
+        assert len(consensus._weighted_votes["prop"]) == 1
+        assert consensus._weighted_votes["prop"][0].belief == 0.2
+
+
+class TestConfidenceByzantineEdgeCases:
+    """Edge-case tests for ConfidenceByzantineConsensus uncovered paths."""
+
+    def test_get_confidence_weighted_average_no_proposition(self):
+        """Returns 0.5 for unknown proposition (line 419)."""
+        from consensus import ConfidenceByzantineConsensus
+
+        consensus = ConfidenceByzantineConsensus(n_agents=4)
+        avg = consensus.get_confidence_weighted_average("nonexistent")
+        assert avg == 0.5
+
+    def test_get_confidence_weighted_average_zero_total_confidence(self):
+        """Returns 0.5 when all confidences are 0 (line 427)."""
+        from consensus import ConfidenceByzantineConsensus, ConfidenceVote
+
+        consensus = ConfidenceByzantineConsensus(n_agents=4)
+        for i in range(4):
+            consensus.submit_vote(ConfidenceVote(f"a{i}", "prop", belief=0.8, confidence=0.0))
+
+        avg = consensus.get_confidence_weighted_average("prop")
+        assert avg == 0.5
+
+    def test_get_aggregate_confidence_no_proposition(self):
+        """Returns 0.0 for unknown proposition (line 445)."""
+        from consensus import ConfidenceByzantineConsensus
+
+        consensus = ConfidenceByzantineConsensus(n_agents=4)
+        agg = consensus.get_aggregate_confidence("nonexistent")
+        assert agg == 0.0
+
+    def test_get_aggregate_confidence_empty_votes(self):
+        """Returns 0.0 when proposition key exists but list is empty (line 449)."""
+        from consensus import ConfidenceByzantineConsensus
+
+        consensus = ConfidenceByzantineConsensus(n_agents=4)
+        # Inject empty list directly
+        consensus._confidence_votes["prop"] = []
+        agg = consensus.get_aggregate_confidence("prop")
+        assert agg == 0.0
+
+    def test_confidence_vote_update_replaces_previous(self):
+        """Re-submitting confidence vote from same agent replaces old one (line 404)."""
+        from consensus import ConfidenceByzantineConsensus, ConfidenceVote
+
+        consensus = ConfidenceByzantineConsensus(n_agents=4)
+        consensus.submit_vote(ConfidenceVote("a1", "prop", belief=0.9, confidence=0.9))
+        # Same agent updates vote
+        consensus.submit_vote(ConfidenceVote("a1", "prop", belief=0.2, confidence=0.5))
+
+        assert len(consensus._confidence_votes["prop"]) == 1
+        assert consensus._confidence_votes["prop"][0].belief == 0.2
+
+    def test_compute_consensus_uses_parent_when_confident(self):
+        """Delegates to parent when aggregate confidence is sufficient (line 472)."""
+        from consensus import ConfidenceByzantineConsensus, ConfidenceVote
+
+        # Set min_aggregate_confidence=0.0 so it always passes through
+        consensus = ConfidenceByzantineConsensus(
+            n_agents=4, max_byzantine=1, min_aggregate_confidence=0.0
+        )
+        for i in range(4):
+            consensus.submit_vote(ConfidenceVote(f"a{i}", "prop", belief=0.9, confidence=0.9))
+
+        result, conf = consensus.compute_consensus("prop")
+        assert result == ConsensusResult.ACCEPT
+
+
+class TestCombinedByzantineEdgeCases:
+    """Edge-case tests for CombinedByzantineConsensus uncovered paths."""
+
+    def test_get_combined_weighted_average_no_proposition(self):
+        """Returns 0.5 for unknown proposition (line 549)."""
+        from consensus import CombinedByzantineConsensus
+
+        consensus = CombinedByzantineConsensus(n_agents=4)
+        avg = consensus.get_combined_weighted_average("nonexistent")
+        assert avg == 0.5
+
+    def test_get_combined_weighted_average_zero_effective_weight(self):
+        """Returns 0.5 when all effective weights are 0 (line 557)."""
+        from consensus import CombinedByzantineConsensus, CombinedVote
+
+        consensus = CombinedByzantineConsensus(n_agents=4)
+        # All votes: trust_weight=0.0 → effective_weight=0
+        for i in range(4):
+            consensus.submit_vote(
+                CombinedVote(f"a{i}", "prop", belief=0.8, trust_weight=0.0, confidence=0.9)
+            )
+
+        avg = consensus.get_combined_weighted_average("prop")
+        assert avg == 0.5
+
+    def test_combined_vote_update_replaces_previous(self):
+        """Re-submitting combined vote from same agent replaces old one (line 534)."""
+        from consensus import CombinedByzantineConsensus, CombinedVote
+
+        consensus = CombinedByzantineConsensus(n_agents=4)
+        consensus.submit_vote(
+            CombinedVote("a1", "prop", belief=0.9, trust_weight=0.9, confidence=0.9)
+        )
+        # Same agent updates
+        consensus.submit_vote(
+            CombinedVote("a1", "prop", belief=0.2, trust_weight=0.5, confidence=0.5)
+        )
+
+        assert len(consensus._combined_votes["prop"]) == 1
+        assert consensus._combined_votes["prop"][0].belief == 0.2

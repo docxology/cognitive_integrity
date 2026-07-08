@@ -1,10 +1,14 @@
 """Tests for provenance tracking and taint propagation."""
 
-from datetime import datetime, timedelta
+from datetime import datetime
 
-import pytest
-from provenance import (CausalAttribution, ProvenanceChain, ProvenanceGraph,
-                        ProvenanceRecord, TaintLabel)
+from provenance import (
+    CausalAttribution,
+    ProvenanceChain,
+    ProvenanceGraph,
+    ProvenanceRecord,
+    TaintLabel,
+)
 
 
 class TestTaintLabel:
@@ -13,21 +17,10 @@ class TestTaintLabel:
     def test_taint_ordering(self):
         """Taint labels have defined trust ordering."""
         # SYSTEM_VERIFIED is most trusted
-        assert (
-            TaintLabel.SYSTEM_VERIFIED.trust_level
-            > TaintLabel.PRINCIPAL_INPUT.trust_level
-        )
-        assert (
-            TaintLabel.PRINCIPAL_INPUT.trust_level
-            > TaintLabel.AGENT_INTERNAL.trust_level
-        )
-        assert (
-            TaintLabel.AGENT_INTERNAL.trust_level
-            > TaintLabel.AGENT_EXTERNAL.trust_level
-        )
-        assert (
-            TaintLabel.AGENT_EXTERNAL.trust_level > TaintLabel.TOOL_OUTPUT.trust_level
-        )
+        assert TaintLabel.SYSTEM_VERIFIED.trust_level > TaintLabel.PRINCIPAL_INPUT.trust_level
+        assert TaintLabel.PRINCIPAL_INPUT.trust_level > TaintLabel.AGENT_INTERNAL.trust_level
+        assert TaintLabel.AGENT_INTERNAL.trust_level > TaintLabel.AGENT_EXTERNAL.trust_level
+        assert TaintLabel.AGENT_EXTERNAL.trust_level > TaintLabel.TOOL_OUTPUT.trust_level
         assert TaintLabel.TOOL_OUTPUT.trust_level > TaintLabel.WEB_CONTENT.trust_level
         assert TaintLabel.WEB_CONTENT.trust_level > TaintLabel.UNVERIFIED.trust_level
 
@@ -57,7 +50,7 @@ class TestProvenanceRecord:
 
     def test_record_with_parent(self):
         """Records can reference parent records."""
-        parent = ProvenanceRecord(
+        ProvenanceRecord(
             belief_id="parent-1",
             content="Base fact",
             source=TaintLabel.SYSTEM_VERIFIED,
@@ -79,7 +72,7 @@ class TestProvenanceChain:
     def test_add_and_get_record(self):
         """Records can be added and retrieved."""
         chain = ProvenanceChain()
-        record = chain.add_belief(
+        chain.add_belief(
             belief_id="b1",
             content="Test belief",
             source=TaintLabel.PRINCIPAL_INPUT,
@@ -179,12 +172,8 @@ class TestProvenanceGraph:
         """Get all beliefs depending on a source."""
         chain = ProvenanceChain()
         chain.add_belief("root", "Root", TaintLabel.SYSTEM_VERIFIED, "sys")
-        chain.add_belief(
-            "d1", "D1", TaintLabel.AGENT_INTERNAL, "ag", parent_ids=["root"]
-        )
-        chain.add_belief(
-            "d2", "D2", TaintLabel.AGENT_INTERNAL, "ag", parent_ids=["root"]
-        )
+        chain.add_belief("d1", "D1", TaintLabel.AGENT_INTERNAL, "ag", parent_ids=["root"])
+        chain.add_belief("d2", "D2", TaintLabel.AGENT_INTERNAL, "ag", parent_ids=["root"])
         chain.add_belief("d3", "D3", TaintLabel.AGENT_INTERNAL, "ag", parent_ids=["d1"])
 
         graph = ProvenanceGraph(chain)
@@ -247,12 +236,8 @@ class TestCausalAttribution:
         """Trace path from belief to compromise source."""
         chain = ProvenanceChain()
         chain.add_belief("bad", "Bad", TaintLabel.WEB_CONTENT, "web")
-        chain.add_belief(
-            "mid", "Mid", TaintLabel.AGENT_INTERNAL, "ag", parent_ids=["bad"]
-        )
-        chain.add_belief(
-            "end", "End", TaintLabel.AGENT_INTERNAL, "ag", parent_ids=["mid"]
-        )
+        chain.add_belief("mid", "Mid", TaintLabel.AGENT_INTERNAL, "ag", parent_ids=["bad"])
+        chain.add_belief("end", "End", TaintLabel.AGENT_INTERNAL, "ag", parent_ids=["mid"])
 
         attribution = CausalAttribution(chain)
         paths = attribution.trace_to_untrusted("end")
@@ -292,9 +277,7 @@ class TestCausalAttribution:
         prev = "origin"
         for i in range(5):
             new_id = f"hop-{i}"
-            chain.add_belief(
-                new_id, f"Hop {i}", TaintLabel.AGENT_INTERNAL, "ag", parent_ids=[prev]
-            )
+            chain.add_belief(new_id, f"Hop {i}", TaintLabel.AGENT_INTERNAL, "ag", parent_ids=[prev])
             prev = new_id
 
         attribution = CausalAttribution(chain)

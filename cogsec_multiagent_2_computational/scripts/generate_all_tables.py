@@ -23,14 +23,17 @@ def main() -> None:
     output_dir = ROOT / args.output
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    from visualization.tables.detection_tables import generate_detection_table
-    from visualization.tables.statistical_tables import generate_hypothesis_table, generate_effect_size_table
-    from visualization.tables.scalability_tables import generate_scalability_table
     from visualization.tables.ablation_tables import generate_ablation_table, generate_synergy_table
-    from visualization.tables.corpus_tables import generate_corpus_table
     from visualization.tables.assumption_tables import generate_assumption_table
+    from visualization.tables.corpus_tables import generate_corpus_table
     from visualization.tables.cross_validation_tables import generate_cross_validation_table
+    from visualization.tables.detection_tables import generate_detection_table
+    from visualization.tables.scalability_tables import generate_scalability_table
     from visualization.tables.stability_tables import generate_stability_table
+    from visualization.tables.statistical_tables import (
+        generate_effect_size_table,
+        generate_hypothesis_table,
+    )
 
     tables = [
         ("detection_rates.tex", generate_detection_table),

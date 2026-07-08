@@ -9,6 +9,15 @@ This file contains LaTeX packages and commands for the Cognitive Security Framew
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{mathtools}
 
+% Dense 9pt body via class-agnostic global rescaling
+\usepackage{fontsize}
+\changefontsize[11pt]{9pt}
+
+% Category theory and diagrammatic formalisms (Section 8)
+\usepackage{tikz-cd}          % Commutative diagrams (functors, natural transformations)
+\usepackage{stmaryrd}         % ⟦⟧ semantic brackets, \llbracket, \rrbracket
+\usepackage{mathrsfs}         % \mathscr for category names (\mathscr{C}, \mathscr{D})
+
 % Algorithm formatting
 \usepackage{algorithm}
 \usepackage{algpseudocode}
@@ -23,8 +32,13 @@ This file contains LaTeX packages and commands for the Cognitive Security Framew
 \usepackage{graphicx}
 \usepackage{tikz}
 \usepackage{pgfplots}
-\usetikzlibrary{shapes,arrows,positioning,calc,fit,backgrounds}
+\usetikzlibrary{shapes,arrows,positioning,calc,fit,backgrounds,cd}
 \pgfplotsset{compat=1.18}
+
+% Lists of figures and tables (injected by auto_number_figures.py)
+\usepackage{tocloft}          % Fine-grained LoF/LoT formatting
+\renewcommand{\cftfigpresnum}{Fig.~}
+\renewcommand{\cfttabpresnum}{Table~}
 
 % Cross-referencing with smart naming
 \usepackage{hyperref}
@@ -40,6 +54,10 @@ This file contains LaTeX packages and commands for the Cognitive Security Framew
 \crefname{equation}{Equation}{Equations}
 \crefname{table}{Table}{Tables}
 \crefname{figure}{Figure}{Figures}
+% Category-theory specific environments
+\crefname{axiom}{Axiom}{Axioms}
+\crefname{proposition}{Proposition}{Propositions}
+\crefname{remark}{Remark}{Remarks}
 
 % Theorem environments with consistent numbering
 \newtheorem{definition}{Definition}[section]
@@ -48,6 +66,8 @@ This file contains LaTeX packages and commands for the Cognitive Security Framew
 \newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{property}{Property}[section]
 \newtheorem{axiom}{Axiom}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remark}
 
 % Math operators
 \DeclareMathOperator*{\argmax}{arg\,max}
@@ -55,6 +75,11 @@ This file contains LaTeX packages and commands for the Cognitive Security Framew
 \DeclareMathOperator{\sign}{sign}
 \DeclareMathOperator{\KL}{KL}
 \DeclareMathOperator{\Tr}{Tr}
+% Category-theory operators
+\DeclareMathOperator{\Ob}{Ob}      % Objects of a category
+\DeclareMathOperator{\Hom}{Hom}    % Hom-sets
+\DeclareMathOperator{\colim}{colim} % Colimit
+\DeclareMathOperator{\DR}{DR}       % Detection rate
 
 % Custom commands for notation consistency
 \newcommand{\calA}{\mathcal{A}}
@@ -72,6 +97,16 @@ This file contains LaTeX packages and commands for the Cognitive Security Framew
 \newcommand{\calT}{\mathcal{T}}
 \newcommand{\calW}{\mathcal{W}}
 % Note: \Phi is a standard LaTeX command, do not redefine
+
+% Category-theory shorthand macros (Section 8)
+\newcommand{\Def}{\mathbf{Def}}         % Defense category
+\newcommand{\Arch}{\mathbf{Arch}}       % Architecture category
+\newcommand{\Ldef}{\mathcal{L}_{\mathrm{def}}}  % Defense lattice
+\newcommand{\bBot}{\bot_{\mathcal{L}}}  % Lattice bottom
+\newcommand{\bTop}{\top_{\mathcal{L}}}  % Lattice top
+\newcommand{\PipeT}{\mathbb{T}}         % Pipeline monad
+\newcommand{\LanF}{\mathrm{Lan}}        % Left Kan extension
+\newcommand{\RanF}{\mathrm{Ran}}        % Right Kan extension
 
 % Trust notation
 \newcommand{\trust}[2]{\mathcal{T}_{#1 \to #2}}
@@ -100,8 +135,8 @@ This file contains LaTeX packages and commands for the Cognitive Security Framew
 % QED symbol
 \renewcommand{\qedsymbol}{$\blacksquare$}
 
-% Page Layout (Slightly smaller margins)
-\usepackage[margin=1in]{geometry}
+% Page Layout (Tighter margins for denser content)
+\usepackage[margin=0.75in]{geometry}
 
 % Hyperlink Styling
 \hypersetup{
@@ -111,4 +146,8 @@ This file contains LaTeX packages and commands for the Cognitive Security Framew
     urlcolor=red,
     citecolor=red
 }
+
+% Lists of figures and tables for front matter
+\listoffigures
+\listoftables
 ```

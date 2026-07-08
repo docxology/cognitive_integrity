@@ -14,8 +14,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 
-from utils.random_seed import set_global_seed
 from data.generate import DataGenerator
+from utils.random_seed import set_global_seed
 
 
 def main() -> None:

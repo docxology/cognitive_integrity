@@ -1,14 +1,7 @@
-"""Verification module.
+#!/usr/bin/env python3
+"""Manuscript Verification Module
 
 Part of the Cognitive Integrity Framework.
-"""
-
-#!/usr/bin/env python3
-from __future__ import annotations
-
-"""
-Manuscript Verification Module
-==============================
 
 This module provides automated checks on manuscript files to ensure
 consistency, correctness, and adherence to style guidelines.
@@ -21,6 +14,7 @@ Features:
 - Checks for file existence
 - Detailed logging
 """
+from __future__ import annotations
 
 import logging
 import re
@@ -113,9 +107,7 @@ class ManuscriptVerifier:
                     keys = [k.strip() for k in citation.split(",")]
                     for key in keys:
                         if key not in valid_keys:
-                            logger.warning(
-                                f"Missing citation key: '{key}' in {md_file.name}"
-                            )
+                            logger.warning(f"Missing citation key: '{key}' in {md_file.name}")
                             status = False
 
         return status
@@ -125,8 +117,6 @@ class ManuscriptVerifier:
         logger.info("Verifying definition labels and references...")
         status = True
         defined_labels = set()
-        used_refs = []
-
         # pass 1: collect labels
         for md_file in self.md_files:
             with open(md_file, "r", encoding="utf-8") as f:
@@ -183,9 +173,7 @@ class ManuscriptVerifier:
                         target_rel = md_file.parent / clean_path
                         if not target_rel.exists():
                             # Try figures dir relative to manuscript root
-                            target_figs = (
-                                self.root_dir / "figures" / Path(clean_path).name
-                            )
+                            target_figs = self.root_dir / "figures" / Path(clean_path).name
                             if not target_figs.exists():
                                 # Try output/figures directory (generated figures)
                                 target_output = output_figures_dir / Path(clean_path).name
@@ -207,11 +195,9 @@ class ManuscriptVerifier:
                 lines = f.readlines()
                 for i, line in enumerate(lines):
                     for word in self.hyperbole_words:
-                        if re.search(
-                            r"\b" + re.escape(word) + r"\b", line, re.IGNORECASE
-                        ):
+                        if re.search(r"\b" + re.escape(word) + r"\b", line, re.IGNORECASE):
                             logger.warning(
-                                f"Potential hyperbole '{word}' in {md_file.name}:{i+1}"
+                                f"Potential hyperbole '{word}' in {md_file.name}:{i + 1}"
                             )
                             # Warn only, don't fail build generally, but return True for now
                             # to indicate 'style warnings found' if we wanted stricter checks.

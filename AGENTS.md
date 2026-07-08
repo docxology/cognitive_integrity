@@ -12,10 +12,9 @@ Program directory containing the Cognitive Security for Multiagent Operators res
 
 | Project | Description | DOI |
 | ------- | ----------- | --- |
-| `cogsec_multiagent_1_theory/` | Part 1: Theoretical foundations — trust calculus, defense composition algebra, adversary taxonomy, model-checked invariants | 10.5281/zenodo.18364119 |
-| `cogsec_multiagent_2_computational/` | Part 2: Computational validation — 950-attack corpus, ablation studies, parametric ceiling, Bayesian uncertainty | 10.5281/zenodo.18364128 |
-| `cogsec_multiagent_3_practical/` | Part 3: A qualitative review for practitioners — deployment guides, incident response, monitoring, cost--benefit, case studies | 10.5281/zenodo.18364130 |
-| `cogsec_multiagent_4_applications/` | Part 4: Applications — CIF-AD-OODA integration, ten-domain goal-hijacking analysis, real-world incident retrospective | _DOI pending_ |
+| `cogsec_multiagent_1_theory/` | Part 1 v2: Theoretical foundations — trust calculus, defense composition algebra, adversary taxonomy, CIF-AD-OODA | 10.5281/zenodo.18364119 |
+| `cogsec_multiagent_2_computational/` | Part 2 v2: Computational validation — 950-attack corpus, adversarial training, red-teaming, colony 500-agent stress | 10.5281/zenodo.18364128 |
+| `cogsec_multiagent_3_practical/` | Part 3+4 merged: Practical guidance + cross-domain CIF-AD-OODA applications | 10.5281/zenodo.18364130 |
 
 ## Series overview
 
@@ -28,7 +27,7 @@ The Cognitive Integrity Framework (CIF) provides defense-in-depth security for m
 - **Tripwire / Drift Detection**: Canary belief monitoring, KL-divergence surveillance
 - **Provenance Tracking**: Information flow with taint labels
 
-Part 4 additionally contributes three novel defense extensions: verification channel separation, active perturbation probing, and physics-informed invariants.
+Part 4 additionally contributed three novel defense extensions (now merged into Part 3+4): verification channel separation, active perturbation probing, and physics-informed invariants.
 
 ## Cross-paper reading guide
 
@@ -36,8 +35,7 @@ Each paper stands alone; the bridge is:
 
 - **Formal definitions** live in Part 1 (Trust Calculus, Defense Composition Algebra, Adversary Taxonomy)
 - **Empirical evidence** lives in Part 2 (Results, Ablations, parametric analysis — see that manuscript for architecture counts and ceiling definitions)
-- **Engineering guidance** lives in Part 3 (Deployment, Incident Response, Monitoring, Cost-Benefit)
-- **Domain applications** live in Part 4 (Ten domains, Universal attack patterns, incident retrospective)
+- **Engineering guidance + domain applications** live in Part 3+4 (merged): Deployment, Incident Response, Monitoring, Cost-Benefit, ten-domain CIF-AD-OODA analyses, universal attack patterns, incident retrospective
 
 ## Evidence and implementation spine
 
@@ -47,7 +45,7 @@ Each paper stands alone; the bridge is:
 ## Repository
 
 - GitHub: <https://github.com/docxology/cognitive_integrity>
-- DOIs: 10.5281/zenodo.18364119, .18364128, .18364130 (Part 4 DOI pending)
+- DOIs: 10.5281/zenodo.18364119, .18364128, .18364130 (Parts 3+4 merged under .18364130)
 
 ## Navigation
 
@@ -70,7 +68,6 @@ Each project follows the standalone paradigm with:
 ./run.sh --render-pdf --project cognitive_integrity/cogsec_multiagent_1_theory
 uv run pytest projects/cognitive_integrity/cogsec_multiagent_2_computational/tests/ -q
 uv run pytest projects/cognitive_integrity/cogsec_multiagent_3_practical/tests/ -q
-uv run pytest projects/cognitive_integrity/cogsec_multiagent_4_applications/tests/ -q
 ```
 
 Run one part at a time if you need to isolate failures. Part 2 imports `scipy` (see that part’s `pyproject.toml`); if imports fail, `uv sync` from the **repository root** first, or sync that part’s environment as described in the program [README](README.md).

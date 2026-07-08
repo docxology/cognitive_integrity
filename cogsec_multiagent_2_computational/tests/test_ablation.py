@@ -9,13 +9,12 @@ All tests use real evaluation functions with deterministic computation.
 No mocks.
 """
 
-import pytest
 import numpy as np
+import pytest
 
 from ablation.component_removal import AblationResult, ComponentRemovalStudy
 from ablation.minimal_config import MinimalConfigResult, MinimalConfigSearch
 from ablation.synergy import PairwiseSynergyAnalysis, SynergyResult
-
 
 # ---------------------------------------------------------------------------
 # Shared test evaluation functions (real computation, no mocks)

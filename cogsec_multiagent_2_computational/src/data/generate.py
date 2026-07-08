@@ -204,7 +204,7 @@ class DataGenerator:
         sizes = [3, 5, 10, 20, 50]
         sizes_arr = np.array(sizes, dtype=float)
 
-        convergence = (10 + 2.5 * sizes_arr + self._rng.normal(0, 2, len(sizes))).astype(int).tolist()
+        convergence = (10 + 2.5 * sizes_arr + self._rng.normal(0, 2, len(sizes))).astype(int).tolist()  # noqa: E501
         integrity = np.clip(
             0.98 - 0.001 * sizes_arr + self._rng.normal(0, 0.005, len(sizes)),
             0.90, 0.99,
@@ -621,7 +621,7 @@ class DataGenerator:
 
         # Compute CVs
         overall_arr = np.array(overall_rates)
-        overall_cv = float(np.std(overall_arr) / np.mean(overall_arr)) if np.mean(overall_arr) > 0 else 0.0
+        overall_cv = float(np.std(overall_arr) / np.mean(overall_arr)) if np.mean(overall_arr) > 0 else 0.0  # noqa: E501
 
         per_arch_cv = {}
         for arch, rates in arch_rates.items():
@@ -647,7 +647,7 @@ class DataGenerator:
     # Persistence
     # ------------------------------------------------------------------
 
-    def save(self, data: Dict[str, Any], filename: str) -> str:
+    def save(self, data: "Any", filename: str) -> str:
         """Save data dictionary to JSON.
 
         Parameters

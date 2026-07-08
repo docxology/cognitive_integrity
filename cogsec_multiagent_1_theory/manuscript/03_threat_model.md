@@ -30,6 +30,151 @@ Systemic & $\Omega_5$ & Orchestrator & Full control & Framework compromise \\
 
 \Cref{tab:adversary-classes} presents the five-tier adversary hierarchy. We assume an honest orchestrator for $\Omega_1$--$\Omega_4$; class $\Omega_5$ attacks require physical or supply-chain compromise outside our threat model.
 
+## Formal Mathematical Characterization of Adversary Classes {#sec:adversary-formal}
+
+We now provide rigorous mathematical characterizations for each adversary class $\Omega_k$. These extend the descriptive table above with information-theoretic bounds, capability monotonicity guarantees, and formal distinguishability criteria.
+
+### Adversary Class $\Omega_1$: External Attacker
+
+\begin{definition}[External Adversary]
+\label{def:omega1}
+An adversary $\mathcal{A} \in \Omega_1$ is characterized by the tuple:
+\begin{equation}
+\label{eq:omega1-formal}
+\Omega_1 = \langle \mathcal{S}_{\text{input}}, \mathcal{K}_{\text{public}}, \mathcal{R}_{\text{low}}, f_{\text{detect}} \rangle
+\end{equation}
+where $\mathcal{S}_{\text{input}} = \{m \in \mathcal{M} : \text{source}(m) = \text{user}\}$ is the accessible surface, $\mathcal{K}_{\text{public}}$ denotes public knowledge of the system, $\mathcal{R}_{\text{low}}$ encodes low resource requirements, and $f_{\text{detect}}: \mathcal{M} \to [0,1]$ is the adversary's model of detection probability.
+\end{definition}
+
+\begin{property}[External Attacker Bounds]
+\label{prop:omega1-bounds}
+For $\mathcal{A} \in \Omega_1$:
+\begin{itemize}
+\item \textbf{Access}: $|\mathcal{S}_{\text{input}}| = 1$ (single input channel)
+\item \textbf{Knowledge}: $H(\mathcal{K}_{\text{public}}) \leq H(\mathcal{K}_{\text{system}})$ (public knowledge bounded by system state entropy)
+\item \textbf{Attack complexity}: $O(1)$ --- constant independent of system size
+\item \textbf{Detectability}: $D_{\text{score}}(\mathcal{A}_{\Omega_1}) \geq D_{\text{base}}$ --- highest detectability class
+\end{itemize}
+\end{property}
+
+The external attacker's fundamental limitation is single-channel access. Any attack must traverse the cognitive firewall (\cref{sec:arch-defenses}), creating a mandatory inspection point with detection probability $r_f \geq 0.80$.
+
+### Adversary Class $\Omega_2$: Peripheral Attacker
+
+\begin{definition}[Peripheral Adversary]
+\label{def:omega2}
+An adversary $\mathcal{A} \in \Omega_2$ controls one or more tool/API data sources:
+\begin{equation}
+\label{eq:omega2-formal}
+\Omega_2 = \langle \mathcal{S}_{\text{tools}}, \mathcal{K}_{\text{domain}}, \mathcal{R}_{\text{medium}}, \mathcal{P}_{\text{inject}} \rangle
+\end{equation}
+where $\mathcal{S}_{\text{tools}} \subseteq \mathcal{T}_{\text{available}}$ denotes accessible tool channels, $\mathcal{K}_{\text{domain}}$ encodes domain-specific knowledge needed for plausible injection, $\mathcal{R}_{\text{medium}}$ captures medium resource requirements, and $\mathcal{P}_{\text{inject}}$ is the injection payload generator.
+\end{definition}
+
+\begin{property}[Peripheral Injection Capacity]
+\label{prop:omega2-injection}
+For $\mathcal{A} \in \Omega_2$, the maximum injection information rate is bounded by:
+\begin{equation}
+\label{eq:omega2-rate}
+\mathcal{I}(\Omega_2) \leq \sum_{t \in \mathcal{S}_{\text{tools}}} C_t \cdot (1 - V_t)
+\end{equation}
+where $C_t$ is the channel capacity of tool $t$ and $V_t \in [0,1]$ is the verification rate applied to tool output.
+\end{property}
+
+This bound shows that high verification rates ($V_t \to 1$) reduce the peripheral attacker to near-zero injection capacity.
+
+### Adversary Class $\Omega_3$: Agent-Level Attacker
+
+\begin{definition}[Agent-Level Adversary]
+\label{def:omega3}
+An adversary $\mathcal{A} \in \Omega_3$ compromises or impersonates a single agent $a_v$:
+\begin{equation}
+\label{eq:omega3-formal}
+\Omega_3 = \langle a_v, \sigma_v, \mathcal{N}(a_v), \mathcal{G}_{\text{adv}} \rangle
+\end{equation}
+where $a_v$ is the victim/compromised agent, $\sigma_v = \langle \mathcal{B}_v, \mathcal{G}_v, \mathcal{I}_v, \mathcal{H}_v \rangle$ is the full cognitive state under adversarial control, $\mathcal{N}(a_v) = \{a_j : \mathcal{C}(a_v, a_j) = 1\}$ is the neighborhood of $a_v$, and $\mathcal{G}_{\text{adv}}$ is the adversarial goal set.
+\end{definition}
+
+\begin{theorem}[Agent Compromise Blast Radius]
+\label{thm:blast-radius}
+When agent $a_v \in \Omega_3$ is fully compromised, the maximum influenced trust is:
+\begin{equation}
+\label{eq:blast-radius}
+\text{BlastRadius}(a_v) = \sum_{a_j \in \mathcal{N}(a_v)} \mathcal{T}_{a_j \to a_v} \cdot |\text{Reachable}(a_j)|
+\end{equation}
+The CIF trust decay bound (\cref{thm:trust-bounded}) limits this to:
+\begin{equation}
+\label{eq:blast-radius-bound}
+\text{BlastRadius}(a_v) \leq n \cdot \delta \cdot \max_{a_j} \mathcal{T}_{a_j \to a_v}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Each neighbor $a_j$ trusts $a_v$ with score $\mathcal{T}_{a_j \to a_v}$. The trust propagated from $a_j$ to further agents via $a_v$ is bounded by $\delta \cdot \mathcal{T}_{a_j \to a_v}$ per \cref{thm:trust-bounded}. Summing over all $n$ agents gives the bound.
+\end{proof}
+
+### Adversary Class $\Omega_4$: Coordination-Level Attacker
+
+\begin{definition}[Coordination Adversary]
+\label{def:omega4}
+An adversary $\mathcal{A} \in \Omega_4$ controls the inter-agent communication channel:
+\begin{equation}
+\label{eq:omega4-formal}
+\Omega_4 = \langle \mathcal{E}_{\text{ctrl}}, f_{\text{man}}, \mathcal{K}_{\text{protocol}}, \mathcal{C}_{\text{sync}} \rangle
+\end{equation}
+where $\mathcal{E}_{\text{ctrl}} \subseteq \mathcal{E}$ is the set of controlled communication edges, $f_{\text{man}}: \mathcal{M} \to \mathcal{M}$ is a message manipulation function, $\mathcal{K}_{\text{protocol}}$ encodes knowledge of coordination protocols, and $\mathcal{C}_{\text{sync}}$ denotes synchronization capability for coordinated attacks.
+\end{definition}
+
+\begin{property}[Coordination Attack Distinguishability]
+\label{prop:omega4-distinguish}
+An $\Omega_4$ attack is distinguishable from legitimate coordination with probability:
+\begin{equation}
+\label{eq:omega4-distinguish}
+P(\text{detect} \mid \Omega_4) \geq 1 - 2^{-D_{\mathrm{KL}}(P_{\text{legitimate}} \| P_{\text{attack}})}
+\end{equation}
+where $D_{\mathrm{KL}}$ measures the divergence between legitimate and adversarial message distributions.
+\end{property}
+
+The coordination attacker must produce messages statistically consistent with legitimate protocol traffic while encoding adversarial payloads---a constraint captured by the KL divergence bound.
+
+### Adversary Class $\Omega_5$: Systemic Attacker
+
+\begin{definition}[Systemic Adversary]
+\label{def:omega5}
+A systemic adversary achieves complete control:
+\begin{equation}
+\label{eq:omega5-formal}
+\Omega_5 = \langle \mathcal{A}_{\text{full}}, \sigma_{\text{all}}, \mathcal{T}_{\text{full}}, \mathcal{P}_{\text{all}} \rangle
+\end{equation}
+where $\mathcal{A}_{\text{full}} = \mathcal{A}$ (all agents), $\sigma_{\text{all}}$ denotes control over all cognitive states, $\mathcal{T}_{\text{full}}$ gives complete trust manipulation capability, and $\mathcal{P}_{\text{all}}$ grants all action permissions.
+\end{definition}
+
+\begin{property}[Systemic Attack Cost Bound]
+\label{prop:omega5-scope}
+$\Omega_5$ requires physical or supply-chain compromise of the orchestrator. CIF provides no cryptographic resistance against $\Omega_5$, but its layered architecture increases the cost of achieving systemic control:
+\begin{equation}
+\label{eq:omega5-cost}
+C(\Omega_5) = C_{\text{orchestrator}} + \sum_{k=1}^{4} C_{\text{bypass}}(\Omega_k)
+\end{equation}
+where $C_{\text{bypass}}(\Omega_k)$ is the cost of neutralizing each sub-class's defenses.
+\end{property}
+
+### Cross-Class Attack Distinguishability
+
+\begin{theorem}[Adversary Class Separation]
+\label{thm:class-separation}
+The five adversary classes $\{\Omega_k\}_{k=1}^5$ are distinguishable in information-theoretic terms:
+\begin{equation}
+\label{eq:class-separation}
+\forall i \neq j: D_{\mathrm{KL}}(P_{\Omega_i} \| P_{\Omega_j}) > 0
+\end{equation}
+where $P_{\Omega_k}$ is the attack signature distribution of class $\Omega_k$.
+\end{theorem}
+
+\begin{proof}
+By construction: each class has distinct access surface ($\mathcal{S}_{\Omega_k}$), producing statistically distinguishable observable signatures. Class $\Omega_1$ attacks appear only in user-input channel; $\Omega_2$ attacks appear in tool-response channels; $\Omega_3$ attacks show belief drift in single agents; $\Omega_4$ attacks manifest as inter-agent message anomalies; $\Omega_5$ requires simultaneously passing all lower-class defenses. The KL divergence is strictly positive because the supports are not identical.
+\end{proof}
+
 ## Attack Complexity Analysis {#sec:attack-complexity}
 
 \begin{definition}[Resource Requirements]

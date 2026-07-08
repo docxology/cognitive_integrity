@@ -40,8 +40,8 @@ def main() -> None:
     for r in results["component_removal"]:
         print(f"  {r['removed']:<20} TPR={r['tpr']:.3f}  ΔTPR={r['delta_tpr']:+.4f}")
 
-    print(f"\nMinimal forward:  {results['minimal_forward']['components']} (TPR={results['minimal_forward']['tpr']:.4f})")
-    print(f"Minimal backward: {results['minimal_backward']['components']} (TPR={results['minimal_backward']['tpr']:.4f})")
+    print(f"\nMinimal forward:  {results['minimal_forward']['components']} (TPR={results['minimal_forward']['tpr']:.4f})")  # noqa: E501
+    print(f"Minimal backward: {results['minimal_backward']['components']} (TPR={results['minimal_backward']['tpr']:.4f})")  # noqa: E501
 
     print("\nTop synergistic pairs:")
     for s in results["top_synergies"]:

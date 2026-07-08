@@ -1,15 +1,18 @@
-"""
 from __future__ import annotations
 
+"""
 Behavioral Invariant Checking for Multiagent Systems.
 
 Implements invariant predicates and runtime monitoring.
 """
 
+import logging
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import IntEnum
 from typing import Callable, Dict, List, Optional
+
+logger = logging.getLogger(__name__)
 
 
 class InvariantSeverity(IntEnum):
@@ -50,8 +53,9 @@ class Invariant:
         """
         try:
             return self.predicate(context)
-        except Exception:
+        except Exception as exc:
             # If predicate fails, assume invariant doesn't apply
+            logger.warning("Invariant %s predicate raised %s, assuming holds", self.id, exc)
             return True
 
 
@@ -262,9 +266,7 @@ class InvariantChecker:
 
         return violations
 
-    def check_single(
-        self, invariant_id: str, context: Dict
-    ) -> Optional[InvariantViolation]:
+    def check_single(self, invariant_id: str, context: Dict) -> Optional[InvariantViolation]:
         """
         Check a single invariant.
 

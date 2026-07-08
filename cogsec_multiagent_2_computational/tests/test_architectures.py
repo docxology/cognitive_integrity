@@ -15,12 +15,11 @@ NO MOCKS -- all tests use real data and computation with deterministic seeds.
 import numpy as np
 import pytest
 
-from architectures.base import ArchitectureAdapter, ArchitectureProfile
 from architectures.autogpt import AutoGPTAdapter
+from architectures.base import ArchitectureAdapter, ArchitectureProfile
 from architectures.claude_code import ClaudeCodeAdapter
 from architectures.crewai import CrewAIAdapter
 from architectures.langgraph import LangGraphAdapter
-
 
 # -----------------------------------------------------------------------
 # Section 1: ArchitectureProfile creation and validation
@@ -1052,7 +1051,7 @@ class TestArchitectureSpecificValidation:
     def test_crewai_minimum_three_roles(self):
         """CrewAI requires at least 3 agents for meaningful role separation."""
         adapter = CrewAIAdapter()
-        T = adapter.create_trust_matrix(3)
+        adapter.create_trust_matrix(3)
         roles = adapter.get_agent_roles(3)
         assert len(set(roles)) == 3  # 3 distinct roles
 

@@ -12,7 +12,7 @@ Tests cover:
 
 import pytest
 
-from src import AssessmentResult, PostureLevel, RiskLevel
+from src import PostureLevel, RiskLevel
 from src.posture import (
     AssessmentQuestion,
     CapabilityChecker,
@@ -29,7 +29,6 @@ from src.posture import (
     determine_posture_level,
     generate_posture_report,
 )
-
 
 # =============================================================================
 # Fixtures
@@ -1000,9 +999,7 @@ class TestGeneratePostureReport:
     ):
         """Test that report includes section routing from pillar assessment."""
         # All pillars unscored (0), should route to all sections
-        report = generate_posture_report(
-            pillars, low_maturity_scores, capability_checker
-        )
+        report = generate_posture_report(pillars, low_maturity_scores, capability_checker)
         assert "07" in report.recommended_sections
 
     def test_report_capabilities_present_and_missing(
@@ -1011,17 +1008,13 @@ class TestGeneratePostureReport:
         """Test that report tracks present and missing capabilities."""
         capability_checker.set_capability(CapabilityName.STIGMERGIC_AUDIT, True)
         capability_checker.set_capability(CapabilityName.QUORUM_GATES, True)
-        report = generate_posture_report(
-            scored_pillars, full_maturity_scores, capability_checker
-        )
+        report = generate_posture_report(scored_pillars, full_maturity_scores, capability_checker)
         assert len(report.capabilities_present) == 2
         assert "stigmergic_audit_trail" in report.capabilities_present
         assert "quorum_gates" in report.capabilities_present
         assert len(report.capabilities_missing) == 5
 
-    def test_report_gaps_include_maturity_priorities(
-        self, scored_pillars, capability_checker
-    ):
+    def test_report_gaps_include_maturity_priorities(self, scored_pillars, capability_checker):
         """Test that report gaps include maturity priority dimensions."""
         scores = {dim: 4 for dim in MaturityDimension}
         scores[MaturityDimension.DETECTION] = 1
@@ -1034,9 +1027,7 @@ class TestGeneratePostureReport:
         self, scored_pillars, full_maturity_scores, capability_checker
     ):
         """Test that report gaps include missing capability names."""
-        report = generate_posture_report(
-            scored_pillars, full_maturity_scores, capability_checker
-        )
+        report = generate_posture_report(scored_pillars, full_maturity_scores, capability_checker)
         capability_gaps = [g for g in report.gaps if "Capability:" in g]
         assert len(capability_gaps) == 7
 
@@ -1057,8 +1048,49 @@ class TestGeneratePostureReport:
         self, scored_pillars, mid_maturity_scores, capability_checker
     ):
         """Test that posture level is consistent with the overall score."""
-        report = generate_posture_report(
-            scored_pillars, mid_maturity_scores, capability_checker
-        )
+        report = generate_posture_report(scored_pillars, mid_maturity_scores, capability_checker)
         expected_level = determine_posture_level(report.overall_score)
         assert report.posture_level == expected_level
+
+
+# =============================================================================
+# Additional coverage tests for uncovered lines
+# =============================================================================
+
+
+class TestUncoveredLines:
+    """Tests targeting previously uncovered lines in posture.py."""
+
+    def test_assess_pillar_empty_questions_returns_zero(self):
+        """Line 262: assess_pillar returns zero-score PillarAssessment when no questions loaded.
+
+        FivePillarsAssessment.assess_pillar hits the early-return branch when
+        get_pillar_questions returns an empty list for a pillar that has no
+        questions registered (cleared questions list).
+        """
+        pillars = FivePillarsAssessment()
+        # Clear the internal questions to simulate a pillar with no questions
+        pillars.questions = []
+        result = pillars.assess_pillar(PillarType.TRUST_BOUNDARY)
+        assert result.pillar == PillarType.TRUST_BOUNDARY
+        assert result.score == 0.0
+        assert result.max_score == 0.0
+        assert result.raw_score == 0.0
+
+    def test_set_capability_invalid_name_raises_value_error(self):
+        """Line 628: set_capability raises ValueError for unknown capability name.
+
+        After clearing all capabilities from a CapabilityChecker, any call to
+        set_capability must raise ValueError because the loop finds no match.
+        """
+        checker = CapabilityChecker()
+        checker.capabilities = []  # empty the list so no name matches
+        with pytest.raises(ValueError, match="not found"):
+            checker.set_capability(CapabilityName.STIGMERGIC_AUDIT, True)
+
+    def test_completeness_score_empty_capabilities_returns_zero(self):
+        """Line 653: completeness_score returns 0.0 when capabilities list is empty."""
+        checker = CapabilityChecker()
+        checker.capabilities = []
+        assert checker.completeness_score() == 0.0
+

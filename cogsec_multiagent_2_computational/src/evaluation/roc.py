@@ -113,7 +113,7 @@ def compute_auc_from_points(fpr: np.ndarray, tpr: np.ndarray) -> float:
 
     # Trapezoidal integration
     # np.trapezoid (numpy >=2.0), fallback to np.trapz for older versions
-    _trapz = getattr(np, "trapezoid", None) or np.trapz
+    _trapz = getattr(np, "trapezoid", None) or np.trapz  # type: ignore[attr-defined]
     auc = float(_trapz(tpr_sorted, fpr_sorted))
     return max(0.0, min(1.0, auc))
 

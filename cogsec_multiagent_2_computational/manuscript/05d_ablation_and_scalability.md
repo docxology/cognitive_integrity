@@ -8,9 +8,11 @@ This section quantifies the contribution of individual defense components and ch
 
 ## Defense Component Contributions {#sec:component-removal}
 
-![Ablation Study: Defense Component Contribution. Horizontal bar chart showing detection rate impact of removing each CIF component from the full ensemble (prototype pipeline, real corpus). The Detection module contributes the largest marginal drop when removed ($\Delta\text{TPR} \approx -0.052$), followed by Tripwires ($\approx -0.011$), Invariants ($\approx -0.010$), Firewall ($\approx -0.009$), Trust Calculus ($\approx -0.007$), Provenance ($\approx -0.001$); Sandbox and Consensus removals can \emph{raise} TPR on this corpus (positive $\Delta\text{TPR}$). The Tripwire + Detection pair exhibits the strongest positive synergy ($\approx +0.025$ beyond additive prediction). All values sourced directly from \texttt{output/data/ablation\_results.json}.](figures/ablation_study.pdf){#fig:ablation-study width=95%}
+\cref{fig:ablation-study} visualizes the detection-rate impact of removing each CIF component from the full ensemble. The Detection module contributes the largest marginal drop ($\Delta\text{TPR} \approx -0.052$), while the Firewall + Detection pair exhibits the strongest positive synergy ($\approx +0.026$ beyond additive prediction).
 
-The ablation analysis quantifies each defense component's marginal contribution on the prototype pipeline evaluated against a stratified 100-attack corpus.
+![Ablation Study: Defense Component Contribution. Horizontal bar chart showing detection rate impact of removing each CIF component from the full ensemble (prototype pipeline, real corpus). The Detection module contributes the largest marginal drop when removed ($\Delta\text{TPR} \approx -0.052$), followed by Tripwires ($\approx -0.011$), Invariants ($\approx -0.010$), Firewall ($\approx -0.019$), Trust Calculus ($\approx -0.007$), Provenance ($\approx -0.001$); Sandbox and Consensus removals can \emph{raise} TPR on this corpus (positive $\Delta\text{TPR}$). The Firewall + Detection pair exhibits the strongest positive synergy ($\approx +0.026$ beyond additive prediction). All values sourced directly from \texttt{output/data/ablation\_results.json}.](figures/ablation_study.pdf){#fig:ablation-study width=95%}
+
+The ablation analysis quantifies each defense component's marginal contribution on the prototype pipeline evaluated against a stratified 100-attack corpus (\cref{tab:component-removal}).
 
 > **Methodology**: Results from `scripts/run_ablation.py` → `output/data/ablation_results.json`. The full pipeline achieves $\sim$12\% TPR on this corpus (not 94\%); the 94\%+ figures are from the parametric simulation. The low absolute TPR reflects that the current adapter implementations demonstrate the CIF architecture using targeted pattern matching; several attack categories (indirect injection, belief manipulation, coordination) require semantic analysis not yet implemented. See §\ref{sec:ablation-summary} for discussion.
 
@@ -21,7 +23,7 @@ The ablation analysis quantifies each defense component's marginal contribution 
 | Detection module | 0.071 | $\approx -0.052$ | Most critical: text-feature analysis |
 | Tripwires | 0.113 | $\approx -0.011$ | Canary-belief shift detection |
 | Invariants | 0.113 | $\approx -0.010$ | Code/credential access detection |
-| Firewall | 0.114 | $\approx -0.009$ | Pattern matching for known injection strings |
+| Firewall | 0.105 | $\approx -0.019$ | Pattern matching for known injection strings |
 | Trust Calculus | 0.117 | $\approx -0.007$ | Authority claim pressure detection |
 | Provenance | 0.123 | $\approx -0.001$ | Source attribution checking |
 | Sandbox | 0.124 | $\approx +0.000$ | On this corpus, removal slightly raises TPR |
@@ -33,21 +35,23 @@ Minimal viable configuration analysis---identifying component sets achieving spe
 
 ## Component Synergy Analysis {#sec:synergy}
 
-Synergy score = Actual combined effect $-$ Sum of individual effects:
+Synergy score = Actual combined effect $-$ Sum of individual effects (\cref{tab:synergy}):
 
 **Table: Component synergy analysis.** {#tab:synergy}
 
 | Pair | Synergy Score | Interpretation |
 | --- | --- | --- |
-| Tripwire + Detection | $\approx +0.025$ | Strongest: canary monitoring + text-feature analysis |
-| Firewall + Detection | $\approx +0.023$ | Pattern-based + statistical |
+| Firewall + Detection | $\approx +0.026$ | Strongest: pattern-based injection + text-feature analysis |
+| Firewall + Trust Calculus | $\approx +0.018$ | Injection patterns + authority claim detection |
 | Provenance + Invariants | $\approx +0.009$ | Attribution + policy checks |
 | Firewall + Invariants | $\approx +0.009$ | Injection patterns + policy checks |
 | Tripwire + Invariants | $\approx +0.008$ | Canary monitoring + policy checks |
 
-**Finding**: Tripwire + Detection show the strongest synergy ($\approx +0.025$), combining canary-belief monitoring with statistical text-feature analysis. See \cref{tab:real-synergy} for effect sizes and confidence intervals.
+**Finding**: Firewall + Detection show the strongest synergy ($\approx +0.026$), combining pattern-based injection detection with statistical text-feature analysis. See \cref{tab:real-synergy} for effect sizes and confidence intervals.
 
 ## Agent Count Scaling {#sec:agent-scaling}
+
+\cref{tab:agent-scaling} reports end-to-end detection time, memory, and consensus latency as agent count scales from 3 to 100.
 
 **Table: Performance scaling with agent count.** {#tab:agent-scaling}
 
@@ -69,6 +73,8 @@ $^\ddagger$\textit{95\% CIs computed via bootstrap resampling ($B = 1{,}000$ ite
 
 **Detection time model**: $T_{detect} = \beta_0 + \beta_1 \cdot n + \beta_2 \cdot n^2$
 
+\cref{tab:detection-regression} gives the fitted coefficients and significance tests.
+
 **Table: Detection time regression coefficients.** {#tab:detection-regression}
 
 | Coefficient | Estimate | SE | 95\% CI | $p$ |
@@ -80,6 +86,8 @@ $^\ddagger$\textit{95\% CIs computed via bootstrap resampling ($B = 1{,}000$ ite
 $R^2 = 0.994$, indicating excellent fit. The dominant linear term ($\beta_1 = 1.8$) confirms approximately linear scaling up to 50 agents, with the quadratic contribution ($\beta_2 = 0.012$) becoming material only beyond this range.
 
 **Memory model**: $M = \gamma_0 + \gamma_1 \cdot n + \gamma_2 \cdot n^2$
+
+\cref{tab:memory-regression} gives the fitted memory-growth coefficients; the quadratic term confirms $O(n^2)$ trust-matrix storage.
 
 **Table: Memory usage regression coefficients.** {#tab:memory-regression}
 
@@ -94,6 +102,8 @@ Memory growth is quadratic, primarily due to trust matrix storage ($O(n^2)$). Th
 \textit{Note: The quadratic regression $M = 78.3 + 12.4n + 0.089n^2$ predicts ${\approx}2{,}208$ MB at $n=100$, which overpredicts the measured peak of 1.6 GB shown in the scaling table above. The regression was fit to the full data range and provides a conservative upper bound for capacity planning; practitioners should reference the directly measured values in the table for deployment sizing.}
 
 ## Message Volume Scaling {#sec:volume-scaling}
+
+\cref{tab:volume-scaling} shows detection rate and latency under increasing message volume, with saturation at $\sim$5000 msg/sec.
 
 **Table: Performance scaling with message volume.** {#tab:volume-scaling}
 

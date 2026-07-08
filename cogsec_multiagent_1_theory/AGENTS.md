@@ -1,6 +1,6 @@
 # Cognitive Security for Multiagent Operators — Part 1 (Theory) — Agent Reference
 
-**Location:** `projects/cognitive_integrity/cogsec_multiagent_1_theory/` (active nested program layout). Use qualified name `cognitive_integrity/cogsec_multiagent_1_theory` for `./run.sh` and `scripts/03_render_pdf.py`.
+**Location:** `projects/cognitive_integrity/cogsec_multiagent_1_theory/` (active nested program layout). Use qualified name `cognitive_integrity/cogsec_multiagent_1_theory` for `./run.sh` and `scripts/pipeline/stage_03_render.py`.
 
 ## Overview
 

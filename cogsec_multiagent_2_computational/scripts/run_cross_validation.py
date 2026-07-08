@@ -18,13 +18,14 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 
+from statistics.cross_validation import run_cross_validation
+
 import numpy as np
 
-from utils.random_seed import set_global_seed
-from attacks.corpus import AttackCorpus
 from ablation.runner import BENIGN_MESSAGES
+from attacks.corpus import AttackCorpus
 from composition.factory import create_full_pipeline
-from statistics.cross_validation import run_cross_validation
+from utils.random_seed import set_global_seed
 
 
 def main() -> None:
@@ -84,7 +85,7 @@ def main() -> None:
               f"{f.precision:>8.4f} {f.recall:>8.4f} {f.n_samples:>6}")
     print("-" * 70)
     print(f"{'Mean':<6} {cv_result.mean_tpr:>8.4f} {cv_result.mean_fpr:>8.4f} "
-          f"{cv_result.mean_f1:>8.4f} {cv_result.mean_precision:>8.4f} {cv_result.mean_recall:>8.4f}")
+          f"{cv_result.mean_f1:>8.4f} {cv_result.mean_precision:>8.4f} {cv_result.mean_recall:>8.4f}")  # noqa: E501
 
     # Save
     out_path = output_dir / "cross_validation_results.json"

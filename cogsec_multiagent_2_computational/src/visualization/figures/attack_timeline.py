@@ -32,12 +32,12 @@ def _load_timelines():
     but no per-step timelines.  We run the scenarios directly to get
     the real integrity time-series.
     """
-    import numpy as np
 
     try:
+        from colony.coordinated_attack import simulate_coordinated_attack
+
         from colony.recruitment_poisoning import simulate_recruitment_poisoning
         from colony.sybil_infiltration import simulate_sybil_infiltration
-        from colony.coordinated_attack import simulate_coordinated_attack
 
         # Run each scenario at default parameters
         rp = simulate_recruitment_poisoning(n_agents=20, n_steps=100, seed=42)
@@ -62,7 +62,7 @@ def _load_timelines():
 
         # Fall back to reading summary data from colony_results.json and
         # constructing approximate timelines from detection_rate and resilience_score
-        data_path = Path(__file__).resolve().parent.parent.parent.parent / "output" / "data" / "colony_results.json"
+        data_path = Path(__file__).resolve().parent.parent.parent.parent / "output" / "data" / "colony_results.json"  # noqa: E501
         with open(data_path, "r", encoding="utf-8") as f:
             scenarios = json.load(f)
 
@@ -129,7 +129,7 @@ def plot_attack_timeline(output_dir: str = "output/figures") -> Figure:
         color=COLORS["neutral"],
     )
 
-    format_axis(ax, xlabel="Time Step", ylabel="Integrity Score", title="Colony Integrity Under Attack Scenarios")
+    format_axis(ax, xlabel="Time Step", ylabel="Integrity Score", title="Colony Integrity Under Attack Scenarios")  # noqa: E501
     ax.set_xlim(0, len(t))
     ax.set_ylim(0, 1.05)
     add_legend(ax, loc="lower left")
