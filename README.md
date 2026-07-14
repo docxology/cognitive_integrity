@@ -83,7 +83,7 @@ Part 1 (example; see Zenodo for each part's record):
 
 ## Building
 
-From the **repository root** (with `uv sync` already run):
+**If this checkout is nested inside [`docxology/template`](https://github.com/docxology/template)** (i.e. this directory lives at `projects/cognitive_integrity/` under that repo's root), build from the **template repository root** (with `uv sync` already run there):
 
 ```bash
 # Render any paper as PDF (qualified names required for the nested layout)
@@ -92,7 +92,7 @@ From the **repository root** (with `uv sync` already run):
 ./run.sh --render-pdf --project cognitive_integrity/cogsec_multiagent_3_practical
 
 # Or directly:
-uv run python scripts/03_render_pdf.py --project cognitive_integrity/cogsec_multiagent_1_theory
+uv run python scripts/pipeline/stage_03_render.py --project cognitive_integrity/cogsec_multiagent_1_theory
 
 # Run tests (examples; run from repo root)
 uv run pytest projects/cognitive_integrity/cogsec_multiagent_1_theory/tests/ -v
@@ -101,6 +101,16 @@ uv run pytest projects/cognitive_integrity/cogsec_multiagent_3_practical/tests/ 
 ```
 
 Part 2's tests import `scipy` (declared in that part's `pyproject.toml`). If collection fails with `ModuleNotFoundError: scipy`, run `uv sync` from `cogsec_multiagent_2_computational/` so its dependencies are installed, then re-run pytest from the repo root as above.
+
+**In a standalone checkout of this repo** (no `run.sh`/`scripts/` at this root — the case if you cloned `docxology/cognitive_integrity` directly rather than as a nested project of `docxology/template`), there is no repo-root build entry point. Each part is independently buildable from its own directory:
+
+```bash
+cd cogsec_multiagent_1_theory && uv sync && uv run pytest tests/ -q && uv run ruff check .
+cd cogsec_multiagent_2_computational && uv sync && uv run pytest tests/ -q && uv run ruff check . && make all   # data + figures + tables + verify
+cd cogsec_multiagent_3_practical && uv sync && uv run pytest tests/ -q && uv run ruff check .
+```
+
+Manuscript integrity checks (Parts 1 and 3) and figure regeneration are documented in each part's own `README.md` § Usage and `scripts/README.md`.
 
 ## License
 

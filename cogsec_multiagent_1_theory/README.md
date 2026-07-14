@@ -113,13 +113,23 @@ These manuscripts are designed to be built using the [docxology/template](https:
 
 ## Usage
 
-From the **template repository root**, use the qualified project name (see [`../README.md`](../README.md) — Location):
+**If this checkout is nested inside `docxology/template`** (i.e. this directory lives at `projects/cognitive_integrity/cogsec_multiagent_1_theory/` under that repo's root), use the qualified project name from the **template repository root** (see [`../README.md`](../README.md) — Location):
 
 ```bash
 ./run.sh --render-pdf --project cognitive_integrity/cogsec_multiagent_1_theory
 # or
-uv run python scripts/03_render_pdf.py --project cognitive_integrity/cogsec_multiagent_1_theory
+uv run python scripts/pipeline/stage_03_render.py --project cognitive_integrity/cogsec_multiagent_1_theory
 
 uv run pytest projects/cognitive_integrity/cogsec_multiagent_1_theory/tests/ -v
 # or: ./run.sh --project cognitive_integrity/cogsec_multiagent_1_theory --project-tests
+```
+
+**In a standalone checkout of this repo** (no `run.sh`/`scripts/pipeline/` at the root — this is the case if you cloned `docxology/cognitive_integrity` directly), the `./run.sh` wrapper above does not exist. Work from this directory instead:
+
+```bash
+uv sync
+uv run pytest tests/ -q                    # test suite
+uv run ruff check .                        # lint
+uv run python scripts/verify_manuscript.py --root manuscript   # manuscript integrity checks
+uv run python scripts/<NN>_*.py            # generate an individual figure (see scripts/README.md)
 ```

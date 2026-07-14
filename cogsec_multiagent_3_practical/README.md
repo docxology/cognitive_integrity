@@ -108,10 +108,14 @@ uv run pytest projects/cognitive_integrity/cogsec_multiagent_3_practical/tests/ 
 ./run.sh --render-pdf --project cognitive_integrity/cogsec_multiagent_3_practical
 ```
 
-From this project directory:
+From this project directory (standalone checkout — no root `run.sh` exists outside `docxology/template`):
 
 ```bash
+uv sync
 uv run pytest tests/ -v --cov=src --cov-fail-under=90
+uv run ruff check .
+uv run python scripts/verify_manuscript.py --root manuscript   # manuscript integrity checks
+uv run python scripts/<NN>_*.py                                # generate an individual figure
 ```
 
 ## Repository
