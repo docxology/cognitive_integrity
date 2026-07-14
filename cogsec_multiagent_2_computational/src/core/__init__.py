@@ -1,10 +1,10 @@
 """Core defense modules for the Cognitive Security Framework.
-from __future__ import annotations
-
 
 Re-exports all public symbols from the 8 foundational defense modules:
 trust, firewall, tripwire, detection, consensus, provenance, invariants, sandbox.
 """
+
+from __future__ import annotations
 
 # Trust module
 # Consensus module

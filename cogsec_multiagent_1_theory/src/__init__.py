@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 """
 Cognitive Security Framework for Multiagent Operators.
 
@@ -17,6 +15,8 @@ v2.0 additions:
 - ooda_monitor: OODA phase monitor with Fisher-Rao geometry and CIF-OODA integration
 - cif_ad_coupling: CIF-AD coupling matrix analysis and defense portfolio optimization
 """
+
+from __future__ import annotations
 
 # Consensus module
 # v2.0: CIF-AD Coupling Detector

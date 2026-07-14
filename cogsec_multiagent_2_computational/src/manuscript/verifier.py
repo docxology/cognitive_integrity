@@ -1,6 +1,4 @@
 """
-from __future__ import annotations
-
 Manuscript Verification Module
 ==============================
 
@@ -15,6 +13,8 @@ Features:
 - Checks for file existence
 - Detailed logging
 """
+
+from __future__ import annotations
 
 import logging
 import re

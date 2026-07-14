@@ -1,6 +1,4 @@
 """
-from __future__ import annotations
-
 Cognitive Security Framework — Practical Implementation and Applications Guide.
 
 This is the unified Part 3+4 package of the Cognitive Security for Multiagent
@@ -21,6 +19,8 @@ Modules:
   visualization       — Figure generation utilities
   identity            — Package identity and merge provenance metadata
 """
+
+from __future__ import annotations
 
 from dataclasses import dataclass, field
 from enum import Enum

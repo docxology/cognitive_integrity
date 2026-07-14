@@ -1,12 +1,12 @@
 """
-from __future__ import annotations
-
 Deployment Configuration and Guidance for Cognitive Security.
 
 Implements Section 05 of the Practical Implementation Guide:
 Risk profiles, architecture-specific guidance, scaling considerations,
 and trust decay analysis.
 """
+
+from __future__ import annotations
 
 from dataclasses import dataclass, field
 from enum import Enum

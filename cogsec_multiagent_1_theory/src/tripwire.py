@@ -1,10 +1,10 @@
 """
-from __future__ import annotations
-
 Cognitive Tripwire System.
 
 Embeds canary beliefs to detect manipulation.
 """
+
+from __future__ import annotations
 
 from dataclasses import dataclass, field
 from datetime import datetime

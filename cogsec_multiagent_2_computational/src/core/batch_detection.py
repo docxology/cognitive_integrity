@@ -1,10 +1,10 @@
 """
-from __future__ import annotations
-
 Batch Detection for Cognitive Security.
 
 Implements offline batch analysis pipeline (S-Algorithm 4).
 """
+
+from __future__ import annotations
 
 from typing import Dict, List, Optional
 

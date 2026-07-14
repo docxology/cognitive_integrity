@@ -1,10 +1,10 @@
-from __future__ import annotations
-
 """
 Anomaly Detection for Cognitive Security.
 
 Implements drift detection and behavioral scoring.
 """
+
+from __future__ import annotations
 
 import logging
 from collections import deque

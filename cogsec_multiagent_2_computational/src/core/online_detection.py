@@ -1,11 +1,11 @@
 """
-from __future__ import annotations
-
 Online Detection for Cognitive Security.
 
 Implements streaming anomaly detection (S-Algorithm 3) and
 batch offline analysis (S-Algorithm 4 delegated to batch_detection.py).
 """
+
+from __future__ import annotations
 
 from collections import deque
 from typing import Callable, Iterator, List, Optional, Tuple

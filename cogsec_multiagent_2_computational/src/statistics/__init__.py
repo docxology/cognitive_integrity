@@ -1,6 +1,4 @@
 """Statistical analysis package for the Cognitive Security Framework.
-from __future__ import annotations
-
 
 Re-exports all public classes and functions from:
 - hypothesis: H1/H2/H3 hypothesis tests
@@ -11,6 +9,8 @@ Re-exports all public classes and functions from:
 - anova: Two-way ANOVA
 - sensitivity: Parameter sweeps, cross-validation
 """
+
+from __future__ import annotations
 
 # Hypothesis testing
 # ANOVA

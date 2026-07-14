@@ -1,6 +1,4 @@
 """
-from __future__ import annotations
-
 Human-Actionable Checklists for Cognitive Security.
 
 Implements Section 03 of the Practical Implementation Guide:
@@ -23,6 +21,8 @@ Additionally, **ConfigurationReference** validates trust calculus
 parameters, firewall thresholds, and tripwire configurations against
 manuscript-specified recommended values and ranges.
 """
+
+from __future__ import annotations
 
 from dataclasses import dataclass
 from enum import Enum

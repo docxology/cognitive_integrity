@@ -1,10 +1,10 @@
 """
-from __future__ import annotations
-
 Trust Network Visualization Logic.
 
 Moves logic from script 11 to a reusable module.
 """
+
+from __future__ import annotations
 
 from pathlib import Path
 

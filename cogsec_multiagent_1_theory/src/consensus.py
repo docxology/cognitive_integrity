@@ -1,10 +1,10 @@
-from __future__ import annotations
-
 """
 Byzantine-Tolerant Consensus for Multiagent Systems.
 
 Implements cognitive Byzantine agreement.
 """
+
+from __future__ import annotations
 
 from dataclasses import dataclass
 from enum import Enum
