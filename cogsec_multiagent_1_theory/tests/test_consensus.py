@@ -310,7 +310,14 @@ class TestConfidenceBasedConsensus:
         assert agg_confidence < 0.5
 
     def test_confidence_affects_decision(self):
-        """Low aggregate confidence can lead to UNDECIDED."""
+        """Low aggregate confidence blocks consensus, forcing UNDECIDED
+
+        even when all agents agree on the belief value. RMS aggregate
+        confidence here is exactly 0.2 (all votes at confidence=0.2),
+        which is below min_aggregate_confidence=0.5, so
+        compute_consensus must short-circuit to UNDECIDED before ever
+        consulting the (unanimous, high) belief agreement.
+        """
         from consensus import ConfidenceByzantineConsensus, ConfidenceVote
 
         consensus = ConfidenceByzantineConsensus(
@@ -321,11 +328,10 @@ class TestConfidenceBasedConsensus:
         for i in range(3):
             consensus.submit_vote(ConfidenceVote(f"agent-{i}", "prop", belief=0.9, confidence=0.2))
 
-        result, _ = consensus.compute_consensus("prop")
+        result, confidence = consensus.compute_consensus("prop")
 
-        # Should be undecided due to low confidence
-        # (actual behavior depends on implementation)
-        assert result in [ConsensusResult.ACCEPT, ConsensusResult.UNDECIDED]
+        assert result == ConsensusResult.UNDECIDED
+        assert confidence == pytest.approx(0.2)
 
 
 class TestCombinedWeightedConfidence:

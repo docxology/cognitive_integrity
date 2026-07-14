@@ -49,14 +49,24 @@ class Invariant:
             context: Dictionary of action/state parameters
 
         Returns:
-            True if invariant holds, False if violated
+            True if invariant holds, False if violated (including when
+            the predicate itself raises, e.g. from malformed/incomplete
+            context)
         """
         try:
             return self.predicate(context)
         except Exception as exc:
-            # If predicate fails, assume invariant doesn't apply
-            logger.warning("Invariant %s predicate raised %s, assuming holds", self.id, exc)
-            return True
+            # Fail closed: a predicate that cannot be evaluated (e.g. a
+            # KeyError from an unexpected context shape) must not be
+            # treated as "invariant holds" -- this is a security-relevant
+            # behavioral check, and silently passing unevaluable input
+            # would let malformed/adversarial context bypass monitoring.
+            logger.warning(
+                "Invariant %s predicate raised %s, treating as violated (fail-closed)",
+                self.id,
+                exc,
+            )
+            return False
 
 
 @dataclass

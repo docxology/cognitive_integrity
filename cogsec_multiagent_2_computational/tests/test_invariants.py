@@ -670,10 +670,13 @@ class TestInvariantPredicateEdgeCases:
     """Tests for edge cases in invariant predicate evaluation."""
 
     def test_predicate_exception_handling(self):
-        """Invariant with predicate raising TypeError is treated as 'holds' (not violated).
+        """Invariant with predicate raising TypeError is treated as violated (fail-closed).
 
         The Invariant.check() method catches TypeError, KeyError, ValueError
-        and returns True, meaning the invariant is considered to hold.
+        and returns False, meaning the invariant is considered violated --
+        an unevaluable predicate (e.g. malformed/adversarial context) must
+        not silently be treated as passing, since this is a
+        security-relevant behavioral check.
         """
         def bad_predicate(ctx):
             raise TypeError("deliberate type error in predicate")
@@ -688,10 +691,10 @@ class TestInvariantPredicateEdgeCases:
         checker = InvariantChecker(load_builtins=False)
         checker.add_invariant(inv)
 
-        # TypeError is caught by Invariant.check() -> returns True -> no violation
+        # TypeError is caught by Invariant.check() -> returns False -> violation recorded
         violations = checker.check_all({"anything": True})
         err_violations = [v for v in violations if v.invariant_id == "ERR-1"]
-        assert len(err_violations) == 0
+        assert len(err_violations) == 1
 
     def test_predicate_returns_none(self):
         """Invariant with predicate returning None (falsy) is treated as violation."""
