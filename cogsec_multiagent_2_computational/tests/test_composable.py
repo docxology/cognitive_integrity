@@ -468,6 +468,25 @@ class TestCategoryDiagram:
         svg = diag.to_svg_string()  # should not raise
         assert "<svg" in svg
 
+    def test_to_svg_string_escapes_arrow_label_xml_chars(self):
+        """Arrow labels containing '&', '<', '>' must be fully XML-escaped
+
+        so the generated SVG stays well-formed. This locks in a fix for a
+        prior bug where the arrow-label escaping path was missing the
+        final '>' -> '&gt;' replacement that every other renderer in this
+        module applies.
+        """
+        diag = CategoryDiagram()
+        diag.add_object("A", "A", 0.0, 0.0)
+        diag.add_object("B", "B", 1.0, 0.0)
+        diag.add_arrow("A", "B", "a<b>c&d")
+        svg = diag.to_svg_string()
+
+        assert "a&lt;b&gt;c&amp;d" in svg
+        # A raw, un-escaped '>' from the label must not appear inside the
+        # text content (only the SVG tags' own '>' characters are fine).
+        assert "a<b>c&d" not in svg
+
     def test_to_matplotlib_returns_figure(self):
         diag = CategoryDiagram.build_monoidal_unit_diagram()
         fig = diag.to_matplotlib()

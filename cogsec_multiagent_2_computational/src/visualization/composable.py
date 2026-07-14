@@ -35,6 +35,15 @@ except ImportError:
     _MATPLOTLIB_AVAILABLE = False
 
 
+def _escape_xml(text: str) -> str:
+    """Escape the three XML-significant characters for safe embedding in SVG text nodes.
+
+    Order matters: '&' must be escaped first so the entities introduced for
+    '<' and '>' aren't themselves re-escaped.
+    """
+    return text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+
+
 # ---------------------------------------------------------------------------
 # Module metadata (matches the 8 CIF defense modules)
 # ---------------------------------------------------------------------------
@@ -297,7 +306,7 @@ class DefenseGraph:
             '<rect width="600" height="100%" fill="#1a1a2e"/>',
         ]
         for i, line in enumerate(lines):
-            escaped = line.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+            escaped = _escape_xml(line)
             svg_lines.append(
                 f'<text x="10" y="{20 + i * 18}" font-family="monospace" '
                 f'font-size="13" fill="#ecf0f1">{escaped}</text>'
@@ -502,7 +511,7 @@ class CategoryDiagram:
                 f'marker-end="url(#arrowhead)"/>'
             )
             mx, my = (sx + dx) // 2, (sy + dy) // 2
-            escaped = arrow.label.replace("&", "&amp;").replace("<", "&lt;")
+            escaped = _escape_xml(arrow.label)
             lines.append(
                 f'<text x="{mx}" y="{my - 8}" text-anchor="middle" font-family="Georgia" '
                 f'font-size="11" fill="#f39c12" font-style="italic">{escaped}</text>'
@@ -639,7 +648,7 @@ class LatticeViz:
             x, y = positions[node.name]
             shade = int(node.rate * 200) + 30
             fill = f"rgb(30,{shade},{shade//2 + 50})"
-            escaped = node.name.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+            escaped = _escape_xml(node.name)
             lines.append(
                 f'<circle cx="{x}" cy="{y}" r="18" fill="{fill}" stroke="#3498db" stroke-width="1.5"/>'  # noqa: E501
             )
@@ -732,7 +741,7 @@ class OperadPlot:
     ) -> None:
         """Recursively render tree nodes into SVG lines list."""
         fill = "#27ae60" if node.is_leaf else "#2980b9"
-        label = node.label.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+        label = _escape_xml(node.label)
         lines.append(
             f'<circle cx="{int(x)}" cy="{int(y)}" r="20" fill="{fill}" stroke="#ecf0f1" stroke-width="1.5"/>'  # noqa: E501
         )
@@ -837,7 +846,7 @@ class MonadFlow:
             x = pad + i * step
             is_monad = stage.startswith("η") or stage.startswith("μ")
             fill = "#8e44ad" if is_monad else "#2980b9"
-            escaped = stage.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+            escaped = _escape_xml(stage)
             lines.append(
                 f'<rect x="{x - 40}" y="{cy - 22}" width="80" height="44" rx="8" '
                 f'fill="{fill}" stroke="#ecf0f1" stroke-width="1.5"/>'
@@ -935,7 +944,7 @@ class LensDiagram:
             (520, 140, "T", "ModifiedState", "#2c3e50"),
         ]
         for bx, by, label, sublabel, fill in boxes:
-            escaped_sub = sublabel.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+            escaped_sub = _escape_xml(sublabel)
             lines.append(
                 f'<rect x="{bx - 60}" y="{by - 28}" width="120" height="56" rx="10" '
                 f'fill="{fill}" stroke="#ecf0f1" stroke-width="1.5"/>'
@@ -971,7 +980,7 @@ class LensDiagram:
         # Lens laws
         laws = ["✓ GetPut: set(s, get(s)) = s", "✓ PutGet: get(set(s,v)) = v", "✓ PutPut: set(set(s,v₁),v₂) = set(s,v₂)"]  # noqa: E501
         for i, law in enumerate(laws):
-            escaped = law.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+            escaped = _escape_xml(law)
             lines.append(
                 f'<text x="20" y="{290 + i * 16}" font-family="monospace" '
                 f'font-size="10" fill="#2ecc71">{escaped}</text>'
