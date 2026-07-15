@@ -1,10 +1,10 @@
 """Defense composition algebra: pipelines, fusion strategies, and operators.
-from __future__ import annotations
-
 
 Provides tools for composing multiple defense modules into series,
 parallel, and hybrid pipelines with configurable score-fusion strategies.
 """
+
+from __future__ import annotations
 
 from .adapters import (
     ConsensusAdapter,

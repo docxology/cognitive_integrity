@@ -48,6 +48,42 @@ class TestInvariant:
         context = {"value": -1}
         assert inv.check(context) is False
 
+    def test_invariant_check_fails_closed_on_predicate_exception(self):
+        """A predicate that raises (e.g. malformed context) must be treated
+
+        as a violation, not silently as 'invariant holds' -- this is a
+        security-relevant behavioral check, so fail-open on unevaluable
+        input would let malformed/adversarial context bypass monitoring.
+        """
+        inv = Invariant(
+            id="INV-RAISES",
+            predicate=lambda ctx: ctx["required_field"] > 0,
+            description="Requires a field that may be absent",
+            severity=InvariantSeverity.HIGH,
+        )
+        assert inv.check({}) is False
+
+    def test_invariant_checker_reports_violation_on_predicate_exception(self):
+        """InvariantChecker.check_all/check_single surface a violation
+
+        (not a silent pass) when a registered invariant's predicate raises.
+        """
+        checker = InvariantChecker()
+        inv = Invariant(
+            id="INV-RAISES-2",
+            predicate=lambda ctx: ctx["required_field"] > 0,
+            description="Requires a field that may be absent",
+            severity=InvariantSeverity.HIGH,
+        )
+        checker.add_invariant(inv)
+
+        violations = checker.check_all({})
+        assert any(v.invariant_id == "INV-RAISES-2" for v in violations)
+
+        single = checker.check_single("INV-RAISES-2", {})
+        assert single is not None
+        assert single.invariant_id == "INV-RAISES-2"
+
 
 class TestInvariantSeverity:
     """Tests for InvariantSeverity enum."""

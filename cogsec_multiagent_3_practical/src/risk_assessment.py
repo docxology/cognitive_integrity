@@ -1,12 +1,12 @@
 """
-from __future__ import annotations
-
 Risk Assessment Framework for Cognitive Security.
 
 Implements Section 06 of the Practical Implementation Guide:
 Attack surface mapping, threat modeling, worked examples,
 and common attack scenario analysis.
 """
+
+from __future__ import annotations
 
 from dataclasses import dataclass, field
 from enum import Enum

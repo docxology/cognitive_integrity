@@ -1,10 +1,10 @@
 """Colony-level Cognitive Security benchmarks.
-from __future__ import annotations
-
 
 Re-exports all public symbols from the colony package:
 benchmark runner, scenario implementations, and scorecard utilities.
 """
+
+from __future__ import annotations
 
 from .belief_cascade import BeliefCascadeScenario
 from .benchmark import ColonyBenchmark, ColonyConfig, ColonyResult, ColonyScenario

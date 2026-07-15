@@ -67,9 +67,7 @@ cogsec_multiagent_2_computational/
 │   │   ├── claude_code.py      # Hierarchical (Claude Code)
 │   │   ├── autogpt.py          # Autonomous + plugins (AutoGPT)
 │   │   ├── crewai.py           # Role-based (CrewAI)
-│   │   ├── langgraph.py        # Graph-based (LangGraph)
-│   │   ├── metagpt.py          # SOP-driven (MetaGPT)
-│   │   └── camel.py            # Debate (Camel)
+│   │   └── langgraph.py        # Graph-based (LangGraph)
 │   ├── attacks/                # Attack corpus generation
 │   │   ├── corpus.py           # AttackCorpus.generate()
 │   │   ├── templates.py        # Attack prompt templates

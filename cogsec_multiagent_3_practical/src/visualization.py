@@ -1,11 +1,11 @@
 """
-from __future__ import annotations
-
 Visualization module for Cognitive Security Practical Implementation Guide.
 
 Provides figure generation logic for the Paper 3 manuscript.
 Scripts in scripts/ call these methods following thin orchestrator pattern.
 """
+
+from __future__ import annotations
 
 from dataclasses import dataclass, field
 from enum import Enum

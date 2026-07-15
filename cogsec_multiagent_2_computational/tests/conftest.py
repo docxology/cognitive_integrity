@@ -20,32 +20,66 @@ from pathlib import Path
 import pytest
 
 # ---------------------------------------------------------------------------
-# Auto-skip requires_ollama when Ollama is unreachable
+# Auto-skip requires_ollama when Ollama is unreachable, or when it's running
+# but lacks the specific model the integration tests need. Probing only
+# server reachability is not enough: on a machine running Ollama with a
+# different model set installed, the tests would hard-fail with an
+# uncaught 404 from /api/chat instead of skipping cleanly.
 # ---------------------------------------------------------------------------
 
-def _ollama_available() -> bool:
-    """Probe Ollama server once and cache result."""
+# Model the requires_ollama integration tests hardcode (tests/test_agents.py
+# TestLLMAgentIntegration). Keep in sync if those tests change model.
+_REQUIRED_OLLAMA_MODEL = "gemma3:4b"
+
+
+def _ollama_status() -> tuple[bool, bool]:
+    """Probe Ollama server once and check whether the required model is pulled.
+
+    Returns:
+        (server_up, model_present)
+    """
     try:
         import requests
         resp = requests.get("http://localhost:11434/api/tags", timeout=2)
-        return resp.status_code == 200
+        if resp.status_code != 200:
+            return False, False
+        models = {m.get("name", "") for m in resp.json().get("models", [])}
+        # Ollama tag names may include a suffix (e.g. "gemma3:4b" exactly, or
+        # with a digest); match on the "name:tag" prefix to be tolerant.
+        model_present = any(
+            name == _REQUIRED_OLLAMA_MODEL or name.startswith(f"{_REQUIRED_OLLAMA_MODEL}-")
+            for name in models
+        )
+        return True, model_present
     except Exception:
-        return False
+        return False, False
 
 
-_OLLAMA_UP: bool | None = None
+_OLLAMA_STATUS: tuple[bool, bool] | None = None
 
 
 def pytest_collection_modifyitems(config, items):
-    """Auto-skip tests marked `requires_ollama` when Ollama is not running."""
-    global _OLLAMA_UP  # noqa: PLW0603
-    if _OLLAMA_UP is None:
-        _OLLAMA_UP = _ollama_available()
+    """Auto-skip tests marked `requires_ollama` when Ollama is not running
 
-    if _OLLAMA_UP:
-        return  # Ollama is up — run all tests
+    or the required model isn't pulled, so the suite degrades to a clean
+    skip rather than a false-negative failure in any environment where
+    Ollama runs a different model set.
+    """
+    global _OLLAMA_STATUS  # noqa: PLW0603
+    if _OLLAMA_STATUS is None:
+        _OLLAMA_STATUS = _ollama_status()
 
-    skip_marker = pytest.mark.skip(reason="Ollama not running at localhost:11434")
+    server_up, model_present = _OLLAMA_STATUS
+
+    if server_up and model_present:
+        return  # Ollama is up and has the required model — run all tests
+
+    if not server_up:
+        reason = "Ollama not running at localhost:11434"
+    else:
+        reason = f"Ollama running but model '{_REQUIRED_OLLAMA_MODEL}' not pulled"
+
+    skip_marker = pytest.mark.skip(reason=reason)
     for item in items:
         if "requires_ollama" in item.keywords:
             item.add_marker(skip_marker)

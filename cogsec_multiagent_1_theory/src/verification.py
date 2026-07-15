@@ -204,8 +204,16 @@ class ManuscriptVerifier:
 
         return status
 
-    def run_all(self):
-        """Run all verifications."""
+    def run_all(self) -> bool:
+        """Run all verifications.
+
+        Returns:
+            True if every check passed, False otherwise. Does not call
+            sys.exit() -- callers (e.g. the CLI entry point in
+            scripts/verify_manuscript.py) own the process exit code, so
+            this method stays usable as a plain library call (including
+            from tests, without needing pytest.raises(SystemExit)).
+        """
         logger.info(f"Starting verification on {self.root_dir}...")
 
         results = {
@@ -228,7 +236,7 @@ class ManuscriptVerifier:
 
         if failed:
             logger.error("Verification failed. See logs for details.")
-            sys.exit(1)
         else:
             logger.info("All checks passed successfully.")
-            sys.exit(0)
+
+        return not failed

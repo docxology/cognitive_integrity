@@ -1,10 +1,10 @@
-from __future__ import annotations
-
 """
 Belief Sandboxing for Multiagent Systems.
 
 Implements verified/provisional partitions with TTL management.
 """
+
+from __future__ import annotations
 
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta

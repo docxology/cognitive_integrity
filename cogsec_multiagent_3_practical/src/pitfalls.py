@@ -1,11 +1,11 @@
 """
-from __future__ import annotations
-
 Common Pitfall Catalog for Cognitive Security Deployments.
 
 Implements Section 07 of the Practical Implementation Guide:
 Eight documented anti-patterns with detection, assessment, and remediation.
 """
+
+from __future__ import annotations
 
 from dataclasses import dataclass, field
 from enum import Enum

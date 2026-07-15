@@ -64,6 +64,8 @@ Each project follows the standalone paradigm with:
 
 ## Build / test (from repo root)
 
+**When nested inside `docxology/template`** (`./run.sh` and `scripts/` present at that repo's root):
+
 ```bash
 ./run.sh --render-pdf --project cognitive_integrity/cogsec_multiagent_1_theory
 uv run pytest projects/cognitive_integrity/cogsec_multiagent_2_computational/tests/ -q
@@ -71,3 +73,5 @@ uv run pytest projects/cognitive_integrity/cogsec_multiagent_3_practical/tests/ 
 ```
 
 Run one part at a time if you need to isolate failures. Part 2 imports `scipy` (see that part’s `pyproject.toml`); if imports fail, `uv sync` from the **repository root** first, or sync that part’s environment as described in the program [README](README.md).
+
+**In a standalone checkout** (no `run.sh` at this root), there is no repo-root entry point — build/test each part from its own directory instead: `uv sync && uv run pytest tests/ -q && uv run ruff check .`, plus `make all` in `cogsec_multiagent_2_computational/` for the full data/figures/tables/verify pipeline, or `uv run python scripts/verify_manuscript.py --root manuscript` in Parts 1/3. See the program [README](README.md) § Building.

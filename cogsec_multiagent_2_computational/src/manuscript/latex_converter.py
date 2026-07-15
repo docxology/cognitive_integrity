@@ -1,6 +1,4 @@
 """
-from __future__ import annotations
-
 LaTeX Table Converter Module
 ============================
 
@@ -8,6 +6,8 @@ Converts LaTeX table environments in markdown files to markdown pipe-style table
 This enables proper rendering in both PDF (via pandoc) and HTML outputs.
 Handles LaTeX tabular column specifications and properly extracts headers.
 """
+
+from __future__ import annotations
 
 import re
 from pathlib import Path

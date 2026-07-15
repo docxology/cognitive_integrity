@@ -1,6 +1,4 @@
 """LLM-backed multiagent simulation for CIF evaluation.
-from __future__ import annotations
-
 
 Provides real LLM agents organized in architecture-specific topologies
 (Claude Code, AutoGPT, CrewAI, LangGraph) that process
@@ -11,6 +9,8 @@ Modules:
     llm_agent: Core LLMAgent class with Ollama integration
     multiagent_system: Topology-aware agent orchestration
 """
+
+from __future__ import annotations
 
 from .llm_agent import AgentMessage, AgentResponse, LLMAgent, OllamaConfig
 from .multiagent_system import MultiAgentSystem, SimulationResult

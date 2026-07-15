@@ -1,10 +1,10 @@
 """
-from __future__ import annotations
-
 Information Flow Tracking with Taint Propagation.
 
 Implements provenance chains for tracking belief origins and contamination.
 """
+
+from __future__ import annotations
 
 from dataclasses import dataclass, field
 from datetime import datetime

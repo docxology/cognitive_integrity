@@ -1,6 +1,4 @@
 """
-from __future__ import annotations
-
 Agent-Readable Security Guidelines for Cognitive Security.
 
 Implements Section 04 of the Practical Implementation Guide:
@@ -14,6 +12,8 @@ Manuscript mapping:
     - 3 Response Protocols (suspicious, compromise, confirmed attack)
     - Machine-readable YAML output format
 """
+
+from __future__ import annotations
 
 from dataclasses import dataclass, field
 from enum import Enum

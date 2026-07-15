@@ -282,6 +282,55 @@ class TestWeightedVoting:
         avg = consensus.get_weighted_average("prop")
         assert abs(avg - 0.8) < 0.01
 
+    def test_weighted_average_no_votes_returns_neutral(self):
+        """get_weighted_average on a proposition with no votes returns the
+
+        neutral 0.5 fallback rather than raising or dividing by zero.
+        """
+        from src import WeightedByzantineConsensus
+
+        consensus = WeightedByzantineConsensus(n_agents=3)
+        assert consensus.get_weighted_average("never-voted-on") == 0.5
+
+    def test_weighted_average_all_zero_weight_returns_neutral(self):
+        """If every submitted vote has trust_weight=0 (e.g. an attacker
+
+        driving its own or a colluding agent's effective weight to zero),
+        get_weighted_average must fall back to the neutral 0.5 rather
+        than dividing by a zero total weight.
+        """
+        from src import WeightedByzantineConsensus, WeightedVote
+
+        consensus = WeightedByzantineConsensus(n_agents=3)
+        for i in range(3):
+            consensus.submit_vote(
+                WeightedVote(f"agent-{i}", "prop", belief=0.9, trust_weight=0.0)
+            )
+
+        assert consensus.get_weighted_average("prop") == 0.5
+
+    def test_weighted_vote_resubmission_replaces_not_accumulates(self):
+        """A second WeightedVote from the same agent_id replaces the first
+
+        rather than being counted twice in the weighted average (mirrors
+        the base ByzantineConsensus.test_vote_update behavior).
+        """
+        from src import WeightedByzantineConsensus, WeightedVote
+
+        consensus = WeightedByzantineConsensus(n_agents=2, max_byzantine=0)
+
+        consensus.submit_vote(
+            WeightedVote("agent-1", "prop", belief=0.9, trust_weight=1.0)
+        )
+        # Same agent changes its mind with a different weight too
+        consensus.submit_vote(
+            WeightedVote("agent-1", "prop", belief=0.1, trust_weight=1.0)
+        )
+
+        # If both votes were counted, average would be (0.9+0.1)/2 = 0.5;
+        # if only the latest is kept, it must be exactly 0.1.
+        assert consensus.get_weighted_average("prop") == pytest.approx(0.1)
+
 
 class TestConfidenceBasedConsensus:
     """Tests for confidence-based consensus."""
@@ -336,7 +385,14 @@ class TestConfidenceBasedConsensus:
         assert agg_confidence < 0.5
 
     def test_confidence_affects_decision(self):
-        """Low aggregate confidence can lead to UNDECIDED."""
+        """Low aggregate confidence blocks consensus, forcing UNDECIDED
+
+        even when all agents agree on the belief value. RMS aggregate
+        confidence here is exactly 0.2 (all votes at confidence=0.2),
+        which is below min_aggregate_confidence=0.5, so
+        compute_consensus must short-circuit to UNDECIDED before ever
+        consulting the (unanimous, high) belief agreement.
+        """
         from src import ConfidenceByzantineConsensus, ConfidenceVote
 
         consensus = ConfidenceByzantineConsensus(
@@ -349,11 +405,52 @@ class TestConfidenceBasedConsensus:
                 ConfidenceVote(f"agent-{i}", "prop", belief=0.9, confidence=0.2)
             )
 
-        result, _ = consensus.compute_consensus("prop")
+        result, confidence = consensus.compute_consensus("prop")
 
-        # Should be undecided due to low confidence
-        # (actual behavior depends on implementation)
-        assert result in [ConsensusResult.ACCEPT, ConsensusResult.UNDECIDED]
+        assert result == ConsensusResult.UNDECIDED
+        assert confidence == pytest.approx(0.2)
+
+    def test_confidence_weighted_average_no_votes_returns_neutral(self):
+        """get_confidence_weighted_average with no votes returns 0.5."""
+        from src import ConfidenceByzantineConsensus
+
+        consensus = ConfidenceByzantineConsensus(n_agents=3)
+        assert consensus.get_confidence_weighted_average("never-voted-on") == 0.5
+
+    def test_confidence_weighted_average_all_zero_confidence_returns_neutral(self):
+        """If every vote has confidence=0 (e.g. an attacker driving down
+
+        its own or a colluding agent's effective confidence), the
+        confidence-weighted average must fall back to 0.5 rather than
+        dividing by a zero total confidence.
+        """
+        from src import ConfidenceByzantineConsensus, ConfidenceVote
+
+        consensus = ConfidenceByzantineConsensus(n_agents=3)
+        for i in range(3):
+            consensus.submit_vote(
+                ConfidenceVote(f"agent-{i}", "prop", belief=0.9, confidence=0.0)
+            )
+
+        assert consensus.get_confidence_weighted_average("prop") == 0.5
+
+    def test_confidence_vote_resubmission_replaces_not_accumulates(self):
+        """A second ConfidenceVote from the same agent_id replaces the
+
+        first rather than being counted twice in the weighted average.
+        """
+        from src import ConfidenceByzantineConsensus, ConfidenceVote
+
+        consensus = ConfidenceByzantineConsensus(n_agents=2, max_byzantine=0)
+
+        consensus.submit_vote(
+            ConfidenceVote("agent-1", "prop", belief=0.9, confidence=1.0)
+        )
+        consensus.submit_vote(
+            ConfidenceVote("agent-1", "prop", belief=0.1, confidence=1.0)
+        )
+
+        assert consensus.get_confidence_weighted_average("prop") == pytest.approx(0.1)
 
 
 class TestCombinedWeightedConfidence:
@@ -422,3 +519,51 @@ class TestCombinedWeightedConfidence:
         # Agent-3's effective weight: 0.25
         # Weighted avg should favor agent-1
         assert avg > 0.5
+
+    def test_combined_weighted_average_no_votes_returns_neutral(self):
+        """get_combined_weighted_average with no votes returns 0.5."""
+        from src import CombinedByzantineConsensus
+
+        consensus = CombinedByzantineConsensus(n_agents=3)
+        assert consensus.get_combined_weighted_average("never-voted-on") == 0.5
+
+    def test_combined_weighted_average_all_zero_effective_weight_returns_neutral(self):
+        """If every vote's effective weight (trust_weight * confidence) is
+
+        zero -- e.g. trust_weight=0 even with full confidence, or vice
+        versa -- the combined-weighted average must fall back to 0.5
+        rather than dividing by a zero total weight.
+        """
+        from src import CombinedByzantineConsensus, CombinedVote
+
+        consensus = CombinedByzantineConsensus(n_agents=3)
+        for i in range(3):
+            consensus.submit_vote(
+                CombinedVote(
+                    f"agent-{i}", "prop", belief=0.9, trust_weight=0.0, confidence=1.0
+                )
+            )
+
+        assert consensus.get_combined_weighted_average("prop") == 0.5
+
+    def test_combined_vote_resubmission_replaces_not_accumulates(self):
+        """A second CombinedVote from the same agent_id replaces the first
+
+        rather than being counted twice in the weighted average.
+        """
+        from src import CombinedByzantineConsensus, CombinedVote
+
+        consensus = CombinedByzantineConsensus(n_agents=2, max_byzantine=0)
+
+        consensus.submit_vote(
+            CombinedVote(
+                "agent-1", "prop", belief=0.9, trust_weight=1.0, confidence=1.0
+            )
+        )
+        consensus.submit_vote(
+            CombinedVote(
+                "agent-1", "prop", belief=0.1, trust_weight=1.0, confidence=1.0
+            )
+        )
+
+        assert consensus.get_combined_weighted_average("prop") == pytest.approx(0.1)

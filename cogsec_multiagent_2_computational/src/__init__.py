@@ -1,6 +1,4 @@
 """
-from __future__ import annotations
-
 Cognitive Security Framework for Multiagent Operators.
 
 Core modules (in ``src.core``):
@@ -26,6 +24,8 @@ New packages:
 - data: Data generation and management
 - utils: Shared configuration, logging, timing, types
 """
+
+from __future__ import annotations
 
 # Many sibling modules use absolute imports (``from utils.timing import ...``)
 # that only resolve when ``src/`` is on ``sys.path``.  When the package is
