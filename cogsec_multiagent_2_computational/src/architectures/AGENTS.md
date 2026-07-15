@@ -30,14 +30,6 @@ Adapter for CrewAI (role-based teams).
 
 Adapter for LangGraph (graph-based workflows).
 
-### metagpt.py
-
-Adapter for MetaGPT (SOP-driven).
-
-### camel.py
-
-Adapter for CAMEL (debate-based).
-
 ## Usage
 
 ```python
@@ -56,5 +48,3 @@ attack_surface = adapter.get_attack_surface()
 | AutoGPT | Star | Plugin-based | Plugins |
 | CrewAI | Role graph | Role-based | Handoffs |
 | LangGraph | DAG | Edge-based | Nodes |
-| MetaGPT | Sequential | SOP-based | Interfaces |
-| CAMEL | Debate pair | Symmetric | Messages |

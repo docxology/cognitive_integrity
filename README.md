@@ -4,7 +4,7 @@ A three-part manuscript series establishing the theoretical foundations, computa
 
 ## Location in this repository
 
-This program is under **`projects/cognitive_integrity/`** as an active nested project group. For `./run.sh` and `scripts/03_render_pdf.py`, pass the **qualified project name**:
+This program is under **`projects/cognitive_integrity/`** as an active nested project group. For `./run.sh` and `scripts/pipeline/stage_03_render.py`, pass the **qualified project name**:
 
 `cognitive_integrity/cogsec_multiagent_<N>_<suffix>`
 
