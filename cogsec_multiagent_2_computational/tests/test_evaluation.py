@@ -425,6 +425,49 @@ class TestLatencyProfiler:
         assert result["mod_a"].count() == 1
         assert result["mod_b"].count() == 1
 
+    def test_profile_falls_back_to_two_arg_evaluate(self):
+        """profile() retries with (message, None) when evaluate() requires a context arg.
+
+        _SimplePipeline's evaluate() has a default context=None, so it never
+        raises TypeError with a single argument -- the `except TypeError:
+        pipeline.evaluate(msg, None)` fallback in profile() was previously
+        untested. This pipeline's evaluate() has no default, forcing it.
+        """
+        profiler = LatencyProfiler()
+
+        class _ContextRequiredPipeline:
+            def evaluate(self, message, context):
+                _ = sum(ord(c) for c in message) + (0 if context is None else 1)
+                return _SimpleResult(0.5)
+
+        pipeline = _ContextRequiredPipeline()
+        acc = profiler.profile(pipeline, ["hello", "world"], n_runs=2)
+
+        assert acc.count() == 4
+
+    def test_profile_by_module_falls_back_to_two_arg_evaluate(self):
+        """profile_by_module() also retries with (message, None) on TypeError."""
+        profiler = LatencyProfiler()
+
+        class _ContextRequiredModule:
+            name = "ctx_required"
+
+            def evaluate(self, message, context):
+                return sum(ord(c) for c in message) + (0 if context is None else 1)
+
+        class _ModularPipeline:
+            def __init__(self):
+                self.modules = [_ContextRequiredModule()]
+
+            def evaluate(self, msg, context=None):
+                for m in self.modules:
+                    m.evaluate(msg, context)
+
+        result = profiler.profile_by_module(_ModularPipeline(), "test message")
+
+        assert "ctx_required" in result
+        assert result["ctx_required"].count() == 1
+
 
 class TestMemoryProfiler:
     """Tests for memory estimation."""
@@ -468,6 +511,41 @@ class TestMemoryProfiler:
         mem = profiler.estimate_memory(pipeline, n_agents=5)
         # Must account for the 100x100 float64 array = 80000 bytes
         assert mem > 80000
+
+    def test_estimate_object_recurses_into_lists_and_dicts(self):
+        """_estimate_object recursively sizes nested list/tuple/dict attributes."""
+        profiler = MemoryProfiler()
+
+        class _PipelineWithNestedContainers:
+            def __init__(self):
+                self.history = [{"a": 1, "b": [1, 2, 3]}, {"c": (4, 5)}]
+                self.name = "nested"
+
+            def evaluate(self, msg):
+                pass
+
+        shallow = MemoryProfiler().estimate_memory(_SimplePipeline(), n_agents=1)
+        with_nested = profiler.estimate_memory(_PipelineWithNestedContainers(), n_agents=1)
+
+        # The nested list/dict/tuple contents must be walked (not just the
+        # container's own sys.getsizeof), so this should exceed a pipeline
+        # with no such attribute by more than noise.
+        assert with_nested > shallow
+
+    def test_estimate_object_depth_cutoff_halts_recursion(self):
+        """_estimate_object returns 0 past depth 5, guarding against cycles/deep nesting."""
+        profiler = MemoryProfiler()
+
+        # Build a list nested 8 levels deep.
+        deeply_nested: list = ["leaf"]
+        for _ in range(8):
+            deeply_nested = [deeply_nested]
+
+        # Directly exercise the depth cutoff: at depth 6 (> 5) it must return 0.
+        assert profiler._estimate_object(deeply_nested, depth=6) == 0
+
+        # And a normal (shallow) call still returns a positive estimate.
+        assert profiler._estimate_object(deeply_nested, depth=0) > 0
 
 
 class TestBenchmarkResult:
