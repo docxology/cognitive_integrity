@@ -31,4 +31,5 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     verifier = ManuscriptVerifier(args.root)
-    verifier.run_all()
+    passed = verifier.run_all()
+    sys.exit(0 if passed else 1)

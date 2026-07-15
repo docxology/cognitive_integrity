@@ -4,8 +4,6 @@
 import tempfile
 from pathlib import Path
 
-import pytest
-
 
 class TestManuscriptVerifier:
     """Tests for ManuscriptVerifier class."""
@@ -331,7 +329,11 @@ class TestManuscriptVerifierEdgeCases:
             assert result is True
 
     def test_run_all_passes_when_all_checks_pass(self):
-        """run_all() calls sys.exit(0) when all verifications pass (lines 207-234)."""
+        """run_all() returns True when all verifications pass (lines 207-234).
+
+        run_all() is a plain library call -- it does not call sys.exit()
+        itself; that's the CLI entry point's job (scripts/verify_manuscript.py).
+        """
         from src.verification import ManuscriptVerifier
 
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -345,14 +347,10 @@ class TestManuscriptVerifierEdgeCases:
 
             verifier = ManuscriptVerifier(tmpdir)
 
-            # run_all() calls sys.exit(0) on success → SystemExit with code 0
-            with pytest.raises(SystemExit) as exc_info:
-                verifier.run_all()
-
-            assert exc_info.value.code == 0
+            assert verifier.run_all() is True
 
     def test_run_all_fails_when_check_fails(self):
-        """run_all() calls sys.exit(1) when a check fails (lines 229-231)."""
+        """run_all() returns False when a check fails (lines 229-231)."""
         from src.verification import ManuscriptVerifier
 
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -366,14 +364,10 @@ class TestManuscriptVerifierEdgeCases:
 
             verifier = ManuscriptVerifier(tmpdir)
 
-            # run_all() calls sys.exit(1) on failure
-            with pytest.raises(SystemExit) as exc_info:
-                verifier.run_all()
+            assert verifier.run_all() is False
 
-            assert exc_info.value.code == 1
-
-    def test_run_all_no_md_files_exits_with_failure(self):
-        """run_all() exits with 1 when there are no markdown files."""
+    def test_run_all_no_md_files_returns_false(self):
+        """run_all() returns False when there are no markdown files."""
         from src.verification import ManuscriptVerifier
 
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -385,7 +379,4 @@ class TestManuscriptVerifierEdgeCases:
 
             verifier = ManuscriptVerifier(tmpdir)
 
-            with pytest.raises(SystemExit) as exc_info:
-                verifier.run_all()
-
-            assert exc_info.value.code == 1
+            assert verifier.run_all() is False
