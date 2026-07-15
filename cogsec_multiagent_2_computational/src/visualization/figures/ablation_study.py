@@ -22,7 +22,7 @@ logger = __import__('logging').getLogger(__name__)
 try:
     from ablation.minimal_config import MinimalConfigSearch
 except (ImportError, ModuleNotFoundError):
-    MinimalConfigSearch = None  # type: ignore[misc]
+    MinimalConfigSearch = None  # type: ignore[assignment,misc]
 
 
 def _load_ablation_data(output_dir: Path) -> tuple:

@@ -218,7 +218,7 @@ class DefenseGraph:
             node_id = self.add_module(name)
             self.add_edge(node_id, fast_out, "⊞")
         # Deep series stage
-        prev_id: Optional[str] = fast_out
+        prev_id: str = fast_out
         for name in deep_modules:
             node_id = self.add_module(name)
             self.add_edge(prev_id, node_id, "→")
