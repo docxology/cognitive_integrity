@@ -1,0 +1,49 @@
+name: CI
+
+# Runs each of the three standalone-buildable parts of the Cognitive
+# Security for Multiagent Operators series (theory, computational,
+# practical) independently, matching the per-part `uv sync && uv run
+# pytest tests/ -q` / `uv run ruff check .` commands documented in each
+# part's AGENTS.md / README.md.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch: {}
+
+jobs:
+  test:
+    name: ${{ matrix.part }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        part:
+          - cogsec_multiagent_1_theory
+          - cogsec_multiagent_2_computational
+          - cogsec_multiagent_3_practical
+    defaults:
+      run:
+        working-directory: ${{ matrix.part }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          enable-cache: true
+          cache-dependency-glob: "${{ matrix.part }}/uv.lock"
+
+      - name: Set up Python
+        run: uv python install
+
+      - name: Install dependencies
+        run: uv sync --all-extras
+
+      - name: Lint (ruff)
+        run: uv run ruff check .
+
+      - name: Test (pytest)
+        run: uv run pytest tests/ -q
