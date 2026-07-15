@@ -37,6 +37,16 @@ class TestPatternDetector:
         )
         assert 0.2 <= score <= 0.7
 
+    def test_score_injection_empty_message_returns_zero(self):
+        """Empty message short-circuits to 0.0 without raising."""
+        detector = PatternDetector()
+        assert detector.score_injection("") == 0.0
+
+    def test_score_suspicious_empty_message_returns_zero(self):
+        """Empty message short-circuits to 0.0 without raising."""
+        detector = PatternDetector()
+        assert detector.score_suspicious("") == 0.0
+
 
 class TestCognitiveFirewall:
     """Tests for CognitiveFirewall."""
