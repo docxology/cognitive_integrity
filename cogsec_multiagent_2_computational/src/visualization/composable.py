@@ -44,6 +44,35 @@ def _escape_xml(text: str) -> str:
     return text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
 
 
+def _svg_document(
+    width: int,
+    height: int,
+    title: str = "",
+    title_y: int = 22,
+    font_size: int = 13,
+    bg: str = "#1a1a2e",
+    title_extra: str = "",
+) -> List[str]:
+    """Common SVG scaffold shared by the composable diagram renderers.
+
+    Returns the opening `<svg>` tag, a full-canvas background `<rect>`, and
+    (if `title` is given) a centered title `<text>` in the shared dark-theme
+    Georgia font. Callers append their own body content, then close the
+    document with `lines.append("</svg>"); "\n".join(lines)`.
+    """
+    lines = [
+        f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}">',
+        f'<rect width="{width}" height="{height}" fill="{bg}"/>',
+    ]
+    if title:
+        extra = f" {title_extra}" if title_extra else ""
+        lines.append(
+            f'<text x="{width // 2}" y="{title_y}" text-anchor="middle" font-family="Georgia" '
+            f'font-size="{font_size}" fill="#ecf0f1"{extra}>{title}</text>'
+        )
+    return lines
+
+
 # ---------------------------------------------------------------------------
 # Module metadata (matches the 8 CIF defense modules)
 # ---------------------------------------------------------------------------
@@ -490,12 +519,10 @@ class CategoryDiagram:
         def ty(y: float) -> int:
             return height - (int((y - min_y) * scale) + pad) - 40
 
-        lines = [
-            f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}">',
-            f'<rect width="{width}" height="{height}" fill="#1a1a2e"/>',
-            f'<text x="{width//2}" y="25" text-anchor="middle" font-family="Georgia" '
-            f'font-size="15" fill="#ecf0f1" font-style="italic">{self.title}</text>',
-        ]
+        lines = _svg_document(
+            width, height, self.title, title_y=25, font_size=15,
+            title_extra='font-style="italic"',
+        )
 
         # Draw arrows first (behind nodes)
         for arrow in self.arrows:
@@ -623,12 +650,7 @@ class LatticeViz:
             positions[node.name] = (x, y)
 
         covers = self.covering_relations()
-        lines = [
-            f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}">',
-            f'<rect width="{width}" height="{height}" fill="#1a1a2e"/>',
-            f'<text x="{width//2}" y="22" text-anchor="middle" font-family="Georgia" '
-            f'font-size="14" fill="#ecf0f1">{self.title}</text>',
-        ]
+        lines = _svg_document(width, height, self.title, title_y=22, font_size=14)
 
         # Cover edges
         for a, b in covers:
@@ -766,12 +788,7 @@ class OperadPlot:
             self._svg_tree(child, cx, cy, child_spread, level_height, lines)
 
     def to_svg_string(self, width: int = 600, height: int = 350) -> str:
-        lines = [
-            f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}">',
-            f'<rect width="{width}" height="{height}" fill="#1a1a2e"/>',
-            f'<text x="{width//2}" y="22" text-anchor="middle" font-family="Georgia" '
-            f'font-size="13" fill="#ecf0f1">{self.title}</text>',
-        ]
+        lines = _svg_document(width, height, self.title, title_y=22, font_size=13)
         if self.root:
             self._svg_tree(self.root, width / 2, 60, width - 80, 80, lines)
         lines.append("</svg>")
@@ -833,12 +850,7 @@ class MonadFlow:
         pad = 60
         step = (width - 2 * pad) // max(n - 1, 1)
 
-        lines = [
-            f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}">',
-            f'<rect width="{width}" height="{height}" fill="#1a1a2e"/>',
-            f'<text x="{width//2}" y="20" text-anchor="middle" font-family="Georgia" '
-            f'font-size="13" fill="#ecf0f1">{self.title}</text>',
-        ]
+        lines = _svg_document(width, height, self.title, title_y=20, font_size=13)
 
         cy = height // 2 + 10
 
@@ -923,11 +935,8 @@ class LensDiagram:
         return "\n".join(lines)
 
     def to_svg_string(self, width: int = 700, height: int = 340) -> str:
-        lines = [
-            f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}">',
-            f'<rect width="{width}" height="{height}" fill="#1a1a2e"/>',
-            f'<text x="{width//2}" y="28" text-anchor="middle" font-family="Georgia" '
-            f'font-size="15" fill="#ecf0f1">{self.title}</text>',
+        lines = _svg_document(width, height, self.title, title_y=28, font_size=15)
+        lines += [
             '<defs><marker id="lens_arrow" markerWidth="8" markerHeight="6" '
             'refX="8" refY="3" orient="auto">'
             '<polygon points="0 0, 8 3, 0 6" fill="#e74c3c"/></marker>',
