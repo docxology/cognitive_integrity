@@ -39,6 +39,7 @@ class DriftDetector:
         self._baseline_mean: Optional[np.ndarray] = None
         self._baseline_std: Optional[np.ndarray] = None
         self._calibrated: bool = False
+        self._calibrated_threshold: Optional[float] = None
 
     def add_observation(self, beliefs: Dict[str, float]) -> None:
         """Add belief state observation."""
@@ -48,7 +49,17 @@ class DriftDetector:
         self._history.append((keys, values))
 
     def calibrate_baseline(self) -> None:
-        """Calibrate baseline from collected observations."""
+        """Calibrate baseline from collected observations.
+
+        Computes per-feature mean/std of the raw belief history (kept for
+        introspection/back-compat) and, per Property (drift-threshold) in
+        the manuscript, calibrates the drift-score anomaly threshold as
+        theta = mu_baseline + k * sigma_baseline, where the baseline
+        distribution is the drift score computed retrospectively over the
+        collected history and k = config.sigma_multiplier. Once calibrated,
+        `is_anomalous` uses this calibrated threshold instead of the static
+        `config.drift_threshold`.
+        """
         if len(self._history) < self.config.baseline_samples:
             raise ValueError(
                 f"Need {self.config.baseline_samples} samples, have {len(self._history)}"
@@ -58,6 +69,27 @@ class DriftDetector:
         values = np.array([v for _, v in self._history])
         self._baseline_mean = np.mean(values, axis=0)
         self._baseline_std = np.std(values, axis=0) + 1e-6  # Avoid div by 0
+
+        # Retrospectively compute drift scores across the collected history
+        # to calibrate a data-driven anomaly threshold.
+        history_list = list(self._history)
+        drift_scores: List[float] = []
+        for i in range(1, len(history_list)):
+            keys, current_values = history_list[i]
+            current = dict(zip(keys, current_values))
+            window = min(i, 10)
+            kl_div, max_delta = self._drift_from_slice(
+                history_list[:i], current, window
+            )
+            drift_scores.append(kl_div + 0.5 * max_delta)
+
+        if drift_scores:
+            mu = float(np.mean(drift_scores))
+            sigma = float(np.std(drift_scores))
+            self._calibrated_threshold = mu + self.config.sigma_multiplier * sigma
+        else:
+            self._calibrated_threshold = self.config.drift_threshold
+
         self._calibrated = True
 
     def _kl_divergence(self, p: np.ndarray, q: np.ndarray) -> float:
@@ -76,22 +108,18 @@ class DriftDetector:
 
         return float(np.sum(p * np.log(p / q)))
 
-    def compute_drift(self, current: Dict[str, float], window: int = 10) -> Tuple[float, float]:
-        """
-        Compute drift from recent history.
-
-        Args:
-            current: Current belief state
-            window: Lookback window
-
-        Returns:
-            Tuple of (kl_divergence, max_delta)
-        """
-        if len(self._history) < window:
+    def _drift_from_slice(
+        self,
+        history_slice: List[Tuple[List[str], np.ndarray]],
+        current: Dict[str, float],
+        window: int,
+    ) -> Tuple[float, float]:
+        """Compute (kl_divergence, max_delta) of `current` against a given history slice."""
+        if len(history_slice) < window:
             return 0.0, 0.0
 
         # Get historical average
-        recent = list(self._history)[-window:]
+        recent = history_slice[-window:]
         keys = sorted(current.keys())
         current_arr = np.array([current.get(k, 0.5) for k in keys])
 
@@ -108,11 +136,29 @@ class DriftDetector:
 
         return kl_div, max_delta
 
+    def compute_drift(self, current: Dict[str, float], window: int = 10) -> Tuple[float, float]:
+        """
+        Compute drift from recent history.
+
+        Args:
+            current: Current belief state
+            window: Lookback window
+
+        Returns:
+            Tuple of (kl_divergence, max_delta)
+        """
+        return self._drift_from_slice(list(self._history), current, window)
+
     def is_anomalous(
         self, current: Dict[str, float], window: int = 10, lambda_weight: float = 0.5
     ) -> Tuple[bool, float]:
         """
         Check if current state is anomalous.
+
+        If `calibrate_baseline()` has been called, the calibrated
+        data-driven threshold (theta = mu_baseline + k * sigma_baseline,
+        cf. manuscript Property drift-threshold) is used instead of the
+        static `config.drift_threshold`.
 
         Args:
             current: Current belief state
@@ -125,7 +171,13 @@ class DriftDetector:
         kl_div, max_delta = self.compute_drift(current, window)
         score = kl_div + lambda_weight * max_delta
 
-        return score > self.config.drift_threshold, score
+        threshold = (
+            self._calibrated_threshold
+            if self._calibrated and self._calibrated_threshold is not None
+            else self.config.drift_threshold
+        )
+
+        return score > threshold, score
 
     def get_drift_history(self, n: int = 20) -> List[float]:
         """Get recent drift scores."""
