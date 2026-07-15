@@ -20,7 +20,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 
-from redteam import ATConfig, AdversarialTrainer, NashEquilibriumEstimator  # noqa: E402
+from redteam import AdversarialTrainer, ATConfig, NashEquilibriumEstimator  # noqa: E402
 
 
 def main() -> None:

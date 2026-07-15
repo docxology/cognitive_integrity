@@ -94,7 +94,10 @@ def main() -> None:
             "successful": successes,
             "evasion_rate": evasion_rate,
         }
-        print(f"  {operator:<22} attempts={len(detected_attacks):<4} evasion_rate={evasion_rate:.3f}")
+        print(
+            f"  {operator:<22} attempts={len(detected_attacks):<4} "
+            f"evasion_rate={evasion_rate:.3f}"
+        )
 
     omega_counts: dict[str, int] = defaultdict(int)
     for a in all_attacks:
