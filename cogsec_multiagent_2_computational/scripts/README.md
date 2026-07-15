@@ -35,9 +35,15 @@ uv run python scripts/run_statistical_analysis.py
 
 # Verify manuscript integrity (citations, labels, figures)
 uv run python scripts/verify_manuscript.py
+
+# NEW v2.0: Run adversarial training evaluation
+uv run python scripts/run_adversarial_training.py --n-rounds 5 --seed 42
+
+# NEW v2.0: Run red-team attack generation + mutation-operator sweep
+uv run python scripts/run_redteam.py --seed 42
 ```
 
-## Script Inventory (17 scripts)
+## Script Inventory (22 scripts)
 
 ### Orchestrators (3)
 
@@ -47,7 +53,7 @@ uv run python scripts/verify_manuscript.py
 | `generate_all_figures.py` | Produces all manuscript figures via `src.visualization.figures` | `output/figures/*.pdf` |
 | `generate_all_tables.py` | Produces all manuscript tables via `src.visualization.tables` | `output/tables/*.{tex,md}` |
 
-### Analysis Scripts (9)
+### Analysis Scripts (11)
 
 | Script | Purpose | Manuscript Anchor |
 | ------ | ------- | ----------------- |
@@ -60,6 +66,8 @@ uv run python scripts/verify_manuscript.py
 | `run_colony_benchmarks.py` | Colony-level CogSec benchmark scoring (5 scenarios at 20–100 agents) | §5, §S03 Benchmark Implementation |
 | `run_llm_demo.py` | Live LLM-backed multiagent CIF evaluation via Ollama (opt-in with `COGSEC_RUN_LLM_ANALYSIS=1`) | §5 Results |
 | `run_publication_suite.py` | Runs publication simulations by default; live LLM branch is opt-in with `COGSEC_RUN_LLM_ANALYSIS=1` or `--run-llm` | — |
+| `run_adversarial_training.py` | Iterative adversarial-training rounds via `src.redteam.AdversarialTrainer`; per-round detection-rate deltas and projected Nash-equilibrium DR | §05g Adversarial Training |
+| `run_redteam.py` | Ω-level attack generation (`src.redteam.generator.AdversarialGenerator`) plus a mutation-operator sweep scored against the real `CognitiveFirewall` | §05h Red-Team Evaluation |
 
 ### Verification & Formal (3)
 
@@ -69,12 +77,15 @@ uv run python scripts/verify_manuscript.py
 | `verify_formal_specs.py` | Generates and verifies the formal specification files | §S04 |
 | `verify_manuscript.py` | Checks citations, labels, `\cref` targets, figure references, style | project-wide |
 
-### Utilities (2)
+### Utilities (5)
 
 | Script | Purpose |
 | ------ | ------- |
 | `convert_latex_tables.py` | Converts LaTeX tables in manuscript `.md` files to Markdown pipe tables (for readability diffs) |
 | `z_inject_manuscript_values.py` | Auto-injects computed values from `output/data/` back into manuscript `.md` files (leading `z_` so it runs last) |
+| `generate_figure_registry.py` | Scans `manuscript/*.md` for `{#fig:...}`/`{#tab:...}` labels and writes an auto-numbered `output/data/figure_registry.json` |
+| `auto_number_figures.py` | Reads `figure_registry.json` and injects `\label{}`/`\listoffigures` commands into manuscript `.md` files |
+| `generate_composer_data.py` | Generates the CIF Composer backend data file (`output/data/composer_data.json`) for the web UI, aggregating category-theory verifications and module registry |
 
 ## Output Layout
 

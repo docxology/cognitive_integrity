@@ -338,3 +338,60 @@ class TestStandardExtractors:
         from detection import goal_stability_extractor
 
         assert goal_stability_extractor({}) == 0
+
+
+class TestDriftDetectorCalibrationEffect:
+    """Calibration must actually change is_anomalous()'s behavior.
+
+    Regression test for a bug where calibrate_baseline() computed and
+    stored _baseline_mean/_baseline_std but is_anomalous()/compute_drift()
+    never consulted them, making calibration a silent no-op.
+    """
+
+    def test_calibration_changes_threshold(self):
+        """Calibrating sets a data-driven threshold distinct from the default."""
+        detector = DriftDetector()
+        for i in range(60):
+            detector.add_observation({"a": 0.5 + 0.001 * (i % 5)})
+
+        assert detector._calibrated_threshold is None
+        detector.calibrate_baseline()
+        assert detector._calibrated is True
+        assert detector._calibrated_threshold is not None
+        assert detector._calibrated_threshold != detector.config.drift_threshold
+
+    def test_calibration_changes_is_anomalous_verdict(self):
+        """A borderline score can flip verdicts once calibrated.
+
+        With a very low static drift_threshold, an uncalibrated detector
+        flags a mildly-shifted state as anomalous. After calibrating on a
+        noisy baseline (large calibrated threshold), the same state is no
+        longer flagged -- proving calibration has real effect.
+        """
+        config = DetectionConfig(drift_threshold=1e-6, baseline_samples=50)
+        detector = DriftDetector(config)
+
+        rng = np.random.default_rng(42)
+        for _ in range(80):
+            detector.add_observation({"a": float(rng.uniform(0.3, 0.7))})
+
+        current = {"a": 0.55}
+
+        is_anom_before, score_before = detector.is_anomalous(current)
+        assert is_anom_before is True  # threshold is ~0, so any signal trips it
+
+        detector.calibrate_baseline()
+        is_anom_after, score_after = detector.is_anomalous(current)
+
+        assert score_before == score_after  # score computation is unaffected
+        assert is_anom_after is False  # calibrated threshold absorbs the noise
+        assert detector._calibrated_threshold > config.drift_threshold
+
+    def test_uncalibrated_detector_uses_static_threshold(self):
+        """Without calibration, is_anomalous falls back to config.drift_threshold."""
+        detector = DriftDetector(DetectionConfig(drift_threshold=0.05))
+        for i in range(15):
+            detector.add_observation({"a": 0.5})
+
+        is_anom, score = detector.is_anomalous({"a": 0.9})
+        assert is_anom == (score > 0.05)

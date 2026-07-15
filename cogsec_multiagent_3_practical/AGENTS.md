@@ -1,6 +1,6 @@
 # CIF Practical Applications and Deployment Guide — Agent Reference
 
-**Location:** `projects/cognitive_integrity/cogsec_multiagent_3_practical/`. Active nested project under program `cognitive_integrity/`; use qualified name `cognitive_integrity/cogsec_multiagent_3_practical` for `./run.sh` and `scripts/03_render_pdf.py` **when this checkout is nested inside `docxology/template`**. In a standalone checkout (no root `run.sh`), use `uv run python scripts/verify_manuscript.py --root manuscript` and the individual figure scripts under `scripts/` instead — see `README.md` § Usage.
+**Location:** `projects/cognitive_integrity/cogsec_multiagent_3_practical/`. Active nested project under program `cognitive_integrity/`; use qualified name `cognitive_integrity/cogsec_multiagent_3_practical` for `./run.sh` and `scripts/pipeline/stage_03_render.py` **when this checkout is nested inside `docxology/template`**. In a standalone checkout (no root `run.sh`), use `uv run python scripts/verify_manuscript.py --root manuscript` and the individual figure scripts under `scripts/` instead — see `README.md` § Usage.
 
 ## Overview
 

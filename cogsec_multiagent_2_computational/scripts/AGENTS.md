@@ -46,14 +46,14 @@ if __name__ == "__main__":
 - Hard-coded paths outside the repo root.
 - `print` statements that are not paths (use `logging`).
 
-## Script Inventory (17 scripts — keep docs in sync)
+## Script Inventory (22 scripts — keep docs in sync)
 
 | Category | Scripts |
 | -------- | ------- |
 | Orchestrators | `generate_all_data.py`, `generate_all_figures.py`, `generate_all_tables.py` |
-| Analysis | `run_full_evaluation.py`, `run_statistical_analysis.py`, `run_ablation.py`, `run_sensitivity_analysis.py`, `run_cross_validation.py`, `run_multi_seed.py`, `run_colony_benchmarks.py`, `run_llm_demo.py`, `run_publication_suite.py` |
+| Analysis | `run_full_evaluation.py`, `run_statistical_analysis.py`, `run_ablation.py`, `run_sensitivity_analysis.py`, `run_cross_validation.py`, `run_multi_seed.py`, `run_colony_benchmarks.py`, `run_llm_demo.py`, `run_publication_suite.py`, `run_adversarial_training.py`, `run_redteam.py` |
 | Verification | `run_formal_validation.py`, `verify_formal_specs.py`, `verify_manuscript.py` |
-| Utilities | `convert_latex_tables.py`, `z_inject_manuscript_values.py` |
+| Utilities | `convert_latex_tables.py`, `z_inject_manuscript_values.py`, `generate_figure_registry.py`, `auto_number_figures.py`, `generate_composer_data.py` |
 
 When adding a new script: (1) update this table, (2) update [scripts/README.md](README.md), (3) add a test in `tests/` that smoke-tests the script's CLI surface.
 
@@ -71,6 +71,10 @@ When adding a new script: (1) update this table, (2) update [scripts/README.md](
 | Model-checking results (§S04) | `run_formal_validation.py`, `verify_formal_specs.py` |
 | Manuscript integrity (citations, refs) | `verify_manuscript.py` |
 | Auto-injected numerical values | `z_inject_manuscript_values.py` |
+| §05g adversarial training (per-round DR deltas, Nash projection) | `run_adversarial_training.py` |
+| §05h red-team evaluation (Ω-level generation, mutation sweep) | `run_redteam.py` |
+| Figure/table auto-numbering | `generate_figure_registry.py`, `auto_number_figures.py` |
+| Composer web-UI backend data | `generate_composer_data.py` |
 
 ## Live LLM Analysis
 

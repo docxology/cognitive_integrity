@@ -109,6 +109,40 @@ class TestBeliefState:
 
         assert state.get_partition("b1") == BeliefPartition.PROVISIONAL
 
+    def test_get_partition_nonexistent_returns_none(self):
+        """get_partition on an unknown belief_id returns None."""
+        state = BeliefState()
+        assert state.get_partition("nonexistent") is None
+
+    def test_remove_nonexistent_returns_false_and_no_op(self):
+        """remove() on an unknown belief_id returns False and leaves partitions unchanged."""
+        state = BeliefState()
+        belief = Belief("b1", "Kept", 0.5)
+        state.add_verified(belief)
+
+        assert state.remove("nonexistent") is False
+        assert "b1" in state.verified
+
+    def test_promote_nonexistent_returns_false_and_no_op(self):
+        """promote() on a belief_id not in provisional returns False and mutates nothing."""
+        state = BeliefState()
+        belief = Belief("b1", "Untouched", 0.9)
+        state.add_verified(belief)
+
+        assert state.promote("nonexistent") is False
+        assert "b1" in state.verified
+        assert state.provisional == {}
+
+    def test_demote_nonexistent_returns_false_and_no_op(self):
+        """demote() on a belief_id not in verified returns False and mutates nothing."""
+        state = BeliefState()
+        belief = Belief("b1", "Untouched", 0.5)
+        state.add_provisional(belief)
+
+        assert state.demote("nonexistent") is False
+        assert "b1" in state.provisional
+        assert state.verified == {}
+
 
 class TestPromotionCriteria:
     """Tests for PromotionCriteria evaluation."""

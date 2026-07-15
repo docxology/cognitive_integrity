@@ -38,6 +38,28 @@ This document maps the theoretical claims and definitions from the Cognitive Int
 | Part 2, Sec 3.3 | Invariant Checking | `InvariantChecker` | `src/core/invariants.py` | `tests/test_invariants.py` |
 | Part 2, Sec 3.3 | Runtime Monitor | `RuntimeMonitor` | `src/core/invariants.py` | `tests/test_invariants.py` |
 
+## v2.0 Additions
+
+| Manuscript Reference | Concept | Implementation Class/Function | Source File | Test File |
+| :--- | :--- | :--- | :--- | :--- |
+| Sec 05g | Adversarial Training | `AdversarialTrainer` | `src/redteam/__init__.py` | `tests/test_redteam.py` |
+| Sec 05g | Nash-Equilibrium Projection | `NashEquilibriumEstimator` | `src/redteam/__init__.py` | `tests/test_redteam.py` |
+| Sec 05h | Attack Generation (Ω1-Ω5) | `AdversarialGenerator` | `src/redteam/generator.py` | `tests/test_redteam.py` |
+| Sec 05h | Mutation Testing (12 operators) | `AttackMutator` | `src/redteam/generator.py` | `tests/test_redteam.py` |
+| Sec 05g/05h | AT convergence estimators | `natural_gradient_at_step`, `geometric_convergence_projection`, `convergence_round_estimate` | `src/redteam/convergence.py` | `tests/test_redteam_convergence.py` |
+| "Defense composition algebra" (25 verification checks) | Lattice / Monoidal / F-Algebra / Operad / Enriched / Kan / Monad / Lens | `run_all_verifications`, `serialize_verification_results` | `src/formal/category_theory_advanced.py` | `tests/test_category_theory_advanced.py` |
+| Composer web-UI backend | Aggregated category-theory + module data | `get_composer_data` | `src/visualization/composer_data.py` | `tests/test_composer_data.py` |
+
+Note: the mutation-operator evasion-rate figures quoted in Sec 05h
+(`manuscript/05h_redteam_evaluation.md`) reference a fuller
+campaign-orchestration framework (`mutator.py`/`campaign.py`/`evasion_probe.py`/
+`scorer.py`/`report.py` per that section's module-structure diagram) that is
+not implemented in `src/redteam/` as of this writing -- only `generator.py`
+and `__init__.py` exist. `scripts/run_redteam.py` reproduces a lighter-weight
+version of the same measurement (real `CognitiveFirewall` classification
+before/after mutation) but does not claim to reproduce the published
+per-operator percentages exactly.
+
 ## Validation & Experiments
 
 | Manuscript Reference | Experiment | Script | Source Directory | Data Output |

@@ -241,6 +241,65 @@ class TestFigureGeneration:
             )
 
 
+class TestRedTeamScripts:
+    """Verify the v2.0 adversarial-training and red-team scripts run end-to-end."""
+
+    def test_run_adversarial_training_script(self):
+        """run_adversarial_training.py runs without errors and writes a JSON result."""
+        script = ROOT / "scripts" / "run_adversarial_training.py"
+        if not script.exists():
+            pytest.skip("run_adversarial_training.py not found")
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            result = subprocess.run(
+                [
+                    sys.executable, str(script),
+                    "--n-rounds", "2", "--seed", "42", "--output", tmpdir,
+                ],
+                capture_output=True,
+                text=True,
+                timeout=60,
+                cwd=str(ROOT),
+            )
+            assert result.returncode == 0, (
+                f"Script failed (rc={result.returncode}):\n"
+                f"STDOUT: {result.stdout[-500:]}\n"
+                f"STDERR: {result.stderr[-500:]}"
+            )
+            out_path = Path(tmpdir) / "adversarial_training_results.json"
+            assert out_path.exists()
+            data = json.loads(out_path.read_text())
+            assert data["n_rounds"] == 2
+
+    def test_run_redteam_script(self):
+        """run_redteam.py runs without errors and writes a JSON result."""
+        script = ROOT / "scripts" / "run_redteam.py"
+        if not script.exists():
+            pytest.skip("run_redteam.py not found")
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            result = subprocess.run(
+                [
+                    sys.executable, str(script),
+                    "--seed", "42", "--n-attacks", "50", "--output", tmpdir,
+                ],
+                capture_output=True,
+                text=True,
+                timeout=60,
+                cwd=str(ROOT),
+            )
+            assert result.returncode == 0, (
+                f"Script failed (rc={result.returncode}):\n"
+                f"STDOUT: {result.stdout[-500:]}\n"
+                f"STDERR: {result.stderr[-500:]}"
+            )
+            out_path = Path(tmpdir) / "redteam_evaluation_results.json"
+            assert out_path.exists()
+            data = json.loads(out_path.read_text())
+            assert data["n_attacks_generated"] > 0
+            assert len(data["mutation_summary"]) == 12
+
+
 # ---------------------------------------------------------------------------
 # Statistical Pipeline
 # ---------------------------------------------------------------------------
