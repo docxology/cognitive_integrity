@@ -64,6 +64,8 @@ def main() -> None:
     # Save
     out_path = output_dir / "multi_seed_results.json"
     data = {
+        "data_origin": "real_pipeline",
+        "source_script": "scripts/run_multi_seed.py",
         "n_seeds": report.n_seeds,
         "overall_cv": report.overall_cv,
         "cv_threshold": report.cv_threshold,

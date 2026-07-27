@@ -14,7 +14,7 @@ Across 30 random seeds on the Claude Code architecture, the full CIF defense pip
 
 | Statistic | Value |
 | --- | --- |
-| Mean DR | 0.447 |
+| Mean DR | 0.448 |
 | Median DR | 0.45 |
 | Std Dev | 0.0441 |
 | Min | 0.37 |
@@ -38,7 +38,7 @@ We quantify the marginal contribution of each defense component using the real a
 | Detection module | 0.071 | $\approx -0.052$ | Largest drop ($\approx 42\%$ of baseline TPR) |
 | Tripwire | 0.113 | $\approx -0.011$ | Second largest |
 | Invariants | 0.113 | $\approx -0.010$ | Third largest |
-| Firewall | 0.105 | $\approx -0.019$ | Fourth |
+| Firewall | 0.114 | $\approx -0.009$ | Fourth |
 | Trust Calculus | 0.117 | $\approx -0.007$ | Fifth |
 | Provenance | 0.123 | $\approx -0.001$ | Small marginal harm when removed |
 | Sandbox | 0.124 | $\approx +0.000$ | On this corpus, small increase when removed |
@@ -54,13 +54,13 @@ We quantify the marginal contribution of each defense component using the real a
 
 | Pair | Synergy Score | Interpretation |
 | --- | --- | --- |
-| Firewall + Detection | $\approx +0.026$ | Strongest: injection patterns + statistical |
-| Firewall + Trust Calculus | $\approx +0.018$ | Injection patterns + authority claim detection |
+| Tripwire + Detection | $\approx +0.025$ | Strongest: canary-belief shift + statistical |
+| Firewall + Detection | $\approx +0.023$ | Pattern-based injection + text-feature analysis |
 | Provenance + Invariants | $\approx +0.009$ | Attribution + policy checks |
 | Firewall + Invariants | $\approx +0.009$ | Injection patterns + policy checks |
 | Tripwire + Invariants | $\approx +0.008$ | Canary monitoring + policy checks |
 
-Synergy scores measure the detection improvement of the pair beyond the sum of their individual effects. The Firewall + Detection pair exhibits the strongest synergy ($\approx +0.026$), confirming that injection pattern filtering and text-feature analysis detect complementary attack patterns on this corpus.
+Synergy scores measure the detection improvement of the pair beyond the sum of their individual effects. The Tripwire + Detection pair exhibits the strongest synergy ($\approx +0.025$), confirming that canary-belief shift detection and text-feature analysis detect complementary attack patterns on this corpus.
 
 ## Confidence Intervals (Empirical) {#sec:empirical-ci}
 
@@ -85,10 +85,10 @@ Given the small sample sizes ($N=5$ per architecture), we report exact binomial 
 
 | Metric | Estimate | 95\% CI (t-distribution) |
 | --- | --- | --- |
-| Mean DR | 0.447 | [0.434, 0.462] |
+| Mean DR | 0.448 | [0.432, 0.464] |
 | Std Dev | 0.0441 | — |
 
-The 95\% confidence interval for the mean pipeline detection rate is [0.434, 0.462], based on 30 seeds with a t-distribution correction. This provides a reliable estimate of expected pipeline performance on the Claude Code architecture with the current adapter implementations.
+The 95\% confidence interval for the mean pipeline detection rate is [0.432, 0.464], based on 30 seeds with a t-distribution correction. This provides a reliable estimate of expected pipeline performance on the Claude Code architecture with the current adapter implementations.
 
 ## Power Analysis {#sec:real-power-analysis}
 
@@ -111,9 +111,9 @@ For the ablation analysis comparing 8 component removals against the full pipeli
 ## Summary {#sec:real-stats-summary}
 
 \begin{enumerate}
-\item **Pipeline detection**: Mean 44.8\% [95\% CI: 43.4\%, 46.2\%] across 30 seeds (Claude Code), with CV = 0.097 indicating moderate seed sensitivity.
+\item **Pipeline detection**: Mean 44.8\% [95\% CI: 43.2\%, 46.4\%] across 30 seeds (Claude Code), with CV = 0.097 indicating moderate seed sensitivity.
 \item **Component hierarchy**: Detection module ($\Delta\text{TPR} \approx -0.052$) is the dominant contributor, followed by Tripwires and Invariants ($\approx -0.011$ and $\approx -0.010$). The top three harmful removals account for about 82\% of the summed negative $\Delta\text{TPR}$ magnitude.
-\item **Synergy**: Firewall + Detection shows strongest synergy ($\approx +0.026$), confirming complementary detection patterns on the ablation corpus.
+\item **Synergy**: Tripwire + Detection shows strongest synergy ($\approx +0.025$), confirming complementary detection patterns on the ablation corpus.
 \item **LLM validation underpowered**: $N=5$ per architecture yields very wide CIs (e.g., [0.28, 0.99] for Claude Code), necessitating expansion for reliable architecture-level conclusions.
 \item **Parametric reference**: Design-level parametric analysis (\cref{sec:parametric-analysis}) achieves 94--100\% detection, establishing the coverage ceiling for fully-realized adapter implementations.
 \end{enumerate}

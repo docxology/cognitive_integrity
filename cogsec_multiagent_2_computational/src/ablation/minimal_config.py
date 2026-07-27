@@ -9,7 +9,13 @@ from __future__ import annotations
 
 import itertools
 from dataclasses import dataclass
-from typing import Any, Callable, Dict, List, Optional
+from typing import Any, Callable, Dict, List, Optional, Tuple
+
+# ``evaluate_fn`` returns the measured operating point ``(tpr, fpr)``.
+# It is deliberately *not* a bare TPR: a configuration search that only
+# sees TPR cannot tell a smaller-and-equally-good configuration from one
+# that reaches the same TPR by flagging more of everything.
+EvaluateFn = Callable[[Dict[str, Any]], Tuple[float, float]]
 
 # ---------------------------------------------------------------------------
 # Result container
@@ -25,12 +31,19 @@ class MinimalConfigResult:
         n_components: Number of components in the subset.
         meets_threshold: Whether the detection rate meets or exceeds the
             target TPR.
+        false_positive_rate: Measured FPR with the selected subset.
     """
 
     components: List[str]
     detection_rate: float
     n_components: int
     meets_threshold: bool
+    false_positive_rate: float
+
+    @property
+    def youden_j(self) -> float:
+        """Youden's J statistic (TPR - FPR) for the selected subset."""
+        return self.detection_rate - self.false_positive_rate
 
 
 # ---------------------------------------------------------------------------
@@ -41,18 +54,18 @@ class MinimalConfigSearch:
     """Search for the minimum viable defense configuration.
 
     The *evaluate_fn* receives a dictionary of active components
-    (name -> instance) and must return a scalar TPR.
+    (name -> instance) and must return ``(tpr, fpr)``.
 
     Args:
         all_components: Dictionary mapping component name to instance.
-        evaluate_fn: Callable ``Dict[str, Any] -> float`` returning TPR.
+        evaluate_fn: Callable ``Dict[str, Any] -> (tpr, fpr)``.
         target_tpr: Minimum acceptable detection rate.
     """
 
     def __init__(
         self,
         all_components: Dict[str, Any],
-        evaluate_fn: Callable[[Dict[str, Any]], float],
+        evaluate_fn: EvaluateFn,
         target_tpr: float = 0.90,
     ) -> None:
         self._components = dict(all_components)
@@ -72,18 +85,21 @@ class MinimalConfigSearch:
         selected: Dict[str, Any] = {}
         remaining = dict(self._components)
         best_tpr = 0.0
+        best_fpr = 0.0
 
         while remaining:
             best_candidate: Optional[str] = None
             best_candidate_tpr = -1.0
+            best_candidate_fpr = 0.0
 
             for name, instance in remaining.items():
                 trial = dict(selected)
                 trial[name] = instance
-                tpr = self._evaluate_fn(trial)
+                tpr, fpr = self._evaluate_fn(trial)
 
                 if tpr > best_candidate_tpr:
                     best_candidate_tpr = tpr
+                    best_candidate_fpr = fpr
                     best_candidate = name
 
             if best_candidate is None:
@@ -91,6 +107,7 @@ class MinimalConfigSearch:
 
             selected[best_candidate] = remaining.pop(best_candidate)
             best_tpr = best_candidate_tpr
+            best_fpr = best_candidate_fpr
 
             if best_tpr >= self._target_tpr:
                 break
@@ -100,6 +117,7 @@ class MinimalConfigSearch:
             detection_rate=best_tpr,
             n_components=len(selected),
             meets_threshold=best_tpr >= self._target_tpr,
+            false_positive_rate=best_fpr,
         )
 
     def greedy_backward_search(self) -> MinimalConfigResult:
@@ -113,18 +131,20 @@ class MinimalConfigSearch:
             :class:`MinimalConfigResult` with the reduced subset.
         """
         current = dict(self._components)
-        current_tpr = self._evaluate_fn(current)
+        current_tpr, current_fpr = self._evaluate_fn(current)
 
         while len(current) > 1:
             least_impact_name: Optional[str] = None
             least_impact_tpr = -1.0
+            least_impact_fpr = 0.0
 
             for name in current:
                 trial = {k: v for k, v in current.items() if k != name}
-                tpr = self._evaluate_fn(trial)
+                tpr, fpr = self._evaluate_fn(trial)
 
                 if tpr > least_impact_tpr:
                     least_impact_tpr = tpr
+                    least_impact_fpr = fpr
                     least_impact_name = name
 
             # If removing the least impactful component still meets target
@@ -134,6 +154,7 @@ class MinimalConfigSearch:
             ):
                 del current[least_impact_name]
                 current_tpr = least_impact_tpr
+                current_fpr = least_impact_fpr
             else:
                 # Can't remove any more without going below target
                 break
@@ -143,6 +164,7 @@ class MinimalConfigSearch:
             detection_rate=current_tpr,
             n_components=len(current),
             meets_threshold=current_tpr >= self._target_tpr,
+            false_positive_rate=current_fpr,
         )
 
     def exhaustive_search(
@@ -172,7 +194,7 @@ class MinimalConfigSearch:
         for size in range(1, max_size + 1):
             for combo in itertools.combinations(names, size):
                 subset = {name: self._components[name] for name in combo}
-                tpr = self._evaluate_fn(subset)
+                tpr, fpr = self._evaluate_fn(subset)
                 meets = tpr >= self._target_tpr
 
                 result = MinimalConfigResult(
@@ -180,6 +202,7 @@ class MinimalConfigSearch:
                     detection_rate=tpr,
                     n_components=size,
                     meets_threshold=meets,
+                    false_positive_rate=fpr,
                 )
 
                 if meets:

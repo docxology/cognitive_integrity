@@ -108,19 +108,21 @@ def ensure_test_data():
     required_files = ["full_evaluation_results.json", "ablation_results.json"]
     missing = not output_dir.exists() or not all((output_dir / f).exists() for f in required_files)
 
-    # If a real-data sentinel exists, the pipeline has already produced results.
-    # Do NOT overwrite with DataGenerator synthetic data — that would corrupt
-    # published figures with fabricated values.
-    sentinel = output_dir / ".real_data_marker"
-    if sentinel.exists():
-        return  # Real pipeline/simulation data present; skip synthetic generation.
+    if not missing:
+        return
 
-    if missing:
-        print("\n[conftest] Generating missing test data in output/data/...")
-        print("[conftest] NOTE: This is synthetic data for schema/test validation.")
-        print("[conftest]       Run scripts/run_full_evaluation.py to produce real data.")
-        output_dir.mkdir(parents=True, exist_ok=True)
-        # Use str(output_dir) to ensure compatibility if expecting string
-        generator = DataGenerator(output_dir=str(output_dir))
-        generator.generate_all()
-        print("[conftest] Data generation complete.")
+    # Real results are protected by DataGenerator's own provenance-based
+    # anti-clobber guard (see src/data/generate.py): an authoritative artifact
+    # is replaced only when its recorded data_origin proves it synthetic.
+    # That guard travels inside the tracked artifacts, so unlike the old
+    # `.real_data_marker` sentinel — which the repository's `**/output/`
+    # ignore rule keeps out of a fresh clone — it cannot be lost by cloning.
+    print("\n[conftest] Generating missing test data in output/data/...")
+    print("[conftest] NOTE: This is synthetic data for schema/test validation.")
+    print("[conftest]       Run scripts/run_full_evaluation.py to produce real data.")
+    print("[conftest]       Existing real_pipeline artifacts are left untouched.")
+    output_dir.mkdir(parents=True, exist_ok=True)
+    # Use str(output_dir) to ensure compatibility if expecting string
+    generator = DataGenerator(output_dir=str(output_dir))
+    generator.generate_all()
+    print("[conftest] Data generation complete.")

@@ -80,7 +80,7 @@ This paper assumes familiarity with the formal framework developed in Part 1, pa
 - **Defense Composition Algebra** (Section 5 of Part 1): Series and parallel composition theorems
 - **Integrity Properties** (Section 7 of Part 1): Belief consistency, goal preservation, trust boundedness
 
-All notation follows the canonical reference in Part 1 Appendix (\cref{sec:notation-reference}). For practical deployment guidance including checklists, incident-response playbooks, monitoring, and operational considerations, see Part 3 (DOI: 10.5281/zenodo.18364130). For domain-specific application of these mechanisms across critical operational sectors (infrastructure, supply chain, cyber-security, biowarfare, information ecosystems, and more) through the integrated CIF-AD-OODA model and retrospective analysis of documented AI-agent incidents, see Part 4.
+All notation follows the canonical reference in Part 1 Appendix (\cref{sec:notation-reference}). For practical deployment guidance and domain-specific applications across critical operational sectors, see the unified Part 3+4 paper (DOI: 10.5281/zenodo.18364130).
 
 ## Paper Organization
 
@@ -134,7 +134,7 @@ This paper is designed to stand alone as the empirical-validation reference of t
 | Deployment guides, subagent hardening, incident response, monitoring, cost--benefit | Part 3 (DOI: 10.5281/zenodo.18364130), \S{5}--\S{6} |
 | Accessible-language explanations of these empirical results for non-specialists | Part 3, \S{3} (Evidence) |
 | Operator risk frameworks + common pitfalls | Part 3, \S{5c}, \S{6} |
-| Domain-specific application of these results in ten operational sectors | Part 4, \S{3.01}--\S{3.10} |
-| Three universal attack patterns (FR Polarity Inversion, Constraint Relaxation, Context Boundary Violation) across domains | Part 4, \S{4} |
-| Retrospective analysis of documented 2024--2025 AI-agent security incidents | Part 4 S02 |
+| Domain-specific application of these results in ten operational sectors | Part 3+4, Sections 9--10 |
+| Three universal attack patterns (FR Polarity Inversion, Constraint Relaxation, Context Boundary Violation) across domains | Part 3+4, Section 10 |
+| Retrospective analysis of documented 2024--2025 AI-agent security incidents | Part 3+4, Supplement S03 |
 

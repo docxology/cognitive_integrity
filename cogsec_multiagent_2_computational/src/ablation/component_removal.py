@@ -39,6 +39,27 @@ class AblationResult:
     false_positive_rate: float
     delta_fpr: float
 
+    @property
+    def youden_j(self) -> float:
+        """Youden's J statistic (TPR - FPR) for the reduced component set.
+
+        A TPR-only ranking cannot distinguish a component that adds true
+        detections from one that merely raises the overall flag rate.
+        J is the standard single-number summary that subtracts the
+        false-positive cost from the true-positive benefit.
+        """
+        return self.detection_rate - self.false_positive_rate
+
+    @property
+    def delta_youden_j(self) -> float:
+        """Change in Youden's J relative to the full pipeline.
+
+        Algebraically ``delta_tpr - delta_fpr``: both deltas are taken
+        against the same cached full-pipeline baseline, so the baseline
+        terms cancel exactly.
+        """
+        return self.delta_tpr - self.delta_fpr
+
 
 # ---------------------------------------------------------------------------
 # Component removal study
@@ -75,6 +96,15 @@ class ComponentRemovalStudy:
             self._full_fpr = fpr
         return self._full_tpr, self._full_fpr
 
+    def full_baseline(self) -> Tuple[float, float]:
+        """Public accessor for the cached full-pipeline ``(tpr, fpr)``.
+
+        Callers that serialise ablation output need the operating point
+        of the *unablated* pipeline; reconstructing it by averaging
+        ``tpr - delta_tpr`` across rows is lossy and error-prone.
+        """
+        return self._get_full_baseline()
+
     def run_full_ablation(self) -> List[AblationResult]:
         """Remove each component one at a time and measure impact.
 
@@ -102,8 +132,11 @@ class ComponentRemovalStudy:
                 )
             )
 
-        # Sort by delta_tpr ascending (largest drop = most negative first)
-        results.sort(key=lambda r: r.delta_tpr)
+        # Sort by delta_tpr ascending (largest drop = most negative first).
+        # Components with identical impact tie *exactly* once no noise is
+        # injected, so the name is a secondary key: without it the published
+        # ranking would silently depend on `components` insertion order.
+        results.sort(key=lambda r: (r.delta_tpr, r.removed_component))
         return results
 
     def run_leave_k_out(self, k: int = 2) -> List[AblationResult]:
@@ -154,7 +187,7 @@ class ComponentRemovalStudy:
                 )
             )
 
-        results.sort(key=lambda r: r.delta_tpr)
+        results.sort(key=lambda r: (r.delta_tpr, r.removed_component))
         return results
 
     def get_critical_components(

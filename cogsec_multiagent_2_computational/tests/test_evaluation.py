@@ -12,6 +12,10 @@ All tests use real data and computation -- no mocks.
 """
 
 import math
+import os
+import subprocess
+import sys
+from pathlib import Path
 
 import numpy as np
 import pytest
@@ -35,7 +39,7 @@ from evaluation.roc import (
     compute_roc,
     youdens_j,
 )
-from evaluation.runner import ExperimentResult, ExperimentRunner
+from evaluation.runner import ExperimentResult, ExperimentRunner, dominant_category
 from evaluation.scalability import (
     ScalabilityBenchmark,
     ScalabilityResult,
@@ -1191,3 +1195,121 @@ class TestIntegration:
         for arch_name, categories in table.items():
             for cat, detection_rate in categories.items():
                 assert 0.0 <= detection_rate <= 1.0
+
+
+# ===========================================================================
+# 12. Reproducibility: dominant-category tie-break (audit REPRO-03)
+# ===========================================================================
+
+
+_TIED_CATEGORIES = [
+    "direct_injection",
+    "tool_poisoning",
+    "memory_exfil",
+    "direct_injection",
+    "tool_poisoning",
+    "memory_exfil",
+]
+
+# Enough distinct seeds that a hash-order-dependent implementation is
+# overwhelmingly likely to disagree with itself at least once.
+_HASH_SEEDS = ("1", "2", "3", "4", "5", "6", "7", "8")
+
+
+def _run_under_hash_seeds(snippet: str) -> list:
+    """Execute *snippet* once per PYTHONHASHSEED and collect stdout.
+
+    PYTHONHASHSEED can only be honoured at interpreter start-up, so this has
+    to be a subprocess sweep -- there is no in-process way to observe the
+    defect.  Real interpreters, real imports; no mocking involved.
+    """
+    project_root = Path(__file__).resolve().parent.parent
+    outputs = []
+    for seed in _HASH_SEEDS:
+        env = dict(os.environ)
+        env["PYTHONHASHSEED"] = seed
+        env["PYTHONPATH"] = str(project_root / "src")
+        env["PYTHONDONTWRITEBYTECODE"] = "1"
+        completed = subprocess.run(
+            [sys.executable, "-c", snippet],
+            capture_output=True,
+            text=True,
+            env=env,
+            timeout=120,
+            check=True,
+        )
+        outputs.append(completed.stdout.strip())
+    return outputs
+
+
+class TestDominantCategoryDeterminism:
+    """`ExperimentResult.attack_category` must not depend on PYTHONHASHSEED.
+
+    Audit finding REPRO-03: the shipped idiom was
+    ``max(set(categories), key=categories.count)``.  On a tie, the winner is
+    whichever element ``set`` iteration visits last, and string hashing is
+    randomised per interpreter, so ``run_full_evaluation.py --seed 42``
+    recorded different categories on different runs.
+    """
+
+    def test_positive_control_old_idiom_is_hash_seed_dependent(self):
+        """POSITIVE CONTROL: the sweep really can detect the defect.
+
+        Runs the *original* buggy expression under the same harness.  If this
+        test ever goes green-by-agreement, the sweep below proves nothing and
+        must be strengthened rather than trusted.
+        """
+        snippet = (
+            f"cats = {_TIED_CATEGORIES!r}\n"
+            "print(max(set(cats), key=cats.count))\n"
+        )
+        outputs = _run_under_hash_seeds(snippet)
+        assert len(set(outputs)) > 1, (
+            "the buggy idiom agreed across every hash seed, so this harness "
+            f"cannot detect nondeterminism; observed {outputs!r}"
+        )
+
+    def test_dominant_category_is_hash_seed_independent(self):
+        """The shipped helper returns the same label under every hash seed."""
+        snippet = (
+            "from evaluation.runner import dominant_category\n"
+            f"print(dominant_category({_TIED_CATEGORIES!r}))\n"
+        )
+        outputs = _run_under_hash_seeds(snippet)
+        assert len(set(outputs)) == 1, f"nondeterministic tie-break: {outputs!r}"
+        # Pin the tie-break outcome, not merely its stability.
+        assert outputs[0] == "direct_injection"
+
+    def test_tie_breaks_lexicographically(self):
+        """Ties resolve to the lexicographically smallest label."""
+        assert dominant_category(["b", "a", "b", "a"]) == "a"
+        assert dominant_category(["zeta", "alpha", "zeta", "alpha"]) == "alpha"
+
+    def test_strict_majority_beats_lexicographic_order(self):
+        """Count dominates order -- guards against a plain ``min``/``sorted``.
+
+        Inverting the sort key or dropping the count term makes this fail.
+        """
+        assert dominant_category(["zzz", "aaa", "zzz"]) == "zzz"
+        assert dominant_category(["aaa", "zzz", "zzz", "aaa", "aaa"]) == "aaa"
+
+    def test_empty_input_returns_unknown(self):
+        assert dominant_category([]) == "unknown"
+
+    def test_run_single_records_the_deterministic_tie_break(self):
+        """The production path, not just the helper, uses the pinned tie-break."""
+        samples = (
+            _make_attack_samples("sybil_attack", n_attacks=6, n_benign=0)
+            + _make_attack_samples("belief_drift", n_attacks=6, n_benign=0)
+        )
+        runner = ExperimentRunner(ExperimentConfig(seed=42))
+        adapter = _SimpleAdapter(name="TieArch", multiplier=1.0)
+
+        result = runner.run_single(adapter, samples, None)
+
+        # 6 vs 6 is an exact tie; "belief_drift" < "sybil_attack".
+        assert result.attack_category == "belief_drift"
+
+        # Reversing the input order must not change the answer.
+        reversed_result = runner.run_single(adapter, list(reversed(samples)), None)
+        assert reversed_result.attack_category == "belief_drift"

@@ -24,7 +24,7 @@ Credible intervals are reported as 95\% Highest Density Intervals (HDI), compute
 
 ## Posterior Detection Rates for All Claimed Results {#sec:posterior-rates}
 
-\cref{tab:bayesian-posteriors} restates each major detection claim from \cref{sec:results} and \cref{sec:parametric-analysis} as a Beta posterior with an explicit 95\% HDI. For the multi-seed analysis, $n$ is the total number of per-seed evaluations ($30 \times 1000 = 30{,}000$ attack instances across seeds) and $k = \bar{p} \cdot n$ is the aggregate detection count implied by the mean detection rate $\bar{p} = 0.448$; reporting a single aggregate posterior in this way is conservative relative to a hierarchical model that would partially pool across seeds.
+\cref{tab:bayesian-posteriors} restates each major detection claim from \cref{sec:results} and \cref{sec:parametric-analysis} as a Beta posterior with an explicit 95\% HDI. For the conservative representative posterior, $n$ is one seed's aggregate evaluation size (1,000 attack instances) and $k = \bar{p} \cdot n = 448$ is the corresponding detection count. The 30-seed run characterizes between-seed variability; it is not pooled as 30,000 independent Bernoulli trials.
 
 **Table: Beta-Binomial posteriors for major detection claims. Prior: $\mathrm{Beta** {#tab:bayesian-posteriors}
 

@@ -4,11 +4,11 @@ Top-level source package for the Cognitive Integrity Framework (CIF) **Paper 2: 
 
 ## Series Position
 
-This is Part 2 of the four-part *Cognitive Security for Multiagent Operators* series. The `src/` code here is the **authoritative implementation** of CIF — Papers 1, 3, and 4 cite this codebase. See [../README.md](../README.md) for the series map.
+This is Part 2 of the three-part *Cognitive Security for Multiagent Operators* series. The `src/` code here is the **authoritative implementation** of CIF — Papers 1 and 3+4 cite this codebase. See [../README.md](../README.md) for the series map.
 
 - **Part 1** \cite{friedman2026cogsec1} — formal foundations (definitions → code here)
 - **Part 3** \cite{friedman2026cogsec3} — practitioner's deployment guidance (refers back to this package)
-- **Part 4** \cite{friedman2026cogsec4} — ten-domain applications (uses the defense vocabulary defined here)
+- **Part 3+4** \cite{friedman2026cogsec3} — ten-domain applications (uses the defense vocabulary defined here)
 
 ## Subpackage Map
 

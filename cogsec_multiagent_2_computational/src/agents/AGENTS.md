@@ -21,4 +21,4 @@ Provides real Ollama-integrated LLM agents and topology-aware orchestration used
 
 ## Cross-Paper Reference
 
-This package is cited by Paper 3 §3 and Paper 4 §2 (see [`../AGENTS.md`](../AGENTS.md) for the full cross-reference discipline).
+This package is cited by the unified Part 3+4 paper §3 and §9 (see [`../AGENTS.md`](../AGENTS.md) for the full cross-reference discipline).

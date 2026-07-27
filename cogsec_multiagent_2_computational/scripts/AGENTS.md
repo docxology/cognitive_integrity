@@ -1,16 +1,16 @@
 # Cognitive Security Scripts — Agent Reference (Paper 2)
 
-Agent guidance for working with the thin-orchestrator scripts in `projects/cognitive_integrity/cogsec_multiagent_2_computational/scripts/`.
+Agent guidance for working with the thin-orchestrator scripts in `cogsec_multiagent_2_computational/scripts/` (standalone repo) or `projects/working/cognitive_integrity/cogsec_multiagent_2_computational/scripts/` (template sidecar).
 
 ## Series Position
 
-Paper 2 (*Computational Validation*) is the second of four papers in the *Cognitive Security for Multiagent Operators* series. Scripts here produce the empirical evidence cited by the sibling papers. See [../README.md](../README.md) for the series map.
+Paper 2 (*Computational Validation*) is the second paper in the three-paper *Cognitive Security for Multiagent Operators* series. Scripts here produce the empirical evidence cited by the sibling papers. See [../README.md](../README.md) for the series map.
 
 When a script changes any result that siblings cite, update:
 
 - `src.manuscript.verifier` expectations
 - `output/data/` headline JSON
-- Sibling cross-references (Part 1 §8, Part 3 §3, Part 4 §2)
+- Sibling cross-references (Part 1 §8 and Part 3+4 §3/§9–§10)
 
 ## Thin-Orchestrator Contract (MANDATORY)
 
@@ -94,10 +94,9 @@ When a script changes headline numbers, agents must update **all** sibling paper
 | Bibkey | Paper | Key Sections that Cite Paper 2 |
 | ------ | ----- | ------------------------------ |
 | `friedman2026cogsec1` | Part 1: Formal Foundations | §8 Discussion, §9 Conclusion |
-| `friedman2026cogsec3` | Part 3: A Qualitative Review for Practitioners | §3 Evidence, §5 Deployment, §6 Case Studies |
-| `friedman2026cogsec4` | Part 4: Applications | §2 Methodology (validation anchor), §4 Discussion |
+| `friedman2026cogsec3` | Part 3+4: Practitioner Guidance + Applications | §2/§3 Evidence and Methodology, §4 Discussion, §5 Deployment, §9–§10 Applications |
 
-**DO NOT** mischaracterize Paper 3 as "biological" or "eusocial" — that content lives in Paper 1's S02 supplementary. Paper 3 is the practitioner's qualitative review.
+**DO NOT** mischaracterize Part 3+4 as "biological" or "eusocial" — that content lives in Part 1's S02 supplementary.
 
 ## CI / Verification
 

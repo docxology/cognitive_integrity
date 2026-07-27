@@ -4,7 +4,7 @@ Tooling for maintaining manuscript integrity in Paper 2 (*Computational Validati
 
 ## Series Position
 
-Part 2 of four in the *Cognitive Security for Multiagent Operators* series. These utilities produce the manuscript-integrity guarantees that allow sibling papers to cite Paper 2's numbers with confidence.
+Part 2 of three in the *Cognitive Security for Multiagent Operators* series. These utilities produce the manuscript-integrity guarantees that allow sibling papers to cite Paper 2's numbers with confidence.
 
 ## Modules
 

@@ -1,6 +1,5 @@
-This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.3.22)  26 APR 2026 19:05
+This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.3.22)  13 JUL 2026 13:53
 entering extended mode
- \write18 enabled.
  %&-line parsing enabled.
 **_combined_manuscript.tex
 (./_combined_manuscript.tex
@@ -736,8 +735,12 @@ File: bkm-dvipdfm.def 2023-12-10 v1.31 bookmark driver for dvipdfm (HO)
 (/usr/local/texlive/2026/texmf-dist/tex/latex/xurl/xurl.sty
 Package: xurl 2022/01/09 v 0.10 modify URL breaks
 )
-Package hyperref Info: Option `colorlinks' set `true' on input line 94.
+Package hyperref Info: Option `colorlinks' set `true' on input line 100.
 
+(/usr/local/texlive/2026/texmf-dist/tex/latex/seqsplit/seqsplit.sty
+Package: seqsplit 2006/08/07 v0.1 Splitting long sequences (DNA, RNA, proteins,
+ etc.) 
+)
 (/usr/local/texlive/2026/texmf-dist/tex/latex/amscls/amsthm.sty
 Package: amsthm 2020/05/29 v2.20.6
 \thm@style=\toks31
@@ -1325,6 +1328,103 @@ File: tikzlibrarybackgrounds.code.tex 2025-08-29 v3.1.11a (3.1.11a)
 \pgf@layerbox@background=\box100
 \pgf@layerboxsaved@background=\box101
 )
+(/usr/local/texlive/2026/texmf-dist/tex/latex/setspace/setspace.sty
+Package: setspace 2022/12/04 v6.7b set line spacing
+)
+(/usr/local/texlive/2026/texmf-dist/tex/latex/geometry/geometry.sty
+Package: geometry 2026/03/07 v6.0 Page Geometry
+
+(/usr/local/texlive/2026/texmf-dist/tex/generic/iftex/ifvtex.sty
+Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
+)
+\Gm@cnth=\count386
+\Gm@cntv=\count387
+\c@Gm@tempcnt=\count388
+\Gm@bindingoffset=\dimen325
+\Gm@wd@mp=\dimen326
+\Gm@odd@mp=\dimen327
+\Gm@even@mp=\dimen328
+\Gm@layoutwidth=\dimen329
+\Gm@layoutheight=\dimen330
+\Gm@layouthoffset=\dimen331
+\Gm@layoutvoffset=\dimen332
+\Gm@dimlist=\toks54
+)
+(/usr/local/texlive/2026/texmf-dist/tex/latex/fancyhdr/fancyhdr.sty
+Package: fancyhdr 2025/02/07 v5.2 Extensive control of page headers and footers
+
+\f@nch@headwidth=\skip76
+\f@nch@offset@elh=\skip77
+\f@nch@offset@erh=\skip78
+\f@nch@offset@olh=\skip79
+\f@nch@offset@orh=\skip80
+\f@nch@offset@elf=\skip81
+\f@nch@offset@erf=\skip82
+\f@nch@offset@olf=\skip83
+\f@nch@offset@orf=\skip84
+\f@nch@height=\skip85
+\f@nch@footalignment=\skip86
+\f@nch@widthL=\skip87
+\f@nch@widthC=\skip88
+\f@nch@widthR=\skip89
+\@temptokenb=\toks55
+)
+(/usr/local/texlive/2026/texmf-dist/tex/latex/tcolorbox/tcolorbox.sty
+Package: tcolorbox 2025/11/28 version 6.9.0 text color boxes
+
+(/usr/local/texlive/2026/texmf-dist/tex/latex/tools/verbatim.sty
+Package: verbatim 2024-01-22 v1.5x LaTeX2e package for verbatim enhancements
+\every@verbatim=\toks56
+\verbatim@line=\toks57
+\verbatim@in@stream=\read3
+)
+(/usr/local/texlive/2026/texmf-dist/tex/latex/environ/environ.sty
+Package: environ 2014/05/04 v0.3 A new way to define environments
+
+(/usr/local/texlive/2026/texmf-dist/tex/latex/trimspaces/trimspaces.sty
+Package: trimspaces 2009/09/17 v1.1 Trim spaces around a token list
+))
+\tcb@titlebox=\box102
+\tcb@upperbox=\box103
+\tcb@lowerbox=\box104
+\tcb@phantombox=\box105
+\c@tcbbreakpart=\count389
+\c@tcblayer=\count390
+\c@tcolorbox@number=\count391
+\l__tcobox_tmpa_box=\box106
+\l__tcobox_tmpa_dim=\dimen333
+\tcb@temp=\box107
+\tcb@temp=\box108
+\tcb@temp=\box109
+\tcb@temp=\box110
+)
+(/usr/local/texlive/2026/texmf-dist/tex/latex/tcolorbox/tcbskins.code.tex
+Library (tcolorbox): 'tcbskins.code.tex' version '6.9.0'
+(/usr/local/texlive/2026/texmf-dist/tex/latex/tikzfill/tikzfill.image.sty
+Package: tikzfill.image 2023/08/08 v1.0.1 Image filling library for TikZ
+
+(/usr/local/texlive/2026/texmf-dist/tex/latex/tikzfill/tikzfill-common.sty
+Package: tikzfill-common 2023/08/08 v1.0.1 Auxiliary code for tikzfill
+)
+(/usr/local/texlive/2026/texmf-dist/tex/latex/tikzfill/tikzlibraryfill.image.co
+de.tex
+File: tikzlibraryfill.image.code.tex 2023/08/08 v1.0.1 Image filling library
+\l__tikzfill_img_box=\box111
+))
+(/usr/local/texlive/2026/texmf-dist/tex/latex/tcolorbox/tcbskinsjigsaw.code.tex
+Library (tcolorbox): 'tcbskinsjigsaw.code.tex' version '6.9.0'
+))
+(/usr/local/texlive/2026/texmf-dist/tex/latex/tcolorbox/tcbbreakable.code.tex
+Library (tcolorbox): 'tcbbreakable.code.tex' version '6.9.0'
+(/usr/local/texlive/2026/texmf-dist/tex/latex/pdfcol/pdfcol.sty
+Package: pdfcol 2022-09-21 v1.7 Handle new color stacks for pdfTeX (HO)
+Package pdfcol Info: Interface disabled because of missing PDF mode of pdfTeX.
+)
+Package pdfcol Info: pdfTeX's color stacks are not available.
+\tcb@testbox=\box112
+\tcb@totalupperbox=\box113
+\tcb@totallowerbox=\box114
+)
 (/usr/local/texlive/2026/texmf-dist/tex/latex/cleveref/cleveref.sty
 Package: cleveref 2018/03/27 v0.21.4 Intelligent cross-referencing
 Package cleveref Info: `hyperref' support loaded on input line 2370.
@@ -1351,68 +1451,296 @@ Package cleveref Info: include cross-reference names in hyperlinks on input lin
 e 7852.
 )
 ==> First Aid for cleveref.sty applied!
-\c@definition=\count386
-\c@theorem=\count387
-\c@property=\count388
-\c@axiom=\count389
-(/usr/local/texlive/2026/texmf-dist/tex/latex/geometry/geometry.sty
-Package: geometry 2026/03/07 v6.0 Page Geometry
+Package hyperref Info: Option `colorlinks' set `true' on input line 171.
+\c@definition=\count392
+\c@theorem=\count393
+\c@property=\count394
+\c@axiom=\count395
+(/usr/local/texlive/2026/texmf-dist/tex/latex/listings/listings.sty
+\lst@mode=\count396
+\lst@gtempboxa=\box115
+\lst@token=\toks58
+\lst@length=\count397
+\lst@currlwidth=\dimen334
+\lst@column=\count398
+\lst@pos=\count399
+\lst@lostspace=\dimen335
+\lst@width=\dimen336
+\lst@newlines=\count400
+\lst@lineno=\count401
+\lst@maxwidth=\dimen337
 
-(/usr/local/texlive/2026/texmf-dist/tex/generic/iftex/ifvtex.sty
-Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
+(/usr/local/texlive/2026/texmf-dist/tex/latex/listings/lstpatch.sty
+File: lstpatch.sty 2025/11/14 1.11b (Carsten Heinz)
 )
-\Gm@cnth=\count390
-\Gm@cntv=\count391
-\c@Gm@tempcnt=\count392
-\Gm@bindingoffset=\dimen325
-\Gm@wd@mp=\dimen326
-\Gm@odd@mp=\dimen327
-\Gm@even@mp=\dimen328
-\Gm@layoutwidth=\dimen329
-\Gm@layoutheight=\dimen330
-\Gm@layouthoffset=\dimen331
-\Gm@layoutvoffset=\dimen332
-\Gm@dimlist=\toks54
+(/usr/local/texlive/2026/texmf-dist/tex/latex/listings/lstmisc.sty
+File: lstmisc.sty 2025/11/14 1.11b (Carsten Heinz)
+\c@lstnumber=\count402
+\lst@skipnumbers=\count403
+\lst@framebox=\box116
 )
-Package hyperref Info: Option `colorlinks' set `true' on input line 208.
+(/usr/local/texlive/2026/texmf-dist/tex/latex/listings/listings.cfg
+File: listings.cfg 2025/11/14 1.11b listings configuration
+))
+Package: listings 2025/11/14 1.11b (Carsten Heinz)
 
-(./_combined_manuscript.aux)
+==> First Aid for listings.sty no longer applied!
+    Expected:
+        2024/09/23 1.10c (Carsten Heinz)
+    but found:
+        2025/11/14 1.11b (Carsten Heinz)
+    so I'm assuming it got fixed.
+
+! LaTeX Error: Missing \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.250 \listoffigures
+                    
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: Missing \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.250 \listoffigures
+                    
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+(./_combined_manuscript.lof)
+\tf@lof=\write4
+\openout4 = `_combined_manuscript.lof'.
+
+ (./_combined_manuscript.lot
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.1 ...00-agent deployment.}}{31}{table.caption.4}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.1 ...00-agent deployment.}}{31}{table.caption.4}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+LaTeX Font Info:    Trying to load font information for U+msa on input line 1.
+(/usr/local/texlive/2026/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Trying to load font information for U+msb on input line 1.
+
+(/usr/local/texlive/2026/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
+! Undefined control sequence.
+\set@color ->\special {color push \current@color 
+                                                 }\aftergroup \reset@color 
+l.1 ...00-agent deployment.}}{31}{table.caption.4}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.2 ... by adversary class.}}{31}{table.caption.5}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.2 ... by adversary class.}}{31}{table.caption.5}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\set@color ->\special {color push \current@color 
+                                                 }\aftergroup \reset@color 
+l.2 ... by adversary class.}}{31}{table.caption.5}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.3 ...critical thresholds.}}{33}{table.caption.6}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.3 ...critical thresholds.}}{33}{table.caption.6}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\set@color ->\special {color push \current@color 
+                                                 }\aftergroup \reset@color 
+l.3 ...critical thresholds.}}{33}{table.caption.6}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.4 ...nd escalation paths.}}{34}{table.caption.7}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.4 ...nd escalation paths.}}{34}{table.caption.7}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\set@color ->\special {color push \current@color 
+                                                 }\aftergroup \reset@color 
+l.4 ...nd escalation paths.}}{34}{table.caption.7}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.5 ...ind specific topics.}}{53}{table.caption.8}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.5 ...ind specific topics.}}{53}{table.caption.8}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\set@color ->\special {color push \current@color 
+                                                 }\aftergroup \reset@color 
+l.5 ...ind specific topics.}}{53}{table.caption.8}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+)
+\tf@lot=\write5
+\openout5 = `_combined_manuscript.lot'.
+
+ (./_combined_manuscript.aux
+
+LaTeX Warning: Label `sec:reading-companion' multiply defined.
+
+
+LaTeX Warning: Label `sec:reading-companion@cref' multiply defined.
+
+)
 \openout1 = `_combined_manuscript.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 210.
-LaTeX Font Info:    ... okay on input line 210.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 210.
-LaTeX Font Info:    ... okay on input line 210.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 210.
-LaTeX Font Info:    ... okay on input line 210.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 210.
-LaTeX Font Info:    ... okay on input line 210.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 210.
-LaTeX Font Info:    ... okay on input line 210.
-LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 210.
-LaTeX Font Info:    ... okay on input line 210.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 210.
-LaTeX Font Info:    ... okay on input line 210.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 210.
-LaTeX Font Info:    ... okay on input line 210.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 210.
-LaTeX Font Info:    ... okay on input line 210.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 210.
-LaTeX Font Info:    ... okay on input line 210.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 253.
+LaTeX Font Info:    ... okay on input line 253.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 253.
+LaTeX Font Info:    ... okay on input line 253.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 253.
+LaTeX Font Info:    ... okay on input line 253.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 253.
+LaTeX Font Info:    ... okay on input line 253.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 253.
+LaTeX Font Info:    ... okay on input line 253.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 253.
+LaTeX Font Info:    ... okay on input line 253.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 253.
+LaTeX Font Info:    ... okay on input line 253.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 253.
+LaTeX Font Info:    ... okay on input line 253.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 253.
+LaTeX Font Info:    ... okay on input line 253.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 253.
+LaTeX Font Info:    ... okay on input line 253.
 LaTeX Font Info:    Overwriting math alphabet `\mathrm' in version `normal'
-(Font)                  OT1/cmr/m/n --> TU/lmr/m/n on input line 210.
+(Font)                  OT1/cmr/m/n --> TU/lmr/m/n on input line 253.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
-(Font)                  OT1/cmr/m/it --> TU/lmr/m/it on input line 210.
+(Font)                  OT1/cmr/m/it --> TU/lmr/m/it on input line 253.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
-(Font)                  OT1/cmr/bx/n --> TU/lmr/bx/n on input line 210.
+(Font)                  OT1/cmr/bx/n --> TU/lmr/bx/n on input line 253.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
-(Font)                  OT1/cmss/m/n --> TU/lmss/m/n on input line 210.
+(Font)                  OT1/cmss/m/n --> TU/lmss/m/n on input line 253.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  OT1/cmss/bx/n --> TU/lmss/bx/n on input line 210.
+(Font)                  OT1/cmss/bx/n --> TU/lmss/bx/n on input line 253.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
-(Font)                  OT1/cmtt/m/n --> TU/lmtt/m/n on input line 210.
+(Font)                  OT1/cmtt/m/n --> TU/lmtt/m/n on input line 253.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  OT1/cmtt/m/n --> TU/lmtt/bx/n on input line 210.
+(Font)                  OT1/cmtt/m/n --> TU/lmtt/bx/n on input line 253.
 
 Package fontspec Info: 
 (fontspec)             latinmodern-math scale = 0.9999964596882403.
@@ -1443,7 +1771,7 @@ pt=math;language=dflt;"
 pt=math;language=dflt;"
 
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(0)/m/n' will be
-(Font)              scaled to size 10.0pt on input line 210.
+(Font)              scaled to size 10.0pt on input line 253.
 
 Package fontspec Info: 
 (fontspec)             latinmodern-math scale = 0.9999964596882403.
@@ -1486,18 +1814,18 @@ ath.otf]/OT:script=math;language=dflt;+ssty=1;"
 pt=math;language=dflt;"
 
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 10.0pt on input line 210.
+(Font)              scaled to size 10.0pt on input line 253.
 LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
-(Font)              `operators' in the math version `normal' on input line 210.
+(Font)              `operators' in the math version `normal' on input line 253.
 
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
 (Font)                  OT1/cmr/m/n --> TU/latinmodern-math.otf(1)/m/n on input
- line 210.
+ line 253.
 LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
-(Font)              `operators' in the math version `bold' on input line 210.
+(Font)              `operators' in the math version `bold' on input line 253.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
 (Font)                  OT1/cmr/bx/n --> TU/latinmodern-math.otf(1)/b/n on inpu
-t line 210.
+t line 253.
 
 Package fontspec Info: 
 (fontspec)             latinmodern-math scale = 0.9999964596882403.
@@ -1571,15 +1899,15 @@ ript=math;language=dflt;"<6-8.5>s*[1.000096459334209]"[latinmodern-math.otf]/OT
 t=math;language=dflt;"
 
 LaTeX Font Info:    Encoding `OMS' has changed to `TU' for symbol font
-(Font)              `symbols' in the math version `normal' on input line 210.
+(Font)              `symbols' in the math version `normal' on input line 253.
 LaTeX Font Info:    Overwriting symbol font `symbols' in version `normal'
 (Font)                  OMS/cmsy/m/n --> TU/latinmodern-math.otf(2)/m/n on inpu
-t line 210.
+t line 253.
 LaTeX Font Info:    Encoding `OMS' has changed to `TU' for symbol font
-(Font)              `symbols' in the math version `bold' on input line 210.
+(Font)              `symbols' in the math version `bold' on input line 253.
 LaTeX Font Info:    Overwriting symbol font `symbols' in version `bold'
 (Font)                  OMS/cmsy/b/n --> TU/latinmodern-math.otf(2)/b/n on inpu
-t line 210.
+t line 253.
 
 Package fontspec Info: 
 (fontspec)             latinmodern-math scale = 0.9999964596882403.
@@ -1648,16 +1976,16 @@ pt=math;language=dflt;"
 
 LaTeX Font Info:    Encoding `OMX' has changed to `TU' for symbol font
 (Font)              `largesymbols' in the math version `normal' on input line 2
-10.
+53.
 LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `normal'
 (Font)                  OMX/cmex/m/n --> TU/latinmodern-math.otf(3)/m/n on inpu
-t line 210.
+t line 253.
 LaTeX Font Info:    Encoding `OMX' has changed to `TU' for symbol font
-(Font)              `largesymbols' in the math version `bold' on input line 210
+(Font)              `largesymbols' in the math version `bold' on input line 253
 .
 LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
 (Font)                  OMX/cmex/m/n --> TU/latinmodern-math.otf(3)/b/n on inpu
-t line 210.
+t line 253.
 
 
 Package unicode-math Warning: Using \overbracket and \underbracket from
@@ -1677,13 +2005,15 @@ Package unicode-math Warning: I'm going to overwrite the following commands
 (unicode-math)                colon-like commands, using them will lead to
 (unicode-math)                inconsistencies.
 
-LaTeX Info: Redefining \microtypecontext on input line 210.
-Package microtype Info: Applying patch `item' on input line 210.
-Package microtype Info: Applying patch `toc' on input line 210.
-Package microtype Info: Applying patch `eqnum' on input line 210.
-Package microtype Info: Applying patch `footnote' on input line 210.
-Package microtype Info: Applying patch `verbatim' on input line 210.
-LaTeX Info: Redefining \microtypesetup on input line 210.
+LaTeX Info: Redefining \microtypecontext on input line 253.
+Package microtype Info: Applying patch `item' on input line 253.
+Package microtype Info: Applying patch `toc' on input line 253.
+Package microtype Info: Applying patch `eqnum' on input line 253.
+
+Package microtype Warning: Unable to apply patch `footnote' on input line 253.
+
+Package microtype Info: Applying patch `verbatim' on input line 253.
+LaTeX Info: Redefining \microtypesetup on input line 253.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using protrusion set `basicmath'.
 Package microtype Info: No adjustment of tracking.
@@ -1702,8 +2032,9 @@ Package footnotehyper Info: Using the \@makefntext{} approach (see doc).
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: float package is loaded.
 Package caption Info: hyperref package is loaded.
+Package caption Info: listings package is loaded.
 Package caption Info: End \AtBeginDocument code.
-Package hyperref Info: Link coloring ON on input line 210.
+Package hyperref Info: Link coloring ON on input line 253.
 
 Package pgfplots notification 'compat/show suggested version=true': document ha
 s been generated with the most recent feature set (\pgfplotsset{compat=1.18}).
@@ -1712,19 +2043,19 @@ s been generated with the most recent feature set (\pgfplotsset{compat=1.18}).
 *geometry* detected driver: xetex
 *geometry* verbose mode - [ preamble ] result:
 * driver: xetex
-* paper: <default>
+* paper: a4paper
 * layout: <same size as paper>
 * layoutoffset:(h,v)=(0.0pt,0.0pt)
 * modes: 
-* h-part:(L,W,R)=(72.26999pt, 469.75502pt, 72.26999pt)
-* v-part:(T,H,B)=(72.26999pt, 650.43001pt, 72.26999pt)
-* \paperwidth=614.295pt
-* \paperheight=794.96999pt
-* \textwidth=469.75502pt
-* \textheight=650.43001pt
-* \oddsidemargin=0.0pt
-* \evensidemargin=0.0pt
-* \topmargin=-37.0pt
+* h-part:(L,W,R)=(71.13188pt, 455.24411pt, 71.13188pt)
+* v-part:(T,H,B)=(71.13188pt, 702.78308pt, 71.13188pt)
+* \paperwidth=597.50787pt
+* \paperheight=845.04684pt
+* \textwidth=455.24411pt
+* \textheight=702.78308pt
+* \oddsidemargin=-1.1381pt
+* \evensidemargin=-1.1381pt
+* \topmargin=-38.1381pt
 * \headheight=12.0pt
 * \headsep=25.0pt
 * \topskip=10.0pt
@@ -1742,42 +2073,10 @@ s been generated with the most recent feature set (\pgfplotsset{compat=1.18}).
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 12.0pt on input line 213.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 8.0pt on input line 213.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 6.0pt on input line 213.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 12.0011pt on input line 213.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 8.00073pt on input line 213.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 6.00055pt on input line 213.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 11.99872pt on input line 213.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 7.99915pt on input line 213.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 5.99936pt on input line 213.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 213
-.
-(/usr/local/texlive/2026/texmf-dist/tex/latex/amsfonts/umsa.fd
-File: umsa.fd 2013/01/14 v3.01 AMS symbols A
-)
-(/usr/local/texlive/2026/texmf-dist/tex/latex/microtype/mt-msa.cfg
-File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
-)
-LaTeX Font Info:    Trying to load font information for U+msb on input line 213
-.
+\c@lstlisting=\count404
+[1
 
-(/usr/local/texlive/2026/texmf-dist/tex/latex/amsfonts/umsb.fd
-File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-)
-(/usr/local/texlive/2026/texmf-dist/tex/latex/microtype/mt-msb.cfg
-File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
-)
-(./_combined_manuscript.toc
+] [1] (./_combined_manuscript.toc
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
 (Font)              scaled to size 7.0pt on input line 2.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
@@ -1794,183 +2093,271 @@ LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
 (Font)              scaled to size 6.99925pt on input line 2.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
 (Font)              scaled to size 4.99947pt on input line 2.
- [1
 
-] [2])
-\tf@toc=\write4
-\openout4 = `_combined_manuscript.toc'.
+(/usr/local/texlive/2026/texmf-dist/tex/latex/microtype/mt-msa.cfg
+File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
+)
+(/usr/local/texlive/2026/texmf-dist/tex/latex/microtype/mt-msb.cfg
+File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
+) [1]
+[2] [3] [4] [5])
+\tf@toc=\write6
+\openout6 = `_combined_manuscript.toc'.
 
- [3] [4] [5] [6] [7] [8]
-Missing character: There is no ₅ (U+2085) in font [lmroman10-bold]:mapping=tex-
-text;!
-[9] [10]
-Missing character: There is no ₁ (U+2081) in font [lmroman10-regular]:mapping=t
-ex-text;!
-Missing character: There is no ₄ (U+2084) in font [lmroman10-regular]:mapping=t
-ex-text;!
-Missing character: There is no ₅ (U+2085) in font [lmroman10-regular]:mapping=t
-ex-text;!
-Missing character: There is no ∼ (U+223C) in font [lmroman10-regular]:mapping=t
-ex-text;!
-Missing character: There is no ₁ (U+2081) in font [lmroman10-regular]:mapping=t
-ex-text;!
-Missing character: There is no ₂ (U+2082) in font [lmroman10-regular]:mapping=t
-ex-text;!
-Missing character: There is no ₄ (U+2084) in font [lmroman10-regular]:mapping=t
-ex-text;!
-Missing character: There is no ₅ (U+2085) in font [lmroman10-regular]:mapping=t
-ex-text;!
-[11] [12] [13] [14] [15]
-Overfull \hbox (21.72433pt too wide) in paragraph at lines 1226--1230
-[]\TU/lmr/bx/n/10 Scope\TU/lmr/m/n/10 : \TU/lmr/m/it/10 “I only modify files in
- \TU/lmtt/m/it/10 [APPROVED_PATHS]\TU/lmr/m/it/10 .” \TU/lmr/m/n/10 / \TU/lmr/m
-/it/10 “I only process documents from \TU/lmtt/m/it/10 [APPROVED_SOURCES]\TU/lm
-r/m/it/10 .” 
+ [6] [7] [8]
+ignored: Infinite glue shrinkage found in box being split [9] [10]
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
+(Font)              scaled to size 12.0pt on input line 550.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
+(Font)              scaled to size 8.0pt on input line 550.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
+(Font)              scaled to size 6.0pt on input line 550.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
+(Font)              scaled to size 12.0011pt on input line 550.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
+(Font)              scaled to size 8.00073pt on input line 550.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
+(Font)              scaled to size 6.00055pt on input line 550.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
+(Font)              scaled to size 11.99872pt on input line 550.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
+(Font)              scaled to size 7.99915pt on input line 550.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
+(Font)              scaled to size 5.99936pt on input line 550.
+ [11] [12] [13]
+Underfull \hbox (badness 1515) in paragraph at lines 801--810
+[]\TU/lmr/m/n/10 Part 2 also provides a \TU/lmr/bx/n/10 composable visualizatio
+n engine \TU/lmr/m/n/10 (\TU/lmtt/m/n/10 DefenseGraph\TU/lmr/m/n/10 , \TU/lmtt/
+m/n/10 CategoryDiagram\TU/lmr/m/n/10 ,
  []
 
-[16] [17] [18] [19]
-ignored: Infinite glue shrinkage found in box being split [20] [21] [
-22] [23] [24] [25]
-Overfull \hbox (101.30609pt too wide) in paragraph at lines 1992--2005
+[14] [15] [16] [17]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 1058.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 1090.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 1120.
+
+[18]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 1149.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 1177.
+
+[19] [20]
+Underfull \hbox (badness 1365) in paragraph at lines 1344--1348
+[]\TU/lmr/bx/n/10 Scope\TU/lmr/m/n/10 : \TU/lmr/m/it/10 “I only modify files in
+ \TU/lmtt/m/it/10 [APPROVED_PATHS]\TU/lmr/m/it/10 .” \TU/lmr/m/n/10 / \TU/lmr/m
+/it/10 “I only process documents from
+ []
+
+[21] [22] [23] [24]
+ignored: Infinite glue shrinkage found in box being split [25]
+ignored: Infinit
+e glue shrinkage found in box being split [26] [27]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 1910.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 1955.
+
+[28]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 2002.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 2052.
+
+[29]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 2099.
+
+[30]
+Overfull \hbox (138.877pt too wide) in paragraph at lines 2172--2185
  [][] 
  []
 
-Missing character: There is no ≈ (U+2248) in font [lmroman10-regular]:mapping=t
-ex-text;!
 
-Underfull \hbox (badness 1478) in paragraph at lines 2030--2031
+Underfull \hbox (badness 1478) in paragraph at lines 2210--2211
 []|\TU/lmr/m/n/10 Data breach cost (IBM 2024:
  []
 
 
-Underfull \hbox (badness 6641) in paragraph at lines 2033--2034
+Underfull \hbox (badness 6641) in paragraph at lines 2213--2214
 []|\TU/lmr/m/n/10 Scale-dependent; financial or
  []
 
 
-Overfull \hbox (5.1918pt too wide) in paragraph at lines 2026--2037
+Overfull \hbox (19.70271pt too wide) in paragraph at lines 2206--2217
  [][] 
  []
 
-[26]
-Underfull \hbox (badness 1728) in paragraph at lines 2058--2063
-[]\TU/lmr/bx/n/10 Low-severity scenario\TU/lmr/m/n/10 : Annual CIF cost $100K, 
-mean attack cost $50K. Break-even at
- []
-
-[27]
-Underfull \hbox (badness 10000) in paragraph at lines 2171--2171
+[31] [32]
+Underfull \hbox (badness 10000) in paragraph at lines 2350--2350
 []|\TU/lmr/m/n/10 Firewall rejec-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 2172--2172
+Underfull \hbox (badness 10000) in paragraph at lines 2351--2351
 []|\TU/lmr/m/n/10 Trust matrix
  []
 
 
-Underfull \hbox (badness 5954) in paragraph at lines 2172--2172
+Underfull \hbox (badness 5954) in paragraph at lines 2351--2351
 []|\TU/lmr/m/n/10 Average pairwise
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 2173--2173
+Underfull \hbox (badness 10000) in paragraph at lines 2352--2352
 []|\TU/lmr/m/n/10 Per-agent $[][]$
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 2174--2174
+Underfull \hbox (badness 10000) in paragraph at lines 2353--2353
 \TU/lmr/m/n/10 interaction pat-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 2175--2175
+Underfull \hbox (badness 10000) in paragraph at lines 2354--2354
 []|\TU/lmr/m/n/10 False positive
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 2175--2175
+Underfull \hbox (badness 10000) in paragraph at lines 2354--2354
 []|\TU/lmr/m/n/10 % of reviewed
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 2175--2175
+Underfull \hbox (badness 10000) in paragraph at lines 2354--2354
 \TU/lmr/m/n/10 alerts confirmed
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 2176--2176
+Underfull \hbox (badness 10000) in paragraph at lines 2355--2355
 []|\TU/lmr/m/n/10 Consensus la-
  []
 
 
-Underfull \hbox (badness 1831) in paragraph at lines 2176--2176
+Underfull \hbox (badness 1831) in paragraph at lines 2355--2355
 []|\TU/lmr/m/n/10 95th pct consen-
  []
 
 
-Overfull \hbox (72.75624pt too wide) in paragraph at lines 2167--2179
+Overfull \hbox (87.26715pt too wide) in paragraph at lines 2346--2358
  [][] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 2201--2201
+Underfull \hbox (badness 10000) in paragraph at lines 2380--2380
 []|\TU/lmr/m/n/10 Two+ metrics in
  []
 
 
-Underfull \hbox (badness 7851) in paragraph at lines 2201--2201
+Underfull \hbox (badness 7851) in paragraph at lines 2380--2380
 []|\TU/lmr/m/n/10 Agent quarantine +
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 2202--2202
+Underfull \hbox (badness 10000) in paragraph at lines 2381--2381
 []|\TU/lmr/m/n/10 Playbook execution
  []
 
-[28] [29] [30] [31] [32]
-ignored: Infinite glue shrinkage found in box being split [33] [
-34] [35] [36] [37] [38] [39] [40]
-Missing character: There is no ₁ (U+2081) in font [lmroman10-regular]:mapping=t
-ex-text;!
-Missing character: There is no ₃ (U+2083) in font [lmroman10-regular]:mapping=t
-ex-text;!
-Missing character: There is no ₄ (U+2084) in font [lmroman10-regular]:mapping=t
-ex-text;!
-Missing character: There is no ₅ (U+2085) in font [lmroman10-regular]:mapping=t
-ex-text;!
-[41] [42] [43]
-Overfull \hbox (162.5959pt too wide) in paragraph at lines 3372--3376
-\TU/lmr/m/n/10 For complete formal definitions of all CIF notation, see Part 1 
-supplementary \TU/lmr/bx/n/10 S03 \TU/lmr/m/n/10 (\TU/lmtt/m/n/10 cogsec_multia
-gent_1_theory/manuscript/S03_notation.md
+[33] [34] [35] [36] [37] [38] [39]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 2822.
+
+[40]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 2886.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 2886.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 2966.
+
+[41] [42] [43] [44] [45] [46] [47] [48] [49] [50] [51]
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
+(Font)              scaled to size 9.0pt on input line 3714.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
+(Font)              scaled to size 9.00082pt on input line 3714.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
+(Font)              scaled to size 8.99904pt on input line 3714.
+
+Underfull \hbox (badness 8113) in paragraph at lines 3718--3718
+[]|\TU/lmr/m/n/9 Formal definition of the cognitive state
  []
 
-[44]
-! Undefined control sequence.
-l.3397 \printbibliography
-                         
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
 
-[45] (./_combined_manuscript.bbl) [46
+Underfull \hbox (badness 2119) in paragraph at lines 3719--3719
+[]|\TU/lmr/m/n/9 Trust Calculus, $[][][][][][]$ decay theorem, no-
+ []
 
-] (./_combined_manuscript.aux)
+
+Underfull \hbox (badness 10000) in paragraph at lines 3723--3723
+[]|\TU/lmr/m/n/9 Model-checked safety invariants +
+ []
+
+
+Underfull \hbox (badness 1769) in paragraph at lines 3728--3728
+[]|\TU/lmr/m/n/9 Game-theoretic adversarial analysis / Nash
+ []
+
+[52] [53]
+ignored: Infinite glue shrinkage found in box being split [54]
+ignored: Infinite glue shr
+inkage found in box being split [55] [56] [57] [58] [59] [60] [61] [62]
+ignored: Infinite
+ glue shrinkage found in box being split [63] [64] [65] [66]
+[67] [68] [69] [70]
+ignored: Infinite glue shrinkage found in box being split [71] [72] [
+73] [74] [75] [76] [77] [78] [79]
+ignored: Infinite glue shrinkage found in box being spl
+it [80] [81]
+[82] [83] [84] [85] [86] [87] [88] [89] [90] [91] [92] [93] [94]
+Underfull \hbox (badness 1178) in paragraph at lines 6826--6835
+\TU/lmr/m/n/10 CVE-2025-53773 documented a critical vulnerability in GitHub Cop
+ilot’s agent mode [][]Raz and
+ []
+
+[95] [96] [97] (./_combined_manuscript.bbl [98
+
+] [99] [100] [101]) [102]
+(./_combined_manuscript.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
  ***********
+
+
+LaTeX Warning: There were multiply-defined labels.
+
  ) 
 Here is how much of TeX's memory you used:
- 46569 strings out of 468168
- 1082843 string characters out of 5432815
- 1757852 words of memory out of 5000000
- 74585 multiletter control sequences out of 15000+600000
- 633124 words of font info for 93 fonts, out of 8000000 for 9000
+ 52409 strings out of 468168
+ 1225160 string characters out of 5432815
+ 1949149 words of memory out of 5000000
+ 80343 multiletter control sequences out of 15000+600000
+ 634587 words of font info for 107 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 90i,13n,114p,1017b,535s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 90i,13n,114p,1017b,666s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on _combined_manuscript.pdf (46 pages).
+Output written on _combined_manuscript.pdf (104 pages).

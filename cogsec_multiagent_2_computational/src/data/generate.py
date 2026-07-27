@@ -21,14 +21,25 @@ a single seed.
    - Detection matrix → ``python scripts/run_full_evaluation.py --mode simulation``
    - Ablation study   → ``python scripts/run_ablation.py``
    - Statistics       → ``python scripts/run_statistical_analysis.py``
+   - Sensitivity      → ``python scripts/run_sensitivity_analysis.py``
    - All at once      → ``make data`` (see Makefile)
+
+Anti-clobber guard
+------------------
+:meth:`DataGenerator.generate_all` never overwrites an authoritative result
+artifact.  The decision is made from the *provenance recorded in the artifact
+itself* (:func:`classify_provenance`), not from an out-of-band sentinel file,
+so the protection survives a fresh clone.  The rule is fail-safe: an
+authoritative artifact is overwritten only when it can be positively proven
+synthetic.  Files whose provenance is missing or unrecognised are preserved.
 """
 
 from __future__ import annotations
 
+import hashlib
 import json
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any, Dict, Optional, Union
 
 import numpy as np
 
@@ -38,6 +49,170 @@ _ARCHITECTURES = [
     "Claude Code", "AutoGPT", "CrewAI", "LangGraph",
 ]
 _CATEGORIES = ["Injection", "Trust Exploitation", "Belief Manipulation", "Coordination"]
+
+# ---------------------------------------------------------------------------
+# Provenance vocabulary
+# ---------------------------------------------------------------------------
+
+#: Artifact was produced by a real pipeline/experiment script.
+DATA_ORIGIN_REAL = "real_pipeline"
+#: Artifact was produced by :class:`DataGenerator` (schema placeholder only).
+DATA_ORIGIN_SYNTHETIC = "synthetic_schema"
+#: Artifact carries no recognisable provenance.
+DATA_ORIGIN_UNKNOWN = "unknown"
+
+#: Provenance keys every producer should emit.
+PROVENANCE_KEYS = ("data_origin", "source_script", "generated_by", "seed")
+
+#: Sidecar-only key binding a sidecar to the exact artifact bytes it describes.
+SIDECAR_HASH_KEY = "artifact_sha256"
+
+_KNOWN_ORIGINS = frozenset({DATA_ORIGIN_REAL, DATA_ORIGIN_SYNTHETIC})
+
+#: Result artifacts that may hold real experimental output and must therefore
+#: never be silently replaced by :class:`DataGenerator` placeholders.
+AUTHORITATIVE_RESULT_NAMES = frozenset({
+    "full_evaluation_results",
+    "ablation_results",
+    "colony_results",
+    "cross_validation_results",
+    "multi_seed_results",
+    "statistical_results",
+    "sensitivity_results",
+})
+
+#: Legacy out-of-band sentinel.  Kept as an additional override for existing
+#: working trees; the provenance-based guard no longer depends on it.
+REAL_DATA_MARKER = ".real_data_marker"
+
+_SYNTHETIC_SOURCE_SCRIPT = "scripts/generate_all_data.py"
+_SYNTHETIC_GENERATED_BY = "src.data.generate.DataGenerator.generate_all"
+
+
+def provenance_sidecar_path(path: Union[str, Path]) -> Path:
+    """Return the sidecar provenance path for a data artifact.
+
+    List-shaped artifacts (e.g. ``full_evaluation_results.json``) cannot carry
+    inline provenance keys without changing their schema, so their provenance
+    lives in ``<stem>.provenance.json`` next to them.
+
+    Parameters
+    ----------
+    path : str or Path
+        Path of the data artifact.
+
+    Returns
+    -------
+    Path
+    """
+    p = Path(path)
+    return p.with_name(f"{p.stem}.provenance.json")
+
+
+def _load_json_or_none(path: Path) -> Any:
+    """Load JSON, returning ``None`` for a missing or unparseable file."""
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except (OSError, ValueError):
+        return None
+
+
+def _extract_provenance(payload: Any) -> Dict[str, Any]:
+    """Pull the provenance keys out of a decoded JSON payload."""
+    if not isinstance(payload, dict):
+        return {}
+    return {k: payload[k] for k in PROVENANCE_KEYS if k in payload}
+
+
+def _sha256_of(path: Path) -> str:
+    """Hex SHA-256 of a file's bytes ("" when unreadable)."""
+    try:
+        return hashlib.sha256(path.read_bytes()).hexdigest()
+    except OSError:
+        return ""
+
+
+def _sidecar_provenance(artifact: Path) -> Dict[str, Any]:
+    """Read a sidecar, rejecting it when it no longer describes the artifact.
+
+    A sidecar written by an earlier ``DataGenerator`` run would otherwise
+    outlive the placeholder it described and mislabel a real artifact that a
+    pipeline script later wrote in its place — reintroducing exactly the
+    clobber this guard exists to prevent.  Sidecars are therefore bound to
+    the artifact by content hash.
+    """
+    payload = _load_json_or_none(provenance_sidecar_path(artifact))
+    if not isinstance(payload, dict):
+        return {}
+
+    recorded = payload.get(SIDECAR_HASH_KEY)
+    if recorded is None:
+        # No integrity binding.  Trusting a "real" claim only ever preserves
+        # data, so it is safe; trusting an unbound "synthetic" claim could
+        # destroy data, so it is refused.
+        if payload.get("data_origin") != DATA_ORIGIN_REAL:
+            return {}
+    elif recorded != _sha256_of(artifact):
+        return {}
+
+    return _extract_provenance(payload)
+
+
+def read_provenance(path: Union[str, Path]) -> Dict[str, Any]:
+    """Read the provenance block recorded for a data artifact.
+
+    Looks for inline provenance keys first, then falls back to the
+    ``<stem>.provenance.json`` sidecar used by list-shaped artifacts.
+
+    Parameters
+    ----------
+    path : str or Path
+        Path of the data artifact (not the sidecar).
+
+    Returns
+    -------
+    dict
+        Subset of :data:`PROVENANCE_KEYS` found.  Empty if the artifact does
+        not exist or records nothing.
+    """
+    p = Path(path)
+    if not p.is_file():
+        return {}
+
+    inline = _extract_provenance(_load_json_or_none(p))
+    if inline.get("data_origin") in _KNOWN_ORIGINS:
+        return inline
+
+    sidecar = _sidecar_provenance(p)
+    if sidecar.get("data_origin") in _KNOWN_ORIGINS:
+        return sidecar
+
+    return inline or sidecar
+
+
+def classify_provenance(path: Union[str, Path]) -> str:
+    """Classify a data artifact as real, synthetic, or unknown.
+
+    Parameters
+    ----------
+    path : str or Path
+        Path of the data artifact.
+
+    Returns
+    -------
+    str
+        One of :data:`DATA_ORIGIN_REAL`, :data:`DATA_ORIGIN_SYNTHETIC`, or
+        :data:`DATA_ORIGIN_UNKNOWN`.  Anything that cannot be positively
+        proven is ``unknown`` — callers must treat that as "do not clobber".
+    """
+    origin = read_provenance(path).get("data_origin")
+    return origin if origin in _KNOWN_ORIGINS else DATA_ORIGIN_UNKNOWN
+
+
+def is_synthetic_artifact(path: Union[str, Path]) -> bool:
+    """Return ``True`` only when *path* is provably ``synthetic_schema``."""
+    return classify_provenance(path) == DATA_ORIGIN_SYNTHETIC
 
 
 class DataGenerator:
@@ -79,7 +254,11 @@ class DataGenerator:
             "colony": self.generate_colony_data(),
         }
         for name, data in datasets.items():
-            self.save(data.to_dict(), f"{name}_data.json")
+            self.save(
+                data.to_dict(),
+                f"{name}_data.json",
+                provenance=self.provenance(),
+            )
 
         # Pipeline-format result files for visualization modules
         pipeline_datasets = {
@@ -92,10 +271,59 @@ class DataGenerator:
             "multi_seed_results": self.generate_multi_seed_results(),
         }
         for name, data in pipeline_datasets.items():
-            self.save(data, f"{name}.json")
+            if self.should_preserve(name):
+                continue
+            self.save(data, f"{name}.json", provenance=self.provenance())
         datasets.update(pipeline_datasets)
 
         return datasets
+
+    # ------------------------------------------------------------------
+    # Provenance / anti-clobber guard
+    # ------------------------------------------------------------------
+
+    def provenance(self) -> Dict[str, Any]:
+        """Return the provenance block stamped on every generated artifact.
+
+        Returns
+        -------
+        dict
+            ``data_origin``, ``source_script``, ``generated_by``, ``seed``.
+        """
+        return {
+            "data_origin": DATA_ORIGIN_SYNTHETIC,
+            "source_script": _SYNTHETIC_SOURCE_SCRIPT,
+            "generated_by": _SYNTHETIC_GENERATED_BY,
+            "seed": self.seed,
+        }
+
+    def should_preserve(self, name: str) -> bool:
+        """Decide whether an existing artifact must not be overwritten.
+
+        An authoritative artifact is overwritten only when it can be
+        *positively proven* synthetic.  Missing or unrecognised provenance is
+        treated as "may be real" and therefore preserved.
+
+        Parameters
+        ----------
+        name : str
+            Artifact base name without the ``.json`` suffix, e.g.
+            ``"statistical_results"``.
+
+        Returns
+        -------
+        bool
+            ``True`` when :meth:`generate_all` must skip writing the file.
+        """
+        if name not in AUTHORITATIVE_RESULT_NAMES:
+            return False
+        # Legacy out-of-band override, retained for existing working trees.
+        if (self.output_dir / REAL_DATA_MARKER).exists():
+            return True
+        path = self.output_dir / f"{name}.json"
+        if not path.is_file():
+            return False
+        return not is_synthetic_artifact(path)
 
     def generate_detection_data(self) -> DetectionData:
         """Generate 4x4 detection matrix data.
@@ -227,7 +455,9 @@ class DataGenerator:
     # ------------------------------------------------------------------
 
     def generate_full_evaluation_results(self) -> list:
-        """Generate full evaluation results matching run_full_evaluation.py output.
+        """Generate synthetic schema-compliant placeholder data.
+
+        Run scripts/run_full_evaluation.py for empirically-measured values.
 
         Produces a list of per-architecture × per-category evaluation
         rows with detection rates, confusion counts, and latency.
@@ -344,6 +574,7 @@ class DataGenerator:
             synergies.append({"a": a, "b": b, "synergy": base_syn})  # deterministic
 
         return {
+            **self.provenance(),
             "component_removal": removal,
             "minimal_forward": forward,
             "minimal_backward": backward,
@@ -434,13 +665,21 @@ class DataGenerator:
         }
 
         return {
+            **self.provenance(),
             "sweeps": sweeps,
             "sensitivity_index": sensitivity_index,
             "grid_best": grid_best,
         }
 
     def generate_cross_validation_results(self) -> Dict[str, Any]:
-        """Generate cross-validation results matching run_cross_validation.py output.
+        """Generate synthetic schema-compliant placeholder data.
+
+        Run scripts/run_cross_validation.py for empirically-measured values.
+
+        This method is intentionally not an authoritative experiment.  The
+        real corpus-backed result is produced by
+        ``scripts/run_cross_validation.py``; callers must not use this method
+        for manuscript claims.
 
         Returns
         -------
@@ -471,6 +710,7 @@ class DataGenerator:
             f1s.append(f1)
 
         return {
+            **self.provenance(),
             "k": k,
             "folds": folds,
             "mean_tpr": float(np.mean(tprs)),
@@ -553,6 +793,7 @@ class DataGenerator:
         ]
 
         return {
+            **self.provenance(),
             "h1": h1,
             "h2": h2,
             "h3": h3,
@@ -566,7 +807,14 @@ class DataGenerator:
         }
 
     def generate_multi_seed_results(self) -> Dict[str, Any]:
-        """Generate multi-seed stability results matching run_multi_seed.py output.
+        """Generate synthetic schema-compliant placeholder data.
+
+        Run scripts/run_multi_seed.py for empirically-measured values.
+
+        This method is intentionally not an authoritative experiment.  The
+        real corpus-backed result is produced by
+        ``scripts/run_multi_seed.py``; callers must not use this method for
+        manuscript claims.
 
         Returns
         -------
@@ -634,6 +882,7 @@ class DataGenerator:
             per_cat_cv[cat] = float(np.std(arr) / np.mean(arr)) if np.mean(arr) > 0 else 0.0
 
         return {
+            **self.provenance(),
             "n_seeds": n_seeds,
             "overall_cv": overall_cv,
             "cv_threshold": cv_threshold,
@@ -647,15 +896,24 @@ class DataGenerator:
     # Persistence
     # ------------------------------------------------------------------
 
-    def save(self, data: "Any", filename: str) -> str:
-        """Save data dictionary to JSON.
+    def save(
+        self,
+        data: "Any",
+        filename: str,
+        provenance: Optional[Dict[str, Any]] = None,
+    ) -> str:
+        """Save data to JSON, optionally stamping provenance.
 
         Parameters
         ----------
-        data : dict
+        data : dict or list
             Data to serialise.
         filename : str
             Output filename (relative to ``output_dir``).
+        provenance : dict, optional
+            Provenance block.  Merged inline when *data* is a mapping;
+            written to a ``<stem>.provenance.json`` sidecar when *data* is a
+            list, whose schema has no room for extra keys.
 
         Returns
         -------
@@ -664,6 +922,25 @@ class DataGenerator:
         """
         self.output_dir.mkdir(parents=True, exist_ok=True)
         path = self.output_dir / filename
-        with open(path, "w", encoding="utf-8") as f:
-            json.dump(data, f, indent=2, default=str)
+
+        payload = data
+        sidecar: Optional[Dict[str, Any]] = None
+        if provenance:
+            if isinstance(data, dict):
+                # Existing keys win so a generator that already declares its
+                # own provenance is never silently relabelled.
+                payload = {**provenance, **data}
+            else:
+                sidecar = dict(provenance)
+
+        text = json.dumps(payload, indent=2, default=str)
+        path.write_text(text, encoding="utf-8")
+
+        if sidecar is not None:
+            sidecar[SIDECAR_HASH_KEY] = hashlib.sha256(
+                text.encode("utf-8"),
+            ).hexdigest()
+            provenance_sidecar_path(path).write_text(
+                json.dumps(sidecar, indent=2, default=str), encoding="utf-8",
+            )
         return str(path)

@@ -2,7 +2,7 @@
 
 # LaTeX Preamble
 
-This file contains LaTeX packages and commands for the Cognitive Integrity Framework (Part 3+4) manuscript.
+This file contains LaTeX packages and commands for the Cognitive Integrity Framework (Part 3: Practitioner Guide and Applications) manuscript.
 
 ```latex
 % Core mathematical packages
@@ -82,6 +82,12 @@ This file contains LaTeX packages and commands for the Cognitive Integrity Frame
 \newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{property}{Property}[section]
 \newtheorem{axiom}{Axiom}[section]
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+
+% Code listings and raw implementation examples in the manuscript
+\usepackage{listings}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible}
 
 % Math operators
 \DeclareMathOperator*{\argmax}{arg\,max}

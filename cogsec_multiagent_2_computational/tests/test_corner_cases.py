@@ -171,13 +171,32 @@ class TestAnomalyScorerCornerCases:
         assert np.isfinite(score)
         assert score == 0.0  # Negative total_weight triggers the fallback to 0.0
 
-    def test_missing_keys_in_state(self):
-        """Extractor that accesses a missing key should be handled gracefully (returns 0.0)."""
+    def test_missing_keys_in_state_fails_closed(self):
+        """An extractor that cannot be evaluated must NOT yield a clean verdict.
+
+        This previously asserted ``score == 0.0`` — i.e. it pinned the
+        fail-*open* behaviour, in which attacker-controlled input of an
+        unexpected shape silently removed a feature from the anomaly score and
+        turned a detection into a clean pass.  The scorer now fails closed:
+        an undeterminable feature is treated as maximally anomalous.
+        """
         scorer = AnomalyScorer()
         scorer.add_extractor("broken", lambda s: s["missing_key"], weight=1.0)
-        # The score method catches KeyError and skips the extractor
         score = scorer.score("agent1", {"other_key": 42})
-        assert score == 0.0
+        assert score > 0.0, (
+            "an unevaluable feature must not produce a clean (0.0) anomaly score"
+        )
+
+    def test_missing_keys_positive_control_healthy_extractor_scores_zero(self):
+        """Positive control for the test above: a *working* extractor at its
+        baseline really does score 0.0, so the ``score > 0.0`` assertion is
+        discriminating rather than trivially true."""
+        scorer = AnomalyScorer()
+        scorer.add_extractor("healthy", lambda s: s["x"], weight=1.0)
+        extractor, _ = scorer._extractors[0]
+        extractor.baseline_mean = 42.0
+        extractor.baseline_std = 1.0
+        assert scorer.score("agent1", {"x": 42.0}) == 0.0
 
     def test_score_with_nan_value(self):
         """Extractor returning NaN should be handled by is_anomalous without crashing."""

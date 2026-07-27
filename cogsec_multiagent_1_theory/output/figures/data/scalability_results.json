@@ -3,19 +3,19 @@
     "agent_count": 2,
     "detection_time_ms": 10.0,
     "memory_mb": 1.0,
-    "consensus_latency_ms": 0.08
+    "consensus_latency_ms": 0.15
   },
   {
     "agent_count": 4,
     "detection_time_ms": 10.0,
     "memory_mb": 1.0,
-    "consensus_latency_ms": 0.03
+    "consensus_latency_ms": 0.05
   },
   {
     "agent_count": 8,
     "detection_time_ms": 10.0,
     "memory_mb": 1.0,
-    "consensus_latency_ms": 0.02
+    "consensus_latency_ms": 0.03
   },
   {
     "agent_count": 16,
@@ -27,7 +27,7 @@
     "agent_count": 32,
     "detection_time_ms": 10.0,
     "memory_mb": 1.0,
-    "consensus_latency_ms": 0.03
+    "consensus_latency_ms": 0.04
   },
   {
     "agent_count": 64,

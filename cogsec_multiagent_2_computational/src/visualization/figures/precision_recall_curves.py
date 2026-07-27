@@ -32,7 +32,7 @@ def _compute_pr_from_evaluation():
     rows = load_full_evaluation()
 
     # Group by attack category
-    cat_data = {}
+    cat_data: dict[str, dict[str, int]] = {}
     for r in rows:
         cat = r.attack_category
         cat_data.setdefault(cat, {"tp": 0, "fp": 0, "fn": 0, "tn": 0})

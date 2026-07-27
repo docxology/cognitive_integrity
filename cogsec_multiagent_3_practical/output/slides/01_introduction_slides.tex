@@ -112,6 +112,9 @@
 \providecommand{\citeyear}[1]{#1}
 \providecommand{\cref}[1]{\texttt{\detokenize{#1}}}
 \providecommand{\Cref}[1]{\texttt{\detokenize{#1}}}
+
+\newtheorem{proposition}{Proposition}
+\newtheorem{hypothesis}{Hypothesis}
 \usepackage{bookmark}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same}
@@ -191,12 +194,14 @@ efficacy from formal, computational, and applied angles.
   attack patterns and three novel defense extensions.
 \end{itemize}
 
-The combined evidence: \textbf{1,594 passing tests and 94\% overall
-detection} (95\% CI: {[}0.92, 0.96{]}) across all attack categories and
-architectures (Part 2), with direct injection detection reaching
-96--98\% in fully defended configurations; plus CIF coverage validated
-across all ten operational domains in §9--§10 with retrospective
-analysis of six documented 2024--2025 AI agent incidents.
+The combined evidence includes \textbf{2,283 passing tests} and a
+\textbf{94--100\% parametric detection ceiling} across all attack
+categories and architectures (Part 2), alongside a lower real-pipeline
+multi-seed mean of approximately 44.8\% (30 seeds). Direct-injection
+detection reaches 96--98\% in the fully defended parametric
+configuration; plus CIF coverage is analyzed across all ten operational
+domains in §9--§10 with retrospective analysis of six documented
+2024--2025 AI-agent incidents.
 \end{frame}
 
 \begin{frame}[allowframebreaks]{The Purpose of This Guide}

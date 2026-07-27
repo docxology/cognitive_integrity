@@ -68,6 +68,11 @@ This file contains LaTeX packages and commands for the Cognitive Security Framew
 \newtheorem{axiom}{Axiom}[section]
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+
+% Code listings and raw implementation examples in the supplements
+\usepackage{listings}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible}
 
 % Math operators
 \DeclareMathOperator*{\argmax}{arg\,max}

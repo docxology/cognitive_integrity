@@ -23,16 +23,21 @@ import sys
 from pathlib import Path
 from typing import Set
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - %(levelname)s - %(message)s",
-    handlers=[
-        logging.StreamHandler(sys.stdout),
-        logging.FileHandler("manuscript_verification.log"),
-    ],
-)
 logger = logging.getLogger(__name__)
+
+
+def _configure_verification_logging() -> None:
+    """Configure logging once when running verification as a CLI entrypoint."""
+    if logger.handlers:
+        return
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s - %(levelname)s - %(message)s",
+        handlers=[
+            logging.StreamHandler(sys.stdout),
+            logging.FileHandler("manuscript_verification.log"),
+        ],
+    )
 
 
 class ManuscriptVerifier:

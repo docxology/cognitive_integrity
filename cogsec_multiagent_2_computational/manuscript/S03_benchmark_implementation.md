@@ -8,8 +8,8 @@ This supplementary section presents the *design specification* for colony cognit
 
 > **Cross-paper reading guide.**
 > • **Biological grounding** for colony-level defenses (stigmergic substrates, collective invariants) appears in Part 1 S02 *Eusocial CogSec* \cite{friedman2026cogsec1}.
-> • **Deployment patterns** for operating colony-scale systems (including Ω₅ playbooks for emergent drift) are in Part 3 \cite{friedman2026cogsec3} §5b Incident Response.
-> • **Domain applications** of colony-scale CIF to nation-state and infrastructure contexts appear in Part 4 \cite{friedman2026cogsec4} §3.02 and §3.09.
+> • **Deployment patterns** for operating colony-scale systems (including $\Omega_5$ playbooks for emergent drift) are in Part 3 \cite{friedman2026cogsec3} §5b Incident Response.
+> • **Domain applications** of colony-scale CIF to nation-state and infrastructure contexts appear in unified Part 3+4 \cite{friedman2026cogsec3}, Sections 9.04 and 9.10.
 
 1. **Scalable agent populations** — $n \in \{10, 50, 100, 500, 1000\}$
 2. **Configurable stigmergic substrates** — Shared memory, message queues, artifact stores

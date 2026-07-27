@@ -50,7 +50,7 @@ This formalism suggests that catastrophic attacks are inherently easier to detec
 
 Finally, Part 1 defines the **Composition Algebra**, determining how output probabilities of distinct modules interact. The key result is that orthogonal defenses compose multiplicatively.
 
-This "Swiss Cheese Model" was empirically validated in Part 2, where the full stack (94% overall detection, 95% CI: [0.92, 0.96]) significantly outperformed the sum of its parts.
+This "Swiss Cheese Model" was supported by Part 2's parametric simulation, where the full stack reached a 94--100% design-level detection ceiling and outperformed the sum of its parts. The real prototype pipeline is materially lower and is reported separately as a multi-seed mean of approximately 44.8%.
 
 ## The Science Behind Belief Updates: Free Energy {#sec:fep-connection}
 
@@ -84,7 +84,7 @@ This connection is not just theoretical. It means:
 
 1. **Emergent misalignment is the hardest problem** because it minimizes $\Delta F$ per agent: each individual belief shift is sub-threshold, but the collective drift accumulates. This is precisely why colony-scale monitoring is necessary—the FEP signal is distributed across agents.
 2. **Trust calibration is precision calibration**: operators who carefully calibrate trust scores are effectively setting the precision weighting of their agent network. Well-calibrated trust → robust cognition.
-3. **The Ω₅ miss rate (44%) reflects FEP's fundamental challenge**: systematic manipulation by a compromised orchestrator can shift the agent's generative model $P$ itself (not just $Q$), making the baseline a moving target. This requires out-of-band verification (human review, Byzantine quorum) rather than in-context detection.
+3. **The $\Omega_5$ miss rate (44%) reflects FEP's fundamental challenge**: systematic manipulation by a compromised orchestrator can shift the agent's generative model $P$ itself (not just $Q$), making the baseline a moving target. This requires out-of-band verification (human review, Byzantine quorum) rather than in-context detection.
 
 For the full mathematical treatment, see Part~2's theoretical-connections and information-geometry sections.
 

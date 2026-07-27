@@ -324,7 +324,7 @@ Trust vanishes exponentially: $\lim_{d \to \infty} \mathcal{T}_{i \to k}^{\text{
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.9\textwidth]{figures/trust_decay.pdf}
-\caption{Trust Decay Over Delegation Depth: Exponential decay curves showing trust attenuation $\mathcal{T}_{\text{del}}^{(d)} = \delta^d \cdot \mathcal{T}_{i \to j}$ for decay factors $\delta \in \{0.5, 0.7, 0.8, 0.9\}$ over delegation chains of depth $d = 1$ to $10$. At $\delta = 0.8$ (recommended), trust falls below practical threshold ($\tau = 0.1$) by depth 4. \textit{Note: Values are illustrative examples demonstrating the mathematical framework; specific decay factors should be tuned to deployment context.}}
+\caption{Trust Decay Over Delegation Depth: Exponential decay curves showing trust attenuation $\mathcal{T}_{\text{del}}^{(d)} = \delta^d \cdot \mathcal{T}_{i \to j}$ for decay factors $\delta \in \{0.5, 0.7, 0.8, 0.9\}$ over delegation chains of depth $d = 1$ to $10$. At $\delta = 0.8$, trust falls below $\tau=0.5$ at depth 4 and below $\tau=0.1$ at depth 11 (outside this plotted range). \textit{Note: Values are illustrative examples demonstrating the mathematical framework; specific decay factors should be tuned to deployment context.}}
 \label{fig:trust-decay}
 \end{figure}
 
@@ -341,15 +341,22 @@ Trust vanishes exponentially: $\lim_{d \to \infty} \mathcal{T}_{i \to k}^{\text{
 
 \begin{theorem}[Delegation Associativity]
 \label{thm:delegation-assoc}
-Trust delegation is associative:
+The sequential delegation operation is defined by
+\(T_1 \otimes T_2 = \delta\min(T_1,T_2)\). Because the decay factor is
+applied at each composition step, this operation is not associative in
+general; chain evaluation therefore preserves the explicit left-to-right
+delegation order.
 \begin{equation}
 \label{eq:delegation-assoc}
-(T_1 \otimes T_2) \otimes T_3 = T_1 \otimes (T_2 \otimes T_3)
+T_1 \otimes (T_2 \otimes T_3) \neq (T_1 \otimes T_2) \otimes T_3
 \end{equation}
 \end{theorem}
 
 \begin{proof}
-Let $T_1 = \mathcal{T}_{i \to j}$, $T_2 = \mathcal{T}_{j \to k}$, $T_3 = \mathcal{T}_{k \to l}$. Both sides reduce to $\min(T_1, T_2, T_3) \cdot \delta^2$ by properties of $\min$.
+For example, with $(T_1,T_2,T_3,\delta)=(0.9,0.9,0.1,0.9)$, the left-associated
+value is $0.090$ while the right-associated value is $0.081$. Thus any
+associative abstraction must be defined separately (for example, as a chain
+functional $\min_i T_i\,\delta^d$), rather than inferred for $\otimes$.
 \end{proof}
 
 \begin{theorem}[Aggregation Properties]
@@ -466,9 +473,9 @@ Evidence is a tuple $e = \langle \phi, c, s, \pi \rangle$ comprising proposition
 Upon receiving evidence $e$ from source $s$:
 \begin{equation}
 \label{eq:bayesian-update}
-\mathcal{B}*i^{t+1}(\phi) = \frac{\mathcal{B}*i^t(\phi) \cdot P(e|\phi) \cdot \mathcal{T}*{i \to s}}{\sum*{\psi} \mathcal{B}*i^t(\psi) \cdot P(e|\psi) \cdot \mathcal{T}*{i \to s}}
+\mathcal{B}_i^{t+1}(\phi) = \frac{\mathcal{B}_i^t(\phi) \cdot \left[\mathcal{T}_{i \to s} P(e|\phi) + (1-\mathcal{T}_{i \to s})P_0(e|\phi)\right]}{\sum_{\psi} \mathcal{B}_i^t(\psi) \cdot \left[\mathcal{T}_{i \to s} P(e|\psi) + (1-\mathcal{T}_{i \to s})P_0(e|\psi)\right]}
 \end{equation}
-Trust acts as evidence weight; low-trust sources have diminished update impact.
+Trust mixes the source likelihood with a neutral likelihood $P_0$; low-trust sources therefore have a diminished update impact rather than canceling as a common normalization factor.
 \end{definition}
 
 **Rule B-Direct** (Direct Evidence):
@@ -476,6 +483,19 @@ Trust acts as evidence weight; low-trust sources have diminished update impact.
 \label{eq:rule-direct}
 \frac{e = \langle \phi, c, s, \pi \rangle \quad V(\pi) = 1 \quad \mathcal{T}*{i \to s} \geq \tau*{\text{trust}}}{\mathcal{B}_i^{t+1}(\phi) = \text{BayesUpdate}(\mathcal{B}*i^t(\phi), c \cdot \mathcal{T}*{i \to s})}
 \end{equation}
+
+**Rule B-Delegated** (Delegated Evidence): evidence received through a delegation
+chain of depth $d$ is accepted only when its provenance is valid and its delegated
+trust meets the configured threshold:
+\begin{equation}
+\label{eq:rule-delegated}
+\frac{e = \langle \phi, c, s, \pi \rangle \quad V(\pi) = 1 \quad
+\mathcal{T}^{\mathrm{del}}_{i \to s} = \mathcal{T}^{(d)}_{i \to s} \geq \tau_{\text{trust}}}
+{\mathcal{B}_i^{t+1}(\phi) = \operatorname{BayesUpdate}
+\left(\mathcal{B}_i^t(\phi), c \cdot \mathcal{T}^{\mathrm{del}}_{i \to s}\right)}.
+\end{equation}
+Here $\mathcal{T}^{(d)}_{i \to s} \leq \delta^d$ is the delegated trust after
+$d$ hops, making depth-dependent attenuation explicit.
 
 **Rule B-Corroboration** (Multiple Sources):
 \begin{equation}

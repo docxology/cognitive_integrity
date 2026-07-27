@@ -26,13 +26,13 @@ Saying "the code works" requires specifying what that means. There are three hon
 
 **Level 3 — The defense ceiling is achievable** (confidence: moderate-high). The parametric simulation ($N=3{,}800$) establishes that fully-mature (Level 5) adapters achieve 94--100\% detection, consistent with the formal design. The gap between Level 3 (44.8\%) and Level 5 (94\%) is an engineering challenge, not a theoretical limitation. The roadmap in Part 2 projects +35--41 percentage points of improvement through adapter maturation.
 
-The honest operational posture is Level 2: deploy CIF for meaningful protection against Ω₁--Ω₃ attacks today, while investing in adapter maturation for Ω₄--Ω₅ coverage. Do not rely on 94\% detection for life-safety applications until your adapters reach Level 4--5 and have been validated against your threat model.
+The honest operational posture is Level 2: deploy CIF for meaningful protection against $\Omega_1$--$\Omega_3$ attacks today, while investing in adapter maturation for $\Omega_4$--$\Omega_5$ coverage. Do not rely on 94\\% detection for life-safety applications until your adapters reach Level 4--5 and have been validated against your threat model.
 
 ## Summary of Practical Recommendations
 
 The preceding sections distill the CIF series into actionable guidance. The core recommendations are:
 
-1. **Adopt layered defense from the start** (Pitfall 2). No single mechanism achieves the full-stack result in Part~2: isolated layers (e.g., firewall-only) were on the order of 60--70% detection, while the full CIF stack reached 94% overall. Security must be designed into the architecture, not bolted on after deployment.
+1. **Adopt layered defense from the start** (Pitfall 2). No single mechanism achieves the full-stack result in Part~2: isolated layers (e.g., firewall-only) were on the order of 60--70% detection, while the full CIF stack reached a 94–100% parametric detection ceiling. Security must be designed into the architecture, not bolted on after deployment.
 
 2. **Implement trust decay on every delegation chain** (Pitfall 1). The Trust Calculus with $\delta \leq 0.8$ prevents trust laundering across all tested architectures. This is not optional hardening---it is the structural foundation that prevents systemic compromise from local failures.
 
@@ -59,7 +59,7 @@ Organizations adopting cognitive security should plan a staged deployment aligne
 - Deploy drift detection with sliding-window analysis
 - Implement structured provenance logging
 - Tune thresholds against representative attack samples from Part 2's corpus
-- Expected outcome: 94% overall detection at ~20% latency overhead
+- Expected outcome: a 94–100% parametric detection ceiling at ~20% latency overhead; real-pipeline performance must be measured separately
 
 **Stage 3: High Assurance** (Months 4--6)
 

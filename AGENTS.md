@@ -4,7 +4,7 @@ Program directory containing the Cognitive Security for Multiagent Operators res
 
 ## Location and discovery
 
-- **Path:** `projects/cognitive_integrity/` (active nested program directory).
+- **Path:** `cognitive_integrity/` repo root; in template checkouts typically `projects/working/cognitive_integrity/` (sidecar symlink) or `projects/cognitive_integrity/`.
 - **Pipeline / PDF:** use qualified names: `cognitive_integrity/cogsec_multiagent_<part>`.
 - **Resolution:** `infrastructure.project.discovery.resolve_project_root` prefers `projects/<name>` then `projects_in_progress/<name>`; nested segments must appear in `--project` (e.g. `cognitive_integrity/cogsec_multiagent_2_computational`).
 
@@ -27,7 +27,7 @@ The Cognitive Integrity Framework (CIF) provides defense-in-depth security for m
 - **Tripwire / Drift Detection**: Canary belief monitoring, KL-divergence surveillance
 - **Provenance Tracking**: Information flow with taint labels
 
-Part 4 additionally contributed three novel defense extensions (now merged into Part 3+4): verification channel separation, active perturbation probing, and physics-informed invariants.
+Part 3+4 additionally contributes three novel defense extensions: verification channel separation, active perturbation probing, and physics-informed invariants.
 
 ## Cross-paper reading guide
 

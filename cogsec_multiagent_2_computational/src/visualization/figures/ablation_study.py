@@ -24,7 +24,6 @@ try:
 except (ImportError, ModuleNotFoundError):
     MinimalConfigSearch = None  # type: ignore[assignment,misc]
 
-
 def _load_ablation_data(output_dir: Path) -> tuple:
     """Load ablation results from ablation_results.json."""
     data_path = output_dir.parent / "data" / "ablation_results.json"

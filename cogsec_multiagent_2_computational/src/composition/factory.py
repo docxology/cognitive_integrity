@@ -83,16 +83,29 @@ def create_pipeline_without(
 ) -> SeriesPipeline | ParallelPipeline:
     """Create a pipeline with specified modules excluded (for ablation).
 
+    The exclusion list is validated *fail-closed*: a name that is not a
+    key of :data:`MODULE_REGISTRY` raises rather than being silently
+    ignored.  Silently ignoring an unknown name is how an ablation can
+    report a "removal" delta for a module that was never removed.
+
     Args:
-        excluded: List of module names to exclude.
+        excluded: List of module names to exclude.  Every name must be a
+            key of :data:`MODULE_REGISTRY`.
         mode: ``"series"`` or ``"parallel"``.
 
     Returns:
         A pipeline missing the excluded modules.
 
     Raises:
-        ValueError: If all modules are excluded.
+        ValueError: If any excluded name is not a registered module, or
+            if all modules are excluded.
     """
+    unknown = sorted(set(excluded) - set(MODULE_REGISTRY))
+    if unknown:
+        raise ValueError(
+            f"Unknown module name(s) in `excluded`: {unknown}. "
+            f"Known modules: {sorted(MODULE_REGISTRY)}"
+        )
     modules = [
         MODULE_REGISTRY[name]()
         for name in CANONICAL_ORDER

@@ -1,7 +1,7 @@
 """
 Cognitive Security Framework — Practical Implementation and Applications Guide.
 
-This is the unified Part 3+4 package of the Cognitive Security for Multiagent
+This is Part 3 of the Cognitive Security for Multiagent
 Operators series. It combines:
   - Practitioner guidance: operator posture assessment, checklists, deployment,
     risk assessment, incident response, pitfalls, and case studies (Part 3).

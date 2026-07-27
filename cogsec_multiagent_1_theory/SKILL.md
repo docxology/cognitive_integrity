@@ -62,6 +62,6 @@ uv run python projects/cognitive_integrity/cogsec_multiagent_1_theory/scripts/ge
 
 - Part 2 (computational) validates these claims empirically; defer to Part 2 for data-backed performance numbers.
 - Part 3 (practical) translates these mechanisms into deployment guidance.
-- Part 4 (applications) applies these across domains.
+- Part 3+4 (unified practical and applications paper) applies these across domains.
 
 All definitions live here; downstream parts import and reuse.

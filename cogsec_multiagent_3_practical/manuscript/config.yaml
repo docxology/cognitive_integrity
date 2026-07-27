@@ -1,6 +1,6 @@
 paper:
   title: "Cognitive Integrity Framework: Practical Applications and Deployment Guide"
-  subtitle: "Part 3+4 (Unified): Practitioner Guidance and Cross-Domain CIF-AD-OODA Applications"
+  subtitle: "Part 3: Practitioner Guidance and Cross-Domain CIF-AD-OODA Applications"
   short_title: "CIF Practical & Applications"
   version: "2.0"
   type: "review"
@@ -101,7 +101,7 @@ figures:
     width: "0.80\\linewidth"
   trust_decay_comparison:
     path: "figures/trust_decay_comparison.png"
-    caption: "Trust retention across delegation chain depth for three decay factors ($\\delta \\in \\{0.60, 0.80, 0.95\\}$). Profiles C, B, and A respectively. At $\\delta=0.80$, trust drops below 50\\% after 3 hops, enforcing practical delegation bounds."
+    caption: "Trust retention across delegation chain depth for three decay factors ($\\delta \\in \\{0.60, 0.80, 0.95\\}$). Profiles C, B, and A respectively. At $\\delta=0.80$, trust drops below 50\\% at depth 4, enforcing practical delegation bounds."
     label: "fig:trust-decay-comparison"
     width: "0.75\\linewidth"
   domain_analysis_template:

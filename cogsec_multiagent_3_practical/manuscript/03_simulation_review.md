@@ -17,7 +17,7 @@ The test corpus included direct prompt injection, poisoned RAG contexts, deep tr
 
 ## Finding 1: Defense Layering vs. Individual Efficacy
 
-**The Data**: Individual defenses (like just a firewall) stopped ~60--70% of attacks. The full CIF stack achieved **94% overall detection** (95% CI: [0.92, 0.96]), with specific architectures reaching 97--98% for direct injection.
+**The Data**: Individual defenses (like just a firewall) stopped ~60--70% of attacks in the parametric evaluation. The full CIF stack achieved a **94--100% parametric detection ceiling**, with specific architectures reaching 97--98% for direct injection. The separate real-pipeline evaluation had a lower multi-seed mean of approximately 44.8%.
 **The Implication**: The defenses demonstrated orthogonal coverage. The firewall blocked inputs that the sandbox would have missed, and the sandbox identified anomalies that the trust calculus would have permitted. The data suggests that removing any single layer creates a statistically significant vulnerability gap.
 
 ## Finding 2: State Machine Determinism
@@ -48,13 +48,13 @@ The test corpus included direct prompt injection, poisoned RAG contexts, deep tr
 The colony benchmark reveals a striking pattern: **emergent misalignment achieves the lowest detection rate (56.1\%) at the highest false positive rate (46.6\%)** of any evaluated scenario. Part 2's game-theoretic analysis explains why: in the zero-sum game between CIF and an adversary, emergent misalignment is the Nash-equilibrium attack strategy. It is the attacker's best response to full CIF deployment.
 
 The game-theoretic payoff matrix shows that:
-- Full CIF achieves 94\% detection against direct injection (Ω₁), 89\% against trust exploitation (Ω₄)
+- Full CIF achieves 94\\% detection against direct injection ($\Omega_1$), 89\\% against trust exploitation ($\Omega_4$)
 - Against emergent misalignment (distributed sub-threshold drift with no explicit adversaries), detection falls to 56.1\%
 - A rational adversary, knowing CIF is deployed, will prefer emergent misalignment over direct injection
 
 This is not a failure of CIF—it is a consequence of its success. When explicit attacks are reliably detected, adversaries are forced toward the subtlest and most distributed manipulation strategies. The 56.1\% detection rate on emergent misalignment represents the current frontier of defensive capability, not a gap in the framework's design.
 
-**Operator implication**: Deploy colony-scale entropy monitoring and schedule periodic manual behavioral audits (weekly for high-stakes deployments). The Ω₅ playbook (\cref{sec:incident-response}) provides the response protocol when drift accumulates despite in-context detection.
+**Operator implication**: Deploy colony-scale entropy monitoring and schedule periodic manual behavioral audits (weekly for high-stakes deployments). The $\Omega_5$ playbook (\cref{sec:incident-response}) provides the response protocol when drift accumulates despite in-context detection.
 
 ## Finding 7: The Implementation Gap Is a Feature, Not a Bug
 
@@ -70,7 +70,7 @@ The 49--88 percentage-point gap between the parametric ceiling (94--100\%) and t
 
 The current Claude Code adapter is at Level 3 (Statistical), explaining the 44.8\% mean. The roadmap projects +35--41 percentage points of improvement by advancing adapters to Level 5 for the primary attack categories. The parametric ceiling (94--100\%) represents what Level-5 adapters achieve—it is a design target, not an overclaim.
 
-**Operator implication**: When deploying CIF, assess the maturity level of each adapter against your threat model. Level-3 adapters (current) provide meaningful protection against unsophisticated Ω₁--Ω₂ attacks; Level-4--5 adapters (planned) are required for Ω₄--Ω₅ protection. The gap is closeable—it is an engineering challenge, not a theoretical limitation.
+**Operator implication**: When deploying CIF, assess the maturity level of each adapter against your threat model. Level-3 adapters (current) provide meaningful protection against unsophisticated $\Omega_1$--$\Omega_2$ attacks; Level-4--5 adapters (planned) are required for $\Omega_4$--$\Omega_5$ protection. The gap is closeable—it is an engineering challenge, not a theoretical limitation.
 
 ---
 

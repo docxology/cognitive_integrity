@@ -2,11 +2,13 @@
 
 Covers:
 - check_tool: returns path string or None.
-- run_command: returns stdout or error string.
-- generate_and_verify_all: writes spec files and returns result dict.
+- run_command: structured CommandOutcome, including launch failures.
+- verify_* tool-absent path.
+- generate_and_verify_all: writes spec files and returns VerificationResults.
 
-No external tools (NuSMV, SPIN, TLA+) are required; all three should return
-SKIP status on a machine without those tools installed.
+No external model checkers are required; without them all three verifiers must
+report SKIPPED.  Tool-present behaviour is exercised in
+``test_spec_verifier_extended.py`` with real executable shims on PATH.
 """
 
 from __future__ import annotations
@@ -14,6 +16,8 @@ from __future__ import annotations
 import shutil
 
 from formal.spec_verifier import (
+    VerificationResult,
+    VerificationStatus,
     check_tool,
     generate_and_verify_all,
     run_command,
@@ -60,26 +64,50 @@ class TestRunCommand:
     """Tests for run_command()."""
 
     def test_echo_returns_expected_output(self, tmp_path):
-        result = run_command(["echo", "hello_spec_verifier"], cwd=tmp_path)
-        assert "hello_spec_verifier" in result
+        outcome = run_command(["echo", "hello_spec_verifier"], cwd=tmp_path)
+        assert outcome.executed
+        assert outcome.returncode == 0
+        assert "hello_spec_verifier" in outcome.stdout
+        assert outcome.error == ""
 
-    def test_nonexistent_command_returns_error_string(self, tmp_path):
-        result = run_command(
+    def test_nonexistent_command_reports_launch_failure(self, tmp_path):
+        """A missing binary must be flagged as *not executed*.
+
+        The old implementation folded this into a free-text string that
+        happened not to contain the word "error", which the SPIN verdict logic
+        then read as a pass.
+        """
+        outcome = run_command(
             ["__totally_nonexistent_binary_xyz__", "--flag"], cwd=tmp_path
         )
-        assert isinstance(result, str)
-        # Should not raise — returns error message
-        assert len(result) > 0
+        assert outcome.executed is False
+        assert outcome.returncode is None
+        assert outcome.error != ""
 
-    def test_failing_command_returns_error_string(self, tmp_path):
-        # 'ls /nonexistent_path_xyz' fails with non-zero exit
-        result = run_command(["ls", "/nonexistent_path_xyz_that_does_not_exist"], cwd=tmp_path)
-        # CalledProcessError path — returns error string
-        assert isinstance(result, str)
+    def test_unusable_cwd_reports_launch_failure(self, tmp_path):
+        """A vanished working directory is a launch failure, not a success."""
+        outcome = run_command(["echo", "hi"], cwd=tmp_path / "does_not_exist")
+        assert outcome.executed is False
+        assert outcome.error != ""
 
-    def test_returns_string(self, tmp_path):
-        result = run_command(["echo", "test"], cwd=tmp_path)
-        assert isinstance(result, str)
+    def test_failing_command_is_executed_with_nonzero_exit(self, tmp_path):
+        outcome = run_command(
+            ["ls", "/nonexistent_path_xyz_that_does_not_exist"], cwd=tmp_path
+        )
+        assert outcome.executed is True
+        assert outcome.returncode != 0
+
+    def test_timeout_reports_launch_failure(self, tmp_path):
+        outcome = run_command(["sleep", "5"], cwd=tmp_path, timeout=0.2)
+        assert outcome.executed is False
+        assert "timed out" in outcome.error
+
+    def test_combined_includes_both_streams(self, tmp_path):
+        outcome = run_command(
+            ["sh", "-c", "echo out; echo err 1>&2"], cwd=tmp_path
+        )
+        assert "out" in outcome.combined
+        assert "err" in outcome.combined
 
 
 # ---------------------------------------------------------------------------
@@ -88,22 +116,62 @@ class TestRunCommand:
 
 
 class TestVerifyToolsAbsent:
-    """When the external verification tools are absent, functions return SKIP."""
+    """When the external verification tools are absent, verifiers SKIP."""
 
     def test_verify_nusmv_skip_when_absent(self, tmp_path, monkeypatch):
         monkeypatch.setattr(shutil, "which", lambda name: None)
         result = verify_nusmv(tmp_path / "dummy.smv")
-        assert result.startswith("SKIP")
+        assert result.status is VerificationStatus.SKIPPED
+        assert result.passed is False
 
     def test_verify_spin_skip_when_absent(self, tmp_path, monkeypatch):
         monkeypatch.setattr(shutil, "which", lambda name: None)
         result = verify_spin(tmp_path / "dummy.pml")
-        assert result.startswith("SKIP")
+        assert result.status is VerificationStatus.SKIPPED
+        assert result.passed is False
 
     def test_verify_tla_skip_when_absent(self, tmp_path, monkeypatch):
         monkeypatch.setattr(shutil, "which", lambda name: None)
         result = verify_tla(tmp_path / "dummy.tla")
-        assert result.startswith("SKIP")
+        assert result.status is VerificationStatus.SKIPPED
+        assert result.passed is False
+
+    def test_absent_tools_never_report_pass(self, tmp_path, monkeypatch):
+        """Regression guard for audit INTEG-03.
+
+        A machine with no model checkers must never yield a passing verdict
+        from any verifier.
+        """
+        monkeypatch.setattr(shutil, "which", lambda name: None)
+        for verify, suffix in (
+            (verify_nusmv, ".smv"),
+            (verify_spin, ".pml"),
+            (verify_tla, ".tla"),
+        ):
+            result = verify(tmp_path / f"dummy{suffix}")
+            assert result.status is not VerificationStatus.PASSED
+            assert not str(result).startswith("PASS")
+
+
+# ---------------------------------------------------------------------------
+# VerificationResult rendering
+# ---------------------------------------------------------------------------
+
+
+class TestVerificationResultRendering:
+    """The string form keeps the legacy 'STATUS: detail' shape."""
+
+    def test_str_without_detail(self):
+        assert str(VerificationResult("SPIN", VerificationStatus.PASSED)) == "PASS"
+
+    def test_str_with_detail(self):
+        result = VerificationResult("SPIN", VerificationStatus.SKIPPED, "no binary")
+        assert str(result) == "SKIP: no binary"
+
+    def test_passed_property_only_true_for_passed(self):
+        for status in VerificationStatus:
+            result = VerificationResult("t", status, "d")
+            assert result.passed == (status is VerificationStatus.PASSED)
 
 
 # ---------------------------------------------------------------------------
@@ -118,10 +186,11 @@ class TestGenerateAndVerifyAll:
         result = generate_and_verify_all(tmp_path)
         assert set(result.keys()) == {"NuSMV", "SPIN", "TLA+"}
 
-    def test_values_are_strings(self, tmp_path):
+    def test_values_are_verification_results(self, tmp_path):
         result = generate_and_verify_all(tmp_path)
         for key, val in result.items():
-            assert isinstance(val, str), f"{key} result should be str, got {type(val)}"
+            assert isinstance(val, VerificationResult), f"{key}: {type(val)}"
+            assert isinstance(str(val), str) and str(val)
 
     def test_creates_output_directory(self, tmp_path):
         out_dir = tmp_path / "specs_output"
@@ -142,11 +211,12 @@ class TestGenerateAndVerifyAll:
             assert len(content) > 100, f"{fname} appears too short"
 
     def test_skip_status_when_tools_absent(self, tmp_path, monkeypatch):
-        """Without external tools, all three results should start with SKIP."""
+        """Without external tools, all three results are SKIPPED — never PASSED."""
         monkeypatch.setattr(shutil, "which", lambda name: None)
         result = generate_and_verify_all(tmp_path)
         for key, val in result.items():
-            assert val.startswith("SKIP"), f"{key}: expected SKIP, got {val!r}"
+            assert val.status is VerificationStatus.SKIPPED, f"{key}: {val}"
+            assert not val.passed
 
     def test_custom_n_agents(self, tmp_path):
         result = generate_and_verify_all(tmp_path, n_agents=7, max_byzantine=2)

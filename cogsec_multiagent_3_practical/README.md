@@ -10,7 +10,7 @@ This paper unifies two previously separate works into a single comprehensive ref
 
 **Part 3 — Practitioner Guidance (§1–§8):** Translates the Cognitive Integrity Framework (CIF) into actionable guidance for practitioners deploying multiagent AI systems. Prose-first format with minimal formal prerequisites.
 
-**Part 4 — Cross-Domain Applications (§9–§10):** Applies the **CIF-AD-OODA integration model** — combining CIF's five canonical defense mechanisms with Axiomatic Design (AD) theory and Boyd's OODA Loop — to analyze Goal Hijacking across ten critical operational domains: rare-earth mining, nation-state alliances, cyber-security, drone warfare, supply chains, biowarfare, food security, trade wars, infrastructure, and information ecosystems.
+**Cross-Domain Applications (§9–§10, originally Part 4):** Applies the **CIF-AD-OODA integration model** — combining CIF's five canonical defense mechanisms with Axiomatic Design (AD) theory and Boyd's OODA Loop — to analyze Goal Hijacking across ten critical operational domains: rare-earth mining, nation-state alliances, cyber-security, drone warfare, supply chains, biowarfare, food security, trade wars, infrastructure, and information ecosystems.
 
 **Prerequisites:** None required. Optional: [Part 1](../cogsec_multiagent_1_theory/) for full formal notation; this paper's [`S01_notation_reference.md`](manuscript/S01_notation_reference.md) provides a short in-paper table. For benchmarks and code-level defenses, see [Part 2](../cogsec_multiagent_2_computational/).
 
@@ -54,7 +54,7 @@ cogsec_multiagent_3_practical/
 │   ├── 05c_cost_benefit.md, 05d_monitoring_guide.md
 │   ├── 06_common_pitfalls.md, 06b_case_studies.md
 │   ├── 07_future_directions.md, 08_conclusion.md
-│   ├── 09_applications_intro.md       ← Part 4: teleological attack surface
+│   ├── 09_applications_intro.md       ← unified applications: teleological attack surface
 │   ├── 09b_cif_ad_ooda_methodology.md ← CIF-AD-OODA integration model
 │   ├── 09c_rare_earth_mining.md       ← Domain 1
 │   ├── 09d_nation_state_alliances.md  ← Domain 2

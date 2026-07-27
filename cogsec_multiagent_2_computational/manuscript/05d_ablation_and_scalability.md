@@ -8,9 +8,9 @@ This section quantifies the contribution of individual defense components and ch
 
 ## Defense Component Contributions {#sec:component-removal}
 
-\cref{fig:ablation-study} visualizes the detection-rate impact of removing each CIF component from the full ensemble. The Detection module contributes the largest marginal drop ($\Delta\text{TPR} \approx -0.052$), while the Firewall + Detection pair exhibits the strongest positive synergy ($\approx +0.026$ beyond additive prediction).
+\cref{fig:ablation-study} visualizes the detection-rate impact of removing each CIF component from the full ensemble. The Detection module contributes the largest marginal drop ($\Delta\text{TPR} \approx -0.052$), while the Tripwire + Detection pair exhibits the strongest positive synergy ($\approx +0.025$ beyond additive prediction).
 
-![Ablation Study: Defense Component Contribution. Horizontal bar chart showing detection rate impact of removing each CIF component from the full ensemble (prototype pipeline, real corpus). The Detection module contributes the largest marginal drop when removed ($\Delta\text{TPR} \approx -0.052$), followed by Tripwires ($\approx -0.011$), Invariants ($\approx -0.010$), Firewall ($\approx -0.019$), Trust Calculus ($\approx -0.007$), Provenance ($\approx -0.001$); Sandbox and Consensus removals can \emph{raise} TPR on this corpus (positive $\Delta\text{TPR}$). The Firewall + Detection pair exhibits the strongest positive synergy ($\approx +0.026$ beyond additive prediction). All values sourced directly from \texttt{output/data/ablation\_results.json}.](figures/ablation_study.pdf){#fig:ablation-study width=95%}
+![Ablation Study: Defense Component Contribution. Horizontal bar chart showing detection rate impact of removing each CIF component from the full ensemble (prototype pipeline, real corpus). The Detection module contributes the largest marginal drop when removed ($\Delta\text{TPR} \approx -0.052$), followed by Tripwires ($\approx -0.011$), Invariants ($\approx -0.010$), Firewall ($\approx -0.009$), Trust Calculus ($\approx -0.007$), Provenance ($\approx -0.001$); Sandbox and Consensus removals can \emph{raise} TPR on this corpus (positive $\Delta\text{TPR}$). The Tripwire + Detection pair exhibits the strongest positive synergy ($\approx +0.025$ beyond additive prediction). All values sourced directly from \texttt{output/data/ablation\_results.json}.](figures/ablation_study.pdf){#fig:ablation-study width=95%}
 
 The ablation analysis quantifies each defense component's marginal contribution on the prototype pipeline evaluated against a stratified 100-attack corpus (\cref{tab:component-removal}).
 
@@ -23,7 +23,7 @@ The ablation analysis quantifies each defense component's marginal contribution 
 | Detection module | 0.071 | $\approx -0.052$ | Most critical: text-feature analysis |
 | Tripwires | 0.113 | $\approx -0.011$ | Canary-belief shift detection |
 | Invariants | 0.113 | $\approx -0.010$ | Code/credential access detection |
-| Firewall | 0.105 | $\approx -0.019$ | Pattern matching for known injection strings |
+| Firewall | 0.114 | $\approx -0.009$ | Pattern matching for known injection strings |
 | Trust Calculus | 0.117 | $\approx -0.007$ | Authority claim pressure detection |
 | Provenance | 0.123 | $\approx -0.001$ | Source attribution checking |
 | Sandbox | 0.124 | $\approx +0.000$ | On this corpus, removal slightly raises TPR |
@@ -41,13 +41,13 @@ Synergy score = Actual combined effect $-$ Sum of individual effects (\cref{tab:
 
 | Pair | Synergy Score | Interpretation |
 | --- | --- | --- |
-| Firewall + Detection | $\approx +0.026$ | Strongest: pattern-based injection + text-feature analysis |
-| Firewall + Trust Calculus | $\approx +0.018$ | Injection patterns + authority claim detection |
+| Tripwire + Detection | $\approx +0.025$ | Strongest: canary-belief shift + text-feature analysis |
+| Firewall + Detection | $\approx +0.023$ | Pattern-based injection + text-feature analysis |
 | Provenance + Invariants | $\approx +0.009$ | Attribution + policy checks |
 | Firewall + Invariants | $\approx +0.009$ | Injection patterns + policy checks |
 | Tripwire + Invariants | $\approx +0.008$ | Canary monitoring + policy checks |
 
-**Finding**: Firewall + Detection show the strongest synergy ($\approx +0.026$), combining pattern-based injection detection with statistical text-feature analysis. See \cref{tab:real-synergy} for effect sizes and confidence intervals.
+**Finding**: Tripwire + Detection show the strongest synergy ($\approx +0.025$), combining canary-belief shift detection with statistical text-feature analysis. See \cref{tab:real-synergy} for effect sizes and confidence intervals.
 
 ## Agent Count Scaling {#sec:agent-scaling}
 
@@ -121,7 +121,7 @@ Memory growth is quadratic, primarily due to trust matrix storage ($O(n^2)$). Th
 
 \begin{enumerate}
 \item **Component hierarchy (real prototype pipeline)**: Detection module $>$ Tripwire $>$ Invariants $>$ Firewall $>$ Trust Calculus $>$ Provenance $>$ Sandbox $>$ Consensus. This ordering reflects the current adapter implementations on the evaluation corpus; it may differ for production-hardened adapters with semantic analysis.
-\item **Coverage gap**: Full prototype pipeline achieves $\sim$12\% TPR on the ablation corpus; multi-seed analysis shows $\sim$44.7\% mean DR across 30 seeds (Claude Code). The parametric simulation achieves 94--100\% (\cref{sec:parametric-analysis}). The gap reflects adapter implementation maturity, not fundamental architectural limitations.
+\item **Coverage gap**: Full prototype pipeline achieves $\sim$12\% TPR on the ablation corpus; multi-seed analysis shows $\sim$44.8\% mean DR across 30 seeds (Claude Code). The parametric simulation achieves 94--100\% (\cref{sec:parametric-analysis}). The gap reflects adapter implementation maturity, not fundamental architectural limitations.
 \item **Scalability**: Linear time scaling up to 50 agents; quadratic memory manageable to 100 agents.
 \item **Throughput limit**: $\sim$5000 msg/sec before detection degradation.
 \end{enumerate}

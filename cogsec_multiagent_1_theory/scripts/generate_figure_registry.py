@@ -78,13 +78,13 @@ LATEX_FIG_RE = re.compile(r"\\label\{(fig:[a-zA-Z0-9_:.-]+)\}")
 LATEX_TAB_RE = re.compile(r"\\label\{(tab:[a-zA-Z0-9_:.-]+)\}")
 
 # Caption extraction for LaTeX figures: \caption{...}
-LATEX_CAPTION_RE = re.compile(r"\\caption\{([^}]{0,200})\}")
+LATEX_CAPTION_RE = re.compile(r"\\caption\{([^}]+)\}")
 
 # Caption extraction for pandoc figures: ![caption text](...)
-PANDOC_IMG_CAPTION_RE = re.compile(r"!\[([^\]]{0,200})\]\([^)]+\)\{#(?:fig|tab):[^}]+\}")
+PANDOC_IMG_CAPTION_RE = re.compile(r"!\[([^\]]+)\]\([^)]+\)\{#(?:fig|tab):[^}]+\}")
 
 # LaTeX table caption: \caption{...} before \label{tab:...}
-LATEX_TAB_CAPTION_RE = re.compile(r"\\caption\{([^}]{0,200})\}")
+LATEX_TAB_CAPTION_RE = re.compile(r"\\caption\{([^}]+)\}")
 
 
 def extract_caption_near_label(lines: list[str], label_line_idx: int, window: int = 10) -> str:

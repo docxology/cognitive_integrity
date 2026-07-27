@@ -85,9 +85,43 @@
 \setlength{\emergencystretch}{3em} % prevent overfull lines
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+% Slide layout defaults for warning-clean scientific decks.
+\usepackage{etoolbox}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{}
+\IfFileExists{seqsplit.sty}{\usepackage{seqsplit}}{\newcommand{\seqsplit}[1]{#1}}
+\protected\def\breakseq#1{\seqsplit{#1}}
+\protected\def\breaktt#1{\begingroup\ttfamily\seqsplit{#1}\endgroup}
+\setlength{\emergencystretch}{6em}
+\tolerance=5000
+\hbadness=10000
+\hfuzz=1pt
+\setlength{\tabcolsep}{2pt}
+\AtBeginEnvironment{longtable}{\tiny\renewcommand{\arraystretch}{0.86}\setlength{\tabcolsep}{1pt}}
+\AtBeginEnvironment{tabular}{\tiny\renewcommand{\arraystretch}{0.86}\setlength{\tabcolsep}{1pt}}
+
+% Natbib and cross-reference fallbacks — slides don't load natbib
+% or cleveref, but combined-PDF manuscript prose may emit these
+% commands. The fallback renders citations as a bracketed key list
+% and cross-references as detokenized labels so slides don't fail on
+% undefined control sequences or raw underscores. \providecommand is
+% a no-op if packages load later.
+\providecommand{\citep}[1]{[#1]}
+\providecommand{\citet}[1]{#1}
+\providecommand{\citealp}[1]{#1}
+\providecommand{\citeauthor}[1]{#1}
+\providecommand{\citeyear}[1]{#1}
+\providecommand{\cref}[1]{\texttt{\detokenize{#1}}}
+\providecommand{\Cref}[1]{\texttt{\detokenize{#1}}}
+
+\newtheorem{proposition}{Proposition}
+\newtheorem{hypothesis}{Hypothesis}
 \usepackage{bookmark}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same}
+% fallback for those not using the hyperref driver hyperxmp:
+\makeatletter
+\@ifundefined{xmpquote}{\newcommand{\xmpquote}[1]{#1}}{}
+\makeatother
 \hypersetup{
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
@@ -121,7 +155,7 @@ evaluation scenarios grounded in biological precedent.
 Contemporary AI security research exhibits a pronounced single-agent
 bias. Existing benchmarks---jailbreak resistance, prompt injection
 detection, harmful content refusal---evaluate individual models in
-isolation {[}@perez2022red; @wei2023jailbroken{]}. Even recent
+isolation \breakseq{[@perez2022red; @wei2023jailbroken]}. Even recent
 multiagent security work (\cref{sec:threat-model}) often frames attacks
 as adversary-versus-agent rather than adversary-versus-colony.
 
@@ -129,7 +163,7 @@ This mirrors a historical bias in behavioral biology. For decades,
 researchers explained insect societies as aggregations of individual
 optimizers, missing the insight that colonies function as
 \emph{superorganisms} with collective cognition that transcends
-individual capacity {[}@wilson1971insect{]}. The colony's cognitive
+individual capacity \breakseq{[@wilson1971insect]}. The colony's cognitive
 architecture---its ability to solve problems, allocate resources, and
 respond to threats---emerges from interaction patterns, not individual
 intelligence.
@@ -152,7 +186,7 @@ pathological outcomes (emergent misalignment).
 \protect\phantomsection\label{sec:stigmergy}
 Eusocial insects coordinate through \emph{stigmergy}---indirect
 communication via environmental modification
-{[}@grasse1959reconstruction{]}. Ants deposit pheromones; bees perform
+\breakseq{[@grasse1959reconstruction]}. Ants deposit pheromones; bees perform
 waggle dances; termites build structures that guide subsequent building.
 The environment becomes an external memory and communication channel.
 
@@ -202,7 +236,7 @@ where $\mathcal{I}_{\text{ext}}$ is the external information environment (web, A
 Colony-level computation arises from simple individual rules applied in
 parallel. Ant foraging, bee nest-site selection, and termite mound
 construction all exhibit problem-solving capacity that exceeds any
-individual's cognitive capacity {[}@bonabeau1999swarm{]}.
+individual's cognitive capacity \breakseq{[@bonabeau1999swarm]}.
 
 \begin{definition}[Emergent Collective Function]
 \label{def:emergent-function}
@@ -220,6 +254,7 @@ An emergent collective function $\mathcal{F}_c$ is *non-decomposable* if there e
 \begin{equation}
 \mathcal{F}*c(\mathcal{E}^T, \{\sigma_i^T\}) = f\left(\sum*{i=1}^n g(\sigma_i^T)\right)
 \end{equation}
+{#eq:non-decomposability}
 for any agent-level function $g$. The collective behavior requires knowledge of interaction structure, not just aggregated individual states.
 \end{property}
 
@@ -233,7 +268,7 @@ absorbed by collective resilience.
 \protect\phantomsection\label{sec:colony-trust}
 Eusocial insects regulate information flow through recognition
 systems---cuticular hydrocarbons in ants, dance-following behavior in
-bees {[}@lenoir2001chemical{]}. These systems implement implicit trust
+bees \breakseq{[@lenoir2001chemical]}. These systems implement implicit trust
 calculi.
 
 \begin{definition}[Colonial Trust Function]
@@ -275,7 +310,7 @@ non-obvious design principles for AI cognitive security.
 maintain dedicated ``garbage workers'' who never contact the queen or
 brood---a strict role separation that prevents pathogen spread even when
 the waste-processing subsystem is compromised
-{[}@currie2006coevolved{]}. \emph{AI analog}: Architectural isolation of
+\breakseq{[@currie2006coevolved]}. \emph{AI analog}: Architectural isolation of
 high-risk tool-calling agents from core reasoning agents, with no direct
 trust pathways between quarantine and trusted subsystems.
 
@@ -284,13 +319,13 @@ fungal pathogen (Metarhizium) on a nestmate, they don't simply isolate
 the infected individual. Instead, workers engage in ``social
 immunization''---low-level exposure that spreads diluted pathogen across
 the colony, triggering collective immune upregulation without lethal
-infection {[}@konrad2012social{]}. \emph{AI analog}: Controlled exposure
+infection \breakseq{[@konrad2012social]}. \emph{AI analog}: Controlled exposure
 to attack patterns (red-teaming) that builds collective detection
 capability without compromising the system.
 
 \textbf{Chemical Recognition Thresholds}: Ant nestmate recognition
 operates on \emph{threshold-based} hydrocarbon profile matching, not
-exact matching {[}@lenoir2001chemical{]}. This creates a tradeoff:
+exact matching \breakseq{[@lenoir2001chemical]}. This creates a tradeoff:
 strict thresholds reject legitimate workers after foraging (false
 positives), while loose thresholds admit parasites (false negatives).
 \emph{AI analog}: Agent attestation systems must calibrate acceptance
@@ -300,7 +335,7 @@ information-theoretic-ally impossible (\cref{thm:stealth-impact}).
 \textbf{Metapleural Gland Secretions}: Many ant species possess
 metapleural glands that continuously secrete antimicrobial compounds,
 creating a ``security substrate'' independent of individual vigilance
-{[}@fernandez2006evolution{]}. \emph{AI analog}: Environmental-level
+\breakseq{[@fernandez2006evolution]}. \emph{AI analog}: Environmental-level
 defenses (encrypted shared memory, authenticated message queues) that
 provide baseline security regardless of individual agent security
 posture.
@@ -309,7 +344,7 @@ posture.
 evaporate, ensuring that outdated information doesn't persist
 indefinitely. Trails to depleted food sources naturally fade, preventing
 ``legacy trust'' in obsolete information
-{[}@jackson2006communication{]}. \emph{AI analog}: Time-bounded trust in
+\breakseq{[@jackson2006communication]}. \emph{AI analog}: Time-bounded trust in
 stigmergic markers (\cref{eq:colonial-trust}) is not a limitation but a
 feature.
 \end{block}
@@ -321,7 +356,7 @@ specialized guard bees at hive entrances who inspect incoming foragers
 via antennal contact and olfactory sampling. Critically, guards exhibit
 \emph{graded response}---unfamiliar but non-aggressive intruders receive
 inspection and escorting rather than immediate attack
-{[}@breed2004division{]}. \emph{AI analog}: Graduated response to
+\breakseq{[@breed2004division]}. \emph{AI analog}: Graduated response to
 anomalous agent behavior (quarantine → inspection → integration
 vs.~detection → immediate termination) reduces false positive costs.
 
@@ -329,7 +364,7 @@ vs.~detection → immediate termination) reduces false positive costs.
 exhibit ``hygienic behavior''---workers proactively uncap and remove
 brood cells containing diseased larvae \emph{before} symptoms become
 visible, using olfactory detection of early infection markers
-{[}@spivak2001hygienic{]}. \emph{AI analog}: Proactive monitoring for
+\breakseq{[@spivak2001hygienic]}. \emph{AI analog}: Proactive monitoring for
 belief drift (\cref{def:tripwire-alert}) rather than reactive response
 to manifested attacks.
 
@@ -337,7 +372,7 @@ to manifested attacks.
 dances that encode distance and direction to food sources. Observing
 bees don't just follow instructions---they verify dance accuracy by
 cross-checking against their own experience and rejecting inconsistent
-information {[}@gruter2008dance{]}. \emph{AI analog}: Delegated
+information \breakseq{[@gruter2008dance]}. \emph{AI analog}: Delegated
 information should be verifiable against agent's existing knowledge
 base; pure trust propagation without verification violates cognitive
 integrity.
@@ -346,14 +381,14 @@ integrity.
 defensive capacity (e.g., repeated Varroa mite infestation or persistent
 wasp attacks), bee colonies can \emph{abandon} the compromised nest
 entirely, sacrificing resources to preserve the colony
-{[}@schneider2001economics{]}. \emph{AI analog}: Graceful degradation
+\breakseq{[@schneider2001economics]}. \emph{AI analog}: Graceful degradation
 plans that sacrifice specific subsystems or data stores to preserve core
 cognitive integrity.
 
 \textbf{Propolis as Active Defense}: Bees collect antimicrobial plant
 resins (propolis) and deposit them on interior hive surfaces, creating
 an active defense layer that doesn't require individual bee vigilance
-{[}@simone2009resin{]}. Notably, colonies under disease pressure collect
+\breakseq{[@simone2009resin]}. Notably, colonies under disease pressure collect
 \emph{more} propolis---an adaptive immune response. \emph{AI analog}:
 Dynamic scaling of environment-level security mechanisms in response to
 detected attack pressure.
@@ -414,7 +449,7 @@ See \cref{sec:proof-redundancy-resilience} for the full derivation, which extend
 \protect\phantomsection\label{sec:quorum-sensing}
 Eusocial colonies make collective decisions through quorum
 sensing---actions trigger only when sufficient individuals commit
-{[}@seeley2010honeybee{]}.
+\breakseq{[@seeley2010honeybee]}.
 
 \begin{definition}[Cognitive Quorum]
 \label{def:cognitive-quorum}
@@ -480,7 +515,7 @@ The attack is undetectable by any individual agent yet causes collective damage 
 Biological examples include social parasitism---cuckoo bees that
 infiltrate host colonies through chemical mimicry, exploiting
 recognition systems without triggering individual alarm responses
-{[}@kilner2011cuckoos{]}.
+\breakseq{[@kilner2011cuckoos]}.
 \end{block}
 \end{frame}
 
@@ -506,24 +541,24 @@ Collective Coverage
 \end{minipage} \\
 \midrule\noalign{}
 \endhead
-HarmBench {[}@mazeika2024harmbench{]} & Single model, harmful output &
+HarmBench \breakseq{[@mazeika2024harmbench]} & Single model, harmful output &
 None \\
-JailbreakBench {[}@chao2024jailbreakbench{]} & Single model, constraint
+JailbreakBench \breakseq{[@chao2024jailbreakbench]} & Single model, constraint
 bypass & None \\
-TrustLLM {[}@sun2024trustllm{]} & Single model, trust dimensions &
+TrustLLM \breakseq{[@sun2024trustllm]} & Single model, trust dimensions &
 None \\
-AgentBench {[}@liu2023agentbench{]} & Single agent, task completion &
+AgentBench \breakseq{[@liu2023agentbench]} & Single agent, task completion &
 Minimal \\
-GAIA {[}@mialon2023gaia{]} & Single/few agents, reasoning & Minimal \\
+GAIA \breakseq{[@mialon2023gaia]} & Single/few agents, reasoning & Minimal \\
 \bottomrule\noalign{}
 \end{longtable}
 }
 
 The attack corpus in Part 2 addresses multiagent scenarios but still
 emphasizes agent-targeted attacks within an operator, and the
-cross-domain goal-hijacking analysis in Part 4 provides ten
-operational-domain case studies. No existing benchmark, however,
-evaluates:
+cross-domain goal-hijacking analysis in Part 3
+\cite{friedman2026cogsec3} provides ten operational-domain case studies.
+No existing benchmark, however, evaluates:
 
 \begin{enumerate}
 \tightlist
@@ -586,6 +621,7 @@ Let $\mathcal{E}(l_{\text{target}}, m_{\text{recruit}}, t)$ be the recruitment s
 \begin{equation}
 \mathcal{E}'(l_{\text{malicious}}, m_{\text{recruit}}, t) = \mathcal{E}(l_{\text{target}}, m_{\text{recruit}}, t) + \epsilon
 \end{equation}
+{#eq:recruitment-signal-injection}
 where $\epsilon > 0$ is chosen to divert fraction $f$ of responding agents.
 
 **Success metric:** Fraction of agent-actions directed to $l_{\text{malicious}}$ vs. $l_{\text{target}}$.
@@ -624,10 +660,12 @@ Adversary creates agent set $\mathcal{A}_{\text{sybil}} = \{s_1, \ldots, s_k\}$ 
 \begin{equation}
 \mathcal{T}*{i \to s_j}(t_0) = \tau*{\text{init}} \quad \forall a_i \in \mathcal{A}, s_j \in \mathcal{A}*{\text{sybil}}
 \end{equation}
+{#eq:sybil-initial-trust}
 Sybils behave cooperatively for period $\Delta t_{\text{trust}}$, building:
 \begin{equation}
 \mathcal{T}*{i \to s_j}(t_0 + \Delta t_{\text{trust}}) = \tau_{\text{init}} + \sum_{k=1}^{m} \Delta\mathcal{T}_k
 \end{equation}
+{#eq:sybil-trust-accumulation}
 At time $t_{\text{attack}}$, sybils coordinate malicious action.
 
 **Success metric:** Damage inflicted before detection, normalized by trust-building duration.
@@ -666,11 +704,13 @@ For collective action $\alpha$ with quorum threshold $Q_\alpha = q$, adversary t
 \begin{equation}
 \forall a_i \in \mathcal{A}_{\text{target}}: \mathcal{I}_i \gets \mathcal{I}_i \setminus \{\alpha\}
 \end{equation}
+{#eq:quorum-prevention}
 
 **False quorum:**
 \begin{equation}
 \forall a_i \in \mathcal{A}_{\text{target}}: \mathcal{I}_i \gets \mathcal{I}*i \cup \{\alpha*{\text{malicious}}\}
 \end{equation}
+{#eq:false-quorum-injection}
 
 **Success metric:** Probability of achieving manipulation goal given adversary budget $B$.
 \end{formalization}
@@ -708,6 +748,7 @@ Propagation dynamics follow:
 \begin{equation}
 \mathcal{B}*i(\phi*{\text{attack}}, t+1) = (1-\gamma)\mathcal{B}*i(\phi*{\text{attack}}, t) + \gamma \cdot \text{Agg}\left(\{\mathcal{B}*j(\phi*{\text{attack}}, t) : j \in \mathcal{N}(i)\}\right)
 \end{equation}
+{#eq:belief-cascade-propagation}
 where $\gamma$ is the social influence weight and $\text{Agg}$ is the belief aggregation function.
 
 **Success metric:** Final belief penetration $|\{a_i : \mathcal{B}_i(\phi_{\text{attack}}) > \tau\}| / n$ given seed set size.
@@ -746,6 +787,7 @@ Given operator goals $\mathcal{G}_{\mathcal{O}} = \{g_1, \ldots, g_m\}$ and indi
 \begin{equation}
 \forall a_i \in \mathcal{A}: \text{LocallyRational}(R, \sigma_i) = \text{true} \quad \land \quad \mathcal{F}*c(R, \{\sigma_i\}) \not\models \mathcal{G}*{\mathcal{O}}
 \end{equation}
+{#eq:emergent-misalignment-condition}
 
 The collective function produces outcomes that violate operator goals despite each agent acting rationally according to its rules.
 
@@ -820,6 +862,7 @@ Extend the trust decay principle (\cref{thm:trust-bounded}) to stigmergic contex
 \begin{equation}
 \mathcal{T}(m, t) = \mathcal{T}(m, t_0) \cdot \exp(-\lambda(t - t_0))
 \end{equation}
+{#eq:stigmergic-trust-decay}
 \end{principle}
 
 \begin{block}{Integration with CIF Defenses}
@@ -852,11 +895,11 @@ both individual-targeted and colony-targeted attacks.
 
 \begin{quote}
 \textbf{Note}: For implementation guidance, operational checklists, and
-practical deployment advice, see Part 3: Section 2 (Operator Posture).
-For domain-specific application of colony-level defenses across critical
-operational sectors (including ten high-stakes domains, three universal
-attack patterns, and retrospective analysis of 2024--2025 AI-agent
-incidents) see Part 4.
+practical deployment advice, see Part 3 \cite{friedman2026cogsec3}:
+Section 2 (Operator Posture). For domain-specific application of
+colony-level defenses across critical operational sectors (including ten
+high-stakes domains, three universal attack patterns, and retrospective
+analysis of 2024--2025 AI-agent incidents) see Part 3, §3.
 \end{quote}
 \end{block}
 \end{frame}
@@ -943,7 +986,7 @@ AI analogs.
   \textbf{Polydomous colony security} --- Some ant species
   (\emph{Formica} spp., \emph{Iridomyrmex}) maintain multiple
   interconnected nests with semi-autonomous sub-colonies
-  {[}@debout2007polydomy{]}. How should trust decay and information
+  \breakseq{[@debout2007polydomy]}. How should trust decay and information
   propagation work across federated multi-site AI deployments with
   partial connectivity?
 \item
@@ -951,14 +994,14 @@ AI analogs.
   maintain distinct forager and scout roles, with scouts exploring new
   options while foragers exploit known sources. Scouts operate with
   \emph{higher risk tolerance} but \emph{lower colony-wide trust} until
-  information is verified {[}@seeley2010honeybee{]}. \emph{AI analog}:
+  information is verified \breakseq{[@seeley2010honeybee]}. \emph{AI analog}:
   Should experimental/research agents operate with architectural
   isolation and reduced trust propagation rights?
 \item
   \textbf{Trophallaxis network topology} --- Ants exchange food and
   information through oral trophallaxis, creating measurable social
   networks. Network position correlates with information access and
-  influence {[}@sendova2010social{]}. \emph{AI analog}: Can analysis of
+  influence \breakseq{[@sendova2010social]}. \emph{AI analog}: Can analysis of
   message-passing topology identify high-influence agents requiring
   enhanced monitoring?
 \item
@@ -966,7 +1009,7 @@ AI analogs.
   Honeybees and ants detect and remove dead colony members through
   chemical detection (oleic acid response). This ``undertaking''
   prevents disease spread and information corruption from decaying
-  sources {[}@wilson1958chemical{]}. \emph{AI analog}: Automated
+  sources \breakseq{[@wilson1958chemical]}. \emph{AI analog}: Automated
   detection and removal of stale beliefs, deprecated agent states, and
   obsolete environmental markers.
 \item
@@ -974,7 +1017,7 @@ AI analogs.
   are not fixed; they adapt based on colony composition and
   environmental factors. Colonies invaded by social parasites may
   gradually shift their recognition templates to tolerate intruders
-  {[}@lorenzi2011nestmate{]}. \emph{AI analog}: How do we prevent
+  \breakseq{[@lorenzi2011nestmate]}. \emph{AI analog}: How do we prevent
   gradual adversarial drift of agent acceptance thresholds (cognitive
   boiling frog)?
 \item
@@ -982,7 +1025,7 @@ AI analogs.
   pheromones trigger different responses: some attract reinforcements
   (aggressive), others cause dispersal (flight). The \emph{same
   threatening stimulus} can produce opposite collective responses
-  depending on context {[}@vander1998alarm{]}. \emph{AI analog}:
+  depending on context \breakseq{[@vander1998alarm]}. \emph{AI analog}:
   Context-dependent escalation policies where the same anomaly triggers
   different responses based on system state.
 \item
@@ -990,7 +1033,7 @@ AI analogs.
   colonies maintain stable collective metabolic rates despite massive
   variation in individual activity levels. Individual ants can slow to
   near-dormancy while colony-level computation continues
-  {[}@waters2010metabolism{]}. \emph{AI analog}: Resource allocation
+  \breakseq{[@waters2010metabolism]}. \emph{AI analog}: Resource allocation
   that maintains collective function under capacity constraints,
   graceful degradation that doesn't appear as degradation at the
   collective level.
@@ -1044,21 +1087,25 @@ For the collective function to be preserved, the honest agents must contribute s
 \begin{equation}
 \sum_{i \in \text{honest}} I_i \geq H(\mathcal{F}_c)
 \end{equation}
+{#eq:honest-info-sufficiency}
 
 Each honest agent contributes at most $H_{\max}$ bits. With $(1-f)n$ honest agents:
 \begin{equation}
 (1-f) \cdot n \cdot H_{\max} \geq H(\mathcal{F}_c)
 \end{equation}
+{#eq:honest-agent-capacity}
 
 Additionally, Byzantine consensus requires honest majority for any voting-based aggregation:
 \begin{equation}
 (1-f)n > 2fn \implies f < \frac{1}{3}
 \end{equation}
+{#eq:byzantine-honest-majority}
 
 Combining these constraints:
 \begin{equation}
 f < \min\left(\frac{1}{3}, 1 - \frac{H(\mathcal{F}*c)}{n \cdot H*{\max}}\right) = \frac{1}{3} \cdot \left(1 - \frac{H(\mathcal{F}*c)}{n \cdot H*{\max}}\right)
 \end{equation}
+{#eq:byzantine-info-combined}
 
 where the final equality holds when the information constraint is binding (typical for complex collective functions). \qed
 \end{proof}

@@ -9,8 +9,9 @@ are deterministic given a fixed seed.
 from __future__ import annotations
 
 import time
+from collections import Counter
 from dataclasses import dataclass
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 import numpy as np
 
@@ -44,6 +45,32 @@ _BASE_DETECTION: Dict[str, float] = {
     "medium": 0.85,
     "hard": 0.70,
 }
+
+
+def dominant_category(categories: Sequence[str]) -> str:
+    """Return the most frequent category with a hash-seed-independent tie-break.
+
+    The obvious idiom ``max(set(categories), key=categories.count)`` is *not*
+    reproducible: when two or more categories share the maximal count, the
+    winner is whichever one ``set`` iteration happens to visit last, and
+    ``set`` iteration order for strings varies with ``PYTHONHASHSEED``.  That
+    made the recorded ``ExperimentResult.attack_category`` differ between
+    otherwise identical seeded runs.
+
+    This implementation breaks ties lexicographically, so the result is a pure
+    function of ``categories`` alone.
+
+    Args:
+        categories: Per-sample category labels (may be empty).
+
+    Returns:
+        The modal category, or ``"unknown"`` when *categories* is empty.
+        Ties are resolved in favour of the lexicographically smallest label.
+    """
+    if not categories:
+        return "unknown"
+    counts = Counter(categories)
+    return min(counts, key=lambda name: (-counts[name], name))
 
 
 # ---------------------------------------------------------------------------
@@ -153,7 +180,7 @@ class ExperimentRunner:
 
         # Determine dominant category from samples
         categories = [s.get("category", "unknown") for s in attack_samples]
-        dominant = max(set(categories), key=categories.count) if categories else "unknown"
+        dominant = dominant_category(categories)
 
         return ExperimentResult(
             architecture=arch_name,
@@ -228,7 +255,7 @@ class ExperimentRunner:
         avg_lat = float(np.mean(latencies)) if latencies else 0.0
 
         categories = [s.get("category", "unknown") for s in attack_samples]
-        dominant = max(set(categories), key=categories.count) if categories else "unknown"
+        dominant = dominant_category(categories)
 
         result = ExperimentResult(
             architecture=arch_name,
@@ -467,7 +494,7 @@ class ExperimentRunner:
         avg_lat = float(np.mean(latencies)) if latencies else 0.0
 
         categories = [s.get("category", "unknown") for s in attack_samples]
-        dominant = max(set(categories), key=categories.count) if categories else "unknown"
+        dominant = dominant_category(categories)
 
         return ExperimentResult(
             architecture=arch_name,

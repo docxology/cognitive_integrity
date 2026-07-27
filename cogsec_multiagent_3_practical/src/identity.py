@@ -2,7 +2,7 @@
 
 This module provides identity and provenance metadata for the unified
 Part 3+4 paper, integrating practitioner guidance with cross-domain
-CIF-AD-OODA analysis originally developed in Part 4.
+CIF-AD-OODA analysis integrated from the former Part 4 (now unified in Part 3).
 """
 
 from __future__ import annotations

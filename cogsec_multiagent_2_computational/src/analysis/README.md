@@ -4,7 +4,7 @@ Analytical layer that sits above the core defense mechanisms: game-theoretic for
 
 ## Series Position
 
-Part 2 of four in the *Cognitive Security for Multiagent Operators* series. This subpackage realizes the theoretical-connections chapter of the manuscript:
+Part 2 of three in the *Cognitive Security for Multiagent Operators* series. This subpackage realizes the theoretical-connections chapter of the manuscript:
 
 - **§1c Theoretical Connections** — game theory + information geometry framing
 - **§6 Discussion** — Nash analysis, arms race, adaptive defenders

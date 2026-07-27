@@ -1,12 +1,11 @@
-This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.3.22)  26 APR 2026 19:01
+This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.3.22)  13 JUL 2026 13:52
 entering extended mode
- \write18 enabled.
  %&-line parsing enabled.
-**/Users/4d/Documents/GitHub/template/projects/cognitive_integrity/cogsec_multi
-agent_1_theory/output/slides/S02_eusocial_cogsec_slides.tex
-
-(/Users/4d/Documents/GitHub/template/projects/cognitive_integrity/cogsec_multia
+**/Users/4d/Documents/GitHub/projects/working/cognitive_integrity/cogsec_multia
 gent_1_theory/output/slides/S02_eusocial_cogsec_slides.tex
+
+(/Users/4d/Documents/GitHub/projects/working/cognitive_integrity/cogsec_multiag
+ent_1_theory/output/slides/S02_eusocial_cogsec_slides.tex
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
 (/usr/local/texlive/2026/texmf-dist/tex/latex/beamer/beamer.cls
@@ -1194,41 +1193,46 @@ Package caption Info: longtable package is loaded.
 (/usr/local/texlive/2026/texmf-dist/tex/latex/caption/ltcaption.sty
 Package: ltcaption 2021/01/08 v1.4c longtable captions (AR)
 ))
+(/usr/local/texlive/2026/texmf-dist/tex/latex/xurl/xurl.sty
+Package: xurl 2022/01/09 v 0.10 modify URL breaks
+)
+(/usr/local/texlive/2026/texmf-dist/tex/latex/seqsplit/seqsplit.sty
+Package: seqsplit 2006/08/07 v0.1 Splitting long sequences (DNA, RNA, proteins,
+ etc.) 
+)
+\c@proposition=\count397
+\c@hypothesis=\count398
+
 (/usr/local/texlive/2026/texmf-dist/tex/latex/bookmark/bookmark.sty
 Package: bookmark 2023-12-10 v1.31 PDF bookmarks (HO)
 
 (/usr/local/texlive/2026/texmf-dist/tex/latex/bookmark/bkm-dvipdfm.def
 File: bkm-dvipdfm.def 2023-12-10 v1.31 bookmark driver for dvipdfm (HO)
-\BKM@id=\count397
+\BKM@id=\count399
 ))
-(/usr/local/texlive/2026/texmf-dist/tex/latex/xurl/xurl.sty
-Package: xurl 2022/01/09 v 0.10 modify URL breaks
-)
-(/Users/4d/Documents/GitHub/template/projects/cognitive_integrity/cogsec_multia
-gent_1_theory/output/slides/S02_eusocial_cogsec_slides.aux)
+No file S02_eusocial_cogsec_slides.aux.
 \openout1 = `S02_eusocial_cogsec_slides.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 98.
-LaTeX Font Info:    ... okay on input line 98.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 98.
-LaTeX Font Info:    ... okay on input line 98.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 98.
-LaTeX Font Info:    ... okay on input line 98.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 98.
-LaTeX Font Info:    ... okay on input line 98.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 98.
-LaTeX Font Info:    ... okay on input line 98.
-LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 98.
-LaTeX Font Info:    ... okay on input line 98.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 98.
-LaTeX Font Info:    ... okay on input line 98.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 98.
-LaTeX Font Info:    ... okay on input line 98.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 98.
-LaTeX Font Info:    ... okay on input line 98.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 98.
-LaTeX Font Info:    ... okay on input line 98.
-
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 132.
+LaTeX Font Info:    ... okay on input line 132.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 132.
+LaTeX Font Info:    ... okay on input line 132.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 132.
+LaTeX Font Info:    ... okay on input line 132.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 132.
+LaTeX Font Info:    ... okay on input line 132.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 132.
+LaTeX Font Info:    ... okay on input line 132.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 132.
+LaTeX Font Info:    ... okay on input line 132.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 132.
+LaTeX Font Info:    ... okay on input line 132.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 132.
+LaTeX Font Info:    ... okay on input line 132.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 132.
+LaTeX Font Info:    ... okay on input line 132.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 132.
+LaTeX Font Info:    ... okay on input line 132.
 *geometry* driver: auto-detecting
 *geometry* detected driver: xetex
 *geometry* verbose mode - [ preamble ] result:
@@ -1263,7 +1267,10 @@ LaTeX Font Info:    ... okay on input line 98.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-Package hyperref Info: Link coloring OFF on input line 98.
+Package hyperref Info: Link coloring OFF on input line 132.
+
+Package hyperref Warning: Rerun to get /PageLabels entry.
+
 
 (/usr/local/texlive/2026/texmf-dist/tex/latex/translator/translator-basic-dicti
 onary-English.dict
@@ -1290,19 +1297,19 @@ tionary-English.dict
 Dictionary: translator-theorem-dictionary, Language: English 
 )
 LaTeX Font Info:    Overwriting math alphabet `\mathrm' in version `normal'
-(Font)                  OT1/lmr/m/n --> TU/lmr/m/n on input line 98.
+(Font)                  OT1/lmr/m/n --> TU/lmr/m/n on input line 132.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
-(Font)                  OT1/lmr/m/it --> TU/lmr/m/it on input line 98.
+(Font)                  OT1/lmr/m/it --> TU/lmr/m/it on input line 132.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
-(Font)                  OT1/lmr/bx/n --> TU/lmr/bx/n on input line 98.
+(Font)                  OT1/lmr/bx/n --> TU/lmr/bx/n on input line 132.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
-(Font)                  OT1/lmss/m/n --> TU/lmss/m/n on input line 98.
+(Font)                  OT1/lmss/m/n --> TU/lmss/m/n on input line 132.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  OT1/lmss/bx/n --> TU/lmss/bx/n on input line 98.
+(Font)                  OT1/lmss/bx/n --> TU/lmss/bx/n on input line 132.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
-(Font)                  OT1/lmtt/m/n --> TU/lmtt/m/n on input line 98.
+(Font)                  OT1/lmtt/m/n --> TU/lmtt/m/n on input line 132.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  OT1/lmtt/m/n --> TU/lmtt/bx/n on input line 98.
+(Font)                  OT1/lmtt/m/n --> TU/lmtt/bx/n on input line 132.
 
 Package fontspec Info: 
 (fontspec)             latinmodern-math scale = 1.03015890977869.
@@ -1333,7 +1340,7 @@ allCapsFont={},Script=Math,BoldFont={latinmodern-math.otf}].
 =math;language=dflt;"
 
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(0)/m/n' will be
-(Font)              scaled to size 11.28015pt on input line 98.
+(Font)              scaled to size 11.28015pt on input line 132.
 
 Package fontspec Info: 
 (fontspec)             latinmodern-math scale = 1.03015890977869.
@@ -1376,17 +1383,18 @@ dern-math.otf]/OT:script=math;language=dflt;+ssty=1;"
 =math;language=dflt;"
 
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 11.28015pt on input line 98.
+(Font)              scaled to size 11.28015pt on input line 132.
 LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
-(Font)              `operators' in the math version `normal' on input line 98.
+(Font)              `operators' in the math version `normal' on input line 132.
+
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
 (Font)                  OT1/lmr/m/n --> TU/latinmodern-math.otf(1)/m/n on input
- line 98.
+ line 132.
 LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
-(Font)              `operators' in the math version `bold' on input line 98.
+(Font)              `operators' in the math version `bold' on input line 132.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
 (Font)                  OT1/lmr/bx/n --> TU/latinmodern-math.otf(1)/b/n on inpu
-t line 98.
+t line 132.
 
 Package fontspec Info: 
 (fontspec)             latinmodern-math scale = 1.03015890977869.
@@ -1460,15 +1468,15 @@ nmodern-math.otf]/OT:script=math;language=dflt;+ssty=1;"
 t=math;language=dflt;"
 
 LaTeX Font Info:    Encoding `OMS' has changed to `TU' for symbol font
-(Font)              `symbols' in the math version `normal' on input line 98.
+(Font)              `symbols' in the math version `normal' on input line 132.
 LaTeX Font Info:    Overwriting symbol font `symbols' in version `normal'
 (Font)                  OMS/lmsy/m/n --> TU/latinmodern-math.otf(2)/m/n on inpu
-t line 98.
+t line 132.
 LaTeX Font Info:    Encoding `OMS' has changed to `TU' for symbol font
-(Font)              `symbols' in the math version `bold' on input line 98.
+(Font)              `symbols' in the math version `bold' on input line 132.
 LaTeX Font Info:    Overwriting symbol font `symbols' in version `bold'
 (Font)                  OMS/lmsy/b/n --> TU/latinmodern-math.otf(2)/b/n on inpu
-t line 98.
+t line 132.
 
 Package fontspec Info: 
 (fontspec)             latinmodern-math scale = 1.03015890977869.
@@ -1536,24 +1544,24 @@ nmodern-math.otf]/OT:script=math;language=dflt;+ssty=1;"
 t=math;language=dflt;"
 
 LaTeX Font Info:    Encoding `OMX' has changed to `TU' for symbol font
-(Font)              `largesymbols' in the math version `normal' on input line 9
-8.
+(Font)              `largesymbols' in the math version `normal' on input line 1
+32.
 LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `normal'
 (Font)                  OMX/lmex/m/n --> TU/latinmodern-math.otf(3)/m/n on inpu
-t line 98.
+t line 132.
 LaTeX Font Info:    Encoding `OMX' has changed to `TU' for symbol font
-(Font)              `largesymbols' in the math version `bold' on input line 98.
-
+(Font)              `largesymbols' in the math version `bold' on input line 132
+.
 LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
 (Font)                  OMX/lmex/m/n --> TU/latinmodern-math.otf(3)/b/n on inpu
-t line 98.
-LaTeX Info: Redefining \microtypecontext on input line 98.
-Package microtype Info: Applying patch `item' on input line 98.
-Package microtype Info: Applying patch `toc' on input line 98.
-Package microtype Info: Applying patch `eqnum' on input line 98.
-Package microtype Info: Applying patch `footnote' on input line 98.
-Package microtype Info: Applying patch `verbatim' on input line 98.
-LaTeX Info: Redefining \microtypesetup on input line 98.
+t line 132.
+LaTeX Info: Redefining \microtypecontext on input line 132.
+Package microtype Info: Applying patch `item' on input line 132.
+Package microtype Info: Applying patch `toc' on input line 132.
+Package microtype Info: Applying patch `eqnum' on input line 132.
+Package microtype Info: Applying patch `footnote' on input line 132.
+Package microtype Info: Applying patch `verbatim' on input line 132.
+LaTeX Info: Redefining \microtypesetup on input line 132.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using protrusion set `basicmath'.
 Package microtype Info: No adjustment of tracking.
@@ -1566,36 +1574,14 @@ Package microtype Info: Loading generic protrusion settings for font family
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: End \AtBeginDocument code.
 
-(/Users/4d/Documents/GitHub/template/projects/cognitive_integrity/cogsec_multia
-gent_1_theory/output/slides/S02_eusocial_cogsec_slides.nav) [1
+No file S02_eusocial_cogsec_slides.nav.
+[1
 
 ] [2
 
 ]
 LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <10.95> not available
-(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 147.
-
-! Undefined control sequence.
-<inserted text> ... the main CIF framework (\cref 
-                                                  {sec:formal-framework}) ad...
-l.147 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<inserted text> ...ultiagent security work (\cref 
-                                                  {sec:threat-model}) often ...
-l.147 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
+(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 181.
 
 
 ! LaTeX Error: Environment observation undefined.
@@ -1604,34 +1590,34 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.147 \end{frame}
+l.181 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 7.8961pt on input line 147.
+(Font)              scaled to size 7.8961pt on input line 181.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 5.64008pt on input line 147.
+(Font)              scaled to size 5.64008pt on input line 181.
 LaTeX Font Info:    Trying to load font information for OML+lmm on input line 1
-47.
+81.
 (/usr/local/texlive/2026/texmf-dist/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 11.28131pt on input line 147.
+(Font)              scaled to size 11.28131pt on input line 181.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 7.89691pt on input line 147.
+(Font)              scaled to size 7.89691pt on input line 181.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 5.64066pt on input line 147.
+(Font)              scaled to size 5.64066pt on input line 181.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 11.27914pt on input line 147.
+(Font)              scaled to size 11.27914pt on input line 181.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 7.8954pt on input line 147.
+(Font)              scaled to size 7.8954pt on input line 181.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 5.63957pt on input line 147.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 147
+(Font)              scaled to size 5.63957pt on input line 181.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 181
 .
 
 (/usr/local/texlive/2026/texmf-dist/tex/latex/amsfonts/umsa.fd
@@ -1640,7 +1626,7 @@ File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 (/usr/local/texlive/2026/texmf-dist/tex/latex/microtype/mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 147
+LaTeX Font Info:    Trying to load font information for U+msb on input line 181
 .
 
 (/usr/local/texlive/2026/texmf-dist/tex/latex/amsfonts/umsb.fd
@@ -1650,14 +1636,14 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 )
 
-! LaTeX Error: \begin{beamercolorbox} on input line 147 ended by \end{observati
+! LaTeX Error: \begin{beamercolorbox} on input line 181 ended by \end{observati
 on}.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.147 \end{frame}
+l.181 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -1666,11 +1652,11 @@ or  <return>  to continue without it.
 [3
 
 ]
-Underfull \vbox (badness 1112) detected at line 147
+Underfull \vbox (badness 1112) detected at line 181
  []
 
 
-Overfull \vbox (107.52182pt too high) detected at line 147
+Overfull \vbox (107.52182pt too high) detected at line 181
  []
 
 [4
@@ -1684,86 +1670,41 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.373 \end{frame}
+l.408 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
+! You can't use `macro parameter character #' in horizontal mode.
+<inserted text> ...^T)\right ) \end {equation} {##
+                                                  eq:non-decomposability} fo...
+l.408 \end{frame}
+                 
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
 
-! LaTeX Error: \begin{beamercolorbox} on input line 373 ended by \end{property}
+
+! LaTeX Error: \begin{beamercolorbox} on input line 408 ended by \end{property}
 .
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.373 \end{frame}
+l.408 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
-
-! Undefined control sequence.
-<inserted text> ...\mathcal {T}_{i \to j}$ (\cref 
-                                                  {def:trust-function}) to e...
-l.373 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
 
 
 (/usr/local/texlive/2026/texmf-dist/tex/latex/microtype/mt-LatinModernRoman.cfg
 File: mt-LatinModernRoman.cfg 2026/02/26 v1.2 microtype config. file: Latin Mod
 ern Roman (RS)
 )
-! Undefined control sequence.
-<inserted text> ...agent-to-agent channels (\cref 
-                                                  {sec:trust-calculus}). \en...
-l.373 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<inserted text> ...eoretic-ally impossible (\cref 
-                                                  {thm:stealth-impact}). \pa...
-l.373 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<inserted text> ...t in stigmergic markers (\cref 
-                                                  {eq:colonial-trust}) is no...
-l.373 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<inserted text> ...toring for belief drift (\cref 
-                                                  {def:tripwire-alert}) rath...
-l.373 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
 
 ! LaTeX Error: Environment observation undefined.
 
@@ -1771,38 +1712,38 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.373 \end{frame}
+l.408 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
 
-! LaTeX Error: \begin{beamercolorbox} on input line 373 ended by \end{observati
+! LaTeX Error: \begin{beamercolorbox} on input line 408 ended by \end{observati
 on}.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.373 \end{frame}
+l.408 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
 
-Underfull \vbox (badness 1112) detected at line 373
+Underfull \vbox (badness 1112) detected at line 408
  []
 
 [5
 
 ]
-Underfull \vbox (badness 1112) detected at line 373
+Underfull \vbox (badness 1112) detected at line 408
  []
 
 
-Overfull \vbox (2236.36964pt too high) detected at line 373
+Overfull \vbox (2222.76964pt too high) detected at line 408
  []
 
 [6
@@ -1816,41 +1757,30 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.485 \end{frame}
+l.520 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
 
-! LaTeX Error: \begin{beamercolorbox} on input line 485 ended by \end{property}
+! LaTeX Error: \begin{beamercolorbox} on input line 520 ended by \end{property}
 .
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.485 \end{frame}
+l.520 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
-! Undefined control sequence.
-<inserted text> ... \par \begin {proof} See \cref 
-                                                  {sec:proof-redundancy-resi...
-l.485 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
 LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <7.665> not available
-(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 485.
+(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 520.
 LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <5.475> not available
-(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 485.
+(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 520.
 
 ! LaTeX Error: Environment property undefined.
 
@@ -1858,69 +1788,43 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.485 \end{frame}
+l.520 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
 
-! LaTeX Error: \begin{beamercolorbox} on input line 485 ended by \end{property}
+! LaTeX Error: \begin{beamercolorbox} on input line 520 ended by \end{property}
 .
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.485 \end{frame}
+l.520 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
-! Undefined control sequence.
-<inserted text> ...ptographically verified (\cref 
-                                                  {sec:provenance}), stigmer...
-l.485 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
 [7
 
 ]
-Underfull \vbox (badness 1112) detected at line 485
+Underfull \vbox (badness 1112) detected at line 520
  []
 
 
-Overfull \vbox (800.97752pt too high) detected at line 485
+Overfull \vbox (812.44228pt too high) detected at line 520
  []
 
 [8
 
 
 ]
-Overfull \hbox (42.51457pt too wide) in paragraph at lines 565--565
-\TU/lmss/m/n/10.95 [@mazeika2024harmbench]|  
- []
 
-
-Overfull \hbox (41.90138pt too wide) in paragraph at lines 565--565
-\TU/lmss/m/n/10.95 [@chao2024jailbreakbench]|  
- []
-
-
-Overfull \hbox (6.56573pt too wide) in paragraph at lines 565--565
-\TU/lmss/m/n/10.95 [@sun2024trustllm]|  
- []
-
-
-Overfull \hbox (18.74213pt too wide) in paragraph at lines 565--565
-\TU/lmss/m/n/10.95 [@liu2023agentbench]|  
- []
+LaTeX Warning: Citation `friedman2026cogsec3' on page 9 undefined on input line
+ 600.
 
 
 ! LaTeX Error: Environment observation undefined.
@@ -1929,148 +1833,49 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.565 \end{frame}
+l.600 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
-! Undefined control sequence.
-<argument> ...nation attacks become viable (\cref 
-                                                  {sec:omega4})
-l.565 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
 
-! Undefined control sequence.
-<argument> ...nation attacks become viable (\cref 
-                                                  {sec:omega4})
-l.565 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...nation attacks become viable (\cref 
-                                                  {sec:omega4})
-l.565 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...nation attacks become viable (\cref 
-                                                  {sec:omega4})
-l.565 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...nation attacks become viable (\cref 
-                                                  {sec:omega4})
-l.565 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...nation attacks become viable (\cref 
-                                                  {sec:omega4})
-l.565 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...nation attacks become viable (\cref 
-                                                  {sec:omega4})
-l.565 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...nation attacks become viable (\cref 
-                                                  {sec:omega4})
-l.565 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-
-Overfull \hbox (2.54771pt too wide) detected at line 565
+Overfull \hbox (7.82562pt too wide) detected at line 600
 []
  []
 
 
-! LaTeX Error: \begin{beamercolorbox} on input line 565 ended by \end{observati
+! LaTeX Error: \begin{beamercolorbox} on input line 600 ended by \end{observati
 on}.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.565 \end{frame}
+l.600 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
 
-Underfull \vbox (badness 1112) detected at line 565
+Underfull \vbox (badness 1112) detected at line 600
  []
 
 [9
 
 ]
-Underfull \vbox (badness 1112) detected at line 565
+Underfull \vbox (badness 1112) detected at line 600
  []
 
 
-Overfull \vbox (484.48222pt too high) detected at line 565
+Overfull \vbox (298.70828pt too high) detected at line 600
  []
 
 [10
 
 
 ]
-! Undefined control sequence.
-<inserted text> ... (peripheral compromise, \cref 
-                                                  {sec:adversary-classes}) i...
-l.769 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
 
 ! LaTeX Error: Environment formalization undefined.
 
@@ -2078,36 +1883,35 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.769 \end{frame}
+l.811 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
+! You can't use `macro parameter character #' in horizontal mode.
+<inserted text> ... + \epsilon \end {equation} {##
+                                                  eq:recruitment-signal-inje...
+l.811 \end{frame}
+                 
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
 
-! LaTeX Error: \begin{beamercolorbox} on input line 769 ended by \end{formaliza
+
+! LaTeX Error: \begin{beamercolorbox} on input line 811 ended by \end{formaliza
 tion}.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.769 \end{frame}
+l.811 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
-
-! Undefined control sequence.
-<inserted text> ...\) (coordination attack, \cref 
-                                                  {sec:adversary-classes}) i...
-l.769 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
 
 
 ! LaTeX Error: Environment formalization undefined.
@@ -2116,21 +1920,41 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.769 \end{frame}
+l.811 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
+! You can't use `macro parameter character #' in horizontal mode.
+<inserted text> ...xt {sybil}} \end {equation} {##
+                                                  eq:sybil-initial-trust} Sy...
+l.811 \end{frame}
+                 
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
 
-! LaTeX Error: \begin{beamercolorbox} on input line 769 ended by \end{formaliza
+! You can't use `macro parameter character #' in horizontal mode.
+<inserted text> ...thcal {T}_k \end {equation} {##
+                                                  eq:sybil-trust-accumulatio...
+l.811 \end{frame}
+                 
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+
+! LaTeX Error: \begin{beamercolorbox} on input line 811 ended by \end{formaliza
 tion}.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.769 \end{frame}
+l.811 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -2143,21 +1967,41 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.769 \end{frame}
+l.811 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
+! You can't use `macro parameter character #' in horizontal mode.
+<inserted text> ...\{\alpha \} \end {equation} {##
+                                                  eq:quorum-prevention} \par...
+l.811 \end{frame}
+                 
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
 
-! LaTeX Error: \begin{beamercolorbox} on input line 769 ended by \end{formaliza
+! You can't use `macro parameter character #' in horizontal mode.
+<inserted text> ...licious}}\} \end {equation} {##
+                                                  eq:false-quorum-injection}...
+l.811 \end{frame}
+                 
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+
+! LaTeX Error: \begin{beamercolorbox} on input line 811 ended by \end{formaliza
 tion}.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.769 \end{frame}
+l.811 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -2170,27 +2014,37 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.769 \end{frame}
+l.811 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
 
-Overfull \hbox (105.03325pt too wide) detected at line 769
+Overfull \hbox (105.03325pt too wide) detected at line 811
 [][] [] [][][] [] [][] [] [] [][] [] [][] [] [][][] [] [][][] [] [][] [][] [] [
 ] [] [] []
  []
 
+! You can't use `macro parameter character #' in horizontal mode.
+<inserted text> ...)\}\right ) \end {equation} {##
+                                                  eq:belief-cascade-propagat...
+l.811 \end{frame}
+                 
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
 
-! LaTeX Error: \begin{beamercolorbox} on input line 769 ended by \end{formaliza
+
+! LaTeX Error: \begin{beamercolorbox} on input line 811 ended by \end{formaliza
 tion}.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.769 \end{frame}
+l.811 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -2203,21 +2057,31 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.769 \end{frame}
+l.811 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
+! You can't use `macro parameter character #' in horizontal mode.
+<inserted text> ...athcal {O}} \end {equation} {##
+                                                  eq:emergent-misalignment-c...
+l.811 \end{frame}
+                 
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
 
-! LaTeX Error: \begin{beamercolorbox} on input line 769 ended by \end{formaliza
+
+! LaTeX Error: \begin{beamercolorbox} on input line 811 ended by \end{formaliza
 tion}.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.769 \end{frame}
+l.811 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -2226,11 +2090,11 @@ or  <return>  to continue without it.
 [11
 
 ]
-Underfull \vbox (badness 1112) detected at line 769
+Underfull \vbox (badness 1112) detected at line 811
  []
 
 
-Overfull \vbox (1335.55379pt too high) detected at line 769
+Overfull \vbox (1416.5464pt too high) detected at line 811
  []
 
 [12
@@ -2238,7 +2102,7 @@ Overfull \vbox (1335.55379pt too high) detected at line 769
 
 ]
 LaTeX Font Info:    Font shape `TU/lmss/bx/it' in size <10.95> not available
-(Font)              Font shape `TU/lmss/bx/sl' tried instead on input line 795.
+(Font)              Font shape `TU/lmss/bx/sl' tried instead on input line 837.
 
  [13
 
@@ -2253,21 +2117,21 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.862 \end{frame}
+l.905 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
 
-! LaTeX Error: \begin{beamer@framepauses} on input line 862 ended by \end{princ
+! LaTeX Error: \begin{beamer@framepauses} on input line 905 ended by \end{princ
 iple}.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.862 \end{frame}
+l.905 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -2280,21 +2144,21 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.862 \end{frame}
+l.905 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
 
-! LaTeX Error: \begin{beamer@framepauses} on input line 862 ended by \end{princ
+! LaTeX Error: \begin{beamer@framepauses} on input line 905 ended by \end{princ
 iple}.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.862 \end{frame}
+l.905 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -2307,21 +2171,21 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.862 \end{frame}
+l.905 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
 
-! LaTeX Error: \begin{beamer@framepauses} on input line 862 ended by \end{princ
+! LaTeX Error: \begin{beamer@framepauses} on input line 905 ended by \end{princ
 iple}.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.862 \end{frame}
+l.905 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -2334,95 +2198,56 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.862 \end{frame}
+l.905 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
-! Undefined control sequence.
-<inserted text> ...e trust decay principle (\cref 
-                                                  {thm:trust-bounded}) to st...
-l.862 \end{frame}
+! You can't use `macro parameter character #' in horizontal mode.
+<inserted text> ... (t - t_0)) \end {equation} {##
+                                                  eq:stigmergic-trust-decay}...
+l.905 \end{frame}
                  
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
 
 
-! LaTeX Error: \begin{beamer@framepauses} on input line 862 ended by \end{princ
+! LaTeX Error: \begin{beamer@framepauses} on input line 905 ended by \end{princ
 iple}.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.862 \end{frame}
+l.905 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
-! Undefined control sequence.
-<inserted text> ...h the CIF defense stack (\cref 
-                                                  {sec:defense-mechanisms}):...
-l.862 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
+
+LaTeX Warning: Citation `friedman2026cogsec3' on page 15 undefined on input lin
+e 905.
 
 [15
 
 ] [16
 
 
+] [17
+
+
+] [18
+
 ]
-Underfull \vbox (badness 1112) detected at line 862
+Underfull \vbox (badness 1112) detected at line 940
  []
 
 
-Overfull \vbox (89.6234pt too high) detected at line 862
- []
-
-[17
-
-
-]
-! Undefined control sequence.
-<inserted text> ...The trust decay theorem (\cref 
-                                                  {thm:trust-bounded}) exten...
-l.897 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<inserted text> ...stealth-impact tradeoff (\cref 
-                                                  {thm:stealth-impact}) appl...
-l.897 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-[18
-
-]
-Underfull \vbox (badness 1112) detected at line 897
- []
-
-
-Overfull \vbox (51.89973pt too high) detected at line 897
+Overfull \vbox (51.89973pt too high) detected at line 940
  []
 
 [19
@@ -2430,79 +2255,100 @@ Overfull \vbox (51.89973pt too high) detected at line 897
 
 ]
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 14.83417pt on input line 904.
+(Font)              scaled to size 14.83417pt on input line 947.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 10.30151pt on input line 904.
+(Font)              scaled to size 10.30151pt on input line 947.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 7.21106pt on input line 904.
+(Font)              scaled to size 7.21106pt on input line 947.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 14.83571pt on input line 904.
+(Font)              scaled to size 14.83571pt on input line 947.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 10.30258pt on input line 904.
+(Font)              scaled to size 10.30258pt on input line 947.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 7.2118pt on input line 904.
+(Font)              scaled to size 7.2118pt on input line 947.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 14.83284pt on input line 904.
+(Font)              scaled to size 14.83284pt on input line 947.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 10.3006pt on input line 904.
+(Font)              scaled to size 10.3006pt on input line 947.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 7.21042pt on input line 904.
+(Font)              scaled to size 7.21042pt on input line 947.
  [20
 
-]
-! Undefined control sequence.
-<inserted text> ... Current formal methods (\cref 
-                                                  {sec:formal-verification})...
-l.999 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-[21
+] [21
 
 ]
-Underfull \vbox (badness 1112) detected at line 999
+Underfull \vbox (badness 1112) detected at line 1042
  []
 
 
-Overfull \vbox (674.18051pt too high) detected at line 999
+Overfull \vbox (674.18051pt too high) detected at line 1042
  []
 
 [22
 
 
-]
-! Undefined control sequence.
-<inserted text> ...t the main bibliography (\cref 
-                                                  {sec:references}) with eus...
-l.1032 \end{frame}
-                  
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-[23
+] [23
 
 ] [24
 
 
 ]
-Underfull \vbox (badness 1112) detected at line 1066
+
+LaTeX Warning: Reference `thm:redundancy-resilience' on page 25 undefined on in
+put line 1113.
+
+! You can't use `macro parameter character #' in horizontal mode.
+<inserted text> ...hcal {F}_c) \end {equation} {##
+                                                  eq:honest-info-sufficiency...
+l.1113 \end{frame}
+                  
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+! You can't use `macro parameter character #' in horizontal mode.
+<inserted text> ...hcal {F}_c) \end {equation} {##
+                                                  eq:honest-agent-capacity} ...
+l.1113 \end{frame}
+                  
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+! You can't use `macro parameter character #' in horizontal mode.
+<inserted text> ...frac {1}{3} \end {equation} {##
+                                                  eq:byzantine-honest-majori...
+l.1113 \end{frame}
+                  
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+! You can't use `macro parameter character #' in horizontal mode.
+<inserted text> ... }}\right ) \end {equation} {##
+                                                  eq:byzantine-info-combined...
+l.1113 \end{frame}
+                  
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+
+Underfull \vbox (badness 1112) detected at line 1113
  []
 
 [25
 
 ]
-Underfull \vbox (badness 1112) detected at line 1066
+Underfull \vbox (badness 1112) detected at line 1113
  []
 
 
-Overfull \vbox (150.1089pt too high) detected at line 1066
+Overfull \vbox (203.52773pt too high) detected at line 1113
  []
 
 [26
@@ -2521,22 +2367,29 @@ Overfull \vbox (150.1089pt too high) detected at line 1066
 \openout7 = `S02_eusocial_cogsec_slides.snm'.
 
 
-(/Users/4d/Documents/GitHub/template/projects/cognitive_integrity/cogsec_multia
-gent_1_theory/output/slides/S02_eusocial_cogsec_slides.aux)
+(/Users/4d/Documents/GitHub/projects/working/cognitive_integrity/cogsec_multiag
+ent_1_theory/output/slides/S02_eusocial_cogsec_slides.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
  ***********
+
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
  ) 
 Here is how much of TeX's memory you used:
- 31388 strings out of 468168
- 635441 string characters out of 5432815
- 1234727 words of memory out of 5000000
- 59530 multiletter control sequences out of 15000+600000
- 634216 words of font info for 98 fonts, out of 8000000 for 9000
+ 31404 strings out of 468168
+ 636102 string characters out of 5432815
+ 1235582 words of memory out of 5000000
+ 59541 multiletter control sequences out of 15000+600000
+ 634248 words of font info for 102 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 128i,16n,123p,1129b,987s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 128i,16n,123p,1128b,1003s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on /Users/4d/Documents/GitHub/template/projects/cognitive_integr
-ity/cogsec_multiagent_1_theory/output/slides/S02_eusocial_cogsec_slides.pdf (27
- pages).
+Output written on /Users/4d/Documents/GitHub/projects/working/cognitive_integri
+ty/cogsec_multiagent_1_theory/output/slides/S02_eusocial_cogsec_slides.pdf (27 
+pages).

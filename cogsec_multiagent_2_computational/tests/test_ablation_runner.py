@@ -11,10 +11,11 @@ All tests use real computation. No mocks.
 
 from __future__ import annotations
 
-import numpy as np
+import pytest
 
 from ablation.runner import (
     BENIGN_MESSAGES,
+    COMPONENT_TO_MODULE,
     evaluate_component_subset,
     make_default_components,
     run_full_ablation,
@@ -81,6 +82,20 @@ class TestMakeDefaultComponents:
         d1["firewall"] = 9999.0
         assert d2["firewall"] != 9999.0
 
+    def test_every_component_maps_to_a_real_registry_module(self):
+        """Every ablation name must name a module the pipeline can remove.
+
+        A name with no registry counterpart is silently ignored by the
+        pipeline factory, so its "removal" delta would measure nothing.
+        """
+        from composition.factory import MODULE_REGISTRY
+
+        components = set(make_default_components())
+        assert set(COMPONENT_TO_MODULE) == components
+        targets = [COMPONENT_TO_MODULE[name] for name in components]
+        assert set(targets) == set(MODULE_REGISTRY)
+        assert len(targets) == len(set(targets)), "two components share one module"
+
 
 # ---------------------------------------------------------------------------
 # evaluate_component_subset
@@ -125,20 +140,31 @@ class TestEvaluateComponentSubset:
         assert 0.0 <= tpr <= 1.0
         assert 0.0 <= fpr <= 1.0
 
-    def test_empty_component_list(self):
-        """No components should still return valid floats."""
-        tpr, fpr = evaluate_component_subset([], seed=42)
-        assert 0.0 <= tpr <= 1.0
-        assert 0.0 <= fpr <= 1.0
+    def test_empty_component_list_detects_nothing(self):
+        """A pipeline with zero defense modules detects nothing at all."""
+        assert evaluate_component_subset([], seed=42) == (0.0, 0.0)
 
-    def test_with_rng_adds_noise(self):
-        """Providing an rng should add noise so results differ from no-rng."""
+    def test_unknown_component_name_raises(self):
+        """Unknown component names fail closed instead of being ignored."""
+        with pytest.raises(ValueError, match="Unknown ablation component"):
+            evaluate_component_subset(["firewall", "not_a_component"], seed=42)
+
+    def test_no_rng_keyword(self):
+        """The noise-injection keyword is gone; callers cannot re-enable it."""
+        import numpy as np
+
         components = list(make_default_components().keys())
-        rng = np.random.default_rng(99)
-        tpr_noisy, fpr_noisy = evaluate_component_subset(components, seed=42, rng=rng)
-        # Result should still be in [0, 1]
-        assert 0.0 <= tpr_noisy <= 1.0
-        assert 0.0 <= fpr_noisy <= 1.0
+        with pytest.raises(TypeError):
+            evaluate_component_subset(
+                components, seed=42, rng=np.random.default_rng(99),
+            )
+
+    def test_repeated_evaluation_is_bit_identical(self):
+        """No noise: repeated evaluation is exactly equal, not merely close."""
+        components = list(make_default_components().keys())
+        first = evaluate_component_subset(components, seed=42)
+        for _ in range(4):
+            assert evaluate_component_subset(components, seed=42) == first
 
 
 # ---------------------------------------------------------------------------
@@ -152,12 +178,26 @@ class TestRunFullAblation:
     def test_returns_dict_with_expected_keys(self):
         result = run_full_ablation(seed=42)
         expected_keys = {
+            "full_pipeline",
             "component_removal",
             "minimal_forward",
             "minimal_backward",
             "top_synergies",
         }
         assert set(result.keys()) == expected_keys
+
+    def test_full_pipeline_operating_point_is_reported(self):
+        """The unablated operating point is serialized, not reconstructed."""
+        result = run_full_ablation(seed=42)
+        full = result["full_pipeline"]
+        assert set(full) == {"tpr", "fpr", "youden_j"}
+        assert 0.0 <= full["tpr"] <= 1.0
+        assert 0.0 <= full["fpr"] <= 1.0
+        assert abs(full["youden_j"] - (full["tpr"] - full["fpr"])) < 1e-12
+        # It must agree with the deltas recorded on every removal row.
+        for row in result["component_removal"]:
+            assert abs((row["tpr"] - row["delta_tpr"]) - full["tpr"]) < 1e-12
+            assert abs((row["fpr"] - row["delta_fpr"]) - full["fpr"]) < 1e-12
 
     def test_component_removal_is_list(self):
         result = run_full_ablation(seed=42)
@@ -166,26 +206,40 @@ class TestRunFullAblation:
 
     def test_component_removal_entries_have_required_fields(self):
         result = run_full_ablation(seed=42)
+        required = {
+            "removed", "tpr", "delta_tpr", "fpr", "delta_fpr",
+            "youden_j", "delta_youden_j",
+        }
         for entry in result["component_removal"]:
-            assert "removed" in entry
-            assert "tpr" in entry
-            assert "delta_tpr" in entry
+            assert required <= set(entry), f"missing {required - set(entry)}"
             assert isinstance(entry["tpr"], float)
+            assert isinstance(entry["fpr"], float)
             assert 0.0 <= entry["tpr"] <= 1.0
+            assert 0.0 <= entry["fpr"] <= 1.0
+            assert abs(entry["youden_j"] - (entry["tpr"] - entry["fpr"])) < 1e-12
+            assert abs(
+                entry["delta_youden_j"] - (entry["delta_tpr"] - entry["delta_fpr"])
+            ) < 1e-12
 
-    def test_minimal_forward_has_components_and_tpr(self):
+    def test_minimal_forward_has_components_and_rates(self):
         result = run_full_ablation(seed=42)
         fwd = result["minimal_forward"]
         assert isinstance(fwd["components"], list)
-        assert isinstance(fwd["tpr"], float)
+        for key in ("tpr", "fpr", "youden_j"):
+            assert isinstance(fwd[key], float), f"{key} missing or not a float"
         assert 0.0 <= fwd["tpr"] <= 1.0
+        assert 0.0 <= fwd["fpr"] <= 1.0
+        assert abs(fwd["youden_j"] - (fwd["tpr"] - fwd["fpr"])) < 1e-12
 
-    def test_minimal_backward_has_components_and_tpr(self):
+    def test_minimal_backward_has_components_and_rates(self):
         result = run_full_ablation(seed=42)
         bwd = result["minimal_backward"]
         assert isinstance(bwd["components"], list)
-        assert isinstance(bwd["tpr"], float)
+        for key in ("tpr", "fpr", "youden_j"):
+            assert isinstance(bwd[key], float), f"{key} missing or not a float"
         assert 0.0 <= bwd["tpr"] <= 1.0
+        assert 0.0 <= bwd["fpr"] <= 1.0
+        assert abs(bwd["youden_j"] - (bwd["tpr"] - bwd["fpr"])) < 1e-12
 
     def test_top_synergies_is_list(self):
         result = run_full_ablation(seed=42)
@@ -193,17 +247,21 @@ class TestRunFullAblation:
 
     def test_top_synergies_entries_have_required_fields(self):
         result = run_full_ablation(seed=42)
+        required = {
+            "a", "b", "synergy", "tpr_a", "tpr_b", "combined_tpr",
+            "fpr_a", "fpr_b", "combined_fpr", "youden_synergy",
+        }
         for entry in result["top_synergies"]:
-            assert "a" in entry
-            assert "b" in entry
-            assert "synergy" in entry
+            assert required <= set(entry), f"missing {required - set(entry)}"
+            j_a = entry["tpr_a"] - entry["fpr_a"]
+            j_b = entry["tpr_b"] - entry["fpr_b"]
+            j_combined = entry["combined_tpr"] - entry["combined_fpr"]
+            assert abs(entry["youden_synergy"] - (j_combined - max(j_a, j_b))) < 1e-12
 
     def test_deterministic_with_same_seed(self):
-        """Running twice with the same seed should produce identical results."""
+        """Two runs at the same seed must be byte-identical, not merely close."""
+        import json
+
         r1 = run_full_ablation(seed=42)
         r2 = run_full_ablation(seed=42)
-        # Component removal order and values should match
-        assert len(r1["component_removal"]) == len(r2["component_removal"])
-        for a, b in zip(r1["component_removal"], r2["component_removal"]):
-            assert a["removed"] == b["removed"]
-            assert abs(a["tpr"] - b["tpr"]) < 1e-6
+        assert json.dumps(r1, sort_keys=True) == json.dumps(r2, sort_keys=True)

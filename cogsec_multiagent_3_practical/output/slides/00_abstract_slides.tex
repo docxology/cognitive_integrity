@@ -104,6 +104,9 @@
 \providecommand{\citeyear}[1]{#1}
 \providecommand{\cref}[1]{\texttt{\detokenize{#1}}}
 \providecommand{\Cref}[1]{\texttt{\detokenize{#1}}}
+
+\newtheorem{proposition}{Proposition}
+\newtheorem{hypothesis}{Hypothesis}
 \usepackage{bookmark}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same}
@@ -154,13 +157,13 @@ from traditional security models.
 
 The \textbf{Cognitive Integrity Framework (CIF)} is developed across a
 three-part series: formal treatment (Part 1), running code and
-experiments (Part 2), and the present unified paper (Part 3+4) combining
+experiments (Part 2), and the present unified paper (Part 3) combining
 practitioner guidance with cross-domain application. \textbf{Part 1}
 establishes mathematical foundations---a trust calculus with provably
 bounded delegation, defense composition algebras with multiplicative
 detection guarantees, and information-theoretic limits on attack
 stealth. \textbf{Part 2} provides computational validation: eight
-implemented defense modules (1,594 passing tests), a 950-attack corpus
+implemented defense modules, 2,283 passing tests, a 950-attack corpus
 spanning four threat categories, parametric architecture-aware
 simulation across four production multiagent topologies, and a
 category-theoretic formalization of defense composition (Theorems

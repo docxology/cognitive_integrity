@@ -57,6 +57,11 @@ This file contains LaTeX packages and commands for the Cognitive Security Framew
 \newtheorem{formalization}[theorem]{Formalization}
 \newtheorem{principle}[theorem]{Principle}
 \newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+
+% Code listings used by supplementary implementation examples
+\usepackage{listings}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible}
 
 % End of theorem environment declarations
 

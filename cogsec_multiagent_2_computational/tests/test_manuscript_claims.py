@@ -82,10 +82,12 @@ def test_firewall_removal_delta_tpr(ablation: dict) -> None:
     """Firewall removal ΔTPR matches ``output/data/ablation_results.json``.
 
     Ground truth is the committed JSON (regenerate with
-    ``scripts/run_ablation.py`` if methodology changes).
+    ``scripts/run_ablation.py`` if methodology changes). Manuscript
+    (``05d_ablation_and_scalability.md``) states Firewall removal
+    ΔTPR ≈ -0.009, matching a live ``scripts/run_ablation.py --seed 42`` run.
     """
     removal = {r["removed"]: r["delta_tpr"] for r in ablation["component_removal"]}
-    assert abs(removal["firewall"] - (-0.019)) < 0.005, (
+    assert abs(removal["firewall"] - (-0.009)) < 0.005, (
         f"Firewall ΔTPR out of sync with ablation_results.json, got {removal['firewall']:.6f}"
     )
 
@@ -101,18 +103,50 @@ def test_tripwire_removal_delta_tpr(ablation: dict) -> None:
     )
 
 
-def test_top_synergy_pair_is_firewall_detection(ablation: dict) -> None:
-    """Top synergy pair is firewall+detection per ``ablation_results.json``."""
+def test_strongest_synergy_is_a_tie_between_two_detection_pairs(ablation: dict) -> None:
+    """The strongest synergy is a *tie*, not a single winning pair.
+
+    Once the RNG noise was removed from ``src/ablation/runner.py`` and the
+    ``trust_calculus``/``trust`` registry mismatch was fixed, the noiseless
+    measurement puts ``firewall+detection`` and ``tripwire+detection`` at
+    byte-identical synergy.  The manuscript must not name one of them as "the"
+    strongest — this test exists to keep that claim honest, and it fails if a
+    future change reintroduces a spurious ordering between them.
+    """
     synergies = ablation["top_synergies"]
-    assert len(synergies) > 0
-    top = synergies[0]
-    components = {top["a"], top["b"]}
-    assert components == {"firewall", "detection"}, (
-        f"Expected top synergy firewall+detection, got {components}"
+    assert len(synergies) >= 2
+    best = synergies[0]["synergy"]
+    tied = [{s["a"], s["b"]} for s in synergies if s["synergy"] == best]
+    assert len(tied) == 2, (
+        f"Expected exactly two pairs tied at the top synergy {best:.6f}, "
+        f"got {len(tied)}: {tied}"
     )
-    assert abs(top["synergy"] - 0.026) < 0.005, (
-        f"Top synergy out of sync with ablation_results.json, got {top['synergy']:.6f}"
+    assert {"firewall", "detection"} in tied and {"tripwire", "detection"} in tied, (
+        f"Expected the tie to be firewall+detection and tripwire+detection, got {tied}"
     )
+
+
+def test_ablation_deltas_are_exact_multiples_of_the_sample_resolution(
+    ablation: dict,
+) -> None:
+    """Every ablation delta is an exact multiple of 1/N — the resolution limit.
+
+    The evaluation draws a stratified sample of N=98 attacks, so a single
+    attack moves TPR by 1/98 ≈ 0.0102.  Deltas smaller than that are not
+    measurable, and any delta that is *not* a multiple of 1/98 means noise has
+    been reintroduced into the measurement path.  This is the positive control
+    for :func:`test_strongest_synergy_is_a_tie_between_two_detection_pairs`:
+    a noisy pipeline fails here first.
+    """
+    n_samples = round(1.0 / ablation["full_pipeline"]["tpr"] * 12)
+    resolution = 1.0 / n_samples
+    for row in ablation["component_removal"]:
+        quanta = row["delta_tpr"] / resolution
+        assert abs(quanta - round(quanta)) < 1e-9, (
+            f"delta_tpr for {row['removed']} is {row['delta_tpr']!r}, which is "
+            f"not an exact multiple of the 1/{n_samples} sample resolution — "
+            "noise has been reintroduced into the ablation measurement"
+        )
 
 
 # ---------------------------------------------------------------------------
@@ -166,6 +200,66 @@ def test_non_autogpt_architectures_achieve_100_percent(full_eval: list) -> None:
                 f"{entry['architecture']}/{entry['attack_category']}: "
                 f"expected 1.0, got {entry['detection_rate']}"
             )
+
+
+def test_live_simulator_matches_stored_full_evaluation_results(full_eval: list) -> None:
+    """Re-run the real ExperimentRunner.run_full_matrix() (seed=42, simulation
+    mode) and confirm its live detection rates agree with the stored
+    full_evaluation_results.json — not just that the static file matches
+    itself (C-04).
+
+    Note: ``ExperimentResult.attack_category`` picks the *dominant* subcategory
+    per (architecture, top-category) cell via ``max(set(categories), key=...)``,
+    which is order-dependent when subcategory counts tie and therefore not
+    stable across interpreter runs (PYTHONHASHSEED-dependent set iteration).
+    So this test compares the multiset of detection rates achieved per
+    architecture rather than keying on the (possibly relabeled) category name.
+    """
+    from architectures.autogpt import AutoGPTAdapter
+    from architectures.claude_code import ClaudeCodeAdapter
+    from architectures.crewai import CrewAIAdapter
+    from architectures.langgraph import LangGraphAdapter
+    from attacks.corpus import AttackCorpus
+    from evaluation.runner import ExperimentRunner
+    from utils.types import ExperimentConfig
+
+    seed = 42
+    corpus = AttackCorpus.generate(seed=seed)
+    adapters = [ClaudeCodeAdapter(), AutoGPTAdapter(), CrewAIAdapter(), LangGraphAdapter()]
+
+    corpus_dict: dict[str, list[dict]] = {}
+    for cat in ["injection", "trust_exploitation", "belief_manipulation", "coordination"]:
+        samples = corpus.by_top_category(cat)
+        corpus_dict[cat] = [
+            {"category": s.subcategory, "content": s.payload, "is_attack": True}
+            for s in samples
+        ]
+
+    runner = ExperimentRunner(ExperimentConfig(seed=seed))
+    live_results = runner.run_full_matrix(adapters, corpus_dict, None)
+
+    assert len(live_results) == len(full_eval), (
+        f"live run produced {len(live_results)} cells, "
+        f"stored file has {len(full_eval)}"
+    )
+
+    live_rates: dict[str, list[float]] = {}
+    for r in live_results:
+        live_rates.setdefault(r.architecture, []).append(round(r.detection_rate, 6))
+
+    stored_rates: dict[str, list[float]] = {}
+    for e in full_eval:
+        stored_rates.setdefault(e["architecture"], []).append(round(e["detection_rate"], 6))
+
+    assert set(live_rates) == set(stored_rates), (
+        f"architecture set differs: live={sorted(live_rates)} "
+        f"stored={sorted(stored_rates)}"
+    )
+    for arch in live_rates:
+        assert sorted(live_rates[arch]) == sorted(stored_rates[arch]), (
+            f"{arch}: live detection rates {sorted(live_rates[arch])} != "
+            f"stored {sorted(stored_rates[arch])}"
+        )
 
 
 # ---------------------------------------------------------------------------

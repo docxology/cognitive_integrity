@@ -90,6 +90,8 @@ def main() -> None:
     # Save
     out_path = output_dir / "cross_validation_results.json"
     data = {
+        "data_origin": "real_pipeline",
+        "source_script": "scripts/run_cross_validation.py",
         "k": cv_result.k,
         "folds": [
             {"fold": f.fold, "tpr": f.tpr, "fpr": f.fpr, "f1": f.f1,

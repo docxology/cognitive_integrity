@@ -1,6 +1,6 @@
 # Architecture Adapters
 
-Adapters for 4 production multiagent architectures.
+Adapters for the four production multiagent architectures evaluated in this paper.
 
 ## Supported Architectures
 

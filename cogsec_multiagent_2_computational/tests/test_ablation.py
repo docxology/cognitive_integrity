@@ -36,33 +36,42 @@ def make_additive_eval_fn(contributions: dict[str, float], baseline_fpr: float =
     return evaluate
 
 
-def make_tpr_only_eval_fn(contributions: dict[str, float]):
-    """Create an evaluation function returning only TPR (for MinimalConfig/Synergy).
+def make_tpr_only_eval_fn(contributions: dict[str, float], fpr: float = 0.0):
+    """Create an evaluation function whose FPR is a fixed constant.
 
-    Each component contributes a fixed amount to detection rate.
+    Each component contributes a fixed amount to detection rate; the FPR
+    is held constant so TPR-driven behaviour can be tested in isolation.
+    Returns ``(tpr, fpr)`` — the contract shared by ComponentRemovalStudy,
+    MinimalConfigSearch, and PairwiseSynergyAnalysis.
     """
-    def evaluate(active: dict) -> float:
+    def evaluate(active: dict) -> tuple[float, float]:
         tpr = sum(contributions.get(name, 0.0) for name in active)
-        return min(tpr, 1.0)
+        return (min(tpr, 1.0), fpr)
     return evaluate
 
 
 def make_synergistic_eval_fn(
     individual: dict[str, float],
     synergies: dict[tuple[str, str], float],
+    fpr_contributions: dict[str, float] | None = None,
 ):
     """Create an evaluation function with pairwise synergy effects.
 
     When both components in a synergy pair are present, the combined
-    TPR gets a bonus (or penalty if negative).
+    TPR gets a bonus (or penalty if negative).  *fpr_contributions* lets a
+    test give a component a false-positive cost, so that a pair can be
+    made TPR-synergistic while being Youden-J-neutral or worse.
     """
-    def evaluate(active: dict) -> float:
+    fpr_contributions = fpr_contributions or {}
+
+    def evaluate(active: dict) -> tuple[float, float]:
         tpr = sum(individual.get(name, 0.0) for name in active)
         active_names = set(active.keys())
         for (a, b), bonus in synergies.items():
             if a in active_names and b in active_names:
                 tpr += bonus
-        return min(max(tpr, 0.0), 1.0)
+        fpr = sum(fpr_contributions.get(name, 0.0) for name in active)
+        return (min(max(tpr, 0.0), 1.0), min(max(fpr, 0.0), 1.0))
     return evaluate
 
 
@@ -328,11 +337,14 @@ class TestMinimalConfigResult:
             detection_rate=0.92,
             n_components=2,
             meets_threshold=True,
+            false_positive_rate=0.04,
         )
         assert result.components == ["firewall", "trust"]
         assert result.detection_rate == 0.92
         assert result.n_components == 2
         assert result.meets_threshold is True
+        assert result.false_positive_rate == 0.04
+        assert abs(result.youden_j - 0.88) < 1e-12
 
 
 class TestMinimalConfigSearch:
@@ -497,10 +509,14 @@ class TestSynergyResult:
             individual_b_tpr=0.50,
             combined_tpr=0.75,
             synergy_score=0.15,
+            individual_a_fpr=0.02,
+            individual_b_fpr=0.03,
+            combined_fpr=0.04,
         )
         assert result.component_a == "firewall"
         assert result.component_b == "tripwire"
         assert result.synergy_score == 0.15
+        assert result.combined_fpr == 0.04
 
     def test_synergy_score_calculation(self):
         """synergy = combined - max(individual_a, individual_b)."""
@@ -511,8 +527,37 @@ class TestSynergyResult:
             individual_b_tpr=0.50,
             combined_tpr=0.75,
             synergy_score=0.75 - max(0.60, 0.50),
+            individual_a_fpr=0.0,
+            individual_b_fpr=0.0,
+            combined_fpr=0.0,
         )
         assert abs(result.synergy_score - 0.15) < 1e-10
+
+    def test_youden_synergy_discounts_false_positives(self):
+        """TPR synergy bought entirely with false positives has zero J synergy.
+
+        Positive control for the ΔJ column: the *same* TPR numbers with a
+        clean combined FPR give a positive J synergy, so the assertion
+        below cannot pass by construction.
+        """
+        bought = SynergyResult(
+            component_a="a", component_b="b",
+            individual_a_tpr=0.60, individual_b_tpr=0.50,
+            combined_tpr=0.75, synergy_score=0.15,
+            individual_a_fpr=0.00, individual_b_fpr=0.00,
+            combined_fpr=0.15,
+        )
+        assert abs(bought.youden_synergy_score - 0.0) < 1e-12
+
+        genuine = SynergyResult(
+            component_a="a", component_b="b",
+            individual_a_tpr=0.60, individual_b_tpr=0.50,
+            combined_tpr=0.75, synergy_score=0.15,
+            individual_a_fpr=0.00, individual_b_fpr=0.00,
+            combined_fpr=0.00,
+        )
+        assert abs(genuine.youden_synergy_score - 0.15) < 1e-12
+        assert genuine.youden_synergy_score > bought.youden_synergy_score
 
 
 class TestPairwiseSynergyAnalysis:
@@ -590,7 +635,7 @@ class TestPairwiseSynergyAnalysis:
 
         def counting_eval(active):
             call_count[0] += 1
-            return sum(0.3 for _ in active)
+            return (sum(0.3 for _ in active), 0.0)
 
         analysis = PairwiseSynergyAnalysis(components, counting_eval)
         analysis.compute_all_pairs()

@@ -15,8 +15,11 @@ All renderers produce either:
 
 from __future__ import annotations
 
+import logging
 from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional, Tuple
+
+from composition.algebra import compute_parallel_detection_rate, compute_series_detection_rate
 
 # Optional graphviz import — graceful degradation
 try:
@@ -33,6 +36,7 @@ try:
     _MATPLOTLIB_AVAILABLE = True
 except ImportError:
     _MATPLOTLIB_AVAILABLE = False
+
 
 
 def _escape_xml(text: str) -> str:
@@ -72,6 +76,7 @@ def _svg_document(
         )
     return lines
 
+logger = logging.getLogger(__name__)
 
 # ---------------------------------------------------------------------------
 # Module metadata (matches the 8 CIF defense modules)
@@ -157,17 +162,15 @@ PRESET_PIPELINES: Dict[str, Dict[str, Any]] = {
 # Combined detection rate calculators
 # ---------------------------------------------------------------------------
 
+
 def series_rate(rates: List[float]) -> float:
     """Combined detection rate for series composition."""
-    miss = 1.0
-    for r in rates:
-        miss *= (1 - r)
-    return 1.0 - miss
+    return compute_series_detection_rate(rates)
 
 
 def parallel_rate(rates: List[float]) -> float:
-    """Combined detection rate for parallel composition (max)."""
-    return max(rates) if rates else 0.0
+    """Combined detection rate for parallel max-fusion (OR) composition."""
+    return compute_parallel_detection_rate(rates, strategy="max")
 
 
 # ---------------------------------------------------------------------------
@@ -250,6 +253,7 @@ class DefenseGraph:
         prev_id: str = fast_out
         for name in deep_modules:
             node_id = self.add_module(name)
+            assert prev_id is not None
             self.add_edge(prev_id, node_id, "→")
             prev_id = node_id
         return self
@@ -324,8 +328,8 @@ class DefenseGraph:
         if dot is not None:
             try:
                 return dot.pipe(format="svg").decode("utf-8")
-            except Exception:
-                pass
+            except Exception as _exc:
+                logger.debug("graphviz pipe failed, using ASCII fallback: %s", _exc)
         # SVG wrapping ASCII fallback
         ascii_art = self.to_ascii()
         lines = ascii_art.split("\n")

@@ -1,90 +1,177 @@
 {
+  "full_pipeline": {
+    "tpr": 0.12244897959183673,
+    "fpr": 0.0,
+    "youden_j": 0.12244897959183673
+  },
   "component_removal": [
     {
       "removed": "detection",
-      "tpr": 0.068,
-      "delta_tpr": -0.052
-    },
-    {
-      "removed": "firewall",
-      "tpr": 0.10099999999999999,
-      "delta_tpr": -0.019
+      "tpr": 0.07142857142857142,
+      "delta_tpr": -0.05102040816326531,
+      "fpr": 0.0,
+      "delta_fpr": 0.0,
+      "youden_j": 0.07142857142857142,
+      "delta_youden_j": -0.05102040816326531
     },
     {
       "removed": "trust_calculus",
-      "tpr": 0.105,
-      "delta_tpr": -0.015
+      "tpr": 0.10204081632653061,
+      "delta_tpr": -0.020408163265306117,
+      "fpr": 0.0,
+      "delta_fpr": 0.0,
+      "youden_j": 0.10204081632653061,
+      "delta_youden_j": -0.020408163265306117
     },
     {
-      "removed": "tripwire",
-      "tpr": 0.109,
-      "delta_tpr": -0.011
-    },
-    {
-      "removed": "consensus",
-      "tpr": 0.111,
-      "delta_tpr": -0.009
-    },
-    {
-      "removed": "provenance",
-      "tpr": 0.11299999999999999,
-      "delta_tpr": -0.007
-    },
-    {
-      "removed": "sandbox",
-      "tpr": 0.11499999999999999,
-      "delta_tpr": -0.005
+      "removed": "firewall",
+      "tpr": 0.11224489795918367,
+      "delta_tpr": -0.010204081632653059,
+      "fpr": 0.0,
+      "delta_fpr": 0.0,
+      "youden_j": 0.11224489795918367,
+      "delta_youden_j": -0.010204081632653059
     },
     {
       "removed": "invariants",
-      "tpr": 0.11399999999999999,
-      "delta_tpr": -0.006
+      "tpr": 0.11224489795918367,
+      "delta_tpr": -0.010204081632653059,
+      "fpr": 0.0,
+      "delta_fpr": 0.0,
+      "youden_j": 0.11224489795918367,
+      "delta_youden_j": -0.010204081632653059
+    },
+    {
+      "removed": "tripwire",
+      "tpr": 0.11224489795918367,
+      "delta_tpr": -0.010204081632653059,
+      "fpr": 0.0,
+      "delta_fpr": 0.0,
+      "youden_j": 0.11224489795918367,
+      "delta_youden_j": -0.010204081632653059
+    },
+    {
+      "removed": "consensus",
+      "tpr": 0.12244897959183673,
+      "delta_tpr": 0.0,
+      "fpr": 0.0,
+      "delta_fpr": 0.0,
+      "youden_j": 0.12244897959183673,
+      "delta_youden_j": 0.0
+    },
+    {
+      "removed": "provenance",
+      "tpr": 0.12244897959183673,
+      "delta_tpr": 0.0,
+      "fpr": 0.0,
+      "delta_fpr": 0.0,
+      "youden_j": 0.12244897959183673,
+      "delta_youden_j": 0.0
+    },
+    {
+      "removed": "sandbox",
+      "tpr": 0.12244897959183673,
+      "delta_tpr": 0.0,
+      "fpr": 0.0,
+      "delta_fpr": 0.0,
+      "youden_j": 0.12244897959183673,
+      "delta_youden_j": 0.0
     }
   ],
   "minimal_forward": {
     "components": [
-      "firewall",
       "detection",
+      "firewall",
       "trust_calculus",
-      "tripwire"
+      "tripwire",
+      "invariants",
+      "consensus",
+      "provenance",
+      "sandbox"
     ],
-    "tpr": 0.118
+    "n_components": 8,
+    "meets_threshold": false,
+    "tpr": 0.12244897959183673,
+    "fpr": 0.0,
+    "youden_j": 0.12244897959183673
   },
   "minimal_backward": {
     "components": [
       "firewall",
-      "detection",
       "trust_calculus",
       "tripwire",
-      "consensus"
+      "detection",
+      "consensus",
+      "provenance",
+      "sandbox",
+      "invariants"
     ],
-    "tpr": 0.117
+    "n_components": 8,
+    "meets_threshold": false,
+    "tpr": 0.12244897959183673,
+    "fpr": 0.0,
+    "youden_j": 0.12244897959183673
   },
   "top_synergies": [
     {
       "a": "firewall",
       "b": "detection",
-      "synergy": 0.026
+      "synergy": 0.030612244897959176,
+      "tpr_a": 0.030612244897959183,
+      "tpr_b": 0.05102040816326531,
+      "combined_tpr": 0.08163265306122448,
+      "fpr_a": 0.0,
+      "fpr_b": 0.0,
+      "combined_fpr": 0.0,
+      "youden_synergy": 0.030612244897959176
+    },
+    {
+      "a": "tripwire",
+      "b": "detection",
+      "synergy": 0.030612244897959176,
+      "tpr_a": 0.030612244897959183,
+      "tpr_b": 0.05102040816326531,
+      "combined_tpr": 0.08163265306122448,
+      "fpr_a": 0.0,
+      "fpr_b": 0.0,
+      "combined_fpr": 0.0,
+      "youden_synergy": 0.030612244897959176
     },
     {
       "a": "firewall",
       "b": "trust_calculus",
-      "synergy": 0.018
-    },
-    {
-      "a": "detection",
-      "b": "consensus",
-      "synergy": 0.014
+      "synergy": 0.020408163265306124,
+      "tpr_a": 0.030612244897959183,
+      "tpr_b": 0.02040816326530612,
+      "combined_tpr": 0.05102040816326531,
+      "fpr_a": 0.0,
+      "fpr_b": 0.0,
+      "combined_fpr": 0.0,
+      "youden_synergy": 0.020408163265306124
     },
     {
       "a": "trust_calculus",
       "b": "tripwire",
-      "synergy": 0.012
+      "synergy": 0.020408163265306124,
+      "tpr_a": 0.02040816326530612,
+      "tpr_b": 0.030612244897959183,
+      "combined_tpr": 0.05102040816326531,
+      "fpr_a": 0.0,
+      "fpr_b": 0.0,
+      "combined_fpr": 0.0,
+      "youden_synergy": 0.020408163265306124
     },
     {
-      "a": "tripwire",
-      "b": "consensus",
-      "synergy": 0.01
+      "a": "trust_calculus",
+      "b": "detection",
+      "synergy": 0.020408163265306117,
+      "tpr_a": 0.02040816326530612,
+      "tpr_b": 0.05102040816326531,
+      "combined_tpr": 0.07142857142857142,
+      "fpr_a": 0.0,
+      "fpr_b": 0.0,
+      "combined_fpr": 0.0,
+      "youden_synergy": 0.020408163265306117
     }
   ]
 }

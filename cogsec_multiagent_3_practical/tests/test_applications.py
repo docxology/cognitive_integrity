@@ -117,14 +117,18 @@ EXPECTED_SRC_MODULES = [
     "pitfalls",
     "visualization",
     "identity",
+    "applications",
 ]
 
 
 @pytest.mark.parametrize("module", EXPECTED_SRC_MODULES)
 def test_src_module_exists(module):
-    """Every expected src module file must be present."""
-    path = PROJECT_ROOT / "src" / f"{module}.py"
-    assert path.exists(), f"Missing src module: {module}.py"
+    """Every expected src module file or package must be present."""
+    module_path = PROJECT_ROOT / "src" / module
+    flat_module = PROJECT_ROOT / "src" / f"{module}.py"
+    assert module_path.is_dir() or flat_module.is_file(), (
+        f"Missing src module: {module}.py or src/{module}/ package"
+    )
 
 
 def test_identity_module_imports():

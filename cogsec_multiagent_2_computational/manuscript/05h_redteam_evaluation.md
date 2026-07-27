@@ -8,9 +8,9 @@
 > infrastructure is discussed in the merged Part 3+4 \cite{friedman2026cogsec3} §4.2
 > (practitioner red-team checklists) and §5.3.2 (incident-response integration).
 >
-> **Reproducibility.** Red-team harness available at `src/redteam/`; evaluation
-> results at `output/data/redteam_evaluation_results.json`. Run via
-> `uv run python scripts/run_redteam.py`.
+> **Status.** The complete red-team evaluation script and result artifact are not
+> included in this checkout. The section is therefore conceptual/planned and its
+> illustrative values are not reported as reproducible empirical evidence.
 
 ## Red-Team Architecture {#sec:redteam-arch}
 

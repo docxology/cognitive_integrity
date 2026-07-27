@@ -1,8 +1,18 @@
-"""Additional tests for src/formal/trust_bounds.py — missed branches.
+"""Additional tests for src/formal/trust_bounds.py — the FAILED branch.
 
-Covers:
-- The FAILED branch (violations > 0) — triggered by using delta=0.0
-  so all trust delegations exceed 0^d=0 (any positive trust violates).
+Audit TEST-05/TEST-06 background
+--------------------------------
+The previous version of this file claimed to cover ``validate_trust_bound``'s
+FAILED branch but every test accepted either outcome
+(``assert result.status in (PASSED, FAILED)``), so no test could ever fail.
+The validator itself was tautological as well: it only checked
+``T_delegated <= delta^d``, which holds for *any* aggregator of two values in
+[0, 1] scaled by ``delta^d`` — including ``max``, i.e. an implementation that
+amplifies trust through delegation.
+
+Every FAILED-branch test below now asserts a definite status, and the
+amplifying/no-decay stubs are the positive controls proving the checker can
+actually reject a wrong implementation.
 
 All tests use real computation. No mocks.
 """
@@ -11,8 +21,28 @@ from __future__ import annotations
 
 import pytest
 
+from core.trust import TrustCalculus, TrustConfig
 from formal.theorem_registry import TheoremStatus
-from formal.trust_bounds import validate_trust_bound
+from formal.trust_bounds import DECAY_FACTOR_DEFAULT, validate_trust_bound
+
+
+def amplifying_delegation(source: float, target: float, depth: int) -> float:
+    """Wrong implementation: takes the *strongest* link instead of the weakest.
+
+    Still obeys ``T <= delta^d`` because both inputs are in [0, 1], which is
+    exactly why the old absolute-bound-only check could not see it.
+    """
+    return max(source, target) * (DECAY_FACTOR_DEFAULT ** depth)
+
+
+def no_decay_delegation(source: float, target: float, depth: int) -> float:
+    """Wrong implementation: weakest link but no depth attenuation."""
+    return min(source, target)
+
+
+def unit_delegation(source: float, target: float, depth: int) -> float:
+    """Wrong implementation: full trust regardless of the chain."""
+    return 1.0
 
 
 class TestTrustBoundsFailedBranch:
@@ -21,42 +51,102 @@ class TestTrustBoundsFailedBranch:
     def test_default_params_pass(self):
         result = validate_trust_bound(seed=42)
         assert result.status == TheoremStatus.PASSED
+        assert result.details["implementation"] == (
+            "core.trust.TrustCalculus.delegate_trust"
+        )
 
-    def test_delta_zero_fails(self):
-        """delta=0 → bound = 0^d = 0, any positive trust violates."""
-        # With delta=0, the bound is 0 at every depth.
-        # delegate_trust(src, tgt, depth=d) uses decay=delta=0, so
-        # delegated = src * tgt * 0^(d-1) = 0 for d>1, but for d=1
-        # it might be non-zero depending on implementation.
-        # Use a very small delta that still causes violations with random trusts.
-        result = validate_trust_bound(delta=1e-10, max_depth=1, n_trials=100, seed=42)
-        # With delta=1e-10, bound = 1e-10 at depth=1, but delegated trust
-        # may be significantly larger → should detect violations
-        # Result can be PASSED or FAILED depending on implementation details
-        assert result.theorem_id == "3.1"
-        assert result.status in (TheoremStatus.PASSED, TheoremStatus.FAILED)
+    def test_amplifying_implementation_is_rejected(self):
+        """Positive control: trust amplification must be reported as FAILED.
+
+        ``max`` instead of ``min`` survived the old checker untouched.
+        """
+        result = validate_trust_bound(
+            delegate_fn=amplifying_delegation, max_depth=5, n_trials=200, seed=42
+        )
+        assert result.status == TheoremStatus.FAILED
+        assert result.details["amplification_violations"] > 0
+        assert result.details["max_amplification"] > 0.0
+        # The absolute decay bound alone cannot see this defect — which is the
+        # whole point of adding the weakest-link check.
+        assert result.details["decay_violations"] == 0
+
+    def test_no_decay_implementation_is_rejected(self):
+        """An implementation that forgets delta^d must be reported as FAILED."""
+        result = validate_trust_bound(
+            delegate_fn=no_decay_delegation, max_depth=5, n_trials=200, seed=42
+        )
+        assert result.status == TheoremStatus.FAILED
+        assert result.details["decay_violations"] > 0
+        assert result.details["amplification_violations"] > 0
+
+    def test_unit_delegation_is_rejected(self):
+        result = validate_trust_bound(
+            delegate_fn=unit_delegation, max_depth=3, n_trials=100, seed=7
+        )
+        assert result.status == TheoremStatus.FAILED
+        assert result.details["violations"] > 0
+
+    def test_failed_evidence_reports_both_violation_classes(self):
+        result = validate_trust_bound(
+            delegate_fn=amplifying_delegation, max_depth=3, n_trials=100, seed=42
+        )
+        assert result.status == TheoremStatus.FAILED
+        assert "amplified" in result.evidence
+        assert "violated" in result.evidence
+
+    def test_production_delegation_matches_weakest_link_formula(self):
+        """The passing verdict is bound to the shipped implementation.
+
+        Sampled directly from ``TrustCalculus`` so the checker's premise —
+        ``delegated == min(source, target) * delta^d`` — is asserted against
+        real code rather than restated.
+        """
+        calculus = TrustCalculus(TrustConfig(decay=DECAY_FACTOR_DEFAULT))
+        for depth in range(1, 6):
+            for source in (0.1, 0.5, 0.9, 1.0):
+                for target in (0.1, 0.5, 0.9, 1.0):
+                    delegated = calculus.delegate_trust(source, target, depth=depth)
+                    expected = min(source, target) * DECAY_FACTOR_DEFAULT ** depth
+                    assert delegated == pytest.approx(expected, abs=1e-12)
+                    # And the amplifying alternative genuinely differs whenever
+                    # the two links are not equal.
+                    if source != target:
+                        assert delegated < amplifying_delegation(
+                            source, target, depth
+                        )
 
     def test_delta_greater_than_one_causes_violations(self):
-        """delta > 1 is not valid — TrustConfig enforces decay in (0, 1).
-        Verify the error is raised cleanly."""
+        """delta > 1 is not valid — TrustConfig enforces decay in (0, 1)."""
         with pytest.raises(ValueError, match="Decay must be in"):
             validate_trust_bound(delta=1.5, max_depth=2, n_trials=10, seed=42)
 
-    def test_violation_branch_evidence_contains_violated(self):
-        """When violations occur, evidence should mention violation count."""
-        # Try with very strict delta forcing violations
-        # With delta=0.01, bound at depth 1 = 0.01; delegate_trust may exceed this
-        result = validate_trust_bound(delta=0.01, max_depth=5, n_trials=500, seed=42)
-        if result.status == TheoremStatus.FAILED:
-            assert "violated" in result.evidence
-            assert result.details["violations"] > 0
-        else:
-            # Passed — that's fine too
-            assert result.details["violations"] == 0
+    def test_delta_validated_even_with_injected_delegate_fn(self):
+        """The decay range check must not be bypassed by the injection hook."""
+        with pytest.raises(ValueError, match="Decay must be in"):
+            validate_trust_bound(
+                delta=1.5, delegate_fn=amplifying_delegation, n_trials=5
+            )
+
+    def test_tiny_delta_still_passes_for_production_code(self):
+        """delta=1e-10: the bound shrinks with delta, so the real code holds."""
+        result = validate_trust_bound(delta=1e-10, max_depth=1, n_trials=100, seed=42)
+        assert result.status == TheoremStatus.PASSED
+        assert result.details["violations"] == 0
 
     def test_result_details_keys(self):
         result = validate_trust_bound(seed=42)
-        expected_keys = {"delta", "max_depth", "n_trials", "total_samples", "violations", "max_violation"}  # noqa: E501
+        expected_keys = {
+            "delta",
+            "max_depth",
+            "n_trials",
+            "total_samples",
+            "violations",
+            "max_violation",
+            "decay_violations",
+            "amplification_violations",
+            "max_amplification",
+            "implementation",
+        }
         assert expected_keys == set(result.details.keys())
 
     def test_total_samples_equals_depth_times_trials(self):

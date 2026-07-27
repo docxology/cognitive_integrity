@@ -780,3 +780,198 @@ class TestSlidingWindowMonitor:
         # Different number of numeric features
         monitor.collect_snapshot({"x": 1.0})
         assert len(monitor._ema_mean) == 1
+
+
+# ---------------------------------------------------------------------------
+# Fail-closed feature extraction (audit INTEG-04)
+#
+# AnomalyScorer used to drop any feature whose extractor raised, from BOTH the
+# numerator and the denominator of the weighted mean.  Feature extractors read
+# an attacker-influenced state dict, so an adversary who makes every extractor
+# raise -- e.g. by sending the same anomalous counters as strings instead of
+# numbers -- drove the score to 0.0 and converted a detected anomaly into a
+# clean verdict.  These tests pin the fail-closed behaviour and include the
+# adversarial input as the positive control.
+# ---------------------------------------------------------------------------
+
+
+def _calibrated_scorer(config=None):
+    """Scorer with three standard extractors calibrated on benign traffic."""
+    scorer = AnomalyScorer(config or DetectionConfig())
+    scorer.add_extractor("freq", action_frequency_extractor, 1.0)
+    scorer.add_extractor("belief", belief_volatility_extractor, 1.0)
+    scorer.add_extractor("comm", communication_volume_extractor, 1.0)
+    for i in range(60):
+        scorer.observe(
+            "agent1",
+            {
+                "action_count": 5 + (i % 3),
+                "time_delta": 1,
+                "belief_changes": 1,
+                "messages_sent": 2,
+                "messages_received": 2,
+            },
+        )
+    scorer.calibrate("agent1")
+    return scorer
+
+
+#: Behaviour that is unambiguously anomalous against the benign baseline.
+_ATTACK_STATE = {
+    "action_count": 5000,
+    "time_delta": 1,
+    "belief_changes": 900,
+    "messages_sent": 900,
+    "messages_received": 900,
+}
+
+#: The same behaviour, with every counter typed as a string so that each
+#: extractor raises TypeError.  This is the evasion payload.
+_EVASIVE_STATE = {key: str(value) for key, value in _ATTACK_STATE.items()}
+
+
+class TestAnomalyScorerFailClosed:
+    """A feature that cannot be extracted must never clean up the verdict."""
+
+    def test_numeric_attack_is_detected(self):
+        """Baseline: the attack behaviour is detected when typed normally."""
+        scorer = _calibrated_scorer()
+        is_anom, score, features = scorer.is_anomalous("agent1", _ATTACK_STATE)
+        assert is_anom
+        assert score > scorer.config.sigma_multiplier
+        assert set(features) == {"freq", "belief", "comm"}
+
+    def test_string_typed_attack_is_still_flagged(self):
+        """Positive control for INTEG-04.
+
+        Identical behaviour, every counter stringified.  Under the old
+        fail-open code every extractor raised, the weighted mean collapsed to
+        0.0 and the verdict was clean.
+        """
+        scorer = _calibrated_scorer()
+        is_anom, score, _ = scorer.is_anomalous("agent1", _EVASIVE_STATE)
+        assert is_anom is True
+        assert score > scorer.config.sigma_multiplier
+
+    def test_evasive_state_never_scores_zero(self):
+        """score() itself must not report a clean 0.0 for the evasion payload."""
+        scorer = _calibrated_scorer()
+        assert scorer.score("agent1", _EVASIVE_STATE) > 0.0
+
+    def test_undeterminable_features_are_named(self):
+        """evaluate() reports exactly which signals were suppressed."""
+        scorer = _calibrated_scorer()
+        verdict = scorer.evaluate("agent1", _EVASIVE_STATE)
+        assert verdict.is_undeterminable
+        assert set(verdict.undeterminable_features) == {"freq", "belief", "comm"}
+        assert verdict.feature_scores == {}
+
+    def test_partial_suppression_is_flagged(self):
+        """Breaking only one extractor must not clear the alarm either."""
+        scorer = _calibrated_scorer()
+        partial = dict(_ATTACK_STATE)
+        partial["action_count"] = "5000"
+        verdict = scorer.evaluate("agent1", partial)
+        assert verdict.is_anomalous
+        assert verdict.undeterminable_features == ("freq",)
+
+    def test_suppressing_only_feature_of_benign_state_still_flags(self):
+        """Even benign-looking traffic is flagged if a signal is unreadable.
+
+        Undeterminable is not the same as normal: the scorer has no evidence
+        either way, so fail-closed reports an alarm.
+        """
+        scorer = _calibrated_scorer()
+        benign_but_broken = {
+            "action_count": "6",
+            "time_delta": 1,
+            "belief_changes": 1,
+            "messages_sent": 2,
+            "messages_received": 2,
+        }
+        verdict = scorer.evaluate("agent1", benign_but_broken)
+        assert verdict.is_anomalous
+        assert verdict.score > scorer.config.sigma_multiplier
+
+    def test_clean_state_is_not_flagged(self):
+        """Negative control: fail-closed must not flag everything.
+
+        Without this, the assertions above would also pass for a scorer that
+        simply always returns True.
+        """
+        scorer = _calibrated_scorer()
+        verdict = scorer.evaluate(
+            "agent1",
+            {
+                "action_count": 6,
+                "time_delta": 1,
+                "belief_changes": 1,
+                "messages_sent": 2,
+                "messages_received": 2,
+            },
+        )
+        assert verdict.is_anomalous is False
+        assert verdict.is_undeterminable is False
+        assert verdict.score <= scorer.config.sigma_multiplier
+
+    def test_fail_open_configuration_reproduces_the_vulnerability(self):
+        """The config knob is consumed, not merely named.
+
+        With ``fail_closed=False`` the historical fail-open behaviour returns
+        (score 0.0, clean verdict) for the very same payload.  This proves the
+        fail-closed assertions above are produced by the new code path rather
+        than by something incidental.
+        """
+        scorer = _calibrated_scorer(DetectionConfig(fail_closed=False))
+        verdict = scorer.evaluate("agent1", _EVASIVE_STATE)
+        assert verdict.is_anomalous is False
+        assert verdict.score == 0.0
+        # The undeterminable features are still reported, just not acted on.
+        assert set(verdict.undeterminable_features) == {"freq", "belief", "comm"}
+
+    def test_non_numeric_extractor_return_is_undeterminable(self):
+        """An extractor that returns a string is undeterminable, not a crash."""
+        scorer = AnomalyScorer()
+        scorer.add_extractor("bogus", lambda s: s.get("v"), weight=1.0)
+        extractor, _ = scorer._extractors[0]
+        extractor.baseline_mean = 0.0
+        extractor.baseline_std = 1.0
+        verdict = scorer.evaluate("agent1", {"v": "not-a-number"})
+        assert verdict.undeterminable_features == ("bogus",)
+        assert verdict.is_anomalous
+
+    def test_scorer_without_extractors_is_not_flagged(self):
+        """No extractors means nothing undeterminable — verdict stays clean."""
+        scorer = AnomalyScorer()
+        verdict = scorer.evaluate("agent1", {})
+        assert verdict.is_anomalous is False
+        assert verdict.undeterminable_features == ()
+
+    def test_undeterminable_observations_are_counted(self):
+        """observe() records, rather than silently swallowing, bad samples."""
+        scorer = AnomalyScorer()
+        scorer.add_extractor("freq", action_frequency_extractor, 1.0)
+        for _ in range(3):
+            scorer.observe("agent1", {"action_count": "5", "time_delta": 1})
+        counts = scorer.undeterminable_observation_counts()
+        assert counts == {"agent1:freq": 3}
+        # And a good sample is still recorded normally.
+        scorer.observe("agent1", {"action_count": 5, "time_delta": 1})
+        assert scorer.undeterminable_observation_counts() == {"agent1:freq": 3}
+
+    def test_fail_closed_score_strictly_exceeds_threshold(self):
+        """The clamp is a strict exceedance of the configured sigma."""
+        config = DetectionConfig(sigma_multiplier=7.5)
+        scorer = AnomalyScorer(config)
+        scorer.add_extractor("freq", action_frequency_extractor, 1.0)
+        verdict = scorer.evaluate("agent1", {"action_count": "1", "time_delta": 1})
+        assert verdict.score > 7.5
+        assert verdict.score == pytest.approx(7.5, abs=1e-9)
+
+    def test_fail_closed_keeps_a_higher_real_score(self):
+        """A genuinely huge score is not clamped down to the threshold."""
+        scorer = _calibrated_scorer()
+        partial = dict(_ATTACK_STATE)
+        partial["action_count"] = "5000"
+        verdict = scorer.evaluate("agent1", partial)
+        assert verdict.score > 1000.0

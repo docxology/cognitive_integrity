@@ -305,6 +305,7 @@ class LearnedFusion(FusionStrategy):
             dW2 = h.T @ delta2                                     # (hidden, 1)
             db2 = delta2.sum(axis=0)                                # (1,)
 
+            assert self._W2 is not None
             dh = delta2 @ self._W2.T                               # (N, hidden)
             dtanh = self._tanh_deriv(h)                             # (N, hidden)
             delta1 = dh * dtanh                                    # (N, hidden)

@@ -11,10 +11,28 @@ HTTP error scenarios use a simple stub response class instead of MagicMock.
 
 from __future__ import annotations
 
+import importlib.util
+import json
+import sys
+from pathlib import Path
+
 import pytest
 import requests
 
 from evaluation.llm_evaluator import DEMO_ATTACKS, run_llm_evaluation
+
+ROOT = Path(__file__).resolve().parent.parent
+
+
+def _load_llm_demo_script():
+    """Import scripts/run_llm_demo.py as a module without shadowing a package."""
+    path = ROOT / "scripts" / "run_llm_demo.py"
+    spec = importlib.util.spec_from_file_location("_run_llm_demo_under_test", path)
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = module
+    spec.loader.exec_module(module)
+    return module
 
 # ---------------------------------------------------------------------------
 # DEMO_ATTACKS constant
@@ -136,3 +154,160 @@ class TestRunLlmEvaluationErrorPath:
                 pipeline=None,
                 runner=None,
             )
+
+
+# ---------------------------------------------------------------------------
+# scripts/run_llm_demo.py result schema
+#
+# The demo script is the *producer* end of the LLM evidence chain. These tests
+# pin the property that makes the chain auditable: a run that produced no
+# measurements must be machine-distinguishable from a run that measured zero.
+# ---------------------------------------------------------------------------
+
+
+@pytest.fixture(scope="module")
+def demo():
+    """The run_llm_demo script, imported as a module."""
+    return _load_llm_demo_script()
+
+
+def _phase2_block() -> dict:
+    return {
+        "Claude Code": {
+            "detection_rate": 0.6,
+            "false_positive_rate": 0.0,
+            "n_attacks": 5,
+            "true_positives": 3,
+            "false_negatives": 2,
+            "avg_latency_ms": 15.2,
+        },
+        "CrewAI": {
+            "detection_rate": 0.0,
+            "false_positive_rate": 0.0,
+            "n_attacks": 5,
+            "true_positives": 0,
+            "false_negatives": 5,
+            "avg_latency_ms": 15.9,
+        },
+    }
+
+
+class TestArchitectureSlug:
+    """Display names must never leak into the results keys."""
+
+    @pytest.mark.parametrize(
+        ("display", "expected"),
+        [
+            ("Claude Code", "claude_code"),
+            ("CrewAI", "crewai"),
+            ("LangGraph", "langgraph"),
+            ("Auto GPT", "auto_gpt"),
+        ],
+    )
+    def test_slugs(self, demo, display, expected):
+        assert demo.architecture_slug(display) == expected
+
+
+class TestResultPayloads:
+    """Both the measured and the not-measured path write the full schema."""
+
+    @pytest.mark.parametrize(
+        "status", ["skipped", "ollama_unavailable", "timeout", "error"]
+    )
+    def test_unavailable_payload_is_schema_complete(self, demo, status):
+        payload = demo.build_unavailable_payload(status, "because", "gemma3:4b")
+        assert set(demo.RESULT_KEYS) <= set(payload)
+        assert payload["status"] == status
+        assert payload["reason"] == "because"
+        assert payload["multiagent_results"] is None
+
+    def test_unavailable_payload_rejects_a_success_status(self, demo):
+        """Positive control: 'ok' cannot be smuggled through the outage path."""
+        with pytest.raises(ValueError, match="not one of the unavailable statuses"):
+            demo.build_unavailable_payload("ok", "because", "gemma3:4b")
+
+    def test_success_payload_is_schema_complete_and_slug_keyed(self, demo):
+        payload = demo.build_success_payload(
+            {
+                "phase1_baseline": [],
+                "phase2_architectures": _phase2_block(),
+                "phase3_comparison": {},
+            },
+            "gemma3:4b",
+        )
+        assert set(demo.RESULT_KEYS) <= set(payload)
+        assert payload["status"] == "ok"
+        assert sorted(payload["multiagent_results"]) == ["claude_code", "crewai"]
+        assert payload["multiagent_results"]["claude_code"] == {
+            "detection_rate": 0.6,
+            "true_positives": 3,
+            "false_negatives": 2,
+            "total": 5,
+            "false_positive_rate": 0.0,
+            "avg_latency_ms": 15.2,
+        }
+
+    def test_measured_zero_survives_as_zero(self, demo):
+        """A real 0% detection rate is written, not dropped."""
+        payload = demo.build_success_payload(
+            {"phase2_architectures": _phase2_block()}, "gemma3:4b"
+        )
+        crewai = payload["multiagent_results"]["crewai"]
+        assert crewai["detection_rate"] == 0.0
+        assert crewai["total"] == 5
+
+    def test_write_results_refuses_an_incomplete_payload(self, demo, tmp_path):
+        """Positive control for the schema guard."""
+        target = tmp_path / "llm_demo_results.json"
+        with pytest.raises(ValueError, match="missing keys"):
+            demo.write_results(target, {"status": "skipped"})
+        assert not target.exists()
+
+        demo.write_results(
+            target, demo.build_unavailable_payload("skipped", "not set", "gemma3:4b")
+        )
+        assert set(demo.RESULT_KEYS) <= set(json.loads(target.read_text()))
+
+
+class TestProducerConsumerContract:
+    """The producer's output must drive the consumer's fail-closed decision."""
+
+    def test_skipped_payload_yields_no_numbers_downstream(self, demo, tmp_path):
+        from manuscript.injector import _load_llm_ground_truth
+
+        target = tmp_path / "llm_demo_results.json"
+        demo.write_results(
+            target,
+            demo.build_unavailable_payload(
+                "skipped", "COGSEC_RUN_LLM_ANALYSIS not set", "g"
+            ),
+        )
+
+        values, reason = _load_llm_ground_truth(target)
+
+        assert values is None
+        assert "skipped" in reason
+
+    def test_success_payload_is_accepted_downstream(self, demo, tmp_path):
+        """Positive control: the same writer's success path IS consumable.
+
+        Before this contract existed the producer wrote 'phase2_architectures'
+        while the consumer read 'multiagent_results', so a real run was
+        silently replaced by hardcoded 80%/100% defaults.
+        """
+        from manuscript.injector import _load_llm_ground_truth
+
+        target = tmp_path / "llm_demo_results.json"
+        demo.write_results(
+            target,
+            demo.build_success_payload(
+                {"phase2_architectures": _phase2_block()}, "gemma3:4b"
+            ),
+        )
+
+        values, reason = _load_llm_ground_truth(target)
+
+        assert reason is None
+        assert values["llm_claude_dr"] == 0.6
+        assert values["llm_crewai_dr"] == 0.0
+        assert values["llm_total_n"] == 10

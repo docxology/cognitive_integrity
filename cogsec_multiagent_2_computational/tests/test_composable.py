@@ -19,6 +19,7 @@ import os
 
 import matplotlib
 import matplotlib.pyplot as plt
+import pytest
 
 matplotlib.use("Agg")
 
@@ -119,11 +120,11 @@ class TestRateFunctions:
     def test_parallel_rate_single(self):
         assert parallel_rate([0.7]) == 0.7
 
-    def test_parallel_rate_returns_max(self):
-        assert parallel_rate([0.3, 0.8, 0.5]) == 0.8
+    def test_parallel_rate_returns_or_combination(self):
+        assert parallel_rate([0.3, 0.8, 0.5]) == pytest.approx(0.93)
 
     def test_parallel_rate_all_equal(self):
-        assert parallel_rate([0.6, 0.6, 0.6]) == 0.6
+        assert parallel_rate([0.6, 0.6, 0.6]) == pytest.approx(0.936)
 
 
 # ---------------------------------------------------------------------------
@@ -231,7 +232,8 @@ class TestDefenseGraph:
         dg = DefenseGraph()
         dg.build_parallel_pipeline(["Firewall", "Detection"])
         rate = dg.combined_rate()
-        assert rate == 0.91  # max
+        expected = parallel_rate([0.91, 0.88])
+        assert abs(rate - expected) < 1e-10
 
     def test_combined_rate_hybrid_conservative(self):
         dg = DefenseGraph()
@@ -1024,9 +1026,8 @@ class TestPresetPipelines:
         dg.build_parallel_pipeline(p["modules"])
         assert dg.strategy == "parallel"
         rate = dg.combined_rate()
-        assert rate == max(
-            MODULE_META[m]["detection_rate"] for m in p["modules"]
-        )
+        expected = parallel_rate([MODULE_META[m]["detection_rate"] for m in p["modules"]])
+        assert rate == pytest.approx(expected)
 
     def test_hybrid_pipeline(self):
         p = PRESET_PIPELINES["hybrid"]

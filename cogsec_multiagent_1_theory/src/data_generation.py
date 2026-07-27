@@ -20,8 +20,8 @@ from pathlib import Path
 
 import numpy as np
 
-from src.firewall import Classification, CognitiveFirewall, FirewallConfig
-from src.trust import TrustMatrixWithDecay
+from .firewall import Classification, CognitiveFirewall, FirewallConfig
+from .trust import TrustMatrixWithDecay
 
 
 def generate_experimental_data(output_dir: Path) -> None:

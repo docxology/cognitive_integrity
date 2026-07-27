@@ -986,17 +986,12 @@ When agent $a_v$ is compromised, the maximum trust influenced in the system is b
 \end{theorem}
 
 \begin{proof}[Proof of \cref{thm:blast-radius-restated}]
-For each neighbor $a_j$ of $a_v$: by \cref{thm:trust-bounded}, trust from $a_j$ through $a_v$ to any further agent $a_k$ is:
-\begin{equation}
-\label{eq:blast-step-1}
-\mathcal{T}_{a_j \to a_k}^{a_v} \leq \delta \cdot \mathcal{T}_{a_j \to a_v}
-\end{equation}
-The blast radius sums over all agents reachable via $a_v$. There are at most $n$ agents total:
-\begin{equation}
-\label{eq:blast-step-2}
-\text{BlastRadius}(a_v) = \sum_{a_j \in \mathcal{N}(a_v)} \sum_{a_k \in \text{Reachable}(a_j)} \mathcal{T}_{a_j \to a_k}^{a_v} \leq |\mathcal{N}(a_v)| \cdot |\text{Reachable}| \cdot \delta \cdot \max_{a_j} \mathcal{T}_{a_j \to a_v}
-\end{equation}
-Since $|\mathcal{N}(a_v)| \leq n$ and $|\text{Reachable}(a_j)| \leq n$, the bound $n \cdot \delta \cdot \max_{a_j} \mathcal{T}_{a_j \to a_v}$ follows.
+For each neighbor $a_j$ of $a_v$, \\cref{thm:trust-bounded} bounds the aggregate influence propagated through $a_v$ by $\\delta \\cdot \\mathcal{T}_{a_j \\to a_v}$. Summing over at most $n$ neighbors gives:
+\\begin{equation}
+\\label{eq:blast-step-2}
+\\text{BlastRadius}(a_v) \\leq \\sum_{a_j \\in \\mathcal{N}(a_v)} \\delta \\cdot \\mathcal{T}_{a_j \\to a_v} \\leq n \\cdot \\delta \\cdot \\max_{a_j} \\mathcal{T}_{a_j \\to a_v}.
+\\end{equation}
+This is a per-neighbor aggregate bound; it does not multiply the neighbor and reachable-agent counts.
 \end{proof}
 
 \begin{corollary}[Isolation Reduces Blast Radius]

@@ -1,138 +1,166 @@
-"""Fig 8: Integrity degradation time-series during attacks.
+"""Fig 8: Measured colony integrity trajectories under attack.
 
-Shows how system integrity degrades under attack and how different
-defense configurations respond and recover.
-Reads colony timeline data from colony_results.json.
+Every curve in this figure is the per-step ``ColonyResult.timeline`` produced by
+running the corresponding :mod:`colony` scenario through
+:class:`colony.ColonyBenchmark` at a fixed seed.  Nothing here is synthesised
+or reconstructed from summary scalars.
+
+History / invariant
+-------------------
+An earlier revision wrapped the scenario run in ``try: ... except Exception:``
+and, on failure, fabricated each curve analytically as
+``1 - (1 - detection_rate) * sin(pi * progress)`` from two summary scalars in
+``output/data/colony_results.json`` -- while the docstring claimed the series
+were measured.  The import inside that ``try`` referenced a module
+(``colony.coordinated_attack``) that never existed, so the fabricated branch
+was the *only* branch that ever ran, and the legend attributed each synthetic
+curve to the wrong scenario.
+
+The fallback is gone deliberately.  ``_load_timelines`` must fail loudly rather
+than substitute a plausible-looking curve: a reader cannot tell a fabricated
+integrity trace from a measured one by looking at it, so the code must never be
+able to silently swap one for the other.
 """
 
 from __future__ import annotations
 
-import json
-from pathlib import Path
+import logging
+from typing import List, Optional, Sequence, Tuple
 
 import numpy as np
 from matplotlib.figure import Figure
 
+from colony.benchmark import ColonyBenchmark
+
 from ..style import (
-    COLORS,
     FONTSIZE,
+    PALETTE,
     add_legend,
     create_figure,
     format_axis,
     save_figure,
 )
 
-logger = __import__('logging').getLogger(__name__)
+logger = logging.getLogger(__name__)
+
+#: Seed used for the published figure.  Fixed so the figure is reproducible.
+TIMELINE_SEED = 42
+
+#: Human-readable labels for the built-in scenario identifiers.
+SCENARIO_LABELS = {
+    "recruitment_poisoning": "Recruitment Poisoning",
+    "sybil_infiltration": "Sybil Infiltration",
+    "quorum_manipulation": "Quorum Manipulation",
+    "belief_cascade": "Belief Cascade",
+    "emergent_misalignment": "Emergent Misalignment",
+}
 
 
-def _load_timelines():
-    """Load colony benchmark timelines by running scenarios.
+def _load_timelines(
+    benchmark: Optional[ColonyBenchmark] = None,
+    seed: int = TIMELINE_SEED,
+) -> List[Tuple[str, np.ndarray]]:
+    """Run the colony scenarios and return their measured integrity timelines.
 
-    The colony_results.json contains summary data (detection rate, etc.)
-    but no per-step timelines.  We run the scenarios directly to get
-    the real integrity time-series.
+    Parameters
+    ----------
+    benchmark : ColonyBenchmark, optional
+        Benchmark to run.  Defaults to ``ColonyBenchmark()`` (all five
+        built-in scenarios).
+    seed : int
+        Base seed forwarded to :meth:`ColonyBenchmark.run_all`.
+
+    Returns
+    -------
+    list of (label, ndarray)
+        One entry per scenario, in benchmark order.  Each array is the
+        scenario's own per-step integrity trace, unmodified.
+
+    Raises
+    ------
+    Exception
+        Whatever a scenario raises is propagated unchanged.  There is no
+        synthetic fallback -- see the module docstring.
+    ValueError
+        If the benchmark yields no scenarios, or if any scenario returns an
+        empty timeline (an empty trace is a broken measurement, not a
+        licence to invent one).
     """
+    bench = benchmark if benchmark is not None else ColonyBenchmark()
+    results = bench.run_all(seed=seed)
 
-    try:
-        from colony.coordinated_attack import simulate_coordinated_attack
+    if not results:
+        raise ValueError("ColonyBenchmark produced no scenario results")
 
-        from colony.recruitment_poisoning import simulate_recruitment_poisoning
-        from colony.sybil_infiltration import simulate_sybil_infiltration
+    series: List[Tuple[str, np.ndarray]] = []
+    for result in results:
+        name = result.scenario_name or "unnamed_scenario"
+        timeline = np.asarray(result.timeline, dtype=float)
+        if timeline.size == 0:
+            raise ValueError(
+                f"Scenario {name!r} returned an empty integrity timeline; "
+                "refusing to synthesise a substitute curve"
+            )
+        series.append((SCENARIO_LABELS.get(name, name), timeline))
 
-        # Run each scenario at default parameters
-        rp = simulate_recruitment_poisoning(n_agents=20, n_steps=100, seed=42)
-        si = simulate_sybil_infiltration(n_agents=50, n_steps=100, seed=42)
-        ca = simulate_coordinated_attack(n_agents=30, n_steps=100, seed=42)
-
-        # Extract timeline data from results
-        rp_timeline = np.array(rp.get("timeline", np.ones(100)))
-        si_timeline = np.array(si.get("timeline", np.ones(100)))
-        ca_timeline = np.array(ca.get("timeline", np.ones(100)))
-
-        logger.info("Generated colony timelines by running scenarios directly")
-        n_steps = min(len(rp_timeline), len(si_timeline), len(ca_timeline))
-        return (
-            np.arange(n_steps),
-            rp_timeline[:n_steps],
-            si_timeline[:n_steps],
-            ca_timeline[:n_steps],
-        )
-    except Exception as exc:
-        logger.warning("Could not generate timelines: %s — using summary data", exc)
-
-        # Fall back to reading summary data from colony_results.json and
-        # constructing approximate timelines from detection_rate and resilience_score
-        data_path = Path(__file__).resolve().parent.parent.parent.parent / "output" / "data" / "colony_results.json"  # noqa: E501
-        with open(data_path, "r", encoding="utf-8") as f:
-            scenarios = json.load(f)
-
-        n_steps = 100
-        t = np.arange(n_steps)
-
-        # Build approximate timelines from summary metrics
-        timelines = []
-        for s in scenarios[:3]:
-            dr = s.get("detection_rate", 0.5)
-            rs = s.get("resilience_score", 0.5)
-            # Integrity starts high, dips during attack phase (40-70%), recovers
-            timeline = np.ones(n_steps)
-            attack_start = int(n_steps * 0.4)
-            attack_end = int(n_steps * 0.7)
-            # Dip proportional to (1 - detection_rate)
-            dip = 1.0 - dr
-            for i in range(attack_start, attack_end):
-                progress = (i - attack_start) / (attack_end - attack_start)
-                timeline[i] = 1.0 - dip * np.sin(np.pi * progress)
-            # Recovery proportional to resilience
-            for i in range(attack_end, n_steps):
-                recovery_progress = (i - attack_end) / (n_steps - attack_end)
-                timeline[i] = 1.0 - dip * (1 - rs) * np.exp(-3 * recovery_progress)
-            timelines.append(timeline)
-
-        while len(timelines) < 3:
-            timelines.append(np.ones(n_steps))
-
-        logger.info("Constructed approximate timelines from colony_results.json")
-        return t, timelines[0], timelines[1], timelines[2]
+    logger.info("Loaded %d measured colony timelines (seed=%d)", len(series), seed)
+    return series
 
 
-def plot_attack_timeline(output_dir: str = "output/figures") -> Figure:
-    """Create the integrity degradation time-series (Fig 8).
+def plot_attack_timeline(
+    output_dir: str = "output/figures",
+    series: Optional[Sequence[Tuple[str, np.ndarray]]] = None,
+) -> Figure:
+    """Create the measured integrity time-series figure (Fig 8).
 
     Parameters
     ----------
     output_dir : str
         Directory for saved figure files.
+    series : sequence of (label, ndarray), optional
+        Pre-computed timelines.  Defaults to running the colony benchmark via
+        :func:`_load_timelines`.
 
     Returns
     -------
     Figure
     """
+    resolved = list(series) if series is not None else _load_timelines()
+
     fig, ax = create_figure(width=8, height=4.5)
-    t, no_def, partial, full_cif = _load_timelines()
 
-    # Determine attack injection point (where integrity starts dropping)
-    attack_step = int(len(t) * 0.4)  # trust-building phase ends at 40%
+    for i, (label, values) in enumerate(resolved):
+        n = len(values)
+        # Scenarios have different horizons (100-1000 steps); plot each against
+        # its own normalised progress so the traces are comparable.
+        x = np.linspace(0.0, 1.0, n) if n > 1 else np.zeros(1)
+        ax.plot(
+            x,
+            values,
+            color=PALETTE[i % len(PALETTE)],
+            linewidth=1.6,
+            label=f"{label} (n={n})",
+        )
 
-    ax.plot(t, no_def, color=COLORS["accent"], linewidth=1.8, label="Emergent Misalignment")
-    ax.plot(t, partial, color=COLORS["warning"], linewidth=1.8, label="Recruitment Poisoning")
-    ax.plot(t, full_cif, color=COLORS["secondary"], linewidth=1.8, label="Coordinated Attack")
-
-    # Attack injection marker
-    ax.axvline(x=attack_step, color=COLORS["neutral"], linestyle=":", linewidth=1.5, alpha=0.7)
-    ax.annotate(
-        "Attack phase begins",
-        xy=(attack_step, 0.98),
-        xytext=(attack_step + 10, 0.75),
-        fontsize=FONTSIZE["base"],
-        arrowprops=dict(arrowstyle="->", color=COLORS["neutral"]),
-        color=COLORS["neutral"],
+    format_axis(
+        ax,
+        xlabel="Simulation progress (fraction of scenario steps)",
+        ylabel="Integrity Score",
+        title="Measured Colony Integrity Under Attack Scenarios",
     )
-
-    format_axis(ax, xlabel="Time Step", ylabel="Integrity Score", title="Colony Integrity Under Attack Scenarios")  # noqa: E501
-    ax.set_xlim(0, len(t))
+    ax.set_xlim(0, 1)
     ax.set_ylim(0, 1.05)
     add_legend(ax, loc="lower left")
+    ax.text(
+        0.99,
+        0.02,
+        f"ColonyBenchmark, seed={TIMELINE_SEED}",
+        transform=ax.transAxes,
+        ha="right",
+        va="bottom",
+        fontsize=FONTSIZE["tiny"],
+        color="#888888",
+    )
 
     fig.tight_layout()
     save_figure(fig, "fig08_attack_timeline", output_dir=output_dir)

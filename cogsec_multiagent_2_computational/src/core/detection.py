@@ -6,11 +6,25 @@ Implements drift detection and behavioral scoring.
 
 from __future__ import annotations
 
+import logging
+import math
 from collections import deque
 from dataclasses import dataclass
 from typing import Callable, Dict, List, Optional, Tuple
 
 import numpy as np
+
+logger = logging.getLogger(__name__)
+
+#: Exceptions a feature extractor may raise on adversarial / malformed state.
+EXTRACTION_ERRORS = (
+    TypeError,
+    KeyError,
+    ValueError,
+    AttributeError,
+    IndexError,
+    ZeroDivisionError,
+)
 
 
 @dataclass
@@ -21,6 +35,13 @@ class DetectionConfig:
     window_size: int = 100  # Sliding window size
     baseline_samples: int = 50  # Samples for baseline
     sigma_multiplier: float = 3.0  # For threshold setting
+    # When True (default), a feature whose extractor raises on the observed
+    # state is treated as *undeterminable* and the state is flagged, instead of
+    # being silently dropped from the weighted mean.  Setting this False
+    # restores the historical fail-open behaviour and is unsafe: an attacker
+    # who can make an extractor raise (e.g. by sending a numeric field as a
+    # string) suppresses that feature's contribution to the anomaly score.
+    fail_closed: bool = True
 
 
 class DriftDetector:
@@ -217,17 +238,55 @@ class FeatureExtractor:
     baseline_std: float = 1.0
 
 
+@dataclass(frozen=True)
+class AnomalyVerdict:
+    """Outcome of scoring a single agent state.
+
+    Attributes:
+        is_anomalous: Whether the state should raise an alarm.
+        score: Weighted anomaly score actually used for the decision.
+        feature_scores: Per-feature z-scores for features that could be
+            evaluated.  Undeterminable features are deliberately absent.
+        undeterminable_features: Names of features whose extractor raised on
+            this state.  Non-empty means the score is a *lower bound* on the
+            true anomaly level, because at least one signal was suppressed.
+    """
+
+    is_anomalous: bool
+    score: float
+    feature_scores: Dict[str, float]
+    undeterminable_features: Tuple[str, ...] = ()
+
+    @property
+    def is_undeterminable(self) -> bool:
+        """True when at least one monitored feature could not be evaluated."""
+        return bool(self.undeterminable_features)
+
+
 class AnomalyScorer:
     """
     Scores agents for behavioral anomalies.
 
     Uses multiple feature extractors with weighted scoring.
+
+    Fail-closed semantics
+    ---------------------
+    Feature extractors run on attacker-influenced state dictionaries, so an
+    adversary can often force one to raise (for example by sending a numeric
+    field as a string).  Under the historical behaviour such a feature was
+    dropped from both the numerator and the denominator of the weighted mean,
+    so suppressing every feature drove the score to ``0.0`` and turned a
+    detected anomaly into a clean verdict.  With ``config.fail_closed`` (the
+    default) an undeterminable feature can never lower the verdict: the state
+    is flagged and the reported score is raised to just above the alarm
+    threshold if the determinable features alone did not already exceed it.
     """
 
     def __init__(self, config: Optional[DetectionConfig] = None):
         self.config = config or DetectionConfig()
         self._extractors: List[Tuple[FeatureExtractor, float]] = []
         self._history: Dict[str, deque] = {}
+        self._undeterminable_observations: Dict[str, int] = {}
 
     def add_extractor(
         self, name: str, extract_fn: Callable[[dict], float], weight: float = 1.0
@@ -255,12 +314,32 @@ class AnomalyScorer:
         for extractor, _ in self._extractors:
             try:
                 value = extractor.extract(state)
-                key = f"{agent_id}:{extractor.name}"
-                if key not in self._history:
-                    self._history[key] = deque(maxlen=self.config.window_size)
-                self._history[key].append(value)
-            except (TypeError, KeyError, ValueError, AttributeError):
-                pass  # Skip failed extractions
+            except EXTRACTION_ERRORS as _exc:
+                # Dropping a malformed sample from the *baseline* is the safe
+                # direction (it cannot poison the calibrated mean/std), but it
+                # is never silent: repeated failures indicate either a broken
+                # extractor or an agent probing for a suppression channel.
+                obs_key = f"{agent_id}:{extractor.name}"
+                self._undeterminable_observations[obs_key] = (
+                    self._undeterminable_observations.get(obs_key, 0) + 1
+                )
+                logger.warning(
+                    "Observation undeterminable for agent=%s extractor=%s "
+                    "(count=%d): %s",
+                    agent_id,
+                    extractor.name,
+                    self._undeterminable_observations[obs_key],
+                    _exc,
+                )
+                continue
+            key = f"{agent_id}:{extractor.name}"
+            if key not in self._history:
+                self._history[key] = deque(maxlen=self.config.window_size)
+            self._history[key].append(value)
+
+    def undeterminable_observation_counts(self) -> Dict[str, int]:
+        """Return per ``agent:feature`` counts of undeterminable observations."""
+        return dict(self._undeterminable_observations)
 
     def calibrate(self, agent_id: str) -> None:
         """Calibrate baselines for agent from history."""
@@ -274,44 +353,112 @@ class AnomalyScorer:
                 extractor.baseline_mean = float(np.mean(values))
                 extractor.baseline_std = float(np.std(values)) + 1e-6
 
-    def score(self, agent_id: str, state: dict) -> float:
-        """Compute weighted Z-score anomaly measure for agent state.
-
-        Formula:
-            S = Sum_j [w_j . |x_j - mu_j| / sigma_j] / Sum_j w_j
-
-        where x_j is the j-th feature value, mu_j and sigma_j are the
-        calibrated baseline mean and standard deviation, and w_j is
-        the feature weight. Division by zero is avoided: if sigma_j = 0,
-        the z-score for that feature defaults to 0.0.
-
-        Args:
-            agent_id: Agent identifier (currently unused but reserved
-                for per-agent baseline lookup)
-            state: Current agent state dictionary
+    def _weighted_score(
+        self, agent_id: str, state: dict
+    ) -> Tuple[float, Dict[str, float], Tuple[str, ...]]:
+        """Weighted z-score over the features that can be evaluated.
 
         Returns:
-            Weighted anomaly score >= 0; higher indicates more anomalous
+            Tuple of (raw weighted score, per-feature z-scores, names of
+            features whose extractor raised on this state).
         """
+        feature_scores: Dict[str, float] = {}
+        undeterminable: List[str] = []
         total_score = 0.0
         total_weight = 0.0
 
         for extractor, weight in self._extractors:
             try:
                 value = extractor.extract(state)
-
-                # Z-score from baseline
+                # Z-score from baseline.  The arithmetic is inside the guard
+                # because a non-numeric value returned by an otherwise
+                # successful extractor is equally undeterminable.
                 if extractor.baseline_std > 0:
                     z = abs(value - extractor.baseline_mean) / extractor.baseline_std
                 else:
                     z = 0.0
+            except EXTRACTION_ERRORS as _exc:
+                undeterminable.append(extractor.name)
+                logger.warning(
+                    "Feature undeterminable for agent=%s extractor=%s: %s "
+                    "(treated as anomalous; not dropped)",
+                    agent_id,
+                    extractor.name,
+                    _exc,
+                )
+                continue
 
-                total_score += weight * z
-                total_weight += weight
-            except (TypeError, KeyError, ValueError, AttributeError):
-                pass
+            feature_scores[extractor.name] = z
+            total_score += weight * z
+            total_weight += weight
 
-        return total_score / total_weight if total_weight > 0 else 0.0
+        raw = total_score / total_weight if total_weight > 0 else 0.0
+        return raw, feature_scores, tuple(undeterminable)
+
+    def evaluate(self, agent_id: str, state: dict) -> AnomalyVerdict:
+        """Score a state and return an explicit, fail-closed verdict.
+
+        Formula (over evaluable features):
+            S = Sum_j [w_j . |x_j - mu_j| / sigma_j] / Sum_j w_j
+
+        where x_j is the j-th feature value, mu_j and sigma_j are the
+        calibrated baseline mean and standard deviation, and w_j is the
+        feature weight.  If sigma_j = 0, that feature's z-score is 0.0.
+
+        If any extractor raises and ``config.fail_closed`` is set, the state
+        is flagged and the reported score is raised to the smallest float
+        strictly greater than the alarm threshold, so a suppressed feature can
+        never turn an alarm into a clean verdict.
+
+        Args:
+            agent_id: Agent identifier (used for diagnostics).
+            state: Current agent state dictionary.
+
+        Returns:
+            AnomalyVerdict carrying the decision, score, per-feature z-scores
+            and the names of any undeterminable features.
+        """
+        raw, feature_scores, undeterminable = self._weighted_score(agent_id, state)
+        threshold = self.config.sigma_multiplier
+
+        if undeterminable and self.config.fail_closed:
+            alarm_score = math.nextafter(threshold, math.inf)
+            score = raw if raw > threshold else alarm_score
+            logger.warning(
+                "Fail-closed anomaly verdict for agent=%s: features %s could "
+                "not be evaluated; reporting score %.6f (raw %.6f)",
+                agent_id,
+                ", ".join(undeterminable),
+                score,
+                raw,
+            )
+            return AnomalyVerdict(
+                is_anomalous=True,
+                score=score,
+                feature_scores=feature_scores,
+                undeterminable_features=undeterminable,
+            )
+
+        return AnomalyVerdict(
+            is_anomalous=bool(raw > threshold),
+            score=raw,
+            feature_scores=feature_scores,
+            undeterminable_features=undeterminable,
+        )
+
+    def score(self, agent_id: str, state: dict) -> float:
+        """Compute the weighted Z-score anomaly measure for an agent state.
+
+        Args:
+            agent_id: Agent identifier.
+            state: Current agent state dictionary.
+
+        Returns:
+            Weighted anomaly score >= 0; higher indicates more anomalous.
+            Under the default fail-closed configuration this never falls
+            below the alarm threshold when a feature is undeterminable.
+        """
+        return self.evaluate(agent_id, state).score
 
     def is_anomalous(
         self, agent_id: str, state: dict
@@ -320,29 +467,12 @@ class AnomalyScorer:
         Check if agent state is anomalous.
 
         Returns:
-            Tuple of (is_anomalous, score, feature_scores)
+            Tuple of (is_anomalous, score, feature_scores).  Use
+            :meth:`evaluate` when the caller needs to know *which* features
+            were undeterminable.
         """
-        feature_scores = {}
-        total_score = 0.0
-        total_weight = 0.0
-
-        for extractor, weight in self._extractors:
-            try:
-                value = extractor.extract(state)
-                if extractor.baseline_std > 0:
-                    z = abs(value - extractor.baseline_mean) / extractor.baseline_std
-                else:
-                    z = 0.0
-                feature_scores[extractor.name] = z
-                total_score += weight * z
-                total_weight += weight
-            except (TypeError, KeyError, ValueError, AttributeError):
-                pass
-
-        score = total_score / total_weight if total_weight > 0 else 0.0
-        threshold = self.config.sigma_multiplier
-
-        return score > threshold, score, feature_scores
+        verdict = self.evaluate(agent_id, state)
+        return verdict.is_anomalous, verdict.score, verdict.feature_scores
 
 
 # Standard feature extractors
@@ -511,6 +641,7 @@ class SlidingWindowMonitor:
             else:
                 diff = features - self._ema_mean
                 self._ema_mean = (1 - self.alpha) * self._ema_mean + self.alpha * features
+                assert self._ema_var is not None
                 self._ema_var = (
                     (1 - self.alpha) * self._ema_var + self.alpha * (diff ** 2)
                 )
@@ -525,6 +656,7 @@ class SlidingWindowMonitor:
             return []
 
         anomalies = []
+        assert self._ema_var is not None
         std = np.sqrt(self._ema_var) + 1e-10
 
         for timestamp, features in self._snapshots:

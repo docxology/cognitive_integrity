@@ -10,7 +10,7 @@ This paper provided computational validation of the Cognitive Integrity Framewor
 
 **Attack Corpus**: We assembled 950 cognitive attacks across four categories (prompt injection, trust exploitation, belief manipulation, coordination attacks), enabling reproducible security evaluation of multiagent systems.
 
-**Multi-Tier Evaluation**: We evaluated CIF through five complementary modes: (1) multi-seed pipeline evaluation (30 seeds, mean DR = 44.7\%); (2) real ablation studies (100-attack corpus, full pipeline TPR = 12.4\%); (3) LLM-backed multiagent validation ($N=10$, Gemma 3 4B); (4) colony benchmarks at scale (20--100 agents); and (5) parametric simulation ($N=3{,}800$) establishing the design-level coverage ceiling at 94--100\%.
+**Multi-Tier Evaluation**: We evaluated CIF through five complementary modes: (1) multi-seed pipeline evaluation (30 seeds, mean DR = 44.8\%); (2) real ablation studies (100-attack corpus, full pipeline TPR = 12.4\%); (3) LLM-backed multiagent validation ($N=10$, Gemma 3 4B); (4) colony benchmarks at scale (20--100 agents); and (5) parametric simulation ($N=3{,}800$) establishing the design-level coverage ceiling at 94--100\%.
 
 **Categorical Defense Algebra**: We formalized CIF's composition rules as a category (DefenseCategory) satisfying proven laws CT.1--CT.3, establishing that the series detection formula (Part 1, Theorem 3.2a) is a categorical consequence under the short-circuit pipeline semantics rather than an independent empirical result. Composition inherits those laws by construction for morphisms that satisfy the DefenseCategory axioms.
 
@@ -26,7 +26,7 @@ This paper provided computational validation of the Cognitive Integrity Framewor
 
 The multi-tier evaluation yields four principal findings:
 
-1. **Layered defense is essential**: Ablation studies confirm that no single component accounts for a majority of detection. The top three components by marginal removal cost (Detection, Tripwires, Invariants) account for about 82\% of the summed harmful $\Delta\text{TPR}$ from component removal on the ablation corpus, and the Firewall + Detection pair exhibits the strongest synergy ($\approx +0.026$ beyond additive prediction).
+1. **Layered defense is essential**: Ablation studies confirm that no single component accounts for a majority of detection. The top three components by marginal removal cost (Detection, Tripwires, Invariants) account for about 82\% of the summed harmful $\Delta\text{TPR}$ from component removal on the ablation corpus, and the Tripwire + Detection pair exhibits the strongest synergy ($\approx +0.025$ beyond additive prediction).
 
 2. **Trust calculus prevents amplification**: The $\delta^d$ decay bound successfully prevented trust laundering across all evaluation modes---a structural guarantee verified formally (Part 1), through unit-tested implementation, and through colony-scale simulation (100\% sybil detection at 0\% FPR with 50 agents and 4 adversaries).
 
@@ -40,7 +40,7 @@ The multi-tier evaluation yields four principal findings:
 
 The evaluation data establishes four empirical properties relevant to deployment:
 
-1. **Current pipeline detection**: Mean 44.8\% [CI: 43.4\%, 46.2\%] across 30 seeds on Claude Code, with low-to-moderate seed sensitivity (CV = 0.097; below the 0.10 practical stability threshold, though above the stated 0.05 target). Full pipeline TPR on the ablation corpus is $\sim$12\%, reflecting that the current adapters implement the CIF architecture but have not yet been tuned for high coverage.
+1. **Current pipeline detection**: Mean 44.8\% [CI: 43.2\%, 46.4\%] across 30 seeds on Claude Code, with low-to-moderate seed sensitivity (CV = 0.097; below the 0.10 practical stability threshold, though above the stated 0.05 target). Full pipeline TPR on the ablation corpus is $\sim$12\%, reflecting that the current adapters implement the CIF architecture but have not yet been tuned for high coverage.
 
 2. **Component hierarchy**: Detection module $>$ Firewall $>$ Trust Calculus $>$ Tripwire $>$ Consensus $>$ Provenance $>$ Invariants $>$ Sandbox (ordered by marginal $\Delta\text{TPR}$ contribution when each module is removed in isolation from the 100-attack ablation corpus --- see \cref{tab:component-removal}). Lower-ranked components show modest marginal contribution on the current evaluation corpus.
 

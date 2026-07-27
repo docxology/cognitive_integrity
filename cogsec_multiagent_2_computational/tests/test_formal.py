@@ -18,7 +18,11 @@ All tests use real data and computation. No mocks.
 import numpy as np
 import pytest
 
-from formal.byzantine_guarantees import validate_byzantine_bound
+from formal.byzantine_guarantees import (
+    _simulate_quorum_agreement,
+    default_bound_predicate,
+    validate_byzantine_bound,
+)
 from formal.composition_proofs import (
     validate_associativity,
     validate_parallel_composition,
@@ -31,6 +35,7 @@ from formal.stealth_impact import validate_stealth_impact
 from formal.theorem_registry import TheoremRegistry, TheoremResult, TheoremStatus
 from formal.tla_spec import generate_tla_spec, parse_tla_result
 from formal.trust_bounds import validate_trust_bound
+from utils.random_seed import get_rng
 
 # ---------------------------------------------------------------------------
 # Section 1: TheoremResult and TheoremStatus (dataclass / enum basics)
@@ -238,6 +243,8 @@ class TestByzantineGuarantees:
             "valid_success_rate",
             "invalid_failures",
             "invalid_total",
+            "invalid_failure_rate",
+            "predicate",
         }
         assert expected_keys == set(result.details.keys())
 
@@ -256,16 +263,75 @@ class TestByzantineGuarantees:
         result = validate_byzantine_bound(max_n=6, seed=42)
         assert result.details["tests_run"] > 0
 
-    def test_n_3f1_boundary_formula(self):
-        """The mathematical bound n >= 3f+1 is correctly encoded."""
-        # For n=4, f can be at most 1 (4 >= 3*1+1 = 4)
-        # For n=4, f=2 is invalid (4 < 3*2+1 = 7)
-        assert 4 >= 3 * 1 + 1
-        assert not (4 >= 3 * 2 + 1)
+    def test_untolerated_configurations_actually_fail(self):
+        """Both arms of the theorem are checked, not just the tolerated one.
 
-        # For n=7, f can be at most 2 (7 >= 3*2+1 = 7)
-        assert 7 >= 3 * 2 + 1
-        assert not (7 >= 3 * 3 + 1)
+        The old validator computed ``invalid_failures`` but excluded it from
+        the PASS criterion, so a predicate that admitted unsafe configurations
+        went unnoticed.
+        """
+        result = validate_byzantine_bound(max_n=20, seed=42)
+        assert result.details["invalid_total"] > 0
+        assert result.details["invalid_failure_rate"] >= 0.95
+
+    def test_simulated_agreement_tracks_the_bound(self):
+        """The simulation must agree with n >= 3f+1 configuration by configuration."""
+        rng = get_rng(11)
+        for n in range(4, 16):
+            for f in range(1, n):
+                rate = _simulate_quorum_agreement(n, f, rng, n_rounds=5)
+                tolerated = default_bound_predicate(n, f)
+                assert (rate >= 0.8) is tolerated, (
+                    f"n={n}, f={f}: success rate {rate} disagrees with "
+                    f"n >= 3f+1 = {tolerated}"
+                )
+
+    def test_weakened_bound_predicate_is_rejected(self):
+        """Positive control: mutating the bound to n >= 2f+1 must FAIL.
+
+        This is the mutation the audit showed the old suite could not detect:
+        with plain vote-averaging, ``n >= 2f+1`` still reported a 100% pass.
+        """
+
+        def two_f_plus_one(n: int, f: int) -> bool:
+            return n >= 2 * f + 1
+
+        result = validate_byzantine_bound(
+            max_n=20, seed=42, bound_predicate=two_f_plus_one
+        )
+        assert result.status == TheoremStatus.FAILED
+        # Configurations with 2f+1 <= n < 3f+1 are wrongly admitted and fail
+        # to reach consensus, dragging the tolerated arm below threshold.
+        assert result.details["valid_success_rate"] < 0.95
+
+    def test_over_strict_bound_predicate_is_rejected(self):
+        """Positive control on the other arm: n >= 4f+1 is also wrong.
+
+        Configurations with 3f+1 <= n < 4f+1 do reach consensus, so declaring
+        them untolerated breaks the invalid arm.
+        """
+
+        def four_f_plus_one(n: int, f: int) -> bool:
+            return n >= 4 * f + 1
+
+        result = validate_byzantine_bound(
+            max_n=20, seed=42, bound_predicate=four_f_plus_one
+        )
+        assert result.status == TheoremStatus.FAILED
+        assert result.details["invalid_failure_rate"] < 0.95
+
+    def test_all_byzantine_never_reaches_consensus(self):
+        """Degenerate input f >= n leaves no quorum at all."""
+        rng = get_rng(3)
+        assert _simulate_quorum_agreement(3, 3, rng, n_rounds=5) == 0.0
+        assert _simulate_quorum_agreement(3, 5, rng, n_rounds=5) == 0.0
+
+    def test_default_predicate_is_the_theorem_bound(self):
+        """The shipped predicate is n >= 3f+1 at the exact boundaries."""
+        assert default_bound_predicate(4, 1) is True
+        assert default_bound_predicate(3, 1) is False
+        assert default_bound_predicate(7, 2) is True
+        assert default_bound_predicate(6, 2) is False
 
     def test_different_seeds_produce_different_randomness(self):
         """Different seeds produce different internal random draws."""
@@ -864,6 +930,10 @@ class TestTrustBounds:
             "total_samples",
             "violations",
             "max_violation",
+            "decay_violations",
+            "amplification_violations",
+            "max_amplification",
+            "implementation",
         }
         assert expected_keys == set(result.details.keys())
 
@@ -883,16 +953,24 @@ class TestTrustBounds:
         r2 = validate_trust_bound(max_depth=3, n_trials=50, seed=42)
         assert r1.details == r2.details
 
-    def test_delegation_decay_formula(self):
-        """Direct check: min(source, target) * delta^d <= delta^d."""
-        delta = 0.85
-        for d in range(1, 6):
-            bound = delta ** d
-            # min(s, t) <= 1.0 always, so min(s,t)*delta^d <= delta^d
-            for s in [0.1, 0.5, 0.9, 1.0]:
-                for t in [0.1, 0.5, 0.9, 1.0]:
-                    delegated = min(s, t) * (delta ** d)
-                    assert delegated <= bound + 1e-10
+    def test_amplifying_delegation_is_rejected(self):
+        """Positive control for the trust-bound checker.
+
+        The previous test at this position restated the formula
+        (``min(s,t)*delta^d <= delta^d``) and was therefore true by
+        construction — it held for ``max`` just as well, so it could not
+        detect a trust-*amplifying* implementation.  Feed the checker exactly
+        that implementation and require a FAILED verdict.
+        """
+
+        def amplifying(source: float, target: float, depth: int) -> float:
+            return max(source, target) * (0.85 ** depth)
+
+        result = validate_trust_bound(
+            delegate_fn=amplifying, max_depth=5, n_trials=200, seed=42
+        )
+        assert result.status == TheoremStatus.FAILED
+        assert result.details["amplification_violations"] > 0
 
     def test_evidence_mentions_samples(self):
         """Evidence text mentions sample counts."""

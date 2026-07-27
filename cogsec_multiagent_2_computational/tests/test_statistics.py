@@ -1132,8 +1132,8 @@ class TestKruskalWallis:
         result = kruskal_wallis(g1, g2)
         assert result.significant is True
 
-    def test_six_architectures_scenario(self):
-        """Simulate the 6-architecture comparison from the manuscript."""
+    def test_kruskal_wallis_multi_group_scenario(self):
+        """Test Kruskal-Wallis with 6 groups of different means."""
         rng = np.random.default_rng(42)
         groups = [
             rng.normal(0.90, 0.05, 20),

@@ -4,11 +4,11 @@ Real LLM-backed multiagent simulation used in Paper 2's **LLM-backed validation 
 
 ## Series Position
 
-Part 2 of four in the *Cognitive Security for Multiagent Operators* series. The results produced by this package appear in:
+Part 2 of three in the *Cognitive Security for Multiagent Operators* series. The results produced by this package appear in:
 
 - **Abstract** — "LLM-backed multiagent validation (N=10, Gemma 3 4B via Ollama) achieving 80–100% detection across Claude Code and CrewAI topologies"
 - **§5 Results** — LLM-backed evaluation tier
-- Cited by Paper 3 §3 "Evidence" and Paper 4 §2 "Methodology"
+- Cited by Part 3+4 §3 "Evidence" and §9 "Applications"
 
 ## Modules
 

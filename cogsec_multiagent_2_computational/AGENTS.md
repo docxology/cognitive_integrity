@@ -85,7 +85,7 @@ cogsec_multiagent_2_computational/
 │   ├── utils/                  # Shared types & helpers
 │   └── data/                   # Data loaders
 ├── scripts/                    # Entry-point scripts (17)
-│   ├── run_full_evaluation.py  # Full CIF pipeline (6 archs × 950 attacks)
+│   ├── run_full_evaluation.py  # Full CIF pipeline (4 archs × 950 attacks)
 │   ├── run_statistical_analysis.py  # Hypothesis tests & effect sizes
 │   ├── run_ablation.py         # Component ablation study
 │   ├── run_colony_benchmarks.py     # Colony-level benchmarks

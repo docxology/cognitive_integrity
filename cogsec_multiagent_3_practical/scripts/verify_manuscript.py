@@ -30,6 +30,9 @@ if __name__ == "__main__":
     parser.add_argument("--root", default=default_root, help="Path to manuscript root directory.")
     args = parser.parse_args()
 
+    from src.verification import _configure_verification_logging
+
+    _configure_verification_logging()
     verifier = ManuscriptVerifier(args.root)
     passed = verifier.run_all()
     sys.exit(0 if passed else 1)

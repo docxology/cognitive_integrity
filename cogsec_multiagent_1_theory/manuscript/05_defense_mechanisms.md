@@ -468,7 +468,7 @@ Layer & Defense & Latency & $P_{\text{detect}}$ \\
 Assuming independence, the full stack (\cref{tab:defense-stack}) achieves:
 \begin{equation}
 \label{eq:stack-detection}
-P_{\text{detect}} = 1 - (1-0.80)(1-0.70)(1-0.60)(1-0.80) = 0.995
+P_{\\text{detect}} = 1 - (1-0.80)(1-0.70)(1-0.60)(1-0.65)(1-0.55)(1-0.90) \\approx 0.9996
 \end{equation}
 \end{corollary}
 

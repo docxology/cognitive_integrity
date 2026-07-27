@@ -15,6 +15,11 @@ from typing import Any, Callable, Dict, List, Tuple
 
 import numpy as np
 
+# ``evaluate_fn`` returns the measured operating point ``(tpr, fpr)``.
+# A TPR-only synergy score cannot distinguish two components that
+# genuinely complement each other from two that simply flag more.
+EvaluateFn = Callable[[Dict[str, Any]], Tuple[float, float]]
+
 # ---------------------------------------------------------------------------
 # Result container
 # ---------------------------------------------------------------------------
@@ -32,6 +37,9 @@ class SynergyResult:
         synergy_score: ``combined - max(individual_a, individual_b)``.
             Positive values indicate synergy; negative values indicate
             antagonism.
+        individual_a_fpr: FPR when only component A is active.
+        individual_b_fpr: FPR when only component B is active.
+        combined_fpr: FPR when both A and B are active together.
     """
 
     component_a: str
@@ -40,6 +48,22 @@ class SynergyResult:
     individual_b_tpr: float
     combined_tpr: float
     synergy_score: float
+    individual_a_fpr: float
+    individual_b_fpr: float
+    combined_fpr: float
+
+    @property
+    def youden_synergy_score(self) -> float:
+        """Synergy measured on Youden's J instead of raw TPR.
+
+        ``J(combined) - max(J(a), J(b))`` where ``J = TPR - FPR``.  A pair
+        whose TPR synergy is bought entirely with extra false positives
+        has a J synergy of zero or below.
+        """
+        j_a = self.individual_a_tpr - self.individual_a_fpr
+        j_b = self.individual_b_tpr - self.individual_b_fpr
+        j_combined = self.combined_tpr - self.combined_fpr
+        return j_combined - max(j_a, j_b)
 
 
 # ---------------------------------------------------------------------------
@@ -50,29 +74,29 @@ class PairwiseSynergyAnalysis:
     """Compute pairwise synergy scores for all defense component pairs.
 
     The *evaluate_fn* receives a dictionary of active components
-    (name -> instance) and returns a scalar TPR.
+    (name -> instance) and returns ``(tpr, fpr)``.
 
     Args:
         components: Dictionary mapping component name to instance.
-        evaluate_fn: Callable ``Dict[str, Any] -> float`` returning TPR.
+        evaluate_fn: Callable ``Dict[str, Any] -> (tpr, fpr)``.
     """
 
     def __init__(
         self,
         components: Dict[str, Any],
-        evaluate_fn: Callable[[Dict[str, Any]], float],
+        evaluate_fn: EvaluateFn,
     ) -> None:
         self._components = dict(components)
         self._evaluate_fn = evaluate_fn
-        self._individual_tprs: Dict[str, float] = {}
+        self._individual_rates: Dict[str, Tuple[float, float]] = {}
         self._pair_results: List[SynergyResult] | None = None
 
-    def _get_individual_tpr(self, name: str) -> float:
+    def _get_individual_rates(self, name: str) -> Tuple[float, float]:
         """Evaluate a single component in isolation (cached)."""
-        if name not in self._individual_tprs:
+        if name not in self._individual_rates:
             single = {name: self._components[name]}
-            self._individual_tprs[name] = self._evaluate_fn(single)
-        return self._individual_tprs[name]
+            self._individual_rates[name] = self._evaluate_fn(single)
+        return self._individual_rates[name]
 
     def compute_all_pairs(self) -> List[SynergyResult]:
         """Compute synergy scores for all C(n, 2) component pairs.
@@ -85,11 +109,11 @@ class PairwiseSynergyAnalysis:
         results: List[SynergyResult] = []
 
         for a, b in combinations(names, 2):
-            tpr_a = self._get_individual_tpr(a)
-            tpr_b = self._get_individual_tpr(b)
+            tpr_a, fpr_a = self._get_individual_rates(a)
+            tpr_b, fpr_b = self._get_individual_rates(b)
 
             combined = {a: self._components[a], b: self._components[b]}
-            tpr_combined = self._evaluate_fn(combined)
+            tpr_combined, fpr_combined = self._evaluate_fn(combined)
 
             synergy = tpr_combined - max(tpr_a, tpr_b)
 
@@ -101,10 +125,17 @@ class PairwiseSynergyAnalysis:
                     individual_b_tpr=tpr_b,
                     combined_tpr=tpr_combined,
                     synergy_score=synergy,
+                    individual_a_fpr=fpr_a,
+                    individual_b_fpr=fpr_b,
+                    combined_fpr=fpr_combined,
                 )
             )
 
-        results.sort(key=lambda r: r.synergy_score, reverse=True)
+        # Highest synergy first.  Pairs tie *exactly* once no noise is
+        # injected, so component names are an explicit secondary key:
+        # otherwise the published "top synergy pair" would depend on the
+        # insertion order of `components`.
+        results.sort(key=lambda r: (-r.synergy_score, r.component_a, r.component_b))
         self._pair_results = results
         return results
 
@@ -140,7 +171,7 @@ class PairwiseSynergyAnalysis:
         assert self._pair_results is not None
 
         antagonistic = [r for r in self._pair_results if r.synergy_score < 0]
-        antagonistic.sort(key=lambda r: r.synergy_score)
+        antagonistic.sort(key=lambda r: (r.synergy_score, r.component_a, r.component_b))
         return antagonistic
 
     def synergy_matrix(self) -> Tuple[List[str], np.ndarray]:

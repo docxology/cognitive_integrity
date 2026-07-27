@@ -2,7 +2,7 @@
 
 # Supplementary: Deployment Guide and Integration {#sec:deployment}
 
-This supplementary material provides deployment considerations and integration examples for production CIF deployment. It complements --- and does not replace --- the dedicated practitioner's guidance in Part 3 (DOI: 10.5281/zenodo.18364130), which presents full deployment guides (\S{5}), incident-response playbooks (\S{5b}), monitoring strategies (\S{5d}), cost--benefit analysis (\S{5c}), and operator risk frameworks. For domain-calibrated deployment parameters across ten critical operational sectors (from millisecond-scale drone swarms to year-scale diplomatic agents), see Part 4.
+This supplementary material provides deployment considerations and integration examples for production CIF deployment. It complements --- and does not replace --- the dedicated practitioner's guidance in unified Part 3+4 (DOI: 10.5281/zenodo.18364130), which presents full deployment guides (Section 5), incident-response playbooks, monitoring strategies, cost--benefit analysis, and operator risk frameworks. For domain-calibrated deployment parameters across ten critical operational sectors (from millisecond-scale drone swarms to year-scale diplomatic agents), see its Sections 9--10.
 
 ## Production Deployment Checklist {#sec:production-checklist}
 

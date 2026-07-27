@@ -50,7 +50,7 @@ The LLM-backed results provide preliminary evidence that CIF's defense pipeline 
 
 **Reproducibility.** All experiments use a fixed random seed (42) for deterministic reproduction. The complete evaluation framework, including architecture adapters, attack corpus (sanitized subset), and analysis scripts, is available in the supplementary repository. Multi-seed stability analysis across 30 seeds is reported in \cref{sec:extended-results}. All experiments are fully deterministic when executed with the default seed configuration.
 
-**Pre-Registered Statistical Analysis.** To ensure inferential integrity, we specify three primary hypotheses and their statistical tests prior to examining results. Hypotheses and methods are registered in the supplementary repository at `analysis/preregistration.yaml`.
+**Planned Statistical Analysis.** To support inferential integrity, we specify three primary hypotheses and their statistical tests. A separate `analysis/preregistration.yaml` is not included in this checkout, so this description should not be read as evidence of an external preregistration.
 
 *H1 (Layered Defense)*: The full CIF pipeline achieves strictly higher detection rate than any single defense module. Test: one-sided two-proportion $z$-test comparing full-pipeline TPR against each component's TPR on the 100-attack ablation corpus; $\alpha = 0.05$, Bonferroni-corrected for 7 comparisons ($\alpha_\text{adj} = 0.0071$).
 
@@ -88,7 +88,7 @@ The central empirical finding validates CIF's layered approach. No single defens
 
 | Evaluation Mode | Detection Rate | Sample Size | Source |
 | --- | --- | --- | --- |
-| Multi-seed pipeline (Claude Code, 30 seeds) | 44.8\% [43.4, 46.2\%] | $N=30$ seeds | `multi_seed_results.json` |
+| Multi-seed pipeline (Claude Code, 30 seeds) | 44.8\% [43.2, 46.4\%] | $N=30$ seeds | `multi_seed_results.json` |
 | Ablation pipeline (full, 100-attack corpus) | 12.4\% | $N=100$ | `ablation_results.json` |
 | LLM multiagent — Claude Code (Gemma 3 4B) | 80.0\% [28, 99\%] | $N=5$ | `llm_demo_results.json` |
 | LLM multiagent — CrewAI (Gemma 3 4B) | 100\% [48, 100\%] | $N=5$ | `llm_demo_results.json` |

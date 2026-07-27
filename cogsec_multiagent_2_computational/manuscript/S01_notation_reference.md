@@ -2,7 +2,7 @@
 
 # Notation Reference {#sec:notation-reference}
 
-This paper uses notation from the Cognitive Integrity Framework (CIF) formal specification defined in Part 1 of this series \cite{friedman2026cogsec1} (DOI: 10.5281/zenodo.18364119). The quick reference below reproduces the central symbols; for full definitions, proofs, and algebraic properties consult Part 1 §3 (System Model) and §4 (Trust Calculus). Paper 4 \cite{friedman2026cogsec4} S01 mirrors this table for domain-facing readers, and Paper 3 \cite{friedman2026cogsec3} §2 provides plain-language glosses.
+This paper uses notation from the Cognitive Integrity Framework (CIF) formal specification defined in Part 1 of this series \\cite{friedman2026cogsec1} (DOI: 10.5281/zenodo.18364119). The quick reference below reproduces the central symbols; for full definitions, proofs, and algebraic properties consult Part 1 §3 (System Model) and §4 (Trust Calculus). The unified Part 3+4 paper \\cite{friedman2026cogsec3} provides domain-facing applications and plain-language glosses.
 
 > **Code anchor.** Every symbol here has a concrete implementation in the [`src/`](../src/) package of this paper. The two rightmost columns of each table point to the Python module + class/function name, letting readers trace a formula to its executable realization.
 

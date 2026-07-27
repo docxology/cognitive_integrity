@@ -1,6 +1,6 @@
 # `src/` — Agent Reference (Paper 2)
 
-Source-package guidance for agents modifying the Cognitive Integrity Framework (CIF) computational validation codebase (Paper 2 of the four-part series).
+Source-package guidance for agents modifying the Cognitive Integrity Framework (CIF) computational validation codebase (Paper 2 of the three-part series).
 
 ## Series Position
 
@@ -8,7 +8,7 @@ This codebase is the **authoritative CIF implementation** — Papers 1, 3, and 4
 
 - Part 1 (`friedman2026cogsec1`) defines the apparatus; this `src/` implements it.
 - Part 3 (`friedman2026cogsec3`) is the practitioner's guide; its §3 "Evidence" chapter cites **this package's headline metrics**.
-- Part 4 (`friedman2026cogsec4`) applies CIF to ten domains; its §2 Methodology validation-anchors to **this package's benchmarks**.
+- Part 3+4 (`friedman2026cogsec3`) applies CIF to ten domains; its sections 9–10 methodology validation-anchors to **this package's benchmarks**.
 
 **Do not** mischaracterize Paper 3 as "biological" or "eusocial" — that content is in Paper 1's S02 supplementary. Paper 3 = practitioner's qualitative review.
 
@@ -105,11 +105,11 @@ Sibling-paper sections that cite this codebase's metrics:
 | ------- | ------- | -------------- |
 | Paper 1 | §8 Discussion | Ablation deltas from `src.ablation` |
 | Paper 1 | §9 Conclusion | Headline detection rate |
-| Paper 3 | §3 Evidence | 94–100% parametric ceiling, 1,594 passing tests |
-| Paper 3 | §5 Deployment | Per-component configuration guidance |
-| Paper 3 | §5b Incident Response | Adversary class detection rates |
-| Paper 4 | §2 Methodology | 94–100% ceiling as validation anchor |
-| Paper 4 | §4 Discussion | Defense composition algebra empirical backing |
+| Part 3+4 | §3 Evidence | 94–100% parametric ceiling, 2,283 passing tests |
+| Part 3+4 | §5 Deployment | Per-component configuration guidance |
+| Part 3+4 | §5b Incident Response | Adversary class detection rates |
+| Part 3+4 | §2 Methodology | 94–100% ceiling as validation anchor |
+| Part 3+4 | §4 Discussion | Defense composition algebra empirical backing |
 
 ## Adding a New Module
 

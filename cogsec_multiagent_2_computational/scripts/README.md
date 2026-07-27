@@ -6,11 +6,11 @@ All scripts follow the **thin-orchestrator contract** — computation lives in `
 
 ## Series Position
 
-This is Part 2 of the four-part *Cognitive Security for Multiagent Operators* series. See the [project README](../README.md) for the full series map. The scripts here produce the data and figures cited by:
+This is Part 2 of the three-part *Cognitive Security for Multiagent Operators* series. See the [project README](../README.md) for the full series map. The scripts here produce the data and figures cited by:
 
 - **Part 1** \cite{friedman2026cogsec1} — formal-foundations companion (DOI: 10.5281/zenodo.18364119)
 - **Part 3** \cite{friedman2026cogsec3} — practitioner's companion (DOI: 10.5281/zenodo.18364130)
-- **Part 4** \cite{friedman2026cogsec4} — applications companion
+- **Part 3+4** \cite{friedman2026cogsec3} — unified applications companion
 
 ## Quick Start
 
@@ -157,7 +157,7 @@ Expected runtime: ~30 min on a modern laptop (without LLM demo), ~2h with `run_l
 Scripts here produce the empirical results that Papers 1/3/4 reference. If you touch a script that changes headline numbers (e.g., ablation deltas, parametric ceiling, colony detection rates), check that sibling papers' cross-references remain accurate:
 
 - Part 1 §8 Discussion — cites Part 2 ablations (§5.6)
-- Part 3 §3 Evidence — cites Part 2 overall metrics (94–100% ceiling)
-- Part 4 §2 Methodology — cites Part 2 as validation anchor
+- Part 3+4 §3 Evidence — cites Part 2 overall metrics (94–100% parametric ceiling)
+- Part 3+4 §9 Methodology — cites Part 2 as validation anchor
 
 A mismatch between a sibling's quoted number and the current `output/data/` value is a **regression**. Run `verify_manuscript.py` after non-trivial changes.

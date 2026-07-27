@@ -2,9 +2,12 @@ name: CI
 
 # Runs each of the three standalone-buildable parts of the Cognitive
 # Security for Multiagent Operators series (theory, computational,
-# practical) independently, matching the per-part `uv sync && uv run
-# pytest tests/ -q` / `uv run ruff check .` commands documented in each
-# part's AGENTS.md / README.md.
+# practical) independently.
+#
+# Gating: pinned ruff lint, tests with a coverage floor, an import sweep over
+# the *tracked* tree, and manuscript verification for part 2.
+# Advisory (continue-on-error, with the concrete blocker named in each step):
+# `ruff format --check`, mypy, and the Python 3.10 compatibility matrix.
 
 on:
   push:
@@ -13,9 +16,82 @@ on:
     branches: [main]
   workflow_dispatch: {}
 
+env:
+  # Headless plotting: several src/visualization modules import matplotlib at
+  # module scope, so any import of the package needs a non-interactive backend.
+  MPLBACKEND: Agg
+  # Pinned so lint results do not drift with whatever ruff a runner happens to
+  # have.  Parts 1 and 3 declare no ruff dependency at all, so a bare
+  # `uv run ruff` resolved to a *system* ruff locally and would simply not
+  # exist on a runner; `uv run --with` makes the tool explicit for every part.
+  RUFF_VERSION: "0.15.5"
+  # Versions the full suite is verified green on.  3.10 (the declared
+  # requires-python floor) is exercised by the advisory `compat` job below.
+  PRIMARY_PYTHON: "3.12"
+
 jobs:
   test:
-    name: ${{ matrix.part }}
+    name: ${{ matrix.part }} (py${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        part:
+          - cogsec_multiagent_1_theory
+          - cogsec_multiagent_2_computational
+          - cogsec_multiagent_3_practical
+        python-version: ["3.12", "3.13"]
+    defaults:
+      run:
+        working-directory: ${{ matrix.part }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          enable-cache: true
+          cache-dependency-glob: "${{ matrix.part }}/uv.lock"
+
+      - name: Set up Python ${{ matrix.python-version }}
+        run: uv python install ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: uv sync --all-extras --python ${{ matrix.python-version }}
+
+      - name: Lint (ruff check, pinned)
+        run: uv run --with "ruff==${RUFF_VERSION}" ruff check .
+
+      - name: Format check (advisory)
+        # Advisory only: the tree is not `ruff format`-clean yet
+        # (part 1: 5 files, part 2: 189 files, part 3: 6 files as of 2026-07-27).
+        # Promote to gating once a formatting pass has landed.
+        continue-on-error: true
+        run: uv run --with "ruff==${RUFF_VERSION}" ruff format --check .
+
+      - name: Test (pytest + coverage floor)
+        # Each part declares `fail_under = 90` in [tool.coverage.report]; the
+        # explicit flag makes the floor visible in the job log.  Measured
+        # 2026-07-27: part 1 96.42%, part 2 95.40%, part 3 94.72%.
+        run: >-
+          uv run pytest tests/ -q
+          --cov=src --cov-report=term-missing --cov-fail-under=90
+
+      - name: Type check (mypy, advisory)
+        # Part 2 is the only part with a [tool.mypy] section.  Advisory because
+        # one real error remains: src/formal/trust_bounds.py:84 assigns a
+        # Callable over a method-typed name.  Promote to gating once fixed.
+        if: matrix.part == 'cogsec_multiagent_2_computational' && matrix.python-version == '3.12'
+        continue-on-error: true
+        run: uv run mypy src
+
+  tracked-tree-import:
+    # Guards the "a tracked facade imports an untracked module" bug class.
+    # Builds a tree from `git archive HEAD` -- committed files only -- and
+    # imports every module in it, so a re-export of a file that was never
+    # committed fails here instead of passing on a developer machine that
+    # still has the untracked file on disk.
+    name: tracked-tree import sweep (${{ matrix.part }})
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -37,13 +113,135 @@ jobs:
           cache-dependency-glob: "${{ matrix.part }}/uv.lock"
 
       - name: Set up Python
-        run: uv python install
+        run: uv python install "${PRIMARY_PYTHON}"
 
       - name: Install dependencies
-        run: uv sync --all-extras
+        run: uv sync --all-extras --python "${PRIMARY_PYTHON}"
 
-      - name: Lint (ruff)
-        run: uv run ruff check .
+      - name: Export the tracked tree and import every module in it
+        run: |
+          set -euo pipefail
+          archive="$(mktemp -d)"
+          trap 'rm -rf "$archive"' EXIT
+          git archive HEAD -- . | tar -x -C "$archive"
+          cat > "$archive/import_sweep.py" <<'PY'
+          """Import every module of a part's ``src`` package tree."""
+
+          import importlib
+          import pathlib
+          import pkgutil
+          import sys
+
+          src = pathlib.Path(sys.argv[1]).resolve()
+          if not (src / "__init__.py").exists():
+              print(f"import-sweep: {src} is not a package (no __init__.py)", file=sys.stderr)
+              raise SystemExit(1)
+
+          # Parent on the path so intra-package relative imports resolve, and
+          # ``src`` itself so part 2's absolute ``from utils.x import y`` style
+          # resolves too.
+          sys.path.insert(0, str(src.parent))
+          sys.path.insert(1, str(src))
+
+          names: list[str] = []
+          failed: list[tuple[str, str]] = []
+
+
+          def sweep(package_name: str, path: list[str]) -> None:
+              for info in pkgutil.iter_modules(path):
+                  if info.name in {"__main__", "conftest"}:
+                      continue
+                  full = f"{package_name}.{info.name}"
+                  names.append(full)
+                  try:
+                      mod = importlib.import_module(full)
+                  except Exception as exc:  # noqa: BLE001 - report, never mask
+                      failed.append((full, f"{type(exc).__name__}: {exc}"))
+                      continue
+                  if info.ispkg:
+                      sweep(full, list(mod.__path__))
+
+
+          names.append(src.name)
+          try:
+              root_mod = importlib.import_module(src.name)
+          except Exception as exc:  # noqa: BLE001
+              failed.append((src.name, f"{type(exc).__name__}: {exc}"))
+          else:
+              sweep(src.name, list(root_mod.__path__))
+
+          print(f"import-sweep: {len(names)} modules, {len(failed)} failures")
+          for name, err in failed:
+              print(f"  FAIL {name}: {err}", file=sys.stderr)
+          if len(names) < 2:
+              # Anti-vacuity: an empty or single-module sweep proves nothing.
+              print("import-sweep: swept fewer than 2 modules; refusing to pass", file=sys.stderr)
+              raise SystemExit(1)
+          raise SystemExit(1 if failed else 0)
+          PY
+          uv run python "$archive/import_sweep.py" "$archive/src"
+
+  manuscript:
+    # Part 2 is the only part whose published numbers are computed from tracked
+    # data files, so it gets the evidence-provenance guard as well.
+    name: manuscript verification (part 2)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: cogsec_multiagent_2_computational
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          enable-cache: true
+          cache-dependency-glob: "cogsec_multiagent_2_computational/uv.lock"
+
+      - name: Set up Python
+        run: uv python install "${PRIMARY_PYTHON}"
+
+      - name: Install dependencies
+        run: uv sync --all-extras --python "${PRIMARY_PYTHON}"
+
+      - name: Real-pipeline evidence present (not synthetic placeholders)
+        run: make check-real-data
+
+      - name: Verify manuscript
+        run: uv run python scripts/verify_manuscript.py --root manuscript
+
+  compat:
+    # Advisory: 3.10 is the declared requires-python floor, but part 3 has one
+    # float-equality test that only fails there
+    # (tests/test_visualization.py::TestFivePillarsData::test_custom_scores
+    # asserts 0.7000000000000001 == 0.7).  Promote to gating once that is fixed.
+    name: py3.10 compat (${{ matrix.part }}, advisory)
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    strategy:
+      fail-fast: false
+      matrix:
+        part:
+          - cogsec_multiagent_1_theory
+          - cogsec_multiagent_2_computational
+          - cogsec_multiagent_3_practical
+    defaults:
+      run:
+        working-directory: ${{ matrix.part }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          enable-cache: true
+          cache-dependency-glob: "${{ matrix.part }}/uv.lock"
+
+      - name: Set up Python 3.10
+        run: uv python install 3.10
+
+      - name: Install dependencies
+        run: uv sync --all-extras --python 3.10
 
       - name: Test (pytest)
         run: uv run pytest tests/ -q

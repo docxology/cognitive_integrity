@@ -26,12 +26,30 @@ dev = [
     "pytest>=7.4.0",
     "pytest-cov>=4.1.0",
     "pytest-httpserver>=1.1.5",
+    "pytest-timeout>=2.3.0",
+    "mypy>=1.11.0",
     "ruff>=0.4.0",
     "hypothesis>=6.0.0",
 ]
 
+# Packaging layout.
+#
+# `where = ["src"]` published every directory under src/ as its own TOP-LEVEL
+# import name: ablation, agents, analysis, architectures, attacks, colony,
+# composition, core, data, evaluation, formal, manuscript, redteam, statistics,
+# utils, visualization.  Installing this distribution therefore squatted 16
+# generic names in the consumer's environment, and `statistics` shadowed the
+# standard-library module for anything that put src/ on sys.path (which this
+# repo's own pytest config does via `pythonpath = ["src"]`).
+#
+# Publishing the single `src` package instead keeps every in-repo consumer
+# working -- tests and scripts resolve modules by putting src/ on sys.path
+# themselves, never through the installed distribution -- while `import src`
+# still runs the sys.path shim in src/__init__.py, so the historical
+# `from core.trust import ...` style keeps working after `import src`.
 [tool.setuptools.packages.find]
-where = ["src"]
+where = ["."]
+include = ["src", "src.*"]
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]
@@ -39,6 +57,11 @@ testpaths = ["tests"]
 python_files = ["test_*.py"]
 python_functions = ["test_*"]
 addopts = "-v --tb=short --strict-markers"
+# Per-test wall-clock ceiling so a hung test cannot burn a full CI job.  The
+# slowest test in the suite is ~2.4s, so 120s is ~50x headroom for a slow
+# runner.  Honoured by pytest-timeout (dev group); ignored with a warning if
+# the plugin is not installed.
+timeout = 120
 markers = [
     "requires_ollama: tests requiring a running Ollama server with local LLM models",
 ]
@@ -73,6 +96,7 @@ select = ["E", "F", "I", "W"]
 [tool.ruff.lint.per-file-ignores]
 # These files manipulate sys.path before importing project modules — E402 is intentional.
 "src/__init__.py" = ["E402"]
+"src/statistics/__init__.py" = ["E402"]
 "scripts/*.py" = ["E402"]
 "tests/conftest.py" = ["E402"]
 "tests/test_agents.py" = ["E402"]
@@ -88,6 +112,10 @@ mypy_path = "src"
 explicit_package_bases = true
 ignore_missing_imports = true
 exclude = ["src/__main__.py"]
+# Bodies of un-annotated functions are checked too.  Without this, mypy reports
+# "Success" while skipping every function that lacks a signature annotation --
+# which is how a dead import and two type errors survived a "clean" mypy run.
+check_untyped_defs = true
 
 [tool.uv]
 package = true

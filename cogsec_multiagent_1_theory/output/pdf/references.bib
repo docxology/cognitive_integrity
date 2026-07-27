@@ -2,10 +2,10 @@
 % Part 1: Formal Foundations
 
 % ============================================================
-% SERIES CROSS-REFERENCES (Parts 1--4)
+% SERIES CROSS-REFERENCES (Parts 1, 2, 3+4)
 % ============================================================
 
-@article{friedman2026cogsec1,
+@misc{friedman2026cogsec1,
   author    = {Friedman, Daniel Ari},
   title     = {Cognitive Integrity Framework: Formal Foundations for Multiagent Security},
   journal   = {Cognitive Security for Multiagent Operators},
@@ -15,7 +15,7 @@
   note      = {Part 1 (this paper): Theoretical Foundations --- Trust Calculus with $\delta^d$ bounded delegation, Defense Composition Algebra, adversary taxonomy $\Omega_1$--$\Omega_5$, information-theoretic stealth--impact bounds, five canonical defense mechanisms, and model-checked safety invariants.}
 }
 
-@article{friedman2026cogsec2,
+@misc{friedman2026cogsec2,
   author    = {Friedman, Daniel Ari},
   title     = {Cognitive Integrity Framework: Computational Validation},
   journal   = {Cognitive Security for Multiagent Operators},
@@ -25,23 +25,23 @@
   note      = {Part 2: Implementation and Empirical Analysis --- 950-attack corpus, multi-tier evaluation, ablation studies, Bayesian uncertainty, and parametric architecture-aware simulation across four production multiagent topologies.}
 }
 
-@article{friedman2026cogsec3,
+@misc{friedman2026cogsec3,
   author    = {Friedman, Daniel Ari},
-  title     = {Cognitive Integrity Framework: A Qualitative Review},
+  title     = {Cognitive Integrity Framework: Practitioner Guidance and Critical Domain Applications},
   journal   = {Cognitive Security for Multiagent Operators},
   volume    = {3},
   year      = {2026},
   doi       = {10.5281/zenodo.18364130},
-  note      = {Part 3: A Qualitative Review for Practitioners --- accessible-language synthesis, deployment guides, subagent hardening, incident-response playbooks, monitoring, cost--benefit analysis, common pitfalls, case studies, and operator risk frameworks.}
+  note      = {Part 3 (merged from original Parts 3+4): Qualitative review and practitioner synthesis --- accessible-language distillation, deployment guides, subagent hardening, incident-response playbooks, monitoring, cost-benefit analysis, operator risk frameworks --- combined with CIF-AD-OODA applications across ten critical operational domains, three universal attack patterns (FR Polarity Inversion, Constraint Relaxation, Context Boundary Violation), three novel defense extensions, and retrospective analysis of 2024--2025 AI-agent security incidents.}
 }
 
-@article{friedman2026cogsec4,
+@misc{friedman2026cogsec4,
   author    = {Friedman, Daniel Ari},
   title     = {Cognitive Integrity in Critical Domains: A Multi-Sector Analysis},
   journal   = {Cognitive Security for Multiagent Operators},
-  volume    = {4},
+  volume    = {3},
   year      = {2026},
-  note      = {Part 4: Applications of the Cognitive Integrity Framework --- CIF-AD-OODA integration model applied across ten critical domains, three universal attack patterns (FR Polarity Inversion, Constraint Relaxation, Context Boundary Violation), three novel defense extensions (verification channel separation, active perturbation probing, physics-informed invariants), and retrospective analysis of six documented 2024--2025 AI-agent security incidents. DOI pending.}
+  note      = {Part 3+4 (Unified): Applications of the Cognitive Integrity Framework --- CIF-AD-OODA integration model applied across ten critical domains, three universal attack patterns (FR Polarity Inversion, Constraint Relaxation, Context Boundary Violation), three novel defense extensions (verification channel separation, active perturbation probing, physics-informed invariants), and retrospective analysis of six documented 2024--2025 AI-agent security incidents. Merged from former Part 3 (practitioner guidance) and Part 4 (cross-domain applications). DOI: 10.5281/zenodo.18364130}
 }
 
 % Foundational Works
@@ -311,7 +311,7 @@
   year      = {2025}
 }
 
-@report{supplychain2025,
+@techreport{supplychain2025,
   author       = {{ReversingLabs}},
   title        = {The State of {AI} Supply Chain Security 2025},
   institution = {ReversingLabs},
@@ -809,3 +809,141 @@
   note         = {Integrates conflict studies with Active Inference, introducing the Active Inference Conflict (AIC) model. Formalizes OODA loops within cognitive frameworks and addresses conflict in BOLTS (Business, Operations, Legal, Technical, Social) contexts},
   keywords     = {Active Inference, Conflict, BOLTS, NIM}
 }
+
+% ============================================================
+% v2.0 NEW CITATIONS
+% ============================================================
+
+% Fisher-Rao geometry and information geometry
+@book{amari2000methods,
+  author    = {Amari, Shun-ichi and Nagaoka, Hiroshi},
+  title     = {Methods of Information Geometry},
+  publisher = {American Mathematical Society},
+  year      = {2000},
+  note      = {Foundational text on information geometry; defines the Fisher-Rao metric, geodesics on the probability simplex, and the natural gradient. The Fisher-Rao distance $d_{\mathrm{FR}}(p,q) = 2\arccos(\sum_i\sqrt{p_i q_i})$ used in the stealth-impact bound is derived from the sphere isometry of the probability simplex.}
+}
+
+% OODA loop and decision cycle theory
+@article{boyd1995essence,
+  author    = {Boyd, John R.},
+  title     = {The {Essence} of {Winning} and {Losing}},
+  journal   = {Unpublished lecture notes},
+  year      = {1995},
+  note      = {Original OODA loop formulation by John Boyd. The Observe-Orient-Decide-Act cycle captures adversarial decision-making and forms the temporal framework for CIF-OODA integration in v2.0.}
+}
+
+% Neyman-Pearson detection theory
+@article{neyman1933ix,
+  author    = {Neyman, Jerzy and Pearson, Egon S.},
+  title     = {On the Problem of the Most Efficient Tests of Statistical Hypotheses},
+  journal   = {Philosophical Transactions of the Royal Society A},
+  volume    = {231},
+  pages     = {289--337},
+  year      = {1933},
+  doi       = {10.1098/rsta.1933.0009},
+  note      = {Foundation of optimal hypothesis testing; the Neyman-Pearson lemma establishes the likelihood ratio test as the uniformly most powerful test, providing the theoretical basis for the optimal cognitive attack detector described in §6.}
+}
+
+% Chernoff information and error exponents
+@article{chernoff1952measure,
+  author    = {Chernoff, Herman},
+  title     = {A Measure of Asymptotic Efficiency for Tests of a Hypothesis Based on the Sum of Observations},
+  journal   = {Annals of Mathematical Statistics},
+  volume    = {23},
+  number    = {4},
+  pages     = {493--507},
+  year      = {1952},
+  doi       = {10.1214/aoms/1177729330},
+  note      = {Introduces Chernoff information $C^*$ as the maximum error exponent for hypothesis testing; the sample complexity bound $n^* = \lceil\log(1/\epsilon)/C^*\rceil$ for attack detection derives from this result.}
+}
+
+% CUSUM sequential detection
+@article{page1954continuous,
+  author    = {Page, Ewan S.},
+  title     = {Continuous Inspection Schemes},
+  journal   = {Biometrika},
+  volume    = {41},
+  number    = {1--2},
+  pages     = {100--115},
+  year      = {1954},
+  doi       = {10.1093/biomet/41.1-2.100},
+  note      = {Original CUSUM (Cumulative Sum) sequential change-point detection algorithm. Used as the canonical drift detection method for the Orient phase of the OODA monitor.}
+}
+
+% Pinsker's inequality
+@book{cover2006elements,
+  author    = {Cover, Thomas M. and Thomas, Joy A.},
+  title     = {Elements of Information Theory},
+  edition   = {2nd},
+  publisher = {Wiley-Interscience},
+  year      = {2006},
+  note      = {Comprehensive reference for information theory; Pinsker's inequality $\|P-Q\|_{\mathrm{TV}} \leq \sqrt{D_{\mathrm{KL}}(P\|Q)/2}$ (Lemma 11.6.1) is used in the KL-AUC coupling proof.}
+}
+
+% Byzantine fault tolerance (FLP impossibility)
+@article{fischer1985impossibility,
+  author    = {Fischer, Michael J. and Lynch, Nancy A. and Paterson, Michael S.},
+  title     = {Impossibility of Distributed Consensus with One Faulty Process},
+  journal   = {Journal of the ACM},
+  volume    = {32},
+  number    = {2},
+  pages     = {374--382},
+  year      = {1985},
+  doi       = {10.1145/3149.214121},
+  note      = {FLP impossibility result: no deterministic protocol can achieve consensus in an asynchronous system with even one crash-faulty process. Motivates the synchrony assumptions in CIF Byzantine consensus and the limitations §10 discussion.}
+}
+
+% Adversarial machine learning and adaptive attacks
+@inproceedings{carlini2017evaluating,
+  author    = {Carlini, Nicholas and Wagner, David},
+  title     = {Towards Evaluating the Robustness of Neural Networks},
+  booktitle = {IEEE Symposium on Security and Privacy},
+  year      = {2017},
+  doi       = {10.1109/SP.2017.49},
+  note      = {Demonstrates that many proposed defenses against adversarial examples are ineffective against adaptive attackers; motivates the adaptive adversary model and its impact on stationary-distribution assumption limitations discussed in §10.}
+}
+
+% Minimax detection theory
+@book{lehmann2005testing,
+  author    = {Lehmann, Erich L. and Romano, Joseph P.},
+  title     = {Testing Statistical Hypotheses},
+  edition   = {3rd},
+  publisher = {Springer},
+  year      = {2005},
+  note      = {Comprehensive reference for hypothesis testing; minimax optimal tests and their relationship to the Neyman-Pearson framework provide the formal basis for detection bounds under adversarial adaptation.}
+}
+
+% Semiring algebra
+@book{gondran2008graphs,
+  author    = {Gondran, Michel and Minoux, Michel},
+  title     = {Graphs, Dioids and Semirings: New Models and Algorithms},
+  publisher = {Springer},
+  year      = {2008},
+  note      = {Foundational reference on semiring algebra; the defense composition closure under series and parallel operators forms a semiring with the algebraic structure described in the Composition Algebra Closure theorem.}
+}
+
+% Active inference / free-energy principle
+@article{friston2010action,
+  author    = {Friston, Karl J. and Daunizeau, Jean and Kiebel, Stefan J.},
+  title     = {Action and Behavior: A Free-Energy Formulation},
+  journal   = {Biological Cybernetics},
+  volume    = {102},
+  number    = {3},
+  pages     = {227--260},
+  year      = {2010},
+  doi       = {10.1007/s00422-010-0364-z},
+  note      = {Foundational formulation of action selection as free-energy minimization; establishes the variational principle underlying belief updating that the belief sandbox constrains.}
+}
+
+@article{parr2019generalised,
+  author    = {Parr, Thomas and Friston, Karl J.},
+  title     = {Generalised Free Energy and Active Inference},
+  journal   = {Biological Cybernetics},
+  volume    = {113},
+  number    = {5-6},
+  pages     = {495--513},
+  year      = {2019},
+  doi       = {10.1007/s00422-019-00805-w},
+  note      = {Extends the free-energy principle to continuous-time dynamics and generalized coordinates; provides the mathematical framework connecting precision-weighted belief updates to defense mechanisms.}
+}
+

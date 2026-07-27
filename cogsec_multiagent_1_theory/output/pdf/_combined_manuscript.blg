@@ -3,47 +3,44 @@ Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: _combined_manuscript.aux
 The style file: plainnat.bst
 Database file #1: references.bib
-Warning--I didn't find a database entry for "friston2010action"
-Warning--I didn't find a database entry for "parr2019generalised"
-You've used 49 entries,
+You've used 53 entries,
             2773 wiz_defined-function locations,
-            891 strings with 16346 characters,
-and the built_in function-call counts, 24234 in all, are:
-= -- 2095
-> -- 1744
-< -- 21
-+ -- 589
-- -- 540
-* -- 2033
-:= -- 3876
-add.period$ -- 190
-call.type$ -- 49
-change.case$ -- 316
-chr.to.int$ -- 49
-cite$ -- 98
-duplicate$ -- 985
-empty$ -- 1772
-format.name$ -- 611
-if$ -- 4973
-int.to.chr$ -- 1
+            916 strings with 18052 characters,
+and the built_in function-call counts, 25830 in all, are:
+= -- 2245
+> -- 1815
+< -- 24
++ -- 615
+- -- 561
+* -- 2152
+:= -- 4119
+add.period$ -- 206
+call.type$ -- 53
+change.case$ -- 335
+chr.to.int$ -- 52
+cite$ -- 106
+duplicate$ -- 1056
+empty$ -- 1917
+format.name$ -- 638
+if$ -- 5309
+int.to.chr$ -- 2
 int.to.str$ -- 1
-missing$ -- 46
-newline$ -- 295
-num.names$ -- 196
-pop$ -- 634
+missing$ -- 48
+newline$ -- 319
+num.names$ -- 212
+pop$ -- 674
 preamble$ -- 1
-purify$ -- 271
+purify$ -- 286
 quote$ -- 0
-skip$ -- 789
+skip$ -- 843
 stack$ -- 0
-substring$ -- 597
-swap$ -- 62
+substring$ -- 655
+swap$ -- 68
 text.length$ -- 1
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 514
+type$ -- 558
 warning$ -- 0
-while$ -- 185
+while$ -- 201
 width$ -- 0
-write$ -- 700
-(There were 2 warnings)
+write$ -- 758

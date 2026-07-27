@@ -7,7 +7,7 @@ This supplement develops the information-geometric structure of the CIF belief s
 > **Cross-paper reading guide.**
 > • **Formal stealth–impact bound** (which the Fisher–Rao construction realizes) is stated and proved in Part 1 \cite{friedman2026cogsec1} §4.3.
 > • **Operational implications** of the geodesic attack path for active-inference-based monitoring are discussed in Part 3 \cite{friedman2026cogsec3} §2 (theory review).
-> • **Domain applications** — the geodesic framework applies to high-stakes sectors where adversarial inputs stay within a stealth budget; see Part 4 \cite{friedman2026cogsec4} §3.10 (information ecosystems, fake-news detection) in particular, where the Fisher–Rao metric informs distribution-shift monitoring.
+> • **Domain applications** — the geodesic framework applies to high-stakes sectors where adversarial inputs stay within a stealth budget; see unified Part 3+4 \cite{friedman2026cogsec3}, Section 9.12 (information ecosystems, fake-news detection) in particular, where the Fisher--Rao metric informs distribution-shift monitoring.
 
 > **Reproducibility.** All geometric quantities (Fisher–Rao distances, geodesic paths, natural gradient directions) can be regenerated from [`src/analysis/information_geometry.py`](../src/analysis/information_geometry.py). Thin orchestrator: invoke via the publication suite (`uv run python scripts/run_publication_suite.py`) or directly via `StatisticalManifold` / `geodesic_attack_path`.
 

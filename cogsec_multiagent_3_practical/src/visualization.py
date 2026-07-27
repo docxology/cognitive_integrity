@@ -13,6 +13,9 @@ from typing import Any
 
 import matplotlib.pyplot as plt
 import numpy as np
+from matplotlib import colors
+from matplotlib.axes import Axes
+from matplotlib.figure import Figure, SubFigure
 from matplotlib.patches import Patch
 
 
@@ -120,7 +123,9 @@ def get_five_pillars_data(
     )
 
 
-def render_posture_radar(data: FigureData, ax: plt.Axes | None = None) -> plt.Figure:
+def render_posture_radar(
+    data: FigureData, ax: Axes | None = None
+) -> Figure | SubFigure:
     """Render Five Pillars posture radar chart.
 
     Args:
@@ -145,6 +150,7 @@ def render_posture_radar(data: FigureData, ax: plt.Axes | None = None) -> plt.Fi
     values_closed = values + values[:1]
 
     # Create figure if no axes provided
+    fig: Figure | SubFigure
     if ax is None:
         fig, ax = plt.subplots(figsize=(10, 10), subplot_kw=dict(projection="polar"))
     else:
@@ -256,7 +262,9 @@ def get_deployment_phases_data() -> FigureData:
     )
 
 
-def render_checklist_flowchart(data: FigureData, ax: plt.Axes | None = None) -> plt.Figure:
+def render_checklist_flowchart(
+    data: FigureData, ax: Axes | None = None
+) -> Figure | SubFigure:
     """Render deployment checklist flowchart.
 
     Args:
@@ -268,6 +276,7 @@ def render_checklist_flowchart(data: FigureData, ax: plt.Axes | None = None) -> 
     """
     phases: list[DeploymentPhase] = data.data["phases"]
 
+    fig: Figure | SubFigure
     if ax is None:
         fig, ax = plt.subplots(figsize=(14, 8))
     else:
@@ -405,7 +414,9 @@ def get_risk_matrix_data(
     )
 
 
-def render_risk_matrix(data: FigureData, ax: plt.Axes | None = None) -> plt.Figure:
+def render_risk_matrix(
+    data: FigureData, ax: Axes | None = None
+) -> Figure | SubFigure:
     """Render risk assessment matrix heatmap.
 
     Args:
@@ -419,6 +430,7 @@ def render_risk_matrix(data: FigureData, ax: plt.Axes | None = None) -> plt.Figu
     impact_labels = data.data["impact_labels"]
     likelihood_labels = data.data["likelihood_labels"]
 
+    fig: Figure | SubFigure
     if ax is None:
         fig, ax = plt.subplots(figsize=(12, 10))
     else:
@@ -436,8 +448,8 @@ def render_risk_matrix(data: FigureData, ax: plt.Axes | None = None) -> plt.Figu
     )
 
     # Color mapping
-    cmap = plt.cm.RdYlGn_r  # Red = high risk, Green = low risk
-    norm = plt.Normalize(vmin=1, vmax=5)
+    cmap = plt.get_cmap("YlOrRd_r")  # Yellow=low risk, Red=high risk (colorblind-accessible)
+    norm = colors.Normalize(vmin=1, vmax=5)
 
     # Draw heatmap
     ax.imshow(risk_colors, cmap=cmap, norm=norm, aspect="auto")
@@ -532,7 +544,9 @@ def get_trust_decay_data(
     )
 
 
-def render_trust_decay(data: FigureData, ax: plt.Axes | None = None) -> plt.Figure:
+def render_trust_decay(
+    data: FigureData, ax: Axes | None = None
+) -> Figure | SubFigure:
     """Render trust decay curve.
 
     Args:
@@ -547,6 +561,7 @@ def render_trust_decay(data: FigureData, ax: plt.Axes | None = None) -> plt.Figu
     delta = data.data["delta"]
     practical_depth = data.metadata.get("practical_depth", 10)
 
+    fig: Figure | SubFigure
     if ax is None:
         fig, ax = plt.subplots(figsize=(10, 6))
     else:
@@ -680,7 +695,9 @@ def get_pitfalls_data() -> FigureData:
     )
 
 
-def render_pitfall_severity(data: FigureData, ax: plt.Axes | None = None) -> plt.Figure:
+def render_pitfall_severity(
+    data: FigureData, ax: Axes | None = None
+) -> Figure | SubFigure:
     """Render pitfall severity bar chart.
 
     Args:
@@ -692,6 +709,7 @@ def render_pitfall_severity(data: FigureData, ax: plt.Axes | None = None) -> plt
     """
     pitfalls: list[Pitfall] = data.data["pitfalls"]
 
+    fig: Figure | SubFigure
     if ax is None:
         fig, ax = plt.subplots(figsize=(12, 8))
     else:
@@ -817,7 +835,9 @@ def get_timeline_data() -> FigureData:
     )
 
 
-def render_timeline(data: FigureData, ax: plt.Axes | None = None) -> plt.Figure:
+def render_timeline(
+    data: FigureData, ax: Axes | None = None
+) -> Figure | SubFigure:
     """Render deployment timeline.
 
     Args:
@@ -829,6 +849,7 @@ def render_timeline(data: FigureData, ax: plt.Axes | None = None) -> plt.Figure:
     """
     phases: list[TimelinePhase] = data.data["phases"]
 
+    fig: Figure | SubFigure
     if ax is None:
         fig, ax = plt.subplots(figsize=(14, 6))
     else:

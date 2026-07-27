@@ -1,6 +1,6 @@
-This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.3.22)  26 APR 2026 19:01
+This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.3.22)  13 JUL 2026 13:56
 entering extended mode
- \write18 enabled.
+ restricted \write18 enabled.
  %&-line parsing enabled.
 **_combined_manuscript.tex
 (./_combined_manuscript.tex
@@ -764,7 +764,7 @@ File: bkm-dvipdfm.def 2023-12-10 v1.31 bookmark driver for dvipdfm (HO)
 (/usr/local/texlive/2026/texmf-dist/tex/latex/xurl/xurl.sty
 Package: xurl 2022/01/09 v 0.10 modify URL breaks
 )
-Package hyperref Info: Option `colorlinks' set `true' on input line 147.
+Package hyperref Info: Option `colorlinks' set `true' on input line 153.
 
 (/usr/local/texlive/2026/texmf-dist/tex/latex/amscls/amsthm.sty
 Package: amsthm 2020/05/29 v2.20.6
@@ -1366,64 +1366,1773 @@ e 7852.
 \c@theorem=\count390
 \c@property=\count391
 \c@axiom=\count392
+(/usr/local/texlive/2026/texmf-dist/tex/latex/listings/listings.sty
+\lst@mode=\count393
+\lst@gtempboxa=\box104
+\lst@token=\toks54
+\lst@length=\count394
+\lst@currlwidth=\dimen325
+\lst@column=\count395
+\lst@pos=\count396
+\lst@lostspace=\dimen326
+\lst@width=\dimen327
+\lst@newlines=\count397
+\lst@lineno=\count398
+\lst@maxwidth=\dimen328
+
+(/usr/local/texlive/2026/texmf-dist/tex/latex/listings/lstpatch.sty
+File: lstpatch.sty 2025/11/14 1.11b (Carsten Heinz)
+)
+(/usr/local/texlive/2026/texmf-dist/tex/latex/listings/lstmisc.sty
+File: lstmisc.sty 2025/11/14 1.11b (Carsten Heinz)
+\c@lstnumber=\count399
+\lst@skipnumbers=\count400
+\lst@framebox=\box105
+)
+(/usr/local/texlive/2026/texmf-dist/tex/latex/listings/listings.cfg
+File: listings.cfg 2025/11/14 1.11b listings configuration
+))
+Package: listings 2025/11/14 1.11b (Carsten Heinz)
+
+==> First Aid for listings.sty no longer applied!
+    Expected:
+        2024/09/23 1.10c (Carsten Heinz)
+    but found:
+        2025/11/14 1.11b (Carsten Heinz)
+    so I'm assuming it got fixed.
 (/usr/local/texlive/2026/texmf-dist/tex/latex/geometry/geometry.sty
 Package: geometry 2026/03/07 v6.0 Page Geometry
 
 (/usr/local/texlive/2026/texmf-dist/tex/generic/iftex/ifvtex.sty
 Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
 )
-\Gm@cnth=\count393
-\Gm@cntv=\count394
-\c@Gm@tempcnt=\count395
-\Gm@bindingoffset=\dimen325
-\Gm@wd@mp=\dimen326
-\Gm@odd@mp=\dimen327
-\Gm@even@mp=\dimen328
-\Gm@layoutwidth=\dimen329
-\Gm@layoutheight=\dimen330
-\Gm@layouthoffset=\dimen331
-\Gm@layoutvoffset=\dimen332
-\Gm@dimlist=\toks54
+\Gm@cnth=\count401
+\Gm@cntv=\count402
+\c@Gm@tempcnt=\count403
+\Gm@bindingoffset=\dimen329
+\Gm@wd@mp=\dimen330
+\Gm@odd@mp=\dimen331
+\Gm@even@mp=\dimen332
+\Gm@layoutwidth=\dimen333
+\Gm@layoutheight=\dimen334
+\Gm@layouthoffset=\dimen335
+\Gm@layoutvoffset=\dimen336
+\Gm@dimlist=\toks55
 )
-Package hyperref Info: Option `colorlinks' set `true' on input line 267.
+Package hyperref Info: Option `colorlinks' set `true' on input line 285.
 
-(./_combined_manuscript.aux)
+(/usr/local/texlive/2026/texmf-dist/tex/latex/tocloft/tocloft.sty
+Package: tocloft 2017/08/31 v2.3i parameterised ToC, etc., typesetting
+Package tocloft Info: The document has section divisions on input line 51.
+\cftparskip=\skip76
+\cftbeforetoctitleskip=\skip77
+\cftaftertoctitleskip=\skip78
+\cftbeforepartskip=\skip79
+\cftpartnumwidth=\skip80
+\cftpartindent=\skip81
+\cftbeforesecskip=\skip82
+\cftsecindent=\skip83
+\cftsecnumwidth=\skip84
+\cftbeforesubsecskip=\skip85
+\cftsubsecindent=\skip86
+\cftsubsecnumwidth=\skip87
+\cftbeforesubsubsecskip=\skip88
+\cftsubsubsecindent=\skip89
+\cftsubsubsecnumwidth=\skip90
+\cftbeforeparaskip=\skip91
+\cftparaindent=\skip92
+\cftparanumwidth=\skip93
+\cftbeforesubparaskip=\skip94
+\cftsubparaindent=\skip95
+\cftsubparanumwidth=\skip96
+\cftbeforeloftitleskip=\skip97
+\cftafterloftitleskip=\skip98
+\cftbeforefigskip=\skip99
+\cftfigindent=\skip100
+\cftfignumwidth=\skip101
+\c@lofdepth=\count404
+\c@lotdepth=\count405
+\cftbeforelottitleskip=\skip102
+\cftafterlottitleskip=\skip103
+\cftbeforetabskip=\skip104
+\cfttabindent=\skip105
+\cfttabnumwidth=\skip106
+
+
+Package tocloft Warning: \@starttoc has already been redefined; tocloft bailing
+ out. on input line 1156.
+
+)
+
+! LaTeX Error: Missing \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.289 \listoffigures
+                    
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: Missing \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.289 \listoffigures
+                    
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+(./_combined_manuscript.lof
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.1 ...ing detectability.}}{22}{figure.caption.12}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+LaTeX Font Info:    Trying to load font information for U+msa on input line 1.
+(/usr/local/texlive/2026/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Trying to load font information for U+msb on input line 1.
+
+(/usr/local/texlive/2026/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
+! Undefined control sequence.
+<argument> ...ized by adversary class \(\mitOmega 
+                                                  _1\)--\(\mitOmega _5\) wit...
+l.1 ...ing detectability.}}{22}{figure.caption.12}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<argument> ...class \(\mitOmega _1\)--\(\mitOmega 
+                                                  _5\) with increasing capab...
+l.1 ...ing detectability.}}{22}{figure.caption.12}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.1 ...ing detectability.}}{22}{figure.caption.12}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.2 ...hardest to detect.}}{23}{figure.caption.13}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<argument> ...ity---external attacks (\(\mitOmega 
+                                                  _1\)) are most detectable ...
+l.2 ...hardest to detect.}}{23}{figure.caption.13}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<argument> ...while systemic attacks (\(\mitOmega 
+                                                  _5\)) are hardest to detec...
+l.2 ...hardest to detect.}}{23}{figure.caption.13}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.2 ...hardest to detect.}}{23}{figure.caption.13}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.3 ...ts at activation).}}{25}{figure.caption.14}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.3 ...ts at activation).}}{25}{figure.caption.14}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.4 ...estrator control).}}{29}{figure.caption.17}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<argument> ... each adversary class---\(\mitOmega 
+                                                  _1\) (user input), \(\mitO...
+l.4 ...estrator control).}}{29}{figure.caption.17}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<argument> ...mega _1\) (user input), \(\mitOmega 
+                                                  _2\) (tool/API), \(\mitOme...
+l.4 ...estrator control).}}{29}{figure.caption.17}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<argument> ...tOmega _2\) (tool/API), \(\mitOmega 
+                                                  _3\) (agent compromise), \...
+l.4 ...estrator control).}}{29}{figure.caption.17}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<argument> ...3\) (agent compromise), \(\mitOmega 
+                                                  _4\) (inter-agent communic...
+l.4 ...estrator control).}}{29}{figure.caption.17}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<argument> ...ent communication), and \(\mitOmega 
+                                                  _5\) (orchestrator control...
+l.4 ...estrator control).}}{29}{figure.caption.17}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.4 ...estrator control).}}{29}{figure.caption.17}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+Underfull \hbox (badness 2111) in paragraph at lines 4--4
+ [][] []\TU/lmr/m/n/10 red[]Attack Surface Visualization: Hierarchical agent st
+ruc- 
+ []
+
+
+Underfull \hbox (badness 1033) in paragraph at lines 4--4
+ \TU/lmr/m/n/10 input), $[]$ (tool/API), $[]$ (agent compromise), $[]$ (inter-a
+gent 
+ []
+
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.5 ...archical topology.}}{33}{figure.caption.20}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.5 ...archical topology.}}{33}{figure.caption.20}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.6 ...ployment context.}}}{35}{figure.caption.22}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<argument> ...{T}_{\text {del}}^{(d)} = \mitdelta 
+                                                  ^d \cdot \symcal {T}_{i \t...
+l.6 ...ployment context.}}}{35}{figure.caption.22}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \mitdelta 
+                          
+l.6 ...ployment context.}}}{35}{figure.caption.22}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \mitdelta 
+                          
+l.6 ...ployment context.}}}{35}{figure.caption.22}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \mittau 
+                        
+l.6 ...ployment context.}}}{35}{figure.caption.22}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \mittau 
+                        
+l.6 ...ployment context.}}}{35}{figure.caption.22}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.6 ...ployment context.}}}{35}{figure.caption.22}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.7 ...delegation chains.}}{36}{figure.caption.23}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<argument> ... $\symcal {T}_{i \to k} = \mitdelta 
+                                                  \cdot \min (\symcal {T}_{i...
+l.7 ...delegation chains.}}{36}{figure.caption.23}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.7 ...delegation chains.}}{36}{figure.caption.23}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+Underfull \hbox (badness 1142) in paragraph at lines 7--7
+ [][] []\TU/lmr/m/n/10 red[]Trust Calculus Comprehensive: Complete trust calcul
+us 
+ []
+
+
+Underfull \hbox (badness 1895) in paragraph at lines 7--7
+ \TU/lmr/m/n/10 experience, reputation, recommendation), decay mechanics, 
+ []
+
+
+Underfull \hbox (badness 1371) in paragraph at lines 7--7
+ \TU/lmr/m/n/10 and the no-amplification invariant. The composition rule 
+ []
+
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.8 ...ovenance tracking.}}{41}{figure.caption.26}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.8 ...ovenance tracking.}}{41}{figure.caption.26}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+Overfull \hbox (3.89398pt too wide) in paragraph at lines 8--8
+ [][] []\TU/lmr/m/n/10 red[]CIF Architecture Overview: Three-layer defense arch
+itecture— 
+ []
+
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.9 ...layered-defense}).}}{42}{figure.caption.27}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \mitOmega 
+                          
+l.9 ...layered-defense}).}}{42}{figure.caption.27}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \mitOmega 
+                          
+l.9 ...layered-defense}).}}{42}{figure.caption.27}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+LaTeX Warning: Reference `cor:layered-defense' on page 1 undefined on input lin
+e 9.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.9 ...layered-defense}).}}{42}{figure.caption.27}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+Underfull \hbox (badness 1147) in paragraph at lines 9--9
+ [][] []\TU/lmr/m/n/10 red[]Comprehensive CIF Architecture: Extended architectu
+re 
+ []
+
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.10 ...dbox Architecture}}{49}{figure.caption.35}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.10 ...dbox Architecture}}{49}{figure.caption.35}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.11 ...nisms contribute.}}{54}{figure.caption.41}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.11 ...nisms contribute.}}{54}{figure.caption.41}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+)
+\tf@lof=\write5
+\openout5 = `_combined_manuscript.lof'.
+
+ (./_combined_manuscript.lot
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.1 ...ary attack surfaces.}}{10}{table.caption.5}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.1 ...ary attack surfaces.}}{10}{table.caption.5}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.2 ... Paradigm Comparison}}{13}{table.caption.6}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.2 ... Paradigm Comparison}}{13}{table.caption.6}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.3 ...ibling developments.}}{17}{table.caption.7}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.3 ...ibling developments.}}{17}{table.caption.7}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.4 ...evel and capability.}}{18}{table.caption.8}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.4 ...evel and capability.}}{18}{table.caption.8}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.5 ...k resource taxonomy.}}{20}{table.caption.9}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.5 ...k resource taxonomy.}}{20}{table.caption.9}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.6 ...by adversary class.}}{21}{table.caption.10}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.6 ...by adversary class.}}{21}{table.caption.10}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.7 ...by adversary class.}}{21}{table.caption.11}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.7 ...by adversary class.}}{21}{table.caption.11}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.8 ...nding CIF defenses.}}{27}{table.caption.15}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.8 ...nding CIF defenses.}}{27}{table.caption.15}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.9 ...ttack combinations.}}{28}{table.caption.16}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.9 ...ttack combinations.}}{28}{table.caption.16}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.10 ...tor $\symcal {O}$.}}{30}{table.caption.18}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.10 ...tor $\symcal {O}$.}}{30}{table.caption.18}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.11 ...s for agent $a_i$.}}{30}{table.caption.19}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.11 ...s for agent $a_i$.}}{30}{table.caption.19}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.12 ...nction components.}}{34}{table.caption.21}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.12 ...nction components.}}{34}{table.caption.21}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.13 ...liability factors.}}{37}{table.caption.24}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.13 ...liability factors.}}{37}{table.caption.24}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.14 ...ds by attack type.}}{40}{table.caption.25}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.14 ...ds by attack type.}}{40}{table.caption.25}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\set@color ->\special {color push \current@color 
+                                                 }\aftergroup \reset@color 
+l.15 ...ding CIF defenses.}}{41}{table.caption.28}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\set@color ->\special {color push \current@color 
+                                                 }\aftergroup \reset@color 
+l.15 ...ding CIF defenses.}}{41}{table.caption.28}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+\HyPL@Entry{0<</S/D>>}
+[1
+
+]
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.15 ...ding CIF defenses.}}{41}{table.caption.28}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.15 ...ding CIF defenses.}}{41}{table.caption.28}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.16 ...s AD cycle phases.}}{43}{table.caption.29}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.16 ...s AD cycle phases.}}{43}{table.caption.29}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.17 ... and CIF defenses.}}{44}{table.caption.30}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.17 ... and CIF defenses.}}{44}{table.caption.30}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.18 ...sponse escalation.}}{46}{table.caption.31}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.18 ...sponse escalation.}}{46}{table.caption.31}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.19 ...ative guidelines).}}{46}{table.caption.32}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.19 ...ative guidelines).}}{46}{table.caption.32}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.20 ...Cognitive Security}}{47}{table.caption.33}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.20 ...Cognitive Security}}{47}{table.caption.33}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.21 ...tector components.}}{47}{table.caption.34}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.21 ...tector components.}}{47}{table.caption.34}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.22 ...detection targets.}}{49}{table.caption.36}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.22 ...detection targets.}}{49}{table.caption.36}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.23 ...d detection rates.}}{52}{table.caption.37}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.23 ...d detection rates.}}{52}{table.caption.37}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.24 ... model components.}}{52}{table.caption.38}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.24 ... model components.}}{52}{table.caption.38}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.25 ...defense mechanism.}}{52}{table.caption.39}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.25 ...defense mechanism.}}{52}{table.caption.39}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.26 ...s by risk profile.}}{53}{table.caption.40}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.26 ...s by risk profile.}}{53}{table.caption.40}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.27 ...rying $n$ and $f$.}}{56}{table.caption.42}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.27 ...rying $n$ and $f$.}}{56}{table.caption.42}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.28 ...detection targets.}}{58}{table.caption.43}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.28 ...detection targets.}}{58}{table.caption.43}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.29 ...erpretation scale.}}{59}{table.caption.44}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.29 ...erpretation scale.}}{59}{table.caption.44}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.30 ...ection trade-offs.}}{60}{table.caption.45}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.30 ...ection trade-offs.}}{60}{table.caption.45}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.31 ...with trust levels.}}{61}{table.caption.46}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.31 ...with trust levels.}}{61}{table.caption.46}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.32 ...attack indicators.}}{62}{table.caption.47}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.32 ...attack indicators.}}{62}{table.caption.47}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.33 ...escalation levels.}}{62}{table.caption.48}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.33 ...escalation levels.}}{62}{table.caption.48}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.34 ...y by attack class.}}{64}{table.caption.49}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.34 ...y by attack class.}}{64}{table.caption.49}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.35 ...ine configuration.}}{64}{table.caption.50}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.35 ...ine configuration.}}{64}{table.caption.50}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.36 ... space complexity.}}{69}{table.caption.51}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.36 ... space complexity.}}{69}{table.caption.51}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.37 ...n time complexity.}}{70}{table.caption.52}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.37 ...n time complexity.}}{70}{table.caption.52}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.38 ...ification results.}}{72}{table.caption.53}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.38 ...ification results.}}{72}{table.caption.53}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.39 ...ults across tools.}}{72}{table.caption.54}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.39 ...ults across tools.}}{72}{table.caption.54}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.40 ...t attack surfaces.}}{74}{table.caption.55}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.40 ...t attack surfaces.}}{74}{table.caption.55}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.41 ...architecture type.}}{75}{table.caption.56}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.41 ...architecture type.}}{75}{table.caption.56}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.42 ...formal guarantees.}}{76}{table.caption.57}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.42 ...formal guarantees.}}{76}{table.caption.57}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.43 ...ognitive security.}}{77}{table.caption.58}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.43 ...ognitive security.}}{77}{table.caption.58}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.44 ...mal contributions.}}{79}{table.caption.59}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.44 ...mal contributions.}}{79}{table.caption.59}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.45 ...lerate $f$ faults.}}{84}{table.caption.60}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.45 ...lerate $f$ faults.}}{84}{table.caption.60}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.46 ...ended mitigations.}}{85}{table.caption.61}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.46 ...ended mitigations.}}{85}{table.caption.61}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.47 ...throughout proofs.}}{88}{table.caption.62}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.47 ...throughout proofs.}}{88}{table.caption.62}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.48 ...niques by theorem.}}{97}{table.caption.63}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.48 ...niques by theorem.}}{97}{table.caption.63}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \Hy@colorlink 
+                              
+l.49 ...with $\dagger $).}}{100}{table.caption.64}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@EndAnnot ...AnnotLevel}=\@ne \Hy@endcolorlink 
+                                                  \@pdfm@mark {eann}\fi \glo...
+l.49 ...with $\dagger $).}}{100}{table.caption.64}
+                                                  %
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+)
+\tf@lot=\write6
+\openout6 = `_combined_manuscript.lot'.
+
+ (./_combined_manuscript.aux
+
+LaTeX Warning: Label `cor:layered-defense' multiply defined.
+
+
+LaTeX Warning: Label `cor:layered-defense@cref' multiply defined.
+
+
+LaTeX Warning: Label `sec:limitations' multiply defined.
+
+
+LaTeX Warning: Label `sec:limitations@cref' multiply defined.
+
+)
 \openout1 = `_combined_manuscript.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 269.
-LaTeX Font Info:    ... okay on input line 269.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 269.
-LaTeX Font Info:    ... okay on input line 269.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 269.
-LaTeX Font Info:    ... okay on input line 269.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 269.
-LaTeX Font Info:    ... okay on input line 269.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 269.
-LaTeX Font Info:    ... okay on input line 269.
-LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 269.
-LaTeX Font Info:    ... okay on input line 269.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 269.
-LaTeX Font Info:    ... okay on input line 269.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 269.
-LaTeX Font Info:    ... okay on input line 269.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 269.
-LaTeX Font Info:    ... okay on input line 269.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 269.
-LaTeX Font Info:    ... okay on input line 269.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 292.
+LaTeX Font Info:    ... okay on input line 292.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 292.
+LaTeX Font Info:    ... okay on input line 292.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 292.
+LaTeX Font Info:    ... okay on input line 292.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 292.
+LaTeX Font Info:    ... okay on input line 292.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 292.
+LaTeX Font Info:    ... okay on input line 292.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 292.
+LaTeX Font Info:    ... okay on input line 292.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 292.
+LaTeX Font Info:    ... okay on input line 292.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 292.
+LaTeX Font Info:    ... okay on input line 292.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 292.
+LaTeX Font Info:    ... okay on input line 292.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 292.
+LaTeX Font Info:    ... okay on input line 292.
 LaTeX Font Info:    Overwriting math alphabet `\mathrm' in version `normal'
-(Font)                  OT1/cmr/m/n --> TU/lmr/m/n on input line 269.
+(Font)                  OT1/cmr/m/n --> TU/lmr/m/n on input line 292.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
-(Font)                  OT1/cmr/m/it --> TU/lmr/m/it on input line 269.
+(Font)                  OT1/cmr/m/it --> TU/lmr/m/it on input line 292.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
-(Font)                  OT1/cmr/bx/n --> TU/lmr/bx/n on input line 269.
+(Font)                  OT1/cmr/bx/n --> TU/lmr/bx/n on input line 292.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
-(Font)                  OT1/cmss/m/n --> TU/lmss/m/n on input line 269.
+(Font)                  OT1/cmss/m/n --> TU/lmss/m/n on input line 292.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  OT1/cmss/bx/n --> TU/lmss/bx/n on input line 269.
+(Font)                  OT1/cmss/bx/n --> TU/lmss/bx/n on input line 292.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
-(Font)                  OT1/cmtt/m/n --> TU/lmtt/m/n on input line 269.
+(Font)                  OT1/cmtt/m/n --> TU/lmtt/m/n on input line 292.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  OT1/cmtt/m/n --> TU/lmtt/bx/n on input line 269.
+(Font)                  OT1/cmtt/m/n --> TU/lmtt/bx/n on input line 292.
 
 Package fontspec Info: 
 (fontspec)             latinmodern-math scale = 0.9999964596882403.
@@ -1454,7 +3163,7 @@ pt=math;language=dflt;"
 pt=math;language=dflt;"
 
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(0)/m/n' will be
-(Font)              scaled to size 10.0pt on input line 269.
+(Font)              scaled to size 10.0pt on input line 292.
 
 Package fontspec Info: 
 (fontspec)             latinmodern-math scale = 0.9999964596882403.
@@ -1497,18 +3206,18 @@ ath.otf]/OT:script=math;language=dflt;+ssty=1;"
 pt=math;language=dflt;"
 
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 10.0pt on input line 269.
+(Font)              scaled to size 10.0pt on input line 292.
 LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
-(Font)              `operators' in the math version `normal' on input line 269.
+(Font)              `operators' in the math version `normal' on input line 292.
 
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
 (Font)                  OT1/cmr/m/n --> TU/latinmodern-math.otf(1)/m/n on input
- line 269.
+ line 292.
 LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
-(Font)              `operators' in the math version `bold' on input line 269.
+(Font)              `operators' in the math version `bold' on input line 292.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
 (Font)                  OT1/cmr/bx/n --> TU/latinmodern-math.otf(1)/b/n on inpu
-t line 269.
+t line 292.
 
 Package fontspec Info: 
 (fontspec)             latinmodern-math scale = 0.9999964596882403.
@@ -1582,15 +3291,15 @@ ript=math;language=dflt;"<6-8.5>s*[1.000096459334209]"[latinmodern-math.otf]/OT
 t=math;language=dflt;"
 
 LaTeX Font Info:    Encoding `OMS' has changed to `TU' for symbol font
-(Font)              `symbols' in the math version `normal' on input line 269.
+(Font)              `symbols' in the math version `normal' on input line 292.
 LaTeX Font Info:    Overwriting symbol font `symbols' in version `normal'
 (Font)                  OMS/cmsy/m/n --> TU/latinmodern-math.otf(2)/m/n on inpu
-t line 269.
+t line 292.
 LaTeX Font Info:    Encoding `OMS' has changed to `TU' for symbol font
-(Font)              `symbols' in the math version `bold' on input line 269.
+(Font)              `symbols' in the math version `bold' on input line 292.
 LaTeX Font Info:    Overwriting symbol font `symbols' in version `bold'
 (Font)                  OMS/cmsy/b/n --> TU/latinmodern-math.otf(2)/b/n on inpu
-t line 269.
+t line 292.
 
 Package fontspec Info: 
 (fontspec)             latinmodern-math scale = 0.9999964596882403.
@@ -1659,16 +3368,16 @@ pt=math;language=dflt;"
 
 LaTeX Font Info:    Encoding `OMX' has changed to `TU' for symbol font
 (Font)              `largesymbols' in the math version `normal' on input line 2
-69.
+92.
 LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `normal'
 (Font)                  OMX/cmex/m/n --> TU/latinmodern-math.otf(3)/m/n on inpu
-t line 269.
+t line 292.
 LaTeX Font Info:    Encoding `OMX' has changed to `TU' for symbol font
-(Font)              `largesymbols' in the math version `bold' on input line 269
+(Font)              `largesymbols' in the math version `bold' on input line 292
 .
 LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
 (Font)                  OMX/cmex/m/n --> TU/latinmodern-math.otf(3)/b/n on inpu
-t line 269.
+t line 292.
 
 
 Package unicode-math Warning: Using \overbracket and \underbracket from
@@ -1688,13 +3397,13 @@ Package unicode-math Warning: I'm going to overwrite the following commands
 (unicode-math)                colon-like commands, using them will lead to
 (unicode-math)                inconsistencies.
 
-LaTeX Info: Redefining \microtypecontext on input line 269.
-Package microtype Info: Applying patch `item' on input line 269.
-Package microtype Info: Applying patch `toc' on input line 269.
-Package microtype Info: Applying patch `eqnum' on input line 269.
-Package microtype Info: Applying patch `footnote' on input line 269.
-Package microtype Info: Applying patch `verbatim' on input line 269.
-LaTeX Info: Redefining \microtypesetup on input line 269.
+LaTeX Info: Redefining \microtypecontext on input line 292.
+Package microtype Info: Applying patch `item' on input line 292.
+Package microtype Info: Applying patch `toc' on input line 292.
+Package microtype Info: Applying patch `eqnum' on input line 292.
+Package microtype Info: Applying patch `footnote' on input line 292.
+Package microtype Info: Applying patch `verbatim' on input line 292.
+LaTeX Info: Redefining \microtypesetup on input line 292.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using protrusion set `basicmath'.
 Package microtype Info: No adjustment of tracking.
@@ -1713,12 +3422,14 @@ Package footnotehyper Info: Using the \@makefntext{} approach (see doc).
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: float package is loaded.
 Package caption Info: hyperref package is loaded.
+Package caption Info: listings package is loaded.
 Package caption Info: End \AtBeginDocument code.
-Package hyperref Info: Link coloring ON on input line 269.
+Package hyperref Info: Link coloring ON on input line 292.
 
 Package pgfplots notification 'compat/show suggested version=true': document ha
 s been generated with the most recent feature set (\pgfplotsset{compat=1.18}).
 
+\c@lstlisting=\count406
 *geometry* driver: auto-detecting
 *geometry* detected driver: xetex
 *geometry* verbose mode - [ preamble ] result:
@@ -1753,393 +3464,577 @@ s been generated with the most recent feature set (\pgfplotsset{compat=1.18}).
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
+[2] [1] (./_combined_manuscript.toc
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 12.0pt on input line 272.
+(Font)              scaled to size 7.0pt on input line 1.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 8.0pt on input line 272.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 6.0pt on input line 272.
+(Font)              scaled to size 5.0pt on input line 1.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 12.0011pt on input line 272.
+(Font)              scaled to size 10.00092pt on input line 1.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 8.00073pt on input line 272.
+(Font)              scaled to size 7.00064pt on input line 1.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 6.00055pt on input line 272.
+(Font)              scaled to size 5.00046pt on input line 1.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 11.99872pt on input line 272.
+(Font)              scaled to size 9.99893pt on input line 1.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 7.99915pt on input line 272.
+(Font)              scaled to size 6.99925pt on input line 1.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 5.99936pt on input line 272.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 272
-.
-(/usr/local/texlive/2026/texmf-dist/tex/latex/amsfonts/umsa.fd
-File: umsa.fd 2013/01/14 v3.01 AMS symbols A
-)
+(Font)              scaled to size 4.99947pt on input line 1.
+
 (/usr/local/texlive/2026/texmf-dist/tex/latex/microtype/mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 272
-.
-
-(/usr/local/texlive/2026/texmf-dist/tex/latex/amsfonts/umsb.fd
-File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-)
 (/usr/local/texlive/2026/texmf-dist/tex/latex/microtype/mt-msb.cfg
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
-)
-(./_combined_manuscript.toc
+) [1]
+[2] [3] [4] [5])
+\tf@toc=\write7
+\openout7 = `_combined_manuscript.toc'.
+
+ [6] [7] (./_combined_manuscript.toc)
+\tf@toc=\write8
+\openout8 = `_combined_manuscript.toc'.
+
+ [8] [9] [10] [11]
+[12] [13] [14] [15]
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 7.0pt on input line 3.
+(Font)              scaled to size 9.0pt on input line 898.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 5.0pt on input line 3.
+(Font)              scaled to size 6.0pt on input line 898.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 10.00092pt on input line 3.
+(Font)              scaled to size 9.00082pt on input line 898.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 7.00064pt on input line 3.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 5.00046pt on input line 3.
+(Font)              scaled to size 6.00055pt on input line 898.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 9.99893pt on input line 3.
+(Font)              scaled to size 8.99904pt on input line 898.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 6.99925pt on input line 3.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 4.99947pt on input line 3.
- [1
+(Font)              scaled to size 5.99936pt on input line 898.
 
-] [2] [3] [4])
-\tf@toc=\write5
-\openout5 = `_combined_manuscript.toc'.
-
- [5] [6]
-(./_combined_manuscript.toc)
-\tf@toc=\write6
-\openout6 = `_combined_manuscript.toc'.
-
- [7] [8] [9] [10] [11] [12] [13] [14] [15]
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 9.0pt on input line 870.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 9.00082pt on input line 870.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 8.99904pt on input line 870.
-
-Underfull \hbox (badness 10000) in paragraph at lines 878--878
+Underfull \hbox (badness 10000) in paragraph at lines 906--906
 []|\TU/lmr/m/n/9 Model-checking execution (NuSMV, TLA+
  []
 
 
-Underfull \hbox (badness 2529) in paragraph at lines 880--880
+Underfull \hbox (badness 2529) in paragraph at lines 908--908
 []|\TU/lmr/m/n/9 Monitoring, drift detection playbooks, cost–
  []
 
 
-Underfull \hbox (badness 1275) in paragraph at lines 883--883
+Underfull \hbox (badness 1275) in paragraph at lines 911--911
 []|\TU/lmr/m/n/9 Domain-specific goal-hijacking analyses across
  []
 
 
-Underfull \hbox (badness 3690) in paragraph at lines 885--885
+Underfull \hbox (badness 3690) in paragraph at lines 913--913
 \TU/lmr/m/n/9 nel separation, active perturbation probing,
  []
 
-[16]
-Underfull \hbox (badness 3088) in paragraph at lines 945--946
+[16] [17]
+Underfull \hbox (badness 3088) in paragraph at lines 973--974
 []|\TU/lmr/m/n/10 Compromised sub-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 978--978
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 994.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 1023.
+
+[18]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 1049.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 1081.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 1108.
+
+[19]
+Underfull \hbox (badness 10000) in paragraph at lines 1168--1168
 []|\TU/lmr/m/n/10 System understanding re-
  []
 
-[17] [18]
+[20] [21]
 File: ../figures/threat_taxonomy.pdf Graphic file (type pdf)
 <use ../figures/threat_taxonomy.pdf>
 File: ../figures/comprehensive_taxonomy.pdf Graphic file (type pdf)
 <use ../figures/comprehensive_taxonomy.pdf>
- [19] [20]
+ [22] [23]
 File: ../figures/attack_timeline.pdf Graphic file (type pdf)
 <use ../figures/attack_timeline.pdf>
- [21] [22] [23] [24] [25]
+ [24]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 1482.
+
+[25]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 1506.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 1526.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 1564.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 1580.
+
+[26] [27]
 File: ../figures/attack_surface.pdf Graphic file (type pdf)
 <use ../figures/attack_surface.pdf>
- [26] [27]
-Underfull \hbox (badness 10000) in paragraph at lines 1571--1572
+ [28] [29]
+Underfull \hbox (badness 10000) in paragraph at lines 1761--1762
 []|\TU/lmr/m/n/10 Prioritized objectives where
  []
 
 
-Underfull \hbox (badness 1694) in paragraph at lines 1572--1573
+Underfull \hbox (badness 1694) in paragraph at lines 1762--1763
 []|\TU/lmr/m/n/10 Committed action sequence with
  []
 
 
-Underfull \hbox (badness 3861) in paragraph at lines 1573--1574
+Underfull \hbox (badness 3861) in paragraph at lines 1763--1764
 []|\TU/lmr/m/n/10 Interaction trace (events, times-
  []
 
-[28]
+[30]
 
 LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 1599.
-
-
-LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 1599.
+(Font)              using `TU/lmr/m/scsl' instead on input line 1789.
 
 
 LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 1599.
+(Font)              using `TU/lmr/m/scsl' instead on input line 1789.
 
 
 LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 1599.
+(Font)              using `TU/lmr/m/scsl' instead on input line 1789.
 
 
-Underfull \hbox (badness 2237) in paragraph at lines 1599--1600
+LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
+(Font)              using `TU/lmr/m/scsl' instead on input line 1789.
+
+
+Underfull \hbox (badness 2237) in paragraph at lines 1789--1790
 []\TU/lmr/bx/n/10 Definition 4.4 \TU/lmr/m/n/10 (Transition Relation)\TU/lmr/bx
 /n/10 . []\TU/lmr/m/it/10 State transitions follow the relation $[][] [] [][]$ 
 where
  []
 
-[29] [30]
+[31] [32]
 File: ../figures/trust_network.pdf Graphic file (type pdf)
 <use ../figures/trust_network.pdf>
- [31]
-
-! LaTeX Error: Environment remark undefined.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1802 \begin{remark}
-                     [Trust as Precision Weighting]
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
-! LaTeX Error: \begin{document} ended by \end{remark}.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1811 \end{remark}
-                   
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
+ [33]
 File: ../figures/trust_decay.pdf Graphic file (type pdf)
 <use ../figures/trust_decay.pdf>
 File: ../figures/trust_calculus_comprehensive.pdf Graphic file (type pdf)
 <use ../figures/trust_calculus_comprehensive.pdf>
-[32] [33] [34] [35] [36]
-
-! LaTeX Error: Environment remark undefined.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.2174 \begin{remark}
-                     [Geometric Sharpening of the Stealth-Impact Bound]
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
-! LaTeX Error: \begin{document} ended by \end{remark}.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.2202 \end{remark}
-                   
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-[37]
+ [34] [35] [36] [37] [38] [39]
 File: ../figures/cif_architecture.pdf Graphic file (type pdf)
 <use ../figures/cif_architecture.pdf>
 File: ../figures/cif_comprehensive.pdf Graphic file (type pdf)
 <use ../figures/cif_comprehensive.pdf>
- [38] [39] [40] [41] [42]
-Underfull \hbox (badness 10000) in paragraph at lines 2449--2449
+ [40] [41] [42]
+Underfull \hbox (badness 10000) in paragraph at lines 2633--2633
+[]|\TU/lmr/m/n/10 Permission escalation,
+ []
+
+[43] [44] [45] [46]
+Underfull \hbox (badness 3029) in paragraph at lines 2837--2837
+[]|\TU/lmr/m/n/10 Decay trust with delegation depth
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 2838--2838
 []|\TU/lmr/m/n/10 Track provenance for all high-
  []
 
 
-Underfull \hbox (badness 2351) in paragraph at lines 2451--2452
+Underfull \hbox (badness 2351) in paragraph at lines 2840--2841
 []|\TU/lmr/m/n/10 Permit recursive delegation without
  []
 
 
-Underfull \hbox (badness 1466) in paragraph at lines 2453--2454
+Underfull \hbox (badness 1466) in paragraph at lines 2842--2843
 []|\TU/lmr/m/n/10 Trust single-agent outputs for high-
  []
 
 
 LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 2469.
+(Font)              using `TU/lmr/m/scsl' instead on input line 2858.
 
 
 LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 2469.
+(Font)              using `TU/lmr/m/scsl' instead on input line 2858.
 
 
 LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 2469.
+(Font)              using `TU/lmr/m/scsl' instead on input line 2858.
 
 
 LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 2478.
+(Font)              using `TU/lmr/m/scsl' instead on input line 2867.
 
 
 LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 2479.
+(Font)              using `TU/lmr/m/scsl' instead on input line 2868.
 
 
 LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 2480.
+(Font)              using `TU/lmr/m/scsl' instead on input line 2869.
 
 
-Underfull \hbox (badness 1715) in paragraph at lines 2494--2495
+Underfull \hbox (badness 1715) in paragraph at lines 2883--2884
 []|\TU/lmr/m/n/10 Pattern matching + semantic
  []
 
-[43]
-
-! LaTeX Error: Environment remark undefined.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.2520 \begin{remark}
-                     [Belief Sandbox as Constrained Variational Inference]
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
-Package natbib Warning: Citation `friston2010action' on page 44 undefined on in
-put line 2524.
-
-
-Package natbib Warning: Citation `parr2019generalised' on page 44 undefined on 
-input line 2524.
-
-
-! LaTeX Error: \begin{document} ended by \end{remark}.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.2547 \end{remark}
-                   
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
+[47]
 File: ../figures/belief_sandbox.pdf Graphic file (type pdf)
 <use ../figures/belief_sandbox.pdf>
 
-LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 2600.
-
-[44] [45]
 
 LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 2656.
+(Font)              using `TU/lmr/m/scsl' instead on input line 2989.
 
-[46] [47] [48]
+[48] [49]
+
+LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
+(Font)              using `TU/lmr/m/scsl' instead on input line 3045.
+
+[50] [51] [52]
 File: ../figures/defense_composition.pdf Graphic file (type pdf)
 <use ../figures/defense_composition.pdf>
- [49] [50] [51] [52] [53]
-
-LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 3320.
 
 
 LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 3321.
+(Font)              using `TU/lmr/m/scsl' instead on input line 3324.
 
 
 LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 3322.
+(Font)              using `TU/lmr/m/scsl' instead on input line 3324.
 
-[54] [55] [56] [57] [58] [59] [60] [61] [62] [63]
-Underfull \hbox (badness 2495) in paragraph at lines 3997--4001
+
+LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
+(Font)              using `TU/lmr/m/scsl' instead on input line 3324.
+
+[53] [54] [55] [56] [57] [58] [59] [60] [61]
+
+LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
+(Font)              using `TU/lmr/m/scsl' instead on input line 3952.
+
+
+LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
+(Font)              using `TU/lmr/m/scsl' instead on input line 3953.
+
+
+LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
+(Font)              using `TU/lmr/m/scsl' instead on input line 3954.
+
+[62] [63]
+Underfull \hbox (badness 10000) in paragraph at lines 4153--4154
+[]|\TU/lmr/m/n/10 Escalation condi-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 4155--4156
+[]|\TU/lmr/m/n/10 Pattern score
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 4156--4157
+[]|\TU/lmr/m/n/10 Embedding dis-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 4157--4158
+[]|\TU/lmr/m/n/10 Consistency viola-
+ []
+
+[64] [65] [66] [67] [68] [69] [70] [71] [72] [73]
+Underfull \hbox (badness 2495) in paragraph at lines 4856--4860
 []\TU/lmr/m/n/10 These results confirm that the abstract properties proven here
 —boundedness, composition, and
  []
 
-[64]
-Underfull \hbox (badness 2376) in paragraph at lines 4124--4125
+[74]
+Underfull \hbox (badness 2376) in paragraph at lines 4983--4984
 []|$[][]$ \TU/lmr/m/n/10 attacks succeed; systemic
  []
 
-[65] [66]
-Underfull \hbox (badness 1701) in paragraph at lines 4242--4243
+[75] [76]
+Underfull \hbox (badness 1701) in paragraph at lines 5101--5102
 []|\TU/lmr/m/n/10 No inter-agent trust re-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 4243--4244
+Underfull \hbox (badness 10000) in paragraph at lines 5102--5103
 []|\TU/lmr/m/n/10 Limited multiagent-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 4244--4245
+Underfull \hbox (badness 10000) in paragraph at lines 5103--5104
 []|\TU/lmr/m/n/10 Process-focused, not
  []
 
-[67] [68] [69] [70] [71] [72] [73] [74] [75] [76] [77] [78] [79] [80] [81]
-[82] [83] [84] [85] [86] [87] [88] [89] [90] [91] [92] [93] [94]
-ignored: Infinite glue s
-hrinkage found in box being split [95]
-ignored: Infinite glue shrinkage found in box bein
-g split [96]
-ignored: Infinite glue shrinkage found in box being split
-[97]
-ignored: Infinite glue shrinkage found in box being split [98] [99]
-Overfull \hbox (3.63899pt too wide) in paragraph at lines 7000--7002
+[77] [78] [79] [80] [81] [82] [83]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 5551.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 5551.
+
+[84]
+Underfull \hbox (badness 10000) in paragraph at lines 5683--5684
+[]|\TU/lmr/m/n/10 Hardware security modules,
+ []
+
+[85] [86] [87] [88] [89] [90] [91] [92] [93] [94] [95] [96]
+
+LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
+(Font)              using `TU/lmr/m/scsl' instead on input line 6639.
+
+
+LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
+(Font)              using `TU/lmr/m/scsl' instead on input line 6639.
+
+
+LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
+(Font)              using `TU/lmr/m/scsl' instead on input line 6639.
+
+
+Overfull \hbox (9.70355pt too wide) in paragraph at lines 6639--6640
+[]\TU/lmr/bx/n/10 Lemma 11.38 \TU/lmr/m/n/10 (Type Closure under Composition)\T
+U/lmr/bx/n/10 . []\TU/lmr/m/it/10 For any $[][][] [][] [] [][] [] [][][] [][] [
+][]$: 
+ []
+
+
+LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
+(Font)              using `TU/lmr/m/scsl' instead on input line 6642.
+
+
+LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
+(Font)              using `TU/lmr/m/scsl' instead on input line 6642.
+
+
+LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
+(Font)              using `TU/lmr/m/scsl' instead on input line 6642.
+
+
+LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
+(Font)              using `TU/lmr/m/scsl' instead on input line 6665.
+
+[97] [98]
+! Missing $ inserted.
+<inserted text> 
+                $
+l.6789 \\text{BlastRadius}(a_
+                             v) \\leq \\sum_{a_j \\in \\mathcal{N}(a_v)} \\d...
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+
+! LaTeX Error: Command \end{proof} invalid in math mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.6792 \end{proof}
+                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.6792 \end{proof}
+                  
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 6786--6792
+[][][][][][][][][][][][][][] [] [][][][][][][][][][][][][][][][][][][][][][][] 
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
+] []
+ []
+
+[99] [100]
+! You can't use `macro parameter character #' in horizontal mode.
+l.6961 {#
+         eq:non-decomposability}
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+[101] [102] [103] [104] [105]
+! You can't use `macro parameter character #' in horizontal mode.
+l.7331 {#
+         eq:recruitment-signal-injection}
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+! You can't use `macro parameter character #' in horizontal mode.
+l.7370 {#
+         eq:sybil-initial-trust}
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+! You can't use `macro parameter character #' in horizontal mode.
+l.7375 {#
+         eq:sybil-trust-accumulation}
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+! You can't use `macro parameter character #' in horizontal mode.
+l.7414 {#
+         eq:quorum-prevention}
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+! You can't use `macro parameter character #' in horizontal mode.
+l.7420 {#
+         eq:false-quorum-injection}
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+[106]
+! You can't use `macro parameter character #' in horizontal mode.
+l.7458 {#
+         eq:belief-cascade-propagation}
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+! You can't use `macro parameter character #' in horizontal mode.
+l.7497 {#
+         eq:emergent-misalignment-condition}
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+[107]
+! You can't use `macro parameter character #' in horizontal mode.
+l.7573 {#
+         eq:stigmergic-trust-decay}
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+
+ignored: Infinite glue shrinkage found in box being split [108]
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
+(Font)              scaled to size 12.0pt on input line 7653.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
+(Font)              scaled to size 8.0pt on input line 7653.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
+(Font)              scaled to size 12.0011pt on input line 7653.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
+(Font)              scaled to size 8.00073pt on input line 7653.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
+(Font)              scaled to size 11.99872pt on input line 7653.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
+(Font)              scaled to size 7.99915pt on input line 7653.
+ [109] [110]
+! You can't use `macro parameter character #' in horizontal mode.
+l.7800 {#
+         eq:honest-info-sufficiency}
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+! You can't use `macro parameter character #' in horizontal mode.
+l.7806 {#
+         eq:honest-agent-capacity}
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+! You can't use `macro parameter character #' in horizontal mode.
+l.7812 {#
+         eq:byzantine-honest-majority}
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+! You can't use `macro parameter character #' in horizontal mode.
+l.7818 {#
+         eq:byzantine-info-combined}
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+[111]
+ignored: Infinite glue shrinkage found in box being split [112]
+ignored: Infinite glue shrink
+age found in box being split [113]
+ignored: Infinite glue shrinkage found in box being sp
+lit [114]
+ignored: Infinite glue shrinkage found in box being split [115] [116]
+Overfull \hbox (3.63899pt too wide) in paragraph at lines 8334--8336
 []\TU/lmr/m/n/10 Liu, Y., et al. (2023). Prompt Injection Attack Against LLM-In
 tegrated Applications. \TU/lmr/m/it/10 arXiv:2306.05499\TU/lmr/m/n/10 . 
  []
 
 
-Underfull \hbox (badness 1533) in paragraph at lines 7013--7015
+Underfull \hbox (badness 1533) in paragraph at lines 8347--8349
 []\TU/lmr/m/n/10 Askell, A., et al. (2021). A General Language Assistant as a L
 aboratory for Alignment.
  []
 
-[100] [101] [102] (./_combined_manuscript.bbl [103
+[117] [118] [119] (./_combined_manuscript.bbl [120
 
-] [104])
-
-Package natbib Warning: There were undefined citations.
-
-[105] (./_combined_manuscript.aux)
+] [121] [122]) [123]
+(./_combined_manuscript.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
  ***********
+
+
+LaTeX Warning: There were multiply-defined labels.
+
  ) 
 Here is how much of TeX's memory you used:
- 48745 strings out of 468168
- 1130229 string characters out of 5432815
- 1851127 words of memory out of 5000000
- 76718 multiletter control sequences out of 15000+600000
- 634189 words of font info for 112 fonts, out of 8000000 for 9000
+ 50656 strings out of 468168
+ 1163458 string characters out of 5432815
+ 1904822 words of memory out of 5000000
+ 78605 multiletter control sequences out of 15000+600000
+ 634651 words of font info for 115 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 90i,14n,114p,1017b,656s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 90i,15n,114p,1017b,656s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on _combined_manuscript.pdf (105 pages).
+Output written on _combined_manuscript.pdf (126 pages).

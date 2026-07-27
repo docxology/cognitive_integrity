@@ -1,12 +1,11 @@
-This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.3.22)  26 APR 2026 19:01
+This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.3.22)  13 JUL 2026 13:52
 entering extended mode
- \write18 enabled.
  %&-line parsing enabled.
-**/Users/4d/Documents/GitHub/template/projects/cognitive_integrity/cogsec_multi
-agent_1_theory/output/slides/05_defense_mechanisms_slides.tex
-
-(/Users/4d/Documents/GitHub/template/projects/cognitive_integrity/cogsec_multia
+**/Users/4d/Documents/GitHub/projects/working/cognitive_integrity/cogsec_multia
 gent_1_theory/output/slides/05_defense_mechanisms_slides.tex
+
+(/Users/4d/Documents/GitHub/projects/working/cognitive_integrity/cogsec_multiag
+ent_1_theory/output/slides/05_defense_mechanisms_slides.tex
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
 (/usr/local/texlive/2026/texmf-dist/tex/latex/beamer/beamer.cls
@@ -1116,41 +1115,46 @@ Package: parskip 2021-03-14 v2.0h non-zero parskip adjustments
 )
 \pandoc@box=\box81
 
+(/usr/local/texlive/2026/texmf-dist/tex/latex/xurl/xurl.sty
+Package: xurl 2022/01/09 v 0.10 modify URL breaks
+)
+(/usr/local/texlive/2026/texmf-dist/tex/latex/seqsplit/seqsplit.sty
+Package: seqsplit 2006/08/07 v0.1 Splitting long sequences (DNA, RNA, proteins,
+ etc.) 
+)
+\c@proposition=\count385
+\c@hypothesis=\count386
+
 (/usr/local/texlive/2026/texmf-dist/tex/latex/bookmark/bookmark.sty
 Package: bookmark 2023-12-10 v1.31 PDF bookmarks (HO)
 
 (/usr/local/texlive/2026/texmf-dist/tex/latex/bookmark/bkm-dvipdfm.def
 File: bkm-dvipdfm.def 2023-12-10 v1.31 bookmark driver for dvipdfm (HO)
-\BKM@id=\count385
+\BKM@id=\count387
 ))
-(/usr/local/texlive/2026/texmf-dist/tex/latex/xurl/xurl.sty
-Package: xurl 2022/01/09 v 0.10 modify URL breaks
-)
-(/Users/4d/Documents/GitHub/template/projects/cognitive_integrity/cogsec_multia
-gent_1_theory/output/slides/05_defense_mechanisms_slides.aux)
+No file 05_defense_mechanisms_slides.aux.
 \openout1 = `05_defense_mechanisms_slides.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 105.
-LaTeX Font Info:    ... okay on input line 105.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 105.
-LaTeX Font Info:    ... okay on input line 105.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 105.
-LaTeX Font Info:    ... okay on input line 105.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 105.
-LaTeX Font Info:    ... okay on input line 105.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 105.
-LaTeX Font Info:    ... okay on input line 105.
-LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 105.
-LaTeX Font Info:    ... okay on input line 105.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 105.
-LaTeX Font Info:    ... okay on input line 105.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 105.
-LaTeX Font Info:    ... okay on input line 105.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 105.
-LaTeX Font Info:    ... okay on input line 105.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 105.
-LaTeX Font Info:    ... okay on input line 105.
-
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 139.
+LaTeX Font Info:    ... okay on input line 139.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 139.
+LaTeX Font Info:    ... okay on input line 139.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 139.
+LaTeX Font Info:    ... okay on input line 139.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 139.
+LaTeX Font Info:    ... okay on input line 139.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 139.
+LaTeX Font Info:    ... okay on input line 139.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 139.
+LaTeX Font Info:    ... okay on input line 139.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 139.
+LaTeX Font Info:    ... okay on input line 139.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 139.
+LaTeX Font Info:    ... okay on input line 139.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 139.
+LaTeX Font Info:    ... okay on input line 139.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 139.
+LaTeX Font Info:    ... okay on input line 139.
 *geometry* driver: auto-detecting
 *geometry* detected driver: xetex
 *geometry* verbose mode - [ preamble ] result:
@@ -1185,7 +1189,10 @@ LaTeX Font Info:    ... okay on input line 105.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-Package hyperref Info: Link coloring OFF on input line 105.
+Package hyperref Info: Link coloring OFF on input line 139.
+
+Package hyperref Warning: Rerun to get /PageLabels entry.
+
 
 (/usr/local/texlive/2026/texmf-dist/tex/latex/translator/translator-basic-dicti
 onary-English.dict
@@ -1212,19 +1219,19 @@ tionary-English.dict
 Dictionary: translator-theorem-dictionary, Language: English 
 )
 LaTeX Font Info:    Overwriting math alphabet `\mathrm' in version `normal'
-(Font)                  OT1/lmr/m/n --> TU/lmr/m/n on input line 105.
+(Font)                  OT1/lmr/m/n --> TU/lmr/m/n on input line 139.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
-(Font)                  OT1/lmr/m/it --> TU/lmr/m/it on input line 105.
+(Font)                  OT1/lmr/m/it --> TU/lmr/m/it on input line 139.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
-(Font)                  OT1/lmr/bx/n --> TU/lmr/bx/n on input line 105.
+(Font)                  OT1/lmr/bx/n --> TU/lmr/bx/n on input line 139.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
-(Font)                  OT1/lmss/m/n --> TU/lmss/m/n on input line 105.
+(Font)                  OT1/lmss/m/n --> TU/lmss/m/n on input line 139.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  OT1/lmss/bx/n --> TU/lmss/bx/n on input line 105.
+(Font)                  OT1/lmss/bx/n --> TU/lmss/bx/n on input line 139.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
-(Font)                  OT1/lmtt/m/n --> TU/lmtt/m/n on input line 105.
+(Font)                  OT1/lmtt/m/n --> TU/lmtt/m/n on input line 139.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  OT1/lmtt/m/n --> TU/lmtt/bx/n on input line 105.
+(Font)                  OT1/lmtt/m/n --> TU/lmtt/bx/n on input line 139.
 
 Package fontspec Info: 
 (fontspec)             latinmodern-math scale = 1.03015890977869.
@@ -1255,7 +1262,7 @@ allCapsFont={},Script=Math,BoldFont={latinmodern-math.otf}].
 =math;language=dflt;"
 
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(0)/m/n' will be
-(Font)              scaled to size 11.28015pt on input line 105.
+(Font)              scaled to size 11.28015pt on input line 139.
 
 Package fontspec Info: 
 (fontspec)             latinmodern-math scale = 1.03015890977869.
@@ -1298,18 +1305,18 @@ dern-math.otf]/OT:script=math;language=dflt;+ssty=1;"
 =math;language=dflt;"
 
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 11.28015pt on input line 105.
+(Font)              scaled to size 11.28015pt on input line 139.
 LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
-(Font)              `operators' in the math version `normal' on input line 105.
+(Font)              `operators' in the math version `normal' on input line 139.
 
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
 (Font)                  OT1/lmr/m/n --> TU/latinmodern-math.otf(1)/m/n on input
- line 105.
+ line 139.
 LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
-(Font)              `operators' in the math version `bold' on input line 105.
+(Font)              `operators' in the math version `bold' on input line 139.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
 (Font)                  OT1/lmr/bx/n --> TU/latinmodern-math.otf(1)/b/n on inpu
-t line 105.
+t line 139.
 
 Package fontspec Info: 
 (fontspec)             latinmodern-math scale = 1.03015890977869.
@@ -1383,15 +1390,15 @@ nmodern-math.otf]/OT:script=math;language=dflt;+ssty=1;"
 t=math;language=dflt;"
 
 LaTeX Font Info:    Encoding `OMS' has changed to `TU' for symbol font
-(Font)              `symbols' in the math version `normal' on input line 105.
+(Font)              `symbols' in the math version `normal' on input line 139.
 LaTeX Font Info:    Overwriting symbol font `symbols' in version `normal'
 (Font)                  OMS/lmsy/m/n --> TU/latinmodern-math.otf(2)/m/n on inpu
-t line 105.
+t line 139.
 LaTeX Font Info:    Encoding `OMS' has changed to `TU' for symbol font
-(Font)              `symbols' in the math version `bold' on input line 105.
+(Font)              `symbols' in the math version `bold' on input line 139.
 LaTeX Font Info:    Overwriting symbol font `symbols' in version `bold'
 (Font)                  OMS/lmsy/b/n --> TU/latinmodern-math.otf(2)/b/n on inpu
-t line 105.
+t line 139.
 
 Package fontspec Info: 
 (fontspec)             latinmodern-math scale = 1.03015890977869.
@@ -1460,23 +1467,23 @@ t=math;language=dflt;"
 
 LaTeX Font Info:    Encoding `OMX' has changed to `TU' for symbol font
 (Font)              `largesymbols' in the math version `normal' on input line 1
-05.
+39.
 LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `normal'
 (Font)                  OMX/lmex/m/n --> TU/latinmodern-math.otf(3)/m/n on inpu
-t line 105.
+t line 139.
 LaTeX Font Info:    Encoding `OMX' has changed to `TU' for symbol font
-(Font)              `largesymbols' in the math version `bold' on input line 105
+(Font)              `largesymbols' in the math version `bold' on input line 139
 .
 LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
 (Font)                  OMX/lmex/m/n --> TU/latinmodern-math.otf(3)/b/n on inpu
-t line 105.
-LaTeX Info: Redefining \microtypecontext on input line 105.
-Package microtype Info: Applying patch `item' on input line 105.
-Package microtype Info: Applying patch `toc' on input line 105.
-Package microtype Info: Applying patch `eqnum' on input line 105.
-Package microtype Info: Applying patch `footnote' on input line 105.
-Package microtype Info: Applying patch `verbatim' on input line 105.
-LaTeX Info: Redefining \microtypesetup on input line 105.
+t line 139.
+LaTeX Info: Redefining \microtypecontext on input line 139.
+Package microtype Info: Applying patch `item' on input line 139.
+Package microtype Info: Applying patch `toc' on input line 139.
+Package microtype Info: Applying patch `eqnum' on input line 139.
+Package microtype Info: Applying patch `footnote' on input line 139.
+Package microtype Info: Applying patch `verbatim' on input line 139.
+LaTeX Info: Redefining \microtypesetup on input line 139.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using protrusion set `basicmath'.
 Package microtype Info: No adjustment of tracking.
@@ -1487,103 +1494,36 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
 
-(/Users/4d/Documents/GitHub/template/projects/cognitive_integrity/cogsec_multia
-gent_1_theory/output/slides/05_defense_mechanisms_slides.nav) [1
+No file 05_defense_mechanisms_slides.nav.
+[1
 
 ] [2
 
-]
-! Undefined control sequence.
-<inserted text> ...curity operator posture (\cref 
-                                                  {sec:operator-posture}), t...
-l.124 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<inserted text> ...tegories: architectural (\cref 
-                                                  {sec:arch-defenses}), runt...
-l.124 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<inserted text> ...rch-defenses}), runtime (\cref 
-                                                  {sec:runtime-defenses}), a...
-l.124 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<inserted text> ...ses}), and coordination (\cref 
-                                                  {sec:coord-defenses}). We ...
-l.124 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<inserted text> ...yze defense composition (\cref 
-                                                  {sec:defense-composition})...
-l.124 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<inserted text> ... cost-benefit tradeoffs (\cref 
-                                                  {sec:cost-benefit}). 
-l.124 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-[3
+] [3
 
 ]
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 7.8961pt on input line 281.
+(Font)              scaled to size 7.8961pt on input line 315.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 5.64008pt on input line 281.
-LaTeX Font Info:    Trying to load font information for OML+lmm on input line 2
-81.
+(Font)              scaled to size 5.64008pt on input line 315.
+LaTeX Font Info:    Trying to load font information for OML+lmm on input line 3
+15.
  (/usr/local/texlive/2026/texmf-dist/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 11.28131pt on input line 281.
+(Font)              scaled to size 11.28131pt on input line 315.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 7.89691pt on input line 281.
+(Font)              scaled to size 7.89691pt on input line 315.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 5.64066pt on input line 281.
+(Font)              scaled to size 5.64066pt on input line 315.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 11.27914pt on input line 281.
+(Font)              scaled to size 11.27914pt on input line 315.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 7.8954pt on input line 281.
+(Font)              scaled to size 7.8954pt on input line 315.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 5.63957pt on input line 281.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 281
+(Font)              scaled to size 5.63957pt on input line 315.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 315
 .
 
 (/usr/local/texlive/2026/texmf-dist/tex/latex/amsfonts/umsa.fd
@@ -1592,7 +1532,7 @@ File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 (/usr/local/texlive/2026/texmf-dist/tex/latex/microtype/mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 281
+LaTeX Font Info:    Trying to load font information for U+msb on input line 315
 .
 
 (/usr/local/texlive/2026/texmf-dist/tex/latex/amsfonts/umsb.fd
@@ -1601,21 +1541,23 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 (/usr/local/texlive/2026/texmf-dist/tex/latex/microtype/mt-msb.cfg
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 )
-! Undefined control sequence.
-<inserted text> ... can identify over time (\cref 
-                                                  {sec:runtime-defenses}). \...
-l.281 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
+(Font)              scaled to size 6.18091pt on input line 315.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
+(Font)              scaled to size 5.15076pt on input line 315.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
+(Font)              scaled to size 6.18155pt on input line 315.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
+(Font)              scaled to size 5.15129pt on input line 315.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
+(Font)              scaled to size 6.18036pt on input line 315.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
+(Font)              scaled to size 5.1503pt on input line 315.
 
 ! Undefined control sequence.
 <inserted text> ...ular}{@{}llp{5cm}@{}} \toprule 
                                                   Level & Trigger & Response...
-l.281 \end{frame}
+l.315 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1626,7 +1568,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 <recently read> \midrule 
                          
-l.281 \end{frame}
+l.315 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1637,23 +1579,18 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 <recently read> \bottomrule 
                             
-l.281 \end{frame}
+l.315 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
 misspelled it (e.g., `\hobx'), type `I' and the correct
 spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
-
-
-Overfull \hbox (37.33847pt too wide) in paragraph at lines 281--281
- [] 
- []
 
 ! Undefined control sequence.
 <inserted text> ...{tabular}{@{}llll@{}} \toprule 
                                                   Environment & Trust Decay ...
-l.281 \end{frame}
+l.315 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1664,7 +1601,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 <recently read> \midrule 
                          
-l.281 \end{frame}
+l.315 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1675,23 +1612,18 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 <recently read> \bottomrule 
                             
-l.281 \end{frame}
+l.315 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
 misspelled it (e.g., `\hobx'), type `I' and the correct
 spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
-
-
-Overfull \hbox (73.12045pt too wide) in paragraph at lines 281--281
- [] 
- []
 
 ! Undefined control sequence.
 <inserted text> ...{@{}lp{6cm}p{6cm}@{}} \toprule 
                                                   Category & \textbf {Do} & ...
-l.281 \end{frame}
+l.315 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1702,33 +1634,18 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 <recently read> \midrule 
                          
-l.281 \end{frame}
+l.315 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
 misspelled it (e.g., `\hobx'), type `I' and the correct
 spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 281--281
-[]\TU/lmss/m/n/10.95 Track provenance for all high-
- []
-
-
-Underfull \hbox (badness 1152) in paragraph at lines 281--281
-[]\TU/lmss/m/n/10.95 Accept unverified beliefs into core
- []
-
-
-Underfull \hbox (badness 2837) in paragraph at lines 281--281
-[]\TU/lmss/m/n/10.95 Audit persistent memory; enforce
- []
 
 ! Undefined control sequence.
 <recently read> \bottomrule 
                             
-l.281 \end{frame}
+l.315 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1737,18 +1654,18 @@ spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
 
-Overfull \hbox (116.74757pt too wide) in paragraph at lines 281--281
+Overfull \hbox (72.23518pt too wide) in paragraph at lines 315--315
  [] 
  []
 
 [4
 
 ]
-Underfull \vbox (badness 1112) detected at line 281
+Underfull \vbox (badness 1112) detected at line 315
  []
 
 
-Overfull \vbox (1458.18636pt too high) detected at line 281
+Overfull \vbox (1098.51117pt too high) detected at line 315
  []
 
 [5
@@ -1757,7 +1674,7 @@ Overfull \vbox (1458.18636pt too high) detected at line 281
 ]
 
 LaTeX Font Warning: Font shape `TU/lmss/m/sc' in size <10.95> not available
-(Font)              Font shape `TU/lmr/m/sc' tried instead on input line 408.
+(Font)              Font shape `TU/lmr/m/sc' tried instead on input line 442.
 
 
 (/usr/local/texlive/2026/texmf-dist/tex/latex/microtype/mt-LatinModernRoman.cfg
@@ -1771,7 +1688,7 @@ Package microtype Info: Character `ﬀ' is missing
 ! Undefined control sequence.
 <inserted text> ...ular}{@{}llp{5cm}@{}} \toprule 
                                                   Detector & Target & Method...
-l.408 \end{frame}
+l.442 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1782,7 +1699,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 <recently read> \midrule 
                          
-l.408 \end{frame}
+l.442 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1793,7 +1710,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 <recently read> \bottomrule 
                             
-l.408 \end{frame}
+l.442 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1802,11 +1719,11 @@ spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
 LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <10.95> not available
-(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 408.
+(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 442.
 ! Undefined control sequence.
 <inserted text> ...reshold-opt} \tau ^* = \argmin 
                                                   _\tau \text {FNR}(\tau ) \...
-l.408 \end{frame}
+l.442 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1815,9 +1732,9 @@ spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
 LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <7.665> not available
-(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 408.
+(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 442.
 LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <5.475> not available
-(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 408.
+(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 442.
 
 ! LaTeX Error: Environment remark undefined.
 
@@ -1825,31 +1742,24 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.408 \end{frame}
+l.442 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
-! Undefined control sequence.
-<inserted text> ...inciple (FEP) framework \citep 
-                                                  {friston2010action, parr20...
-l.408 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
+
+LaTeX Warning: Reference `def:belief-sandbox' on page 6 undefined on input line
+ 442.
 
 
-! LaTeX Error: \begin{beamercolorbox} on input line 408 ended by \end{remark}.
+! LaTeX Error: \begin{beamercolorbox} on input line 442 ended by \end{remark}.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.408 \end{frame}
+l.442 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -1857,29 +1767,18 @@ or  <return>  to continue without it.
 
 File: ../figures/belief_sandbox.pdf Graphic file (type pdf)
 <use ../figures/belief_sandbox.pdf>
-! Undefined control sequence.
-<inserted text> ...dbox} \end {figure} \par \Cref 
-                                                  {fig:belief-sandbox} illus...
-l.408 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
 
-
-Underfull \vbox (badness 1112) detected at line 408
+Underfull \vbox (badness 1112) detected at line 442
  []
 
 [6
 
 ]
-Underfull \vbox (badness 1112) detected at line 408
+Underfull \vbox (badness 1112) detected at line 442
  []
 
 
-Overfull \vbox (1118.83987pt too high) detected at line 408
+Overfull \vbox (1098.53671pt too high) detected at line 442
  []
 
 [7
@@ -1889,7 +1788,7 @@ Overfull \vbox (1118.83987pt too high) detected at line 408
 ! Undefined control sequence.
 <inserted text> ...ar}{@{}llp{4.5cm}@{}} \toprule 
                                                   Type & Example & Detection...
-l.490 \end{frame}
+l.524 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1900,7 +1799,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 <recently read> \midrule 
                          
-l.490 \end{frame}
+l.524 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1911,7 +1810,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 <recently read> \bottomrule 
                             
-l.490 \end{frame}
+l.524 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1919,38 +1818,24 @@ misspelled it (e.g., `\hobx'), type `I' and the correct
 spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
-
-Overfull \hbox (24.22897pt too wide) in paragraph at lines 490--490
- [] 
- []
-
-
-Underfull \vbox (badness 1112) detected at line 490
- []
-
 [8
 
-]
-Underfull \vbox (badness 1112) detected at line 490
- []
-
-
-Overfull \vbox (371.96933pt too high) detected at line 490
- []
-
-[9
+] [9
 
 
 ] [10
 
+
 ] [11
+
+] [12
 
 
 ]
 ! Undefined control sequence.
 <inserted text> ...{tabular}{@{}llll@{}} \toprule 
                                                   Layer & Defense & Latency ...
-l.646 \end{frame}
+l.680 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1961,7 +1846,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 <recently read> \midrule 
                          
-l.646 \end{frame}
+l.680 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1972,18 +1857,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 <recently read> \bottomrule 
                             
-l.646 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<inserted text> ...endence, the full stack (\cref 
-                                                  {tab:defense-stack}) achie...
-l.646 \end{frame}
+l.680 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1992,27 +1866,120 @@ spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
 
-Underfull \vbox (badness 1112) detected at line 646
- []
+! LaTeX Error: There's no line here to end.
 
-[12
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.680 \end{frame}
+                 
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
 
-]
-Underfull \vbox (badness 1112) detected at line 646
- []
+! Missing $ inserted.
+<inserted text> 
+                $
+l.680 \end{frame}
+                 
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.680 \end{frame}
+                 
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Display math should end with $$.
+<to be read again> 
+                   \tex_par:D 
+l.680 \end{frame}
+                 
+The `$' that I just saw supposedly matches a previous `$$'.
+So I shall assume that you typed `$$' both times.
+
+! Extra }, or forgotten \endgroup.
+<inserted text> ...k-detection} P_{\\text{detect}}
+                                                   = 1 - (1-0.80)(1-0.70)(1-...
+l.680 \end{frame}
+                 
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
 
 
-Overfull \vbox (607.84506pt too high) detected at line 646
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.680 \end{frame}
+                 
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+! You can't use `\eqno' in horizontal mode.
+\veqno ->\@kernel@eqno 
+                       \aftergroup \ignorespaces 
+l.680 \end{frame}
+                 
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.680 \end{frame}
+                 
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Display math should end with $$.
+<to be read again> 
+                   \endgroup 
+l.680 \end{frame}
+                 
+The `$' that I just saw supposedly matches a previous `$$'.
+So I shall assume that you typed `$$' both times.
+
+
+Underfull \vbox (badness 1112) detected at line 680
  []
 
 [13
+
+]
+Underfull \vbox (badness 1112) detected at line 680
+ []
+
+
+Overfull \vbox (597.98006pt too high) detected at line 680
+ []
+
+[14
 
 
 ]
 ! Undefined control sequence.
 <inserted text> ...ular}{@{}llp{4cm}@{}} \toprule 
                                                   Component & Formula & Unit...
-l.750 \end{frame}
+l.784 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2023,7 +1990,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 <recently read> \midrule 
                          
-l.750 \end{frame}
+l.784 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2034,7 +2001,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 <recently read> \bottomrule 
                             
-l.750 \end{frame}
+l.784 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2045,7 +2012,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 <inserted text> ...abular}{@{}llllll@{}} \toprule 
                                                   Defense & Compute & Latenc...
-l.750 \end{frame}
+l.784 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2056,7 +2023,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 <recently read> \midrule 
                          
-l.750 \end{frame}
+l.784 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2067,23 +2034,18 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 <recently read> \bottomrule 
                             
-l.750 \end{frame}
+l.784 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
 misspelled it (e.g., `\hobx'), type `I' and the correct
 spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
-
-
-Overfull \hbox (6.24646pt too wide) in paragraph at lines 750--750
- [] 
- []
 
 ! Undefined control sequence.
 <inserted text> ...{tabular}{@{}llll@{}} \toprule 
                                                   Risk Profile & Recommended...
-l.750 \end{frame}
+l.784 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2094,7 +2056,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 <recently read> \midrule 
                          
-l.750 \end{frame}
+l.784 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2105,46 +2067,135 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 <recently read> \bottomrule 
                             
-l.750 \end{frame}
+l.784 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
 misspelled it (e.g., `\hobx'), type `I' and the correct
 spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
-
-
-Overfull \hbox (15.93958pt too wide) in paragraph at lines 750--750
- [] 
- []
 
 File: ../figures/defense_composition.pdf Graphic file (type pdf)
 <use ../figures/defense_composition.pdf>
+[15
+
+] [16
+
+
+]
+Underfull \vbox (badness 1112) detected at line 784
+ []
+
+
+Overfull \vbox (387.09247pt too high) detected at line 784
+ []
+
+[17
+
+
+]
+
+LaTeX Warning: Reference `sec:defense-composition' on page 18 undefined on inpu
+t line 1026.
+
+
+LaTeX Font Warning: Font shape `TU/lmss/m/scit' undefined
+(Font)              using `TU/lmss/m/sc' instead on input line 1026.
+
+
+LaTeX Font Warning: Font shape `TU/lmss/m/scit' undefined
+(Font)              using `TU/lmss/m/sc' instead on input line 1026.
+
+
+LaTeX Font Warning: Font shape `TU/lmss/m/scit' undefined
+(Font)              using `TU/lmss/m/sc' instead on input line 1026.
+
+
+Overfull \hbox (22.4094pt too wide) detected at line 1026
+[][][] [] [] [] [][][][][][][][] [] [] [] [][][][] [] [][][] [][] [][]
+ []
+
+
+LaTeX Warning: Reference `def:roc-curve' on page 18 undefined on input line 102
+6.
+
+
+LaTeX Warning: Reference `eq:rule-act' on page 18 undefined on input line 1026.
+
+
+
+Overfull \hbox (18.65926pt too wide) detected at line 1026
+[][] [] [][] [] [][][][][][][] [] [] [] [][][][] [] [][][][] [] [][][][][][] []
+ []
+ []
+
+
+LaTeX Warning: Reference `eq:rule-promote' on page 18 undefined on input line 1
+026.
+
+LaTeX Font Info:    Font shape `TU/lmss/bx/it' in size <10.95> not available
+(Font)              Font shape `TU/lmss/bx/sl' tried instead on input line 1026
+.
+
+LaTeX Warning: Reference `def:cog-byzantine' on page 18 undefined on input line
+ 1026.
+
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
+(Font)              scaled to size 10.30151pt on input line 1026.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
+(Font)              scaled to size 7.21106pt on input line 1026.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
+(Font)              scaled to size 10.30258pt on input line 1026.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
+(Font)              scaled to size 7.2118pt on input line 1026.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
+(Font)              scaled to size 10.3006pt on input line 1026.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
+(Font)              scaled to size 7.21042pt on input line 1026.
 ! Undefined control sequence.
-<inserted text> ...tion} \end {figure} \par \Cref 
-                                                  {fig:defense-composition} ...
-l.750 \end{frame}
-                 
+<inserted text> ...tabular}{@{}lllll@{}} \toprule 
+                                                  $n$ agents & Max faulty $f...
+l.1026 \end{frame}
+                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
 misspelled it (e.g., `\hobx'), type `I' and the correct
 spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
-[14
+! Undefined control sequence.
+<recently read> \midrule 
+                         
+l.1026 \end{frame}
+                  
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
 
-] [15
+! Undefined control sequence.
+<recently read> \bottomrule 
+                            
+l.1026 \end{frame}
+                  
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
 
+[18
 
 ]
-Underfull \vbox (badness 1112) detected at line 750
+Underfull \vbox (badness 1112) detected at line 1026
  []
 
 
-Overfull \vbox (437.37236pt too high) detected at line 750
+Overfull \vbox (2445.91574pt too high) detected at line 1026
  []
 
-[16
+[19
 
 
 ]
@@ -2158,22 +2209,29 @@ Overfull \vbox (437.37236pt too high) detected at line 750
 \openout7 = `05_defense_mechanisms_slides.snm'.
 
 
-(/Users/4d/Documents/GitHub/template/projects/cognitive_integrity/cogsec_multia
-gent_1_theory/output/slides/05_defense_mechanisms_slides.aux)
+(/Users/4d/Documents/GitHub/projects/working/cognitive_integrity/cogsec_multiag
+ent_1_theory/output/slides/05_defense_mechanisms_slides.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
  ***********
+
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
  ) 
 Here is how much of TeX's memory you used:
- 29704 strings out of 468168
- 603119 string characters out of 5432815
- 1191054 words of memory out of 5000000
- 57878 multiletter control sequences out of 15000+600000
- 631320 words of font info for 80 fonts, out of 8000000 for 9000
+ 29864 strings out of 468168
+ 607576 string characters out of 5432815
+ 1250142 words of memory out of 5000000
+ 58011 multiletter control sequences out of 15000+600000
+ 635263 words of font info for 113 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 128i,16n,123p,1131b,868s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 128i,17n,123p,1130b,875s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on /Users/4d/Documents/GitHub/template/projects/cognitive_integr
-ity/cogsec_multiagent_1_theory/output/slides/05_defense_mechanisms_slides.pdf (
-16 pages).
+Output written on /Users/4d/Documents/GitHub/projects/working/cognitive_integri
+ty/cogsec_multiagent_1_theory/output/slides/05_defense_mechanisms_slides.pdf (1
+9 pages).

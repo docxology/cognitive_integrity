@@ -1,4 +1,4 @@
-\begin{thebibliography}{49}
+\begin{thebibliography}{53}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -126,6 +126,37 @@ Hermogenes Fern{\'a}ndez-Mar{\'\i}n, Jess~K. Zimmerman, Stephen~A. Rehner, and
 \newblock \emph{Proceedings of the Royal Society B}, 273\penalty0
   (1594):\penalty0 1689--1695, 2006.
 \newblock \doi{10.1098/rspb.2006.3492}.
+
+\bibitem[Friedman(2026{\natexlab{a}})]{friedman2026cogsec2}
+Daniel~Ari Friedman.
+\newblock Cognitive integrity framework: Computational validation,
+  2026{\natexlab{a}}.
+\newblock Part 2: Implementation and Empirical Analysis --- 950-attack corpus,
+  multi-tier evaluation, ablation studies, Bayesian uncertainty, and parametric
+  architecture-aware simulation across four production multiagent topologies.
+
+\bibitem[Friedman(2026{\natexlab{b}})]{friedman2026cogsec3}
+Daniel~Ari Friedman.
+\newblock Cognitive integrity framework: Practitioner guidance and critical
+  domain applications, 2026{\natexlab{b}}.
+\newblock Part 3 (merged from original Parts 3+4): Qualitative review and
+  practitioner synthesis --- accessible-language distillation, deployment
+  guides, subagent hardening, incident-response playbooks, monitoring,
+  cost-benefit analysis, operator risk frameworks --- combined with CIF-AD-OODA
+  applications across ten critical operational domains, three universal attack
+  patterns (FR Polarity Inversion, Constraint Relaxation, Context Boundary
+  Violation), three novel defense extensions, and retrospective analysis of
+  2024--2025 AI-agent security incidents.
+
+\bibitem[Friston et~al.(2010)Friston, Daunizeau, and Kiebel]{friston2010action}
+Karl~J. Friston, Jean Daunizeau, and Stefan~J. Kiebel.
+\newblock Action and behavior: A free-energy formulation.
+\newblock \emph{Biological Cybernetics}, 102\penalty0 (3):\penalty0 227--260,
+  2010.
+\newblock \doi{10.1007/s00422-010-0364-z}.
+\newblock Foundational formulation of action selection as free-energy
+  minimization; establishes the variational principle underlying belief
+  updating that the belief sandbox constrains.
 
 \bibitem[Garcia et~al.(2025)Garcia, Thompson, and Lee]{trustdynamics2025}
 Maria Garcia, David Thompson, and Sunhee Lee.
@@ -263,6 +294,16 @@ Gr{\'e}goire Mialon, Roberto Dess{\`\i}, Maria Lomeli, Christoforos Nalmpantis,
 \newblock URL
   \url{https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/}.
 \newblock Released December 2025.
+
+\bibitem[Parr and Friston(2019)]{parr2019generalised}
+Thomas Parr and Karl~J. Friston.
+\newblock Generalised free energy and active inference.
+\newblock \emph{Biological Cybernetics}, 113\penalty0 (5-6):\penalty0 495--513,
+  2019.
+\newblock \doi{10.1007/s00422-019-00805-w}.
+\newblock Extends the free-energy principle to continuous-time dynamics and
+  generalized coordinates; provides the mathematical framework connecting
+  precision-weighted belief updates to defense mechanisms.
 
 \bibitem[Perez et~al.(2023)Perez, Ringer, Luko{\v{s}}i{\=u}t{\.e}, Nguyen,
   Chen, Heiner, Pettit, Olsson, Kundu, Kadavath, et~al.]{perez2022red}

@@ -42,4 +42,4 @@ Statistical manifold structure of belief space.
 
 ## Cross-Paper Reference
 
-Paper 4 (`friedman2026cogsec4`) §4 Discussion references the arms-race dynamics from `game_theory.arms_race_simulation` when motivating domain-calibrated retraining cadences.
+The unified Part 3+4 paper (`friedman2026cogsec3`) §4 Discussion references the arms-race dynamics from `game_theory.arms_race_simulation` when motivating domain-calibrated retraining cadences.

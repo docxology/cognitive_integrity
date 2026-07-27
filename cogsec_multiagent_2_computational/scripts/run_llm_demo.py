@@ -34,11 +34,101 @@ from evaluation.runner import ExperimentRunner
 from utils.random_seed import set_global_seed
 from utils.types import ExperimentConfig
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s [%(name)s] %(levelname)s: %(message)s",
-)
 logger = logging.getLogger("llm_demo")
+
+#: Bump when the on-disk shape of llm_demo_results.json changes.
+RESULT_SCHEMA_VERSION = 1
+
+#: Every key a consumer (src/manuscript/injector.py) may look for. Written in
+#: *both* the measured and the not-measured path so "no run happened" is
+#: machine-distinguishable from "a run happened and measured zero".
+RESULT_KEYS = (
+    "schema_version",
+    "status",
+    "reason",
+    "model",
+    "phase1_baseline",
+    "phase2_architectures",
+    "phase3_comparison",
+    "multiagent_results",
+)
+
+#: Statuses that mean "this file carries no measurements".
+UNAVAILABLE_STATUSES = frozenset({"skipped", "ollama_unavailable", "timeout", "error"})
+
+
+def architecture_slug(name: str) -> str:
+    """Canonical results key for an architecture display name.
+
+    ``"Claude Code" -> "claude_code"``. The injector keys off these slugs, so
+    the display name must never leak into the results file.
+    """
+    return "_".join(name.lower().split())
+
+
+def build_unavailable_payload(status: str, reason: str, model: str) -> dict:
+    """Schema-complete payload for a run that produced no measurements.
+
+    Every results key is present with an explicit ``None`` so a consumer can
+    tell "the key is absent because nothing ran" from "the key is absent
+    because I forgot to write it".
+    """
+    if status not in UNAVAILABLE_STATUSES:
+        raise ValueError(
+            f"status {status!r} is not one of the unavailable statuses "
+            f"{sorted(UNAVAILABLE_STATUSES)}"
+        )
+    return {
+        "schema_version": RESULT_SCHEMA_VERSION,
+        "status": status,
+        "reason": reason,
+        "model": model,
+        "phase1_baseline": None,
+        "phase2_architectures": None,
+        "phase3_comparison": None,
+        "multiagent_results": None,
+    }
+
+
+def build_success_payload(all_results: dict, model: str) -> dict:
+    """Schema-complete payload for a run that produced real measurements.
+
+    ``multiagent_results`` is derived from the per-architecture phase-2 block
+    and keyed by :func:`architecture_slug`; a real zero detection rate is
+    therefore reported as ``0.0``, never as a missing key.
+    """
+    arch_results = all_results.get("phase2_architectures") or {}
+    multiagent_results = {
+        architecture_slug(name): {
+            "detection_rate": metrics["detection_rate"],
+            "true_positives": metrics["true_positives"],
+            "false_negatives": metrics["false_negatives"],
+            "total": metrics["n_attacks"],
+            "false_positive_rate": metrics["false_positive_rate"],
+            "avg_latency_ms": metrics["avg_latency_ms"],
+        }
+        for name, metrics in arch_results.items()
+    }
+    return {
+        "schema_version": RESULT_SCHEMA_VERSION,
+        "status": "ok",
+        "reason": None,
+        "model": model,
+        "phase1_baseline": all_results.get("phase1_baseline"),
+        "phase2_architectures": arch_results,
+        "phase3_comparison": all_results.get("phase3_comparison"),
+        "multiagent_results": multiagent_results,
+    }
+
+
+def write_results(path: Path, payload: dict) -> None:
+    """Persist a results payload, refusing to write a schema-incomplete one."""
+    missing = [key for key in RESULT_KEYS if key not in payload]
+    if missing:
+        raise ValueError(f"refusing to write incomplete results, missing keys: {missing}")
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with open(path, "w") as f:
+        json.dump(payload, f, indent=2, default=str)
 
 
 def run_demo(model: str = "gemma3:4b") -> dict:
@@ -162,6 +252,11 @@ def _alarm_handler(signum, frame):
 
 if __name__ == "__main__":
     import argparse
+
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s [%(name)s] %(levelname)s: %(message)s",
+    )
     parser = argparse.ArgumentParser(description="CIF LLM demonstration")
     parser.add_argument("--model", default="gemma3:4b", help="Ollama model")
     parser.add_argument("--timeout", type=int, default=300, help="Max runtime (0=no limit)")
@@ -174,7 +269,6 @@ if __name__ == "__main__":
     _sock.close()
 
     out_dir = ROOT / "output" / "data"
-    out_dir.mkdir(parents=True, exist_ok=True)
     out_path = out_dir / "llm_demo_results.json"
 
     if os.environ.get("COGSEC_RUN_LLM_ANALYSIS") != "1":
@@ -182,18 +276,24 @@ if __name__ == "__main__":
             "Skipping LLM demo by default; set COGSEC_RUN_LLM_ANALYSIS=1 to run real Ollama evaluation"  # noqa: E501
         )
         print("WARNING: LLM demo skipped. Set COGSEC_RUN_LLM_ANALYSIS=1 to run real Ollama evaluation.")  # noqa: E501
-        results = {"status": "skipped", "reason": "COGSEC_RUN_LLM_ANALYSIS not set", "model": args.model}  # noqa: E501
-        with open(out_path, "w") as f:
-            json.dump(results, f, indent=2, default=str)
+        write_results(
+            out_path,
+            build_unavailable_payload(
+                "skipped", "COGSEC_RUN_LLM_ANALYSIS not set", args.model
+            ),
+        )
         print(f"Results saved to {out_path}")
         sys.exit(0)
 
     if not _ollama_available:
         logger.warning("Ollama not reachable on localhost:11434 — skipping LLM demo")
         print("WARNING: Ollama not available. LLM demo skipped (parametric results remain valid).")
-        results = {"status": "ollama_unavailable", "model": args.model}
-        with open(out_path, "w") as f:
-            json.dump(results, f, indent=2, default=str)
+        write_results(
+            out_path,
+            build_unavailable_payload(
+                "ollama_unavailable", "no listener on localhost:11434", args.model
+            ),
+        )
         print(f"Results saved to {out_path}")
         sys.exit(0)
 
@@ -202,15 +302,16 @@ if __name__ == "__main__":
         signal.alarm(args.timeout)
 
     try:
-        results = run_demo(model=args.model)
+        payload = build_success_payload(run_demo(model=args.model), args.model)
     except _TimeoutError:
         logger.warning("LLM demo timed out after %ds", args.timeout)
-        results = {"status": "timeout", "timeout_seconds": args.timeout}
+        payload = build_unavailable_payload(
+            "timeout", f"exceeded --timeout of {args.timeout}s", args.model
+        )
     finally:
         if hasattr(signal, "SIGALRM"):
             signal.alarm(0)
 
-    with open(out_path, "w") as f:
-        json.dump(results, f, indent=2, default=str)
+    write_results(out_path, payload)
     print(f"Results saved to {out_path}")
 

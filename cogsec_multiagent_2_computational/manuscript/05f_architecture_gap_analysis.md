@@ -43,7 +43,7 @@ Using the ablation contributions from \cref{sec:extended-ablation}, each CIF mod
 | Module | Level | Evidence | Primary Failure Mode |
 | --- | --- | --- | --- |
 | Detection | 3 | $\Delta\mathrm{TPR} = -0.052$; statistical features | B (threshold) |
-| Firewall | 2--3 | $\Delta\mathrm{TPR} \approx -0.019$; pattern matching | A (feature) |
+| Firewall | 2--3 | $\Delta\mathrm{TPR} \approx -0.009$; pattern matching | A (feature) |
 | Trust Calculus | 2 | $\Delta\mathrm{TPR} = -0.015$; limited adaptation | B (threshold) |
 | Tripwires | 3 | $\Delta\mathrm{TPR} = -0.011$; canary monitoring | A (feature) |
 | Consensus | 1--2 | $\Delta\mathrm{TPR} = -0.009$; uncalibrated | D (adapter hook) |

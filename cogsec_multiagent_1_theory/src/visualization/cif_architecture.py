@@ -17,7 +17,7 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 from matplotlib.patches import FancyBboxPatch
 
-from src.visualization.utils import save_figure, setup_plotting
+from .utils import save_figure, setup_plotting
 
 
 def create_cif_architecture_figure(output_dir: Path) -> Path:
