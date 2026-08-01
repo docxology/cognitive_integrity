@@ -1,8 +1,8 @@
 paper:
-  title: "Cognitive Integrity Framework: Computational Validation and Empirical Analysis (Second Edition)"
+  title: "Cognitive Integrity Framework: Computational Validation and Empirical Analysis"
   subtitle: "Part 2 of 3: Implementation, Empirical Analysis, and Adversarial Evaluation"
-  short_title: "CIF Validation v2"
-  version: "2.0"
+  short_title: "CIF Validation"
+  version: "1.0"
   type: "research"
   series: "Cognitive Security for Multiagent Operators"
   part: 2
@@ -58,7 +58,7 @@ abstract: |
   94-100% design ceiling. Ablation studies identify the Detection module as highest-
   contribution component (42% of pipeline detection).
 
-  New in v2.0: (1) expanded attack taxonomy with full Ω_1–Ω_5 adversary capability
+  New in v1.0: (1) expanded attack taxonomy with full Ω_1–Ω_5 adversary capability
   classification; (2) adversarial training evaluation with red-teaming pipelines;
   (3) Fisher information metric derivations in S10 with natural gradient attack analysis;
   (4) property-based test suite with Hypothesis library achieving 95%+ coverage;
@@ -79,7 +79,7 @@ metadata:
   language: "en"
   edition: 2
   changelog: |
-    v2.0 (2026-07-05): Second Edition — adversarial training, red-teaming,
+    v1.0 (2026-07-05): Initial public release — adversarial training, red-teaming,
     expanded colony simulations (100-500 agents), Fisher information metric
     derivations in S10, property-based tests with Hypothesis, stress tests,
     extended formal verification (TLA+/Promela/SMV), Ω_1–Ω_5 attack taxonomy,

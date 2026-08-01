@@ -1,15 +1,15 @@
 # Cognitive Integrity Framework: Computational Validation and Empirical Analysis (Second Edition)
 
-Part 2 of the **Cognitive Security for Multiagent Operators** series — **Version 2.0 (2026-07-05)**.
+Part 2 of the **Cognitive Security for Multiagent Operators** series — **Version 1.0 (2026-07-05)**.
 
 **Status: Preprint** | **DOI:** [10.5281/zenodo.18364128](https://doi.org/10.5281/zenodo.18364128)
 
-## What's New in v2.0
+## What's New in v1.0
 
 - **Adversarial training evaluation** (§05g): 5 rounds of iterative AT with threshold refinement; +3.4 pp over pre-AT baseline; convergence projection to Nash equilibrium DR ≈ 50.5%
 - **Red-team evaluation framework** (§05h): 12 mutation operators; 5 multi-stage campaign scenarios; coverage analysis across Ω_1–Ω_5
 - **Ω_1–Ω_5 attack taxonomy** (§03): Full mapping of 950-attack corpus to adversary capability levels; Ω_5 gossip-poisoning gap identified
-- **Category-theoretic foundations** (v2.0+): Full typed categorical framework — defense lattice (7 axioms ✓), symmetric monoidal category (unitors, associator, symmetry ✓), operad structure (unit + associativity ✓), enriched category over [0,1] (✓), pipeline monad (3 monad laws ✓), Kan extensions between architectures (✓), lens/optic profunctor (3 lens laws ✓), F-algebra catamorphism — serialized as JSON via `scripts/generate_composer_data.py`
+- **Category-theoretic foundations** (v1.0+): Full typed categorical framework — defense lattice (7 axioms ✓), symmetric monoidal category (unitors, associator, symmetry ✓), operad structure (unit + associativity ✓), enriched category over [0,1] (✓), pipeline monad (3 monad laws ✓), Kan extensions between architectures (✓), lens/optic profunctor (3 lens laws ✓), F-algebra catamorphism — serialized as JSON via `scripts/generate_composer_data.py`
 - **Composable visualization engine**: DefenseGraph (DAG), CategoryDiagram (commutative diagrams), LatticeViz (Hasse), OperadPlot (trees), MonadFlow (Kleisli), LensDiagram — all Python/Graphviz-based
 - **Algebra extension**: Hybrid detection rate (Corollary 3.3), weighted parallel (Gaussian approx), optimal module ordering (descending rate sort), latency models (series sum, parallel max, hybrid fast_max+deep_sum)
 - **Composer data API** (`src/visualization/composer_data.py`): Full 8-module registry, algebra formulas, 4 preset pipelines, category theory verification results — exported as `output/data/composer_data.json` (0.03s generation)
@@ -40,32 +40,32 @@ This paper provides **computational validation** of the Cognitive Integrity Fram
 | Part | Title | Focus | Status | DOI |
 | ---- | ----- | ----- | ------ | --- |
 | 1 | Formal Foundations | Theory, proofs, formalisms | **Published** | [10.5281/zenodo.18364119](https://doi.org/10.5281/zenodo.18364119) |
-| **2 (This, v2.0)** | Computational Validation | Empirical results, adversarial training | Preprint | [10.5281/zenodo.18364128](https://doi.org/10.5281/zenodo.18364128) |
+| **2 (This, v1.0)** | Computational Validation | Empirical results, adversarial training | Preprint | [10.5281/zenodo.18364128](https://doi.org/10.5281/zenodo.18364128) |
 | 3+4 (merged) | Practical Guidance + Applications | Deployment + domains | Preprint | [10.5281/zenodo.18364130](https://doi.org/10.5281/zenodo.18364130) |
 
 ## Project Structure
 
 ```text
 cogsec_multiagent_2_computational/
-├── manuscript/           # Paper content (37 files, v2.0)
+├── manuscript/           # Paper content (37 files, v1.0)
 │   ├── 00_abstract.md–07_conclusion.md
-│   ├── 05g_adversarial_training.md      # NEW v2.0
-│   ├── 05h_redteam_evaluation.md        # NEW v2.0
+│   ├── 05g_adversarial_training.md      # NEW v1.0
+│   ├── 05h_redteam_evaluation.md        # NEW v1.0
 │   ├── S01–S10 supplementary sections
-│   ├── S11_adversarial_training_theory.md  # NEW v2.0
-│   └── references.bib  (103 entries, 11 new in v2.0)
+│   ├── S11_adversarial_training_theory.md  # NEW v1.0
+│   └── references.bib  (103 entries, 11 new in v1.0)
 ├── src/
 │   ├── core/             # Defense mechanism implementations
 │   ├── colony/           # Multi-agent colony simulations (6 modules)
 │   ├── formal/           # Formal verification (15 modules: category_theory, category_theory_advanced, extended_specs, TLA+/Promela/SMV specs)
-│   ├── redteam/          # Adversarial training framework (NEW v2.0)
+│   ├── redteam/          # Adversarial training framework (NEW v1.0)
 │   │   ├── __init__.py   # AdversarialTrainer, ATConfig, NashEquilibriumEstimator
 │   │   ├── generator.py  # AdversarialGenerator, AttackMutator
 │   │   └── convergence.py # natural_gradient_at_step, geometric_convergence_projection
 │   ├── statistics/       # Statistical analysis (12 modules)
 │   ├── visualization/    # Figure generation + composable visualization engine
-├── manuscript/           # Paper content (37 files, v2.0)
-├── tests/                # 68 test files (3+ new in v2.0+)
+├── manuscript/           # Paper content (37 files, v1.0)
+├── tests/                # 68 test files (3+ new in v1.0+)
 │   ├── test_colony_stress.py    # NEW: 23 stress tests at 100-500 agents
 │   ├── test_property_based.py   # NEW: 19 Hypothesis property-based tests
 │   └── test_redteam.py          # NEW: 35 adversarial training tests
@@ -86,8 +86,8 @@ cogsec_multiagent_2_computational/
   year      = {2026},
   doi       = {10.5281/zenodo.18364128},
   publisher = {Zenodo},
-  note      = {Part 2, v2.0. Cognitive Security for Multiagent Operators series.
-               New in v2.0: adversarial training (5 rounds), red-team framework,
+  note      = {Part 2, v1.0. Cognitive Security for Multiagent Operators series.
+               New in v1.0: adversarial training (5 rounds), red-team framework,
                Ω_1-Ω_5 attack taxonomy, Fisher information metric derivations,
                colony stress tests (100-500 agents), property-based tests.}
 }
@@ -99,13 +99,13 @@ cogsec_multiagent_2_computational/
 # Run full test suite (90%+ coverage required)
 uv run pytest tests/ -v --cov=src --cov-report=term-missing
 
-# NEW v2.0: Run adversarial training evaluation
+# NEW v1.0: Run adversarial training evaluation
 uv run python scripts/run_adversarial_training.py --n-rounds 5 --seed 42
 
-# NEW v2.0: Run red-team evaluation
+# NEW v1.0: Run red-team evaluation
 uv run python scripts/run_redteam.py --seed 42
 
-# NEW v2.0: Verify all category-theoretic foundations (25/25 checks)
+# NEW v1.0: Verify all category-theoretic foundations (25/25 checks)
 uv run python -c "from src.formal.category_theory_advanced import run_all_verifications; import json; print(json.dumps(run_all_verifications(), indent=2))"
 
 # NEW: Generate composer data JSON for web UI
@@ -164,7 +164,7 @@ Comprehensive technical documentation is available in [`docs/`](docs/):
 - [Framework Validation](docs/framework_validation.md) — How to reproduce all experiments (seed=42)
 - [Usage Guides](docs/usage_guides/) — Per-component guides with code examples
 
-## Key Results (v2.0 Summary)
+## Key Results (v1.0 Summary)
 
 | Evaluation Mode | Detection Rate | Notes |
 | :--- | :---: | :--- |

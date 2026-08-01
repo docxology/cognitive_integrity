@@ -118,7 +118,7 @@ The following subsections provide detailed attack examples, methodology, and eth
 
 ## Adversary Capability Taxonomy: Ω_1–Ω_5 Mapping {#sec:omega-mapping}
 
-> **v2.0 note.** The Ω_1–Ω_5 capability taxonomy is defined in Part 1 §3.2. The
+> **v1.0 note.** The Ω_1–Ω_5 capability taxonomy is defined in Part 1 §3.2. The
 > mapping below is a *design-level classification* based on each attack
 > subcategory's theoretical requirements; the `AttackSample` type does not carry
 > a runtime `omega_level` field. The counts are derived from

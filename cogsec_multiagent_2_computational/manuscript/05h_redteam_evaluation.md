@@ -38,7 +38,7 @@ src/redteam/
 └── evasion.py           # Mutation-operator evasion sweep vs. the real CognitiveFirewall
 ```
 
-*As-built listing. The manuscript v2.0 draft referenced `mutator.py`, `campaign.py`,
+*As-built listing. The manuscript v1.0 draft referenced `mutator.py`, `campaign.py`,
 `evasion_probe.py`, `scorer.py`, and `report.py` as planned modules; of these,
 `campaign.py`, `evasion_probe.py`, `scorer.py`, and `report.py` are not yet
 implemented. Mutation testing is driven by `generator.py`'s `AttackMutator`

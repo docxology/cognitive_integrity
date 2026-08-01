@@ -83,7 +83,7 @@ CIF's tripwire monitoring of canary beliefs (\cref{alg:tripwire-impl}) at thresh
 
 ## Fisher Information Metric: Complete Derivations {#sec:s10-fim-derivations}
 
-> **v2.0 addition.** This section provides complete derivations of the Fisher information matrix (FIM) for the CIF belief state parameterization, extending the survey in §\ref{sec:s10-manifold} with explicit computations for practical parameter choices used in the empirical evaluation.
+> **v1.0 addition.** This section provides complete derivations of the Fisher information matrix (FIM) for the CIF belief state parameterization, extending the survey in §\ref{sec:s10-manifold} with explicit computations for practical parameter choices used in the empirical evaluation.
 
 ### Parameterized Belief Family
 
