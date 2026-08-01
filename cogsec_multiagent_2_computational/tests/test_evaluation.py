@@ -233,6 +233,27 @@ class TestExperimentRunner:
         assert result.true_positives == 15  # all 15 attacks detected
         assert result.false_positives == 5  # all 5 benign also flagged (score=0.8 > 0.5)
 
+    def test_measurement_mode_reflects_provenance(self):
+        """ExperimentResult records whether numbers were measured or simulated.
+
+        Mode 2 (closed-form parametric simulation, defense_pipeline=None) must
+        be labeled ``parametric`` so downstream provenance can never present it
+        as a measured ``real_pipeline`` result.
+        """
+        runner = ExperimentRunner(ExperimentConfig(seed=42))
+        adapter = _SimpleAdapter(multiplier=1.0)
+        samples = _make_attack_samples("direct_injection", n_attacks=5, n_benign=2)
+
+        sim = runner.run_single(adapter, samples, None)
+        assert sim.measurement_mode == "parametric"
+
+        real = runner.run_single(adapter, samples, _SimplePipeline(score=0.8))
+        assert real.measurement_mode == "real"
+
+        # run_single_with_scores with no pipeline is also a parametric result.
+        result, _ = runner.run_single_with_scores(adapter, samples, None)
+        assert result.measurement_mode == "parametric"
+
     def test_run_single_with_scores(self):
         """run_single_with_scores returns per-sample detection tuples."""
         runner = ExperimentRunner(ExperimentConfig(seed=42))

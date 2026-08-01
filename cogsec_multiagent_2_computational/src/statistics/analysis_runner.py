@@ -288,4 +288,9 @@ def run_full_analysis(
             for ar in assumption_results
         ],
         "assumptions_met": assumptions_met,
+        "provenance": {
+            "baseline_scores": "simulated N(0.03, 0.02): no observed control arm ran",
+            "cohens_d_cif_vs_baseline": "vs. simulated control, not observed",
+            "component_scores": "measured per-component TPR + N(0, 0.02) noise",
+        },
     }

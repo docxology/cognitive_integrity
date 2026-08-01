@@ -92,6 +92,11 @@ class ExperimentResult:
         detection_rate: TP / (TP + FN).
         false_positive_rate: FP / (FP + TN).
         avg_latency_ms: Mean processing latency per sample.
+        measurement_mode: Provenance of these numbers — one of
+            ``"real"`` (real defense pipeline / Mode 1), ``"llm"`` (real LLM
+            multiagent evaluation / Mode 3), or ``"parametric"`` (closed-form
+            design model / Mode 2). ``"parametric"`` must never be published as
+            a measured ``real_pipeline`` result.
     """
 
     architecture: str
@@ -104,6 +109,7 @@ class ExperimentResult:
     detection_rate: float
     false_positive_rate: float
     avg_latency_ms: float
+    measurement_mode: str = "real"
 
 
 # ---------------------------------------------------------------------------
@@ -193,6 +199,7 @@ class ExperimentRunner:
             detection_rate=detection_rate,
             false_positive_rate=fpr,
             avg_latency_ms=avg_lat,
+            measurement_mode=("real" if defense_pipeline is not None else "parametric"),
         )
 
     def run_single_with_scores(
@@ -268,6 +275,7 @@ class ExperimentRunner:
             detection_rate=detection_rate,
             false_positive_rate=fpr_val,
             avg_latency_ms=avg_lat,
+            measurement_mode=("real" if defense_pipeline is not None else "parametric"),
         )
 
         return result, per_sample
@@ -507,4 +515,5 @@ class ExperimentRunner:
             detection_rate=detection_rate,
             false_positive_rate=fpr,
             avg_latency_ms=avg_lat,
+            measurement_mode="llm",
         )
