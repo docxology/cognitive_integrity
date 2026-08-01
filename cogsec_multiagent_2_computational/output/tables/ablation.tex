@@ -1,21 +1,21 @@
 \begin{table}[htbp]
 \centering
-\caption{Ablation Study: Detection Rate Impact of Component Removal}
+\caption{Ablation Study: Detection Rate Impact of Component Removal.}
 \label{tab:ablation}
-\begin{tabular}{lccr}
+\begin{tabular}{lcr}
 \toprule
-Configuration & Detection Rate & 95\% CI & $\Delta$ Rate \\
+Configuration & Detection Rate & $\Delta$ Rate \\
 \midrule
-Full CIF & 0.019 & $\pm 0.008$ & --- \\
+Full CIF & 0.122 & --- \\
 \midrule
-- Detection & 0.071 & $\pm 0.015$ & +0.052 \\
-- Tripwire & 0.113 & $\pm 0.015$ & +0.093 \\
-- Invariants & 0.113 & $\pm 0.015$ & +0.094 \\
-- Firewall & 0.114 & $\pm 0.015$ & +0.095 \\
-- Trust Calculus & 0.117 & $\pm 0.015$ & +0.097 \\
-- Provenance & 0.123 & $\pm 0.015$ & +0.103 \\
-- Sandbox & 0.124 & $\pm 0.015$ & +0.104 \\
-- Consensus & 0.125 & $\pm 0.015$ & +0.106 \\
+- Detection & 0.071 & -0.051 \\
+- Trust Calculus & 0.102 & -0.020 \\
+- Firewall & 0.112 & -0.010 \\
+- Invariants & 0.112 & -0.010 \\
+- Tripwire & 0.112 & -0.010 \\
+- Consensus & 0.122 & 0.000 \\
+- Provenance & 0.122 & 0.000 \\
+- Sandbox & 0.122 & 0.000 \\
 \bottomrule
 \end{tabular}
 \end{table}

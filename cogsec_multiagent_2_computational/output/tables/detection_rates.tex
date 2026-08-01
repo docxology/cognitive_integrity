@@ -1,15 +1,15 @@
 \begin{table}[htbp]
 \centering
-\caption{Detection Rates by Architecture and Attack Category (Mean $\pm$ 95\% CI)}
+\caption{Detection Rates by Architecture and Attack Category ($\pm$ Wilson 95\% score-interval half-width). Overall pools the raw TP/FN counts across categories. Evaluation mode: simulation.}
 \label{tab:detection-rates}
 \begin{tabular}{lccccc}
 \toprule
-Architecture & Injection & Trust Exploit. & Belief Manip. & Coordination & Overall \\
+Architecture & Indirect Inj. & Impersonation & Belief Drift & Sybil Attack & Overall \\
 \midrule
-Claude Code & $1.000 \pm 0.008$ & $1.000 \pm 0.007$ & $1.000 \pm 0.009$ & $1.000 \pm 0.008$ & $1.000 \pm 0.004$ \\
-AutoGPT & $0.987 \pm 0.017$ & $0.990 \pm 0.015$ & $0.960 \pm 0.028$ & $0.960 \pm 0.028$ & $0.974 \pm 0.011$ \\
-CrewAI & $1.000 \pm 0.008$ & $1.000 \pm 0.008$ & $1.000 \pm 0.008$ & $1.000 \pm 0.009$ & $1.000 \pm 0.004$ \\
-LangGraph & $1.000 \pm 0.008$ & $1.000 \pm 0.009$ & $1.000 \pm 0.009$ & $1.000 \pm 0.007$ & $1.000 \pm 0.004$ \\
+Claude Code & $1.000 \pm 0.004$ & $1.000 \pm 0.009$ & $1.000 \pm 0.012$ & $1.000 \pm 0.018$ & $1.000 \pm 0.002$ \\
+AutoGPT & $0.990 \pm 0.009$ & $0.960 \pm 0.028$ & $0.987 \pm 0.022$ & $0.960 \pm 0.041$ & $0.980 \pm 0.009$ \\
+CrewAI & $1.000 \pm 0.004$ & $1.000 \pm 0.009$ & $1.000 \pm 0.012$ & $1.000 \pm 0.018$ & $1.000 \pm 0.002$ \\
+LangGraph & $1.000 \pm 0.004$ & $1.000 \pm 0.009$ & $1.000 \pm 0.012$ & $1.000 \pm 0.018$ & $1.000 \pm 0.002$ \\
 \bottomrule
 \end{tabular}
 \end{table}

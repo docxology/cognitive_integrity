@@ -1,5 +1,10 @@
 {
+  "schema_version": 1,
   "status": "skipped",
   "reason": "COGSEC_RUN_LLM_ANALYSIS not set",
-  "model": "gemma3:4b"
+  "model": "gemma3:4b",
+  "phase1_baseline": null,
+  "phase2_architectures": null,
+  "phase3_comparison": null,
+  "multiagent_results": null
 }

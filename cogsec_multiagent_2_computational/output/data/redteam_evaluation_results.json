@@ -2,39 +2,39 @@
   "data_origin": "real_pipeline",
   "source_script": "scripts/run_redteam.py",
   "seed": 42,
-  "n_attacks_generated": 100,
+  "n_attacks_generated": 950,
   "omega_level_counts": {
-    "OMEGA_1_PASSIVE": 20,
-    "OMEGA_2_INJECTION": 20,
-    "OMEGA_3_IMPERSONATION": 20,
-    "OMEGA_4_BELIEF": 20,
-    "OMEGA_5_COORDINATED": 20
+    "OMEGA_1_PASSIVE": 190,
+    "OMEGA_2_INJECTION": 190,
+    "OMEGA_3_IMPERSONATION": 190,
+    "OMEGA_4_BELIEF": 190,
+    "OMEGA_5_COORDINATED": 190
   },
   "generation_summary": {
     "OMEGA_1_PASSIVE": {
-      "n_attacks": 20,
+      "n_attacks": 190,
       "n_distinct_payloads": 2,
-      "mean_evasion_score": 0.00367142800670575
+      "mean_evasion_score": 0.005567306029916051
     },
     "OMEGA_2_INJECTION": {
-      "n_attacks": 20,
+      "n_attacks": 190,
       "n_distinct_payloads": 3,
-      "mean_evasion_score": 0.2417939401004313
+      "mean_evasion_score": 0.2461476792683953
     },
     "OMEGA_3_IMPERSONATION": {
-      "n_attacks": 20,
+      "n_attacks": 190,
       "n_distinct_payloads": 3,
-      "mean_evasion_score": 0.32179394010043133
+      "mean_evasion_score": 0.32614767926839533
     },
     "OMEGA_4_BELIEF": {
-      "n_attacks": 20,
+      "n_attacks": 190,
       "n_distinct_payloads": 3,
-      "mean_evasion_score": 0.36179394010043125
+      "mean_evasion_score": 0.3661476792683953
     },
     "OMEGA_5_COORDINATED": {
-      "n_attacks": 20,
+      "n_attacks": 190,
       "n_distinct_payloads": 5,
-      "mean_evasion_score": 0.44179394010043127
+      "mean_evasion_score": 0.4461476792683953
     }
   },
   "evasion_denominator": {

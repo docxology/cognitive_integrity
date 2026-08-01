@@ -103,9 +103,22 @@ figures:
 tables:
 	$(PYTHON) $(SCRIPTS)/generate_all_tables.py
 
-# Verify manuscript integrity
+# Verify manuscript integrity (structural: citations, labels, images, formatting)
 verify:
 	$(PYTHON) $(SCRIPTS)/verify_manuscript.py --root manuscript
+
+# Verify manuscript claims (numeric: every registered claim matches output/data)
+# This is the MISS-01 gate: re-derives every headline number from the JSON
+# artifacts and compares it against what the prose actually says.  Currently
+# expected to fail on the ~58 KNOWN_UNRECONCILED drift entries; use
+# --only-failures for a compact report.
+verify-claims:
+	$(PYTHON) $(SCRIPTS)/verify_claims.py --only-failures
+
+# Combined CI gate (lint + tests + claim verification).  Fails closed:
+# a single new unreconciled number breaks the gate.
+ci: lint tests
+	$(PYTHON) $(SCRIPTS)/verify_claims.py --only-failures
 
 # Run full test suite
 tests:

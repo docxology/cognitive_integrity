@@ -1,20 +1,24 @@
 \begin{table}[htbp]
 \centering
-\caption{Hypothesis Test Results (One-Sided Welch's $t$-test)}
+\caption{Hypothesis Test Results (One-Sided Welch's $t$-test). Identifiers are the hypothesis names recorded by \texttt{scripts/run\_statistical\_analysis.py}.}
 \label{tab:hypothesis-tests}
 \begin{tabular}{llccc}
 \toprule
 ID & Hypothesis & $t$-statistic & $p$-value & Significant \\
 \midrule
-H1 & CIF > Baseline & 45.00 & < 0.001 & Yes \\
-H2 & CIF > firewall & -- & < 0.001 & Yes \\
-H3 & CIF > trust_calculus & -- & < 0.001 & Yes \\
-H4 & CIF > tripwire & -- & < 0.001 & Yes \\
-H5 & CIF > detection & -- & < 0.001 & Yes \\
-H6 & CIF > consensus & -- & < 0.001 & Yes \\
-H7 & CIF > provenance & -- & < 0.001 & Yes \\
-H8 & CIF > sandbox & -- & < 0.001 & Yes \\
-H9 & CIF > invariants & -- & < 0.001 & Yes \\
+H1 & CIF $>$ Baseline & 230.23 & $< 0.001$ & Yes \\
+H2\_detection & CIF $>$ detection component alone & -- & $< 0.001$ & Yes \\
+H2\_trust\_calculus & CIF $>$ trust calculus component alone & -- & $< 0.001$ & Yes \\
+H2\_firewall & CIF $>$ firewall component alone & -- & $< 0.001$ & Yes \\
+H2\_invariants & CIF $>$ invariants component alone & -- & $< 0.001$ & Yes \\
+H2\_tripwire & CIF $>$ tripwire component alone & -- & $< 0.001$ & Yes \\
+H2\_consensus & CIF $>$ consensus component alone & -- & $< 0.001$ & Yes \\
+H2\_provenance & CIF $>$ provenance component alone & -- & $< 0.001$ & Yes \\
+H2\_sandbox & CIF $>$ sandbox component alone & -- & $< 0.001$ & Yes \\
+H3\_claude\_code & CIF $>$ baseline on claude code & -- & $< 0.001$ & Yes \\
+H3\_autogpt & CIF $>$ baseline on autogpt & -- & $< 0.001$ & Yes \\
+H3\_crewai & CIF $>$ baseline on crewai & -- & $< 0.001$ & Yes \\
+H3\_langgraph & CIF $>$ baseline on langgraph & -- & $< 0.001$ & Yes \\
 \bottomrule
 \end{tabular}
 \end{table}

@@ -1,192 +1,164 @@
-[
-  {
-    "theorem_id": "3.1",
-    "name": "Trust delegation decay bound",
-    "status": "passed",
-    "evidence": "All 10000 samples satisfy T <= delta^d (max violation: 0.000000)",
-    "details": {
-      "delta": 0.85,
-      "max_depth": 10,
-      "n_trials": 1000,
-      "total_samples": 10000,
-      "violations": 0,
-      "max_violation": 0.0
-    }
+{
+  "seed": 42,
+  "n_registry_entries": 12,
+  "n_distinct_theorems": 12,
+  "n_passed": 12,
+  "status_counts": {
+    "passed": 12,
+    "failed": 0,
+    "skipped": 0,
+    "error": 0
   },
-  {
-    "theorem_id": "3.1",
-    "name": "Trust delegation decay bound",
-    "status": "passed",
-    "evidence": "All 10000 samples satisfy T <= delta^d (max violation: 0.000000)",
-    "details": {
-      "delta": 0.85,
-      "max_depth": 10,
-      "n_trials": 1000,
-      "total_samples": 10000,
-      "violations": 0,
-      "max_violation": 0.0
+  "theorems": [
+    {
+      "theorem_id": "3.1",
+      "name": "Trust delegation decay bound",
+      "status": "passed",
+      "evidence": "All 10000 samples satisfy T <= delta^d and T <= min(source, target) * delta^d (max violation: 0.000000, max amplification: 0.000000)",
+      "details": {
+        "delta": 0.85,
+        "max_depth": 10,
+        "n_trials": 1000,
+        "total_samples": 10000,
+        "violations": 0,
+        "max_violation": 0.0,
+        "decay_violations": 0,
+        "amplification_violations": 0,
+        "max_amplification": 0.0,
+        "implementation": "core.trust.TrustCalculus.delegate_trust"
+      }
+    },
+    {
+      "theorem_id": "3.1b",
+      "name": "Series Composition Detection",
+      "status": "passed",
+      "evidence": "Series composition P_miss = prod(1-r_i) validated across 1000 trials (max error: 0.0055, violations: 0)",
+      "details": {
+        "n_trials": 1000,
+        "n_modules": 5,
+        "violations": 0,
+        "max_error": 0.005517484268822814
+      }
+    },
+    {
+      "theorem_id": "3.2",
+      "name": "Parallel Composition Detection",
+      "status": "passed",
+      "evidence": "Parallel composition rate >= max(r_i) validated across 1000 trials (violations: 0)",
+      "details": {
+        "n_trials": 1000,
+        "violations": 0
+      }
+    },
+    {
+      "theorem_id": "3.3",
+      "name": "Composition Associativity",
+      "status": "passed",
+      "evidence": "Composition is associative: max error 1.11e-16 across 100 trials",
+      "details": {
+        "n_trials": 100,
+        "max_error": 1.1102230246251565e-16
+      }
+    },
+    {
+      "theorem_id": "4",
+      "name": "Stealth-Impact Tradeoff",
+      "status": "passed",
+      "evidence": "All 500 successful attacks satisfy I*S <= 1.00 (max product: 0.9593). 0 attacks detected due to bound violation.",
+      "details": {
+        "c_channel": 1.0,
+        "n_trials": 500,
+        "n_detected": 0,
+        "max_product": 0.9593309404613264
+      }
+    },
+    {
+      "theorem_id": "5.3",
+      "name": "Byzantine Fault Tolerance",
+      "status": "passed",
+      "evidence": "Byzantine consensus correct in 100.0% of tolerated cases (135/135) and failed in 100.0% of untolerated cases (297/297) under predicate 'default_bound_predicate'.",
+      "details": {
+        "tests_run": 432,
+        "valid_correct": 135,
+        "valid_total": 135,
+        "valid_success_rate": 1.0,
+        "invalid_failures": 297,
+        "invalid_total": 297,
+        "invalid_failure_rate": 1.0,
+        "predicate": "default_bound_predicate"
+      }
+    },
+    {
+      "theorem_id": "6",
+      "name": "CIF Latency Overhead Bound",
+      "status": "passed",
+      "evidence": "Mean overhead 10.3% <= 23% target (p95: 19.0%, max: 22.9%)",
+      "details": {
+        "mean_overhead": 0.10263252852759315,
+        "p95_overhead": 0.18968927227196672,
+        "max_overhead": 0.22920090556755796,
+        "target": 0.23,
+        "n_trials": 100
+      }
+    },
+    {
+      "theorem_id": "CT.1",
+      "name": "Defense Category Laws",
+      "status": "passed",
+      "evidence": "left=True right=True assoc=True",
+      "details": {
+        "left_identity": true,
+        "right_identity": true,
+        "associativity": true
+      }
+    },
+    {
+      "theorem_id": "CT.2",
+      "name": "Categorical Product",
+      "status": "passed",
+      "evidence": "detected=True, score=0.800",
+      "details": {
+        "detected": true,
+        "score": 0.8
+      }
+    },
+    {
+      "theorem_id": "CT.3",
+      "name": "Monadic Detection Preservation",
+      "status": "passed",
+      "evidence": "short_circuit=True, laws={'left_identity': True, 'right_identity': True, 'associativity': True}",
+      "details": {
+        "short_circuit": true,
+        "left_identity": true,
+        "right_identity": true,
+        "associativity": true
+      }
+    },
+    {
+      "theorem_id": "FEP.1",
+      "name": "Attack-FEP Equivalence",
+      "status": "passed",
+      "evidence": "\u0394F=1.483, is_attack=True",
+      "details": {
+        "free_energy_baseline": 1.2039728043183804,
+        "free_energy_attacked": 2.687355801329752,
+        "free_energy_increase": 1.4833829970113717,
+        "kl_from_prior": 0.49463193721207277,
+        "entropy_change": -0.4946319372140727,
+        "is_attack": true
+      }
+    },
+    {
+      "theorem_id": "FEP.2",
+      "name": "Trust-Precision Duality",
+      "status": "passed",
+      "evidence": "composite_precision=1.000000, alpha+beta+gamma=1.000000",
+      "details": {
+        "alpha_precision": 0.3,
+        "beta_precision": 0.5,
+        "gamma_precision": 0.2,
+        "composite_precision": 1.0
+      }
     }
-  },
-  {
-    "theorem_id": "3.1b",
-    "name": "Series Composition Detection",
-    "status": "passed",
-    "evidence": "Series composition P_miss = prod(1-r_i) validated across 1000 trials (max error: 0.0055, violations: 0)",
-    "details": {
-      "n_trials": 1000,
-      "n_modules": 5,
-      "violations": 0,
-      "max_error": 0.005517484268822814
-    }
-  },
-  {
-    "theorem_id": "3.2",
-    "name": "Parallel Composition Detection",
-    "status": "passed",
-    "evidence": "Parallel composition rate >= max(r_i) validated across 1000 trials (violations: 0)",
-    "details": {
-      "n_trials": 1000,
-      "violations": 0
-    }
-  },
-  {
-    "theorem_id": "3.1b",
-    "name": "Series Composition Detection",
-    "status": "passed",
-    "evidence": "Series composition P_miss = prod(1-r_i) validated across 1000 trials (max error: 0.0055, violations: 0)",
-    "details": {
-      "n_trials": 1000,
-      "n_modules": 5,
-      "violations": 0,
-      "max_error": 0.005517484268822814
-    }
-  },
-  {
-    "theorem_id": "3.2",
-    "name": "Parallel Composition Detection",
-    "status": "passed",
-    "evidence": "Parallel composition rate >= max(r_i) validated across 1000 trials (violations: 0)",
-    "details": {
-      "n_trials": 1000,
-      "violations": 0
-    }
-  },
-  {
-    "theorem_id": "3.3",
-    "name": "Composition Associativity",
-    "status": "passed",
-    "evidence": "Composition is associative: max error 1.11e-16 across 100 trials",
-    "details": {
-      "n_trials": 100,
-      "max_error": 1.1102230246251565e-16
-    }
-  },
-  {
-    "theorem_id": "3.3",
-    "name": "Composition Associativity",
-    "status": "passed",
-    "evidence": "Composition is associative: max error 1.11e-16 across 100 trials",
-    "details": {
-      "n_trials": 100,
-      "max_error": 1.1102230246251565e-16
-    }
-  },
-  {
-    "theorem_id": "4",
-    "name": "Stealth-Impact Tradeoff",
-    "status": "passed",
-    "evidence": "All 500 successful attacks satisfy I*S <= 1.00 (max product: 0.9593). 0 attacks detected due to bound violation.",
-    "details": {
-      "c_channel": 1.0,
-      "n_trials": 500,
-      "n_detected": 0,
-      "max_product": 0.9593309404613264
-    }
-  },
-  {
-    "theorem_id": "5.3",
-    "name": "Byzantine Fault Tolerance",
-    "status": "passed",
-    "evidence": "Byzantine consensus correct in 100.0% of valid (n>=3f+1) cases (135/135). Invalid cases showed 188/297 failures.",
-    "details": {
-      "tests_run": 432,
-      "valid_correct": 135,
-      "valid_total": 135,
-      "valid_success_rate": 1.0,
-      "invalid_failures": 188,
-      "invalid_total": 297
-    }
-  },
-  {
-    "theorem_id": "6",
-    "name": "CIF Latency Overhead Bound",
-    "status": "passed",
-    "evidence": "Mean overhead 10.3% <= 23% target (p95: 19.0%, max: 22.9%)",
-    "details": {
-      "mean_overhead": 0.10263252852759315,
-      "p95_overhead": 0.18968927227196672,
-      "max_overhead": 0.22920090556755796,
-      "target": 0.23,
-      "n_trials": 100
-    }
-  },
-  {
-    "theorem_id": "CT.1",
-    "name": "Defense Category Laws",
-    "status": "passed",
-    "evidence": "left=True right=True assoc=True",
-    "details": {
-      "left_identity": true,
-      "right_identity": true,
-      "associativity": true
-    }
-  },
-  {
-    "theorem_id": "CT.2",
-    "name": "Categorical Product",
-    "status": "passed",
-    "evidence": "detected=True, score=0.800",
-    "details": {
-      "detected": true,
-      "score": 0.8
-    }
-  },
-  {
-    "theorem_id": "CT.3",
-    "name": "Monadic Detection Preservation",
-    "status": "passed",
-    "evidence": "short_circuit=True, laws={'left_identity': True, 'right_identity': True, 'associativity': True}",
-    "details": {
-      "short_circuit": true,
-      "left_identity": true,
-      "right_identity": true,
-      "associativity": true
-    }
-  },
-  {
-    "theorem_id": "FEP.1",
-    "name": "Attack-FEP Equivalence",
-    "status": "passed",
-    "evidence": "\u0394F=1.483, is_attack=True",
-    "details": {
-      "free_energy_baseline": 1.2039728043183804,
-      "free_energy_attacked": 2.687355801329752,
-      "free_energy_increase": 1.4833829970113717,
-      "kl_from_prior": 0.49463193721207277,
-      "entropy_change": -0.4946319372140727,
-      "is_attack": true
-    }
-  },
-  {
-    "theorem_id": "FEP.2",
-    "name": "Trust-Precision Duality",
-    "status": "passed",
-    "evidence": "composite_precision=1.000000, alpha+beta+gamma=1.000000",
-    "details": {
-      "alpha_precision": 0.3,
-      "beta_precision": 0.5,
-      "gamma_precision": 0.2,
-      "composite_precision": 1.0
-    }
-  }
-]
+  ]
+}

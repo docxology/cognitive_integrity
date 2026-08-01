@@ -1,16 +1,16 @@
 \begin{table}[htbp]
 \centering
-\caption{Pairwise Component Synergy ($\Delta$ above individual contributions)}
+\caption{Recorded pairwise component synergies. Synergy is the combined-pair TPR minus the sum of the two single-component TPRs. Only the pairs serialised by the ablation runner are listed; unlisted pairs were not measured, which is not the same as measuring zero.}
 \label{tab:synergy}
-\begin{tabular}{lccccc}
+\begin{tabular}{llrrrr}
 \toprule
- & Firewall & Trust & Consensus & Detection & Tripwire \\
+Component A & Component B & TPR$_A$ & TPR$_B$ & TPR$_{A+B}$ & Synergy \\
 \midrule
-Firewall & --- & 0.000 & 0.000 & \textbf{0.023} & 0.000 \\
-Trust & 0.000 & --- & 0.000 & 0.000 & 0.000 \\
-Consensus & 0.000 & 0.000 & --- & 0.000 & 0.000 \\
-Detection & \textbf{0.023} & 0.000 & 0.000 & --- & \textbf{0.025} \\
-Tripwire & 0.000 & 0.000 & 0.000 & \textbf{0.025} & --- \\
+Firewall & Detection & 0.0306 & 0.0510 & 0.0816 & +0.0306 \\
+Tripwire & Detection & 0.0306 & 0.0510 & 0.0816 & +0.0306 \\
+Firewall & Trust Calculus & 0.0306 & 0.0204 & 0.0510 & +0.0204 \\
+Trust Calculus & Tripwire & 0.0204 & 0.0306 & 0.0510 & +0.0204 \\
+Trust Calculus & Detection & 0.0204 & 0.0510 & 0.0714 & +0.0204 \\
 \bottomrule
 \end{tabular}
 \end{table}
