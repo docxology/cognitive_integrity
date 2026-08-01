@@ -54,8 +54,9 @@ Active Inference Institute
 Technical documentation for the CIF implementation lives in [`cogsec_multiagent_2_computational/docs/`](cogsec_multiagent_2_computational/docs/):
 
 - [Claims Traceability](cogsec_multiagent_2_computational/docs/claims_traceability.md) — Manuscript-to-code mapping
-- [Usage Guides](cogsec_multiagent_2_computational/docs/usage_guides/) — Per-component guides (Firewall, Sandbox, Trust, Consensus, Tripwires, Drift Detection, Provenance, Invariants)
+- [Usage Guides](cogsec_multiagent_2_computational/docs/usage_guides/) — Per-component guides (Firewall, Sandbox, Trust, Consensus, Tripwires, Drift Detection, Provenance, Invariants, Red-Team Evaluation)
 - [Framework Validation](cogsec_multiagent_2_computational/docs/framework_validation.md) — Experiment reproduction guide
+- [Program Documentation Index](docs/README.md) — Program-wide documentation map
 
 ## Figures and accessible outputs
 

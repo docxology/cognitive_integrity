@@ -1,0 +1,158 @@
+{
+  "data_origin": "real_pipeline",
+  "source_script": "scripts/run_redteam.py",
+  "seed": 42,
+  "n_attacks_generated": 100,
+  "omega_level_counts": {
+    "OMEGA_1_PASSIVE": 20,
+    "OMEGA_2_INJECTION": 20,
+    "OMEGA_3_IMPERSONATION": 20,
+    "OMEGA_4_BELIEF": 20,
+    "OMEGA_5_COORDINATED": 20
+  },
+  "generation_summary": {
+    "OMEGA_1_PASSIVE": {
+      "n_attacks": 20,
+      "n_distinct_payloads": 2,
+      "mean_evasion_score": 0.00367142800670575
+    },
+    "OMEGA_2_INJECTION": {
+      "n_attacks": 20,
+      "n_distinct_payloads": 3,
+      "mean_evasion_score": 0.2417939401004313
+    },
+    "OMEGA_3_IMPERSONATION": {
+      "n_attacks": 20,
+      "n_distinct_payloads": 3,
+      "mean_evasion_score": 0.32179394010043133
+    },
+    "OMEGA_4_BELIEF": {
+      "n_attacks": 20,
+      "n_distinct_payloads": 3,
+      "mean_evasion_score": 0.36179394010043125
+    },
+    "OMEGA_5_COORDINATED": {
+      "n_attacks": 20,
+      "n_distinct_payloads": 5,
+      "mean_evasion_score": 0.44179394010043127
+    }
+  },
+  "evasion_denominator": {
+    "source": "attacks.corpus.AttackCorpus.generate(seed)",
+    "corpus_size": 950,
+    "corpus_distinct_payloads": 871,
+    "distinct_flagged_payloads": 66,
+    "min_denominator": 50,
+    "unit": "distinct payload (duplicates collapsed)"
+  },
+  "mutation_summary": {
+    "semantic_paraphrase": {
+      "operator": "semantic_paraphrase",
+      "attempts": 66,
+      "successful": 0,
+      "evasion_rate": 0.0,
+      "ci_low": 0.0,
+      "ci_high": 0.05500255701354129,
+      "confidence": 0.95
+    },
+    "nested_wrapping": {
+      "operator": "nested_wrapping",
+      "attempts": 66,
+      "successful": 0,
+      "evasion_rate": 0.0,
+      "ci_low": 0.0,
+      "ci_high": 0.05500255701354129,
+      "confidence": 0.95
+    },
+    "indirect_routing": {
+      "operator": "indirect_routing",
+      "attempts": 66,
+      "successful": 0,
+      "evasion_rate": 0.0,
+      "ci_low": 0.0,
+      "ci_high": 0.05500255701354129,
+      "confidence": 0.95
+    },
+    "authority_prefix": {
+      "operator": "authority_prefix",
+      "attempts": 66,
+      "successful": 0,
+      "evasion_rate": 0.0,
+      "ci_low": 0.0,
+      "ci_high": 0.05500255701354129,
+      "confidence": 0.95
+    },
+    "gradual_insertion": {
+      "operator": "gradual_insertion",
+      "attempts": 66,
+      "successful": 3,
+      "evasion_rate": 0.045454545454545456,
+      "ci_low": 0.015578274334433507,
+      "ci_high": 0.1253331411324222,
+      "confidence": 0.95
+    },
+    "chain_delegation": {
+      "operator": "chain_delegation",
+      "attempts": 66,
+      "successful": 0,
+      "evasion_rate": 0.0,
+      "ci_low": 0.0,
+      "ci_high": 0.05500255701354129,
+      "confidence": 0.95
+    },
+    "belief_anchoring": {
+      "operator": "belief_anchoring",
+      "attempts": 66,
+      "successful": 0,
+      "evasion_rate": 0.0,
+      "ci_low": 0.0,
+      "ci_high": 0.05500255701354129,
+      "confidence": 0.95
+    },
+    "multi_hop_routing": {
+      "operator": "multi_hop_routing",
+      "attempts": 66,
+      "successful": 0,
+      "evasion_rate": 0.0,
+      "ci_low": 0.0,
+      "ci_high": 0.05500255701354129,
+      "confidence": 0.95
+    },
+    "canary_avoidance": {
+      "operator": "canary_avoidance",
+      "attempts": 66,
+      "successful": 0,
+      "evasion_rate": 0.0,
+      "ci_low": 0.0,
+      "ci_high": 0.05500255701354129,
+      "confidence": 0.95
+    },
+    "confidence_spoofing": {
+      "operator": "confidence_spoofing",
+      "attempts": 66,
+      "successful": 0,
+      "evasion_rate": 0.0,
+      "ci_low": 0.0,
+      "ci_high": 0.05500255701354129,
+      "confidence": 0.95
+    },
+    "byzantine_mimicry": {
+      "operator": "byzantine_mimicry",
+      "attempts": 66,
+      "successful": 0,
+      "evasion_rate": 0.0,
+      "ci_low": 0.0,
+      "ci_high": 0.05500255701354129,
+      "confidence": 0.95
+    },
+    "quorum_flooding": {
+      "operator": "quorum_flooding",
+      "attempts": 66,
+      "successful": 0,
+      "evasion_rate": 0.0,
+      "ci_low": 0.0,
+      "ci_high": 0.05500255701354129,
+      "confidence": 0.95
+    }
+  }
+}
