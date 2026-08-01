@@ -2,7 +2,7 @@
 
 Unified Part 3+4 of the **Cognitive Security for Multiagent Operators** series.
 
-**Status: Preprint** | **DOI:** [10.5281/zenodo.18364130](https://doi.org/10.5281/zenodo.18364130) | **Version:** 2.0.0
+**Status: Preprint** | **DOI:** [10.5281/zenodo.18364130](https://doi.org/10.5281/zenodo.18364130) | **Version:** 1.0.0
 
 ## Overview
 

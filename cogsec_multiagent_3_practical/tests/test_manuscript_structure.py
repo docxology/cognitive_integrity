@@ -158,10 +158,10 @@ def test_identity_coherence():
 
 
 def test_config_yaml_version():
-    """config.yaml must be at version 2.0 after merge."""
+    """config.yaml must be at version 1.0 for this release."""
     config_path = PROJECT_ROOT / "manuscript" / "config.yaml"
     content = config_path.read_text()
-    assert 'version: "2.0"' in content, "config.yaml must be at version 2.0"
+    assert 'version: "1.0"' in content, "config.yaml must be at version 1.0"
 
 
 def test_config_yaml_merged_title():

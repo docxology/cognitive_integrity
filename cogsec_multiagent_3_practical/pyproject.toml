@@ -7,7 +7,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "cogsec-multiagent-practical"
-version = "2.0.0"
+version = "1.0.0"
 description = "CIF Practical Applications and Deployment Guide — unified Parts 3 and 4: practitioner guidance and cross-domain CIF-AD-OODA analysis"
 authors = [
     {name = "Daniel Ari Friedman", email = "daniel@activeinference.institute"}
