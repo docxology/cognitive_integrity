@@ -50,11 +50,12 @@ uv run python scripts/01_posture_radar_figure.py
 # ... 02..06 analogue figure scripts
 ```
 
-> **Note:** As of this writing the produced figures are not embedded in the
-> rendered PDF — the `manuscript/config.yaml` `figures:` block declares paths
-> that the scripts do not produce, and none of the 8 real outputs are referenced
-> in the markdown. Wiring the figures into the paper is tracked as follow-up
-> work; the scripts themselves are real and deterministic.
+> **Figure wiring:** The 8 figures are embedded in the manuscript (each
+> `manuscript/*.md` references `figures/<name>.png` with an accurate caption and
+> a matching label in the `config.yaml` `figures:` block). Running
+> `scripts/verify_manuscript.py` validates that every image reference resolves
+> against `output/figures/`. A PDF re-render through the template pipeline
+> embeds them (so `\listoffigures` is populated).
 
 ## Verification and tests
 

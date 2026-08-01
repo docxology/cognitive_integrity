@@ -2,6 +2,8 @@
 
 Our cross-domain analysis of ten critical sectors reveals that Goal Hijacking is not merely a linguistic exploit but a structural corruption of the OODA Loop \cite{boyd1987patterns}. In every case---from drone swarms operating at millisecond time scales to diplomatic agents spanning months of deliberation---the attack vector was a transient signal that hijacked the agent's **Orientation** phase, rewriting its Functional Requirements in real-time. This section synthesizes the cross-domain findings, identifies universal attack patterns, evaluates CIF mechanism coverage, and acknowledges limitations.
 
+![CIF-AD-OODA attack-pattern coverage across ten domains for the three universal patterns (FR Polarity Inversion, Constraint Relaxation, Context Boundary Violation).](figures/domain_coverage.png){#fig:domain-coverage width=90%}
+
 ## 10.1 Cross-Domain Attack Pattern Taxonomy {#sec:attack_patterns}
 
 Three universal attack patterns emerge across the ten domains. Each pattern corresponds to a distinct manipulation of the Axiomatic Design Matrix \cite{suh2001axiomatic}:
@@ -64,6 +66,8 @@ The formalization of OODA transients as Design Matrix perturbations also reveals
 ## 10.4 CIF Mechanism Coverage Analysis {#sec:mechanism_coverage}
 
 A critical validation of the CIF framework is whether the five canonical mechanisms provide adequate coverage across diverse operational domains. The following matrix maps primary CIF defenses to the ten domains analyzed:
+
+![Binary mechanism $\times$ domain coverage matrix for the five CIF mechanisms across ten domains.](figures/cif_mechanism_coverage.png){#fig:mechanism-coverage width=90%}
 
 | CIF Mechanism | RE | NS | Cy | Dr | SC | Bio | FS | TW | Inf | FN | Total |
 | --------------- | :--: | :--: | :--: | :--: | :--: | :---: | :--: | :--: | :---: | :--: | :-----: |

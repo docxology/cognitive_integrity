@@ -2,6 +2,8 @@
 
 # Common Pitfalls and What the Research Shows {#sec:pitfalls}
 
+![Common pitfalls by severity across security/configuration/operational categories (e.g. implicit trust in outputs, missing input validation).](figures/pitfall_severity.png){#fig:pitfall-severity width=80%}
+
 The CIF research identifies recurring failure modes in multiagent deployments. This section catalogs eight anti-patterns, each assessed through what Parts 1 and 2 add to the problem and its mitigation.
 
 These pitfalls are ranked by severity. We prioritize critical and high-severity items as they represent verifiable vulnerabilities in the defense architecture.

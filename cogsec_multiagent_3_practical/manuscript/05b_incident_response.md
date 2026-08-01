@@ -2,6 +2,8 @@
 
 # Incident Response Playbooks {#sec:incident-response}
 
+![Deployment lifecycle phases (Pre-Deployment $\rightarrow$ Operational $\rightarrow$ Incident Response) with CIF security activities.](figures/timeline.png){#fig:timeline width=85%}
+
 When the Cognitive Integrity Framework (CIF) detects an attack, automated response handles quarantine and escalation. But automated response is not enough — effective recovery requires human judgment, forensics, and prevention hardening. These playbooks guide the human response to each adversary class.
 
 > **Companion reference.** The Supplementary Material S3 of this unified paper catalogues six documented 2024–2025 AI-agent security incidents (Replit agent meltdown, GitHub Copilot RCE CVE-2025-53773, Slack AI data exfiltration, a \$3.2M procurement fraud, and two others) with full attack-chain reconstructions mapped to the adversary classes below. When rehearsing these playbooks, using the S3 incident transcripts as training exercises grounds the guidance in real production failures.

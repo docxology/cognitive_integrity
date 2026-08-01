@@ -1,5 +1,7 @@
 # The Evidence: What We Proved in Part 2 {#sec:paper2-review}
 
+![Effective trust vs.\ delegation depth at decay factors $\delta = \{0.9, 0.85, 0.7\}$, with 50\% and 10\% thresholds marking delegation bounds.](figures/trust_decay.png){#fig:trust-decay width=75%}
+
 Part 1 supplies the formal apparatus. Part 2 supplies the empirical evaluation: tested CIF modules, a **950-attack** corpus, and an architecture-aware simulation over four headline topologies (Claude Code, AutoGPT, CrewAI, LangGraph), with broader adapter coverage documented in Part 2.
 
 Here is what the data says.

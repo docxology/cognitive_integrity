@@ -1,5 +1,7 @@
 # The Attack Landscape: Five Vectors {#sec:attack-scenarios}
 
+![Cognitive-security risk heatmap: impact $\times$ likelihood for eight named risks (Direct/Indirect Injection, Trust Laundering, Belief Manipulation, Goal Hijacking, Context Poisoning, Multi-turn Attacks, Consensus Subversion).](figures/risk_matrix.png){#fig:risk-matrix width=85%}
+
 This section details five concrete attack vectors from the Part 2 corpus, illustrating the mechanism and the CIF layer that answers it. The vectors here are adversarial-input archetypes; for the complementary *teleological* view (Functional Requirements under Axiomatic Design / OODA), three universal attack patterns (FR Polarity Inversion, Constraint Relaxation, Context Boundary Violation) from cross-domain analysis, and retrospective mapping of six documented 2024--2025 AI-agent incidents, see **§9--§10** (*Applications of the Cognitive Integrity Framework*, this paper).
 
 ## Vector 1: The Nested Injection (External, $\Omega_1$)

@@ -1,5 +1,9 @@
 # Deployment Profiles: Evaluated Configurations from Part 2 {#sec:deployment}
 
+![Five-Pillar operator posture assessment radar (Cognitive Firewall, Belief Sandbox, Identity Tripwire, Behavioral Invariants, Provenance), color-coded against readiness thresholds.](figures/posture_radar.png){#fig:posture-radar width=80%}
+
+![Pre-deployment $\rightarrow$ Integration $\rightarrow$ Testing $\rightarrow$ Operational checklist flowchart mapping CIF enforcement points to deployment phases.](figures/checklist_flowchart.png){#fig:checklist-flowchart width=85%}
+
 In Part 2, we evaluated specific configurations of the Cognitive Integrity Framework to understand how different tuning parameters affected security and performance outcomes. The following profiles are derived directly from the **Parameter Sensitivity Analysis** (Part 2, Section 5.3) and **Architecture-Specific Results** (Part 2, Section 5.1).
 
 ## Profile A: The "Internal Tool" Baseline (Low Latency)
