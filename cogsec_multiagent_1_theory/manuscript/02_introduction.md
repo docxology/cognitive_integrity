@@ -275,7 +275,7 @@ This paper provides both theoretical foundations and practical mechanisms for co
 \item \textbf{The Cognitive Integrity Framework (CIF)}: An integrated approach combining architectural defenses, runtime monitoring, and Byzantine-tolerant coordination for multiagent systems (\cref{sec:system-model})
 \end{enumerate}
 
-\textbf{Empirical Validation}: Part 2 of this series demonstrates the practical viability of these formal mechanisms across six production architectures, showing that layered cognitive defenses significantly outperform single-mechanism approaches. Practitioner translations, domain-specific applications, and real-world incident analyses appear in the merged Part 3 \cite{friedman2026cogsec3}.
+\textbf{Empirical Validation}: Part 2 of this series demonstrates the practical viability of these formal mechanisms across six production architectures, showing that layered cognitive defenses significantly outperform single-mechanism approaches. Practitioner translations, domain-specific applications, and real-world incident analyses appear in the merged Part 3+4 \cite{friedman2026cogsec3}.
 
 ## Paper Organization {#sec:organization}
 
@@ -297,7 +297,7 @@ The remainder of this paper is structured as follows:
 
 \textbf{Part 2: Experimental Validation} A separate, second, companion paper reports empirical results from architecture-aware parametric simulation across 950 attack vectors and six production architectures. Readers seeking detection rates, ablation studies, Bayesian uncertainty quantification, and architecture-specific defense configurations should consult Part 2 (DOI: 10.5281/zenodo.18364128).
 
-\textbf{Part 3: Practitioner Guidance \& Applications} The merged third companion paper (\emph{Cognitive Integrity in Practice and Critical Domains}) provides a qualitative review and practitioner's synthesis---accessible-language summaries of the theoretical and empirical findings, operational checklists, risk assessment frameworks, deployment guides, monitoring strategies, cost-benefit analyses---combined with CIF applications across ten high-stakes operational sectors through the integrated CIF-AD-OODA analytical model. Readers interested in domain-specific goal-hijacking defenses, universal attack patterns (FR polarity inversion, constraint relaxation, context boundary violation), or retrospective analysis of documented 2024--2025 AI agent security incidents should consult Part 3 (DOI: 10.5281/zenodo.18364130).
+\textbf{Part 3+4: Practitioner Guidance \& Applications} The merged third companion paper (\emph{Cognitive Integrity in Practice and Critical Domains}) provides a qualitative review and practitioner's synthesis---accessible-language summaries of the theoretical and empirical findings, operational checklists, risk assessment frameworks, deployment guides, monitoring strategies, cost-benefit analyses---combined with CIF applications across ten high-stakes operational sectors through the integrated CIF-AD-OODA analytical model. Readers interested in domain-specific goal-hijacking defenses, universal attack patterns (FR polarity inversion, constraint relaxation, context boundary violation), or retrospective analysis of documented 2024--2025 AI agent security incidents should consult Part 3 (DOI: 10.5281/zenodo.18364130).
 
 ## Reading Companion: Where to Find Specific Topics {#sec:reading-companion}
 

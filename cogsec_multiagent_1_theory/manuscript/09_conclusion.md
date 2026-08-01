@@ -160,7 +160,7 @@ CIF provides both theoretical foundations and practical mechanisms for this chal
 
 The formal gaps identified in this work---semantic equivalence attacks, progressive drift, orchestrator compromise---define the frontier for future research, while the provable guarantees (bounded trust, composable defenses, information-theoretic limits) provide the stable theoretical foundation on which that research can build.
 
-For empirical validation of these theories, we refer the reader to **Part 2: Computational Validation** (DOI: 10.5281/zenodo.18364128). For actionable deployment strategies, domain-specific goal-hijacking analyses, and real-world incident mapping, we refer the reader to **Part 3: Practitioner Guidance \& Applications** (DOI: 10.5281/zenodo.18364130).
+For empirical validation of these theories, we refer the reader to **Part 2: Computational Validation** (DOI: 10.5281/zenodo.18364128). For actionable deployment strategies, domain-specific goal-hijacking analyses, and real-world incident mapping, we refer the reader to **Part 3+4: Practitioner Guidance \& Applications** (DOI: 10.5281/zenodo.18364130).
 
 \textbf{As autonomous AI agents increasingly operate in high-stakes contexts---executing code, modifying infrastructure, controlling resources, and making decisions with lasting consequences---the formal foundations established here become not merely useful but essential infrastructure for secure deployment.}
 
