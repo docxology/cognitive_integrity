@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from .. import AssessmentResult, ChecklistItem, RiskLevel
+from .. import ChecklistItem
 from .models import ChecklistPhase, EnhancedChecklistItem, IncidentSeverity
 
 

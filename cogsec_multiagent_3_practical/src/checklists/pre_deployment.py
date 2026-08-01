@@ -7,6 +7,7 @@ from .models import (
     EnhancedChecklistItem,
 )
 
+
 class PreDeploymentChecklist:
     """Pre-deployment security checklist with 4 categories, 16 items.
 
