@@ -33,10 +33,11 @@ The key operational property is that once any module returns a $\mathrm{Detectio
 
 \begin{theorem}[Monadic Detection Preservation, CT.3]
 The $\mathrm{Result}[T, E]$ construction equipped with the \texttt{bind} operation
-\begin{align*}
+\begin{align}
+\label{eq:monad-bind}
 \texttt{bind}(\mathrm{Ok}(t), f) &= f(t), \\
 \texttt{bind}(\mathrm{Err}(e), f) &= \mathrm{Err}(e),
-\end{align*}
+\end{align}
 satisfies the three standard monad laws and a fourth CIF-specific detection-preservation law:
 \begin{enumerate}
 \item \emph{Left identity}: $\texttt{bind}(\mathrm{Ok}(\cogstate{}), f) = f(\cogstate{})$.
