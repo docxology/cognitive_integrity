@@ -152,7 +152,5 @@ This file contains LaTeX packages and commands for the Cognitive Security Framew
     citecolor=red
 }
 
-% Lists of figures and tables for front matter
-\listoffigures
-\listoftables
+% Front matter opens on the cover/title page (no list of figures/tables precedes it).
 ```

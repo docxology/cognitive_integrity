@@ -132,9 +132,4 @@ This file contains LaTeX packages and commands for the Cognitive Security Framew
 \usepackage[titles]{tocloft}
 ```
 
-After the table of contents, include:
-
-```latex
-\listoffigures
-\listoftables
-```
+After the table of contents, the rendered PDF begins directly with the cover/title page.

@@ -140,7 +140,5 @@ This file contains LaTeX packages and commands for the Cognitive Integrity Frame
 % QED symbol
 \renewcommand{\qedsymbol}{$\blacksquare$}
 
-% Lists of figures and tables (placed after TOC in rendered PDF)
-\listoffigures
-\listoftables
+% Front matter opens on the cover/title page (no list of figures/tables precedes it).
 ```
