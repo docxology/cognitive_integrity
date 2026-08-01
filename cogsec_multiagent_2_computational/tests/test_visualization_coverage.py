@@ -314,7 +314,17 @@ class TestStatisticalTablesEffectSizes:
         return {
             "h1": {"statistic": 5.2, "p_value": 0.0001, "significant": True},
             "h2": [
-                {"name": "Firewall only", "p_value": 0.0003, "significant": True},
+                {"name": "H2_firewall", "p_value": 0.0003, "significant": True},
+                {"name": "H2_sandbox", "p_value": 0.0400, "significant": False},
+            ],
+            "h3": [
+                {
+                    "name": "H3_autogpt",
+                    "test_statistic": 3.5,
+                    "p_value": 0.0002,
+                    "significant": True,
+                    "description": "CIF detection rate > baseline for 'autogpt'.",
+                },
             ],
             "cohens_d_cif_vs_baseline": cohens_d,
         }
@@ -363,16 +373,103 @@ class TestStatisticalTablesEffectSizes:
         table = st_mod.generate_effect_size_table()
         assert "Large" in table
 
-    def test_hypothesis_table_with_mock_data(self, monkeypatch):
-        """generate_hypothesis_table respects the provided results dict."""
+    def test_hypothesis_table_emits_every_recorded_test(self, monkeypatch):
+        """Every H1/H2/H3 record reaches the table, with its own recorded ID.
+
+        The table used to renumber the rows H2..H9 while printing the JSON's
+        own names in the adjacent column, giving each row two conflicting
+        IDs; and it dropped the H3 family entirely.
+        """
         import visualization.tables.statistical_tables as st_mod
 
         data = self._mock_stats_data(0.9)
         monkeypatch.setattr(st_mod, "_load_statistical_results", lambda: data)
         table = st_mod.generate_hypothesis_table()
-        assert "H1" in table
-        assert "H2" in table
+
         assert "\\begin{table}" in table
+        assert "H1 & CIF $>$ Baseline & 5.20 &" in table
+        # LaTeX-escaped identifiers, one row per recorded test.
+        for name in ("H2\\_firewall", "H2\\_sandbox", "H3\\_autogpt"):
+            assert table.count(name) >= 1, f"{name} missing from the table"
+        assert "H2\\_firewall & CIF $>$ firewall component alone" in table
+        # A record carrying its own description is used, LaTeX-escaped:
+        # a bare ">" in text mode does not typeset as a greater-than sign.
+        assert (
+            "CIF detection rate \\textgreater{} baseline for 'autogpt'." in table
+        )
+        # A recorded test_statistic is printed; a missing one prints "--".
+        assert "3.50" in table
+        # significance flags follow the data, not a constant "Yes"
+        assert table.count("& Yes \\\\") == 3
+        assert table.count("& No \\\\") == 1
+
+    def test_hypothesis_table_omits_families_absent_from_the_data(self, monkeypatch):
+        """POSITIVE CONTROL: rows appear only when the data carries them."""
+        import visualization.tables.statistical_tables as st_mod
+
+        monkeypatch.setattr(
+            st_mod, "_load_statistical_results",
+            lambda: {"h1": {"statistic": 1.0, "p_value": 0.5, "significant": False}},
+        )
+        table = st_mod.generate_hypothesis_table()
+        assert "H1 &" in table
+        assert "H2" not in table
+        assert "H3" not in table
+        assert "& No \\\\" in table
+        # A p-value at or above 0.001 is printed, not collapsed to "< 0.001".
+        assert "0.5000" in table
+
+    def test_hypothesis_table_without_h1(self, monkeypatch):
+        """An h1-less record set still renders the remaining families."""
+        import visualization.tables.statistical_tables as st_mod
+
+        monkeypatch.setattr(
+            st_mod, "_load_statistical_results",
+            lambda: {"h2": [{"name": "H2_firewall", "p_value": 0.0001,
+                             "significant": True}]},
+        )
+        table = st_mod.generate_hypothesis_table()
+        assert "H1 &" not in table
+        assert "H2\\_firewall &" in table
+
+    def test_hypothesis_row_with_an_unrecognised_name_falls_back_to_the_name(
+        self, monkeypatch,
+    ):
+        """An unfamiliar prefix must not be mislabelled as an H2 component test."""
+        import visualization.tables.statistical_tables as st_mod
+
+        monkeypatch.setattr(
+            st_mod, "_load_statistical_results",
+            lambda: {"h2": [{"name": "H9_mystery", "p_value": 0.02,
+                             "significant": False}]},
+        )
+        table = st_mod.generate_hypothesis_table()
+        assert "H9\\_mystery & H9\\_mystery &" in table
+        assert "component alone" not in table
+
+    def test_effect_size_table_omits_the_odds_ratio_column_when_unrecorded(
+        self, monkeypatch,
+    ):
+        """The column used to be present with '--' in its only cell."""
+        import visualization.tables.statistical_tables as st_mod
+
+        monkeypatch.setattr(
+            st_mod, "_load_statistical_results",
+            lambda: self._mock_stats_data(0.9),
+        )
+        assert "Odds Ratio" not in st_mod.generate_effect_size_table()
+
+    def test_effect_size_table_shows_the_odds_ratio_when_recorded(self, monkeypatch):
+        """POSITIVE CONTROL: the odds-ratio column is reachable and data-bound."""
+        import visualization.tables.statistical_tables as st_mod
+
+        data = self._mock_stats_data(0.9)
+        data["odds_ratio_cif_vs_baseline"] = 12.5
+        monkeypatch.setattr(st_mod, "_load_statistical_results", lambda: data)
+
+        table = st_mod.generate_effect_size_table()
+        assert "Odds Ratio" in table
+        assert "12.50" in table
 
     def test_effect_size_table_structure(self, monkeypatch):
         """generate_effect_size_table produces a well-formed LaTeX table."""

@@ -198,6 +198,31 @@ class TestDataGenerator:
         assert gen.seed == 99
         assert gen.output_dir == tmp_path / "custom"
 
+    def test_timestamp_capture_defaults_on(self):
+        gen = DataGenerator()
+        assert gen.include_timestamp is True
+        assert isinstance(gen.run_provenance()["timestamp_utc"], str)
+
+    def test_timestamp_capture_can_be_disabled(self):
+        """Deterministic mode: the wall-clock field is dropped, nothing else."""
+        stamped = DataGenerator(seed=42).run_provenance()
+        plain = DataGenerator(seed=42, include_timestamp=False).run_provenance()
+
+        assert plain["timestamp_utc"] is None
+        assert stamped["timestamp_utc"] is not None
+        assert {k: v for k, v in stamped.items() if k != "timestamp_utc"} == {
+            k: v for k, v in plain.items() if k != "timestamp_utc"
+        }
+
+    def test_provenance_block_carries_the_environment(self):
+        prov = DataGenerator(seed=7).provenance()
+        assert prov["seed"] == 7
+        env = prov["run_provenance"]
+        assert env["seed"] == 7
+        assert env["source_script"] == "scripts/generate_all_data.py"
+        # Recorded, never invented: numpy is installed, so it must resolve.
+        assert env["packages"]["numpy"] != "unknown"
+
     def test_generate_detection_data(self):
         gen = DataGenerator(seed=42)
         data = gen.generate_detection_data()

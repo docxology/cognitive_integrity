@@ -94,6 +94,7 @@ def _write_required_data(data_dir: Path, *, include_optional: bool = True) -> No
             ],
             "top_synergies": [
                 {"a": "firewall", "b": "detection", "synergy": 0.026},
+                {"a": "tripwire", "b": "detection", "synergy": 0.026},
             ],
         },
     )
@@ -123,11 +124,30 @@ def _write_required_data(data_dir: Path, *, include_optional: bool = True) -> No
         _write_json(data_dir / "colony_results.json", [{"scenario": "sybil"}])
 
 
+#: The trust-calculus delta in the setup fixture. It uses exactly the same
+#: LaTeX notation as the detection delta, so a claim-agnostic detection
+#: pattern silently overwrites it. It must survive every injection run.
+_TRUST_CALCULUS_CLAIM = (
+    "The trust calculus ablation shows a marginal contribution of "
+    "$\\Delta\\text{TPR} = -0.007$ on the corpus"
+)
+
+
 def _write_manuscript_files(manuscript_dir: Path) -> None:
+    """Write fixtures that mirror how the *real* manuscript states each claim.
+
+    The notation matters as much as the numbers: the real documents write
+    ``$\\approx -0.010$`` rather than ``$-0.010$``, pluralise some component
+    names ("Tripwires"), and restate the detection delta alongside another
+    component's delta in identical notation. A fixture written to suit the
+    injector's patterns instead of the manuscript's prose is the reason 17
+    dead substitutions went unnoticed, so both spellings appear below.
+    """
     manuscript_dir.mkdir(exist_ok=True)
     (manuscript_dir / "00_abstract.md").write_text(
         "mean detection rate of 0.0\\% [95\\% CI: 0.0\\%, 0.0\\%]\n"
-        "$\\Delta\\text{TPR} = -0.000$ achieving 0--0\\% detection across\n"
+        "the Detection module ($\\Delta\\text{TPR} = -0.000$ when removed) "
+        "achieving 0--0\\% detection across\n"
     )
     (manuscript_dir / "05_results.md").write_text(
         "Mean Detection Rate | 0.000\n"
@@ -136,38 +156,47 @@ def _write_manuscript_files(manuscript_dir: Path) -> None:
         "Max Detection Rate | 0.00\n"
         "| Claude Code | Hub-spoke | 0.0\\%\n"
         "| CrewAI | Chain | 0.0\\%\n"
-        "| Detection Rate (simulation) | 0.000\n"
+        "the Detection module contributes the largest marginal loss "
+        "($\\Delta\\text{TPR} \\approx -0.000$ when removed)\n"
     )
     (manuscript_dir / "05d_ablation_and_scalability.md").write_text(
-        "The Detection module contributes $\\Delta\\text{TPR} = -0.000), "
-        "followed by Tripwire ($-0.011$). The Firewall + Detection pair "
-        "exhibits the strongest positive synergy ($+0.000$ beyond additive prediction).\n"
+        "The Detection module contributes $\\Delta\\text{TPR} \\approx -0.000$), "
+        "followed by Old ($-0.000$); Provenance, Sandbox, and Consensus show zero.\n"
+        "The top synergy tier (old-pair, both "
+        + r"$\approx +0.000$" + ") confirms synergy.\n"
         "| Detection module | 0.000 | $-0.000$ | text |\n"
-        "| Firewall | 0.000 | $-0.000$ | text |\n"
+        "| Firewall | 0.000 | "
+        + r"$\approx -0.000$" + " | text |\n"
         "| Trust Calculus | 0.000 | $-0.000$ | text |\n"
-        "| Tripwire | 0.000 | $-0.000$ | text |\n"
-        "Detection module $>$ Tripwire. multi-seed analysis shows $\\sim$0.0\\%\n"
+        "| Tripwires | 0.000 | "
+        + r"$\approx -0.000$" + " | text |\n"
+        "Detection module $>$ Old. multi-seed analysis shows $\\sim$0.0\\%\n"
     )
     (manuscript_dir / "06_discussion.md").write_text(
         "mean detection rate of 0.0\\% [95\\% CI: 0.0\\%, 0.0\\%] "
-        "$\\Delta\\text{TPR} = -0.000) strongest synergy ($+0.000$\n"
+        "The Detection module alone contributes $\\Delta\\text{TPR} = -0.000$ "
+        "strongest synergy ($+0.000$\n"
     )
     (manuscript_dir / "04_experimental_setup.md").write_text(
         "validation ($N=5$ | Claude Code | Hub-spoke | 0.0\\% "
         "| CrewAI | Chain | 0.0\\% mean DR $\\sim$0\\%\n"
+        "(Detection module: $\\Delta\\text{TPR} \\approx -0.000$ when removed)\n"
+        f"{_TRUST_CALCULUS_CLAIM}\n"
     )
     (manuscript_dir / "07_conclusion.md").write_text(
-        "mean DR = 0.0\\% $\\Delta\\text{TPR} = -0.000 synergy ($+0.000$\n"
+        "mean DR = 0.0\\% strongest synergy ("
+        + r"$\approx +0.000$" + "\n"
     )
     (manuscript_dir / "05b_statistical_significance.md").write_text(
         "Mean DR | 0.000\n"
         "CV | 0.000 |\n"
-        "None (full pipeline) | 0.000\n"
+        "| None (full pipeline) | $\\approx 0.000$ |\n"
+        "The Detection module ($\\Delta\\text{TPR} \\approx -0.000$) "
+        "vs\\ full pipeline $\\approx 0.000$\n"
     )
     (manuscript_dir / "S08_parametric_analysis.md").write_text(
         "| Detection Rate (simulation) | 0.000\n"
         "| Detection Rate — AutoGPT only | 0.000\n"
-        "Cohen's $d$ = 0.00\n"
     )
 
 
@@ -200,6 +229,7 @@ def test_load_ground_truth_recovers_baseline_from_ablation_rows(tmp_path: Path) 
         "b": "detection",
         "synergy": 0.026,
     }
+    assert len(ground_truth["top_synergy_ties"]) == 2
     assert ground_truth["llm_total_n"] == 10
     assert ground_truth["colony_scenarios"] == [{"scenario": "sybil"}]
     assert is_available(ground_truth, "llm")
@@ -706,6 +736,51 @@ def test_unavailable_multi_seed_leaves_every_dependent_claim_alone(
     assert "Mean Detection Rate | 0.459" in (manuscript_dir / "05_results.md").read_text()
 
 
+def test_degenerate_ablation_input_does_not_invent_an_ordering() -> None:
+    """Empty inputs yield nothing, not a plausible-looking default."""
+    from manuscript.injector import _component_hierarchy, _tied_top_synergies
+
+    assert _tied_top_synergies([]) == []
+    assert _component_hierarchy([]) == ""
+    # Positive control: one component is still rendered, so "" above is caused
+    # by emptiness and not by the helper being inert.
+    assert _component_hierarchy([{"removed": "detection", "delta_tpr": -0.05}]) == (
+        "Detection module"
+    )
+    assert _tied_top_synergies([{"a": "x", "b": "y", "synergy": 0.1}]) == [
+        {"a": "x", "b": "y", "synergy": 0.1}
+    ]
+
+
+def test_a_single_seed_with_a_recorded_cv_yields_no_interval(tmp_path: Path) -> None:
+    """One seed has a CV on file but no spread, so no CI may be published."""
+    data_dir = tmp_path / "data"
+    _write_required_data(data_dir)
+    _write_json(
+        data_dir / "multi_seed_results.json",
+        {"n_seeds": 1, "overall_cv": 0.0, "seed_metrics": [{"seed": 1, "overall": 0.42}]},
+    )
+
+    gt = load_ground_truth(data_dir)
+
+    assert is_available(gt, "multi_seed")
+    assert gt["multi_seed_mean_dr"] == 0.42
+    assert "multi_seed_ci_halfwidth" not in gt
+    assert "multi_seed_ci_method" not in gt
+
+
+def test_supplement_injector_raises_standalone_when_the_file_is_gone(
+    project: tuple[Path, Path],
+) -> None:
+    """The standalone entry point must not return a quiet False."""
+    data_dir, manuscript_dir = project
+    gt = load_ground_truth(data_dir)
+    (manuscript_dir / "S08_parametric_analysis.md").unlink()
+
+    with pytest.raises(GroundTruthUnavailableError, match="not found"):
+        inject_parametric_supplement(gt, manuscript_dir, True)
+
+
 def test_component_baseline_tpr_of_no_components_is_zero() -> None:
     """Degenerate ablation input does not blow up the loader helper."""
     from manuscript.injector import _component_baseline_tpr
@@ -728,16 +803,31 @@ def test_report_counts_matches_rather_than_assuming_them(project: tuple[Path, Pa
     assert report.n_substitutions >= len(report.substitutions) > 20
 
 
-def test_missing_supplement_is_skipped_without_a_miss(project: tuple[Path, Path]) -> None:
-    """An absent optional supplement is a skip, not a zero-match error."""
+def test_missing_supplement_is_unbacked_not_a_clean_skip(
+    project: tuple[Path, Path],
+) -> None:
+    """An absent supplement silently drops two maintained claims.
+
+    The old behaviour logged "not found — skipping" and left ``report.ok``
+    True, so deleting the document was indistinguishable from a clean run.
+    """
     data_dir, manuscript_dir = project
     (manuscript_dir / "S08_parametric_analysis.md").unlink()
 
     report = InjectionReport()
-    inject_all(data_dir, manuscript_dir, dry_run=True, report=report)
+    with pytest.raises(GroundTruthUnavailableError, match="S08_parametric_analysis.md"):
+        inject_all(data_dir, manuscript_dir, dry_run=True, report=report)
 
-    assert report.ok
+    assert not report.ok
+    assert [label for _, label, _ in report.unbacked] == ["parametric_supplement"]
     assert not any(doc.startswith("S08") for doc, _, _ in report.substitutions)
+
+    # Positive control: restore the document and the identical run is clean.
+    _write_manuscript_files(manuscript_dir)
+    clean = InjectionReport()
+    inject_all(data_dir, manuscript_dir, dry_run=True, report=clean)
+    assert clean.ok
+    assert any(doc.startswith("S08") for doc, _, _ in clean.substitutions)
 
 
 @pytest.mark.parametrize("inject", ALL_INJECTORS, ids=lambda f: f.__name__)
@@ -788,14 +878,318 @@ def test_inject_all_updates_manuscript_files_from_data(project: tuple[Path, Path
     assert "| Detection module | 0.068 | $-0.052$" in (
         manuscript_dir / "05d_ablation_and_scalability.md"
     ).read_text()
-    assert "None (full pipeline) | 0.120" in (
-        manuscript_dir / "05b_statistical_significance.md"
-    ).read_text()
-    assert "Cohen's $d$ = 2.35" in (
-        manuscript_dir / "S08_parametric_analysis.md"
-    ).read_text()
+    statistical = (manuscript_dir / "05b_statistical_significance.md").read_text()
+    # The table row and the paragraph that interprets it are both maintained,
+    # so they cannot contradict each other.
+    assert "None (full pipeline) | $\\approx 0.120$" in statistical
+    assert "full pipeline $\\approx 0.120" in statistical
 
     assert inject_all(data_dir, manuscript_dir) == 0
+
+
+# ---------------------------------------------------------------------------
+# The patterns must match the *real* manuscript, not just the fixture
+# ---------------------------------------------------------------------------
+
+_PROJECT_ROOT = Path(__file__).resolve().parent.parent
+_REAL_DATA_DIR = _PROJECT_ROOT / "output" / "data"
+_REAL_MANUSCRIPT_DIR = _PROJECT_ROOT / "manuscript"
+
+
+def _real_run(manuscript_dir: Path) -> InjectionReport:
+    """Dry-run every injector over ``manuscript_dir`` with the real data."""
+    report = InjectionReport()
+    try:
+        inject_all(
+            _REAL_DATA_DIR, manuscript_dir, dry_run=True, strict=False, report=report
+        )
+    except InjectionPatternError:
+        pass  # the report is what we assert on; re-raising hides the detail
+    return report
+
+
+def test_every_substitution_matches_the_real_manuscript() -> None:
+    """No pattern in this module may be dead against the shipped manuscript.
+
+    The fixture above is written to suit the injector, so it can never catch
+    manuscript drift — 17 substitutions were dead for months while the whole
+    suite stayed green. This test binds the patterns to the documents they
+    actually maintain. Both directories are git-tracked, so an absent one is a
+    failure rather than a skip.
+    """
+    assert _REAL_DATA_DIR.is_dir(), f"{_REAL_DATA_DIR} missing — cannot audit patterns"
+    assert _REAL_MANUSCRIPT_DIR.is_dir(), f"{_REAL_MANUSCRIPT_DIR} missing"
+
+    report = _real_run(_REAL_MANUSCRIPT_DIR)
+
+    assert report.misses == [], (
+        "dead substitution(s) against the real manuscript: "
+        + "; ".join(f"{doc}:{label}" for doc, label, _ in report.misses)
+    )
+    assert report.n_substitutions > 30
+
+
+def test_the_real_manuscript_audit_can_actually_fail(tmp_path: Path) -> None:
+    """Positive control for the test above.
+
+    Copy the real manuscript, drift one document the way manuscripts really
+    drift (change the notation, keep the claim), and the audit must report it.
+    """
+    copy = tmp_path / "manuscript"
+    copy.mkdir()
+    for source in _REAL_MANUSCRIPT_DIR.glob("*.md"):
+        (copy / source.name).write_text(source.read_text())
+
+    assert _real_run(copy).misses == []  # baseline: the copy is clean
+
+    drifted = copy / "05b_statistical_significance.md"
+    drifted.write_text(
+        drifted.read_text().replace("None (full pipeline)", "None [full pipeline]")
+    )
+
+    misses = _real_run(copy).misses
+    assert [label for _, label, _ in misses] == ["full_pipeline_tpr"]
+
+
+def test_the_real_manuscript_is_left_untouched_by_a_dry_run() -> None:
+    """The audit above must not rewrite the manuscript it audits."""
+    before = {p.name: p.read_text() for p in _REAL_MANUSCRIPT_DIR.glob("*.md")}
+    _real_run(_REAL_MANUSCRIPT_DIR)
+    after = {p.name: p.read_text() for p in _REAL_MANUSCRIPT_DIR.glob("*.md")}
+    assert before == after
+
+
+# ---------------------------------------------------------------------------
+# A substitution must rewrite its own claim and no other
+# ---------------------------------------------------------------------------
+
+
+def test_detection_delta_does_not_overwrite_another_components_delta(
+    project: tuple[Path, Path],
+) -> None:
+    """04_experimental_setup states the trust-calculus delta in the same notation.
+
+    An unanchored ``\\Delta\\text{TPR}`` pattern rewrites it with the detection
+    figure, turning -0.007 into -0.052 while every existing test stays green.
+    """
+    data_dir, manuscript_dir = project
+    setup = manuscript_dir / "04_experimental_setup.md"
+
+    inject_all(data_dir, manuscript_dir)
+
+    text = setup.read_text()
+    assert _TRUST_CALCULUS_CLAIM in text, "the trust-calculus delta was overwritten"
+    # The detection claim in the same file *was* updated, so the substitution
+    # ran; it simply did not reach across to the other component.
+    assert "(Detection module: $\\Delta\\text{TPR} \\approx -0.052$" in text
+    assert text.count("-0.052") == 1
+
+
+def test_detection_delta_still_fires_when_the_claim_is_present(
+    project: tuple[Path, Path],
+) -> None:
+    """Positive control for the anchor: remove "Detection" and it must miss."""
+    data_dir, manuscript_dir = project
+    setup = manuscript_dir / "04_experimental_setup.md"
+    setup.write_text(setup.read_text().replace("(Detection module: $", "(that one: $"))
+
+    report = InjectionReport()
+    with pytest.raises(InjectionPatternError):
+        inject_all(data_dir, manuscript_dir, dry_run=True, strict=False, report=report)
+
+    assert ("04_experimental_setup.md", "detection_delta") in {
+        (doc, label) for doc, label, _ in report.misses
+    }
+
+
+# ---------------------------------------------------------------------------
+# Signs, qualifiers and ties come from the data, not from assumptions
+# ---------------------------------------------------------------------------
+
+
+def test_a_positive_delta_is_written_with_a_plus_sign(project: tuple[Path, Path]) -> None:
+    """Removing a component can *raise* TPR; that must not print as a loss.
+
+    The previous formatting was ``f"-{abs(delta):.3f}"``, which rendered a
+    measured +0.002 as -0.002 — a sign inverted by the reporting layer.
+    """
+    data_dir, manuscript_dir = project
+    ablation = json.loads((data_dir / "ablation_results.json").read_text())
+    ablation["component_removal"][3] = {
+        "removed": "tripwire",
+        "tpr": 0.126,
+        "delta_tpr": 0.002,
+    }
+    _write_json(data_dir / "ablation_results.json", ablation)
+
+    inject_all(data_dir, manuscript_dir)
+
+    text = (manuscript_dir / "05d_ablation_and_scalability.md").read_text()
+    assert "| Tripwires | 0.126 | $\\approx +0.002$" in text
+    assert "$\\approx -0.002$" not in text
+    assert "Tripwire ($\\approx +0.002$)" in text  # the caption agrees
+
+
+def test_the_latex_qualifier_is_preserved_rather_than_normalised(
+    project: tuple[Path, Path],
+) -> None:
+    """``\\approx`` stays ``\\approx`` and ``=`` stays ``=``.
+
+    The injector maintains values, not wording; silently promoting an
+    approximate claim to an exact one would be an unearned strengthening.
+    """
+    data_dir, manuscript_dir = project
+
+    inject_all(data_dir, manuscript_dir)
+
+    approx = (manuscript_dir / "05_results.md").read_text()
+    exact = (manuscript_dir / "00_abstract.md").read_text()
+    assert "$\\Delta\\text{TPR} \\approx -0.052$" in approx
+    assert "$\\Delta\\text{TPR} = -0.052$" in exact
+    assert "\\approx" not in exact.split("achieving")[0].split("CI:")[-1]
+
+
+def test_injected_latex_carries_no_control_characters(
+    project: tuple[Path, Path],
+) -> None:
+    """``\\approx`` in an re.sub replacement becomes BEL unless escaped.
+
+    ``re.sub`` interprets escapes in the *replacement*, so a literal "\\a"
+    silently emits \\x07. LaTeX then fails to build, or worse, builds without
+    the symbol.
+    """
+    data_dir, manuscript_dir = project
+
+    inject_all(data_dir, manuscript_dir)
+
+    for path in manuscript_dir.glob("*.md"):
+        text = path.read_text()
+        offenders = {ch for ch in text if ord(ch) < 32 and ch != "\n"}
+        assert not offenders, f"{path.name} contains {offenders!r}"
+        assert "pprox" not in text.replace("\\approx", "")
+
+
+def test_tied_top_synergies_are_never_reported_as_a_single_winner(
+    project: tuple[Path, Path],
+) -> None:
+    """Every synergy is a multiple of 1/N, so exact ties are routine.
+
+    Naming ``top_synergies[0]`` "the strongest" invents an ordering the
+    measurement cannot support.
+    """
+    data_dir, manuscript_dir = project
+    ablation = json.loads((data_dir / "ablation_results.json").read_text())
+    ablation["top_synergies"] = [
+        {"a": "firewall", "b": "detection", "synergy": 0.030612244897959176},
+        {"a": "tripwire", "b": "detection", "synergy": 0.030612244897959176},
+        {"a": "firewall", "b": "trust_calculus", "synergy": 0.020408163265306124},
+    ]
+    _write_json(data_dir / "ablation_results.json", ablation)
+
+    gt = load_ground_truth(data_dir)
+    assert [(s["a"], s["b"]) for s in gt["top_synergy_ties"]] == [
+        ("firewall", "detection"),
+        ("tripwire", "detection"),
+    ]
+
+    inject_all(data_dir, manuscript_dir)
+    text = (manuscript_dir / "05d_ablation_and_scalability.md").read_text()
+    assert (
+        "The top synergy tier (firewall+detection and tripwire+detection, both"
+        in text
+    )
+
+    # Positive control: break the tie by one measurement step and the sentence
+    # must collapse back to a single named pair.
+    ablation["top_synergies"][1]["synergy"] = 0.020408163265306124
+    _write_json(data_dir / "ablation_results.json", ablation)
+    inject_all(data_dir, manuscript_dir)
+    text = (manuscript_dir / "05d_ablation_and_scalability.md").read_text()
+    assert "The top synergy tier (firewall+detection, both" in text
+    assert " and " not in text.split("The top synergy tier (")[1].split(",")[0]
+
+
+def test_tied_components_are_joined_with_equals_not_greater_than(
+    project: tuple[Path, Path],
+) -> None:
+    """A strict ``$>$`` chain over equal deltas asserts a ranking that is not there."""
+    data_dir, manuscript_dir = project
+    ablation = json.loads((data_dir / "ablation_results.json").read_text())
+    for row in ablation["component_removal"][1:]:
+        row["delta_tpr"] = -0.010204081632653059
+        row["tpr"] = 0.11224489795918367
+    _write_json(data_dir / "ablation_results.json", ablation)
+
+    inject_all(data_dir, manuscript_dir)
+
+    text = (manuscript_dir / "05d_ablation_and_scalability.md").read_text()
+    assert (
+        "Detection module $\\gg$ Firewall $\\approx$ Trust Calculus $\\approx$ Tripwire." in text
+    )
+
+    # Positive control: separate them again and the chain becomes strict.
+    for offset, row in enumerate(ablation["component_removal"][1:]):
+        row["delta_tpr"] = -0.019 + offset * 0.004
+    _write_json(data_dir / "ablation_results.json", ablation)
+    inject_all(data_dir, manuscript_dir)
+    text = (manuscript_dir / "05d_ablation_and_scalability.md").read_text()
+    assert "Detection module $\\gg$ Firewall $>$ Trust Calculus $>$ Tripwire." in text
+    assert "$\\approx$" not in text
+
+
+# ---------------------------------------------------------------------------
+# The published interval is named, not just computed
+# ---------------------------------------------------------------------------
+
+
+def test_the_ci_method_is_recorded_alongside_the_halfwidth(tmp_path: Path) -> None:
+    """The manuscript must be able to state which interval this is."""
+    from manuscript.injector import MULTI_SEED_CI_METHOD
+
+    data_dir = tmp_path / "data"
+    _write_required_data(data_dir)
+
+    gt = load_ground_truth(data_dir)
+
+    assert gt["multi_seed_ci_method"] == MULTI_SEED_CI_METHOD
+    assert "normal approximation" in MULTI_SEED_CI_METHOD
+    assert "seed" in MULTI_SEED_CI_METHOD
+
+
+def test_the_ci_halfwidth_matches_an_independent_derivation(tmp_path: Path) -> None:
+    """Recompute z*s/sqrt(k) longhand rather than re-calling the module.
+
+    ``import statistics`` resolves to this project's ``src/statistics``
+    package, not the stdlib, so the arithmetic is spelled out here.
+    """
+    import math
+
+    data_dir = tmp_path / "data"
+    _write_required_data(data_dir)
+    rates = [
+        m["overall"]
+        for m in json.loads((data_dir / "multi_seed_results.json").read_text())[
+            "seed_metrics"
+        ]
+    ]
+    k = len(rates)
+    mean = sum(rates) / k
+    z95 = 1.959963984540054
+
+    gt = load_ground_truth(data_dir)
+
+    sample_sd = math.sqrt(sum((r - mean) ** 2 for r in rates) / (k - 1))
+    assert gt["multi_seed_ci_halfwidth"] == pytest.approx(
+        z95 * sample_sd / math.sqrt(k), rel=1e-12
+    )
+
+    # Positive control: a population SD (ddof=0) gives a *different* number,
+    # so this assertion is sensitive to which estimator is used and is not
+    # satisfied by any half-width that happens to be in the right ballpark.
+    population_sd = math.sqrt(sum((r - mean) ** 2 for r in rates) / k)
+    assert gt["multi_seed_ci_halfwidth"] != pytest.approx(
+        z95 * population_sd / math.sqrt(k), rel=1e-6
+    )
 
 
 def test_injected_llm_values_track_the_data_file(project: tuple[Path, Path]) -> None:

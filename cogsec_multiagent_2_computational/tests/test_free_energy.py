@@ -25,6 +25,7 @@ import pytest
 
 from src.core.trust import TrustConfig
 from src.formal.free_energy import (
+    SANDBOX_UPDATE_SCALE,
     BeliefState,
     GenerativeModel,
     belief_sandbox_as_constrained_inference,
@@ -36,6 +37,14 @@ from src.formal.free_energy import (
     precision_weighted_trust,
     variational_free_energy,
 )
+
+
+def _binary_model() -> GenerativeModel:
+    """A two-state / two-observation generative model used across tests."""
+    return GenerativeModel(
+        prior=np.array([0.5, 0.5]),
+        likelihood=np.array([[0.9, 0.1], [0.1, 0.9]]),
+    )
 
 
 def test_belief_state_validates_length():
@@ -191,3 +200,217 @@ def test_connect_to_trust_calculus_matches_defaults():
     assert precisions["beta_precision"] == pytest.approx(cfg.beta)
     assert precisions["gamma_precision"] == pytest.approx(cfg.gamma)
     assert precisions["composite_precision"] == pytest.approx(1.0)
+
+
+# ---------------------------------------------------------------------------
+# Belief-sandbox fail-closed path (audit TEST-14)
+#
+# The security-relevant branch: a candidate posterior that clips to all-zeros
+# cannot be normalised, so the sandbox must refuse it outright rather than
+# attempting an update it cannot represent.
+# ---------------------------------------------------------------------------
+
+
+def test_sandbox_blocks_degenerate_update_that_clips_to_zero():
+    """An update that annihilates the posterior is BLOCKED, not accepted."""
+    model = _binary_model()
+    prior = BeliefState(probs=np.array([0.5, 0.5]), labels=["A", "B"], precision=1.0)
+    # candidate = probs + SCALE * (-probs / SCALE) = 0 exactly.
+    suspicious = -prior.probs / SANDBOX_UPDATE_SCALE
+
+    result = belief_sandbox_as_constrained_inference(
+        prior,
+        suspicious_update=suspicious,
+        model=model,
+        observation_idx=0,
+    )
+
+    assert result["sandbox_blocks"] is True
+    assert result["delta_F"] == float("inf")
+    assert result["q_accepted"] is prior
+
+
+def test_sandbox_blocks_update_that_clips_to_zero_via_negative_rectification():
+    """Every component driven negative also lands on the fail-closed branch."""
+    model = _binary_model()
+    prior = BeliefState(probs=np.array([0.25, 0.75]), labels=["A", "B"], precision=1.0)
+
+    result = belief_sandbox_as_constrained_inference(
+        prior,
+        suspicious_update=np.array([-100.0, -100.0]),
+        model=model,
+        observation_idx=1,
+    )
+
+    assert result["sandbox_blocks"] is True
+    assert result["delta_F"] == float("inf")
+    assert result["q_accepted"] is prior
+
+
+def test_positive_control_sandbox_does_not_block_a_survivable_update():
+    """Proves the degenerate-update tests above discriminate.
+
+    The same call shape with an update that leaves surviving mass must take
+    the ordinary path: a finite ΔF and (here) acceptance.  If the fail-closed
+    branch were unconditional, this assertion would fail.
+    """
+    model = _binary_model()
+    prior = BeliefState(probs=np.array([0.5, 0.5]), labels=["A", "B"], precision=1.0)
+
+    result = belief_sandbox_as_constrained_inference(
+        prior,
+        suspicious_update=np.array([-4.0, 0.0]),  # clips A to 0.1, B survives
+        model=model,
+        observation_idx=0,
+    )
+
+    assert np.isfinite(result["delta_F"])
+    assert result["q_accepted"] is not prior
+    assert result["q_accepted"].probs.sum() == pytest.approx(1.0)
+
+
+def test_sandbox_rejects_shape_mismatched_update():
+    model = _binary_model()
+    prior = BeliefState(probs=np.array([0.5, 0.5]), labels=["A", "B"])
+    with pytest.raises(ValueError, match="suspicious_update shape mismatch"):
+        belief_sandbox_as_constrained_inference(
+            prior,
+            suspicious_update=np.array([0.1, 0.1, 0.1]),
+            model=model,
+            observation_idx=0,
+        )
+
+
+# ---------------------------------------------------------------------------
+# BeliefState.normalize (audit TEST-14): a public API no test called.
+# ---------------------------------------------------------------------------
+
+
+def test_normalize_sums_to_one_and_preserves_proportions():
+    state = BeliefState(probs=np.array([2.0, 6.0]), labels=["A", "B"], precision=3.5)
+    normalised = state.normalize()
+
+    assert normalised.probs.sum() == pytest.approx(1.0)
+    np.testing.assert_allclose(normalised.probs, np.array([0.25, 0.75]))
+    assert normalised.labels == ["A", "B"]
+    assert normalised.precision == pytest.approx(3.5)
+    # The original is untouched (normalize returns a copy).
+    np.testing.assert_allclose(state.probs, np.array([2.0, 6.0]))
+    assert normalised.labels is not state.labels
+
+
+def test_normalize_is_idempotent_on_an_already_normalised_state():
+    state = BeliefState(probs=np.array([0.25, 0.75]), labels=["A", "B"])
+    np.testing.assert_allclose(state.normalize().probs, state.probs)
+
+
+def test_normalize_all_zero_raises():
+    """A state with no mass cannot be normalised -- it must not silently pass."""
+    state = BeliefState(probs=np.array([0.0, 0.0]), labels=["A", "B"])
+    with pytest.raises(ValueError, match="Cannot normalize an all-zero BeliefState"):
+        state.normalize()
+
+
+# ---------------------------------------------------------------------------
+# Every remaining ValueError guard in the module (audit TEST-14).
+#
+# Each case is paired, in the same parametrisation, with the observation that
+# the *adjacent* valid input is accepted -- see the positive control below --
+# so a guard that fired unconditionally would be caught.
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize(
+    ("call", "message"),
+    [
+        (
+            lambda: BeliefState(probs=np.array([[0.5, 0.5]]), labels=["A", "B"]),
+            "must be 1-D",
+        ),
+        (
+            lambda: GenerativeModel(prior=np.array([[0.5, 0.5]]), likelihood=np.eye(2)),
+            "prior must be 1-D",
+        ),
+        (
+            lambda: GenerativeModel(prior=np.array([0.5, 0.5]), likelihood=np.array([0.5, 0.5])),
+            "likelihood must be 2-D",
+        ),
+        (
+            lambda: GenerativeModel(prior=np.array([-0.5, 1.5]), likelihood=np.eye(2)),
+            "must be non-negative",
+        ),
+        (
+            lambda: variational_free_energy(
+                BeliefState(probs=np.array([0.5, 0.5]), labels=["A", "B"]),
+                _binary_model(),
+                observation_idx=7,
+            ),
+            "out of range",
+        ),
+        (
+            lambda: precision_weighted_trust([], []),
+            "requires >= 1 message",
+        ),
+        (
+            lambda: precision_weighted_trust(
+                [BeliefState(probs=np.array([0.5, 0.5]), labels=["A", "B"])], [1.0, 2.0]
+            ),
+            "length mismatch",
+        ),
+        (
+            lambda: precision_weighted_trust(
+                [BeliefState(probs=np.array([0.5, 0.5]), labels=["A", "B"])], [-1.0]
+            ),
+            "must be non-negative",
+        ),
+        (
+            lambda: precision_weighted_trust(
+                [BeliefState(probs=np.array([0.5, 0.5]), labels=["A", "B"])], [0.0]
+            ),
+            "must be positive",
+        ),
+        (
+            lambda: precision_weighted_trust(
+                [
+                    BeliefState(probs=np.array([0.5, 0.5]), labels=["A", "B"]),
+                    BeliefState(probs=np.array([0.3, 0.3, 0.4]), labels=["A", "B", "C"]),
+                ],
+                [1.0, 1.0],
+            ),
+            "must share dimension",
+        ),
+        (
+            lambda: precision_weighted_trust(
+                [BeliefState(probs=np.array([0.0, 0.0]), labels=["A", "B"])], [1.0]
+            ),
+            "Accumulated mass is zero",
+        ),
+        (
+            lambda: pragmatic_value(
+                BeliefState(probs=np.array([0.5, 0.5]), labels=["A", "B"]),
+                np.array([0.3, 0.3, 0.4]),
+            ),
+            "preferred_states shape mismatch",
+        ),
+    ],
+)
+def test_guard_clauses_reject_invalid_input(call, message):
+    with pytest.raises(ValueError, match=message):
+        call()
+
+
+def test_positive_control_guard_clauses_admit_valid_input():
+    """The guards above are conditional, not unconditional raises.
+
+    Each production call exercised in the parametrisation is repeated here
+    with the one offending argument corrected; every one must succeed.
+    """
+    model = _binary_model()
+    good = BeliefState(probs=np.array([0.5, 0.5]), labels=["A", "B"])
+
+    assert BeliefState(probs=np.array([0.5, 0.5]), labels=["A", "B"]).probs.ndim == 1
+    assert GenerativeModel(prior=np.array([0.5, 0.5]), likelihood=np.eye(2)).likelihood.ndim == 2
+    assert np.isfinite(variational_free_energy(good, model, observation_idx=1))
+    assert precision_weighted_trust([good], [1.0]).precision == pytest.approx(1.0)
+    assert precision_weighted_trust([good, good], [1.0, 1.0]).probs.sum() == pytest.approx(1.0)
+    assert pragmatic_value(good, np.array([0.5, 0.5])) == pytest.approx(0.0, abs=1e-9)

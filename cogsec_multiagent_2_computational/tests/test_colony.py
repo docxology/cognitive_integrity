@@ -12,7 +12,12 @@ import numpy as np
 import pytest
 
 from colony.belief_cascade import BeliefCascadeScenario, _build_small_world_adjacency
-from colony.benchmark import ColonyBenchmark, ColonyConfig, ColonyResult
+from colony.benchmark import (
+    ColonyBenchmark,
+    ColonyConfig,
+    ColonyResult,
+    ColonyScenario,
+)
 from colony.emergent_misalignment import EmergentMisalignmentScenario
 from colony.quorum_manipulation import QuorumManipulationScenario
 from colony.recruitment_poisoning import RecruitmentPoisoningScenario
@@ -504,6 +509,305 @@ class TestColonyBenchmark:
         bench = ColonyBenchmark(scenarios=[RecruitmentPoisoningScenario()])
         summary = bench.summary()
         assert summary == {}
+
+
+# =========================================================================
+# Section 3b: Seed-sweep interval estimation (ColonyScenarioSummary)
+# =========================================================================
+
+
+class _ConstantScenario(ColonyScenario):
+    """Scenario that ignores the RNG and always returns the same numbers.
+
+    Used as the *negative* arm of the variance positive control: a genuinely
+    degenerate process must produce a zero-width interval, so a non-zero
+    width elsewhere cannot be an artefact of the interval machinery.
+    """
+
+    def __init__(self, name: str = "constant", value: float = 0.7) -> None:
+        self._name = name
+        self._value = value
+
+    @property
+    def name(self) -> str:
+        return self._name
+
+    def default_config(self) -> ColonyConfig:
+        return ColonyConfig(n_agents=4, n_steps=3, n_adversaries=1)
+
+    def run(self, config: ColonyConfig, rng: np.random.Generator) -> ColonyResult:
+        return ColonyResult(
+            scenario_name=self._name,
+            config=config,
+            detection_rate=self._value,
+            false_positive_rate=self._value / 2.0,
+            resilience_score=self._value,
+            recovery_steps=1,
+            ccs_score=self._value,
+            timeline=[self._value] * config.n_steps,
+        )
+
+
+class _SeedVaryingScenario(ColonyScenario):
+    """Scenario whose outputs are a deterministic function of the seed.
+
+    Each seed yields a different, exactly predictable detection rate, so a
+    test can assert both that repeats really used distinct seeds and that
+    the reported mean/min/max match values computed independently.
+    """
+
+    def __init__(self, name: str = "seed_varying") -> None:
+        self._name = name
+
+    @property
+    def name(self) -> str:
+        return self._name
+
+    def default_config(self) -> ColonyConfig:
+        return ColonyConfig(n_agents=4, n_steps=3, n_adversaries=1)
+
+    @staticmethod
+    def value_for_seed(seed: int) -> float:
+        """The detection rate this scenario returns for *seed*."""
+        return (seed % 10) / 10.0
+
+    def run(self, config: ColonyConfig, rng: np.random.Generator) -> ColonyResult:
+        value = self.value_for_seed(config.seed)
+        return ColonyResult(
+            scenario_name=self._name,
+            config=config,
+            detection_rate=value,
+            false_positive_rate=1.0 - value,
+            resilience_score=value,
+            recovery_steps=int(config.seed % 5),
+            ccs_score=value,
+            timeline=[value] * config.n_steps,
+        )
+
+
+class TestColonySeedSweep:
+    """A published colony number must be a seed sweep, not one lucky draw."""
+
+    def test_n_repeats_one_reproduces_legacy_single_run_exactly(self):
+        """n_repeats=1 must be byte-identical to the old run_all(seed)."""
+        scenarios = [RecruitmentPoisoningScenario(), QuorumManipulationScenario()]
+        legacy = ColonyBenchmark(scenarios=list(scenarios)).run_all(seed=42)
+        swept = ColonyBenchmark(scenarios=list(scenarios)).run_all_repeated(
+            seed=42, n_repeats=1
+        )
+
+        assert [s.n_repeats for s in swept] == [1, 1]
+        for old, summary in zip(legacy, swept):
+            assert summary.runs[0].detection_rate == old.detection_rate
+            assert summary.runs[0].false_positive_rate == old.false_positive_rate
+            assert summary.runs[0].ccs_score == old.ccs_score
+            assert summary.runs[0].config.seed == old.config.seed
+
+    def test_repeats_use_distinct_seeds(self):
+        """Each (scenario, repeat) pair gets its own seed -- no reuse."""
+        bench = ColonyBenchmark(
+            scenarios=[_SeedVaryingScenario("a"), _SeedVaryingScenario("b")]
+        )
+        summaries = bench.run_all_repeated(seed=42, n_repeats=5)
+
+        all_seeds = [s for summary in summaries for s in summary.seeds]
+        assert len(all_seeds) == 10
+        assert len(set(all_seeds)) == 10, f"seed reuse detected: {all_seeds}"
+        # Each summary's recorded seeds must match the seeds the runs saw.
+        for summary in summaries:
+            assert [r.config.seed for r in summary.runs] == summary.seeds
+
+    def test_reported_mean_and_range_match_independently_computed_values(self):
+        """The summary must not invent numbers: recompute them by hand."""
+        bench = ColonyBenchmark(scenarios=[_SeedVaryingScenario()])
+        summary = bench.run_all_repeated(seed=42, n_repeats=7)[0]
+
+        expected = [_SeedVaryingScenario.value_for_seed(s) for s in summary.seeds]
+        assert summary.detection_rate_values == expected
+        assert summary.detection_rate_mean == pytest.approx(float(np.mean(expected)))
+        assert summary.detection_rate_range == (min(expected), max(expected))
+
+        # The other two metric views must be sourced from the same runs.
+        assert summary.fpr_values == [1.0 - v for v in expected]
+        assert summary.ccs_values == expected
+        assert summary.fpr_mean == pytest.approx(float(np.mean(summary.fpr_values)))
+        assert summary.ccs_mean == pytest.approx(float(np.mean(summary.ccs_values)))
+        assert summary.fpr_range == (
+            min(summary.fpr_values),
+            max(summary.fpr_values),
+        )
+        assert summary.ccs_range == (
+            min(summary.ccs_values),
+            max(summary.ccs_values),
+        )
+
+    def test_varying_scenario_yields_positive_width_interval(self):
+        """POSITIVE CONTROL: real spread must produce a non-degenerate CI."""
+        bench = ColonyBenchmark(scenarios=[_SeedVaryingScenario()])
+        summary = bench.run_all_repeated(seed=42, n_repeats=20)[0]
+
+        lo, hi = summary.detection_rate_ci95
+        assert len(set(summary.detection_rate_values)) > 1, "control did not vary"
+        assert hi - lo > 0.0, "spread present but CI width is zero"
+        assert lo <= summary.detection_rate_mean <= hi
+
+    def test_constant_scenario_yields_zero_width_interval(self):
+        """NEGATIVE ARM: no spread must produce a zero-width CI.
+
+        Paired with the previous test this proves the CI width tracks the
+        data rather than being a constant the code always emits.
+        """
+        bench = ColonyBenchmark(scenarios=[_ConstantScenario(value=0.7)])
+        summary = bench.run_all_repeated(seed=42, n_repeats=20)[0]
+
+        lo, hi = summary.detection_rate_ci95
+        assert summary.detection_rate_mean == pytest.approx(0.7)
+        assert hi - lo == pytest.approx(0.0, abs=1e-12)
+        assert summary.detection_rate_range == (0.7, 0.7)
+
+    def test_all_runs_at_rejects_a_single_dissenting_seed(self):
+        """POSITIVE CONTROL for the guarantee check.
+
+        ``all_runs_at`` is what a '100% detection' claim is tested with.  A
+        sweep in which 19 of 20 seeds hit 1.0 must return False -- otherwise
+        the check would rubber-stamp a mean-1.0 claim.
+        """
+        perfect = ColonyBenchmark(scenarios=[_ConstantScenario(value=1.0)])
+        perfect_summary = perfect.run_all_repeated(seed=42, n_repeats=20)[0]
+        assert perfect_summary.all_runs_at("detection_rate", 1.0) is True
+
+        # Inject exactly one dissenting run into an otherwise perfect sweep.
+        # The dissent is deliberately small enough that a mean-with-tolerance
+        # check would still call the sweep perfect, so this test kills that
+        # implementation as well as the honest one passing.
+        dissenting = ColonyResult(
+            scenario_name="constant",
+            config=ColonyConfig(),
+            detection_rate=0.999,
+            false_positive_rate=0.0,
+            ccs_score=1.0,
+        )
+        perfect_summary.runs[7] = dissenting
+
+        mean_after = float(np.mean(perfect_summary.detection_rate_values))
+        assert mean_after == pytest.approx(1.0, abs=1e-3), (
+            "dissent too large -- a mean-based check would already reject it, "
+            "so this test would not distinguish the two implementations"
+        )
+        assert perfect_summary.all_runs_at("detection_rate", 1.0) is False
+
+    def test_all_runs_at_rejects_unknown_metric(self):
+        bench = ColonyBenchmark(scenarios=[_ConstantScenario()])
+        summary = bench.run_all_repeated(seed=42, n_repeats=2)[0]
+        with pytest.raises(ValueError, match="metric must be one of"):
+            summary.all_runs_at("not_a_metric", 1.0)
+
+    def test_n_repeats_zero_rejected(self):
+        bench = ColonyBenchmark(scenarios=[_ConstantScenario()])
+        with pytest.raises(ValueError, match="n_repeats must be >= 1"):
+            bench.run_all_repeated(seed=42, n_repeats=0)
+
+    def test_sweep_is_reproducible(self):
+        """Same base seed, same sweep -- including the bootstrap CIs."""
+        scenarios = [RecruitmentPoisoningScenario()]
+        a = ColonyBenchmark(scenarios=list(scenarios)).run_all_repeated(
+            seed=42, n_repeats=6
+        )[0]
+        b = ColonyBenchmark(scenarios=list(scenarios)).run_all_repeated(
+            seed=42, n_repeats=6
+        )[0]
+        assert a.detection_rate_values == b.detection_rate_values
+        assert a.detection_rate_ci95 == b.detection_rate_ci95
+        assert a.ccs_ci95 == b.ccs_ci95
+
+    def test_summary_dict_still_works_after_sweep(self):
+        bench = ColonyBenchmark(scenarios=[RecruitmentPoisoningScenario()])
+        bench.run_all_repeated(seed=42, n_repeats=3)
+        assert "recruitment_poisoning" in bench.summary()
+
+
+class TestColonyHeadlineClaimsAcrossSeeds:
+    """Bind the abstract's colony claims to a real multi-seed measurement.
+
+    These tests are the artifact behind the sybil claim.  They are written
+    to *fail* if a future change makes the claim untrue, and the FPR test in
+    particular encodes what the sweep actually found rather than what the
+    abstract asserts.
+    """
+
+    SWEEP_SEED = 42
+    SWEEP_REPEATS = 20
+
+    def _sybil_summary(self):
+        bench = ColonyBenchmark()
+        index = next(
+            i for i, s in enumerate(bench._scenarios) if s.name == "sybil_infiltration"
+        )
+        scenario = bench._scenarios[index]
+        seeds = [
+            bench.seed_for(index, r, self.SWEEP_SEED) for r in range(self.SWEEP_REPEATS)
+        ]
+        return scenario, seeds, bench
+
+    def test_sybil_detection_is_perfect_on_every_seed(self):
+        """'100% sybil detection' survives the sweep: all seeds hit 1.0."""
+        scenario, seeds, bench = self._sybil_summary()
+        rates = [bench.run_scenario(scenario, seed=s).detection_rate for s in seeds]
+        assert len(rates) == self.SWEEP_REPEATS
+        assert min(rates) == 1.0, f"detection dropped below 1.0 on some seed: {rates}"
+
+    def test_sybil_false_positive_rate_is_not_exactly_zero_on_every_seed(self):
+        """'0% FPR' does NOT survive the sweep -- it is seed-dependent.
+
+        The single published seed happens to give exactly 0.0.  Across the
+        sweep some seeds produce a small but non-zero false-positive rate,
+        so the abstract cannot state 0% as a guarantee.  This test pins that
+        finding; if a future change genuinely makes FPR identically zero it
+        will fail and the claim can be restored deliberately.
+        """
+        scenario, seeds, bench = self._sybil_summary()
+        fprs = [
+            bench.run_scenario(scenario, seed=s).false_positive_rate for s in seeds
+        ]
+        assert max(fprs) > 0.0, (
+            "expected at least one seed with a non-zero sybil FPR; "
+            f"observed max {max(fprs)}"
+        )
+        # ...but the magnitude is negligible, which is the honest framing.
+        assert max(fprs) < 1e-3
+
+    def test_emergent_misalignment_single_seed_is_far_from_the_sweep_mean(self):
+        """The published 0.561 detection rate is an outlier, not the centre.
+
+        This is the cherry-pick check: if the single published seed sat near
+        the sweep mean the assertion would fail and the point estimate would
+        be defensible.
+        """
+        bench = ColonyBenchmark()
+        index = next(
+            i
+            for i, s in enumerate(bench._scenarios)
+            if s.name == "emergent_misalignment"
+        )
+        scenario = bench._scenarios[index]
+        seeds = [
+            bench.seed_for(index, r, self.SWEEP_SEED) for r in range(self.SWEEP_REPEATS)
+        ]
+        rates = np.array(
+            [bench.run_scenario(scenario, seed=s).detection_rate for s in seeds]
+        )
+
+        published_seed_value = bench.run_scenario(scenario, seed=seeds[0]).detection_rate
+        spread = float(rates.max() - rates.min())
+
+        assert spread > 0.2, (
+            "emergent misalignment detection barely varies across seeds; "
+            f"spread {spread}"
+        )
+        assert abs(published_seed_value - float(rates.mean())) > 0.1, (
+            "published seed is close to the sweep mean, so the single-run "
+            "point estimate would be defensible after all"
+        )
 
 
 # =========================================================================
