@@ -125,7 +125,7 @@ class TestAblationStudy:
         with tempfile.TemporaryDirectory() as tmpdir:
             # Create data directory and file
             output_dir = Path(tmpdir) / "figures"
-            data_dir = Path(tmpdir) / "data"
+            data_dir = output_dir / "data"
             data_dir.mkdir(parents=True)
 
             data = {
@@ -282,7 +282,7 @@ class TestDetectionResults:
 
         with tempfile.TemporaryDirectory() as tmpdir:
             output_dir = Path(tmpdir) / "figures"
-            data_dir = Path(tmpdir) / "data"
+            data_dir = output_dir / "data"
             data_dir.mkdir(parents=True)
 
             # Create required data in correct format
@@ -376,7 +376,7 @@ class TestROCCurves:
         with tempfile.TemporaryDirectory() as tmpdir:
             output_dir = Path(tmpdir) / "figures"
             # Create the data directory relative to output_dir.parent/"data"
-            data_dir = Path(tmpdir) / "data"
+            data_dir = output_dir / "data"
             data_dir.mkdir(parents=True)
 
             # Create roc_results.json with firewall FPR/TPR data
@@ -409,7 +409,7 @@ class TestScalability:
 
         with tempfile.TemporaryDirectory() as tmpdir:
             output_dir = Path(tmpdir) / "figures"
-            data_dir = Path(tmpdir) / "data"
+            data_dir = output_dir / "data"
             data_dir.mkdir(parents=True)
 
             # Create required scalability data

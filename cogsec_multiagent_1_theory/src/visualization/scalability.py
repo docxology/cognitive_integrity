@@ -49,7 +49,7 @@ def create_scalability_figure(output_dir: Path) -> tuple[Path, Path]:
     np.random.seed(42)
 
     # Load generated data
-    data_path = output_dir.parent / "data" / "scalability_results.json"
+    data_path = output_dir / "data" / "scalability_results.json"
     if not data_path.exists():
         print(f"Data file not found: {data_path}")
         return output_dir / "error.png", output_dir / "error.pdf"

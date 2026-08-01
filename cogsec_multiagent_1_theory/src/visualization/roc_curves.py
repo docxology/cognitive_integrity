@@ -50,7 +50,7 @@ def create_roc_curves_figure(output_dir: Path) -> tuple[Path, Path]:
     np.random.seed(42)
 
     # Load generated data
-    data_path = output_dir.parent / "data" / "roc_results.json"
+    data_path = output_dir / "data" / "roc_results.json"
     firewall_fpr, firewall_tpr = None, None
     if data_path.exists():
         import json

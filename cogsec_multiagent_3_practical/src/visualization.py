@@ -187,8 +187,8 @@ def render_posture_radar(
     # Add title
     ax.set_title(data.title, fontsize=14, fontweight="bold", pad=20)
 
-    # Add legend
-    ax.legend(loc="upper right", bbox_to_anchor=(1.3, 1.0))
+    # Add legend (kept inside the axes so it renders without stretching the canvas)
+    ax.legend(loc="upper left")
 
     return fig
 

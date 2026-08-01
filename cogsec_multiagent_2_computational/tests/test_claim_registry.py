@@ -159,6 +159,11 @@ def _write_data(data_dir: Path, **files: object) -> GroundTruth:
     return GroundTruth(data_dir)
 
 
+def _deepcopy_json(obj):
+    """JSON-safe deep copy (payloads are JSON-serializable)."""
+    return json.loads(json.dumps(obj))
+
+
 def _ablation(n: int = 50, detected: int = 10) -> dict[str, object]:
     """A minimal ablation artifact whose rates are k/n."""
     return {
@@ -536,6 +541,65 @@ class TestGroundTruthPayload:
         # Second read comes from the cache even if the file is deleted.
         (tmp_path / "s.json").unlink()
         assert gt.payload("s.json")["v"] == 1
+
+
+class TestGroundTruthBaseline:
+    """Fail-closed and happy paths for the baseline_comparison accessors."""
+
+    _VALID = {
+        "detectors": [
+            {
+                "name": "cif",
+                "metrics": {"tpr": 0.4, "fpr": 0.1, "youden_j": 0.3},
+                "curves": {"auc": 0.9},
+                "permutation_null": {"p_value": 0.001},
+            }
+        ],
+        "headline": {"cif_rank": 1},
+    }
+
+    def test_non_object_baseline_raises(self, tmp_path):
+        gt = _write_data(tmp_path, baseline_comparison=[1, 2, 3])
+        with pytest.raises(ClaimDataUnavailable, match="not a JSON object"):
+            gt.baseline_comparison()
+
+    def test_unknown_detector_raises(self, tmp_path):
+        gt = _write_data(tmp_path, baseline_comparison=self._VALID)
+        with pytest.raises(ClaimDataUnavailable, match="has no detector"):
+            gt.baseline_metric("banana", "tpr")
+
+    def test_missing_metric_raises(self, tmp_path):
+        gt = _write_data(tmp_path, baseline_comparison=self._VALID)
+        with pytest.raises(ClaimDataUnavailable, match="no metrics.precision"):
+            gt.baseline_metric("cif", "precision")
+
+    def test_missing_auc_raises(self, tmp_path):
+        payload = _deepcopy_json(self._VALID)
+        payload["detectors"][0]["curves"] = {}
+        gt = _write_data(tmp_path, baseline_comparison=payload)
+        with pytest.raises(ClaimDataUnavailable, match="no curves.auc"):
+            gt.baseline_auc("cif")
+
+    def test_missing_permutation_p_raises(self, tmp_path):
+        payload = _deepcopy_json(self._VALID)
+        payload["detectors"][0]["permutation_null"] = {}
+        gt = _write_data(tmp_path, baseline_comparison=payload)
+        with pytest.raises(ClaimDataUnavailable, match="no permutation_null.p_value"):
+            gt.baseline_permutation_p("cif")
+
+    def test_missing_cif_rank_raises(self, tmp_path):
+        payload = _deepcopy_json(self._VALID)
+        payload["headline"] = {}
+        gt = _write_data(tmp_path, baseline_comparison=payload)
+        with pytest.raises(ClaimDataUnavailable, match="no headline.cif_rank"):
+            gt.baseline_cif_rank()
+
+    def test_valid_baseline_returns_values(self, tmp_path):
+        gt = _write_data(tmp_path, baseline_comparison=self._VALID)
+        assert gt.baseline_metric("cif", "fpr") == 0.1
+        assert gt.baseline_auc("cif") == 0.9
+        assert gt.baseline_permutation_p("cif") == 0.001
+        assert gt.baseline_cif_rank() == 1
 
 
 class TestGroundTruthMultiSeed:

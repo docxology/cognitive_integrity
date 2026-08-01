@@ -3,12 +3,16 @@
 
 from __future__ import annotations
 
+import sys
 from pathlib import Path
+
+# Add project root to path for imports (mirrors scripts 01-06).
+project_root = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(project_root))
 
 from src.applications.domain_coverage import render_domain_coverage_figures
 
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
-OUTPUT_DIR = PROJECT_ROOT / "output" / "figures"
+OUTPUT_DIR = project_root / "output" / "figures"
 
 
 def main() -> None:

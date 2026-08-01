@@ -37,7 +37,7 @@ def create_detection_results_figure(output_dir: Path) -> Path:
     }
 
     # Load generated data
-    data_path = output_dir.parent / "data" / "detection_results.json"
+    data_path = output_dir / "data" / "detection_results.json"
     if not data_path.exists():
         print(f"Data file not found: {data_path}")
         return output_dir / "error.pdf"
@@ -94,7 +94,7 @@ def create_detection_results_figure(output_dir: Path) -> Path:
     ax2 = axes[0, 1]
 
     # Check for ablation data
-    ablation_path = output_dir.parent / "data" / "ablation_study.json"
+    ablation_path = output_dir / "data" / "ablation_study.json"
     if ablation_path.exists():
         with open(ablation_path, "r") as f:
             ablation_data = json.load(f)
@@ -157,7 +157,7 @@ def create_detection_results_figure(output_dir: Path) -> Path:
     attempts = np.arange(0, 161, 10)  # Placeholder x-axis
 
     # Try to load integrity data
-    integrity_path = output_dir.parent / "data" / "integrity_timeseries.csv"
+    integrity_path = output_dir / "data" / "integrity_timeseries.csv"
     if integrity_path.exists():
         import csv
 

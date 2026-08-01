@@ -28,7 +28,7 @@ def create_ablation_study_figure(output_dir: Path) -> Path:
 
     # Data
     # Data
-    data_path = output_dir.parent / "data" / "ablation_study.json"
+    data_path = output_dir / "data" / "ablation_study.json"
     if data_path.exists():
         import json
 

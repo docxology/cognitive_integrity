@@ -74,56 +74,46 @@ series:
       short: "Part 3+4"
 
 figures:
-  ooda_loop_overview:
-    path: "figures/ooda_loop_overview.png"
-    caption: "Boyd's OODA Loop showing Observe-Orient-Decide-Act phases. Goal Hijacking targets the Orient phase, corrupting the synthesis stage where agents integrate observations with prior knowledge."
-    label: "fig:ooda-overview"
+  posture_radar:
+    path: "figures/posture_radar.png"
+    caption: "Five-Pillar operator posture assessment radar (Cognitive Firewall, Belief Sandbox, Identity Tripwire, Behavioral Invariants, Provenance), color-coded against readiness thresholds."
+    label: "fig:posture-radar"
     width: "0.80\\linewidth"
-  design_matrix_uncoupled:
-    path: "figures/design_matrix_uncoupled.png"
-    caption: "Axiomatic Design Matrix $[A]$ in uncoupled (safe) configuration. The diagonal structure indicates that each Functional Requirement $\\text{FR}_k$ is controlled by exactly one Design Parameter $\\text{DP}_k$ without cross-coupling."
-    label: "fig:design-matrix-uncoupled"
-    width: "0.60\\linewidth"
-  design_matrix_coupled:
-    path: "figures/design_matrix_coupled.png"
-    caption: "Axiomatic Design Matrix $[A']$ after Goal Hijacking attack introduces off-diagonal coupling terms. The transient coupling violates Suh's Independence Axiom, enabling adversarial redirection of Functional Requirements."
-    label: "fig:design-matrix-coupled"
-    width: "0.60\\linewidth"
-  cif_defense_stack:
-    path: "figures/cif_defense_stack.png"
-    caption: "CIF five-mechanism defense stack deployed in production: Cognitive Firewall (input layer), Belief Sandbox (isolation layer), Behavioral Invariants (runtime monitoring), Drift Detection (temporal monitoring), Byzantine Consensus (coordination layer). Each layer targets a distinct attack surface."
-    label: "fig:cif-defense-stack"
+  checklist_flowchart:
+    path: "figures/checklist_flowchart.png"
+    caption: "Pre-deployment $\\rightarrow$ Integration $\\rightarrow$ Testing $\\rightarrow$ Operational checklist flowchart mapping CIF enforcement points to deployment phases."
+    label: "fig:checklist-flowchart"
     width: "0.85\\linewidth"
-  deployment_profiles:
-    path: "figures/deployment_profiles.png"
-    caption: "Comparison of three CIF deployment profiles (A: Internal Tool, B: Customer-Facing, C: Autonomous Operator) across detection rate, latency overhead, and resilience dimensions. Profile B represents the empirically optimal balance point from Part 2 evaluation."
-    label: "fig:deployment-profiles"
-    width: "0.80\\linewidth"
-  trust_decay_comparison:
-    path: "figures/trust_decay_comparison.png"
-    caption: "Trust retention across delegation chain depth for three decay factors ($\\delta \\in \\{0.60, 0.80, 0.95\\}$). Profiles C, B, and A respectively. At $\\delta=0.80$, trust drops below 50\\% at depth 4, enforcing practical delegation bounds."
-    label: "fig:trust-decay-comparison"
+  risk_matrix:
+    path: "figures/risk_matrix.png"
+    caption: "Cognitive-security risk heatmap: impact $\\times$ likelihood for eight named risks (Direct/Indirect Injection, Trust Laundering, Belief Manipulation, Goal Hijacking, Context Poisoning, Multi-turn Attacks, Consensus Subversion)."
+    label: "fig:risk-matrix"
+    width: "0.85\\linewidth"
+  trust_decay:
+    path: "figures/trust_decay.png"
+    caption: "Effective trust vs.\ delegation depth at decay factors $\\delta = \\{0.9, 0.85, 0.7\\}$, with 50\\% and 10\\% thresholds marking delegation bounds."
+    label: "fig:trust-decay"
     width: "0.75\\linewidth"
-  domain_analysis_template:
-    path: "figures/domain_analysis_template.png"
-    caption: "Five-step CIF-AD-OODA domain analysis template: (i) Operational Characterization, (ii) Attack Surface Analysis, (iii) Transient Coupling Analysis, (iv) Defense Mapping, (v) Validation Anchoring. Applied uniformly across all ten critical domains."
-    label: "fig:domain-analysis-template"
-    width: "0.85\\linewidth"
-  universal_attack_patterns:
-    path: "figures/universal_attack_patterns.png"
-    caption: "Three universal Goal Hijacking attack patterns identified through cross-domain analysis. FR Polarity Inversion (5/10 domains) co-opts agent capabilities; Constraint Relaxation (2/10) removes operational bounds; Context Boundary Violation (3/10) exploits trust zone boundaries."
-    label: "fig:universal-attack-patterns"
+  pitfall_severity:
+    path: "figures/pitfall_severity.png"
+    caption: "Common pitfalls by severity across security/configuration/operational categories (e.g. implicit trust in outputs, missing input validation)."
+    label: "fig:pitfall-severity"
     width: "0.80\\linewidth"
-  mechanism_coverage_matrix:
-    path: "figures/mechanism_coverage_matrix.png"
-    caption: "CIF mechanism coverage matrix across ten domains. Each cell indicates whether the mechanism serves as primary (P) or supporting (S) defense in the domain. All five mechanisms appear across the portfolio; no single mechanism suffices alone."
+  timeline:
+    path: "figures/timeline.png"
+    caption: "Deployment lifecycle phases (Pre-Deployment $\\rightarrow$ Operational $\\rightarrow$ Incident Response) with CIF security activities."
+    label: "fig:timeline"
+    width: "0.85\\linewidth"
+  domain_coverage:
+    path: "figures/domain_coverage.png"
+    caption: "CIF-AD-OODA attack-pattern coverage across ten domains for the three universal patterns (FR Polarity Inversion, Constraint Relaxation, Context Boundary Violation)."
+    label: "fig:domain-coverage"
+    width: "0.90\\linewidth"
+  cif_mechanism_coverage:
+    path: "figures/cif_mechanism_coverage.png"
+    caption: "Binary mechanism $\\times$ domain coverage matrix for the five CIF mechanisms across ten domains."
     label: "fig:mechanism-coverage"
     width: "0.90\\linewidth"
-  incident_timeline:
-    path: "figures/incident_timeline.png"
-    caption: "Timeline of six documented AI agent security incidents (2024–2025) analyzed in Supplementary Material S3. All incidents map to one of the three universal attack patterns identified through cross-domain analysis."
-    label: "fig:incident-timeline"
-    width: "0.85\\linewidth"
 
 llm:
   translations:
