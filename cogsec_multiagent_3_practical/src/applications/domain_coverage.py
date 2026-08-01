@@ -65,6 +65,17 @@ COVERAGE_MATRIX = np.array(
     dtype=float,
 )
 
+# Dimension guards — fail at import if the matrices drift from their labels so
+# a reordered DOMAINS/MECHANISMS cannot silently mislabel a heatmap column.
+assert ATTACK_PATTERNS.shape == (len(DOMAINS), len(PATTERN_LABELS)), (
+    f"ATTACK_PATTERNS shape {ATTACK_PATTERNS.shape} != "
+    f"({len(DOMAINS)} domains, {len(PATTERN_LABELS)} patterns)"
+)
+assert COVERAGE_MATRIX.shape == (len(MECHANISMS), len(DOMAINS)), (
+    f"COVERAGE_MATRIX shape {COVERAGE_MATRIX.shape} != "
+    f"({len(MECHANISMS)} mechanisms, {len(DOMAINS)} domains)"
+)
+
 
 def domain_coverage_payload() -> dict[str, object]:
     """Return canonical cross-domain matrices for tests and visualization."""
@@ -128,15 +139,19 @@ def plot_attack_patterns(output_dir: Path) -> list[Path]:
         )
 
     totals = ATTACK_PATTERNS.sum(axis=0)
+    # Place the per-pattern totals in *data* coordinates in a right-hand margin
+    # (previously they used transAxes with x ~ len(DOMAINS)+0.1, which is outside
+    # the [0,1] axes fraction and rendered the callouts off-canvas/invisible).
+    ax.set_xlim(-0.6, len(DOMAINS_SHORT) + 2.5)
     for i, (label, total) in enumerate(zip(PATTERN_LABELS, totals)):
         ax.text(
-            len(DOMAINS_SHORT) + 0.1 + i * 0.01,
-            0.97 - i * 0.12,
+            len(DOMAINS_SHORT) + 0.2,
+            1.3 - i * 0.1,
             f"{label}: {int(total)}/10",
-            transform=ax.transAxes,
-            fontsize=9,
-            ha="right",
+            transform=ax.transData,
+            ha="left",
             va="top",
+            fontsize=9,
             color=PATTERN_COLORS[i],
             fontweight="bold",
         )

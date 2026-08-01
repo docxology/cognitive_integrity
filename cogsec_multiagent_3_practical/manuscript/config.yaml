@@ -111,7 +111,7 @@ figures:
     width: "0.85\\linewidth"
   universal_attack_patterns:
     path: "figures/universal_attack_patterns.png"
-    caption: "Three universal Goal Hijacking attack patterns identified through cross-domain analysis. FR Polarity Inversion (5/10 domains) co-opts agent capabilities; Constraint Relaxation (3/10) removes operational bounds; Context Boundary Violation (2/10) exploits trust zone boundaries."
+    caption: "Three universal Goal Hijacking attack patterns identified through cross-domain analysis. FR Polarity Inversion (5/10 domains) co-opts agent capabilities; Constraint Relaxation (2/10) removes operational bounds; Context Boundary Violation (3/10) exploits trust zone boundaries."
     label: "fig:universal-attack-patterns"
     width: "0.80\\linewidth"
   mechanism_coverage_matrix:

@@ -26,16 +26,28 @@ from typing import Set
 logger = logging.getLogger(__name__)
 
 
-def _configure_verification_logging() -> None:
-    """Configure logging once when running verification as a CLI entrypoint."""
+def _configure_verification_logging(log_dir: str | None = None) -> None:
+    """Configure logging once when running verification as a CLI entrypoint.
+
+    Args:
+        log_dir: Directory to write ``manuscript_verification.log`` into. When
+            omitted the log lands in the current working directory; callers
+            should pass the project root so the artifact is reproducible
+            regardless of where the command is invoked.
+    """
     if logger.handlers:
         return
+    log_path = (
+        str(Path(log_dir) / "manuscript_verification.log")
+        if log_dir
+        else "manuscript_verification.log"
+    )
     logging.basicConfig(
         level=logging.INFO,
         format="%(asctime)s - %(levelname)s - %(message)s",
         handlers=[
             logging.StreamHandler(sys.stdout),
-            logging.FileHandler("manuscript_verification.log"),
+            logging.FileHandler(log_path),
         ],
     )
 

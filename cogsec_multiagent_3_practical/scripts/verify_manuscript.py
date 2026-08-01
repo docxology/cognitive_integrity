@@ -32,7 +32,7 @@ if __name__ == "__main__":
 
     from src.verification import _configure_verification_logging
 
-    _configure_verification_logging()
+    _configure_verification_logging(project_dir)
     verifier = ManuscriptVerifier(args.root)
     passed = verifier.run_all()
     sys.exit(0 if passed else 1)

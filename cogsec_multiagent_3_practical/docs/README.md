@@ -14,7 +14,7 @@ computational evidence (Part 2).
 | **`README.md` (this file)** | Documentation index and claims-to-code map |
 | [`../PAI.md`](../PAI.md) | Paper authoring instructions |
 | [`../SKILL.md`](../SKILL.md) | Agent skills for this exemplar |
-| [`../manuscript/`](../manuscript/) | The paper content (35+ files) |
+| [`../manuscript/`](../manuscript/) | The paper content (34 files: 32 markdown + `config.yaml` + `references.bib`) |
 | [`../src/`](../src/) | Source: checklists, applications, verification |
 
 ## What this part provides
@@ -40,13 +40,21 @@ computational evidence (Part 2).
 
 ## Figures
 
-`scripts/` produces the manuscript figures from real, deterministic sources:
+`scripts/` produces 8 deterministic figures into `output/figures/` (posture
+radar, checklist flowchart, risk matrix, trust decay, pitfall severity, timeline,
+domain coverage, CIF mechanism coverage):
 
 ```bash
 uv run python scripts/07_domain_coverage_figure.py
 uv run python scripts/01_posture_radar_figure.py
 # ... 02..06 analogue figure scripts
 ```
+
+> **Note:** As of this writing the produced figures are not embedded in the
+> rendered PDF — the `manuscript/config.yaml` `figures:` block declares paths
+> that the scripts do not produce, and none of the 8 real outputs are referenced
+> in the markdown. Wiring the figures into the paper is tracked as follow-up
+> work; the scripts themselves are real and deterministic.
 
 ## Verification and tests
 
