@@ -1,17 +1,17 @@
 paper:
-  title: "Cognitive Integrity Framework: Formal Foundations (Second Edition)"
-  subtitle: "Part 1 of 3: Theoretical Foundations — v2.0 Revised and Expanded"
-  short_title: "CIF Theory v2"
-  version: "2.0"
-  edition: "second"
+  title: "Cognitive Integrity Framework: Formal Foundations"
+  subtitle: "Part 1 of 3: Theoretical Foundations"
+  short_title: "CIF Theory"
+  version: "1.1"
+  edition: "first"
   type: "research"
   series: "Cognitive Security for Multiagent Operators"
   part: 1
   doi: "10.5281/zenodo.18364119"
   date: "2026-07-05"
-  previous_version_doi: ""  # v2.0 is the initial Zenodo deposition for the Second Edition
+  previous_version_doi: ""  # v1.1 is the initial public deposition
   changelog: |
-    v2.0 (2026-07-05): Second Edition — major expansion:
+    v1.1 (2026-07-05): Initial public release (second-edition expansion):
       - Formal Ω-class adversary taxonomy with information-theoretic resource bounds
       - CIF-AD (Action-Delegation) coupling theory with OODA phase integration
       - Information-geometric bounds on stealth-impact tradeoff (Fisher-Rao geometry)

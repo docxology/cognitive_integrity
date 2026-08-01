@@ -831,7 +831,7 @@ All proofs are constructive and provide explicit bounds useful for system implem
 
 ---
 
-## v2.0 New Proofs: Defense Composition Algebra and Information-Geometric Bounds {#sec:v2-proofs}
+## v1.1 New Proofs: Defense Composition Algebra and Information-Geometric Bounds {#sec:v2-proofs}
 
 This section contains new proofs added in the Second Edition, corresponding to the defense composition algebra guarantees (§\ref{sec:defense-formal-guarantees}) and the information-geometric tightening of the stealth-impact bound (§\ref{sec:detection-bounds}).
 
@@ -1015,7 +1015,7 @@ Restricting the degree of agents (least-privilege communication topology) propor
 
 \begin{table}[htbp]
 \centering
-\caption{Summary of proof techniques by theorem (v2.0 additions marked with $\dagger$).}
+\caption{Summary of proof techniques by theorem (v1.1 additions marked with $\dagger$).}
 \label{tab:proof-summary-v2}
 \begin{tabular}{@{}llll@{}}
 \toprule
