@@ -626,8 +626,8 @@ Furthermore, the connection to KL divergence---$D_{\mathrm{KL}}(p \,\|\, p')
 \approx \tfrac{1}{2}(\Delta p)^\top G(p)(\Delta p)$ for small
 perturbations---gives geometric justification for the drift detection
 threshold $\theta_{\text{drift}} = 0.3$: this corresponds to a
-Fisher-Rao step of approximately $0.28$ radians, or roughly $9\%$ of
-the maximum possible attack distance (Part~2, Supplement~S10).
+Fisher-Rao step of approximately $0.775$ radians, or roughly $25\%$ of
+the maximum possible attack distance ($r_\theta = \sqrt{2\,\theta_{\text{drift}}} = \sqrt{0.6}$).
 \end{remark}
 
 \begin{table}[htbp]

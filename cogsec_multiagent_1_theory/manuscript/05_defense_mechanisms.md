@@ -372,7 +372,7 @@ where $q = \lceil \frac{n + f + 1}{2} \rceil$.
 
 ## Defense Composition {#sec:defense-composition}
 
-![Ablation study: marginal detection contribution of each CIF defense module to the composed defense, showing which components carry the largest share and validating the layered-composition theorems.](figures/ablation_study.pdf){#fig:ablation-study width=80%}
+![Schematic ablation study (illustrative, not measured): representative marginal contribution of each CIF defense module to the composed defense. Measured ablation results are reported in Part 2.](figures/ablation_study.pdf){#fig:ablation-study width=80%}
 
 ### Composition Algebra
 
@@ -758,6 +758,11 @@ The set of CIF defenses $\mathcal{D}$ under series ($\circ$) and parallel ($\par
 \begin{proof}
 Closure: both composition operators produce functions $\mathcal{M} \to \{\textsc{accept}, \textsc{quarantine}, \textsc{reject}\}$, so the output type is preserved. Associativity follows from Boolean operator associativity. The null defense $\mathcal{D}_\emptyset(m) = \textsc{accept}$ for all $m$ is the identity. Distributivity follows from logic: $A \land (B \lor C) \equiv (A \land B) \lor (A \land C)$ instantiated on the accept/reject conditions.
 \end{proof}
+
+\begin{remark}[Scope of the composition-algebra claim]
+\label{rem:composition-algebra-scope}
+$\circ$ and $\parallel$ are defined here on a common accept/compare focal predicate so that closure, associativity, identity, and both distributive laws hold; under that reading the algebra is a bounded distributive lattice, not in general a \emph{field}-like structure. A full \emph{closed semiring} additionally requires a commutative additive identity that annihilates the multiplicative identity and a Kleene-star (infinite-sum) operation, neither of which is constructed or proven here. The claim should therefore be read as ``the defense-composition operators form a bounded distributive lattice under the stated independence assumption (\cref{rem:defense-independence-scope}),'' not as a complete closed semiring.
+\end{remark}
 
 \begin{theorem}[Defense Composition Detection Rate Bound]
 \label{thm:composition-bound}

@@ -64,7 +64,7 @@ where $\sigma$ is the sigmoid function and weights $(w_d, b)$ are learned from l
 
 ## ROC Curve Analysis {#sec:roc-analysis}
 
-![Receiver Operating Characteristic (ROC) curves for CIF detection across attack categories. Each curve traces the true-positive rate against the false-positive rate as the detection threshold varies; the area under each curve quantifies how clearly that attack class separates from benign behavior under the Neyman-Pearson detection framework.](figures/roc_curves.pdf){#fig:roc-curves width=85%}
+![Receiver Operating Characteristic (ROC) curves for CIF detection across attack categories (illustrative/schematic operating points under the Neyman-Pearson framework; the curves themselves are labeled Theoretical, not empirical measurements).](figures/roc_curves.pdf){#fig:roc-curves width=85%}
 
 ### Receiver Operating Characteristic Framework
 
@@ -231,7 +231,7 @@ Combines online and batch detection via feedback loop:
 
 ## False Positive Mitigation {#sec:fp-mitigation}
 
-![False-positive mitigation: how the detection threshold and confidence calibration shape the false-positive / true-positive tradeoff, reducing false alarms without materially sacrificing detection rate.](figures/fp_mitigation.pdf){#fig:fp-mitigation width=80%}
+![False-positive mitigation (illustrative schematic): how the detection threshold and confidence calibration shape the false-positive / true-positive tradeoff.](figures/fp_mitigation.pdf){#fig:fp-mitigation width=80%}
 
 ### Strategy 1: Confirmation Cascade
 
@@ -531,7 +531,7 @@ for any detector with finite observation budget $n$.
 
 \begin{theorem}[Undetectability Condition]
 \label{thm:undetectability}
-Attack $\mathcal{A}$ with $D_{\mathrm{KL}}(P_{\text{attack}} \| P_{\text{benign}}) < \frac{4\epsilon^2}{1}$ is $\epsilon$-undetectable for any detector observing fewer than $n^* = O(1/D_{\mathrm{KL}})$ samples.
+Attack $\mathcal{A}$ with $D_{\mathrm{KL}}(P_{\text{attack}} \| P_{\text{benign}}) < 4\epsilon^2$ is $\epsilon$-undetectable for any detector observing fewer than $n^* = O(1/D_{\mathrm{KL}})$ samples.
 \end{theorem}
 
 \begin{remark}[Implication for Defense Strategy]
@@ -541,7 +541,7 @@ Theorem~\ref{thm:undetectability} establishes that sufficiently subtle attacks a
 
 ## Multi-Stage Detection Pipeline {#sec:multi-stage-pipeline}
 
-![Detection performance of the multi-stage pipeline: detection rate by attack category and across progressive defense stages, showing how layered composition lifts coverage beyond any single mechanism.](figures/detection_performance.pdf){#fig:detection-performance width=85%}
+![Schematic detection-performance curves (illustrative, theory-guided, not measured): detection rate by attack category across representative defense stages. Measured pipeline results are reported in Part 2.](figures/detection_performance.pdf){#fig:detection-performance width=85%}
 
 *Real systems cannot run all detectors on all messages simultaneously. This section formalizes a staged pipeline that applies computationally cheap detectors first, escalating to expensive detectors only when lower stages trigger.*
 
