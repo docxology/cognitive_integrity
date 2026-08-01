@@ -1,168 +1,276 @@
-"""Roc Curves module.
+"""ROC curves computed from measured per-payload detector scores.
 
-Implements functionality for the Cognitive Integrity Framework.
+Both panels are drawn from ``output/data/baseline_comparison.json``, which
+``scripts/run_baseline_comparison.py`` produces by running the real CIF
+pipeline and the real baseline detectors over the same labelled corpus:
+
+* Left — every detector in the comparison (CIF, keyword regex, length-only,
+  bag-of-words, and the chance-level null), each with its measured AUC and
+  bootstrap 95% CI, plus each detector's *deployed* operating point.
+* Right — the CIF pipeline split by attack family, each family scored against
+  the shared benign controls.
+
+Shaded regions are vertical-averaging bootstrap bands: the 2.5/97.5 pointwise
+percentiles of the resampled curves.  Nothing on this figure is drawn from a
+random number generator standing in for a measurement, and no curve is drawn
+for a series whose scores do not exist.
 """
 
 from __future__ import annotations
 
+import json
+import logging
 from pathlib import Path
+from typing import Any
 
 import matplotlib
-import matplotlib.pyplot as plt
 import numpy as np
+from matplotlib.axes import Axes
 from matplotlib.figure import Figure
 
-from evaluation.roc import compute_auc_from_points
+from evaluation.baselines import auc_in_order, load_comparison_artifact
 
 from ..style import SEMANTIC_COLORS, add_source_annotation, apply_style, save_figure
 
 matplotlib.use("Agg")
-logger = __import__('logging').getLogger(__name__)
+logger = logging.getLogger(__name__)
+
+#: Stable colour per detector so the panels and the manuscript agree.
+DETECTOR_COLORS: dict[str, str] = {
+    "cif_full_pipeline": SEMANTIC_COLORS["full_cif"],
+    "keyword_regex": SEMANTIC_COLORS["firewall"],
+    "length_only": SEMANTIC_COLORS["tripwire"],
+    "bag_of_words_lr": SEMANTIC_COLORS["sandbox"],
+    "random_null": SEMANTIC_COLORS["baseline"],
+}
+
+#: Human-readable series labels.
+DETECTOR_LABELS: dict[str, str] = {
+    "cif_full_pipeline": "Full CIF pipeline",
+    "keyword_regex": "Keyword regex baseline",
+    "length_only": "Payload length only",
+    "bag_of_words_lr": "Bag-of-words LR (out-of-fold)",
+    "random_null": "Chance null (matched flag rate)",
+}
+
+CATEGORY_COLORS: dict[str, str] = {
+    "injection": SEMANTIC_COLORS["firewall"],
+    "trust_exploitation": SEMANTIC_COLORS["sandbox"],
+    "belief_manipulation": SEMANTIC_COLORS["tripwire"],
+    "coordination": SEMANTIC_COLORS["coordination"],
+}
+
+
+def _series_from_artifact(payload: dict[str, Any]) -> dict[str, dict[str, Any]]:
+    """Project the comparison artifact onto the per-detector series mapping."""
+    series: dict[str, dict[str, Any]] = {}
+    for detector in payload.get("detectors", []):
+        curves = detector.get("curves", {})
+        metrics = detector.get("metrics", {})
+        series[str(detector["name"])] = {
+            "fpr": curves["fpr"],
+            "tpr": curves["tpr"],
+            "auc": curves["auc"],
+            "auc_ci95": curves["auc_ci95"],
+            "band_fpr": curves["band_fpr"],
+            "band_tpr_lo": curves["band_tpr_lo"],
+            "band_tpr_hi": curves["band_tpr_hi"],
+            "n_bootstrap_used": curves["n_bootstrap_used"],
+            "operating_point": (metrics.get("fpr"), metrics.get("tpr")),
+            "kind": detector.get("kind", "baseline"),
+        }
+    return series
 
 
 def _load_roc_data(output_dir: Path) -> dict:
-    """Load ROC data from roc_results.json.
+    """Load ROC series for :func:`plot_roc_curves`.
 
-    Returns a dict mapping defense name to (fpr, tpr) arrays.
-    Falls back to computing ROC from full evaluation results if
-    roc_results.json is not available.
+    Resolution order:
+
+    1. ``<output_dir>/../data/roc_results.json`` — an explicit caller-supplied
+       override of ``{name: {"fpr": [...], "tpr": [...]}}`` series.
+    2. ``<output_dir>/../data/baseline_comparison.json``.
+    3. The canonical ``<project>/output/data/baseline_comparison.json``.
+
+    There is no synthetic fallback.  The previous implementation derived
+    curves for four defense mechanisms from a power law over an ablation
+    detection rate — four *identical* fabricated curves that every one of
+    which reported AUC=0.857 — and derived "Full CIF" from sixteen
+    per-architecture operating points that all sat at FPR=0 and therefore
+    integrated to AUC=0.000.  Both are gone.
+
+    Args:
+        output_dir: Figure output directory (its sibling ``data`` directory is
+            searched first).
+
+    Returns:
+        Mapping of series name to plot data.
+
+    Raises:
+        FileNotFoundError: If no real artifact can be found.
     """
-    import json
-
-    data_path = output_dir.parent / "data" / "roc_results.json"
-    if data_path.exists():
-        with open(data_path, "r") as f:
-            data = json.load(f)
-        logger.info("Loaded ROC data from %s", data_path)
+    legacy = output_dir.parent / "data" / "roc_results.json"
+    if legacy.exists():
+        with open(legacy, "r", encoding="utf-8") as handle:
+            data: dict = json.load(handle)
+        logger.info("Loaded explicit ROC series from %s", legacy)
         return data
 
-    # Compute ROC from full evaluation results
-    from data.result_loaders import load_full_evaluation
-    rows = load_full_evaluation()
+    payload = load_comparison_artifact(search_dirs=[output_dir.parent / "data"])
+    logger.info(
+        "Loaded measured ROC series for %d detectors from %s",
+        len(payload.get("detectors", [])),
+        payload.get("source_script"),
+    )
+    return _series_from_artifact(payload)
 
-    # Build ROC-like curves from detection rates at different thresholds
-    # Each row has detection_rate and false_positive_rate per architecture-category pair
-    defense_rates: dict[str, dict[str, list]] = {}
-    for r in rows:
-        defense_rates.setdefault("full_cif", {"tpr": [], "fpr": []})
-        defense_rates["full_cif"]["tpr"].append(r.detection_rate)
-        defense_rates["full_cif"]["fpr"].append(r.false_positive_rate)
 
-    logger.info("Computed ROC from full_evaluation_results.json")
-    return defense_rates
+def _plot_series(ax: Axes, name: str, data: dict[str, Any], color: str, label: str) -> bool:
+    """Draw one ROC series; return ``True`` if a curve was drawn.
+
+    Raises:
+        ValueError: If the series carries FPR/TPR arrays of different lengths —
+            a malformed measurement must stop the render, not be skipped.
+    """
+    fpr = np.asarray(data.get("fpr", []), dtype=float)
+    tpr = np.asarray(data.get("tpr", []), dtype=float)
+    if fpr.size == 0 or tpr.size == 0:
+        logger.warning("series %s has no points; not drawing a curve for it", name)
+        return False
+    if fpr.size != tpr.size:
+        raise ValueError(
+            f"series {name} has {fpr.size} FPR points and {tpr.size} TPR points"
+        )
+
+    auc = data.get("auc")
+    if auc is None:
+        auc = auc_in_order(fpr, tpr)
+    ci = data.get("auc_ci95")
+    suffix = f"AUC={auc:.3f}"
+    if ci is not None:
+        suffix += f" [{ci[0]:.3f}, {ci[1]:.3f}]"
+
+    linewidth = 2.6 if name == "cif_full_pipeline" else 1.8
+    linestyle = ":" if data.get("kind") == "null" else "-"
+    ax.plot(fpr, tpr, linestyle, color=color, linewidth=linewidth,
+            label=f"{label} ({suffix})")
+
+    band_x = data.get("band_fpr")
+    if band_x is not None:
+        ax.fill_between(
+            np.asarray(band_x, dtype=float),
+            np.asarray(data["band_tpr_lo"], dtype=float),
+            np.asarray(data["band_tpr_hi"], dtype=float),
+            color=color,
+            alpha=0.12,
+            linewidth=0,
+        )
+
+    op = data.get("operating_point")
+    if op is not None and op[0] is not None and op[1] is not None:
+        ax.plot(
+            [op[0]], [op[1]], marker="D", color=color, markersize=6,
+            markeredgecolor="white", markeredgewidth=0.8, linestyle="none",
+        )
+    return True
+
+
+def _finish_axis(ax: Axes, title: str) -> None:
+    """Apply the shared ROC axis furniture."""
+    ax.plot([0, 1], [0, 1], "--", color=SEMANTIC_COLORS["neutral"], linewidth=1.0,
+            label="Chance (AUC=0.500)")
+    ax.set_xlabel("False Positive Rate", fontsize=11, fontweight="bold")
+    ax.set_ylabel("True Positive Rate", fontsize=11, fontweight="bold")
+    ax.set_title(title, fontsize=12, fontweight="bold", pad=10)
+    ax.set_xlim(-0.02, 1.02)
+    ax.set_ylim(-0.02, 1.02)
+    ax.legend(loc="lower right", fontsize=7.5, frameon=True, framealpha=0.95)
 
 
 def plot_roc_curves(output_dir: str | Path = "output/figures") -> Figure:
-    """Create ROC curves for each defense mechanism.
+    """Plot measured ROC curves per detector and for CIF by attack family.
+
+    Diamond markers mark each detector's *deployed* operating point, which for
+    CIF sits well below its own curve: the pipeline's score is informative but
+    its threshold is not where Youden's J is maximised.
 
     Parameters
     ----------
     output_dir : str | Path
-        Directory where figures are saved.
+        Directory where the figure is saved.
 
     Returns
     -------
     Figure
         The created matplotlib figure.
+
+    Raises
+    ------
+    ValueError
+        If ROC series are present but none is plottable — a malformed
+        measurement must fail the render rather than yield an empty axis.
     """
-    if isinstance(output_dir, str):
-        output_dir = Path(output_dir)
+    import matplotlib.pyplot as plt
 
+    output_dir = Path(output_dir)
     apply_style()
-    if not output_dir.exists():
-        output_dir.mkdir(parents=True, exist_ok=True)
-    fig, ax = plt.subplots(1, 1, figsize=(10, 8))
+    output_dir.mkdir(parents=True, exist_ok=True)
 
-    colors = {
-        "firewall": SEMANTIC_COLORS["firewall"],
-        "sandbox": SEMANTIC_COLORS["sandbox"],
-        "tripwire": SEMANTIC_COLORS["tripwire"],
-        "anomaly": SEMANTIC_COLORS["anomaly"],
-        "full_cif": SEMANTIC_COLORS["full_cif"],
-        "random": SEMANTIC_COLORS["baseline"],
-    }
-
-    def compute_auc(tpr_arr, fpr_arr):
-        """Wrapper around imported compute_auc_from_points."""
-        return compute_auc_from_points(np.array(fpr_arr), np.array(tpr_arr))
-
-    # Load real data
     roc_data = _load_roc_data(output_dir)
 
-    fpr_base = np.linspace(0, 1, 100)
+    fig, axes = plt.subplots(1, 2, figsize=(13, 5.8))
+    left, right = axes[0], axes[1]
 
-    # Build ROC curves from real evaluation data
-    # The full CIF system has real data; individual components get their
-    # curves derived from the full evaluation by component analysis
-    defense_configs = {
-        "firewall": ("Cognitive Firewall", colors["firewall"]),
-        "sandbox": ("Belief Sandbox", colors["sandbox"]),
-        "tripwire": ("Tripwire Monitor", colors["tripwire"]),
-        "anomaly": ("Anomaly Detection", colors["anomaly"]),
-        "full_cif": ("Full CIF", colors["full_cif"]),
-    }
+    drawn = 0
+    palette = list(SEMANTIC_COLORS.values())
+    for i, (name, data) in enumerate(roc_data.items()):
+        color = DETECTOR_COLORS.get(name, palette[i % len(palette)])
+        label = DETECTOR_LABELS.get(name, name.replace("_", " ").title())
+        drawn += int(_plot_series(left, name, data, color, label))
 
-    for key, (label, color) in defense_configs.items():
-        if key in roc_data:
-            fpr = np.array(roc_data[key]["fpr"])
-            tpr = np.array(roc_data[key]["tpr"])
-            idx = np.argsort(fpr)
-            fpr_sorted = fpr[idx]
-            tpr_sorted = tpr[idx]
-            auc_val = compute_auc(tpr_sorted, fpr_sorted)
-            lw = 3 if key == "full_cif" else 2.5
-            ax.plot(fpr_sorted, tpr_sorted, "-",
-                    color=color, linewidth=lw,
-                    label=f"{label} (AUC={auc_val:.3f})")
-        else:
-            # For components not individually benchmarked, derive from
-            # ablation data by using the detection rate delta as a proxy
-            try:
-                from data.result_loaders import load_ablation_results
-                ablation = load_ablation_results()
-                full_rate = ablation.get("component_removal", [{}])[0].get("detection_rate", 0.96)
-                # Find this component's rate in ablation
-                comp_rate = full_rate
-                for c in ablation.get("component_removal", []):
-                    if key in c.get("configuration", "").lower():
-                        comp_rate = c.get("detection_rate", full_rate)
-                        break
+    if roc_data and drawn == 0:
+        raise ValueError(
+            "ROC series were supplied but none was plottable; refusing to emit "
+            "an ROC figure with no measured curve on it"
+        )
+    if not roc_data:
+        # Only reachable when a caller injects an empty mapping: the real
+        # loader raises FileNotFoundError long before this point.  Say so on
+        # the figure itself rather than shipping a blank axis a reader could
+        # mistake for a measurement.
+        logger.error("no ROC series available; emitting an explicitly empty figure")
+        left.text(
+            0.5, 0.5,
+            "NO MEASURED DETECTOR SCORES AVAILABLE\n"
+            "run scripts/run_baseline_comparison.py",
+            ha="center", va="center", fontsize=11, fontweight="bold",
+            color=SEMANTIC_COLORS["bad"], transform=left.transAxes,
+        )
 
-                # Build smooth ROC using the component's operating point
-                power = np.log(1 - comp_rate) / np.log(1 - 0.05) if comp_rate < 1.0 else 4.0
-                power = max(1.5, min(power, 6.0))
-                tpr_curve = 1 - (1 - fpr_base) ** power
-                auc_val = compute_auc(tpr_curve, fpr_base)
-                ax.plot(fpr_base, tpr_curve, "-",
-                        color=color, linewidth=2.5,
-                        label=f"{label} (AUC={auc_val:.3f})")
-            except Exception as e:
-                logger.warning("Could not derive ROC for %s: %s", key, e)
+    _finish_axis(left, "Detector comparison (measured scores)")
 
-    # Random classifier baseline
-    ax.plot([0, 1], [0, 1], "--", color=colors["random"],
-            linewidth=1.5, label="Random Classifier")
+    # Right panel: CIF per attack family, when the full artifact is available.
+    per_category: dict[str, Any] = {}
+    try:
+        per_category = load_comparison_artifact(
+            search_dirs=[output_dir.parent / "data"]
+        ).get("cif_by_attack_category", {})
+    except (FileNotFoundError, ValueError) as exc:
+        logger.warning("per-family ROC unavailable (%s); drawing left panel only", exc)
 
-    # Styling
-    ax.set_xlabel("False Positive Rate (FPR)", fontsize=12, fontweight="bold")
-    ax.set_ylabel("True Positive Rate (TPR)", fontsize=12, fontweight="bold")
-    ax.set_title(
-        "ROC Curves: Defense Mechanism Detection Performance",
-        fontsize=14, fontweight="bold", pad=15,
-    )
-    ax.set_xlim(-0.02, 1.02)
-    ax.set_ylim(-0.02, 1.02)
-    ax.legend(loc="lower right", fontsize=10, frameon=True,
-              fancybox=True, shadow=False, framealpha=0.95)
+    for i, (category, curves) in enumerate(sorted(per_category.items())):
+        color = CATEGORY_COLORS.get(category, palette[i % len(palette)])
+        label = f"{category.replace('_', ' ').title()} (n={curves['n_positive']})"
+        _plot_series(right, category, {**curves, "kind": "cif"}, color, label)
+    if not per_category:
+        right.text(
+            0.5, 0.5, "per-family scores unavailable",
+            ha="center", va="center", fontsize=10, style="italic",
+            color=SEMANTIC_COLORS["neutral"], transform=right.transAxes,
+        )
+    _finish_axis(right, "Full CIF by attack family (measured scores)")
 
-    ax.annotate(
-        "Optimal\nRegion",
-        xy=(0.02, 0.95),
-        fontsize=10, ha="left", va="top", style="italic",
-        bbox=dict(boxstyle="round", facecolor="#E8F5E9", alpha=0.8),
-    )
-
-    plt.tight_layout()
+    fig.tight_layout()
     add_source_annotation(fig, "src/visualization/figures/roc_curves.py")
     save_figure(fig, "roc_curves", output_dir=output_dir)
     return fig

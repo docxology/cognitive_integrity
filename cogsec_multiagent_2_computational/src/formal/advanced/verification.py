@@ -156,9 +156,23 @@ def serialize_verification_results(
     - **Monoidal** (4): left_unitor, right_unitor, associator, symmetry
     - **Operad** (2): operad_unit, operad_associativity
     - **Enriched** (2): enriched_identity, enriched_composition_law
-    - **Kan extensions** (variable): lan_dominates + ran_wellformed
+    - **Kan extensions** (variable): lan_dominates + ran_wellformed for
+      multi-source targets, ran_dominated_by for single-source targets.
+      The default configuration below maps two sources onto one target, so it
+      emits ``lan_dominates_*`` and ``ran_wellformed_*`` only.
     - **Monad** (3): left_unit, right_unit, associativity
-    - **Lenses** (3): get_put, put_get, put_put
+    - **Lenses** (3): get_put, put_get, put_put -- these are laws of the
+      :class:`~formal.advanced.lenses.BeliefLens` argument; the
+      :class:`~formal.advanced.lenses.DefenseProfunctor` receiver's own
+      ``get_fn``/``put_fn`` are not part of these three flags.
+
+    Not every flag is independently falsifiable for arbitrary inputs.  The
+    seven lattice flags in particular are regression detectors over
+    ``DetectionBound.__le__``/``lattice_meet``/``lattice_join`` rather than
+    contingent facts: given the ``[0, 1]`` range enforced in
+    ``DetectionBound.__post_init__``, no admissible element set makes them
+    ``False``.  ``tests/test_category_theory_advanced.py::TestVerifierNegativeControls``
+    pins, per structure, an input for which the verifier does report ``False``.
 
     Args:
         n_states: Number of test states to generate.

@@ -107,11 +107,23 @@ class KanExtension:
         """Check Lan ⊣ restriction and restriction ⊣ Ran for score ordering.
 
         For each source morphism mapped to a target via F:
-        - Lan (left Kan, series-compose of all sources over a target) dominates
-          each individual source rate.
-        - Ran (right Kan, parallel-compose) may exceed a single source when
-          multiple sources are merged; we verify Ran.rate ≥ 0 (well-formedness)
-          rather than a per-source bound in the multi-source case.
+
+        - ``lan_dominates_<src>``: Lan (left Kan, series composition of all
+          sources over a target) dominates each individual source rate.  This
+          is falsifiable: ``compose_morphisms`` short-circuits on detection, so
+          a detecting low-score source in front of a non-detecting high-score
+          source drives the composite *below* the latter.
+        - ``ran_wellformed_<src>`` (multi-source targets): Ran is the parallel
+          composition of the sources, i.e. a pointwise max, so it must both
+          stay inside ``[0, 1]`` **and** dominate every source it merges.
+          ``DefenseResult.score`` is not clipped at construction, so the range
+          arm can genuinely fail; the dominance arm fails for any Ran that
+          drops one of its sources (e.g. returning the identity morphism).
+        - ``ran_dominated_by_<src>`` (single-source targets): Ran *is* the
+          source, so equality is checked in both directions.  A one-sided
+          ``ran <= src`` test would be satisfied by a Ran that silently
+          collapsed to the identity morphism (score 0), which is the exact
+          regression this arm exists to catch.
         """
         lan = self.left_kan()
         ran = self.right_kan()
@@ -139,15 +151,22 @@ class KanExtension:
             if tgt_name in ran:
                 ran_rates = np.array([ran[tgt_name](s).score for s in states])
                 if multi:
-                    # Multi-source Ran is a parallel composition: rate ≥ max(all sources) ≥ individual  # noqa: E501
-                    # Verify it's well-formed (in [0,1]) rather than dominated by a single source
-                    results[f"ran_wellformed_{src_name}"] = bool(
-                        np.all(ran_rates >= 0 - tol) and np.all(ran_rates <= 1.0 + tol)
+                    # Multi-source Ran is a parallel (max-fusion) composition:
+                    # it must be well-formed *and* dominate every source it
+                    # merges.  Range alone would be vacuous for a Ran that
+                    # dropped a source; dominance alone would be vacuous for a
+                    # Ran that returned an out-of-range score.
+                    in_range = bool(
+                        np.all(ran_rates >= 0.0 - tol) and np.all(ran_rates <= 1.0 + tol)
                     )
+                    dominates = bool(np.all(ran_rates >= src_rates - tol))
+                    results[f"ran_wellformed_{src_name}"] = in_range and dominates
                 else:
-                    # Single source: Ran = source itself, check equality
+                    # Single source: Ran *is* the source, so require equality in
+                    # both directions (a one-sided <= would accept an identity
+                    # morphism silently replacing the source).
                     results[f"ran_dominated_by_{src_name}"] = bool(
-                        np.all(ran_rates <= src_rates + tol)
+                        np.allclose(ran_rates, src_rates, atol=tol)
                     )
         return results
 

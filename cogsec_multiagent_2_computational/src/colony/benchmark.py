@@ -10,7 +10,8 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional
+from statistics.confidence import bootstrap_mean_ci
+from typing import Dict, List, Optional, Tuple
 
 import numpy as np
 
@@ -60,6 +61,100 @@ class ColonyResult:
     recovery_steps: int = 0
     ccs_score: float = 0.0
     timeline: List[float] = field(default_factory=list)
+
+
+@dataclass
+class ColonyScenarioSummary:
+    """Seed-sweep summary for one colony scenario.
+
+    A single simulation run is a single draw from a stochastic process
+    (agent initialisation, message ordering and adversary placement are all
+    RNG-driven), so a headline such as "100% detection at 0% false
+    positives" from one seed is a point estimate with unknown variance.
+    This container holds every per-seed run plus mean, 95% bootstrap CI and
+    observed min/max for each headline metric.
+
+    Attributes:
+        scenario_name: Identifier for the scenario.
+        runs: The per-repeat :class:`ColonyResult` objects, in seed order.
+        seeds: The seed used for each repeat, in the same order as ``runs``.
+        detection_rate_mean: Mean detection rate across repeats.
+        detection_rate_ci95: Bootstrap 95% CI for the mean detection rate.
+        detection_rate_range: ``(min, max)`` observed detection rate.
+        fpr_mean: Mean false-positive rate across repeats.
+        fpr_ci95: Bootstrap 95% CI for the mean false-positive rate.
+        fpr_range: ``(min, max)`` observed false-positive rate.
+        ccs_mean: Mean CCS score across repeats.
+        ccs_ci95: Bootstrap 95% CI for the mean CCS score.
+        ccs_range: ``(min, max)`` observed CCS score.
+        n_repeats: Number of repeats (== ``len(runs)``).
+    """
+
+    scenario_name: str
+    runs: List[ColonyResult]
+    seeds: List[int]
+    detection_rate_mean: float
+    detection_rate_ci95: Tuple[float, float]
+    detection_rate_range: Tuple[float, float]
+    fpr_mean: float
+    fpr_ci95: Tuple[float, float]
+    fpr_range: Tuple[float, float]
+    ccs_mean: float
+    ccs_ci95: Tuple[float, float]
+    ccs_range: Tuple[float, float]
+    n_repeats: int
+
+    @property
+    def detection_rate_values(self) -> List[float]:
+        """Per-repeat detection rates."""
+        return [r.detection_rate for r in self.runs]
+
+    @property
+    def fpr_values(self) -> List[float]:
+        """Per-repeat false-positive rates."""
+        return [r.false_positive_rate for r in self.runs]
+
+    @property
+    def ccs_values(self) -> List[float]:
+        """Per-repeat CCS scores."""
+        return [r.ccs_score for r in self.runs]
+
+    def all_runs_at(self, metric: str, value: float, tol: float = 0.0) -> bool:
+        """True only if *every* repeat hit *value* on *metric*.
+
+        This is the test a "guarantee"-shaped claim has to pass: a mean of
+        1.0 with one repeat at 0.98 is not a guarantee.
+
+        Args:
+            metric: ``"detection_rate"``, ``"false_positive_rate"`` or
+                ``"ccs_score"``.
+            value: The value every repeat must equal.
+            tol: Absolute tolerance.
+
+        Returns:
+            True if all repeats are within *tol* of *value*.
+
+        Raises:
+            ValueError: If *metric* is not a recognised ColonyResult field.
+        """
+        valid = {"detection_rate", "false_positive_rate", "ccs_score"}
+        if metric not in valid:
+            raise ValueError(f"metric must be one of {sorted(valid)}, got '{metric}'")
+        return all(abs(getattr(r, metric) - value) <= tol for r in self.runs)
+
+
+def _summarise(
+    values: List[float], seed: int
+) -> Tuple[float, Tuple[float, float], Tuple[float, float]]:
+    """Return ``(mean, bootstrap_ci95, (min, max))`` for *values*."""
+    arr = np.asarray(values, dtype=np.float64)
+    mean = float(arr.mean())
+    if arr.size < 2:
+        # A single observation carries no information about the spread; a
+        # degenerate CI is the honest representation, not a narrow one.
+        return mean, (mean, mean), (mean, mean)
+    _, lower, upper = bootstrap_mean_ci(arr, n_bootstrap=2000, seed=seed)
+    return mean, (float(lower), float(upper)), (float(arr.min()), float(arr.max()))
 
 
 # ---------------------------------------------------------------------------
@@ -116,6 +211,7 @@ class ColonyBenchmark:
             self._scenarios = self._load_default_scenarios()
 
         self._results: List[ColonyResult] = []
+        self._summaries: List[ColonyScenarioSummary] = []
 
     @staticmethod
     def _load_default_scenarios() -> list:
@@ -135,7 +231,11 @@ class ColonyBenchmark:
         ]
 
     def run_all(self, seed: int = 42) -> List[ColonyResult]:
-        """Run every registered scenario.
+        """Run every registered scenario once.
+
+        Single-run point estimates from a stochastic simulation carry no
+        uncertainty information; prefer :meth:`run_all_repeated` for any
+        number that will be published.
 
         Args:
             seed: Base random seed; each scenario gets a derived seed.
@@ -148,6 +248,90 @@ class ColonyBenchmark:
             result = self.run_scenario(scenario, seed=seed + i)
             self._results.append(result)
         return list(self._results)
+
+    def seed_for(self, scenario_index: int, repeat_index: int, base_seed: int) -> int:
+        """Return the seed used for one (scenario, repeat) pair.
+
+        The stride is the scenario count, so every (scenario, repeat) pair
+        gets a distinct seed and ``repeat_index=0`` reproduces the legacy
+        single-run seeds ``base_seed + scenario_index`` exactly.
+
+        Args:
+            scenario_index: Index into the registered scenarios.
+            repeat_index: Zero-based repeat number.
+            base_seed: Base seed for the sweep.
+
+        Returns:
+            The derived seed.
+        """
+        return base_seed + scenario_index + repeat_index * len(self._scenarios)
+
+    def run_all_repeated(
+        self,
+        seed: int = 42,
+        n_repeats: int = 30,
+    ) -> List[ColonyScenarioSummary]:
+        """Run every scenario over a seed sweep and interval-estimate.
+
+        Each scenario is executed ``n_repeats`` times on distinct seeds (see
+        :meth:`seed_for`) and the headline metrics are reported as a mean
+        with a 95% bootstrap CI plus the observed min/max.  With
+        ``n_repeats=1`` the per-scenario runs are byte-identical to
+        :meth:`run_all` with the same base seed, so the legacy artifact can
+        be reproduced for comparison.
+
+        Args:
+            seed: Base random seed for the sweep.
+            n_repeats: Number of repeats per scenario; must be >= 1.
+
+        Returns:
+            One :class:`ColonyScenarioSummary` per registered scenario.
+
+        Raises:
+            ValueError: If *n_repeats* < 1.
+        """
+        if n_repeats < 1:
+            raise ValueError(f"n_repeats must be >= 1, got {n_repeats}")
+
+        summaries: List[ColonyScenarioSummary] = []
+        for i, scenario in enumerate(self._scenarios):
+            seeds = [self.seed_for(i, r, seed) for r in range(n_repeats)]
+            runs = [self.run_scenario(scenario, seed=s) for s in seeds]
+
+            # Bootstrap seeds are derived from the sweep seed so the CI is
+            # reproducible without being shared across metrics.
+            dr_mean, dr_ci, dr_range = _summarise(
+                [r.detection_rate for r in runs], seed=seed + 1_000 + i
+            )
+            fpr_mean, fpr_ci, fpr_range = _summarise(
+                [r.false_positive_rate for r in runs], seed=seed + 2_000 + i
+            )
+            ccs_mean, ccs_ci, ccs_range = _summarise(
+                [r.ccs_score for r in runs], seed=seed + 3_000 + i
+            )
+
+            summaries.append(
+                ColonyScenarioSummary(
+                    scenario_name=runs[0].scenario_name,
+                    runs=runs,
+                    seeds=seeds,
+                    detection_rate_mean=dr_mean,
+                    detection_rate_ci95=dr_ci,
+                    detection_rate_range=dr_range,
+                    fpr_mean=fpr_mean,
+                    fpr_ci95=fpr_ci,
+                    fpr_range=fpr_range,
+                    ccs_mean=ccs_mean,
+                    ccs_ci95=ccs_ci,
+                    ccs_range=ccs_range,
+                    n_repeats=n_repeats,
+                )
+            )
+
+        self._summaries = summaries
+        # Keep ``summary()`` meaningful after a sweep: expose the first repeat.
+        self._results = [s.runs[0] for s in summaries]
+        return list(summaries)
 
     def run_scenario(
         self,

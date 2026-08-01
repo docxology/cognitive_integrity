@@ -1,119 +1,188 @@
-"""Fig 20: Per-category precision-recall curves with AP and CI bands.
+"""Precision-recall curves computed from measured per-payload detector scores.
 
-Displays PR curves for each attack category computed from real
-evaluation data, with average precision annotations.
-Reads data from full_evaluation_results.json.
+Reads ``output/data/baseline_comparison.json`` (written by
+``scripts/run_baseline_comparison.py``) and draws:
+
+* Left — the CIF pipeline per attack family, each family scored against the
+  shared benign controls.
+* Right — every detector in the baseline comparison over the whole corpus.
+
+Average precision is the measured AP of each threshold-swept curve, the
+interval is a bootstrap 95% CI, and the shaded region is the pointwise
+2.5/97.5 percentile band of the resampled curves.  The random-classifier
+reference is drawn at each stratum's *actual* positive prevalence, not at a
+fixed 0.5.
+
+This replaces a generator that fitted the parametric shape
+``1 - (1 - AP) * recall**alpha`` to a single operating point and drew
+"confidence bands" of ``1.96 * spread * sin(pi * recall)`` — an analytic
+flourish with no resampling behind it — and that labelled every curve with
+``real_precision`` while calling it AP.
 """
 
 from __future__ import annotations
 
+import logging
+from pathlib import Path
+from typing import Any
+
 import numpy as np
+from matplotlib.axes import Axes
 from matplotlib.figure import Figure
 
-from ..style import (
-    COLORS,
-    PALETTE,
-    add_legend,
-    create_figure,
-    format_axis,
-    save_figure,
-)
+from evaluation.baselines import load_comparison_artifact
 
-logger = __import__('logging').getLogger(__name__)
+from ..style import PALETTE, SEMANTIC_COLORS, add_source_annotation, apply_style, save_figure
+from .roc_curves import CATEGORY_COLORS, DETECTOR_COLORS, DETECTOR_LABELS
+
+logger = logging.getLogger(__name__)
 
 
-def _compute_pr_from_evaluation():
-    """Compute per-category PR curves from full evaluation results.
+def _prevalence(curves: dict[str, Any]) -> float:
+    """Positive prevalence for a curve block — the PR chance level."""
+    total = int(curves["n_positive"]) + int(curves["n_negative"])
+    return int(curves["n_positive"]) / total if total else 0.0
 
-    Uses real TP/FP/FN counts per category to build precision-recall data.
+
+def _plot_pr_series(
+    ax: Axes,
+    curves: dict[str, Any],
+    color: str,
+    label: str,
+    linewidth: float = 1.8,
+) -> None:
+    """Draw one measured PR curve with its bootstrap band.
+
+    Raises:
+        ValueError: If the recall/precision arrays are misaligned.
     """
-    from data.result_loaders import load_full_evaluation
+    recall = np.asarray(curves["recall"], dtype=float)
+    precision = np.asarray(curves["precision"], dtype=float)
+    if recall.size != precision.size:
+        raise ValueError(
+            f"{label}: {recall.size} recall points vs {precision.size} precision points"
+        )
 
-    rows = load_full_evaluation()
-
-    # Group by attack category
-    cat_data: dict[str, dict[str, int]] = {}
-    for r in rows:
-        cat = r.attack_category
-        cat_data.setdefault(cat, {"tp": 0, "fp": 0, "fn": 0, "tn": 0})
-        cat_data[cat]["tp"] += r.true_positives
-        cat_data[cat]["fp"] += r.false_positives
-        cat_data[cat]["fn"] += r.false_negatives
-        cat_data[cat]["tn"] += r.true_negatives
-
-    results = {}
-    for cat, counts in cat_data.items():
-        tp = counts["tp"]
-        fp = counts["fp"]
-        fn = counts["fn"]
-
-        precision = tp / (tp + fp) if (tp + fp) > 0 else 0.0
-        recall = tp / (tp + fn) if (tp + fn) > 0 else 0.0
-        ap = precision * recall  # average precision approximation
-
-        # Build smooth PR curve using the operating point
-        n_points = 200
-        recall_curve = np.linspace(0, 1, n_points)
-
-        # Use the real precision at the operating point to shape the curve
-        # PR curve: precision tends to drop as recall increases
-        alpha = 0.5 + ap if ap > 0 else 1.0
-        prec_curve = np.clip(1.0 - (1.0 - ap) * recall_curve ** alpha, 0, 1)
-
-        # Confidence bands based on sample size
-        n_total = tp + fp + fn + counts["tn"]
-        spread = max(0.005, 0.025 * (100 / max(n_total, 1)))
-        prec_lo = np.clip(prec_curve - 1.96 * spread * np.sin(np.pi * recall_curve), 0, 1)
-        prec_hi = np.clip(prec_curve + 1.96 * spread * np.sin(np.pi * recall_curve), 0, 1)
-
-        results[cat] = {
-            "recall": recall_curve,
-            "precision": prec_curve,
-            "prec_lo": prec_lo,
-            "prec_hi": prec_hi,
-            "ap": ap,
-            "real_precision": precision,
-            "real_recall": recall,
-        }
-
-    logger.info("Computed PR curves for %d categories from evaluation data", len(results))
-    return results
+    ap = float(curves["average_precision"])
+    lo, hi = (float(v) for v in curves["ap_ci95"])
+    ax.plot(
+        recall, precision, "-", color=color, linewidth=linewidth,
+        label=f"{label} (AP={ap:.3f} [{lo:.3f}, {hi:.3f}])",
+    )
+    ax.fill_between(
+        np.asarray(curves["band_recall"], dtype=float),
+        np.asarray(curves["band_precision_lo"], dtype=float),
+        np.asarray(curves["band_precision_hi"], dtype=float),
+        color=color,
+        alpha=0.12,
+        linewidth=0,
+    )
 
 
-def plot_precision_recall_curves(output_dir: str = "output/figures") -> Figure:
-    """Create per-category PR curves with AP and CI bands (Fig 20).
+def _finish_axis(ax: Axes, title: str, prevalences: list[float]) -> None:
+    """Apply shared PR axis furniture and the prevalence reference line(s).
+
+    The PR chance level is the positive prevalence of the stratum, which
+    differs per attack family; every distinct level is drawn and the legend
+    carries the range rather than one arbitrary representative.
+    """
+    levels = sorted({round(p, 4) for p in prevalences})
+    for i, prevalence in enumerate(levels):
+        if len(levels) == 1:
+            label = f"Chance (prevalence={prevalence:.3f})"
+        elif i == 0:
+            label = f"Chance (prevalence {levels[0]:.3f}-{levels[-1]:.3f})"
+        else:
+            label = None
+        ax.axhline(
+            y=prevalence,
+            color=SEMANTIC_COLORS["neutral"],
+            linestyle="--",
+            linewidth=1.0,
+            alpha=0.6,
+            label=label,
+        )
+    ax.set_xlabel("Recall", fontsize=11, fontweight="bold")
+    ax.set_ylabel("Precision", fontsize=11, fontweight="bold")
+    ax.set_title(title, fontsize=12, fontweight="bold", pad=10)
+    ax.set_xlim(0, 1)
+    ax.set_ylim(0, 1.05)
+    ax.legend(loc="lower left", fontsize=7.5, frameon=True, framealpha=0.95)
+
+
+def plot_precision_recall_curves(output_dir: str | Path = "output/figures") -> Figure:
+    """Plot measured PR curves by attack family and by detector.
 
     Parameters
     ----------
-    output_dir : str
-        Directory for saved figure files.
+    output_dir : str | Path
+        Directory for the saved figure files.
 
     Returns
     -------
     Figure
+
+    Raises
+    ------
+    FileNotFoundError
+        If ``baseline_comparison.json`` has not been generated.
+    ValueError
+        If the artifact contains neither per-family nor per-detector curves.
     """
-    fig, ax = create_figure()
+    import matplotlib.pyplot as plt
 
-    pr_data = _compute_pr_from_evaluation()
+    output_dir = Path(output_dir)
+    apply_style()
+    output_dir.mkdir(parents=True, exist_ok=True)
 
-    for i, (name, data) in enumerate(pr_data.items()):
-        color = PALETTE[i % len(PALETTE)]
-        ap = data["real_precision"]
-        ax.plot(data["recall"], data["precision"], color=color, linewidth=2,
-                label=f"{name} (AP={ap:.2f})")
-        ax.fill_between(data["recall"], data["prec_lo"], data["prec_hi"],
-                        color=color, alpha=0.12)
+    payload = load_comparison_artifact(search_dirs=[output_dir.parent / "data"])
+    per_category: dict[str, Any] = payload.get("cif_by_attack_category", {})
+    detectors: list[dict[str, Any]] = payload.get("detectors", [])
+    if not per_category and not detectors:
+        raise ValueError(
+            "baseline_comparison.json carries no PR curves; refusing to draw a "
+            "precision-recall figure with nothing measured on it"
+        )
 
-    # Baseline
-    ax.axhline(y=0.5, color=COLORS["neutral"], linestyle="--",
-               linewidth=1, alpha=0.5, label="Random baseline")
+    fig, axes = plt.subplots(1, 2, figsize=(13, 5.8))
+    left, right = axes[0], axes[1]
 
-    format_axis(ax, xlabel="Recall", ylabel="Precision",
-                title="Precision-Recall Curves by Attack Category")
-    ax.set_xlim(0, 1)
-    ax.set_ylim(0, 1.05)
-    add_legend(ax, loc="lower left")
+    left_prevalences: list[float] = []
+    for i, (category, curves) in enumerate(sorted(per_category.items())):
+        color = CATEGORY_COLORS.get(category, PALETTE[i % len(PALETTE)])
+        label = f"{category.replace('_', ' ').title()} (n={curves['n_positive']})"
+        _plot_pr_series(left, curves, color, label)
+        left_prevalences.append(_prevalence(curves))
+    if not per_category:
+        logger.error("no per-family PR curves in the artifact")
+        left.text(
+            0.5, 0.5, "per-family scores unavailable",
+            ha="center", va="center", fontsize=10, style="italic",
+            color=SEMANTIC_COLORS["neutral"], transform=left.transAxes,
+        )
+    _finish_axis(left, "Full CIF by attack family (measured scores)", left_prevalences)
+
+    right_prevalences: list[float] = []
+    for i, detector in enumerate(detectors):
+        name = str(detector["name"])
+        curves = detector["curves"]
+        color = DETECTOR_COLORS.get(name, PALETTE[i % len(PALETTE)])
+        label = DETECTOR_LABELS.get(name, name.replace("_", " ").title())
+        _plot_pr_series(
+            right, curves, color, label,
+            linewidth=2.6 if name == "cif_full_pipeline" else 1.8,
+        )
+        right_prevalences.append(_prevalence(curves))
+    if not detectors:
+        logger.error("no per-detector PR curves in the artifact")
+        right.text(
+            0.5, 0.5, "detector scores unavailable",
+            ha="center", va="center", fontsize=10, style="italic",
+            color=SEMANTIC_COLORS["neutral"], transform=right.transAxes,
+        )
+    _finish_axis(right, "Detector comparison (measured scores)", right_prevalences)
 
     fig.tight_layout()
+    add_source_annotation(fig, "src/visualization/figures/precision_recall_curves.py")
     save_figure(fig, "fig20_precision_recall_curves", output_dir=output_dir)
     return fig

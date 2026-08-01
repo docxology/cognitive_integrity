@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any, Callable, Dict, Generic, List, TypeVar
+from typing import Any, Callable, Dict, Generic, List, TypeVar, Union
 
 from formal.category_theory import (
     CognitiveState,
@@ -11,6 +11,12 @@ from formal.category_theory import (
 A = TypeVar("A")
 B = TypeVar("B")
 S = TypeVar("S")
+
+#: Anything usable as a lens on :data:`CognitiveState`: a primitive
+#: :class:`BeliefLens` or a :class:`ComposedLens` built from two of them.
+#: Both expose ``focus``, ``get`` and ``set``, so the law verifier accepts
+#: either.
+LensLike = Union["BeliefLens[Any]", "ComposedLens"]
 
 # 8. LENSES / OPTICS
 # ============================================================================
@@ -47,8 +53,8 @@ class BeliefLens(Generic[S]):
         """Apply a function over the focused belief."""
         return self.set(state, fn(self.get(state)))
 
-    def compose(self, other: "BeliefLens[Any]") -> "ComposedLens":
-        """Compose two lenses (outer . inner)."""
+    def compose(self, other: "LensLike") -> "ComposedLens":
+        """Compose two lenses (outer . inner); ``other`` is applied first."""
         return ComposedLens(outer=self, inner=other)
 
     def __repr__(self) -> str:
@@ -57,19 +63,64 @@ class BeliefLens(Generic[S]):
 
 @dataclass
 class ComposedLens:
-    """Composition of two lenses: outer . inner."""
+    """Composition of two lenses: ``outer . inner`` (``inner`` applied first).
 
-    outer: "BeliefLens[Any]"
-    inner: "BeliefLens[Any]"
+    Read in the usual function-composition order, ``inner`` observes the
+    :data:`CognitiveState` and ``outer`` observes *that* observation.  On the
+    flat ``Dict[str, float]`` state space the intermediate object is a single
+    scalar, so it is presented to ``outer`` as the one-field view
+    ``{outer.focus: inner.get(state)}``.
+
+    Consequences a caller stacking two lenses to model a two-stage cognitive
+    attack must know:
+
+    - the composite's *effective* focus -- the state key actually read and
+      written -- is ``inner.focus`` (exposed as :attr:`focus`);
+    - ``outer`` is nevertheless load-bearing: the value written by ``set`` is
+      whatever ``outer.set`` puts into the intermediate view, so a
+      law-violating ``outer`` makes the composite violate the same law.
+
+    The composite satisfies the three van Laarhoven laws (GetPut, PutGet,
+    PutPut) exactly when both components do.
+
+    Prior to 2026-07 this class was inert: :meth:`get` keyed the intermediate
+    view by ``inner.focus`` and then read ``outer.focus`` out of it, so it
+    returned ``0.0`` whenever the two foci differed, and :meth:`set` wrote the
+    *original* inner value back, making it a no-op.
+    """
+
+    outer: "LensLike"
+    inner: "LensLike"
+
+    @property
+    def focus(self) -> str:
+        """The state key the composite actually reads and writes."""
+        return self.inner.focus
+
+    def _view(self, state: CognitiveState) -> CognitiveState:
+        """The one-field intermediate object the outer lens operates on."""
+        return {self.outer.focus: self.inner.get(state)}
 
     def get(self, state: CognitiveState) -> float:
-        intermediate = {self.inner.focus: self.inner.get(state)}
-        return self.outer.get(intermediate)
+        """Observe the state through ``inner``, then through ``outer``."""
+        return self.outer.get(self._view(state))
 
     def set(self, state: CognitiveState, value: float) -> CognitiveState:
-        current_inner = self.inner.get(state)
-        new_inner_state = self.outer.set({self.inner.focus: current_inner}, value)
-        return self.inner.set(state, new_inner_state.get(self.inner.focus, value))
+        """Write ``value`` through ``outer`` and then back through ``inner``."""
+        updated_view = self.outer.set(self._view(state), value)
+        return self.inner.set(state, updated_view.get(self.outer.focus, value))
+
+    def modify(
+        self,
+        state: CognitiveState,
+        fn: Callable[[float], float],
+    ) -> CognitiveState:
+        """Apply a function over the composite's focused belief."""
+        return self.set(state, fn(self.get(state)))
+
+    def compose(self, other: "LensLike") -> "ComposedLens":
+        """Stack a third lens underneath this composite."""
+        return ComposedLens(outer=self, inner=other)
 
     def __repr__(self) -> str:
         return f"ComposedLens({self.outer!r} . {self.inner!r})"
@@ -122,15 +173,23 @@ class DefenseProfunctor:
 
     def verify_lens_laws(
         self,
-        lens: BeliefLens[Any],
+        lens: LensLike,
         states: List[CognitiveState],
         tol: float = 1e-10,
     ) -> Dict[str, bool]:
-        """Verify van Laarhoven lens laws for the underlying BeliefLens.
+        """Verify van Laarhoven lens laws for *lens*.
 
         - GetPut: set(s, get(s)) = s
         - PutGet: get(set(s, v)) = v
         - PutPut: set(set(s, v1), v2) = set(s, v2)
+
+        Accepts a :class:`BeliefLens` or a :class:`ComposedLens`.
+
+        Note: this method does not consult ``self`` -- the profunctor's own
+        ``get_fn``/``put_fn`` play no part in the three flags it returns.  It
+        checks the *lens* laws, not the profunctor optic; see
+        :meth:`compose` and :meth:`apply_get`/:meth:`apply_put` for the
+        profunctor behaviour, which is exercised separately.
         """
         get_put_ok = True
         put_get_ok = True

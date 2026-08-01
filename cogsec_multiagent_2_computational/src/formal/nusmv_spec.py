@@ -210,6 +210,9 @@ def generate_nusmv_spec(n_agents: int = 5, max_byzantine: int = 1) -> str:
 def parse_nusmv_result(output: str) -> Dict[str, bool]:
     """Parse NuSMV output to extract property verification results.
 
+    A verdict line with neither ``is true`` nor ``is false`` is recorded as
+    ``False``: an unparseable verdict is not evidence that the property holds.
+
     Args:
         output: Raw NuSMV stdout output.
 
@@ -221,18 +224,13 @@ def parse_nusmv_result(output: str) -> Dict[str, bool]:
 
     for line in lines:
         line = line.strip()
-        if "-- specification" in line.lower() or "-- CTLSPEC" in line.lower():
-            prop_name = line
-            # NuSMV prints "is true" or "is false" after the property
-            is_true = "is true" in line.lower()
-            is_false = "is false" in line.lower()
-            if is_true:
-                results[prop_name] = True
-            elif is_false:
-                results[prop_name] = False
-        elif line.startswith("-- specification") and "is true" in line:
-            results[line] = True
-        elif line.startswith("-- specification") and "is false" in line:
-            results[line] = False
+        lowered = line.lower()
+        # Two `elif line.startswith("-- specification") ...` arms used to sit
+        # below this branch; they were unreachable, because any line they could
+        # match already satisfies the `"-- specification" in line.lower()`
+        # guard.  They were removed rather than left as decoration.
+        if "-- specification" in lowered or "-- ctlspec" in lowered:
+            # NuSMV prints "is true" or "is false" after the property.
+            results[line] = "is true" in lowered
 
     return results

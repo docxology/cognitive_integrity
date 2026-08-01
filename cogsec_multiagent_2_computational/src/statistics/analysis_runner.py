@@ -1,6 +1,15 @@
 """Statistical analysis orchestrator.
 
 Loads real data, runs hypothesis tests, and produces serialisable results.
+
+Fail-closed contract
+--------------------
+``load_real_data`` derives component scores from the measured ablation file
+and from nothing else. A missing file, a malformed payload, or a row that has
+lost a key it depends on raises :class:`AblationDataUnavailableError`. It used
+to fall back to a table of hand-written per-component means, which meant a
+schema change or a deleted file silently turned the published component
+statistics into invented numbers that were still labelled ``real_pipeline``.
 """
 
 from __future__ import annotations
@@ -14,9 +23,83 @@ import numpy as np
 
 logger = logging.getLogger(__name__)
 
+#: Keys every ``component_removal`` row must carry for the analysis to run.
+_REQUIRED_ABLATION_ROW_KEYS = ("removed", "tpr")
+
+
+class AblationDataUnavailableError(RuntimeError):
+    """Raised when component scores cannot be derived from measured ablation data.
+
+    This is deliberately fatal. The alternative — substituting plausible
+    per-component means — produces a ``statistical_results.json`` that is
+    indistinguishable from a real one, so the failure has to stop the run.
+    """
+
+
+def _component_means_from_ablation(ablation_path: Path | None) -> dict[str, float]:
+    """Read per-component TPRs out of the ablation results file.
+
+    Raises
+    ------
+    AblationDataUnavailableError
+        The file is missing, unreadable, not an object, carries no
+        ``component_removal`` rows, or a row is missing a required key. The
+        message names the file and the specific key at fault.
+    """
+    if ablation_path is None:
+        raise AblationDataUnavailableError(
+            "no ablation results path was supplied; component scores cannot be "
+            "derived from measured data"
+        )
+    if not ablation_path.exists():
+        raise AblationDataUnavailableError(
+            f"ablation results not found: {ablation_path}"
+        )
+    try:
+        payload = json.loads(ablation_path.read_text())
+    except json.JSONDecodeError as exc:
+        raise AblationDataUnavailableError(
+            f"{ablation_path} is not valid JSON ({exc})"
+        ) from exc
+    if not isinstance(payload, dict):
+        raise AblationDataUnavailableError(f"{ablation_path} is not a JSON object")
+
+    rows = payload.get("component_removal")
+    if not isinstance(rows, list) or not rows:
+        raise AblationDataUnavailableError(
+            f"{ablation_path} has no populated 'component_removal' list "
+            f"(top-level keys: {sorted(payload) if payload else []})"
+        )
+
+    means: dict[str, float] = {}
+    for index, row in enumerate(rows):
+        if not isinstance(row, dict):
+            raise AblationDataUnavailableError(
+                f"{ablation_path}: 'component_removal[{index}]' is not an object"
+            )
+        for key in _REQUIRED_ABLATION_ROW_KEYS:
+            if key not in row:
+                raise AblationDataUnavailableError(
+                    f"{ablation_path}: 'component_removal[{index}]' is missing "
+                    f"required key {key!r} (keys present: {sorted(row)})"
+                )
+        try:
+            means[str(row["removed"])] = float(row["tpr"])
+        except (TypeError, ValueError) as exc:
+            raise AblationDataUnavailableError(
+                f"{ablation_path}: 'component_removal[{index}].tpr' is not a "
+                f"number ({row['tpr']!r})"
+            ) from exc
+    return means
+
 
 def generate_sample_data(rng: np.random.Generator, n: int = 100) -> dict[str, Any]:
     """Generate plausible experimental data for statistical analysis.
+
+    Every number below is invented. This exists to exercise the hypothesis
+    tests on a well-conditioned input; it is not wired into any pipeline and
+    its output must never reach ``output/data`` or the manuscript. Production
+    inputs come from :func:`load_real_data`.
 
     Parameters
     ----------
@@ -71,7 +154,8 @@ def load_real_data(
     eval_path : Path
         Path to full_evaluation_results.json.
     ablation_path : Path, optional
-        Path to ablation_results.json (may not exist).
+        Path to ablation_results.json. Required in practice: ``None`` or a
+        missing/malformed file raises rather than falling back to defaults.
     rng : np.random.Generator
         Seeded RNG for baseline/noise generation.
 
@@ -79,6 +163,22 @@ def load_real_data(
     -------
     dict
         Keys: cif_scores, baseline_scores, component_scores, arch_scores.
+
+    Raises
+    ------
+    AblationDataUnavailableError
+        Component scores could not be derived from measured ablation data.
+
+    Warning
+    -------
+    ``cif_scores`` and ``arch_scores`` are measured. ``baseline_scores`` are
+    **not** — they are drawn from ``N(0.03, 0.02)`` because the evaluation
+    never ran an undefended control arm. ``component_scores`` are measured
+    per-component TPRs widened by ``N(0, 0.02)`` noise to give the hypothesis
+    tests a distribution to work with; they are not repeated measurements.
+    Any effect size computed against ``baseline_scores`` (notably
+    ``cohens_d_cif_vs_baseline``) is therefore a statement about a simulated
+    control, not an observed one, and must be labelled that way downstream.
     """
     from data.result_loaders import load_full_evaluation
 
@@ -92,29 +192,18 @@ def load_real_data(
     n = len(cif_scores)
     baseline_scores = rng.normal(0.03, 0.02, size=n).clip(0.0, 0.10)
 
-    # Component scores from ablation
-    component_scores: dict[str, np.ndarray] = {}
-    if ablation_path and ablation_path.exists():
-        try:
-            ablation_data = json.loads(ablation_path.read_text())
-            for row in ablation_data.get("component_removal", []):
-                comp = row["removed"]
-                single_tpr = float(row["tpr"])
-                component_scores[comp] = rng.normal(single_tpr, 0.02, size=n).clip(0.0, 1.0)
-            logger.info("Loaded component scores from ablation data (%d components)", len(component_scores))  # noqa: E501
-        except Exception as exc:
-            logger.warning("Could not load ablation data (%s); using defaults", exc)
-            component_scores = {}
-
-    if not component_scores:
-        defaults = {
-            "firewall": (0.82, 0.03), "trust_calculus": (0.71, 0.04),
-            "tripwire": (0.68, 0.04), "detection": (0.74, 0.03),
-            "consensus": (0.65, 0.05), "provenance": (0.60, 0.04),
-            "sandbox": (0.58, 0.05), "invariants": (0.63, 0.04),
-        }
-        for key, (mu, sigma) in defaults.items():
-            component_scores[key] = rng.normal(mu, sigma, size=n).clip(0.0, 1.0)
+    # Component scores from ablation. No fallback: an unreadable file or a
+    # renamed key must stop the run, not quietly become invented means.
+    component_means = _component_means_from_ablation(ablation_path)
+    component_scores: dict[str, np.ndarray] = {
+        comp: rng.normal(tpr, 0.02, size=n).clip(0.0, 1.0)
+        for comp, tpr in component_means.items()
+    }
+    logger.info(
+        "Loaded component scores from ablation data (%d components) at %s",
+        len(component_scores),
+        ablation_path,
+    )
 
     # Per-architecture scores
     arch_name_map = {

@@ -47,18 +47,19 @@ This document maps the theoretical claims and definitions from the Cognitive Int
 | Sec 05h | Attack Generation (Ω1-Ω5) | `AdversarialGenerator` | `src/redteam/generator.py` | `tests/test_redteam.py` |
 | Sec 05h | Mutation Testing (12 operators) | `AttackMutator` | `src/redteam/generator.py` | `tests/test_redteam.py` |
 | Sec 05g/05h | AT convergence estimators | `natural_gradient_at_step`, `geometric_convergence_projection`, `convergence_round_estimate` | `src/redteam/convergence.py` | `tests/test_redteam_convergence.py` |
+| Sec 05h | Mutation-operator evasion sweep | `flagged_payloads`, `run_evasion_sweep`, `OperatorEvasion` | `src/redteam/evasion.py` | `tests/test_redteam.py` |
 | "Defense composition algebra" (25 verification checks) | Lattice / Monoidal / F-Algebra / Operad / Enriched / Kan / Monad / Lens | `run_all_verifications`, `serialize_verification_results` | `src/formal/category_theory_advanced.py` | `tests/test_category_theory_advanced.py` |
 | Composer web-UI backend | Aggregated category-theory + module data | `get_composer_data` | `src/visualization/composer_data.py` | `tests/test_composer_data.py` |
 
-Note: the mutation-operator evasion-rate figures quoted in Sec 05h
-(`manuscript/05h_redteam_evaluation.md`) reference a fuller
-campaign-orchestration framework (`mutator.py`/`campaign.py`/`evasion_probe.py`/
-`scorer.py`/`report.py` per that section's module-structure diagram) that is
-not implemented in `src/redteam/` as of this writing -- only `generator.py`
-and `__init__.py` exist. `scripts/run_redteam.py` reproduces a lighter-weight
-version of the same measurement (real `CognitiveFirewall` classification
-before/after mutation) but does not claim to reproduce the published
-per-operator percentages exactly.
+Note: the mutation-operator evasion-rate figures in Sec 05h
+(`manuscript/05h_redteam_evaluation.md`) are produced by
+`scripts/run_redteam.py --seed 42` over the real 950-sample `AttackCorpus`,
+de-duplicated and scored against the real `CognitiveFirewall`, and are pinned
+by `tests/test_redteam.py` (evasion-sweep and manuscript-consistency tests) so
+the manuscript cannot drift from the data. The section's original
+`campaign.py`/`evasion_probe.py`/`scorer.py`/`report.py` campaign-orchestration
+modules remain unimplemented; the published table reports the implemented
+`AttackMutator` sweep only (via the `src/redteam/evasion.py` harness).
 
 ## Validation & Experiments
 

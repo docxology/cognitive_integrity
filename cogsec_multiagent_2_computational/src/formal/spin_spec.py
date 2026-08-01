@@ -229,6 +229,11 @@ def generate_promela_spec(n_agents: int = 5, max_byzantine: int = 1) -> str:
 def parse_spin_result(output: str) -> Dict[str, bool]:
     """Parse SPIN verification output.
 
+    Fail-closed: an ``errors:`` line whose count cannot be parsed as an integer
+    is recorded as a *failure*, not a pass.  Previously the unparseable case
+    left ``errors`` at its ``0`` initialiser and the property was reported as
+    passing, so a malformed or truncated SPIN report read as "verified".
+
     Args:
         output: Raw SPIN stdout output.
 
@@ -242,14 +247,14 @@ def parse_spin_result(output: str) -> Dict[str, bool]:
         line = line.strip()
         # SPIN reports "errors: 0" for passing properties
         if "errors:" in line.lower():
-            errors = 0
+            passed = False
             parts = line.split(":")
             if len(parts) >= 2:
                 try:
-                    errors = int(parts[-1].strip())
+                    passed = int(parts[-1].strip()) == 0
                 except ValueError:
-                    pass
-            results[f"property_{len(results)}"] = errors == 0
+                    passed = False
+            results[f"property_{len(results)}"] = passed
 
         # Look for acceptance/rejection
         if "acceptance cycle" in line.lower():

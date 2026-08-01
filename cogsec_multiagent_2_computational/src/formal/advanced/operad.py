@@ -10,6 +10,7 @@ from formal.category_theory import (
     DefenseMorphism,
     categorical_product,
     compose_morphisms,
+    identity_morphism,
 )
 
 A = TypeVar("A")
@@ -135,12 +136,33 @@ class DefenseOperad:
         states: List[CognitiveState],
         tol: float = 1e-10,
     ) -> bool:
-        """Verify unit element: series_1(f) ≅ f."""
-        op = series_operad_op(1)
-        result = op.apply([f])
+        """Verify the operad unit laws around the operadic identity.
+
+        Three conditions are checked:
+
+        1. ``series_1(f) ≅ f`` -- the unary operation is the identity of the
+           operad.  This arm is definitionally true (``series_operad_op(1)``
+           returns its only child unchanged) and is retained only as a guard
+           against a future arity-1 special case.
+        2. ``series_2(id, f) ≅ f`` -- left unit insertion.
+        3. ``series_2(f, id) ≅ f`` -- right unit insertion.
+
+        Arms 2 and 3 carry the substantive content: grafting the operadic
+        identity into a composite must leave the composite unchanged.  They
+        route through :meth:`build_series`, so a series composition that
+        mishandles the unit (for example one that returns its last argument,
+        or that accumulates the identity's zero score) makes this method
+        return ``False``.
+        """
+        unary = series_operad_op(1).apply([f])
+        ident = identity_morphism()
+        left_unit = self.build_series([ident, f])
+        right_unit = self.build_series([f, ident])
         vf = np.array([f(s).score for s in states])
-        vr = np.array([result(s).score for s in states])
-        return bool(np.allclose(vf, vr, atol=tol))
+        return all(
+            bool(np.allclose(np.array([m(s).score for s in states]), vf, atol=tol))
+            for m in (unary, left_unit, right_unit)
+        )
 
     def verify_operad_associativity(
         self,

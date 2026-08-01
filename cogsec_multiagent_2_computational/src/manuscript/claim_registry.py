@@ -464,6 +464,59 @@ class GroundTruth:
             )
         return float(arch["total"])
 
+    # -- baseline comparison ------------------------------------------------
+
+    def baseline_comparison(self) -> dict[str, Any]:
+        """Parsed ``baseline_comparison.json``."""
+        data = self.payload("baseline_comparison.json")
+        if not isinstance(data, dict):
+            raise ClaimDataUnavailable("baseline_comparison.json is not a JSON object")
+        return data
+
+    def _baseline_detector(self, name: str) -> dict[str, Any]:
+        comp = self.baseline_comparison()
+        for d in comp.get("detectors", []):
+            if isinstance(d, dict) and d.get("name") == name:
+                return d
+        raise ClaimDataUnavailable(f"baseline_comparison.json has no detector {name!r}")
+
+    def baseline_metric(self, detector: str, metric: str) -> float:
+        """A ``metrics`` field for a named baseline detector (e.g. 'tpr', 'fpr', 'youden_j')."""
+        d = self._baseline_detector(detector)
+        m = d.get("metrics")
+        if not isinstance(m, dict) or metric not in m:
+            raise ClaimDataUnavailable(
+                f"baseline_comparison.json detector {detector!r} has no metrics.{metric}"
+            )
+        return float(m[metric])
+
+    def baseline_auc(self, detector: str) -> float:
+        """AUC for a named detector."""
+        d = self._baseline_detector(detector)
+        c = d.get("curves")
+        if not isinstance(c, dict) or "auc" not in c:
+            raise ClaimDataUnavailable(
+                f"baseline_comparison.json detector {detector!r} has no curves.auc"
+            )
+        return float(c["auc"])
+
+    def baseline_permutation_p(self, detector: str) -> float:
+        """Permutation-test p-value for a named detector."""
+        d = self._baseline_detector(detector)
+        p = d.get("permutation_null")
+        if not isinstance(p, dict) or "p_value" not in p:
+            raise ClaimDataUnavailable(
+                f"baseline_comparison.json detector {detector!r} has no permutation_null.p_value"
+            )
+        return float(p["p_value"])
+
+    def baseline_cif_rank(self) -> float:
+        """CIF's rank (1-based) among all detectors by Youden's J."""
+        head = self.baseline_comparison().get("headline")
+        if not isinstance(head, dict) or "cif_rank" not in head:
+            raise ClaimDataUnavailable("baseline_comparison.json has no headline.cif_rank")
+        return float(head["cif_rank"])
+
 
 # ---------------------------------------------------------------------------
 # Claim model
@@ -1797,6 +1850,75 @@ _SUPPLEMENT: tuple[Claim, ...] = (
     ),
 )
 
+_BASELINE: tuple[Claim, ...] = (
+    # Per-detector metrics from the baseline comparison table in 05_results.md.
+    # Pattern is:  | Detector name | TPR | FPR | Youden's J | AUC | Permutation p |
+    _c(
+        "baseline.bow_tpr",
+        "05_results.md",
+        r"\| Bag-of-words LR \(trained, 5-fold CV\) \| (\d+\.\d+) \|",
+        lambda gt: gt.baseline_metric("bag_of_words_lr", "tpr"),
+        F3,
+        "fraction",
+    ),
+    _c(
+        "baseline.bow_youden_j",
+        "05_results.md",
+        r"\| Bag-of-words LR \(trained, 5-fold CV\) \| \d+\.\d+ \| \d+\.\d+ \| (\d+\.\d+) \|",
+        lambda gt: gt.baseline_metric("bag_of_words_lr", "youden_j"),
+        F3,
+        "fraction",
+    ),
+    _c(
+        "baseline.keyword_tpr",
+        "05_results.md",
+        r"\| Keyword regex \(19 frozen patterns\) \| (\d+\.\d+) \|",
+        lambda gt: gt.baseline_metric("keyword_regex", "tpr"),
+        F3,
+        "fraction",
+    ),
+    _c(
+        "baseline.keyword_youden_j",
+        "05_results.md",
+        r"\| Keyword regex \(19 frozen patterns\) \| \d+\.\d+ \| \d+\.\d+ \| (\d+\.\d+) \|",
+        lambda gt: gt.baseline_metric("keyword_regex", "youden_j"),
+        F3,
+        "fraction",
+    ),
+    _c(
+        "baseline.length_tpr",
+        "05_results.md",
+        r"\| Length-only \(\$\\geq 120\$ chars\) \| (\d+\.\d+) \|",
+        lambda gt: gt.baseline_metric("length_only", "tpr"),
+        F3,
+        "fraction",
+    ),
+    _c(
+        "baseline.cif_tpr",
+        "05_results.md",
+        r"\| CIF full pipeline \(8 modules\) \| (\d+\.\d+) \|",
+        lambda gt: gt.baseline_metric("cif_full_pipeline", "tpr"),
+        F3,
+        "fraction",
+    ),
+    _c(
+        "baseline.cif_auc",
+        "05_results.md",
+        r"\| CIF full pipeline \(8 modules\) \| \d+\.\d+ \| \d+\.\d+ \| \d+\.\d+ \| (\d+\.\d+) \|",
+        lambda gt: gt.baseline_auc("cif_full_pipeline"),
+        F3,
+        "fraction",
+    ),
+    _c(
+        "baseline.cif_rank",
+        "05_results.md",
+        r"CIF ranks (\d+) of \d+ detectors by Youden",
+        lambda gt: gt.baseline_cif_rank(),
+        EXACT,
+        "count",
+    ),
+)
+
 #: Every claim the reader-side checker enforces.
 CLAIMS: tuple[Claim, ...] = (
     _ABSTRACT
@@ -1807,6 +1929,7 @@ CLAIMS: tuple[Claim, ...] = (
     + _CONCLUSION
     + _SETUP
     + _SUPPLEMENT
+    + _BASELINE
 )
 
 

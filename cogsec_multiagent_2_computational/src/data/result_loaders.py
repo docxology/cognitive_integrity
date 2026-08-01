@@ -11,7 +11,7 @@ from __future__ import annotations
 import json
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Set, Tuple
 
 import numpy as np
 
@@ -116,9 +116,32 @@ _ARCH_ORDER = [
     "Claude Code", "AutoGPT", "CrewAI", "LangGraph",
 ]
 
+# The attack-category strings that actually appear in
+# full_evaluation_results.json.  These are *subcategory* labels (one
+# representative subcategory per top-level family), not the top-level
+# family names.  They previously read
+# ``["injection", "trust_exploitation", "belief_manipulation", "coordination"]``
+# -- none of which occur in the data -- so the `any(...)` guard in
+# `evaluation_to_detection_matrix` always fell through to alphabetical
+# order while `detection_tables._CATEGORIES` printed the top-level names,
+# silently swapping the injection and belief-manipulation columns
+# (audit REPRO-04).
 _CAT_ORDER = [
-    "injection", "trust_exploitation", "belief_manipulation", "coordination",
+    "indirect_injection", "impersonation", "belief_drift", "sybil_attack",
 ]
+
+
+def _ordered(preferred: List[str], present: Set[str]) -> List[str]:
+    """Order *present* labels by *preferred*, appending unknowns alphabetically.
+
+    Never drops a label that is in the data.  The previous
+    ``preferred if any(match) else sorted(present)`` form was all-or-nothing:
+    a single recognised label made the function return the whole preferred
+    list, dropping every unrecognised label from the matrix without a word.
+    """
+    ordered = [x for x in preferred if x in present]
+    ordered += sorted(present - set(ordered))
+    return ordered
 
 
 def evaluation_to_detection_matrix(
@@ -148,8 +171,8 @@ def evaluation_to_detection_matrix(
     for r in rows:
         lookup[(r.architecture, r.attack_category)] = r.detection_rate
 
-    archs = _ARCH_ORDER if any(r.architecture in _ARCH_ORDER for r in rows) else sorted({r.architecture for r in rows})  # noqa: E501
-    cats = _CAT_ORDER if any(r.attack_category in _CAT_ORDER for r in rows) else sorted({r.attack_category for r in rows})  # noqa: E501
+    archs = _ordered(_ARCH_ORDER, {r.architecture for r in rows})
+    cats = _ordered(_CAT_ORDER, {r.attack_category for r in rows})
 
     matrix = np.zeros((len(archs), len(cats)))
     for i, arch in enumerate(archs):

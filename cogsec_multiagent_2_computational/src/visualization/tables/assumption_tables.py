@@ -9,6 +9,8 @@ import json
 import logging
 from pathlib import Path
 
+from .latex import escape_latex
+
 logger = logging.getLogger(__name__)
 
 
@@ -26,8 +28,8 @@ def generate_assumption_table() -> str:
     for a in data["assumptions"]:
         status = "\\checkmark" if a["passed"] else "\\texttimes"
         rows.append(
-            f"  {a['test']} & {a['group']} & {a['statistic']:.4f} & "
-            f"{a['p_value']:.4e} & {status} \\\\"
+            f"  {escape_latex(a['test'])} & {escape_latex(a['group'])} & "
+            f"{a['statistic']:.4f} & {a['p_value']:.4e} & {status} \\\\"
         )
     body = "\n".join(rows)
 

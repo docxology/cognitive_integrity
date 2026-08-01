@@ -1,41 +1,106 @@
 """LaTeX tables for attack corpus composition.
 
 Generates a table showing category, subcategory, count, and percentage
-for the full 950-attack corpus.
+for the attack corpus.
+
+Every count is measured from ``AttackCorpus.generate()`` at build time
+(audit MSC-11).  This module previously carried a hand-typed 12-row
+literal whose subcategory counts disagreed with the generator in 8 of 12
+rows -- indirect 180 vs 200, nested 120 vs 100, trust inflation 70 vs 60,
+delegation abuse 50 vs 60, belief drift 60 vs 50, belief injection 40 vs
+50, consensus poisoning 35 vs 30, timing 25 vs 30 -- while the top-level
+subtotals happened to agree, which is what let the discrepancy survive.
 """
 
 from __future__ import annotations
 
-_CORPUS = [
-    ("Injection", "Direct Injection", 200),
-    ("Injection", "Indirect Injection", 180),
-    ("Injection", "Nested Injection", 120),
-    ("Trust Exploitation", "Impersonation", 80),
-    ("Trust Exploitation", "Trust Inflation", 70),
-    ("Trust Exploitation", "Delegation Abuse", 50),
-    ("Belief Manipulation", "Belief Drift", 60),
-    ("Belief Manipulation", "Belief Fabrication", 50),
-    ("Belief Manipulation", "Belief Injection", 40),
-    ("Coordination", "Sybil Attack", 40),
-    ("Coordination", "Consensus Poisoning", 35),
-    ("Coordination", "Timing Attack", 25),
-]
+from dataclasses import dataclass
+from typing import TYPE_CHECKING, List, Optional
 
-_TOTAL = 950
+from .latex import escape_latex
+
+if TYPE_CHECKING:  # pragma: no cover - typing only
+    from attacks.corpus import AttackCorpus
+
+# Corpus generation is deterministic given the seed; 42 is the canonical
+# seed used by every other consumer of the corpus in this project.
+CORPUS_SEED = 42
 
 
-def generate_corpus_table() -> str:
+@dataclass(frozen=True)
+class CorpusRow:
+    """One measured ``(top category, subcategory, count)`` row."""
+
+    category: str
+    subcategory: str
+    count: int
+
+
+def _label(name: str) -> str:
+    return escape_latex(name.replace("_", " ").title())
+
+
+def corpus_rows(corpus: Optional["AttackCorpus"] = None) -> List[CorpusRow]:
+    """Measure the corpus composition, preserving generation order.
+
+    Parameters
+    ----------
+    corpus:
+        A corpus to measure.  Generated with :data:`CORPUS_SEED` if *None*.
+
+    Returns
+    -------
+    list of CorpusRow
+        One row per ``(top category, subcategory)`` pair actually present,
+        in first-appearance order so the table groups naturally without a
+        hardcoded ordering list.
+    """
+    if corpus is None:
+        from attacks.corpus import AttackCorpus
+
+        corpus = AttackCorpus.generate(seed=CORPUS_SEED)
+
+    order: List[tuple[str, str]] = []
+    counts: dict[tuple[str, str], int] = {}
+    for sample in corpus:
+        key = (sample.category.top_category, sample.subcategory)
+        if key not in counts:
+            counts[key] = 0
+            order.append(key)
+        counts[key] += 1
+
+    return [CorpusRow(cat, sub, counts[(cat, sub)]) for cat, sub in order]
+
+
+def generate_corpus_table(corpus: Optional["AttackCorpus"] = None) -> str:
     """Generate a LaTeX table of the attack corpus composition.
+
+    Parameters
+    ----------
+    corpus:
+        A corpus to tabulate.  Generated with :data:`CORPUS_SEED` if *None*.
 
     Returns
     -------
     str
-        Complete LaTeX table string showing category breakdown.
+        Complete LaTeX table string showing the category breakdown.
+
+    Raises
+    ------
+    ValueError
+        If the corpus is empty; a percentage column over a zero total is
+        undefined and a zero-row composition table would be misleading.
     """
+    rows = corpus_rows(corpus)
+    total = sum(r.count for r in rows)
+    if total == 0:
+        raise ValueError("attack corpus is empty; nothing to tabulate")
+
     lines = [
         r"\begin{table}[htbp]",
         r"\centering",
-        r"\caption{Attack Corpus Composition (950 Attacks)}",
+        f"\\caption{{Attack Corpus Composition ({total} Attacks). "
+        f"Counts measured from \\texttt{{AttackCorpus.generate(seed={CORPUS_SEED})}}.}}",
         r"\label{tab:corpus}",
         r"\begin{tabular}{llrr}",
         r"\toprule",
@@ -43,31 +108,41 @@ def generate_corpus_table() -> str:
         r"\midrule",
     ]
 
-    prev_cat = None
-    for cat, sub, count in _CORPUS:
-        pct = count / _TOTAL * 100
-        if cat != prev_cat:
+    prev_cat: Optional[str] = None
+    for row in rows:
+        pct = row.count / total * 100
+        if row.category != prev_cat:
             if prev_cat is not None:
                 lines.append(r"\midrule")
-            cat_display = cat
-            prev_cat = cat
+            cat_display = _label(row.category)
+            prev_cat = row.category
         else:
             cat_display = ""
-        lines.append(f"{cat_display} & {sub} & {count} & {pct:.1f}\\% \\\\")
+        lines.append(
+            f"{cat_display} & {_label(row.subcategory)} & {row.count} & {pct:.1f}\\% \\\\"
+        )
 
-    # Category subtotals
+    # Category subtotals, in the same first-appearance order.
     lines.append(r"\midrule")
+    cat_order: List[str] = []
     cat_totals: dict[str, int] = {}
-    for cat, _, count in _CORPUS:
-        cat_totals[cat] = cat_totals.get(cat, 0) + count
+    for row in rows:
+        if row.category not in cat_totals:
+            cat_totals[row.category] = 0
+            cat_order.append(row.category)
+        cat_totals[row.category] += row.count
 
-    for cat, total in cat_totals.items():
-        pct = total / _TOTAL * 100
-        lines.append(f"\\textbf{{{cat}}} & \\textit{{Subtotal}} & \\textbf{{{total}}} & \\textbf{{{pct:.1f}\\%}} \\\\")  # noqa: E501
+    for cat in cat_order:
+        subtotal = cat_totals[cat]
+        pct = subtotal / total * 100
+        lines.append(
+            f"\\textbf{{{_label(cat)}}} & \\textit{{Subtotal}} & "
+            f"\\textbf{{{subtotal}}} & \\textbf{{{pct:.1f}\\%}} \\\\"
+        )
 
     lines.extend([
         r"\midrule",
-        f"\\textbf{{Total}} & & \\textbf{{{_TOTAL}}} & \\textbf{{100.0\\%}} \\\\",
+        f"\\textbf{{Total}} & & \\textbf{{{total}}} & \\textbf{{100.0\\%}} \\\\",
         r"\bottomrule",
         r"\end{tabular}",
         r"\end{table}",

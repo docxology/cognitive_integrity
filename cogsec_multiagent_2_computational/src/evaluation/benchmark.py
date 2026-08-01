@@ -7,14 +7,17 @@ for aggregated results.
 
 from __future__ import annotations
 
+import logging
 import sys
 import time
-from dataclasses import dataclass
-from typing import Any, Dict, List
+from dataclasses import dataclass, field
+from typing import Any, Dict, List, Tuple
 
 import numpy as np
 
 from utils.timing import LatencyAccumulator
+
+logger = logging.getLogger(__name__)
 
 # ---------------------------------------------------------------------------
 # Benchmark result
@@ -127,6 +130,27 @@ class LatencyProfiler:
 # Memory profiler
 # ---------------------------------------------------------------------------
 
+@dataclass
+class MemoryEstimate:
+    """Result of a memory estimation pass over a pipeline.
+
+    Attributes:
+        total_bytes: Estimated total memory in bytes.
+        skipped_attributes: ``(attribute_name, exception_repr)`` for every
+            attribute whose value could not be read.  Each entry is memory
+            that is *missing* from ``total_bytes``, so a non-empty list means
+            the total is an undercount of unknown size.
+    """
+
+    total_bytes: int
+    skipped_attributes: List[Tuple[str, str]] = field(default_factory=list)
+
+    @property
+    def is_complete(self) -> bool:
+        """True if every public attribute was successfully accounted for."""
+        return not self.skipped_attributes
+
+
 class MemoryProfiler:
     """Estimate memory usage of defense pipeline data structures.
 
@@ -134,14 +158,23 @@ class MemoryProfiler:
     array memory from dtype and shape.
     """
 
+    #: Exceptions treated as "this attribute is not currently readable"
+    #: (e.g. a lazily initialised property).  Anything else propagates so a
+    #: genuinely broken pipeline surfaces instead of silently undercounting.
+    SKIPPABLE_ATTR_ERRORS: Tuple[type[BaseException], ...] = (
+        AttributeError,
+        NotImplementedError,
+        RuntimeError,
+    )
+
     def estimate_memory(self, pipeline: Any, n_agents: int) -> int:
         """Estimate total memory usage in bytes.
 
-        Walks the pipeline's attributes and estimates memory for:
-        - Python primitive attributes (via ``sys.getsizeof``)
-        - numpy arrays (dtype itemsize x total elements)
-        - Lists/dicts (recursive estimation)
-        - Agent-count-dependent structures (trust matrices = n^2)
+        Thin wrapper over :meth:`estimate_memory_detailed` that returns only
+        the total.  A warning is logged when any attribute was skipped, since
+        the returned int cannot otherwise convey that it is an undercount;
+        callers that must not publish an undercount should use
+        :meth:`estimate_memory_detailed` and check ``is_complete``.
 
         Args:
             pipeline: The defense pipeline object.
@@ -150,7 +183,45 @@ class MemoryProfiler:
         Returns:
             Estimated memory in bytes.
         """
+        estimate = self.estimate_memory_detailed(pipeline, n_agents)
+        if not estimate.is_complete:
+            logger.warning(
+                "memory estimate for %s is an undercount: %d attribute(s) "
+                "could not be read (%s)",
+                type(pipeline).__name__,
+                len(estimate.skipped_attributes),
+                ", ".join(name for name, _ in estimate.skipped_attributes),
+            )
+        return estimate.total_bytes
+
+    def estimate_memory_detailed(self, pipeline: Any, n_agents: int) -> MemoryEstimate:
+        """Estimate total memory usage, reporting unreadable attributes.
+
+        Walks the pipeline's attributes and estimates memory for:
+        - Python primitive attributes (via ``sys.getsizeof``)
+        - numpy arrays (dtype itemsize x total elements)
+        - Lists/dicts (recursive estimation)
+        - Agent-count-dependent structures (trust matrices = n^2)
+
+        Attributes that raise one of :attr:`SKIPPABLE_ATTR_ERRORS` on access
+        are recorded in ``skipped_attributes`` and omitted from the total.
+        Any other exception propagates to the caller.
+
+        Args:
+            pipeline: The defense pipeline object.
+            n_agents: Number of agents (for matrix sizing estimates).
+
+        Returns:
+            A :class:`MemoryEstimate`.
+
+        Raises:
+            ValueError: If *n_agents* is negative.
+        """
+        if n_agents < 0:
+            raise ValueError(f"n_agents must be >= 0, got {n_agents}")
+
         total = 0
+        skipped: List[Tuple[str, str]] = []
 
         # Base object overhead
         total += sys.getsizeof(pipeline)
@@ -161,7 +232,15 @@ class MemoryProfiler:
                 continue
             try:
                 val = getattr(pipeline, attr_name)
-            except (AttributeError, Exception):
+            except self.SKIPPABLE_ATTR_ERRORS as exc:
+                logger.debug(
+                    "skipping attribute %r of %s: %s: %s",
+                    attr_name,
+                    type(pipeline).__name__,
+                    type(exc).__name__,
+                    exc,
+                )
+                skipped.append((attr_name, f"{type(exc).__name__}: {exc}"))
                 continue
 
             if callable(val) and not isinstance(val, np.ndarray):
@@ -182,7 +261,7 @@ class MemoryProfiler:
         agent_state_bytes = n_agents * 1024
         total += agent_state_bytes
 
-        return total
+        return MemoryEstimate(total_bytes=total, skipped_attributes=skipped)
 
     def _estimate_object(self, obj: Any, depth: int = 0) -> int:
         """Recursively estimate memory for a single object.

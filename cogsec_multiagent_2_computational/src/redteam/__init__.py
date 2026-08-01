@@ -9,7 +9,7 @@ from __future__ import annotations
 import logging
 import math
 from dataclasses import dataclass, field
-from typing import Any
+from typing import Any, Callable, Sequence
 
 import numpy as np
 
@@ -25,6 +25,7 @@ class ATConfig:
     learning_rate: float = 0.05
     seed: int = 42
     ethical_mode: bool = True
+    measurement_mode: str = "model"  # "model" (closed-form) | "real" (measured pipeline)
     mutation_operators: list[str] = field(default_factory=lambda: [
         "semantic_paraphrase",
         "nested_wrapping",
@@ -52,6 +53,98 @@ class ATRoundResult:
     primary_gap_closed: str          # human-readable gap attribution
     n_attacks_generated: int
     threshold_updates: dict[str, float]
+
+
+# ---------------------------------------------------------------------------
+# Modular, real, deterministic building blocks (functionally validated)
+# ---------------------------------------------------------------------------
+# Each of these is a small, pure, side-effect-free function that does real
+# computation: measurement against a real detector, or deterministic threshold
+# refinement.  They are the "most real, functional" units of the AT framework —
+# independently testable and dependency-injected — and are reused by
+# ``AdversarialTrainer`` in ``measurement_mode="real"``.
+# ---------------------------------------------------------------------------
+
+#: Per-gap threshold gradient map (round gap name -> {threshold: gradient}).
+#: Deterministic — the gradient of detection rate w.r.t. each threshold for a
+#: given gap, used by :func:`refine_thresholds`.  This is a design choice, not
+#: an empirical fit; it drives both model and real modes.
+GAP_GRADIENT_MAP = {
+    "indirect injection": {"firewall_depth_max": 0.3, "drift_threshold": 0.2},
+    "trust inflation variants": {"trust_decay": 0.4, "delegation_chain_max": 0.25},
+    "delegation abuse": {"delegation_chain_max": 0.45, "trust_decay": 0.3},
+    "belief cascade variants": {"sandbox_kappa": 0.35, "tripwire_tau": 0.25},
+    "multi-hop sybil routing": {"consensus_quorum": 0.3, "anomaly_threshold": 0.25},
+}
+
+
+def measure_detection_rate(
+    payloads: Sequence[str], detector: Callable[[str], bool]
+) -> float:
+    """Real detection rate of ``detector`` over ``payloads`` (fraction flagged).
+
+    A detector is any ``str -> bool`` predicate that is True when the payload is
+    detected.  This is a *measurement*: it counts real classifications, so the
+    result is whatever the detector actually does on the given payloads.
+
+    Args:
+        payloads: Candidate payloads to score (duplicates are counted as samples).
+        detector: Predicate that is True when a payload is detected.
+
+    Returns:
+        Fraction of payloads detected, in ``[0, 1]`` (0.0 for an empty set).
+    """
+    if not payloads:
+        return 0.0
+    return float(sum(1 for p in payloads if detector(p)) / len(payloads))
+
+
+def refine_thresholds(
+    thresholds: dict[str, float],
+    gap_name: str,
+    learning_rate: float,
+) -> tuple[dict[str, float], dict[str, float]]:
+    """Deterministically refine defense thresholds from a detected gap.
+
+    Applies ``learning_rate * gradient`` (from :data:`GAP_GRADIENT_MAP`) to each
+    threshold, clipped to ``[0.01, 0.99]``.  No RNG — the same inputs always
+    yield the same outputs, so tests can assert exact updates.
+
+    Args:
+        thresholds: Current threshold configuration (mutated only via the return).
+        gap_name: Detected primary gap (looked up in :data:`GAP_GRADIENT_MAP`).
+        learning_rate: Refinement learning rate ``\\alpha``.
+
+    Returns:
+        ``(new_thresholds, updates)`` where ``updates`` maps each threshold to
+        the delta that was applied.
+    """
+    gradients = GAP_GRADIENT_MAP.get(gap_name, {"drift_threshold": 0.1})
+    new_thresholds: dict[str, float] = {}
+    updates: dict[str, float] = {}
+    for key, value in thresholds.items():
+        delta = learning_rate * gradients.get(key, 0.0)
+        new_thresholds[key] = float(np.clip(value + delta, 0.01, 0.99))
+        updates[key] = delta
+    return new_thresholds, updates
+
+
+def evaluate_adaptive_attacks(
+    generator: Any, n: int, detector: Callable[[str], bool]
+) -> float:
+    """Generate ``n`` real adaptive attacks and measure the detected fraction.
+
+    Args:
+        generator: An object with ``generate_batch(n)`` returning attack objects
+            carrying a ``.payload`` string (e.g. :class:`AdversarialGenerator`).
+        n: Number of attacks to generate.
+        detector: Predicate that is True when a payload is detected.
+
+    Returns:
+        Measured detection rate in ``[0, 1]``.
+    """
+    attacks = generator.generate_batch(n)
+    return measure_detection_rate([a.payload for a in attacks], detector)
 
 
 class AdversarialTrainer:
@@ -84,12 +177,28 @@ class AdversarialTrainer:
         self,
         config: ATConfig | None = None,
         initial_thresholds: dict[str, float] | None = None,
+        *,
+        detector: Callable[[str], bool] | None = None,
+        measurement_mode: str | None = None,
     ) -> None:
         self.config = config or ATConfig()
         self.rng = np.random.default_rng(self.config.seed)
         self.thresholds = initial_thresholds or self._default_thresholds()
         self.rounds: list[ATRoundResult] = []
         self._baseline_dr = self.BASELINE_DR
+        self.measurement_mode = measurement_mode or self.config.measurement_mode
+        if self.measurement_mode not in ("model", "real"):
+            raise ValueError(
+                f"measurement_mode must be 'model' or 'real', got {self.measurement_mode!r}"
+            )
+        # Dependency-injected real detector.  When None, ``_detect`` falls back to
+        # the real ``CognitiveFirewall`` (payload != ACCEPT means detected).
+        self._detector = detector
+        self._firewall: Any | None = None
+        self._corpus_payloads_cache: list[str] | None = None
+        #: Real measured baseline DR (set lazily on the first "real" round).  In
+        #: model mode this stays ``self.BASELINE_DR``.
+        self._real_baseline: float | None = None
 
     def _default_thresholds(self) -> dict[str, float]:
         """Return default CIF defense thresholds."""
@@ -145,6 +254,50 @@ class AdversarialTrainer:
             gradients[key] = round_grads.get(key, 0.0) + self.rng.normal(0, 0.01)
         return gradients
 
+    # -- Real measurement path (measurement_mode="real") --------------------
+    # These methods score real payloads against a real detector, so their
+    # outputs are actual measured fractions, not closed-form constants.
+
+    def _detect(self, payload: str) -> bool:
+        """Real detection predicate: the injected detector or the real firewall.
+
+        Returns True when the payload is *not* accepted (REJECT or QUARANTINE).
+        """
+        if self._detector is not None:
+            return self._detector(payload)
+        from core.firewall import Classification
+
+        if self._firewall is None:
+            from core.firewall import CognitiveFirewall
+
+            self._firewall = CognitiveFirewall()
+        return self._firewall.classify(payload) != Classification.ACCEPT
+
+    def corpus_payloads(self) -> list[str]:
+        """The real 950-sample attack corpus payloads (generated once, cached)."""
+        if self._corpus_payloads_cache is None:
+            from attacks.corpus import AttackCorpus
+
+            self._corpus_payloads_cache = [
+                s.payload for s in AttackCorpus.generate(seed=self.config.seed)
+            ]
+        return self._corpus_payloads_cache
+
+    def measure_baseline_corpus_dr(self) -> float:
+        """Real measured detection rate of the current detector on the corpus."""
+        return measure_detection_rate(self.corpus_payloads(), self._detect)
+
+    def _real_round_attack_dr(self, round_num: int) -> float:
+        """Generate real adaptive attacks for a round and measure the detected fraction."""
+        from redteam.generator import AdversarialGenerator, OmegaLevel
+
+        gen = AdversarialGenerator(
+            config_thresholds=self.thresholds,
+            omega_level=OmegaLevel.OMEGA_3_IMPERSONATION,
+            seed=self.config.seed,
+        )
+        return evaluate_adaptive_attacks(gen, self.config.attacks_per_round, self._detect)
+
     def run_round(self, round_num: int) -> ATRoundResult:
         """Execute a single AT round.
 
@@ -160,23 +313,43 @@ class AdversarialTrainer:
         logger.info("AT Round %d/%d", round_num, self.config.n_rounds)
 
         # Step 1: Evaluate adaptive attacks on current config
-        base_dr = self._simulate_adaptive_attack_dr(round_num, self.thresholds)
-
-        # Step 2: Compute threshold gradient
-        gradients = self._compute_threshold_gradient(round_num, base_dr, self.thresholds)
-
-        # Step 3: Update thresholds
-        threshold_updates: dict[str, float] = {}
-        for key in self.thresholds:
-            delta = self.config.learning_rate * gradients.get(key, 0.0)
-            self.thresholds[key] = float(np.clip(self.thresholds[key] + delta, 0.01, 0.99))
-            threshold_updates[key] = delta
-
-        # Step 4: Evaluate hardened config on original corpus
-        hardened_dr = self._simulate_hardened_dr(round_num, self.thresholds)
-        delta_dr = hardened_dr - self._baseline_dr
-
         gap_name, _ = self.ROUND_GAP_ATTRIBUTION.get(round_num, ("unknown", 0.0))
+
+        if self.measurement_mode == "real":
+            # Real measurement path: score real adaptive attacks and the real
+            # corpus against the real detector (injected or the real firewall).
+            # The baseline is the *real measured* corpus DR, not the hardcoded
+            # model constant, so ``delta_dr`` is a real improvement measure.
+            if self._real_baseline is None:
+                self._real_baseline = self.measure_baseline_corpus_dr()
+                self._baseline_dr = self._real_baseline
+            base_dr = self._real_round_attack_dr(round_num)
+            self.thresholds, threshold_updates = refine_thresholds(
+                self.thresholds, gap_name, self.config.learning_rate
+            )
+            hardened_dr = self.measure_baseline_corpus_dr()
+        else:
+            # Design-model path (default): closed-form round math.
+            base_dr = self._simulate_adaptive_attack_dr(round_num, self.thresholds)
+
+            # Step 2: Compute threshold gradient
+            gradients = self._compute_threshold_gradient(
+                round_num, base_dr, self.thresholds
+            )
+
+            # Step 3: Update thresholds
+            threshold_updates: dict[str, float] = {}
+            for key in self.thresholds:
+                delta = self.config.learning_rate * gradients.get(key, 0.0)
+                self.thresholds[key] = float(
+                    np.clip(self.thresholds[key] + delta, 0.01, 0.99)
+                )
+                threshold_updates[key] = delta
+
+            # Step 4: Evaluate hardened config on original corpus
+            hardened_dr = self._simulate_hardened_dr(round_num, self.thresholds)
+
+        delta_dr = hardened_dr - self._baseline_dr
 
         result = ATRoundResult(
             round_num=round_num,

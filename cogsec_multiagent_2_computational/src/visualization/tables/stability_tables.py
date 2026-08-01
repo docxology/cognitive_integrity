@@ -9,6 +9,8 @@ import json
 import logging
 from pathlib import Path
 
+from .latex import escape_latex
+
 logger = logging.getLogger(__name__)
 
 
@@ -31,9 +33,11 @@ def generate_stability_table() -> str:
     ]
     for arch, cv in sorted(data.get("per_architecture_cv", {}).items()):
         stable = "\\checkmark" if cv <= threshold else "\\texttimes"
-        rows.append(f"  {arch} & {cv:.4f} & {threshold:.2f} & {stable} \\\\")
+        rows.append(
+            f"  {escape_latex(arch)} & {cv:.4f} & {threshold:.2f} & {stable} \\\\"
+        )
     for cat, cv in sorted(data.get("per_category_cv", {}).items()):
-        label = cat.replace("_", " ").title()
+        label = escape_latex(cat.replace("_", " ").title())
         stable = "\\checkmark" if cv <= threshold else "\\texttimes"
         rows.append(f"  {label} & {cv:.4f} & {threshold:.2f} & {stable} \\\\")
     body = "\n".join(rows)

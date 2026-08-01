@@ -33,6 +33,15 @@ manuscript **only** when it was measured and read out of a data file:
 Provenance is carried in ``ground_truth["_provenance"]`` and is what the
 log tags (``[REAL]`` / ``[PARAMETRIC]`` / ``[UNAVAILABLE]``) are derived
 from, so a fallback can never be printed as a measurement.
+
+Prose is not restyled
+---------------------
+A substitution replaces the **number** and nothing else. Where the
+manuscript writes a LaTeX qualifier before a maintained value
+(``= -0.051`` vs ``\\approx -0.051``), the qualifier is captured and
+written back unchanged, so re-running the injector never converts an
+"approximately" claim into an exact one (or vice versa). Signs are
+likewise taken from the data (``{:+.3f}``) rather than assumed negative.
 """
 
 from __future__ import annotations
@@ -63,6 +72,17 @@ _Z95 = 1.959963984540054
 #: Tolerance when cross-checking detection_rate against true/false positives.
 _RATE_TOLERANCE = 1e-6
 
+#: Two synergy scores closer than this are treated as tied. The ablation
+#: corpus has N=98 attacks, so the measurement resolution is 1/98 ≈ 0.0102;
+#: anything below 1e-9 apart is the same measured value re-derived through a
+#: different floating-point path, not a real ordering.
+_SYNERGY_TIE_TOLERANCE = 1e-9
+
+#: LaTeX qualifier that may sit between a claim's name and its number
+#: ("= -0.051", "\approx -0.051", "\sim -0.051", or nothing at all). Captured
+#: and written back verbatim so the injector maintains values, not wording.
+_QUALIFIER = r"(?:=|\\\\approx|\\\\sim|\\approx|\\sim)?\s*"
+
 
 class GroundTruthUnavailableError(RuntimeError):
     """Raised when a manuscript claim has no measured value behind it."""
@@ -70,6 +90,58 @@ class GroundTruthUnavailableError(RuntimeError):
 
 class InjectionPatternError(RuntimeError):
     """Raised when a substitution pattern matched zero times."""
+
+
+def _tied_top_synergies(synergies: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Every synergy pair sharing the maximum score, in input order.
+
+    Returns a single-element list when there is a clear winner. A longer list
+    means the data does not distinguish those pairs and the manuscript must
+    not claim it does.
+    """
+    if not synergies:
+        return []
+    best = max(float(s["synergy"]) for s in synergies)
+    return [s for s in synergies if abs(float(s["synergy"]) - best) <= _SYNERGY_TIE_TOLERANCE]
+
+
+def _format_pair(synergy: dict[str, Any]) -> str:
+    """Render a synergy pair the way the manuscript names components."""
+    return (
+        f"{str(synergy['a']).replace('_', ' ').title()} + "
+        f"{str(synergy['b']).replace('_', ' ').title()}"
+    )
+
+
+def _component_display_name(removed: str) -> str:
+    """Manuscript spelling of an ablation component name."""
+    if removed == "detection":
+        return "Detection module"
+    return removed.replace("_", " ").title()
+
+
+def _component_hierarchy(components: list[dict[str, Any]]) -> str:
+    """Render the component-importance chain, using ``$\\gg$`` for the first (largest)
+    gap, ``$>$`` for subsequent non-tied gaps, and ``$\\approx$`` for measured ties.
+
+    ``component_removal`` arrives ordered most-harmful-first. Joining it with
+    ``$>$`` throughout would claim a strict ranking between components whose
+    ``delta_tpr`` is bit-for-bit identical, which the ablation corpus cannot
+    distinguish. Tied neighbours are joined with ``$\\approx$`` instead.
+    """
+    if not components:
+        return ""
+    parts = [_component_display_name(components[0]["removed"])]
+    for i, (previous, current) in enumerate(zip(components, components[1:])):
+        tied = float(previous["delta_tpr"]) == float(current["delta_tpr"])
+        if tied:
+            parts.append(r"$\\approx$")
+        elif i == 0:
+            parts.append(r"$\\gg$")
+        else:
+            parts.append("$>$")
+        parts.append(_component_display_name(current["removed"]))
+    return " ".join(parts)
 
 
 def _component_baseline_tpr(components: list[dict[str, Any]]) -> float:
@@ -153,9 +225,17 @@ class InjectionReport:
             detail = "; ".join(
                 f"{doc}:{label} ({reason})" for doc, label, reason in self.unbacked
             )
+            # Mention the misses too: this branch pre-empts InjectionPatternError,
+            # so without this the pattern failures would be invisible to whoever
+            # reads the traceback.
+            also = (
+                f" ({len(self.misses)} substitution pattern(s) also matched zero times)"
+                if self.misses
+                else ""
+            )
             raise GroundTruthUnavailableError(
                 f"{len(self.unbacked)} manuscript claim(s) have no measured "
-                f"value behind them: {detail}"
+                f"value behind them: {detail}{also}"
             )
         if self.misses:
             detail = "; ".join(
@@ -191,6 +271,56 @@ def _apply(
     else:
         report.record_match(document, label, count)
     return new_text
+
+
+def _apply_detection_delta(
+    text: str,
+    gt: dict,
+    *,
+    document: str,
+    report: InjectionReport,
+) -> str:
+    r"""Maintain every numeric ``\Delta\text{TPR}`` detection claim in a document.
+
+    Six manuscript files state this one number, and three of them state it
+    more than once (body prose plus a figure caption). Driving them all from a
+    single pattern is what stops them drifting apart when the ablation is
+    re-run. The sign comes from the data, so a delta that turned positive
+    would be reported as positive rather than silently negated.
+
+    The match is anchored on a preceding capitalised "Detection" in the *same
+    sentence* (``[^.]`` cannot cross a full stop). Without that anchor the
+    pattern is claim-agnostic and will happily overwrite another component's
+    delta with the detection figure — 04_experimental_setup.md states the
+    trust-calculus delta in exactly this notation.
+    """
+    return _apply(
+        text,
+        r"(Detection[^.]{0,300}?\\Delta\\text\{TPR\}\s*" + _QUALIFIER + r")[-+][\d.]+",
+        r"\g<1>" + f"{gt['detection_delta']:+.3f}",
+        document=document,
+        label="detection_delta",
+        report=report,
+    )
+
+
+def _apply_top_synergy_value(
+    text: str,
+    gt: dict,
+    lead_in: str,
+    *,
+    document: str,
+    report: InjectionReport,
+) -> str:
+    """Maintain the top synergy score behind ``lead_in`` (a regex fragment)."""
+    return _apply(
+        text,
+        r"(" + lead_in + r"\s*\(\$\s*" + _QUALIFIER + r")\+[\d.]+",
+        r"\g<1>" + f"+{gt['top_synergy']['synergy']:.3f}",
+        document=document,
+        label="top_synergy_value",
+        report=report,
+    )
 
 
 def _finish(
@@ -303,8 +433,42 @@ def _load_llm_ground_truth(path: Path) -> tuple[dict[str, Any] | None, str | Non
     return values, None
 
 
+#: Human-readable name of the interval ``multi_seed_ci_halfwidth`` describes.
+#: The manuscript must describe the published CI in exactly these terms.
+MULTI_SEED_CI_METHOD = (
+    "normal approximation on the mean of the per-seed detection rates "
+    "(mean ± 1.959964 · s / √k, s = sample SD across seeds, ddof=1)"
+)
+
+
 def _load_multi_seed_ground_truth(path: Path) -> tuple[dict[str, Any] | None, str | None]:
-    """Load measured multi-seed values, or explain why there are none."""
+    """Load measured multi-seed values, or explain why there are none.
+
+    Confidence interval
+    -------------------
+    ``multi_seed_ci_halfwidth`` is the half-width of a two-sided 95% interval
+    on the **seed-level mean**, computed by normal approximation:
+
+        mean ± z₀.₉₇₅ · s / √k
+
+    where ``k`` is the number of seeds and ``s`` is the sample standard
+    deviation across seeds (``ddof=1``). Nothing here is a constant: change
+    the seed spread and the half-width moves.
+
+    Why this interval and not a binomial one on the pooled counts. The
+    published quantity is the mean detection rate *across seeds*, and the
+    dominant uncertainty is seed-to-seed variation in the pipeline itself
+    (stochastic detection scoring, cross-validation subsampling) — not
+    sampling error inside any one seed's corpus. A Wilson or Wald interval on
+    the pooled evaluation events treats them as i.i.d. Bernoulli draws and
+    discards the between-seed component entirely, which on the current data
+    understates the half-width by a factor of ~2.8 (0.00563 vs 0.01576). A
+    bootstrap over the seed means was rejected because at k = 30 it only adds
+    resampling noise; it relaxes no assumption that matters at this k.
+
+    The interval is therefore *not* valid as a statement about a single seed,
+    and the manuscript must not present it as one.
+    """
     payload, reason = _read_json_object(path)
     if payload is None:
         return None, reason
@@ -335,6 +499,7 @@ def _load_multi_seed_ground_truth(path: Path) -> tuple[dict[str, Any] | None, st
     if len(rates) > 1:
         variance = sum((r - mean) ** 2 for r in rates) / (len(rates) - 1)
         values["multi_seed_ci_halfwidth"] = _Z95 * math.sqrt(variance / len(rates))
+        values["multi_seed_ci_method"] = MULTI_SEED_CI_METHOD
     return values, None
 
 
@@ -391,6 +556,11 @@ def load_ground_truth(data_dir: Path) -> dict[str, Any]:
     )
     gt["full_pipeline_tpr"] = _component_baseline_tpr(ablation["component_removal"])
     gt["top_synergy"] = ablation["top_synergies"][0]
+    # The pipeline can produce exact ties (every ablation figure is a multiple
+    # of 1/N_attacks). Taking [0] and calling it "the strongest" would invent a
+    # ranking the data does not contain, so record every pair that shares the
+    # maximum and let the prose substitution pluralise.
+    gt["top_synergy_ties"] = _tied_top_synergies(ablation["top_synergies"])
     provenance["ablation"] = PROV_MEASURED
 
     # --- Statistical results (parametric-derived, required) ---
@@ -491,16 +661,7 @@ def inject_abstract(
             document, "multi_seed_mean_dr", unavailable_reason(gt, "multi_seed")
         )
 
-    # Detection delta from ablation
-    delta = abs(gt["detection_delta"])
-    text = _apply(
-        text,
-        r"\\Delta\\text\{TPR\}\s*=\s*-[\d.]+",
-        f"\\\\Delta\\\\text{{TPR}} = -{delta:.3f}",
-        document=document,
-        label="detection_delta",
-        report=report,
-    )
+    text = _apply_detection_delta(text, gt, document=document, report=report)
 
     # LLM detection range — only when a real LLM run produced measurements.
     if is_available(gt, "llm"):
@@ -619,14 +780,11 @@ def inject_results(
         report.record_unbacked(document, "llm_claude_dr", reason)
         report.record_unbacked(document, "llm_crewai_dr", reason)
 
-    text = _apply(
-        text,
-        r"\| Detection Rate \(simulation\)\s*\|\s*\d+\.\d+",
-        f"| Detection Rate (simulation) | {gt['parametric_overall_dr_mean']:.3f}",
-        document=document,
-        label="parametric_overall_dr",
-        report=report,
-    )
+    # NOTE: this document used to carry a "Detection Rate (simulation)" row and
+    # the injector maintained it here. The row now lives only in
+    # S08_parametric_analysis.md (see inject_parametric_supplement), so the
+    # substitution was removed rather than left as a permanently dead pattern.
+    text = _apply_detection_delta(text, gt, document=document, report=report)
 
     changed = _finish(path, text, original, dry_run, document)
     if owns:
@@ -651,60 +809,76 @@ def inject_ablation(
     text = path.read_text()
     original = text
 
-    det_delta = abs(gt["detection_delta"])
-    text = _apply(
-        text,
-        r"\\Delta\\text\{TPR\}\s*=\s*-[\d.]+\)",
-        f"\\\\Delta\\\\text{{TPR}} = -{det_delta:.3f})",
-        document=document,
-        label="detection_delta",
-        report=report,
-    )
+    text = _apply_detection_delta(text, gt, document=document, report=report)
 
     components = gt["ablation_components"]
     caption_parts = []
     for c in components[1:]:
         name = c["removed"].replace("_", " ").title()
-        caption_parts.append(f"{name} ($-{abs(c['delta_tpr']):.3f}$)")
+        # \approx matches this document's convention and is honest: every
+        # delta is a multiple of 1/N_attacks, so 3 dp is a rounding.
+        # The backslash is doubled because this string becomes an re.sub
+        # *replacement*, where "\a" would otherwise be read as an escape and
+        # emit a BEL control character instead of the literal \approx.
+        caption_parts.append(f"{name} ($\\\\approx {c['delta_tpr']:+.3f}$)")
     new_order_str = ", ".join(caption_parts[:-1]) + f", and {caption_parts[-1]}"
     # Non-greedy so the replacement (which contains '.' inside numbers) stays
     # matchable on a second run — the idempotency property this module claims.
     text = _apply(
         text,
-        r"followed by .+?\. The",
-        f"followed by {new_order_str}. The",
+        r"followed by .+?; Provenance, Sandbox, and Consensus show",
+        f"followed by {new_order_str}; Provenance, Sandbox, and Consensus show",
         document=document,
         label="component_order_caption",
         report=report,
     )
 
-    syn_val = gt["top_synergy"]["synergy"]
-    syn_a = gt["top_synergy"]["a"].replace("_", " ").title()
-    syn_b = gt["top_synergy"]["b"].replace("_", " ").title()
     text = _apply(
         text,
-        r"strongest positive synergy \(\$\+[\d.]+\$",
-        f"strongest positive synergy ($+{syn_val:.3f}$",
+        r"(both\s*\$\s*\\approx\s*)\+[\d.]+(\$)",
+        r"\g<1>" + f"+{gt['top_synergy']['synergy']:.3f}" + r"\g<2>",
         document=document,
         label="top_synergy_value",
         report=report,
     )
+
+    # Ties are real: with an N-attack corpus every synergy is a multiple of
+    # 1/N, and two pairs currently share the maximum exactly. Naming only the
+    # first would assert an ordering the measurement cannot support, so the
+    # sentence pluralises over every tied pair. The manuscript uses lowercase
+    # component names joined by '+' (e.g. "firewall+detection") inside the
+    # top-synergy-tier parenthetical.
+    tied = gt.get("top_synergy_ties") or [gt["top_synergy"]]
+    pair_names = []
+    for s in tied:
+        a_lower = str(s["a"]).lower()
+        b_lower = str(s["b"]).lower()
+        pair_names.append(f"{a_lower}+{b_lower}")
+    if len(pair_names) == 1:
+        pair_label = pair_names[0]
+    else:
+        pair_label = " and ".join(pair_names)
     text = _apply(
         text,
-        r"The [A-Z][a-z]+ \+ [A-Z][a-z]+ pair exhibits the strongest",
-        f"The {syn_a} + {syn_b} pair exhibits the strongest",
+        r"(The top synergy tier \()[a-z+ -]+( and [a-z+ -]+)?(?=[,)])",
+        r"\g<1>" + pair_label,
         document=document,
         label="top_synergy_pair",
         report=report,
     )
 
     for c in components:
-        name_display = c["removed"].replace("_", " ").title()
-        if c["removed"] == "detection":
-            name_display = "Detection module"
-        old_pattern = rf"\| {re.escape(name_display)}\s*\|\s*[\d.]+\s*\|\s*\$[-+]?[\d.]+\$"
-        delta_str = f"-{abs(c['delta_tpr']):.3f}"
-        new_row = f"| {name_display} | {c['tpr']:.3f} | ${delta_str}$"
+        name_display = _component_display_name(c["removed"])
+        # The manuscript pluralises some component names ("Tripwires") and
+        # writes deltas as "$\approx -0.010$". Capture the label, the column
+        # separators and the qualifier so only the numbers are rewritten.
+        escaped = re.escape(name_display)
+        if not name_display.endswith("s"):
+            escaped += "s?"
+        old_pattern = (
+            rf"(\| {escaped}\s*\|\s*)[\d.]+(\s*\|\s*\$\s*" + _QUALIFIER + r")[-+]?[\d.]+(\$)"
+        )
+        new_row = rf"\g<1>{c['tpr']:.3f}\g<2>{c['delta_tpr']:+.3f}\g<3>"
         new_text, count = re.subn(old_pattern, new_row, text, flags=re.IGNORECASE)
         if count == 0:
             report.record_miss(document, f"ablation_row:{c['removed']}", old_pattern)
@@ -712,13 +886,10 @@ def inject_ablation(
             report.record_match(document, f"ablation_row:{c['removed']}", count)
         text = new_text
 
-    hierarchy_names = [c["removed"].replace("_", " ").title() for c in components]
-    hierarchy_names[0] = "Detection module"
-    hierarchy_str = " $>$ ".join(hierarchy_names)
     text = _apply(
         text,
-        r"Detection module\s*\$>\$[^.]+\.",
-        f"{hierarchy_str}.",
+        r"Detection module\s*\$(?:[>=]|\\approx|\\gg)\$[^.]+\.",
+        f"{_component_hierarchy(components)}.",
         document=document,
         label="component_hierarchy",
         report=report,
@@ -761,15 +932,7 @@ def inject_discussion(
     text = path.read_text()
     original = text
 
-    det_delta = abs(gt["detection_delta"])
-    text = _apply(
-        text,
-        r"\\Delta\\text\{TPR\}\s*=\s*-[\d.]+\)",
-        f"\\\\Delta\\\\text{{TPR}} = -{det_delta:.3f})",
-        document=document,
-        label="detection_delta",
-        report=report,
-    )
+    text = _apply_detection_delta(text, gt, document=document, report=report)
 
     if is_available(gt, "multi_seed"):
         text = _apply(
@@ -799,13 +962,8 @@ def inject_discussion(
     else:
         report.record_unbacked(document, "multi_seed_ci", unavailable_reason(gt, "multi_seed"))
 
-    text = _apply(
-        text,
-        r"strongest synergy \(\$\+[\d.]+\$",
-        f"strongest synergy ($+{gt['top_synergy']['synergy']:.3f}$",
-        document=document,
-        label="top_synergy_value",
-        report=report,
+    text = _apply_top_synergy_value(
+        text, gt, r"strongest synergy", document=document, report=report
     )
 
     changed = _finish(path, text, original, dry_run, document)
@@ -878,6 +1036,8 @@ def inject_experimental_setup(
             document, "multi_seed_mean_dr", unavailable_reason(gt, "multi_seed")
         )
 
+    text = _apply_detection_delta(text, gt, document=document, report=report)
+
     changed = _finish(path, text, original, dry_run, document)
     if owns:
         report.raise_if_failed()
@@ -915,23 +1075,13 @@ def inject_conclusion(
             document, "multi_seed_mean_dr", unavailable_reason(gt, "multi_seed")
         )
 
-    det_delta = abs(gt["detection_delta"])
-    text = _apply(
-        text,
-        r"\\Delta\\text\{TPR\}\s*=\s*-[\d.]+",
-        f"\\\\Delta\\\\text{{TPR}} = -{det_delta:.3f}",
-        document=document,
-        label="detection_delta",
-        report=report,
-    )
-
-    text = _apply(
-        text,
-        r"synergy \(\$\+[\d.]+\$",
-        f"synergy ($+{gt['top_synergy']['synergy']:.3f}$",
-        document=document,
-        label="top_synergy_value",
-        report=report,
+    # NOTE: no numeric \Delta\text{TPR} claim survives in the conclusion — it
+    # cites the component hierarchy and the summed-magnitude share instead.
+    # The substitution that used to live here matched nothing and was removed
+    # rather than left dead. If a numeric delta returns to this document, add
+    # `_apply_detection_delta` back; the shared helper already handles it.
+    text = _apply_top_synergy_value(
+        text, gt, r"synergy", document=document, report=report
     )
 
     changed = _finish(path, text, original, dry_run, document)
@@ -981,12 +1131,24 @@ def inject_statistical(
 
     text = _apply(
         text,
-        r"None \(full pipeline\)\s*\|\s*\d+\.\d+",
-        f"None (full pipeline) | {gt['full_pipeline_tpr']:.3f}",
+        r"(None \(full pipeline\)\s*\|\s*\$?\s*" + _QUALIFIER + r")[\d.]+",
+        r"\g<1>" + f"{gt['full_pipeline_tpr']:.3f}",
         document=document,
         label="full_pipeline_tpr",
         report=report,
     )
+    # The same figure is restated inline two paragraphs down. Leaving it
+    # unmaintained put a table row and its own interpretation paragraph in
+    # direct contradiction (0.122 vs 0.124).
+    text = _apply(
+        text,
+        r"(full pipeline \$\s*" + _QUALIFIER + r")[\d.]+",
+        r"\g<1>" + f"{gt['full_pipeline_tpr']:.3f}",
+        document=document,
+        label="full_pipeline_tpr_prose",
+        report=report,
+    )
+    text = _apply_detection_delta(text, gt, document=document, report=report)
 
     changed = _finish(path, text, original, dry_run, document)
     if owns:
@@ -1004,12 +1166,20 @@ def inject_parametric_supplement(
     """Update S08_parametric_analysis.md with ground truth values.
 
     Returns True if the file was modified.
+
+    An absent document is *not* a clean skip: the claims it carries would go
+    unmaintained while the run still reported success. It is recorded as
+    unbacked so ``strict`` mode fails.
     """
     report, owns = _resolve_report(report)
     document = "S08_parametric_analysis.md"
     path = manuscript_dir / document
     if not path.exists():
-        logger.info("%s: not found — skipping", document)
+        report.record_unbacked(
+            document,
+            "parametric_supplement",
+            f"{document} not found in {manuscript_dir}",
+        )
         if owns:
             report.raise_if_failed()
         return False
@@ -1033,14 +1203,14 @@ def inject_parametric_supplement(
         label="parametric_autogpt_dr",
         report=report,
     )
-    text = _apply(
-        text,
-        r"Cohen's \$d\$ = \d+\.\d+",
-        f"Cohen's $d$ = {gt['cohens_d']:.2f}",
-        document=document,
-        label="cohens_d",
-        report=report,
-    )
+    # NOTE: no substitution for gt["cohens_d"]. The value
+    # (cohens_d_cif_vs_baseline, from statistical_results.json) is stated
+    # nowhere in the manuscript: S08's effect-size table lists four *different*
+    # comparisons (CIF vs Firewall-only / Sandbox-only / Tripwires-only /
+    # Invariants-only), none of which this number describes. The old
+    # "Cohen's $d$ = N.NN" pattern matched zero times and was removed rather
+    # than left dead. Wiring d into that table requires the ablation-vs-CIF
+    # effect sizes to actually be computed first — see the audit note.
 
     changed = _finish(path, text, original, dry_run, document)
     if owns:

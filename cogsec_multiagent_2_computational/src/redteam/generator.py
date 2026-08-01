@@ -301,6 +301,24 @@ class AttackMutator:
             mutation_operator=operator,
         )
 
+    def mutate_payload(self, payload: str, operator: str) -> str:
+        """Apply a mutation operator to a bare payload string.
+
+        Public entry point for callers that hold payload text rather than a
+        :class:`GeneratedAttack` — notably the corpus-sourced evasion sweep in
+        :mod:`redteam.evasion`, which mutates
+        :class:`attacks.corpus.AttackSample` payloads.
+
+        Args:
+            payload: Attack payload text.
+            operator: Mutation operator name. An unknown operator returns the
+                payload unchanged (see :attr:`MUTATION_OPERATORS`).
+
+        Returns:
+            The mutated payload.
+        """
+        return self._apply_mutation(payload, operator)
+
     def _apply_mutation(self, payload: str, operator: str) -> str:
         """Apply mutation to payload string."""
         mutations = {

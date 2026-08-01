@@ -21,6 +21,7 @@ This is Part 2 of the three-part *Cognitive Security for Multiagent Operators* s
 | [`agents/`](agents/) | LLM-backed multiagent simulation (Ollama/Gemma 3 4B) | §5 Results (LLM-backed tier) |
 | [`colony/`](colony/) | Colony-level CogSec benchmarks at 20–100 agent scale | §5 Results (Colony tier), §S03 Benchmark Implementation |
 | [`evaluation/`](evaluation/) | Experiment runner, metrics, ROC analysis, benchmark harnesses | §4 Experimental Setup, §5 Results |
+| [`redteam/`](redteam/) | Adversarial training + red-team evaluation: Ω₁–Ω₅ attack generation, mutation-operator evasion sweep vs. the real firewall | §5g Adversarial Training, §5h Red-Team Evaluation |
 | [`ablation/`](ablation/) | Component removal + pairwise synergy + minimal configuration | §5.6, §5d Ablation and Scalability |
 | [`statistics/`](statistics/) | Hypothesis tests, effect sizes, CI, Bayesian uncertainty, sensitivity | §5b, §5c, §5e |
 | [`analysis/`](analysis/) | Game-theoretic (Nash, arms race) + information-geometric (Fisher-Rao) analyses | §6 Discussion, §1c Theoretical Connections, §S10 Information Geometry |

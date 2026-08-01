@@ -6,22 +6,49 @@ Provides automated checks on manuscript files to ensure consistency,
 correctness, and adherence to style guidelines.
 
 Features:
-- Validates LaTeX citations against references.bib
+- Validates LaTeX citations against references.bib, in both directions
+  (\\cite/\\citet/\\citep/\\citealp keys must resolve; duplicate bib keys are
+  an error; never-cited entries are reported as a warning)
 - Checks internal links and image references
 - Verifies LaTeX labels and cross-references (\\cref, \\ref)
-- Detects potential hyperbole and weasel words
+- Detects hyperbole outside quoted material
 - Checks for file existence
 - Detailed logging
+
+Every ``check_*`` method returns ``False`` on a violation, and ``run_all``
+fails when any of them does. Nothing here is advisory-only: a check that can
+never return ``False`` is a gate that certifies whatever it is shown.
 """
 
 from __future__ import annotations
 
 import logging
 import re
+from collections import Counter
 from pathlib import Path
 from typing import Dict, List, Set
 
 logger = logging.getLogger(__name__)
+
+#: Spans whose contents are quoted material rather than authorial voice.
+#: LaTeX ``...'' pairs, straight double quotes, and typographic quotes.
+_QUOTED_SPAN = re.compile(r"``.*?''|\"[^\"]*\"|“[^”]*”")
+
+#: A link target that is worth resolving on disk: no whitespace, no URL
+#: scheme, no anchor-only reference. Anything else (an LTL formula that
+#: happens to look like ``[](a => b)``, a mailto:, an http URL) is skipped.
+_LOCAL_PATH = re.compile(r"^[\w./~-]+$")
+
+
+def _mask_quotations(line: str) -> str:
+    """Blank out quoted spans, preserving offsets.
+
+    A term of art quoted from the literature ("almost perfect" agreement, per
+    Landis & Koch) is not the author claiming perfection. Masking the quoted
+    span - rather than allow-listing a word - keeps the exemption tied to a
+    syntactic region instead of to a bypass keyword.
+    """
+    return _QUOTED_SPAN.sub(lambda m: " " * len(m.group(0)), line)
 
 
 class ManuscriptVerifier:
@@ -32,13 +59,17 @@ class ManuscriptVerifier:
         self.bib_file = self.root_dir / "references.bib"
         self.md_files = sorted(list(self.root_dir.glob("**/*.md")))
 
-        # Regex patterns
-        self.cite_pattern = re.compile(r"\\cite\{([^}]+)\}")
+        # Regex patterns.
+        # cite_pattern covers the natbib family (\citet, \citep, \citealp,
+        # \citeauthor, ...) and starred forms, not just the bare \cite: a
+        # \citet{nonexistent} used to be invisible to check_citations.
+        self.cite_pattern = re.compile(r"\\cite[a-z]*\*?\{([^}]+)\}")
         self.bib_entry_pattern = re.compile(r"@\w+\{([^,]+),")
         self.label_pattern = re.compile(r"\\label\{([^}]+)\}")
         self.ref_pattern = re.compile(r"\\(cref|ref|autoref)\{([^}]+)\}")
         self.img_pattern = re.compile(r"!\[.*?\]\((.*?)\)")
-        self.link_pattern = re.compile(r"\[.*?\]\((.*?)\)")
+        # Markdown links that are NOT images (negative lookbehind on '!').
+        self.link_pattern = re.compile(r"(?<!!)\[.*?\]\((.*?)\)")
 
         # Style checks
         self.hyperbole_words = [
@@ -66,43 +97,64 @@ class ManuscriptVerifier:
 
         return status
 
-    def get_bib_keys(self) -> Set[str]:
-        """Extract keys from references.bib."""
-        keys: Set[str] = set()
+    def get_bib_entry_keys(self) -> List[str]:
+        """Every bib key in file order, including repeats."""
         if not self.bib_file.exists():
-            return keys
+            return []
+        content = self.bib_file.read_text(encoding="utf-8")
+        return [key.strip() for key in self.bib_entry_pattern.findall(content)]
 
-        with open(self.bib_file, "r", encoding="utf-8") as f:
-            content = f.read()
-            matches = self.bib_entry_pattern.findall(content)
-            keys.update(matches)
-
-        logger.info(f"Found {len(keys)} bibliography entries.")
+    def get_bib_keys(self) -> Set[str]:
+        """Extract the distinct keys defined in references.bib."""
+        keys = set(self.get_bib_entry_keys())
+        if keys:
+            logger.info(f"Found {len(keys)} bibliography entries.")
         return keys
 
+    def get_cited_keys(self) -> Set[str]:
+        """Every key cited anywhere in the manuscript."""
+        cited: Set[str] = set()
+        for md_file in self.md_files:
+            content = md_file.read_text(encoding="utf-8")
+            for citation in self.cite_pattern.findall(content):
+                cited.update(k.strip() for k in citation.split(",") if k.strip())
+        return cited
+
     def check_citations(self) -> bool:
-        """Verify all citations map to a valid bib entry."""
+        """Verify citations and bibliography agree, in both directions.
+
+        Failures:
+          * a cited key with no bib entry;
+          * the same bib key defined more than once.
+
+        Warning only (citation padding is an editorial matter, not a build
+        error): a bib entry that is never cited.
+        """
         logger.info("Verifying citations...")
         status = True
-        valid_keys = self.get_bib_keys()
+        entry_keys = self.get_bib_entry_keys()
+        valid_keys = set(entry_keys)
+
+        duplicates = sorted(key for key, count in Counter(entry_keys).items() if count > 1)
+        for key in duplicates:
+            logger.warning(f"Duplicate bibliography key: '{key}' in {self.bib_file.name}")
+            status = False
 
         for md_file in self.md_files:
-            if md_file.name == "references.bib":
-                continue
+            content = md_file.read_text(encoding="utf-8")
+            for citation in self.cite_pattern.findall(content):
+                # Handle multiple citations like \cite{key1,key2}
+                for key in (k.strip() for k in citation.split(",")):
+                    if key and key not in valid_keys:
+                        logger.warning(f"Missing citation key: '{key}' in {md_file.name}")
+                        status = False
 
-            with open(md_file, "r", encoding="utf-8") as f:
-                content = f.read()
-                citations = self.cite_pattern.findall(content)
-
-                for citation in citations:
-                    # Handle multiple citations like \cite{key1,key2}
-                    keys = [k.strip() for k in citation.split(",")]
-                    for key in keys:
-                        if key not in valid_keys:
-                            logger.warning(
-                                f"Missing citation key: '{key}' in {md_file.name}"
-                            )
-                            status = False
+        unused = sorted(valid_keys - self.get_cited_keys())
+        if unused:
+            logger.warning(
+                f"{len(unused)} of {len(valid_keys)} bibliography entries are never cited: "
+                f"{', '.join(unused)}"
+            )
 
         return status
 
@@ -142,6 +194,21 @@ class ManuscriptVerifier:
 
         return status
 
+    def _check_local_links(self, md_file: Path, content: str) -> bool:
+        """Resolve non-image markdown links that point at local paths."""
+        status = True
+        for target in self.link_pattern.findall(content):
+            candidate = target.split("#", 1)[0].strip()
+            if not candidate or not _LOCAL_PATH.match(candidate):
+                # URLs, mailto:, anchors, and pseudo-links such as the LTL
+                # formulas written as [](a => b) are not filesystem paths.
+                continue
+            if (md_file.parent / candidate).exists() or (self.root_dir / candidate).exists():
+                continue
+            logger.warning(f"Broken local link: '{candidate}' in {md_file.name}")
+            status = False
+        return status
+
     def check_images_and_links(self) -> bool:
         """Verify local image paths and links."""
         logger.info("Verifying images and links...")
@@ -153,6 +220,9 @@ class ManuscriptVerifier:
         for md_file in self.md_files:
             with open(md_file, "r", encoding="utf-8") as f:
                 content = f.read()
+
+                if not self._check_local_links(md_file, content):
+                    status = False
 
                 # Check images
                 for img_path in self.img_pattern.findall(content):
@@ -184,7 +254,12 @@ class ManuscriptVerifier:
         return status
 
     def check_style(self) -> bool:
-        """Check for stylistic issues like hyperbole."""
+        """Fail on hyperbole written in the author's own voice.
+
+        Quoted spans are masked first (see :func:`_mask_quotations`), so a
+        quoted term of art does not trip the gate while the same word used
+        unquoted - on the same line - still does.
+        """
         logger.info("Checking style guidelines...")
         status = True
 
@@ -192,13 +267,11 @@ class ManuscriptVerifier:
             with open(md_file, "r", encoding="utf-8") as f:
                 lines = f.readlines()
                 for i, line in enumerate(lines):
+                    unquoted = _mask_quotations(line)
                     for word in self.hyperbole_words:
-                        if re.search(
-                            r"\b" + re.escape(word) + r"\b", line, re.IGNORECASE
-                        ):
-                            logger.warning(
-                                f"Potential hyperbole '{word}' in {md_file.name}:{i+1}"
-                            )
+                        if re.search(r"\b" + re.escape(word) + r"\b", unquoted, re.IGNORECASE):
+                            logger.warning(f"Hyperbole '{word}' in {md_file.name}:{i+1}")
+                            status = False
 
         return status
 
@@ -208,8 +281,6 @@ class ManuscriptVerifier:
         status = True
 
         garbled_pattern = re.compile(r"\|\s*[lcr]+p\{")
-        # A line that starts with non-| content followed by | --- pattern
-        re.compile(r"^[^|]*\|[^|]+\|\s*\|?\s*---")
 
         for md_file in self.md_files:
             with open(md_file, "r", encoding="utf-8") as f:

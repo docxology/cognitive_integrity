@@ -43,6 +43,8 @@ from typing import Any, Dict, Optional, Union
 
 import numpy as np
 
+from utils.run_provenance import run_provenance as capture_run_provenance
+
 from .schema import AblationData, ColonyData, DetectionData, ScalabilityData
 
 _ARCHITECTURES = [
@@ -62,7 +64,15 @@ DATA_ORIGIN_SYNTHETIC = "synthetic_schema"
 DATA_ORIGIN_UNKNOWN = "unknown"
 
 #: Provenance keys every producer should emit.
-PROVENANCE_KEYS = ("data_origin", "source_script", "generated_by", "seed")
+#:
+#: ``run_provenance`` is part of the block, not an optional extra: the shipped
+#: artifacts are compared against generator output with these keys stripped
+#: (see ``tests/test_data_provenance.py``), so an environment field kept
+#: *outside* the set would make that comparison trivially true — it would
+#: differ on the timestamp alone and stop detecting a synthetic clobber.
+PROVENANCE_KEYS = (
+    "data_origin", "source_script", "generated_by", "seed", "run_provenance",
+)
 
 #: Sidecar-only key binding a sidecar to the exact artifact bytes it describes.
 SIDECAR_HASH_KEY = "artifact_sha256"
@@ -224,12 +234,25 @@ class DataGenerator:
         Master random seed for reproducibility.
     output_dir : str
         Directory for saving generated data.
+    include_timestamp : bool, default True
+        Whether the stamped run-provenance block records wall-clock time.
+        ``False`` restores byte-for-byte determinism across runs made from the
+        same checkout and environment (the timestamp is the only
+        nondeterministic field), which is what ``--no-timestamp`` on
+        ``scripts/generate_all_data.py`` selects.
     """
 
-    def __init__(self, seed: int = 42, output_dir: str = "output/data") -> None:
+    def __init__(
+        self,
+        seed: int = 42,
+        output_dir: str = "output/data",
+        include_timestamp: bool = True,
+    ) -> None:
         self.seed = seed
         self.output_dir = Path(output_dir)
+        self.include_timestamp = include_timestamp
         self._rng = np.random.default_rng(seed)
+        self._run_provenance: Optional[Dict[str, Any]] = None
 
     # ------------------------------------------------------------------
     # Public API
@@ -282,19 +305,42 @@ class DataGenerator:
     # Provenance / anti-clobber guard
     # ------------------------------------------------------------------
 
+    def run_provenance(self) -> Dict[str, Any]:
+        """Return the run-provenance block for this generator instance.
+
+        Captured once and reused, so every artifact written by a single
+        :meth:`generate_all` agrees on the commit, environment, and timestamp
+        of *one* run rather than recording eleven slightly different clocks.
+
+        Returns
+        -------
+        dict
+            See :data:`utils.run_provenance.RUN_PROVENANCE_KEYS`.
+        """
+        if self._run_provenance is None:
+            self._run_provenance = capture_run_provenance(
+                _SYNTHETIC_SOURCE_SCRIPT,
+                self.seed,
+                include_timestamp=self.include_timestamp,
+            )
+        return self._run_provenance
+
     def provenance(self) -> Dict[str, Any]:
         """Return the provenance block stamped on every generated artifact.
 
         Returns
         -------
         dict
-            ``data_origin``, ``source_script``, ``generated_by``, ``seed``.
+            ``data_origin``, ``source_script``, ``generated_by``, ``seed``,
+            and ``run_provenance`` (git SHA + dirty flag, interpreter,
+            platform, numpy/scipy/matplotlib versions, UTC timestamp).
         """
         return {
             "data_origin": DATA_ORIGIN_SYNTHETIC,
             "source_script": _SYNTHETIC_SOURCE_SCRIPT,
             "generated_by": _SYNTHETIC_GENERATED_BY,
             "seed": self.seed,
+            "run_provenance": self.run_provenance(),
         }
 
     def should_preserve(self, name: str) -> bool:
