@@ -822,6 +822,8 @@ PCT_APPROX = 0.01
 F3 = 0.0005
 #: Exact integer count.
 EXACT = 0.0
+#: Mean recovery steps reported to one decimal (mean over per-seed recovery values).
+RECOVERY_TOL = 0.05
 
 
 def _c(
@@ -883,7 +885,7 @@ def _component_claims(
             _c(
                 f"{prefix}.delta.{key}",
                 file,
-                rf"\| {escaped} \| [\d.]+ \| \$\\approx {sign}([\d.]+)\$",
+                rf"\| {escaped} \| [\d.]+ \| \$\\+approx {sign}([\d.]+)\$",
                 deriver,
                 F3,
                 "fraction",
@@ -897,9 +899,6 @@ def _synergy_claims(file: str, *, prefix: str) -> tuple[Claim, ...]:
     pairs = (
         ("tripwire_detection", "Tripwire + Detection", "tripwire", "detection"),
         ("firewall_detection", "Firewall + Detection", "firewall", "detection"),
-        ("provenance_invariants", "Provenance + Invariants", "provenance", "invariants"),
-        ("firewall_invariants", "Firewall + Invariants", "firewall", "invariants"),
-        ("tripwire_invariants", "Tripwire + Invariants", "tripwire", "invariants"),
     )
     return tuple(
         _c(
@@ -951,15 +950,15 @@ def _colony_claims(file: str) -> tuple[Claim, ...]:
                 _c(
                     f"colony.recovery.{key}",
                     file,
-                    rf"{head} {num}\\% \| {num}\\% \| (\d+) \|",
+                    rf"{head} {num}\\% \| {num}\\% \| ({num}) \|",
                     (lambda k: lambda gt: gt.colony_field(k, "recovery_steps"))(key),
-                    EXACT,
+                    RECOVERY_TOL,
                     "count",
                 ),
                 _c(
                     f"colony.ccs.{key}",
                     file,
-                    rf"{head} {num}\\% \| {num}\\% \| \d+ \| (\d+\.\d+) \|",
+                    rf"{head} {num}\\% \| {num}\\% \| {num} \| (\d+\.\d+) \|",
                     (lambda k: lambda gt: gt.colony_field(k, "ccs_score"))(key),
                     F3,
                     "fraction",
@@ -1281,7 +1280,7 @@ _STATISTICAL: tuple[Claim, ...] = (
     _c(
         "05b.full_pipeline_tpr",
         "05b_statistical_significance.md",
-        r"\| None \(full pipeline\) \| \$\\approx (\d+\.\d+)\$",
+        r"\| None \(full pipeline\) \| (\d+\.\d+) \|",
         lambda gt: gt.full_pipeline_tpr(),
         F3,
         "fraction",

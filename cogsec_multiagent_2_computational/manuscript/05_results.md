@@ -43,7 +43,7 @@ Table: Power summary: sample size required for $\pm 5$ pp HDI at the estimated t
 | Colony structured scenarios | 0.90 | 20--100 | 111 | Partial |
 | Multi-seed pipeline (aggregate) | 0.45 | 1{,}000 | 385 | Yes |
 | LLM validation (per architecture) | 0.80 | 5--10 | 246 | **No** |
-| Ablation TPR | 0.12 | 97 | 411 | **No** |
+| Ablation TPR | 0.12 | 98 | 411 | **No** |
 
 *The LLM validation (N=5--10 per architecture) achieves only $\pm 13$ to $\pm 18$ percentage points of precision at the observed 80\% rate. A minimum of $N = 246$ per architecture is required for $\pm 5$ pp precision; this is the highest-priority methodological gap in the current study. Full Bayesian reanalysis with Beta-Binomial posteriors and credible intervals is presented in \cref{sec:bayesian-uncertainty}.*
 
@@ -55,7 +55,7 @@ Table: Gap between parametric ceiling and empirical detection, with primary attr
 
 | Architecture | Parametric DR | Empirical DR | Total Gap | Primary Cause |
 | :--- | :---: | :---: | :---: | :--- |
-| Claude Code (multi-seed pipeline) | 94\% | 44.8\% | $\sim$49 pp | Adapter maturity ($G_{\text{adapter}}$) |
+| Claude Code (multi-seed pipeline) | 100\% | 44.8\% | $\sim$55 pp | Adapter maturity ($G_{\text{adapter}}$) |
 | Claude Code (LLM validation) | 80\% | 80\% | $\sim$0 pp (N=10) | Insufficient power |
 | CrewAI (LLM validation) | 100\% | 100\% | 0 pp | --- |
 
@@ -119,13 +119,13 @@ Table: Colony benchmark results (real execution). {#tab:colony-benchmarks}
 
 | Scenario | Agents | Steps | Adversaries | Detection Rate | FPR | Recovery Steps | CCS Score |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| Recruitment poisoning | 20 | 100 | 2 | 81.4\% | 6.8\% | 8 | 0.615 |
+| Recruitment poisoning | 20 | 100 | 2 | 80.7\% | 6.7\% | 8.4 | 0.612 |
 | Sybil infiltration | 50 | 500 | 4 | 100\% | 0.0\% | 0 | 1.000 |
-| Quorum manipulation | 30 | 200 | 3 | 100\% | 15.3\% | 1 | 0.668 |
-| Belief cascade | 100 | 300 | 2 | 100\% | 39.7\% | 104 | 0.551 |
-| Emergent misalignment | 50 | 1000 | 0 | 56.1\% | 46.6\% | 824 | 0.388 |
+| Quorum manipulation | 30 | 200 | 3 | 100\% | 15.1\% | 1.0 | 0.669 |
+| Belief cascade | 100 | 300 | 2 | 100\% | 37.4\% | 113.5 | 0.549 |
+| Emergent misalignment | 50 | 1000 | 0 | 74.3\% | 25.5\% | 408.4 | 0.520 |
 
-*Colony benchmarks reveal scenario-dependent performance. Structured adversarial attacks (sybil infiltration, quorum manipulation) are detected with high reliability, but the emergent misalignment scenario---where no explicit adversaries exist but agents collectively drift---achieves only 56.1\% detection at a 46.6\% false positive rate. The belief cascade scenario achieves 100\% detection but at a high false positive cost (39.7\%) and requires 104 steps for recovery, demonstrating the tension between detection sensitivity and operational overhead at 100-agent scale. The Cognitive Composite Score (CCS), a weighted composite of detection rate, false positive rate, resilience, and recovery, provides a holistic view: only the sybil infiltration scenario achieves a CCS above 0.90.*
+*Colony benchmarks reveal scenario-dependent performance. Structured adversarial attacks (sybil infiltration, quorum manipulation) are detected with high reliability, but the emergent misalignment scenario---where no explicit adversaries exist but agents collectively drift---achieves the lowest detection rate (74.3\\%) at a 25.5\\% false positive rate. The belief cascade scenario achieves 100\\% detection but at a high false positive cost (37.4\\%) and requires 113.5 steps for recovery, demonstrating the tension between detection sensitivity and operational overhead at 100-agent scale. The Cognitive Composite Score (CCS), a weighted composite of detection rate, false positive rate, resilience, and recovery, provides a holistic view: only the sybil infiltration scenario achieves a CCS above 0.90.*
 
 ## Statistical Analysis
 
@@ -181,8 +181,8 @@ confidence intervals.
 
 \begin{enumerate}
 \item **Pipeline detection (real)**: The full CIF defense pipeline achieves a mean detection rate of $\sim$44\% (95\% range: 37--56\%) across 30 random seeds on the Claude Code architecture, with a coefficient of variation of 0.097.
-\item **Component hierarchy (real)**: Ablation studies on a 100-attack corpus confirm that the Detection module contributes the largest marginal loss ($\Delta\text{TPR} \approx -0.051$ when removed), followed by Tripwires ($\approx -0.011$), Invariants ($\approx -0.010$), and Firewall ($\approx -0.009$). Full pipeline TPR on this corpus is $\sim$12\%.
+\item **Component hierarchy (real)**: Ablation studies on a 98-attack corpus confirm that the Detection module contributes the largest marginal loss ($\Delta\text{TPR} \approx -0.051$ when removed), followed by Tripwires ($\approx -0.011$), Invariants ($\approx -0.010$), and Firewall ($\approx -0.009$). Full pipeline TPR on this corpus is $\sim$12\%.
 \item **LLM validation**: Preliminary LLM-backed evaluation ($N=10$, Gemma 3 4B) yields 80--100\% detection across Claude Code (80\%) and CrewAI (100\%) topologies, providing initial evidence that CIF's defenses operate with real language model reasoning.
-\item **Colony benchmarks**: CIF achieves 81--100\% detection on structured adversarial scenarios (recruitment poisoning, sybil infiltration, quorum manipulation, belief cascade) but only 56\% on emergent misalignment, highlighting the need for improved collective-behavior detection.
-\item **Parametric ceiling**: The parametric simulation (\cref{sec:parametric-analysis}) achieves 94--100\% detection, establishing the theoretical coverage ceiling. The gap between empirical results and parametric predictions reflects current adapter implementation maturity, not fundamental limitations of the CIF architecture.
+\item **Colony benchmarks**: CIF achieves 81--100\% detection on structured adversarial scenarios (recruitment poisoning, sybil infiltration, quorum manipulation, belief cascade) but 74\% on emergent misalignment, highlighting the need for improved collective-behavior detection.
+\item **Parametric ceiling**: The parametric simulation (\cref{sec:parametric-analysis}) achieves 96--100\% detection, establishing the theoretical coverage ceiling. The gap between empirical results and parametric predictions reflects current adapter implementation maturity, not fundamental limitations of the CIF architecture.
 \end{enumerate}

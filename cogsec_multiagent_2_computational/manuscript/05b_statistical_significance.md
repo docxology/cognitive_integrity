@@ -112,8 +112,8 @@ For the ablation analysis comparing 8 component removals against the full pipeli
 
 \begin{enumerate}
 \item **Pipeline detection**: Mean 44.8\% [95\% CI: 43.2\%, 46.4\%] across 30 seeds (Claude Code), with CV = 0.097 indicating moderate seed sensitivity.
-\item **Component hierarchy**: Detection module ($\Delta\text{TPR} \approx -0.051$) is the dominant contributor, followed by Tripwires and Invariants ($\approx -0.011$ and $\approx -0.010$). The top three harmful removals account for about 82\% of the summed negative $\Delta\text{TPR}$ magnitude.
-\item **Synergy**: Tripwire + Detection shows strongest synergy ($\approx +0.025$), confirming complementary detection patterns on the ablation corpus.
+\item **Component hierarchy**: Detection module ($\Delta\text{TPR} \approx -0.051$) is the dominant contributor, followed by Tripwires and Invariants ($\approx -0.011$ and $\approx -0.010$). The top three harmful removals account for about 80\% of the summed negative $\Delta\text{TPR}$ magnitude.
+\item **Synergy**: Tripwire + Detection shows strongest synergy ($\approx +0.031$), confirming complementary detection patterns on the ablation corpus.
 \item **LLM validation underpowered**: $N=5$ per architecture yields very wide CIs (e.g., [0.28, 0.99] for Claude Code), necessitating expansion for reliable architecture-level conclusions.
-\item **Parametric reference**: Design-level parametric analysis (\cref{sec:parametric-analysis}) achieves 94--100\% detection, establishing the coverage ceiling for fully-realized adapter implementations.
+\item **Parametric reference**: Design-level parametric analysis (\cref{sec:parametric-analysis}) achieves 96--100\% detection, establishing the coverage ceiling for fully-realized adapter implementations.
 \end{enumerate}

@@ -10,7 +10,7 @@ This paper provided computational validation of the Cognitive Integrity Framewor
 
 **Attack Corpus**: We assembled 950 cognitive attacks across four categories (prompt injection, trust exploitation, belief manipulation, coordination attacks), enabling reproducible security evaluation of multiagent systems.
 
-**Multi-Tier Evaluation**: We evaluated CIF through five complementary modes: (1) multi-seed pipeline evaluation (30 seeds, mean DR = 44.8\%); (2) real ablation studies (100-attack corpus, full pipeline TPR = 12.4\%); (3) LLM-backed multiagent validation ($N=10$, Gemma 3 4B); (4) colony benchmarks at scale (20--100 agents); and (5) parametric simulation ($N=3{,}800$) establishing the design-level coverage ceiling at 94--100\%.
+**Multi-Tier Evaluation**: We evaluated CIF through five complementary modes: (1) multi-seed pipeline evaluation (30 seeds, mean DR = 44.8\%); (2) real ablation studies (98-attack corpus, full pipeline TPR = 12.2\%); (3) LLM-backed multiagent validation ($N=10$, Gemma 3 4B); (4) colony benchmarks at scale (20--100 agents); and (5) parametric simulation ($N=3{,}800$) establishing the design-level coverage ceiling at 96--100\%.
 
 **Categorical Defense Algebra**: We formalized CIF's composition rules as a category (DefenseCategory) satisfying proven laws CT.1--CT.3, establishing that the series detection formula (Part 1, Theorem 3.2a) is a categorical consequence under the short-circuit pipeline semantics rather than an independent empirical result. Composition inherits those laws by construction for morphisms that satisfy the DefenseCategory axioms.
 
@@ -20,7 +20,7 @@ This paper provided computational validation of the Cognitive Integrity Framewor
 
 **Bayesian Uncertainty Quantification**: We replaced all point estimates with Beta-Binomial posteriors and established that: (a) the parametric--empirical gap has Bayes factor $\text{BF}_{10} \gg 10^6$ (decisive evidence for a true performance gap); (b) the LLM validation ($N=5$--$10$ per architecture) is severely underpowered (required $N \geq 246$ for $\pm 5\%$ precision); and (c) the multi-seed estimate (mean 44.8\%, 95\% HDI [41.3\%, 48.3\%]) is the most reliable single point estimate.
 
-**Honest Gap Characterization**: We documented the 49--88 percentage-point gap between parametric design ceiling and current empirical performance (parametric ceiling 94--100\% vs.\ pipeline mean 44.8\% and ablation 12.4\% respectively), attributing it to adapter implementation maturity rather than fundamental architectural limitations.
+**Honest Gap Characterization**: We documented the 49--88 percentage-point gap between parametric design ceiling and current empirical performance (parametric ceiling 96--100\% vs.\ pipeline mean 44.8\% and ablation 12.2\% respectively), attributing it to adapter implementation maturity rather than fundamental architectural limitations.
 
 ## Key Findings
 

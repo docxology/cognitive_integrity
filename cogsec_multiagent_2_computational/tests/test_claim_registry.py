@@ -29,6 +29,7 @@ from manuscript.claim_registry import (
     EXACT,
     F3,
     PCT1,
+    RECOVERY_TOL,
     Claim,
     ClaimDataUnavailable,
     ClaimReport,
@@ -75,10 +76,7 @@ KNOWN_UNRECONCILED = frozenset(
         "05b.summary_detection_delta",
         "05b.summary_synergy",
         "05b.synergy.firewall_detection",
-        "05b.synergy.firewall_invariants",
-        "05b.synergy.provenance_invariants",
         "05b.synergy.tripwire_detection",
-        "05b.synergy.tripwire_invariants",
         "05b.top3_share",
         "05b.top3_share_summary",
         "05b.tpr.consensus",
@@ -99,10 +97,7 @@ KNOWN_UNRECONCILED = frozenset(
         "05d.intro_detection_delta",
         "05d.intro_synergy",
         "05d.synergy.firewall_detection",
-        "05d.synergy.firewall_invariants",
-        "05d.synergy.provenance_invariants",
         "05d.synergy.tripwire_detection",
-        "05d.synergy.tripwire_invariants",
         "05d.tpr.consensus",
         "05d.tpr.firewall",
         "05d.tpr.invariants",
@@ -1084,9 +1079,12 @@ class TestUnitsOnRealClaims:
         assert {c.provenance for c in CLAIMS} <= {"real", "parametric", "illustrative"}
 
     def test_count_claims_use_exact_tolerance(self):
+        # Most count claims are exact; colony *recovery* is a mean over
+        # per-seed values reported to one decimal, so it uses RECOVERY_TOL.
+        allowed = {EXACT, RECOVERY_TOL}
         for claim in CLAIMS:
             if claim.unit == "count":
-                assert claim.tolerance == EXACT, claim.id
+                assert claim.tolerance in allowed, claim.id
 
     def test_percent_claims_have_sane_tolerance(self):
         for claim in CLAIMS:

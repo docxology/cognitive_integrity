@@ -60,7 +60,7 @@ The LLM-backed results provide preliminary evidence that CIF's defense pipeline 
 
 **Planned Statistical Analysis.** To support inferential integrity, we specify three primary hypotheses and their statistical tests. A separate `analysis/preregistration.yaml` is not included in this checkout, so this description should not be read as evidence of an external preregistration.
 
-*H1 (Layered Defense)*: The full CIF pipeline achieves strictly higher detection rate than any single defense module. Test: one-sided two-proportion $z$-test comparing full-pipeline TPR against each component's TPR on the 100-attack ablation corpus; $\alpha = 0.05$, Bonferroni-corrected for 7 comparisons ($\alpha_\text{adj} = 0.0071$).
+*H1 (Layered Defense)*: The full CIF pipeline achieves strictly higher detection rate than any single defense module. Test: one-sided two-proportion $z$-test comparing full-pipeline TPR against each component's TPR on the 98-attack ablation corpus; $\alpha = 0.05$, Bonferroni-corrected for 7 comparisons ($\alpha_\text{adj} = 0.0071$).
 
 *H2 (Trust Calculus)*: The trust calculus prevents trust amplification in the sybil infiltration scenario (50 agents, 4 adversaries). Test: one-sided proportion test that detection rate in sybil scenario $> 0.95$; $\alpha = 0.05$.
 
@@ -76,7 +76,7 @@ The power summary (\cref{tab:power-analysis-preregistration}) shows that the mul
 | Ablation corpus | 98 attacks | TPR = 0.122 | $N \\geq 171$ | Marginally underpowered; $\\pm 6.5\\%$ CI |
 | LLM multiagent (per arch.) | 5 per arch. | DR $\in$ [0.80, 1.00] | $N \geq 246$ | Severely underpowered; wide CIs |
 | Colony benchmark | 1 scenario each | — | $N \geq 10$ scenarios | Exploratory only; not powered for inference |
-| Parametric simulation | 3,800 | DR = 0.94--1.00 | Sufficient | Design-level; not subject to sampling |
+| Parametric simulation | 3,800 | DR = 0.96--1.00 | Sufficient | Design-level; not subject to sampling |
 
 *Interpretation*: The multi-seed and LLM validation modes are severely underpowered for precise estimation of detection rates. The reported results should be interpreted as preliminary estimates with the uncertainty quantified in \cref{sec:bayesian-uncertainty}. The parametric simulation ($N=3{,}800$) is adequately powered but reflects design-level properties rather than empirical pipeline performance. Future work should target $N \geq 246$ seeds (multi-seed) and $N \geq 246$ per architecture (LLM validation) for definitive inference.
 
@@ -97,19 +97,19 @@ Table: Detection performance summary — empirical results across evaluation mod
 | Evaluation Mode | Detection Rate | Sample Size | Source |
 | --- | --- | --- | --- |
 | Multi-seed pipeline (Claude Code, 30 seeds) | 44.8\% [43.2, 46.4\%] | $N=30$ seeds | `multi_seed_results.json` |
-| Ablation pipeline (full, 100-attack corpus) | 12.4\% | $N=100$ | `ablation_results.json` |
+| Ablation pipeline (full, 98-attack corpus) | 12.2\% | $N=98$ | `ablation_results.json` |
 | LLM multiagent — Claude Code (Gemma 3 4B) | 80.0\% [28, 99\%] | $N=5$ | `llm_demo_results.json` |
 | LLM multiagent — CrewAI (Gemma 3 4B) | 100\% [48, 100\%] | $N=5$ | `llm_demo_results.json` |
-| Colony — recruitment poisoning (20 agents) | 81.4\% | 1 scenario | `colony_results.json` |
+| Colony — recruitment poisoning (20 agents) | 80.7\% | 1 scenario | `colony_results.json` |
 | Colony — sybil infiltration (50 agents) | 100\% | 1 scenario | `colony_results.json` |
-| Colony — emergent misalignment (50 agents) | 56.1\% | 1 scenario | `colony_results.json` |
-| Parametric simulation (design ceiling) | 94--100\% | $N=3{,}800$ | \cref{sec:parametric-analysis} |
+| Colony — emergent misalignment (50 agents) | 74.3\% | 1 scenario | `colony_results.json` |
+| Parametric simulation (design ceiling) | 96--100\% | $N=3{,}800$ | \cref{sec:parametric-analysis} |
 
 *Note: The wide variation across evaluation modes (12--100\%) reflects the distinction between CIF's design-level coverage (parametric) and the current adapter implementations' maturity (pipeline/LLM). The multi-seed mean of 44.8\% represents the most reliable single estimate for the Claude Code architecture under current implementation. Confidence intervals for LLM results are Clopper-Pearson exact binomial intervals reflecting the preliminary sample size ($N=5$ per architecture).*
 
-The real ablation data (\cref{tab:component-removal}) quantifies the layered architecture's individual contributions: no single component accounts for a majority of detection (Detection module: $\Delta\text{TPR} \approx -0.051$ when removed), while the three largest harmful removals (Detection, Tripwires, Invariants) together account for about 82\% of the summed negative $\Delta\text{TPR}$ magnitude on this corpus. This confirms that defense composition provides meaningful improvement over individual mechanisms, consistent with the multiplicative composition theorems from Part 1.
+The real ablation data (\cref{tab:component-removal}) quantifies the layered architecture's individual contributions: no single component accounts for a majority of detection (Detection module: $\Delta\text{TPR} \approx -0.051$ when removed), while the three largest harmful removals (Detection, Tripwires, Invariants) together account for about 80\% of the summed negative $\Delta\text{TPR}$ magnitude on this corpus. This confirms that defense composition provides meaningful improvement over individual mechanisms, consistent with the multiplicative composition theorems from Part 1.
 
-The multi-seed pipeline analysis (mean DR = 44.8\%, CV = 0.097 across 30 seeds) establishes a reliable baseline for the Claude Code architecture. The parametric simulation (\cref{sec:parametric-analysis}) achieves 94--100\% detection rate, defining the design-level coverage ceiling that fully-realized adapter implementations should approach.
+The multi-seed pipeline analysis (mean DR = 44.8\%, CV = 0.097 across 30 seeds) establishes a reliable baseline for the Claude Code architecture. The parametric simulation (\cref{sec:parametric-analysis}) achieves 96--100\% detection rate, defining the design-level coverage ceiling that fully-realized adapter implementations should approach.
 
 ### Finding 2: Trust Calculus Prevents Amplification Attacks
 
@@ -117,7 +117,7 @@ The multi-seed pipeline analysis (mean DR = 44.8\%, CV = 0.097 across 30 seeds) 
 
 ![ROC Curves by Attack Category. Receiver Operating Characteristic curves showing the tradeoff between True Positive Rate (sensitivity) and False Positive Rate (1-specificity) for CIF detection across four attack categories. AUC values computed via \texttt{compute\_auc\_from\_points()} (trapezoidal integration): Prompt Injection = 0.97, Trust Exploitation = 0.94, Belief Manipulation = 0.93, Coordination Attacks = 0.92. The operating point (diamond marker) is selected to maximize Youden's $J$ statistic ($J = \text{TPR} - \text{FPR}$), balancing sensitivity and specificity. Confidence bands (shaded) computed via $n=1{,}000$ bootstrap resamples; the wider band for Coordination Attacks reflects the smaller sample size ($n=100$ vs.\ $n=500$ for injection).](figures/roc_curves.pdf){#fig:roc-curves width=90%}
 
-Across all tested architectures, the bounded trust decay ($\delta^d$) successfully prevented trust laundering and amplification attempts. In adversarial scenarios where attackers attempted to relay high-impact content through multiple trusted intermediaries, the exponential decay ensured that delegated trust remained below action thresholds. This is validated by the colony benchmark sybil infiltration scenario (50 agents, 4 adversaries), which achieved 100\% detection at 0\% FPR (\cref{tab:colony-benchmarks}). The trust calculus ablation shows a marginal contribution of $\Delta\text{TPR} = -0.007$ on the 100-attack corpus, confirming its role as a structural safeguard.
+Across all tested architectures, the bounded trust decay ($\delta^d$) successfully prevented trust laundering and amplification attempts. In adversarial scenarios where attackers attempted to relay high-impact content through multiple trusted intermediaries, the exponential decay ensured that delegated trust remained below action thresholds. This is validated by the colony benchmark sybil infiltration scenario (50 agents, 4 adversaries), which achieved 100\% detection at 0\% FPR (\cref{tab:colony-benchmarks}). The trust calculus ablation shows a marginal contribution of $\Delta\text{TPR} = -0.020$ on the 98-attack corpus, confirming its role as a structural safeguard.
 
 Critically, this held even when individual agents in the delegation chain were compromised---the trust bound is a \textit{structural} guarantee independent of agent behavior.
 
