@@ -1,20 +1,30 @@
 #!/usr/bin/env python3
-"""Auto-Number Figures & Tables
-================================
+"""Front-matter lists and cross-reference verification
+======================================================
 
-Reads figure_registry.json and performs the following transformations
-across all manuscript/*.md files:
+Two real transformations over ``manuscript/*.md``, driven by
+``output/data/figure_registry.json``:
 
-1. **Label anchors** — {#fig:foo width=95%} → {#fig:foo width=95%}   (kept as-is)
-2. **\\label injection** — adds ``\\label{fig:foo}`` immediately after each
-   figure's caption attribute block so XeLaTeX can resolve \\cref / \\Cref.
-3. **\\listoffigures / \\listoftables** — injects the commands into preamble.md
-   inside the LaTeX code block if they are not already present.
-4. **\\Cref reference verification** — warns if any \\Cref{fig:foo} or
-   \\Cref{tab:foo} target is absent from the registry.
+1. **\\listoffigures / \\listoftables** — injected into ``preamble.md`` inside
+   the LaTeX code block if not already present.
+2. **\\Cref reference verification** — every ``\\Cref{fig:...}`` /
+   ``\\Cref{tab:...}`` target in the manuscript must exist in the registry.
+   The check is anti-vacuity guarded: if *zero* targets are found the script
+   fails rather than printing "all resolved".
 
-The script is **non-destructive**: it only *adds* label anchors where they are
-missing and inserts LoF/LoT commands; it never removes or rewrites captions.
+**What this script does not do.** It used to advertise a third transformation,
+"``\\label`` injection", implemented by ``inject_latex_label``, whose body was
+``return content, 0`` — an unconditional no-op that could never fire. It has
+been deleted rather than implemented, because it is not needed: figures in
+this manuscript carry pandoc attribute blocks (``{#fig:foo width=95%}``) and
+pandoc-crossref emits the corresponding ``\\label{}`` itself when compiling to
+PDF via XeLaTeX. A manual injector would duplicate those labels.
+
+The script is **non-destructive**: it only *adds* LoF/LoT commands; it never
+removes or rewrites captions.
+
+Exit codes: ``0`` all targets resolved; ``1`` registry missing or the
+cross-reference check would have been vacuous; ``2`` unresolved targets found.
 
 Usage:
     python scripts/auto_number_figures.py [--root manuscript]
@@ -31,6 +41,10 @@ from pathlib import Path
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 logger = logging.getLogger(__name__)
 
+#: A manuscript with no cross-references at all would make ``verify_cref_targets``
+#: trivially "pass". Treat that as a broken run, not a clean one.
+MIN_CREF_TARGETS = 1
+
 
 # --------------------------------------------------------------------------
 # Helpers
@@ -43,33 +57,32 @@ def load_registry(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def inject_latex_label(content: str, label: str) -> tuple[str, int]:
-    """NOTE: pandoc-crossref automatically generates \\label{} from {#fig:...}
-    attribute blocks when compiling to PDF via XeLaTeX. Manual \\label injection
-    is therefore NOT needed for figures managed by pandoc-crossref.
+def verify_cref_targets(manuscript_dir: Path, registry: dict) -> tuple[list[str], int]:
+    """Check every ``\\Cref``/``\\cref`` target against the registry.
 
-    This function is retained for supplementary files or custom LaTeX environments
-    where pandoc-crossref is not active, but returns unchanged content by default.
+    Args:
+        manuscript_dir: Directory of manuscript ``*.md`` files.
+        registry: Mapping of label → registry entry.
 
-    Returns (content, 0) — no changes.
+    Returns:
+        ``(warnings, n_targets)`` where *warnings* names each unresolved
+        target and *n_targets* is the total number of targets inspected.
+        Callers must check *n_targets* — a zero-target run resolves
+        vacuously.
     """
-    # Pandoc-crossref handles \label{} generation; no injection needed.
-    return content, 0
-
-
-def verify_cref_targets(manuscript_dir: Path, registry: dict) -> list[str]:
-    """Return list of warning strings for \\Cref{} targets not in the registry."""
     warnings = []
+    n_targets = 0
     for md_file in sorted(manuscript_dir.glob("*.md")):
         content = md_file.read_text(encoding="utf-8")
         # Match both \Cref{...} and \cref{...}
         for m in re.finditer(r"\\[Cc]ref\{((?:fig|tab|tbl):[^}]+)\}", content):
             target = m.group(1)
+            n_targets += 1
             # Normalise: tbl: → tab:
             canonical = target.replace("tbl:", "tab:")
             if canonical not in registry and target not in registry:
                 warnings.append(f"{md_file.name}: unresolved \\Cref{{{target}}}")
-    return warnings
+    return warnings, n_targets
 
 
 def ensure_lof_lot_in_preamble(preamble_path: Path, dry_run: bool = False) -> bool:
@@ -111,8 +124,10 @@ def ensure_lof_lot_in_preamble(preamble_path: Path, dry_run: bool = False) -> bo
 # Main
 # --------------------------------------------------------------------------
 
-def main() -> int:
-    parser = argparse.ArgumentParser(description="Auto-number figures/tables in manuscript.")
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(
+        description="Inject LoF/LoT into the preamble and verify \\Cref targets."
+    )
     base_dir = Path(__file__).resolve().parent.parent
     parser.add_argument("--root", default=str(base_dir / "manuscript"))
     parser.add_argument(
@@ -121,7 +136,7 @@ def main() -> int:
     parser.add_argument(
         "--dry-run", action="store_true", help="Print changes without writing files"
     )
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
 
     manuscript_dir = Path(args.root)
     registry_path = Path(args.registry)
@@ -129,50 +144,37 @@ def main() -> int:
     registry = load_registry(registry_path)
     logger.info("Loaded registry: %d entries", len(registry))
 
-    total_injections = 0
-
-    for md_file in sorted(manuscript_dir.glob("*.md")):
-        if md_file.name == "preamble.md":
-            continue
-        content = md_file.read_text(encoding="utf-8")
-        new_content = content
-        file_injections = 0
-
-        for label, entry in registry.items():
-            if entry["section"] + ".md" != md_file.name:
-                continue
-            if entry["type"] == "figure":
-                new_content, n = inject_latex_label(new_content, label)
-                file_injections += n
-            # Tables: \\label injection for tables (optional — LaTeX handles them differently)
-            # We skip table label injection to avoid disrupting table markdown syntax
-
-        if new_content != content:
-            if not args.dry_run:
-                md_file.write_text(new_content, encoding="utf-8")
-                logger.info("Updated %s (+%d labels)", md_file.name, file_injections)
-            else:
-                logger.info("[DRY-RUN] Would update %s (+%d labels)", md_file.name, file_injections)
-            total_injections += file_injections
-
-    logger.info("Total \\label injections: %d", total_injections)
-
     # Preamble LoF/LoT
     preamble_path = manuscript_dir / "preamble.md"
     if preamble_path.exists():
         ensure_lof_lot_in_preamble(preamble_path, dry_run=args.dry_run)
+    else:
+        logger.warning("No preamble.md in %s — skipping LoF/LoT injection", manuscript_dir)
 
     # Cross-reference verification
     logger.info("Verifying \\Cref targets …")
-    warnings = verify_cref_targets(manuscript_dir, registry)
+    warnings, n_targets = verify_cref_targets(manuscript_dir, registry)
+    if n_targets < MIN_CREF_TARGETS:
+        logger.error(
+            "Cross-reference check inspected %d targets (minimum %d) — it would "
+            "have passed vacuously. Check --root=%s.",
+            n_targets,
+            MIN_CREF_TARGETS,
+            manuscript_dir,
+        )
+        return 1
     if warnings:
-        logger.warning("Unresolved cross-references found (%d):", len(warnings))
+        logger.warning(
+            "Unresolved cross-references found (%d of %d targets):",
+            len(warnings),
+            n_targets,
+        )
         for w in warnings:
             logger.warning("  %s", w)
-    else:
-        logger.info("All \\Cref targets resolved ✓")
+        return 2
 
-    return 0 if not warnings else 2
+    logger.info("All %d \\Cref targets resolved against the registry", n_targets)
+    return 0
 
 
 if __name__ == "__main__":

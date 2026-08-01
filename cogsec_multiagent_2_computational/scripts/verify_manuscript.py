@@ -6,8 +6,20 @@ Manuscript Verification Script
 Thin orchestrator that verifies manuscript integrity using the
 ManuscriptVerifier from src/manuscript/verifier.py.
 
+Import is side-effect free
+--------------------------
+This module used to call ``logging.basicConfig(..., handlers=[...,
+logging.FileHandler("manuscript_verification.log")])`` at *import* time, in
+append mode, against a CWD-relative path.  Three consequences: importing the
+module from a read-only checkout raised ``PermissionError`` before any code
+ran (two tests failed for reasons unrelated to the code under test), every
+``make verify`` dirtied the working tree, and the git-tracked log grew without
+bound.  Logging is now configured inside :func:`main` and writes under
+``output/logs/`` (a generated, gitignored directory), overwriting rather than
+appending.
+
 Usage:
-    python verify_manuscript.py [--root manuscript]
+    python scripts/verify_manuscript.py [--root manuscript] [--log PATH]
 """
 
 import argparse
@@ -19,36 +31,55 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 
-from manuscript.verifier import ManuscriptVerifier
+from manuscript.verifier import ManuscriptVerifier  # noqa: E402
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - %(levelname)s - %(message)s",
-    handlers=[
-        logging.StreamHandler(sys.stdout),
-        logging.FileHandler("manuscript_verification.log"),
-    ],
-)
+DEFAULT_LOG_PATH = ROOT / "output" / "logs" / "manuscript_verification.log"
 
 
-def main():
+def configure_logging(log_path: Path | None) -> None:
+    """Attach stdout and (optionally) file handlers to the root logger.
+
+    Args:
+        log_path: Destination log file, or ``None`` to log to stdout only.
+            Parent directories are created.  The file is opened in ``"w"``
+            mode so repeated runs do not accumulate.
+    """
+    handlers: list[logging.Handler] = [logging.StreamHandler(sys.stdout)]
+    if log_path is not None:
+        log_path.parent.mkdir(parents=True, exist_ok=True)
+        handlers.append(logging.FileHandler(log_path, mode="w"))
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s - %(levelname)s - %(message)s",
+        handlers=handlers,
+        force=True,
+    )
+
+
+def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Verify manuscript integrity.")
     # Default to project's own manuscript directory (not CWD-relative)
-    project_dir = os.environ.get(
-        "PROJECT_DIR",
-        str(Path(__file__).resolve().parent.parent)
-    )
+    project_dir = os.environ.get("PROJECT_DIR", str(ROOT))
     default_root = str(Path(project_dir) / "manuscript")
     parser.add_argument(
         "--root", default=default_root, help="Path to manuscript root directory."
     )
-    args = parser.parse_args()
+    parser.add_argument(
+        "--log",
+        default=str(DEFAULT_LOG_PATH),
+        help=(
+            "Log file path (created/overwritten). Pass an empty string to "
+            "disable file logging entirely."
+        ),
+    )
+    args = parser.parse_args(argv)
+
+    configure_logging(Path(args.log) if args.log else None)
 
     verifier = ManuscriptVerifier(args.root)
     passed = verifier.run_all()
-    sys.exit(0 if passed else 1)
+    return 0 if passed else 1
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

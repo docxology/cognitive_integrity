@@ -28,6 +28,16 @@ def main() -> None:
     parser.add_argument("--n-rounds", type=int, default=5)
     parser.add_argument("--attacks-per-round", type=int, default=100)
     parser.add_argument("--seed", type=int, default=42)
+    parser.add_argument(
+        "--measurement-mode",
+        choices=["model", "real"],
+        default="model",
+        help=(
+            "'model' (default) reproduces the published closed-form AT table; "
+            "'real' measures round detection rates against the real "
+            "CognitiveFirewall and attack corpus (see src/redteam)."
+        ),
+    )
     parser.add_argument("--output", type=str, default="output/data")
     args = parser.parse_args()
 
@@ -35,13 +45,17 @@ def main() -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
 
     print("=" * 70)
-    print(f"Adversarial Training ({args.n_rounds} rounds, seed={args.seed})")
+    print(
+        f"Adversarial Training ({args.n_rounds} rounds, seed={args.seed}, "
+        f"measurement={args.measurement_mode})"
+    )
     print("=" * 70)
 
     config = ATConfig(
         n_rounds=args.n_rounds,
         attacks_per_round=args.attacks_per_round,
         seed=args.seed,
+        measurement_mode=args.measurement_mode,
     )
     trainer = AdversarialTrainer(config=config)
     rounds = trainer.run()
@@ -59,6 +73,19 @@ def main() -> None:
         summary["baseline_dr"]
     )
     summary["omega_level_dr"] = trainer.omega_level_dr()
+    # Provenance, following the other committed artifacts (no timestamp, so a
+    # same-seed re-run reproduces the file byte-for-byte). In "real" measurement
+    # mode the round rates ARE measured against the real CognitiveFirewall and
+    # corpus, so `data_origin: real_pipeline` is accurate. In "model" mode they
+    # are closed-form simulation constants, so we deliberately omit `data_origin`
+    # rather than mislabel a simulation as a measurement. The firewall-measured
+    # evasion results live in output/data/redteam_evaluation_results.json
+    # (data_origin: real_pipeline).
+    summary["source_script"] = "scripts/run_adversarial_training.py"
+    summary["seed"] = args.seed
+    if args.measurement_mode == "real":
+        summary["data_origin"] = "real_pipeline"
+        summary["detector"] = "core.firewall.CognitiveFirewall + attacks.corpus"
 
     print(f"\nBaseline DR:        {summary['baseline_dr']:.3f}")
     print(f"Final hardened DR:  {summary['final_hardened_dr']:.3f}")
