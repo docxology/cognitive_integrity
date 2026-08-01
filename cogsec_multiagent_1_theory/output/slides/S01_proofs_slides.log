@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.3.22)  13 JUL 2026 13:52
+This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.3.22)  1 AUG 2026 14:59
 entering extended mode
  %&-line parsing enabled.
 **/Users/4d/Documents/GitHub/projects/working/cognitive_integrity/cogsec_multia
@@ -1641,88 +1641,116 @@ Overfull \vbox (313.38554pt too high) detected at line 301
 
 ]
 LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <7.665> not available
-(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 394.
+(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 399.
 LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <5.475> not available
-(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 394.
- [10
+(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 399.
+
+
+! LaTeX Error: Environment remark undefined.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.399 \end{frame}
+                 
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: \begin{beamer@framepauses} on input line 399 ended by \end{remar
+k}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.399 \end{frame}
+                 
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+[10
 
 ] [11
 
 
-]
-Underfull \vbox (badness 1112) detected at line 394
- []
-
-
-Overfull \vbox (224.4669pt too high) detected at line 394
- []
-
-[12
+] [12
 
 
 ] [13
 
-] [14
-
 
 ]
-Underfull \vbox (badness 1112) detected at line 497
+Underfull \vbox (badness 1112) detected at line 399
  []
 
 
-Overfull \vbox (377.31943pt too high) detected at line 497
+Overfull \vbox (224.4669pt too high) detected at line 399
  []
 
-[15
+[14
 
+
+] [15
 
 ] [16
 
-] [17
+
+]
+Underfull \vbox (badness 1112) detected at line 502
+ []
+
+
+Overfull \vbox (377.31943pt too high) detected at line 502
+ []
+
+[17
 
 
 ] [18
 
-
-]
-Underfull \vbox (badness 1112) detected at line 596
- []
+] [19
 
 
-Overfull \vbox (166.20102pt too high) detected at line 596
- []
-
-[19
+] [20
 
 
 ]
-Overfull \hbox (67.0681pt too wide) detected at line 678
+Underfull \vbox (badness 1112) detected at line 601
+ []
+
+
+Overfull \vbox (166.20102pt too high) detected at line 601
+ []
+
+[21
+
+
+]
+Overfull \hbox (67.0681pt too wide) detected at line 683
 [][][][][][][] [] [][] [] [][][][][][] [] [][] [] [][][][][][] [] [][] [] []
- []
-
-[20
-
-] [21
-
-
-]
-Underfull \vbox (badness 1112) detected at line 678
- []
-
-
-Overfull \vbox (79.49304pt too high) detected at line 678
  []
 
 [22
 
-
 ] [23
 
-] [24
+
+]
+Underfull \vbox (badness 1112) detected at line 683
+ []
+
+
+Overfull \vbox (79.49304pt too high) detected at line 683
+ []
+
+[24
 
 
 ] [25
-
 
 ] [26
 
@@ -1730,40 +1758,46 @@ Overfull \vbox (79.49304pt too high) detected at line 678
 ] [27
 
 
-]
-Overfull \hbox (54.20062pt too wide) detected at line 863
-[]
- []
+] [28
 
-[28
 
 ] [29
 
 
 ]
-Underfull \vbox (badness 1112) detected at line 863
- []
-
-
-Overfull \vbox (374.20323pt too high) detected at line 863
+Overfull \hbox (54.20062pt too wide) detected at line 868
+[]
  []
 
 [30
 
-
 ] [31
 
-] [32
+
+]
+Underfull \vbox (badness 1112) detected at line 868
+ []
+
+
+Overfull \vbox (374.20323pt too high) detected at line 868
+ []
+
+[32
 
 
 ] [33
+
+] [34
+
+
+] [35
 
 
 ]
 ! Undefined control sequence.
 <inserted text> ... {tabular}{@{}lll@{}} \toprule 
                                                   Theorem & Primary Techniqu...
-l.956 \end{frame}
+l.961 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1774,7 +1808,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 <recently read> \midrule 
                          
-l.956 \end{frame}
+l.961 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1785,7 +1819,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 <recently read> \bottomrule 
                             
-l.956 \end{frame}
+l.961 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1793,488 +1827,92 @@ misspelled it (e.g., `\hobx'), type `I' and the correct
 spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
-[34
-
-]
-
-LaTeX Warning: Reference `sec:defense-formal-guarantees' on page 35 undefined o
-n input line 965.
-
-
-LaTeX Warning: Reference `sec:detection-bounds' on page 35 undefined on input l
-ine 965.
-
-[35
-
-]
-
-LaTeX Font Warning: Font shape `TU/lmss/m/scit' undefined
-(Font)              using `TU/lmss/m/sc' instead on input line 1016.
-
-
-LaTeX Font Warning: Font shape `TU/lmss/m/sc' in size <10.95> not available
-(Font)              Font shape `TU/lmr/m/sc' tried instead on input line 1016.
-
-
-LaTeX Font Warning: Font shape `TU/lmss/m/scit' undefined
-(Font)              using `TU/lmss/m/sc' instead on input line 1016.
-
-
-LaTeX Font Warning: Font shape `TU/lmss/m/scit' undefined
-(Font)              using `TU/lmss/m/sc' instead on input line 1016.
-
-
-LaTeX Font Warning: Font shape `TU/lmss/m/scit' undefined
-(Font)              using `TU/lmss/m/sc' instead on input line 1016.
-
-
-LaTeX Font Warning: Font shape `TU/lmss/m/scit' undefined
-(Font)              using `TU/lmss/m/sc' instead on input line 1016.
-
-
-LaTeX Font Warning: Font shape `TU/lmss/m/scit' undefined
-(Font)              using `TU/lmss/m/sc' instead on input line 1016.
-
-
-LaTeX Font Warning: Font shape `TU/lmss/m/scit' undefined
-(Font)              using `TU/lmss/m/sc' instead on input line 1016.
-
 [36
 
 ] [37
 
+]
 
-] [38
+LaTeX Font Warning: Font shape `TU/lmss/m/scit' undefined
+(Font)              using `TU/lmss/m/sc' instead on input line 1021.
 
+
+LaTeX Font Warning: Font shape `TU/lmss/m/sc' in size <10.95> not available
+(Font)              Font shape `TU/lmr/m/sc' tried instead on input line 1021.
+
+
+LaTeX Font Warning: Font shape `TU/lmss/m/scit' undefined
+(Font)              using `TU/lmss/m/sc' instead on input line 1021.
+
+
+LaTeX Font Warning: Font shape `TU/lmss/m/scit' undefined
+(Font)              using `TU/lmss/m/sc' instead on input line 1021.
+
+
+LaTeX Font Warning: Font shape `TU/lmss/m/scit' undefined
+(Font)              using `TU/lmss/m/sc' instead on input line 1021.
+
+
+LaTeX Font Warning: Font shape `TU/lmss/m/scit' undefined
+(Font)              using `TU/lmss/m/sc' instead on input line 1021.
+
+
+LaTeX Font Warning: Font shape `TU/lmss/m/scit' undefined
+(Font)              using `TU/lmss/m/sc' instead on input line 1021.
+
+
+LaTeX Font Warning: Font shape `TU/lmss/m/scit' undefined
+(Font)              using `TU/lmss/m/sc' instead on input line 1021.
+
+[38
 
 ] [39
+
 
 ] [40
 
 
 ] [41
 
-
 ] [42
 
 
-]
-Overfull \vbox (152.91092pt too high) detected at line 1106
- []
-
-[43
+] [43
 
 
-]
+] [44
 
-! LaTeX Error: There's no line here to end.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1137 \end{frame}
-                  
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-! Missing $ inserted.
-<inserted text> 
-                $
-l.1137 \end{frame}
-                  
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
-! Missing $ inserted.
-<inserted text> 
-                $
-l.1137 \end{frame}
-                  
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
-
-! LaTeX Error: There's no line here to end.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1137 \end{frame}
-                  
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-! Missing $ inserted.
-<inserted text> 
-                $
-l.1137 \end{frame}
-                  
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
-! Missing } inserted.
-<inserted text> 
-                }
-l.1137 \end{frame}
-                  
-I've inserted something that you may have forgotten.
-(See the <inserted text> above.)
-With luck, this will get me unwedged. But if you
-really didn't forget anything, try typing `2' now; then
-my insertion and my current dilemma will both disappear.
-
-! Missing $ inserted.
-<inserted text> 
-                $
-l.1137 \end{frame}
-                  
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
-! Extra }, or forgotten $.
-<inserted text> ...dot \\mathcal{T}_{a_j \\to a_v}
-                                                  $. Summing over at most $n...
-l.1137 \end{frame}
-                  
-I've deleted a group-closing symbol because it seems to be
-spurious, as in `$x}$'. But perhaps the } is legitimate and
-you forgot something else, as in `\hbox{$x}'. In such cases
-the way to recover is to insert both the forgotten and the
-deleted material, e.g., by typing `I$}'.
-
-! Missing $ inserted.
-<inserted text> 
-                $
-l.1137 \end{frame}
-                  
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
-
-! LaTeX Error: There's no line here to end.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1137 \end{frame}
-                  
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-! Missing $ inserted.
-<inserted text> 
-                $
-l.1137 \end{frame}
-                  
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
-! Missing $ inserted.
-<inserted text> 
-                $
-l.1137 \end{frame}
-                  
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
-
-! LaTeX Error: There's no line here to end.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1137 \end{frame}
-                  
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-! Missing $ inserted.
-<inserted text> 
-                $
-l.1137 \end{frame}
-                  
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
-! Missing } inserted.
-<inserted text> 
-                }
-l.1137 \end{frame}
-                  
-I've inserted something that you may have forgotten.
-(See the <inserted text> above.)
-With luck, this will get me unwedged. But if you
-really didn't forget anything, try typing `2' now; then
-my insertion and my current dilemma will both disappear.
-
-! Missing $ inserted.
-<inserted text> 
-                $
-l.1137 \end{frame}
-                  
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
-! Extra }, or forgotten $.
-<inserted text> ...um_{a_j \\in \\mathcal{N}(a_v)}
-                                                   \\delta \\cdot \\mathcal{...
-l.1137 \end{frame}
-                  
-I've deleted a group-closing symbol because it seems to be
-spurious, as in `$x}$'. But perhaps the } is legitimate and
-you forgot something else, as in `\hbox{$x}'. In such cases
-the way to recover is to insert both the forgotten and the
-deleted material, e.g., by typing `I$}'.
-
-
-! LaTeX Error: There's no line here to end.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1137 \end{frame}
-                  
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-! Missing $ inserted.
-<inserted text> 
-                $
-l.1137 \end{frame}
-                  
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
-! Missing $ inserted.
-<inserted text> 
-                $
-l.1137 \end{frame}
-                  
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
-
-! LaTeX Error: There's no line here to end.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1137 \end{frame}
-                  
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-! Missing $ inserted.
-<inserted text> 
-                $
-l.1137 \end{frame}
-                  
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
-! Missing } inserted.
-<inserted text> 
-                }
-l.1137 \end{frame}
-                  
-I've inserted something that you may have forgotten.
-(See the <inserted text> above.)
-With luck, this will get me unwedged. But if you
-really didn't forget anything, try typing `2' now; then
-my insertion and my current dilemma will both disappear.
-
-! Missing $ inserted.
-<inserted text> 
-                $
-l.1137 \end{frame}
-                  
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
-! Extra }, or forgotten $.
-<inserted text> ...dot \\mathcal{T}_{a_j \\to a_v}
-                                                   \\leq n \\cdot \\delta \\...
-l.1137 \end{frame}
-                  
-I've deleted a group-closing symbol because it seems to be
-spurious, as in `$x}$'. But perhaps the } is legitimate and
-you forgot something else, as in `\hbox{$x}'. In such cases
-the way to recover is to insert both the forgotten and the
-deleted material, e.g., by typing `I$}'.
-
-
-! LaTeX Error: There's no line here to end.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1137 \end{frame}
-                  
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-! Missing $ inserted.
-<inserted text> 
-                $
-l.1137 \end{frame}
-                  
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
-! Missing $ inserted.
-<inserted text> 
-                $
-l.1137 \end{frame}
-                  
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
-
-! LaTeX Error: There's no line here to end.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1137 \end{frame}
-                  
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-! Missing $ inserted.
-<inserted text> 
-                $
-l.1137 \end{frame}
-                  
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
-! Missing $ inserted.
-<inserted text> 
-                $
-l.1137 \end{frame}
-                  
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
-
-! LaTeX Error: There's no line here to end.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1137 \end{frame}
-                  
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-! Missing $ inserted.
-<inserted text> 
-                $
-l.1137 \end{frame}
-                  
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
-! Missing } inserted.
-<inserted text> 
-                }
-l.1137 \end{frame}
-                  
-I've inserted something that you may have forgotten.
-(See the <inserted text> above.)
-With luck, this will get me unwedged. But if you
-really didn't forget anything, try typing `2' now; then
-my insertion and my current dilemma will both disappear.
-
-! Missing $ inserted.
-<inserted text> 
-                $
-l.1137 \end{frame}
-                  
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
-! Extra }, or forgotten $.
-<inserted text> ..._j} \\mathcal{T}_{a_j \\to a_v}
-                                                  . \\end{equation} This is ...
-l.1137 \end{frame}
-                  
-I've deleted a group-closing symbol because it seems to be
-spurious, as in `$x}$'. But perhaps the } is legitimate and
-you forgot something else, as in `\hbox{$x}'. In such cases
-the way to recover is to insert both the forgotten and the
-deleted material, e.g., by typing `I$}'.
-
-
-! LaTeX Error: There's no line here to end.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1137 \end{frame}
-                  
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-! Missing $ inserted.
-<inserted text> 
-                $
-l.1137 \end{frame}
-                  
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
-[44
 
 ]
-Underfull \vbox (badness 1112) detected at line 1137
- []
-
-
-Overfull \vbox (239.27249pt too high) detected at line 1137
+Overfull \vbox (152.91092pt too high) detected at line 1111
  []
 
 [45
 
 
+] [46
+
+] [47
+
+
 ]
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 10.30151pt on input line 1169.
+(Font)              scaled to size 10.30151pt on input line 1174.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 7.21106pt on input line 1169.
+(Font)              scaled to size 7.21106pt on input line 1174.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 10.30258pt on input line 1169.
+(Font)              scaled to size 10.30258pt on input line 1174.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 7.2118pt on input line 1169.
+(Font)              scaled to size 7.2118pt on input line 1174.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 10.3006pt on input line 1169.
+(Font)              scaled to size 10.3006pt on input line 1174.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 7.21042pt on input line 1169.
+(Font)              scaled to size 7.21042pt on input line 1174.
 
 ! Undefined control sequence.
 <inserted text> ...{tabular}{@{}llll@{}} \toprule 
                                                   Theorem & Primary Techniqu...
-l.1169 \end{frame}
+l.1174 \end{frame}
                   
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2285,7 +1923,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 <recently read> \midrule 
                          
-l.1169 \end{frame}
+l.1174 \end{frame}
                   
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2296,7 +1934,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 <recently read> \bottomrule 
                             
-l.1169 \end{frame}
+l.1174 \end{frame}
                   
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2304,7 +1942,7 @@ misspelled it (e.g., `\hobx'), type `I' and the correct
 spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
-[46
+[48
 
 ]
 \tf@nav=\write5
@@ -2325,20 +1963,17 @@ L3 programming layer <2026-01-19>
  ***********
 
 
-LaTeX Warning: There were undefined references.
-
-
 LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 
  ) 
 Here is how much of TeX's memory you used:
- 29848 strings out of 468168
- 606464 string characters out of 5432815
+ 29851 strings out of 468168
+ 606525 string characters out of 5432815
  1162023 words of memory out of 5000000
- 58002 multiletter control sequences out of 15000+600000
+ 58005 multiletter control sequences out of 15000+600000
  635239 words of font info for 110 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  128i,14n,123p,1119b,993s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
 Output written on /Users/4d/Documents/GitHub/projects/working/cognitive_integri
-ty/cogsec_multiagent_1_theory/output/slides/S01_proofs_slides.pdf (46 pages).
+ty/cogsec_multiagent_1_theory/output/slides/S01_proofs_slides.pdf (48 pages).

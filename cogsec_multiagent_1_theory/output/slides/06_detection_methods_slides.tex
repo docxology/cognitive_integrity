@@ -74,6 +74,21 @@
 }{% if KOMA class
   \KOMAoptions{parskip=half}}
 \makeatother
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
 \setlength{\emergencystretch}{3em} % prevent overfull lines
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
@@ -145,7 +160,7 @@ and real-time monitoring architecture (\cref{sec:monitoring}).
 \textbf{Note}: For algorithm implementations and empirical performance
 results, see Part 2 of this series \cite{friedman2026cogsec2}.
 Empirically, the multi-stage pipeline achieves a parametric design
-ceiling of 94--100\% detection rate on a 950-attack corpus across six
+ceiling of 96--100\% detection rate on a 950-attack corpus across four
 architectures; the prototype pipeline achieves a mean of 44.7\% {[}CI:
 43.4\%, 46.2\%{]} across 30 seeds, with per-\(\Omega\)-class detection
 rates ranging from 97\% (\(\Omega_1\), passive) to 49\% (\(\Omega_5\),
@@ -215,6 +230,15 @@ where $\sigma$ is the sigmoid function and weights $(w_d, b)$ are learned from l
 
 \begin{frame}[allowframebreaks]{ROC Curve Analysis}
 \protect\phantomsection\label{sec:roc-analysis}
+\begin{figure}
+\centering
+\includegraphics[width=0.85\linewidth,height=0.46\textheight,keepaspectratio,alt={Receiver Operating Characteristic (ROC) curves for CIF detection across attack categories (illustrative/schematic operating points under the Neyman-Pearson framework; the curves themselves are labeled Theoretical, not empirical measurements).}]{../figures/roc_curves.pdf}
+\caption{Receiver Operating Characteristic (ROC) curves for CIF
+detection across attack categories (illustrative/schematic operating
+points under the Neyman-Pearson framework; the curves themselves are
+labeled Theoretical, not empirical measurements).}\label{fig:roc-curves}
+\end{figure}
+
 \begin{block}{Receiver Operating Characteristic Framework}
 \protect\phantomsection\label{receiver-operating-characteristic-framework}
 \begin{definition}[ROC Curve]
@@ -390,6 +414,14 @@ Combines online and batch detection via feedback loop:
 
 \begin{frame}[allowframebreaks]{False Positive Mitigation}
 \protect\phantomsection\label{sec:fp-mitigation}
+\begin{figure}
+\centering
+\includegraphics[width=0.8\linewidth,height=0.46\textheight,keepaspectratio,alt={False-positive mitigation (illustrative schematic): how the detection threshold and confidence calibration shape the false-positive / true-positive tradeoff.}]{../figures/fp_mitigation.pdf}
+\caption{False-positive mitigation (illustrative schematic): how the
+detection threshold and confidence calibration shape the false-positive
+/ true-positive tradeoff.}\label{fig:fp-mitigation}
+\end{figure}
+
 \begin{block}{Strategy 1: Confirmation Cascade}
 \protect\phantomsection\label{strategy-1-confirmation-cascade}
 \begin{definition}[Confirmation Cascade]
@@ -721,7 +753,7 @@ for any detector with finite observation budget $n$.
 
 \begin{theorem}[Undetectability Condition]
 \label{thm:undetectability}
-Attack $\mathcal{A}$ with $D_{\mathrm{KL}}(P_{\text{attack}} \| P_{\text{benign}}) < \frac{4\epsilon^2}{1}$ is $\epsilon$-undetectable for any detector observing fewer than $n^* = O(1/D_{\mathrm{KL}})$ samples.
+Attack $\mathcal{A}$ with $D_{\mathrm{KL}}(P_{\text{attack}} \| P_{\text{benign}}) < 4\epsilon^2$ is $\epsilon$-undetectable for any detector observing fewer than $n^* = O(1/D_{\mathrm{KL}})$ samples.
 \end{theorem}
 
 \begin{remark}[Implication for Defense Strategy]
@@ -733,6 +765,15 @@ Theorem~\ref{thm:undetectability} establishes that sufficiently subtle attacks a
 
 \begin{frame}[allowframebreaks]{Multi-Stage Detection Pipeline}
 \protect\phantomsection\label{sec:multi-stage-pipeline}
+\begin{figure}
+\centering
+\includegraphics[width=0.85\linewidth,height=0.46\textheight,keepaspectratio,alt={Schematic detection-performance curves (illustrative, theory-guided, not measured): detection rate by attack category across representative defense stages. Measured pipeline results are reported in Part 2.}]{../figures/detection_performance.pdf}
+\caption{Schematic detection-performance curves (illustrative,
+theory-guided, not measured): detection rate by attack category across
+representative defense stages. Measured pipeline results are reported in
+Part 2.}\label{fig:detection-performance}
+\end{figure}
+
 \emph{Real systems cannot run all detectors on all messages
 simultaneously. This section formalizes a staged pipeline that applies
 computationally cheap detectors first, escalating to expensive detectors

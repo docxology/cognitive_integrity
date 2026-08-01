@@ -578,6 +578,15 @@ where $q = \lceil \frac{n + f + 1}{2} \rceil$.
 
 \begin{frame}[allowframebreaks]{Defense Composition}
 \protect\phantomsection\label{sec:defense-composition}
+\begin{figure}
+\centering
+\includegraphics[width=0.8\linewidth,height=0.46\textheight,keepaspectratio,alt={Schematic ablation study (illustrative, not measured): representative marginal contribution of each CIF defense module to the composed defense. Measured ablation results are reported in Part 2.}]{../figures/ablation_study.pdf}
+\caption{Schematic ablation study (illustrative, not measured):
+representative marginal contribution of each CIF defense module to the
+composed defense. Measured ablation results are reported in Part
+2.}\label{fig:ablation-study}
+\end{figure}
+
 \begin{block}{Composition Algebra}
 \protect\phantomsection\label{composition-algebra}
 \begin{definition}[Defense Composition]
@@ -827,7 +836,7 @@ The optimal threshold $\tau_1^*$ lies on the Pareto frontier:
 \label{eq:pareto-threshold}
 \tau_1^* \in \{\tau_1 : \nexists \tau_1': \text{TPR}(\tau_1') > \text{TPR}(\tau_1) \land \text{FPR}(\tau_1') < \text{FPR}(\tau_1)\}
 \end{equation}
-This frontier is precisely the ROC curve (Definition~\ref{def:roc-curve}).
+This frontier is precisely the ROC curve (Definition~6.4).
 \end{corollary}
 \end{block}
 
@@ -845,7 +854,7 @@ until $\phi$ satisfies the promotion criteria.
 \end{theorem}
 
 \begin{proof}
-By construction: action preconditions are evaluated against $\mathcal{B}_{\text{verified}}$ only (Rule T-Act, Eq.~\ref{eq:rule-act}). The permission layer enforces $\mathcal{P}_{\text{eff}}$ which does not consult $\mathcal{B}_{\text{provisional}}$.
+By construction: action preconditions are evaluated against $\mathcal{B}_{\text{verified}}$ only (Rule T-Act, Eq.~37). The permission layer enforces $\mathcal{P}_{\text{eff}}$ which does not consult $\mathcal{B}_{\text{provisional}}$.
 \end{proof}
 
 \begin{theorem}[Sandbox Promotion Soundness]
@@ -858,7 +867,7 @@ Beliefs promoted from sandbox to verified satisfy all three promotion criteria s
 \end{theorem}
 
 \begin{proof}
-By Rule S-Promote (Eq.~\ref{eq:rule-promote}): promotion is conditional on all three criteria. The rule is the only mechanism for transferring beliefs from $\mathcal{B}_{\text{provisional}}$ to $\mathcal{B}_{\text{verified}}$.
+By Rule S-Promote (Eq.~58): promotion is conditional on all three criteria. The rule is the only mechanism for transferring beliefs from $\mathcal{B}_{\text{provisional}}$ to $\mathcal{B}_{\text{verified}}$.
 \end{proof}
 \end{block}
 
@@ -998,6 +1007,11 @@ The set of CIF defenses $\mathcal{D}$ under series ($\circ$) and parallel ($\par
 \begin{proof}
 Closure: both composition operators produce functions $\mathcal{M} \to \{\textsc{accept}, \textsc{quarantine}, \textsc{reject}\}$, so the output type is preserved. Associativity follows from Boolean operator associativity. The null defense $\mathcal{D}_\emptyset(m) = \textsc{accept}$ for all $m$ is the identity. Distributivity follows from logic: $A \land (B \lor C) \equiv (A \land B) \lor (A \land C)$ instantiated on the accept/reject conditions.
 \end{proof}
+
+\begin{remark}[Scope of the composition-algebra claim]
+\label{rem:composition-algebra-scope}
+$\circ$ and $\parallel$ are defined here on a common accept/compare focal predicate so that closure, associativity, identity, and both distributive laws hold; under that reading the algebra is a bounded distributive lattice, not in general a \emph{field}-like structure. A full \emph{closed semiring} additionally requires a commutative additive identity that annihilates the multiplicative identity and a Kleene-star (infinite-sum) operation, neither of which is constructed or proven here. The claim should therefore be read as ``the defense-composition operators form a bounded distributive lattice under the stated independence assumption (\cref{rem:defense-independence-scope}),'' not as a complete closed semiring.
+\end{remark}
 
 \begin{theorem}[Defense Composition Detection Rate Bound]
 \label{thm:composition-bound}

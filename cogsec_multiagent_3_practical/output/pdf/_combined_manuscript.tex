@@ -37,6 +37,8 @@
   \KOMAoptions{parskip=half}}
 \makeatother
 \usepackage{longtable,booktabs,array}
+\usepackage{caption}
+\captionsetup[table]{skip=6pt}
 \newcounter{none} % for unnumbered tables
 \usepackage{calc} % for calculating minipage widths
 % Correct order of tables after \paragraph or \subparagraph
@@ -47,6 +49,21 @@
 % Allow footnotes in longtable head/foot
 \IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
 \makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
 \setlength{\emergencystretch}{3em} % prevent overfull lines
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
@@ -300,13 +317,13 @@ from traditional security models.
 
 The \textbf{Cognitive Integrity Framework (CIF)} is developed across a
 three-part series: formal treatment (Part 1), running code and
-experiments (Part 2), and the present unified paper (Part 3) combining
+experiments (Part 2), and the present unified paper (Part 3+4) combining
 practitioner guidance with cross-domain application. \textbf{Part 1}
 establishes mathematical foundations---a trust calculus with provably
 bounded delegation, defense composition algebras with multiplicative
 detection guarantees, and information-theoretic limits on attack
 stealth. \textbf{Part 2} provides computational validation: eight
-implemented defense modules, 2,283 passing tests, a 950-attack corpus
+implemented defense modules, 3,308 passing tests, a 950-attack corpus
 spanning four threat categories, parametric architecture-aware
 simulation across four production multiagent topologies, and a
 category-theoretic formalization of defense composition (Theorems
@@ -407,7 +424,7 @@ efficacy from formal, computational, and applied angles.
   attack patterns and three novel defense extensions.
 \end{itemize}
 
-The combined evidence includes \textbf{2,283 passing tests} and a
+The combined evidence includes \textbf{3,308 passing tests} and a
 \textbf{94--100\% parametric detection ceiling} across all attack
 categories and architectures (Part 2), alongside a lower real-pipeline
 multi-seed mean of approximately 44.8\% (30 seeds). Direct-injection
@@ -813,6 +830,14 @@ deployment configurations before committing to a production layout.
 \section{The Evidence: What We Proved in Part
 2}\label{sec:paper2-review}
 
+\begin{figure}
+\centering
+\includegraphics[width=0.75\linewidth,height=0.5\textheight,keepaspectratio,alt={Effective trust vs.~delegation depth at decay factors \textbackslash delta = \textbackslash\{0.9, 0.85, 0.7\textbackslash\}, with 50\% and 10\% thresholds marking delegation bounds.}]{../figures/trust_decay.png}
+\caption{Effective trust vs.~delegation depth at decay factors
+\(\delta = \{0.9, 0.85, 0.7\}\), with 50\% and 10\% thresholds marking
+delegation bounds.}\label{fig:trust-decay}
+\end{figure}
+
 Part 1 supplies the formal apparatus. Part 2 supplies the empirical
 evaluation: tested CIF modules, a \textbf{950-attack} corpus, and an
 architecture-aware simulation over four headline topologies (Claude
@@ -1043,6 +1068,15 @@ Temporal canaries & 1 per agent & Session continuity \\
 \newpage
 
 \section{The Attack Landscape: Five Vectors}\label{sec:attack-scenarios}
+
+\begin{figure}
+\centering
+\includegraphics[width=0.85\linewidth,height=0.5\textheight,keepaspectratio,alt={Cognitive-security risk heatmap: impact \textbackslash times likelihood for eight named risks (Direct/Indirect Injection, Trust Laundering, Belief Manipulation, Goal Hijacking, Context Poisoning, Multi-turn Attacks, Consensus Subversion).}]{../figures/risk_matrix.png}
+\caption{Cognitive-security risk heatmap: impact \(\times\) likelihood
+for eight named risks (Direct/Indirect Injection, Trust Laundering,
+Belief Manipulation, Goal Hijacking, Context Poisoning, Multi-turn
+Attacks, Consensus Subversion).}\label{fig:risk-matrix}
+\end{figure}
 
 This section details five concrete attack vectors from the Part 2
 corpus, illustrating the mechanism and the CIF layer that answers it.
@@ -1551,6 +1585,23 @@ per-role hardening closes both gaps.
 \section{Deployment Profiles: Evaluated Configurations from Part
 2}\label{sec:deployment}
 
+\begin{figure}
+\centering
+\includegraphics[width=0.8\linewidth,height=0.5\textheight,keepaspectratio,alt={Five-Pillar operator posture assessment radar (Cognitive Firewall, Belief Sandbox, Identity Tripwire, Behavioral Invariants, Provenance), color-coded against readiness thresholds.}]{../figures/posture_radar.png}
+\caption{Five-Pillar operator posture assessment radar (Cognitive
+Firewall, Belief Sandbox, Identity Tripwire, Behavioral Invariants,
+Provenance), color-coded against readiness
+thresholds.}\label{fig:posture-radar}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=0.85\linewidth,height=0.5\textheight,keepaspectratio,alt={Pre-deployment \textbackslash rightarrow Integration \textbackslash rightarrow Testing \textbackslash rightarrow Operational checklist flowchart mapping CIF enforcement points to deployment phases.}]{../figures/checklist_flowchart.png}
+\caption{Pre-deployment \(\rightarrow\) Integration \(\rightarrow\)
+Testing \(\rightarrow\) Operational checklist flowchart mapping CIF
+enforcement points to deployment phases.}\label{fig:checklist-flowchart}
+\end{figure}
+
 In Part 2, we evaluated specific configurations of the Cognitive
 Integrity Framework to understand how different tuning parameters
 affected security and performance outcomes. The following profiles are
@@ -1862,6 +1913,14 @@ adapter-maturity discount discussed in §3.
 \newpage
 
 \section{Incident Response Playbooks}\label{sec:incident-response}
+
+\begin{figure}
+\centering
+\includegraphics[width=0.85\linewidth,height=0.5\textheight,keepaspectratio,alt={Deployment lifecycle phases (Pre-Deployment \textbackslash rightarrow Operational \textbackslash rightarrow Incident Response) with CIF security activities.}]{../figures/timeline.png}
+\caption{Deployment lifecycle phases (Pre-Deployment \(\rightarrow\)
+Operational \(\rightarrow\) Incident Response) with CIF security
+activities.}\label{fig:timeline}
+\end{figure}
 
 When the Cognitive Integrity Framework (CIF) detects an attack,
 automated response handles quarantine and escalation. But automated
@@ -2469,6 +2528,14 @@ working.
 
 \section{Common Pitfalls and What the Research
 Shows}\label{sec:pitfalls}
+
+\begin{figure}
+\centering
+\includegraphics[width=0.8\linewidth,height=0.5\textheight,keepaspectratio,alt={Common pitfalls by severity across security/configuration/operational categories (e.g.~implicit trust in outputs, missing input validation).}]{../figures/pitfall_severity.png}
+\caption{Common pitfalls by severity across
+security/configuration/operational categories (e.g.~implicit trust in
+outputs, missing input validation).}\label{fig:pitfall-severity}
+\end{figure}
 
 The CIF research identifies recurring failure modes in multiagent
 deployments. This section catalogs eight anti-patterns, each assessed
@@ -5828,6 +5895,14 @@ its Functional Requirements in real-time. This section synthesizes the
 cross-domain findings, identifies universal attack patterns, evaluates
 CIF mechanism coverage, and acknowledges limitations.
 
+\begin{figure}
+\centering
+\includegraphics[width=0.9\linewidth,height=0.5\textheight,keepaspectratio,alt={CIF-AD-OODA attack-pattern coverage across ten domains for the three universal patterns (FR Polarity Inversion, Constraint Relaxation, Context Boundary Violation).}]{../figures/domain_coverage.png}
+\caption{CIF-AD-OODA attack-pattern coverage across ten domains for the
+three universal patterns (FR Polarity Inversion, Constraint Relaxation,
+Context Boundary Violation).}\label{fig:domain-coverage}
+\end{figure}
+
 \subsection{10.1 Cross-Domain Attack Pattern
 Taxonomy}\label{sec:attack_patterns}
 
@@ -6002,6 +6077,13 @@ A critical validation of the CIF framework is whether the five canonical
 mechanisms provide adequate coverage across diverse operational domains.
 The following matrix maps primary CIF defenses to the ten domains
 analyzed:
+
+\begin{figure}
+\centering
+\includegraphics[width=0.9\linewidth,height=0.5\textheight,keepaspectratio,alt={Binary mechanism \textbackslash times domain coverage matrix for the five CIF mechanisms across ten domains.}]{../figures/cif_mechanism_coverage.png}
+\caption{Binary mechanism \(\times\) domain coverage matrix for the five
+CIF mechanisms across ten domains.}\label{fig:mechanism-coverage}
+\end{figure}
 
 {\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}
@@ -6963,7 +7045,8 @@ constructed in
 
 
 
-\clearpage
+\providecommand{\bibsection}{}
+\renewcommand{\bibsection}{}
 
 \bibliography{references}
 \end{document}

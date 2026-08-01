@@ -333,6 +333,11 @@ By construction of the CIF architecture:
 Therefore, $P(\text{firewall detects} | \text{sandbox outcome}) = P(\text{firewall detects})$. The mechanisms are probabilistically independent.
 \end{proof}
 
+\begin{remark}[Independence is an assumption, not a guarantee]
+\label{rem:defense-independence-scope}
+Disjoint feature sets do not by themselves guarantee probabilistic independence of detection events: an adversary can craft content that defeats both pattern matching and provenance/consistency checks, correlating the failure modes. The multiplicative detection bounds derived below (e.g.\ $(1-r_f)(1-r_s)$) therefore hold under the architectural \emph{assumption} that firewall and sandbox failure events are approximately independent (decoupled adversarial capability). If the failure modes are positively correlated, the correct bound is the union bound $P(\text{success}) \le \min(1-r_f,\,1-r_s)$, or $P(\text{success}) \le (1-r_f)(1-r_s) + \rho$ with an explicit correlation term $\rho \ge 0$. Throughout this part we adopt the independence assumption for the closed-form analyses and apply the union-bound relaxation where correlation may be material.
+\end{remark}
+
 \begin{definition}[Attack Success]
 \label{def:attack-success}
 A belief injection attack $\mathcal{A}_{BI}$ succeeds if and only if:
@@ -955,13 +960,13 @@ All proofs are constructive and provide explicit bounds useful for
 system implementation and analysis.
 \end{frame}
 
-\begin{frame}[allowframebreaks]{v2.0 New Proofs: Defense Composition
+\begin{frame}[allowframebreaks]{v1.1 New Proofs: Defense Composition
 Algebra and Information-Geometric Bounds}
 \protect\phantomsection\label{sec:v2-proofs}
 This section contains new proofs added in the Second Edition,
 corresponding to the defense composition algebra guarantees
-(§\ref{sec:defense-formal-guarantees}) and the information-geometric
-tightening of the stealth-impact bound (§\ref{sec:detection-bounds}).
+(§5.7) and the information-geometric
+tightening of the stealth-impact bound (§4.5).
 \end{frame}
 
 \begin{frame}[allowframebreaks]{Theorem: Defense Composition Semiring}
@@ -1084,7 +1089,7 @@ Therefore:
 \mathcal{I}_{\mathrm{FR}} \cdot \mathcal{S}_{\mathrm{FR}} = r \cdot \frac{1}{r} = 1 \leq \frac{\pi}{2}
 \end{equation}
 
-Wait---the bound $\pi/2$ arises from the maximum attack at the hemisphere boundary. For attacks with $r < \pi$, the product $\mathcal{I} \cdot \mathcal{S}$ is bounded when $\mathcal{S}$ is defined relative to the detectable threshold $\theta_{\text{drift}}$:
+The bound $\pi/2$ in \Cref{eq:fr-product-2} arises from the maximum attack at the hemisphere boundary. For attacks with $r < \pi$, the product $\mathcal{I} \cdot \mathcal{S}$ is bounded when $\mathcal{S}$ is defined relative to the detectable threshold $\theta_{\text{drift}}$:
 
 \begin{equation}
 \label{eq:fr-product-2}
@@ -1117,11 +1122,11 @@ When agent $a_v$ is compromised, the maximum trust influenced in the system is b
 \end{theorem}
 
 \begin{proof}[Proof of \cref{thm:blast-radius-restated}]
-For each neighbor $a_j$ of $a_v$, \\cref{thm:trust-bounded} bounds the aggregate influence propagated through $a_v$ by $\\delta \\cdot \\mathcal{T}_{a_j \\to a_v}$. Summing over at most $n$ neighbors gives:
-\\begin{equation}
-\\label{eq:blast-step-2}
-\\text{BlastRadius}(a_v) \\leq \\sum_{a_j \\in \\mathcal{N}(a_v)} \\delta \\cdot \\mathcal{T}_{a_j \\to a_v} \\leq n \\cdot \\delta \\cdot \\max_{a_j} \\mathcal{T}_{a_j \\to a_v}.
-\\end{equation}
+For each neighbor $a_j$ of $a_v$, \cref{thm:trust-bounded} bounds the aggregate influence propagated through $a_v$ by $\delta \cdot \mathcal{T}_{a_j \to a_v}$. Summing over at most $n$ neighbors gives:
+\begin{equation}
+\label{eq:blast-step-2}
+\text{BlastRadius}(a_v) \leq \sum_{a_j \in \mathcal{N}(a_v)} \delta \cdot \mathcal{T}_{a_j \to a_v} \leq n \cdot \delta \cdot \max_{a_j} \mathcal{T}_{a_j \to a_v}.
+\end{equation}
 This is a per-neighbor aggregate bound; it does not multiply the neighbor and reachable-agent counts.
 \end{proof}
 
@@ -1140,7 +1145,7 @@ Restricting the degree of agents (least-privilege communication topology) propor
 \protect\phantomsection\label{sec:proof-summary-v2}
 \begin{table}[htbp]
 \centering
-\caption{Summary of proof techniques by theorem (v2.0 additions marked with $\dagger$).}
+\caption{Summary of proof techniques by theorem (v1.1 additions marked with $\dagger$).}
 \label{tab:proof-summary-v2}
 \begin{tabular}{@{}llll@{}}
 \toprule

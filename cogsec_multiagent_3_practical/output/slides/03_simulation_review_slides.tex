@@ -75,12 +75,29 @@
   \KOMAoptions{parskip=half}}
 \makeatother
 \usepackage{longtable,booktabs,array}
+\usepackage{caption}
+\captionsetup[table]{skip=6pt}
 \newcounter{none} % for unnumbered tables
 \usepackage{calc} % for calculating minipage widths
 \usepackage{caption}
 % Make caption package work with longtable
 \makeatletter
 \def\fnum@table{\tablename~\thetable}
+\makeatother
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
 \makeatother
 \setlength{\emergencystretch}{3em} % prevent overfull lines
 \providecommand{\tightlist}{%
@@ -135,6 +152,14 @@
 2}\label{sec:paper2-review}
 
 \begin{frame}[allowframebreaks]{The Evidence: What We Proved in Part 2}
+\begin{figure}
+\centering
+\includegraphics[width=0.75\linewidth,height=0.46\textheight,keepaspectratio,alt={Effective trust vs.~delegation depth at decay factors \textbackslash delta = \textbackslash\{0.9, 0.85, 0.7\textbackslash\}, with 50\% and 10\% thresholds marking delegation bounds.}]{../figures/trust_decay.png}
+\caption{Effective trust vs.~delegation depth at decay factors
+\(\delta = \{0.9, 0.85, 0.7\}\), with 50\% and 10\% thresholds marking
+delegation bounds.}\label{fig:trust-decay}
+\end{figure}
+
 Part 1 supplies the formal apparatus. Part 2 supplies the empirical
 evaluation: tested CIF modules, a \textbf{950-attack} corpus, and an
 architecture-aware simulation over four headline topologies (Claude

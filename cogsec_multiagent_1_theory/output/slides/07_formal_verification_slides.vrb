@@ -57,16 +57,16 @@ series, along with full implementation configurations.
 
 \begin{table}[htbp]
 \centering
-\caption{Model checking verification results.}
+\caption{Model checking verification results. ``Verified'' here denotes a theoretical state-space bound established in this part; executable NuSMV/SPIN/TLA+ runs are deferred to Part 2 \S 04 (S04). No model checker was executed in this part.}
 \label{tab:mc-results}
-\begin{tabular}{@{}llll@{}}
+\begin{tabular}{@{}lll@{}}
 \toprule
-Property & Verified & States Explored & Reference \\
+Property & Status & Reference \\
 \midrule
-Belief integrity & $\checkmark$ & $10^6$ & \cref{thm:belief-injection} \\
-Trust bounded & $\checkmark$ & $10^4$ & \cref{thm:trust-bound} \\
-No deadlock & $\checkmark$ & $10^7$ & \cref{thm:firewall-liveness} \\
-Eventual detection & $\checkmark$ & $10^5$ & \cref{thm:progressive-detection} \\
+Belief integrity & theoretical bound; executable run in Part 2 §S04 & \cref{thm:belief-injection} \\
+Trust bounded & theoretical bound; executable run in Part 2 §S04 & \cref{thm:trust-bound} \\
+No deadlock & theoretical bound; executable run in Part 2 §S04 & \cref{thm:firewall-liveness} \\
+Eventual detection & theoretical bound; executable run in Part 2 §S04 & \cref{thm:progressive-detection} \\
 \bottomrule
 \end{tabular}
 \end{table}

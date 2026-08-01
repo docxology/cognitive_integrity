@@ -75,6 +75,8 @@
 \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
 \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
 \usepackage{longtable,booktabs,array}
+\usepackage{caption}
+\captionsetup[table]{skip=6pt}
 \newcounter{none} % for unnumbered tables
 \usepackage{calc} % for calculating minipage widths
 % Correct order of tables after \paragraph or \subparagraph
@@ -147,17 +149,16 @@
 \@ifundefined{xmpquote}{\newcommand{\xmpquote}[1]{#1}}{}
 \makeatother
 \hypersetup{
-  pdftitle={Cognitive Integrity Framework: Formal Foundations (Second Edition)},
+  pdftitle={Cognitive Integrity Framework: Formal Foundations},
   pdfauthor={Daniel Ari Friedman},
   colorlinks=true,linkcolor=red,urlcolor=red,citecolor=red,anchorcolor=red,filecolor=red,
   pdfcreator={LaTeX via pandoc}}
 
-\title{Cognitive Integrity Framework: Formal Foundations (Second
-Edition)}
+\title{Cognitive Integrity Framework: Formal Foundations}
 \author{Daniel Ari Friedman}
 \date{}
 
-\title{Cognitive Integrity Framework: Formal Foundations (Second Edition)}
+\title{Cognitive Integrity Framework: Formal Foundations}
 \author{Daniel Ari Friedman\\\footnotesize{Active Inference Institute}\\\footnotesize{\texttt{daniel@activeinference.institute}}\\\footnotesize{\href{https://orcid.org/0000-0001-6232-9096}{ORCID: 0000-0001-6232-9096}}}
 \date{2026-07-05}
 
@@ -293,9 +294,9 @@ Edition)}
 \begin{titlepage}
 \centering
 \vspace*{2cm}
-{\LARGE\bfseries Cognitive Integrity Framework: Formal Foundations (Second Edition)\par}
+{\LARGE\bfseries Cognitive Integrity Framework: Formal Foundations\par}
 \vspace{0.75em}
-{\large Part 1 of 3: Theoretical Foundations — v2.0 Revised and Expanded\par}
+{\large Part 1 of 3: Theoretical Foundations\par}
 \vfill
 \makeatletter
 {\@author\par}
@@ -370,7 +371,7 @@ representation. This is Part 1 of a three-part series: Part 1 (this
 paper, DOI: 10.5281/zenodo.18364119) presents formal foundations and
 theoretical analysis; Part 2 (DOI: 10.5281/zenodo.18364128) provides
 computational validation through architecture-aware parametric
-simulation across 950 attacks and six production architectures; Part 3
+simulation across 950 attacks and four production architectures; Part 3
 (DOI: 10.5281/zenodo.18364130) offers a combined qualitative review,
 practitioner's deployment guidance, and CIF-AD-OODA integration across
 ten critical operational domains. The framework will continue to be
@@ -821,11 +822,11 @@ mechanisms for cognitive security:
 \end{enumerate}
 
 \textbf{Empirical Validation}: Part 2 of this series demonstrates the
-practical viability of these formal mechanisms across six production
+practical viability of these formal mechanisms across four production
 architectures, showing that layered cognitive defenses significantly
 outperform single-mechanism approaches. Practitioner translations,
 domain-specific applications, and real-world incident analyses appear in
-the merged Part 3 \cite{friedman2026cogsec3}.
+the merged Part 3+4 \cite{friedman2026cogsec3}.
 
 \subsection{Paper Organization}\label{sec:organization}
 
@@ -862,13 +863,13 @@ identifies directions for future research.
 
 \textbf{Part 2: Experimental Validation} A separate, second, companion
 paper reports empirical results from architecture-aware parametric
-simulation across 950 attack vectors and six production architectures.
+simulation across 950 attack vectors and four production architectures.
 Readers seeking detection rates, ablation studies, Bayesian uncertainty
 quantification, and architecture-specific defense configurations should
 consult Part 2 (DOI: 10.5281/zenodo.18364128).
 
-\textbf{Part 3: Practitioner Guidance \& Applications} The merged third
-companion paper
+\textbf{Part 3+4: Practitioner Guidance \& Applications} The merged
+third companion paper
 (\emph{Cognitive Integrity in Practice and Critical Domains}) provides a
 qualitative review and practitioner's synthesis---accessible-language
 summaries of the theoretical and empirical findings, operational
@@ -2407,8 +2408,8 @@ Furthermore, the connection to KL divergence---$D_{\mathrm{KL}}(p \,\|\, p')
 about \tfrac{1}{2}(Delta p)^\top G(p)(Delta p)$ for small
 perturbations---gives geometric justification for the drift detection
 threshold $theta_{\text{drift}} = 0.3$: this corresponds to a
-Fisher-Rao step of approximately $0.28$ radians, or roughly $9\%$ of
-the maximum possible attack distance (Part~2, Supplement~S10).
+Fisher-Rao step of approximately $0.775$ radians, or roughly $25\%$ of
+the maximum possible attack distance ($r_theta = \sqrt{2\,theta_{\text{drift}}} = \sqrt{0.6}$).
 \end{remark}
 
 \begin{table}[htbp]
@@ -2497,6 +2498,15 @@ rates and performance overhead, see Part 2 of this series.
 \subsection{CIF-AD Integration: Action-Delegation
 Coupling}\label{sec:cif-ad-coupling}
 
+\begin{figure}
+\centering
+\includegraphics[width=0.85\linewidth,height=0.5\textheight,keepaspectratio,alt={CIF-AD action--delegation coupling matrix showing how Functional Requirements map to Design Parameters and delegation actions, making explicit where a Goal-Hijacking transient can introduce off-diagonal coupling.}]{../figures/cif_ad_coupling.pdf}
+\caption{CIF-AD action--delegation coupling matrix showing how
+Functional Requirements map to Design Parameters and delegation actions,
+making explicit where a Goal-Hijacking transient can introduce
+off-diagonal coupling.}\label{fig:cif-ad-coupling}
+\end{figure}
+
 \emph{The Cognitive Integrity Framework provides static structural
 guarantees (trust bounds, belief consistency). But multiagent operators
 are dynamic: agents act, delegate, and observe outcomes. This section
@@ -2580,6 +2590,14 @@ By inspection of Table~\ref{tab:cif-ad-matrix}: minimum column maxima are Plan (
 
 \subsection{CIF-OODA Integration: Temporal Security Across Decision
 Cycles}\label{sec:cif-ooda}
+
+\begin{figure}
+\centering
+\includegraphics[width=0.85\linewidth,height=0.5\textheight,keepaspectratio,alt={CIF-OODA phase diagram mapping the defense mechanisms onto the Observe--Orient--Decide--Act cycle, indicating at which phase each defense intervenes and its latency budget.}]{../figures/ooda_phase_diagram.pdf}
+\caption{CIF-OODA phase diagram mapping the defense mechanisms onto the
+Observe--Orient--Decide--Act cycle, indicating at which phase each
+defense intervenes and its latency budget.}\label{fig:ooda-phase}
+\end{figure}
 
 \emph{The OODA loop (Observe-Orient-Decide-Act) models how agents
 process information and take action over time. Cognitive attacks often
@@ -3099,6 +3117,15 @@ where $q = \lceil \frac{n + f + 1}{2} \rceil$.
 
 \subsection{Defense Composition}\label{sec:defense-composition}
 
+\begin{figure}
+\centering
+\includegraphics[width=0.8\linewidth,height=0.5\textheight,keepaspectratio,alt={Schematic ablation study (illustrative, not measured): representative marginal contribution of each CIF defense module to the composed defense. Measured ablation results are reported in Part 2.}]{../figures/ablation_study.pdf}
+\caption{Schematic ablation study (illustrative, not measured):
+representative marginal contribution of each CIF defense module to the
+composed defense. Measured ablation results are reported in Part
+2.}\label{fig:ablation-study}
+\end{figure}
+
 \subsubsection{Composition Algebra}\label{composition-algebra}
 
 \begin{definition}[Defense Composition]
@@ -3513,6 +3540,11 @@ The set of CIF defenses $\mathcal{D}$ under series ($\circ$) and parallel ($\par
 Closure: both composition operators produce functions $\mathcal{M} -> \{\textsc{accept}, \textsc{quarantine}, \textsc{reject}\}$, so the output type is preserved. Associativity follows from Boolean operator associativity. The null defense $\mathcal{D}_\emptyset(m) = \textsc{accept}$ for all $m$ is the identity. Distributivity follows from logic: $A \land (B \lor C) \equiv (A \land B) \lor (A \land C)$ instantiated on the accept/reject conditions.
 \end{proof}
 
+\begin{remark}[Scope of the composition-algebra claim]
+\label{rem:composition-algebra-scope}
+$\circ$ and $\parallel$ are defined here on a common accept/compare focal predicate so that closure, associativity, identity, and both distributive laws hold; under that reading the algebra is a bounded distributive lattice, not in general a \emph{field}-like structure. A full \emph{closed semiring} additionally requires a commutative additive identity that annihilates the multiplicative identity and a Kleene-star (infinite-sum) operation, neither of which is constructed or proven here. The claim should therefore be read as ``the defense-composition operators form a bounded distributive lattice under the stated independence assumption (\cref{rem:defense-independence-scope}),'' not as a complete closed semiring.
+\end{remark}
+
 \begin{theorem}[Defense Composition Detection Rate Bound]
 \label{thm:composition-bound}
 For any composition of defenses $\mathcal{D}_1, \ldots, \mathcal{D}_k$ with individual rates $r_1, \ldots, r_k$:
@@ -3557,7 +3589,7 @@ and real-time monitoring architecture (\cref{sec:monitoring}).
 \textbf{Note}: For algorithm implementations and empirical performance
 results, see Part 2 of this series \cite{friedman2026cogsec2}.
 Empirically, the multi-stage pipeline achieves a parametric design
-ceiling of 94--100\% detection rate on a 950-attack corpus across six
+ceiling of 96--100\% detection rate on a 950-attack corpus across four
 architectures; the prototype pipeline achieves a mean of 44.7\% {[}CI:
 43.4\%, 46.2\%{]} across 30 seeds, with per-\(\Omega\)-class detection
 rates ranging from 97\% (\(\Omega_1\), passive) to 49\% (\(\Omega_5\),
@@ -3621,6 +3653,15 @@ where $sigma$ is the sigmoid function and weights $(w_d, b)$ are learned from la
 \end{definition}
 
 \subsection{ROC Curve Analysis}\label{sec:roc-analysis}
+
+\begin{figure}
+\centering
+\includegraphics[width=0.85\linewidth,height=0.5\textheight,keepaspectratio,alt={Receiver Operating Characteristic (ROC) curves for CIF detection across attack categories (illustrative/schematic operating points under the Neyman-Pearson framework; the curves themselves are labeled Theoretical, not empirical measurements).}]{../figures/roc_curves.pdf}
+\caption{Receiver Operating Characteristic (ROC) curves for CIF
+detection across attack categories (illustrative/schematic operating
+points under the Neyman-Pearson framework; the curves themselves are
+labeled Theoretical, not empirical measurements).}\label{fig:roc-curves}
+\end{figure}
 
 \subsubsection{Receiver Operating Characteristic
 Framework}\label{receiver-operating-characteristic-framework}
@@ -3789,6 +3830,14 @@ Combines online and batch detection via feedback loop:
 \end{definition}
 
 \subsection{False Positive Mitigation}\label{sec:fp-mitigation}
+
+\begin{figure}
+\centering
+\includegraphics[width=0.8\linewidth,height=0.5\textheight,keepaspectratio,alt={False-positive mitigation (illustrative schematic): how the detection threshold and confidence calibration shape the false-positive / true-positive tradeoff.}]{../figures/fp_mitigation.pdf}
+\caption{False-positive mitigation (illustrative schematic): how the
+detection threshold and confidence calibration shape the false-positive
+/ true-positive tradeoff.}\label{fig:fp-mitigation}
+\end{figure}
 
 \subsubsection{Strategy 1: Confirmation
 Cascade}\label{strategy-1-confirmation-cascade}
@@ -4116,7 +4165,7 @@ for any detector with finite observation budget $n$.
 
 \begin{theorem}[Undetectability Condition]
 \label{thm:undetectability}
-Attack $\mathcal{A}$ with $D_{\mathrm{KL}}(P_{\text{attack}} \| P_{\text{benign}}) < \frac{4epsilon^2}{1}$ is $epsilon$-undetectable for any detector observing fewer than $n^* = O(1/D_{\mathrm{KL}})$ samples.
+Attack $\mathcal{A}$ with $D_{\mathrm{KL}}(P_{\text{attack}} \| P_{\text{benign}}) < 4epsilon^2$ is $epsilon$-undetectable for any detector observing fewer than $n^* = O(1/D_{\mathrm{KL}})$ samples.
 \end{theorem}
 
 \begin{remark}[Implication for Defense Strategy]
@@ -4126,6 +4175,15 @@ Theorem~\ref{thm:undetectability} establishes that sufficiently subtle attacks a
 
 \subsection{Multi-Stage Detection
 Pipeline}\label{sec:multi-stage-pipeline}
+
+\begin{figure}
+\centering
+\includegraphics[width=0.85\linewidth,height=0.5\textheight,keepaspectratio,alt={Schematic detection-performance curves (illustrative, theory-guided, not measured): detection rate by attack category across representative defense stages. Measured pipeline results are reported in Part 2.}]{../figures/detection_performance.pdf}
+\caption{Schematic detection-performance curves (illustrative,
+theory-guided, not measured): detection rate by attack category across
+representative defense stages. Measured pipeline results are reported in
+Part 2.}\label{fig:detection-performance}
+\end{figure}
 
 \emph{Real systems cannot run all detectors on all messages
 simultaneously. This section formalizes a staged pipeline that applies
@@ -4714,16 +4772,16 @@ series, along with full implementation configurations.
 
 \begin{table}[htbp]
 \centering
-\caption{Model checking verification results.}
+\caption{Model checking verification results. ``Verified'' here denotes a theoretical state-space bound established in this part; executable NuSMV/SPIN/TLA+ runs are deferred to Part 2 \S 04 (S04). No model checker was executed in this part.}
 \label{tab:mc-results}
-\begin{tabular}{@{}llll@{}}
+\begin{tabular}{@{}lll@{}}
 \toprule
-Property & Verified & States Explored & Reference \\
+Property & Status & Reference \\
 \midrule
-Belief integrity & $\checkmark$ & $10^6$ & \cref{thm:belief-injection} \\
-Trust bounded & $\checkmark$ & $10^4$ & \cref{thm:trust-bound} \\
-No deadlock & $\checkmark$ & $10^7$ & \cref{thm:firewall-liveness} \\
-Eventual detection & $\checkmark$ & $10^5$ & \cref{thm:progressive-detection} \\
+Belief integrity & theoretical bound; executable run in Part 2 §S04 & \cref{thm:belief-injection} \\
+Trust bounded & theoretical bound; executable run in Part 2 §S04 & \cref{thm:trust-bound} \\
+No deadlock & theoretical bound; executable run in Part 2 §S04 & \cref{thm:firewall-liveness} \\
+Eventual detection & theoretical bound; executable run in Part 2 §S04 & \cref{thm:progressive-detection} \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -5524,8 +5582,8 @@ For empirical validation of these theories, we refer the reader to
 \textbf{Part 2: Computational Validation} (DOI:
 10.5281/zenodo.18364128). For actionable deployment strategies,
 domain-specific goal-hijacking analyses, and real-world incident
-mapping, we refer the reader to \textbf{Part 3: Practitioner Guidance \&
-Applications} (DOI: 10.5281/zenodo.18364130).
+mapping, we refer the reader to \textbf{Part 3+4: Practitioner Guidance
+\& Applications} (DOI: 10.5281/zenodo.18364130).
 
 \textbf{As autonomous AI agents increasingly operate in high-stakes contexts---executing code, modifying infrastructure, controlling resources, and making decisions with lasting consequences---the formal foundations established here become not merely useful but essential infrastructure for secure deployment.}
 
@@ -5984,6 +6042,11 @@ By construction of the CIF architecture:
 
 Therefore, $P(\text{firewall detects} | \text{sandbox outcome}) = P(\text{firewall detects})$. The mechanisms are probabilistically independent.
 \end{proof}
+
+\begin{remark}[Independence is an assumption, not a guarantee]
+\label{rem:defense-independence-scope}
+Disjoint feature sets do not by themselves guarantee probabilistic independence of detection events: an adversary can craft content that defeats both pattern matching and provenance/consistency checks, correlating the failure modes. The multiplicative detection bounds derived below (e.g.\ $(1-r_f)(1-r_s)$) therefore hold under the architectural \emph{assumption} that firewall and sandbox failure events are approximately independent (decoupled adversarial capability). If the failure modes are positively correlated, the correct bound is the union bound $P(\text{success}) \le \min(1-r_f,\,1-r_s)$, or $P(\text{success}) \le (1-r_f)(1-r_s) + \rho$ with an explicit correlation term $\rho \ge 0$. Throughout this part we adopt the independence assumption for the closed-form analyses and apply the union-bound relaxation where correlation may be material.
+\end{remark}
 
 \begin{definition}[Attack Success]
 \label{def:attack-success}
@@ -6616,7 +6679,7 @@ system implementation and analysis.
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
-\subsection{v2.0 New Proofs: Defense Composition Algebra and
+\subsection{v1.1 New Proofs: Defense Composition Algebra and
 Information-Geometric Bounds}\label{sec:v2-proofs}
 
 This section contains new proofs added in the Second Edition,
@@ -6748,7 +6811,7 @@ Therefore:
 \mathcal{I}_{\mathrm{FR}} \cdot \mathcal{S}_{\mathrm{FR}} = r \cdot \frac{1}{r} = 1 \leq \frac{\pi}{2}
 \end{equation}
 
-Wait---the bound $pi/2$ arises from the maximum attack at the hemisphere boundary. For attacks with $r < pi$, the product $\mathcal{I} \cdot \mathcal{S}$ is bounded when $\mathcal{S}$ is defined relative to the detectable threshold $theta_{\text{drift}}$:
+The bound $pi/2$ in \Cref{eq:fr-product-2} arises from the maximum attack at the hemisphere boundary. For attacks with $r < pi$, the product $\mathcal{I} \cdot \mathcal{S}$ is bounded when $\mathcal{S}$ is defined relative to the detectable threshold $theta_{\text{drift}}$:
 
 \begin{equation}
 \label{eq:fr-product-2}
@@ -6783,11 +6846,11 @@ When agent $a_v$ is compromised, the maximum trust influenced in the system is b
 \end{theorem}
 
 \begin{proof}[Proof of \cref{thm:blast-radius-restated}]
-For each neighbor $a_j$ of $a_v$, \\cref{thm:trust-bounded} bounds the aggregate influence propagated through $a_v$ by $\delta \\cdot \\mathcal{T}_{a_j \-> a_v}$. Summing over at most $n$ neighbors gives:
-\\begin{equation}
-\\label{eq:blast-step-2}
-\\text{BlastRadius}(a_v) \\leq \\sum_{a_j \\in \\mathcal{N}(a_v)} \\delta \\cdot \\mathcal{T}_{a_j \\to a_v} \\leq n \\cdot \\delta \\cdot \\max_{a_j} \\mathcal{T}_{a_j \\to a_v}.
-\\end{equation}
+For each neighbor $a_j$ of $a_v$, \cref{thm:trust-bounded} bounds the aggregate influence propagated through $a_v$ by $delta \cdot \mathcal{T}_{a_j -> a_v}$. Summing over at most $n$ neighbors gives:
+\begin{equation}
+\label{eq:blast-step-2}
+\text{BlastRadius}(a_v) \leq \sum_{a_j \in \mathcal{N}(a_v)} \delta \cdot \mathcal{T}_{a_j \to a_v} \leq n \cdot \delta \cdot \max_{a_j} \mathcal{T}_{a_j \to a_v}.
+\end{equation}
 This is a per-neighbor aggregate bound; it does not multiply the neighbor and reachable-agent counts.
 \end{proof}
 
@@ -6808,7 +6871,7 @@ Techniques}\label{sec:proof-summary-v2}
 
 \begin{table}[htbp]
 \centering
-\caption{Summary of proof techniques by theorem (v2.0 additions marked with $\dagger$).}
+\caption{Summary of proof techniques by theorem (v1.1 additions marked with $\dagger$).}
 \label{tab:proof-summary-v2}
 \begin{tabular}{@{}llll@{}}
 \toprule
@@ -8514,7 +8577,8 @@ Systems}\label{eusocial-intelligence-and-swarm-systems}
 
 
 
-\clearpage
+\providecommand{\bibsection}{}
+\renewcommand{\bibsection}{}
 
 \bibliography{references}
 \end{document}

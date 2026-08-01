@@ -53,6 +53,7 @@
 \beamer@slide {eq:quorum}{11}
 \beamer@slide {spotcheck-pattern}{11}
 \beamer@slide {sec:defense-composition}{13}
+\beamer@slide {fig:ablation-study}{13}
 \beamer@slide {composition-algebra}{13}
 \beamer@slide {def:defense-composition}{13}
 \beamer@slide {eq:series-comp}{13}
@@ -115,6 +116,7 @@
 \beamer@slide {tab:byz-performance}{18}
 \beamer@slide {defense-composition-algebra-complete-specification}{18}
 \beamer@slide {thm:composition-closure}{18}
+\beamer@slide {rem:composition-algebra-scope}{18}
 \beamer@slide {thm:composition-bound}{18}
 \beamer@slide {eq:composition-bound}{18}
 \beamer@slide {cor:layered-defense}{18}

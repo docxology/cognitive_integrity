@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.3.22)  13 JUL 2026 13:52
+This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.3.22)  1 AUG 2026 14:58
 entering extended mode
  %&-line parsing enabled.
 **/Users/4d/Documents/GitHub/projects/working/cognitive_integrity/cogsec_multia
@@ -1832,10 +1832,13 @@ and I'll forget about whatever was undefined.
 
 
 ]
+File: ../figures/ablation_study.pdf Graphic file (type pdf)
+<use ../figures/ablation_study.pdf>
+
 ! Undefined control sequence.
 <inserted text> ...{tabular}{@{}llll@{}} \toprule 
                                                   Layer & Defense & Latency ...
-l.680 \end{frame}
+l.689 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1846,7 +1849,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 <recently read> \midrule 
                          
-l.680 \end{frame}
+l.689 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1857,7 +1860,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 <recently read> \bottomrule 
                             
-l.680 \end{frame}
+l.689 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1872,7 +1875,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.680 \end{frame}
+l.689 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -1881,7 +1884,7 @@ or  <return>  to continue without it.
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.680 \end{frame}
+l.689 \end{frame}
                  
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
@@ -1889,7 +1892,7 @@ you left one out. Proceed, with fingers crossed.
 ! Missing } inserted.
 <inserted text> 
                 }
-l.680 \end{frame}
+l.689 \end{frame}
                  
 I've inserted something that you may have forgotten.
 (See the <inserted text> above.)
@@ -1900,7 +1903,7 @@ my insertion and my current dilemma will both disappear.
 ! Display math should end with $$.
 <to be read again> 
                    \tex_par:D 
-l.680 \end{frame}
+l.689 \end{frame}
                  
 The `$' that I just saw supposedly matches a previous `$$'.
 So I shall assume that you typed `$$' both times.
@@ -1908,7 +1911,7 @@ So I shall assume that you typed `$$' both times.
 ! Extra }, or forgotten \endgroup.
 <inserted text> ...k-detection} P_{\\text{detect}}
                                                    = 1 - (1-0.80)(1-0.70)(1-...
-l.680 \end{frame}
+l.689 \end{frame}
                  
 I've deleted a group-closing symbol because it seems to be
 spurious, as in `$x}$'. But perhaps the } is legitimate and
@@ -1923,7 +1926,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.680 \end{frame}
+l.689 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -1932,7 +1935,7 @@ or  <return>  to continue without it.
 ! You can't use `\eqno' in horizontal mode.
 \veqno ->\@kernel@eqno 
                        \aftergroup \ignorespaces 
-l.680 \end{frame}
+l.689 \end{frame}
                  
 Sorry, but I'm not programmed to handle this case;
 I'll just pretend that you didn't ask for it.
@@ -1942,7 +1945,7 @@ return to the right one by typing `I}' or `I$' or `I\par'.
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.680 \end{frame}
+l.689 \end{frame}
                  
 I've inserted something that you may have forgotten.
 (See the <inserted text> above.)
@@ -1953,23 +1956,19 @@ my insertion and my current dilemma will both disappear.
 ! Display math should end with $$.
 <to be read again> 
                    \endgroup 
-l.680 \end{frame}
+l.689 \end{frame}
                  
 The `$' that I just saw supposedly matches a previous `$$'.
 So I shall assume that you typed `$$' both times.
 
-
-Underfull \vbox (badness 1112) detected at line 680
- []
-
 [13
 
 ]
-Underfull \vbox (badness 1112) detected at line 680
+Underfull \vbox (badness 1112) detected at line 689
  []
 
 
-Overfull \vbox (597.98006pt too high) detected at line 680
+Overfull \vbox (597.98006pt too high) detected at line 689
  []
 
 [14
@@ -1979,7 +1978,7 @@ Overfull \vbox (597.98006pt too high) detected at line 680
 ! Undefined control sequence.
 <inserted text> ...ular}{@{}llp{4cm}@{}} \toprule 
                                                   Component & Formula & Unit...
-l.784 \end{frame}
+l.793 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1990,7 +1989,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 <recently read> \midrule 
                          
-l.784 \end{frame}
+l.793 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2001,7 +2000,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 <recently read> \bottomrule 
                             
-l.784 \end{frame}
+l.793 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2012,7 +2011,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 <inserted text> ...abular}{@{}llllll@{}} \toprule 
                                                   Defense & Compute & Latenc...
-l.784 \end{frame}
+l.793 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2023,7 +2022,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 <recently read> \midrule 
                          
-l.784 \end{frame}
+l.793 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2034,7 +2033,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 <recently read> \bottomrule 
                             
-l.784 \end{frame}
+l.793 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2045,7 +2044,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 <inserted text> ...{tabular}{@{}llll@{}} \toprule 
                                                   Risk Profile & Recommended...
-l.784 \end{frame}
+l.793 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2056,7 +2055,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 <recently read> \midrule 
                          
-l.784 \end{frame}
+l.793 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2067,7 +2066,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 <recently read> \bottomrule 
                             
-l.784 \end{frame}
+l.793 \end{frame}
                  
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2083,11 +2082,11 @@ File: ../figures/defense_composition.pdf Graphic file (type pdf)
 
 
 ]
-Underfull \vbox (badness 1112) detected at line 784
+Underfull \vbox (badness 1112) detected at line 793
  []
 
 
-Overfull \vbox (387.09247pt too high) detected at line 784
+Overfull \vbox (387.09247pt too high) detected at line 793
  []
 
 [17
@@ -2096,66 +2095,54 @@ Overfull \vbox (387.09247pt too high) detected at line 784
 ]
 
 LaTeX Warning: Reference `sec:defense-composition' on page 18 undefined on inpu
-t line 1026.
+t line 1040.
 
 
 LaTeX Font Warning: Font shape `TU/lmss/m/scit' undefined
-(Font)              using `TU/lmss/m/sc' instead on input line 1026.
+(Font)              using `TU/lmss/m/sc' instead on input line 1040.
 
 
 LaTeX Font Warning: Font shape `TU/lmss/m/scit' undefined
-(Font)              using `TU/lmss/m/sc' instead on input line 1026.
+(Font)              using `TU/lmss/m/sc' instead on input line 1040.
 
 
 LaTeX Font Warning: Font shape `TU/lmss/m/scit' undefined
-(Font)              using `TU/lmss/m/sc' instead on input line 1026.
+(Font)              using `TU/lmss/m/sc' instead on input line 1040.
 
 
-Overfull \hbox (22.4094pt too wide) detected at line 1026
+Overfull \hbox (22.4094pt too wide) detected at line 1040
 [][][] [] [] [] [][][][][][][][] [] [] [] [][][][] [] [][][] [][] [][]
  []
 
 
-LaTeX Warning: Reference `def:roc-curve' on page 18 undefined on input line 102
-6.
-
-
-LaTeX Warning: Reference `eq:rule-act' on page 18 undefined on input line 1026.
-
-
-
-Overfull \hbox (18.65926pt too wide) detected at line 1026
+Overfull \hbox (18.65926pt too wide) detected at line 1040
 [][] [] [][] [] [][][][][][][] [] [] [] [][][][] [] [][][][] [] [][][][][][] []
  []
  []
 
-
-LaTeX Warning: Reference `eq:rule-promote' on page 18 undefined on input line 1
-026.
-
 LaTeX Font Info:    Font shape `TU/lmss/bx/it' in size <10.95> not available
-(Font)              Font shape `TU/lmss/bx/sl' tried instead on input line 1026
+(Font)              Font shape `TU/lmss/bx/sl' tried instead on input line 1040
 .
 
 LaTeX Warning: Reference `def:cog-byzantine' on page 18 undefined on input line
- 1026.
+ 1040.
 
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 10.30151pt on input line 1026.
+(Font)              scaled to size 10.30151pt on input line 1040.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 7.21106pt on input line 1026.
+(Font)              scaled to size 7.21106pt on input line 1040.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 10.30258pt on input line 1026.
+(Font)              scaled to size 10.30258pt on input line 1040.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 7.2118pt on input line 1026.
+(Font)              scaled to size 7.2118pt on input line 1040.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 10.3006pt on input line 1026.
+(Font)              scaled to size 10.3006pt on input line 1040.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 7.21042pt on input line 1026.
+(Font)              scaled to size 7.21042pt on input line 1040.
 ! Undefined control sequence.
 <inserted text> ...tabular}{@{}lllll@{}} \toprule 
                                                   $n$ agents & Max faulty $f...
-l.1026 \end{frame}
+l.1040 \end{frame}
                   
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2166,7 +2153,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 <recently read> \midrule 
                          
-l.1026 \end{frame}
+l.1040 \end{frame}
                   
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2177,7 +2164,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 <recently read> \bottomrule 
                             
-l.1026 \end{frame}
+l.1040 \end{frame}
                   
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2185,14 +2172,41 @@ misspelled it (e.g., `\hobx'), type `I' and the correct
 spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
+
+! LaTeX Error: Environment remark undefined.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1040 \end{frame}
+                  
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: \begin{beamercolorbox} on input line 1040 ended by \end{remark}.
+
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1040 \end{frame}
+                  
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
 [18
 
 ]
-Underfull \vbox (badness 1112) detected at line 1026
+Underfull \vbox (badness 1112) detected at line 1040
  []
 
 
-Overfull \vbox (2445.91574pt too high) detected at line 1026
+Overfull \vbox (2609.11581pt too high) detected at line 1040
  []
 
 [19
@@ -2224,10 +2238,10 @@ LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 
  ) 
 Here is how much of TeX's memory you used:
- 29864 strings out of 468168
- 607576 string characters out of 5432815
- 1250142 words of memory out of 5000000
- 58011 multiletter control sequences out of 15000+600000
+ 29872 strings out of 468168
+ 607896 string characters out of 5432815
+ 1254658 words of memory out of 5000000
+ 58018 multiletter control sequences out of 15000+600000
  635263 words of font info for 113 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  128i,17n,123p,1130b,875s stack positions out of 10000i,1000n,20000p,200000b,200000s

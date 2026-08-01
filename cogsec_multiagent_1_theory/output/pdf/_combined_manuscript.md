@@ -30,7 +30,7 @@ Nor shall my Sword sleep in my hand:''
 
 Multiagent AI systems introduce cognitive attack surfaces absent in single-model inference. When agents delegate to agents, forming beliefs about beliefs through recursive trust hierarchies, manipulation of reasoning processes---rather than mere data corruption---becomes a primary security concern. This paper presents the Cognitive Integrity Framework (CIF), providing formal foundations for cognitive security in multiagent operators. We develop four interconnected theoretical contributions: a Trust Calculus with bounded delegation (exponential $\delta^d$ decay) that prevents trust amplification through delegation chains; a Defense Composition Algebra with series and parallel composition theorems establishing multiplicative detection bounds; Information-Theoretic Limits relating stealth constraints to maximum attack impact through a fundamental stealth-impact tradeoff; and a formal Adversary Hierarchy ($\Omega_1$--$\Omega_5$) characterizing external, peripheral, agent-level, coordination, and systemic threats with increasing capability and decreasing detectability. The framework provides complete coverage of the OWASP Top 10 for Agentic Applications through formal threat models grounded in cognitive state manipulation rather than traditional input/output filtering.
 
-CIF bridges classical security concepts with the cognitive requirements of agentic systems. We extend Byzantine fault tolerance to cognitive manipulation---agents that appear functional but hold corrupted beliefs---and adapt trust management systems to continuous trust evolution with provable decay bounds. The framework formalizes five architectural defense mechanisms (cognitive firewalls, belief sandboxing, behavioral tripwires, provenance tracking, Byzantine consensus) with composition rules enabling formal reasoning about layered security. Technical foundations include: operational semantics for message passing and trust updates; invariants for belief integrity, goal preservation, and trust boundedness; model checking configurations for safety property verification; and a complete notation system for attack parameterization, defense specification, and cognitive state representation. This is Part 1 of a three-part series: Part 1 (this paper, DOI: 10.5281/zenodo.18364119) presents formal foundations and theoretical analysis; Part 2 (DOI: 10.5281/zenodo.18364128) provides computational validation through architecture-aware parametric simulation across 950 attacks and six production architectures; Part 3 (DOI: 10.5281/zenodo.18364130) offers a combined qualitative review, practitioner's deployment guidance, and CIF-AD-OODA integration across ten critical operational domains. The framework will continue to be developed and versioned at <https://github.com/docxology/cognitive_integrity/>.
+CIF bridges classical security concepts with the cognitive requirements of agentic systems. We extend Byzantine fault tolerance to cognitive manipulation---agents that appear functional but hold corrupted beliefs---and adapt trust management systems to continuous trust evolution with provable decay bounds. The framework formalizes five architectural defense mechanisms (cognitive firewalls, belief sandboxing, behavioral tripwires, provenance tracking, Byzantine consensus) with composition rules enabling formal reasoning about layered security. Technical foundations include: operational semantics for message passing and trust updates; invariants for belief integrity, goal preservation, and trust boundedness; model checking configurations for safety property verification; and a complete notation system for attack parameterization, defense specification, and cognitive state representation. This is Part 1 of a three-part series: Part 1 (this paper, DOI: 10.5281/zenodo.18364119) presents formal foundations and theoretical analysis; Part 2 (DOI: 10.5281/zenodo.18364128) provides computational validation through architecture-aware parametric simulation across 950 attacks and four production architectures; Part 3 (DOI: 10.5281/zenodo.18364130) offers a combined qualitative review, practitioner's deployment guidance, and CIF-AD-OODA integration across ten critical operational domains. The framework will continue to be developed and versioned at <https://github.com/docxology/cognitive_integrity/>.
 
 
 
@@ -316,7 +316,7 @@ This paper provides both theoretical foundations and practical mechanisms for co
 \item \textbf{The Cognitive Integrity Framework (CIF)}: An integrated approach combining architectural defenses, runtime monitoring, and Byzantine-tolerant coordination for multiagent systems (\cref{sec:system-model})
 \end{enumerate}
 
-\textbf{Empirical Validation}: Part 2 of this series demonstrates the practical viability of these formal mechanisms across six production architectures, showing that layered cognitive defenses significantly outperform single-mechanism approaches. Practitioner translations, domain-specific applications, and real-world incident analyses appear in the merged Part 3 \cite{friedman2026cogsec3}.
+\textbf{Empirical Validation}: Part 2 of this series demonstrates the practical viability of these formal mechanisms across four production architectures, showing that layered cognitive defenses significantly outperform single-mechanism approaches. Practitioner translations, domain-specific applications, and real-world incident analyses appear in the merged Part 3+4 \cite{friedman2026cogsec3}.
 
 ## Paper Organization {#sec:organization}
 
@@ -336,9 +336,9 @@ The remainder of this paper is structured as follows:
 
 \textbf{\Cref{sec:summary}: Conclusion} summarizes contributions and identifies directions for future research.
 
-\textbf{Part 2: Experimental Validation} A separate, second, companion paper reports empirical results from architecture-aware parametric simulation across 950 attack vectors and six production architectures. Readers seeking detection rates, ablation studies, Bayesian uncertainty quantification, and architecture-specific defense configurations should consult Part 2 (DOI: 10.5281/zenodo.18364128).
+\textbf{Part 2: Experimental Validation} A separate, second, companion paper reports empirical results from architecture-aware parametric simulation across 950 attack vectors and four production architectures. Readers seeking detection rates, ablation studies, Bayesian uncertainty quantification, and architecture-specific defense configurations should consult Part 2 (DOI: 10.5281/zenodo.18364128).
 
-\textbf{Part 3: Practitioner Guidance \& Applications} The merged third companion paper (\emph{Cognitive Integrity in Practice and Critical Domains}) provides a qualitative review and practitioner's synthesis---accessible-language summaries of the theoretical and empirical findings, operational checklists, risk assessment frameworks, deployment guides, monitoring strategies, cost-benefit analyses---combined with CIF applications across ten high-stakes operational sectors through the integrated CIF-AD-OODA analytical model. Readers interested in domain-specific goal-hijacking defenses, universal attack patterns (FR polarity inversion, constraint relaxation, context boundary violation), or retrospective analysis of documented 2024--2025 AI agent security incidents should consult Part 3 (DOI: 10.5281/zenodo.18364130).
+\textbf{Part 3+4: Practitioner Guidance \& Applications} The merged third companion paper (\emph{Cognitive Integrity in Practice and Critical Domains}) provides a qualitative review and practitioner's synthesis---accessible-language summaries of the theoretical and empirical findings, operational checklists, risk assessment frameworks, deployment guides, monitoring strategies, cost-benefit analyses---combined with CIF applications across ten high-stakes operational sectors through the integrated CIF-AD-OODA analytical model. Readers interested in domain-specific goal-hijacking defenses, universal attack patterns (FR polarity inversion, constraint relaxation, context boundary violation), or retrospective analysis of documented 2024--2025 AI agent security incidents should consult Part 3 (DOI: 10.5281/zenodo.18364130).
 
 ## Reading Companion: Where to Find Specific Topics {#sec:reading-companion}
 
@@ -1636,8 +1636,8 @@ Furthermore, the connection to KL divergence---$D_{\mathrm{KL}}(p \,\|\, p')
 \approx \tfrac{1}{2}(\Delta p)^\top G(p)(\Delta p)$ for small
 perturbations---gives geometric justification for the drift detection
 threshold $\theta_{\text{drift}} = 0.3$: this corresponds to a
-Fisher-Rao step of approximately $0.28$ radians, or roughly $9\%$ of
-the maximum possible attack distance (Part~2, Supplement~S10).
+Fisher-Rao step of approximately $0.775$ radians, or roughly $25\%$ of
+the maximum possible attack distance ($r_\theta = \sqrt{2\,\theta_{\text{drift}}} = \sqrt{0.6}$).
 \end{remark}
 
 \begin{table}[htbp]
@@ -1707,6 +1707,8 @@ Lagrangian optimization maximizing expected detection subject to budget constrai
 \Cref{fig:cif-comprehensive} provides a detailed view of the complete CIF architecture, including all component formulas and their interactions. The defense layer implements the cognitive firewall with threshold $\tau_f = 0.5$, the belief sandbox with promotion function $\gamma$, and behavioral invariants constraining intentions $\mathcal{I} \subseteq \text{permitted}$. The detection layer specifies anomaly scoring $\sigma(\Delta b) > \tau_d$, tripwire verification $c_i \in \mathcal{B}?$, and provenance tracking $P: \mathcal{B} \to \text{sources}$. The coordination layer encodes the trust calculus $\mathcal{T}: \mathcal{A} \times \mathcal{A} \to [0,1]$ with $\delta$-bounded decay, k-of-n quorum protocols, and Byzantine fault tolerance ($n \geq 3f + 1$). For empirical validation of detection rates and performance overhead, see Part 2 of this series.
 
 ## CIF-AD Integration: Action-Delegation Coupling {#sec:cif-ad-coupling}
+
+![CIF-AD action–delegation coupling matrix showing how Functional Requirements map to Design Parameters and delegation actions, making explicit where a Goal-Hijacking transient can introduce off-diagonal coupling.](figures/cif_ad_coupling.pdf){#fig:cif-ad-coupling width=85%}
 
 *The Cognitive Integrity Framework provides static structural guarantees (trust bounds, belief consistency). But multiagent operators are dynamic: agents act, delegate, and observe outcomes. This section formalizes how CIF integrates with the Action-Delegation (AD) cycle to provide continuous runtime security guarantees.*
 
@@ -1784,6 +1786,8 @@ By inspection of Table~\ref{tab:cif-ad-matrix}: minimum column maxima are Plan (
 \end{proof}
 
 ## CIF-OODA Integration: Temporal Security Across Decision Cycles {#sec:cif-ooda}
+
+![CIF-OODA phase diagram mapping the defense mechanisms onto the Observe–Orient–Decide–Act cycle, indicating at which phase each defense intervenes and its latency budget.](figures/ooda_phase_diagram.pdf){#fig:ooda-phase width=85%}
 
 *The OODA loop (Observe-Orient-Decide-Act) models how agents process information and take action over time. Cognitive attacks often target specific OODA phases to corrupt decision-making while minimizing detectable footprint. This section formalizes the OODA-phase attack model and CIF's phase-specific defenses.*
 
@@ -2253,6 +2257,8 @@ where $q = \lceil \frac{n + f + 1}{2} \rceil$.
 
 ## Defense Composition {#sec:defense-composition}
 
+![Schematic ablation study (illustrative, not measured): representative marginal contribution of each CIF defense module to the composed defense. Measured ablation results are reported in Part 2.](figures/ablation_study.pdf){#fig:ablation-study width=80%}
+
 ### Composition Algebra
 
 \begin{definition}[Defense Composition]
@@ -2638,6 +2644,11 @@ The set of CIF defenses $\mathcal{D}$ under series ($\circ$) and parallel ($\par
 Closure: both composition operators produce functions $\mathcal{M} \to \{\textsc{accept}, \textsc{quarantine}, \textsc{reject}\}$, so the output type is preserved. Associativity follows from Boolean operator associativity. The null defense $\mathcal{D}_\emptyset(m) = \textsc{accept}$ for all $m$ is the identity. Distributivity follows from logic: $A \land (B \lor C) \equiv (A \land B) \lor (A \land C)$ instantiated on the accept/reject conditions.
 \end{proof}
 
+\begin{remark}[Scope of the composition-algebra claim]
+\label{rem:composition-algebra-scope}
+$\circ$ and $\parallel$ are defined here on a common accept/compare focal predicate so that closure, associativity, identity, and both distributive laws hold; under that reading the algebra is a bounded distributive lattice, not in general a \emph{field}-like structure. A full \emph{closed semiring} additionally requires a commutative additive identity that annihilates the multiplicative identity and a Kleene-star (infinite-sum) operation, neither of which is constructed or proven here. The claim should therefore be read as ``the defense-composition operators form a bounded distributive lattice under the stated independence assumption (\cref{rem:defense-independence-scope}),'' not as a complete closed semiring.
+\end{remark}
+
 \begin{theorem}[Defense Composition Detection Rate Bound]
 \label{thm:composition-bound}
 For any composition of defenses $\mathcal{D}_1, \ldots, \mathcal{D}_k$ with individual rates $r_1, \ldots, r_k$:
@@ -2675,7 +2686,7 @@ This bound is conservative; empirical rates exceed $0.994$ with the recommended 
 
 This section presents the formal foundations for cognitive attack detection. We define anomaly detection metrics (\cref{sec:anomaly-detection}), ROC curve framework (\cref{sec:roc-analysis}), multi-detector fusion theory (\cref{sec:detector-fusion}), online vs. batch trade-offs (\cref{sec:online-batch}), false positive mitigation strategies (\cref{sec:fp-mitigation}), provenance analysis (\cref{sec:provenance}), and real-time monitoring architecture (\cref{sec:monitoring}).
 
-> **Note**: For algorithm implementations and empirical performance results, see Part 2 of this series \cite{friedman2026cogsec2}. Empirically, the multi-stage pipeline achieves a parametric design ceiling of 94--100\% detection rate on a 950-attack corpus across six architectures; the prototype pipeline achieves a mean of 44.7\% [CI: 43.4\%, 46.2\%] across 30 seeds, with per-$\Omega$-class detection rates ranging from 97\% ($\Omega_1$, passive) to 49\% ($\Omega_5$, coordinated) after adversarial training hardening (Part 2, §5g).
+> **Note**: For algorithm implementations and empirical performance results, see Part 2 of this series \cite{friedman2026cogsec2}. Empirically, the multi-stage pipeline achieves a parametric design ceiling of 96--100\% detection rate on a 950-attack corpus across four architectures; the prototype pipeline achieves a mean of 44.7\% [CI: 43.4\%, 46.2\%] across 30 seeds, with per-$\Omega$-class detection rates ranging from 97\% ($\Omega_1$, passive) to 49\% ($\Omega_5$, coordinated) after adversarial training hardening (Part 2, §5g).
 
 ## Anomaly Detection {#sec:anomaly-detection}
 
@@ -2734,6 +2745,8 @@ where $\sigma$ is the sigmoid function and weights $(w_d, b)$ are learned from l
 \end{definition}
 
 ## ROC Curve Analysis {#sec:roc-analysis}
+
+![Receiver Operating Characteristic (ROC) curves for CIF detection across attack categories (illustrative/schematic operating points under the Neyman-Pearson framework; the curves themselves are labeled Theoretical, not empirical measurements).](figures/roc_curves.pdf){#fig:roc-curves width=85%}
 
 ### Receiver Operating Characteristic Framework
 
@@ -2899,6 +2912,8 @@ Combines online and batch detection via feedback loop:
 \end{definition}
 
 ## False Positive Mitigation {#sec:fp-mitigation}
+
+![False-positive mitigation (illustrative schematic): how the detection threshold and confidence calibration shape the false-positive / true-positive tradeoff.](figures/fp_mitigation.pdf){#fig:fp-mitigation width=80%}
 
 ### Strategy 1: Confirmation Cascade
 
@@ -3198,7 +3213,7 @@ for any detector with finite observation budget $n$.
 
 \begin{theorem}[Undetectability Condition]
 \label{thm:undetectability}
-Attack $\mathcal{A}$ with $D_{\mathrm{KL}}(P_{\text{attack}} \| P_{\text{benign}}) < \frac{4\epsilon^2}{1}$ is $\epsilon$-undetectable for any detector observing fewer than $n^* = O(1/D_{\mathrm{KL}})$ samples.
+Attack $\mathcal{A}$ with $D_{\mathrm{KL}}(P_{\text{attack}} \| P_{\text{benign}}) < 4\epsilon^2$ is $\epsilon$-undetectable for any detector observing fewer than $n^* = O(1/D_{\mathrm{KL}})$ samples.
 \end{theorem}
 
 \begin{remark}[Implication for Defense Strategy]
@@ -3207,6 +3222,8 @@ Theorem~\ref{thm:undetectability} establishes that sufficiently subtle attacks a
 \end{remark}
 
 ## Multi-Stage Detection Pipeline {#sec:multi-stage-pipeline}
+
+![Schematic detection-performance curves (illustrative, theory-guided, not measured): detection rate by attack category across representative defense stages. Measured pipeline results are reported in Part 2.](figures/detection_performance.pdf){#fig:detection-performance width=85%}
 
 *Real systems cannot run all detectors on all messages simultaneously. This section formalizes a staged pipeline that applies computationally cheap detectors first, escalating to expensive detectors only when lower stages trigger.*
 
@@ -3770,16 +3787,16 @@ The following table summarizes the expected state space exploration for each pro
 
 \begin{table}[htbp]
 \centering
-\caption{Model checking verification results.}
+\caption{Model checking verification results. ``Verified'' here denotes a theoretical state-space bound established in this part; executable NuSMV/SPIN/TLA+ runs are deferred to Part 2 \S 04 (S04). No model checker was executed in this part.}
 \label{tab:mc-results}
-\begin{tabular}{@{}llll@{}}
+\begin{tabular}{@{}lll@{}}
 \toprule
-Property & Verified & States Explored & Reference \\
+Property & Status & Reference \\
 \midrule
-Belief integrity & $\checkmark$ & $10^6$ & \cref{thm:belief-injection} \\
-Trust bounded & $\checkmark$ & $10^4$ & \cref{thm:trust-bound} \\
-No deadlock & $\checkmark$ & $10^7$ & \cref{thm:firewall-liveness} \\
-Eventual detection & $\checkmark$ & $10^5$ & \cref{thm:progressive-detection} \\
+Belief integrity & theoretical bound; executable run in Part 2 §S04 & \cref{thm:belief-injection} \\
+Trust bounded & theoretical bound; executable run in Part 2 §S04 & \cref{thm:trust-bound} \\
+No deadlock & theoretical bound; executable run in Part 2 §S04 & \cref{thm:firewall-liveness} \\
+Eventual detection & theoretical bound; executable run in Part 2 §S04 & \cref{thm:progressive-detection} \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -4268,7 +4285,7 @@ CIF provides both theoretical foundations and practical mechanisms for this chal
 
 The formal gaps identified in this work---semantic equivalence attacks, progressive drift, orchestrator compromise---define the frontier for future research, while the provable guarantees (bounded trust, composable defenses, information-theoretic limits) provide the stable theoretical foundation on which that research can build.
 
-For empirical validation of these theories, we refer the reader to **Part 2: Computational Validation** (DOI: 10.5281/zenodo.18364128). For actionable deployment strategies, domain-specific goal-hijacking analyses, and real-world incident mapping, we refer the reader to **Part 3: Practitioner Guidance \& Applications** (DOI: 10.5281/zenodo.18364130).
+For empirical validation of these theories, we refer the reader to **Part 2: Computational Validation** (DOI: 10.5281/zenodo.18364128). For actionable deployment strategies, domain-specific goal-hijacking analyses, and real-world incident mapping, we refer the reader to **Part 3+4: Practitioner Guidance \& Applications** (DOI: 10.5281/zenodo.18364130).
 
 \textbf{As autonomous AI agents increasingly operate in high-stakes contexts---executing code, modifying infrastructure, controlling resources, and making decisions with lasting consequences---the formal foundations established here become not merely useful but essential infrastructure for secure deployment.}
 
@@ -4661,6 +4678,11 @@ By construction of the CIF architecture:
 
 Therefore, $P(\text{firewall detects} | \text{sandbox outcome}) = P(\text{firewall detects})$. The mechanisms are probabilistically independent.
 \end{proof}
+
+\begin{remark}[Independence is an assumption, not a guarantee]
+\label{rem:defense-independence-scope}
+Disjoint feature sets do not by themselves guarantee probabilistic independence of detection events: an adversary can craft content that defeats both pattern matching and provenance/consistency checks, correlating the failure modes. The multiplicative detection bounds derived below (e.g.\ $(1-r_f)(1-r_s)$) therefore hold under the architectural \emph{assumption} that firewall and sandbox failure events are approximately independent (decoupled adversarial capability). If the failure modes are positively correlated, the correct bound is the union bound $P(\text{success}) \le \min(1-r_f,\,1-r_s)$, or $P(\text{success}) \le (1-r_f)(1-r_s) + \rho$ with an explicit correlation term $\rho \ge 0$. Throughout this part we adopt the independence assumption for the closed-form analyses and apply the union-bound relaxation where correlation may be material.
+\end{remark}
 
 \begin{definition}[Attack Success]
 \label{def:attack-success}
@@ -5289,7 +5311,7 @@ All proofs are constructive and provide explicit bounds useful for system implem
 
 ---
 
-## v2.0 New Proofs: Defense Composition Algebra and Information-Geometric Bounds {#sec:v2-proofs}
+## v1.1 New Proofs: Defense Composition Algebra and Information-Geometric Bounds {#sec:v2-proofs}
 
 This section contains new proofs added in the Second Edition, corresponding to the defense composition algebra guarantees (§\ref{sec:defense-formal-guarantees}) and the information-geometric tightening of the stealth-impact bound (§\ref{sec:detection-bounds}).
 
@@ -5415,7 +5437,7 @@ Therefore:
 \mathcal{I}_{\mathrm{FR}} \cdot \mathcal{S}_{\mathrm{FR}} = r \cdot \frac{1}{r} = 1 \leq \frac{\pi}{2}
 \end{equation}
 
-Wait---the bound $\pi/2$ arises from the maximum attack at the hemisphere boundary. For attacks with $r < \pi$, the product $\mathcal{I} \cdot \mathcal{S}$ is bounded when $\mathcal{S}$ is defined relative to the detectable threshold $\theta_{\text{drift}}$:
+The bound $\pi/2$ in \Cref{eq:fr-product-2} arises from the maximum attack at the hemisphere boundary. For attacks with $r < \pi$, the product $\mathcal{I} \cdot \mathcal{S}$ is bounded when $\mathcal{S}$ is defined relative to the detectable threshold $\theta_{\text{drift}}$:
 
 \begin{equation}
 \label{eq:fr-product-2}
@@ -5449,11 +5471,11 @@ When agent $a_v$ is compromised, the maximum trust influenced in the system is b
 \end{theorem}
 
 \begin{proof}[Proof of \cref{thm:blast-radius-restated}]
-For each neighbor $a_j$ of $a_v$, \\cref{thm:trust-bounded} bounds the aggregate influence propagated through $a_v$ by $\\delta \\cdot \\mathcal{T}_{a_j \\to a_v}$. Summing over at most $n$ neighbors gives:
-\\begin{equation}
-\\label{eq:blast-step-2}
-\\text{BlastRadius}(a_v) \\leq \\sum_{a_j \\in \\mathcal{N}(a_v)} \\delta \\cdot \\mathcal{T}_{a_j \\to a_v} \\leq n \\cdot \\delta \\cdot \\max_{a_j} \\mathcal{T}_{a_j \\to a_v}.
-\\end{equation}
+For each neighbor $a_j$ of $a_v$, \cref{thm:trust-bounded} bounds the aggregate influence propagated through $a_v$ by $\delta \cdot \mathcal{T}_{a_j \to a_v}$. Summing over at most $n$ neighbors gives:
+\begin{equation}
+\label{eq:blast-step-2}
+\text{BlastRadius}(a_v) \leq \sum_{a_j \in \mathcal{N}(a_v)} \delta \cdot \mathcal{T}_{a_j \to a_v} \leq n \cdot \delta \cdot \max_{a_j} \mathcal{T}_{a_j \to a_v}.
+\end{equation}
 This is a per-neighbor aggregate bound; it does not multiply the neighbor and reachable-agent counts.
 \end{proof}
 
@@ -5473,7 +5495,7 @@ Restricting the degree of agents (least-privilege communication topology) propor
 
 \begin{table}[htbp]
 \centering
-\caption{Summary of proof techniques by theorem (v2.0 additions marked with $\dagger$).}
+\caption{Summary of proof techniques by theorem (v1.1 additions marked with $\dagger$).}
 \label{tab:proof-summary-v2}
 \begin{tabular}{@{}llll@{}}
 \toprule

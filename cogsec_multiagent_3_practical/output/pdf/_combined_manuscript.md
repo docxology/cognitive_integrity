@@ -19,7 +19,7 @@ theory and practice. In practice, there is.''
 
 Multiagent AI systems—autonomous coding assistants, research pipelines, financial decision engines—have moved from prototype to production in under two years. With them comes a new class of security concern: attacks that target not data or infrastructure but the *reasoning processes* of AI agents. Prompt injections that propagate through delegation chains, trust relationships that launder adversarial influence, and coordination mechanisms vulnerable to strategic manipulation all represent cognitive attack surfaces absent from traditional security models.
 
-The **Cognitive Integrity Framework (CIF)** is developed across a three-part series: formal treatment (Part 1), running code and experiments (Part 2), and the present unified paper (Part 3) combining practitioner guidance with cross-domain application. **Part 1** establishes mathematical foundations—a trust calculus with provably bounded delegation, defense composition algebras with multiplicative detection guarantees, and information-theoretic limits on attack stealth. **Part 2** provides computational validation: eight implemented defense modules, 2,283 passing tests, a 950-attack corpus spanning four threat categories, parametric architecture-aware simulation across four production multiagent topologies, and a category-theoretic formalization of defense composition (Theorems CT.1–CT.3). The cross-domain applications section (§9–§10, originally "Part 4") applies the framework via the integrated CIF-AD-OODA model across ten critical operational domains.
+The **Cognitive Integrity Framework (CIF)** is developed across a three-part series: formal treatment (Part 1), running code and experiments (Part 2), and the present unified paper (Part 3+4) combining practitioner guidance with cross-domain application. **Part 1** establishes mathematical foundations—a trust calculus with provably bounded delegation, defense composition algebras with multiplicative detection guarantees, and information-theoretic limits on attack stealth. **Part 2** provides computational validation: eight implemented defense modules, 3,308 passing tests, a 950-attack corpus spanning four threat categories, parametric architecture-aware simulation across four production multiagent topologies, and a category-theoretic formalization of defense composition (Theorems CT.1–CT.3). The cross-domain applications section (§9–§10, originally "Part 4") applies the framework via the integrated CIF-AD-OODA model across ten critical operational domains.
 
 This paper (Part 3+4, unified) is simultaneously a qualitative practitioner guide and a cross-domain application study. The practitioner section (§1–§8) synthesizes Parts 1 and 2 into accessible language, situates the formal results against current deployment practice, and gives practical recommendations for teams that build and run multiagent AI systems. The applications section (§9–§10) applies the framework across ten critical domains. No formal prerequisites are assumed; for proofs and definitions see Part 1, for empirical results see Part 2.
 
@@ -64,7 +64,7 @@ The Cognitive Integrity Framework (CIF) was developed to secure these systems, a
 * **Part 2: Computational Validation** (DOI: 10.5281/zenodo.18364128) implemented this theory in Python and tested it against a corpus of 950 attacks across four production architectures, reporting ablation studies, Bayesian uncertainty quantification, colony-scale benchmarks at 20--100 agents, and a category-theoretic formalization of defense composition (Defense Category $\calD$, Theorems CT.1--CT.3) with a composable visualization engine and interactive CIF Composer web UI.
 * **Applications (§9--§10, this paper):** The integrated CIF-AD-OODA analytical model is applied across ten critical domains (rare-earth mining, nation-state alliances, cyber-security, drone warfare, supply chain, biowarfare, food security, trade wars, infrastructure, information ecosystems), identifying three universal attack patterns and three novel defense extensions.
 
-The combined evidence includes **2,283 passing tests** and a **94--100% parametric detection ceiling** across all attack categories and architectures (Part 2), alongside a lower real-pipeline multi-seed mean of approximately 44.8% (30 seeds). Direct-injection detection reaches 96--98% in the fully defended parametric configuration; plus CIF coverage is analyzed across all ten operational domains in §9--§10 with retrospective analysis of six documented 2024--2025 AI-agent incidents.
+The combined evidence includes **3,308 passing tests** and a **94--100% parametric detection ceiling** across all attack categories and architectures (Part 2), alongside a lower real-pipeline multi-seed mean of approximately 44.8% (30 seeds). Direct-injection detection reaches 96--98% in the fully defended parametric configuration; plus CIF coverage is analyzed across all ten operational domains in §9--§10 with retrospective analysis of six documented 2024--2025 AI-agent incidents.
 
 ## The Purpose of This Guide
 
@@ -232,6 +232,8 @@ Part 2 also provides a **composable visualization engine** (`DefenseGraph`, `Cat
 
 # The Evidence: What We Proved in Part 2 {#sec:paper2-review}
 
+![Effective trust vs.\ delegation depth at decay factors $\delta = \{0.9, 0.85, 0.7\}$, with 50\% and 10\% thresholds marking delegation bounds.](figures/trust_decay.png){#fig:trust-decay width=75%}
+
 Part 1 supplies the formal apparatus. Part 2 supplies the empirical evaluation: tested CIF modules, a **950-attack** corpus, and an architecture-aware simulation over four headline topologies (Claude Code, AutoGPT, CrewAI, LangGraph), with broader adapter coverage documented in Part 2.
 
 Here is what the data says.
@@ -342,6 +344,8 @@ The simulations utilized the following tripwire densities to achieve the reporte
 
 
 # The Attack Landscape: Five Vectors {#sec:attack-scenarios}
+
+![Cognitive-security risk heatmap: impact $\times$ likelihood for eight named risks (Direct/Indirect Injection, Trust Laundering, Belief Manipulation, Goal Hijacking, Context Poisoning, Multi-turn Attacks, Consensus Subversion).](figures/risk_matrix.png){#fig:risk-matrix width=85%}
 
 This section details five concrete attack vectors from the Part 2 corpus, illustrating the mechanism and the CIF layer that answers it. The vectors here are adversarial-input archetypes; for the complementary *teleological* view (Functional Requirements under Axiomatic Design / OODA), three universal attack patterns (FR Polarity Inversion, Constraint Relaxation, Context Boundary Violation) from cross-domain analysis, and retrospective mapping of six documented 2024--2025 AI-agent incidents, see **§9--§10** (*Applications of the Cognitive Integrity Framework*, this paper).
 
@@ -591,6 +595,10 @@ This is defense in depth applied at the *per-role* granularity: not "more defens
 
 # Deployment Profiles: Evaluated Configurations from Part 2 {#sec:deployment}
 
+![Five-Pillar operator posture assessment radar (Cognitive Firewall, Belief Sandbox, Identity Tripwire, Behavioral Invariants, Provenance), color-coded against readiness thresholds.](figures/posture_radar.png){#fig:posture-radar width=80%}
+
+![Pre-deployment $\rightarrow$ Integration $\rightarrow$ Testing $\rightarrow$ Operational checklist flowchart mapping CIF enforcement points to deployment phases.](figures/checklist_flowchart.png){#fig:checklist-flowchart width=85%}
+
 In Part 2, we evaluated specific configurations of the Cognitive Integrity Framework to understand how different tuning parameters affected security and performance outcomes. The following profiles are derived directly from the **Parameter Sensitivity Analysis** (Part 2, Section 5.3) and **Architecture-Specific Results** (Part 2, Section 5.1).
 
 ## Profile A: The "Internal Tool" Baseline (Low Latency)
@@ -734,6 +742,8 @@ Part 2 ships an **interactive CIF Composer web UI** (`output/web/cif_composer.ht
 \newpage
 
 # Incident Response Playbooks {#sec:incident-response}
+
+![Deployment lifecycle phases (Pre-Deployment $\rightarrow$ Operational $\rightarrow$ Incident Response) with CIF security activities.](figures/timeline.png){#fig:timeline width=85%}
 
 When the Cognitive Integrity Framework (CIF) detects an attack, automated response handles quarantine and escalation. But automated response is not enough — effective recovery requires human judgment, forensics, and prevention hardening. These playbooks guide the human response to each adversary class.
 
@@ -1038,6 +1048,8 @@ These checks run monthly, take approximately half a day of analyst time, and pro
 \newpage
 
 # Common Pitfalls and What the Research Shows {#sec:pitfalls}
+
+![Common pitfalls by severity across security/configuration/operational categories (e.g. implicit trust in outputs, missing input validation).](figures/pitfall_severity.png){#fig:pitfall-severity width=80%}
 
 The CIF research identifies recurring failure modes in multiagent deployments. This section catalogs eight anti-patterns, each assessed through what Parts 1 and 2 add to the problem and its mitigation.
 
@@ -2493,6 +2505,8 @@ The provenance-based defense has received significant institutional endorsement.
 
 Our cross-domain analysis of ten critical sectors reveals that Goal Hijacking is not merely a linguistic exploit but a structural corruption of the OODA Loop \cite{boyd1987patterns}. In every case---from drone swarms operating at millisecond time scales to diplomatic agents spanning months of deliberation---the attack vector was a transient signal that hijacked the agent's **Orientation** phase, rewriting its Functional Requirements in real-time. This section synthesizes the cross-domain findings, identifies universal attack patterns, evaluates CIF mechanism coverage, and acknowledges limitations.
 
+![CIF-AD-OODA attack-pattern coverage across ten domains for the three universal patterns (FR Polarity Inversion, Constraint Relaxation, Context Boundary Violation).](figures/domain_coverage.png){#fig:domain-coverage width=90%}
+
 ## 10.1 Cross-Domain Attack Pattern Taxonomy {#sec:attack_patterns}
 
 Three universal attack patterns emerge across the ten domains. Each pattern corresponds to a distinct manipulation of the Axiomatic Design Matrix \cite{suh2001axiomatic}:
@@ -2555,6 +2569,8 @@ The formalization of OODA transients as Design Matrix perturbations also reveals
 ## 10.4 CIF Mechanism Coverage Analysis {#sec:mechanism_coverage}
 
 A critical validation of the CIF framework is whether the five canonical mechanisms provide adequate coverage across diverse operational domains. The following matrix maps primary CIF defenses to the ten domains analyzed:
+
+![Binary mechanism $\times$ domain coverage matrix for the five CIF mechanisms across ten domains.](figures/cif_mechanism_coverage.png){#fig:mechanism-coverage width=90%}
 
 | CIF Mechanism | RE | NS | Cy | Dr | SC | Bio | FS | TW | Inf | FN | Total |
 | --------------- | :--: | :--: | :--: | :--: | :--: | :---: | :--: | :--: | :---: | :--: | :-----: |
