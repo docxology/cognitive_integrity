@@ -17,6 +17,7 @@ series map, reading order, and build commands, and
 | -------- | -------- |
 | **`README.md` (this file)** | Program-wide documentation index |
 | `THERMO_NUCLEAR_AUDIT_2026-07-22.md` | Historical program audit (thermo-nuclear framing) |
+| [Part 2 `docs/RED_TEAM_ASSESSMENT.md`](../cogsec_multiagent_2_computational/docs/RED_TEAM_ASSESSMENT.md) | Authoritative deep red-team (adversarial) assessment — theory soundness, empirical/model validity, code/security/reproducibility, and their resolutions |
 | [Part 1 `docs/`](../cogsec_multiagent_1_theory/docs/) | [Part 1 index](../cogsec_multiagent_1_theory/docs/README.md) — formal-foundations documentation (manuscript map, figures, tests) |
 | [Part 2 `docs/`](../cogsec_multiagent_2_computational/docs/) | [Part 2 index](../cogsec_multiagent_2_computational/docs/README.md) — claims traceability, framework validation, per-module usage guides, audit reports |
 | [Part 3 `docs/`](../cogsec_multiagent_3_practical/docs/) | [Part 3 index](../cogsec_multiagent_3_practical/docs/README.md) — Part 3+4 practical/applications documentation (claims → code map) |
@@ -36,6 +37,8 @@ This part carries the richest documentation spine:
 
 - [`docs/claims_traceability.md`](../cogsec_multiagent_2_computational/docs/claims_traceability.md)
   — manuscript-to-code mapping for every claim.
+- [`docs/RED_TEAM_ASSESSMENT.md`](../cogsec_multiagent_2_computational/docs/RED_TEAM_ASSESSMENT.md)
+  — deep red-team (adversarial) assessment and the status of every finding.
 - [`docs/framework_validation.md`](../cogsec_multiagent_2_computational/docs/framework_validation.md)
   — experiment reproduction guide.
 - [`docs/usage_guides/`](../cogsec_multiagent_2_computational/docs/usage_guides/)
