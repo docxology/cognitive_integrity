@@ -279,7 +279,7 @@ Analysis of the attack corpus reveals several cross-cutting insights for defense
 
 ## Cross-Architecture Patterns {#sec:cross-arch-patterns}
 
-**Table: Architecture-specific vulnerability patterns and observed defense responses.** {#tab:arch-vulnerabilities}
+Table: Architecture-specific vulnerability patterns and observed defense responses. {#tab:arch-vulnerabilities}
 
 | Architecture | Primary Vulnerability | Observed CIF Defense Response |
 | --- | --- | --- |

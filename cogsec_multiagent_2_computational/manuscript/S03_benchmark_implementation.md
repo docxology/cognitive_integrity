@@ -17,7 +17,7 @@ This supplementary section presents the *design specification* for colony cognit
 4. **Controllable adversary injection** — Precise Sybil insertion and signal poisoning
 5. **Collective function measurement** — Aggregate outcome metrics beyond individual agent states
 
-**Table: Recommended colony CogSec benchmark configurations.** {#tab:benchmark-configs}
+Table: Recommended colony CogSec benchmark configurations. {#tab:benchmark-configs}
 
 **Benchmark** | **Min $n$** | **Stigmergy** | **Adversary** | **Duration** | **Metrics** |
 | --- | --- | --- | --- | --- | --- |

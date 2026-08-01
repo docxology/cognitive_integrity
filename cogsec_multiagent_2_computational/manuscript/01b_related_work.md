@@ -68,7 +68,7 @@ CIF's contribution is providing a unified, formally grounded defense framework a
 
 \Cref{tab:related-work-comparison} summarizes the key distinctions.
 
-**Table: Comparison of CIF with related defense frameworks.** {#tab:related-work-comparison}
+Table: Comparison of CIF with related defense frameworks. {#tab:related-work-comparison}
 
 | Framework | Multiagent | Formal Guarantees | Trust Bounds | Attack Corpus | Architectures Tested | Category-Theoretic | FEP-Grounded |
 | --- | --- | --- | --- | --- | --- | --- | --- |

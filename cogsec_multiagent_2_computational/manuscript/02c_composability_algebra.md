@@ -86,7 +86,7 @@ The adapter \texttt{from\_defense\_result()} in \texttt{src/core/monad.py} conve
 
 \cref{thm:monadic-laws} proves that the monadic pipeline is a formal object with the detection-preservation law baked in. It does not, however, change \emph{what} CIF detects. The \texttt{MonadicPipeline} and the pre-existing \texttt{SeriesPipeline} produce identical detection outcomes on every input: both apply modules in order, both short-circuit on the first detection, both aggregate $\mathrm{DefenseResult}$ objects from non-firing modules. The value added by the monadic formulation is formal and architectural rather than behavioral.
 
-**Table: Comparison of pipeline interfaces. Detection outcomes are identical; the monadic interface adds formal guarantees, typed composition, and categorical structure.** {#tab:pipeline-comparison}
+Table: Comparison of pipeline interfaces. Detection outcomes are identical; the monadic interface adds formal guarantees, typed composition, and categorical structure. {#tab:pipeline-comparison}
 
 | Feature | \texttt{SeriesPipeline} | \texttt{MonadicPipeline} |
 | --- | --- | --- |

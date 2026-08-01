@@ -10,7 +10,7 @@ This supplement provides detailed pseudocode for all six core CIF defense algori
 
 ## Algorithm Quick Reference {#sec:alg-quickref}
 
-**Table: CIF defense algorithm quick reference — formal basis, complexity, and implementation.** {#tab:alg-quickref}
+Table: CIF defense algorithm quick reference — formal basis, complexity, and implementation. {#tab:alg-quickref}
 
 | Algorithm | Formal Basis | Per-Message Complexity | Space | Implementation |
 | --- | --- | --- | --- | --- |

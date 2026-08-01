@@ -8,7 +8,7 @@ This section documents configuration parameters for all CIF defense components. 
 
 ## Core Framework Parameters {#sec:core-params}
 
-**Table: Core framework configuration parameters.** {#tab:core-params}
+Table: Core framework configuration parameters. {#tab:core-params}
 
 | Parameter | Symbol | Default | Range | Description |
 | --- | --- | --- | --- | --- |
@@ -20,7 +20,7 @@ This section documents configuration parameters for all CIF defense components. 
 
 ## Trust Calculus Parameters {#sec:trust-params}
 
-**Table: Trust calculus configuration parameters.** {#tab:trust-params}
+Table: Trust calculus configuration parameters. {#tab:trust-params}
 
 | Parameter | Symbol | Default | Range | Description |
 | --- | --- | --- | --- | --- |
@@ -35,7 +35,7 @@ This section documents configuration parameters for all CIF defense components. 
 
 ## Firewall Parameters {#sec:firewall-params}
 
-**Table: Cognitive firewall configuration parameters.** {#tab:firewall-params}
+Table: Cognitive firewall configuration parameters. {#tab:firewall-params}
 
 | Parameter | Symbol | Default | Range | Description |
 | --- | --- | --- | --- | --- |
@@ -49,7 +49,7 @@ This section documents configuration parameters for all CIF defense components. 
 
 ## Sandbox Parameters {#sec:sandbox-params}
 
-**Table: Belief sandbox configuration parameters.** {#tab:sandbox-params}
+Table: Belief sandbox configuration parameters. {#tab:sandbox-params}
 
 | Parameter | Symbol | Default | Range | Description |
 | --- | --- | --- | --- | --- |
@@ -58,7 +58,7 @@ This section documents configuration parameters for all CIF defense components. 
 
 ## Tripwire Parameters {#sec:tripwire-params}
 
-**Table: Cognitive tripwire configuration parameters.** {#tab:tripwire-params}
+Table: Cognitive tripwire configuration parameters. {#tab:tripwire-params}
 
 | Parameter | Symbol | Default | Range | Description |
 | --- | --- | --- | --- | --- |
@@ -72,7 +72,7 @@ This section documents configuration parameters for all CIF defense components. 
 
 ## Drift Detection Parameters {#sec:drift-params}
 
-**Table: Drift detection configuration parameters.** {#tab:drift-params}
+Table: Drift detection configuration parameters. {#tab:drift-params}
 
 | Parameter | Symbol | Default | Range | Description |
 | --- | --- | --- | --- | --- |
@@ -82,7 +82,7 @@ This section documents configuration parameters for all CIF defense components. 
 
 ## Consensus Parameters {#sec:consensus-params}
 
-**Table: Byzantine consensus configuration parameters.** {#tab:consensus-params}
+Table: Byzantine consensus configuration parameters. {#tab:consensus-params}
 
 | Parameter | Symbol | Default | Range | Description |
 | --- | --- | --- | --- | --- |
@@ -91,7 +91,7 @@ This section documents configuration parameters for all CIF defense components. 
 
 ## Invariant Parameters {#sec:invariant-params}
 
-**Table: Invariant enforcement configuration parameters.** {#tab:invariant-params}
+Table: Invariant enforcement configuration parameters. {#tab:invariant-params}
 
 | Parameter | Symbol | Default | Range | Description |
 | --- | --- | --- | --- | --- |
@@ -99,7 +99,7 @@ This section documents configuration parameters for all CIF defense components. 
 
 ## Deployment Profiles {#sec:tuning-profiles}
 
-**Table: Recommended configuration profiles by deployment scenario.** {#tab:tuning-profiles}
+Table: Recommended configuration profiles by deployment scenario. {#tab:tuning-profiles}
 
 | Profile | Configuration |
 | --- | --- |

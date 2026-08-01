@@ -34,7 +34,7 @@ The defense composition architecture (\cref{fig:defense-composition}) illustrate
 
 ### Architecture-Specific Insights
 
-**Table: Architecture vulnerability patterns and observed CIF defense response.** {#tab:architecture-insights}
+Table: Architecture vulnerability patterns and observed CIF defense response. {#tab:architecture-insights}
 
 | Architecture  | Primary Vulnerability  | Observed CIF Defense Mechanism |
 | --- | --- | --- |
@@ -93,7 +93,7 @@ Additionally, the R$^2$ values for our scaling regressions (0.994 for detection 
 
 ### Observed Cost-Benefit Profile
 
-The ablation data (\cref{tab:component-removal}) reveals a clear incremental cost-benefit curve for the current adapter implementations. The Detection module alone contributes $\Delta\text{TPR} \approx -0.052$ (about 42\% of full-pipeline TPR on the ablation corpus); Tripwires and Invariants are the next-largest removal effects. The top three harmful removals (Detection, Tripwires, Invariants) together account for about 82\% of the summed negative $\Delta\text{TPR}$ magnitude in this run. The Tripwire + Detection pair shows the strongest synergy ($\approx +0.025$, \cref{tab:real-synergy}), combining canary-belief shift detection with text-feature analysis.
+The ablation data (\cref{tab:component-removal}) reveals a clear incremental cost-benefit curve for the current adapter implementations. The Detection module alone contributes $\Delta\text{TPR} \approx -0.051$ (about 42\% of full-pipeline TPR on the ablation corpus); Tripwires and Invariants are the next-largest removal effects. The top three harmful removals (Detection, Tripwires, Invariants) together account for about 82\% of the summed negative $\Delta\text{TPR}$ magnitude in this run. The Tripwire + Detection pair shows the strongest synergy ($\approx +0.031$, \cref{tab:real-synergy}), combining canary-belief shift detection with text-feature analysis.
 
 The gap between the full pipeline TPR ($\sim$12\% on the 100-attack ablation corpus, $\sim$45\% mean across 30 seeds) and the parametric ceiling (94--100\%; \cref{sec:parametric-analysis}) quantifies the adapter implementation gap. The lower-ranked components currently show modest marginal contribution ($\Delta\text{TPR}$ between $-0.005$ and $-0.009$) on the evaluation corpus, suggesting that the attack distribution does not sufficiently exercise these mechanisms---or that their current adapter implementations require further tuning. The practical deployment implications of these findings are explored in Part 3.
 

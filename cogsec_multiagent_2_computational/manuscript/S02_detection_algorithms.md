@@ -35,7 +35,7 @@ This supplementary section presents detection algorithm implementations for the 
 
 ## Detector Performance Results
 
-**Table: Detector performance comparison via ROC metrics.** {#tab:detector-roc}
+Table: Detector performance comparison via ROC metrics. {#tab:detector-roc}
 
 | Detector  | AUC  | F1-max $\tau$ | TPR@1\%FPR | TPR@5\%FPR |
 | --- | --- | --- | --- | --- |
@@ -48,7 +48,7 @@ This supplementary section presents detection algorithm implementations for the 
 
 *Note: These are design-level detector AUC values from parametric evaluation on the calibrated attack corpus. Empirical ensemble performance with current adapter implementations shows lower realized detection rates (see \cref{sec:extended-results}).*
 
-**Table: Empirical AUC with 95\% confidence intervals.** {#tab:auc-ci}
+Table: Empirical AUC with 95\% confidence intervals. {#tab:auc-ci}
 
 | Detector  | AUC  | 95\% CI |
 | --- | --- | --- |
@@ -81,7 +81,7 @@ This supplementary section presents detection algorithm implementations for the 
 \end{algorithm}
 {#alg:multi-detector-fusion}
 
-**Table: Fusion strategy performance comparison.** {#tab:fusion-performance}
+Table: Fusion strategy performance comparison. {#tab:fusion-performance}
 
 | Fusion Strategy  | AUC  | FPR@90\%TPR | Latency |
 | --- | --- | --- | --- |
@@ -139,7 +139,7 @@ This supplementary section presents detection algorithm implementations for the 
 \end{algorithm}
 {#alg:batch-detection}
 
-**Table: Hybrid configuration trade-off analysis.** {#tab:hybrid-tradeoffs}
+Table: Hybrid configuration trade-off analysis. {#tab:hybrid-tradeoffs}
 
 | Configuration  | Detection Rate  | Latency | Cost |
 | --- | --- | --- | --- |
@@ -152,7 +152,7 @@ This supplementary section presents detection algorithm implementations for the 
 
 ## False Positive Mitigation Results
 
-**Table: False positive root causes and mitigation strategies.** {#tab:fp-root-causes}
+Table: False positive root causes and mitigation strategies. {#tab:fp-root-causes}
 
 | Cause  | Frequency  | Impact | Mitigation |
 | --- | --- | --- | --- |
@@ -184,7 +184,7 @@ This supplementary section presents detection algorithm implementations for the 
 \end{algorithm}
 {#alg:baseline-update}
 
-**Table: False positive mitigation strategy effectiveness.** {#tab:fp-mitigation-results}
+Table: False positive mitigation strategy effectiveness. {#tab:fp-mitigation-results}
 
 | Strategy  | FPR Reduction  | TPR Impact | Complexity |
 | --- | --- | --- | --- |
@@ -222,7 +222,7 @@ This supplementary section presents detection algorithm implementations for the 
 
 ## Computational Complexity Summary {#sec:detection-complexity}
 
-**Table: Detection algorithm computational complexity.** {#tab:detection-complexity}
+Table: Detection algorithm computational complexity. {#tab:detection-complexity}
 
 | Algorithm | Time (per message) | Space | Suitable For |
 | --- | --- | --- | --- |
@@ -288,7 +288,7 @@ The Fisher-Rao metric on the belief simplex $\Delta^{n-1}$ provides a principled
 
 The natural gradient anomaly score weights each dimension's detection signal by the current belief probability, making the score sensitive to manipulations of high-probability beliefs (which carry more semantic content) while remaining robust to noise in low-probability dimensions.
 
-**Table: Information-geometric vs.\ KL-based detection comparison.** {#tab:ig-vs-kl}
+Table: Information-geometric vs.\ KL-based detection comparison. {#tab:ig-vs-kl}
 
 | Detector | AUC | TPR@1\%FPR | Geodesic Sensitivity | Boundary Attacks |
 | :--- | :--- | :--- | :--- | :--- |

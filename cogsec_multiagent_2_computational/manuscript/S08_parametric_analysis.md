@@ -20,7 +20,7 @@ This supplementary section consolidates all results derived from CIF's parametri
 \item State: Centralized in orchestrator
 \end{itemize}
 
-**Table: Claude Code parametric detection results by attack type.** {#tab:parametric-claude-code-detection}
+Table: Claude Code parametric detection results by attack type. {#tab:parametric-claude-code-detection}
 
 | Attack Type  | Baseline  | Firewall | Sandbox | Tripwires | Full CIF |
 | --- | --- | --- | --- | --- | --- |
@@ -31,7 +31,7 @@ This supplementary section consolidates all results derived from CIF's parametri
 | Belief manipulation | 0.00 | 0.67 | 0.79 | 0.85 | 0.94 |
 | Coordination | 0.00 | 0.52 | 0.61 | 0.76 | 0.88 |
 
-**Table: Claude Code parametric performance metrics.** {#tab:parametric-claude-code-perf}
+Table: Claude Code parametric performance metrics. {#tab:parametric-claude-code-perf}
 
 | Metric  | Baseline  | Full CIF | Delta |
 | --- | --- | --- | --- |
@@ -41,7 +41,7 @@ This supplementary section consolidates all results derived from CIF's parametri
 | Throughput | 850 req/s | 712 req/s | $-16\%$ |
 | Memory | 256MB | 312MB | +22\% |
 
-**Table: Claude Code parametric integrity preservation.** {#tab:parametric-claude-code-integrity}
+Table: Claude Code parametric integrity preservation. {#tab:parametric-claude-code-integrity}
 
 | Scenario  | Baseline  | With CIF | Improvement |
 | --- | --- | --- | --- |
@@ -51,7 +51,7 @@ This supplementary section consolidates all results derived from CIF's parametri
 
 ### AutoGPT (Autonomous Architecture) {#sec:parametric-autogpt}
 
-**Table: AutoGPT parametric detection results by attack type.** {#tab:parametric-autogpt-detection}
+Table: AutoGPT parametric detection results by attack type. {#tab:parametric-autogpt-detection}
 
 | Attack Type  | Baseline  | Firewall | Sandbox | Tripwires | Full CIF |
 | --- | --- | --- | --- | --- | --- |
@@ -62,7 +62,7 @@ This supplementary section consolidates all results derived from CIF's parametri
 | Belief manipulation | 0.00 | 0.69 | 0.76 | 0.88 | 0.95 |
 | Coordination | 0.00 | 0.48 | 0.55 | 0.71 | 0.85 |
 
-**Table: AutoGPT parametric performance metrics.** {#tab:parametric-autogpt-perf}
+Table: AutoGPT parametric performance metrics. {#tab:parametric-autogpt-perf}
 
 | Metric  | Baseline  | Full CIF | Delta |
 | --- | --- | --- | --- |
@@ -74,7 +74,7 @@ This supplementary section consolidates all results derived from CIF's parametri
 
 ### CrewAI (Role-Based Architecture) {#sec:parametric-crewai}
 
-**Table: CrewAI parametric detection results by attack type.** {#tab:parametric-crewai-detection}
+Table: CrewAI parametric detection results by attack type. {#tab:parametric-crewai-detection}
 
 | Attack Type  | Baseline  | Firewall | Sandbox | Tripwires | Full CIF |
 | --- | --- | --- | --- | --- | --- |
@@ -87,7 +87,7 @@ This supplementary section consolidates all results derived from CIF's parametri
 
 ### LangGraph (Graph-Based Architecture) {#sec:parametric-langgraph}
 
-**Table: LangGraph parametric detection results by attack type.** {#tab:parametric-langgraph-detection}
+Table: LangGraph parametric detection results by attack type. {#tab:parametric-langgraph-detection}
 
 | Attack Type  | Baseline  | Firewall | Sandbox | Tripwires | Full CIF |
 | --- | --- | --- | --- | --- | --- |
@@ -100,7 +100,7 @@ This supplementary section consolidates all results derived from CIF's parametri
 
 ## Cross-Architecture Parametric Summary {#sec:parametric-cross-arch}
 
-**Table: Cross-architecture parametric detection summary (Full CIF).** {#tab:parametric-cross-arch-summary}
+Table: Cross-architecture parametric detection summary (Full CIF). {#tab:parametric-cross-arch-summary}
 
 | Architecture | Overall TPR | Strongest Category | Weakest Category | Latency Overhead |
 | --- | --- | --- | --- | --- |
@@ -115,7 +115,7 @@ $^\dagger$\textit{Estimated from architecture-specific adapter overhead characte
 
 ### Effect Sizes (Cohen's d) {#sec:parametric-cohens-d}
 
-**Table: Effect sizes (Cohen's $d$) for primary comparisons (parametric simulation).** {#tab:parametric-effect-sizes}
+Table: Effect sizes (Cohen's $d$) for primary comparisons (parametric simulation). {#tab:parametric-effect-sizes}
 
 | Comparison | Cohen's $d$ | Interpretation |
 | --- | --- | --- |
@@ -126,7 +126,7 @@ $^\dagger$\textit{Estimated from architecture-specific adapter overhead characte
 
 ### Odds Ratios {#sec:parametric-odds-ratios}
 
-**Table: Odds ratios for detection comparisons (parametric simulation).** {#tab:parametric-odds-ratios}
+Table: Odds ratios for detection comparisons (parametric simulation). {#tab:parametric-odds-ratios}
 
 | Comparison | OR | 95\% CI |
 | --- | --- | --- |
@@ -135,7 +135,7 @@ $^\dagger$\textit{Estimated from architecture-specific adapter overhead characte
 
 ### Number Needed to Treat {#sec:parametric-nnt}
 
-**Table: Number needed to treat by attack type (parametric simulation).** {#tab:parametric-nnt}
+Table: Number needed to treat by attack type (parametric simulation). {#tab:parametric-nnt}
 
 | Attack Type | Baseline DR | CIF DR (sim) | NNT |
 | --- | --- | --- | --- |
@@ -146,7 +146,7 @@ $^\dagger$\textit{Estimated from architecture-specific adapter overhead characte
 
 ### Confidence Intervals {#sec:parametric-ci}
 
-**Table: Per-architecture TPR and FPR with 95\% confidence intervals (parametric simulation).** {#tab:parametric-arch-ci}
+Table: Per-architecture TPR and FPR with 95\% confidence intervals (parametric simulation). {#tab:parametric-arch-ci}
 
 | Architecture | TPR | 95\% CI (TPR) | FPR | 95\% CI (FPR) |
 | --- | --- | --- | --- | --- |
@@ -155,7 +155,7 @@ $^\dagger$\textit{Estimated from architecture-specific adapter overhead characte
 | CrewAI | 0.96 | [0.93, 0.98] | 0.05 | [0.03, 0.08] |
 | LangGraph | 0.98 | [0.95, 0.99] | 0.04 | [0.02, 0.07] |
 
-**Table: Detection rate confidence intervals by attack subcategory (parametric simulation).** {#tab:parametric-attack-ci}
+Table: Detection rate confidence intervals by attack subcategory (parametric simulation). {#tab:parametric-attack-ci}
 
 | Subcategory | DR | Lower | Upper |
 | --- | --- | --- | --- |
@@ -180,7 +180,7 @@ $^\dagger$\textit{Estimated from architecture-specific adapter overhead characte
 
 The firewall uses **dual thresholds**: $\tau_1$ (hard-reject; inputs above this score are blocked outright) and $\tau_2$ (quarantine; inputs scoring in $(\tau_2, \tau_1]$ are sandboxed). Sensitivity analysis holds one threshold fixed while varying the other.
 
-**Table: Reject threshold ($\tau_1$) sensitivity — quarantine threshold held fixed at $\tau_2 = 0.5$ (parametric simulation).** {#tab:parametric-firewall-tau1-sensitivity}
+Table: Reject threshold ($\tau_1$) sensitivity — quarantine threshold held fixed at $\tau_2 = 0.5$ (parametric simulation). {#tab:parametric-firewall-tau1-sensitivity}
 
 | $\tau_1$ | TPR | 95\% CI (TPR) | FPR | 95\% CI (FPR) | F1 |
 | --- | --- | --- | --- | --- | --- |
@@ -191,7 +191,7 @@ The firewall uses **dual thresholds**: $\tau_1$ (hard-reject; inputs above this 
 
 Lower $\tau_1$ increases TPR but reduces precision; $\tau_1 = 0.7$ balances security and utility (false-reject rate remains below 2\%).
 
-**Table: Quarantine threshold ($\tau_2$) sensitivity — reject threshold held fixed at $\tau_1 = 0.7$ (parametric simulation).** {#tab:parametric-firewall-tau2-sensitivity}
+Table: Quarantine threshold ($\tau_2$) sensitivity — reject threshold held fixed at $\tau_1 = 0.7$ (parametric simulation). {#tab:parametric-firewall-tau2-sensitivity}
 
 | $\tau_2$ | TPR | 95\% CI (TPR) | FPR | 95\% CI (FPR) | F1 |
 | --- | --- | --- | --- | --- | --- |
@@ -205,7 +205,7 @@ $\tau_2 = 0.5$ maximizes F1 (0.94); values above 0.55 increase FPR disproportion
 
 ### Trust Decay Factor Sensitivity {#sec:parametric-decay-sensitivity}
 
-**Table: Trust decay factor sensitivity analysis (parametric simulation).** {#tab:parametric-decay-sensitivity}
+Table: Trust decay factor sensitivity analysis (parametric simulation). {#tab:parametric-decay-sensitivity}
 
 | $\delta$ | $\delta^3$ | Detection Rate | FPR |
 | --- | --- | --- | --- |
@@ -217,7 +217,7 @@ $\tau_2 = 0.5$ maximizes F1 (0.94); values above 0.55 increase FPR disproportion
 
 ### Corroboration Count Sensitivity {#sec:parametric-corroboration}
 
-**Table: Corroboration count sensitivity analysis (parametric simulation).** {#tab:parametric-corroboration}
+Table: Corroboration count sensitivity analysis (parametric simulation). {#tab:parametric-corroboration}
 
 | $\kappa$ | Attack Bypass Rate | FPR | Latency Overhead |
 | --- | --- | --- | --- |
@@ -228,7 +228,7 @@ $\tau_2 = 0.5$ maximizes F1 (0.94); values above 0.55 increase FPR disproportion
 
 ### Window Size Sensitivity {#sec:parametric-window}
 
-**Table: Sliding window size sensitivity analysis (parametric simulation).** {#tab:parametric-window}
+Table: Sliding window size sensitivity analysis (parametric simulation). {#tab:parametric-window}
 
 | Window Size | Detection Rate | FPR | Latency |
 | --- | --- | --- | --- |
@@ -239,7 +239,7 @@ $\tau_2 = 0.5$ maximizes F1 (0.94); values above 0.55 increase FPR disproportion
 
 ### Parameter Interaction Effects {#sec:parametric-interactions}
 
-**Table: Two-way ANOVA interaction effects (parametric simulation).** {#tab:parametric-interactions}
+Table: Two-way ANOVA interaction effects (parametric simulation). {#tab:parametric-interactions}
 
 | Parameter A | Parameter B | $F$ | $p$ | $\eta^2$ |
 | --- | --- | --- | --- | --- |
@@ -249,7 +249,7 @@ $\tau_2 = 0.5$ maximizes F1 (0.94); values above 0.55 increase FPR disproportion
 
 ### Robustness to Attack Distribution Shift {#sec:parametric-robustness}
 
-**Table: Cross-validation with held-out attack types (parametric simulation).** {#tab:parametric-generalization}
+Table: Cross-validation with held-out attack types (parametric simulation). {#tab:parametric-generalization}
 
 | Held-Out Type | Train DR | Test DR | Gap |
 | --- | --- | --- | --- |
@@ -259,7 +259,7 @@ $\tau_2 = 0.5$ maximizes F1 (0.94); values above 0.55 increase FPR disproportion
 
 ### Empirically Optimal Configuration (Parametric) {#sec:parametric-optimal-config}
 
-**Table: F1-maximizing parameter configuration (parametric simulation).** {#tab:parametric-recommended-config}
+Table: F1-maximizing parameter configuration (parametric simulation). {#tab:parametric-recommended-config}
 
 | Parameter | Value | Rationale |
 | --- | --- | --- |
@@ -271,7 +271,7 @@ $\tau_2 = 0.5$ maximizes F1 (0.94); values above 0.55 increase FPR disproportion
 
 ## Minimal Viable Configurations (Parametric) {#sec:parametric-minimal}
 
-**Table: Minimal viable configurations (parametric simulation).** {#tab:parametric-minimal-configs}
+Table: Minimal viable configurations (parametric simulation). {#tab:parametric-minimal-configs}
 
 | Config | Components | TPR | FPR | Latency Overhead |
 | --- | --- | --- | --- | --- |
@@ -281,7 +281,7 @@ $\tau_2 = 0.5$ maximizes F1 (0.94); values above 0.55 increase FPR disproportion
 
 ## Parametric Overall Summary {#sec:parametric-summary}
 
-**Table: Parametric simulation overall performance summary.** {#tab:parametric-overall-summary}
+Table: Parametric simulation overall performance summary. {#tab:parametric-overall-summary}
 
 | Metric  | Value  | 95\% CI |
 | --- | --- | --- |

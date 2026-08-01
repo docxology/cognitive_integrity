@@ -17,7 +17,7 @@ This section documents the attack generation methodology, effectiveness analysis
 \item **Validation**: Human review of generated attacks
 \end{enumerate}
 
-**Table: Generation method statistics.** {#tab:generation-stats}
+Table: Generation method statistics. {#tab:generation-stats}
 
 | Method | Count | QA Pass Rate$^*$ | Mean Sophistication |
 | --- | --- | --- | --- |
@@ -45,7 +45,7 @@ $^*$\textit{QA pass rate denotes the proportion of candidate attacks that passed
 
 ### Quality Assurance {#sec:qa}
 
-**Table: Attack validation criteria.** {#tab:validation-criteria}
+Table: Attack validation criteria. {#tab:validation-criteria}
 
 | Criterion | Description |
 | --- | --- |
@@ -65,7 +65,7 @@ $^*$\textit{QA pass rate denotes the proportion of candidate attacks that passed
 
 ### Success Rate by Defense Configuration {#sec:success-by-defense}
 
-**Table: Attack success rate by defense configuration.** {#tab:success-by-defense}
+Table: Attack success rate by defense configuration. {#tab:success-by-defense}
 
 | Defense | Prompt Inj. | Trust Expl. | Belief Manip. | Coord. |
 | --- | --- | --- | --- | --- |
@@ -85,7 +85,7 @@ We report Spearman's rank correlation ($\rho$) rather than Pearson's $r$ because
 
 ### Temporal Analysis {#sec:temporal-analysis}
 
-**Table: Detection rate by attack age.** {#tab:attack-age}
+Table: Detection rate by attack age. {#tab:attack-age}
 
 | Attack Age | Detection Rate | $n$ |
 | --- | --- | --- |
@@ -106,7 +106,7 @@ All novel attack vectors discovered during this research were:
 \item **Mitigated**: Defenses provided alongside vulnerability reports
 \end{enumerate}
 
-**Table: Disclosure timeline.** {#tab:disclosure-timeline}
+Table: Disclosure timeline. {#tab:disclosure-timeline}
 
 | Framework | Date Reported | Status | Resolution |
 | --- | --- | --- | --- |
@@ -127,7 +127,7 @@ Framework names are anonymized per coordinated disclosure agreements. Specific v
 \item **Usage Tracking**: Audit log of corpus access
 \end{enumerate}
 
-**Table: Access control hierarchy.** {#tab:access-hierarchy}
+Table: Access control hierarchy. {#tab:access-hierarchy}
 
 | Access Level | Scope | Requirement |
 | --- | --- | --- |

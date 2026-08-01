@@ -24,22 +24,21 @@ Credible intervals are reported as 95\% Highest Density Intervals (HDI), compute
 
 ## Posterior Detection Rates for All Claimed Results {#sec:posterior-rates}
 
-\cref{tab:bayesian-posteriors} restates each major detection claim from \cref{sec:results} and \cref{sec:parametric-analysis} as a Beta posterior with an explicit 95\% HDI. For the conservative representative posterior, $n$ is one seed's aggregate evaluation size (1,000 attack instances) and $k = \bar{p} \cdot n = 448$ is the corresponding detection count. The 30-seed run characterizes between-seed variability; it is not pooled as 30,000 independent Bernoulli trials.
+\cref{tab:bayesian-posteriors} restates each major detection claim from \cref{sec:results} and \cref{sec:parametric-analysis} as a Beta posterior with an explicit 95\% HDI, computed via `BetaPosterior(1 + k, 1 + n - k).hdi(0.95)`. For the multi-seed pipeline, $n = 100$ is the per-seed evaluation size (30 seeds, 100 samples each, seed 42 as representative) and $k = 45$ is the corresponding integer detection count at the 0.448 mean rate.
 
-**Table: Beta-Binomial posteriors for major detection claims. Prior: $\mathrm{Beta** {#tab:bayesian-posteriors}
+Table: Beta-Binomial posteriors for major detection claims. Prior: $\mathrm{Beta {#tab:bayesian-posteriors}
 
 | Result | $k$ | $n$ | Posterior | 95\% HDI |
 | --- | --- | --- | --- | --- |
-| Multi-seed pipeline (aggregate) | 448 | 1000 | $\mathrm{Beta}(449, 553)$ | $[0.413, 0.483]$ |
-| Ablation full pipeline TPR | 12 | 97 | $\mathrm{Beta}(13, 86)$ | $[0.071, 0.193]$ |
-| LLM validation (Claude Code) | 8 | 10 | $\mathrm{Beta}(9, 3)$ | $[0.503, 0.990]$ |
-| LLM validation (CrewAI) | 10 | 10 | $\mathrm{Beta}(11, 1)$ | $[0.717, 1.000]$ |
-| Parametric full CIF (direct injection) | 92 | 100 | $\mathrm{Beta}(93, 9)$ | $[0.852, 0.968]$ |
-| Colony: Sybil infiltration | 20 | 20 | $\mathrm{Beta}(21, 1)$ | $[0.860, 1.000]$ |
-| Colony: Emergent misalignment | 56 | 100 | $\mathrm{Beta}(57, 45)$ | $[0.458, 0.660]$ |
+| Multi-seed pipeline (representative seed) | 45 | 100 | $\mathrm{Beta}(46, 56)$ | $[0.355, 0.547]$ |
+| Ablation full pipeline TPR | 12 | 98 | $\mathrm{Beta}(13, 87)$ | $[0.068, 0.197]$ |
+| LLM validation (Claude Code) | 4 | 5 | $\mathrm{Beta}(5, 2)$ | $[0.409, 0.982]$ |
+| LLM validation (CrewAI) | 5 | 5 | $\mathrm{Beta}(6, 1)$ | $[0.570, 1.000]$ |
+| Parametric full CIF (direct injection) | 92 | 100 | $\mathrm{Beta}(93, 9)$ | $[0.856, 0.963]$ |
+| Colony: Sybil infiltration | 20 | 20 | $\mathrm{Beta}(21, 1)$ | $[0.867, 1.000]$ |
+| Colony: Emergent misalignment | 56 | 100 | $\mathrm{Beta}(57, 45)$ | $[0.463, 0.654]$ |
 
-
-The multi-seed aggregate posterior confirms the frequentist headline: under the uniform prior and with 1000 aggregated trials, the posterior median detection rate is $0.448$ with a 95\% HDI of $[0.413, 0.483]$, matching the reported Wilson interval to within rounding. Two observations emerge from this table that the frequentist summary does not make equally visible. First, the LLM validation results have an HDI width of $0.487$ (Claude Code) and $0.283$ (CrewAI)---the small sample sizes produce precision too loose to distinguish, say, 70\% from 95\% detection. Second, the ablation TPR posterior concentrates tightly around $0.13$ ($n = 97$), whereas the multi-seed aggregate concentrates tightly around $0.45$, quantifying the 32-percentage-point gap as a structurally separated posterior rather than a sampling coincidence (see \cref{sec:bayes-factors}).
+The multi-seed posterior under the uniform prior has a posterior median detection rate of $0.453$ with a 95\% HDI of $[0.355, 0.547]$. This interval width (0.192) reflects the moderate per-seed sample size ($n = 100$); the 30-seed run characterizes between-seed variability and the seeds are not pooled as independent Bernoulli trials. Two observations are immediately visible. First, the LLM validation results have extremely wide HDIs (Claude Code width 0.573, CrewAI width 0.430) due to small sample sizes ($n = 5$ per architecture); these cannot support the 80–100\% detection range claimed in the abstract without acknowledging the wide credible intervals. Second, the ablation TPR posterior concentrates around $0.13$ ($n = 98$) whereas the multi-seed aggregate concentrates around $0.45$, quantifying the 32-percentage-point gap as a structurally separated posterior rather than a sampling coincidence (see \cref{sec:bayes-factors}).
 
 ## Bayes Factors for the Parametric-Empirical Gap {#sec:bayes-factors}
 
@@ -49,7 +48,7 @@ The single most consequential quantitative claim in this paper is that the param
 from src.statistics.bayesian import bayes_factor_two_proportions
 
 bf_10 = bayes_factor_two_proportions(
-    n1=1000, k1=448,    # aggregate multi-seed
+    n1=100, k1=45,      # representative seed multi-seed
     n2=100,  k2=92,     # parametric direct injection, full CIF
     prior=(1.0, 1.0),
 )
@@ -66,7 +65,7 @@ The Bayes factor does not by itself identify the \emph{cause} of the gap; it onl
 
 The last and most actionable Bayesian analysis is the prospective power calculation: how many evaluation trials are required to resolve each detection rate to a target HDI width? Using \texttt{power\_analysis\_beta\_binomial()} with target HDI half-width $0.05$ (i.e.\ $\pm 5$ percentage points), we obtain the following:
 
-**Table: Required sample size $n^*$ for $\pm 5$ pp HDI at each mode's estimated true rate. ``Adequately powered'' means current $n$ achieves $\pm 5$ pp HDI.** {#tab:power-analysis}
+Table: Required sample size $n^*$ for $\pm 5$ pp HDI at each mode's estimated true rate. ``Adequately powered'' means current $n$ achieves $\pm 5$ pp HDI. {#tab:power-analysis}
 
 | Evaluation Mode | Est.\ True Rate | Current $n$ | Required $n^*$ | Adequate? |
 | --- | --- | --- | --- | --- |

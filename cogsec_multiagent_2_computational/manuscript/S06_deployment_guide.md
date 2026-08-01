@@ -8,7 +8,7 @@ This supplementary material provides deployment considerations and integration e
 
 Before deploying CIF in production environments, verify completion of all items:
 
-**Table: Production deployment checklist.** {#tab:deploy-checklist}
+Table: Production deployment checklist. {#tab:deploy-checklist}
 
 | Checkpoint | Verification | Method |
 | --- | --- | --- |
@@ -161,7 +161,7 @@ def process_message(msg, source):
 
 The following operational metrics emerged as informative during our experimental evaluation and are included here as a reference for production monitoring:
 
-**Table: Key operational metrics for CIF monitoring.** {#tab:operational-metrics}
+Table: Key operational metrics for CIF monitoring. {#tab:operational-metrics}
 
 | Metric | Threshold | Action | Frequency |
 | --- | --- | --- | --- |

@@ -10,7 +10,7 @@ This supplementary material provides empirical results from the real CIF defense
 
 We evaluated pipeline detection rate stability across 30 random seeds on the Claude Code architecture using the full defense pipeline against the 950-attack corpus. \cref{tab:multi-seed-summary} summarizes the aggregate statistics.
 
-**Table: Multi-seed pipeline detection rate summary (Claude Code, $N=30$ seeds).** {#tab:multi-seed-summary}
+Table: Multi-seed pipeline detection rate summary (Claude Code, $N=30$ seeds). {#tab:multi-seed-summary}
 
 | Metric  | Value |
 | --- | --- |
@@ -20,7 +20,7 @@ We evaluated pipeline detection rate stability across 30 random seeds on the Cla
 | Coefficient of Variation | 0.097 |
 | Stability (CV < 0.05) | Not achieved |
 
-**Table: Per-seed detection rates (Claude Code, full pipeline).** {#tab:per-seed-rates}
+Table: Per-seed detection rates (Claude Code, full pipeline). {#tab:per-seed-rates}
 
 | Seeds 1–10 | Seeds 11–20 | Seeds 21–30 |
 | --- | --- | --- |
@@ -35,7 +35,7 @@ We evaluated pipeline detection rate stability across 30 random seeds on the Cla
 
 The multi-seed aggregate sample size ($N = 30 \times 1000 = 30{,}000$ evaluation events) provides strong precision, but the smaller-$N$ evaluation modes in this paper vary considerably in their achievable precision. \cref{tab:power-summary} summarizes the sample size required for $\pm 5$ pp posterior HDI half-width at each mode's estimated true detection rate, using the Beta-Binomial power calculation of \cref{sec:power-analysis}.
 
-**Table: Power summary: sample size required for $\pm 5$ pp HDI at the estimated true rate.** {#tab:power-summary}
+Table: Power summary: sample size required for $\pm 5$ pp HDI at the estimated true rate. {#tab:power-summary}
 
 | Evaluation Mode | Est.\ True Rate | Current $N$ | Required $N^*$ | Adequately Powered? |
 | :--- | :---: | :---: | :---: | :---: |
@@ -51,7 +51,7 @@ The multi-seed aggregate sample size ($N = 30 \times 1000 = 30{,}000$ evaluation
 
 The wide range of detection rates observed across evaluation modes (12\%--100\%) reflects a structural gap between the parametric design-level ceiling and the current empirical pipeline. \cref{tab:gap-quantification} summarizes this gap for the architectures for which both parametric and empirical measurements are available.
 
-**Table: Gap between parametric ceiling and empirical detection, with primary attribution.** {#tab:gap-quantification}
+Table: Gap between parametric ceiling and empirical detection, with primary attribution. {#tab:gap-quantification}
 
 | Architecture | Parametric DR | Empirical DR | Total Gap | Primary Cause |
 | :--- | :---: | :---: | :---: | :--- |
@@ -71,7 +71,7 @@ To confirm that the defense pipeline operates correctly when attacks are process
 
 Five representative attacks (one per category) were evaluated against a single LLM agent to establish baseline behavior (\cref{tab:llm-baseline}):
 
-**Table: Single-agent LLM baseline results (Gemma 3 4B).** {#tab:llm-baseline}
+Table: Single-agent LLM baseline results (Gemma 3 4B). {#tab:llm-baseline}
 
 | Attack | Category | Agent Refused | CIF Detected | CIF Score |
 | --- | --- | --- | --- | --- |
@@ -87,7 +87,7 @@ Five representative attacks (one per category) were evaluated against a single L
 
 We evaluated 5 attacks across 2 architecture topologies (Claude Code hub-spoke, CrewAI chain) with full multiagent propagation (\cref{tab:llm-multiagent}):
 
-**Table: LLM-backed multiagent detection results ($N=10$, Gemma 3 4B, 5 attacks per architecture).** {#tab:llm-multiagent}
+Table: LLM-backed multiagent detection results ($N=10$, Gemma 3 4B, 5 attacks per architecture). {#tab:llm-multiagent}
 
 | Architecture | Topology | Detection Rate | TP / FN | Avg Latency |
 | :--- | :--- | :--- | :--- | :--- |
@@ -98,7 +98,7 @@ We evaluated 5 attacks across 2 architecture topologies (Claude Code hub-spoke, 
 
 \cref{tab:parametric-vs-llm} contrasts design-level parametric detection rates with the observed LLM pipeline rates.
 
-**Table: Detection rate comparison: parametric simulation vs LLM pipeline.** {#tab:parametric-vs-llm}
+Table: Detection rate comparison: parametric simulation vs LLM pipeline. {#tab:parametric-vs-llm}
 
 | Architecture | Parametric DR | LLM Pipeline DR | Gap |
 | :--- | :--- | :--- | :--- |
@@ -115,7 +115,7 @@ Colony benchmarks evaluate CIF at scale across five adversarial scenarios with v
 
 **Scenario Construction**: (1) *Recruitment poisoning* (20 agents, 100 steps, 2 adversaries): adversarial agents send messages encoding false belief priors to each new agent that joins their communication neighborhood, attempting to corrupt the population's prior distribution before CIF filtering activates. (2) *Sybil infiltration* (50 agents, 500 steps, 4 adversaries): adversarial agents are registered with artificially elevated initial trust scores ($T_0 = 0.85$ vs.\ honest agents' $T_0 = 0.5$) and flood the consensus channel with coordinated false votes. (3) *Quorum manipulation* (30 agents, 200 steps, 3 adversaries): adversarial agents time their vote submissions to arrive within a synchronized window during Phase 1 of Byzantine consensus, attempting to skew the vote distribution before honest agents can respond. (4) *Belief cascade* (100 agents, 300 steps, 2 adversaries): adversarial agents target a high-connectivity hub node (degree $\geq 15$) with a false belief injection, relying on honest-agent belief propagation to amplify the falsehood without further adversarial action. (5) *Emergent misalignment* (50 agents, 1000 steps, 0 adversaries): all agents initialize with slightly inconsistent belief priors (sampled from $\mathcal{N}(0, 0.1)$ perturbations of a shared prior) and interact without any adversarial agents; natural deliberation causes collective drift, testing CIF's false-positive behavior and recovery mechanisms.
 
-**Table: Colony benchmark results (real execution).** {#tab:colony-benchmarks}
+Table: Colony benchmark results (real execution). {#tab:colony-benchmarks}
 
 | Scenario | Agents | Steps | Adversaries | Detection Rate | FPR | Recovery Steps | CCS Score |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -137,11 +137,51 @@ The following subsections provide detailed statistical analysis organized as sep
 
 - **Parametric Simulation Analysis** (\cref{sec:parametric-analysis}): Design-level detection rates, per-architecture parametric tables, parametric confidence intervals, parameter sensitivity sweeps, and minimal viable configurations. See `S08_parametric_analysis.md`.
 
+## Comparison Against Non-CIF Baselines {#sec:baseline-comparison}
+
+A detection rate is only interpretable against a comparator: 12% is meaningful if
+chance is 1% and a concern if a twenty-line regex gets 38%. The following
+comparison evaluates CIF and four non-CIF detectors on the identical stratified
+attack sample ($N=98$ attacks) and benign control set ($N=50$) used by the
+published ablation. The trained comparator (bag-of-words logistic regression) is
+scored strictly out of fold.
+
+Table: Detector comparison — CIF vs non-CIF baselines and a chance null. {#tab:baseline-comparison}
+
+| Detector | TPR | FPR | Youden's J | AUC | Permutation $p$ |
+| --- | --- | --- | --- | --- | --- |
+| Bag-of-words LR (trained, 5-fold CV) | 1.000 | 0.060 | 0.940 | 1.000 | 0.0001 |
+| Length-only ($\geq 120$ chars) | 0.541 | 0.000 | 0.541 | 0.987 | 0.0001 |
+| Keyword regex (19 frozen patterns) | 0.367 | 0.000 | 0.367 | 0.684 | 0.0001 |
+| CIF full pipeline (8 modules) | 0.122 | 0.000 | 0.122 | 0.855 | 0.0046 |
+| Random null (matched flag rate) | 0.082 | 0.060 | 0.022 | 0.486 | 0.4536 |
+
+*CIF ranks 4 of 5 detectors by Youden's J on this corpus. The strongest non-CIF
+detector (bag-of-words logistic regression, J = 0.940) outperforms CIF by a
+factor of 7.7. The keyword regex baseline (TPR 36.7%, zero false positives)
+detects three times as many attacks as CIF while using 19 frozen
+prompt-injection patterns. The length-only baseline (flag anything $\geq 120$
+characters, TPR 54.1%) outperforms CIF by a factor of 4.4. However, CIF
+outperforms the random null (J = 0.022, permutation $p = 0.454$, not significant),
+confirming that its detection rate, while low in absolute terms, is above chance.
+All comparisons include a permutation test ($N = 10{,}000$ shuffles) against the
+null hypothesis that the detector is no better than random labeling. All four
+non-random detectors achieve $p < 0.01$.*
+
+**Caveats.** The attack corpus is template-generated, so lexical baselines are
+partly matched to the generators. This cuts both ways: either the corpus design
+over-represents lexically-detectable patterns, or CIF's semantic pipeline
+underperforms simple detectors on it. The benign control set is only 50
+messages, so every false-positive rate has a Wilson 95% upper bound near 7% even
+when zero false positives are observed. See
+`output/data/baseline_comparison.json` for per-payload scores and bootstrap
+confidence intervals.
+
 ## Summary of Empirical Results {#sec:empirical-summary}
 
 \begin{enumerate}
 \item **Pipeline detection (real)**: The full CIF defense pipeline achieves a mean detection rate of $\sim$44\% (95\% range: 37--56\%) across 30 random seeds on the Claude Code architecture, with a coefficient of variation of 0.097.
-\item **Component hierarchy (real)**: Ablation studies on a 100-attack corpus confirm that the Detection module contributes the largest marginal loss ($\Delta\text{TPR} \approx -0.052$ when removed), followed by Tripwires ($\approx -0.011$), Invariants ($\approx -0.010$), and Firewall ($\approx -0.009$). Full pipeline TPR on this corpus is $\sim$12\%.
+\item **Component hierarchy (real)**: Ablation studies on a 100-attack corpus confirm that the Detection module contributes the largest marginal loss ($\Delta\text{TPR} \approx -0.051$ when removed), followed by Tripwires ($\approx -0.011$), Invariants ($\approx -0.010$), and Firewall ($\approx -0.009$). Full pipeline TPR on this corpus is $\sim$12\%.
 \item **LLM validation**: Preliminary LLM-backed evaluation ($N=10$, Gemma 3 4B) yields 80--100\% detection across Claude Code (80\%) and CrewAI (100\%) topologies, providing initial evidence that CIF's defenses operate with real language model reasoning.
 \item **Colony benchmarks**: CIF achieves 81--100\% detection on structured adversarial scenarios (recruitment poisoning, sybil infiltration, quorum manipulation, belief cascade) but only 56\% on emergent misalignment, highlighting the need for improved collective-behavior detection.
 \item **Parametric ceiling**: The parametric simulation (\cref{sec:parametric-analysis}) achieves 94--100\% detection, establishing the theoretical coverage ceiling. The gap between empirical results and parametric predictions reflects current adapter implementation maturity, not fundamental limitations of the CIF architecture.

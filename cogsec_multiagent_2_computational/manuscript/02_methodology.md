@@ -12,7 +12,7 @@ The implementation comprises six core algorithms (\cref{sec:pseudocode}), 27 con
 
 The CIF defense suite processes each inter-agent message through a layered pipeline. Modules 1–5 operate **in series** for each message; modules 6–8 operate **in parallel** on separate communication events (trust updates on interaction completion, consensus on multi-agent decisions, provenance on message receipt).
 
-**Table: CIF processing pipeline — module order, inputs, outputs, and attack targets.** {#tab:pipeline-architecture}
+Table: CIF processing pipeline — module order, inputs, outputs, and attack targets. {#tab:pipeline-architecture}
 
 | Stage | Module | Primary Input | Output | Attack Target |
 | --- | --- | --- | --- | --- |

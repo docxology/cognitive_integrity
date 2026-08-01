@@ -17,7 +17,7 @@ This supplementary material documents the core framework modules that implement 
 
 The trust module implements bounded trust delegation with configurable decay.
 
-**Table: Trust module API: Core classes for trust computation and management.** {#tab:trust-api}
+Table: Trust module API: Core classes for trust computation and management. {#tab:trust-api}
 
 | Class | Description |
 | --- | --- |
@@ -38,7 +38,7 @@ The trust module implements bounded trust delegation with configurable decay.
 
 The firewall module implements multi-stage classification for cognitive attack detection.
 
-**Table: Firewall module API: Classes for message classification and threat detection.** {#tab:firewall-api}
+Table: Firewall module API: Classes for message classification and threat detection. {#tab:firewall-api}
 
 | Class | Description |
 | --- | --- |
@@ -59,7 +59,7 @@ The firewall module implements multi-stage classification for cognitive attack d
 
 The consensus module implements Byzantine-tolerant agreement protocols.
 
-**Table: Consensus module API: Classes for Byzantine-tolerant multiagent decisions.** {#tab:consensus-api}
+Table: Consensus module API: Classes for Byzantine-tolerant multiagent decisions. {#tab:consensus-api}
 
 | Class | Description |
 | --- | --- |
@@ -79,7 +79,7 @@ The consensus module implements Byzantine-tolerant agreement protocols.
 
 The detection module implements statistical anomaly and drift detection.
 
-**Table: Detection module API: Classes for belief drift and anomaly detection.** {#tab:detection-api}
+Table: Detection module API: Classes for belief drift and anomaly detection. {#tab:detection-api}
 
 | Class | Description |
 | --- | --- |
@@ -90,7 +90,7 @@ The detection module implements statistical anomaly and drift detection.
 
 The provenance module implements information flow tracking with causal attribution.
 
-**Table: Provenance module API: Classes for belief origin tracking and taint propagation.** {#tab:provenance-api}
+Table: Provenance module API: Classes for belief origin tracking and taint propagation. {#tab:provenance-api}
 
 | Class | Description |
 | --- | --- |
@@ -103,7 +103,7 @@ The provenance module implements information flow tracking with causal attributi
 
 The sandbox module implements belief partitioning for provisional information management.
 
-**Table: Sandbox module API: Classes for belief sandboxing and promotion.** {#tab:sandbox-api}
+Table: Sandbox module API: Classes for belief sandboxing and promotion. {#tab:sandbox-api}
 
 | Class | Description |
 | --- | --- |
@@ -115,7 +115,7 @@ The sandbox module implements belief partitioning for provisional information ma
 
 The tripwire module implements canary belief monitoring for intrusion detection.
 
-**Table: Tripwire module API: Classes for canary belief monitoring.** {#tab:tripwire-api}
+Table: Tripwire module API: Classes for canary belief monitoring. {#tab:tripwire-api}
 
 | Class | Description |
 | --- | --- |
@@ -127,7 +127,7 @@ The tripwire module implements canary belief monitoring for intrusion detection.
 
 The invariants module implements runtime behavioral constraint checking.
 
-**Table: Invariants module API: Classes for behavioral invariant enforcement.** {#tab:invariants-api}
+Table: Invariants module API: Classes for behavioral invariant enforcement. {#tab:invariants-api}
 
 | Class | Description |
 | --- | --- |

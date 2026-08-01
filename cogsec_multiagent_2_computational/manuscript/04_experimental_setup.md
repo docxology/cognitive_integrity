@@ -10,7 +10,7 @@ This section demonstrates the practical viability of CIF's formal mechanisms thr
 
 We evaluated CIF across four production multiagent systems representing diverse architectural patterns (\cref{tab:target-architectures}):
 
-**Table: Multiagent system architectures evaluated.** {#tab:target-architectures}
+Table: Multiagent system architectures evaluated. {#tab:target-architectures}
 
 | System  | Architecture  | Communication |
 | --- | --- | --- |
@@ -21,7 +21,15 @@ We evaluated CIF across four production multiagent systems representing diverse 
 
 ### Attack Corpus
 
-We assembled a corpus of 950 cognitive attacks across four categories: prompt injection (500), trust exploitation (200), belief manipulation (150), and coordination attacks (100). Sources include published jailbreak datasets \cite{perez2023hackaprompt}, custom adversarial prompts, red team exercises (8 researchers, 4-week engagement), and synthetic generation via adversarial models. The corpus was partitioned into training (70\%, $n=665$), test (20\%, $n=190$), and validation (10\%, $n=95$) splits with stratification across attack categories and difficulty levels. The training set was used for threshold calibration and fusion operator training; the test set for primary performance evaluation; and the held-out validation set for generalization assessment and sensitivity analysis.
+We assembled a corpus of 950 cognitive attacks across four categories: prompt
+injection (500), trust exploitation (200), belief manipulation (150), and
+coordination attacks (100). The corpus is 100% template-generated via
+`AttackCorpus.generate(seed=42)` — no external datasets are used. Evaluation
+uses the full corpus or a stratified subsample (target 100 attacks,
+proportional across subcategories) drawn deterministically at seed 42. No
+held-out validation split is performed: all reported detection rates are
+in-sample. Thresholds are hardcoded literals (`FirewallConfig.injection_threshold = 0.8`,
+etc.), not fitted on a training partition.
 
 ### Evaluation Methodology {#sec:eval-methodology}
 
@@ -35,7 +43,7 @@ This parametric approach enables controlled comparison across architectures and 
 
 **LLM-backed multiagent validation ($N=10$).** To confirm that the pipeline-driven and parametric results hold when attacks are processed by real language models operating within architecture-specific topologies, we additionally evaluate CIF using live LLM agents. Each architecture adapter spawns a multiagent system where every agent is backed by a real LLM (Gemma 3 4B \cite{team2025gemma} via Ollama), configured with role-specific system prompts (orchestrator, researcher, reviewer, etc.) and connected according to the architecture's communication graph and trust matrix. We evaluated 5 representative attacks (one per category) across 2 architectures ($5 \times 2 = 10$ trials). Attack payloads are injected into the system's entry-point agent(s) and propagated through the communication topology up to a bounded depth; the CIF defense pipeline then analyzes all inter-agent messages for detection. This three-phase evaluation---single-agent baseline ($N=5$), multi-agent propagation ($N=10$), and CIF defense analysis---demonstrates that the framework operates correctly with genuine LLM reasoning rather than simulated responses.
 
-**Table: LLM-backed multiagent detection results ($N=10$, Gemma 3 4B, 5 representative attacks per architecture).** {#tab:llm-validation}
+Table: LLM-backed multiagent detection results ($N=10$, Gemma 3 4B, 5 representative attacks per architecture). {#tab:llm-validation}
 
 | Architecture | Topology | Detection Rate | TP / FN | Avg Latency |
 | :--- | :--- | :--- | :--- | :--- |
@@ -58,14 +66,14 @@ The LLM-backed results provide preliminary evidence that CIF's defense pipeline 
 
 *H3 (Topology Dependence)*: Detection rate differs significantly across architecture topologies. Test: chi-squared test of independence across architecture × detected contingency table; $\alpha = 0.05$.
 
-**Table: Statistical power analysis for each evaluation mode.** {#tab:power-analysis-preregistration}
+Table: Statistical power analysis for each evaluation mode. {#tab:power-analysis-preregistration}
 
 The power summary (\cref{tab:power-analysis-preregistration}) shows that the multi-seed and LLM validation modes are severely underpowered for precise estimation.
 
 | Evaluation Mode | $N$ (Actual) | Effect Size | Required $N$ ($\pm 5\%$ precision) | Interpretation |
 | :--- | :--- | :--- | :--- | :--- |
 | Multi-seed pipeline (30 seeds) | 30 | DR = 0.448 | $N \geq 246$ seeds | Severely underpowered; $\pm 8.8\%$ CI |
-| Ablation corpus | 100 attacks | TPR = 0.124 | $N \geq 171$ | Marginally underpowered; $\pm 6.5\%$ CI |
+| Ablation corpus | 98 attacks | TPR = 0.122 | $N \\geq 171$ | Marginally underpowered; $\\pm 6.5\\%$ CI |
 | LLM multiagent (per arch.) | 5 per arch. | DR $\in$ [0.80, 1.00] | $N \geq 246$ | Severely underpowered; wide CIs |
 | Colony benchmark | 1 scenario each | — | $N \geq 10$ scenarios | Exploratory only; not powered for inference |
 | Parametric simulation | 3,800 | DR = 0.94--1.00 | Sufficient | Design-level; not subject to sampling |
@@ -84,7 +92,7 @@ The central empirical finding validates CIF's layered approach. No single defens
 
 ![Detection Performance Comparison. Bar chart comparing detection rates across defense configurations (Baseline, Firewall-only, Sandbox-only, Tripwires-only, Full CIF) for each attack category (Prompt Injection, Trust Exploitation, Belief Manipulation, Coordination). Error bars show 95\% bootstrap confidence intervals ($n=1{,}000$ resamples). Full CIF consistently achieves $>90\%$ detection across all categories, while individual mechanisms show significant gaps---validating the defense composition algebra (Part 1, Theorems 3.1-3.2). The Full CIF theoretical rate ($1 - \prod(1-r_i) \approx 0.99$) via \texttt{compute\_series\_detection\_rate()} exceeds the empirical 0.94, indicating room for implementation-level optimization. Detection data generated by the CIF evaluation pipeline (\texttt{output/data/detection\_data.json}).](figures/detection_performance.pdf){#fig:detection-performance width=95%}
 
-**Table: Detection performance summary — empirical results across evaluation modes.** {#tab:detection-performance}
+Table: Detection performance summary — empirical results across evaluation modes. {#tab:detection-performance}
 
 | Evaluation Mode | Detection Rate | Sample Size | Source |
 | --- | --- | --- | --- |
@@ -99,7 +107,7 @@ The central empirical finding validates CIF's layered approach. No single defens
 
 *Note: The wide variation across evaluation modes (12--100\%) reflects the distinction between CIF's design-level coverage (parametric) and the current adapter implementations' maturity (pipeline/LLM). The multi-seed mean of 44.8\% represents the most reliable single estimate for the Claude Code architecture under current implementation. Confidence intervals for LLM results are Clopper-Pearson exact binomial intervals reflecting the preliminary sample size ($N=5$ per architecture).*
 
-The real ablation data (\cref{tab:component-removal}) quantifies the layered architecture's individual contributions: no single component accounts for a majority of detection (Detection module: $\Delta\text{TPR} \approx -0.052$ when removed), while the three largest harmful removals (Detection, Tripwires, Invariants) together account for about 82\% of the summed negative $\Delta\text{TPR}$ magnitude on this corpus. This confirms that defense composition provides meaningful improvement over individual mechanisms, consistent with the multiplicative composition theorems from Part 1.
+The real ablation data (\cref{tab:component-removal}) quantifies the layered architecture's individual contributions: no single component accounts for a majority of detection (Detection module: $\Delta\text{TPR} \approx -0.051$ when removed), while the three largest harmful removals (Detection, Tripwires, Invariants) together account for about 82\% of the summed negative $\Delta\text{TPR}$ magnitude on this corpus. This confirms that defense composition provides meaningful improvement over individual mechanisms, consistent with the multiplicative composition theorems from Part 1.
 
 The multi-seed pipeline analysis (mean DR = 44.8\%, CV = 0.097 across 30 seeds) establishes a reliable baseline for the Claude Code architecture. The parametric simulation (\cref{sec:parametric-analysis}) achieves 94--100\% detection rate, defining the design-level coverage ceiling that fully-realized adapter implementations should approach.
 
@@ -117,7 +125,7 @@ Critically, this held even when individual agents in the delegation chain were c
 
 \cref{tab:cross-arch-summary} summarizes the real LLM validation results by architecture topology.
 
-**Table: Cross-architecture detection summary (real LLM validation, $N=10$).** {#tab:cross-arch-summary}
+Table: Cross-architecture detection summary (real LLM validation, $N=10$). {#tab:cross-arch-summary}
 
 | Architecture | Detection Rate | TP / FN | Topology |
 | --- | --- | --- | --- |

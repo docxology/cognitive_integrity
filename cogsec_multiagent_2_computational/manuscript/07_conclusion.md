@@ -26,7 +26,7 @@ This paper provided computational validation of the Cognitive Integrity Framewor
 
 The multi-tier evaluation yields four principal findings:
 
-1. **Layered defense is essential**: Ablation studies confirm that no single component accounts for a majority of detection. The top three components by marginal removal cost (Detection, Tripwires, Invariants) account for about 82\% of the summed harmful $\Delta\text{TPR}$ from component removal on the ablation corpus, and the Tripwire + Detection pair exhibits the strongest synergy ($\approx +0.025$ beyond additive prediction).
+1. **Layered defense is essential**: Ablation studies confirm that no single component accounts for a majority of detection. The top three components by marginal removal cost (Detection, Tripwires, Invariants) account for about 82\% of the summed harmful $\Delta\text{TPR}$ from component removal on the ablation corpus, and the Tripwire + Detection pair exhibits the strongest synergy ($\approx +0.031$ beyond additive prediction).
 
 2. **Trust calculus prevents amplification**: The $\delta^d$ decay bound successfully prevented trust laundering across all evaluation modes---a structural guarantee verified formally (Part 1), through unit-tested implementation, and through colony-scale simulation (100\% sybil detection at 0\% FPR with 50 agents and 4 adversaries).
 

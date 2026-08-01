@@ -15,7 +15,7 @@ This supplement provides the complete specification for CIF's functional and mon
 
 The core types form a small, disciplined hierarchy. The sum type $\mathrm{Result}[T, E]$ is the root; $\mathrm{Ok}[T]$ and $\mathrm{Err}[E]$ are its two variants; $\mathrm{DetectionEvent}$ is the specific $E$ used by CIF; and existing types from \texttt{src/core/base.py} connect into this hierarchy via the adapter \texttt{from\_defense\_result()}.
 
-**Table: CIF monadic API types.** {#tab:s09-types}
+Table: CIF monadic API types. {#tab:s09-types}
 
 | Type | Kind | Role |
 | --- | --- | --- |
@@ -122,7 +122,7 @@ The bridge between the two interfaces is \texttt{lift\_defense\_module()}, which
 
 Both pipeline interfaces produce identical detection outcomes on identical inputs. The differences are in typing, composition story, and formal guarantees, not in what gets detected.
 
-**Table: Side-by-side comparison of the two pipeline interfaces.** {#tab:s09-pipeline-comparison}
+Table: Side-by-side comparison of the two pipeline interfaces. {#tab:s09-pipeline-comparison}
 
 | Feature | \texttt{SeriesPipeline} | \texttt{MonadicPipeline} |
 | --- | --- | --- |

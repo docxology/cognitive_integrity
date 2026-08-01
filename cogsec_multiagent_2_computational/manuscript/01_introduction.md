@@ -121,7 +121,7 @@ Eight supplementary sections accompany this paper, with S09–S12 added or expan
 
 This paper is designed to stand alone as the empirical-validation reference of the series. The table below points readers to the sibling paper and section where each related topic is developed most fully.
 
-**Table: Cross-paper navigation from Part 2 topics to sibling developments.** {#tab:part2-navigation}
+Table: Cross-paper navigation from Part 2 topics to sibling developments. {#tab:part2-navigation}
 
 | If you want\ldots | \ldots consult\ldots |
 | --- | --- |

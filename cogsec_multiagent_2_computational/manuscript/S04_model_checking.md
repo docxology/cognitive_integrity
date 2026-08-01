@@ -169,7 +169,7 @@ THEOREM Spec => []ConsensusIntegrity
 
 ## Tool Selection Guide {#sec:tool-selection}
 
-**Table: Model checking tool selection by verification objective.** {#tab:tool-selection}
+Table: Model checking tool selection by verification objective. {#tab:tool-selection}
 
 | Objective | Recommended Tool | Rationale |
 | --- | --- | --- |
@@ -185,7 +185,7 @@ All three tools verify the same four core properties (belief integrity, trust bo
 
 The following parameters configure model checking execution. Values are chosen to balance verification completeness against computational feasibility.
 
-**Table: Model checking configuration parameters.** {#tab:verification-config}
+Table: Model checking configuration parameters. {#tab:verification-config}
 
 | Parameter | Value | Rationale |
 | :--- | :--- | :--- |

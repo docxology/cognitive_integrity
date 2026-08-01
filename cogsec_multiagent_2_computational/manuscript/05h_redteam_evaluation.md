@@ -8,9 +8,11 @@
 > infrastructure is discussed in the merged Part 3+4 \cite{friedman2026cogsec3} §4.2
 > (practitioner red-team checklists) and §5.3.2 (incident-response integration).
 >
-> **Status.** The complete red-team evaluation script and result artifact are not
-> included in this checkout. The section is therefore conceptual/planned and its
-> illustrative values are not reported as reproducible empirical evidence.
+> **Status.** Values below are generated deterministically by
+> `scripts/run_redteam.py --seed 42` → `output/data/redteam_evaluation_results.json`
+> ($M=950$). The mutation-operator table is re-derived from that data file by
+> `tests/test_redteam.py` (evasion-sweep and manuscript-consistency tests), so
+> the manuscript cannot drift from the committed measurements.
 
 ## Red-Team Architecture {#sec:redteam-arch}
 
@@ -30,14 +32,20 @@ infrastructure for:
 
 ```
 src/redteam/
-├── __init__.py
-├── generator.py        # AdversarialGenerator: conditioned attack generation
-├── mutator.py          # AttackMutator: systematic payload mutation
-├── campaign.py         # CampaignOrchestrator: multi-stage attack campaigns
-├── evasion_probe.py    # EvasionProbe: targeted component probing
-├── scorer.py           # RedTeamScorer: evasion rate and coverage metrics
-└── report.py           # RedTeamReport: structured findings reporting
+├── __init__.py          # AdversarialTrainer, ATConfig, NashEquilibriumEstimator
+├── generator.py         # AdversarialGenerator: conditioned attack generation; AttackMutator
+├── convergence.py       # Round-attribution and adversarial-rate-of-change tracking
+└── evasion.py           # Mutation-operator evasion sweep vs. the real CognitiveFirewall
 ```
+
+*As-built listing. The manuscript v2.0 draft referenced `mutator.py`, `campaign.py`,
+`evasion_probe.py`, `scorer.py`, and `report.py` as planned modules; of these,
+`campaign.py`, `evasion_probe.py`, `scorer.py`, and `report.py` are not yet
+implemented. Mutation testing is driven by `generator.py`'s `AttackMutator`
+class, which performs all 12 mutation types inline; the mutation-operator escape
+sweep below is driven by `evasion.py`, which runs those operators against the
+real `CognitiveFirewall` and reports each rate with a Wilson confidence interval
+and a minimum-denominator anti-vacuity guard.*
 
 ## Mutation Testing Results {#sec:mutation-results}
 
@@ -45,99 +53,77 @@ Mutation testing applies 12 mutation operators to each detected attack,
 generating variants that test the boundary of the detection decision surface.
 A mutation is "successful" (from the adversary's perspective) if it converts a
 detected attack to an undetected one while preserving the attack's semantic intent.
-\cref{tab:mutation-operators} reports the evasion rate for each operator.
 
-**Table: Mutation operator effectiveness (successful evasion rate).** {#tab:mutation-operators}
+Table: Mutation operator evaluation (real pipeline, seed 42, $M=950$). {#tab:mutation-operators}
 
-| Mutation Operator | Category | Attempts | Successful | Evasion Rate |
-| :--- | :--- | ---: | ---: | :---: |
-| Semantic paraphrase | Lexical | 950 | 287 | 30.2% |
-| Nested wrapping | Structural | 950 | 203 | 21.4% |
-| Indirect routing | Structural | 950 | 189 | 19.9% |
-| Authority prefix | Trust | 950 | 156 | 16.4% |
-| Gradual insertion | Timing | 950 | 134 | 14.1% |
-| Chain delegation | Trust | 950 | 98 | 10.3% |
-| Belief anchoring | Semantic | 950 | 87 | 9.2% |
-| Multi-hop routing | Structural | 950 | 76 | 8.0% |
-| Canary avoidance | Evasion | 950 | 71 | 7.5% |
-| Confidence spoofing | Trust | 950 | 62 | 6.5% |
-| Byzantine mimicry | Coordination | 950 | 58 | 6.1% |
-| Quorum flooding | Coordination | 950 | 43 | 4.5% |
-
-*Semantic paraphrase is the most effective mutation operator (30.2% evasion rate),
-indicating that the detection pipeline relies partially on lexical patterns. Structural
-mutations (nested wrapping, indirect routing) are the next most effective, targeting
-depth-limited parsing in the firewall preprocessor.*
+| Mutation Operator | Attempts | Successful Evasions | Evasion Rate | 95\% CI |
+| :--- | ---: | ---: | :---: | :---: |
+| Semantic paraphrase | 66 | 0 | 0.0\% | [0.0, 5.5\%] |
+| Nested wrapping | 66 | 0 | 0.0\% | [0.0, 5.5\%] |
+| Indirect routing | 66 | 0 | 0.0\% | [0.0, 5.5\%] |
+| Authority prefix | 66 | 0 | 0.0\% | [0.0, 5.5\%] |
+| Gradual insertion | 66 | 3 | 4.5\% | [1.6, 12.5\%] |
+| Chain delegation | 66 | 0 | 0.0\% | [0.0, 5.5\%] |
+| Belief anchoring | 66 | 0 | 0.0\% | [0.0, 5.5\%] |
+| Multi-hop routing | 66 | 0 | 0.0\% | [0.0, 5.5\%] |
+| Canary avoidance | 66 | 0 | 0.0\% | [0.0, 5.5\%] |
+| Confidence spoofing | 66 | 0 | 0.0\% | [0.0, 5.5\%] |
+| Byzantine mimicry | 66 | 0 | 0.0\% | [0.0, 5.5\%] |
+| Quorum flooding | 66 | 0 | 0.0\% | [0.0, 5.5\%] |
 
 ### Detection Boundary Analysis
 
-The mutation results reveal three distinct detection boundaries:
+The mutation results reveal that on the 66 distinct payloads the firewall flags
+in the 950-sample corpus (871 distinct payloads, seed 42), 11 of the 12 mutation
+operators produce zero evasions against the real CIF pipeline. The exception is
+**gradual insertion**, which evaded detection in 3 of 66 cases (4.5\%; 95\%
+Wilson CI $[1.6\%, 12.5\%]$) by splitting the `ignore previous instructions`
+trigger phrase so the firewall's lexical pattern no longer matches. Of the 792
+total mutation attempts (66 $\times$ 12 operators), 789 were detected. For the
+eleven zero-success operators, the 95\% Wilson upper bounds indicate the true
+evasion rate is below 5.5\% with 95\% confidence.
 
-1. **Lexical boundary** (paraphrase-vulnerable): 30.2% of detected attacks can be
-   made to evade detection by paraphrasing their payload while preserving semantics.
-   This boundary is addressed by the semantic scoring component but is not fully
-   closed in the Claude Code adapter implementation.
+**Interpretation**: The near-zero-evasion result reflects the current pipeline's effectiveness against this template-generated attack corpus at seed 42. It does not imply that the pipeline is impervious to mutation attacks. The 66-flagged-payload denominator may not contain the specific attack patterns that each mutation operator targets; the single successful operator, gradual insertion, works by a *lexical* mechanism (splitting the trigger phrase) rather than by semantic reformulation. Furthermore, the mutation operators may produce variants that no longer preserve the original attack's semantic intent (the preservation check in the mutator is lexical, not semantic), so successful (semantics-preserving) evasions may be genuinely rare on this corpus.
 
-2. **Structural depth boundary**: The firewall's nesting-depth limit ($d_{\max} = 3$
-   by default) creates a detection boundary exploitable by mutations that increase
-   nesting depth beyond $d_{\max}$. Increasing $d_{\max}$ closes this gap at the
-   cost of $O(d_{\max})$ processing overhead per message.
+### Known Limitations
 
-3. **Trust chain boundary**: Delegation chains of length $> \delta^d_{\max}$
-   (Part 1 \cite{friedman2026cogsec1} §4.1, bounded delegation) create verifiable
-   gaps only for $\Omega_3$ adversaries who can fabricate intermediate delegation
-   records. The current trust calculus correctly identifies these gaps but the
-   adapter does not fully enforce trust-chain depth limits.
+The current red-team evaluation has important scope limitations:
 
-## Campaign Simulation Results {#sec:campaign-results}
+1. **Corpus size**: The evasion denominator is 66 distinct flagged payloads drawn from the 950-sample corpus (871 distinct payloads), limiting statistical power (e.g., the gradual-insertion 4.5\% rate has a 95\% CI spanning 1.6–12.5\%).
+2. **Deterministic evaluation**: All evaluations use seed 42; results may differ with other seeds.
+3. **Template-generated attacks**: The attack corpus is 100\% synthetic template expansion; mutation effectiveness may differ on real-world attacks.
+4. **Lexical preservation check**: The semantic-equivalence check in the mutator is lexical, not semantic; some "preserved" mutations may have altered meaning, and some "broken" mutations may have preserved it.
 
-Multi-stage attack campaigns test CIF's ability to detect coordinated scenarios
-where individual messages are innocuous but their combination constitutes an attack.
-Five campaign scenarios were evaluated, each involving 3–7 sequential messages (\cref{tab:campaigns}):
+Future work should expand the evaluation corpus, implement semantic preservation checking, and test against real-world attack corpora.
 
-**Table: Multi-stage campaign detection results.** {#tab:campaigns}
+## $\Omega$-Level Coverage {#sec:redteam-omega}
 
-| Campaign | Stages | Agents Involved | Detected? | Detection Stage | Delay (msgs) |
-| :--- | :---: | :---: | :---: | :---: | :---: |
-| Belief priming + injection | 3 | 2 | Yes | Stage 2 | 1 |
-| Progressive trust inflation | 5 | 3 | Yes | Stage 3 | 2 |
-| Sybil staging + quorum attack | 7 | 5 | Partial | Stage 5 | 4 |
-| Gossip poisoning campaign | 4 | 4 | No | — | — |
-| Authority chain fabrication | 6 | 3 | Yes | Stage 4 | 3 |
+The red-team harness generates $M=190$ attacks per $\Omega$ level (950 total,
+seed 42) using `AdversarialGenerator` with $\Omega$-conditioned templates. The
+table reports, per level, how many attacks were generated, how many *distinct*
+payloads the generator emitted (its template set is small), and the generator's
+mean self-estimated evasion score — a design-level heuristic, **not** a
+firewall-measured evasion rate. Firewall-measured evasion is reported separately
+in the mutation sweep above, whose denominator is the 66 corpus payloads the
+firewall flags.
 
-*"Partial" detection indicates that the coordinated nature was detected but one sybil
-agent was not identified. The gossip poisoning campaign (undetected) is a known gap
-in the current implementation: the belief drift detector evaluates individual agent
-deltas but does not compute inter-agent belief correlation, which is required to
-detect coordinated manipulation. This is flagged as Priority-1 gap in §\ref{sec:architecture-gap-analysis}.*
+Table: Red-team generator summary by adversary capability level (seed 42). {#tab:redteam-omega}
 
-## Coverage Analysis {#sec:redteam-coverage}
+| Adversary Level | Attacks Generated | Distinct Payloads | Mean Self-Estimated Evasion |
+| :--- | ---: | ---: | :---: |
+| $\Omega_1$ (passive) | 190 | 2 | 0.6% |
+| $\Omega_2$ (injection) | 190 | 3 | 24.6% |
+| $\Omega_3$ (impersonation) | 190 | 3 | 32.6% |
+| $\Omega_4$ (belief manipulation) | 190 | 3 | 36.6% |
+| $\Omega_5$ (coordinated) | 190 | 5 | 44.6% |
 
-The red-team evaluation covers the following fraction of the $\Omega_1$–$\Omega_5$
-capability space:
-
-| Capability Level | Attack Types in Corpus | RT Coverage | Gaps Identified |
-| :--- | :---: | :---: | :--- |
-| $\Omega_1$ (passive) | 8 | 100% | None |
-| $\Omega_2$ (injection) | 24 | 100% | Lexical boundary |
-| $\Omega_3$ (impersonation) | 18 | 94% | Trust-chain depth limit |
-| $\Omega_4$ (belief manip.) | 15 | 87% | Natural gradient high-$p$ attacks |
-| $\Omega_5$ (coordinated) | 11 | 73% | Gossip correlation; sybil identification |
-
-The $\Omega_5$ coverage gap (73%) identifies the highest-priority open research problem:
-inter-agent belief correlation monitoring. Implementation of a correlation-based
-detection module is planned for v2.1.
-
-## Responsible Red-Teaming {#sec:redteam-ethics}
-
-All red-team artifacts (attack generators, mutation operators, campaign scripts) are:
-
-- **Contained**: Executed in sandboxed evaluation environments with no external
-  API access; all attacks are synthetic and never submitted to production systems.
-- **Documented**: Each attack type includes an ethical review annotation
-  in `src/redteam/generator.py` following the framework in §\ref{sec:ethical-considerations}.
-- **Controlled**: The `AdversarialGenerator` requires an explicit `ethical_mode=True`
-  flag and records the purpose of each generated attack in the audit log.
-- **Responsibly disclosed**: Novel evasion techniques discovered during red-teaming
-  are documented in `output/reports/redteam_findings.md` for responsible disclosure
-  to affected architecture maintainers.
+*The monotonic increase in the generator's self-estimated evasion score with $\Omega$
+level is expected: higher-capability adversaries receive higher base evasion scores
+by construction and emit more structurally diverse payloads (distinct-payload counts
+2→5). These are generative heuristics, not firewall-measured evasion. The
+firewall-measured proxy is the mutation sweep above: 66 of the corpus's 871 distinct
+payloads (7.6\%) are flagged, and 11 of 12 mutation operators achieve zero real
+evasions against the firewall. The $\Omega_5$ design-level score of 44.6\% reflects
+that coordinated multi-step attacks are treated as the most capable adversary class,
+but this corpus does not independently measure their real-world evasion under the
+firewall.*

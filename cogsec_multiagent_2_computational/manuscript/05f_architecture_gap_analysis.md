@@ -25,7 +25,7 @@ The total gap decomposes additively: $G_{\text{total}} = G_{\text{adapter}} + G_
 
 We adopt a 5-level maturity rubric modeled on the Capability Maturity Model Integration (CMMI) scale but specialized to defense-module adapters (\cref{tab:maturity-rubric}). Each level implies a typical range of marginal TPR contribution and a typical dominant failure mode.
 
-**Table: Adapter maturity rubric and typical marginal TPR contribution.** {#tab:maturity-rubric}
+Table: Adapter maturity rubric and typical marginal TPR contribution. {#tab:maturity-rubric}
 
 | Level | Name | Description | Marginal TPR |
 | --- | --- | --- | --- |
@@ -38,21 +38,21 @@ We adopt a 5-level maturity rubric modeled on the Capability Maturity Model Inte
 
 Using the ablation contributions from \cref{sec:extended-ablation}, each CIF module can be placed on this scale:
 
-**Table: Current adapter maturity assessment per module. Evidence: $\Delta\mathrm{TPR** {#tab:module-maturity}
+Table: Current adapter maturity assessment per module. Evidence: $\Delta\mathrm{TPR {#tab:module-maturity}
 
 | Module | Level | Evidence | Primary Failure Mode |
 | --- | --- | --- | --- |
-| Detection | 3 | $\Delta\mathrm{TPR} = -0.052$; statistical features | B (threshold) |
-| Firewall | 2--3 | $\Delta\mathrm{TPR} \approx -0.009$; pattern matching | A (feature) |
-| Trust Calculus | 2 | $\Delta\mathrm{TPR} = -0.015$; limited adaptation | B (threshold) |
-| Tripwires | 3 | $\Delta\mathrm{TPR} = -0.011$; canary monitoring | A (feature) |
-| Consensus | 1--2 | $\Delta\mathrm{TPR} = -0.009$; uncalibrated | D (adapter hook) |
-| Provenance | 1 | $\Delta\mathrm{TPR} = -0.007$; stub on current corpus | D (adapter hook) |
-| Invariants | 3 | $\Delta\mathrm{TPR} = -0.006$; rule-based | C (unexercised) |
-| Sandbox | 1--2 | $\Delta\mathrm{TPR} = -0.005$; limited contribution | C (unexercised) |
+| Detection | 3 | $\\Delta\\mathrm{TPR} = -0.051$; statistical features | B (threshold) |
+| Trust Calculus | 3 | $\\Delta\\mathrm{TPR} = -0.020$; authority-claim detection | B (threshold) |
+| Firewall | 2 | $\\Delta\\mathrm{TPR} = -0.010$; pattern matching | A (feature) |
+| Tripwires | 2 | $\\Delta\\mathrm{TPR} = -0.010$; canary monitoring | A (feature) |
+| Invariants | 2 | $\\Delta\\mathrm{TPR} = -0.010$; rule-based | C (unexercised) |
+| Consensus | 1 | $\\Delta\\mathrm{TPR} = 0.000$; uncalibrated mock votes | D (adapter hook) |
+| Provenance | 1 | $\\Delta\\mathrm{TPR} = 0.000$; stub on current corpus | D (adapter hook) |
+| Sandbox | 1 | $\\Delta\\mathrm{TPR} = 0.000$; limited contribution | C (unexercised) |
 
 
-The Detection module's Level 3 rating reflects its calibrated statistical features and matches its dominant position in ablation. The Consensus module is Level 1--2 not because the Byzantine-consensus algorithm is inadequate---the formal theorem from Part 1 is unaffected---but because its current adapter uses mock votes rather than real agent voting and is not calibrated against the evaluation corpus. This is a classic $G_{\text{adapter}}$ failure: the formal mechanism is sound; the plumbing that connects the corpus to the mechanism is stub-level.
+The Detection module's Level 3 rating reflects its calibrated statistical features and matches its dominant position in ablation ($\\Delta\\mathrm{TPR} = -0.051$, 42% of baseline). The elevated Trust Calculus impact ($\\Delta\\mathrm{TPR} = -0.020$) relative to earlier manuscript revisions reflects the corrected ablation key mapping (see §\\ref{sec:component-removal}) — previous versions reported $\\Delta\\mathrm{TPR} \\approx -0.007$ because a name mismatch caused the Trust Calculus adapter to remain active in all ablation configurations. The Consensus, Provenance, and Sandbox modules show $\\Delta\\mathrm{TPR} = 0.000$ not because their formal mechanisms are inadequate, but because their current adapters use mock/stub implementations that are not exercised by the 98-attack stratified corpus. This is a classic $G_{\\text{adapter}}$ failure: the formal mechanism is sound; the plumbing that connects the corpus to the mechanism is stub-level.
 
 ## Failure Mode Taxonomy {#sec:failure-modes}
 
