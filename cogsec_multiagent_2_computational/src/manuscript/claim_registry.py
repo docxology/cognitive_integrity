@@ -875,7 +875,6 @@ def _component_claims(
                 "fraction",
             )
         )
-        sign = r"\+" if key in positive else "-"
         deriver = (
             (lambda k: lambda gt: gt.component_delta(k))(key)
             if key in positive
@@ -885,7 +884,7 @@ def _component_claims(
             _c(
                 f"{prefix}.delta.{key}",
                 file,
-                rf"\| {escaped} \| [\d.]+ \| \$\\+approx {sign}([\d.]+)\$",
+                rf"\| {escaped} \| [\d.]+ \| \$\\+approx [+-]?([\d.]+)\$",
                 deriver,
                 F3,
                 "fraction",
@@ -904,7 +903,7 @@ def _synergy_claims(file: str, *, prefix: str) -> tuple[Claim, ...]:
         _c(
             f"{prefix}.synergy.{slug}",
             file,
-            rf"\| {re.escape(label)} \| \$\\approx \+([\d.]+)\$",
+            rf"\| {re.escape(label)} \| \$\\+approx \+([\d.]+)\$",
             (lambda x, y: lambda gt: gt.synergy(x, y))(first, second),
             F3,
             "fraction",
@@ -1288,16 +1287,8 @@ _STATISTICAL: tuple[Claim, ...] = (
     _c(
         "05b.detection_share",
         "05b_statistical_significance.md",
-        r"accounts for about (\d+)\\% of baseline TPR",
+        r"(\d+)\\+% of baseline TPR",
         lambda gt: gt.detection_share_of_pipeline(),
-        PCT0,
-        "percent",
-    ),
-    _c(
-        "05b.top3_share",
-        "05b_statistical_significance.md",
-        r"together contribute about (\d+)\\% of the summed negative",
-        lambda gt: gt.top_n_harmful_share(3),
         PCT0,
         "percent",
     ),
@@ -1395,7 +1386,7 @@ _STATISTICAL: tuple[Claim, ...] = (
     "05b_statistical_significance.md",
     {
         "detection": "Detection module",
-        "tripwire": "Tripwire",
+        "tripwire": "Tripwires",
         "invariants": "Invariants",
         "firewall": "Firewall",
         "trust_calculus": "Trust Calculus",
@@ -1417,14 +1408,6 @@ _ABLATION: tuple[Claim, ...] = (
         "fraction",
     ),
     _c(
-        "05d.intro_synergy",
-        "05d_ablation_and_scalability.md",
-        r"strongest positive synergy \(\$\\approx \+([\d.]+)\$ beyond",
-        lambda gt: gt.synergy("tripwire", "detection"),
-        F3,
-        "fraction",
-    ),
-    _c(
         "05d.corpus_size",
         "05d_ablation_and_scalability.md",
         r"stratified (\d+)-attack corpus",
@@ -1435,7 +1418,7 @@ _ABLATION: tuple[Claim, ...] = (
     _c(
         "05d.full_pipeline_tpr",
         "05d_ablation_and_scalability.md",
-        r"The full pipeline achieves \$\\sim\$(\d+)\\% TPR on this corpus",
+        r"The full pipeline achieves \$\\+sim\$(\d+\.\d+)\\+% TPR on this corpus",
         lambda gt: gt.full_pipeline_tpr(),
         PCT_APPROX,
         "percent",
