@@ -54,8 +54,8 @@ Invoke this skill when:
 # Run tests
 uv run pytest projects/cognitive_integrity/cogsec_multiagent_1_theory/tests/ -q
 
-# Generate figures only
-uv run python projects/cognitive_integrity/cogsec_multiagent_1_theory/scripts/generate_figures.py
+# Generate a figure (each `scripts/0X_*_figure.py` renders one; example below — see scripts/ for the full set)
+uv run python projects/cognitive_integrity/cogsec_multiagent_1_theory/scripts/05_threat_taxonomy_figure.py
 ```
 
 ## Cross-Part Discipline

@@ -38,6 +38,13 @@ This paper unifies two previously separate works into a single comprehensive ref
 |------|-------|-------|--------|-----|
 | 1 | Formal Foundations | Theory, proofs, formalisms | **Published** | [10.5281/zenodo.18364119](https://doi.org/10.5281/zenodo.18364119) |
 | 2 | Computational Validation | Empirical results, algorithms | Preprint | [10.5281/zenodo.18364128](https://doi.org/10.5281/zenodo.18364128) |
+
+## Documentation
+
+- [Documentation Index](docs/README.md) — Part 3+4 documentation and claims→code map
+- [Part 1 docs](../cogsec_multiagent_1_theory/docs/README.md) — formal foundations
+- [Part 2 docs](../cogsec_multiagent_2_computational/docs/README.md) — computational validation
+
 | **3+4 (This)** | Practical Guidance + Applications | Deployment checklists, guidelines, cross-domain CIF-AD-OODA | Preprint | [10.5281/zenodo.18364130](https://doi.org/10.5281/zenodo.18364130) |
 
 ## Project Structure
@@ -72,9 +79,8 @@ cogsec_multiagent_3_practical/
 │   ├── S03_real_world_incidents.md    ← 6 documented AI security incidents
 │   ├── config.yaml, preamble.md, references.bib
 ├── src/
-│   ├── posture.py, checklists.py, agent_guidelines.py, deployment.py
-│   ├── risk_assessment.py, pitfalls.py, visualization.py
-│   ├── identity.py                    ← merge provenance metadata
+│   ├── posture.py, agent_guidelines.py, deployment.py, risk_assessment.py, pitfalls.py, visualization.py, identity.py
+│   ├── checklists/            ← checklists package (pre-deployment/operational/incident-response)
 │   └── __init__.py
 ├── scripts/              # Figure orchestrators + verify_manuscript.py
 ├── tests/                # Includes test_identity.py, test_applications.py

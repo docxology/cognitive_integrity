@@ -94,7 +94,7 @@ cogsec_multiagent_2_computational/
 │   ├── manuscript/             # Manuscript verifier & LaTeX converter
 │   ├── utils/                  # Shared types & helpers
 │   └── data/                   # Data loaders
-├── scripts/                    # Entry-point scripts (17)
+├── scripts/                    # Entry-point scripts (26)
 │   ├── run_full_evaluation.py  # Full CIF pipeline (4 archs × 950 attacks)
 │   ├── run_statistical_analysis.py  # Hypothesis tests & effect sizes
 │   ├── run_ablation.py         # Component ablation study
@@ -112,8 +112,8 @@ cogsec_multiagent_2_computational/
 │   ├── generate_all_data.py    # All experimental data → output/data/
 │   ├── convert_latex_tables.py # LaTeX → Markdown table conversion
 │   └── z_inject_manuscript_values.py # Auto-inject values into manuscript
-├── tests/                      # 36 test_*.py modules + conftest; 90%+ coverage (see glob in repo)
-├── manuscript/                 # Paper content (28 files)
+├── tests/                      # 68 test_*.py modules + conftest; 90%+ coverage (see glob in repo)
+├── manuscript/                 # Paper content (37 files)
 └── output/                     # Generated figures and data
     ├── figures/                # *.pdf figures
     └── data/                   # *.json results

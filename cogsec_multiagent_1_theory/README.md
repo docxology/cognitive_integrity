@@ -44,6 +44,12 @@ This paper presents the **theoretical foundations** of the Cognitive Integrity F
 || 2 | Computational Validation | Empirical results, algorithms | Preprint | [10.5281/zenodo.18364128](https://doi.org/10.5281/zenodo.18364128) |
 || 3+4 (merged) | Practical Guidance + Applications | Deployment checklists, guidelines, cross-domain CIF-AD-OODA | Preprint | [10.5281/zenodo.18364130](https://doi.org/10.5281/zenodo.18364130) |
 
+## Documentation
+
+- [Documentation Index](docs/README.md) — Part 1 documentation (manuscript map, figures, tests)
+- [Part 2 docs](../cogsec_multiagent_2_computational/docs/README.md) — computational validation
+- [Part 3 docs](../cogsec_multiagent_3_practical/docs/README.md) — practical/applications
+
 ## Project Structure
 
 ```

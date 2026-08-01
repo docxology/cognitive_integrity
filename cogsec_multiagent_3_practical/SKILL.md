@@ -39,7 +39,7 @@ Invoke this skill when:
 - `src/posture.py` — Cognitive security readiness assessment
 - `src/deployment.py` — Deployment configuration and lifecycle
 - `src/risk_assessment.py` — Threat modeling and risk scoring
-- `src/checklists.py` — Pre-flight, post-deployment, and audit checklists
+- `src/checklists/` — Pre-flight, post-deployment, and audit checklists (package)
 - `src/pitfalls.py` — Anti-patterns and mitigations
 - `src/agent_guidelines.py` — Machine-readable security rules for agents
 - `src/visualization.py` — Posture and risk visualization
@@ -71,8 +71,8 @@ manuscript/
 # Run tests (covers risk, posture, checklists, pitfalls)
 uv run pytest projects/cognitive_integrity/cogsec_multiagent_3_practical/tests/ -q
 
-# Generate posture visualization
-uv run python projects/cognitive_integrity/cogsec_multiagent_3_practical/scripts/generate_visuals.py
+# Generate posture visualization (one figure per `scripts/0X_*_figure.py`; example below)
+uv run python projects/cognitive_integrity/cogsec_multiagent_3_practical/scripts/01_posture_radar_figure.py
 ```
 
 ## Cross-Part Discipline

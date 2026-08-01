@@ -47,13 +47,13 @@ This paper provides **computational validation** of the Cognitive Integrity Fram
 
 ```text
 cogsec_multiagent_2_computational/
-├── manuscript/           # Paper content (34 files, v2.0)
+├── manuscript/           # Paper content (37 files, v2.0)
 │   ├── 00_abstract.md–07_conclusion.md
 │   ├── 05g_adversarial_training.md      # NEW v2.0
 │   ├── 05h_redteam_evaluation.md        # NEW v2.0
 │   ├── S01–S10 supplementary sections
 │   ├── S11_adversarial_training_theory.md  # NEW v2.0
-│   └── references.bib  (835 entries, 11 new in v2.0)
+│   └── references.bib  (103 entries, 11 new in v2.0)
 ├── src/
 │   ├── core/             # Defense mechanism implementations
 │   ├── colony/           # Multi-agent colony simulations (6 modules)
@@ -64,8 +64,8 @@ cogsec_multiagent_2_computational/
 │   │   └── convergence.py # natural_gradient_at_step, geometric_convergence_projection
 │   ├── statistics/       # Statistical analysis (12 modules)
 │   ├── visualization/    # Figure generation + composable visualization engine
-├── manuscript/           # Paper content (34 files, v2.0)
-├── tests/                # 44 test files (3+ new in v2.0+)
+├── manuscript/           # Paper content (37 files, v2.0)
+├── tests/                # 68 test files (3+ new in v2.0+)
 │   ├── test_colony_stress.py    # NEW: 23 stress tests at 100-500 agents
 │   ├── test_property_based.py   # NEW: 19 Hypothesis property-based tests
 │   └── test_redteam.py          # NEW: 35 adversarial training tests
@@ -159,6 +159,7 @@ From the template repository root:
 
 Comprehensive technical documentation is available in [`docs/`](docs/):
 
+- [Documentation Index](docs/README.md) — index of all Part 2 documentation
 - [Claims Traceability](docs/claims_traceability.md) — Maps every manuscript claim to its code implementation and test
 - [Framework Validation](docs/framework_validation.md) — How to reproduce all experiments (seed=42)
 - [Usage Guides](docs/usage_guides/) — Per-component guides with code examples

@@ -34,13 +34,19 @@ All experiments are deterministic (seed=42). Run from the project root directory
 
 ### 1. Full Pipeline (Recommended)
 
-The `run.sh` script executes the complete pipeline via `execute_pipeline.py`:
+The package provides a `Makefile`; `make all` executes the complete pipeline
+(generating all data, figures, and tables under `output/`):
 
 ```bash
-bash run.sh
+make all
 ```
 
-This generates all data, figures, and tables in the `output/` directory.
+> **Note:** There is no `bash run.sh` entry point in this part. For the full
+> end-to-end reproduction recipe — including the synthetic-vs-real data caveat
+> and per-experiment commands — see [`REPRODUCE.md`](../REPRODUCE.md), which is
+> the single reproduction authority for Part 2. All commands below assume
+> `uv run python ...` (the project is `uv`-managed; bare `python`/`pytest` are
+> not on `PATH` after `uv sync`).
 
 ### 2. Run Full Evaluation
 
