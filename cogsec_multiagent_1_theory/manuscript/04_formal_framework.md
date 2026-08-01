@@ -698,6 +698,8 @@ Lagrangian optimization maximizing expected detection subject to budget constrai
 
 ## CIF-AD Integration: Action-Delegation Coupling {#sec:cif-ad-coupling}
 
+![CIF-AD action–delegation coupling matrix showing how Functional Requirements map to Design Parameters and delegation actions, making explicit where a Goal-Hijacking transient can introduce off-diagonal coupling.](figures/cif_ad_coupling.pdf){#fig:cif-ad-coupling width=85%}
+
 *The Cognitive Integrity Framework provides static structural guarantees (trust bounds, belief consistency). But multiagent operators are dynamic: agents act, delegate, and observe outcomes. This section formalizes how CIF integrates with the Action-Delegation (AD) cycle to provide continuous runtime security guarantees.*
 
 ### The Action-Delegation Cycle
@@ -774,6 +776,8 @@ By inspection of Table~\ref{tab:cif-ad-matrix}: minimum column maxima are Plan (
 \end{proof}
 
 ## CIF-OODA Integration: Temporal Security Across Decision Cycles {#sec:cif-ooda}
+
+![CIF-OODA phase diagram mapping the defense mechanisms onto the Observe–Orient–Decide–Act cycle, indicating at which phase each defense intervenes and its latency budget.](figures/ooda_phase_diagram.pdf){#fig:ooda-phase width=85%}
 
 *The OODA loop (Observe-Orient-Decide-Act) models how agents process information and take action over time. Cognitive attacks often target specific OODA phases to corrupt decision-making while minimizing detectable footprint. This section formalizes the OODA-phase attack model and CIF's phase-specific defenses.*
 

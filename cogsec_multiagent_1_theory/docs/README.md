@@ -41,9 +41,11 @@ CIF-AD-OODA integration).
 ## Figures
 
 `scripts/*_figure.py` generates the manuscript figures (threat taxonomy, attack
-surface, trust decay, defense composition, ROC curves, belief sandbox, CIF-AD
-coupling heatmap, OODA phase diagram, and more) into `output/figures/`. The
-figure registry is maintained by
+surface, trust decay, defense composition, ROC curves, belief sandbox, detection
+performance, false-positive mitigation, ablation study, CIF-AD coupling heatmap,
+OODA phase diagram, and more) into `output/figures/`. Every figure is embedded
+in the manuscript with an accurate caption and a `{#fig:...}` label; the figure
+registry is maintained by
 [`scripts/generate_figure_registry.py`](../scripts/generate_figure_registry.py).
 
 ```bash

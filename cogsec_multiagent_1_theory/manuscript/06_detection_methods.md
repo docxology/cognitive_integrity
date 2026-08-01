@@ -64,6 +64,8 @@ where $\sigma$ is the sigmoid function and weights $(w_d, b)$ are learned from l
 
 ## ROC Curve Analysis {#sec:roc-analysis}
 
+![Receiver Operating Characteristic (ROC) curves for CIF detection across attack categories. Each curve traces the true-positive rate against the false-positive rate as the detection threshold varies; the area under each curve quantifies how clearly that attack class separates from benign behavior under the Neyman-Pearson detection framework.](figures/roc_curves.pdf){#fig:roc-curves width=85%}
+
 ### Receiver Operating Characteristic Framework
 
 \begin{definition}[ROC Curve]
@@ -228,6 +230,8 @@ Combines online and batch detection via feedback loop:
 \end{definition}
 
 ## False Positive Mitigation {#sec:fp-mitigation}
+
+![False-positive mitigation: how the detection threshold and confidence calibration shape the false-positive / true-positive tradeoff, reducing false alarms without materially sacrificing detection rate.](figures/fp_mitigation.pdf){#fig:fp-mitigation width=80%}
 
 ### Strategy 1: Confirmation Cascade
 
@@ -536,6 +540,8 @@ Theorem~\ref{thm:undetectability} establishes that sufficiently subtle attacks a
 \end{remark}
 
 ## Multi-Stage Detection Pipeline {#sec:multi-stage-pipeline}
+
+![Detection performance of the multi-stage pipeline: detection rate by attack category and across progressive defense stages, showing how layered composition lifts coverage beyond any single mechanism.](figures/detection_performance.pdf){#fig:detection-performance width=85%}
 
 *Real systems cannot run all detectors on all messages simultaneously. This section formalizes a staged pipeline that applies computationally cheap detectors first, escalating to expensive detectors only when lower stages trigger.*
 

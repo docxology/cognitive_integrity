@@ -372,6 +372,8 @@ where $q = \lceil \frac{n + f + 1}{2} \rceil$.
 
 ## Defense Composition {#sec:defense-composition}
 
+![Ablation study: marginal detection contribution of each CIF defense module to the composed defense, showing which components carry the largest share and validating the layered-composition theorems.](figures/ablation_study.pdf){#fig:ablation-study width=80%}
+
 ### Composition Algebra
 
 \begin{definition}[Defense Composition]
