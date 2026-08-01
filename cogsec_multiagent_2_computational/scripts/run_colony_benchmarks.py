@@ -19,7 +19,6 @@ import argparse
 import json
 import platform
 import sys
-from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -127,7 +126,7 @@ def main() -> None:
     payload = {
         "data_origin": "real_pipeline",
         "generator": "scripts/run_colony_benchmarks.py",
-        "generated_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "generated_utc": None,  # deterministic: no wall-clock timestamp, byte-reproducible
         "base_seed": args.seed,
         "n_repeats": args.n_repeats,
         "ci_method": "bootstrap percentile over per-seed values, B=2000, 95%",

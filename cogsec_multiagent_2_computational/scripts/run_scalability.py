@@ -48,7 +48,6 @@ import platform
 import sys
 import time
 import tracemalloc
-from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Callable, Dict, List
 
@@ -371,7 +370,7 @@ def main() -> None:
     payload = {
         "data_origin": "real_pipeline",
         "generator": "scripts/run_scalability.py",
-        "generated_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "generated_utc": None,  # deterministic: no wall-clock timestamp, byte-reproducible
         "seed": args.seed,
         "python": platform.python_version(),
         "platform": platform.platform(),

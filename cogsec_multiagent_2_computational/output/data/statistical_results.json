@@ -100,5 +100,10 @@
       "passed": 1.0
     }
   ],
-  "assumptions_met": false
+  "assumptions_met": false,
+  "provenance": {
+    "baseline_scores": "simulated N(0.03, 0.02): no observed control arm ran",
+    "cohens_d_cif_vs_baseline": "vs. simulated control, not observed",
+    "component_scores": "measured per-component TPR + N(0, 0.02) noise"
+  }
 }

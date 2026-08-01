@@ -16,6 +16,17 @@
 > `AdversarialTrainer` from a baseline plus per-round gap attributions rather
 > than a pipeline-in-the-loop measurement. Firewall-measured evasion results are
 > reported separately in §05h.
+>
+> **Scope of the AT results.** The per-round $\Delta$DR profile (baseline 0.447,
+> round-5 +0.2323), the Key Findings below, the Convergence/Nash projection, and
+> the Ω-level 100% implications are **by construction of this closed-form design
+> model** — they encode an assumed learning curve, not a measured re-run of the
+> defense pipeline. In `measurement_mode='real'`, hardening compares a
+> before/after corpus measurement; because the refined thresholds are not yet
+> coupled to the firewall's decision function, real mode currently measures no
+> improvement ($\Delta \approx 0$). The 0.447 baseline and +0.2323 round-5 gain
+> are therefore the scenario assumptions of the design model, not an observed
+> hardening result.
 
 ## Overview {#sec:adv-overview}
 
@@ -90,6 +101,9 @@ pre-AT baseline (44.7%).*
 
 ### Key Findings
 
+*The four findings below are properties of the closed-form design model (see
+Status), not pipeline-in-the-loop measurements.*
+
 1. **Iterative improvement**: Each round yields monotonically increasing hardened DR,
    from 52.0% (Round 1) to 67.9% (Round 5), a cumulative improvement of +23.2 pp over
    the pre-AT baseline.
@@ -117,10 +131,11 @@ $$\theta^* = \arg\max_\theta \min_{\mathcal{A}} \mathrm{DR}(\theta, \mathcal{A})
 The Nash equilibrium of this game defines the highest detection rate achievable
 against an adaptive adversary with knowledge of $\theta$. The empirical AT
 sequence's per-round gain sequence $(7.3, 5.6, 5.0, 2.9, 2.4)$ pp is approximately
-linear rather than geometrically decaying, and the projected Nash equilibrium
-of 100.0\% DR (full detection against any adaptive adversary at this corpus size)
-reflects the deterministic, small-corpus nature of the current evaluation.
-Larger corpora and stochastic evaluation would produce intermediate Nash values.
+linear rather than geometrically decaying, and the projected
+Nash equilibrium of 100.0\% DR (full detection against any adaptive adversary at
+this corpus size) is a property of the assumed per-round gains of the design
+model — it is a projection, not a measured result. Larger corpora and stochastic
+evaluation would produce intermediate Nash values.
 
 The gap between the Nash projection (100.0\%) and the parametric
 ceiling (96--100\%) reflects the deterministic evaluation on a fixed attack

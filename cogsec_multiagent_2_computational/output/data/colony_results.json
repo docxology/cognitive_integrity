@@ -1,7 +1,7 @@
 {
   "data_origin": "real_pipeline",
   "generator": "scripts/run_colony_benchmarks.py",
-  "generated_utc": "2026-07-27T13:08:25+00:00",
+  "generated_utc": null,
   "base_seed": 42,
   "n_repeats": 30,
   "ci_method": "bootstrap percentile over per-seed values, B=2000, 95%",

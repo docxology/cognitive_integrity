@@ -48,10 +48,24 @@ def main() -> None:
     print(f"  KW H:       {results['kruskal_wallis']['h']:.2f}")
     print(f"  KW p:       {results['kruskal_wallis']['p']:.4e}")
 
-    # Save
+    # Save. Provenance is emitted in two complementary forms: the top-level
+    # preservation marker (data_origin/source_script/generated_by/seed) so the
+    # shipped artifact is never clobbered by DataGenerator's synthetic output,
+    # and an honest nested `provenance` block documenting that the CIF values
+    # are compared against a *simulated* control (no observed control arm ran).
     out_path = output_dir / "statistical_results.json"
+    payload = {
+        "data_origin": "real_pipeline",  # preservation marker for a shipped result
+        "source_script": "scripts/run_statistical_analysis.py",
+        "generated_by": (
+            f"scripts/run_statistical_analysis.py --seed {args.seed} "
+            f"--output {str(args.output)}"
+        ),
+        "seed": args.seed,
+        **results,
+    }
     with open(out_path, "w") as f:
-        json.dump(results, f, indent=2, default=float)
+        json.dump(payload, f, indent=2, default=float)
     print(f"\nResults saved to {out_path}")
 
 
