@@ -1,4 +1,8 @@
 {
+  "metadata": {
+    "illustrative": true,
+    "note": "Schematic component-contribution values for illustration, not measured; measured ablation results are reported in Part 2 (cogsec_multiagent_2_computational)."
+  },
   "full_cif": {
     "detection": 0.94,
     "delta": 0.0

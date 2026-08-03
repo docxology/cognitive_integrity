@@ -45,8 +45,14 @@ class PatternDetector:
 
     # Known injection patterns (partial list for demonstration)
     INJECTION_PATTERNS = [
-        r"ignore\s+(previous|all|above)\s+instructions?",
-        r"disregard\s+(your|the)\s+(instructions?|rules?)",
+        # Multi-token optional alternation so the canonical phrase
+        # "Ignore all previous instructions" (and "ignore the above
+        # instructions", "ignore previous instructions", ...) actually
+        # matches.  A single optional word between "ignore" and
+        # "instructions" silently let the most common injection string
+        # through (detection rate 0.00 on the project's own corpus).
+        r"ignore\s+(?:(?:all|any|the)\s+)?(?:previous|above|prior)\s+instructions?",
+        r"disregard\s+(?:your|the|above)\s+(?:instructions?|rules?)",
         r"you\s+are\s+now\s+(?:a|an)\s+\w+",
         r"new\s+instruction[s]?:",
         r"system\s*:\s*",
@@ -174,6 +180,15 @@ class CognitiveFirewall:
 
         if injection_score > self.config.injection_threshold:
             return Classification.REJECT
+
+        # Any detected injection pattern is at least QUARANTINEd, never
+        # silently ACCEPTed.  (P1-1: the injection regex previously scored
+        # the canonical phrase "Ignore all previous instructions" as 0.00,
+        # and even a scored single pattern at 0.3 fell below the 0.4
+        # suspicious threshold, so the firewall detected 0% of its own test
+        # corpus at default settings.)
+        if injection_score > 0.0:
+            return Classification.QUARANTINE
 
         # Score for suspicious content
         suspicious_score = self.detector.score_suspicious(message)

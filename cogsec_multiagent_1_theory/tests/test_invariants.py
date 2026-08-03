@@ -212,6 +212,41 @@ class TestInvariantChecker:
         inv5_violations = [v for v in violations if v.invariant_id == "INV-5"]
         assert len(inv5_violations) == 1
 
+    def test_fail_closed_missing_code_trust(self):
+        """INV-1 fails closed when `code_trusted` is absent (unknown -> untrusted)."""
+        checker = InvariantChecker()
+        violations = checker.check_all({"action": "execute_code"})
+        inv1_violations = [v for v in violations if v.invariant_id == "INV-1"]
+        assert len(inv1_violations) == 1
+
+    def test_fail_closed_missing_secrets_field(self):
+        """INV-2 fails closed when `contains_secrets` is absent on an output."""
+        checker = InvariantChecker()
+        violations = checker.check_all({"action": "send_message"})
+        inv2_violations = [v for v in violations if v.invariant_id == "INV-2"]
+        assert len(inv2_violations) == 1
+
+    def test_fail_closed_missing_permission(self):
+        """INV-3 fails closed when a system-file write omits `has_permission`."""
+        checker = InvariantChecker()
+        violations = checker.check_all({"action": "write_file", "is_system_path": True})
+        inv3_violations = [v for v in violations if v.invariant_id == "INV-3"]
+        assert len(inv3_violations) == 1
+
+    def test_fail_closed_missing_path_classification(self):
+        """INV-3 treats an unclassified path as a system path (unknown -> untrusted)."""
+        checker = InvariantChecker()
+        violations = checker.check_all({"action": "write_file"})
+        inv3_violations = [v for v in violations if v.invariant_id == "INV-3"]
+        assert len(inv3_violations) == 1
+
+    def test_fail_closed_missing_verification(self):
+        """INV-4 fails closed when `tool_output_verified` is absent."""
+        checker = InvariantChecker()
+        violations = checker.check_all({"action": "use_tool_result"})
+        inv4_violations = [v for v in violations if v.invariant_id == "INV-4"]
+        assert len(inv4_violations) == 1
+
     def test_add_custom_invariant(self):
         """Custom invariants can be added."""
         checker = InvariantChecker()

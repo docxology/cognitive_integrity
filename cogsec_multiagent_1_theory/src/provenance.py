@@ -17,6 +17,12 @@ class TaintLabel(Enum):
     Taint labels for information sources with trust ordering.
 
     Higher trust_level = more trusted source.
+
+    Note on scale: ``trust_level`` is an *ordinal* integer scale 1-7
+    (higher = more trusted).  Manuscript section 06 presents a normalized
+    [0, 1] "trust level" table; the two scales are NOT interchangeable.
+    To convert, map ``level / 7`` (ordinal ranking, not a measured
+    probability).  Do not mix the two schemes in the same computation.
     """
 
     SYSTEM_VERIFIED = ("system_verified", 7, True)
@@ -380,7 +386,7 @@ class CausalAttribution:
         if not record:
             return {
                 "belief_id": belief_id,
-                "effective_taint": TaintLabel.UNVERIFIED,
+                "effective_taint": TaintLabel.UNVERIFIED.value,
                 "untrusted_sources": [],
                 "paths": [],
                 "ancestry_size": 0,
@@ -394,7 +400,10 @@ class CausalAttribution:
 
         return {
             "belief_id": belief_id,
-            "effective_taint": effective_taint,
+            # Serialize the enum as its string value so the report is
+            # actually machine-readable (json.dumps raises TypeError on a
+            # raw TaintLabel member).
+            "effective_taint": effective_taint.value,
             "untrusted_sources": list(untrusted_sources),
             "paths": paths,
             "ancestry_size": len(ancestry),

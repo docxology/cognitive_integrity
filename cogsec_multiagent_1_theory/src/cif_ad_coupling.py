@@ -179,7 +179,12 @@ class CIFADCouplingDetector:
         Returns:
             Coverage score in [0, 1].
         """
-        defenses = portfolio or list(CIFDefense)
+        # `portfolio or ...` would silently treat an explicit empty list as
+        # "use the full stack" -- an empty portfolio has zero defenses and
+        # must report zero coverage, not the full-stack maximum.
+        defenses = list(CIFDefense) if portfolio is None else portfolio
+        if not defenses:
+            return 0.0
         return max(self.coupling_matrix.get(d, {}).get(phase, 0.0) for d in defenses)
 
     def get_combined_coverage(

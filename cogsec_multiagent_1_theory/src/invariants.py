@@ -195,29 +195,48 @@ class InvariantChecker:
 
     @staticmethod
     def _inv1_no_untrusted_code(ctx: Dict) -> bool:
-        """INV-1: Never execute untrusted code."""
+        """INV-1: Never execute untrusted code.
+
+        Fail-safe default: if a monitoring integration does not declare
+        whether the code is trusted, the input is treated as untrusted
+        (unknown -> untrusted), so the invariant reports a violation
+        rather than silently permitting execution.
+        """
         action = ctx.get("action", "")
         if action not in ("execute_code", "run_script", "eval"):
             return True  # Not a code execution action
-        return ctx.get("code_trusted", True)
+        return ctx.get("code_trusted", False)
 
     @staticmethod
     def _inv2_no_credential_leak(ctx: Dict) -> bool:
-        """INV-2: Never leak credentials."""
+        """INV-2: Never leak credentials.
+
+        Fail-safe default: an output action that does not declare whether
+        it contains secrets is treated as potentially exfiltrating
+        credentials (unknown -> untrusted), so the invariant reports a
+        violation instead of assuming the output is clean.
+        """
         action = ctx.get("action", "")
         if action not in ("send_message", "output", "log", "write"):
             return True  # Not an output action
-        return not ctx.get("contains_secrets", False)
+        return not ctx.get("contains_secrets", True)
 
     @staticmethod
     def _inv3_no_unauthorized_system_write(ctx: Dict) -> bool:
-        """INV-3: Never modify system files without permission."""
+        """INV-3: Never modify system files without permission.
+
+        Fail-safe defaults: a file operation that does not declare whether
+        the path is a system path is treated as a system path, and one that
+        does not declare permission is treated as unauthorized (unknown ->
+        untrusted / no permission), so both missing fields report a
+        violation.
+        """
         action = ctx.get("action", "")
         if action not in ("write_file", "modify_file", "delete_file"):
             return True  # Not a file operation
 
-        is_system = ctx.get("is_system_path", False)
-        has_permission = ctx.get("has_permission", True)
+        is_system = ctx.get("is_system_path", True)
+        has_permission = ctx.get("has_permission", False)
 
         if is_system and not has_permission:
             return False
@@ -225,11 +244,16 @@ class InvariantChecker:
 
     @staticmethod
     def _inv4_verify_tool_outputs(ctx: Dict) -> bool:
-        """INV-4: Always verify tool outputs."""
+        """INV-4: Always verify tool outputs.
+
+        Fail-safe default: using a tool result that is not declared
+        verified is treated as unverified (unknown -> unverified), so the
+        invariant reports a violation instead of trusting the output.
+        """
         action = ctx.get("action", "")
         if action not in ("use_tool_result", "accept_tool_output"):
             return True  # Not using tool output
-        return ctx.get("tool_output_verified", True)
+        return ctx.get("tool_output_verified", False)
 
     @staticmethod
     def _inv5_trust_ordering(ctx: Dict) -> bool:

@@ -112,8 +112,13 @@ class ByzantineConsensus:
         votes = self._votes[proposition]
         n_votes = len(votes)
 
-        # Need enough votes
-        min_votes = int(np.ceil(self.n_agents * self.config.quorum_fraction))
+        # Need enough votes: floor(2n/3) + 1.  Using ceil(2n/3) here while
+        # acceptance requires a *strict* > 2n/3 majority deadlocks at the
+        # nominal quorum for n ≡ 2 (mod 3) (e.g. 4 of 6 votes -> UNDECIDED
+        # even though 4 > 4.0 is false and 4 >= 4 would be the quorum).
+        # floor(2n/3) + 1 is exactly the smallest count that satisfies
+        # count > 2n/3, so quorum and decision threshold stay consistent.
+        min_votes = int(np.floor(self.n_agents * self.config.quorum_fraction)) + 1
         if n_votes < min_votes:
             return ConsensusResult.UNDECIDED, n_votes / self.n_agents
 
@@ -210,7 +215,14 @@ class QuorumVerification:
 
     def __init__(self, n_agents: int, max_byzantine: Optional[int] = None):
         self.n_agents = n_agents
-        self.max_byzantine = max_byzantine or (n_agents - 1) // 3
+        # An explicit max_byzantine=0 must be honored (no Byzantine agents):
+        # the `or` idiom would silently replace 0 with (n-1)//3, inflating
+        # the quorum for the f=0 case.  ByzantineConsensus handles None
+        # correctly; QuorumVerification must too.
+        if max_byzantine is None:
+            self.max_byzantine = (n_agents - 1) // 3
+        else:
+            self.max_byzantine = max_byzantine
 
         # Quorum threshold: ceil((n + f + 1) / 2)
         self.quorum = int(np.ceil((n_agents + self.max_byzantine + 1) / 2))
@@ -336,6 +348,58 @@ class WeightedByzantineConsensus(ByzantineConsensus):
 
         weighted_sum = sum(v.belief * v.trust_weight for v in votes)
         return weighted_sum / total_weight
+
+    def compute_consensus(self, proposition: str) -> Tuple[ConsensusResult, float]:
+        """
+        Compute trust-weighted consensus.
+
+        The decision is made on *weighted* vote counts: a vote's
+        contribution to the accept/reject tally is its `trust_weight`,
+        so low-trust agents cannot dominate a decision the way they
+        would under plain majority counting.  Quorum still requires the
+        same number of *voting agents* as the base class.
+
+        Args:
+            proposition: The proposition to decide
+
+        Returns:
+            Tuple of (result, confidence)
+        """
+        if proposition not in self._weighted_votes:
+            return ConsensusResult.UNDECIDED, 0.0
+
+        votes = self._weighted_votes[proposition]
+        n_votes = len(votes)
+
+        min_votes = int(np.floor(self.n_agents * self.config.quorum_fraction)) + 1
+        if n_votes < min_votes:
+            return ConsensusResult.UNDECIDED, n_votes / self.n_agents
+
+        total_weight = sum(v.trust_weight for v in votes)
+        if total_weight <= 0:
+            return ConsensusResult.UNDECIDED, n_votes / self.n_agents
+
+        accept_weight = sum(
+            v.trust_weight for v in votes if v.belief > self.config.acceptance_threshold
+        )
+        reject_weight = sum(
+            v.trust_weight for v in votes if v.belief < self.config.rejection_threshold
+        )
+
+        threshold = total_weight * self.config.quorum_fraction
+
+        if accept_weight > threshold:
+            self._decided[proposition] = ConsensusResult.ACCEPT
+            return ConsensusResult.ACCEPT, accept_weight / total_weight
+
+        if reject_weight > threshold:
+            self._decided[proposition] = ConsensusResult.REJECT
+            return ConsensusResult.REJECT, reject_weight / total_weight
+
+        return (
+            ConsensusResult.UNDECIDED,
+            max(accept_weight, reject_weight) / total_weight,
+        )
 
 
 @dataclass

@@ -227,6 +227,35 @@ class TestMinimumViablePortfolio:
         mvp = detector.minimum_viable_portfolio(min_phase_coverage=0.90)
         assert len(mvp) > 0
 
+    def test_mvp_non_empty_at_default_threshold(self):
+        """minimum_viable_portfolio() is non-empty at the default threshold (P1-7).
+
+        Previously the empty-portfolio `or` idiom made an empty portfolio
+        appear to achieve full coverage, so minimum_viable_portfolio()
+        returned [].
+        """
+        detector = CIFADCouplingDetector()
+        mvp = detector.minimum_viable_portfolio()
+        assert len(mvp) > 0
+
+    def test_empty_portfolio_has_zero_phase_coverage(self):
+        """get_phase_coverage with an explicit empty portfolio is 0 (P1-7).
+
+        Previously `portfolio or list(CIFDefense)` treated [] as the full
+        stack and returned the full-stack maximum (e.g. 0.9 for PLAN).
+        """
+        detector = CIFADCouplingDetector()
+        for phase in ADPhase:
+            assert detector.get_phase_coverage(phase, portfolio=[]) == 0.0
+
+    def test_analyze_empty_portfolio_reports_gaps(self):
+        """Empty portfolio reports zero coverage + gaps, never full coverage (P1-7)."""
+        detector = CIFADCouplingDetector()
+        analysis = detector.analyze_portfolio([])
+        assert analysis.full_coverage_achieved is False
+        assert len(analysis.coverage_gaps) == len(list(ADPhase))
+        assert analysis.total_coverage_score == 0.0
+
     def test_mvp_with_stricter_threshold_uses_more_defenses(self, detector):
         mvp_normal = detector.minimum_viable_portfolio(min_phase_coverage=0.50)
         mvp_strict = detector.minimum_viable_portfolio(min_phase_coverage=0.85)

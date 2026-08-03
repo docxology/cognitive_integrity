@@ -69,6 +69,16 @@ class TestTrustCalculus:
         calc = TrustCalculus()
         assert calc.compute_path_trust([]) == 0.0
 
+    def test_compute_path_trust_uses_total_depth_once(self):
+        """Definition 4.4: min edge trust * delta^total_depth (P1-9).
+
+        A 4-hop chain of 1.0s is 0.9^4 (not delta compounded once per hop,
+        which would give 0.9^6).  Matches the manuscript worked examples.
+        """
+        calc = TrustCalculus(TrustConfig(decay=0.9))
+        assert np.isclose(calc.compute_path_trust([1.0, 1.0, 1.0, 1.0]), 0.9**4)
+        assert np.isclose(calc.compute_path_trust([1.0] * 5), 0.9**5)
+
 
 class TestTrustMatrix:
     """Tests for TrustMatrix."""
@@ -110,6 +120,12 @@ class TestTrustMatrix:
         direct_trust = matrix.get_trust(0, 1)
 
         assert path_trust < direct_trust
+
+    def test_get_delegation_trust_requires_two_nodes(self):
+        """A degenerate single-node 'path' yields zero delegated trust (P1-20)."""
+        matrix = TrustMatrix(n_agents=3)
+        assert matrix.get_delegation_trust([0]) == 0.0
+        assert matrix.get_delegation_trust([]) == 0.0
 
     def test_to_matrix(self):
         """to_matrix returns correct shape."""

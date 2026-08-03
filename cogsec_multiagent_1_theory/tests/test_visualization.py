@@ -352,6 +352,36 @@ class TestFPMitigation:
 class TestROCCurves:
     """Tests for visualization/roc_curves.py."""
 
+    def test_compute_roc_auc_normal(self):
+        """Non-degenerate ROC curves use the trapezoidal rule."""
+        import numpy as np
+
+        from src.visualization.roc_curves import compute_roc_auc
+
+        fpr = np.linspace(0, 1, 100)
+        tpr = fpr  # diagonal -> AUC 0.5
+        assert abs(compute_roc_auc(tpr, fpr) - 0.5) < 1e-3
+
+    def test_compute_roc_auc_degenerate_constant_fpr(self):
+        """Degenerate all-zero FPR reports max(TPR), not AUC 0.000 (P1-4).
+
+        A classifier that never fires on negatives has FPR=0 at every
+        measured threshold; the trapezoidal rule over a zero-FPR width would
+        return 0.0, displaying a perfect-precision curve as AUC 0.000.
+        """
+        import numpy as np
+
+        from src.visualization.roc_curves import compute_roc_auc
+
+        fpr = np.zeros(20)
+        tpr = np.array([0.6] * 6 + [0.0] * 14)
+        assert abs(compute_roc_auc(tpr, fpr) - 0.6) < 1e-12
+
+    def test_compute_roc_auc_empty_returns_zero(self):
+        from src.visualization.roc_curves import compute_roc_auc
+
+        assert compute_roc_auc([], []) == 0.0
+
     def test_create_roc_curves_figure(self):
         """Test ROC curves figure generation."""
         from src.visualization.roc_curves import create_roc_curves_figure

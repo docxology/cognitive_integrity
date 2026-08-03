@@ -20,7 +20,7 @@ script_dir = Path(__file__).resolve().parent
 project_root = script_dir.parent
 sys.path.insert(0, str(project_root))
 
-from src.verification import ManuscriptVerifier
+from src.verification import ManuscriptVerifier, configure_logging
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Verify manuscript integrity.")
@@ -30,6 +30,9 @@ if __name__ == "__main__":
     parser.add_argument("--root", default=default_root, help="Path to manuscript root directory.")
     args = parser.parse_args()
 
+    # Logging is configured here (not at import) so importing src.verification
+    # from tests or other tools never writes ./manuscript_verification.log.
+    configure_logging()
     verifier = ManuscriptVerifier(args.root)
     passed = verifier.run_all()
     sys.exit(0 if passed else 1)

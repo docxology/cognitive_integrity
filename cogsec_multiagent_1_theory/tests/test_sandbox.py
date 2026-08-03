@@ -113,7 +113,7 @@ class TestPromotionCriteria:
 
     def test_confidence_threshold(self):
         """Promotion requires minimum confidence."""
-        criteria = PromotionCriteria(min_confidence=0.8)
+        criteria = PromotionCriteria(min_confidence=0.8, min_corroborations=0)
 
         high_conf = Belief("b1", "High", 0.9)
         low_conf = Belief("b2", "Low", 0.5)
@@ -133,7 +133,7 @@ class TestPromotionCriteria:
 
     def test_age_requirement(self):
         """Promotion can require minimum belief age."""
-        criteria = PromotionCriteria(min_confidence=0.5, min_age_seconds=10)
+        criteria = PromotionCriteria(min_confidence=0.5, min_age_seconds=10, min_corroborations=0)
 
         # New belief should not meet criteria
         new_belief = Belief("b1", "New", 0.8)
@@ -149,7 +149,9 @@ class TestPromotionCriteria:
         def must_have_source(belief: Belief) -> bool:
             return belief.source_agent is not None
 
-        criteria = PromotionCriteria(min_confidence=0.5, custom_predicates=[must_have_source])
+        criteria = PromotionCriteria(
+            min_confidence=0.5, custom_predicates=[must_have_source], min_corroborations=0
+        )
 
         no_source = Belief("b1", "Anonymous", 0.9)
         with_source = Belief("b2", "Sourced", 0.9, source_agent="agent-1")
@@ -215,8 +217,9 @@ class TestSandboxManager:
         criteria = PromotionCriteria(min_confidence=0.8)
         manager = SandboxManager(SandboxConfig(default_ttl_seconds=60), promotion_criteria=criteria)
 
-        # High confidence belief
-        high = Belief("high", "High confidence", 0.95)
+        # High confidence belief with corroboration meets the (default
+        # min_corroborations=1) promotion criteria.
+        high = Belief("high", "High confidence", 0.95, corroboration_count=1)
         manager.add_provisional(high)
 
         # Check for promotions
@@ -224,6 +227,28 @@ class TestSandboxManager:
 
         assert "high" in promoted
         assert manager.state.get_partition("high") == BeliefPartition.VERIFIED
+
+    def test_default_promotion_requires_corroboration(self):
+        """A fresh single-source belief is not auto-promoted by default (P1-11).
+
+        Previously PromotionCriteria defaulted to min_corroborations=0, so a
+        new single-source belief immediately satisfied Rule S-PROMOTE.
+        """
+        manager = SandboxManager()
+        fresh = Belief("fresh", "Single source", 0.95)  # corroboration_count=0
+        manager.add_provisional(fresh)
+        promoted = manager.check_promotions()
+        assert "fresh" not in promoted
+        assert manager.state.get_partition("fresh") == BeliefPartition.PROVISIONAL
+
+    def test_max_provisional_beliefs_enforced(self):
+        """add_provisional rejects beliefs once the store is at capacity (P1-11)."""
+        import pytest
+
+        manager = SandboxManager(SandboxConfig(max_provisional_beliefs=1))
+        manager.add_provisional(Belief("b1", "First", 0.9))
+        with pytest.raises(ValueError):
+            manager.add_provisional(Belief("b2", "Second", 0.9))
 
     def test_no_auto_promote_below_threshold(self):
         """Low confidence beliefs stay provisional."""

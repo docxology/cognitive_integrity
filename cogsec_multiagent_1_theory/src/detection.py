@@ -78,9 +78,7 @@ class DriftDetector:
             keys, current_values = history_list[i]
             current = dict(zip(keys, current_values))
             window = min(i, 10)
-            kl_div, max_delta = self._drift_from_slice(
-                history_list[:i], current, window
-            )
+            kl_div, max_delta = self._drift_from_slice(history_list[:i], current, window)
             drift_scores.append(kl_div + 0.5 * max_delta)
 
         if drift_scores:
@@ -123,8 +121,11 @@ class DriftDetector:
         keys = sorted(current.keys())
         current_arr = np.array([current.get(k, 0.5) for k in keys])
 
-        # Average of recent observations
-        hist_values = np.array([v for _, v in recent if len(v) == len(keys)])
+        # Only average observations that share the *same key set* as the
+        # current observation.  Filtering on value-array length alone lets
+        # same-length/different-key observations silently misalign (a
+        # belief vector for different keys compared positionally).
+        hist_values = np.array([v for k_, v in recent if k_ == keys])
         if len(hist_values) == 0:
             return 0.0, 0.0
 
@@ -147,7 +148,12 @@ class DriftDetector:
         Returns:
             Tuple of (kl_divergence, max_delta)
         """
-        return self._drift_from_slice(list(self._history), current, window)
+        # Clamp the lookback window to the available history so the scoring
+        # window matches the calibration window (min(i, 10) in
+        # calibrate_baseline): with fewer than `window` observations the
+        # detector uses what is available instead of bailing to (0, 0).
+        effective_window = min(window, len(self._history))
+        return self._drift_from_slice(list(self._history), current, effective_window)
 
     def is_anomalous(
         self, current: Dict[str, float], window: int = 10, lambda_weight: float = 0.5

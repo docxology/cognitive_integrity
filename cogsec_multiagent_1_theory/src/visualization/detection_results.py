@@ -98,10 +98,12 @@ def create_detection_results_figure(output_dir: Path) -> Path:
     if ablation_path.exists():
         with open(ablation_path, "r") as f:
             ablation_data = json.load(f)
-            # Construct lists...
+            # Ignore the metadata/illustrative marker key when listing
+            # components so it is not plotted as a component.
+            component_keys = [k for k in ablation_data.keys() if k != "metadata"]
             components = ["Full CIF"] + [
                 f"- {k.replace('minus_', '').replace('_', ' ').title()}"
-                for k in ablation_data.keys()
+                for k in component_keys
                 if k != "full_cif"
             ]
 
@@ -110,7 +112,7 @@ def create_detection_results_figure(output_dir: Path) -> Path:
             detection = [base_val]
             delta = [0.0]
 
-            for k in ablation_data.keys():
+            for k in component_keys:
                 if k != "full_cif":
                     val = ablation_data[k]["detection"]
                     detection.append(val)
@@ -218,21 +220,34 @@ def create_detection_results_figure(output_dir: Path) -> Path:
     # Panel D: Performance trade-off (Detection vs Latency)
     ax4 = axes[1, 1]
 
-    defenses = ["Baseline", "Firewall", "Sandbox", "Tripwires", "Full CIF"]
-    detection_rates = [0.0, 0.78, 0.65, 0.82, 0.94]
-    latency_overhead = [0, 8, 15, 3, 23]
-    sizes = [100, 200, 200, 200, 300]
+    # Computed from the measured detection_results.json, not hard-coded:
+    # plot the three real defense configurations with their measured
+    # detection rates and declared latency overhead.  (Sandbox/Tripwires are
+    # not in the data file, so no fabricated points are added.)
+    def config_by_name(name):
+        return next((c for c in data["defense_configurations"] if c["name"] == name), None)
+
+    pd_names = ["Baseline", "Firewall Only", "Full CIF"]
+    pd_detection = []
+    pd_latency = []
+    for name in pd_names:
+        cfg = config_by_name(name)
+        pd_latency.append(cfg.get("latency_overhead_pct", 0) if cfg else 0)
+        if cfg is None:
+            pd_detection.append(0.0)
+        else:
+            rates = list(cfg.get("detection_rates", {}).values())
+            pd_detection.append(float(np.mean(rates)) if rates else 0.0)
+    sizes = [100, 200, 300]
 
     scatter_colors = [
         colors["baseline"],
         colors["firewall"],
-        colors["sandbox"],
-        colors["tripwire"],
         colors["full_cif"],
     ]
 
-    for i, (det, lat, size, color, name) in enumerate(
-        zip(detection_rates, latency_overhead, sizes, scatter_colors, defenses)
+    for det, lat, size, color, name in zip(
+        pd_detection, pd_latency, sizes, scatter_colors, pd_names
     ):
         ax4.scatter(
             lat,
@@ -252,18 +267,6 @@ def create_detection_results_figure(output_dir: Path) -> Path:
     ax4.set_xlim(-2, 30)
     ax4.set_ylim(-0.05, 1.05)
     ax4.grid(True, alpha=0.3)
-
-    # Add Pareto frontier
-    pareto_x = [0, 3, 8, 23]
-    pareto_y = [0, 0.82, 0.78, 0.94]
-    ax4.plot(
-        pareto_x[1:],
-        pareto_y[1:],
-        "--",
-        color="gray",
-        alpha=0.5,
-        label="Pareto frontier",
-    )
 
     plt.tight_layout()
 

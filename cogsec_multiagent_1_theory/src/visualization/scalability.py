@@ -75,7 +75,7 @@ def create_scalability_figure(output_dir: Path) -> tuple[Path, Path]:
         color=colors["firewall"],
         linewidth=2.5,
         markersize=8,
-        label="Cognitive Firewall (Measured)",
+        label="Cognitive Firewall (Analytic model)",
     )
     # Theoretical linear baseline for comparison
     ax1.plot(
@@ -105,7 +105,7 @@ def create_scalability_figure(output_dir: Path) -> tuple[Path, Path]:
         color=colors["full_cif"],
         linewidth=2.5,
         markersize=8,
-        label="Full CIF (Measured)",
+        label="Full CIF (Analytic model)",
     )
 
     ax2.set_xlabel("Number of Agents", fontsize=12, fontweight="bold")
@@ -125,7 +125,7 @@ def create_scalability_figure(output_dir: Path) -> tuple[Path, Path]:
         color=colors["consensus"],
         linewidth=2.5,
         markersize=8,
-        label="Consensus (Measured)",
+        label="Consensus (Analytic model)",
     )
 
     # Theoretical O(N^2) fit for reference

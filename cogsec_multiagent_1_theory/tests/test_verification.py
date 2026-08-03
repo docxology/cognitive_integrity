@@ -358,9 +358,7 @@ class TestManuscriptVerifierEdgeCases:
 
             # Valid bib file but manuscript references a key that doesn't exist
             (tmppath / "references.bib").write_text("@article{key1,}")
-            (tmppath / "manuscript.md").write_text(
-                r"Content with \cite{nonexistent_key}." "\n"
-            )
+            (tmppath / "manuscript.md").write_text(r"Content with \cite{nonexistent_key}." "\n")
 
             verifier = ManuscriptVerifier(tmpdir)
 

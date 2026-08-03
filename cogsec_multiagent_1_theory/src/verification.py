@@ -14,6 +14,7 @@ Features:
 - Checks for file existence
 - Detailed logging
 """
+
 from __future__ import annotations
 
 import logging
@@ -22,16 +23,29 @@ import sys
 from pathlib import Path
 from typing import Set
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - %(levelname)s - %(message)s",
-    handlers=[
-        logging.StreamHandler(sys.stdout),
-        logging.FileHandler("manuscript_verification.log"),
-    ],
-)
+# Logging is NOT configured at import time: a module-level basicConfig with a
+# CWD-relative FileHandler would append to ./manuscript_verification.log on
+# every `import src.verification` (including test runs), dirtying the working
+# tree and failing from read-only CWDs.  Callers that want the file handler
+# (e.g. scripts/verify_manuscript.py) call configure_logging() explicitly.
 logger = logging.getLogger(__name__)
+
+
+def configure_logging(level: int = logging.INFO) -> None:
+    """Configure stream + file logging for the verification CLI.
+
+    Idempotent; safe to call more than once (basicConfig is a no-op after
+    the first call).  The file handler writes to the CWD-relative
+    `manuscript_verification.log` (gitignored).
+    """
+    logging.basicConfig(
+        level=level,
+        format="%(asctime)s - %(levelname)s - %(message)s",
+        handlers=[
+            logging.StreamHandler(sys.stdout),
+            logging.FileHandler("manuscript_verification.log"),
+        ],
+    )
 
 
 class ManuscriptVerifier:

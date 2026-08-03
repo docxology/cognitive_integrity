@@ -14,7 +14,7 @@ import time
 from collections import deque
 from dataclasses import dataclass, field
 from enum import Enum, auto
-from typing import Any, Callable, Dict, List, Optional
+from typing import Any, Callable, Dict, List, Optional, Tuple
 
 import numpy as np
 
@@ -175,8 +175,7 @@ class OODAPhaseMonitor:
                     "valid_transitions": [p.name for p in valid_next],
                 },
                 description=(
-                    f"Invalid OODA phase transition: "
-                    f"{self._current_phase.name} -> {new_phase.name}"
+                    f"Invalid OODA phase transition: {self._current_phase.name} -> {new_phase.name}"
                 ),
             )
             return False
@@ -364,8 +363,7 @@ class OODAPhaseMonitor:
                     "principal_goals": list(principal_set),
                 },
                 description=(
-                    f"Goal hijacking: {len(unauthorized_goals)} "
-                    f"unauthorized goal(s) detected"
+                    f"Goal hijacking: {len(unauthorized_goals)} unauthorized goal(s) detected"
                 ),
             )
 
@@ -579,21 +577,27 @@ class OODAPhaseMonitor:
         return float(2.0 * math.acos(bhattacharyya))
 
     @staticmethod
-    def stealth_impact_product(belief_shift_fr: float) -> float:
+    def stealth_impact_product(belief_shift_fr: float) -> Tuple[float, float, float]:
         """
-        Compute the stealth-impact product for a given Fisher-Rao belief shift.
+        Compute the stealth-impact pair and their product for a Fisher-Rao shift.
 
-        From Theorem (FR Tight Bound): I_FR * S_FR = pi/2.
+        From Theorem (FR Tight Bound): I_FR * S_FR <= pi/2, with equality
+        when stealth is normalized as S = (pi/2) / I_FR.  Returning the raw
+        product alone would be a tautology (it is always pi/2 by
+        construction); returning the components lets consumers verify the
+        bound against *computed* (not definitionally-normalized) values.
 
         Args:
             belief_shift_fr: Fisher-Rao distance of the attack.
 
         Returns:
-            Stealth-impact product (should be <= pi/2).
+            Tuple of (impact, stealth, product), where
+            impact = belief_shift_fr, stealth = (pi/2) / belief_shift_fr,
+            product = impact * stealth (<= pi/2 by construction).
         """
         if belief_shift_fr <= 0:
-            return 0.0
+            return 0.0, 0.0, 0.0
         # Stealth normalized to [0, 1]: S = (pi/2) / r
         stealth = (math.pi / 2) / belief_shift_fr
         impact = belief_shift_fr
-        return impact * stealth  # = pi/2
+        return impact, stealth, impact * stealth

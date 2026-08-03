@@ -18,6 +18,25 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
+def compute_roc_auc(y, x) -> float:
+    """Compute area under a ROC curve using the trapezoidal rule.
+
+    Handles the degenerate all-constant-FPR case: a trapezoid over a
+    zero-FPR width returns 0 by construction, which would display a
+    perfect-precision classifier (one that never fires on negatives) as
+    AUC 0.000.  Such a curve is conventionally the vertical segment at
+    FPR=0 up to max(TPR), so AUC = max(TPR) (the curve then jumps to
+    (1, 1) at the loosest threshold).
+    """
+    x = np.asarray(x, dtype=float)
+    y = np.asarray(y, dtype=float)
+    if x.size == 0:
+        return 0.0
+    if np.all(np.abs(x - x[0]) < 1e-12):
+        return float(np.max(y))
+    return float(np.sum(np.diff(x) * (y[:-1] + y[1:]) / 2))
+
+
 def create_roc_curves_figure(output_dir: Path) -> tuple[Path, Path]:
     """
     Create ROC curves for each defense mechanism.
@@ -63,8 +82,7 @@ def create_roc_curves_figure(output_dir: Path) -> tuple[Path, Path]:
 
     # Use scipy or manual integration for AUC calculation
     def compute_auc(y, x):
-        """Compute area under curve using trapezoidal rule."""
-        return float(np.sum(np.diff(x) * (y[:-1] + y[1:]) / 2))
+        return compute_roc_auc(y, x)
 
     # Define base FPR for theoretical curves
     fpr_base = np.linspace(0, 1, 100)

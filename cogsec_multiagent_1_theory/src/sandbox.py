@@ -151,7 +151,7 @@ class PromotionCriteria:
     """
 
     min_confidence: float = 0.8
-    min_corroborations: int = 0
+    min_corroborations: int = 1
     min_age_seconds: float = 0.0
     custom_predicates: List[Callable[[Belief], bool]] = field(default_factory=list)
 
@@ -216,10 +216,24 @@ class SandboxManager:
         """
         Add a belief to provisional partition with TTL.
 
+        Enforces ``config.max_provisional_beliefs``: once the provisional
+        store is at capacity, new provisional beliefs are rejected so the
+        store cannot grow without bound (Rule S-PROMOTE in the manuscript
+        assumes a bounded provisional partition).
+
         Args:
             belief: The belief to add
             ttl_seconds: Custom TTL (uses config default if None)
+
+        Raises:
+            ValueError: if the provisional store is already at capacity
         """
+        if len(self.state.provisional) >= self.config.max_provisional_beliefs:
+            raise ValueError(
+                f"Provisional store at capacity "
+                f"({self.config.max_provisional_beliefs}); promote or expire "
+                f"beliefs before adding more"
+            )
         self.state.add_provisional(belief)
 
         # Set TTL

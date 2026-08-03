@@ -64,7 +64,7 @@ where $\sigma$ is the sigmoid function and weights $(w_d, b)$ are learned from l
 
 ## ROC Curve Analysis {#sec:roc-analysis}
 
-![Receiver Operating Characteristic (ROC) curves for CIF detection across attack categories (illustrative/schematic operating points under the Neyman-Pearson framework; the curves themselves are labeled Theoretical, not empirical measurements).](figures/roc_curves.pdf){#fig:roc-curves width=85%}
+![Receiver Operating Characteristic (ROC) curves for CIF detection across attack categories (illustrative/schematic operating points under the Neyman-Pearson framework; the sandbox/tripwire/anomaly/full-CIF curves are labeled Theoretical, not empirical measurements, whereas the Cognitive Firewall curve is the Part-1 curve measured over the module's small test corpus — measured eval curves are reported in Part 2).](figures/roc_curves.pdf){#fig:roc-curves width=85%}
 
 ### Receiver Operating Characteristic Framework
 
@@ -321,7 +321,7 @@ Each belief carries provenance tags:
 
 \begin{table}[htbp]
 \centering
-\caption{Taint categories with trust levels.}
+\caption{Taint categories with trust levels. (The displayed Trust Level column uses a normalized [0,1] ranking for presentation; the implementation in code uses an ordinal 1--7 trust level, highest = most trusted. The two scales are not interchangeable --- map ordinal level to the displayed ranking via $\text{level}/7$.)}
 \label{tab:taint-categories}
 \begin{tabular}{@{}lll@{}}
 \toprule
@@ -416,7 +416,7 @@ L4 & Systemic compromise & System shutdown \\
 
 The detection methods presented in this section have been empirically validated in Part 2 of this series. Key results include:
 
-\textbf{ROC Analysis}: Receiver Operating Characteristic curves demonstrate the tradeoff between True Positive Rate and False Positive Rate for each detector type. The ensemble achieves AUC $> 0.84$, with individual mechanisms ranging from $0.74$ (Belief Sandbox) to $0.81$ (Tripwire Monitor). See Part 2, \S{4} for detailed ROC curves and confidence intervals.
+\textbf{ROC Analysis}: Receiver Operating Characteristic curves demonstrate the tradeoff between True Positive Rate and False Positive Rate for each detector type. For the theoretical ensemble reference curves (Part 2, \S{4}), the ensemble achieves AUC $> 0.84$, with individual mechanisms ranging from $0.74$ (Belief Sandbox) to $0.81$ (Tripwire Monitor). (These are the theory-guided Part-2 curves; the Part-1 measured firewall curve over the module's small corpus is shown in the ROC figure in this section.)
 
 \textbf{Detection Performance by Attack Type}: Detection rates vary across the five adversary classes ($\Omega_1$--$\Omega_5$). The Cognitive Firewall excels at $\Omega_1$ (external) attacks while Tripwires and Invariants provide stronger coverage for $\Omega_3$ (compromised agent) and $\Omega_4$ (inter-agent) attacks. See Part 2, \S{5} for the complete detection matrix.
 

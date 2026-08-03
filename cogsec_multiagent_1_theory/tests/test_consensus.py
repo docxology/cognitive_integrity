@@ -78,6 +78,30 @@ class TestByzantineConsensus:
         assert result == ConsensusResult.UNDECIDED
         assert confidence < 0.5  # Low confidence due to few votes
 
+    def test_quorum_matches_supermajority_n6(self):
+        """Quorum is consistent with the > 2n/3 decision threshold (P1-17).
+
+        Previously min_votes = ceil(2n/3) = 4 for n=6, which passed quorum
+        but could not satisfy the strict > 2n/3 = 4.0 acceptance check,
+        deadlocking at the nominal quorum.  With floor(2n/3)+1 = 5, reaching
+        quorum guarantees the decision threshold is met.
+        """
+        consensus = ByzantineConsensus(n_agents=6)
+
+        # 4 accepts + 2 rejects is NOT a supermajority (>4) -> UNDECIDED.
+        for i in range(4):
+            consensus.submit_vote(Vote(f"a{i}", "prop", 0.9))
+        consensus.submit_vote(Vote("a4", "prop", 0.1))
+        consensus.submit_vote(Vote("a5", "prop", 0.1))
+        assert consensus.compute_consensus("prop")[0] == ConsensusResult.UNDECIDED
+
+        # 5 accepts + 1 reject IS a supermajority (5 > 4.0) -> ACCEPT.
+        consensus.reset("prop")
+        for i in range(5):
+            consensus.submit_vote(Vote(f"b{i}", "prop", 0.9))
+        consensus.submit_vote(Vote("b5", "prop", 0.1))
+        assert consensus.compute_consensus("prop")[0] == ConsensusResult.ACCEPT
+
     def test_get_belief_returns_average(self):
         """get_belief returns average of agreeing votes."""
         consensus = ByzantineConsensus(n_agents=4)
@@ -146,6 +170,13 @@ class TestQuorumVerification:
         # n=7, f=2: quorum = ceil((7+2+1)/2) = ceil(5) = 5
         quorum = QuorumVerification(n_agents=7, max_byzantine=2)
         assert quorum.quorum == 5
+
+    def test_zero_byzantine_honored(self):
+        """An explicit max_byzantine=0 is honored, not replaced by (n-1)//3 (P1-8)."""
+        quorum = QuorumVerification(n_agents=7, max_byzantine=0)
+        assert quorum.max_byzantine == 0
+        # quorum = ceil((7 + 0 + 1) / 2) = 4, not the inflated (7+2+1)/2 = 5
+        assert quorum.quorum == 4
 
     def test_approval_reaches_quorum(self):
         """Action approved when quorum reached."""
@@ -232,7 +263,32 @@ class TestWeightedVoting:
 
         result, _ = consensus.compute_consensus("prop")
         # High trust vote should have more influence
-        # But still need quorum - result depends on weights
+        # But still need quorum - result depends on weights.
+        # With one trusted accept (weight 0.9) vs three low-trust rejects
+        # (0.1 each): total weight 1.2, accept weight 0.9 > 2/3 * 1.2 = 0.8,
+        # so the trusted accept carries the decision despite the 3-1
+        # numerical minority of dissent.
+        assert result == ConsensusResult.ACCEPT
+
+    def test_weighted_votes_can_flip_verdict(self):
+        """Weights change a decision that plain majority would not reach.
+
+        Regression for P1-6: WeightedByzantineConsensus previously inherited
+        the unweighted majority count, so trust weights never affected the
+        outcome.  Here two low-trust accepts (0.1 each) vs one high-trust
+        reject (1.0): unweighted counting is UNDECIDED (2 accepts is not
+        > 2n/3 for n=3), but weighted counting rejects because the single
+        high-trust vote carries 1.0 > 2/3 * 1.2 of the weight.
+        """
+        from consensus import WeightedByzantineConsensus, WeightedVote
+
+        consensus = WeightedByzantineConsensus(n_agents=3, max_byzantine=0)
+        consensus.submit_vote(WeightedVote("lo-1", "prop", belief=0.9, trust_weight=0.1))
+        consensus.submit_vote(WeightedVote("lo-2", "prop", belief=0.9, trust_weight=0.1))
+        consensus.submit_vote(WeightedVote("hi-1", "prop", belief=0.1, trust_weight=1.0))
+
+        result, _ = consensus.compute_consensus("prop")
+        assert result == ConsensusResult.REJECT
 
     def test_trusted_agent_more_influence(self):
         """Trusted agents have more influence on outcome."""

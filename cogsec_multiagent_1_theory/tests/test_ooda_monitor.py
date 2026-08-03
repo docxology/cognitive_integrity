@@ -316,11 +316,23 @@ class TestFisherRaoDistance:
             < 1e-10
         )
 
-    def test_stealth_impact_product_equals_pi_over_2(self):
-        """The stealth-impact product should be pi/2 (Theorem FR in S01_proofs.md)."""
+    def test_stealth_impact_product_pi_over_2(self):
+        """The stealth-impact product is pi/2 (Theorem FR in S01_proofs.md).
+
+        The function now returns the (impact, stealth, product) tuple so the
+        components are verifiable rather than a definitionally-trivial
+        scalar.
+        """
         for r in [0.1, 0.5, 1.0, math.pi / 2, math.pi - 0.01]:
-            product = OODAPhaseMonitor.stealth_impact_product(r)
+            impact, stealth, product = OODAPhaseMonitor.stealth_impact_product(r)
+            assert abs(impact - r) < 1e-10, f"impact mismatch for r={r}"
+            assert abs(stealth - (math.pi / 2) / r) < 1e-10, f"stealth mismatch for r={r}"
             assert abs(product - math.pi / 2) < 1e-10, f"Expected pi/2 for r={r}, got {product}"
+
+    def test_stealth_impact_product_nonpositive_returns_zeros(self):
+        """Non-positive belief shifts yield zero impact/stealth/product."""
+        impact, stealth, product = OODAPhaseMonitor.stealth_impact_product(0.0)
+        assert (impact, stealth, product) == (0.0, 0.0, 0.0)
 
 
 # ── Latency Budget Tests ──────────────────────────────────────────────────────

@@ -245,6 +245,23 @@ class TestDriftDetectorEdgeCases:
         history = detector.get_drift_history()
         assert history == []
 
+    def test_compute_drift_ignores_same_length_different_keys(self):
+        """Same-length/different-key observations are not positionally aligned (P1-16).
+
+        Previously history observations were filtered by value-array *length*
+        only, so a stored {"x","y"} observation was compared positionally
+        against a current {"a","b"} state.  Now observations must share the
+        exact same key set.
+        """
+        detector = DriftDetector()
+        for _ in range(15):
+            detector.add_observation({"x": 0.5, "y": 0.5})
+
+        # Same length (2) but different key names -> no alignable history.
+        kl, delta = detector.compute_drift({"a": 0.5, "b": 0.5}, window=10)
+        assert kl == 0.0
+        assert delta == 0.0
+
 
 class TestAnomalyScorerEdgeCases:
     """Edge-case tests targeting uncovered lines in AnomalyScorer."""

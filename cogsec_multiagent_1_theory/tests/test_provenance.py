@@ -265,8 +265,32 @@ class TestCausalAttribution:
         report = attribution.generate_report("combined")
 
         assert report["belief_id"] == "combined"
-        assert report["effective_taint"] == TaintLabel.WEB_CONTENT
+        assert report["effective_taint"] == TaintLabel.WEB_CONTENT.value
         assert len(report["untrusted_sources"]) > 0
+
+    def test_generate_report_is_json_serializable(self):
+        """The machine-readable report serializes to JSON (P1-15).
+
+        Previously the report embedded a raw TaintLabel enum in
+        ``effective_taint``, so ``json.dumps`` raised TypeError.
+        """
+        import json
+
+        chain = ProvenanceChain()
+        chain.add_belief("sys", "System", TaintLabel.SYSTEM_VERIFIED, "sys")
+        chain.add_belief("web", "Web data", TaintLabel.WEB_CONTENT, "web")
+        chain.add_belief(
+            "combined",
+            "Combined",
+            TaintLabel.AGENT_INTERNAL,
+            "agent-1",
+            parent_ids=["sys", "web"],
+        )
+        attribution = CausalAttribution(chain)
+        report = attribution.generate_report("combined")
+        # Should not raise
+        payload = json.dumps(report)
+        assert "web_content" in payload
 
     def test_multi_hop_attribution(self):
         """Attribution works across multiple hops."""
