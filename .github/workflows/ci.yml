@@ -79,8 +79,10 @@ jobs:
 
       - name: Type check (mypy, advisory)
         # Part 2 is the only part with a [tool.mypy] section.  Advisory because
-        # one real error remains: src/formal/trust_bounds.py:84 assigns a
-        # Callable over a method-typed name.  Promote to gating once fixed.
+        # the Python 3.10 compatibility matrix / formatter can differ.  At HEAD
+        # mypy is clean (it was previously blocked by a no-redef in
+        # src/redteam/__init__.py; that was fixed).  Promote to gating once
+        # it is consistently clean across the matrix.
         if: matrix.part == 'cogsec_multiagent_2_computational' && matrix.python-version == '3.12'
         continue-on-error: true
         run: uv run mypy src
@@ -209,6 +211,25 @@ jobs:
 
       - name: Verify manuscript
         run: uv run python scripts/verify_manuscript.py --root manuscript
+
+      - name: Verify manuscript claims (numeric gate, fail-closed)
+        # P2-4: the MISS-01 claim gate was previously exercised by no CI job,
+        # so a new unreconciled number would not fail CI.  Here we run the
+        # verifier (writing the JSON report even on failure) and then hard-assert
+        # that there are NO mismatches or missing claims, and that the only
+        # UNBACKED claims are exactly the 4 env-gated LLM claims pinned in
+        # tests/test_claim_registry.py::KNOWN_UNRECONCILED.
+        run: |
+          uv run python scripts/verify_claims.py --json output/claim_report.json || true
+          uv run python - <<'EOF'
+          import json
+          r = json.load(open("output/claim_report.json"))
+          c = r["counts"]
+          assert c["mismatch"] == 0, f"mismatched claims: {c['mismatch']}"
+          assert c["not_found"] == 0, f"missing claims: {c['not_found']}"
+          assert c["unbacked"] == 4, f"UNBACKED != pinned 4: {c['unbacked']}"
+          print(f"claims gate OK: {c['total']} total, {c['match']} MATCH, {c['unbacked']} UNBACKED")
+          EOF
 
   compat:
     # Advisory: 3.10 is the declared requires-python floor, but part 3 has one

@@ -285,7 +285,9 @@ class SecurityInvariantChecker:
             InvariantCheckResult indicating pass/fail
         """
         high_confidence = {
-            b["id"]: b for b in beliefs if b.get("confidence", 0) > confidence_threshold
+            b["id"]: b
+            for b in beliefs
+            if b.get("id") is not None and b.get("confidence", 0) > confidence_threshold
         }
 
         contradictions: list[tuple[str, str]] = []

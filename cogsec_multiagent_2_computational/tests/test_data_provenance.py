@@ -35,6 +35,7 @@ import pytest
 
 from data.generate import (
     AUTHORITATIVE_RESULT_NAMES,
+    DATA_ORIGIN_PARAMETRIC,
     DATA_ORIGIN_REAL,
     DATA_ORIGIN_SYNTHETIC,
     DATA_ORIGIN_UNKNOWN,
@@ -496,8 +497,15 @@ class TestShippedArtifacts:
         path = _DATA_DIR / f"{name}.json"
         if not path.exists():
             pytest.skip(f"{name}.json not present in this checkout")
-        assert classify_provenance(path) == DATA_ORIGIN_REAL, (
-            f"{name}.json is not marked real_pipeline — it was probably "
+        # Shipped authoritative artifacts must be either measured pipeline
+        # evidence (real_pipeline) or, for sensitivity, an explicitly-labelled
+        # closed-form parametric model — never synthetic/schema placeholder,
+        # and never overwritten by DataGenerator.  After P2-1, sensitivity is
+        # honestly stamped `parametric_simulation` instead of a misleading
+        # `real_pipeline`.
+        origin = classify_provenance(path)
+        assert origin in {DATA_ORIGIN_REAL, DATA_ORIGIN_PARAMETRIC}, (
+            f"{name}.json classified as {origin!r} — it was probably "
             f"overwritten by DataGenerator"
         )
 

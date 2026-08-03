@@ -231,7 +231,7 @@ As shown in \cref{fig:test}.
             assert result is True
 
     def test_check_style(self):
-        """Test check_style detects hyperbole words."""
+        """Test check_style detects hyperbole words (P3-2)."""
         from src.verification import ManuscriptVerifier
 
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -243,10 +243,17 @@ As shown in \cref{fig:test}.
             )
 
             verifier = ManuscriptVerifier(tmpdir)
-            # Style check returns True but logs warnings
-            result = verifier.check_style()
+            # Hyperbole present -> the check must report it (not a vacuous pass).
+            assert verifier.check_style() is False
 
-            assert result is True  # Style warnings don't fail
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmppath = Path(tmpdir)
+            (tmppath / "references.bib").write_text("")
+            (tmppath / "manuscript.md").write_text(
+                "This approach improves measured coverage by 12%."
+            )
+            verifier = ManuscriptVerifier(tmpdir)
+            assert verifier.check_style() is True
 
     def test_check_domain_content_no_domain_files(self):
         """check_domain_content passes (True) when no 09c-09l domain files exist."""
@@ -374,9 +381,7 @@ class TestManuscriptVerifierRunAll:
 
             # Valid bib file but manuscript references a key that doesn't exist
             (tmppath / "references.bib").write_text("@article{key1,}")
-            (tmppath / "manuscript.md").write_text(
-                r"Content with \cite{nonexistent_key}." "\n"
-            )
+            (tmppath / "manuscript.md").write_text(r"Content with \cite{nonexistent_key}." "\n")
 
             verifier = ManuscriptVerifier(tmpdir)
 

@@ -1093,4 +1093,3 @@ class TestUncoveredLines:
         checker = CapabilityChecker()
         checker.capabilities = []
         assert checker.completeness_score() == 0.0
-

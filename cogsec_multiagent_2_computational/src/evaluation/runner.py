@@ -93,10 +93,13 @@ class ExperimentResult:
         false_positive_rate: FP / (FP + TN).
         avg_latency_ms: Mean processing latency per sample.
         measurement_mode: Provenance of these numbers — one of
-            ``"real"`` (real defense pipeline / Mode 1), ``"llm"`` (real LLM
-            multiagent evaluation / Mode 3), or ``"parametric"`` (closed-form
-            design model / Mode 2). ``"parametric"`` must never be published as
-            a measured ``real_pipeline`` result.
+            "real" (real defense pipeline / Mode 1), "llm" (real LLM
+            multiagent evaluation / Mode 3), or "parametric" (closed-form
+            design model / Mode 2). "parametric" must never be published as
+            a measured "real_pipeline" result.
+        llm_fallback_count: Number of samples intended for the LLM path (Mode 3)
+            that fell back to the pipeline/parametric path (e.g. LLM unreachable),
+            so readers can tell a genuine LLM result from a fallback. (P2-2)
     """
 
     architecture: str
@@ -110,6 +113,7 @@ class ExperimentResult:
     false_positive_rate: float
     avg_latency_ms: float
     measurement_mode: str = "real"
+    llm_fallback_count: int = 0
 
 
 # ---------------------------------------------------------------------------
@@ -129,6 +133,7 @@ class ExperimentRunner:
     def __init__(self, config: Optional[ExperimentConfig] = None) -> None:
         self.config = config or ExperimentConfig()
         self._rng = np.random.default_rng(self.config.seed)
+        self._llm_fallback_count = 0
 
     # ---- public API ----
 
@@ -415,6 +420,10 @@ class ExperimentRunner:
                 _logger.warning(
                     "LLM system error, falling back to pipeline: %s", e,
                 )
+                # Track the fallback so the caller can label the measurement
+                # mode honestly (P2-2): a result scored by the fallback must
+                # not be published as an "llm" measurement.
+                self._llm_fallback_count += 1
                 # Fall through to Mode 1 or Mode 2
 
         # --- Mode 1: real pipeline evaluation ---
@@ -469,6 +478,7 @@ class ExperimentRunner:
 
         tp = fp = tn = fn = 0
         latencies: List[float] = []
+        self._llm_fallback_count = 0
 
         for sample in attack_samples:
             is_attack = sample.get("is_attack", True)
@@ -504,6 +514,16 @@ class ExperimentRunner:
         categories = [s.get("category", "unknown") for s in attack_samples]
         dominant = dominant_category(categories)
 
+        # Honest measurement mode (P2-2): if every sample fell back out of the
+        # LLM path (e.g. the LLM was unreachable), the numbers were produced by
+        # the pipeline / parametric fallback and must not claim "llm"
+        # provenance.
+        n = len(attack_samples)
+        if n > 0 and self._llm_fallback_count == n:
+            measurement_mode = "pipeline" if defense_pipeline is not None else "parametric"
+        else:
+            measurement_mode = "llm"
+
         return ExperimentResult(
             architecture=arch_name,
             attack_category=dominant,
@@ -515,5 +535,6 @@ class ExperimentRunner:
             detection_rate=detection_rate,
             false_positive_rate=fpr,
             avg_latency_ms=avg_lat,
-            measurement_mode="llm",
+            measurement_mode=measurement_mode,
+            llm_fallback_count=self._llm_fallback_count,
         )

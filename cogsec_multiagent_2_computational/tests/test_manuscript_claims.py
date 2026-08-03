@@ -103,6 +103,29 @@ def test_tripwire_removal_delta_tpr(ablation: dict) -> None:
     )
 
 
+def test_component_hierarchy_ordering_matches_manuscript(ablation: dict) -> None:
+    """P2-3: the manuscript 'Component hierarchy' ordering matches the data.
+
+    The corrected manuscript (05_results.md) lists detection as the largest
+    marginal loss, then Trust Calculus, then a three-way tie among Tripwires,
+    Invariants and Firewall.  Previously the prose dropped Trust Calculus
+    (the second-largest) and mis-stated the tied triple as distinct values.
+    """
+    removal = {r["removed"]: r["delta_tpr"] for r in ablation["component_removal"]}
+    # Detection is the largest marginal loss.
+    assert removal["detection"] <= removal["trust_calculus"]
+    # Trust Calculus is strictly the second-largest (not tied with detection).
+    assert removal["trust_calculus"] < -0.015
+    assert removal["trust_calculus"] <= removal["firewall"]
+    # Firewall / Invariants / Tripwire form a three-way tie at ~ -0.010.
+    assert abs(removal["firewall"] - removal["invariants"]) < 1e-6
+    assert abs(removal["firewall"] - removal["tripwire"]) < 1e-6
+    # Manuscript prose reflects the corrected ordering.
+    ms = (Path(__file__).parent.parent / "manuscript" / "05_results.md").read_text()
+    assert "Trust Calculus ($\\approx -0.020$)" in ms
+    assert "three-way tie among Tripwires, Invariants, and Firewall" in ms
+
+
 def test_strongest_synergy_is_a_tie_between_two_detection_pairs(ablation: dict) -> None:
     """The strongest synergy is a *tie*, not a single winning pair.
 

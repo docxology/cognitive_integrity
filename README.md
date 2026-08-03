@@ -22,7 +22,7 @@ The qualified name keeps each paper's outputs under `output/cognitive_integrity/
 
 | Part | Title | Status | DOI |
 |------|-------|--------|-----|
-| 1 v2 | [Formal Foundations](cogsec_multiagent_1_theory/) (Second Edition) | **v2.0** | [10.5281/zenodo.18364119](https://doi.org/10.5281/zenodo.18364119) |
+| 1 v2 | [Formal Foundations](cogsec_multiagent_1_theory/) (Second Edition) | **v1.1** | [10.5281/zenodo.18364119](https://doi.org/10.5281/zenodo.18364119) |
 | 2 v2 | [Computational Validation](cogsec_multiagent_2_computational/) (Second Edition) | Preprint | [10.5281/zenodo.18364128](https://doi.org/10.5281/zenodo.18364128) |
 | 3+4 merged | [Practical Applications and Deployment Guide](cogsec_multiagent_3_practical/) (Parts 3+4 Unified) | Preprint | [10.5281/zenodo.18364130](https://doi.org/10.5281/zenodo.18364130) |
 

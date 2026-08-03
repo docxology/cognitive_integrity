@@ -1334,3 +1334,40 @@ class TestDominantCategoryDeterminism:
         # Reversing the input order must not change the answer.
         reversed_result = runner.run_single(adapter, list(reversed(samples)), None)
         assert reversed_result.attack_category == "belief_drift"
+
+
+def test_run_single_llm_fallback_reports_honest_mode():
+    """P2-2: when the LLM path raises for every sample, measurement_mode is
+    not 'llm' — the result must disclose the fallback instead of publishing
+    parametric/pipeline numbers as an LLM measurement.
+    """
+
+    class _RaisingLLM:
+        """MultiAgentSystem stand-in whose process_attack always raises."""
+
+        def __init__(self):
+            self.n_resets = 0
+
+        def process_attack(self, **kwargs):
+            raise ConnectionError("Ollama unreachable")
+
+        def reset_all(self):
+            self.n_resets += 1
+
+    samples = _make_attack_samples("direct_injection", n_attacks=5, n_benign=2)
+    adapter = _SimpleAdapter(name="FallArch", multiplier=1.0)
+    runner = ExperimentRunner(ExperimentConfig(seed=42))
+
+    # LLM down + no pipeline -> parametric fallback, labelled honestly.
+    result = runner.run_single_llm(
+        adapter, samples, defense_pipeline=None, llm_system=_RaisingLLM()
+    )
+    assert result.measurement_mode == "parametric"
+    assert result.llm_fallback_count == len(samples)
+
+    # LLM down + real pipeline -> pipeline fallback, labelled honestly.
+    result2 = runner.run_single_llm(
+        adapter, samples, defense_pipeline=_SimplePipeline(0.7), llm_system=_RaisingLLM()
+    )
+    assert result2.measurement_mode == "pipeline"
+    assert result2.llm_fallback_count == len(samples)

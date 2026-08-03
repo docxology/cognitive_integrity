@@ -109,9 +109,10 @@ verify:
 
 # Verify manuscript claims (numeric: every registered claim matches output/data)
 # This is the MISS-01 gate: re-derives every headline number from the JSON
-# artifacts and compares it against what the prose actually says.  Currently
-# expected to fail on the ~58 KNOWN_UNRECONCILED drift entries; use
-# --only-failures for a compact report.
+# artifacts and compares it against what the prose actually says.  At HEAD
+# this exits 1 only on the 4 env-gated LLM claims (UNBACKED), pinned in
+# tests/test_claim_registry.py::KNOWN_UNRECONCILED; use --only-failures for a
+# compact report.
 verify-claims:
 	$(PYTHON) $(SCRIPTS)/verify_claims.py --only-failures
 

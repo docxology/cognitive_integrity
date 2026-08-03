@@ -78,9 +78,28 @@ def main() -> None:
     print(f"  Best: injection={best_params['injection_threshold']:.3f}, drift={best_params['drift_threshold']:.3f}")  # noqa: E501
     print(f"  Detection rate: {grid_result['best_metric']:.4f}")
 
-    # Save
+    # Save — with honest provenance.  This analysis evaluates a closed-form
+    # quadratic response-surface model (make_default_evaluate_fn), NOT the
+    # measured pipeline, so it is stamped `parametric_simulation` and never
+    # `real_pipeline` (a machine reader must not mistake design-model numbers
+    # for measurements; P2-1).
     out_path = output_dir / "sensitivity_results.json"
     data = {
+        "data_origin": "parametric_simulation",
+        "source_script": "scripts/run_sensitivity_analysis.py",
+        "generated_by": (
+            "scripts/run_sensitivity_analysis.py --seed {args.seed} --output {args.output}"
+        ),
+        "seed": args.seed,
+        "provenance": {
+            "measurement": (
+                "closed-form parametric response-surface model "
+                "(quadratic interaction effects + Gaussian noise); not a "
+                "pipeline-in-the-loop measurement. Do not report these "
+                "numbers as measured detection rates."
+            ),
+            "model": "statistics.sensitivity.make_default_evaluate_fn",
+        },
         "sweeps": [
             {"parameter": s.parameter_name, "best_value": float(s.best_value),
              "best_metric": float(s.best_metric),

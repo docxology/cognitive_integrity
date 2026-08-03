@@ -1056,4 +1056,3 @@ class TestUncoveredLinesDeployment:
         result = advisor.get_tier(9999)
         # The fallback always returns the last tier element.
         assert result is advisor.tiers[-1]
-

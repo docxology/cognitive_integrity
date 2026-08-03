@@ -338,7 +338,7 @@ class AdversarialTrainer:
             )
 
             # Step 3: Update thresholds
-            threshold_updates: dict[str, float] = {}
+            threshold_updates = {}
             for key in self.thresholds:
                 delta = self.config.learning_rate * gradients.get(key, 0.0)
                 self.thresholds[key] = float(

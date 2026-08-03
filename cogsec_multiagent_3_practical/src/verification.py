@@ -15,6 +15,7 @@ Features:
 - Verifies domain-application sections have required structural elements
 - Detailed logging
 """
+
 from __future__ import annotations
 
 import logging
@@ -204,7 +205,12 @@ class ManuscriptVerifier:
         return status
 
     def check_style(self) -> bool:
-        """Check for stylistic issues like hyperbole."""
+        """Check for stylistic issues like hyperbole.
+
+        Returns True only when no style warnings were found.  A style issue
+        is a real (if advisory) finding, so the summary row must reflect it
+        rather than always reporting "Style: PASS" (a vacuous pass).
+        """
         logger.info("Checking style guidelines...")
         status = True
 
@@ -217,8 +223,7 @@ class ManuscriptVerifier:
                             logger.warning(
                                 f"Potential hyperbole '{word}' in {md_file.name}:{i + 1}"
                             )
-                            # Warn only, don't fail build generally, but return True for now
-                            # to indicate 'style warnings found' if we wanted stricter checks.
+                            status = False
 
         return status
 

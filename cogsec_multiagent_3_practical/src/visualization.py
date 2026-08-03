@@ -123,9 +123,7 @@ def get_five_pillars_data(
     )
 
 
-def render_posture_radar(
-    data: FigureData, ax: Axes | None = None
-) -> Figure | SubFigure:
+def render_posture_radar(data: FigureData, ax: Axes | None = None) -> Figure | SubFigure:
     """Render Five Pillars posture radar chart.
 
     Args:
@@ -262,9 +260,7 @@ def get_deployment_phases_data() -> FigureData:
     )
 
 
-def render_checklist_flowchart(
-    data: FigureData, ax: Axes | None = None
-) -> Figure | SubFigure:
+def render_checklist_flowchart(data: FigureData, ax: Axes | None = None) -> Figure | SubFigure:
     """Render deployment checklist flowchart.
 
     Args:
@@ -414,9 +410,7 @@ def get_risk_matrix_data(
     )
 
 
-def render_risk_matrix(
-    data: FigureData, ax: Axes | None = None
-) -> Figure | SubFigure:
+def render_risk_matrix(data: FigureData, ax: Axes | None = None) -> Figure | SubFigure:
     """Render risk assessment matrix heatmap.
 
     Args:
@@ -544,9 +538,7 @@ def get_trust_decay_data(
     )
 
 
-def render_trust_decay(
-    data: FigureData, ax: Axes | None = None
-) -> Figure | SubFigure:
+def render_trust_decay(data: FigureData, ax: Axes | None = None) -> Figure | SubFigure:
     """Render trust decay curve.
 
     Args:
@@ -695,9 +687,7 @@ def get_pitfalls_data() -> FigureData:
     )
 
 
-def render_pitfall_severity(
-    data: FigureData, ax: Axes | None = None
-) -> Figure | SubFigure:
+def render_pitfall_severity(data: FigureData, ax: Axes | None = None) -> Figure | SubFigure:
     """Render pitfall severity bar chart.
 
     Args:
@@ -835,9 +825,7 @@ def get_timeline_data() -> FigureData:
     )
 
 
-def render_timeline(
-    data: FigureData, ax: Axes | None = None
-) -> Figure | SubFigure:
+def render_timeline(data: FigureData, ax: Axes | None = None) -> Figure | SubFigure:
     """Render deployment timeline.
 
     Args:

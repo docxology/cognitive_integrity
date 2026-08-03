@@ -1,8 +1,12 @@
 {
-  "data_origin": "real_pipeline",
+  "data_origin": "parametric_simulation",
   "source_script": "scripts/run_sensitivity_analysis.py",
-  "generated_by": "scripts/run_sensitivity_analysis.py --seed 42 --output output/data",
+  "generated_by": "scripts/run_sensitivity_analysis.py --seed {args.seed} --output {args.output}",
   "seed": 42,
+  "provenance": {
+    "measurement": "closed-form parametric response-surface model (quadratic interaction effects + Gaussian noise); not a pipeline-in-the-loop measurement. Do not report these numbers as measured detection rates.",
+    "model": "statistics.sensitivity.make_default_evaluate_fn"
+  },
   "sweeps": [
     {
       "parameter": "injection_threshold",

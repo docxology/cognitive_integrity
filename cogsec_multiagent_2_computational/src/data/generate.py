@@ -60,6 +60,10 @@ _CATEGORIES = ["Injection", "Trust Exploitation", "Belief Manipulation", "Coordi
 DATA_ORIGIN_REAL = "real_pipeline"
 #: Artifact was produced by :class:`DataGenerator` (schema placeholder only).
 DATA_ORIGIN_SYNTHETIC = "synthetic_schema"
+#: Artifact is a closed-form / parametric model evaluation, not a measured
+#: pipeline run.  Distinct from ``real_pipeline`` so machine readers never
+#: mistake design-model numbers for measurements (P2-1).
+DATA_ORIGIN_PARAMETRIC = "parametric_simulation"
 #: Artifact carries no recognisable provenance.
 DATA_ORIGIN_UNKNOWN = "unknown"
 
@@ -77,7 +81,9 @@ PROVENANCE_KEYS = (
 #: Sidecar-only key binding a sidecar to the exact artifact bytes it describes.
 SIDECAR_HASH_KEY = "artifact_sha256"
 
-_KNOWN_ORIGINS = frozenset({DATA_ORIGIN_REAL, DATA_ORIGIN_SYNTHETIC})
+_KNOWN_ORIGINS = frozenset(
+    {DATA_ORIGIN_REAL, DATA_ORIGIN_SYNTHETIC, DATA_ORIGIN_PARAMETRIC}
+)
 
 #: Result artifacts that may hold real experimental output and must therefore
 #: never be silently replaced by :class:`DataGenerator` placeholders.
@@ -209,12 +215,19 @@ def classify_provenance(path: Union[str, Path]) -> str:
     path : str or Path
         Path of the data artifact.
 
+    Examples
+    --------
+    >>> origin = classify_provenance("output/data/ablation_results.json")
+    >>> origin in {"real_pipeline", "synthetic_schema", "parametric_simulation", "unknown"}
+    True
+
     Returns
     -------
     str
-        One of :data:`DATA_ORIGIN_REAL`, :data:`DATA_ORIGIN_SYNTHETIC`, or
-        :data:`DATA_ORIGIN_UNKNOWN`.  Anything that cannot be positively
-        proven is ``unknown`` — callers must treat that as "do not clobber".
+        One of :data:`DATA_ORIGIN_REAL`, :data:`DATA_ORIGIN_SYNTHETIC`,
+        :data:`DATA_ORIGIN_PARAMETRIC`, or :data:`DATA_ORIGIN_UNKNOWN`.
+        Anything that cannot be positively proven is ``unknown`` — callers
+        must treat that as "do not clobber".
     """
     origin = read_provenance(path).get("data_origin")
     return origin if origin in _KNOWN_ORIGINS else DATA_ORIGIN_UNKNOWN
