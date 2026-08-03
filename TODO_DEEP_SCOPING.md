@@ -22,8 +22,8 @@ This pass filed **11 MAJOR · 24 MEDIUM · 24 MINOR · 2 LATENT** findings (Phas
 
 ### Implementation pass (2026-08-03, part 2) — fixed since the review
 
-The hostile-red-team findings were implemented and gate-verified at commit
-`<HEAD>` (this follow-up session). Resolved (with tests):
+The hostile-red-team findings were implemented and gate-verified at commits
+`ca941f3` (Part 1) and `3dd7e2b` (Part 2/3/CI/docs). Resolved (with tests):
 
 - **P1-1…P1-22 (Part 1)** — all implemented: canonical-injection regex + firewall
   quarantine-on-pattern, invariants fail-closed, artifact determinism, ROC
