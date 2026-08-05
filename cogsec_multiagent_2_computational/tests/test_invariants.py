@@ -86,6 +86,22 @@ class TestInvariantChecker:
         inv1_violations = [v for v in violations if v.invariant_id == "INV-1"]
         assert len(inv1_violations) == 1
 
+    def test_missing_security_fields_fail_closed(self):
+        """Invariants must fail CLOSED when a security field is absent
+        (P2-37): missing code_trusted / has_permission / tool_output_verified
+        must be treated as untrusted / unpermitted / unverified, never as
+        implicitly safe.  Mirrors Part 1 P1-2.
+        """
+        checker = InvariantChecker()
+        codes = checker.check_all({"action": "execute_code"})
+        assert any(v.invariant_id == "INV-1" for v in codes)
+        writes = checker.check_all({"action": "write_file", "file_path": "/etc/passwd"})
+        assert any(v.invariant_id == "INV-3" for v in writes)
+        tool = checker.check_all({"action": "use_tool_result"})
+        assert any(v.invariant_id == "INV-4" for v in tool)
+        leak = checker.check_all({"action": "send_message"})
+        assert any(v.invariant_id == "INV-2" for v in leak)
+
     def test_builtin_inv2_credential_leak(self):
         """INV-2: Never leak credentials."""
         checker = InvariantChecker()

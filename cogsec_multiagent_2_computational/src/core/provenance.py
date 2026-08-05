@@ -380,7 +380,7 @@ class CausalAttribution:
         if not record:
             return {
                 "belief_id": belief_id,
-                "effective_taint": TaintLabel.UNVERIFIED,
+                "effective_taint": TaintLabel.UNVERIFIED.value,
                 "untrusted_sources": [],
                 "paths": [],
                 "ancestry_size": 0,
@@ -394,7 +394,7 @@ class CausalAttribution:
 
         return {
             "belief_id": belief_id,
-            "effective_taint": effective_taint,
+            "effective_taint": effective_taint.value,
             "untrusted_sources": list(untrusted_sources),
             "paths": paths,
             "ancestry_size": len(ancestry),

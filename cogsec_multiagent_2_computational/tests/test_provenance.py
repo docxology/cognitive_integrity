@@ -278,7 +278,7 @@ class TestCausalAttribution:
         report = attribution.generate_report("combined")
 
         assert report["belief_id"] == "combined"
-        assert report["effective_taint"] == TaintLabel.WEB_CONTENT
+        assert report["effective_taint"] == TaintLabel.WEB_CONTENT.value
         assert len(report["untrusted_sources"]) > 0
 
     def test_multi_hop_attribution(self):

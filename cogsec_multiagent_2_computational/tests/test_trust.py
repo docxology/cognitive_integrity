@@ -63,6 +63,17 @@ class TestTrustCalculus:
         # Should be bounded by min(path) and decay
         assert result <= min(path)
         assert result > 0
+        # Exact value: T = min(path) * delta**d = 0.7 * 0.9**3
+        assert result == pytest.approx(0.7 * 0.9**3)
+
+    def test_path_trust_decay_applied_once_for_total_depth(self):
+        """A k-hop uniform chain decays as delta**k, not delta**(k(k+1)/2)
+        from per-hop compounding (Definition 4.4, P2-35)."""
+        calc = TrustCalculus(TrustConfig(decay=0.9))
+        result = calc.compute_path_trust([1.0, 1.0, 1.0, 1.0])
+        # 4 edges -> delta**4 = 0.9**4 = 0.6561 (per-hop compounding would
+        # give delta**(1+2+3) = delta**6 = 0.5314).
+        assert result == pytest.approx(0.9**4)
 
     def test_empty_path_returns_zero(self):
         """Empty path returns zero trust."""
@@ -110,6 +121,13 @@ class TestTrustMatrix:
         direct_trust = matrix.get_trust(0, 1)
 
         assert path_trust < direct_trust
+
+    def test_delegation_short_path_yields_zero(self):
+        """A degenerate single-node path must not claim maximal trust; it
+        returns 0.0 (P2-35, mirrors Part 1 P1-20)."""
+        matrix = TrustMatrix(n_agents=4)
+        assert matrix.get_delegation_trust([0]) == 0.0
+        assert matrix.get_delegation_trust([]) == 0.0
 
     def test_to_matrix(self):
         """to_matrix returns correct shape."""

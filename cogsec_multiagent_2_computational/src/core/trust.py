@@ -95,8 +95,11 @@ class TrustCalculus:
         return min(source_trust, target_trust) * (self.config.decay**depth)
 
     def compute_path_trust(self, path_trusts: List[float]) -> float:
-        """
-        Compute trust along a delegation path.
+        """Compute trust along a delegation path (Definition 4.4).
+
+        End-to-end delegated trust is the minimum edge trust scaled by a
+        single decay factor raised to the **total path depth** (number of
+        hops): ``T_path = min_i T_i * delta**d``.
 
         Args:
             path_trusts: Trust values along path [T_0→1, T_1→2, ...]
@@ -107,11 +110,11 @@ class TrustCalculus:
         if not path_trusts:
             return 0.0
 
-        result = path_trusts[0]
-        for i, trust in enumerate(path_trusts[1:], 1):
-            result = self.delegate_trust(result, trust, depth=i)
-
-        return result
+        # delta applied once for the total depth, not compounded per hop.
+        # Per-hop compounding would over-decay (a k-hop chain of 1.0s would
+        # yield delta**(k(k+1)/2) instead of the manuscript's delta**k) and
+        # diverge from Definition 4.4 for non-uniform edges (P2-35).
+        return min(path_trusts) * (self.config.decay ** len(path_trusts))
 
 
 class TrustMatrix:
@@ -176,7 +179,10 @@ class TrustMatrix:
             End-to-end trust with decay
         """
         if len(path) < 2:
-            return 1.0
+            # A path needs at least a source and a target; returning 1.0
+            # (maximal trust) for a degenerate single-node 'path' would let
+            # an empty delegation claim full trust (P2-35, mirrors Part 1 P1-20).
+            return 0.0
 
         trusts = [self.get_trust(path[i], path[i + 1]) for i in range(len(path) - 1)]
         return self.calculus.compute_path_trust(trusts)

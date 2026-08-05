@@ -3,6 +3,8 @@
 import time
 from datetime import datetime, timedelta
 
+import pytest
+
 from src import (
     Belief,
     BeliefPartition,
@@ -151,8 +153,8 @@ class TestPromotionCriteria:
         """Promotion requires minimum confidence."""
         criteria = PromotionCriteria(min_confidence=0.8)
 
-        high_conf = Belief("b1", "High", 0.9)
-        low_conf = Belief("b2", "Low", 0.5)
+        high_conf = Belief("b1", "High", 0.9, corroboration_count=1)
+        low_conf = Belief("b2", "Low", 0.5, corroboration_count=1)
 
         assert criteria.evaluate(high_conf) is True
         assert criteria.evaluate(low_conf) is False
@@ -172,12 +174,13 @@ class TestPromotionCriteria:
         criteria = PromotionCriteria(min_confidence=0.5, min_age_seconds=10)
 
         # New belief should not meet criteria
-        new_belief = Belief("b1", "New", 0.8)
+        new_belief = Belief("b1", "New", 0.8, corroboration_count=1)
         assert criteria.evaluate(new_belief) is False
 
         # Old belief should meet criteria
         old_belief = Belief(
-            "b2", "Old", 0.8, created_at=datetime.now() - timedelta(seconds=20)
+            "b2", "Old", 0.8, corroboration_count=1,
+            created_at=datetime.now() - timedelta(seconds=20),
         )
         assert criteria.evaluate(old_belief) is True
 
@@ -192,7 +195,8 @@ class TestPromotionCriteria:
         )
 
         no_source = Belief("b1", "Anonymous", 0.9)
-        with_source = Belief("b2", "Sourced", 0.9, source_agent="agent-1")
+        with_source = Belief("b2", "Sourced", 0.9, source_agent="agent-1",
+                             corroboration_count=1)
 
         assert criteria.evaluate(no_source) is False
         assert criteria.evaluate(with_source) is True
@@ -260,6 +264,7 @@ class TestSandboxManager:
         # High confidence belief
         high = Belief("high", "High confidence", 0.95)
         manager.add_provisional(high)
+        manager.add_corroboration("high", "agent-a")
 
         # Check for promotions
         promoted = manager.check_promotions()
@@ -281,6 +286,25 @@ class TestSandboxManager:
 
         assert "low" not in promoted
         assert manager.state.get_partition("low") == BeliefPartition.PROVISIONAL
+
+    def test_default_criteria_require_corroboration(self):
+        """The default PromotionCriteria requires >=1 corroboration, so a
+        fresh single-source belief is NOT promoted (P2-36)."""
+        manager = SandboxManager(SandboxConfig(default_ttl_seconds=60))
+        high = Belief("h", "High", 0.95)
+        manager.add_provisional(high)
+        assert manager.check_promotions() == []
+        assert manager.state.get_partition("h") == BeliefPartition.PROVISIONAL
+
+    def test_provisional_cap_enforced(self):
+        """add_provisional raises once the provisional store reaches
+        max_provisional_beliefs (P2-36)."""
+        cfg = SandboxConfig(max_provisional_beliefs=2)
+        manager = SandboxManager(cfg)
+        manager.add_provisional(Belief("x1", "a", 0.9))
+        manager.add_provisional(Belief("x2", "b", 0.9))
+        with pytest.raises(ValueError):
+            manager.add_provisional(Belief("x3", "c", 0.9))
 
     def test_update_belief_confidence(self):
         """Belief confidence can be updated."""

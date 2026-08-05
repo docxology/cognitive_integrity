@@ -535,8 +535,11 @@ class TestSandboxManagerEdgePaths:
         criteria = PromotionCriteria(min_confidence=0.6)
         manager = SandboxManager(SandboxConfig(), promotion_criteria=criteria)
 
+        # The default promotion criteria require >=1 corroboration (P2-36),
+        # so the eligible high-confidence belief is corroborated first.
         manager.add_provisional(Belief("b1", "high", 0.9))
         manager.add_provisional(Belief("b2", "low", 0.4))
+        manager.add_corroboration("b1", "agent-a")
 
         promoted = manager.check_promotions()
         assert "b1" in promoted

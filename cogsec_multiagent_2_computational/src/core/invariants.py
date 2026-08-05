@@ -191,7 +191,10 @@ class InvariantChecker:
         action = ctx.get("action", "")
         if action not in ("execute_code", "run_script", "eval"):
             return True  # Not a code execution action
-        return ctx.get("code_trusted", True)
+        # Fail closed (P2-37): a missing code_trusted must NOT default to
+        # trusted, or any monitoring integration that omits the field lets
+        # untrusted code execute.  Mirrors Part 1 P1-2.
+        return ctx.get("code_trusted", False)
 
     @staticmethod
     def _inv2_no_credential_leak(ctx: Dict) -> bool:
@@ -199,7 +202,9 @@ class InvariantChecker:
         action = ctx.get("action", "")
         if action not in ("send_message", "output", "log", "write"):
             return True  # Not an output action
-        return not ctx.get("contains_secrets", False)
+        # Fail closed (P2-37): a missing contains_secrets must be treated
+        # as 'secrets may be present' for a leak-sensitive output action.
+        return not ctx.get("contains_secrets", True)
 
     @staticmethod
     def _inv3_no_unauthorized_system_write(ctx: Dict) -> bool:
@@ -208,8 +213,11 @@ class InvariantChecker:
         if action not in ("write_file", "modify_file", "delete_file"):
             return True  # Not a file operation
 
-        is_system = ctx.get("is_system_path", False)
-        has_permission = ctx.get("has_permission", True)
+        # Fail closed (P2-37): a write with unknown path/permission must
+        # not be assumed safe (missing fields -> treat as system path with
+        # no permission).
+        is_system = ctx.get("is_system_path", True)
+        has_permission = ctx.get("has_permission", False)
 
         if is_system and not has_permission:
             return False
@@ -221,7 +229,9 @@ class InvariantChecker:
         action = ctx.get("action", "")
         if action not in ("use_tool_result", "accept_tool_output"):
             return True  # Not using tool output
-        return ctx.get("tool_output_verified", True)
+        # Fail closed (P2-37): unverified tool output must be treated as
+        # unverified when the field is missing.
+        return ctx.get("tool_output_verified", False)
 
     @staticmethod
     def _inv5_trust_ordering(ctx: Dict) -> bool:

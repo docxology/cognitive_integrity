@@ -153,7 +153,11 @@ class PromotionCriteria:
     """
 
     min_confidence: float = 0.8
-    min_corroborations: int = 0
+    # A fresh single-source belief must be corroborated before it can be
+    # promoted to verified.  Default 0 let any high-confidence claim from
+    # one unverified source become 'verified' immediately, contradicting
+    # the corroboration gate (P2-36, mirrors Part 1 P1-11).
+    min_corroborations: int = 1
     min_age_seconds: float = 0.0
     custom_predicates: List[Callable[[Belief], bool]] = field(default_factory=list)
 
@@ -224,6 +228,14 @@ class SandboxManager:
             belief: The belief to add
             ttl_seconds: Custom TTL (uses config default if None)
         """
+        # Enforce the provisional-store cap (P2-36): without this the store is
+        # unbounded (a soft resource-exhaustion surface).  Caller-side
+        # management (promote() / cleanup_expired()) remains available.
+        if len(self.state.provisional) >= self.config.max_provisional_beliefs:
+            raise ValueError(
+                f"provisional store at cap ({self.config.max_provisional_beliefs}); "
+                "promote or expire beliefs before adding more"
+            )
         self.state.add_provisional(belief)
 
         # Set TTL

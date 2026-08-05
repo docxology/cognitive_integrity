@@ -13,7 +13,7 @@
 | Paper | Tests | Coverage (>=90) | Ruff | Mypy | Manuscript verify | Claims gate |
 |-------|-------|-----------------|------|------|-------------------|-------------|
 | 1 | 382 passed / 0 skipped | 96.18% | 0 | N/A | PASS | N/A |
-| 2 | 3347 passed / 3 skipped | 96.98% (branch) | 0 | clean (161) | PASS (10) | 163: 159 MATCH / 0 MISMATCH / 0 NOT_FOUND / 4 UNBACKED, CI-wired |
+| 2 | 3352 passed / 3 skipped | 96.98% (branch) | 0 | clean (161) | PASS (10) | 163: 159 MATCH / 0 MISMATCH / 0 NOT_FOUND / 4 UNBACKED, CI-wired |
 | 3 | 882 passed / 0 skipped | 99.69% | 0 | N/A | PASS (7) | N/A |
 
 All suites green. Claims gate exits 1 only on the 4 env-gated LLM claims (pinned); CI asserts mismatch=0 / not_found=0 / unbacked=4 (P2-4).
@@ -39,6 +39,27 @@ Implemented remaining open medium/minor items:
 ### Partial / carried
 - P2-5 (PARTIAL): writer fixed (null FPR, measurement_mode, sidecar); committed artifact left as-is (regeneration changes category labels + latencies).
 - P2-20 (PARTIAL): run_full_evaluation standardized to sys.exit(main()); ~12 scripts remain bare (advisory).
+
+### 2026-08-04 continued pass (Part 2 core divergence fixes)
+
+Part 2 is the "authoritative CIF implementation", but its `src/core/` modules had
+NOT received the Part-1 fixes applied at ca941f3. Four Part-1 defect classes had
+diverged and were fixed this continuation (verified: Part 2 full suite green, ruff
++ mypy clean, claims gate 159/0/0/4 unchanged):
+
+- **P2-37 (MAJOR, P1-2 mirror)** - invariants now fail CLOSED on missing fields:
+  INV-1/2/3/4 treat a missing `code_trusted`/`contains_secrets`/`has_permission`/
+  `tool_output_verified` as untrusted/unverified instead of implicitly safe.
+  Added a missing-field fail-closed test.
+- **P2-36 (MEDIUM, P1-11 mirror)** - sandbox: default `min_corroborations` is now 1
+  (a fresh single-source belief cannot auto-promote), and `add_provisional` enforces
+  `max_provisional_beliefs` (raises at cap). Added default + cap tests; two
+  pre-existing tests updated to add a corroborator.
+- **P2-35 (MEDIUM, P1-9/P1-20 mirrors)** - `trust.compute_path_trust` applies decay
+  ONCE for total depth (`min * delta**len`, Def 4.4) instead of per-hop compounding;
+  `get_delegation_trust` returns 0.0 for degenerate short paths. Added value pins.
+- **P2-38 (MINOR, P1-15 mirror)** - `provenance.generate_report` serializes the
+  `TaintLabel` as `.value` so the report is JSON-serializable.
 
 ---
 
@@ -68,6 +89,10 @@ Implemented remaining open medium/minor items:
 | P2-19 | t vs z prose | DONE (this pass) |
 | P2-32 | rank-biserial sign | DONE (this pass) |
 | P2-22/23/24/26/27/28/31/33/34 | doc/count/phantom minors | DONE (this pass) |
+| P2-37 | invariants fail-closed (P1-2 mirror) | DONE (continuation) |
+| P2-36 | sandbox corroboration default + cap (P1-11 mirror) | DONE (continuation) |
+| P2-35 | trust path decay once + short-path (P1-9/20 mirrors) | DONE (continuation) |
+| P2-38 | provenance report JSON-safe (P1-15 mirror) | DONE (continuation) |
 
 ### Paper 3
 All findings (P3-1..P3-3 + ledger) DONE at 3dd7e2b. No new findings this pass.
