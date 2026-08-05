@@ -245,6 +245,10 @@ def generate_experimental_data(output_dir: Path) -> None:
         json.dump(scalability_data, f, indent=2)
 
     # Integrity degradation time series (Simulated Trust Decay)
+    # NOTE (P1-#13): these curves are ILLUSTRATIVE hand-rolled formulas
+    # (baseline/firewall/full_cif_integrity), NOT measured values.  The CSV
+    # format carries no metadata field, so this comment is the provenance
+    # marker; consumers must not present these as measured degradation data.
     print("Running integrity simulation...")
     integrity_data = []
 

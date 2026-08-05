@@ -27,13 +27,15 @@ def validate_stealth_impact(
     seed: int = 42,
     **kwargs,
 ) -> TheoremResult:
-    """Validate Theorem 4: I * S <= C_channel.
+    """Schematic consistency check of Part-1 Theorem 4: I * S <= C_channel.
 
-    Generate attack samples with varying impact (I) and stealth (S) values.
-    Verify that successful attacks always satisfy the product bound.
-
-    High-impact attacks must sacrifice stealth and vice versa; attempts
-    to violate the bound result in detection (failed attacks).
+    NOTE (red-team fix, P2-F1): this is NOT an independent empirical validation
+    of a real detector.  It draws (impact, stealth) from the design ranges and
+    models detection as fail-closed *by construction*: any attack with
+    I*S > C_channel is assumed detected and so never appears in the successful
+    set.  The check therefore confirms the design constraint is self-consistent
+    under that fail-closed detection model -- it cannot fail, and must not be
+    read as measuring a real system (Part 2 leaves the theorem to Part 1).
     """
     rng = get_rng(seed)
 
@@ -62,7 +64,9 @@ def validate_stealth_impact(
             name="Stealth-Impact Tradeoff",
             status=TheoremStatus.PASSED,
             evidence=(
-                f"All {n_trials - violations} successful attacks satisfy "
+                f"Schematic consistency check (fail-closed detection by "
+                f"construction; not an empirical measurement): all "
+                f"{n_trials - violations} successful attacks satisfy "
                 f"I*S <= {c_channel:.2f} (max product: {max_product:.4f}). "
                 f"{violations} attacks detected due to bound violation."
             ),
@@ -71,6 +75,7 @@ def validate_stealth_impact(
                 "n_trials": n_trials,
                 "n_detected": violations,
                 "max_product": max_product,
+                "detection_model": "fail-closed by construction (schematic)",
             },
         )
     else:

@@ -1,8 +1,18 @@
 """
 Operator Posture Assessment for Cognitive Security.
 
-Implements Section 02 of the Practical Implementation Guide:
-Five Pillars assessment, maturity scoring, and capability validation.
+Implements an operator-posture assessment: five pillars of operator posture
+(readiness), maturity scoring, and capability validation, aligned with the
+deployment / incident-response guidance in Part 3 SS02-SS05.
+
+NOTE (P3-M1): the "Five Pillars" taxonomy defined here (trust-boundary,
+belief-provenance, delegation-hygiene, coordination-integrity,
+continuous-monitoring) is THIS MODULE'S OWN operator-posture schema.  It is
+distinct from, and must not be conflated with, the CIF *defense-component*
+pillars used by ``visualization.py`` (firewall / belief-sandbox / identity-
+tripwire / behavioral-invariants / epistemic-provenance).  Where the manuscript
+uses the CIF defense-component pillars, they are referenced via the
+visualization layer; this module's taxonomy is the operator-readiness one.
 """
 
 from __future__ import annotations

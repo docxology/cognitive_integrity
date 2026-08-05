@@ -714,7 +714,12 @@ class CoordinationIntegrityMonitor:
             - ``"total"``: int
             - ``"participation_rate"``: float (0-1)
         """
-        quorum_met = participating_agents >= self.min_quorum
+        # Quorum requires the system to actually have enough agents AND
+        # enough of them to participate (P3-m9).
+        quorum_met = (
+            total_agents >= self.min_quorum
+            and participating_agents >= self.min_quorum
+        )
         participation_rate = participating_agents / total_agents if total_agents > 0 else 0.0
         return {
             "quorum_met": quorum_met,

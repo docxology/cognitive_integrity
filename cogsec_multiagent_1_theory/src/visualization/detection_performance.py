@@ -21,6 +21,14 @@ import numpy as np
 def create_detection_performance_figure(output_dir: Path) -> Path:
     """
     Create detection performance comparison visualization.
+
+    NOTE (red-team fix, P1-#10): the metric arrays plotted in Panels A and B
+    are SCHEMATIC/illustrative values, NOT measurements.  The Part-1
+    illustrative corpus carries only ``prompt_injection`` and
+    ``trust_exploitation`` categories; the five-category Panel B and the
+    defense-configuration Panel A values are hand-set for illustration and
+    must not be read as measured detection rates.  They are visibly labelled
+    "Illustrative schematic" in the rendered figure for that reason.
     """
     if not output_dir.exists():
         output_dir.mkdir(parents=True, exist_ok=True)
@@ -151,8 +159,14 @@ def create_detection_performance_figure(output_dir: Path) -> Path:
     ax2.set_ylim(0, 1.15)
     ax2.grid(True, alpha=0.2, axis="y")
 
-    plt.tight_layout()
-
+    plt.tight_layout(rect=[0, 0.05, 1, 1])
+    # Visible honesty footer: these values are schematic, not measured.
+    plt.figtext(
+        0.5, 0.01,
+        "Illustrative schematic \u2014 values are NOT measured; the Part-1 "
+        "illustrative corpus contains prompt_injection and trust_exploitation only.",
+        ha="center", fontsize=8, style="italic", color="#666666",
+    )
     # Save both PNG and PDF
     output_path_png = output_dir / "detection_performance.png"
     output_path_pdf = output_dir / "detection_performance.pdf"

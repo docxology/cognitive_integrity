@@ -6,6 +6,7 @@ Embeds canary beliefs to detect manipulation.
 
 from __future__ import annotations
 
+import copy
 from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Callable, Dict, List, Optional
@@ -220,6 +221,8 @@ class CognitiveTripwire:
         self._canaries = {p: c for p, c in self._canaries.items() if c.category != category}
 
         # Add new canaries
-        for canary in new_canaries:
+        for original in new_canaries:
+            # Operate on a copy so the caller's Canary objects are not mutated.
+            canary = copy.copy(original)
             canary.category = category
             self.add_canary(canary)

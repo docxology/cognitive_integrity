@@ -43,6 +43,7 @@ from .pipeline import (
 # Composition constructors
 # ---------------------------------------------------------------------------
 
+
 def series_compose(*modules: DefenseModule) -> SeriesPipeline:
     """Create a series pipeline from one or more defense modules.
 
@@ -90,6 +91,7 @@ def parallel_compose(
 # Theoretical detection rate computations
 # ---------------------------------------------------------------------------
 
+
 def compute_series_detection_rate(rates: List[float]) -> float:
     """Compute the combined detection rate for series composition.
 
@@ -117,7 +119,7 @@ def compute_series_detection_rate(rates: List[float]) -> float:
 
     miss_rate = 1.0
     for r in rates:
-        miss_rate *= (1.0 - r)
+        miss_rate *= 1.0 - r
 
     return 1.0 - miss_rate
 
@@ -193,7 +195,7 @@ def _majority_exact(rates: List[float]) -> float:
             if mask & (1 << i):
                 p *= rates[i]
             else:
-                p *= (1.0 - rates[i])
+                p *= 1.0 - rates[i]
         total_prob += p
 
     return total_prob
@@ -230,7 +232,7 @@ def _weighted_normal_approx(
 
     # Weighted sum of Bernoulli: Y = sum(w_i * X_i), X_i ~ Bernoulli(r_i)
     mu = sum(w * r for w, r in zip(weights, rates))
-    var = sum(w ** 2 * r * (1 - r) for w, r in zip(weights, rates))
+    var = sum(w**2 * r * (1 - r) for w, r in zip(weights, rates))
 
     if var <= 0:
         return 1.0 if mu > threshold else 0.0
@@ -243,6 +245,7 @@ def _weighted_normal_approx(
 # ---------------------------------------------------------------------------
 # Extended composition algebra (Corollary 3.3 + helpers)
 # ---------------------------------------------------------------------------
+
 
 def compute_hybrid_detection_rate(
     fast_rates: List[float],
@@ -328,8 +331,7 @@ def compute_weighted_parallel_detection_rate(
     """
     if len(rates) != len(weights):
         raise ValueError(
-            f"rates and weights must have the same length "
-            f"(got {len(rates)} and {len(weights)})"
+            f"rates and weights must have the same length (got {len(rates)} and {len(weights)})"
         )
     for i, r in enumerate(rates):
         if not 0.0 <= r <= 1.0:
@@ -396,6 +398,12 @@ def latency_estimate(
     - **parallel**: L = max(l_i) (modules execute concurrently)
     - **hybrid**:   L = max(l_fast) + Σ(l_deep)
 
+    NOTE (P2-F3): the "parallel" value is a THEORETICAL ideal for perfectly
+    concurrent modules.  The reference ``ParallelPipeline.evaluate`` runs its
+    modules sequentially in a loop (its wall-clock latency is the SUM, not the
+    max), so a real parallel deployment exhibits latency closer to the series
+    model unless modules are actually run on independent threads/processes.
+
     Args:
         modules: Ordered list of module names.
         strategy: One of ``'series'``, ``'parallel'``, ``'hybrid'``.
@@ -440,6 +448,7 @@ def latency_estimate(
 # ---------------------------------------------------------------------------
 # Empirical validation
 # ---------------------------------------------------------------------------
+
 
 def validate_composition_theorem(
     modules: List[DefenseModule],

@@ -37,10 +37,16 @@ def validate_latency_bound(
     seed: int = 42,
     **kwargs,
 ) -> TheoremResult:
-    """Validate Theorem 6: CIF overhead <= 23%.
+    """Illustrative simulation of the CIF overhead magnitude (Theorem 6).
 
-    Simulate baseline processing and CIF overhead across *n_trials*.
-    Verify that the mean overhead fraction stays within the target.
+    NOTE (red-team fix, P2-F2): this is a SCHEMATIC simulation.  Baseline and
+    per-component overheads are drawn from hand-tuned uniform ranges, not
+    measured from the real pipeline.  The measured overhead evidence lives in
+    the benchmark artifacts that drive Section 04 (measured 20-25%).  This
+    check reports the simulated mean, p95 and max overhead fractions and the
+    share of trials above target; it is a sanity illustration of magnitude,
+    not an empirical validation, and the "at most" phrasing applies to the
+    mean, not to individual trials (whose max can exceed the target).
     """
     rng = get_rng(seed)
 
@@ -67,7 +73,11 @@ def validate_latency_bound(
     mean_overhead = float(np.mean(arr))
     p95_overhead = float(np.percentile(arr, P95_PERCENTILE))
     max_overhead = float(np.max(arr))
+    pct_over_target = float(np.mean(arr > overhead_target))
 
+    # Mean-based pass criterion (honest about its meaning: the "at most"
+    # phrasing holds for the mean; p95/max and pct_over_target are reported
+    # so a reader sees that individual trials can spike above the target).
     passed = mean_overhead <= overhead_target
 
     return TheoremResult(
@@ -75,16 +85,20 @@ def validate_latency_bound(
         name="CIF Latency Overhead Bound",
         status=TheoremStatus.PASSED if passed else TheoremStatus.FAILED,
         evidence=(
-            f"Mean overhead {mean_overhead:.1%} <= {overhead_target:.0%} target "
-            f"(p95: {p95_overhead:.1%}, max: {max_overhead:.1%})"
-            if passed else
-            f"Mean overhead {mean_overhead:.1%} exceeds {overhead_target:.0%} target"
+            f"Schematic simulation (not measured): mean overhead "
+            f"{mean_overhead:.1%} <= {overhead_target:.0%} target; "
+            f"p95 {p95_overhead:.1%}, max {max_overhead:.1%}, "
+            f"{pct_over_target:.0%} of trials above target."
+            if passed
+            else f"Schematic mean overhead {mean_overhead:.1%} exceeds {overhead_target:.0%} target"
         ),
         details={
             "mean_overhead": mean_overhead,
             "p95_overhead": p95_overhead,
             "max_overhead": max_overhead,
+            "pct_over_target": pct_over_target,
             "target": overhead_target,
             "n_trials": n_trials,
+            "model": "schematic/uniform (not measured)",
         },
     )

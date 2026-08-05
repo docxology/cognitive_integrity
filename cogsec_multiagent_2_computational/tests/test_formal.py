@@ -111,9 +111,19 @@ class TestTheoremRegistry:
         registry = TheoremRegistry()
         expected_ids = {
             # Paper 1
-            "3.1", "3.2a", "3.2b", "3.2c", "4", "5.3", "6",
+            "3.1",
+            "3.2a",
+            "3.2b",
+            "3.2c",
+            "4",
+            "5.3",
+            "6",
             # Paper 2 extensions (category theory + FEP)
-            "CT.1", "CT.2", "CT.3", "FEP.1", "FEP.2",
+            "CT.1",
+            "CT.2",
+            "CT.3",
+            "FEP.1",
+            "FEP.2",
         }
         actual_ids = set(registry._validators.keys())
         assert expected_ids == actual_ids
@@ -182,9 +192,7 @@ class TestTheoremRegistry:
 
         def capturing_validator(**kwargs) -> TheoremResult:
             captured.update(kwargs)
-            return TheoremResult(
-                theorem_id="cap", name="Cap", status=TheoremStatus.PASSED
-            )
+            return TheoremResult(theorem_id="cap", name="Cap", status=TheoremStatus.PASSED)
 
         registry.register("cap", "Capture", capturing_validator)
         registry.validate("cap", seed=99, extra="hello")
@@ -196,14 +204,10 @@ class TestTheoremRegistry:
         registry = TheoremRegistry()
 
         def v1(**kwargs):
-            return TheoremResult(
-                theorem_id="dup", name="V1", status=TheoremStatus.PASSED
-            )
+            return TheoremResult(theorem_id="dup", name="V1", status=TheoremStatus.PASSED)
 
         def v2(**kwargs):
-            return TheoremResult(
-                theorem_id="dup", name="V2", status=TheoremStatus.FAILED
-            )
+            return TheoremResult(theorem_id="dup", name="V2", status=TheoremStatus.FAILED)
 
         registry.register("dup", "V1", v1)
         registry.register("dup", "V2", v2)
@@ -282,8 +286,7 @@ class TestByzantineGuarantees:
                 rate = _simulate_quorum_agreement(n, f, rng, n_rounds=5)
                 tolerated = default_bound_predicate(n, f)
                 assert (rate >= 0.8) is tolerated, (
-                    f"n={n}, f={f}: success rate {rate} disagrees with "
-                    f"n >= 3f+1 = {tolerated}"
+                    f"n={n}, f={f}: success rate {rate} disagrees with n >= 3f+1 = {tolerated}"
                 )
 
     def test_weakened_bound_predicate_is_rejected(self):
@@ -296,9 +299,7 @@ class TestByzantineGuarantees:
         def two_f_plus_one(n: int, f: int) -> bool:
             return n >= 2 * f + 1
 
-        result = validate_byzantine_bound(
-            max_n=20, seed=42, bound_predicate=two_f_plus_one
-        )
+        result = validate_byzantine_bound(max_n=20, seed=42, bound_predicate=two_f_plus_one)
         assert result.status == TheoremStatus.FAILED
         # Configurations with 2f+1 <= n < 3f+1 are wrongly admitted and fail
         # to reach consensus, dragging the tolerated arm below threshold.
@@ -314,9 +315,7 @@ class TestByzantineGuarantees:
         def four_f_plus_one(n: int, f: int) -> bool:
             return n >= 4 * f + 1
 
-        result = validate_byzantine_bound(
-            max_n=20, seed=42, bound_predicate=four_f_plus_one
-        )
+        result = validate_byzantine_bound(max_n=20, seed=42, bound_predicate=four_f_plus_one)
         assert result.status == TheoremStatus.FAILED
         assert result.details["invalid_failure_rate"] < 0.95
 
@@ -476,7 +475,15 @@ class TestLatencyBound:
     def test_details_contain_statistics(self):
         """Result details include mean, p95, max overhead."""
         result = validate_latency_bound(seed=42)
-        expected_keys = {"mean_overhead", "p95_overhead", "max_overhead", "target", "n_trials"}
+        expected_keys = {
+            "mean_overhead",
+            "p95_overhead",
+            "max_overhead",
+            "pct_over_target",
+            "target",
+            "n_trials",
+            "model",
+        }
         assert expected_keys == set(result.details.keys())
 
     def test_overhead_values_positive(self):
@@ -575,14 +582,14 @@ class TestNuSMVSpec:
 
     def test_parse_nusmv_true_result(self):
         """Parser extracts 'is true' from NuSMV output."""
-        output = '-- specification AG (trust_score >= 0) is true\n'
+        output = "-- specification AG (trust_score >= 0) is true\n"
         results = parse_nusmv_result(output)
         # Should have at least one True entry
         assert any(v is True for v in results.values())
 
     def test_parse_nusmv_false_result(self):
         """Parser extracts 'is false' from NuSMV output."""
-        output = '-- specification AG (consensus_reached) is false\n'
+        output = "-- specification AG (consensus_reached) is false\n"
         results = parse_nusmv_result(output)
         assert any(v is False for v in results.values())
 
@@ -737,7 +744,7 @@ class TestStealthImpact:
     def test_details_contain_expected_keys(self):
         """Result details contain channel capacity and trial info."""
         result = validate_stealth_impact(seed=42)
-        expected_keys = {"c_channel", "n_trials", "n_detected", "max_product"}
+        expected_keys = {"c_channel", "n_trials", "n_detected", "max_product", "detection_model"}
         assert expected_keys == set(result.details.keys())
 
     def test_max_product_within_bound(self):
@@ -964,11 +971,9 @@ class TestTrustBounds:
         """
 
         def amplifying(source: float, target: float, depth: int) -> float:
-            return max(source, target) * (0.85 ** depth)
+            return max(source, target) * (0.85**depth)
 
-        result = validate_trust_bound(
-            delegate_fn=amplifying, max_depth=5, n_trials=200, seed=42
-        )
+        result = validate_trust_bound(delegate_fn=amplifying, max_depth=5, n_trials=200, seed=42)
         assert result.status == TheoremStatus.FAILED
         assert result.details["amplification_violations"] > 0
 
@@ -1030,27 +1035,48 @@ class TestRegistryIntegration:
 class TestSpecStructuralConsistency:
     """Cross-cutting structural checks across all three spec generators."""
 
-    @pytest.mark.parametrize("n_agents,max_byz", [
-        (4, 1), (5, 1), (7, 2), (10, 3), (20, 6),
-    ])
+    @pytest.mark.parametrize(
+        "n_agents,max_byz",
+        [
+            (4, 1),
+            (5, 1),
+            (7, 2),
+            (10, 3),
+            (20, 6),
+        ],
+    )
     def test_nusmv_spec_valid_for_various_configs(self, n_agents, max_byz):
         """NuSMV spec generates without error for various configs."""
         spec = generate_nusmv_spec(n_agents=n_agents, max_byzantine=max_byz)
         assert "MODULE main" in spec
         assert f"{n_agents}" in spec
 
-    @pytest.mark.parametrize("n_agents,max_byz", [
-        (4, 1), (5, 1), (7, 2), (10, 3), (20, 6),
-    ])
+    @pytest.mark.parametrize(
+        "n_agents,max_byz",
+        [
+            (4, 1),
+            (5, 1),
+            (7, 2),
+            (10, 3),
+            (20, 6),
+        ],
+    )
     def test_promela_spec_valid_for_various_configs(self, n_agents, max_byz):
         """Promela spec generates without error for various configs."""
         spec = generate_promela_spec(n_agents=n_agents, max_byzantine=max_byz)
         assert f"#define N_AGENTS {n_agents}" in spec
         assert f"#define MAX_BYZANTINE {max_byz}" in spec
 
-    @pytest.mark.parametrize("n_agents,max_byz", [
-        (4, 1), (5, 1), (7, 2), (10, 3), (20, 6),
-    ])
+    @pytest.mark.parametrize(
+        "n_agents,max_byz",
+        [
+            (4, 1),
+            (5, 1),
+            (7, 2),
+            (10, 3),
+            (20, 6),
+        ],
+    )
     def test_tla_spec_valid_for_various_configs(self, n_agents, max_byz):
         """TLA+ spec generates without error for various configs."""
         spec = generate_tla_spec(n_agents=n_agents, max_byzantine=max_byz)

@@ -118,3 +118,48 @@ All findings (P3-1..P3-3 + ledger) DONE at 3dd7e2b. No new findings in rounds 2-
 - No mocks; no sys.exit in src; no eval/exec/pickle; requests carry timeout; no bare excepts in either src tree.
 - Part 3 matrices consistent with prose; 6 incidents match the retrospective.
 - Part 1/2/3 manuscripts pass verify_manuscript after the H7/L2 prose edits.
+
+
+---
+
+## Round 4 - Deep-Audit Implementation (2026-08-05)
+
+Continuation after Round 3. Three parallel hostile read-only audits (Part 2 / Part 1 /
+Part 3) scanned the remaining modules. Every finding was verified hands-on against the
+source before implementation. Implemented this round:
+
+### Implemented (verified + tests green)
+| ID | Sev | Finding | Fix |
+|----|-----|---------|-----|
+| P2-F1 | MAJOR | `formal/stealth_impact.py` "validated" Theorem 4 with a self-confirming loop (success def = product <= C, C=1.0, I,S <= 1 => can never fail) | Relabeled a schematic fail-closed consistency check; detection model documented; added `detection_model` detail; test updated |
+| P2-F2 | MAJOR | `formal/latency_bound.py` synthetic model, mean-only check (per-trial max exceeds 23%); measured evidence lives in S04 | Relabeled schematic; added `pct_over_target` + max disclosure; test updated |
+| P1-#10 | MAJOR | `detection_performance.py` plotted fabricated unlabeled metrics (5 cats) contradicting measured 2-cat JSON | Figure annotated "Illustrative schematic - values NOT measured" + docstring |
+| P3-M3 | MAJOR | `verification.check_images_and_links` never checked links; `root/abs` path-traversal read | Wired link pattern check (flag file:/empty/absolute/·escaping); reject escaping image paths; verifier still PASS |
+| P3-M1 | MAJOR | Two contradictory "Five Pillars" in one package; posture.py taxonomy absent from manuscript | posture.py docstring documents it as its own operator-posture schema, distinct from the CIF defense-component pillars |
+| P3-M2 | MAJOR | Figure defaults hardcoded, drift from authoritative risk/pitfall catalogs (1-5 vs 1-4) | get_risk_matrix_data / get_pitfalls_data labeled illustrative + metadata note |
+| P2-F3 | MED | Parallel latency model (max) vs sequential impl (sum) | Docstring caveat that parallel curve is a theoretical ideal |
+| P2-F13 | MIN | anova dead `a*b*n` expr + "balanced or unbalanced" docstring | Removed dead expr; docstring corrected to balanced |
+| P2-F7 | MIN | result_loaders silent 0% on missing (arch,cat) | Warnings on missing combos |
+| P1-#13 | MED | integrity_timeseries.csv fabricated curves not flagged | Explicit illustrative comment at generation site |
+| P1-#19 | MIN | rotate_canaries mutates caller Canary | copy before assigning category; test passes |
+| P3-m9 | MIN | verify_quorum ignores total_agents (quorum met when total < min) | Requires total >= min AND participating >= min; + regression test |
+| LD | MED | thm:no-trust-amp has no resolvable proof label | Added pointer to S01 thm:trust-amp-restated |
+
+### Scoped forward (precise, not silently skipped)
+- **P2-F4 (MED)** `agents/multiagent_system.process_attack` no visited-set => redundant re-
+  processing inflates llm_calls/latency. Changing it alters committed colony numbers; scope:
+  add per-run visited set + regenerate colony artifacts + verify claims.
+- **P2-F5 (MED)** `utils/random_seed` module-global RNG + `src/__init__` sys.path shim shadowing
+  stdlib `statistics`. Scope: per-call default_rng streams + replace `from statistics.confidence`
+  with package-absolute imports repo-wide.
+- **P2-F6 (MED)** `evaluation/benchmark.estimate_memory_detailed` hardcoded O(n²) formula (not
+  measured). Scope: inspect pipeline for actual structures; would change committed memory numbers.
+- **P2-F8 (MIN)** `cross_validation` `is_attack` defaults to True. Scope: require key or warn.
+- **P2-F9..F16, P1-#11/#12/#14/#15/#16/#17/#18/#20/#21/#22, P3-M4/M5/m6/m7/m8/m10/m11** - catalogued
+  in the audit transcripts; most are doc/label/caveat improvements that alter committed figures or
+  behavior. Lowest-value are documented in this backlog for a future pass.
+- **Claim-vs-Proof (P1)** - catalog assembled: 7 MAJOR theorems asserted without proof
+  (thm:aggregation, thm:trust-monotonic, thm:cross-modality-bound, thm:threshold-selection,
+  thm:fpr-composition, thm:cascade-fpr, thm:pipeline-tpr) + 6 corollaries. These are author
+  mathematical proofs (carried H-items); the catalog is now precise with locations.
+- **H2 (real-mode AT threading)** and **P2-5 (artifact regen)** - unchanged, deferred as before.

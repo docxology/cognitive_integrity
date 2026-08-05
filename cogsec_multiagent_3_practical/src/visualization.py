@@ -371,7 +371,14 @@ def render_checklist_flowchart(data: FigureData, ax: Axes | None = None) -> Figu
 def get_risk_matrix_data(
     risks: list[dict[str, Any]] | None = None,
 ) -> FigureData:
-    """Generate data for risk assessment matrix.
+    """Generate data for the risk assessment matrix figure.
+
+    NOTE (P3-M2): when *risks* is omitted the defaults are ILLUSTRATIVE EXAMPLE
+    risks on the figure's 1-5 impact/likelihood scale.  They are NOT the
+    authoritative catalog: ``risk_assessment.CommonAttackScenarios`` scores on a
+    1-4 scale, so the two are different coordinate systems and must not be read
+    as the same source of truth.  Callers wanting the authoritative matrix
+    should pass explicit risks from that catalog.
 
     Args:
         risks: Optional list of risk dictionaries with 'name', 'impact', 'likelihood'
@@ -380,7 +387,7 @@ def get_risk_matrix_data(
         FigureData with risk matrix configuration
     """
     if risks is None:
-        # Default example risks
+        # Default ILLUSTRATIVE example risks (1-5 scale; not the catalog)
         risks = [
             {"name": "Direct Injection", "impact": 4, "likelihood": 3},
             {"name": "Indirect Injection", "impact": 4, "likelihood": 4},
@@ -401,7 +408,12 @@ def get_risk_matrix_data(
 
     return FigureData(
         figure_type=FigureType.HEATMAP,
-        title="Cognitive Security Risk Matrix",
+        title="Cognitive Security Risk Matrix (illustrative example risks)",
+        metadata={
+            "illustrative": True,
+            "note": "1-5 scale example risks; NOT the authoritative "
+                    "risk_assessment catalog (P3-M2).",
+        },
         data={
             "risks": risks,
             "impact_labels": ["Minimal", "Minor", "Moderate", "Major", "Severe"],
@@ -615,10 +627,15 @@ class Pitfall:
 
 
 def get_pitfalls_data() -> FigureData:
-    """Generate data for common pitfalls severity chart.
+    """Generate data for the common-pitfalls severity chart.
+
+    NOTE (P3-M2): the pitfalls rendered here are ILLUSTRATIVE EXAMPLES and are
+    NOT derived from the authoritative ``pitfalls.PitfallCatalog`` (PIT-1..PIT-8).
+    Names/severities may diverge from that catalog; readers should treat this
+    figure as illustrative and the catalog as the source of truth.
 
     Returns:
-        FigureData with pitfall severity rankings
+        FigureData with illustrative pitfall severity rankings
     """
     pitfalls = [
         Pitfall(

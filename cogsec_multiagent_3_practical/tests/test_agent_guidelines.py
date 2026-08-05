@@ -930,6 +930,13 @@ class TestCoordinationIntegrityMonitor:
         assert "total" in result
         assert "participation_rate" in result
 
+    def test_quorum_not_possible_when_total_below_min(self):
+        """Quorum cannot be met if the system has fewer agents than min (P3-m9)."""
+        monitor = CoordinationIntegrityMonitor(min_quorum=5)
+        result = monitor.verify_quorum(total_agents=3, participating_agents=3)
+        assert result["quorum_met"] is False
+        assert result["participation_rate"] == pytest.approx(1.0)
+
     def test_voting_normal_pattern(self):
         """Normal votes (different times, different values) are not suspicious."""
         monitor = CoordinationIntegrityMonitor()

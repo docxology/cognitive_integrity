@@ -18,6 +18,7 @@ from scipy import stats
 # Result container
 # ---------------------------------------------------------------------------
 
+
 @dataclass
 class AnovaResult:
     """Single row from a two-way ANOVA table.
@@ -43,6 +44,7 @@ class AnovaResult:
 # ---------------------------------------------------------------------------
 # Effect size helpers
 # ---------------------------------------------------------------------------
+
 
 def eta_squared(ss_effect: float, ss_total: float) -> float:
     """Eta-squared effect size for ANOVA.
@@ -80,8 +82,9 @@ def partial_eta_squared(ss_effect: float, ss_error: float) -> float:
 
 
 # ---------------------------------------------------------------------------
-# Two-way ANOVA (Type I SS, balanced or unbalanced)
+# Two-way ANOVA (Type I SS, balanced design)
 # ---------------------------------------------------------------------------
+
 
 def two_way_anova(
     data: np.ndarray,
@@ -112,18 +115,14 @@ def two_way_anova(
     data = np.asarray(data, dtype=np.float64)
 
     if data.ndim != 3:
-        raise ValueError(
-            f"data must be 3-D (a, b, n), got {data.ndim}-D array"
-        )
+        raise ValueError(f"data must be 3-D (a, b, n), got {data.ndim}-D array")
 
     a, b, n = data.shape
     if a != factor1_levels or b != factor2_levels:
         raise ValueError(
-            f"Shape mismatch: data has ({a}, {b}) but expected "
-            f"({factor1_levels}, {factor2_levels})"
+            f"Shape mismatch: data has ({a}, {b}) but expected ({factor1_levels}, {factor2_levels})"
         )
 
-    a * b * n  # total observations
     grand_mean = data.mean()
 
     # SS total
@@ -140,12 +139,9 @@ def two_way_anova(
     # Interaction: cell means minus row/column effects minus grand mean
     cell_means = data.mean(axis=2)  # shape (a, b)
     interaction_deviations = (
-        cell_means
-        - row_means[:, np.newaxis]
-        - col_means[np.newaxis, :]
-        + grand_mean
+        cell_means - row_means[:, np.newaxis] - col_means[np.newaxis, :] + grand_mean
     )
-    ss_interaction = n * np.sum(interaction_deviations ** 2)
+    ss_interaction = n * np.sum(interaction_deviations**2)
 
     # Residual (within-cell): total - factor1 - factor2 - interaction
     ss_residual = ss_total - ss_factor1 - ss_factor2 - ss_interaction

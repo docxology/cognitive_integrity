@@ -371,6 +371,9 @@ For any path $p = (a_0, \ldots, a_k)$:
 \label{eq:no-amplification}
 \mathcal{T}*{a_0 \to a_k}^{\text{path}} \leq \min*{i \in [0,k-1]} \mathcal{T}*{a_i \to a*{i+1}}
 \end{equation}
+A proof of the no-amplification claim is given in the supplementary material
+(\cref{thm:trust-amp-restated}, S01), which states the identical bound under
+a dedicated label.
 \end{theorem}
 
 \begin{theorem}[Trust Monotonicity]
