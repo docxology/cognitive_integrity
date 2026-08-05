@@ -243,10 +243,10 @@ As shown in \cref{fig:test}.
             )
 
             verifier = ManuscriptVerifier(tmpdir)
-            # Style check returns True but logs warnings
+            # (#20) a style warning is a real finding: check_style returns False.
             result = verifier.check_style()
 
-            assert result is True  # Style warnings don't fail
+            assert result is False
 
 
 class TestManuscriptVerifierPatterns:

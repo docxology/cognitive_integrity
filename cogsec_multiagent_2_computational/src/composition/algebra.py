@@ -453,8 +453,6 @@ def latency_estimate(
 def validate_composition_theorem(
     modules: List[DefenseModule],
     test_data: List[Tuple[str, Dict[str, Any]]],
-    n_trials: int = 100,
-    seed: int = 42,
     tolerance: float = 0.15,
 ) -> Dict[str, Any]:
     """Validate that empirical detection rate matches theoretical prediction.
@@ -466,8 +464,6 @@ def validate_composition_theorem(
         modules: Defense modules to compose.
         test_data: List of (message, context) tuples. Each should be an
             attack that *should* be detected.
-        n_trials: Number of evaluation trials (for statistical stability).
-        seed: Random seed.
         tolerance: Acceptable absolute difference between empirical and
             theoretical rates.
 

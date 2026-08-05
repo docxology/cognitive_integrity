@@ -53,7 +53,10 @@ def compute_roc(
     n_pos = int(y_true_arr.sum())
     n_neg = len(y_true_arr) - n_pos
 
-    # Sweep thresholds from high to low
+    # Sweep thresholds from high to low.
+    # NOTE (P2-F16): the uniform n_thresholds grid gives a bounded-accuracy
+    # trapezoidal AUC (not the exact ROC), which can differ slightly from an
+    # exhaustive per-distinct-score sweep.
     thresholds = np.linspace(1.0, 0.0, n_thresholds)
     fpr_list: List[float] = []
     tpr_list: List[float] = []

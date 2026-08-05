@@ -183,7 +183,10 @@ def create_roc_curves_figure(output_dir: Path) -> tuple[Path, Path]:
         label="Random Classifier",
     )
 
-    # Mark operating points (chosen thresholds)
+    # Mark operating points (chosen thresholds).
+    # (#21) These operating-point markers are schematic choices, not
+    # measured from the plotted curves (the rate curves are themselves
+    # parametric guesses).
     operating_points = [
         (0.05, 0.78, "firewall", "Firewall"),
         (0.08, 0.68, "sandbox", "Sandbox"),

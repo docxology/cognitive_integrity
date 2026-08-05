@@ -269,7 +269,7 @@ class LLMAgent:
             # Strip thinking tags (qwen-style)
             import re
             content = re.sub(
-                r"<think[^>]*>.*?</think>", "", content,
+                r"<think[^>]*>[\s\S]*?[\n\s]+response", "", content,
                 flags=re.IGNORECASE | re.DOTALL,
             ).strip()
 

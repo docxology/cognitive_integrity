@@ -285,7 +285,7 @@ class CIFADCouplingDetector:
         """
         for phase in ADPhase:
             max_cov = self.get_phase_coverage(phase)
-            if max_cov <= self.min_coverage:
+            if max_cov < self.min_coverage:
                 return False
         return True
 

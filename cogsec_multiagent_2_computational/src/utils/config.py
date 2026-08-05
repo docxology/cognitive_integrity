@@ -108,7 +108,12 @@ def _parse_simple_yaml(text: str) -> Dict[str, Any]:
         if not line or line.startswith("#"):
             continue
         if ":" not in line:
-            continue
+            # P2-F14: a non-comment, non-empty line without a colon is a
+            # malformed key for this flat schema -- fail instead of silently
+            # dropping it (a typo used to yield a silently-default config).
+            raise ValueError(
+                f"malformed config line (no ':'): {line!r}"
+            )
         key, _, val = line.partition(":")
         key = key.strip()
         val = val.strip()

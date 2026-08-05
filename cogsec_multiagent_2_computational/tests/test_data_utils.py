@@ -635,12 +635,11 @@ key2: 42
         assert result["key2"] == 42
         assert len(result) == 2
 
-    def test_parse_simple_yaml_no_colon_lines_skipped(self):
+    def test_parse_simple_yaml_malformed_line_raises(self):
+        """A non-comment, non-empty line without ':' is a malformed key (F14)."""
         text = "valid_key: 10\nno colon here\nanother_key: 20\n"
-        result = _parse_simple_yaml(text)
-        assert result["valid_key"] == 10
-        assert result["another_key"] == 20
-        assert len(result) == 2
+        with pytest.raises(ValueError):
+            _parse_simple_yaml(text)
 
 
 # ===========================================================================

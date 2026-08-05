@@ -128,7 +128,9 @@ def create_scalability_figure(output_dir: Path) -> tuple[Path, Path]:
         label="Consensus (Analytic model)",
     )
 
-    # Theoretical O(N^2) fit for reference
+    # Theoretical O(N^2) fit for reference.
+    # (#22) This fit is applied to the SAME analytic formula that generated
+    # the data, so it is a self-consistent smoothing, not independent evidence.
     if len(agent_counts) > 2:
         try:
             # Simple fit a*x^2

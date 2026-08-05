@@ -213,8 +213,9 @@ class ManuscriptVerifier:
                             logger.warning(
                                 f"Potential hyperbole '{word}' in {md_file.name}:{i + 1}"
                             )
-                            # Warn only, don't fail build generally, but return True for now
-                            # to indicate 'style warnings found' if we wanted stricter checks.
+                            # #20: reflect a real style hit in the status instead of
+                            # always reporting PASS (a style warning is a finding).
+                            status = False
 
         return status
 

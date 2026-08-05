@@ -49,26 +49,23 @@ def create_detection_results_figure(output_dir: Path) -> Path:
 
     # Panel A: Detection rate by attack type
     ax1 = axes[0, 0]
+    # #11: only the categories the measured detection_results.json actually
+    # carries (prompt_injection, trust_exploitation); the previous set listed
+    # three categories the generator never produces, plotting constant-zero bars.
     attack_types = [
         "Prompt\nInjection",
         "Trust\nExploit",
-        "Belief\nManip.",
-        "Coordination",
-        "Temporal",
     ]
 
     # Helper to get rates
     def get_rates(config_name):
         cfg = next((c for c in data["defense_configurations"] if c["name"] == config_name), None)
         if not cfg:
-            return [0.0] * 5
+            return [0.0] * 2
         rates = cfg["detection_rates"]
         return [
             rates.get("prompt_injection", 0),
             rates.get("trust_exploitation", 0),
-            rates.get("belief_manipulation", 0),
-            rates.get("coordination_attack", 0),
-            rates.get("temporal_attack", 0),
         ]
 
     baseline = get_rates("Baseline")

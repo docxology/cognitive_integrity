@@ -526,3 +526,23 @@ class TestTrustNetwork:
                 assert result[0].exists()
             else:
                 assert result.exists()
+
+
+class TestFigureDataIntegrityGuards:
+    """Guard the P1-#10 / #11 data-integrity fixes (test gap #14)."""
+
+    def test_detection_performance_is_documented_schematic(self):
+        """The fabricated-metrics figure must remain visibly labelled schematic."""
+        import inspect
+        from src.visualization import detection_performance as m
+        doc = (inspect.getdoc(m.create_detection_performance_figure) or "").upper()
+        assert "SCHEMATIC" in doc and "NOT MEASUREMENT" in doc.replace("measurements", "measurement").upper() or "NOT MEASURED" in doc
+
+    def test_detection_results_uses_only_measured_categories(self):
+        """detection_results must not plot fabricated (never-produced) categories."""
+        import inspect
+        from src.visualization import detection_results as dr
+        src = inspect.getsource(dr)
+        assert "belief_manipulation" not in src
+        assert "temporal_attack" not in src
+        assert "coordination_attack" not in src

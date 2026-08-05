@@ -39,6 +39,7 @@ class OODAPhaseAttack(Enum):
     CONSTRAINT_REMOVAL = "constraint_removal"  # Decide phase
     PERMISSION_ESCALATION = "permission_escalation"  # Act phase
     SIDE_EFFECT_ABUSE = "side_effect_abuse"  # Act phase
+    PHASE_ORDER_VIOLATION = "phase_order_violation"  # #17: invalid OODA ordering
 
 
 @dataclass
@@ -143,7 +144,7 @@ class OODAPhaseMonitor:
         self._cycle_start_time: float = time.monotonic()
 
         # History buffers
-        self._belief_history: deque = deque(maxlen=belief_history_window)
+        # (#15) _belief_history deque removed: it was appended but never read.
         self._events_this_cycle: Dict[OODAPhase, List[OODAEvent]] = {p: [] for p in OODAPhase}
         self._alerts_this_cycle: List[OODAAlert] = []
         self._completed_cycles: List[OODACycleStats] = []
@@ -167,7 +168,7 @@ class OODAPhaseMonitor:
         valid_next = self.PHASE_TRANSITIONS[self._current_phase]
         if new_phase not in valid_next:
             self._raise_alert(
-                OODAPhaseAttack.SIDE_EFFECT_ABUSE,
+                OODAPhaseAttack.PHASE_ORDER_VIOLATION,
                 self._current_phase,
                 severity=0.7,
                 evidence={
@@ -300,6 +301,9 @@ class OODAPhaseMonitor:
                 )
 
             # CUSUM drift detection (slower gradual drift)
+            # (#16) CUSUM does NOT auto-reset; callers must call reset_cusum()
+            # at cycle boundaries (or accept that persistent small drift above
+            # the allowance can eventually cross the threshold).
             if self._cusum_stat > self._cusum_threshold:
                 return self._raise_alert(
                     OODAPhaseAttack.SEMANTIC_DRIFT,
@@ -317,7 +321,6 @@ class OODAPhaseMonitor:
                 )
 
         # Record belief in history
-        self._belief_history.append(beliefs_norm.copy())
         return None
 
     def decide(

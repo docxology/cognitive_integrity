@@ -45,7 +45,10 @@ def get_rng(seed: Optional[int] = None) -> np.random.Generator:
     """
     global _GLOBAL_RNG
     if seed is not None:
-        return set_global_seed(seed)
+        # P2-F5: derive a fresh, independent stream instead of re-seeding the
+        # shared global RNG.  Callers that pass a seed get deterministic,
+        # call-order-independent draws and never perturb other consumers.
+        return np.random.default_rng(seed)
     if _GLOBAL_RNG is None:
         _GLOBAL_RNG = np.random.default_rng(_GLOBAL_SEED)
     return _GLOBAL_RNG

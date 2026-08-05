@@ -93,7 +93,7 @@ class TestPhaseTransitions:
         monitor.transition_phase(OODAPhase.DECIDE)
         alerts = monitor.get_alert_history()
         assert len(alerts) == 1
-        assert alerts[0].attack_type == OODAPhaseAttack.SIDE_EFFECT_ABUSE
+        assert alerts[0].attack_type == OODAPhaseAttack.PHASE_ORDER_VIOLATION
 
     def test_cycle_finalizes_after_full_loop(self, monitor):
         for phase in [OODAPhase.ORIENT, OODAPhase.DECIDE, OODAPhase.ACT, OODAPhase.OBSERVE]:
@@ -192,11 +192,13 @@ class TestOrientPhase:
         # Note: CUSUM should detect cumulative drift eventually
         # (may not always trigger in 50 steps; this is an integration test)
 
-    def test_orient_records_beliefs_in_history(self, monitor):
+    def test_orient_computes_drift_against_previous(self, monitor):
+        """Orientation feeds the CUSUM drift monitor (was: dead _belief_history)."""
         monitor.transition_phase(OODAPhase.ORIENT)
-        beliefs = uniform_beliefs(4)
-        monitor.orient(beliefs)
-        assert len(monitor._belief_history) == 1
+        base = uniform_beliefs(4)
+        shifted = peaked_beliefs(4, peak_idx=0)
+        monitor.orient(shifted, previous_beliefs=base)
+        assert monitor._cusum_stat > 0.0
 
 
 # ── Decide Phase Tests ────────────────────────────────────────────────────────

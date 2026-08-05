@@ -7,6 +7,8 @@ Eight documented anti-patterns with detection, assessment, and remediation.
 
 from __future__ import annotations
 
+import copy
+
 from dataclasses import dataclass, field
 from enum import Enum
 
@@ -382,6 +384,13 @@ class PitfallDetector:
             ValueError: If indicator index out of range
         """
         pitfall = self.catalog.get_by_id(pitfall_id)
+
+        # (M4) reset every indicator first: a fresh evaluation must not inherit
+        # stale `present` flags from a previous call.  This keeps scan_all's
+        # catalog-based contract while making repeated/interleaved evaluations
+        # deterministic (each call fully re-specifies the pitfall).
+        for ind in pitfall.indicators:
+            ind.present = False
 
         for idx, present in indicator_status.items():
             if idx < 0 or idx >= len(pitfall.indicators):

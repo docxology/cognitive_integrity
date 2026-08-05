@@ -6,10 +6,13 @@ each fold, and reports per-fold and aggregate metrics.
 
 from __future__ import annotations
 
+import logging
 from dataclasses import dataclass
 from typing import Any, Callable, Dict, List, Tuple
 
 import numpy as np
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass
@@ -173,7 +176,10 @@ def run_cross_validation(
         predictions = []
         for sample in test:
             content = sample.get("content", "")
-            is_attack = sample.get("is_attack", True)
+            is_attack = sample.get("is_attack")
+            if is_attack is None:
+                logger.warning("sample missing 'is_attack'; defaulting to attack=True (P2-F8)")
+                is_attack = True
             detected, _score = eval_fn(content)
             predictions.append((is_attack, detected))
 

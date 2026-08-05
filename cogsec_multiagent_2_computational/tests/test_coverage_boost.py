@@ -162,8 +162,9 @@ class TestLatencyProfilerTypeFallback:
 
         profiler = MemoryProfiler()
         mem = profiler.estimate_memory(SimplePipeline(), n_agents=5)
-        # Trust matrix 5x5 x 8 = 200, comm graph = 200, per-agent = 5120
-        assert mem >= 5 * 5 * 8 + 5 * 5 * 8 + 5 * 1024
+        # (F6) SimplePipeline holds no matrix structures, so only the per-agent
+        # state term (5*1024) is added, not any unconditional n^2 terms.
+        assert mem >= 5 * 1024
 
     def test_estimate_object_list_and_dict(self):
         """Lines 199-209: _estimate_object handles list and dict."""

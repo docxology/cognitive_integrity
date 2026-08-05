@@ -873,6 +873,14 @@ class TestEdgeCases:
         pitfall = catalog.get_by_id(PitfallID.IMPLICIT_TRUST)
         assert pitfall.indicators[0].present is True
 
+    def test_check_indicators_resets_stale_flags(self) -> None:
+        """(M4) a re-check must clear a stale `present` flag from a prior call."""
+        detector = PitfallDetector()
+        detector.check_indicators(PitfallID.IMPLICIT_TRUST, {0: True})
+        result = detector.check_indicators(PitfallID.IMPLICIT_TRUST, {1: True})
+        assert result.indicators[0].present is False
+        assert result.indicators[1].present is True
+
     def test_full_workflow(self) -> None:
         """End-to-end: detect -> assess -> remediate."""
         # Step 1: Detect pitfalls

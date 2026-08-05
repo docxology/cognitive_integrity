@@ -291,6 +291,9 @@ def compute_sensitivity_index(
     return dict(sorted(index.items(), key=lambda kv: kv[1], reverse=True))
 
 
+# NOTE (P2-F10): synthetic quadratic surrogate for a defence-parameter response
+# surface, NOT the real pipeline.  Its indices are labelled parametric/demo
+# (parametric_simulation provenance) and must never be read as measured.
 def make_default_evaluate_fn(
     rng: np.random.Generator,
 ) -> Callable[[float, float, float, float], float]:

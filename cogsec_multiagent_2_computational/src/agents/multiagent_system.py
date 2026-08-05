@@ -26,7 +26,7 @@ from __future__ import annotations
 import logging
 import time
 from dataclasses import dataclass
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Set, Tuple
 
 from .llm_agent import AgentMessage, AgentResponse, LLMAgent, OllamaConfig
 
@@ -297,6 +297,10 @@ class MultiAgentSystem:
         pending: List[Tuple[int, AgentMessage, int]] = [
             (idx, initial_msg, 0) for idx in entry_agents
         ]
+        # P2-F4: each agent processes the attack at most once per run; without
+        # a visited set, dense topologies re-invoke the same agent via many
+        # paths, inflating response counts and llm_latency.
+        visited: Set[int] = set()
 
         while pending:
             next_pending: List[Tuple[int, AgentMessage, int]] = []
@@ -304,6 +308,9 @@ class MultiAgentSystem:
             for agent_idx, msg, hop in pending:
                 if hop > max_hops:
                     continue
+                if agent_idx in visited:
+                    continue
+                visited.add(agent_idx)
 
                 agent = self.agents[agent_idx]
                 response = agent.process_message(msg)

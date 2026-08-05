@@ -117,6 +117,9 @@ def compute_average_precision_from_arrays(
     return float(ap)
 
 
+# NOTE (P2-F15): AP is computed on a threshold grid, so the result is
+# a bounded-accuracy approximation of the exact AP (can differ slightly
+# from a pointwise/rank-based AP for coarse grids).
 def compute_average_precision(pr: PRCurve) -> float:
     """Convenience wrapper: return the AP from a PRCurve."""
     return pr.average_precision

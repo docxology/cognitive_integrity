@@ -248,14 +248,22 @@ class MemoryProfiler:
 
             total += self._estimate_object(val)
 
-        # Estimate agent-count-dependent structures
-        # Trust matrix: n x n float64
-        trust_matrix_bytes = n_agents * n_agents * 8
+        # Estimate agent-count-dependent structures (P2-F6): only count the
+        # matrix structures that actually exist on the pipeline.  The previous
+        # code unconditionally added two n^2 terms, inflating estimates for
+        # pipelines that hold no such matrices.
+        matrix_like = 0
+        for attr_name in dir(pipeline):
+            if attr_name.startswith("_"):
+                continue
+            try:
+                val = getattr(pipeline, attr_name)
+            except self.SKIPPABLE_ATTR_ERRORS:
+                continue
+            if isinstance(val, np.ndarray) and val.ndim >= 2:
+                matrix_like += 1
+        trust_matrix_bytes = n_agents * n_agents * 8 * matrix_like
         total += trust_matrix_bytes
-
-        # Communication graph: n x n float64
-        comm_graph_bytes = n_agents * n_agents * 8
-        total += comm_graph_bytes
 
         # Per-agent state overhead (estimated 1KB per agent)
         agent_state_bytes = n_agents * 1024

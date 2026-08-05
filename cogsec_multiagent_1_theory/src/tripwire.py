@@ -140,7 +140,12 @@ class CognitiveTripwire:
         triggered = []
 
         for prop, canary in self._canaries.items():
-            actual = beliefs.get(prop, 0.5)  # Default to uncertain
+            # #12: an absent canary is "not reported", not "explicitly uncertain".
+            # Defaulting a missing belief to 0.5 conflated the two and produced
+            # spurious HIGH/CRITICAL alerts under a partial belief dict.
+            if prop not in beliefs:
+                continue
+            actual = beliefs[prop]
 
             if not canary.check(actual):
                 drift = abs(actual - canary.expected_belief)

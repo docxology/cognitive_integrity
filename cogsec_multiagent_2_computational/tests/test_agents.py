@@ -119,7 +119,7 @@ class TestLLMAgent:
     def test_thinking_tags_stripped(self, httpserver: HTTPServer):
         """Agent strips <think> tags from model output."""
         base_url = _configure_ollama_server(
-            httpserver, "<think>Let me think...</think>The answer is 42."
+            httpserver, "<think>Let me think...</think>\nresponseThe answer is 42."
         )
 
         agent = LLMAgent(

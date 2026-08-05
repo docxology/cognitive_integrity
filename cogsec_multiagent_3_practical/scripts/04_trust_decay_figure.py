@@ -10,7 +10,7 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 
 # Add project root to path for imports
-project_root = Path(__file__).parent.parent
+project_root = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(project_root))
 
 from src.visualization import (
