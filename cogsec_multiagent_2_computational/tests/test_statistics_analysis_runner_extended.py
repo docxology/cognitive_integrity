@@ -59,6 +59,14 @@ class TestLoadRealData:
     def test_returns_dict(self, loaded):
         assert isinstance(loaded, dict)
 
+    def test_simulated_control_false_fails_closed(self):
+        """Requesting a real (non-simulated) control arm is impossible
+        because no undefended control was ever run, so load_real_data
+        must refuse rather than fabricate a baseline (P2-15)."""
+        rng = np.random.default_rng(42)
+        with pytest.raises(ValueError, match="no observed control arm|opt in"):
+            load_real_data(_EVAL_PATH, _ABLATION_PATH, rng, simulated_control=False)
+
     def test_has_required_keys(self, loaded):
         expected = {"cif_scores", "baseline_scores", "component_scores", "arch_scores"}
         assert set(loaded.keys()) == expected
@@ -96,8 +104,7 @@ class TestLoadRealData:
     def test_component_names_come_from_the_ablation_file(self, loaded):
         """The component set is whatever the file says, not a fixed table."""
         measured = {
-            row["removed"]
-            for row in json.loads(_ABLATION_PATH.read_text())["component_removal"]
+            row["removed"] for row in json.loads(_ABLATION_PATH.read_text())["component_removal"]
         }
         assert set(loaded["component_scores"]) == measured
 
@@ -133,12 +140,8 @@ class TestAblationDataIsMandatory:
         ("payload", "expected_fragment"),
         [
             pytest.param({}, "component_removal", id="empty_object"),
-            pytest.param(
-                {"component_removal": []}, "component_removal", id="empty_rows"
-            ),
-            pytest.param(
-                {"full_pipeline": {"tpr": 0.12}}, "component_removal", id="rows_renamed"
-            ),
+            pytest.param({"component_removal": []}, "component_removal", id="empty_rows"),
+            pytest.param({"full_pipeline": {"tpr": 0.12}}, "component_removal", id="rows_renamed"),
             pytest.param(
                 {"component_removal": [{"tpr": 0.07}]}, "'removed'", id="row_lost_removed"
             ),
@@ -175,9 +178,7 @@ class TestAblationDataIsMandatory:
     def test_truncated_file_raises(self, tmp_path):
         """A half-written JSON file is an error, not a silent default."""
         ablation = tmp_path / "ablation_results.json"
-        full = json.dumps(
-            {"component_removal": [{"removed": "detection", "tpr": 0.071}]}
-        )
+        full = json.dumps({"component_removal": [{"removed": "detection", "tpr": 0.071}]})
         ablation.write_text(full[: len(full) // 2])
         rng = np.random.default_rng(42)
 

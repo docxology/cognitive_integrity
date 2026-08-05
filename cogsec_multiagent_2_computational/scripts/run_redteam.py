@@ -102,12 +102,12 @@ def main(argv: list[str] | None = None) -> int:
         )
         attacks = gen.generate_batch(per_level_attacks)
         all_attacks.extend(attacks)
-        mean_evasion = sum(a.evasion_score for a in attacks) / len(attacks)
+        mean_evasion = sum(a.heuristic_evasion_score for a in attacks) / len(attacks)
         distinct = len({a.payload for a in attacks})
         generation_summary[level.name] = {
             "n_attacks": len(attacks),
             "n_distinct_payloads": distinct,
-            "mean_evasion_score": mean_evasion,
+            "mean_heuristic_evasion_score": mean_evasion,
         }
         print(
             f"  {level.name:<25} n={len(attacks):<4} distinct={distinct:<3} "

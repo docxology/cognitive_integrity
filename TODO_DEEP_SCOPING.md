@@ -1,137 +1,120 @@
 # Cognitive Integrity Program - Per-Paper TODO Deep Scoping
 
-**Date:** 2026-07-06 (original) / **Last reviewed:** 2026-08-04
-**Auditor:** autonomous hostile red-team review - 3 parallel audits of Parts 1/2 + lead pass on Part 3; every MAJOR re-verified by lead with live probes; 2026-08-04 pass re-ran all gates and implemented the remaining open engineering items
+**Date:** 2026-07-06 (original) / **Last reviewed:** 2026-08-05
+**Auditor:** autonomous hostile red-team review - 3 parallel audits of Parts 1/2 + lead pass on Part 3; rounds 2026-08-04 and 2026-08-05 re-ran all gates and implemented the open engineering items
 **Scope:** All three papers in `cognitive_integrity/` (Part 1 theory, Part 2 computational, Part 3+4 practical)
-**Status legend:** `DONE` verified at HEAD (see commit SHAs) | `OPEN` tracked forward | `PARTIAL` partially addressed | `[A]` author decision | `[H]` agent-scoped work
-**Owner conventions:** `[A]` author/subject-matter decision | `[H]` agent-scoped engineering item | `[H+A]` both
+**Status legend:** `DONE` verified at HEAD (see commit SHAs) | `OPEN` tracked forward | `PARTIAL` partially addressed | `[A]` author decision | `[H]` agent-scoped work | `[H+A]` both
 
 ---
 
-## Executive Summary - measured 2026-08-04 (fresh runs, not hand-pinned)
+## Executive Summary - measured 2026-08-05 (fresh runs)
 
 | Paper | Tests | Coverage (>=90) | Ruff | Mypy | Manuscript verify | Claims gate |
 |-------|-------|-----------------|------|------|-------------------|-------------|
 | 1 | 382 passed / 0 skipped | 96.18% | 0 | N/A | PASS | N/A |
-| 2 | 3352 passed / 3 skipped | 96.98% (branch) | 0 | clean (161) | PASS (10) | 163: 159 MATCH / 0 MISMATCH / 0 NOT_FOUND / 4 UNBACKED, CI-wired |
+| 2 | 3354 passed / 3 skipped | 96.98% (branch) | 0 | clean (161) | PASS (10) | 163: 159 MATCH / 0 MISMATCH / 0 NOT_FOUND / 4 UNBACKED, CI-wired |
 | 3 | 882 passed / 0 skipped | 99.69% | 0 | N/A | PASS (7) | N/A |
 
 All suites green. Claims gate exits 1 only on the 4 env-gated LLM claims (pinned); CI asserts mismatch=0 / not_found=0 / unbacked=4 (P2-4).
 
-### 2026-08-04 implementation pass - fixed this session
+### Rounds 1-2 (2026-08-04) - completed
+Round 1 filed and implemented P1-1..P1-22, P2-1..P2-4/13/16/19, P3-1..P3-3 and the medium/minor batch
+(P2-6..P2-12/14/18/22/23/24/26/27/28/31/32/33/34, P1-14 fork pin). Round 2 mirrored the
+Part-1 defect fixes into the Part-2 authoritative core (P2-35 trust decay/short-path,
+P2-36 sandbox corroboration + cap, P2-37 invariants fail-closed, P2-38 provenance report
+JSON-safe). See Completed/Closed below.
 
-Re-verified MAJORs from `ca941f3`+`3dd7e2b` live: P1-1 regex, P1-2 invariants, P1-3 determinism, P1-4/5 ROC+figure, P1-6/7 weighted consensus+portfolio, P2-1 origin+provenance, P2-2 fallback mode, P2-3 ablation ordering, P2-4 CI claims gate.
+### Round 3 (2026-08-05) - comprehensive completion pass, implemented:
+- **P2-17** - real-mode AT round now de-duplicates the generated batch before measuring
+  base detection rate (phantom 100-attack -> ~3-distinct-payload denominator); regression test.
+- **P2-15** - `load_real_data` gains a `simulated_control` gate: requesting a real (non-simulated)
+  control arm fails closed because no undefended control was ever run; effect sizes against the
+  disclosed simulated N(0.03,0.02) control remain labeled; test.
+- **P2-20** - all remaining bare-`main()` scripts standardized to `sys.exit(main())`
+  (13 scripts; `run_llm_demo.py` is inline-only and already exit-honest).
+- **LOW-3** - `GeneratedAttack.evasion_score` renamed `heuristic_evasion_score` (unit:
+  "heuristic"), script output key renamed `mean_heuristic_evasion_score`, committed
+  redteam artifact regenerated (identical values, renamed key only).
+- **L2** - power-analysis "mean vs 0" row reframed: explicitly a degenerate reference row,
+  not the research question; the substantive null (mean vs parametric ceiling) is settled by
+  the Bayes-factor gap analysis.
+- **H7** - blast-radius reachability-factor alignment documented at thm:blast-radius,
+  pointing to the consistent S01 restatement (thm:blast-radius-restated).
+- **CITATION.cff** added at repo root (schema-valid, three-part DOIs).
+- **P2-10** - verified already addressed: S08/05_results label every cross-arch table
+  "parametric/design-level" and name the producing script/artifact; round-1 runner docstring
+  discloses that real mode is architecture-agnostic. Closed without code change.
 
-Implemented remaining open medium/minor items:
-- P2-6: Weighted/Confidence/Combined consensus now override compute_consensus (weighted supermajority); 3 flip-verdict tests.
-- P2-7: ConsensusAdapter submits exactly n_agents votes (profiles cycled); non-7 test.
-- P2-8: ablation priors documented as unused (only keys authoritative).
-- P2-9: run_full_evaluation atomic write + sha256 marker.
-- P2-10: runner docstring discloses real mode is architecture-agnostic.
-- P2-11: per-domain threshold clip (PROBABILISTIC_THRESHOLDS only); test.
-- P2-12: geometric projection returns +inf on divergent ratio; round-estimate returns 0 on divergence; design-model 1.0 kept as disclosed.
-- P2-14: firewall fork documented at both heads; defaults pinned (0.7 / 0.8).
-- P2-18: H3 degeneracy guard (constant series flagged, not significant); test.
-- P2-19: 05b prose corrected to the recorded normal approximation (mean +/- 1.96*s/sqrt(k)).
-- P2-22/23/24/26/27/28/31/32/33/34: SKILL+AGENTS counts, phantom t_ci, stale MED-5, phantom no_mock_enforcer, Makefile note, expected_detection, surrogate/quorum caveats, rank-biserial sign, TLA placeholder, generated-not-checked.
-- P1-14 collateral: Part-1 firewall fork note + pin test (382nd).
-
-### Partial / carried
-- P2-5 (PARTIAL): writer fixed (null FPR, measurement_mode, sidecar); committed artifact left as-is (regeneration changes category labels + latencies).
-- P2-20 (PARTIAL): run_full_evaluation standardized to sys.exit(main()); ~12 scripts remain bare (advisory).
-
-### 2026-08-04 continued pass (Part 2 core divergence fixes)
-
-Part 2 is the "authoritative CIF implementation", but its `src/core/` modules had
-NOT received the Part-1 fixes applied at ca941f3. Four Part-1 defect classes had
-diverged and were fixed this continuation (verified: Part 2 full suite green, ruff
-+ mypy clean, claims gate 159/0/0/4 unchanged):
-
-- **P2-37 (MAJOR, P1-2 mirror)** - invariants now fail CLOSED on missing fields:
-  INV-1/2/3/4 treat a missing `code_trusted`/`contains_secrets`/`has_permission`/
-  `tool_output_verified` as untrusted/unverified instead of implicitly safe.
-  Added a missing-field fail-closed test.
-- **P2-36 (MEDIUM, P1-11 mirror)** - sandbox: default `min_corroborations` is now 1
-  (a fresh single-source belief cannot auto-promote), and `add_provisional` enforces
-  `max_provisional_beliefs` (raises at cap). Added default + cap tests; two
-  pre-existing tests updated to add a corroborator.
-- **P2-35 (MEDIUM, P1-9/P1-20 mirrors)** - `trust.compute_path_trust` applies decay
-  ONCE for total depth (`min * delta**len`, Def 4.4) instead of per-hop compounding;
-  `get_delegation_trust` returns 0.0 for degenerate short paths. Added value pins.
-- **P2-38 (MINOR, P1-15 mirror)** - `provenance.generate_report` serializes the
-  `TaintLabel` as `.value` so the report is JSON-serializable.
+### P2-5 - PARTIAL (writer DONE, artifact preserved)
+The `run_full_evaluation.py` writer emits honest output (null FPR on 0/0, `measurement_mode`,
+atomic write, sha256 marker, provenance sidecar). The **committed** `full_evaluation_results.json`
+was deliberately NOT regenerated: a regeneration flips the injection-cell dominant label
+(deterministic tie-break `direct_injection` vs the committed `indirect_injection`), which would
+churn the tracked `detection_rates.tex` and the manuscript render for no scientific gain (detection
+rates are identical, and the manuscript already labels the artifact "parametric ceiling").
+Scope to close fully: decide the tie-break label for the injection cell (or emit the top-level
+category), regenerate artifact + tracked tables + re-render, confirm the claims gate.
 
 ---
 
-## Completed / Closed (verified at HEAD 2026-08-04)
+## Completed / Closed (verified at HEAD 2026-08-05)
 
 ### Paper 1
 | ID | Issue | Status |
 |----|-------|--------|
-| P1-1 | Firewall regex fails canonical phrase | DONE |
-| P1-2 | Invariants fail OPEN on missing fields | DONE |
-| P1-3 | Artifact non-reproducibility | DONE |
-| P1-4/5 | Degenerate ROC AUC; contradictory detection figure | DONE |
-| P1-6 | Weighted consensus decorative | DONE (decision overrides) |
-| P1-7 | Empty-portfolio or-idiom | DONE |
-| P1-8..P1-16 | Medium engineering items | DONE |
-| P1-17..P1-22 | Minor items | DONE |
+| P1-1..P1-22 | Full Part-1 hostile-red-team batch | DONE (ca941f3) |
+| H7 | Blast-radius reachability factor vs delta-bound alignment | DONE (2026-08-05) - documented at thm:blast-radius referencing S01 restatement |
 
 ### Paper 2
 | ID | Issue | Status |
 |----|-------|--------|
-| P2-1 | sensitivity false-real-pipeline origin | DONE |
-| P2-2 | measurement_mode on fallback | DONE |
-| P2-3 | ablation ordering | DONE |
-| P2-4 | claims gate CI-wired | DONE |
-| P2-13 | mypy red | DONE |
-| P2-14 | firewall fork | DONE (this pass) |
-| P2-19 | t vs z prose | DONE (this pass) |
-| P2-32 | rank-biserial sign | DONE (this pass) |
-| P2-22/23/24/26/27/28/31/33/34 | doc/count/phantom minors | DONE (this pass) |
-| P2-37 | invariants fail-closed (P1-2 mirror) | DONE (continuation) |
-| P2-36 | sandbox corroboration default + cap (P1-11 mirror) | DONE (continuation) |
-| P2-35 | trust path decay once + short-path (P1-9/20 mirrors) | DONE (continuation) |
-| P2-38 | provenance report JSON-safe (P1-15 mirror) | DONE (continuation) |
+| P2-1..P2-4/13/16/19 | provenance/CI/gate/mypy batch | DONE (3dd7e2b) |
+| P2-6..P2-12/14/18/22/23/24/26/27/28/31/32/33/34 | medium/minor batch | DONE (dcd2f9e) |
+| P2-35..P2-38 | Part-2 core divergence mirrors (trust/sandbox/invariants/provenance) | DONE (da7bca7) |
+| P2-17 | AT real-mode batch de-dup | DONE (2026-08-05) |
+| P2-15 | simulated-control gate (fail-closed) | DONE (2026-08-05) |
+| P2-20 | script exit-code standardization | DONE (2026-08-05) |
+| P2-10 | cross-arch table parametric labeling | DONE (2026-08-05) - verified already labeled |
+| LOW-3 | heuristic_evasion_score rename + artifact | DONE (2026-08-05) |
+| L2 | power-analysis strawman reframe | DONE (2026-08-05) |
 
 ### Paper 3
-All findings (P3-1..P3-3 + ledger) DONE at 3dd7e2b. No new findings this pass.
+All findings (P3-1..P3-3 + ledger) DONE at 3dd7e2b. No new findings in rounds 2-3.
+
+### Publication / program
+| Item | Status |
+|------|--------|
+| CITATION.cff (schema-valid, 3 DOIs) | DONE (2026-08-05) |
 
 ---
 
 ## Open backlog (by severity)
 
-### Major
-No MAJOR defect remains open. Deferred with Major-like scope:
-- H2 (Part 2) - Real-mode AT is a structural no-op (thresholds never threaded into the detector; real-mode delta ~0). Disclosed in 05g. **Deferred:** thread thresholds into the real detector so real mode can improve; acceptance = real-mode delta > 0 + test. Author input needed.
+### Major - Scoped (deferred)
+- **H2 (Part 2) - Real-mode AT is a structural no-op** - refined thresholds are never threaded
+  into the real detector, so `measurement_mode="real"` measures no improvement (delta ~0).
+  Disclosed in 05g. **Scope/acceptance:** design a defensible mapping from the AT threshold
+  vector (drift/anomaly/trust_decay/...) onto `CognitiveFirewall`/detector parameters, then
+  verify real-mode delta > 0 on a held-out corpus with a regression test.
+  **Reason deferred:** the threshold-to-detector coupling is an architecture decision the author
+  flagged for design input; a hand-invented mapping risks presenting an arbitrary improvement as
+  meaningful. All independent pieces (P2-17 de-dup, measurement mode labeling) are done.
+
+### Part 1 - theory soundness (author decision, carried)
+- **H1** - defense-independence: full re-derivation with union/Frechet bounds (or explicit rho). S01_proofs.md. Reason: mathematical re-derivation authored by the paper's author.
+- **H2** - "closed semiring" - prove the four axioms on one focal predicate. Reason: proof authorship.
+- **H3** - Fisher-Rao I*S <= pi/2 - delete or restate. Reason: author decision on claim scope.
+- **H5** - KL-AUC bound direction + recomputed table (06_detection_methods.md:489-518). Reason: re-derivation + table recomputation is author math.
+- **M1/M2/M4-M7/M9-M11, HIGH-2** - Claim vs Proof split items; illustrative-figure scripts. Reason: author decision on which claims to reclassify.
 
 ### Medium
-- P2-17: AT real-mode round batch duplicate-inflated (~100 -> 3 distinct payloads). De-dup before measuring (helper at redteam/evasion.py). Tied to H2; deferred.
-- P2-15: statistics effect size (Cohens-d ~62) vs invented control. Provenance honest, but must never be reported as real. Drop/gate simulated-control tests. Author decision.
-- P2-5: committed full_evaluation_results.json remains legacy provenance-bare. Dedicated regeneration pass (stable category determination first).
-- P2-10: consider labeling cross-arch table (05f) parametric-only in prose (runner disclosure added).
-- P2-20: standardize remaining ~12 script exit codes (advisory).
-
-### Part 1 - theory soundness (author, carried)
-- H1 independence re-derivation (union/Frechet or rho); H2 closed-semiring proof; H3 Fisher-Rao I*S<=pi/2; H5 KL-AUC bound + table; H7 blast-radius alignment; Claim vs Proof split items (M1/M2/M4-M7/M9-M11, HIGH-2).
+- **P2-5 (PARTIAL)** - committed full_evaluation_results.json is legacy provenance-bare (0.0 FPR on 0/0). Writer fixed; deciding the dominant-label tie-break and regenerating artifact + tracked tables + re-render is scoped above (see Partial note).
 
 ---
 
-## Test-coverage gaps worth closing (future passes)
-1. Regenerate full_evaluation_results.json honestly (P2-5) + claims-gate confirmation.
-2. Real-mode AT: de-dup (P2-17) + thread thresholds (H2).
-3. Standardize script exit codes (P2-20).
-
-## Checked and deliberately cleared (this pass)
+## Checked and deliberately cleared (rounds 1-3)
 - Attack corpus 950 = 500/200/150/100; byte-identical at fixed seed; no unfilled placeholders.
-- Stats primitives verified vs scipy/hand refs; rank-biserial sign pinned.
-- Consensus variants now exercise weights in compute_consensus (P2-6).
-- No mocks; no sys.exit in src; no eval/exec/pickle; requests carry timeout.
-- Part 3 matrices consistent with prose; 6 incidents match retrospective.
-
----
-
-## Cross-Paper Consistency (this pass)
-- Versions hold (1.1 / 1.0 / 1.0). Prose drift refreshed (P2-22).
-- Claims gate 159/0/0/4, CI-wired (P2-4).
-- Firewall fork (0.7 reference / 0.8 operational) documented + pinned (P2-14).
+- Stats primitives (cohens_d, Wilson, bootstrap, rank-biserial) verified vs scipy/hand refs.
+- No mocks; no sys.exit in src; no eval/exec/pickle; requests carry timeout; no bare excepts in either src tree.
+- Part 3 matrices consistent with prose; 6 incidents match the retrospective.
+- Part 1/2/3 manuscripts pass verify_manuscript after the H7/L2 prose edits.

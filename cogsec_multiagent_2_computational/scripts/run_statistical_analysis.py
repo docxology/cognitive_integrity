@@ -58,8 +58,7 @@ def main() -> None:
         "data_origin": "real_pipeline",  # preservation marker for a shipped result
         "source_script": "scripts/run_statistical_analysis.py",
         "generated_by": (
-            f"scripts/run_statistical_analysis.py --seed {args.seed} "
-            f"--output {str(args.output)}"
+            f"scripts/run_statistical_analysis.py --seed {args.seed} --output {str(args.output)}"
         ),
         "seed": args.seed,
         **results,
@@ -70,4 +69,4 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

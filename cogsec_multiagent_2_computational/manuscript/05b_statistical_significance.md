@@ -102,7 +102,18 @@ Table: Power analysis for primary empirical comparisons. {#tab:real-power}
 | LLM DR per architecture | Large | 30 | 5 | 0.24 |
 | Ablation component removal | Medium | 64 | 100 | 0.68 |
 
-**Key finding**: The LLM validation ($N=5$ per architecture) is substantially underpowered for detecting architecture-specific differences. The multi-seed analysis is well-powered for estimating the pipeline's mean detection rate. The ablation analysis has moderate power for detecting component contributions.
+**Key finding**: The LLM validation ($N=5$ per architecture) is substantially underpowered for 
+detecting architecture-specific differences. The multi-seed analysis is well-powered for 
+estimating the pipeline's mean detection rate (95\% CI [43.2, 46.4]); the ablation analysis has 
+moderate power for detecting component contributions.
+
+*Note on the first row (L2): 'mean vs 0' is a degenerate/reference power row, not the research 
+question --- a detection rate of 44.8\% is trivially distinguishable from 0. The substantive null 
+for the multi-seed pipeline is whether its mean differs from the design-level parametric ceiling, 
+and that comparison is settled decisively by the Bayes-factor gap analysis in 
+\cref{sec:real-power-analysis}'s companion section (Bayes factor $>10^6$ for the structural gap), not 
+by a power-vs-0 computation. The informative read of the table is the underpowered LLM row and the 
+moderate ablation row.*
 
 ## Multiple Comparison Correction {#sec:real-bonferroni}
 

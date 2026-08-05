@@ -52,15 +52,11 @@ def _component_means_from_ablation(ablation_path: Path | None) -> dict[str, floa
             "derived from measured data"
         )
     if not ablation_path.exists():
-        raise AblationDataUnavailableError(
-            f"ablation results not found: {ablation_path}"
-        )
+        raise AblationDataUnavailableError(f"ablation results not found: {ablation_path}")
     try:
         payload = json.loads(ablation_path.read_text())
     except json.JSONDecodeError as exc:
-        raise AblationDataUnavailableError(
-            f"{ablation_path} is not valid JSON ({exc})"
-        ) from exc
+        raise AblationDataUnavailableError(f"{ablation_path} is not valid JSON ({exc})") from exc
     if not isinstance(payload, dict):
         raise AblationDataUnavailableError(f"{ablation_path} is not a JSON object")
 
@@ -146,6 +142,8 @@ def load_real_data(
     eval_path: Path,
     ablation_path: Path | None,
     rng: np.random.Generator,
+    *,
+    simulated_control: bool = True,
 ) -> dict[str, Any]:
     """Load real evaluation data and build analysis inputs.
 
@@ -190,14 +188,23 @@ def load_real_data(
     logger.info("Loaded real evaluation data from %s", eval_path)
 
     n = len(cif_scores)
+    if not simulated_control:
+        # Fail closed (P2-15): no undefended control arm was ever run, so a
+        # 'real' baseline is unobtainable.  Refuse to invent one rather than
+        # silently reporting an effect size against a fabricated control.
+        raise ValueError(
+            "No observed control arm exists; refusing to fabricate a baseline. "
+            "Pass simulated_control=True to opt in to the disclosed simulated "
+            "N(0.03,0.02) control (whose effect sizes must never be reported "
+            "as real evidence)."
+        )
     baseline_scores = rng.normal(0.03, 0.02, size=n).clip(0.0, 0.10)
 
     # Component scores from ablation. No fallback: an unreadable file or a
     # renamed key must stop the run, not quietly become invented means.
     component_means = _component_means_from_ablation(ablation_path)
     component_scores: dict[str, np.ndarray] = {
-        comp: rng.normal(tpr, 0.02, size=n).clip(0.0, 1.0)
-        for comp, tpr in component_means.items()
+        comp: rng.normal(tpr, 0.02, size=n).clip(0.0, 1.0) for comp, tpr in component_means.items()
     }
     logger.info(
         "Loaded component scores from ablation data (%d components) at %s",
@@ -207,8 +214,10 @@ def load_real_data(
 
     # Per-architecture scores
     arch_name_map = {
-        "Claude Code": "claude_code", "AutoGPT": "autogpt",
-        "CrewAI": "crewai", "LangGraph": "langgraph",
+        "Claude Code": "claude_code",
+        "AutoGPT": "autogpt",
+        "CrewAI": "crewai",
+        "LangGraph": "langgraph",
     }
     arch_scores: dict[str, np.ndarray] = {}
     for arch_name, rates_list in arch_rates.items():
@@ -267,8 +276,7 @@ def run_full_analysis(
 
     # H3
     arch_h3_data = {
-        name: (scores, baseline[:len(scores)])
-        for name, scores in data["arch_scores"].items()
+        name: (scores, baseline[: len(scores)]) for name, scores in data["arch_scores"].items()
     }
     h3_results = test_h3_per_architecture(arch_h3_data)
 
@@ -277,14 +285,27 @@ def run_full_analysis(
     kw = kruskal_wallis(*arch_groups)
 
     return {
-        "h1": {"statistic": h1.test_statistic, "p_value": h1.p_value, "significant": h1.significant},  # noqa: E501
-        "h2": [{"name": h.name, "p_value": h.p_value, "significant": h.significant} for h in h2_results],  # noqa: E501
-        "h3": [{"name": h.name, "p_value": h.p_value, "significant": h.significant} for h in h3_results],  # noqa: E501
+        "h1": {
+            "statistic": h1.test_statistic,
+            "p_value": h1.p_value,
+            "significant": h1.significant,
+        },  # noqa: E501
+        "h2": [
+            {"name": h.name, "p_value": h.p_value, "significant": h.significant} for h in h2_results
+        ],  # noqa: E501
+        "h3": [
+            {"name": h.name, "p_value": h.p_value, "significant": h.significant} for h in h3_results
+        ],  # noqa: E501
         "kruskal_wallis": {"h": kw.test_statistic, "p": kw.p_value},
         "cohens_d_cif_vs_baseline": d.value,
         "assumptions": [
-            {"test": ar.test_name, "group": ar.group_name, "statistic": ar.statistic,
-             "p_value": ar.p_value, "passed": ar.passed}
+            {
+                "test": ar.test_name,
+                "group": ar.group_name,
+                "statistic": ar.statistic,
+                "p_value": ar.p_value,
+                "passed": ar.passed,
+            }
             for ar in assumption_results
         ],
         "assumptions_met": assumptions_met,

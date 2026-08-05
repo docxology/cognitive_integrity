@@ -39,7 +39,9 @@ def load_config(project_root: Path, publication: bool = False) -> dict:
             section = raw.get("llm", {})
         return {
             "sample_size": section.get("sample_size", 5),
-            "replicates": raw.get("publication" if publication else "simulation", {}).get("replicates", 1),  # noqa: E501
+            "replicates": raw.get("publication" if publication else "simulation", {}).get(
+                "replicates", 1
+            ),  # noqa: E501
             "model": raw.get("llm", {}).get("model", "gemma3:4b"),
             "seed": raw.get("simulation", {}).get("seed", 42),
         }
@@ -48,15 +50,25 @@ def load_config(project_root: Path, publication: bool = False) -> dict:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Run CIF experiments (reads experiment_config.toml)")  # noqa: E501
-    parser.add_argument("--publication", action="store_true",
-                        help="Use publication-scale parameters (replicates=11, sample_size=10)")
-    parser.add_argument("--sample-size", type=int, default=None,
-                        help="Override sample_size from config")
-    parser.add_argument("--replicates", type=int, default=None,
-                        help="Override replicates from config")
-    parser.add_argument("--run-llm", action="store_true",
-                        help="Run live Ollama LLM evaluation (also enabled by COGSEC_RUN_LLM_ANALYSIS=1)")  # noqa: E501
+    parser = argparse.ArgumentParser(
+        description="Run CIF experiments (reads experiment_config.toml)"
+    )  # noqa: E501
+    parser.add_argument(
+        "--publication",
+        action="store_true",
+        help="Use publication-scale parameters (replicates=11, sample_size=10)",
+    )
+    parser.add_argument(
+        "--sample-size", type=int, default=None, help="Override sample_size from config"
+    )
+    parser.add_argument(
+        "--replicates", type=int, default=None, help="Override replicates from config"
+    )
+    parser.add_argument(
+        "--run-llm",
+        action="store_true",
+        help="Run live Ollama LLM evaluation (also enabled by COGSEC_RUN_LLM_ANALYSIS=1)",
+    )  # noqa: E501
     args = parser.parse_args()
 
     # Resolve paths
@@ -81,11 +93,16 @@ def main() -> None:
     # 1. Parametric Simulation
     print(f"\n[Part 1/2] Parametric Simulation: {replicates} replicate(s)")
     cmd_sim = [
-        sys.executable, str(runner_script),
-        "--mode", "simulation",
-        "--replicates", str(replicates),
-        "--seed", seed,
-        "--output", "output/data_publication/simulation"
+        sys.executable,
+        str(runner_script),
+        "--mode",
+        "simulation",
+        "--replicates",
+        str(replicates),
+        "--seed",
+        seed,
+        "--output",
+        "output/data_publication/simulation",
     ]
     print(f"Command: {' '.join(cmd_sim)}")
     try:
@@ -99,25 +116,34 @@ def main() -> None:
     total_calls = sample_size * 4 * 4  # 4 categories × 4 architectures
     print(f"\n[Part 2/2] LLM-Empirical Evaluation: N=~{total_calls} (sample-size={sample_size})")
     cmd_llm = [
-        sys.executable, str(runner_script),
-        "--mode", "llm",
-        "--sample-size", str(sample_size),
-        "--model", model,
-        "--seed", seed,
-        "--output", "output/data_publication/llm"
+        sys.executable,
+        str(runner_script),
+        "--mode",
+        "llm",
+        "--sample-size",
+        str(sample_size),
+        "--model",
+        model,
+        "--seed",
+        seed,
+        "--output",
+        "output/data_publication/llm",
     ]
     print(f"Command: {' '.join(cmd_llm)}")
 
     if not args.run_llm and os.environ.get("COGSEC_RUN_LLM_ANALYSIS") != "1":
-        print("WARNING: LLM evaluation skipped. Set COGSEC_RUN_LLM_ANALYSIS=1 or pass --run-llm to run real Ollama evaluation.")  # noqa: E501
+        print(
+            "WARNING: LLM evaluation skipped. Set COGSEC_RUN_LLM_ANALYSIS=1 or pass --run-llm to run real Ollama evaluation."  # noqa: E501
+        )  # noqa: E501
         print("WARNING: Parametric simulation complete; LLM publication data remains opt-in.")
         sys.exit(0)
 
     try:
         # Check if Ollama is likely available (simple check)
         import socket
+
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        result = sock.connect_ex(('localhost', 11434))
+        result = sock.connect_ex(("localhost", 11434))
         sock.close()
 
         if result == 0:
@@ -125,7 +151,9 @@ def main() -> None:
             print(">> LLM evaluation complete.")
         else:
             print("WARNING: Ollama not detected on port 11434. Skipping LLM evaluation.")
-            print("WARNING: Ollama not available — LLM evaluation skipped. Parametric results are still valid.")  # noqa: E501
+            print(
+                "WARNING: Ollama not available — LLM evaluation skipped. Parametric results are still valid."  # noqa: E501
+            )  # noqa: E501
             sys.exit(0)
 
     except subprocess.CalledProcessError as e:
@@ -135,10 +163,10 @@ def main() -> None:
         print(f"ERROR: Unexpected error in LLM evaluation: {e}")
         sys.exit(1)
 
-    print("\n" + "="*70)
+    print("\n" + "=" * 70)
     print("ALL EXPERIMENTS COMPLETED SUCCESSFULLY")
-    print("="*70)
+    print("=" * 70)
+
 
 if __name__ == "__main__":
-    main()
-
+    sys.exit(main())

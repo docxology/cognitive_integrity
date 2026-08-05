@@ -107,6 +107,12 @@ The CIF trust decay bound (\cref{thm:trust-bounded}) limits this to:
 \label{eq:blast-radius-bound}
 \text{BlastRadius}(a_v) \leq n \cdot \delta \cdot \max_{a_j} \mathcal{T}_{a_j \to a_v}
 \end{equation}
+*Reachability factor alignment (H7): the \cref{eq:blast-radius} definition includes an explicit
+$|\text{Reachable}(a_j)|$ factor as the intuitive influence interpretation; the trust-decay bound
+(\cref{eq:blast-radius-bound}) is stated on the trust-influence measure, where each reachable hop
+contributes at most $\delta \cdot \mathcal{T}$, so the aggregate is capped at $n \cdot \delta \cdot \max_j \mathcal{T}$.
+The supplementary restatement (\cref{thm:blast-radius-restated}) states the bound consistently and
+does not multiply the neighbor and reachable-agent counts (see S01, \cref{sec:thm-blast-radius}).*
 \end{theorem}
 
 \begin{proof}

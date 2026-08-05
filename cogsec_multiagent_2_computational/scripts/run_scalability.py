@@ -178,9 +178,7 @@ def _inference_record(fit: RegressionInference, unit: str) -> Dict[str, Any]:
                 "p_value": p,
                 "ci_excludes_zero": (lo > 0.0 or hi < 0.0),
             }
-            for name, b, se, (lo, hi), p in zip(
-                names, fit.beta, fit.stderr, fit.ci95, fit.p_values
-            )
+            for name, b, se, (lo, hi), p in zip(names, fit.beta, fit.stderr, fit.ci95, fit.p_values)
         ],
     }
 
@@ -341,23 +339,17 @@ def main() -> None:
         print(f"\n{label}  (unit: {unit}, n_obs={fit.n_obs}, df={fit.df_resid})")
         print(f"  {'coef':<18} {'estimate':>14} {'SE':>13} {'95% CI':>30} {'p':>11}")
         names = ["beta0 (intercept)", "beta1 (linear)", "beta2 (quadratic)"]
-        for name, b, se, (lo, hi), p in zip(
-            names, fit.beta, fit.stderr, fit.ci95, fit.p_values
-        ):
+        for name, b, se, (lo, hi), p in zip(names, fit.beta, fit.stderr, fit.ci95, fit.p_values):
             ci = f"[{lo:.6g}, {hi:.6g}]"
             print(f"  {name:<18} {b:>14.6g} {se:>13.6g} {ci:>30} {p:>11.3g}")
         print(f"  R^2 = {fit.r_squared:.6f}   adj R^2 = {fit.adj_r_squared:.6f}")
 
     _print_fit("Latency regression (all timed rounds)", latency_fit, "milliseconds")
-    _print_fit(
-        "Latency regression (per-count medians)", latency_fit_median, "milliseconds"
-    )
+    _print_fit("Latency regression (per-count medians)", latency_fit_median, "milliseconds")
     _print_fit("Memory regression", memory_fit, "bytes (tracemalloc peak)")
 
     adapter_records = [] if args.skip_adapter_track else _adapter_track()
-    max_supported = max(
-        cls().profile.agent_count_range[1] for cls in ADAPTER_CLASSES
-    )
+    max_supported = max(cls().profile.agent_count_range[1] for cls in ADAPTER_CLASSES)
     unsupported = [n for n in agent_counts if n > max_supported]
 
     if unsupported:
@@ -390,9 +382,7 @@ def main() -> None:
         "agent_counts_without_adapter_support": unsupported,
         "framework_track": per_count,
         "latency_regression": _inference_record(latency_fit, "milliseconds"),
-        "latency_regression_median": _inference_record(
-            latency_fit_median, "milliseconds"
-        ),
+        "latency_regression_median": _inference_record(latency_fit_median, "milliseconds"),
         "memory_regression": _inference_record(memory_fit, "bytes"),
         "adapter_track": adapter_records,
     }
@@ -404,4 +394,4 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

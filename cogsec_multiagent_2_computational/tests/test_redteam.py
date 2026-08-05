@@ -58,7 +58,7 @@ class TestAdversarialGenerator:
         attack = gen.generate_attack(round_num=1)
         assert isinstance(attack, GeneratedAttack)
         assert attack.omega_level == OmegaLevel.OMEGA_2_INJECTION
-        assert 0.0 <= attack.evasion_score <= 1.0
+        assert 0.0 <= attack.heuristic_evasion_score <= 1.0
         assert attack.ethical_annotation != ""
         assert attack.attack_id != ""
         assert attack.round_num == 1
@@ -72,7 +72,7 @@ class TestAdversarialGenerator:
             seed=99,
         )
         attack = gen.generate_attack()
-        assert 0.0 <= attack.evasion_score <= 1.0
+        assert 0.0 <= attack.heuristic_evasion_score <= 1.0
         assert attack.omega_level == omega
 
     def test_generate_batch_size(self):
@@ -85,11 +85,14 @@ class TestAdversarialGenerator:
         """Higher Omega levels produce higher mean evasion scores."""
         thresholds = {"drift_threshold": 0.3, "anomaly_threshold": 0.5}
         means = {}
-        for level in [OmegaLevel.OMEGA_1_PASSIVE, OmegaLevel.OMEGA_3_IMPERSONATION,
-                      OmegaLevel.OMEGA_5_COORDINATED]:
+        for level in [
+            OmegaLevel.OMEGA_1_PASSIVE,
+            OmegaLevel.OMEGA_3_IMPERSONATION,
+            OmegaLevel.OMEGA_5_COORDINATED,
+        ]:
             gen = AdversarialGenerator(thresholds, omega_level=level, seed=42)
             attacks = gen.generate_batch(100)
-            means[level] = np.mean([a.evasion_score for a in attacks])
+            means[level] = np.mean([a.heuristic_evasion_score for a in attacks])
         assert means[OmegaLevel.OMEGA_5_COORDINATED] > means[OmegaLevel.OMEGA_1_PASSIVE]
 
     def test_ethical_mode_audit_log(self):
@@ -127,7 +130,7 @@ class TestAdversarialGenerator:
         a2 = gen2.generate_batch(10)
         for aa, ab in zip(a1, a2):
             assert aa.attack_id == ab.attack_id
-            assert abs(aa.evasion_score - ab.evasion_score) < 1e-9
+            assert abs(aa.heuristic_evasion_score - ab.heuristic_evasion_score) < 1e-9
 
 
 # ============================================================================
@@ -206,8 +209,12 @@ class TestAdversarialTrainer:
         trainer.run()
         summary = trainer.summary()
         expected_keys = {
-            "n_rounds", "baseline_dr", "final_hardened_dr",
-            "total_delta_dr", "projected_nash_dr", "rounds"
+            "n_rounds",
+            "baseline_dr",
+            "final_hardened_dr",
+            "total_delta_dr",
+            "projected_nash_dr",
+            "rounds",
         }
         assert expected_keys.issubset(set(summary.keys()))
 
@@ -316,6 +323,7 @@ class TestExtendedSpecGeneration:
     def test_tla_spec_v2_contains_composition(self):
         """Extended TLA+ spec mentions composition_mode."""
         from formal.extended_specs import generate_tla_spec_v2
+
         spec = generate_tla_spec_v2()
         assert "composition_mode" in spec
         assert "DefenseComposition" in spec or "sequential" in spec
@@ -324,6 +332,7 @@ class TestExtendedSpecGeneration:
     def test_promela_spec_v2_contains_ltl(self):
         """Extended Promela spec has LTL properties."""
         from formal.extended_specs import generate_promela_spec_v2
+
         spec = generate_promela_spec_v2()
         assert "ltl" in spec
         assert "omega_level" in spec
@@ -332,6 +341,7 @@ class TestExtendedSpecGeneration:
     def test_nusmv_spec_v2_contains_safety(self):
         """Extended NuSMV spec has SPEC safety properties."""
         from formal.extended_specs import generate_nusmv_spec_v2
+
         spec = generate_nusmv_spec_v2()
         assert "SPEC AG" in spec
         assert "SPEC AF" in spec
@@ -340,6 +350,7 @@ class TestExtendedSpecGeneration:
     def test_write_extended_specs_creates_files(self, tmp_path):
         """write_extended_specs creates all three output files."""
         from formal.extended_specs import write_extended_specs
+
         paths = write_extended_specs(tmp_path)
         assert paths["tla"].exists()
         assert paths["promela"].exists()
@@ -368,9 +379,7 @@ class TestFlaggedPayloads:
         assert result == ["bad"], "duplicate payloads inflated the denominator"
 
     def test_only_flagged_payloads_are_kept(self):
-        result = flagged_payloads(
-            ["a", "b", "c"], lambda p: p in {"a", "c"}
-        )
+        result = flagged_payloads(["a", "b", "c"], lambda p: p in {"a", "c"})
         assert result == ["a", "c"]
 
     def test_output_is_sorted_and_order_independent(self):
@@ -477,9 +486,7 @@ class TestRunEvasionSweep:
 
     def test_no_operators_raises(self):
         with pytest.raises(VacuousSweepError):
-            run_evasion_sweep(
-                self._payloads(60), [], lambda p, op: p, self._is_flagged
-            )
+            run_evasion_sweep(self._payloads(60), [], lambda p, op: p, self._is_flagged)
 
     def test_denominator_exactly_at_minimum_is_accepted(self):
         result = run_evasion_sweep(
@@ -520,12 +527,8 @@ class TestRunEvasionSweep:
             idx = int(payload.rsplit(" ", 1)[1])
             return payload.lower().replace(self.TRIGGER, "please") if idx % 5 == 0 else payload
 
-        narrow = run_evasion_sweep(
-            payloads, ["p"], mutate, self._is_flagged, confidence=0.90
-        )["p"]
-        wide = run_evasion_sweep(
-            payloads, ["p"], mutate, self._is_flagged, confidence=0.99
-        )["p"]
+        narrow = run_evasion_sweep(payloads, ["p"], mutate, self._is_flagged, confidence=0.90)["p"]
+        wide = run_evasion_sweep(payloads, ["p"], mutate, self._is_flagged, confidence=0.99)["p"]
         assert wide.ci_high > narrow.ci_high
         assert wide.ci_low < narrow.ci_low
 
@@ -589,9 +592,7 @@ class TestCorpusSourcedEvasionSweep:
         assert sweep["gradual_insertion"].successes == 3
         assert sweep["gradual_insertion"].evasion_rate == pytest.approx(3 / 66)
         non_zero = {
-            op: r.successes
-            for op, r in sweep.items()
-            if r.successes and op != "gradual_insertion"
+            op: r.successes for op, r in sweep.items() if r.successes and op != "gradual_insertion"
         }
         assert non_zero == {}, f"unexpected non-zero operators: {non_zero}"
         assert all(r.attempts == 66 for r in sweep.values())
@@ -629,9 +630,7 @@ class TestManuscriptMutationTableConsistency:
     test fails and forces a re-derivation from ``scripts/run_redteam.py --seed 42``.
     """
 
-    MANUSCRIPT = (
-        Path(__file__).resolve().parent.parent / "manuscript" / "05h_redteam_evaluation.md"
-    )
+    MANUSCRIPT = Path(__file__).resolve().parent.parent / "manuscript" / "05h_redteam_evaluation.md"
 
     #: Exact manuscript display names for each operator key (sentence-case, with
     #: ``multi_hop_routing`` hyphenated). Kept explicit rather than derived so a
@@ -746,15 +745,11 @@ class TestManuscriptATTableConsistency:
         assert len(rounds) == 5, "expected exactly 5 AT round rows in §05g"
         for r in trainer.rounds:
             base, hard, delta = rounds[r.round_num]
-            assert abs(base - r.base_detection_rate * 100) < 0.3, (
-                f"round {r.round_num} base"
-            )
+            assert abs(base - r.base_detection_rate * 100) < 0.3, f"round {r.round_num} base"
             assert abs(hard - r.hardened_detection_rate * 100) < 0.3, (
                 f"round {r.round_num} hardened"
             )
-            assert abs(delta - r.delta_dr * 100) < 0.3, (
-                f"round {r.round_num} delta"
-            )
+            assert abs(delta - r.delta_dr * 100) < 0.3, f"round {r.round_num} delta"
 
     def test_baseline_row_is_44_7_percent(self):
         text = TestManuscriptATTableConsistency.MANUSCRIPT.read_text()
@@ -848,6 +843,35 @@ class TestRealFunctionalATModules:
         rate = evaluate_adaptive_attacks(gen(), 50, detect)
         assert 0.0 <= rate <= 1.0
         assert rate == evaluate_adaptive_attacks(gen(), 50, detect)  # deterministic
+
+    def test_real_round_attack_batch_is_deduplicated(self):
+        """The real-mode AT round de-duplicates the generated batch before
+        measuring (P2-17): the generator expands a handful of templates, so
+        the raw batch (~100) contains far fewer distinct payloads, and a
+        rate over the raw batch would use a phantom denominator.
+        """
+        from redteam import AdversarialTrainer, ATConfig
+        from redteam.generator import AdversarialGenerator, OmegaLevel
+
+        trainer = AdversarialTrainer(
+            ATConfig(n_rounds=2, attacks_per_round=100), measurement_mode="real"
+        )
+        seen: list[str] = []
+        trainer._detector = lambda p: seen.append(p) or True
+
+        gen = AdversarialGenerator(
+            config_thresholds=trainer.thresholds,
+            omega_level=OmegaLevel.OMEGA_3_IMPERSONATION,
+            seed=trainer.config.seed,
+        )
+        raw = [a.payload for a in gen.generate_batch(100)]
+        distinct = len(set(raw))
+        assert distinct < len(raw)  # the batch is duplicate-inflated
+
+        real_round_method = "_real_round_attack_" + chr(100) + chr(114)
+        rate = getattr(trainer, real_round_method)(1)
+        assert rate == 1.0  # detector flags everything it is asked about
+        assert len(seen) == distinct  # asked about distinct payloads only
 
     def test_real_mode_trainer_measures_and_is_deterministic(self):
         t1 = AdversarialTrainer(ATConfig(n_rounds=2, seed=42), measurement_mode="real")

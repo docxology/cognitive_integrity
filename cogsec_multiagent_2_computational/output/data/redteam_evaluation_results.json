@@ -14,27 +14,27 @@
     "OMEGA_1_PASSIVE": {
       "n_attacks": 190,
       "n_distinct_payloads": 2,
-      "mean_evasion_score": 0.005567306029916051
+      "mean_heuristic_evasion_score": 0.005567306029916051
     },
     "OMEGA_2_INJECTION": {
       "n_attacks": 190,
       "n_distinct_payloads": 3,
-      "mean_evasion_score": 0.2461476792683953
+      "mean_heuristic_evasion_score": 0.2461476792683953
     },
     "OMEGA_3_IMPERSONATION": {
       "n_attacks": 190,
       "n_distinct_payloads": 3,
-      "mean_evasion_score": 0.32614767926839533
+      "mean_heuristic_evasion_score": 0.32614767926839533
     },
     "OMEGA_4_BELIEF": {
       "n_attacks": 190,
       "n_distinct_payloads": 3,
-      "mean_evasion_score": 0.3661476792683953
+      "mean_heuristic_evasion_score": 0.3661476792683953
     },
     "OMEGA_5_COORDINATED": {
       "n_attacks": 190,
       "n_distinct_payloads": 5,
-      "mean_evasion_score": 0.4461476792683953
+      "mean_heuristic_evasion_score": 0.4461476792683953
     }
   },
   "evasion_denominator": {

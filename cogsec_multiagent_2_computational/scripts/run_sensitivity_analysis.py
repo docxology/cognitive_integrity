@@ -55,8 +55,10 @@ def main() -> None:
     }
     sweeps = []
     for param_name, param_range in params.items():
+
         def eval_single(val, _pn=param_name):
             return evaluate(**{_pn: val})
+
         result = parameter_sweep(param_name, param_range, eval_single)
         sweeps.append(result)
         print(f"  {param_name}: best={result.best_value:.3f} (DR={result.best_metric:.4f})")
@@ -70,12 +72,16 @@ def main() -> None:
     # 3. 2D grid search
     print("\n[3/3] 2D parameter interaction grid...")
     grid_result = grid_search_2d(
-        "injection_threshold", np.linspace(0.4, 0.8, 15),
-        "drift_threshold", np.linspace(0.15, 0.45, 15),
+        "injection_threshold",
+        np.linspace(0.4, 0.8, 15),
+        "drift_threshold",
+        np.linspace(0.15, 0.45, 15),
         lambda p1, p2: evaluate(injection_threshold=p1, drift_threshold=p2),
     )
     best_params = grid_result["best_params"]
-    print(f"  Best: injection={best_params['injection_threshold']:.3f}, drift={best_params['drift_threshold']:.3f}")  # noqa: E501
+    print(
+        f"  Best: injection={best_params['injection_threshold']:.3f}, drift={best_params['drift_threshold']:.3f}"  # noqa: E501
+    )  # noqa: E501
     print(f"  Detection rate: {grid_result['best_metric']:.4f}")
 
     # Save — with honest provenance.  This analysis evaluates a closed-form
@@ -101,9 +107,13 @@ def main() -> None:
             "model": "statistics.sensitivity.make_default_evaluate_fn",
         },
         "sweeps": [
-            {"parameter": s.parameter_name, "best_value": float(s.best_value),
-             "best_metric": float(s.best_metric),
-             "values": s.values.tolist(), "metrics": s.metric_values.tolist()}
+            {
+                "parameter": s.parameter_name,
+                "best_value": float(s.best_value),
+                "best_metric": float(s.best_metric),
+                "values": s.values.tolist(),
+                "metrics": s.metric_values.tolist(),
+            }
             for s in sweeps
         ],
         "sensitivity_index": sensitivity,
@@ -119,4 +129,4 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

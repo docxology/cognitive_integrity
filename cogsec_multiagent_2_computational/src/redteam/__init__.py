@@ -26,20 +26,22 @@ class ATConfig:
     seed: int = 42
     ethical_mode: bool = True
     measurement_mode: str = "model"  # "model" (closed-form) | "real" (measured pipeline)
-    mutation_operators: list[str] = field(default_factory=lambda: [
-        "semantic_paraphrase",
-        "nested_wrapping",
-        "indirect_routing",
-        "authority_prefix",
-        "gradual_insertion",
-        "chain_delegation",
-        "belief_anchoring",
-        "multi_hop_routing",
-        "canary_avoidance",
-        "confidence_spoofing",
-        "byzantine_mimicry",
-        "quorum_flooding",
-    ])
+    mutation_operators: list[str] = field(
+        default_factory=lambda: [
+            "semantic_paraphrase",
+            "nested_wrapping",
+            "indirect_routing",
+            "authority_prefix",
+            "gradual_insertion",
+            "chain_delegation",
+            "belief_anchoring",
+            "multi_hop_routing",
+            "canary_avoidance",
+            "confidence_spoofing",
+            "byzantine_mimicry",
+            "quorum_flooding",
+        ]
+    )
 
 
 @dataclass
@@ -47,10 +49,10 @@ class ATRoundResult:
     """Result of a single adversarial training round."""
 
     round_num: int
-    base_detection_rate: float       # DR on round-specific adaptive attacks
-    hardened_detection_rate: float   # DR on original 950-attack corpus after refinement
-    delta_dr: float                  # improvement over pre-AT baseline
-    primary_gap_closed: str          # human-readable gap attribution
+    base_detection_rate: float  # DR on round-specific adaptive attacks
+    hardened_detection_rate: float  # DR on original 950-attack corpus after refinement
+    delta_dr: float  # improvement over pre-AT baseline
+    primary_gap_closed: str  # human-readable gap attribution
     n_attacks_generated: int
     threshold_updates: dict[str, float]
 
@@ -83,13 +85,15 @@ GAP_GRADIENT_MAP = {
 #: [0.01, 0.99] silently corrupts them (e.g. ``sandbox_kappa`` 3.0 -> 0.99).
 #: Only the probabilistic thresholds are clipped to the unit interval (P2-11);
 #: non-probabilistic thresholds are only clamped at a 0 floor.
-PROBABILISTIC_THRESHOLDS = frozenset({
-    "drift_threshold",
-    "anomaly_threshold",
-    "trust_decay",
-    "tripwire_tau",
-    "consensus_quorum",
-})
+PROBABILISTIC_THRESHOLDS = frozenset(
+    {
+        "drift_threshold",
+        "anomaly_threshold",
+        "trust_decay",
+        "tripwire_tau",
+        "consensus_quorum",
+    }
+)
 
 
 def bound_threshold(key: str, value: float) -> float:
@@ -105,9 +109,7 @@ def bound_threshold(key: str, value: float) -> float:
     return float(max(0.0, value))
 
 
-def measure_detection_rate(
-    payloads: Sequence[str], detector: Callable[[str], bool]
-) -> float:
+def measure_detection_rate(payloads: Sequence[str], detector: Callable[[str], bool]) -> float:
     """Real detection rate of ``detector`` over ``payloads`` (fraction flagged).
 
     A detector is any ``str -> bool`` predicate that is True when the payload is
@@ -156,9 +158,7 @@ def refine_thresholds(
     return new_thresholds, updates
 
 
-def evaluate_adaptive_attacks(
-    generator: Any, n: int, detector: Callable[[str], bool]
-) -> float:
+def evaluate_adaptive_attacks(generator: Any, n: int, detector: Callable[[str], bool]) -> float:
     """Generate ``n`` real adaptive attacks and measure the detected fraction.
 
     Args:
@@ -240,9 +240,7 @@ class AdversarialTrainer:
             "delegation_chain_max": 2.0,
         }
 
-    def _simulate_adaptive_attack_dr(
-        self, round_num: int, thresholds: dict[str, float]
-    ) -> float:
+    def _simulate_adaptive_attack_dr(self, round_num: int, thresholds: dict[str, float]) -> float:
         """Simulate detection rate of adaptive attacks on current config.
 
         Adaptive attacks are generated to evade the current configuration,
@@ -255,9 +253,7 @@ class AdversarialTrainer:
         evasion_rate = max(0.24, base_evasion - decay * round_num + noise)
         return float(1.0 - evasion_rate)
 
-    def _simulate_hardened_dr(
-        self, round_num: int, thresholds: dict[str, float]
-    ) -> float:
+    def _simulate_hardened_dr(self, round_num: int, thresholds: dict[str, float]) -> float:
         """Simulate DR on original corpus after threshold refinement."""
         _, delta = self.ROUND_GAP_ATTRIBUTION.get(round_num, ("unknown", 0.02))
         noise = self.rng.normal(0, 0.005)
@@ -323,7 +319,12 @@ class AdversarialTrainer:
             omega_level=OmegaLevel.OMEGA_3_IMPERSONATION,
             seed=self.config.seed,
         )
-        return evaluate_adaptive_attacks(gen, self.config.attacks_per_round, self._detect)
+        # De-duplicate the round batch before measuring (P2-17): the
+        # generator expands a handful of templates, so the raw batch is
+        # duplicate-inflated and measuring over it would report a base DR
+        # on a phantom denominator (100 attacks -> ~3 distinct payloads).
+        payloads = sorted({a.payload for a in gen.generate_batch(self.config.attacks_per_round)})
+        return measure_detection_rate(payloads, self._detect)
 
     def run_round(self, round_num: int) -> ATRoundResult:
         """Execute a single AT round.
@@ -360,9 +361,7 @@ class AdversarialTrainer:
             base_dr = self._simulate_adaptive_attack_dr(round_num, self.thresholds)
 
             # Step 2: Compute threshold gradient
-            gradients = self._compute_threshold_gradient(
-                round_num, base_dr, self.thresholds
-            )
+            gradients = self._compute_threshold_gradient(round_num, base_dr, self.thresholds)
 
             # Step 3: Update thresholds
             threshold_updates = {}
@@ -370,9 +369,7 @@ class AdversarialTrainer:
                 delta = self.config.learning_rate * gradients.get(key, 0.0)
                 # Clip only probabilistic thresholds (P2-11); count/scale
                 # thresholds keep their natural domain.
-                self.thresholds[key] = bound_threshold(
-                    key, self.thresholds[key] + delta
-                )
+                self.thresholds[key] = bound_threshold(key, self.thresholds[key] + delta)
                 threshold_updates[key] = delta
 
             # Step 4: Evaluate hardened config on original corpus
@@ -392,7 +389,10 @@ class AdversarialTrainer:
         self.rounds.append(result)
         logger.info(
             "Round %d: base_dr=%.3f hardened_dr=%.3f delta=%.3f",
-            round_num, base_dr, hardened_dr, delta_dr,
+            round_num,
+            base_dr,
+            hardened_dr,
+            delta_dr,
         )
         return result
 

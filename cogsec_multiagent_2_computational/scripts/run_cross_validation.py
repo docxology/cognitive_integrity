@@ -47,8 +47,7 @@ def main() -> None:
     print("\n[1/3] Generating attack corpus...")
     corpus = AttackCorpus.generate(seed=args.seed)
     samples = [
-        {"category": s.subcategory, "content": s.payload, "is_attack": True}
-        for s in list(corpus)
+        {"category": s.subcategory, "content": s.payload, "is_attack": True} for s in list(corpus)
     ]
 
     # Add benign samples
@@ -81,11 +80,15 @@ def main() -> None:
     print(f"{'Fold':<6} {'TPR':>8} {'FPR':>8} {'F1':>8} {'Prec':>8} {'Rec':>8} {'N':>6}")
     print("-" * 70)
     for f in cv_result.fold_results:
-        print(f"{f.fold:<6} {f.tpr:>8.4f} {f.fpr:>8.4f} {f.f1:>8.4f} "
-              f"{f.precision:>8.4f} {f.recall:>8.4f} {f.n_samples:>6}")
+        print(
+            f"{f.fold:<6} {f.tpr:>8.4f} {f.fpr:>8.4f} {f.f1:>8.4f} "
+            f"{f.precision:>8.4f} {f.recall:>8.4f} {f.n_samples:>6}"
+        )
     print("-" * 70)
-    print(f"{'Mean':<6} {cv_result.mean_tpr:>8.4f} {cv_result.mean_fpr:>8.4f} "
-          f"{cv_result.mean_f1:>8.4f} {cv_result.mean_precision:>8.4f} {cv_result.mean_recall:>8.4f}")  # noqa: E501
+    print(
+        f"{'Mean':<6} {cv_result.mean_tpr:>8.4f} {cv_result.mean_fpr:>8.4f} "
+        f"{cv_result.mean_f1:>8.4f} {cv_result.mean_precision:>8.4f} {cv_result.mean_recall:>8.4f}"
+    )  # noqa: E501
 
     # Save
     out_path = output_dir / "cross_validation_results.json"
@@ -94,8 +97,15 @@ def main() -> None:
         "source_script": "scripts/run_cross_validation.py",
         "k": cv_result.k,
         "folds": [
-            {"fold": f.fold, "tpr": f.tpr, "fpr": f.fpr, "f1": f.f1,
-             "precision": f.precision, "recall": f.recall, "n_samples": f.n_samples}
+            {
+                "fold": f.fold,
+                "tpr": f.tpr,
+                "fpr": f.fpr,
+                "f1": f.f1,
+                "precision": f.precision,
+                "recall": f.recall,
+                "n_samples": f.n_samples,
+            }
             for f in cv_result.fold_results
         ],
         "mean_tpr": cv_result.mean_tpr,
@@ -109,4 +119,4 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

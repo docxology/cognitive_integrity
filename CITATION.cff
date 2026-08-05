@@ -1,0 +1,46 @@
+cff-version: 1.2.0
+message: "If you use the Cognitive Integrity Framework or the Cognitive Security for Multiagent Operators series, please cite the relevant part(s)."
+title: "Cognitive Integrity Framework"
+authors:
+  - family-names: Friedman
+    given-names: Daniel Ari
+    orcid: "https://orcid.org/0000-0001-6232-9096"
+    affiliation: "Active Inference Institute"
+keywords:
+  - cognitive security
+  - multiagent AI safety
+  - trust calculus
+  - cognitive integrity framework
+abstract: "A three-part research series (Cognitive Security for Multiagent Operators) establishing the theoretical foundations, computational validation, and practical guidance for the Cognitive Integrity Framework (CIF): trust calculus, defense composition algebra, and defense-in-depth security for multiagent AI systems."
+date-released: "2026-08-05"
+preferred-citation:
+  type: software
+  title: "Cognitive Integrity Framework: Formal Foundations for Securing Multiagent AI Operators (Part 1)"
+  version: "1.1"
+  doi: "10.5281/zenodo.18364119"
+  year: 2026
+references:
+  - type: software
+    title: "Cognitive Integrity Framework: Formal Foundations for Securing Multiagent AI Operators (Part 1, Second Edition)"
+    version: "1.1"
+    doi: "10.5281/zenodo.18364119"
+    year: 2026
+    authors:
+      - family-names: Friedman
+        given-names: Daniel Ari
+  - type: software
+    title: "Cognitive Integrity Framework: Computational Validation and Empirical Analysis (Part 2, Second Edition)"
+    version: "1.0"
+    doi: "10.5281/zenodo.18364128"
+    year: 2026
+    authors:
+      - family-names: Friedman
+        given-names: Daniel Ari
+  - type: software
+    title: "CIF Practical Applications and Deployment Guide (Parts 3+4 Unified)"
+    version: "1.0"
+    doi: "10.5281/zenodo.18364130"
+    year: 2026
+    authors:
+      - family-names: Friedman
+        given-names: Daniel Ari
