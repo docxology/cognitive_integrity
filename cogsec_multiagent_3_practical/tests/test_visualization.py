@@ -208,7 +208,9 @@ class TestRenderPostureRadar:
             provenance_score=0.88,
         )
         fig = render_posture_radar(data)
-        assert fig is not None
+        # Data line + 4 threshold fills + 1 data fill (Polygon patches) (M5).
+        assert len(fig.axes[0].lines) == 1
+        assert len(fig.axes[0].patches) == 5
         plt.close(fig)
 
 
@@ -330,7 +332,11 @@ class TestRenderRiskMatrix:
         ]
         data = get_risk_matrix_data(risks=custom_risks)
         fig = render_risk_matrix(data)
-        assert fig is not None
+        ax = fig.axes[0]
+        # One marker line + one annotation per risk; one heatmap image (M5).
+        assert len(ax.images) == 1
+        assert len(ax.lines) == len(custom_risks)
+        assert len(ax.texts) == len(custom_risks)
         plt.close(fig)
 
     def test_render_with_provided_axes(self) -> None:
@@ -421,7 +427,9 @@ class TestRenderTrustDecay:
         """Test rendering with aggressive (low) delta."""
         data = get_trust_decay_data(delta=0.5)
         fig = render_trust_decay(data)
-        assert fig is not None
+        # Data line + 50%/10% hlines (plus practical-depth vline) (M5).
+        assert len(fig.axes[0].lines) >= 3
+        assert len(fig.axes[0].collections) >= 1  # fill_between
         plt.close(fig)
 
     def test_render_with_provided_axes(self) -> None:
@@ -631,3 +639,84 @@ class TestIntegration:
         for fig in figures:
             assert isinstance(fig, plt.Figure)
             plt.close(fig)
+
+
+# =============================================================================
+# Render artist assertions (M5): figures must DRAW real artists so a silent
+# data-drop (empty inputs rendering nothing) fails these tests.
+# =============================================================================
+
+
+class TestRenderArtistAssertions:
+    """Renders must place the expected axes / artists / labels / counts."""
+
+    def test_posture_radar_draws_thresholds_and_data(self) -> None:
+        data = get_five_pillars_data(
+            firewall_score=0.8,
+            sandbox_score=0.6,
+            tripwire_score=0.7,
+            invariant_score=0.5,
+            provenance_score=0.9,
+        )
+        fig = render_posture_radar(data)
+        ax = fig.axes[0]
+        assert ax.name == "polar"
+        # 4 threshold fills + 1 data fill (Polygon patches); single data line.
+        assert len(ax.lines) == 1
+        assert len(ax.patches) == 5
+        texts = [t.get_text() for t in ax.get_xticklabels()]
+        assert len(texts) == 5 and all(texts)
+        plt.close(fig)
+
+    def test_checklist_flowchart_draws_all_boxes(self) -> None:
+        data = get_deployment_phases_data()
+        fig = render_checklist_flowchart(data)
+        ax = fig.axes[0]
+        # 4 phase headers + 16 checks (4 phases x 4 checks) = 20 rectangles.
+        assert len(ax.patches) == 20
+        assert all(isinstance(p, plt.Rectangle) for p in ax.patches)
+        asserts = [t.get_text() for t in ax.texts]
+        assert "Pre-Deployment" in asserts
+        plt.close(fig)
+
+    def test_risk_matrix_draws_image_and_points(self) -> None:
+        risks = [
+            {"name": "Attack A", "impact": 4, "likelihood": 3},
+            {"name": "Attack B", "impact": 2, "likelihood": 5},
+        ]
+        data = get_risk_matrix_data(risks=risks)
+        fig = render_risk_matrix(data)
+        ax = fig.axes[0]
+        assert len(ax.images) == 1  # heatmap
+        assert len(ax.lines) == len(risks)  # one marker per risk point
+        assert len(ax.texts) == len(risks)  # one annotation per risk point
+        plt.close(fig)
+
+    def test_trust_decay_draws_curve_thresholds_fill(self) -> None:
+        data = get_trust_decay_data(delta=0.5, max_depth=5)
+        fig = render_trust_decay(data)
+        ax = fig.axes[0]
+        # data line + 50%/10% hlines (practical-depth vline also short delta).
+        assert len(ax.lines) >= 3
+        assert len(ax.collections) >= 1  # fill_between region
+        plt.close(fig)
+
+    def test_pitfall_severity_draws_one_bar_per_pitfall(self) -> None:
+        data = get_pitfalls_data()
+        fig = render_pitfall_severity(data)
+        ax = fig.axes[0]
+        containers = [c for c in ax.containers]
+        assert len(containers) == 1
+        assert len(containers[0]) == len(data.data["pitfalls"])  # 8 bars
+        # Highest-severity pitfall is rendered at the top (inverted y).
+        plt.close(fig)
+
+    def test_timeline_draws_one_bar_per_phase(self) -> None:
+        data = get_timeline_data()
+        fig = render_timeline(data)
+        ax = fig.axes[0]
+        assert len(ax.patches) == len(data.data["phases"])  # 3 bars
+        texts = [t.get_text() for t in ax.texts]
+        for phase in data.data["phases"]:
+            assert phase.name in texts
+        plt.close(fig)

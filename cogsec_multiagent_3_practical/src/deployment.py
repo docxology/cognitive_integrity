@@ -230,13 +230,28 @@ class DeploymentConfigurator:
         to the appropriate risk profile. Higher scores indicate greater
         security requirements.
 
+        Scoring weights (m10):
+            autonomous          +3  autonomous action capability
+            sensitive_data      +2  handles sensitive data
+            customer_facing     +1  customer-facing deployment
+            complex_delegation  +2  complex delegation chains
+            human_oversight     -1  regular human oversight
+        The ``human_oversight`` flag defaults to True when omitted, so an
+        unspecified oversight regime is treated as present and subtracts one
+        point; only an explicit ``human_oversight=False`` skips the -1.
+
+        Risk-profile thresholds (m10):
+            score >= 5  -> HIGH
+            score >= 2  -> MEDIUM
+            otherwise   -> LOW
+
         Args:
-            characteristics: Dict of characteristic flags:
+            characteristics: Dict of characteristic flags (booleans):
                 - "autonomous": Has autonomous actions
                 - "sensitive_data": Handles sensitive data
                 - "customer_facing": Customer-facing deployment
                 - "complex_delegation": Has complex delegation chains
-                - "human_oversight": Has regular human oversight
+                - "human_oversight": Has regular human oversight (default True)
 
         Returns:
             Recommended RiskProfile
@@ -696,7 +711,9 @@ class TrustDecayAnalyzer:
 
         result: dict[str, dict[str, Any]] = {}
         for name, delta in profiles.items():
-            practical_limit = int(math.ceil(math.log(0.1) / math.log(delta)))
+            # DRY (m6): practical_depth_limit is the single source of truth for
+            # the trust-depth formula (int(ceil(log(threshold)/log(delta)))).
+            practical_limit = TrustDecayAnalyzer.practical_depth_limit(delta)
             half_trust_depth = math.log(0.5) / math.log(delta)
             trust_at_4 = delta**4
 

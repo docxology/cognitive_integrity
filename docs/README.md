@@ -17,6 +17,7 @@ series map, reading order, and build commands, and
 | -------- | -------- |
 | **`README.md` (this file)** | Program-wide documentation index |
 | `THERMO_NUCLEAR_AUDIT_2026-07-22.md` | Historical program audit (thermo-nuclear framing) |
+| [`deep_audit_improvements.md`](deep_audit_improvements.md) | Ledger of hostile red-team / deep-audit rounds by Part (2026-08-03 to 2026-08-05) |
 | [Part 2 `docs/RED_TEAM_ASSESSMENT.md`](../cogsec_multiagent_2_computational/docs/RED_TEAM_ASSESSMENT.md) | Authoritative deep red-team (adversarial) assessment — theory soundness, empirical/model validity, code/security/reproducibility, and their resolutions |
 | [Part 1 `docs/`](../cogsec_multiagent_1_theory/docs/) | [Part 1 index](../cogsec_multiagent_1_theory/docs/README.md) — formal-foundations documentation (manuscript map, figures, tests) |
 | [Part 2 `docs/`](../cogsec_multiagent_2_computational/docs/) | [Part 2 index](../cogsec_multiagent_2_computational/docs/README.md) — claims traceability, framework validation, per-module usage guides, audit reports |

@@ -534,15 +534,113 @@ class TestFigureDataIntegrityGuards:
     def test_detection_performance_is_documented_schematic(self):
         """The fabricated-metrics figure must remain visibly labelled schematic."""
         import inspect
+
         from src.visualization import detection_performance as m
+
         doc = (inspect.getdoc(m.create_detection_performance_figure) or "").upper()
-        assert "SCHEMATIC" in doc and "NOT MEASUREMENT" in doc.replace("measurements", "measurement").upper() or "NOT MEASURED" in doc
+        upper_doc = doc.replace("measurements", "measurement").upper()
+        is_schematic = ("SCHEMATIC" in doc and "NOT MEASUREMENT" in upper_doc) or (
+            "NOT MEASURED" in doc
+        )
+        assert is_schematic
 
     def test_detection_results_uses_only_measured_categories(self):
         """detection_results must not plot fabricated (never-produced) categories."""
         import inspect
+
         from src.visualization import detection_results as dr
         src = inspect.getsource(dr)
         assert "belief_manipulation" not in src
         assert "temporal_attack" not in src
         assert "coordination_attack" not in src
+
+class TestDetectionResultsBranches:
+    """Branch coverage for detection_results.py (missing-data, ablation, integrity, cfg)."""
+
+    def _write_detection_results(self, data_dir, configs):
+        data_dir.mkdir(parents=True, exist_ok=True)
+        (data_dir / "detection_results.json").write_text(json.dumps({
+            "defense_configurations": configs
+        }))
+
+    def test_data_missing_returns_error_pdf(self):
+        from src.visualization.detection_results import create_detection_results_figure
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            output_dir = Path(tmpdir) / "figures"
+            result = create_detection_results_figure(output_dir)
+            assert result == output_dir / "error.pdf"
+
+    def test_with_ablation_and_integrity_data(self):
+        from src.visualization.detection_results import create_detection_results_figure
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            output_dir = Path(tmpdir) / "figures"
+            data_dir = output_dir / "data"
+            self._write_detection_results(
+                data_dir,
+                [
+                    {
+                        "name": "Baseline",
+                        "detection_rates": {"prompt_injection": 0.1, "trust_exploitation": 0.1},
+                        "latency_overhead_pct": 0,
+                    },
+                    {
+                        "name": "Firewall Only",
+                        "detection_rates": {"prompt_injection": 0.8, "trust_exploitation": 0.7},
+                        "latency_overhead_pct": 8,
+                    },
+                    {
+                        "name": "Full CIF",
+                        "detection_rates": {"prompt_injection": 0.98, "trust_exploitation": 0.95},
+                        "latency_overhead_pct": 23,
+                    },
+                ],
+            )
+            (data_dir / "ablation_study.json").write_text(json.dumps({
+                "metadata": {"illustrative": True},
+                "full_cif": {"detection": 0.94, "delta": 0.0},
+                "minus_firewall": {"detection": 0.81, "delta": -0.13},
+            }))
+            (data_dir / "integrity_timeseries.csv").write_text(
+                "attack_attempt,baseline_integrity,firewall_integrity,full_cif_integrity\n"
+                "0,0.45,0.75,0.96\n10,0.44,0.745,0.959\n"
+            )
+            result = create_detection_results_figure(output_dir)
+            if isinstance(result, tuple):
+                assert result[1].exists()
+            else:
+                assert result.exists() and result.suffix == ".pdf"
+
+    def test_missing_config_falls_back_to_zeros(self):
+        from src.visualization.detection_results import create_detection_results_figure
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            output_dir = Path(tmpdir) / "figures"
+            data_dir = output_dir / "data"
+            self._write_detection_results(
+                data_dir,
+                [
+                    {
+                        "name": "Baseline",
+                        "detection_rates": {"prompt_injection": 0.1, "trust_exploitation": 0.1},
+                        "latency_overhead_pct": 0,
+                    },
+                ],
+            )
+            result = create_detection_results_figure(output_dir)
+            if isinstance(result, tuple):
+                assert result[1].exists()
+            else:
+                assert result.suffix == ".pdf"
+
+
+class TestScalabilityBranches:
+    def test_data_missing_returns_error_tuple(self):
+        from src.visualization.scalability import create_scalability_figure
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            output_dir = Path(tmpdir) / "figures"
+            png, pdf = create_scalability_figure(output_dir)
+            assert png == output_dir / "error.png"
+            assert pdf == output_dir / "error.pdf"

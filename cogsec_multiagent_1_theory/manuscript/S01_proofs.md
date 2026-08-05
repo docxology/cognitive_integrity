@@ -4,6 +4,43 @@
 
 This supplementary material provides complete formal proofs for all theorems stated in the main text, including preliminary definitions (\cref{sec:preliminaries}), main theorem proofs (\crefrange{sec:thm42-proof}{sec:thm511-proof}), and additional supporting lemmas (\cref{sec:additional-lemmas}).
 
+## Proof Status {#sec:proof-status}
+
+For transparency, this section records, by exact label, which results stated in the main text carry a proof in this supplement and which are asserted without proof.
+
+**Proven in this supplement.** The following theorems each have a dedicated `proof` environment (section given in parentheses):
+
+- Trust Boundedness (Thm. 4.2), \cref{thm:trust-bound-restated} (\cref{sec:thm42-proof})
+- Belief Injection Resistance (Thm. 5.7), \cref{thm:belief-injection-restated} (\cref{sec:thm57-proof})
+- No Trust Amplification (Thm. 4.7), \cref{thm:trust-amp-restated} (\cref{sec:thm47-proof})
+- Goal Alignment Invariant (Thm. 5.8), \cref{thm:goal-alignment-restated} (\cref{sec:thm58-proof})
+- Firewall Liveness (Thm. 5.9), \cref{thm:firewall-liveness-restated} (\cref{sec:thm59-proof})
+- Byzantine Consensus Termination (Thm. 5.10), \cref{thm:byzantine-restated} (\cref{sec:thm510-proof})
+- Bounded Overhead (Thm. 5.11), \cref{thm:overhead-restated} (\cref{sec:thm511-proof})
+- Defense Composition Semiring, \cref{thm:composition-semiring-restated} (\cref{sec:thm-composition-semiring})
+- Fisher-Rao Stealth-Impact Tight Bound, \cref{thm:fr-bound-restated} (\cref{sec:thm-geometric-bound})
+- Agent Compromise Blast Radius, \cref{thm:blast-radius-restated} (\cref{sec:thm-blast-radius})
+
+Separate proofs are also given for the supporting lemmas and for the corollaries \cref{cor:trust-vanishing}, \cref{cor:defense-stacking}, and \cref{cor:consensus-safety}. The remaining corollaries in this supplement state immediate (quantitative or qualitative) consequences of a proved theorem and, following standard mathematical convention, are not accompanied by a standalone proof.
+
+**Asserted without proof (deferred).** The following theorems and corollaries stated in the main text do not have a proof in this supplement; they are assertions whose proofs are deferred to future work. They are recorded here so that they are not mistaken for proved results:
+
+- Aggregation Properties, \cref{thm:aggregation} (stated in 04_formal\_framework.md)
+- Trust Monotonicity, \cref{thm:trust-monotonic} (04_formal\_framework.md)
+- Cross-Modality Delegation Bound, \cref{thm:cross-modality-bound} (04_formal\_framework.md)
+- Optimal Threshold Selection, \cref{thm:threshold-selection} (05_defense\_mechanisms.md)
+- False Positive Composition, \cref{thm:fpr-composition} (05_defense\_mechanisms.md)
+- Cascade FPR Reduction, \cref{thm:cascade-fpr} (06_detection\_methods.md)
+- Pipeline TPR Bound, \cref{thm:pipeline-tpr} (06_detection\_methods.md)
+- Stack Detection Rate, \cref{cor:stack-detection} (05_defense\_mechanisms.md)
+- Layered Defense Asymptotic Guarantee, \cref{cor:layered-defense} (05_defense\_mechanisms.md)
+- Quorum Attack Cost, \cref{cor:quorum-attack-cost} (S02_eusocial\_cogsec.md)
+- Stigmergic Trust Bound, \cref{cor:stigmergic-trust} (S02_eusocial\_cogsec.md)
+- Emergent Stealth-Impact Bound, \cref{cor:emergent-stealth-impact} (S02_eusocial\_cogsec.md)
+
+> **Note on \cref{cor:isolation-blast}.**
+> An earlier audit listed \cref{cor:isolation-blast} among the asserted results. Re-reading the source, this corollary is stated in this supplement (\cref{sec:thm-blast-radius}), immediately after the proved \cref{thm:blast-radius-restated}, as that theorem's degree-restricted consequence ($\lvert \mathcal{N}(a_v) \rvert = k \le n$). It therefore carries no standalone proof environment -- consistent with the other corollaries in this supplement -- and is not deferred. It is recorded here only because the prior audit flagged it, so that its status is unambiguous.
+
 ## Preliminary Definitions and Notation {#sec:preliminaries}
 
 ### Notation Summary {#sec:notation}

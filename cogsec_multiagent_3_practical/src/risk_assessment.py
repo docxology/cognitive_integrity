@@ -196,12 +196,19 @@ class RiskScore:
     def _compute_priority(self) -> MitigationPriority:
         """Determine priority from impact and likelihood.
 
-        Priority matrix:
-        - IMMEDIATE: Critical impact + High/Very High likelihood
-        - NEAR_TERM: High/Critical impact + High/Very High likelihood
-          (except Critical+High which is IMMEDIATE)
-        - MONITORING: Critical impact + Low/Medium likelihood
-        - NORMAL_CYCLE: Everything else
+        Priority matrix (Impact x Likelihood, both 1-4 scales):
+
+            Impact / Likelihood : Low | Medium | High | VHigh
+            Critical            : MON | MON    | IMM  | IMM
+            High                : NC  | NC     | NT   | NT
+            Medium              : NC  | NC     | NC   | NC
+            Low                 : NC  | NC     | NC   | NC
+
+        - IMMEDIATE   : Critical impact + High/Very-High likelihood (max risk)
+        - NEAR_TERM   : High impact + High/Very-High likelihood
+        - MONITORING  : Critical impact + Low/Medium likelihood (low-probability,
+                        high-impact - keep on watch)
+        - NORMAL_CYCLE: everything else (lower impact and/or likelihood)
 
         Returns:
             Computed MitigationPriority.

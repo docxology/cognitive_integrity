@@ -7,8 +7,6 @@ Eight documented anti-patterns with detection, assessment, and remediation.
 
 from __future__ import annotations
 
-import copy
-
 from dataclasses import dataclass, field
 from enum import Enum
 
@@ -546,7 +544,8 @@ class PitfallChecklist:
 
         Produces an AssessmentResult that reflects:
         - Score: fraction of pitfalls that have been assessed
-        - Risk level: based on the highest-severity unmitigated pitfall
+        - Risk level: based on the highest-severity open pitfall
+          (detected-unmitigated or unassessed)
         - Findings: detected-unmitigated and unassessed pitfalls
         - Recommendations: unimplemented mitigations for detected pitfalls
         - Passed: True only if all assessed AND none detected-unmitigated
@@ -562,17 +561,30 @@ class PitfallChecklist:
 
         detected_unmitigated = self.get_detected_unmitigated()
 
-        # Risk based on the highest-severity unmitigated pitfall
-        max_unmitigated_severity = 0
+        # Risk is based on the highest-severity *open* exposure (m7):
+        #   - detected-but-unmitigated pitfalls carry full severity as a
+        #     CONFIRMED active risk;
+        #   - unassessed pitfalls carry nominal severity as an UNVERIFIED
+        #     potential risk (the deployment has not been checked against them).
+        # Previously only detected_unmitigated was considered with a seed of 0,
+        # so a fresh or partially-assessed checklist under-reported to LOW even
+        # when high-severity pitfalls were unevaluated. NOTE: this raises the
+        # risk_level returned here; it does not change any committed figure
+        # (pitfall figures render the illustrative get_pitfalls_data(), not this
+        # checklist), so no committed artifact was regenerated.
+        max_open_severity = 0
         for entry in detected_unmitigated:
             pitfall = self.catalog.get_by_id(entry.pitfall_id)
-            max_unmitigated_severity = max(max_unmitigated_severity, pitfall.severity)
+            max_open_severity = max(max_open_severity, pitfall.severity)
+        for entry in self.get_unassessed():
+            pitfall = self.catalog.get_by_id(entry.pitfall_id)
+            max_open_severity = max(max_open_severity, pitfall.severity)
 
-        if max_unmitigated_severity >= 5:
+        if max_open_severity >= 5:
             risk_level = RiskLevel.CRITICAL
-        elif max_unmitigated_severity >= 4:
+        elif max_open_severity >= 4:
             risk_level = RiskLevel.HIGH
-        elif max_unmitigated_severity >= 3:
+        elif max_open_severity >= 3:
             risk_level = RiskLevel.MEDIUM
         else:
             risk_level = RiskLevel.LOW

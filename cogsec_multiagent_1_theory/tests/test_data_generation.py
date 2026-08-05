@@ -148,3 +148,20 @@ class TestDataGeneration:
             # Strictly increasing with agent count (previous wall-clock data
             # decreased 2 -> 16 agents).
             assert all(latencies[i] < latencies[i + 1] for i in range(len(latencies) - 1))
+
+class TestDataGenerationHelpers:
+    """Tests for the private helper edge branches."""
+
+    def test_measure_set_empty_messages_returns_zero(self):
+        from src.data_generation import _build_detector, _measure_set
+
+        fw = _build_detector("Firewall Only")
+        assert _measure_set(fw, []) == 0.0
+
+    def test_build_detector_unknown_configuration_raises(self):
+        import pytest
+
+        from src.data_generation import _build_detector
+
+        with pytest.raises(ValueError):
+            _build_detector("Not A Real Configuration")

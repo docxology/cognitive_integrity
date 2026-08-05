@@ -192,7 +192,11 @@ class TestFailedEvaluationsExcludedFromLatency:
         # Each success sleeps >= 5 ms, so an honest mean is >= 5 ms.  Averaging
         # the 5 instant failures in as well would put it near 2.5 ms.
         assert measured >= _WorkingPipeline.SUCCESS_MS * 0.9, measured
-        assert measured < _WorkingPipeline.SUCCESS_MS * 2.0, measured
+        # Upper bound is a load-tolerance sanity check, not the bug detector:
+        # averaging the 5 failed (0 ms) runs in would drive the mean to ~2.5 ms,
+        # which already fails the lower bound above.  A loaded scheduler can
+        # stretch a 5 ms sleep past 10 ms wall-clock, so keep it generous here.
+        assert measured < _WorkingPipeline.SUCCESS_MS * 6.0, measured
 
     def test_context_requiring_pipeline_still_measured(self):
         """A TypeError signature probe is a retry, not a failure."""

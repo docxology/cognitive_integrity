@@ -378,3 +378,18 @@ class TestManuscriptVerifierEdgeCases:
             verifier = ManuscriptVerifier(tmpdir)
 
             assert verifier.run_all() is False
+
+    def test_check_style_clean_pass(self):
+        """check_style() returns True when no hyperbole words are present."""
+        from src.verification import ManuscriptVerifier
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmppath = Path(tmpdir)
+
+            (tmppath / "references.bib").write_text("")
+            (tmppath / "manuscript.md").write_text(
+                "This is a measured and reproducible result."
+            )
+
+            verifier = ManuscriptVerifier(tmpdir)
+            assert verifier.check_style() is True

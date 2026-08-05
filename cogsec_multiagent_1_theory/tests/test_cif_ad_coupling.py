@@ -377,3 +377,28 @@ class TestByzantineConsensusStress:
         max_trust = 1.0
         bound = n * delta * max_trust
         assert bound == pytest.approx(800.0)
+
+class TestCoverageEdgeCases:
+    """Tests for previously-uncovered branches (empty/all-zero, theorem-false, to_dict)."""
+
+    def test_all_zero_coupling_matrix_zero_coverage(self):
+        """An explicit empty coupling matrix means zero defenses, not the default stack."""
+        detector = CIFADCouplingDetector(coupling_matrix={})
+        for phase in ADPhase:
+            assert detector.get_phase_coverage(phase) == 0.0
+            assert detector.get_combined_coverage(phase, portfolio=list(CIFDefense)) == 0.0
+
+    def test_verify_full_coverage_false_when_threshold_above_every_column(self):
+        """verify_full_coverage_theorem() False when some column max < min_coverage."""
+        detector = CIFADCouplingDetector(min_coverage=0.96)  # > max column max (0.95)
+        assert detector.verify_full_coverage_theorem() is False
+
+    def test_analysis_to_dict_round_trip(self):
+        detector = CIFADCouplingDetector()
+        analysis = detector.analyze_portfolio([])
+        d = analysis.to_dict()
+        assert d["portfolio"] == []
+        assert d["full_coverage_achieved"] is False
+        assert d["total_coverage_score"] == 0.0
+        assert len(d["coverage_gaps"]) == len(list(ADPhase))
+        assert "phase_coverage" in d and "max_phase_coverage" in d

@@ -11,7 +11,6 @@ from __future__ import annotations
 
 import math
 import time
-from collections import deque
 from dataclasses import dataclass, field
 from enum import Enum, auto
 from typing import Any, Callable, Dict, List, Optional, Tuple
@@ -266,6 +265,8 @@ class OODAPhaseMonitor:
 
         # Normalize beliefs
         beliefs_norm = np.asarray(current_beliefs, dtype=float)
+        if beliefs_norm.size == 0:
+            raise ValueError("belief distribution must be non-empty")
         total = beliefs_norm.sum()
         if total > 0:
             beliefs_norm /= total
@@ -275,6 +276,8 @@ class OODAPhaseMonitor:
         # Check for belief injection: sudden large change
         if previous_beliefs is not None:
             prev_norm = np.asarray(previous_beliefs, dtype=float)
+            if prev_norm.size == 0:
+                raise ValueError("previous belief distribution must be non-empty")
             prev_sum = prev_norm.sum()
             if prev_sum > 0:
                 prev_norm /= prev_sum

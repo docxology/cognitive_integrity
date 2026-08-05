@@ -149,7 +149,13 @@ class CIFADCouplingDetector:
             coupling_matrix: Custom coupling matrix (uses default if None).
             min_coverage: Minimum per-phase coverage required (τ_cov in manuscript).
         """
-        self.coupling_matrix = coupling_matrix or CIF_AD_COUPLING_MATRIX
+        # `coupling_matrix or ...` would silently treat an explicit empty
+        # dict as "use the full default matrix"; an explicit empty matrix has
+        # zero defenses and must not inherit the default. `None` alone means
+        # "no matrix supplied, use the default".
+        self.coupling_matrix = (
+            coupling_matrix if coupling_matrix is not None else CIF_AD_COUPLING_MATRIX
+        )
         self.min_coverage = min_coverage
         self._matrix_array = self._build_matrix_array()
 

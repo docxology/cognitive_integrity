@@ -452,3 +452,120 @@ class TestEdgeCases:
         beliefs = np.array([1.0])
         alert = monitor.orient(beliefs, beliefs)
         assert alert is None
+
+class TestCusumBoundary:
+    """CUSUM drift detection: threshold crossing is strict (>), cumulative drift fires."""
+
+    KL_P = None
+
+    def _kl_pair(self):
+        # KL(P||Q) ~= 0.2704 < drift_threshold 0.3, so no BELIEF_INJECTION fires.
+        p = np.array([0.85, 0.15], dtype=float)
+        q = np.array([0.5, 0.5], dtype=float)
+        kl = OODAPhaseMonitor._kl_divergence(p, q)
+        assert kl < 0.3 and kl > 0.0
+        return p, q, kl
+
+    def test_semantic_drift_alert_when_cusum_crosses_threshold(self, monitor):
+        monitor.transition_phase(OODAPhase.ORIENT)
+        p, q, _ = self._kl_pair()
+        alert = None
+        for _ in range(80):
+            alert = monitor.orient(p, q)
+            if alert is not None:
+                break
+        assert alert is not None
+        assert alert.attack_type == OODAPhaseAttack.SEMANTIC_DRIFT
+        assert monitor._cusum_stat > monitor._cusum_threshold
+
+    def test_cusum_lands_exactly_on_threshold_does_not_alert(self, monitor):
+        monitor.transition_phase(OODAPhase.ORIENT)
+        p, q, kl = self._kl_pair()
+        allowance = monitor._cusum_allowance
+        # One orient() updates cusum -> max(0, cusum + kl - allowance). Position so
+        # the result lands EXACTLY on the threshold: strict `>` must not fire.
+        monitor._cusum_stat = monitor._cusum_threshold - kl + allowance
+        alert = monitor.orient(p, q)
+        assert alert is None
+        # Sanity: stat really is at the threshold (boundary case exercised).
+        assert abs(monitor._cusum_stat - monitor._cusum_threshold) < 1e-9
+
+    def test_cusum_just_above_threshold_alerts(self, monitor):
+        monitor.transition_phase(OODAPhase.ORIENT)
+        p, q, kl = self._kl_pair()
+        allowance = monitor._cusum_allowance
+        monitor._cusum_stat = monitor._cusum_threshold - kl + allowance + 1e-9
+        alert = monitor.orient(p, q)
+        assert alert is not None
+        assert alert.attack_type == OODAPhaseAttack.SEMANTIC_DRIFT
+
+
+class TestEmptyBeliefGuard:
+    def test_empty_current_beliefs_raise(self, monitor):
+        monitor.transition_phase(OODAPhase.ORIENT)
+        with pytest.raises(ValueError):
+            monitor.orient(np.array([]), np.array([0.5, 0.5]))
+
+    def test_empty_previous_beliefs_raise(self, monitor):
+        monitor.transition_phase(OODAPhase.ORIENT)
+        with pytest.raises(ValueError):
+            monitor.orient(np.array([0.5, 0.5]), np.array([]))
+
+
+class TestCycleStatsAndCallback:
+    def test_cycle_duration_and_alert_count_properties(self, monitor):
+        for ph in [OODAPhase.ORIENT, OODAPhase.DECIDE, OODAPhase.ACT, OODAPhase.OBSERVE]:
+            monitor.transition_phase(ph)
+        stats = monitor.get_cycle_stats()
+        assert len(stats) == 1
+        assert stats[0].cycle_duration >= 0.0
+        assert stats[0].alert_count == 0
+
+    def test_alert_callback_invoked_with_alert(self, monitor):
+        seen = []
+        monitor.alert_callback = seen.append
+        for ph in [OODAPhase.ORIENT, OODAPhase.DECIDE]:
+            monitor.transition_phase(ph)
+        alert = monitor.decide(["g1", "bad_goal"], ["g1"], constraints=["c1"])
+        assert alert is not None
+        assert seen == [alert]
+
+
+class TestAutoTransitions:
+    def test_orient_auto_transitions_from_observe(self):
+        mon = OODAPhaseMonitor(agent_id="auto")
+        alert = mon.orient(np.array([0.5, 0.5]), np.array([0.5, 0.5]))
+        assert mon.get_current_phase() == OODAPhase.ORIENT
+        assert alert is None
+
+    def test_orient_records_event(self):
+        mon = OODAPhaseMonitor(agent_id="auto")
+        event = make_event(OODAPhase.ORIENT)
+        mon.orient(np.array([0.5, 0.5]), np.array([0.5, 0.5]), event=event)
+        assert len(mon._events_this_cycle[OODAPhase.ORIENT]) == 1
+
+    def test_decide_auto_transitions_from_orient(self):
+        mon = OODAPhaseMonitor(agent_id="auto")
+        mon.transition_phase(OODAPhase.ORIENT)
+        event = make_event(OODAPhase.DECIDE)
+        alert = mon.decide(["g1"], ["g1"], constraints=["c1"], event=event)
+        assert mon.get_current_phase() == OODAPhase.DECIDE
+        assert alert is None
+        assert len(mon._events_this_cycle[OODAPhase.DECIDE]) == 1
+
+    def test_act_auto_transitions_from_decide(self):
+        mon = OODAPhaseMonitor(agent_id="auto")
+        for ph in [OODAPhase.ORIENT, OODAPhase.DECIDE]:
+            mon.transition_phase(ph)
+        alert = mon.act("a", ["a"], event=make_event(OODAPhase.ACT))
+        assert mon.get_current_phase() == OODAPhase.ACT
+        assert alert is None
+        assert len(mon._events_this_cycle[OODAPhase.ACT]) == 1
+
+    def test_observe_auto_transition_finalizes_cycle(self):
+        mon = OODAPhaseMonitor(agent_id="auto")
+        for ph in [OODAPhase.ORIENT, OODAPhase.DECIDE, OODAPhase.ACT]:
+            mon.transition_phase(ph)
+        mon.observe(make_event(OODAPhase.OBSERVE, trust=0.9, verified=True))
+        assert mon.get_current_phase() == OODAPhase.OBSERVE
+        assert len(mon.get_cycle_stats()) == 1

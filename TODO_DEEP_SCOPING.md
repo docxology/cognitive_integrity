@@ -200,3 +200,19 @@ Implemented every remaining actionable finding from the deep audits.
 - **P2-F11** stability `per_architecture={"Claude Code": overall}` - affects committed multi-seed aggregation; needs real arch names or dropping the field. Scoped.
 - **P1-#22 note** covered above. Remaining Part 1 concerns are author-math (Claim-vs-Proof proofs) - carried.
 - **P3-M5** weak render tests (fig is not None only) - document/upgrade later; **P3-m6** drift-formula dedup, **P3-m7** unassessed-pitfall risk weighting, **P3-m8** priority-matrix semantics, **P3-m10** recommend_profile weight docs - all change committed figure/risk data or need a weight decision; scoped.
+
+
+---
+
+## Round 6 - 4-tab fleet additions (2026-08-05)
+
+Four herdr agents (p2core, part1, part3, docs) ran in disjoint subtrees, no version-control ops; orchestrator verified then committed.
+
+### Committed
+- Part 1: Proof-status subsection in S01_proofs.md; fresh red-team; +25 real tests. Verified: 409 passed / 97.68% (was 384/96.16%); ruff 0; verify PASS.
+- Part 3: m6 DRY trust-depth; M5 render asserts; m7 unassessed risk; m10 weights doc; m8 matrix doc. Verified: 907 passed / 98.79% (was 884); ruff 0.
+- docs: docs/README.md index + deep_audit_improvements.md ledger.
+- Part 2 (orchestrator): de-flake latency test upper bound 2.0x->6.0x.
+
+### Part 2 fleet tree (p2core) REVERTED, NOT committed
+Solid P2-RT-1..15 findings were reverted: they destabilized cross-file suite ordering (each run failed a different test) and the F-Algebra addition left an un-reconciled artifact mismatch (code 28 vs committed 25). Scoped forward one-at-a-time with tests + artifact regen.

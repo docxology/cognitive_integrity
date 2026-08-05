@@ -186,3 +186,26 @@ class TestCognitiveTripwire:
         counts = tripwire.get_canary_count()
         assert counts["identity"] == 2
         assert "I am agent Old-Agent" not in tripwire._canaries
+
+class TestTripwireRemainingEdges:
+    """Remaining uncovered branches: temporal canary, absent-belief skip, unknown single."""
+
+    def test_add_temporal_canary(self):
+        tripwire = CognitiveTripwire()
+        tripwire.add_temporal_canary("session-9")
+        canary = tripwire._canaries["Current session is session-9"]
+        assert canary.category == "temporal"
+        assert canary.expected_belief == 1.0
+
+    def test_check_skips_canaries_absent_from_beliefs(self):
+        """An absent canary proposition is 'not reported', so no alert fires for it."""
+        tripwire = CognitiveTripwire()
+        tripwire.add_identity_canary("A1")
+        tripwire.add_boundary_canary("act")
+        alerts = tripwire.check({"I am agent A1": 0.1})
+        assert len(alerts) == 1
+        assert alerts[0].canary.category == "identity"
+
+    def test_check_single_unknown_proposition_returns_none(self):
+        tripwire = CognitiveTripwire()
+        assert tripwire.check_single("missing", 0.0) is None

@@ -18,6 +18,8 @@ from matplotlib.axes import Axes
 from matplotlib.figure import Figure, SubFigure
 from matplotlib.patches import Patch
 
+from .deployment import TrustDecayAnalyzer
+
 
 class FigureType(Enum):
     """Types of figures supported by this module."""
@@ -412,7 +414,7 @@ def get_risk_matrix_data(
         metadata={
             "illustrative": True,
             "note": "1-5 scale example risks; NOT the authoritative "
-                    "risk_assessment catalog (P3-M2).",
+            "risk_assessment catalog (P3-M2).",
         },
         data={
             "risks": risks,
@@ -532,8 +534,8 @@ def get_trust_decay_data(
     depths = np.arange(0, max_depth + 1)
     trust_values = delta**depths
 
-    # Calculate practical depth (where trust < 0.1)
-    practical_depth = int(np.ceil(np.log(0.1) / np.log(delta)))
+    # Practical depth (where trust < 0.1) - single source of truth (m6)
+    practical_depth = TrustDecayAnalyzer.practical_depth_limit(delta)
 
     return FigureData(
         figure_type=FigureType.CURVE,
