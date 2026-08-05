@@ -331,6 +331,67 @@ class TestWeightedVoting:
         # if only the latest is kept, it must be exactly 0.1.
         assert consensus.get_weighted_average("prop") == pytest.approx(0.1)
 
+    def test_weighted_decision_high_trust_dominates_reject(self):
+        """Trust weights drive the accept/reject decision (P2-6).
+
+        Three low-trust accepting agents (belief 0.9, weight 0.1) vs two
+        high-trust rejecting agents (belief 0.1, weight 0.9): the weighted
+        supermajority is on the rejecting side, so the verdict is REJECT —
+        whereas a plain unweighted count would be UNDECIDED.
+        """
+        from src import ConsensusResult, WeightedByzantineConsensus, WeightedVote
+
+        consensus = WeightedByzantineConsensus(n_agents=5)
+        for i in range(3):
+            consensus.submit_vote(
+                WeightedVote(f"accept-{i}", "prop", belief=0.9, trust_weight=0.1)
+            )
+        for i in range(2):
+            consensus.submit_vote(
+                WeightedVote(f"reject-{i}", "prop", belief=0.1, trust_weight=0.9)
+            )
+
+        result, _ = consensus.compute_consensus("prop")
+        assert result == ConsensusResult.REJECT
+
+    def test_weighted_decision_trusted_majority_accepts(self):
+        """A trusted accepting majority reaches ACCEPT even when more agents
+
+        individually vote the other way (P2-6).
+        """
+        from src import ConsensusResult, WeightedByzantineConsensus, WeightedVote
+
+        consensus = WeightedByzantineConsensus(n_agents=5)
+        # 1 high-trust accept + 1 medium accept vs 3 low-trust rejects
+        consensus.submit_vote(WeightedVote("accept-1", "prop", belief=0.9, trust_weight=0.9))
+        consensus.submit_vote(WeightedVote("accept-2", "prop", belief=0.85, trust_weight=0.8))
+        for i in range(3):
+            consensus.submit_vote(
+                WeightedVote(f"reject-{i}", "prop", belief=0.1, trust_weight=0.1)
+            )
+
+        result, _ = consensus.compute_consensus("prop")
+        assert result == ConsensusResult.ACCEPT
+
+    def test_combined_decision_effective_weight_dominates(self):
+        """Combined (trust*confidence) weighting decides by effective weight (P2-6)."""
+        from src import CombinedByzantineConsensus, CombinedVote, ConsensusResult
+
+        consensus = CombinedByzantineConsensus(n_agents=4)
+        consensus.submit_vote(
+            CombinedVote("accept-1", "prop", belief=0.9, trust_weight=0.9, confidence=0.9)
+        )
+        consensus.submit_vote(
+            CombinedVote("accept-2", "prop", belief=0.8, trust_weight=0.8, confidence=0.8)
+        )
+        for i in range(2):
+            consensus.submit_vote(
+                CombinedVote(f"reject-{i}", "prop", belief=0.1, trust_weight=0.2, confidence=0.2)
+            )
+
+        result, _ = consensus.compute_consensus("prop")
+        assert result == ConsensusResult.ACCEPT
+
 
 class TestConfidenceBasedConsensus:
     """Tests for confidence-based consensus."""

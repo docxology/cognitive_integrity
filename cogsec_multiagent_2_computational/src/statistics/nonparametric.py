@@ -114,18 +114,22 @@ def rank_biserial_correlation(
 
     Effect size for the Mann-Whitney U test, computed as:
 
-        r = 1 - (2*U) / (n1 * n2)
+        r = 2*U / (n1 * n2) - 1
 
-    where U is the Mann-Whitney U statistic.
+    where U is the Mann-Whitney U statistic for group 1 (``x``).
 
-    Values range from -1 to 1, with 0 indicating no effect.
+    Values range from -1 to 1, with 0 indicating no effect.  Sign follows the
+    conventional interpretation: positive when group 1 (``x``) tends to be
+    higher than group 2 (``y``), negative when ``y`` tends higher.  (The
+    previous ``1 - 2U/(n1*n2)`` form returned the inverted sign for
+    perfectly-separated groups — x>y gave -1.0 and x<y gave +1.0 — P2-32.)
 
     Args:
         x: Observations from group 1.
         y: Observations from group 2.
 
     Returns:
-        Rank-biserial correlation value.
+        Rank-biserial correlation value in [-1, 1].
     """
     x_arr = np.asarray(x, dtype=np.float64)
     y_arr = np.asarray(y, dtype=np.float64)
@@ -133,7 +137,7 @@ def rank_biserial_correlation(
     n1, n2 = len(x_arr), len(y_arr)
     u_stat, _ = stats.mannwhitneyu(x_arr, y_arr, alternative="two-sided")
 
-    return 1.0 - (2.0 * u_stat) / (n1 * n2)
+    return (2.0 * u_stat) / (n1 * n2) - 1.0
 
 
 # ---------------------------------------------------------------------------

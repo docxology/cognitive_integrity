@@ -37,6 +37,13 @@ SCRIPTS  = scripts
 REAL_DATA_DIR      ?= output/data
 SYNTHETIC_DATA_DIR ?= output/data_synthetic
 
+# NOTE (P2-27): the list mixes origins.  multi_seed / ablation / colony /
+# cross_validation are measured-pipeline evidence (`data_origin: real_pipeline`);
+# full_evaluation_results.json is the *parametric-simulation* ceiling
+# (`measurement_mode: simulation`).  It is still protected here because it is
+# git-tracked and claims-pinned (the synthetic generator writes a file with the
+# same name), NOT because it is empirically measured.  Nothing in the default
+# build may overwrite any of them.
 REAL_DATA_FILES = \
 	$(REAL_DATA_DIR)/full_evaluation_results.json \
 	$(REAL_DATA_DIR)/ablation_results.json \

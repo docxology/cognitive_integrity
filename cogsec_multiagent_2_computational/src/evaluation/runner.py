@@ -1,9 +1,18 @@
 """ExperimentRunner: orchestrates the full 950 x 6 evaluation matrix.
 
 Runs every combination of architecture adapter and attack category
-through a defense pipeline, simulating detection using architecture-
-specific attack-surface modifiers and trust topologies.  Results
-are deterministic given a fixed seed.
+through a defense pipeline.  Results are deterministic given a fixed
+seed.
+
+Architecture signalling (P2-10): only the **parametric** (Mode 2, no
+pipeline) path consumes architecture-specific attack-surface modifiers
+(``adapter.get_attack_surface_multiplier()``).  The **real pipeline**
+(Mode 1) path scores the message through the CIF defense pipeline, which
+is architecture-agnostic — it does not consult the adapter.  So real-mode
+cross-architecture rows differ only by which corpus subset each
+architecture is scored on, not by topology; do not draw architecture-gap
+conclusions from real-mode rows.  Cross-architecture tables are
+meaningful only in parametric mode.
 """
 
 from __future__ import annotations

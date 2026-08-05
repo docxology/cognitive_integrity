@@ -83,7 +83,7 @@ def generate_categorical_tla_spec() -> str:
         "\\* Hexagon identity: (f ⊗ g) ⊗ h ≅ f ⊗ (g ⊗ h)",
         "HexagonIdentity ==",
         "  \\A f, g, h \\in Morphisms :",
-        "    LET fg == DetectionRate[f]  \\* placeholder: max of detection rates",
+        "    LET fg == DetectionRate[f]  \\* heuristic: max of detection rates",
         "        fgh_left == fg",
         "        fgh_right == fg",
         "    IN fgh_left = fgh_right",

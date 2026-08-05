@@ -28,7 +28,16 @@ class Classification(Enum):
 
 @dataclass
 class FirewallConfig:
-    """Configuration for cognitive firewall."""
+    """Configuration for cognitive firewall.
+
+    NOTE (fork contract, P2-14): this is the **operational/authoritative**
+    default of Part 2 (computational validation).  Part 1's reference
+    implementation (``cogsec_multiagent_1_theory/src/firewall.py``) uses
+    ``injection_threshold=0.7`` for illustration; the two are parallel
+    implementations of the same mechanism and this is the intentional split.
+    Keep both defaults pinned in their test suites and document any change
+    across both modules.
+    """
 
     injection_threshold: float = 0.8  # τ₁: Reject above this (Paper §2, Table firewall-params)
     suspicious_threshold: float = 0.5  # τ₂: Quarantine above this (Paper §2, Table firewall-params)

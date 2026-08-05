@@ -536,3 +536,9 @@ class TestEnhancedCognitiveFirewallEdgeCases:
         assert "classification" in result
         assert "scores" in result
         assert "aggregate_score" in result
+
+    def test_default_injection_threshold_pinned(self):
+        """Part 1 is the illustrative reference firewall: its default
+        injection_threshold is pinned at 0.7 (fork contract with Part 2's
+        operational default of 0.8, P2-14)."""
+        assert FirewallConfig().injection_threshold == 0.7

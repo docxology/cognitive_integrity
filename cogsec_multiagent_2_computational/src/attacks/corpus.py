@@ -40,7 +40,10 @@ class AttackSample:
         category: :class:`AttackCategory` enum value.
         subcategory: Human-readable subcategory string.
         difficulty: ``'easy'``, ``'medium'``, or ``'hard'``.
-        expected_detection: Whether defenses are expected to detect this.
+        expected_detection: Whether defenses are expected to detect this. Note
+        this is an invariant/assertion for corpus entries (all are attacks;
+        always True in generated samples) rather than a per-sample
+        difficulty estimate (P2-28).
         metadata: Additional information (technique, variant, etc.).
     """
 

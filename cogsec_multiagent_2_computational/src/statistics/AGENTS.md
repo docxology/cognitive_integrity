@@ -30,8 +30,13 @@ Confidence interval estimation.
 
 **Key Functions:**
 
+- `wilson_ci()` - Wilson score interval
 - `bootstrap_ci()` - Bootstrap CI
-- `t_ci()` - T-distribution CI
+- `bootstrap_mean_ci()` - Bootstrap CI on the mean
+- `bootstrap_diff_ci()` - Bootstrap CI on a difference
+
+(No `t_ci()` exists; the manuscript's small-sample intervals come from the
+bootstrap machinery above, not a Student-t shortcut.)
 
 ### anova.py
 

@@ -83,12 +83,12 @@ Table: LLM validation detection rates with exact binomial 95\% CI. {#tab:llm-ci}
 
 Table: Multi-seed pipeline summary with 95\% CI (30 seeds, Claude Code). {#tab:multi-seed-ci}
 
-| Metric | Estimate | 95\% CI (t-distribution) |
+| Metric | Estimate | 95\% CI (normal approximation) |
 | --- | --- | --- |
 | Mean DR | 0.448 | [0.432, 0.464] |
 | Std Dev | 0.0441 | — |
 
-The 95\% confidence interval for the mean pipeline detection rate is [0.432, 0.464], based on 30 seeds with a t-distribution correction. This provides a reliable estimate of expected pipeline performance on the Claude Code architecture with the current adapter implementations.
+The 95\% confidence interval for the mean pipeline detection rate is [0.432, 0.464], based on 30 seeds using the normal approximation on the seed-level mean (mean ± 1.96·s/√k), matching the recorded interval method (P2-19). This provides a reliable estimate of expected pipeline performance on the Claude Code architecture with the current adapter implementations.
 
 ## Power Analysis {#sec:real-power-analysis}
 

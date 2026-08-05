@@ -356,8 +356,13 @@ class TestAdversarialTrainingProperties:
         """Projected equilibrium DR ≤ 1.0."""
         from redteam.convergence import geometric_convergence_projection
 
-        proj_dr, _ = geometric_convergence_projection(gains, 0.447)
-        assert proj_dr <= 1.0 + 1e-9
+        proj_dr, ratio = geometric_convergence_projection(gains, 0.447)
+        if ratio >= 1.0:
+            assert proj_dr == float("inf")
+            assert gains
+            assert all(g > 0 for g in gains)
+        else:
+            assert proj_dr <= 1.0 + 1e-9
 
     @given(
         st.floats(min_value=0.01, max_value=0.99, allow_nan=False),

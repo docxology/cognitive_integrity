@@ -17,9 +17,12 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import logging
+import os
 import sys
+import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -52,7 +55,7 @@ def _create_pipeline(mode: str):
     return create_full_pipeline()
 
 
-def main() -> None:
+def main() -> int:
     parser = argparse.ArgumentParser(
         description="Run full CIF evaluation matrix",
         formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -98,7 +101,10 @@ def main() -> None:
             for s in samples
         ]
 
-    # Save helper
+    # Save helper (P2-5/P2-9): atomic write, honest measurement_mode,
+    # null FPR on the 0/0 operating point, provenance sidecar, and a
+    # content-hashed .real_data_marker so a stale or hand-edited results
+    # file can be detected.
     def save_results_to_file(results_list, final=False):
         if not results_list:
             return
@@ -108,8 +114,17 @@ def main() -> None:
                 "n_attacks": r.n_attacks, "true_positives": r.true_positives,
                 "false_positives": r.false_positives, "true_negatives": r.true_negatives,
                 "false_negatives": r.false_negatives, "detection_rate": r.detection_rate,
-                "false_positive_rate": r.false_positive_rate,
-                "avg_latency_ms": r.avg_latency_ms, "mode": args.mode,
+                # FPR is structurally undefined when no benign samples ran
+                # (tn == fp == 0); publish null rather than a fake 0.0 rate.
+                "false_positive_rate": (
+                    None
+                    if (r.false_positives == 0 and r.true_negatives == 0)
+                    else r.false_positive_rate
+                ),
+                "avg_latency_ms": r.avg_latency_ms,
+                "mode": args.mode,
+                # Honest provenance: what actually produced these numbers.
+                "measurement_mode": args.mode,
             }
             for r in results_list
         ]
@@ -117,16 +132,56 @@ def main() -> None:
         if not final:
             suffix += "_partial"
         out_path = output_dir / f"full_evaluation_results{suffix}.json"
-        with open(out_path, "w") as f:
-            json.dump(results_data, f, indent=2)
+
+        payload = json.dumps(results_data, indent=2)
+        # Atomic write: temp file in the same directory, then rename.
+        fd, tmp = tempfile.mkstemp(dir=str(output_dir), suffix=".tmp")
+        try:
+            with os.fdopen(fd, "w") as f:
+                f.write(payload)
+                f.flush()
+                os.fsync(f.fileno())
+            os.replace(tmp, out_path)
+        except BaseException:
+            try:
+                os.unlink(tmp)
+            except OSError:
+                pass
+            raise
+
         if final:
             print(f"\nResults saved to {out_path}")
             partial = output_dir / f"full_evaluation_results_{args.mode}_partial.json"
             if partial.exists():
                 partial.unlink()
             import datetime as _dt
+            data_hash = hashlib.sha256(payload.encode()).hexdigest()
             marker = output_dir / ".real_data_marker"
-            marker.write_text(f"mode={args.mode} seed={args.seed} generated={_dt.datetime.now().isoformat()}\n")  # noqa: E501
+            marker.write_text(
+                f"mode={args.mode} seed={args.seed} "
+                f"generated={_dt.datetime.now().isoformat()} "
+                f"sha256={data_hash}\n"
+            )
+            prov = {
+                "data_origin": (
+                    "parametric_simulation" if args.mode == "simulation" else args.mode
+                ),
+                "source_script": "scripts/run_full_evaluation.py",
+                "seed": args.seed,
+                "mode": args.mode,
+                "note": (
+                    "Parametric ceiling / simulation origin: these rows model "
+                    "CIF behaviour with calibrated base rates; they are NOT "
+                    "empirically measured pipeline evidence (P2-5)."
+                    if args.mode == "simulation"
+                    else "Pipeline-mode rows over the attack corpus."
+                ),
+                "rows": len(results_data),
+                "sha256": data_hash,
+            }
+            (output_dir / f"full_evaluation_results{suffix}.provenance.json").write_text(
+                json.dumps(prov, indent=2)
+            )
 
     config = ExperimentConfig(seed=args.seed)
     runner = ExperimentRunner(config)
@@ -171,5 +226,8 @@ def main() -> None:
     print("-" * 70)
 
 
+    return 0
+
+
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

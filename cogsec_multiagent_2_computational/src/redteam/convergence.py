@@ -60,7 +60,16 @@ def geometric_convergence_projection(
         if gains[i] > 1e-9
     ]
     ratio = float(np.median(ratios)) if ratios else 0.65
-    ratio = max(0.01, min(0.99, ratio))
+
+    # A geometric ratio >= 1 means the gain series *diverges*: there is no
+    # finite Nash-equilibrium projection.  Previously the ratio was clamped to
+    # [0.01, 0.99], which silently turned any divergent series into a finite
+    # (usually ~1.0) "projection" regardless of the data (P2-12).  Report
+    # divergence honestly instead so callers do not mistake it for convergence.
+    if ratio >= 1.0:
+        return float("inf"), ratio
+
+    ratio = max(0.01, min(0.9999, ratio))
 
     # Geometric series: total gain = first_gain / (1 - ratio)
     total_gain = gains[0] / (1.0 - ratio)
@@ -84,7 +93,9 @@ def convergence_round_estimate(
     if not gains or gains[0] <= tolerance:
         return 0
     _, ratio = geometric_convergence_projection(gains, 0.0)
-    if ratio <= 0:
+    if ratio <= 0 or ratio >= 1:
+        # Non-convergent (flat or divergent) gain series never falls below
+        # tolerance (P2-12): report round 0 rather than a bogus negative count.
         return 0
     k = math.log(tolerance / gains[0]) / math.log(ratio)
     return int(math.ceil(k))

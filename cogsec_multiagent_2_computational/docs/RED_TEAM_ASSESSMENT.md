@@ -82,7 +82,7 @@ Legend: ✅ RESOLVED · 🟡 PARTIAL (mitigated/qualified) · 🔴 OPEN (needs a
 - **MED-1/2** analysis_runner simulated-baseline annotation is honest (holds); H1/cohen's-d/d′ stats are against invented data — provenance now emitted (see Part-2 H3); still don't report d≈62 as real. 🟡.
 - **MED-3** Non-determinism/timestamps in committed artifacts (P2 colony/scalability + P1 detection_results.json). ✅ **RESOLVED** — all set to `null`.
 - **MED-4** Stale/unsupported provenance fields in committed artifact. ✅ **RESOLVED** (regeneration).
-- **MED-5** `visualization.py:472-473` risk dict assumes `impact`/`likelihood` keys present. 🔴 OPEN (use `.get()`/validate).
+- **MED-5** ~~`visualization.py:472-473` risk dict assumes `impact`/`likelihood` keys present~~ — **STALE/SUPERSEDED (P2-24)**: the cited `visualization.py:472-473` does not exist at HEAD; the modern visualization modules resolve these keys defensively. No action needed.
 
 ### LOW
 - **LOW-1/2** redteam summary correctly discloses `n_distinct_payloads`; sha256 IDs deterministic. ✅ no action.

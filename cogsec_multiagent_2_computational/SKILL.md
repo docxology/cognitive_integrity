@@ -1,6 +1,6 @@
 ---
 name: cogsec-multiagent-2-computational
-description: Cognitive Integrity Framework — Part 2 computational validation (2100+ tests, statistics, formal proofs, attack corpus, ablation studies)
+description: Cognitive Integrity Framework — Part 2 computational validation (3300+ tests, statistics, formal proofs, attack corpus, ablation studies)
 triggers:
   - when: "user mentions 'Part 2' or 'computational validation' or 'empirical validation'"
     action: "route to this project"
@@ -17,7 +17,7 @@ license: MIT
 
 This skill directs LLM agents to **Part 2** of the Cognitive Security for Multiagent Operators series. Part 2 provides the computational validation engine:
 
-- **2100+ data-driven tests** (90%+ coverage, zero mocks)
+- **3300+ data-driven tests** (90%+ coverage, zero mocks)
 - **Statistics module** (hypothesis testing, confidence intervals, effect sizes, ANOVA, Bayesian analysis)
 - **Formal methods** (TLA+, NuSMV, Spin specs; category theory; theorem registry)
 - **Attack corpus** — 950+ real attack variants (injection, trust exploitation, belief manipulation, coordination)
@@ -52,7 +52,7 @@ Invoke this skill when:
 ## Commands
 
 ```bash
-# Full test suite (fast, ~18s)
+# Full test suite (3338 passed / 3 skipped; ~90-160s with coverage)
 uv run pytest projects/cognitive_integrity/cogsec_multiagent_2_computational/tests/ -q
 
 # Run specific module tests
@@ -78,7 +78,7 @@ uv run python -c "from projects.cognitive_integrity.cogsec_multiagent_2_computat
 
 ## Performance Notes
 
-- Test suite is large but fast (2100+ tests in ~18s on M3/M4 Mac).
+- Test suite is large (3338 passed / 3 skipped with --cov; ~90s-2.6min).
 - Uses `pytest-timeout` (2s default per test) to catch hangs.
 - Parallel execution possible: `pytest -n auto` (requires pytest-xdist).
 

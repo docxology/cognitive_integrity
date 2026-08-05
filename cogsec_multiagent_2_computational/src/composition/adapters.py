@@ -452,9 +452,19 @@ class ConsensusAdapter(DefenseModule):
         total_words = max(len(words), 1)
         upper_words = sum(1 for w in words if w.isupper() and len(w) > 3)
 
+        n_agents = self._consensus.n_agents
+        n_profiles = len(self._SENSITIVITY_PROFILES)
         agent_scores: List[float] = []
 
-        for idx, sensitivity in enumerate(self._SENSITIVITY_PROFILES):
+        # Submit exactly n_agents votes so the quorum (min_votes = ceil(n_agents
+        # * quorum_fraction)) is computed against the same population that
+        # votes.  Previously votes were derived from len(sensitivity_profiles)
+        # (default 7), so a caller passing n_agents != 7 left the consensus
+        # permanently UNDECIDED.  Sensitivity profiles are cycled when the
+        # caller supplies a profile list shorter than n_agents (P2-7).
+        profiles = [self._SENSITIVITY_PROFILES[i % n_profiles] for i in range(n_agents)]
+
+        for idx, sensitivity in enumerate(profiles):
             base_suspicion = (upper_words / total_words) * 0.3
             if "ignore" in msg_lower or "override" in msg_lower:
                 base_suspicion += 0.2
@@ -485,7 +495,7 @@ class ConsensusAdapter(DefenseModule):
             details={
                 "agent_scores": agent_scores,
                 "average_belief": avg_belief,
-                "n_agents": len(self._SENSITIVITY_PROFILES),
+                "n_agents": self._consensus.n_agents,
                 "threshold": self._threshold,
             },
             latency_ms=latency_ms,

@@ -6,6 +6,13 @@ Generates extended TLA+, Promela, and SMV specifications that include:
 - Belief drift detection
 - Corroboration-gated sandbox
 - Colony-level Byzantine fault tolerance
+
+GENERATION-ONLY DISCLOSURE (P2-34): these specs (including the SMV
+liveness properties) are **generated, not model-checked** - no NuSMV/
+SPIN/TLC binary is invoked anywhere in this repo; ``verify_formal_specs.py``
+verifies that generation succeeds, not that the properties hold. Treat
+them as intended-property encodings awaiting an external checker, not as
+verified results.
 """
 
 from __future__ import annotations

@@ -811,6 +811,31 @@ class TestRealFunctionalATModules:
         for value in a.values():
             assert 0.01 <= value <= 0.99
 
+    def test_refine_thresholds_preserves_count_scales(self):
+        """Count/scale thresholds are not clipped into [0.01, 0.99] (P2-11).
+
+        ``sandbox_kappa``, ``firewall_depth_max`` and ``delegation_chain_max``
+        are integer scales, not probabilities; clipping them to the unit
+        interval silently corrupts the hardened config (3.0 -> 0.99).
+        """
+        thresholds = {
+            "sandbox_kappa": 3.0,
+            "firewall_depth_max": 3.0,
+            "delegation_chain_max": 2.0,
+            "drift_threshold": 0.3,
+        }
+        a, _ = refine_thresholds(thresholds, "trust inflation variants", 0.05)
+        # trust inflation variants gradient: trust_decay 0.4, delegation_chain_max 0.25
+        # sandbox_kappa / firewall_depth_max have no gradient here -> unchanged.
+        assert a["sandbox_kappa"] == 3.0
+        assert a["firewall_depth_max"] == 3.0
+        # delegation_chain_max IS refined (2.0 + 0.05*0.25 = 2.0125) but must
+        # NOT be clipped to the [0,1] unit interval as before (would become 0.99).
+        assert a["delegation_chain_max"] == pytest.approx(2.0 + 0.05 * 0.25)
+        assert a["delegation_chain_max"] > 1.0
+        # probabilistic threshold still clips/refines normally
+        assert 0.01 <= a["drift_threshold"] <= 0.99
+
     def test_evaluate_adaptive_attacks_measures_real_fraction(self):
         from redteam.generator import AdversarialGenerator
 

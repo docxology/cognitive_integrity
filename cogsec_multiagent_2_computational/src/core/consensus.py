@@ -374,6 +374,54 @@ class WeightedByzantineConsensus(ByzantineConsensus):
         weighted_sum = sum(v.belief * v.trust_weight for v in votes)
         return weighted_sum / total_weight
 
+    def compute_consensus(self, proposition: str) -> Tuple[ConsensusResult, float]:
+        """Trust-weighted consensus (``belief`` votes weighted by ``trust_weight``).
+
+        Unlike the unweighted base class, high-trust agents' verdicts dominate
+        the accept/reject decision: a weighted supermajority is required
+        relative to the *total trust weight present*, so a clique of low-trust
+        agents cannot outvote a trusted majority.
+
+        Returns:
+            Tuple of (result, weighted agreement fraction).
+        """
+        votes = self._weighted_votes.get(proposition, [])
+        if not votes:
+            return super().compute_consensus(proposition)
+
+        n_votes = len(votes)
+        min_votes = int(np.ceil(self.n_agents * self.config.quorum_fraction))
+        if n_votes < min_votes:
+            return ConsensusResult.UNDECIDED, n_votes / self.n_agents
+
+        total_weight = sum(v.trust_weight for v in votes)
+        if total_weight <= 0:
+            return super().compute_consensus(proposition)
+
+        accept_w = sum(
+            v.trust_weight for v in votes
+            if v.belief > self.config.acceptance_threshold
+        )
+        reject_w = sum(
+            v.trust_weight for v in votes
+            if v.belief < self.config.rejection_threshold
+        )
+
+        threshold = total_weight * self.config.quorum_fraction
+
+        if accept_w > threshold:
+            self._decided[proposition] = ConsensusResult.ACCEPT
+            return ConsensusResult.ACCEPT, accept_w / total_weight
+
+        if reject_w > threshold:
+            self._decided[proposition] = ConsensusResult.REJECT
+            return ConsensusResult.REJECT, reject_w / total_weight
+
+        return (
+            ConsensusResult.UNDECIDED,
+            max(accept_w, reject_w) / total_weight,
+        )
+
 
 @dataclass
 class ConfidenceVote:
@@ -511,8 +559,42 @@ class ConfidenceByzantineConsensus(ByzantineConsensus):
             # Too uncertain to decide
             return ConsensusResult.UNDECIDED, agg_confidence
 
-        # Use parent's consensus logic
-        return super().compute_consensus(proposition)
+        votes = self._confidence_votes.get(proposition, [])
+        if not votes:
+            return super().compute_consensus(proposition)
+
+        n_votes = len(votes)
+        min_votes = int(np.ceil(self.n_agents * self.config.quorum_fraction))
+        if n_votes < min_votes:
+            return ConsensusResult.UNDECIDED, n_votes / self.n_agents
+
+        total_confidence = sum(v.confidence for v in votes)
+        if total_confidence <= 0:
+            return super().compute_consensus(proposition)
+
+        accept_c = sum(
+            v.confidence for v in votes
+            if v.belief > self.config.acceptance_threshold
+        )
+        reject_c = sum(
+            v.confidence for v in votes
+            if v.belief < self.config.rejection_threshold
+        )
+
+        threshold = total_confidence * self.config.quorum_fraction
+
+        if accept_c > threshold:
+            self._decided[proposition] = ConsensusResult.ACCEPT
+            return ConsensusResult.ACCEPT, accept_c / total_confidence
+
+        if reject_c > threshold:
+            self._decided[proposition] = ConsensusResult.REJECT
+            return ConsensusResult.REJECT, reject_c / total_confidence
+
+        return (
+            ConsensusResult.UNDECIDED,
+            max(accept_c, reject_c) / total_confidence,
+        )
 
 
 @dataclass
@@ -603,3 +685,50 @@ class CombinedByzantineConsensus(ByzantineConsensus):
 
         weighted_sum = sum(v.belief * v.effective_weight for v in votes)
         return weighted_sum / total_weight
+
+    def compute_consensus(self, proposition: str) -> Tuple[ConsensusResult, float]:
+        """Combined trust*confidence-weighted consensus.
+
+        Uses ``effective_weight = trust_weight * confidence`` to weight the
+        accept/reject decision at a weighted supermajority, so high-trust,
+        high-confidence agents dominate the verdict.
+
+        Returns:
+            Tuple of (result, effective-weight agreement fraction).
+        """
+        votes = self._combined_votes.get(proposition, [])
+        if not votes:
+            return super().compute_consensus(proposition)
+
+        n_votes = len(votes)
+        min_votes = int(np.ceil(self.n_agents * self.config.quorum_fraction))
+        if n_votes < min_votes:
+            return ConsensusResult.UNDECIDED, n_votes / self.n_agents
+
+        total_weight = sum(v.effective_weight for v in votes)
+        if total_weight <= 0:
+            return super().compute_consensus(proposition)
+
+        accept_w = sum(
+            v.effective_weight for v in votes
+            if v.belief > self.config.acceptance_threshold
+        )
+        reject_w = sum(
+            v.effective_weight for v in votes
+            if v.belief < self.config.rejection_threshold
+        )
+
+        threshold = total_weight * self.config.quorum_fraction
+
+        if accept_w > threshold:
+            self._decided[proposition] = ConsensusResult.ACCEPT
+            return ConsensusResult.ACCEPT, accept_w / total_weight
+
+        if reject_w > threshold:
+            self._decided[proposition] = ConsensusResult.REJECT
+            return ConsensusResult.REJECT, reject_w / total_weight
+
+        return (
+            ConsensusResult.UNDECIDED,
+            max(accept_w, reject_w) / total_weight,
+        )

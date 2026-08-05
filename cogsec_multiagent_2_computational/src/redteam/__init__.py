@@ -77,6 +77,33 @@ GAP_GRADIENT_MAP = {
     "multi-hop sybil routing": {"consensus_quorum": 0.3, "anomaly_threshold": 0.25},
 }
 
+#: Thresholds that are true *probabilities/rates* living in [0, 1].  The rest
+#: (``sandbox_kappa``, ``firewall_depth_max``, ``delegation_chain_max``) are
+#: counts / integer scales whose natural range is NOT [0, 1]; clipping them to
+#: [0.01, 0.99] silently corrupts them (e.g. ``sandbox_kappa`` 3.0 -> 0.99).
+#: Only the probabilistic thresholds are clipped to the unit interval (P2-11);
+#: non-probabilistic thresholds are only clamped at a 0 floor.
+PROBABILISTIC_THRESHOLDS = frozenset({
+    "drift_threshold",
+    "anomaly_threshold",
+    "trust_decay",
+    "tripwire_tau",
+    "consensus_quorum",
+})
+
+
+def bound_threshold(key: str, value: float) -> float:
+    """Bound a refined threshold to its natural domain (P2-11).
+
+    Probabilistic thresholds are kept in ``[0.01, 0.99]``; count/scale
+    thresholds (``sandbox_kappa``, ``firewall_depth_max``,
+    ``delegation_chain_max``) are only clamped at a floor of 0 so their scale
+    is preserved.
+    """
+    if key in PROBABILISTIC_THRESHOLDS:
+        return float(np.clip(value, 0.01, 0.99))
+    return float(max(0.0, value))
+
 
 def measure_detection_rate(
     payloads: Sequence[str], detector: Callable[[str], bool]
@@ -124,7 +151,7 @@ def refine_thresholds(
     updates: dict[str, float] = {}
     for key, value in thresholds.items():
         delta = learning_rate * gradients.get(key, 0.0)
-        new_thresholds[key] = float(np.clip(value + delta, 0.01, 0.99))
+        new_thresholds[key] = bound_threshold(key, value + delta)
         updates[key] = delta
     return new_thresholds, updates
 
@@ -341,8 +368,10 @@ class AdversarialTrainer:
             threshold_updates = {}
             for key in self.thresholds:
                 delta = self.config.learning_rate * gradients.get(key, 0.0)
-                self.thresholds[key] = float(
-                    np.clip(self.thresholds[key] + delta, 0.01, 0.99)
+                # Clip only probabilistic thresholds (P2-11); count/scale
+                # thresholds keep their natural domain.
+                self.thresholds[key] = bound_threshold(
+                    key, self.thresholds[key] + delta
                 )
                 threshold_updates[key] = delta
 

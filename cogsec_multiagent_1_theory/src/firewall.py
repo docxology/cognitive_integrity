@@ -29,7 +29,16 @@ class Classification(Enum):
 
 @dataclass
 class FirewallConfig:
-    """Configuration for cognitive firewall."""
+    """Configuration for cognitive firewall.
+
+    NOTE (fork contract, P2-14): this is the **illustrative/reference** CIF
+    firewall of Part 1 (formal foundations).  It deliberately uses a looser
+    default (``injection_threshold=0.7``) than the operational default in
+    Part 2 ``src/core/firewall.py`` (``0.8``).  The two are parallel
+    implementations of the same mechanism; Part 2 is the authoritative
+    operational default.  Keep both defaults pinned in their test suites and
+    document any change across both modules.
+    """
 
     injection_threshold: float = 0.7  # τ₁: Reject above this
     suspicious_threshold: float = 0.4  # τ₂: Quarantine above this

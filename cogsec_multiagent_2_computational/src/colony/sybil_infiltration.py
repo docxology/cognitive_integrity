@@ -18,6 +18,13 @@ from .scorecard import compute_ccs, compute_recovery_steps, compute_resilience
 class SybilInfiltrationScenario:
     """Omega_4 scenario: sybil agents coordinate to flip consensus.
 
+    SCENARIO-CONSTRUCTION CAVEAT (P2-31): adversaries here are constructed to
+    vote exactly-identical values far from ground truth, and the detector
+    flags exactly that pattern — so 100% detection in this scenario is
+    near-tautological by construction and must not be cited as evidence CIF
+    "detects" sybil infiltration generally; it validates the specific
+    coordinated-identical-vote heuristic.
+
     Four coordinated sybil identities join the colony and vote as a block,
     attempting to shift majority consensus away from the ground truth.
     """

@@ -46,7 +46,7 @@ if __name__ == "__main__":
 - Hard-coded paths outside the repo root.
 - `print` statements that are not paths (use `logging`).
 
-## Script Inventory (22 scripts — keep docs in sync)
+## Script Inventory (26 scripts — keep docs in sync)
 
 | Category | Scripts |
 | -------- | ------- |

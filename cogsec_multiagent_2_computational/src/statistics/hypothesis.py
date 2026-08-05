@@ -208,6 +208,18 @@ def test_h2_cif_vs_components(
 
 # ---------------------------------------------------------------------------
 # H3: Per-architecture superiority
+
+def _is_degenerate(*arrays: np.ndarray) -> bool:
+    """True if any input series is constant (zero variance / zero range)."""
+    for a in arrays:
+        if a.size == 0:
+            return True
+        if np.allclose(a, a[0]):
+            return True
+    return False
+
+
+
 # ---------------------------------------------------------------------------
 
 def test_h3_per_architecture(
@@ -233,17 +245,29 @@ def test_h3_per_architecture(
 
         t_stat, p_val = paired_ttest(cif_arr, base_arr, alternative="greater")
 
+        # Degenerate-operating-point guard (P2-18): a paired t-test on a
+        # constant series (e.g. every cell at rate 1.0) yields a meaningless
+        # tiny p-value.  Surface it explicitly instead of reporting it as
+        # evidence of superiority; the numeric p is preserved for the
+        # artifact, but it is not marked significant.
+        degenerate = _is_degenerate(cif_arr, base_arr)
+        desc = (
+            f"CIF detection rate > baseline for architecture "
+            f"'{arch_name}' (one-sided paired t-test)."
+        )
+        if degenerate:
+            desc += (" DEGENERATE OPERATING POINT: one or both input series "
+                     "is constant (zero variance); the paired t-test is not "
+                     "meaningful here and this row is not treated as evidence.")
+
         results.append(
             HypothesisResult(
                 name=f"H3_{arch_name}",
                 test_statistic=t_stat,
                 p_value=p_val,
-                significant=p_val < alpha,
+                significant=False if degenerate else (p_val < alpha),
                 alpha=alpha,
-                description=(
-                    f"CIF detection rate > baseline for architecture "
-                    f"'{arch_name}' (one-sided paired t-test)."
-                ),
+                description=desc,
                 method="paired t-test (one-sided, per-architecture)",
             )
         )

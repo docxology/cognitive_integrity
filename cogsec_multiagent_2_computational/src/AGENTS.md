@@ -69,7 +69,7 @@ def compute_series_detection_rate(rates: Sequence[float]) -> float:
 
 ## No-Mocks Policy (Absolute)
 
-Using any of `MagicMock`, `mock.patch`, `unittest.mock`, `mocker.patch`, `monkeypatch` against project internals is a project-wide violation. The `infrastructure/validation/no_mock_enforcer.py` CI gate scans for these patterns and fails the build.
+Using any of `MagicMock`, `mock.patch`, `unittest.mock`, `mocker.patch`, `monkeypatch` against project internals is a project-wide violation. Enforcement is by policy + convention (tests construct real objects; several test modules state the no-MagicMock contract in their docstrings). Note: there is **no** `infrastructure/validation/no_mock_enforcer.py` in this repo — that file lives in the parent template's infrastructure and is not wired here, so the no-mocks discipline is maintained in-repo by the stated contract, not by a local CI gate (P2-26).
 
 Approved alternatives:
 

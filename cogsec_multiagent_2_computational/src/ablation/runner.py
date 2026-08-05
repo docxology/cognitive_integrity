@@ -92,10 +92,18 @@ COMPONENT_TO_MODULE: dict[str, str] = {
 
 
 def make_default_components() -> dict[str, float]:
-    """Return component name → baseline detection rate contribution.
+    """Return component name → prior rate (KEYS ARE AUTHORITATIVE).
 
     Keys are ablation component names (see :data:`COMPONENT_TO_MODULE`),
     not composition-registry module names.
+
+    **The float values are NOT used for scoring.**  Every ablation
+    measurement goes through :func:`evaluate_component_subset`, which
+    runs the real pipeline using only the component *names*; only the
+    dict keys are read.  The numeric values (0.58–0.82) are stale prior
+    rates kept for backward compatibility and must not be mistaken for
+    per-component detection rates — the real measured full-pipeline TPR is
+    ≈0.12 (P2-8).  Treat them as opaque placeholders of the ordering.
     """
     return {
         "firewall": 0.82,

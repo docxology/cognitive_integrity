@@ -140,3 +140,9 @@ class QuorumManipulationScenario:
             ccs_score=ccs,
             timeline=timeline,
         )
+
+# SCENARIO-CONSTRUCTION CAVEAT (P2-31): like the sybil scenario, quorum
+# manipulation constructs adversaries that vote the exact opposite of truth,
+# and the detector flags that exact pattern.  Its ~100% detection rows are
+# near-tautological by construction and validate the specific heuristic, not
+# general CIF detection ability; cite accordingly.

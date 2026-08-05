@@ -109,11 +109,30 @@ class TestGeometricConvergenceProjection:
         dr, ratio = geometric_convergence_projection(gains, baseline_dr=baseline)
         assert dr >= baseline - 1e-9
 
-    def test_ratio_clamped(self):
-        # All gains identical → ratio would be 1.0 → clamp to 0.99
+    def test_constant_gains_are_divergent(self):
+        # All gains identical → ratio == 1.0 (the improvement never
+        # decays) → the geometric series diverges and there is NO finite
+        # projection.  Previously this was clamped to 0.99 and reported a
+        # fabricated ≈1.0 equilibrium (P2-12).
         gains = [0.1, 0.1, 0.1]
-        _, ratio = geometric_convergence_projection(gains, baseline_dr=0.8)
-        assert 0.01 <= ratio <= 0.99
+        proj, ratio = geometric_convergence_projection(gains, baseline_dr=0.8)
+        assert ratio >= 1.0
+        assert proj == float("inf")
+
+    def test_divergent_gains_reported_as_divergence(self):
+        """A geometrically divergent gain series yields +inf, not a
+        fabricated finite projection (P2-12)."""
+        gains = [0.077, 0.129, 0.177, 0.205, 0.232]
+        proj, ratio = geometric_convergence_projection(gains, 0.447)
+        assert ratio >= 1.0
+        assert proj == float("inf")
+
+    def test_converging_gains_stay_finite(self):
+        """A genuinely converging series still yields a finite projection"""
+        gains = [0.10, 0.065, 0.042, 0.027]
+        proj, ratio = geometric_convergence_projection(gains, 0.447)
+        assert proj < float("inf")
+        assert 0.0 < ratio < 1.0
 
 
 # ---------------------------------------------------------------------------
@@ -148,6 +167,12 @@ class TestConvergenceRoundEstimate:
         gains = [0.05, 0.03, 0.02, 0.01]
         k = convergence_round_estimate(gains, tolerance=0.005)
         assert k >= 0
+
+    def test_divergent_series_reports_zero(self):
+        """A divergent gain series never converges: round estimate is 0
+        rather than a negative count (P2-12)."""
+        gains = [0.077, 0.129, 0.177, 0.205, 0.232]
+        assert convergence_round_estimate(gains, tolerance=0.001) == 0
 
 
 # ---------------------------------------------------------------------------

@@ -1082,6 +1082,16 @@ class TestH3PerArchitecture:
         assert len(results) == 1
         assert results[0].name == "H3_single_arch"
 
+    def test_degenerate_operating_point_not_treated_as_evidence(self):
+        """An all-1.0 (zero-variance) series is flagged degenerate, not
+        reported as a meaningful superiority result (P2-18)."""
+        ones = np.ones(16)
+        baseline = np.repeat([1.0], 16)
+        results = h3_per_architecture({"claude_code": (ones, baseline)})
+        r = results[0]
+        assert r.significant is False
+        assert "DEGENERATE" in r.description
+
 
 # ===========================================================================
 # 7. NONPARAMETRIC TESTS
