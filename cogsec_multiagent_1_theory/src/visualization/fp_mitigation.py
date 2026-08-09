@@ -6,7 +6,15 @@ Part of the Cognitive Integrity Framework.
 #!/usr/bin/env python3
 from __future__ import annotations
 
-"""False positive mitigation visualization module."""
+"""False positive mitigation visualization module.
+
+NOTE (round-7 audit, F5): the FPR/TPR stage values and threshold-sensitivity
+curves plotted here are SCHEMATIC/illustrative, NOT measurements.  The
+manuscript caption labels the figure "illustrative schematic"; measured
+false-positive mitigation results are reported in Part 2.  The rendered
+figure carries a visible "Illustrative schematic — values are NOT measured"
+footer.
+"""
 
 import os
 
@@ -20,7 +28,11 @@ import numpy as np
 
 def create_fp_mitigation_figure(output_dir: Path) -> Path:
     """
-    Create false positive mitigation visualization.
+    Create the false-positive mitigation visualization.
+
+    The FPR/TPR stage values and threshold curves are schematic/illustrative,
+    not measured; measured results are reported in Part 2. The rendered figure
+    includes a visible honesty footer.
     """
     if not output_dir.exists():
         output_dir.mkdir(parents=True, exist_ok=True)
@@ -164,7 +176,19 @@ def create_fp_mitigation_figure(output_dir: Path) -> Path:
     labels = [line.get_label() for line in lines]
     ax2.legend(lines, labels, loc="center right", fontsize=10)
 
-    plt.tight_layout()
+    # Visible honesty footer: these rates are schematic, not measured.
+    plt.figtext(
+        0.5,
+        0.01,
+        "Illustrative schematic \u2014 values are NOT measured; measured "
+        "false-positive mitigation results are reported in Part 2.",
+        ha="center",
+        fontsize=8,
+        style="italic",
+        color="#666666",
+    )
+
+    plt.tight_layout(rect=[0, 0.05, 1, 1])
 
     # Save both PNG and PDF
     output_path_png = output_dir / "fp_mitigation.png"

@@ -19,6 +19,12 @@ def generate_trust_decay_figure(output_dir: Path) -> Path:
     """
     Generate the trust decay visualization.
 
+    NOTE (round-7 audit, F5): Panel A plots the exact trust-decay function
+    T(d) = delta^d (mathematical curves, not measurements).  Panel B plots
+    SCHEMATIC/illustrative trust-preservation values (hardcoded scenario
+    values), NOT measurements; the rendered figure carries a visible
+    "Panel B values are illustrative schematic — not measured" footer.
+
     Args:
         output_dir: Directory to save output files
 
@@ -161,6 +167,18 @@ def generate_trust_decay_figure(output_dir: Path) -> Path:
     matplotlib.rcParams["ps.fonttype"] = 42
 
     plt.tight_layout(pad=3.0)
+
+    # Visible honesty footer: Panel B scenario values are schematic.
+    plt.figtext(
+        0.5,
+        0.01,
+        "Panel B values are illustrative schematic \u2014 not measured.",
+        ha="center",
+        fontsize=8,
+        style="italic",
+        color="#666666",
+    )
+    plt.tight_layout(rect=[0, 0.05, 1, 1])
 
     save_figure(fig, output_dir, "trust_decay")
     plt.close()

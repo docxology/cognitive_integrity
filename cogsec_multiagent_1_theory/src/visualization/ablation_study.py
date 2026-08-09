@@ -6,7 +6,15 @@ Part of the Cognitive Integrity Framework.
 #!/usr/bin/env python3
 from __future__ import annotations
 
-"""Ablation study visualization module."""
+"""Ablation study visualization module.
+
+NOTE (round-7 audit, F5): the ablation component-contribution values plotted
+here (both the JSON-loaded values and the hardcoded fallback arrays) are
+SCHEMATIC/illustrative, NOT measurements.  The manuscript caption labels the
+figure "Schematic ablation study (illustrative, not measured)"; measured
+ablation results are reported in Part 2.  The rendered figure carries a
+visible "Illustrative schematic — values are NOT measured" footer.
+"""
 
 import os
 
@@ -20,7 +28,11 @@ import numpy as np
 
 def create_ablation_study_figure(output_dir: Path) -> Path:
     """
-    Create ablation study visualization.
+    Create the ablation study visualization.
+
+    The component-contribution values are schematic/illustrative, not measured;
+    measured ablation results are reported in Part 2. The rendered figure
+    includes a visible honesty footer.
     """
     if not output_dir.exists():
         output_dir.mkdir(parents=True, exist_ok=True)
@@ -119,6 +131,19 @@ def create_ablation_study_figure(output_dir: Path) -> Path:
     ax.axvline(x=0.94, color="#648FFF", linestyle="--", alpha=0.5, linewidth=1.5)
     ax.grid(True, alpha=0.3, axis="x")
 
+    # Visible honesty footer: these component contributions are schematic,
+    # not measured (measured ablation results are reported in Part 2).
+    plt.figtext(
+        0.5,
+        0.01,
+        "Illustrative schematic \u2014 values are NOT measured; measured ablation "
+        "results are reported in Part 2.",
+        ha="center",
+        fontsize=8,
+        style="italic",
+        color="#666666",
+    )
+
     # Colorblind-friendly legend for impact severity (IBM Design)
     from matplotlib.patches import Patch
 
@@ -130,7 +155,7 @@ def create_ablation_study_figure(output_dir: Path) -> Path:
     ]
     ax.legend(handles=legend_elements, loc="lower right", fontsize=9, title="Impact Severity")
 
-    plt.tight_layout()
+    plt.tight_layout(rect=[0, 0.05, 1, 1])
 
     # Save both PNG and PDF
     output_path_png = output_dir / "ablation_study.png"

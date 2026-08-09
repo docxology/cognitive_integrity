@@ -24,6 +24,8 @@ Figure generation and data analysis scripts for the CIF manuscript.
 | `16_comprehensive_taxonomy_figure.py` | Full taxonomy | Attack categories |
 | `17_cif_comprehensive_figure.py` | Complete framework | Full system diagram |
 | `18_trust_calculus_figure.py` | Trust mathematics | Formula visualization |
+| `19_cif_ad_coupling_figure.py` | CIF-AD coupling heatmap | Defense coverage by AD phase (NEW v2) |
+| `20_ooda_phase_figure.py` | OODA phase diagram | Phase-specific defenses and latency (NEW v2) |
 | `verify_manuscript.py` | Validation report | Cross-reference checks |
 
 ## Quick Commands

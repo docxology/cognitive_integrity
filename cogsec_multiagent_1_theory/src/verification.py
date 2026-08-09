@@ -74,6 +74,87 @@ class ManuscriptVerifier:
             "undoubtedly",
         ]
 
+        # Math-hygiene checks (round-7 audit, F2/F11):
+        # - [A-Za-z}]\*[{A-Za-z] catches subscript corruption where a literal
+        #   star was substituted for an underscore (\mathcal{T}*{i \to j}),
+        #   which pandoc passes through as a math-mode binary operator.
+        # - \\[a-zA-Z] catches double-escaped control sequences (P_{\\text{...}})
+        #   that pandoc leaves as two backslashes inside math, producing a
+        #   line break + literal text in LaTeX.
+        self.subscript_star_pattern = re.compile(r"[A-Za-z}]\*[{A-Za-z]")
+        self.double_backslash_cmd_pattern = re.compile(r"\\\\[a-zA-Z]")
+
+    def check_pandoc_attributes(self) -> bool:
+        """Check for bare ``{#label}`` attribute lines that pandoc passes
+        through as literal text (breaking the LaTeX build).
+
+        A legitimate pandoc identifier attribute is attached to a heading,
+        image, or div (``# Heading {#sec:x}``, ``![..](..){#fig:x}``).  A line
+        that is *only* ``{#eq:...}`` is not valid pandoc attribute syntax and
+        survives the markdown-to-LaTeX conversion verbatim, causing
+        ``You can't use `macro parameter character #'`` LaTeX errors
+        (round-7 audit, F1).
+        """
+        logger.info("Verifying pandoc attributes...")
+        status = True
+        bare_attr = re.compile(r"^\s*\{#[^}]+\}\s*$", re.MULTILINE)
+
+        for md_file in self.md_files:
+            with open(md_file, "r", encoding="utf-8") as f:
+                content = f.read()
+            for m in bare_attr.finditer(content):
+                line = content.count("\n", 0, m.start()) + 1
+                logger.warning(
+                    f"Bare pandoc attribute line {m.group(0).strip()} in "
+                    f"{md_file.name}:{line} will pass through to LaTeX as "
+                    f"literal text and break the PDF build; attach it to the "
+                    f"enclosing environment (e.g. \\label inside the equation)"
+                )
+                status = False
+        return status
+
+    def check_math_hygiene(self) -> bool:
+        """Check for LaTeX math-notational corruption that renders wrong but
+        does not fail the label/citation checks.
+
+        Flags (round-7 audit, F2/F11):
+        - subscript-corruption stars: ``\\mathcal{T}*{i \\to j}`` (should be
+          ``\\mathcal{T}_{i \\to j}``)
+        - double-escaped control sequences inside math: ``P_{\\text{x}}``
+          (should be ``P_{\\text{x}}``)
+
+        Legitimate starred commands (``\\vspace*``, ``\\DeclareMathOperator*``)
+        are excluded.
+        """
+        logger.info("Verifying math hygiene...")
+        status = True
+        legit_starred = ("vspace*{", "DeclareMathOperator*{")
+
+        for md_file in self.md_files:
+            with open(md_file, "r", encoding="utf-8") as f:
+                lines = f.readlines()
+
+            for i, line in enumerate(lines):
+                for m in self.subscript_star_pattern.finditer(line):
+                    ctx = line[max(0, m.start() - 20) : m.end()]
+                    if any(token in ctx for token in legit_starred):
+                        continue
+                    logger.warning(
+                        f"Subscript-star corruption '{m.group(0)}' in "
+                        f"{md_file.name}:{i + 1}: replace '*' with '_' "
+                        f"(literal stars render as binary operators in math)"
+                    )
+                    status = False
+
+                for m in self.double_backslash_cmd_pattern.finditer(line):
+                    logger.warning(
+                        f"Double-escaped control sequence '{m.group(0)}' in "
+                        f"{md_file.name}:{i + 1}: use a single backslash "
+                        f"inside math"
+                    )
+                    status = False
+        return status
+
     def check_files_exist(self) -> bool:
         """Check if essential files exist."""
         logger.info("Checking file existence...")
@@ -130,18 +211,35 @@ class ManuscriptVerifier:
         """Check \\label definitions and \\ref usage."""
         logger.info("Verifying definition labels and references...")
         status = True
-        defined_labels = set()
+        defined_labels: dict[str, int] = {}
         # pass 1: collect labels
         for md_file in self.md_files:
             with open(md_file, "r", encoding="utf-8") as f:
                 content = f.read()
                 # LaTeX labels
                 labels = self.label_pattern.findall(content)
-                defined_labels.update(labels)
+                for label in labels:
+                    defined_labels[label] = defined_labels.get(label, 0) + 1
 
                 # Pandoc labels {#label}
-                pandoc_labels = re.findall(r"\{#([^}]+)\}", content)
-                defined_labels.update(pandoc_labels)
+                # Pandoc identifiers start with a letter; "#1"-style LaTeX
+                # macro parameters must not be counted as labels.
+                pandoc_labels = re.findall(r"\{#([A-Za-z][^}]*)\}", content)
+                for label in pandoc_labels:
+                    defined_labels[label] = defined_labels.get(label, 0) + 1
+
+        # Duplicate labels produce "Label `X' multiply defined" LaTeX warnings
+        # and make \\cref resolve to the *last* definition, silently
+        # contradicting cross-references that intend the first (round-7
+        # audit, F3: cor:layered-defense and sec:limitations were duplicated).
+        for label, count in sorted(defined_labels.items()):
+            if count > 1:
+                logger.warning(
+                    f"Duplicate label '{label}' defined {count} times; "
+                    f"\\cref resolves to the last definition - rename one "
+                    f"occurrence"
+                )
+                status = False
 
         # pass 2: check refs
         for md_file in self.md_files:
@@ -149,7 +247,7 @@ class ManuscriptVerifier:
                 content = f.read()
                 refs = self.ref_pattern.findall(content)
                 for ref_type, ref_key in refs:
-                    # Handle multiple refs like \cref{fig:1,fig:2}
+                    # Handle multiple refs like \\cref{fig:1,fig:2}
                     keys = [k.strip() for k in ref_key.split(",")]
                     for key in keys:
                         if key not in defined_labels:
@@ -235,6 +333,8 @@ class ManuscriptVerifier:
             "Files": self.check_files_exist(),
             "Citations": self.check_citations(),
             "Labels/Refs": self.check_labels_and_refs(),
+            "Pandoc Attributes": self.check_pandoc_attributes(),
+            "Math Hygiene": self.check_math_hygiene(),
             "Images/Links": self.check_images_and_links(),
             "Style": self.check_style(),
         }

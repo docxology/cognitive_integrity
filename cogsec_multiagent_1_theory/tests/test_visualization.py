@@ -644,3 +644,34 @@ class TestScalabilityBranches:
             png, pdf = create_scalability_figure(output_dir)
             assert png == output_dir / "error.png"
             assert pdf == output_dir / "error.pdf"
+
+
+class TestRound7FigureHonesty:
+    """Keep schematic figure values visibly distinct from measurements."""
+
+    def test_schematic_figure_docstrings_are_explicit(self):
+        import inspect
+
+        from src.visualization import ablation_study, fp_mitigation, trust_decay
+
+        functions = (
+            ablation_study.create_ablation_study_figure,
+            fp_mitigation.create_fp_mitigation_figure,
+            trust_decay.generate_trust_decay_figure,
+        )
+        for function in functions:
+            doc = (inspect.getdoc(function) or "").upper()
+            assert "SCHEMATIC" in doc
+            assert "NOT MEASURED" in doc
+
+    def test_schematic_figure_sources_render_honesty_footer(self):
+        import inspect
+
+        from src.visualization import ablation_study, fp_mitigation, trust_decay
+
+        modules = (ablation_study, fp_mitigation, trust_decay)
+        for module in modules:
+            source = inspect.getsource(module)
+            source_lower = source.lower()
+            assert "schematic" in source_lower
+            assert "not measured" in source_lower

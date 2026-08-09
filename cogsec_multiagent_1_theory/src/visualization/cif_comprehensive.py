@@ -121,7 +121,7 @@ def create_cif_comprehensive_figure(output_dir: Path) -> Path:
             "color": colors["detection"],
             "components": [
                 ("Anomaly Detection", "Drift scoring\n& sliding window", "σ(Δb) > τ_d"),
-                ("Tripwire Monitor", "Canary belief\nverification", "c_i ∈ B?"),
+                ("Tripwire Monitor", "Canary belief\nverification", r"$c_i \in \mathcal{B}$?"),
                 ("Provenance Tracker", "Source chain\nattribution", "P: B → sources"),
             ],
         },
@@ -131,8 +131,12 @@ def create_cif_comprehensive_figure(output_dir: Path) -> Path:
             "height": 2.2,
             "color": colors["agent"],
             "components": [
-                ("Beliefs (B)", "Propositions\nP(b) ∈ [0,1]", "verified/provisional"),
-                ("Goals (G)", "Objectives\n⟨G, ≺⟩ ordered", "priority queue"),
+                ("Beliefs (B)", "Propositions\n" + r"$P(b) \in [0,1]$", "verified/provisional"),
+                (
+                    "Goals (G)",
+                    "Objectives\n" + r"$\langle \mathcal{G}, \prec \rangle$ ordered",
+                    "priority queue",
+                ),
                 ("Intentions (I)", "Actions\nπ: S → A", "policy mapping"),
                 ("History (H)", "Trace\n[(a,o,r)...]", "audit log"),
             ],

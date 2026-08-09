@@ -74,7 +74,7 @@ def create_comprehensive_taxonomy_figure(output_dir: Path) -> Path:
     # Data for each adversary class
     classes = [
         {
-            "symbol": "Ω₁",
+            "symbol": r"$\Omega_1$",
             "name": "EXTERNAL",
             "color": colors["external"],
             "icon": "↓",
@@ -88,10 +88,10 @@ def create_comprehensive_taxonomy_figure(output_dir: Path) -> Path:
             "impact": "Entry Point",
         },
         {
-            "symbol": "Ω₂",
+            "symbol": r"$\Omega_2$",
             "name": "PERIPHERAL",
             "color": colors["peripheral"],
-            "icon": "⚡",
+            "icon": "!",
             "attacks": [
                 "Tool Response\nManipulation",
                 "Memory\nPoisoning",
@@ -102,10 +102,10 @@ def create_comprehensive_taxonomy_figure(output_dir: Path) -> Path:
             "impact": "Data Injection",
         },
         {
-            "symbol": "Ω₃",
+            "symbol": r"$\Omega_3$",
             "name": "AGENT-LEVEL",
             "color": colors["agent"],
-            "icon": "◉",
+            "icon": "o",
             "attacks": [
                 "Identity\nConfusion",
                 "Belief\nInjection",
@@ -116,10 +116,10 @@ def create_comprehensive_taxonomy_figure(output_dir: Path) -> Path:
             "impact": "State Corruption",
         },
         {
-            "symbol": "Ω₄",
+            "symbol": r"$\Omega_4$",
             "name": "COORDINATION",
             "color": colors["coordination"],
-            "icon": "⬡",
+            "icon": "#",
             "attacks": [
                 "Trust\nLaundering",
                 "Sybil\nAttacks",
@@ -130,10 +130,10 @@ def create_comprehensive_taxonomy_figure(output_dir: Path) -> Path:
             "impact": "Trust Exploitation",
         },
         {
-            "symbol": "Ω₅",
+            "symbol": r"$\Omega_5$",
             "name": "SYSTEMIC",
             "color": colors["systemic"],
-            "icon": "⚠",
+            "icon": "!",
             "attacks": [
                 "Orchestrator\nCompromise",
                 "System-Wide\nCorruption",

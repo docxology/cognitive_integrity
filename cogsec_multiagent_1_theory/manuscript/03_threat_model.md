@@ -329,7 +329,7 @@ We classify attacks into four dimensions: epistemic, behavioral, social, and tem
 
 Epistemic attacks target the agent's relationship with its **information environment**---the totality of information sources, evidence streams, and knowledge repositories that inform agent beliefs. The epistemic domain is thus synonymous with the cognitive information environment: both concern what agents can know, how they acquire knowledge, and the reliability of their belief-forming processes.
 
-Target: Agent beliefs $\\mathcal{B}_i$.
+Target: Agent beliefs $\mathcal{B}_i$.
 
 \begin{definition}[Belief Injection]
 \label{def:belief-injection}

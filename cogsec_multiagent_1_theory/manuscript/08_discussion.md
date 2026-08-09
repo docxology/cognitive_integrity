@@ -2,7 +2,7 @@
 
 # Discussion: Theoretical Implications, Limitations, and Future Directions {#sec:discussion}
 
-This section examines the theoretical implications of the Cognitive Integrity Framework (\cref{sec:theoretical-implications}), formal limitations and boundary conditions (\cref{sec:limitations}), relationship to prior work (\cref{sec:related-work}), governance implications (\cref{sec:governance}), and future research directions (\cref{sec:future-directions}).
+This section examines the theoretical implications of the Cognitive Integrity Framework (\cref{sec:theoretical-implications}), formal limitations (\cref{sec:formal-limitations}) and boundary conditions (\cref{sec:limitations}), relationship to prior work (\cref{sec:related-work}), governance implications (\cref{sec:governance}), and future research directions (\cref{sec:future-directions}).
 
 ## Empirical Validation Summary
 
@@ -83,7 +83,7 @@ State machine & State integrity assumption & State hash verification \\
 
 These are structural properties of the architectures themselves, not implementation-specific weaknesses.
 
-## Formal Limitations {#sec:limitations}
+## Formal Limitations {#sec:formal-limitations}
 
 ### Assumption Dependencies
 
@@ -188,7 +188,7 @@ The detection degradation problem suggests a need for adaptive defenses. Formal 
 
 \begin{equation}
 \label{eq:adaptive-defense}
-\pi^{*}*{\text{defense}} = \argmax*{\pi} \mathbb{E}\left[\sum_t \gamma^t r(s_t, a_t)\right]
+\pi^{*}_{\text{defense}} = \argmax_{\pi} \mathbb{E}\left[\sum_t \gamma^t r(s_t, a_t)\right]
 \end{equation}
 
 requires solving the partial observability problem—defenders cannot directly observe attacker intent.
@@ -199,7 +199,7 @@ Extending trust calculus across organizational boundaries:
 
 \begin{equation}
 \label{eq:cross-system-trust}
-\mathcal{T}*{i \to j}^{\text{cross}} = f(\mathcal{T}*{\text{local}}, \mathcal{T}*{\text{reputation}}, \mathcal{T}*{\text{attestation}})
+\mathcal{T}_{i \to j}^{\text{cross}} = f(\mathcal{T}_{\text{local}}, \mathcal{T}_{\text{reputation}}, \mathcal{T}_{\text{attestation}})
 \end{equation}
 
 The primary challenge is trust calibration—mapping heterogeneous trust semantics across systems with different threat models.

@@ -76,7 +76,7 @@ P(\text{success}) \leq (1 - 0.8)(1 - 0.7) = 0.2 \cdot 0.3 = 0.06
 \end{corollary}
 
 \begin{corollary}[Layered Defense Generalization]
-\label{cor:layered-defense}
+\label{cor:n-layer-bound}
 For $n$ independent defense layers with rates $r_1, \ldots, r_n$:
 \begin{equation}
 \label{eq:n-layer-bound}

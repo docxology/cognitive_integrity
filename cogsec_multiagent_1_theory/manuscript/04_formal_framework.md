@@ -99,13 +99,13 @@ The transition rules are defined as follows:
 **Rule T-Update** (Belief Update):
 \begin{equation}
 \label{eq:rule-update}
-\frac{m \in \text{inbox}_i \quad e = \text{extract}(m) \quad s = \text{source}(m)}{\mathcal{B}_i^t \xrightarrow{\textsc{update}} \mathcal{B}_i^{t+1} = \text{BayesUpdate}(\mathcal{B}*i^t, e, \mathcal{T}*{i \to s})}
+\frac{m \in \text{inbox}_i \quad e = \text{extract}(m) \quad s = \text{source}(m)}{\mathcal{B}_i^t \xrightarrow{\textsc{update}} \mathcal{B}_i^{t+1} = \text{BayesUpdate}(\mathcal{B}_i^t, e, \mathcal{T}_{i \to s})}
 \end{equation}
 
 **Rule T-Act** (Action Execution):
 \begin{equation}
 \label{eq:rule-act}
-\frac{a \in \mathcal{I}*i \quad \mathcal{P}*{\text{eff}}(a_i, a) = 1 \quad \text{precond}(a, \mathcal{S}^t)}{(\sigma_i, \mathcal{S}^t) \xrightarrow{\textsc{act}} (\sigma_i', \text{effect}(a, \mathcal{S}^t))}
+\frac{a \in \mathcal{I}_i \quad \mathcal{P}_{\text{eff}}(a_i, a) = 1 \quad \text{precond}(a, \mathcal{S}^t)}{(\sigma_i, \mathcal{S}^t) \xrightarrow{\textsc{act}} (\sigma_i', \text{effect}(a, \mathcal{S}^t))}
 \end{equation}
 
 **Rule T-Communicate** (Message Sending):
@@ -150,7 +150,7 @@ No high-confidence beliefs contradict each other.
 \label{prop:goal-alignment}
 \begin{equation}
 \label{eq:goal-alignment}
-\text{Aligned}(\mathcal{G}*i) \iff \mathcal{G}*i \subseteq \mathcal{G}*{\text{principal}} \cup \text{Delegate}(\mathcal{G}*{\text{principal}})
+\text{Aligned}(\mathcal{G}_i) \iff \mathcal{G}_i \subseteq \mathcal{G}_{\text{principal}} \cup \text{Delegate}(\mathcal{G}_{\text{principal}})
 \end{equation}
 All goals derive from the principal or valid delegation chains.
 \end{property}
@@ -239,7 +239,7 @@ Our framework addresses this through modality-adjusted base trust: $T_{\text{bas
 Trust from agent $a_i$ to agent $a_j$ at time $t$:
 \begin{equation}
 \label{eq:trust-function}
-\mathcal{T}*{i \to j}^t = \alpha \cdot T*{\text{base}}(j) + \beta \cdot T_{\text{rep}}^t(j) + \gamma \cdot T_{\text{ctx}}^t(i,j)
+\mathcal{T}_{i \to j}^t = \alpha \cdot T_{\text{base}}(j) + \beta \cdot T_{\text{rep}}^t(j) + \gamma \cdot T_{\text{ctx}}^t(i,j)
 \end{equation}
 subject to $\alpha + \beta + \gamma = 1$, with components in \cref{tab:trust-components}.
 \end{definition}
@@ -275,7 +275,7 @@ neurocomputational grounding for the trust calculus (Part~2, \S 1.2).
 When agent $a_i$ delegates trust through $a_j$ to $a_k$:
 \begin{equation}
 \label{eq:trust-delegation}
-\mathcal{T}*{i \to k}^{\text{del}} = \min(\mathcal{T}*{i \to j}, \mathcal{T}_{j \to k}) \cdot \delta^d
+\mathcal{T}_{i \to k}^{\text{del}} = \min(\mathcal{T}_{i \to j}, \mathcal{T}_{j \to k}) \cdot \delta^d
 \end{equation}
 where $\delta \in (0, 1)$ is the decay factor and $d \in \mathbb{N}$ is the delegation depth.
 \end{definition}
@@ -369,7 +369,7 @@ Trust aggregation $\oplus$ satisfies: (i) associativity, (ii) commutativity, (ii
 For any path $p = (a_0, \ldots, a_k)$:
 \begin{equation}
 \label{eq:no-amplification}
-\mathcal{T}*{a_0 \to a_k}^{\text{path}} \leq \min*{i \in [0,k-1]} \mathcal{T}*{a_i \to a*{i+1}}
+\mathcal{T}_{a_0 \to a_k}^{\text{path}} \leq \min_{i \in [0,k-1]} \mathcal{T}_{a_i \to a_{i+1}}
 \end{equation}
 A proof of the no-amplification claim is given in the supplementary material
 (\cref{thm:trust-amp-restated}, S01), which states the identical bound under
@@ -390,7 +390,7 @@ When agents operate across modalities---processing text, code, images, audio, an
 For agent $a_j$ operating in modality $m$, the adjusted trust from agent $a_i$ is:
 \begin{equation}
 \label{eq:modality-trust}
-\mathcal{T}*{i \to j}^{m} = \mathcal{T}*{i \to j} \cdot \eta_m
+\mathcal{T}_{i \to j}^{m} = \mathcal{T}_{i \to j} \cdot \eta_m
 \end{equation}
 where $\eta_m \in (0, 1]$ is the modality reliability factor.
 \end{definition}
@@ -419,7 +419,7 @@ Video & 0.60 & Combines image and temporal vulnerabilities \\
 For delegation chain crossing modalities $m_1, \ldots, m_k$:
 \begin{equation}
 \label{eq:cross-modality-bound}
-\mathcal{T}*{i \to j}^{\text{cross}} \leq \delta^d \cdot \prod*{l=1}^{k} \eta_{m_l}
+\mathcal{T}_{i \to j}^{\text{cross}} \leq \delta^d \cdot \prod_{l=1}^{k} \eta_{m_l}
 \end{equation}
 \end{theorem}
 
@@ -439,7 +439,7 @@ A trust domain $\mathcal{D}$ is a set of agents sharing a common trust authority
 For agent $a_i$ in domain $\mathcal{D}_1$ and agent $a_j$ in domain $\mathcal{D}_2$:
 \begin{equation}
 \label{eq:cross-domain-trust}
-\mathcal{T}*{i \to j}^{\text{fed}} = \mathcal{T}*{i \to \mathcal{D}*2} \cdot \mathcal{T}*{\mathcal{D}_2}(j)
+\mathcal{T}_{i \to j}^{\text{fed}} = \mathcal{T}_{i \to \mathcal{D}*2} \cdot \mathcal{T}_{\mathcal{D}_2}(j)
 \end{equation}
 where $\mathcal{T}_{i \to \mathcal{D}_2}$ is $a_i$'s trust in domain $\mathcal{D}_2$ and $\mathcal{T}_{\mathcal{D}_2}(j)$ is $a_j$'s standing within its domain.
 \end{definition}
@@ -451,7 +451,7 @@ This two-stage model captures realistic trust reasoning: an organization might t
 Cross-domain trust is bounded by domain trust:
 \begin{equation}
 \label{eq:federated-bound}
-\mathcal{T}*{i \to j}^{\text{fed}} \leq \mathcal{T}*{i \to \mathcal{D}_2}
+\mathcal{T}_{i \to j}^{\text{fed}} \leq \mathcal{T}_{i \to \mathcal{D}_2}
 \end{equation}
 ensuring that untrusted domains cannot boost individual agent trust.
 \end{property}
@@ -484,7 +484,7 @@ Trust mixes the source likelihood with a neutral likelihood $P_0$; low-trust sou
 **Rule B-Direct** (Direct Evidence):
 \begin{equation}
 \label{eq:rule-direct}
-\frac{e = \langle \phi, c, s, \pi \rangle \quad V(\pi) = 1 \quad \mathcal{T}*{i \to s} \geq \tau*{\text{trust}}}{\mathcal{B}_i^{t+1}(\phi) = \text{BayesUpdate}(\mathcal{B}*i^t(\phi), c \cdot \mathcal{T}*{i \to s})}
+\frac{e = \langle \phi, c, s, \pi \rangle \quad V(\pi) = 1 \quad \mathcal{T}_{i \to s} \geq \tau_{\text{trust}}}{\mathcal{B}_i^{t+1}(\phi) = \text{BayesUpdate}(\mathcal{B}_i^t(\phi), c \cdot \mathcal{T}_{i \to s})}
 \end{equation}
 
 **Rule B-Delegated** (Delegated Evidence): evidence received through a delegation
@@ -503,7 +503,7 @@ $d$ hops, making depth-dependent attenuation explicit.
 **Rule B-Corroboration** (Multiple Sources):
 \begin{equation}
 \label{eq:rule-corroboration}
-\frac{\{e_j\}*{j=1}^k: \forall j.\, e_j = \langle \phi, c_j, s_j, \pi_j \rangle \quad |\{s_j\}| \geq \kappa}{\mathcal{B}*i^{t+1}(\phi) = 1 - \prod*{j=1}^{k}(1 - c_j \cdot \mathcal{T}*{i \to s_j})}
+\frac{\{e_j\}_{j=1}^k: \forall j.\, e_j = \langle \phi, c_j, s_j, \pi_j \rangle \quad |\{s_j\}| \geq \kappa}{\mathcal{B}_i^{t+1}(\phi) = 1 - \prod_{j=1}^{k}(1 - c_j \cdot \mathcal{T}_{i \to s_j})}
 \end{equation}
 
 \begin{lemma}[Belief Boundedness]
@@ -518,26 +518,26 @@ After any update sequence: $\forall \phi: 0 \leq \mathcal{B}_i(\phi) \leq 1$.
 Beliefs from unverified sources enter provisional state:
 \begin{equation}
 \label{eq:sandbox-partition}
-\mathcal{B}*i = \mathcal{B}*{\text{verified}} \cup \mathcal{B}_{\text{provisional}}
+\mathcal{B}_i = \mathcal{B}_{\text{verified}} \cup \mathcal{B}_{\text{provisional}}
 \end{equation}
 \end{definition}
 
 **Rule S-Sandbox** (Enter Sandbox):
 \begin{equation}
 \label{eq:rule-sandbox}
-\frac{e = \langle \phi, c, s, \pi \rangle \quad (\mathcal{T}*{i \to s} < \tau*{\text{trust}} \lor V(\pi) = 0)}{\mathcal{B}*{\text{prov}} \gets \mathcal{B}*{\text{prov}} \cup \{(\phi, c, s, \pi, \text{TTL})\}}
+\frac{e = \langle \phi, c, s, \pi \rangle \quad (\mathcal{T}_{i \to s} < \tau_{\text{trust}} \lor V(\pi) = 0)}{\mathcal{B}_{\text{prov}} \gets \mathcal{B}_{\text{prov}} \cup \{(\phi, c, s, \pi, \text{TTL})\}}
 \end{equation}
 
 **Rule S-Promote** (Sandbox Promotion):
 \begin{equation}
 \label{eq:rule-promote}
-\frac{(\phi, \ldots) \in \mathcal{B}*{\text{prov}} \quad V(\pi) = 1 \quad \text{Consistent}(\mathcal{B}*{\text{ver}} \cup \{\phi\}) \quad |\text{Corr}(\phi)| \geq \kappa}{\mathcal{B}*{\text{ver}} \gets \mathcal{B}*{\text{ver}} \cup \{\phi\}; \quad \mathcal{B}*{\text{prov}} \gets \mathcal{B}*{\text{prov}} \setminus \{(\phi, \ldots)\}}
+\frac{(\phi, \ldots) \in \mathcal{B}_{\text{prov}} \quad V(\pi) = 1 \quad \text{Consistent}(\mathcal{B}_{\text{ver}} \cup \{\phi\}) \quad |\text{Corr}(\phi)| \geq \kappa}{\mathcal{B}_{\text{ver}} \gets \mathcal{B}_{\text{ver}} \cup \{\phi\}; \quad \mathcal{B}_{\text{prov}} \gets \mathcal{B}_{\text{prov}} \setminus \{(\phi, \ldots)\}}
 \end{equation}
 
 **Rule S-Expire** (Sandbox Expiry):
 \begin{equation}
 \label{eq:rule-expire}
-\frac{(\phi, c, s, \pi, \text{TTL}) \in \mathcal{B}*{\text{prov}} \quad \text{TTL} \leq 0}{\mathcal{B}*{\text{prov}} \gets \mathcal{B}_{\text{prov}} \setminus \{(\phi, c, s, \pi, \text{TTL})\}}
+\frac{(\phi, c, s, \pi, \text{TTL}) \in \mathcal{B}_{\text{prov}} \quad \text{TTL} \leq 0}{\mathcal{B}_{\text{prov}} \gets \mathcal{B}_{\text{prov}} \setminus \{(\phi, c, s, \pi, \text{TTL})\}}
 \end{equation}
 
 Promotion requires: (1) provenance verification $V(\pi) = 1$, (2) consistency with verified beliefs, and (3) corroboration threshold $\kappa$.
@@ -551,7 +551,7 @@ Promotion requires: (1) provenance verification $V(\pi) = 1$, (2) consistency wi
 An attack models a communication channel from adversary to target:
 \begin{equation}
 \label{eq:attack-channel}
-\text{Channel}: \mathcal{A}*{\text{adv}} \to \sigma*{\text{target}}
+\text{Channel}: \mathcal{A}_{\text{adv}} \to \sigma_{\text{target}}
 \end{equation}
 \end{definition}
 
@@ -673,7 +673,7 @@ Total monitoring capacity: $B_{\text{total}} = \sum_{d \in \mathcal{D}} B_d$.
 Given attack distribution $P(\mathcal{A}_k)$ and detector sensitivities $\eta_d(\mathcal{A}_k)$:
 \begin{equation}
 \label{eq:optimal-allocation}
-B_d^* = \frac{\sum_k P(\mathcal{A}_k) \cdot \eta_d(\mathcal{A}*k)}{\sum*{d'}\sum_k P(\mathcal{A}*k) \cdot \eta*{d'}(\mathcal{A}*k)} \cdot B*{\text{total}}
+B_d^* = \frac{\sum_k P(\mathcal{A}_k) \cdot \eta_d(\mathcal{A}_k)}{\sum_{d'}\sum_k P(\mathcal{A}_k) \cdot \eta_{d'}(\mathcal{A}_k)} \cdot B_{\text{total}}
 \end{equation}
 \end{theorem}
 

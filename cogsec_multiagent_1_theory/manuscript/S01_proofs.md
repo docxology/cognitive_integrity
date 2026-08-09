@@ -2,7 +2,7 @@
 
 # Supplementary: Mathematical Proofs
 
-This supplementary material provides complete formal proofs for all theorems stated in the main text, including preliminary definitions (\cref{sec:preliminaries}), main theorem proofs (\crefrange{sec:thm42-proof}{sec:thm511-proof}), and additional supporting lemmas (\cref{sec:additional-lemmas}).
+This supplementary material provides formal proofs for the theorems that carry proofs in this edition, including preliminary definitions (\cref{sec:preliminaries}), main theorem proofs (\crefrange{sec:thm42-proof}{sec:thm511-proof}), and additional supporting lemmas (\cref{sec:additional-lemmas}). Results stated in the main text that are asserted without a proof in this supplement are recorded explicitly in the Proof Status section (\cref{sec:proof-status}) so that they are not mistaken for proved results.
 
 ## Proof Status {#sec:proof-status}
 
@@ -28,12 +28,18 @@ Separate proofs are also given for the supporting lemmas and for the corollaries
 - Aggregation Properties, \cref{thm:aggregation} (stated in 04_formal\_framework.md)
 - Trust Monotonicity, \cref{thm:trust-monotonic} (04_formal\_framework.md)
 - Cross-Modality Delegation Bound, \cref{thm:cross-modality-bound} (04_formal\_framework.md)
+- Stealth-Impact Tradeoff, \cref{thm:stealth-impact} (04_formal\_framework.md)
+- Fundamental Detection Limit, \cref{thm:detection-limit} (04_formal\_framework.md)
+- Progressive Attack Detection Bound, \cref{thm:progressive-detection} (04_formal\_framework.md)
 - Optimal Threshold Selection, \cref{thm:threshold-selection} (05_defense\_mechanisms.md)
+- Firewall Completeness, \cref{thm:firewall-completeness} (05_defense\_mechanisms.md)
+- CUSUM Average Run Length, \cref{thm:cusum-arl} (05_defense\_mechanisms.md)
 - False Positive Composition, \cref{thm:fpr-composition} (05_defense\_mechanisms.md)
 - Cascade FPR Reduction, \cref{thm:cascade-fpr} (06_detection\_methods.md)
 - Pipeline TPR Bound, \cref{thm:pipeline-tpr} (06_detection\_methods.md)
 - Stack Detection Rate, \cref{cor:stack-detection} (05_defense\_mechanisms.md)
 - Layered Defense Asymptotic Guarantee, \cref{cor:layered-defense} (05_defense\_mechanisms.md)
+- Small-Step Detection Reduction, \cref{cor:small-steps} (04_formal\_framework.md; immediate consequence of the deferred \cref{thm:progressive-detection})
 - Quorum Attack Cost, \cref{cor:quorum-attack-cost} (S02_eusocial\_cogsec.md)
 - Stigmergic Trust Bound, \cref{cor:stigmergic-trust} (S02_eusocial\_cogsec.md)
 - Emergent Stealth-Impact Bound, \cref{cor:emergent-stealth-impact} (S02_eusocial\_cogsec.md)
@@ -853,13 +859,13 @@ By the strong law of large numbers, $T_{rep}^t \to \mu$ almost surely.
 \toprule
 Theorem & Primary Technique & Complexity \\
 \midrule
-3.1 (Trust Boundedness) & Strong induction & $O(d)$ \\
-6.1 (Belief Injection Resistance) & Probability independence & $O(1)$ \\
-6.2 (No Trust Amplification) & Strong induction & $O(k)$ \\
-6.3 (Goal Alignment Invariant) & Induction on time & $O(t)$ \\
-6.4 (Firewall Liveness) & Complement probability & $O(1)$ \\
-6.5 (Byzantine Consensus) & Classical BFT & $O(f)$ \\
-6.6 (Bounded Overhead) & Expected value & $O(1)$ \\
+4.2 (Trust Boundedness) & Strong induction & $O(d)$ \\
+5.7 (Belief Injection Resistance) & Probability independence & $O(1)$ \\
+4.7 (No Trust Amplification) & Strong induction & $O(k)$ \\
+5.8 (Goal Alignment Invariant) & Induction on time & $O(t)$ \\
+5.9 (Firewall Liveness) & Complement probability & $O(1)$ \\
+5.10 (Byzantine Consensus) & Classical BFT & $O(f)$ \\
+5.11 (Bounded Overhead) & Expected value & $O(1)$ \\
 \bottomrule
 \end{tabular}
 \end{table}

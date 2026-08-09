@@ -51,7 +51,7 @@ The critical insight is that attacks on $\mathcal{E}$ constitute attacks on the 
 The *cyberphysical niche* $\mathcal{N}$ of a stigmergic operator is the tuple:
 \begin{equation}
 \label{eq:niche}
-\mathcal{N} = \langle \mathcal{E}, \mathcal{I}*{\text{ext}}, \mathcal{R}, \mathcal{H}*{\text{env}} \rangle
+\mathcal{N} = \langle \mathcal{E}, \mathcal{I}_{\text{ext}}, \mathcal{R}, \mathcal{H}_{\text{env}} \rangle
 \end{equation}
 where $\mathcal{I}_{\text{ext}}$ is the external information environment (web, APIs, sensors), $\mathcal{R}$ is the resource landscape (compute, memory, tokens), and $\mathcal{H}_{\text{env}}$ is environmental history.
 \end{definition}
@@ -65,7 +65,7 @@ Colony-level computation arises from simple individual rules applied in parallel
 For a stigmergic operator $\mathcal{O}_\Sigma$ with agents $\mathcal{A} = \{a_1, \ldots, a_n\}$, the *emergent collective function* $\mathcal{F}_c$ is:
 \begin{equation}
 \label{eq:emergent-function}
-\mathcal{F}*c: \mathcal{E}^T \times \prod*{i=1}^n \sigma_i^T \to \mathcal{O}_{\text{collective}}
+\mathcal{F}_c: \mathcal{E}^T \times \prod_{i=1}^n \sigma_i^T \to \mathcal{O}_{\text{collective}}
 \end{equation}
 mapping environmental and cognitive state trajectories to collective outcomes $\mathcal{O}_{\text{collective}}$ that are not computable from any single $\sigma_i$ in isolation.
 \end{definition}
@@ -74,9 +74,9 @@ mapping environmental and cognitive state trajectories to collective outcomes $\
 \label{prop:non-decomposable}
 An emergent collective function $\mathcal{F}_c$ is *non-decomposable* if there exists no function $f$ such that:
 \begin{equation}
-\mathcal{F}*c(\mathcal{E}^T, \{\sigma_i^T\}) = f\left(\sum*{i=1}^n g(\sigma_i^T)\right)
+\mathcal{F}_c(\mathcal{E}^T, \{\sigma_i^T\}) = f\left(\sum_{i=1}^n g(\sigma_i^T)\right)
+\label{eq:non-decomposability}
 \end{equation}
-{#eq:non-decomposability}
 for any agent-level function $g$. The collective behavior requires knowledge of interaction structure, not just aggregated individual states.
 \end{property}
 
@@ -91,7 +91,7 @@ Eusocial insects regulate information flow through recognition systems—cuticul
 In a stigmergic operator, the *colonial trust function* $\mathcal{T}_c$ extends the dyadic trust $\mathcal{T}_{i \to j}$ (\cref{def:trust-function}) to environment-mediated trust:
 \begin{equation}
 \label{eq:colonial-trust}
-\mathcal{T}*{c}(i, m, l, t) = \mathcal{T}*{i}^{\text{self}} \cdot \rho(m, l, t) \cdot \exp(-\lambda \cdot \Delta t)
+\mathcal{T}_{c}(i, m, l, t) = \mathcal{T}_{i}^{\text{self}} \cdot \rho(m, l, t) \cdot \exp(-\lambda \cdot \Delta t)
 \end{equation}
 where $\rho(m, l, t)$ is the signal reliability at location $l$ for marker $m$ at time $t$, and $\lambda$ is the temporal decay constant.
 \end{definition}
@@ -168,7 +168,7 @@ Biological colonies maintain function despite continuous individual mortality. A
 For a stigmergic operator $\mathcal{O}_\Sigma$ with Byzantine adversary controlling fraction $f$ of agents, collective function $\mathcal{F}_c$ is preserved if and only if:
 \begin{equation}
 \label{eq:redundancy-condition}
-f < \frac{1}{3} \cdot \left(1 - \frac{H(\mathcal{F}*c)}{n \cdot H*{\max}}\right)
+f < \frac{1}{3} \cdot \left(1 - \frac{H(\mathcal{F}_c)}{n \cdot H_{\max}}\right)
 \end{equation}
 where $H(\mathcal{F}_c)$ is the entropy of the collective function and $H_{\max}$ is the maximum per-agent entropy.
 \end{theorem}
@@ -186,7 +186,7 @@ Eusocial colonies make collective decisions through quorum sensing—actions tri
 A *cognitive quorum* for collective action $\alpha$ is a threshold function $Q_\alpha: \mathbb{N} \to [0, 1]$ such that $\alpha$ executes only when:
 \begin{equation}
 \label{eq:quorum-eusocial}
-\frac{|\{a_i \in \mathcal{A} : \mathcal{I}*i \ni \alpha\}|}{|\mathcal{A}|} \geq Q*\alpha(|\mathcal{A}|)
+\frac{|\{a_i \in \mathcal{A} : \mathcal{I}_i \ni \alpha\}|}{|\mathcal{A}|} \geq Q_\alpha(|\mathcal{A}|)
 \end{equation}
 \end{definition}
 
@@ -290,8 +290,8 @@ We propose five benchmark scenarios grounded in eusocial insect analogs, formali
 Let $\mathcal{E}(l_{\text{target}}, m_{\text{recruit}}, t)$ be the recruitment signal at legitimate target $l_{\text{target}}$. Adversary injects:
 \begin{equation}
 \mathcal{E}'(l_{\text{malicious}}, m_{\text{recruit}}, t) = \mathcal{E}(l_{\text{target}}, m_{\text{recruit}}, t) + \epsilon
+\label{eq:recruitment-signal-injection}
 \end{equation}
-{#eq:recruitment-signal-injection}
 where $\epsilon > 0$ is chosen to divert fraction $f$ of responding agents.
 
 **Success metric:** Fraction of agent-actions directed to $l_{\text{malicious}}$ vs. $l_{\text{target}}$.
@@ -316,14 +316,14 @@ where $\epsilon > 0$ is chosen to divert fraction $f$ of responding agents.
 \label{form:sybil-infiltration}
 Adversary creates agent set $\mathcal{A}_{\text{sybil}} = \{s_1, \ldots, s_k\}$ with initial trust:
 \begin{equation}
-\mathcal{T}*{i \to s_j}(t_0) = \tau*{\text{init}} \quad \forall a_i \in \mathcal{A}, s_j \in \mathcal{A}*{\text{sybil}}
+\mathcal{T}_{i \to s_j}(t_0) = \tau_{\text{init}} \quad \forall a_i \in \mathcal{A}, s_j \in \mathcal{A}_{\text{sybil}}
+\label{eq:sybil-initial-trust}
 \end{equation}
-{#eq:sybil-initial-trust}
 Sybils behave cooperatively for period $\Delta t_{\text{trust}}$, building:
 \begin{equation}
-\mathcal{T}*{i \to s_j}(t_0 + \Delta t_{\text{trust}}) = \tau_{\text{init}} + \sum_{k=1}^{m} \Delta\mathcal{T}_k
+\mathcal{T}_{i \to s_j}(t_0 + \Delta t_{\text{trust}}) = \tau_{\text{init}} + \sum_{k=1}^{m} \Delta\mathcal{T}_k
+\label{eq:sybil-trust-accumulation}
 \end{equation}
-{#eq:sybil-trust-accumulation}
 At time $t_{\text{attack}}$, sybils coordinate malicious action.
 
 **Success metric:** Damage inflicted before detection, normalized by trust-building duration.
@@ -349,14 +349,14 @@ For collective action $\alpha$ with quorum threshold $Q_\alpha = q$, adversary t
 **Quorum prevention:**
 \begin{equation}
 \forall a_i \in \mathcal{A}_{\text{target}}: \mathcal{I}_i \gets \mathcal{I}_i \setminus \{\alpha\}
+\label{eq:quorum-prevention}
 \end{equation}
-{#eq:quorum-prevention}
 
 **False quorum:**
 \begin{equation}
-\forall a_i \in \mathcal{A}_{\text{target}}: \mathcal{I}_i \gets \mathcal{I}*i \cup \{\alpha*{\text{malicious}}\}
+\forall a_i \in \mathcal{A}_{\text{target}}: \mathcal{I}_i \gets \mathcal{I}_i \cup \{\alpha_{\text{malicious}}\}
+\label{eq:false-quorum-injection}
 \end{equation}
-{#eq:false-quorum-injection}
 
 **Success metric:** Probability of achieving manipulation goal given adversary budget $B$.
 \end{formalization}
@@ -380,9 +380,9 @@ Adversary injects belief $\mathcal{B}_{\text{false}}(\phi_{\text{attack}}) = p_0
 
 Propagation dynamics follow:
 \begin{equation}
-\mathcal{B}*i(\phi*{\text{attack}}, t+1) = (1-\gamma)\mathcal{B}*i(\phi*{\text{attack}}, t) + \gamma \cdot \text{Agg}\left(\{\mathcal{B}*j(\phi*{\text{attack}}, t) : j \in \mathcal{N}(i)\}\right)
+\mathcal{B}_i(\phi_{\text{attack}}, t+1) = (1-\gamma)\mathcal{B}_i(\phi_{\text{attack}}, t) + \gamma \cdot \text{Agg}\left(\{\mathcal{B}_j(\phi_{\text{attack}}, t) : j \in \mathcal{N}(i)\}\right)
+\label{eq:belief-cascade-propagation}
 \end{equation}
-{#eq:belief-cascade-propagation}
 where $\gamma$ is the social influence weight and $\text{Agg}$ is the belief aggregation function.
 
 **Success metric:** Final belief penetration $|\{a_i : \mathcal{B}_i(\phi_{\text{attack}}) > \tau\}| / n$ given seed set size.
@@ -407,9 +407,9 @@ Given operator goals $\mathcal{G}_{\mathcal{O}} = \{g_1, \ldots, g_m\}$ and indi
 
 **Misalignment condition:**
 \begin{equation}
-\forall a_i \in \mathcal{A}: \text{LocallyRational}(R, \sigma_i) = \text{true} \quad \land \quad \mathcal{F}*c(R, \{\sigma_i\}) \not\models \mathcal{G}*{\mathcal{O}}
+\forall a_i \in \mathcal{A}: \text{LocallyRational}(R, \sigma_i) = \text{true} \quad \land \quad \mathcal{F}_c(R, \{\sigma_i\}) \not\models \mathcal{G}_{\mathcal{O}}
+\label{eq:emergent-misalignment-condition}
 \end{equation}
-{#eq:emergent-misalignment-condition}
 
 The collective function produces outcomes that violate operator goals despite each agent acting rationally according to its rules.
 
@@ -438,8 +438,8 @@ where:
 \begin{align}
 \text{DR}_c &= \text{Colony-level detection rate} \\
 \text{FPR}_c &= \text{Colony-level false positive rate} \\
-\text{Resilience} &= \frac{\mathcal{F}_c(\text{under attack})}{\mathcal{F}*c(\text{baseline})} \\
-\text{Recovery} &= \frac{1}{t*{\text{recovery}}} \text{ (normalized)}
+\text{Resilience} &= \frac{\mathcal{F}_c(\text{under attack})}{\mathcal{F}_c(\text{baseline})} \\
+\text{Recovery} &= \frac{1}{t_{\text{recovery}}} \text{ (normalized)}
 \end{align}
 with weights $w_i$ summing to 1.
 \end{definition}
@@ -472,8 +472,8 @@ Monitor collective metrics, not just individual agent health. Pathological emerg
 Extend the trust decay principle (\cref{thm:trust-bounded}) to stigmergic contexts. Environmental markers should carry trust that decays with distance and time from source:
 \begin{equation}
 \mathcal{T}(m, t) = \mathcal{T}(m, t_0) \cdot \exp(-\lambda(t - t_0))
+\label{eq:stigmergic-trust-decay}
 \end{equation}
-{#eq:stigmergic-trust-decay}
 \end{principle}
 
 ### Integration with CIF Defenses {#sec:cif-integration}
@@ -506,7 +506,7 @@ The trust decay theorem (\cref{thm:trust-bounded}) extends to stigmergic context
 For a stigmergic operator $\mathcal{O}_\Sigma$, trust in environmental markers is bounded by:
 \begin{equation}
 \label{eq:stigmergic-trust-bound}
-\mathcal{T}*{c}(i, m, l, t) \leq \mathcal{T}*{i}^{\text{self}} \cdot \delta_s^{d_{\text{space}}} \cdot \delta_t^{d_{\text{time}}}
+\mathcal{T}_{c}(i, m, l, t) \leq \mathcal{T}_{i}^{\text{self}} \cdot \delta_s^{d_{\text{space}}} \cdot \delta_t^{d_{\text{time}}}
 \end{equation}
 where $\delta_s$ is spatial decay, $\delta_t$ is temporal decay, $d_{\text{space}}$ is distance from marker origin, and $d_{\text{time}}$ is time since marker creation.
 \end{corollary}
@@ -518,7 +518,7 @@ The stealth-impact tradeoff (\cref{thm:stealth-impact}) applies to emergent atta
 For an emergent attack $\mathcal{A}_e$ with collective impact $\mathcal{I}_c$ and collective stealth $\mathcal{S}_c$:
 \begin{equation}
 \label{eq:emergent-stealth-impact}
-\mathcal{I}_c \cdot \mathcal{S}*c \leq n \cdot C*{\text{channel}}
+\mathcal{I}_c \cdot \mathcal{S}_c \leq n \cdot C_{\text{channel}}
 \end{equation}
 Collective impact cannot be both high and collectively undetectable, but the bound scales with colony size.
 \end{corollary}
@@ -586,26 +586,26 @@ The collective function $\mathcal{F}_c$ can be decomposed into information contr
 For the collective function to be preserved, the honest agents must contribute sufficient information:
 \begin{equation}
 \sum_{i \in \text{honest}} I_i \geq H(\mathcal{F}_c)
+\label{eq:honest-info-sufficiency}
 \end{equation}
-{#eq:honest-info-sufficiency}
 
 Each honest agent contributes at most $H_{\max}$ bits. With $(1-f)n$ honest agents:
 \begin{equation}
 (1-f) \cdot n \cdot H_{\max} \geq H(\mathcal{F}_c)
+\label{eq:honest-agent-capacity}
 \end{equation}
-{#eq:honest-agent-capacity}
 
 Additionally, Byzantine consensus requires honest majority for any voting-based aggregation:
 \begin{equation}
 (1-f)n > 2fn \implies f < \frac{1}{3}
+\label{eq:byzantine-honest-majority}
 \end{equation}
-{#eq:byzantine-honest-majority}
 
 Combining these constraints:
 \begin{equation}
-f < \min\left(\frac{1}{3}, 1 - \frac{H(\mathcal{F}*c)}{n \cdot H*{\max}}\right) = \frac{1}{3} \cdot \left(1 - \frac{H(\mathcal{F}*c)}{n \cdot H*{\max}}\right)
+f < \min\left(\frac{1}{3}, 1 - \frac{H(\mathcal{F}_c)}{n \cdot H_{\max}}\right) = \frac{1}{3} \cdot \left(1 - \frac{H(\mathcal{F}_c)}{n \cdot H_{\max}}\right)
+\label{eq:byzantine-info-combined}
 \end{equation}
-{#eq:byzantine-info-combined}
 
 where the final equality holds when the information constraint is binding (typical for complex collective functions). \qed
 \end{proof}

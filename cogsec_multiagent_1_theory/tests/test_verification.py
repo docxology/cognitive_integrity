@@ -393,3 +393,87 @@ class TestManuscriptVerifierEdgeCases:
 
             verifier = ManuscriptVerifier(tmpdir)
             assert verifier.check_style() is True
+
+
+class TestManuscriptVerifierRound7:
+    """Round-7 guard tests: pandoc-attribute and math-hygiene checks (F1/F2/F3)."""
+
+    def _make_verifier(self, md_content: str):
+        import tempfile
+        from pathlib import Path
+
+        from src.verification import ManuscriptVerifier
+
+        tmp = tempfile.mkdtemp()
+        tmppath = Path(tmp)
+        (tmppath / "references.bib").write_text("@article{key1,}")
+        (tmppath / "manuscript.md").write_text(md_content)
+        return ManuscriptVerifier(tmp)
+
+    def test_pandoc_attributes_clean(self):
+        """Heading/image attributes are legitimate and pass."""
+        v = self._make_verifier(
+            "# Section {#sec:intro}\n\n![alt](fig.png){#fig:x width=80%}\n"
+        )
+        assert v.check_pandoc_attributes() is True
+
+    def test_pandoc_attributes_flags_bare_line(self):
+        """A standalone {#eq:...} line is raw attribute syntax that breaks LaTeX."""
+        v = self._make_verifier(
+            "\\begin{equation}\nx = 1\n\\end{equation}\n{#eq:foo}\n"
+        )
+        assert v.check_pandoc_attributes() is False
+
+    def test_math_hygiene_clean(self):
+        """Proper subscripts and single-backslash commands pass."""
+        v = self._make_verifier(r"$\mathcal{T}_{i \to j}$ and $P_{\text{x}}$")
+        assert v.check_math_hygiene() is True
+
+    def test_math_hygiene_flags_subscript_star(self):
+        """Subscript corruption (star instead of underscore) is flagged."""
+        v = self._make_verifier(r"$\mathcal{T}*{i \to j}$")
+        assert v.check_math_hygiene() is False
+
+    def test_math_hygiene_flags_double_backslash(self):
+        """Double-escaped control sequences inside math are flagged."""
+        v = self._make_verifier(r"$P_{\\text{detect}}$")
+        assert v.check_math_hygiene() is False
+
+    def test_math_hygiene_ignores_legit_starred(self):
+        """Legitimate starred LaTeX commands are not flagged."""
+        v = self._make_verifier(
+            "\\vspace*{2cm}\n\\DeclareMathOperator*{\\argmax}{argmax}\n"
+        )
+        assert v.check_math_hygiene() is True
+
+    def test_duplicate_label_flagged(self):
+        """Duplicate labels (multiply-defined LaTeX warnings) are flagged."""
+        v = self._make_verifier(
+            "\\label{cor:foo}\n...\n\\label{cor:foo}\n"
+        )
+        assert v.check_labels_and_refs() is False
+
+    def test_run_all_includes_new_checks(self):
+        """run_all() executes the round-7 checks and fails on a bare attribute."""
+        import tempfile
+        from pathlib import Path
+
+        from src.verification import ManuscriptVerifier
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmppath = Path(tmpdir)
+            (tmppath / "references.bib").write_text("@article{key1,}")
+            (tmppath / "manuscript.md").write_text(
+                "\\begin{equation}\nx = 1\n\\end{equation}\n{#eq:broken}\n"
+            )
+            verifier = ManuscriptVerifier(tmpdir)
+            assert verifier.run_all() is False
+
+
+    def test_macro_parameters_not_counted_as_labels(self):
+        """LaTeX \\newcommand macro parameters (#1, #2) are not pandoc labels."""
+        v = self._make_verifier(
+            "\\newcommand{\\trust}[2]{\\mathcal{T}_{#1 \\to #2}}\n"
+            "\\label{eq:real}\n"
+        )
+        assert v.check_labels_and_refs() is True

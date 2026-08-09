@@ -32,7 +32,7 @@ This paper presents the **theoretical foundations** of the Cognitive Integrity F
 | New section | — | §10 Limitations and Boundary Conditions |
 | Proofs supplement | 7 theorems | +6 new v1.1 proofs (Fisher-Rao, semiring, blast radius) |
 | Source modules | 10 modules | +2: `ooda_monitor.py`, `cif_ad_coupling.py` |
-| Test coverage | 12 test files | +2 files: 83 new tests (OODA, CIF-AD, Byzantine stress) |
+| Test coverage | 13 test files | +2 files: 104 tests (OODA, CIF-AD, Byzantine stress); 420 total |
 | Figures | 18 scripts | +2: CIF-AD coupling heatmap, OODA phase diagram |
 | Citations | ~100 | +10 new: Fisher-Rao, Neyman-Pearson, CUSUM, FLP, etc. |
 
@@ -81,8 +81,8 @@ cogsec_multiagent_1_theory/
 │   ├── 20_ooda_phase_figure.py       # NEW v2
 │   └── (01-18 existing scripts)
 ├── tests/                # Module and visualization tests
-│   ├── test_ooda_monitor.py    # NEW v2: 51 tests (incl. Hypothesis property-based)
-│   ├── test_cif_ad_coupling.py # NEW v2: 32 tests (incl. Byzantine stress)
+│   ├── test_ooda_monitor.py    # NEW v2: 56 tests (incl. Hypothesis property-based)
+│   ├── test_cif_ad_coupling.py # NEW v2: 48 tests (incl. Byzantine stress)
 │   └── (existing test files)
 └── output/               # Generated PDF, figures, reports
 ```
