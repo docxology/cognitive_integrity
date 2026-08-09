@@ -151,6 +151,17 @@ class TestQuorumVerification:
         quorum = QuorumVerification(n_agents=7, max_byzantine=2)
         assert quorum.quorum == 5
 
+    def test_explicit_zero_byzantine_budget_is_preserved(self):
+        """An explicit f=0 must not be replaced by the default budget."""
+        quorum = QuorumVerification(n_agents=4, max_byzantine=0)
+        assert quorum.max_byzantine == 0
+        assert quorum.quorum == 3
+
+    def test_invalid_agent_count_rejected(self):
+        """Quorum verification requires at least one agent."""
+        with pytest.raises(ValueError, match="n_agents must be positive"):
+            QuorumVerification(n_agents=0, max_byzantine=0)
+
     def test_approval_reaches_quorum(self):
         """Action approved when quorum reached."""
         quorum = QuorumVerification(n_agents=4, max_byzantine=1)

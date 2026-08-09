@@ -18,7 +18,7 @@ This paper provided computational validation of the Cognitive Integrity Framewor
 
 **Information-Geometric Attack Formalization**: We characterized adversarial belief manipulation as geodesic movement on the Fisher-Rao statistical manifold (Theorem CG.1), providing a Riemannian metric on cognitive attacks and establishing that each sandbox threshold $\kappa$ corresponds to a bounded geodesic radius $\rho = 2\arccos(\sqrt{1-\kappa\varepsilon})$.
 
-**Bayesian Uncertainty Quantification**: We replaced all point estimates with Beta-Binomial posteriors and established that: (a) the parametric--empirical gap has Bayes factor $\text{BF}_{10} \gg 10^6$ (decisive evidence for a true performance gap); (b) the LLM validation ($N=5$--$10$ per architecture) is severely underpowered (required $N \geq 246$ for $\pm 5\%$ precision); and (c) the multi-seed estimate (mean 44.8\%, 95\% HDI [41.3\%, 48.3\%]) is the most reliable single point estimate.
+**Bayesian Uncertainty Quantification**: We supplemented point estimates with Beta-Binomial posteriors and established that: (a) the parametric--empirical gap has Bayes factor $\text{BF}_{10} \gg 10^6$ under the explicitly simulated-control model; (b) the LLM validation ($N=5$--$10$ per architecture) is severely underpowered (required $N \geq 246$ for $\pm 5\%$ precision); and (c) the representative multi-seed estimate (mean 44.8\%, 95\% HDI [35.5\%, 54.7\%]) is reported with uncertainty.
 
 **Honest Gap Characterization**: We documented the 49--88 percentage-point gap between parametric design ceiling and current empirical performance (parametric ceiling 96--100\% vs.\ pipeline mean 44.8\% and ablation 12.2\% respectively), attributing it to adapter implementation maturity rather than fundamental architectural limitations.
 
@@ -26,13 +26,13 @@ This paper provided computational validation of the Cognitive Integrity Framewor
 
 The multi-tier evaluation yields four principal findings:
 
-1. **Layered defense is essential**: Ablation studies confirm that no single component accounts for a majority of detection. The top three components by marginal removal cost (Detection, Tripwires, Invariants) account for about 82\% of the summed harmful $\Delta\text{TPR}$ from component removal on the ablation corpus, and the Tripwire + Detection pair exhibits the strongest synergy ($\approx +0.031$ beyond additive prediction).
+1. **Layered defense is essential**: Ablation studies confirm that no single component accounts for a majority of detection. The top three components by marginal removal cost (Detection, Tripwires, Invariants) account for about 80\% of the summed harmful $\Delta\text{TPR}$ from component removal on the ablation corpus, and the Tripwire + Detection pair exhibits the strongest synergy ($\approx +0.031$ beyond additive prediction).
 
 2. **Trust calculus prevents amplification**: The $\delta^d$ decay bound successfully prevented trust laundering across all evaluation modes---a structural guarantee verified formally (Part 1), through unit-tested implementation, and through colony-scale simulation (100\% sybil detection at 0\% FPR with 50 agents and 4 adversaries).
 
 3. **Architecture topology matters**: Preliminary LLM validation ($N=10$) shows topology-dependent detection: CrewAI (chain topology) achieves 100\% detection while Claude Code (hub-spoke) achieves 80\%. Colony benchmarks further demonstrate that structured adversarial scenarios are more detectable than emergent misalignment.
 
-4. **Emergent misalignment is the hardest problem**: Colony benchmarks reveal that agents collectively drifting without explicit adversaries (emergent misalignment) achieves only 56.1\% detection at 46.6\% FPR, defining the most important frontier for future defense research.
+4. **Emergent misalignment is the hardest problem**: The 30-seed colony benchmark reveals that agents collectively drifting without explicit adversaries (emergent misalignment) average 74.3\% detection; its bootstrap uncertainty and false-positive rate are reported with the scenario artifact, defining an important frontier for future defense research. The single-seed 56.1\% result is not used as the headline estimate.
 
 5. **Composability under modeled semantics**: Theorem CT.3 (monadic composition law) shows that detection-preservation holds by construction for composed morphisms when the pipeline matches the short-circuit category laws. Attacks that circumvent that guarantee must operate outside the modeled composition semantics (e.g., by breaking module contracts or the trust/identity assumptions), not merely evade a single threshold.
 

@@ -245,7 +245,16 @@ class QuorumVerification:
 
     def __init__(self, n_agents: int, max_byzantine: Optional[int] = None) -> None:
         self.n_agents = n_agents
-        self.max_byzantine = max_byzantine or (n_agents - 1) // 3
+        # ``0`` is a valid explicit Byzantine budget.  Truthiness would
+        # silently replace it with the default budget (P2-39).
+        self.max_byzantine = (
+            (n_agents - 1) // 3 if max_byzantine is None else max_byzantine
+        )
+
+        if self.max_byzantine < 0:
+            raise ValueError("max_byzantine must be non-negative")
+        if n_agents < 1:
+            raise ValueError("n_agents must be positive")
 
         # Quorum threshold: ceil((n + f + 1) / 2)
         self.quorum = int(np.ceil((n_agents + self.max_byzantine + 1) / 2))

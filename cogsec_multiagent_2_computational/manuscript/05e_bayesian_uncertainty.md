@@ -36,7 +36,7 @@ Table: Beta-Binomial posteriors for major detection claims. Prior: $\mathrm{Beta
 | LLM validation (CrewAI) | 5 | 5 | $\mathrm{Beta}(6, 1)$ | $[0.570, 1.000]$ |
 | Parametric full CIF (direct injection) | 92 | 100 | $\mathrm{Beta}(93, 9)$ | $[0.856, 0.963]$ |
 | Colony: Sybil infiltration | 20 | 20 | $\mathrm{Beta}(21, 1)$ | $[0.867, 1.000]$ |
-| Colony: Emergent misalignment | 56 | 100 | $\mathrm{Beta}(57, 45)$ | $[0.463, 0.654]$ |
+| Colony: Emergent misalignment (30-seed mean) | — | 30 seeds | Not Beta-Binomial; bootstrap CI in \cref{sec:colony-results} | 0.743 point estimate |
 
 The multi-seed posterior under the uniform prior has a posterior median detection rate of $0.453$ with a 95\% HDI of $[0.355, 0.547]$. This interval width (0.192) reflects the moderate per-seed sample size ($n = 100$); the 30-seed run characterizes between-seed variability and the seeds are not pooled as independent Bernoulli trials. Two observations are immediately visible. First, the LLM validation results have extremely wide HDIs (Claude Code width 0.573, CrewAI width 0.430) due to small sample sizes ($n = 5$ per architecture); these cannot support the 80–100\% detection range claimed in the abstract without acknowledging the wide credible intervals. Second, the ablation TPR posterior concentrates around $0.13$ ($n = 98$) whereas the multi-seed aggregate concentrates around $0.45$, quantifying the 32-percentage-point gap as a structurally separated posterior rather than a sampling coincidence (see \cref{sec:bayes-factors}).
 

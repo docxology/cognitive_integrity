@@ -134,7 +134,7 @@ Table: Cross-architecture detection summary (real LLM validation, $N=10$). {#tab
 
 *Note: Only 2 of 4 architectures have been evaluated with live LLM agents ($N=5$ each). The complete parametric cross-architecture analysis is available in \cref{sec:parametric-cross-arch}.*
 
-Preliminary LLM validation across two architectures shows topology-dependent detection: CrewAI's sequential chain topology achieves 100\% detection ($N=5$), while Claude Code's hub-spoke topology shows one miss. The colony benchmarks further demonstrate topology effects: structured adversarial scenarios (sybil infiltration, quorum manipulation) achieve near-complete detection, while emergent misalignment (no explicit adversaries) achieves only 56.1\%.
+Preliminary LLM validation across two architectures shows topology-dependent detection: CrewAI's sequential chain topology achieves 100\% detection ($N=5$), while Claude Code's hub-spoke topology shows one miss. The colony benchmarks further demonstrate scenario effects: structured adversarial scenarios (sybil infiltration, quorum manipulation) achieve near-complete detection, while the 30-seed emergent-misalignment benchmark (with no explicit adversaries) averages 74.3\% detection. The previously reported 56.1\% value was a single seed and is not used here.
 
 Architectures with explicit role boundaries (CrewAI) and rich graph structure (LangGraph, per parametric analysis) provide more interception opportunities for CIF monitors. Extension of LLM validation to AutoGPT and LangGraph is planned for future work.
 
