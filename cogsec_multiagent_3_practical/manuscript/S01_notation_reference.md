@@ -14,7 +14,7 @@ This paper intentionally minimizes mathematical notation to maximize accessibili
 | $[A]$ | Design Matrix | Maps Functional Requirements to Defense Provisions |
 | $\{FR\}$ | Functional Requirements | What the system must protect |
 | $\{DP\}$ | Defense Provisions | What CIF mechanisms provide |
-| $\Omega_k$ | Adversary class $k$ | Capability tier (1=passive, 2=injection, 3=spoofing, 4=belief manipulation, 5=coordinated) |
+| $\Omega_k$ | Adversary class $k$ | Capability tier: 1=external (input control), 2=peripheral (tool/data channels), 3=agent-level (single compromised agent), 4=coordination (inter-agent channels), 5=systemic (orchestrator) |
 
 ## CIF-AD-OODA Notation
 
@@ -22,7 +22,7 @@ The cross-domain analysis (Sections 9c–9l) uses the CIF-AD-OODA methodology:
 
 - **Design Matrix** $[A]$: A matrix where rows represent Functional Requirements ($FR$) and columns represent Defense Provisions ($DP$). Each entry $A_{ij}$ indicates whether defense $j$ covers requirement $i$.
 - **Transient Coupling** $[A']$: The coupling matrix during an active attack, showing which defenses are bypassed.
-- **Adversary Classes** $\Omega_1$–$\Omega_5$: Five capability tiers from passive eavesdropping ($\Omega_1$) through coordinated multi-agent attacks ($\Omega_5$), as defined in Part 1, Section 3.
+- **Adversary Classes** $\Omega_1$–$\Omega_5$: Five adversary classes from external input control ($\Omega_1$) through peripheral tool/data-channel compromise ($\Omega_2$), single compromised agents ($\Omega_3$), coordination-channel attacks ($\Omega_4$), and systemic orchestrator compromise ($\Omega_5$), as defined in Part 1, Section 3.
 
 ### Three Universal Attack Patterns
 

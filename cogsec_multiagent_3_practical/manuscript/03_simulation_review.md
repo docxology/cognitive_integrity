@@ -89,9 +89,9 @@ We proved the *architecture* works. The implementation fidelity is the variable 
 >
 > - **94--100\%** (parametric simulation, $N=3{,}800$): CIF's **design-level detection ceiling** — what the defense architecture achieves when adapters are fully mature (Level 5) and conditions match the calibrated model. This is the target, not the current reality.
 > - **44.8\%** [95\% HDI: 41.3\%, 48.3\%] (multi-seed pipeline, 30 seeds): The **current empirical baseline** for the Claude Code architecture with Level-3 adapters. This is what you get today, out of the box, before adapter tuning.
-> - **12.4\%** (ablation corpus, 100 attacks, all categories including hardest): The **conservative floor** — full pipeline performance on a corpus specifically designed to include difficult attacks. This represents the worst-case realistic estimate.
+> - **~12.2\%** (ablation corpus, 98 attacks, all categories including hardest): The **conservative floor** — full pipeline performance on a corpus specifically designed to include difficult attacks. This represents the worst-case realistic estimate.
 >
-> All three numbers are correct. Use 44.8\% for realistic planning, 94\% as the achievable ceiling with mature adapters, and 12.4\% as a conservative lower bound for adversarial threat modeling.
+> All three numbers are correct. Use 44.8\% for realistic planning, 94\% as the achievable ceiling with mature adapters, and ~12.2\% as a conservative lower bound for adversarial threat modeling.
 
 ### Tripwire Configuration Data
 

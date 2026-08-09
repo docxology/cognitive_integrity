@@ -402,3 +402,108 @@ class TestManuscriptVerifierRunAll:
             verifier = ManuscriptVerifier(tmpdir)
 
             assert verifier.run_all() is False
+
+
+class TestVerificationCoveragePaths:
+    """Round-7 additions: cover previously-unexercised branches (real checks, no mocks)."""
+
+    def test_configure_logging_writes_log_file(self):
+        """_configure_verification_logging creates manuscript_verification.log in log_dir."""
+        from src.verification import _configure_verification_logging
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            _configure_verification_logging(tmpdir)
+            log_path = Path(tmpdir) / "manuscript_verification.log"
+            assert log_path.exists()
+            assert log_path.stat().st_size >= 0
+
+    def test_escapes_root_detects_absolute_and_parent(self):
+        """_escapes_root rejects absolute and parent-relative paths, accepts local."""
+        from src.verification import ManuscriptVerifier
+
+        assert ManuscriptVerifier._escapes_root("/etc/passwd") is True
+        assert ManuscriptVerifier._escapes_root("../outside.png") is True
+        assert ManuscriptVerifier._escapes_root("a/../../outside.png") is True
+        assert ManuscriptVerifier._escapes_root("figures/posture.png") is False
+        assert ManuscriptVerifier._escapes_root("sub/fig.png") is False
+
+    def test_image_absolute_path_flagged(self):
+        """check_images_and_links fails on an absolute image path."""
+        from src.verification import ManuscriptVerifier
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmppath = Path(tmpdir)
+            (tmppath / "references.bib").write_text("")
+            (tmppath / "manuscript.md").write_text("![x](/etc/passwd.png)")
+            verifier = ManuscriptVerifier(tmpdir)
+            assert verifier.check_images_and_links() is False
+
+    def test_image_parent_escape_flagged(self):
+        """check_images_and_links fails on a parent-relative image path."""
+        from src.verification import ManuscriptVerifier
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmppath = Path(tmpdir)
+            (tmppath / "references.bib").write_text("")
+            (tmppath / "manuscript.md").write_text("![x](../outside.png)")
+            verifier = ManuscriptVerifier(tmpdir)
+            assert verifier.check_images_and_links() is False
+
+    def test_file_link_flagged(self):
+        """check_images_and_links rejects non-portable file: links."""
+        from src.verification import ManuscriptVerifier
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmppath = Path(tmpdir)
+            (tmppath / "references.bib").write_text("")
+            (tmppath / "manuscript.md").write_text("[secret](file:///etc/passwd)")
+            verifier = ManuscriptVerifier(tmpdir)
+            assert verifier.check_images_and_links() is False
+
+    def test_escaping_link_flagged(self):
+        """check_images_and_links fails on a link that escapes the manuscript root."""
+        from src.verification import ManuscriptVerifier
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmppath = Path(tmpdir)
+            (tmppath / "references.bib").write_text("")
+            (tmppath / "manuscript.md").write_text("[outside](../secret.md)")
+            verifier = ManuscriptVerifier(tmpdir)
+            assert verifier.check_images_and_links() is False
+
+    def test_broken_link_fails_check(self):
+        """(Round-7) a broken local link target must fail, not merely warn."""
+        from src.verification import ManuscriptVerifier
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmppath = Path(tmpdir)
+            (tmppath / "references.bib").write_text("")
+            (tmppath / "manuscript.md").write_text("[missing](does_not_exist.md)")
+            verifier = ManuscriptVerifier(tmpdir)
+            assert verifier.check_images_and_links() is False
+
+    def test_resolvable_link_passes(self):
+        """A local link that resolves passes the link check."""
+        from src.verification import ManuscriptVerifier
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmppath = Path(tmpdir)
+            (tmppath / "references.bib").write_text("")
+            (tmppath / "target.md").write_text("# Target")
+            (tmppath / "manuscript.md").write_text("[target](target.md)")
+            verifier = ManuscriptVerifier(tmpdir)
+            assert verifier.check_images_and_links() is True
+
+    def test_citations_skip_references_bib_named_file(self):
+        """check_citations skips a file literally named references.bib."""
+        from src.verification import ManuscriptVerifier
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmppath = Path(tmpdir)
+            (tmppath / "references.bib").write_text("@article{real_key,}")
+            # A file named exactly references.bib (no .md suffix) present in md_files
+            # must be skipped rather than parsed for \\cite keys.
+            verifier = ManuscriptVerifier(tmpdir)
+            verifier.md_files = [tmppath / "references.bib"]
+            (tmppath / "references.bib").write_text(r"\\cite{not_a_real_key}")
+            assert verifier.check_citations() is True

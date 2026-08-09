@@ -182,10 +182,10 @@ class TestPitfallCatalog:
             PitfallID.SECURITY_AFTERTHOUGHT: 5,
             PitfallID.UNCALIBRATED_THRESHOLDS: 4,
             PitfallID.INDIVIDUAL_ONLY: 4,
-            PitfallID.STATIC_TRIPWIRES: 4,
+            PitfallID.STATIC_TRIPWIRES: 3,
             PitfallID.IGNORING_DRIFT: 3,
             PitfallID.INSUFFICIENT_LOGGING: 3,
-            PitfallID.SINGLE_ORCHESTRATOR: 2,
+            PitfallID.SINGLE_ORCHESTRATOR: 4,
         }
         for pid, severity in expected_severities.items():
             pitfall = self.catalog.get_by_id(pid)
@@ -603,13 +603,13 @@ class TestPitfallChecklistEvaluate:
         result = self.checklist.evaluate()
         assert result.risk_level == RiskLevel.MEDIUM
 
-    def test_evaluate_low_unmitigated(self) -> None:
-        """Severity-2 unmitigated: risk=LOW."""
+    def test_evaluate_single_orchestrator_unmitigated(self) -> None:
+        """Severity-4 unmitigated (PIT-8 is High per manuscript Section 07): risk=HIGH."""
         for pid in PitfallID:
             self.checklist.assess(pid, detected=False)
         self.checklist.assess(PitfallID.SINGLE_ORCHESTRATOR, detected=True)
         result = self.checklist.evaluate()
-        assert result.risk_level == RiskLevel.LOW
+        assert result.risk_level == RiskLevel.HIGH
 
     def test_evaluate_score_reflects_assessment_coverage(self) -> None:
         """Score = assessed_count / total_count."""
@@ -803,14 +803,14 @@ class TestGenerateRemediationPlan:
 
     def test_priority_ordering(self) -> None:
         """Steps are ordered by severity (highest first)."""
-        self.checklist.assess(PitfallID.SINGLE_ORCHESTRATOR, detected=True)  # sev 2
+        self.checklist.assess(PitfallID.SINGLE_ORCHESTRATOR, detected=True)  # sev 4
         self.checklist.assess(PitfallID.IMPLICIT_TRUST, detected=True)  # sev 5
         self.checklist.assess(PitfallID.IGNORING_DRIFT, detected=True)  # sev 3
         plan = generate_remediation_plan(self.checklist)
         # First steps should be from IMPLICIT_TRUST (severity 5)
         assert plan.steps[0].pitfall_id == PitfallID.IMPLICIT_TRUST
-        # Last steps should be from SINGLE_ORCHESTRATOR (severity 2)
-        assert plan.steps[-1].pitfall_id == PitfallID.SINGLE_ORCHESTRATOR
+        # Last steps should be from IGNORING_DRIFT (severity 3, lowest here)
+        assert plan.steps[-1].pitfall_id == PitfallID.IGNORING_DRIFT
 
     def test_priorities_are_sequential(self) -> None:
         """Priority numbers increment from 1."""
@@ -924,12 +924,30 @@ class TestEdgeCases:
     def test_severity_boundary_values(self) -> None:
         """Severity boundaries map correctly in evaluate."""
         checklist = PitfallChecklist()
-        # Only severity-2 detected -> LOW
         for pid in PitfallID:
             checklist.assess(pid, detected=False)
-        checklist.assess(PitfallID.SINGLE_ORCHESTRATOR, detected=True)  # sev 2
+        # A detected-unmitigated severity-4 pitfall -> HIGH (PIT-8 is sev 4)
+        checklist.assess(PitfallID.SINGLE_ORCHESTRATOR, detected=True)
+        result = checklist.evaluate()
+        assert result.risk_level == RiskLevel.HIGH
+
+    def test_low_boundary_all_assessed_clean(self) -> None:
+        """No open exposures -> LOW regardless of severity profile."""
+        checklist = PitfallChecklist()
+        for pid in PitfallID:
+            checklist.assess(pid, detected=False)
         result = checklist.evaluate()
         assert result.risk_level == RiskLevel.LOW
+        assert result.passed is True
+
+    def test_medium_boundary_severity_three(self) -> None:
+        """A detected-unmitigated severity-3 pitfall -> MEDIUM."""
+        checklist = PitfallChecklist()
+        for pid in PitfallID:
+            checklist.assess(pid, detected=False)
+        checklist.assess(PitfallID.IGNORING_DRIFT, detected=True)  # sev 3
+        result = checklist.evaluate()
+        assert result.risk_level == RiskLevel.MEDIUM
 
     def test_multiple_categories_detected(self) -> None:
         """Detect pitfalls from all three categories simultaneously."""

@@ -65,7 +65,7 @@ This paper makes the following contributions:
 - **C2:** Identification of three universal attack patterns---FR Polarity Inversion, Constraint Relaxation, and Context Boundary Violation---through cross-domain synthesis.
 - **C3:** Validation that all five canonical CIF mechanisms provide adequate coverage across ten critical domains, with no mechanism appearing in fewer than three domains and no domain requiring mechanisms outside the CIF vocabulary.
 - **C4:** Three novel defense pattern extensions: verification channel separation, active perturbation probing, and physics-informed invariants.
-- **C5:** Temporal scale analysis demonstrating CIF's applicability across eight orders of magnitude in OODA cycle time.
+- **C5:** Temporal scale analysis demonstrating CIF's applicability across more than ten orders of magnitude in OODA cycle time.
 - **C6:** Retrospective validation through six documented AI agent security incidents (2024--2025), confirming that all incidents map to the universal attack pattern taxonomy and would have been detectable by the appropriate CIF mechanism.
 
 ## Reading Companion: Where to Find Specific Topics {#sec:reading-companion}

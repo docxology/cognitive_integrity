@@ -78,7 +78,7 @@ class TestTrustDepthDRY:
 
     def test_compare_profiles_matches_practical_depth_limit(self) -> None:
         """compare_profiles must reuse practical_depth_limit per profile."""
-        for name, delta in [("low", 0.95), ("medium", 0.9), ("high", 0.85)]:
+        for name, delta in [("low", 0.95), ("medium", 0.80), ("high", 0.60)]:
             result = TrustDecayAnalyzer.compare_profiles()[name]
             assert result["practical_limit"] == TrustDecayAnalyzer.practical_depth_limit(delta)
 
@@ -88,3 +88,44 @@ class TestTrustDepthDRY:
             data = get_trust_decay_data(delta=delta, max_depth=60)
             expected = TrustDecayAnalyzer.practical_depth_limit(delta)
             assert data.metadata["practical_depth"] == expected
+
+
+class TestProfileDeltasBindToManuscript:
+    """Deployment profile deltas must match the Section 05 profile table (round 7).
+
+    The manuscript's Profile A/B/C table is the source of truth for trust-decay
+    deltas (0.95 / 0.80 / 0.60). If the code drifts from the manuscript again,
+    this guard fails at test time.
+    """
+
+    def test_profile_deltas_match_manuscript_section_05(self) -> None:
+        import re
+        from pathlib import Path
+
+        manuscript = (
+            Path(__file__).parent.parent
+            / "manuscript"
+            / "05_deployment_guide.md"
+        )
+        text = manuscript.read_text()
+        configurator = DeploymentConfigurator()
+
+        # Extract the delta each Section 05 profile line declares, e.g.
+        # "* **Trust Decay ($\delta$)**: `0.95`. ..." -> 0.95
+        profile_deltas = [
+            float(m)
+            for m in re.findall(
+                r"\* \*\*Trust Decay \(\$\\delta\$\)\*\*: `(0\.\d+)`",
+                text,
+            )
+        ]
+        assert len(profile_deltas) == 3, f"parsed {profile_deltas}"
+        expected = [
+            configurator.get_config(RiskProfile.LOW).trust_decay_delta,
+            configurator.get_config(RiskProfile.MEDIUM).trust_decay_delta,
+            configurator.get_config(RiskProfile.HIGH).trust_decay_delta,
+        ]
+        # Profile lines appear in manuscript order A, B, C.
+        assert profile_deltas == expected, (
+            f"code deltas {expected} != manuscript profile deltas {profile_deltas}"
+        )

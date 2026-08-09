@@ -164,7 +164,10 @@ class DeploymentConfigurator:
                     accept_threshold=0.25,
                     reject_threshold=0.65,
                 ),
-                trust_decay_delta=0.9,
+                # Manuscript Section 05 Profile B ("Customer Facing", balanced):
+                # delta = 0.80, the empirically optimal configuration from Part 2
+                # (S08: delta=0.8 maximizes F1; 0.8^3 = 0.51 permits 3-hop delegation).
+                trust_decay_delta=0.80,
                 consensus=ConsensusConfig(
                     mechanism="2/3 majority with identity verification",
                     requires_identity_verification=True,
@@ -190,7 +193,10 @@ class DeploymentConfigurator:
                     accept_threshold=0.2,
                     reject_threshold=0.6,
                 ),
-                trust_decay_delta=0.85,
+                # Manuscript Section 05 Profile C ("Autonomous Operator", high
+                # assurance): delta = 0.60 (the "Byzantine-Heavy" configuration
+                # from Part 2). Aggressive decay enforces a flat command structure.
+                trust_decay_delta=0.60,
                 consensus=ConsensusConfig(
                     mechanism="Byzantine-tolerant (n >= 3f + 1)",
                     requires_identity_verification=True,
@@ -692,7 +698,8 @@ class TrustDecayAnalyzer:
         """Compare trust decay across the 3 risk profiles.
 
         Computes practical depth limit, half-trust depth, and trust
-        at depth 4 for each profile's delta value.
+        at depth 4 for each profile's delta value (Section 05 profiles:
+        low=0.95, medium=0.80, high=0.60).
 
         Returns:
             Dict mapping profile name to decay characteristics:
@@ -703,8 +710,8 @@ class TrustDecayAnalyzer:
         """
         profiles = {
             "low": 0.95,
-            "medium": 0.9,
-            "high": 0.85,
+            "medium": 0.80,
+            "high": 0.60,
         }
 
         import math

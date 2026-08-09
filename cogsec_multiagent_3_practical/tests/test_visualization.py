@@ -720,3 +720,64 @@ class TestRenderArtistAssertions:
         for phase in data.data["phases"]:
             assert phase.name in texts
         plt.close(fig)
+
+
+# =============================================================================
+# Figure Honesty: Determinism Guard (Round 7)
+# =============================================================================
+
+
+class TestFigureDeterminism:
+    """Figure data/render pipelines must be deterministic (no RNG, no timestamps).
+
+    Each figure is rendered twice to PNG bytes and the hashes compared. This is
+    a figure-honesty guard: if a future edit introduces randomness or
+    time-varying output, the committed figures can no longer be reproduced and
+    this test fails at render time (real computations, no mocks).
+    """
+
+    @staticmethod
+    def _render_bytes(render_fn) -> bytes:
+        import io
+
+        buf = io.BytesIO()
+        fig = render_fn()
+        fig.savefig(buf, format="png", dpi=100)
+        plt.close(fig)
+        return buf.getvalue()
+
+    def test_posture_radar_deterministic(self) -> None:
+        data = get_five_pillars_data(0.85, 0.70, 0.60, 0.90, 0.55)
+        first = self._render_bytes(lambda: render_posture_radar(data))
+        second = self._render_bytes(lambda: render_posture_radar(data))
+        assert first == second
+
+    def test_checklist_flowchart_deterministic(self) -> None:
+        data = get_deployment_phases_data()
+        first = self._render_bytes(lambda: render_checklist_flowchart(data))
+        second = self._render_bytes(lambda: render_checklist_flowchart(data))
+        assert first == second
+
+    def test_risk_matrix_deterministic(self) -> None:
+        data = get_risk_matrix_data()
+        first = self._render_bytes(lambda: render_risk_matrix(data))
+        second = self._render_bytes(lambda: render_risk_matrix(data))
+        assert first == second
+
+    def test_trust_decay_deterministic(self) -> None:
+        data = get_trust_decay_data(delta=0.85, max_depth=10)
+        first = self._render_bytes(lambda: render_trust_decay(data))
+        second = self._render_bytes(lambda: render_trust_decay(data))
+        assert first == second
+
+    def test_pitfall_severity_deterministic(self) -> None:
+        data = get_pitfalls_data()
+        first = self._render_bytes(lambda: render_pitfall_severity(data))
+        second = self._render_bytes(lambda: render_pitfall_severity(data))
+        assert first == second
+
+    def test_timeline_deterministic(self) -> None:
+        data = get_timeline_data()
+        first = self._render_bytes(lambda: render_timeline(data))
+        second = self._render_bytes(lambda: render_timeline(data))
+        assert first == second

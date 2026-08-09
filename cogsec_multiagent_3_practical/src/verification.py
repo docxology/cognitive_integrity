@@ -249,6 +249,7 @@ class ManuscriptVerifier:
                         logger.warning(
                             f"Broken or unresolvable link target '{dest}' in {md_file.name}"
                         )
+                        link_status = False
 
         status = status and link_status
         return status

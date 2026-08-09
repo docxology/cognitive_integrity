@@ -243,9 +243,9 @@ class TestDeploymentConfigurator:
         assert config.firewall.reject_threshold == 0.65
 
     def test_medium_profile_trust_decay(self):
-        """Test medium profile trust decay delta = 0.9."""
+        """Test medium profile trust decay delta = 0.80 (Section 05 Profile B)."""
         config = DeploymentConfigurator().get_config(RiskProfile.MEDIUM)
-        assert config.trust_decay_delta == 0.9
+        assert config.trust_decay_delta == 0.80
 
     def test_medium_profile_consensus(self):
         """Test medium profile uses 2/3 majority with identity verification."""
@@ -268,9 +268,9 @@ class TestDeploymentConfigurator:
         assert config.firewall.reject_threshold == 0.6
 
     def test_high_profile_trust_decay(self):
-        """Test high profile trust decay delta = 0.85."""
+        """Test high profile trust decay delta = 0.60 (Section 05 Profile C)."""
         config = DeploymentConfigurator().get_config(RiskProfile.HIGH)
-        assert config.trust_decay_delta == 0.85
+        assert config.trust_decay_delta == 0.60
 
     def test_high_profile_consensus(self):
         """Test high profile uses Byzantine-tolerant consensus."""
@@ -759,20 +759,20 @@ class TestTrustDecayAnalyzer:
         with pytest.raises(ValueError, match="depth must be non-negative"):
             TrustDecayAnalyzer.effective_trust(1.0, 0.9, -1)
 
-    def test_practical_depth_limit_high_profile(self):
-        """Test manuscript value: delta=0.85 gives practical limit ~14-15."""
+    def test_practical_depth_limit_delta_085(self):
+        """Test the depth formula at delta=0.85 (generic delta, ~14-15)."""
         limit = TrustDecayAnalyzer.practical_depth_limit(0.85)
         # log(0.1) / log(0.85) = -2.3026 / -0.16252 = 14.17 -> ceil = 15
         assert limit == 15
 
-    def test_practical_depth_limit_medium_profile(self):
-        """Test practical limit for delta=0.9."""
+    def test_practical_depth_limit_delta_09(self):
+        """Test the depth formula at delta=0.9."""
         limit = TrustDecayAnalyzer.practical_depth_limit(0.9)
         # log(0.1) / log(0.9) = -2.3026 / -0.10536 = 21.85 -> ceil = 22
         assert limit == 22
 
     def test_practical_depth_limit_low_profile(self):
-        """Test practical limit for delta=0.95."""
+        """Test practical limit for delta=0.95 (Section 05 Profile A)."""
         limit = TrustDecayAnalyzer.practical_depth_limit(0.95)
         # log(0.1) / log(0.95) = -2.3026 / -0.05129 = 44.89 -> ceil = 45
         assert limit == 45
@@ -824,18 +824,18 @@ class TestTrustDecayAnalyzer:
         """Test compare_profiles returns correct delta for each profile."""
         result = TrustDecayAnalyzer.compare_profiles()
         assert result["low"]["delta"] == 0.95
-        assert result["medium"]["delta"] == 0.9
-        assert result["high"]["delta"] == 0.85
+        assert result["medium"]["delta"] == 0.80
+        assert result["high"]["delta"] == 0.60
 
     def test_compare_profiles_high_trust_at_depth_4(self):
-        """Test manuscript value: delta=0.85 at depth 4 gives 0.522."""
+        """Test manuscript value: delta=0.60 at depth 4 gives 0.130."""
         result = TrustDecayAnalyzer.compare_profiles()
-        assert result["high"]["trust_at_depth_4"] == pytest.approx(0.522, abs=0.001)
+        assert result["high"]["trust_at_depth_4"] == pytest.approx(0.130, abs=0.001)
 
     def test_compare_profiles_high_practical_limit(self):
-        """Test manuscript value: delta=0.85 practical limit is 15."""
+        """Test manuscript value: delta=0.60 practical limit is 5."""
         result = TrustDecayAnalyzer.compare_profiles()
-        assert result["high"]["practical_limit"] == 15
+        assert result["high"]["practical_limit"] == 5
 
     def test_compare_profiles_practical_limits_decrease_with_risk(self):
         """Test that higher risk means shallower practical limit."""
@@ -846,10 +846,10 @@ class TestTrustDecayAnalyzer:
     def test_compare_profiles_half_trust_depth(self):
         """Test half-trust depth values are reasonable."""
         result = TrustDecayAnalyzer.compare_profiles()
-        # High: log(0.5)/log(0.85) = 4.265 -> round(4.3, 1) = 4.3
-        assert result["high"]["half_trust_depth"] == pytest.approx(4.3, abs=0.1)
-        # Medium: log(0.5)/log(0.9) = 6.579 -> round(6.6, 1) = 6.6
-        assert result["medium"]["half_trust_depth"] == pytest.approx(6.6, abs=0.1)
+        # High: log(0.5)/log(0.60) = 1.357 -> round(1.4, 1) = 1.4
+        assert result["high"]["half_trust_depth"] == pytest.approx(1.4, abs=0.1)
+        # Medium: log(0.5)/log(0.80) = 3.106 -> round(3.1, 1) = 3.1
+        assert result["medium"]["half_trust_depth"] == pytest.approx(3.1, abs=0.1)
 
     def test_compare_profiles_all_keys_present(self):
         """Test each profile entry has all expected keys."""

@@ -134,7 +134,7 @@ The incidents span the full attack pattern taxonomy. **FR Polarity Inversion** m
 
 Three findings emerge from the retrospective analysis:
 
-1. **Pattern coverage.** All three universal attack patterns are represented in documented production failures, with FR Polarity Inversion and Context Boundary Violation each appearing in two incidents. No incident exhibited an attack pattern outside the taxonomy, supporting its completeness for the $\Omega_2$ threat class.
+1. **Pattern coverage.** All three universal attack patterns are represented in documented production failures, with each of the three attack patterns appearing in two incidents. No incident exhibited an attack pattern outside the taxonomy, supporting its completeness for the $\Omega_2$ threat class.
 
 2. **Defense applicability.** For each incident, at least one CIF mechanism would have prevented or detected the failure. Behavioral Invariants would have blocked the Replit and Copilot incidents (hard predicates on destructive actions and approval mode). Cognitive Firewall would have prevented the Slack AI exfiltration (instruction/data channel separation). Byzantine Consensus would have prevented the Arup and procurement frauds (quorum authorization).
 

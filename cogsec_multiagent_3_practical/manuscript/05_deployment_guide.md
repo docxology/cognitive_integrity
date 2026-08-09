@@ -28,7 +28,7 @@ This profile corresponds to the **Empirically Optimal Configuration** identified
 
 **Configuration Parameters**:
 
-* **Trust Decay ($\delta$)**: `0.80`. At this setting, trust degrades to <50% after 3 hops, strictly bounding the "radius of effective delegation."
+* **Trust Decay ($\delta$)**: `0.80`. At this setting, trust degrades to <50% after 4 hops, strictly bounding the "radius of effective delegation."
 * **Firewall Sensitivity**: Balanced ($\tau=0.5$).
 * **Consensus**: Variable (Architecture Dependent).
 
@@ -44,7 +44,7 @@ This profile corresponds to the "Byzantine-Heavy" configuration tested in Part 2
 
 **Configuration Parameters**:
 
-* **Trust Decay ($\delta$)**: `0.60`. Aggressive decay. Trust halves every 1.3 hops, enforcing a strictly flat command structure.
+* **Trust Decay ($\delta$)**: `0.60`. Aggressive decay. Trust halves every ~1.36 hops, enforcing a strictly flat command structure.
 * **Firewall Sensitivity**: Strict ($\tau=0.4$).
 * **Consensus**: Byzantine Fault Tolerance ($n \ge 3f+1$).
 

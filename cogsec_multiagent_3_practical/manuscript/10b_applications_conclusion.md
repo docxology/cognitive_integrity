@@ -12,7 +12,7 @@ This paper has applied the Cognitive Integrity Framework (CIF) \cite{friedman202
 
 **C4: Novel Defense Patterns.** Three domains contributed genuinely novel extensions to the CIF vocabulary: *verification channel separation* (Biowarfare), *active perturbation probing* (Trade Wars), and *physics-informed invariants* (Infrastructure). These patterns generalize beyond their originating domains and represent candidate additions to the canonical CIF mechanism set.
 
-**C5: Temporal Scale Analysis.** The OODA transient dynamics analysis revealed that Goal Hijacking operates across eight orders of magnitude in time scale (milliseconds for drone swarms to years for diplomatic agents), demonstrating that CIF's temporal parameters ($\epsilon$, $\Delta t$) must be domain-calibrated but the underlying defense principles are scale-invariant.
+**C5: Temporal Scale Analysis.** The OODA transient dynamics analysis revealed that Goal Hijacking operates across more than ten orders of magnitude in time scale (milliseconds for drone swarms to years for diplomatic agents), demonstrating that CIF's temporal parameters ($\epsilon$, $\Delta t$) must be domain-calibrated but the underlying defense principles are scale-invariant.
 
 **C6: Real-World Validation.** Retrospective analysis of six documented AI agent security incidents (2024--2025)---including the Replit agent meltdown, GitHub Copilot RCE (CVE-2025-53773), Slack AI data exfiltration, and a \$3.2M procurement fraud---confirms that all incidents map to one of the three universal attack patterns and would have been detectable or preventable by the appropriate CIF mechanism. This provides the first empirical grounding for the CIF-AD-OODA framework in real production failures (see Supplementary Material S3).
 

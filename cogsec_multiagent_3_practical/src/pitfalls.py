@@ -218,7 +218,7 @@ class PitfallCatalog:
                 name="Static Tripwires",
                 pattern=("Deploying canary tripwires once without rotation"),
                 category=PitfallCategory.DESIGN,
-                severity=4,
+                severity=3,  # manuscript Section 07 labels this Medium
                 indicators=[
                     PitfallIndicator("Same canary values since deployment"),
                     PitfallIndicator("No rotation schedule"),
@@ -275,7 +275,7 @@ class PitfallCatalog:
                 name="Single-Orchestrator Reliance",
                 pattern=("Relying entirely on orchestrator integrity without backup"),
                 category=PitfallCategory.DESIGN,
-                severity=2,
+                severity=4,  # manuscript Section 07 labels this High
                 indicators=[
                     PitfallIndicator("Single orchestrator for entire system"),
                     PitfallIndicator("No orchestrator monitoring"),
