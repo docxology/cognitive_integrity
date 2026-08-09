@@ -505,6 +505,12 @@ The CIF trust decay bound (\cref{thm:trust-bounded}) limits this to:
 \label{eq:blast-radius-bound}
 \text{BlastRadius}(a_v) \leq n \cdot \delta \cdot \max_{a_j} \mathcal{T}_{a_j \to a_v}
 \end{equation}
+*Reachability factor alignment (H7): the \cref{eq:blast-radius} definition includes an explicit
+$|\text{Reachable}(a_j)|$ factor as the intuitive influence interpretation; the trust-decay bound
+(\cref{eq:blast-radius-bound}) is stated on the trust-influence measure, where each reachable hop
+contributes at most $\delta \cdot \mathcal{T}$, so the aggregate is capped at $n \cdot \delta \cdot \max_j \mathcal{T}$.
+The supplementary restatement (\cref{thm:blast-radius-restated}) states the bound consistently and
+does not multiply the neighbor and reachable-agent counts (see S01, \cref{sec:thm-blast-radius}).*
 \end{theorem}
 
 \begin{proof}
@@ -721,7 +727,7 @@ We classify attacks into four dimensions: epistemic, behavioral, social, and tem
 
 Epistemic attacks target the agent's relationship with its **information environment**---the totality of information sources, evidence streams, and knowledge repositories that inform agent beliefs. The epistemic domain is thus synonymous with the cognitive information environment: both concern what agents can know, how they acquire knowledge, and the reliability of their belief-forming processes.
 
-Target: Agent beliefs $\\mathcal{B}_i$.
+Target: Agent beliefs $\mathcal{B}_i$.
 
 \begin{definition}[Belief Injection]
 \label{def:belief-injection}
@@ -1109,13 +1115,13 @@ The transition rules are defined as follows:
 **Rule T-Update** (Belief Update):
 \begin{equation}
 \label{eq:rule-update}
-\frac{m \in \text{inbox}_i \quad e = \text{extract}(m) \quad s = \text{source}(m)}{\mathcal{B}_i^t \xrightarrow{\textsc{update}} \mathcal{B}_i^{t+1} = \text{BayesUpdate}(\mathcal{B}*i^t, e, \mathcal{T}*{i \to s})}
+\frac{m \in \text{inbox}_i \quad e = \text{extract}(m) \quad s = \text{source}(m)}{\mathcal{B}_i^t \xrightarrow{\textsc{update}} \mathcal{B}_i^{t+1} = \text{BayesUpdate}(\mathcal{B}_i^t, e, \mathcal{T}_{i \to s})}
 \end{equation}
 
 **Rule T-Act** (Action Execution):
 \begin{equation}
 \label{eq:rule-act}
-\frac{a \in \mathcal{I}*i \quad \mathcal{P}*{\text{eff}}(a_i, a) = 1 \quad \text{precond}(a, \mathcal{S}^t)}{(\sigma_i, \mathcal{S}^t) \xrightarrow{\textsc{act}} (\sigma_i', \text{effect}(a, \mathcal{S}^t))}
+\frac{a \in \mathcal{I}_i \quad \mathcal{P}_{\text{eff}}(a_i, a) = 1 \quad \text{precond}(a, \mathcal{S}^t)}{(\sigma_i, \mathcal{S}^t) \xrightarrow{\textsc{act}} (\sigma_i', \text{effect}(a, \mathcal{S}^t))}
 \end{equation}
 
 **Rule T-Communicate** (Message Sending):
@@ -1160,7 +1166,7 @@ No high-confidence beliefs contradict each other.
 \label{prop:goal-alignment}
 \begin{equation}
 \label{eq:goal-alignment}
-\text{Aligned}(\mathcal{G}*i) \iff \mathcal{G}*i \subseteq \mathcal{G}*{\text{principal}} \cup \text{Delegate}(\mathcal{G}*{\text{principal}})
+\text{Aligned}(\mathcal{G}_i) \iff \mathcal{G}_i \subseteq \mathcal{G}_{\text{principal}} \cup \text{Delegate}(\mathcal{G}_{\text{principal}})
 \end{equation}
 All goals derive from the principal or valid delegation chains.
 \end{property}
@@ -1249,7 +1255,7 @@ Our framework addresses this through modality-adjusted base trust: $T_{\text{bas
 Trust from agent $a_i$ to agent $a_j$ at time $t$:
 \begin{equation}
 \label{eq:trust-function}
-\mathcal{T}*{i \to j}^t = \alpha \cdot T*{\text{base}}(j) + \beta \cdot T_{\text{rep}}^t(j) + \gamma \cdot T_{\text{ctx}}^t(i,j)
+\mathcal{T}_{i \to j}^t = \alpha \cdot T_{\text{base}}(j) + \beta \cdot T_{\text{rep}}^t(j) + \gamma \cdot T_{\text{ctx}}^t(i,j)
 \end{equation}
 subject to $\alpha + \beta + \gamma = 1$, with components in \cref{tab:trust-components}.
 \end{definition}
@@ -1285,7 +1291,7 @@ neurocomputational grounding for the trust calculus (Part~2, \S 1.2).
 When agent $a_i$ delegates trust through $a_j$ to $a_k$:
 \begin{equation}
 \label{eq:trust-delegation}
-\mathcal{T}*{i \to k}^{\text{del}} = \min(\mathcal{T}*{i \to j}, \mathcal{T}_{j \to k}) \cdot \delta^d
+\mathcal{T}_{i \to k}^{\text{del}} = \min(\mathcal{T}_{i \to j}, \mathcal{T}_{j \to k}) \cdot \delta^d
 \end{equation}
 where $\delta \in (0, 1)$ is the decay factor and $d \in \mathbb{N}$ is the delegation depth.
 \end{definition}
@@ -1379,8 +1385,11 @@ Trust aggregation $\oplus$ satisfies: (i) associativity, (ii) commutativity, (ii
 For any path $p = (a_0, \ldots, a_k)$:
 \begin{equation}
 \label{eq:no-amplification}
-\mathcal{T}*{a_0 \to a_k}^{\text{path}} \leq \min*{i \in [0,k-1]} \mathcal{T}*{a_i \to a*{i+1}}
+\mathcal{T}_{a_0 \to a_k}^{\text{path}} \leq \min_{i \in [0,k-1]} \mathcal{T}_{a_i \to a_{i+1}}
 \end{equation}
+A proof of the no-amplification claim is given in the supplementary material
+(\cref{thm:trust-amp-restated}, S01), which states the identical bound under
+a dedicated label.
 \end{theorem}
 
 \begin{theorem}[Trust Monotonicity]
@@ -1397,7 +1406,7 @@ When agents operate across modalities---processing text, code, images, audio, an
 For agent $a_j$ operating in modality $m$, the adjusted trust from agent $a_i$ is:
 \begin{equation}
 \label{eq:modality-trust}
-\mathcal{T}*{i \to j}^{m} = \mathcal{T}*{i \to j} \cdot \eta_m
+\mathcal{T}_{i \to j}^{m} = \mathcal{T}_{i \to j} \cdot \eta_m
 \end{equation}
 where $\eta_m \in (0, 1]$ is the modality reliability factor.
 \end{definition}
@@ -1426,7 +1435,7 @@ Video & 0.60 & Combines image and temporal vulnerabilities \\
 For delegation chain crossing modalities $m_1, \ldots, m_k$:
 \begin{equation}
 \label{eq:cross-modality-bound}
-\mathcal{T}*{i \to j}^{\text{cross}} \leq \delta^d \cdot \prod*{l=1}^{k} \eta_{m_l}
+\mathcal{T}_{i \to j}^{\text{cross}} \leq \delta^d \cdot \prod_{l=1}^{k} \eta_{m_l}
 \end{equation}
 \end{theorem}
 
@@ -1446,7 +1455,7 @@ A trust domain $\mathcal{D}$ is a set of agents sharing a common trust authority
 For agent $a_i$ in domain $\mathcal{D}_1$ and agent $a_j$ in domain $\mathcal{D}_2$:
 \begin{equation}
 \label{eq:cross-domain-trust}
-\mathcal{T}*{i \to j}^{\text{fed}} = \mathcal{T}*{i \to \mathcal{D}*2} \cdot \mathcal{T}*{\mathcal{D}_2}(j)
+\mathcal{T}_{i \to j}^{\text{fed}} = \mathcal{T}_{i \to \mathcal{D}*2} \cdot \mathcal{T}_{\mathcal{D}_2}(j)
 \end{equation}
 where $\mathcal{T}_{i \to \mathcal{D}_2}$ is $a_i$'s trust in domain $\mathcal{D}_2$ and $\mathcal{T}_{\mathcal{D}_2}(j)$ is $a_j$'s standing within its domain.
 \end{definition}
@@ -1458,7 +1467,7 @@ This two-stage model captures realistic trust reasoning: an organization might t
 Cross-domain trust is bounded by domain trust:
 \begin{equation}
 \label{eq:federated-bound}
-\mathcal{T}*{i \to j}^{\text{fed}} \leq \mathcal{T}*{i \to \mathcal{D}_2}
+\mathcal{T}_{i \to j}^{\text{fed}} \leq \mathcal{T}_{i \to \mathcal{D}_2}
 \end{equation}
 ensuring that untrusted domains cannot boost individual agent trust.
 \end{property}
@@ -1491,7 +1500,7 @@ Trust mixes the source likelihood with a neutral likelihood $P_0$; low-trust sou
 **Rule B-Direct** (Direct Evidence):
 \begin{equation}
 \label{eq:rule-direct}
-\frac{e = \langle \phi, c, s, \pi \rangle \quad V(\pi) = 1 \quad \mathcal{T}*{i \to s} \geq \tau*{\text{trust}}}{\mathcal{B}_i^{t+1}(\phi) = \text{BayesUpdate}(\mathcal{B}*i^t(\phi), c \cdot \mathcal{T}*{i \to s})}
+\frac{e = \langle \phi, c, s, \pi \rangle \quad V(\pi) = 1 \quad \mathcal{T}_{i \to s} \geq \tau_{\text{trust}}}{\mathcal{B}_i^{t+1}(\phi) = \text{BayesUpdate}(\mathcal{B}_i^t(\phi), c \cdot \mathcal{T}_{i \to s})}
 \end{equation}
 
 **Rule B-Delegated** (Delegated Evidence): evidence received through a delegation
@@ -1510,7 +1519,7 @@ $d$ hops, making depth-dependent attenuation explicit.
 **Rule B-Corroboration** (Multiple Sources):
 \begin{equation}
 \label{eq:rule-corroboration}
-\frac{\{e_j\}*{j=1}^k: \forall j.\, e_j = \langle \phi, c_j, s_j, \pi_j \rangle \quad |\{s_j\}| \geq \kappa}{\mathcal{B}*i^{t+1}(\phi) = 1 - \prod*{j=1}^{k}(1 - c_j \cdot \mathcal{T}*{i \to s_j})}
+\frac{\{e_j\}_{j=1}^k: \forall j.\, e_j = \langle \phi, c_j, s_j, \pi_j \rangle \quad |\{s_j\}| \geq \kappa}{\mathcal{B}_i^{t+1}(\phi) = 1 - \prod_{j=1}^{k}(1 - c_j \cdot \mathcal{T}_{i \to s_j})}
 \end{equation}
 
 \begin{lemma}[Belief Boundedness]
@@ -1525,26 +1534,26 @@ After any update sequence: $\forall \phi: 0 \leq \mathcal{B}_i(\phi) \leq 1$.
 Beliefs from unverified sources enter provisional state:
 \begin{equation}
 \label{eq:sandbox-partition}
-\mathcal{B}*i = \mathcal{B}*{\text{verified}} \cup \mathcal{B}_{\text{provisional}}
+\mathcal{B}_i = \mathcal{B}_{\text{verified}} \cup \mathcal{B}_{\text{provisional}}
 \end{equation}
 \end{definition}
 
 **Rule S-Sandbox** (Enter Sandbox):
 \begin{equation}
 \label{eq:rule-sandbox}
-\frac{e = \langle \phi, c, s, \pi \rangle \quad (\mathcal{T}*{i \to s} < \tau*{\text{trust}} \lor V(\pi) = 0)}{\mathcal{B}*{\text{prov}} \gets \mathcal{B}*{\text{prov}} \cup \{(\phi, c, s, \pi, \text{TTL})\}}
+\frac{e = \langle \phi, c, s, \pi \rangle \quad (\mathcal{T}_{i \to s} < \tau_{\text{trust}} \lor V(\pi) = 0)}{\mathcal{B}_{\text{prov}} \gets \mathcal{B}_{\text{prov}} \cup \{(\phi, c, s, \pi, \text{TTL})\}}
 \end{equation}
 
 **Rule S-Promote** (Sandbox Promotion):
 \begin{equation}
 \label{eq:rule-promote}
-\frac{(\phi, \ldots) \in \mathcal{B}*{\text{prov}} \quad V(\pi) = 1 \quad \text{Consistent}(\mathcal{B}*{\text{ver}} \cup \{\phi\}) \quad |\text{Corr}(\phi)| \geq \kappa}{\mathcal{B}*{\text{ver}} \gets \mathcal{B}*{\text{ver}} \cup \{\phi\}; \quad \mathcal{B}*{\text{prov}} \gets \mathcal{B}*{\text{prov}} \setminus \{(\phi, \ldots)\}}
+\frac{(\phi, \ldots) \in \mathcal{B}_{\text{prov}} \quad V(\pi) = 1 \quad \text{Consistent}(\mathcal{B}_{\text{ver}} \cup \{\phi\}) \quad |\text{Corr}(\phi)| \geq \kappa}{\mathcal{B}_{\text{ver}} \gets \mathcal{B}_{\text{ver}} \cup \{\phi\}; \quad \mathcal{B}_{\text{prov}} \gets \mathcal{B}_{\text{prov}} \setminus \{(\phi, \ldots)\}}
 \end{equation}
 
 **Rule S-Expire** (Sandbox Expiry):
 \begin{equation}
 \label{eq:rule-expire}
-\frac{(\phi, c, s, \pi, \text{TTL}) \in \mathcal{B}*{\text{prov}} \quad \text{TTL} \leq 0}{\mathcal{B}*{\text{prov}} \gets \mathcal{B}_{\text{prov}} \setminus \{(\phi, c, s, \pi, \text{TTL})\}}
+\frac{(\phi, c, s, \pi, \text{TTL}) \in \mathcal{B}_{\text{prov}} \quad \text{TTL} \leq 0}{\mathcal{B}_{\text{prov}} \gets \mathcal{B}_{\text{prov}} \setminus \{(\phi, c, s, \pi, \text{TTL})\}}
 \end{equation}
 
 Promotion requires: (1) provenance verification $V(\pi) = 1$, (2) consistency with verified beliefs, and (3) corroboration threshold $\kappa$.
@@ -1558,7 +1567,7 @@ Promotion requires: (1) provenance verification $V(\pi) = 1$, (2) consistency wi
 An attack models a communication channel from adversary to target:
 \begin{equation}
 \label{eq:attack-channel}
-\text{Channel}: \mathcal{A}*{\text{adv}} \to \sigma*{\text{target}}
+\text{Channel}: \mathcal{A}_{\text{adv}} \to \sigma_{\text{target}}
 \end{equation}
 \end{definition}
 
@@ -1680,7 +1689,7 @@ Total monitoring capacity: $B_{\text{total}} = \sum_{d \in \mathcal{D}} B_d$.
 Given attack distribution $P(\mathcal{A}_k)$ and detector sensitivities $\eta_d(\mathcal{A}_k)$:
 \begin{equation}
 \label{eq:optimal-allocation}
-B_d^* = \frac{\sum_k P(\mathcal{A}_k) \cdot \eta_d(\mathcal{A}*k)}{\sum*{d'}\sum_k P(\mathcal{A}*k) \cdot \eta*{d'}(\mathcal{A}*k)} \cdot B*{\text{total}}
+B_d^* = \frac{\sum_k P(\mathcal{A}_k) \cdot \eta_d(\mathcal{A}_k)}{\sum_{d'}\sum_k P(\mathcal{A}_k) \cdot \eta_{d'}(\mathcal{A}_k)} \cdot B_{\text{total}}
 \end{equation}
 \end{theorem}
 
@@ -2355,7 +2364,7 @@ Layer & Defense & Latency & $P_{\text{detect}}$ \\
 Assuming independence, the full stack (\cref{tab:defense-stack}) achieves:
 \begin{equation}
 \label{eq:stack-detection}
-P_{\\text{detect}} = 1 - (1-0.80)(1-0.70)(1-0.60)(1-0.65)(1-0.55)(1-0.90) \\approx 0.9996
+P_{\text{detect}} = 1 - (1-0.80)(1-0.70)(1-0.60)(1-0.65)(1-0.55)(1-0.90) \approx 0.9996
 \end{equation}
 \end{corollary}
 
@@ -2746,7 +2755,7 @@ where $\sigma$ is the sigmoid function and weights $(w_d, b)$ are learned from l
 
 ## ROC Curve Analysis {#sec:roc-analysis}
 
-![Receiver Operating Characteristic (ROC) curves for CIF detection across attack categories (illustrative/schematic operating points under the Neyman-Pearson framework; the curves themselves are labeled Theoretical, not empirical measurements).](figures/roc_curves.pdf){#fig:roc-curves width=85%}
+![Receiver Operating Characteristic (ROC) curves for CIF detection across attack categories (illustrative/schematic operating points under the Neyman-Pearson framework; the sandbox/tripwire/anomaly/full-CIF curves are labeled Theoretical, not empirical measurements, whereas the Cognitive Firewall curve is the Part-1 curve measured over the module's small test corpus — measured eval curves are reported in Part 2).](figures/roc_curves.pdf){#fig:roc-curves width=85%}
 
 ### Receiver Operating Characteristic Framework
 
@@ -3003,7 +3012,7 @@ Each belief carries provenance tags:
 
 \begin{table}[htbp]
 \centering
-\caption{Taint categories with trust levels.}
+\caption{Taint categories with trust levels. (The displayed Trust Level column uses a normalized [0,1] ranking for presentation; the implementation in code uses an ordinal 1--7 trust level, highest = most trusted. The two scales are not interchangeable --- map ordinal level to the displayed ranking via $\text{level}/7$.)}
 \label{tab:taint-categories}
 \begin{tabular}{@{}lll@{}}
 \toprule
@@ -3098,7 +3107,7 @@ L4 & Systemic compromise & System shutdown \\
 
 The detection methods presented in this section have been empirically validated in Part 2 of this series. Key results include:
 
-\textbf{ROC Analysis}: Receiver Operating Characteristic curves demonstrate the tradeoff between True Positive Rate and False Positive Rate for each detector type. The ensemble achieves AUC $> 0.84$, with individual mechanisms ranging from $0.74$ (Belief Sandbox) to $0.81$ (Tripwire Monitor). See Part 2, \S{4} for detailed ROC curves and confidence intervals.
+\textbf{ROC Analysis}: Receiver Operating Characteristic curves demonstrate the tradeoff between True Positive Rate and False Positive Rate for each detector type. For the theoretical ensemble reference curves (Part 2, \S{4}), the ensemble achieves AUC $> 0.84$, with individual mechanisms ranging from $0.74$ (Belief Sandbox) to $0.81$ (Tripwire Monitor). (These are the theory-guided Part-2 curves; the Part-1 measured firewall curve over the module's small corpus is shown in the ROC figure in this section.)
 
 \textbf{Detection Performance by Attack Type}: Detection rates vary across the five adversary classes ($\Omega_1$--$\Omega_5$). The Cognitive Firewall excels at $\Omega_1$ (external) attacks while Tripwires and Invariants provide stronger coverage for $\Omega_3$ (compromised agent) and $\Omega_4$ (inter-agent) attacks. See Part 2, \S{5} for the complete detection matrix.
 
@@ -3381,7 +3390,7 @@ P(\text{success}) \leq (1 - 0.8)(1 - 0.7) = 0.2 \cdot 0.3 = 0.06
 \end{corollary}
 
 \begin{corollary}[Layered Defense Generalization]
-\label{cor:layered-defense}
+\label{cor:n-layer-bound}
 For $n$ independent defense layers with rates $r_1, \ldots, r_n$:
 \begin{equation}
 \label{eq:n-layer-bound}
@@ -3863,7 +3872,7 @@ When verification fails, model checkers produce counterexamples. Analysis proced
 
 # Discussion: Theoretical Implications, Limitations, and Future Directions {#sec:discussion}
 
-This section examines the theoretical implications of the Cognitive Integrity Framework (\cref{sec:theoretical-implications}), formal limitations and boundary conditions (\cref{sec:limitations}), relationship to prior work (\cref{sec:related-work}), governance implications (\cref{sec:governance}), and future research directions (\cref{sec:future-directions}).
+This section examines the theoretical implications of the Cognitive Integrity Framework (\cref{sec:theoretical-implications}), formal limitations (\cref{sec:formal-limitations}) and boundary conditions (\cref{sec:limitations}), relationship to prior work (\cref{sec:related-work}), governance implications (\cref{sec:governance}), and future research directions (\cref{sec:future-directions}).
 
 ## Empirical Validation Summary
 
@@ -3944,7 +3953,7 @@ State machine & State integrity assumption & State hash verification \\
 
 These are structural properties of the architectures themselves, not implementation-specific weaknesses.
 
-## Formal Limitations {#sec:limitations}
+## Formal Limitations {#sec:formal-limitations}
 
 ### Assumption Dependencies
 
@@ -4049,7 +4058,7 @@ The detection degradation problem suggests a need for adaptive defenses. Formal 
 
 \begin{equation}
 \label{eq:adaptive-defense}
-\pi^{*}*{\text{defense}} = \argmax*{\pi} \mathbb{E}\left[\sum_t \gamma^t r(s_t, a_t)\right]
+\pi^{*}_{\text{defense}} = \argmax_{\pi} \mathbb{E}\left[\sum_t \gamma^t r(s_t, a_t)\right]
 \end{equation}
 
 requires solving the partial observability problem—defenders cannot directly observe attacker intent.
@@ -4060,7 +4069,7 @@ Extending trust calculus across organizational boundaries:
 
 \begin{equation}
 \label{eq:cross-system-trust}
-\mathcal{T}*{i \to j}^{\text{cross}} = f(\mathcal{T}*{\text{local}}, \mathcal{T}*{\text{reputation}}, \mathcal{T}*{\text{attestation}})
+\mathcal{T}_{i \to j}^{\text{cross}} = f(\mathcal{T}_{\text{local}}, \mathcal{T}_{\text{reputation}}, \mathcal{T}_{\text{attestation}})
 \end{equation}
 
 The primary challenge is trust calibration—mapping heterogeneous trust semantics across systems with different threat models.
@@ -4482,7 +4491,50 @@ The stealth-impact bound $\mathcal{I} \cdot \mathcal{S} \leq \pi/2$ (Remark~\ref
 
 # Supplementary: Mathematical Proofs
 
-This supplementary material provides complete formal proofs for all theorems stated in the main text, including preliminary definitions (\cref{sec:preliminaries}), main theorem proofs (\crefrange{sec:thm42-proof}{sec:thm511-proof}), and additional supporting lemmas (\cref{sec:additional-lemmas}).
+This supplementary material provides formal proofs for the theorems that carry proofs in this edition, including preliminary definitions (\cref{sec:preliminaries}), main theorem proofs (\crefrange{sec:thm42-proof}{sec:thm511-proof}), and additional supporting lemmas (\cref{sec:additional-lemmas}). Results stated in the main text that are asserted without a proof in this supplement are recorded explicitly in the Proof Status section (\cref{sec:proof-status}) so that they are not mistaken for proved results.
+
+## Proof Status {#sec:proof-status}
+
+For transparency, this section records, by exact label, which results stated in the main text carry a proof in this supplement and which are asserted without proof.
+
+**Proven in this supplement.** The following theorems each have a dedicated `proof` environment (section given in parentheses):
+
+- Trust Boundedness (Thm. 4.2), \cref{thm:trust-bound-restated} (\cref{sec:thm42-proof})
+- Belief Injection Resistance (Thm. 5.7), \cref{thm:belief-injection-restated} (\cref{sec:thm57-proof})
+- No Trust Amplification (Thm. 4.7), \cref{thm:trust-amp-restated} (\cref{sec:thm47-proof})
+- Goal Alignment Invariant (Thm. 5.8), \cref{thm:goal-alignment-restated} (\cref{sec:thm58-proof})
+- Firewall Liveness (Thm. 5.9), \cref{thm:firewall-liveness-restated} (\cref{sec:thm59-proof})
+- Byzantine Consensus Termination (Thm. 5.10), \cref{thm:byzantine-restated} (\cref{sec:thm510-proof})
+- Bounded Overhead (Thm. 5.11), \cref{thm:overhead-restated} (\cref{sec:thm511-proof})
+- Defense Composition Semiring, \cref{thm:composition-semiring-restated} (\cref{sec:thm-composition-semiring})
+- Fisher-Rao Stealth-Impact Tight Bound, \cref{thm:fr-bound-restated} (\cref{sec:thm-geometric-bound})
+- Agent Compromise Blast Radius, \cref{thm:blast-radius-restated} (\cref{sec:thm-blast-radius})
+
+Separate proofs are also given for the supporting lemmas and for the corollaries \cref{cor:trust-vanishing}, \cref{cor:defense-stacking}, and \cref{cor:consensus-safety}. The remaining corollaries in this supplement state immediate (quantitative or qualitative) consequences of a proved theorem and, following standard mathematical convention, are not accompanied by a standalone proof.
+
+**Asserted without proof (deferred).** The following theorems and corollaries stated in the main text do not have a proof in this supplement; they are assertions whose proofs are deferred to future work. They are recorded here so that they are not mistaken for proved results:
+
+- Aggregation Properties, \cref{thm:aggregation} (stated in 04_formal\_framework.md)
+- Trust Monotonicity, \cref{thm:trust-monotonic} (04_formal\_framework.md)
+- Cross-Modality Delegation Bound, \cref{thm:cross-modality-bound} (04_formal\_framework.md)
+- Stealth-Impact Tradeoff, \cref{thm:stealth-impact} (04_formal\_framework.md)
+- Fundamental Detection Limit, \cref{thm:detection-limit} (04_formal\_framework.md)
+- Progressive Attack Detection Bound, \cref{thm:progressive-detection} (04_formal\_framework.md)
+- Optimal Threshold Selection, \cref{thm:threshold-selection} (05_defense\_mechanisms.md)
+- Firewall Completeness, \cref{thm:firewall-completeness} (05_defense\_mechanisms.md)
+- CUSUM Average Run Length, \cref{thm:cusum-arl} (05_defense\_mechanisms.md)
+- False Positive Composition, \cref{thm:fpr-composition} (05_defense\_mechanisms.md)
+- Cascade FPR Reduction, \cref{thm:cascade-fpr} (06_detection\_methods.md)
+- Pipeline TPR Bound, \cref{thm:pipeline-tpr} (06_detection\_methods.md)
+- Stack Detection Rate, \cref{cor:stack-detection} (05_defense\_mechanisms.md)
+- Layered Defense Asymptotic Guarantee, \cref{cor:layered-defense} (05_defense\_mechanisms.md)
+- Small-Step Detection Reduction, \cref{cor:small-steps} (04_formal\_framework.md; immediate consequence of the deferred \cref{thm:progressive-detection})
+- Quorum Attack Cost, \cref{cor:quorum-attack-cost} (S02_eusocial\_cogsec.md)
+- Stigmergic Trust Bound, \cref{cor:stigmergic-trust} (S02_eusocial\_cogsec.md)
+- Emergent Stealth-Impact Bound, \cref{cor:emergent-stealth-impact} (S02_eusocial\_cogsec.md)
+
+> **Note on \cref{cor:isolation-blast}.**
+> An earlier audit listed \cref{cor:isolation-blast} among the asserted results. Re-reading the source, this corollary is stated in this supplement (\cref{sec:thm-blast-radius}), immediately after the proved \cref{thm:blast-radius-restated}, as that theorem's degree-restricted consequence ($\lvert \mathcal{N}(a_v) \rvert = k \le n$). It therefore carries no standalone proof environment -- consistent with the other corollaries in this supplement -- and is not deferred. It is recorded here only because the prior audit flagged it, so that its status is unambiguous.
 
 ## Preliminary Definitions and Notation {#sec:preliminaries}
 
@@ -5296,13 +5348,13 @@ By the strong law of large numbers, $T_{rep}^t \to \mu$ almost surely.
 \toprule
 Theorem & Primary Technique & Complexity \\
 \midrule
-3.1 (Trust Boundedness) & Strong induction & $O(d)$ \\
-6.1 (Belief Injection Resistance) & Probability independence & $O(1)$ \\
-6.2 (No Trust Amplification) & Strong induction & $O(k)$ \\
-6.3 (Goal Alignment Invariant) & Induction on time & $O(t)$ \\
-6.4 (Firewall Liveness) & Complement probability & $O(1)$ \\
-6.5 (Byzantine Consensus) & Classical BFT & $O(f)$ \\
-6.6 (Bounded Overhead) & Expected value & $O(1)$ \\
+4.2 (Trust Boundedness) & Strong induction & $O(d)$ \\
+5.7 (Belief Injection Resistance) & Probability independence & $O(1)$ \\
+4.7 (No Trust Amplification) & Strong induction & $O(k)$ \\
+5.8 (Goal Alignment Invariant) & Induction on time & $O(t)$ \\
+5.9 (Firewall Liveness) & Complement probability & $O(1)$ \\
+5.10 (Byzantine Consensus) & Classical BFT & $O(f)$ \\
+5.11 (Bounded Overhead) & Expected value & $O(1)$ \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -5580,7 +5632,7 @@ The critical insight is that attacks on $\mathcal{E}$ constitute attacks on the 
 The *cyberphysical niche* $\mathcal{N}$ of a stigmergic operator is the tuple:
 \begin{equation}
 \label{eq:niche}
-\mathcal{N} = \langle \mathcal{E}, \mathcal{I}*{\text{ext}}, \mathcal{R}, \mathcal{H}*{\text{env}} \rangle
+\mathcal{N} = \langle \mathcal{E}, \mathcal{I}_{\text{ext}}, \mathcal{R}, \mathcal{H}_{\text{env}} \rangle
 \end{equation}
 where $\mathcal{I}_{\text{ext}}$ is the external information environment (web, APIs, sensors), $\mathcal{R}$ is the resource landscape (compute, memory, tokens), and $\mathcal{H}_{\text{env}}$ is environmental history.
 \end{definition}
@@ -5594,7 +5646,7 @@ Colony-level computation arises from simple individual rules applied in parallel
 For a stigmergic operator $\mathcal{O}_\Sigma$ with agents $\mathcal{A} = \{a_1, \ldots, a_n\}$, the *emergent collective function* $\mathcal{F}_c$ is:
 \begin{equation}
 \label{eq:emergent-function}
-\mathcal{F}*c: \mathcal{E}^T \times \prod*{i=1}^n \sigma_i^T \to \mathcal{O}_{\text{collective}}
+\mathcal{F}_c: \mathcal{E}^T \times \prod_{i=1}^n \sigma_i^T \to \mathcal{O}_{\text{collective}}
 \end{equation}
 mapping environmental and cognitive state trajectories to collective outcomes $\mathcal{O}_{\text{collective}}$ that are not computable from any single $\sigma_i$ in isolation.
 \end{definition}
@@ -5603,9 +5655,9 @@ mapping environmental and cognitive state trajectories to collective outcomes $\
 \label{prop:non-decomposable}
 An emergent collective function $\mathcal{F}_c$ is *non-decomposable* if there exists no function $f$ such that:
 \begin{equation}
-\mathcal{F}*c(\mathcal{E}^T, \{\sigma_i^T\}) = f\left(\sum*{i=1}^n g(\sigma_i^T)\right)
+\mathcal{F}_c(\mathcal{E}^T, \{\sigma_i^T\}) = f\left(\sum_{i=1}^n g(\sigma_i^T)\right)
+\label{eq:non-decomposability}
 \end{equation}
-{#eq:non-decomposability}
 for any agent-level function $g$. The collective behavior requires knowledge of interaction structure, not just aggregated individual states.
 \end{property}
 
@@ -5620,7 +5672,7 @@ Eusocial insects regulate information flow through recognition systems—cuticul
 In a stigmergic operator, the *colonial trust function* $\mathcal{T}_c$ extends the dyadic trust $\mathcal{T}_{i \to j}$ (\cref{def:trust-function}) to environment-mediated trust:
 \begin{equation}
 \label{eq:colonial-trust}
-\mathcal{T}*{c}(i, m, l, t) = \mathcal{T}*{i}^{\text{self}} \cdot \rho(m, l, t) \cdot \exp(-\lambda \cdot \Delta t)
+\mathcal{T}_{c}(i, m, l, t) = \mathcal{T}_{i}^{\text{self}} \cdot \rho(m, l, t) \cdot \exp(-\lambda \cdot \Delta t)
 \end{equation}
 where $\rho(m, l, t)$ is the signal reliability at location $l$ for marker $m$ at time $t$, and $\lambda$ is the temporal decay constant.
 \end{definition}
@@ -5643,7 +5695,7 @@ Eusocial insects have evolved sophisticated security mechanisms over 100+ millio
 
 **Behavioral Immunity**: When *Lasius niger* ants detect a fungal pathogen (Metarhizium) on a nestmate, they don't simply isolate the infected individual. Instead, workers engage in "social immunization"---low-level exposure that spreads diluted pathogen across the colony, triggering collective immune upregulation without lethal infection [@konrad2012social]. *AI analog*: Controlled exposure to attack patterns (red-teaming) that builds collective detection capability without compromising the system.
 
-**Chemical Recognition Thresholds**: Ant nestmate recognition operates on *threshold-based* hydrocarbon profile matching, not exact matching [@lenoir2001chemical]. This creates a tradeoff: strict thresholds reject legitimate workers after foraging (false positives), while loose thresholds admit parasites (false negatives). *AI analog*: Agent attestation systems must calibrate acceptance thresholds, recognizing that perfect recognition is information-theoretic\-ally impossible (\cref{thm:stealth-impact}).
+**Chemical Recognition Thresholds**: Ant nestmate recognition operates on *threshold-based* hydrocarbon profile matching, not exact matching [@lenoir2001chemical]. This creates a tradeoff: strict thresholds reject legitimate workers after foraging (false positives), while loose thresholds admit parasites (false negatives). *AI analog*: Agent attestation systems must calibrate acceptance thresholds, recognizing that error-free recognition is information-theoretic\-ally impossible (\cref{thm:stealth-impact}).
 
 **Metapleural Gland Secretions**: Many ant species possess metapleural glands that continuously secrete antimicrobial compounds, creating a "security substrate" independent of individual vigilance [@fernandez2006evolution]. *AI analog*: Environmental-level defenses (encrypted shared memory, authenticated message queues) that provide baseline security regardless of individual agent security posture.
 
@@ -5697,7 +5749,7 @@ Biological colonies maintain function despite continuous individual mortality. A
 For a stigmergic operator $\mathcal{O}_\Sigma$ with Byzantine adversary controlling fraction $f$ of agents, collective function $\mathcal{F}_c$ is preserved if and only if:
 \begin{equation}
 \label{eq:redundancy-condition}
-f < \frac{1}{3} \cdot \left(1 - \frac{H(\mathcal{F}*c)}{n \cdot H*{\max}}\right)
+f < \frac{1}{3} \cdot \left(1 - \frac{H(\mathcal{F}_c)}{n \cdot H_{\max}}\right)
 \end{equation}
 where $H(\mathcal{F}_c)$ is the entropy of the collective function and $H_{\max}$ is the maximum per-agent entropy.
 \end{theorem}
@@ -5715,7 +5767,7 @@ Eusocial colonies make collective decisions through quorum sensing—actions tri
 A *cognitive quorum* for collective action $\alpha$ is a threshold function $Q_\alpha: \mathbb{N} \to [0, 1]$ such that $\alpha$ executes only when:
 \begin{equation}
 \label{eq:quorum-eusocial}
-\frac{|\{a_i \in \mathcal{A} : \mathcal{I}*i \ni \alpha\}|}{|\mathcal{A}|} \geq Q*\alpha(|\mathcal{A}|)
+\frac{|\{a_i \in \mathcal{A} : \mathcal{I}_i \ni \alpha\}|}{|\mathcal{A}|} \geq Q_\alpha(|\mathcal{A}|)
 \end{equation}
 \end{definition}
 
@@ -5819,8 +5871,8 @@ We propose five benchmark scenarios grounded in eusocial insect analogs, formali
 Let $\mathcal{E}(l_{\text{target}}, m_{\text{recruit}}, t)$ be the recruitment signal at legitimate target $l_{\text{target}}$. Adversary injects:
 \begin{equation}
 \mathcal{E}'(l_{\text{malicious}}, m_{\text{recruit}}, t) = \mathcal{E}(l_{\text{target}}, m_{\text{recruit}}, t) + \epsilon
+\label{eq:recruitment-signal-injection}
 \end{equation}
-{#eq:recruitment-signal-injection}
 where $\epsilon > 0$ is chosen to divert fraction $f$ of responding agents.
 
 **Success metric:** Fraction of agent-actions directed to $l_{\text{malicious}}$ vs. $l_{\text{target}}$.
@@ -5845,14 +5897,14 @@ where $\epsilon > 0$ is chosen to divert fraction $f$ of responding agents.
 \label{form:sybil-infiltration}
 Adversary creates agent set $\mathcal{A}_{\text{sybil}} = \{s_1, \ldots, s_k\}$ with initial trust:
 \begin{equation}
-\mathcal{T}*{i \to s_j}(t_0) = \tau*{\text{init}} \quad \forall a_i \in \mathcal{A}, s_j \in \mathcal{A}*{\text{sybil}}
+\mathcal{T}_{i \to s_j}(t_0) = \tau_{\text{init}} \quad \forall a_i \in \mathcal{A}, s_j \in \mathcal{A}_{\text{sybil}}
+\label{eq:sybil-initial-trust}
 \end{equation}
-{#eq:sybil-initial-trust}
 Sybils behave cooperatively for period $\Delta t_{\text{trust}}$, building:
 \begin{equation}
-\mathcal{T}*{i \to s_j}(t_0 + \Delta t_{\text{trust}}) = \tau_{\text{init}} + \sum_{k=1}^{m} \Delta\mathcal{T}_k
+\mathcal{T}_{i \to s_j}(t_0 + \Delta t_{\text{trust}}) = \tau_{\text{init}} + \sum_{k=1}^{m} \Delta\mathcal{T}_k
+\label{eq:sybil-trust-accumulation}
 \end{equation}
-{#eq:sybil-trust-accumulation}
 At time $t_{\text{attack}}$, sybils coordinate malicious action.
 
 **Success metric:** Damage inflicted before detection, normalized by trust-building duration.
@@ -5878,14 +5930,14 @@ For collective action $\alpha$ with quorum threshold $Q_\alpha = q$, adversary t
 **Quorum prevention:**
 \begin{equation}
 \forall a_i \in \mathcal{A}_{\text{target}}: \mathcal{I}_i \gets \mathcal{I}_i \setminus \{\alpha\}
+\label{eq:quorum-prevention}
 \end{equation}
-{#eq:quorum-prevention}
 
 **False quorum:**
 \begin{equation}
-\forall a_i \in \mathcal{A}_{\text{target}}: \mathcal{I}_i \gets \mathcal{I}*i \cup \{\alpha*{\text{malicious}}\}
+\forall a_i \in \mathcal{A}_{\text{target}}: \mathcal{I}_i \gets \mathcal{I}_i \cup \{\alpha_{\text{malicious}}\}
+\label{eq:false-quorum-injection}
 \end{equation}
-{#eq:false-quorum-injection}
 
 **Success metric:** Probability of achieving manipulation goal given adversary budget $B$.
 \end{formalization}
@@ -5909,9 +5961,9 @@ Adversary injects belief $\mathcal{B}_{\text{false}}(\phi_{\text{attack}}) = p_0
 
 Propagation dynamics follow:
 \begin{equation}
-\mathcal{B}*i(\phi*{\text{attack}}, t+1) = (1-\gamma)\mathcal{B}*i(\phi*{\text{attack}}, t) + \gamma \cdot \text{Agg}\left(\{\mathcal{B}*j(\phi*{\text{attack}}, t) : j \in \mathcal{N}(i)\}\right)
+\mathcal{B}_i(\phi_{\text{attack}}, t+1) = (1-\gamma)\mathcal{B}_i(\phi_{\text{attack}}, t) + \gamma \cdot \text{Agg}\left(\{\mathcal{B}_j(\phi_{\text{attack}}, t) : j \in \mathcal{N}(i)\}\right)
+\label{eq:belief-cascade-propagation}
 \end{equation}
-{#eq:belief-cascade-propagation}
 where $\gamma$ is the social influence weight and $\text{Agg}$ is the belief aggregation function.
 
 **Success metric:** Final belief penetration $|\{a_i : \mathcal{B}_i(\phi_{\text{attack}}) > \tau\}| / n$ given seed set size.
@@ -5936,9 +5988,9 @@ Given operator goals $\mathcal{G}_{\mathcal{O}} = \{g_1, \ldots, g_m\}$ and indi
 
 **Misalignment condition:**
 \begin{equation}
-\forall a_i \in \mathcal{A}: \text{LocallyRational}(R, \sigma_i) = \text{true} \quad \land \quad \mathcal{F}*c(R, \{\sigma_i\}) \not\models \mathcal{G}*{\mathcal{O}}
+\forall a_i \in \mathcal{A}: \text{LocallyRational}(R, \sigma_i) = \text{true} \quad \land \quad \mathcal{F}_c(R, \{\sigma_i\}) \not\models \mathcal{G}_{\mathcal{O}}
+\label{eq:emergent-misalignment-condition}
 \end{equation}
-{#eq:emergent-misalignment-condition}
 
 The collective function produces outcomes that violate operator goals despite each agent acting rationally according to its rules.
 
@@ -5967,8 +6019,8 @@ where:
 \begin{align}
 \text{DR}_c &= \text{Colony-level detection rate} \\
 \text{FPR}_c &= \text{Colony-level false positive rate} \\
-\text{Resilience} &= \frac{\mathcal{F}_c(\text{under attack})}{\mathcal{F}*c(\text{baseline})} \\
-\text{Recovery} &= \frac{1}{t*{\text{recovery}}} \text{ (normalized)}
+\text{Resilience} &= \frac{\mathcal{F}_c(\text{under attack})}{\mathcal{F}_c(\text{baseline})} \\
+\text{Recovery} &= \frac{1}{t_{\text{recovery}}} \text{ (normalized)}
 \end{align}
 with weights $w_i$ summing to 1.
 \end{definition}
@@ -6001,8 +6053,8 @@ Monitor collective metrics, not just individual agent health. Pathological emerg
 Extend the trust decay principle (\cref{thm:trust-bounded}) to stigmergic contexts. Environmental markers should carry trust that decays with distance and time from source:
 \begin{equation}
 \mathcal{T}(m, t) = \mathcal{T}(m, t_0) \cdot \exp(-\lambda(t - t_0))
+\label{eq:stigmergic-trust-decay}
 \end{equation}
-{#eq:stigmergic-trust-decay}
 \end{principle}
 
 ### Integration with CIF Defenses {#sec:cif-integration}
@@ -6035,7 +6087,7 @@ The trust decay theorem (\cref{thm:trust-bounded}) extends to stigmergic context
 For a stigmergic operator $\mathcal{O}_\Sigma$, trust in environmental markers is bounded by:
 \begin{equation}
 \label{eq:stigmergic-trust-bound}
-\mathcal{T}*{c}(i, m, l, t) \leq \mathcal{T}*{i}^{\text{self}} \cdot \delta_s^{d_{\text{space}}} \cdot \delta_t^{d_{\text{time}}}
+\mathcal{T}_{c}(i, m, l, t) \leq \mathcal{T}_{i}^{\text{self}} \cdot \delta_s^{d_{\text{space}}} \cdot \delta_t^{d_{\text{time}}}
 \end{equation}
 where $\delta_s$ is spatial decay, $\delta_t$ is temporal decay, $d_{\text{space}}$ is distance from marker origin, and $d_{\text{time}}$ is time since marker creation.
 \end{corollary}
@@ -6047,7 +6099,7 @@ The stealth-impact tradeoff (\cref{thm:stealth-impact}) applies to emergent atta
 For an emergent attack $\mathcal{A}_e$ with collective impact $\mathcal{I}_c$ and collective stealth $\mathcal{S}_c$:
 \begin{equation}
 \label{eq:emergent-stealth-impact}
-\mathcal{I}_c \cdot \mathcal{S}*c \leq n \cdot C*{\text{channel}}
+\mathcal{I}_c \cdot \mathcal{S}_c \leq n \cdot C_{\text{channel}}
 \end{equation}
 Collective impact cannot be both high and collectively undetectable, but the bound scales with colony size.
 \end{corollary}
@@ -6115,26 +6167,26 @@ The collective function $\mathcal{F}_c$ can be decomposed into information contr
 For the collective function to be preserved, the honest agents must contribute sufficient information:
 \begin{equation}
 \sum_{i \in \text{honest}} I_i \geq H(\mathcal{F}_c)
+\label{eq:honest-info-sufficiency}
 \end{equation}
-{#eq:honest-info-sufficiency}
 
 Each honest agent contributes at most $H_{\max}$ bits. With $(1-f)n$ honest agents:
 \begin{equation}
 (1-f) \cdot n \cdot H_{\max} \geq H(\mathcal{F}_c)
+\label{eq:honest-agent-capacity}
 \end{equation}
-{#eq:honest-agent-capacity}
 
 Additionally, Byzantine consensus requires honest majority for any voting-based aggregation:
 \begin{equation}
 (1-f)n > 2fn \implies f < \frac{1}{3}
+\label{eq:byzantine-honest-majority}
 \end{equation}
-{#eq:byzantine-honest-majority}
 
 Combining these constraints:
 \begin{equation}
-f < \min\left(\frac{1}{3}, 1 - \frac{H(\mathcal{F}*c)}{n \cdot H*{\max}}\right) = \frac{1}{3} \cdot \left(1 - \frac{H(\mathcal{F}*c)}{n \cdot H*{\max}}\right)
+f < \min\left(\frac{1}{3}, 1 - \frac{H(\mathcal{F}_c)}{n \cdot H_{\max}}\right) = \frac{1}{3} \cdot \left(1 - \frac{H(\mathcal{F}_c)}{n \cdot H_{\max}}\right)
+\label{eq:byzantine-info-combined}
 \end{equation}
-{#eq:byzantine-info-combined}
 
 where the final equality holds when the information constraint is binding (typical for complex collective functions). \qed
 \end{proof}

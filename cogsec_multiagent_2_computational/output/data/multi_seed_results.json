@@ -6,9 +6,8 @@
   "overall_cv": 0.09668039208798085,
   "cv_threshold": 0.05,
   "stable": false,
-  "per_architecture_cv": {
-    "Claude Code": 0.09668039208798085
-  },
+  "per_architecture_cv": {},
+  "architecture_scope": "not_applicable: one architecture-agnostic CIF pipeline",
   "per_category_cv": {
     "injection": 0.09668039208798085
   },
@@ -36,9 +35,7 @@
     {
       "seed": 1,
       "overall": 0.38,
-      "per_architecture": {
-        "Claude Code": 0.38
-      },
+      "per_architecture": {},
       "per_category": {
         "injection": 0.38
       },
@@ -66,9 +63,7 @@
     {
       "seed": 2,
       "overall": 0.45,
-      "per_architecture": {
-        "Claude Code": 0.45
-      },
+      "per_architecture": {},
       "per_category": {
         "injection": 0.45
       },
@@ -96,9 +91,7 @@
     {
       "seed": 3,
       "overall": 0.48,
-      "per_architecture": {
-        "Claude Code": 0.48
-      },
+      "per_architecture": {},
       "per_category": {
         "injection": 0.48
       },
@@ -126,9 +119,7 @@
     {
       "seed": 4,
       "overall": 0.43,
-      "per_architecture": {
-        "Claude Code": 0.43
-      },
+      "per_architecture": {},
       "per_category": {
         "injection": 0.43
       },
@@ -156,9 +147,7 @@
     {
       "seed": 5,
       "overall": 0.49,
-      "per_architecture": {
-        "Claude Code": 0.49
-      },
+      "per_architecture": {},
       "per_category": {
         "injection": 0.49
       },
@@ -186,9 +175,7 @@
     {
       "seed": 6,
       "overall": 0.37,
-      "per_architecture": {
-        "Claude Code": 0.37
-      },
+      "per_architecture": {},
       "per_category": {
         "injection": 0.37
       },
@@ -216,9 +203,7 @@
     {
       "seed": 7,
       "overall": 0.5,
-      "per_architecture": {
-        "Claude Code": 0.5
-      },
+      "per_architecture": {},
       "per_category": {
         "injection": 0.5
       },
@@ -246,9 +231,7 @@
     {
       "seed": 8,
       "overall": 0.48,
-      "per_architecture": {
-        "Claude Code": 0.48
-      },
+      "per_architecture": {},
       "per_category": {
         "injection": 0.48
       },
@@ -276,9 +259,7 @@
     {
       "seed": 9,
       "overall": 0.44,
-      "per_architecture": {
-        "Claude Code": 0.44
-      },
+      "per_architecture": {},
       "per_category": {
         "injection": 0.44
       },
@@ -306,9 +287,7 @@
     {
       "seed": 10,
       "overall": 0.47,
-      "per_architecture": {
-        "Claude Code": 0.47
-      },
+      "per_architecture": {},
       "per_category": {
         "injection": 0.47
       },
@@ -336,9 +315,7 @@
     {
       "seed": 11,
       "overall": 0.46,
-      "per_architecture": {
-        "Claude Code": 0.46
-      },
+      "per_architecture": {},
       "per_category": {
         "injection": 0.46
       },
@@ -366,9 +343,7 @@
     {
       "seed": 12,
       "overall": 0.51,
-      "per_architecture": {
-        "Claude Code": 0.51
-      },
+      "per_architecture": {},
       "per_category": {
         "injection": 0.51
       },
@@ -396,9 +371,7 @@
     {
       "seed": 13,
       "overall": 0.41,
-      "per_architecture": {
-        "Claude Code": 0.41
-      },
+      "per_architecture": {},
       "per_category": {
         "injection": 0.41
       },
@@ -426,9 +399,7 @@
     {
       "seed": 14,
       "overall": 0.56,
-      "per_architecture": {
-        "Claude Code": 0.56
-      },
+      "per_architecture": {},
       "per_category": {
         "injection": 0.56
       },
@@ -456,9 +427,7 @@
     {
       "seed": 15,
       "overall": 0.42,
-      "per_architecture": {
-        "Claude Code": 0.42
-      },
+      "per_architecture": {},
       "per_category": {
         "injection": 0.42
       },
@@ -486,9 +455,7 @@
     {
       "seed": 16,
       "overall": 0.45,
-      "per_architecture": {
-        "Claude Code": 0.45
-      },
+      "per_architecture": {},
       "per_category": {
         "injection": 0.45
       },
@@ -516,9 +483,7 @@
     {
       "seed": 17,
       "overall": 0.47,
-      "per_architecture": {
-        "Claude Code": 0.47
-      },
+      "per_architecture": {},
       "per_category": {
         "injection": 0.47
       },
@@ -546,9 +511,7 @@
     {
       "seed": 18,
       "overall": 0.39,
-      "per_architecture": {
-        "Claude Code": 0.39
-      },
+      "per_architecture": {},
       "per_category": {
         "injection": 0.39
       },
@@ -576,9 +539,7 @@
     {
       "seed": 19,
       "overall": 0.48,
-      "per_architecture": {
-        "Claude Code": 0.48
-      },
+      "per_architecture": {},
       "per_category": {
         "injection": 0.48
       },
@@ -606,9 +567,7 @@
     {
       "seed": 20,
       "overall": 0.43,
-      "per_architecture": {
-        "Claude Code": 0.43
-      },
+      "per_architecture": {},
       "per_category": {
         "injection": 0.43
       },
@@ -636,9 +595,7 @@
     {
       "seed": 21,
       "overall": 0.49,
-      "per_architecture": {
-        "Claude Code": 0.49
-      },
+      "per_architecture": {},
       "per_category": {
         "injection": 0.49
       },
@@ -666,9 +623,7 @@
     {
       "seed": 22,
       "overall": 0.38,
-      "per_architecture": {
-        "Claude Code": 0.38
-      },
+      "per_architecture": {},
       "per_category": {
         "injection": 0.38
       },
@@ -696,9 +651,7 @@
     {
       "seed": 23,
       "overall": 0.44,
-      "per_architecture": {
-        "Claude Code": 0.44
-      },
+      "per_architecture": {},
       "per_category": {
         "injection": 0.44
       },
@@ -726,9 +679,7 @@
     {
       "seed": 24,
       "overall": 0.41,
-      "per_architecture": {
-        "Claude Code": 0.41
-      },
+      "per_architecture": {},
       "per_category": {
         "injection": 0.41
       },
@@ -756,9 +707,7 @@
     {
       "seed": 25,
       "overall": 0.41,
-      "per_architecture": {
-        "Claude Code": 0.41
-      },
+      "per_architecture": {},
       "per_category": {
         "injection": 0.41
       },
@@ -786,9 +735,7 @@
     {
       "seed": 26,
       "overall": 0.47,
-      "per_architecture": {
-        "Claude Code": 0.47
-      },
+      "per_architecture": {},
       "per_category": {
         "injection": 0.47
       },
@@ -816,9 +763,7 @@
     {
       "seed": 27,
       "overall": 0.48,
-      "per_architecture": {
-        "Claude Code": 0.48
-      },
+      "per_architecture": {},
       "per_category": {
         "injection": 0.48
       },
@@ -846,9 +791,7 @@
     {
       "seed": 28,
       "overall": 0.39,
-      "per_architecture": {
-        "Claude Code": 0.39
-      },
+      "per_architecture": {},
       "per_category": {
         "injection": 0.39
       },
@@ -876,9 +819,7 @@
     {
       "seed": 29,
       "overall": 0.45,
-      "per_architecture": {
-        "Claude Code": 0.45
-      },
+      "per_architecture": {},
       "per_category": {
         "injection": 0.45
       },
@@ -906,9 +847,7 @@
     {
       "seed": 30,
       "overall": 0.45,
-      "per_architecture": {
-        "Claude Code": 0.45
-      },
+      "per_architecture": {},
       "per_category": {
         "injection": 0.45
       },

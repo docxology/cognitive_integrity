@@ -26,6 +26,7 @@ constructed arithmetic evaluation functions.
 from __future__ import annotations
 
 import json
+from pathlib import Path
 
 import pytest
 
@@ -444,3 +445,23 @@ def test_shipped_artifact_matches_a_live_run():
 
     live = run_full_ablation(seed=42)
     assert json.dumps(stored, sort_keys=True) == json.dumps(live, sort_keys=True)
+
+
+def test_shipped_artifact_has_reproducibility_provenance():
+    """The committed ablation result identifies its real generator and seed."""
+    artifact = (
+        Path(__file__).resolve().parent.parent / "output" / "data" / "ablation_results.json"
+    )
+    if not artifact.exists():  # pragma: no cover - conftest normally provides it
+        pytest.skip("ablation_results.json not present")
+    payload = json.loads(artifact.read_text())
+    if "full_pipeline" not in payload:  # pragma: no cover - synthetic fixture
+        pytest.skip("artifact is DataGenerator synthetic data, not a real run")
+    assert payload["data_origin"] == "real_pipeline"
+    assert payload["source_script"] == "scripts/run_ablation.py"
+    assert payload["seed"] == 42
+    assert payload["generator"] == {
+        "module": "src/ablation/runner.py",
+        "function": "run_full_ablation",
+        "deterministic": True,
+    }

@@ -123,6 +123,8 @@ class ExperimentResult:
     avg_latency_ms: float
     measurement_mode: str = "real"
     llm_fallback_count: int = 0
+    # Top-level corpus category, distinct from the dominant subcategory.
+    category: str = "unknown"
 
 
 # ---------------------------------------------------------------------------
@@ -315,6 +317,7 @@ class ExperimentRunner:
         for adapter in adapters:
             for category_key, samples in corpus.items():
                 result = self.run_single(adapter, samples, pipeline)
+                result.category = category_key
                 results.append(result)
 
         return results

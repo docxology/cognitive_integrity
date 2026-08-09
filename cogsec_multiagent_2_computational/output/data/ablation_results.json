@@ -1,4 +1,12 @@
 {
+  "data_origin": "real_pipeline",
+  "source_script": "scripts/run_ablation.py",
+  "seed": 42,
+  "generator": {
+    "module": "src/ablation/runner.py",
+    "function": "run_full_ablation",
+    "deterministic": true
+  },
   "full_pipeline": {
     "tpr": 0.12244897959183673,
     "fpr": 0.0,

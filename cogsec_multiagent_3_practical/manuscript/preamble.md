@@ -8,6 +8,9 @@ This file contains LaTeX packages and commands for the Cognitive Integrity Frame
 % Core mathematical packages
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{mathtools}
+% Keep long deployment prose and references within the text block.
+\setlength{\emergencystretch}{3em}
+\sloppy
 
 % Algorithm formatting
 \usepackage{algorithm}

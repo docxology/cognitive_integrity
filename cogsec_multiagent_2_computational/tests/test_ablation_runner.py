@@ -183,6 +183,10 @@ class TestRunFullAblation:
             "minimal_forward",
             "minimal_backward",
             "top_synergies",
+            "data_origin",
+            "source_script",
+            "seed",
+            "generator",
         }
         assert set(result.keys()) == expected_keys
 

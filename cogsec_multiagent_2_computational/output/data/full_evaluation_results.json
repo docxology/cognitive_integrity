@@ -1,19 +1,21 @@
 [
   {
     "architecture": "Claude Code",
-    "attack_category": "indirect_injection",
+    "category": "injection",
+    "attack_category": "direct_injection",
     "n_attacks": 500,
     "true_positives": 500,
     "false_positives": 0,
     "true_negatives": 0,
     "false_negatives": 0,
     "detection_rate": 1.0,
-    "false_positive_rate": 0.0,
-    "avg_latency_ms": 0.002636650067870505,
-    "mode": "simulation"
+    "false_positive_rate": null,
+    "mode": "simulation",
+    "measurement_mode": "simulation"
   },
   {
     "architecture": "Claude Code",
+    "category": "trust_exploitation",
     "attack_category": "impersonation",
     "n_attacks": 200,
     "true_positives": 200,
@@ -21,12 +23,13 @@
     "true_negatives": 0,
     "false_negatives": 0,
     "detection_rate": 1.0,
-    "false_positive_rate": 0.0,
-    "avg_latency_ms": 0.0024114249390549958,
-    "mode": "simulation"
+    "false_positive_rate": null,
+    "mode": "simulation",
+    "measurement_mode": "simulation"
   },
   {
     "architecture": "Claude Code",
+    "category": "belief_manipulation",
     "attack_category": "belief_drift",
     "n_attacks": 150,
     "true_positives": 150,
@@ -34,12 +37,13 @@
     "true_negatives": 0,
     "false_negatives": 0,
     "detection_rate": 1.0,
-    "false_positive_rate": 0.0,
-    "avg_latency_ms": 0.002351906393111373,
-    "mode": "simulation"
+    "false_positive_rate": null,
+    "mode": "simulation",
+    "measurement_mode": "simulation"
   },
   {
     "architecture": "Claude Code",
+    "category": "coordination",
     "attack_category": "sybil_attack",
     "n_attacks": 100,
     "true_positives": 100,
@@ -47,25 +51,27 @@
     "true_negatives": 0,
     "false_negatives": 0,
     "detection_rate": 1.0,
-    "false_positive_rate": 0.0,
-    "avg_latency_ms": 0.0026124804571736604,
-    "mode": "simulation"
+    "false_positive_rate": null,
+    "mode": "simulation",
+    "measurement_mode": "simulation"
   },
   {
     "architecture": "AutoGPT",
-    "attack_category": "indirect_injection",
+    "category": "injection",
+    "attack_category": "direct_injection",
     "n_attacks": 500,
     "true_positives": 495,
     "false_positives": 0,
     "true_negatives": 0,
     "false_negatives": 5,
     "detection_rate": 0.99,
-    "false_positive_rate": 0.0,
-    "avg_latency_ms": 0.002540220186347142,
-    "mode": "simulation"
+    "false_positive_rate": null,
+    "mode": "simulation",
+    "measurement_mode": "simulation"
   },
   {
     "architecture": "AutoGPT",
+    "category": "trust_exploitation",
     "attack_category": "impersonation",
     "n_attacks": 200,
     "true_positives": 192,
@@ -73,12 +79,13 @@
     "true_negatives": 0,
     "false_negatives": 8,
     "detection_rate": 0.96,
-    "false_positive_rate": 0.0,
-    "avg_latency_ms": 0.0024409798425040208,
-    "mode": "simulation"
+    "false_positive_rate": null,
+    "mode": "simulation",
+    "measurement_mode": "simulation"
   },
   {
     "architecture": "AutoGPT",
+    "category": "belief_manipulation",
     "attack_category": "belief_drift",
     "n_attacks": 150,
     "true_positives": 148,
@@ -86,12 +93,13 @@
     "true_negatives": 0,
     "false_negatives": 2,
     "detection_rate": 0.9866666666666667,
-    "false_positive_rate": 0.0,
-    "avg_latency_ms": 0.0024094198791620633,
-    "mode": "simulation"
+    "false_positive_rate": null,
+    "mode": "simulation",
+    "measurement_mode": "simulation"
   },
   {
     "architecture": "AutoGPT",
+    "category": "coordination",
     "attack_category": "sybil_attack",
     "n_attacks": 100,
     "true_positives": 96,
@@ -99,25 +107,27 @@
     "true_negatives": 0,
     "false_negatives": 4,
     "detection_rate": 0.96,
-    "false_positive_rate": 0.0,
-    "avg_latency_ms": 0.002932879579020664,
-    "mode": "simulation"
+    "false_positive_rate": null,
+    "mode": "simulation",
+    "measurement_mode": "simulation"
   },
   {
     "architecture": "CrewAI",
-    "attack_category": "indirect_injection",
+    "category": "injection",
+    "attack_category": "direct_injection",
     "n_attacks": 500,
     "true_positives": 500,
     "false_positives": 0,
     "true_negatives": 0,
     "false_negatives": 0,
     "detection_rate": 1.0,
-    "false_positive_rate": 0.0,
-    "avg_latency_ms": 0.002385048122960143,
-    "mode": "simulation"
+    "false_positive_rate": null,
+    "mode": "simulation",
+    "measurement_mode": "simulation"
   },
   {
     "architecture": "CrewAI",
+    "category": "trust_exploitation",
     "attack_category": "impersonation",
     "n_attacks": 200,
     "true_positives": 200,
@@ -125,12 +135,13 @@
     "true_negatives": 0,
     "false_negatives": 0,
     "detection_rate": 1.0,
-    "false_positive_rate": 0.0,
-    "avg_latency_ms": 0.002342214938835241,
-    "mode": "simulation"
+    "false_positive_rate": null,
+    "mode": "simulation",
+    "measurement_mode": "simulation"
   },
   {
     "architecture": "CrewAI",
+    "category": "belief_manipulation",
     "attack_category": "belief_drift",
     "n_attacks": 150,
     "true_positives": 150,
@@ -138,12 +149,13 @@
     "true_negatives": 0,
     "false_negatives": 0,
     "detection_rate": 1.0,
-    "false_positive_rate": 0.0,
-    "avg_latency_ms": 0.002339692631115516,
-    "mode": "simulation"
+    "false_positive_rate": null,
+    "mode": "simulation",
+    "measurement_mode": "simulation"
   },
   {
     "architecture": "CrewAI",
+    "category": "coordination",
     "attack_category": "sybil_attack",
     "n_attacks": 100,
     "true_positives": 100,
@@ -151,25 +163,27 @@
     "true_negatives": 0,
     "false_negatives": 0,
     "detection_rate": 1.0,
-    "false_positive_rate": 0.0,
-    "avg_latency_ms": 0.0023420896468451247,
-    "mode": "simulation"
+    "false_positive_rate": null,
+    "mode": "simulation",
+    "measurement_mode": "simulation"
   },
   {
     "architecture": "LangGraph",
-    "attack_category": "indirect_injection",
+    "category": "injection",
+    "attack_category": "direct_injection",
     "n_attacks": 500,
     "true_positives": 500,
     "false_positives": 0,
     "true_negatives": 0,
     "false_negatives": 0,
     "detection_rate": 1.0,
-    "false_positive_rate": 0.0,
-    "avg_latency_ms": 0.0026045300328405574,
-    "mode": "simulation"
+    "false_positive_rate": null,
+    "mode": "simulation",
+    "measurement_mode": "simulation"
   },
   {
     "architecture": "LangGraph",
+    "category": "trust_exploitation",
     "attack_category": "impersonation",
     "n_attacks": 200,
     "true_positives": 200,
@@ -177,12 +191,13 @@
     "true_negatives": 0,
     "false_negatives": 0,
     "detection_rate": 1.0,
-    "false_positive_rate": 0.0,
-    "avg_latency_ms": 0.0026805948800756596,
-    "mode": "simulation"
+    "false_positive_rate": null,
+    "mode": "simulation",
+    "measurement_mode": "simulation"
   },
   {
     "architecture": "LangGraph",
+    "category": "belief_manipulation",
     "attack_category": "belief_drift",
     "n_attacks": 150,
     "true_positives": 150,
@@ -190,12 +205,13 @@
     "true_negatives": 0,
     "false_negatives": 0,
     "detection_rate": 1.0,
-    "false_positive_rate": 0.0,
-    "avg_latency_ms": 0.002668246549243728,
-    "mode": "simulation"
+    "false_positive_rate": null,
+    "mode": "simulation",
+    "measurement_mode": "simulation"
   },
   {
     "architecture": "LangGraph",
+    "category": "coordination",
     "attack_category": "sybil_attack",
     "n_attacks": 100,
     "true_positives": 100,
@@ -203,8 +219,8 @@
     "true_negatives": 0,
     "false_negatives": 0,
     "detection_rate": 1.0,
-    "false_positive_rate": 0.0,
-    "avg_latency_ms": 0.0026711800455814227,
-    "mode": "simulation"
+    "false_positive_rate": null,
+    "mode": "simulation",
+    "measurement_mode": "simulation"
   }
 ]

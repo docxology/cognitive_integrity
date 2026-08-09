@@ -10,7 +10,7 @@ Part 1 (Section 5) established that series composition of defense modules satisf
 \begin{equation}
 P_{\text{detect}}^{\text{series}} = 1 - \prod_{i=1}^{m} (1 - r_i),
 \end{equation}
-{#eq:series-composition}
+\label{eq:series-composition}
 where $r_i$ is the per-module detection rate. We now show that this composition is categorical: the CIF defense suite forms a category $\calD$ whose morphisms are detection functions.
 
 \begin{definition}[Defense Category]\label{def:defense-category}
@@ -33,7 +33,7 @@ For all detection morphisms $f, g, h \in \mathrm{Mor}(\calD)$:
 \item \emph{Associativity}: $(h \circ g) \circ f = h \circ (g \circ f)$.
 \end{enumerate}
 \end{theorem}
-{#thm:defense-category-laws}
+\label{thm:defense-category-laws}
 
 \begin{proof}[Proof sketch]
 Left identity: $\mathrm{id} \circ f$ applies $f$ first; if $f$ fires, the composition short-circuits to $f$'s event; if not, $\mathrm{id}$ returns $\cogstate{}$, matching $f$'s pass-through. Right identity follows symmetrically. Associativity: both $(h \circ g) \circ f$ and $h \circ (g \circ f)$ apply $f$ first; if $f$ fires, both return $f$'s event; if $f$ passes, both reduce to applying $g$ then $h$ with the same short-circuit semantics. The function \texttt{verify\_category\_laws()} in \texttt{src/formal/category\_theory.py} provides empirical validation across randomly sampled morphism triples.
@@ -42,14 +42,14 @@ Left identity: $\mathrm{id} \circ f$ applies $f$ first; if $f$ fires, the compos
 \begin{theorem}[Series Composition as Categorical Composition]
 Let $f_1, \ldots, f_m$ be independent detection morphisms with miss probabilities $1 - r_i$. Then the categorical composite $f_m \circ \cdots \circ f_1$ has miss probability $\prod_{i=1}^{m} (1 - r_i)$, recovering the Part 1 series composition formula.
 \end{theorem}
-{#thm:series-categorical}
+\label{thm:series-categorical}
 
 The proof is immediate: the composite fails to detect only if every $f_i$ individually misses, which by independence has probability $\prod_i (1 - r_i)$. The multiplicative miss-rate law of Part 1 is therefore the category-theoretic composition of detection morphisms.
 
 \begin{theorem}[Categorical Product, CT.2]
 Parallel composition of defense modules is the categorical product in $\calD$. Given $f_1 : \cogstate{} \to \mathrm{DefenseResult}_1$ and $f_2 : \cogstate{} \to \mathrm{DefenseResult}_2$, the product morphism $f_1 \times f_2 : \cogstate{} \to \mathrm{DefenseResult}_1 \times \mathrm{DefenseResult}_2$ satisfies the universal property of products, and its detection decision is given by max-score fusion: $\mathrm{detected}(f_1 \times f_2) = \max(s_1, s_2) > \tau$.
 \end{theorem}
-{#thm:categorical-product}
+\label{thm:categorical-product}
 
 This recovers the parallel composition rule from Part 1 (Theorem 3.2): parallel defenses aggregate via max-score, and the categorical framing makes explicit that this is the unique universal construction commuting with both projections. The empirical composition helper \texttt{compute\_parallel\_detection\_rate()} implements exactly this max-fusion.
 
@@ -63,7 +63,7 @@ Karl Friston's Free Energy Principle \cite{friston2010free,dacosta2020active} po
 \begin{equation}
 F[Q] = \KL[Q(s) \,\|\, P(s)] - \E_{Q(s)}[\log P(o \mid s)].
 \end{equation}
-{#eq:variational-free-energy}
+\label{eq:variational-free-energy}
 Active inference proceeds by minimizing $F$ along two axes: perception updates $Q$ to better match observations, and action selects policies expected to produce observations that make $Q$ accurate. Under the FEP, both cognitive and behavioral dynamics reduce to a single optimization on $F$.
 
 The CIF defense modules admit a natural FEP interpretation. Agent beliefs $\belief{i}{\cdot}$ from Part 1 correspond to the approximate posterior $Q_i$; the generative model prior $P_i$ encodes the agent's baseline world model; and incoming messages from peers constitute observations. An attack, in these terms, is any adversarial intervention that inflates $F[Q_i]$---either by driving $Q_i$ away from $P_i$ (the KL term) or by making $Q_i$ assign low probability to veridical observations (the likelihood term).
@@ -73,21 +73,21 @@ A cognitive attack $\adversary{}$ on agent $i$ is effective in the CIF sense (in
 \begin{equation}
 \Delta F(\adversary{}) = F[Q_i^{\text{attacked}}] - F[Q_i^{\text{baseline}}] > \kappa_{\mathrm{FEP}}
 \end{equation}
-{#eq:attack-free-energy-change}
+\label{eq:attack-free-energy-change}
 exceeds a threshold $\kappa_{\mathrm{FEP}}$ determined by the sandbox corroboration parameter $\kappa$.
 \end{theorem}
 
 \begin{proof}[Proof sketch]
 The sandbox promotes a provisional belief to verified status iff corroboration count $\geq \kappa$ and the belief is consistent with provenance and the ambient belief set. Both conditions can be recast as bounds on the KL divergence between the provisional belief and the (multiply-corroborated) reference distribution; equivalently, on the free energy of the attacked posterior under the reference generative model. The explicit mapping $\kappa_{\mathrm{FEP}} = \kappa \cdot \log(1 + \epsilon_{\text{precision}}^{-1})$ is derived in \texttt{src/formal/free\_energy.py::free\_energy\_of\_attack()}.
 \end{proof}
-{#thm:attack-fep}
+\label{thm:attack-fep}
 
 A second FEP connection concerns trust. In Part 1 (Theorem 4.2) the composite trust score is $T(i \to j) = \alpha \cdot T_{\text{base}} + \beta \cdot T_{\text{rep}} + \gamma \cdot T_{\text{ctx}}$. Within active inference, the analogous quantity is the \emph{precision} weight $\rho_{ij}$ assigned to messages from agent $j$ when updating $Q_i$: messages from high-precision sources dominate the posterior update, while low-precision sources are effectively ignored.
 
 \begin{theorem}[Trust-Precision Duality, FEP.2]\label{thm:trust-precision}
 The CIF composite trust $T(i \to j)$ is an affine function of the FEP precision weight $\rho_{ij}$: $T(i \to j) = a \rho_{ij} + b$ for architecture-specific constants $a, b$ determined by the trust calculus parameters. High-trust agents correspond to high-precision message channels, and the trust decay bound $T_{\text{delegated}} \leq \delta^d \cdot T_{\text{direct}}$ corresponds to precision decay under delegation.
 \end{theorem}
-{#thm:trust-precision-duality}
+\label{thm:trust-precision-duality}
 
 This duality has a concrete algorithmic consequence: CIF's drift detector monitors $\KL[\belieft{i}{t}{\cdot} \,\|\, \belieft{i}{t-w}{\cdot}] > \theta_{\text{drift}}$ (Part 1, Definition 6.1); under the trust-precision mapping, this is exactly an FEP-grounded free-energy spike detector. The empirically calibrated threshold $\theta_{\text{drift}} = 0.3$ therefore admits a principled interpretation as the free-energy budget beyond which belief updates must be attributable to multiple high-precision (high-trust) sources rather than a single adversarial channel.
 
@@ -135,13 +135,13 @@ By the minimax theorem, the game value is
 \begin{equation}
 v^* = \max_{d \in D} \min_{a \in \Omega} M[a, d] = \min_{a \in \Omega} \max_{d \in D} M[a, d] \approx 0.56,
 \end{equation}
-{#eq:minimax-game-value}
+\label{eq:minimax-game-value}
 achieved at the pure strategy pair $(a^*, d^*) = (\text{Emergent Misalignment}, \text{Full CIF})$. In particular, Full CIF weakly dominates every alternative defense configuration column-wise in \cref{tab:payoff-matrix}, so the minimax-optimal defense is the pure strategy ``Full CIF''---no mixed strategy improves on it at current adapter maturity. The attacker's Nash best-response is likewise pure: emergent misalignment minimizes detection across all defense configurations.
 
 \begin{theorem}[CIF Nash Equilibrium, GT.1]
 The CIF defense game $\calG$ admits a unique pure-strategy Nash equilibrium $(d^* = \text{Full CIF}, a^* = \text{Emergent Misalignment})$ with game value $v^* \approx 0.56$. Full CIF strictly dominates every proper subset configuration; no mixed strategy yields a higher defender payoff.
 \end{theorem}
-{#thm:cif-nash}
+\label{thm:cif-nash}
 
 The zero-sum solver \texttt{solve\_zero\_sum\_game()} in \texttt{src/analysis/game\_theory.py} verifies this equilibrium numerically from \cref{tab:payoff-matrix}. Since the attacker's best response is a pure strategy, the fictitious-play simulation \texttt{fictitious\_play()} converges to the same equilibrium within $\sim 50$ iterations.
 

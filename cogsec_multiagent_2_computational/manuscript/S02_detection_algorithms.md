@@ -31,7 +31,7 @@ This supplementary section presents detection algorithm implementations for the 
 \State \Return $(\text{ROC}, \text{AUC}, \tau^*)$
 \end{algorithmic}
 \end{algorithm}
-{#alg:roc-construction}
+\label{alg:roc-construction}
 
 ## Detector Performance Results
 
@@ -79,7 +79,7 @@ Table: Empirical AUC with 95\% confidence intervals. {#tab:auc-ci}
 \State \Return $(f_{\text{fused}}, \tau_{\text{fused}})$
 \end{algorithmic}
 \end{algorithm}
-{#alg:multi-detector-fusion}
+\label{alg:multi-detector-fusion}
 
 Table: Fusion strategy performance comparison. {#tab:fusion-performance}
 
@@ -117,7 +117,7 @@ Table: Fusion strategy performance comparison. {#tab:fusion-performance}
 \EndLoop
 \end{algorithmic}
 \end{algorithm}
-{#alg:online-detection}
+\label{alg:online-detection}
 
 ## Batch Detection Algorithm
 
@@ -137,7 +137,7 @@ Table: Fusion strategy performance comparison. {#tab:fusion-performance}
 \State \Return $(\text{anomalies}, \text{attack\_patterns}, \tau^*)$
 \end{algorithmic}
 \end{algorithm}
-{#alg:batch-detection}
+\label{alg:batch-detection}
 
 Table: Hybrid configuration trade-off analysis. {#tab:hybrid-tradeoffs}
 
@@ -182,7 +182,7 @@ Table: False positive root causes and mitigation strategies. {#tab:fp-root-cause
 \EndIf
 \end{algorithmic}
 \end{algorithm}
-{#alg:baseline-update}
+\label{alg:baseline-update}
 
 Table: False positive mitigation strategy effectiveness. {#tab:fp-mitigation-results}
 
@@ -218,7 +218,7 @@ Table: False positive mitigation strategy effectiveness. {#tab:fp-mitigation-res
 \EndLoop
 \end{algorithmic}
 \end{algorithm}
-{#alg:sliding-window}
+\label{alg:sliding-window}
 
 ## Computational Complexity Summary {#sec:detection-complexity}
 
@@ -262,7 +262,7 @@ The Fisher-Rao metric on the belief simplex $\Delta^{n-1}$ provides a principled
 \EndLoop
 \end{algorithmic}
 \end{algorithm}
-{#alg:fisher-rao-drift}
+\label{alg:fisher-rao-drift}
 
 **Relationship to Theorem CG.1.** The geodesic threshold $\rho$ in Algorithm IG.1 corresponds to the sandbox radius derived in \cref{sec:information-geometry}: setting $\rho = 2\arccos(\sqrt{1 - \kappa \cdot \varepsilon_\text{precision}})$ makes the drift detector and the belief sandbox mutually consistent---any update rejected by the sandbox would also trigger an alert, and vice versa.
 
@@ -284,7 +284,7 @@ The Fisher-Rao metric on the belief simplex $\Delta^{n-1}$ provides a principled
 \EndIf
 \end{algorithmic}
 \end{algorithm}
-{#alg:natural-gradient}
+\label{alg:natural-gradient}
 
 The natural gradient anomaly score weights each dimension's detection signal by the current belief probability, making the score sensitive to manipulations of high-probability beliefs (which carry more semantic content) while remaining robust to noise in low-probability dimensions.
 

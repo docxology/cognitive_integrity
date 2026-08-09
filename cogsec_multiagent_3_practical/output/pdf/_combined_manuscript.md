@@ -321,9 +321,9 @@ We proved the *architecture* works. The implementation fidelity is the variable 
 >
 > - **94--100\%** (parametric simulation, $N=3{,}800$): CIF's **design-level detection ceiling** — what the defense architecture achieves when adapters are fully mature (Level 5) and conditions match the calibrated model. This is the target, not the current reality.
 > - **44.8\%** [95\% HDI: 41.3\%, 48.3\%] (multi-seed pipeline, 30 seeds): The **current empirical baseline** for the Claude Code architecture with Level-3 adapters. This is what you get today, out of the box, before adapter tuning.
-> - **12.4\%** (ablation corpus, 100 attacks, all categories including hardest): The **conservative floor** — full pipeline performance on a corpus specifically designed to include difficult attacks. This represents the worst-case realistic estimate.
+> - **~12.2\%** (ablation corpus, 98 attacks, all categories including hardest): The **conservative floor** — full pipeline performance on a corpus specifically designed to include difficult attacks. This represents the worst-case realistic estimate.
 >
-> All three numbers are correct. Use 44.8\% for realistic planning, 94\% as the achievable ceiling with mature adapters, and 12.4\% as a conservative lower bound for adversarial threat modeling.
+> All three numbers are correct. Use 44.8\% for realistic planning, 94\% as the achievable ceiling with mature adapters, and ~12.2\% as a conservative lower bound for adversarial threat modeling.
 
 ### Tripwire Configuration Data
 
@@ -623,7 +623,7 @@ This profile corresponds to the **Empirically Optimal Configuration** identified
 
 **Configuration Parameters**:
 
-* **Trust Decay ($\delta$)**: `0.80`. At this setting, trust degrades to <50% after 3 hops, strictly bounding the "radius of effective delegation."
+* **Trust Decay ($\delta$)**: `0.80`. At this setting, trust degrades to <50% after 4 hops, strictly bounding the "radius of effective delegation."
 * **Firewall Sensitivity**: Balanced ($\tau=0.5$).
 * **Consensus**: Variable (Architecture Dependent).
 
@@ -639,7 +639,7 @@ This profile corresponds to the "Byzantine-Heavy" configuration tested in Part 2
 
 **Configuration Parameters**:
 
-* **Trust Decay ($\delta$)**: `0.60`. Aggressive decay. Trust halves every 1.3 hops, enforcing a strictly flat command structure.
+* **Trust Decay ($\delta$)**: `0.60`. Aggressive decay. Trust halves every ~1.36 hops, enforcing a strictly flat command structure.
 * **Firewall Sensitivity**: Strict ($\tau=0.4$).
 * **Consensus**: Byzantine Fault Tolerance ($n \ge 3f+1$).
 
@@ -1508,7 +1508,7 @@ Together, Papers 1 through 3+4 provide a complete stack: Paper 1 defines *what* 
 
 The vulnerability of modern Artificial Intelligence has shifted from the *epistemic* (what the agent knows) to the *teleological* (what the agent wants) \cite{waltzman2017weaponization, aiagentssurvey2025}. **Goal Hijacking**, a sophisticated vector of indirect prompt injection \cite{greshake2023indirect}, allows adversaries to surreptitiously rewrite an agent's objective function. This represents an ontological crisis for autonomous systems: if an agent cannot trust the integrity of its own goals, it cannot trust any action it calculates.
 
-In the context of Boyd's **OODA (Observe-Orient-Decide-Act) Loop** \cite{boyd1987patterns, osinga2007science}, Goal Hijacking is a corruption of the **Orientation** phase. The agent correctly Observes the world, but its internal Orientation---the synthesis of heritage, culture, and genetic code (or in AI terms: training data, system prompts, and hard-coded constraints)---is displaced by a parasitic instruction. The agent then proceeds to Decide and Act with perfect logical consistency, but in service of an alien will. This dynamic has been documented across the emerging agentic AI landscape \cite{owasp2025agentic, microsoft2025indirect}. The OWASP Top 10 for Agentic Applications (December 2025) designates **ASI-01: Agent Goal Hijack** as the \#1 risk for deployed agentic AI systems---a direct industry validation of this paper's central thesis.
+In the context of Boyd's **OODA (Observe-Orient-Decide-Act) Loop** \cite{boyd1987patterns, osinga2007science}, Goal Hijacking is a corruption of the **Orientation** phase. The agent correctly Observes the world, but its internal Orientation---the synthesis of heritage, culture, and genetic code (or in AI terms: training data, system prompts, and hard-coded constraints)---is displaced by a parasitic instruction. The agent then proceeds to Decide and Act with complete internal logical consistency, but in service of an alien will. This dynamic has been documented across the emerging agentic AI landscape \cite{owasp2025agentic, microsoft2025indirect}. The OWASP Top 10 for Agentic Applications (December 2025) designates **ASI-01: Agent Goal Hijack** as the \#1 risk for deployed agentic AI systems---a direct industry validation of this paper's central thesis.
 
 ### Empirical Urgency
 
@@ -1558,7 +1558,7 @@ This paper makes the following contributions:
 - **C2:** Identification of three universal attack patterns---FR Polarity Inversion, Constraint Relaxation, and Context Boundary Violation---through cross-domain synthesis.
 - **C3:** Validation that all five canonical CIF mechanisms provide adequate coverage across ten critical domains, with no mechanism appearing in fewer than three domains and no domain requiring mechanisms outside the CIF vocabulary.
 - **C4:** Three novel defense pattern extensions: verification channel separation, active perturbation probing, and physics-informed invariants.
-- **C5:** Temporal scale analysis demonstrating CIF's applicability across eight orders of magnitude in OODA cycle time.
+- **C5:** Temporal scale analysis demonstrating CIF's applicability across more than ten orders of magnitude in OODA cycle time.
 - **C6:** Retrospective validation through six documented AI agent security incidents (2024--2025), confirming that all incidents map to the universal attack pattern taxonomy and would have been detectable by the appropriate CIF mechanism.
 
 ## Reading Companion: Where to Find Specific Topics {#sec:reading-companion}
@@ -2637,7 +2637,7 @@ The incidents span the full attack pattern taxonomy. **FR Polarity Inversion** m
 
 Three findings emerge from the retrospective analysis:
 
-1. **Pattern coverage.** All three universal attack patterns are represented in documented production failures, with FR Polarity Inversion and Context Boundary Violation each appearing in two incidents. No incident exhibited an attack pattern outside the taxonomy, supporting its completeness for the $\Omega_2$ threat class.
+1. **Pattern coverage.** All three universal attack patterns are represented in documented production failures, with each of the three attack patterns appearing in two incidents. No incident exhibited an attack pattern outside the taxonomy, supporting its completeness for the $\Omega_2$ threat class.
 
 2. **Defense applicability.** For each incident, at least one CIF mechanism would have prevented or detected the failure. Behavioral Invariants would have blocked the Replit and Copilot incidents (hard predicates on destructive actions and approval mode). Cognitive Firewall would have prevented the Slack AI exfiltration (instruction/data channel separation). Byzantine Consensus would have prevented the Arup and procurement frauds (quorum authorization).
 
@@ -2682,7 +2682,7 @@ This paper has applied the Cognitive Integrity Framework (CIF) \cite{friedman202
 
 **C4: Novel Defense Patterns.** Three domains contributed genuinely novel extensions to the CIF vocabulary: *verification channel separation* (Biowarfare), *active perturbation probing* (Trade Wars), and *physics-informed invariants* (Infrastructure). These patterns generalize beyond their originating domains and represent candidate additions to the canonical CIF mechanism set.
 
-**C5: Temporal Scale Analysis.** The OODA transient dynamics analysis revealed that Goal Hijacking operates across eight orders of magnitude in time scale (milliseconds for drone swarms to years for diplomatic agents), demonstrating that CIF's temporal parameters ($\epsilon$, $\Delta t$) must be domain-calibrated but the underlying defense principles are scale-invariant.
+**C5: Temporal Scale Analysis.** The OODA transient dynamics analysis revealed that Goal Hijacking operates across more than ten orders of magnitude in time scale (milliseconds for drone swarms to years for diplomatic agents), demonstrating that CIF's temporal parameters ($\epsilon$, $\Delta t$) must be domain-calibrated but the underlying defense principles are scale-invariant.
 
 **C6: Real-World Validation.** Retrospective analysis of six documented AI agent security incidents (2024--2025)---including the Replit agent meltdown, GitHub Copilot RCE (CVE-2025-53773), Slack AI data exfiltration, and a \$3.2M procurement fraud---confirms that all incidents map to one of the three universal attack patterns and would have been detectable or preventable by the appropriate CIF mechanism. This provides the first empirical grounding for the CIF-AD-OODA framework in real production failures (see Supplementary Material S3).
 
@@ -2745,7 +2745,7 @@ This paper intentionally minimizes mathematical notation to maximize accessibili
 | $[A]$ | Design Matrix | Maps Functional Requirements to Defense Provisions |
 | $\{FR\}$ | Functional Requirements | What the system must protect |
 | $\{DP\}$ | Defense Provisions | What CIF mechanisms provide |
-| $\Omega_k$ | Adversary class $k$ | Capability tier (1=passive, 2=injection, 3=spoofing, 4=belief manipulation, 5=coordinated) |
+| $\Omega_k$ | Adversary class $k$ | Capability tier: 1=external (input control), 2=peripheral (tool/data channels), 3=agent-level (single compromised agent), 4=coordination (inter-agent channels), 5=systemic (orchestrator) |
 
 ## CIF-AD-OODA Notation
 
@@ -2753,7 +2753,7 @@ The cross-domain analysis (Sections 9c–9l) uses the CIF-AD-OODA methodology:
 
 - **Design Matrix** $[A]$: A matrix where rows represent Functional Requirements ($FR$) and columns represent Defense Provisions ($DP$). Each entry $A_{ij}$ indicates whether defense $j$ covers requirement $i$.
 - **Transient Coupling** $[A']$: The coupling matrix during an active attack, showing which defenses are bypassed.
-- **Adversary Classes** $\Omega_1$–$\Omega_5$: Five capability tiers from passive eavesdropping ($\Omega_1$) through coordinated multi-agent attacks ($\Omega_5$), as defined in Part 1, Section 3.
+- **Adversary Classes** $\Omega_1$–$\Omega_5$: Five adversary classes from external input control ($\Omega_1$) through peripheral tool/data-channel compromise ($\Omega_2$), single compromised agents ($\Omega_3$), coordination-channel attacks ($\Omega_4$), and systemic orchestrator compromise ($\Omega_5$), as defined in Part 1, Section 3.
 
 ### Three Universal Attack Patterns
 
@@ -2767,14 +2767,19 @@ Across all ten domains, attacks reduce to three canonical patterns:
 
 ## Trust Decay Explanation
 
-When we write δ = 0.9, this means:
+The symbol δ is a parameter, not a universal constant. For an illustrative
+example, δ = 0.8 means:
 
 - Direct trust: 100% of assigned value
-- One delegation: 90% of source trust
-- Two delegations: 81% of source trust
-- Three delegations: 73% of source trust
+- One delegation: 80% of source trust
+- Two delegations: 64% of source trust
+- Three delegations: 51.2% of source trust
 
-A lower δ (e.g., 0.85) means faster decay, providing more security but limiting delegation utility.
+The executable Part 3 deployment profiles use δ = 0.80 for balanced operation
+and δ = 0.60 for high assurance. Those are implementation defaults, not a
+claim that either value is optimal for every threat model. A lower δ means
+faster decay, providing more security against long delegation chains while
+limiting delegation utility.
 
 ## Byzantine Tolerance Explanation
 

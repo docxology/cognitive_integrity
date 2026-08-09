@@ -1371,3 +1371,25 @@ def test_run_single_llm_fallback_reports_honest_mode():
     )
     assert result2.measurement_mode == "pipeline"
     assert result2.llm_fallback_count == len(samples)
+
+
+def test_full_matrix_records_top_level_category():
+    """Matrix rows retain corpus category separately from subcategory."""
+    from architectures.autogpt import AutoGPTAdapter
+    from attacks.corpus import AttackCorpus
+
+    corpus = AttackCorpus.generate(seed=42)
+    samples = corpus.by_top_category("injection")
+    rows = ExperimentRunner(ExperimentConfig(seed=42)).run_full_matrix(
+        [AutoGPTAdapter()],
+        {
+            "injection": [
+                {"category": s.subcategory, "content": s.payload, "is_attack": True}
+                for s in samples
+            ]
+        },
+        None,
+    )
+    assert len(rows) == 1
+    assert rows[0].category == "injection"
+    assert rows[0].attack_category != "injection"

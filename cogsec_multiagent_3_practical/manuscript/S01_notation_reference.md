@@ -36,14 +36,19 @@ Across all ten domains, attacks reduce to three canonical patterns:
 
 ## Trust Decay Explanation
 
-When we write δ = 0.9, this means:
+The symbol δ is a parameter, not a universal constant. For an illustrative
+example, δ = 0.8 means:
 
 - Direct trust: 100% of assigned value
-- One delegation: 90% of source trust
-- Two delegations: 81% of source trust
-- Three delegations: 73% of source trust
+- One delegation: 80% of source trust
+- Two delegations: 64% of source trust
+- Three delegations: 51.2% of source trust
 
-A lower δ (e.g., 0.85) means faster decay, providing more security but limiting delegation utility.
+The executable Part 3 deployment profiles use δ = 0.80 for balanced operation
+and δ = 0.60 for high assurance. Those are implementation defaults, not a
+claim that either value is optimal for every threat model. A lower δ means
+faster decay, providing more security against long delegation chains while
+limiting delegation utility.
 
 ## Byzantine Tolerance Explanation
 

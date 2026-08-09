@@ -52,7 +52,7 @@ Laws 1--3 follow from the standard construction of the error monad (also known a
 
 Law 4 is the CIF-specific invariant that forbids any downstream module from promoting an $\mathrm{Err}$ back to $\mathrm{Ok}$. This property does not hold in arbitrary sum-type monads (e.g., \texttt{Either} in languages where error values can be pattern-matched away), but it is guaranteed in our construction because the \texttt{bind} definition fixes $\mathrm{Err}$ as an absorbing element: no $f$ receives the error value, so no $f$ can transform it. The \texttt{verify\_monad\_laws()} helper in \texttt{src/core/monad.py} checks all four laws empirically over sampled inputs; the absorbing-element property provides the closed-form argument.
 \end{proof}
-{#thm:monadic-laws}
+\label{thm:monadic-laws}
 
 The detection-preservation law is the guarantee that makes monadic composition safe for security use: once a module fires, the detection event propagates to the pipeline caller regardless of what subsequent modules would have computed. Any bypass attack that attempts to suppress an upstream detection by exploiting a downstream module must therefore operate before the detecting module runs, not after.
 

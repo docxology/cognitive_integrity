@@ -73,7 +73,7 @@ The power summary (\cref{tab:power-analysis-preregistration}) shows that the mul
 | Evaluation Mode | $N$ (Actual) | Effect Size | Required $N$ ($\pm 5\%$ precision) | Interpretation |
 | :--- | :--- | :--- | :--- | :--- |
 | Multi-seed pipeline (30 seeds) | 30 | DR = 0.448 | $N \geq 246$ seeds | Severely underpowered; $\pm 8.8\%$ CI |
-| Ablation corpus | 98 attacks | TPR = 0.122 | $N \\geq 171$ | Marginally underpowered; $\\pm 6.5\\%$ CI |
+| Ablation corpus | 98 attacks | TPR = 0.122 | $N \geq 171$ | Marginally underpowered; $\pm 6.5\%$ CI |
 | LLM multiagent (per arch.) | 5 per arch. | DR $\in$ [0.80, 1.00] | $N \geq 246$ | Severely underpowered; wide CIs |
 | Colony benchmark | 1 scenario each | — | $N \geq 10$ scenarios | Exploratory only; not powered for inference |
 | Parametric simulation | 3,800 | DR = 0.96--1.00 | Sufficient | Design-level; not subject to sampling |

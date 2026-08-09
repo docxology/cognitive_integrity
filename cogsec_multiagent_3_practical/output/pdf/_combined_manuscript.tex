@@ -131,6 +131,9 @@ Deployment Guide}
 % Core mathematical packages
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{mathtools}
+% Keep long deployment prose and references within the text block.
+\setlength{\emergencystretch}{3em}
+\sloppy
 
 % Algorithm formatting
 \usepackage{algorithm}
@@ -1031,15 +1034,16 @@ not --- they measure different things:
   architecture with Level-3 adapters. This is what you get today, out of
   the box, before adapter tuning.
 \item
-  \textbf{12.4\%} (ablation corpus, 100 attacks, all categories
-  including hardest): The \textbf{conservative floor} --- full pipeline
-  performance on a corpus specifically designed to include difficult
-  attacks. This represents the worst-case realistic estimate.
+  \textbf{about 12.2\%} (ablation corpus, 98 attacks, all
+  categories including hardest): The \textbf{conservative floor} ---
+  full pipeline performance on a corpus specifically designed to include
+  difficult attacks. This represents the worst-case realistic estimate.
 \end{itemize}
 
 All three numbers are correct. Use 44.8\% for realistic planning, 94\%
-as the achievable ceiling with mature adapters, and 12.4\% as a
-conservative lower bound for adversarial threat modeling.
+as the achievable ceiling with mature adapters, and
+about 12.2\% as a conservative lower bound for adversarial
+threat modeling.
 \end{quote}
 
 \subsubsection{Tripwire Configuration
@@ -1654,7 +1658,7 @@ which balances security guarantees with operational overhead.
 \tightlist
 \item
   \textbf{Trust Decay (\(\delta\))}: \texttt{0.80}. At this setting,
-  trust degrades to \textless50\% after 3 hops, strictly bounding the
+  trust degrades to \textless50\% after 4 hops, strictly bounding the
   ``radius of effective delegation.''
 \item
   \textbf{Firewall Sensitivity}: Balanced (\(\tau=0.5\)).
@@ -1690,8 +1694,8 @@ high-stakes, unsupervised environments.
 \tightlist
 \item
   \textbf{Trust Decay (\(\delta\))}: \texttt{0.60}. Aggressive decay.
-  Trust halves every 1.3 hops, enforcing a strictly flat command
-  structure.
+  Trust halves every about 1.36 hops, enforcing a strictly flat
+  command structure.
 \item
   \textbf{Firewall Sensitivity}: Strict (\(\tau=0.4\)).
 \item
@@ -3617,12 +3621,12 @@ Observes the world, but its internal Orientation---the synthesis of
 heritage, culture, and genetic code (or in AI terms: training data,
 system prompts, and hard-coded constraints)---is displaced by a
 parasitic instruction. The agent then proceeds to Decide and Act with
-perfect logical consistency, but in service of an alien will. This
-dynamic has been documented across the emerging agentic AI landscape
-\cite{owasp2025agentic, microsoft2025indirect}. The OWASP Top 10 for
-Agentic Applications (December 2025) designates \textbf{ASI-01: Agent
-Goal Hijack} as the \#1 risk for deployed agentic AI systems---a direct
-industry validation of this paper's central thesis.
+complete internal logical consistency, but in service of an alien will.
+This dynamic has been documented across the emerging agentic AI
+landscape \cite{owasp2025agentic, microsoft2025indirect}. The OWASP Top
+10 for Agentic Applications (December 2025) designates \textbf{ASI-01:
+Agent Goal Hijack} as the \#1 risk for deployed agentic AI systems---a
+direct industry validation of this paper's central thesis.
 
 \subsubsection{Empirical Urgency}\label{empirical-urgency}
 
@@ -3755,7 +3759,7 @@ This paper makes the following contributions:
   invariants.
 \item
   \textbf{C5:} Temporal scale analysis demonstrating CIF's applicability
-  across eight orders of magnitude in OODA cycle time.
+  across more than ten orders of magnitude in OODA cycle time.
 \item
   \textbf{C6:} Retrospective validation through six documented AI agent
   security incidents (2024--2025), confirming that all incidents map to
@@ -6387,11 +6391,10 @@ Three findings emerge from the retrospective analysis:
 \def\labelenumi{\arabic{enumi}.}
 \item
   \textbf{Pattern coverage.} All three universal attack patterns are
-  represented in documented production failures, with FR Polarity
-  Inversion and Context Boundary Violation each appearing in two
-  incidents. No incident exhibited an attack pattern outside the
-  taxonomy, supporting its completeness for the \(\Omega_2\) threat
-  class.
+  represented in documented production failures, with each of the three
+  attack patterns appearing in two incidents. No incident exhibited an
+  attack pattern outside the taxonomy, supporting its completeness for
+  the \(\Omega_2\) threat class.
 \item
   \textbf{Defense applicability.} For each incident, at least one CIF
   mechanism would have prevented or detected the failure. Behavioral
@@ -6516,11 +6519,11 @@ patterns generalize beyond their originating domains and represent
 candidate additions to the canonical CIF mechanism set.
 
 \textbf{C5: Temporal Scale Analysis.} The OODA transient dynamics
-analysis revealed that Goal Hijacking operates across eight orders of
-magnitude in time scale (milliseconds for drone swarms to years for
-diplomatic agents), demonstrating that CIF's temporal parameters
-(\(\epsilon\), \(\Delta t\)) must be domain-calibrated but the
-underlying defense principles are scale-invariant.
+analysis revealed that Goal Hijacking operates across more than ten
+orders of magnitude in time scale (milliseconds for drone swarms to
+years for diplomatic agents), demonstrating that CIF's temporal
+parameters (\(\epsilon\), \(\Delta t\)) must be domain-calibrated but
+the underlying defense principles are scale-invariant.
 
 \textbf{C6: Real-World Validation.} Retrospective analysis of six
 documented AI agent security incidents (2024--2025)---including the
@@ -6699,8 +6702,10 @@ tolerated'' \\
 Provisions \\
 \(\{FR\}\) & Functional Requirements & What the system must protect \\
 \(\{DP\}\) & Defense Provisions & What CIF mechanisms provide \\
-\(\Omega_k\) & Adversary class \(k\) & Capability tier (1=passive,
-2=injection, 3=spoofing, 4=belief manipulation, 5=coordinated) \\
+\(\Omega_k\) & Adversary class \(k\) & Capability tier: 1=external
+(input control), 2=peripheral (tool/data channels), 3=agent-level
+(single compromised agent), 4=coordination (inter-agent channels),
+5=systemic (orchestrator) \\
 \end{longtable}
 }
 
@@ -6720,9 +6725,12 @@ methodology:
   \textbf{Transient Coupling} \([A']\): The coupling matrix during an
   active attack, showing which defenses are bypassed.
 \item
-  \textbf{Adversary Classes} \(\Omega_1\)--\(\Omega_5\): Five capability
-  tiers from passive eavesdropping (\(\Omega_1\)) through coordinated
-  multi-agent attacks (\(\Omega_5\)), as defined in Part 1, Section 3.
+  \textbf{Adversary Classes} \(\Omega_1\)--\(\Omega_5\): Five adversary
+  classes from external input control (\(\Omega_1\)) through peripheral
+  tool/data-channel compromise (\(\Omega_2\)), single compromised agents
+  (\(\Omega_3\)), coordination-channel attacks (\(\Omega_4\)), and
+  systemic orchestrator compromise (\(\Omega_5\)), as defined in Part 1,
+  Section 3.
 \end{itemize}
 
 \subsubsection{Three Universal Attack
@@ -6759,22 +6767,26 @@ agent contexts & Provenance Tracking + Trust Calculus \\
 
 \subsection{Trust Decay Explanation}\label{trust-decay-explanation}
 
-When we write \texorpdfstring{\ensuremath{\delta}}{delta} = 0.9, this means:
+The symbol \texorpdfstring{\ensuremath{\delta}}{delta} is a parameter, not a universal constant. For an
+illustrative example, \texorpdfstring{\ensuremath{\delta}}{delta} = 0.8 means:
 
 \begin{itemize}
 \tightlist
 \item
   Direct trust: 100\% of assigned value
 \item
-  One delegation: 90\% of source trust
+  One delegation: 80\% of source trust
 \item
-  Two delegations: 81\% of source trust
+  Two delegations: 64\% of source trust
 \item
-  Three delegations: 73\% of source trust
+  Three delegations: 51.2\% of source trust
 \end{itemize}
 
-A lower \texorpdfstring{\ensuremath{\delta}}{delta} (e.g., 0.85) means faster decay, providing more security but
-limiting delegation utility.
+The executable Part 3 deployment profiles use \texorpdfstring{\ensuremath{\delta}}{delta} = 0.80 for balanced
+operation and \texorpdfstring{\ensuremath{\delta}}{delta} = 0.60 for high assurance. Those are implementation
+defaults, not a claim that either value is optimal for every threat
+model. A lower \texorpdfstring{\ensuremath{\delta}}{delta} means faster decay, providing more security against
+long delegation chains while limiting delegation utility.
 
 \subsection{Byzantine Tolerance
 Explanation}\label{byzantine-tolerance-explanation}

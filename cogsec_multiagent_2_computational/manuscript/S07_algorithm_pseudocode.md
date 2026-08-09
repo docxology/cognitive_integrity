@@ -58,7 +58,7 @@ The cognitive firewall classifies incoming messages using a multi-stage detectio
 \EndFunction
 \end{algorithmic}
 \end{algorithm}
-{#alg:firewall-impl}
+\label{alg:firewall-impl}
 
 > **Implementation**: `src/core/firewall.py` — `CognitiveFirewall.classify()`, `PatternDetector.score_injection()`, `SemanticSimilarityDetector.score_semantic_similarity()`.
 
@@ -109,7 +109,7 @@ Manages provisional beliefs with verification and promotion logic. This implemen
 \EndFunction
 \end{algorithmic}
 \end{algorithm}
-{#alg:sandbox-impl}
+\label{alg:sandbox-impl}
 
 > **Implementation**: `src/core/sandbox.py` — `SandboxManager.add_provisional()`, `SandboxManager.promote()`, `PromotionCriteria.evaluate()`.
 
@@ -154,7 +154,7 @@ Implements the trust calculus with decay and reputation updates. This is a direc
 \EndFunction
 \end{algorithmic}
 \end{algorithm}
-{#alg:trust-impl}
+\label{alg:trust-impl}
 
 > **Implementation**: `src/core/trust.py` — `TrustCalculus.compute_trust()`, `TrustCalculus.delegate_trust()`, `TrustMatrix.get_delegation_trust()`, `ReputationTracker.get_reputation()`.
 
@@ -201,7 +201,7 @@ Continuously monitors canary beliefs for unauthorized modifications. Tripwires i
 \EndFunction
 \end{algorithmic}
 \end{algorithm}
-{#alg:tripwire-impl}
+\label{alg:tripwire-impl}
 
 > **Implementation**: `src/core/tripwire.py` — `CognitiveTripwire.check()`, `CognitiveTripwire.check_single()`, `TripwireAlert.severity`.
 
@@ -249,7 +249,7 @@ Implements Byzantine fault-tolerant consensus for multi-agent decisions. This sa
 \EndFunction
 \end{algorithmic}
 \end{algorithm}
-{#alg:byzantine-impl}
+\label{alg:byzantine-impl}
 
 > **Implementation**: `src/core/consensus.py` — `ByzantineConsensus.compute_consensus()`, `WeightedByzantineConsensus.submit_vote()`, `QuorumVerification.approve()`.
 
@@ -292,6 +292,6 @@ Monitors belief distributions for anomalous changes over time using KL divergenc
 \EndFunction
 \end{algorithmic}
 \end{algorithm}
-{#alg:drift-impl}
+\label{alg:drift-impl}
 
 > **Implementation**: `src/core/detection.py` — `DriftDetector.compute_drift()`, `DriftDetector.is_anomalous()`, `AnomalyScorer.score()`.

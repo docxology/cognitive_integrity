@@ -127,6 +127,11 @@ def main() -> None:
         "cv_threshold": report.cv_threshold,
         "stable": report.stable,
         "per_architecture_cv": report.per_architecture_cv,
+        "architecture_scope": (
+            "not_applicable: one architecture-agnostic CIF pipeline"
+            if not report.per_architecture_cv
+            else "multiple architecture series"
+        ),
         "per_category_cv": report.per_category_cv,
         "benign_arm_present": report.benign_arm_present,
         "benign_per_stratum": args.benign_per_stratum,

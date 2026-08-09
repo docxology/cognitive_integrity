@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.3.22)  1 AUG 2026 15:07
+This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.3.22)  8 AUG 2026 20:50
 entering extended mode
  %&-line parsing enabled.
 **_combined_manuscript.tex
@@ -1417,7 +1417,7 @@ Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
 \Gm@layoutvoffset=\dimen336
 \Gm@dimlist=\toks55
 )
-Package hyperref Info: Option `colorlinks' set `true' on input line 286.
+Package hyperref Info: Option `colorlinks' set `true' on input line 289.
 
 (/usr/local/texlive/2026/texmf-dist/tex/latex/tocloft/tocloft.sty
 Package: tocloft 2017/08/31 v2.3i parameterised ToC, etc., typesetting
@@ -1460,56 +1460,43 @@ Package tocloft Info: The document has section divisions on input line 51.
 Package tocloft Warning: \@starttoc has already been redefined; tocloft bailing
  out. on input line 1156.
 
-) (./_combined_manuscript.aux
-
-LaTeX Warning: Label `cor:layered-defense' multiply defined.
-
-
-LaTeX Warning: Label `cor:layered-defense@cref' multiply defined.
-
-
-LaTeX Warning: Label `sec:limitations' multiply defined.
-
-
-LaTeX Warning: Label `sec:limitations@cref' multiply defined.
-
-)
+) (./_combined_manuscript.aux)
 \openout1 = `_combined_manuscript.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 291.
-LaTeX Font Info:    ... okay on input line 291.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 291.
-LaTeX Font Info:    ... okay on input line 291.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 291.
-LaTeX Font Info:    ... okay on input line 291.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 291.
-LaTeX Font Info:    ... okay on input line 291.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 291.
-LaTeX Font Info:    ... okay on input line 291.
-LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 291.
-LaTeX Font Info:    ... okay on input line 291.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 291.
-LaTeX Font Info:    ... okay on input line 291.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 291.
-LaTeX Font Info:    ... okay on input line 291.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 291.
-LaTeX Font Info:    ... okay on input line 291.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 291.
-LaTeX Font Info:    ... okay on input line 291.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 294.
+LaTeX Font Info:    ... okay on input line 294.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 294.
+LaTeX Font Info:    ... okay on input line 294.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 294.
+LaTeX Font Info:    ... okay on input line 294.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 294.
+LaTeX Font Info:    ... okay on input line 294.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 294.
+LaTeX Font Info:    ... okay on input line 294.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 294.
+LaTeX Font Info:    ... okay on input line 294.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 294.
+LaTeX Font Info:    ... okay on input line 294.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 294.
+LaTeX Font Info:    ... okay on input line 294.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 294.
+LaTeX Font Info:    ... okay on input line 294.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 294.
+LaTeX Font Info:    ... okay on input line 294.
 LaTeX Font Info:    Overwriting math alphabet `\mathrm' in version `normal'
-(Font)                  OT1/cmr/m/n --> TU/lmr/m/n on input line 291.
+(Font)                  OT1/cmr/m/n --> TU/lmr/m/n on input line 294.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
-(Font)                  OT1/cmr/m/it --> TU/lmr/m/it on input line 291.
+(Font)                  OT1/cmr/m/it --> TU/lmr/m/it on input line 294.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
-(Font)                  OT1/cmr/bx/n --> TU/lmr/bx/n on input line 291.
+(Font)                  OT1/cmr/bx/n --> TU/lmr/bx/n on input line 294.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
-(Font)                  OT1/cmss/m/n --> TU/lmss/m/n on input line 291.
+(Font)                  OT1/cmss/m/n --> TU/lmss/m/n on input line 294.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  OT1/cmss/bx/n --> TU/lmss/bx/n on input line 291.
+(Font)                  OT1/cmss/bx/n --> TU/lmss/bx/n on input line 294.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
-(Font)                  OT1/cmtt/m/n --> TU/lmtt/m/n on input line 291.
+(Font)                  OT1/cmtt/m/n --> TU/lmtt/m/n on input line 294.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  OT1/cmtt/m/n --> TU/lmtt/bx/n on input line 291.
+(Font)                  OT1/cmtt/m/n --> TU/lmtt/bx/n on input line 294.
 
 Package fontspec Info:
 (fontspec)             latinmodern-math scale = 0.9999964596882403.
@@ -1540,7 +1527,7 @@ pt=math;language=dflt;"
 pt=math;language=dflt;"
 
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(0)/m/n' will be
-(Font)              scaled to size 10.0pt on input line 291.
+(Font)              scaled to size 10.0pt on input line 294.
 
 Package fontspec Info:
 (fontspec)             latinmodern-math scale = 0.9999964596882403.
@@ -1583,18 +1570,18 @@ ath.otf]/OT:script=math;language=dflt;+ssty=1;"
 pt=math;language=dflt;"
 
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 10.0pt on input line 291.
+(Font)              scaled to size 10.0pt on input line 294.
 LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
-(Font)              `operators' in the math version `normal' on input line 291.
+(Font)              `operators' in the math version `normal' on input line 294.
 
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
 (Font)                  OT1/cmr/m/n --> TU/latinmodern-math.otf(1)/m/n on input
- line 291.
+ line 294.
 LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
-(Font)              `operators' in the math version `bold' on input line 291.
+(Font)              `operators' in the math version `bold' on input line 294.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
 (Font)                  OT1/cmr/bx/n --> TU/latinmodern-math.otf(1)/b/n on inpu
-t line 291.
+t line 294.
 
 Package fontspec Info:
 (fontspec)             latinmodern-math scale = 0.9999964596882403.
@@ -1668,15 +1655,15 @@ ript=math;language=dflt;"<6-8.5>s*[1.000096459334209]"[latinmodern-math.otf]/OT
 t=math;language=dflt;"
 
 LaTeX Font Info:    Encoding `OMS' has changed to `TU' for symbol font
-(Font)              `symbols' in the math version `normal' on input line 291.
+(Font)              `symbols' in the math version `normal' on input line 294.
 LaTeX Font Info:    Overwriting symbol font `symbols' in version `normal'
 (Font)                  OMS/cmsy/m/n --> TU/latinmodern-math.otf(2)/m/n on inpu
-t line 291.
+t line 294.
 LaTeX Font Info:    Encoding `OMS' has changed to `TU' for symbol font
-(Font)              `symbols' in the math version `bold' on input line 291.
+(Font)              `symbols' in the math version `bold' on input line 294.
 LaTeX Font Info:    Overwriting symbol font `symbols' in version `bold'
 (Font)                  OMS/cmsy/b/n --> TU/latinmodern-math.otf(2)/b/n on inpu
-t line 291.
+t line 294.
 
 Package fontspec Info:
 (fontspec)             latinmodern-math scale = 0.9999964596882403.
@@ -1745,16 +1732,16 @@ pt=math;language=dflt;"
 
 LaTeX Font Info:    Encoding `OMX' has changed to `TU' for symbol font
 (Font)              `largesymbols' in the math version `normal' on input line 2
-91.
+94.
 LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `normal'
 (Font)                  OMX/cmex/m/n --> TU/latinmodern-math.otf(3)/m/n on inpu
-t line 291.
+t line 294.
 LaTeX Font Info:    Encoding `OMX' has changed to `TU' for symbol font
-(Font)              `largesymbols' in the math version `bold' on input line 291
+(Font)              `largesymbols' in the math version `bold' on input line 294
 .
 LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
 (Font)                  OMX/cmex/m/n --> TU/latinmodern-math.otf(3)/b/n on inpu
-t line 291.
+t line 294.
 
 
 Package unicode-math Warning: Using \overbracket and \underbracket from
@@ -1774,13 +1761,13 @@ Package unicode-math Warning: I'm going to overwrite the following commands
 (unicode-math)                colon-like commands, using them will lead to
 (unicode-math)                inconsistencies.
 
-LaTeX Info: Redefining \microtypecontext on input line 291.
-Package microtype Info: Applying patch `item' on input line 291.
-Package microtype Info: Applying patch `toc' on input line 291.
-Package microtype Info: Applying patch `eqnum' on input line 291.
-Package microtype Info: Applying patch `footnote' on input line 291.
-Package microtype Info: Applying patch `verbatim' on input line 291.
-LaTeX Info: Redefining \microtypesetup on input line 291.
+LaTeX Info: Redefining \microtypecontext on input line 294.
+Package microtype Info: Applying patch `item' on input line 294.
+Package microtype Info: Applying patch `toc' on input line 294.
+Package microtype Info: Applying patch `eqnum' on input line 294.
+Package microtype Info: Applying patch `footnote' on input line 294.
+Package microtype Info: Applying patch `verbatim' on input line 294.
+LaTeX Info: Redefining \microtypesetup on input line 294.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using protrusion set `basicmath'.
 Package microtype Info: No adjustment of tracking.
@@ -1801,7 +1788,7 @@ Package footnotehyper Info: Using the \@makefntext{} approach (see doc).
 (footnotehyper)    try sending the author a small illustrative document.
 (footnotehyper)    To turn off this message, add \footnotehyperwarnfalse
 (footnotehyper)    to the preamble.
-Package hyperref Info: Link coloring ON on input line 291.
+Package hyperref Info: Link coloring ON on input line 294.
 
 Package pgfplots notification 'compat/show suggested version=true': document ha
 s been generated with the most recent feature set (\pgfplotsset{compat=1.18}).
@@ -1887,65 +1874,66 @@ File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
  [8] [9] [10] [11]
 [12] [13] [14] [15]
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 9.0pt on input line 897.
+(Font)              scaled to size 9.0pt on input line 900.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 6.0pt on input line 897.
+(Font)              scaled to size 6.0pt on input line 900.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 9.00082pt on input line 897.
+(Font)              scaled to size 9.00082pt on input line 900.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 6.00055pt on input line 897.
+(Font)              scaled to size 6.00055pt on input line 900.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 8.99904pt on input line 897.
+(Font)              scaled to size 8.99904pt on input line 900.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 5.99936pt on input line 897.
+(Font)              scaled to size 5.99936pt on input line 900.
 
-Underfull \hbox (badness 10000) in paragraph at lines 905--905
+Underfull \hbox (badness 10000) in paragraph at lines 908--908
 []|\TU/lmr/m/n/9 Model-checking execution (NuSMV, TLA+
  []
 
 
-Underfull \hbox (badness 2529) in paragraph at lines 907--907
+Underfull \hbox (badness 2529) in paragraph at lines 910--910
 []|\TU/lmr/m/n/9 Monitoring, drift detection playbooks, cost–
  []
 
 
-Underfull \hbox (badness 1275) in paragraph at lines 910--910
+Underfull \hbox (badness 1275) in paragraph at lines 913--913
 []|\TU/lmr/m/n/9 Domain-specific goal-hijacking analyses across
  []
 
 
-Underfull \hbox (badness 3690) in paragraph at lines 912--912
+Underfull \hbox (badness 3690) in paragraph at lines 915--915
 \TU/lmr/m/n/9 nel separation, active perturbation probing,
  []
 
 [16] [17]
-Underfull \hbox (badness 3088) in paragraph at lines 972--973
+Underfull \hbox (badness 3088) in paragraph at lines 975--976
 []|\TU/lmr/m/n/10 Compromised sub-
  []
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 993.
+(hyperref)                removing `subscript' on input line 996.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 1022.
+(hyperref)                removing `subscript' on input line 1025.
 
 [18]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 1048.
+(hyperref)                removing `subscript' on input line 1051.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 1080.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 1107.
+(hyperref)                removing `subscript' on input line 1089.
 
 [19]
-Underfull \hbox (badness 10000) in paragraph at lines 1167--1167
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 1116.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1176--1176
 []|\TU/lmr/m/n/10 System understanding re-
  []
 
@@ -1954,455 +1942,346 @@ File: ../figures/threat_taxonomy.pdf Graphic file (type pdf)
 <use ../figures/threat_taxonomy.pdf>
 File: ../figures/comprehensive_taxonomy.pdf Graphic file (type pdf)
 <use ../figures/comprehensive_taxonomy.pdf>
- [22] [23]
+ [22] [23] [24]
 File: ../figures/attack_timeline.pdf Graphic file (type pdf)
 <use ../figures/attack_timeline.pdf>
- [24]
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 1481.
-
-[25]
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 1505.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 1525.
+(hyperref)                removing `subscript' on input line 1490.
+
+[25] [26]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 1514.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 1563.
+(hyperref)                removing `subscript' on input line 1534.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 1579.
+(hyperref)                removing `subscript' on input line 1572.
 
-[26] [27]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 1588.
+
+[27] [28]
 File: ../figures/attack_surface.pdf Graphic file (type pdf)
 <use ../figures/attack_surface.pdf>
- [28] [29]
-Underfull \hbox (badness 10000) in paragraph at lines 1760--1761
+ [29] [30]
+Underfull \hbox (badness 10000) in paragraph at lines 1769--1770
 []|\TU/lmr/m/n/10 Prioritized objectives where
  []
 
 
-Underfull \hbox (badness 1694) in paragraph at lines 1761--1762
+Underfull \hbox (badness 1694) in paragraph at lines 1770--1771
 []|\TU/lmr/m/n/10 Committed action sequence with
  []
 
 
-Underfull \hbox (badness 3861) in paragraph at lines 1762--1763
+Underfull \hbox (badness 3861) in paragraph at lines 1771--1772
 []|\TU/lmr/m/n/10 Interaction trace (events, times-
  []
 
-[30]
+[31]
 
 LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 1788.
-
-
-LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 1788.
+(Font)              using `TU/lmr/m/scsl' instead on input line 1797.
 
 
 LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 1788.
+(Font)              using `TU/lmr/m/scsl' instead on input line 1797.
 
 
 LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 1788.
+(Font)              using `TU/lmr/m/scsl' instead on input line 1797.
 
 
-Underfull \hbox (badness 2237) in paragraph at lines 1788--1789
-[]\TU/lmr/bx/n/10 Definition 4.4 \TU/lmr/m/n/10 (Transition Relation)\TU/lmr/bx
-/n/10 . []\TU/lmr/m/it/10 State transitions follow the relation $[][] [] [][]$
-where
- []
+LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
+(Font)              using `TU/lmr/m/scsl' instead on input line 1797.
 
-[31] [32]
+[32] [33]
 File: ../figures/trust_network.pdf Graphic file (type pdf)
 <use ../figures/trust_network.pdf>
- [33]
+ [34]
 File: ../figures/trust_decay.pdf Graphic file (type pdf)
 <use ../figures/trust_decay.pdf>
 File: ../figures/trust_calculus_comprehensive.pdf Graphic file (type pdf)
 <use ../figures/trust_calculus_comprehensive.pdf>
- [34] [35] [36] [37] [38] [39]
+ [35] [36] [37] [38] [39] [40]
 File: ../figures/cif_architecture.pdf Graphic file (type pdf)
 <use ../figures/cif_architecture.pdf>
 File: ../figures/cif_comprehensive.pdf Graphic file (type pdf)
 <use ../figures/cif_comprehensive.pdf>
 File: ../figures/cif_ad_coupling.pdf Graphic file (type pdf)
 <use ../figures/cif_ad_coupling.pdf>
- [40] [41] [42]
+ [41] [42] [43]
 File: ../figures/ooda_phase_diagram.pdf Graphic file (type pdf)
 <use ../figures/ooda_phase_diagram.pdf>
- [43]
-Underfull \hbox (badness 10000) in paragraph at lines 2649--2649
+ [44]
+Underfull \hbox (badness 10000) in paragraph at lines 2661--2661
 []|\TU/lmr/m/n/10 Permission escalation,
  []
 
-[44] [45] [46] [47]
-Underfull \hbox (badness 3029) in paragraph at lines 2853--2853
+[45] [46] [47] [48]
+Underfull \hbox (badness 3029) in paragraph at lines 2865--2865
 []|\TU/lmr/m/n/10 Decay trust with delegation depth
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 2854--2854
+Underfull \hbox (badness 10000) in paragraph at lines 2866--2866
 []|\TU/lmr/m/n/10 Track provenance for all high-
  []
 
 
-Underfull \hbox (badness 2351) in paragraph at lines 2856--2857
+Underfull \hbox (badness 2351) in paragraph at lines 2868--2869
 []|\TU/lmr/m/n/10 Permit recursive delegation without
  []
 
 
-Underfull \hbox (badness 1466) in paragraph at lines 2858--2859
+Underfull \hbox (badness 1466) in paragraph at lines 2870--2871
 []|\TU/lmr/m/n/10 Trust single-agent outputs for high-
  []
 
 
 LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 2874.
+(Font)              using `TU/lmr/m/scsl' instead on input line 2886.
 
 
 LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 2874.
+(Font)              using `TU/lmr/m/scsl' instead on input line 2886.
 
 
 LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 2874.
+(Font)              using `TU/lmr/m/scsl' instead on input line 2886.
 
 
 LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 2883.
+(Font)              using `TU/lmr/m/scsl' instead on input line 2895.
 
 
 LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 2884.
+(Font)              using `TU/lmr/m/scsl' instead on input line 2896.
 
 
 LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 2885.
+(Font)              using `TU/lmr/m/scsl' instead on input line 2897.
 
 
-Underfull \hbox (badness 1715) in paragraph at lines 2899--2900
+Underfull \hbox (badness 1715) in paragraph at lines 2911--2912
 []|\TU/lmr/m/n/10 Pattern matching + semantic
  []
 
-[48]
+[49]
 File: ../figures/belief_sandbox.pdf Graphic file (type pdf)
 <use ../figures/belief_sandbox.pdf>
 
 
 LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 3005.
+(Font)              using `TU/lmr/m/scsl' instead on input line 3017.
 
-[49] [50]
+[50] [51]
 
 LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 3061.
+(Font)              using `TU/lmr/m/scsl' instead on input line 3073.
 
 File: ../figures/ablation_study.pdf Graphic file (type pdf)
 <use ../figures/ablation_study.pdf>
-[51] [52]
+[52] [53]
 File: ../figures/defense_composition.pdf Graphic file (type pdf)
 <use ../figures/defense_composition.pdf>
- [53] [54]
+ [54] [55]
 
 LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 3349.
-
-
-LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 3349.
+(Font)              using `TU/lmr/m/scsl' instead on input line 3361.
 
 
 LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 3349.
+(Font)              using `TU/lmr/m/scsl' instead on input line 3361.
 
-[55] [56] [57] [58]
+
+LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
+(Font)              using `TU/lmr/m/scsl' instead on input line 3361.
+
+[56] [57] [58] [59]
 File: ../figures/roc_curves.pdf Graphic file (type pdf)
 <use ../figures/roc_curves.pdf>
- [59] [60] [61]
+
+Underfull \hbox (badness 7814) in paragraph at lines 3676--3676
+[]\TU/lmr/m/n/10 Figure 15: |Receiver Operating Characteristic (ROC) curves for
+ CIF detection across at-
+ []
+
+
+Underfull \hbox (badness 1270) in paragraph at lines 3676--3676
+\TU/lmr/m/n/10 tack categories (illustrative/schematic operating points under t
+he Neyman-Pearson framework; the
+ []
+
+[60] [61] [62]
 File: ../figures/fp_mitigation.pdf Graphic file (type pdf)
 <use ../figures/fp_mitigation.pdf>
- [62] [63]
+ [63] [64]
 
 LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 3999.
-
-
-LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 4000.
+(Font)              using `TU/lmr/m/scsl' instead on input line 4014.
 
 
 LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 4001.
+(Font)              using `TU/lmr/m/scsl' instead on input line 4015.
 
-[64] [65]
+
+LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
+(Font)              using `TU/lmr/m/scsl' instead on input line 4016.
+
+[65] [66]
 File: ../figures/detection_performance.pdf Graphic file (type pdf)
 <use ../figures/detection_performance.pdf>
 
-Underfull \hbox (badness 10000) in paragraph at lines 4209--4210
+Underfull \hbox (badness 10000) in paragraph at lines 4226--4227
 []|\TU/lmr/m/n/10 Escalation condi-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 4211--4212
+Underfull \hbox (badness 10000) in paragraph at lines 4228--4229
 []|\TU/lmr/m/n/10 Pattern score
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 4212--4213
+Underfull \hbox (badness 10000) in paragraph at lines 4229--4230
 []|\TU/lmr/m/n/10 Embedding dis-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 4213--4214
+Underfull \hbox (badness 10000) in paragraph at lines 4230--4231
 []|\TU/lmr/m/n/10 Consistency viola-
  []
 
-[66] [67] [68] [69] [70] [71] [72] [73] [74] [75] [76]
-Underfull \hbox (badness 2495) in paragraph at lines 4912--4916
+[67] [68] [69] [70] [71] [72] [73] [74] [75] [76] [77]
+Underfull \hbox (badness 2495) in paragraph at lines 4930--4934
 []\TU/lmr/m/n/10 These results confirm that the abstract properties proven here
 —boundedness, composition, and
  []
 
-[77]
-Underfull \hbox (badness 2376) in paragraph at lines 5039--5040
+[78]
+Underfull \hbox (badness 2376) in paragraph at lines 5057--5058
 []|$[][]$ \TU/lmr/m/n/10 attacks succeed; systemic
  []
 
-[78] [79]
-Underfull \hbox (badness 1701) in paragraph at lines 5157--5158
+[79] [80]
+Underfull \hbox (badness 1701) in paragraph at lines 5175--5176
 []|\TU/lmr/m/n/10 No inter-agent trust re-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 5158--5159
+Underfull \hbox (badness 10000) in paragraph at lines 5176--5177
 []|\TU/lmr/m/n/10 Limited multiagent-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 5159--5160
+Underfull \hbox (badness 10000) in paragraph at lines 5177--5178
 []|\TU/lmr/m/n/10 Process-focused, not
  []
 
-[80] [81] [82] [83] [84] [85] [86]
+[81] [82] [83] [84] [85] [86] [87]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 5607.
+(hyperref)                removing `subscript' on input line 5625.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 5607.
+(hyperref)                removing `subscript' on input line 5625.
 
-[87]
-Underfull \hbox (badness 10000) in paragraph at lines 5739--5740
+[88]
+Underfull \hbox (badness 10000) in paragraph at lines 5757--5758
 []|\TU/lmr/m/n/10 Hardware security modules,
  []
 
-[88] [89] [90] [91] [92] [93] [94] [95] [96] [97] [98] [99]
+[89] [90] [91] [92] [93] [94] [95] [96] [97] [98] [99] [100] [101]
 
 LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 6700.
-
-
-LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 6700.
+(Font)              using `TU/lmr/m/scsl' instead on input line 6850.
 
 
 LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 6700.
+(Font)              using `TU/lmr/m/scsl' instead on input line 6850.
 
 
-Overfull \hbox (9.70355pt too wide) in paragraph at lines 6700--6701
+LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
+(Font)              using `TU/lmr/m/scsl' instead on input line 6850.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 6850--6851
 []\TU/lmr/bx/n/10 Lemma 11.39 \TU/lmr/m/n/10 (Type Closure under Composition)\T
-U/lmr/bx/n/10 . []\TU/lmr/m/it/10 For any $[][][] [][] [] [][] [] [][][] [][] [
-][]$:
+U/lmr/bx/n/10 . []\TU/lmr/m/it/10 For any $[][][] [][] [] [][] []
  []
 
 
 LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 6703.
+(Font)              using `TU/lmr/m/scsl' instead on input line 6853.
 
 
 LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 6703.
+(Font)              using `TU/lmr/m/scsl' instead on input line 6853.
 
 
 LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 6703.
+(Font)              using `TU/lmr/m/scsl' instead on input line 6853.
 
-[100]
+[102]
 
 LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 6726.
+(Font)              using `TU/lmr/m/scsl' instead on input line 6876.
 
-[101] [102] [103] [104]
-! You can't use `macro parameter character #' in horizontal mode.
-l.7022 {#
-         eq:non-decomposability}
-Sorry, but I'm not programmed to handle this case;
-I'll just pretend that you didn't ask for it.
-If you're in the wrong mode, you might be able to
-return to the right one by typing `I}' or `I$' or `I\par'.
-
-[105] [106] [107] [108]
-! You can't use `macro parameter character #' in horizontal mode.
-l.7392 {#
-         eq:recruitment-signal-injection}
-Sorry, but I'm not programmed to handle this case;
-I'll just pretend that you didn't ask for it.
-If you're in the wrong mode, you might be able to
-return to the right one by typing `I}' or `I$' or `I\par'.
-
-! You can't use `macro parameter character #' in horizontal mode.
-l.7431 {#
-         eq:sybil-initial-trust}
-Sorry, but I'm not programmed to handle this case;
-I'll just pretend that you didn't ask for it.
-If you're in the wrong mode, you might be able to
-return to the right one by typing `I}' or `I$' or `I\par'.
-
-[109]
-! You can't use `macro parameter character #' in horizontal mode.
-l.7436 {#
-         eq:sybil-trust-accumulation}
-Sorry, but I'm not programmed to handle this case;
-I'll just pretend that you didn't ask for it.
-If you're in the wrong mode, you might be able to
-return to the right one by typing `I}' or `I$' or `I\par'.
-
-! You can't use `macro parameter character #' in horizontal mode.
-l.7475 {#
-         eq:quorum-prevention}
-Sorry, but I'm not programmed to handle this case;
-I'll just pretend that you didn't ask for it.
-If you're in the wrong mode, you might be able to
-return to the right one by typing `I}' or `I$' or `I\par'.
-
-! You can't use `macro parameter character #' in horizontal mode.
-l.7481 {#
-         eq:false-quorum-injection}
-Sorry, but I'm not programmed to handle this case;
-I'll just pretend that you didn't ask for it.
-If you're in the wrong mode, you might be able to
-return to the right one by typing `I}' or `I$' or `I\par'.
-
-! You can't use `macro parameter character #' in horizontal mode.
-l.7519 {#
-         eq:belief-cascade-propagation}
-Sorry, but I'm not programmed to handle this case;
-I'll just pretend that you didn't ask for it.
-If you're in the wrong mode, you might be able to
-return to the right one by typing `I}' or `I$' or `I\par'.
-
-[110]
-! You can't use `macro parameter character #' in horizontal mode.
-l.7558 {#
-         eq:emergent-misalignment-condition}
-Sorry, but I'm not programmed to handle this case;
-I'll just pretend that you didn't ask for it.
-If you're in the wrong mode, you might be able to
-return to the right one by typing `I}' or `I$' or `I\par'.
-
-[111]
-! You can't use `macro parameter character #' in horizontal mode.
-l.7634 {#
-         eq:stigmergic-trust-decay}
-Sorry, but I'm not programmed to handle this case;
-I'll just pretend that you didn't ask for it.
-If you're in the wrong mode, you might be able to
-return to the right one by typing `I}' or `I$' or `I\par'.
-
-[112]
+[103] [104] [105] [106] [107] [108] [109] [110] [111] [112] [113] [114]
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 12.0pt on input line 7714.
+(Font)              scaled to size 12.0pt on input line 7864.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 8.0pt on input line 7714.
+(Font)              scaled to size 8.0pt on input line 7864.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 12.0011pt on input line 7714.
+(Font)              scaled to size 12.0011pt on input line 7864.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 8.00073pt on input line 7714.
+(Font)              scaled to size 8.00073pt on input line 7864.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 11.99872pt on input line 7714.
+(Font)              scaled to size 11.99872pt on input line 7864.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 7.99915pt on input line 7714.
- [113]
-! You can't use `macro parameter character #' in horizontal mode.
-l.7861 {#
-         eq:honest-info-sufficiency}
-Sorry, but I'm not programmed to handle this case;
-I'll just pretend that you didn't ask for it.
-If you're in the wrong mode, you might be able to
-return to the right one by typing `I}' or `I$' or `I\par'.
+(Font)              scaled to size 7.99915pt on input line 7864.
 
-! You can't use `macro parameter character #' in horizontal mode.
-l.7867 {#
-         eq:honest-agent-capacity}
-Sorry, but I'm not programmed to handle this case;
-I'll just pretend that you didn't ask for it.
-If you're in the wrong mode, you might be able to
-return to the right one by typing `I}' or `I$' or `I\par'.
-
-! You can't use `macro parameter character #' in horizontal mode.
-l.7873 {#
-         eq:byzantine-honest-majority}
-Sorry, but I'm not programmed to handle this case;
-I'll just pretend that you didn't ask for it.
-If you're in the wrong mode, you might be able to
-return to the right one by typing `I}' or `I$' or `I\par'.
-
-[114]
-! You can't use `macro parameter character #' in horizontal mode.
-l.7879 {#
-         eq:byzantine-info-combined}
-Sorry, but I'm not programmed to handle this case;
-I'll just pretend that you didn't ask for it.
-If you're in the wrong mode, you might be able to
-return to the right one by typing `I}' or `I$' or `I\par'.
-
-[115]
-ignored: Infinite glue shrinkage found in box being split [116]
-ignored: Infinite glue shrink
-age found in box being split [117]
-ignored: Infinite glue shrinkage found in box being sp
-lit [118]
-ignored: Infinite glue shrinkage found in box being split [119] [120]
-Overfull \hbox (3.63899pt too wide) in paragraph at lines 8395--8397
+[115] [116] [117]
+ignored: Infinite glue shrinkage found in box being split [118]
+ignored: Infinite
+ glue shrinkage found in box being split [119]
+ignored: Infinite glue shrinkage found in
+box being split [120]
+ignored: Infinite glue shrinkage found in box being split [121] [12
+2]
+Underfull \hbox (badness 3769) in paragraph at lines 8545--8547
 []\TU/lmr/m/n/10 Liu, Y., et al. (2023). Prompt Injection Attack Against LLM-In
-tegrated Applications. \TU/lmr/m/it/10 arXiv:2306.05499\TU/lmr/m/n/10 .
+tegrated Applications.
  []
 
 
-Underfull \hbox (badness 1533) in paragraph at lines 8408--8410
+Underfull \hbox (badness 1533) in paragraph at lines 8558--8560
 []\TU/lmr/m/n/10 Askell, A., et al. (2021). A General Language Assistant as a L
 aboratory for Alignment.
  []
 
-[121] [122] (./_combined_manuscript.bbl [123] [124] [125]) [126]
+[123] [124] (./_combined_manuscript.bbl [125] [126] [127]) [128]
 (./_combined_manuscript.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
  ***********
-
-
-LaTeX Warning: There were multiply-defined labels.
-
  )
 Here is how much of TeX's memory you used:
- 50711 strings out of 468168
- 1165515 string characters out of 5432815
- 1904624 words of memory out of 5000000
- 78662 multiletter control sequences out of 15000+600000
+ 50744 strings out of 468168
+ 1166454 string characters out of 5432815
+ 1906799 words of memory out of 5000000
+ 78695 multiletter control sequences out of 15000+600000
  634197 words of font info for 113 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 90i,15n,114p,1017b,654s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 90i,15n,114p,1017b,650s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on _combined_manuscript.pdf (127 pages).
+Output written on _combined_manuscript.pdf (129 pages).

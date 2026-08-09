@@ -12,12 +12,12 @@ Every detection-rate claim in this paper is a binary proportion: each evaluation
 \begin{equation}
 \theta \sim \mathrm{Beta}(\alpha_0, \beta_0), \qquad k \mid \theta \sim \mathrm{Binomial}(n, \theta),
 \end{equation}
-{#eq:beta-binomial-prior}
+\label{eq:beta-binomial-prior}
 which yields the closed-form posterior
 \begin{equation}
 \theta \mid k, n \sim \mathrm{Beta}(\alpha_0 + k,\ \beta_0 + n - k).
 \end{equation}
-{#eq:beta-binomial-posterior}
+\label{eq:beta-binomial-posterior}
 We use the uniform prior $\mathrm{Beta}(1, 1)$ throughout. This prior is noncommittal about the true detection rate, pulls posterior means toward $1/2$ only for small $n$, and is consistent with the conservative stance that a defense should not be credited with performance it has not empirically demonstrated. The Jeffreys prior $\mathrm{Beta}(0.5, 0.5)$ produces quantitatively similar intervals at all sample sizes relevant here; the choice does not affect any qualitative conclusion.
 
 Credible intervals are reported as 95\% Highest Density Intervals (HDI), computed via \texttt{BetaPosterior.hdi()}. For symmetric posteriors the HDI coincides with the equal-tailed interval, but for posteriors near the boundary of $[0, 1]$ the HDI is narrower and more interpretable.

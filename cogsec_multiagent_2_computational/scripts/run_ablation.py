@@ -51,7 +51,6 @@ def main() -> None:
     for s in results["top_synergies"]:
         print(f"  {s['a']} + {s['b']}: synergy = {s['synergy']:+.4f}")
 
-    # Save
     out_path = output_dir / "ablation_results.json"
     with open(out_path, "w") as f:
         json.dump(results, f, indent=2)

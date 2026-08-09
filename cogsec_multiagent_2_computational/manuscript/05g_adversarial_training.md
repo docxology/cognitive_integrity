@@ -126,8 +126,8 @@ Status), not pipeline-in-the-loop measurements.*
 The adversarial training dynamics can be modeled as a two-player zero-sum game
 between the defender (maximizing DR) and the red team (maximizing evasion):
 
-$$\theta^* = \arg\max_\theta \min_{\mathcal{A}} \mathrm{DR}(\theta, \mathcal{A})$$ {#eq:at-nash-objective}
-
+$$\theta^* = \arg\max_\theta \min_{\mathcal{A}} \mathrm{DR}(\theta, \mathcal{A})$$
+\label{eq:at-nash-objective}
 The Nash equilibrium of this game defines the highest detection rate achievable
 against an adaptive adversary with knowledge of $\theta$. The empirical AT
 sequence's per-round gain sequence $(7.3, 5.6, 5.0, 2.9, 2.4)$ pp is approximately

@@ -110,7 +110,9 @@ def main() -> int:
             return
         results_data = [
             {
-                "architecture": r.architecture, "attack_category": r.attack_category,
+                "architecture": r.architecture,
+                "category": r.category,
+                "attack_category": r.attack_category,
                 "n_attacks": r.n_attacks, "true_positives": r.true_positives,
                 "false_positives": r.false_positives, "true_negatives": r.true_negatives,
                 "false_negatives": r.false_negatives, "detection_rate": r.detection_rate,
@@ -121,7 +123,8 @@ def main() -> int:
                     if (r.false_positives == 0 and r.true_negatives == 0)
                     else r.false_positive_rate
                 ),
-                "avg_latency_ms": r.avg_latency_ms,
+                # Wall-clock timing is not part of the reproducible result
+                # artifact; retain it on ExperimentResult for runtime use.
                 "mode": args.mode,
                 # Honest provenance: what actually produced these numbers.
                 "measurement_mode": args.mode,

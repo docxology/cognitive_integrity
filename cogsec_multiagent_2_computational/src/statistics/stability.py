@@ -430,7 +430,10 @@ def make_pipeline_eval_fn(
         return SeedMetrics(
             seed=seed,
             overall_detection_rate=overall,
-            per_architecture={"Claude Code": overall},
+            # The real CIF pipeline is architecture-agnostic and this
+            # stability run evaluates one pipeline, not multiple adapters.
+            # Do not relabel the overall series as an architecture result.
+            per_architecture={},
             per_category=per_category,
             false_positive_rate=fpr,
             n_attacks=total,

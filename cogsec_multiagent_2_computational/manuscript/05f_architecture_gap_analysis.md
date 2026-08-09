@@ -10,7 +10,7 @@ For a fixed architecture $A$ and attack category $\adversary{}$, define the obse
 \begin{equation}
 \mathrm{Gap}(A, \adversary{}) = \mathrm{DR}_{\text{parametric}}(A, \adversary{}) - \mathrm{DR}_{\text{empirical}}(A, \adversary{}).
 \end{equation}
-{#eq:architecture-gap}
+\label{eq:architecture-gap}
 We decompose this quantity into three non-overlapping components:
 
 \begin{enumerate}
@@ -42,17 +42,17 @@ Table: Current adapter maturity assessment per module. Evidence: $\Delta\mathrm{
 
 | Module | Level | Evidence | Primary Failure Mode |
 | --- | --- | --- | --- |
-| Detection | 3 | $\\Delta\\mathrm{TPR} = -0.051$; statistical features | B (threshold) |
-| Trust Calculus | 3 | $\\Delta\\mathrm{TPR} = -0.020$; authority-claim detection | B (threshold) |
-| Firewall | 2 | $\\Delta\\mathrm{TPR} = -0.010$; pattern matching | A (feature) |
-| Tripwires | 2 | $\\Delta\\mathrm{TPR} = -0.010$; canary monitoring | A (feature) |
-| Invariants | 2 | $\\Delta\\mathrm{TPR} = -0.010$; rule-based | C (unexercised) |
-| Consensus | 1 | $\\Delta\\mathrm{TPR} = 0.000$; uncalibrated mock votes | D (adapter hook) |
-| Provenance | 1 | $\\Delta\\mathrm{TPR} = 0.000$; stub on current corpus | D (adapter hook) |
-| Sandbox | 1 | $\\Delta\\mathrm{TPR} = 0.000$; limited contribution | C (unexercised) |
+| Detection | 3 | $\Delta\mathrm{TPR} = -0.051$; statistical features | B (threshold) |
+| Trust Calculus | 3 | $\Delta\mathrm{TPR} = -0.020$; authority-claim detection | B (threshold) |
+| Firewall | 2 | $\Delta\mathrm{TPR} = -0.010$; pattern matching | A (feature) |
+| Tripwires | 2 | $\Delta\mathrm{TPR} = -0.010$; canary monitoring | A (feature) |
+| Invariants | 2 | $\Delta\mathrm{TPR} = -0.010$; rule-based | C (unexercised) |
+| Consensus | 1 | $\Delta\mathrm{TPR} = 0.000$; uncalibrated mock votes | D (adapter hook) |
+| Provenance | 1 | $\Delta\mathrm{TPR} = 0.000$; stub on current corpus | D (adapter hook) |
+| Sandbox | 1 | $\Delta\mathrm{TPR} = 0.000$; limited contribution | C (unexercised) |
 
 
-The Detection module's Level 3 rating reflects its calibrated statistical features and matches its dominant position in ablation ($\\Delta\\mathrm{TPR} = -0.051$, 42% of baseline). The elevated Trust Calculus impact ($\\Delta\\mathrm{TPR} = -0.020$) relative to earlier manuscript revisions reflects the corrected ablation key mapping (see §\\ref{sec:component-removal}) — previous versions reported $\\Delta\\mathrm{TPR} \\approx -0.007$ because a name mismatch caused the Trust Calculus adapter to remain active in all ablation configurations. The Consensus, Provenance, and Sandbox modules show $\\Delta\\mathrm{TPR} = 0.000$ not because their formal mechanisms are inadequate, but because their current adapters use mock/stub implementations that are not exercised by the 98-attack stratified corpus. This is a classic $G_{\\text{adapter}}$ failure: the formal mechanism is sound; the plumbing that connects the corpus to the mechanism is stub-level.
+The Detection module's Level 3 rating reflects its calibrated statistical features and matches its dominant position in ablation ($\Delta\mathrm{TPR} = -0.051$, 42% of baseline). The elevated Trust Calculus impact ($\Delta\mathrm{TPR} = -0.020$) relative to earlier manuscript revisions reflects the corrected ablation key mapping (see §\\ref{sec:component-removal}) — previous versions reported $\Delta\mathrm{TPR} \approx -0.007$ because a name mismatch caused the Trust Calculus adapter to remain active in all ablation configurations. The Consensus, Provenance, and Sandbox modules show $\Delta\mathrm{TPR} = 0.000$ not because their formal mechanisms are inadequate, but because their current adapters use mock/stub implementations that are not exercised by the 98-attack stratified corpus. This is a classic $G_{\text{adapter}}$ failure: the formal mechanism is sound; the plumbing that connects the corpus to the mechanism is stub-level.
 
 ## Failure Mode Taxonomy {#sec:failure-modes}
 

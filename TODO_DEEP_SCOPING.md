@@ -287,3 +287,12 @@ committed. Per-lane records: `docs/AUDIT_ROUND7_2026-08-08.md` + each part's
 Part 1 and Part 3 are strong release candidates after the PDF render pass. Part 2 needs
 the substantive publication decisions before first release: real-mode AT threshold
 threading (P2-R7-06), simulated-control claim framing, and the 4 env-gated LLM claims.
+
+
+---
+
+## Round 7b - deferred closure (2026-08-08)
+
+Implemented and re-gated after Round 7: deterministic provenance metadata in the real ablation writer (data origin, source script, seed, deterministic generator); explicit top-level corpus category in full-evaluation rows; wall-clock latency removed from the reproducible result artifact and loader made backward-compatible; deterministic category tie-break retained and tested; the stability artifact no longer labels the single architecture-agnostic CIF pipeline as an architecture-specific series and now records the scope explicitly; Part 2/3 trust-decay notation aligned to the executable profile convention. Regenerated ablation/full-evaluation/multi-seed artifacts and detection/stability tables.
+
+Verified: Part 1 420 passed; Part 2 3358 passed / 3 skipped; Part 3 925 passed; all three manuscript verifiers pass; Part 2 and Part 3 Ruff pass after the final test formatting fix; cffconvert passes. Part 1 combined render log has zero fatal errors and zero overfull boxes. Part 3 combined render log has zero fatal errors but three remaining overfull boxes in long table content. Part 2 combined render now reaches zero fatal diagnostics after repairing legacy LaTeX escapes, display-label attributes, the warning environment, and the breakable-code macro. It retains 13 overfull-box warnings in long table/content lines; Part 3 retains 3. These are layout warnings, not fatal render errors, and require visual review before publication.

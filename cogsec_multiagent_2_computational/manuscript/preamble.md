@@ -68,10 +68,13 @@ This file contains LaTeX packages and commands for the Cognitive Security Framew
 \newtheorem{axiom}{Axiom}[section]
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{remark}[theorem]{Remark}
+\newtheorem{warning}[theorem]{Warning}
 \newtheorem{example}[theorem]{Example}
 
 % Code listings and raw implementation examples in the supplements
 \usepackage{listings}
+\usepackage{seqsplit}
+\protected\def\breaktt#1{\begingroup\ttfamily\seqsplit{#1}\endgroup}
 \lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible}
 
 % Math operators

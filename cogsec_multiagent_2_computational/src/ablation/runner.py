@@ -326,7 +326,15 @@ def run_full_ablation(
             "youden_j": result.youden_j,
         }
 
-    return {
+    results = {
+        "data_origin": "real_pipeline",
+        "source_script": "scripts/run_ablation.py",
+        "seed": seed,
+        "generator": {
+            "module": "src/ablation/runner.py",
+            "function": "run_full_ablation",
+            "deterministic": True,
+        },
         "full_pipeline": {
             "tpr": full_tpr,
             "fpr": full_fpr,
@@ -362,3 +370,4 @@ def run_full_ablation(
             for s in top_synergies
         ],
     }
+    return results

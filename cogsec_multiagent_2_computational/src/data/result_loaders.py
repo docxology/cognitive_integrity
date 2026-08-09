@@ -85,7 +85,9 @@ def load_full_evaluation(
             false_negatives=r["false_negatives"],
             detection_rate=r["detection_rate"],
             false_positive_rate=r["false_positive_rate"],
-            avg_latency_ms=r["avg_latency_ms"],
+            # Timing is optional: reproducible result artifacts omit
+            # wall-clock latency, while older artifacts may still carry it.
+            avg_latency_ms=r.get("avg_latency_ms", 0.0),
         )
         for r in raw
     ]

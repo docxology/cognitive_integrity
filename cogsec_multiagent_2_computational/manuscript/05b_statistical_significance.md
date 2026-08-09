@@ -32,19 +32,19 @@ We quantify the marginal contribution of each defense component using the real a
 
 Table: Component removal impact with effect sizes (real pipeline). {#tab:real-component-effects}
 
-| Removed Component | Pipeline TPR | $\\Delta$ TPR | Relative Impact |
+| Removed Component | Pipeline TPR | $\Delta$ TPR | Relative Impact |
 | --- | --- | --- | --- |
 | None (full pipeline) | 0.122 | --- | Full pipeline (8 components active) |
-| Detection module | 0.071 | $\\approx -0.051$ | Largest drop ($\\approx 42\\%$ of baseline TPR) |
-| Trust Calculus | 0.102 | $\\approx -0.020$ | Second largest |
-| Firewall | 0.112 | $\\approx -0.010$ | Third (tied) |
-| Invariants | 0.112 | $\\approx -0.010$ | Third (tied) |
-| Tripwires | 0.112 | $\\approx -0.010$ | Third (tied) |
-| Consensus | 0.122 | $\\approx 0.000$ | No measurable independent contribution |
-| Provenance | 0.122 | $\\approx 0.000$ | No measurable independent contribution |
-| Sandbox | 0.122 | $\\approx 0.000$ | No measurable independent contribution |
+| Detection module | 0.071 | $\approx -0.051$ | Largest drop ($\approx 42\%$ of baseline TPR) |
+| Trust Calculus | 0.102 | $\approx -0.020$ | Second largest |
+| Firewall | 0.112 | $\approx -0.010$ | Third (tied) |
+| Invariants | 0.112 | $\approx -0.010$ | Third (tied) |
+| Tripwires | 0.112 | $\approx -0.010$ | Third (tied) |
+| Consensus | 0.122 | $\approx 0.000$ | No measurable independent contribution |
+| Provenance | 0.122 | $\approx 0.000$ | No measurable independent contribution |
+| Sandbox | 0.122 | $\approx 0.000$ | No measurable independent contribution |
 
-**Interpretation**: The Detection module accounts for about 42\\% of baseline TPR in marginal-removal terms ($\\Delta\\text{TPR} \\approx -0.051$ vs.\\ full pipeline $\\approx 0.122$). The Trust Calculus is the second most impactful component ($\\Delta\\text{TPR} \\approx -0.020$). Firewall, Invariants, and Tripwires each contribute $\\Delta\\text{TPR} \\approx -0.010$. Consensus, Provenance, and Sandbox show $\\Delta\\text{TPR} = 0.000$, meaning their removal produced no measurable change in detection rate on this 98-attack corpus — this does not imply these components are ineffective, only that the current corpus may not exercise their trigger conditions.
+**Interpretation**: The Detection module accounts for about 42\% of baseline TPR in marginal-removal terms ($\Delta\text{TPR} \approx -0.051$ vs.\\ full pipeline $\approx 0.122$). The Trust Calculus is the second most impactful component ($\Delta\text{TPR} \approx -0.020$). Firewall, Invariants, and Tripwires each contribute $\Delta\text{TPR} \approx -0.010$. Consensus, Provenance, and Sandbox show $\Delta\text{TPR} = 0.000$, meaning their removal produced no measurable change in detection rate on this 98-attack corpus — this does not imply these components are ineffective, only that the current corpus may not exercise their trigger conditions.
 
 ### Synergy Effect Sizes (Real Pipeline)
 
@@ -54,13 +54,13 @@ Table: Component pair synergy scores (real pipeline, ablation data). {#tab:real-
 
 | Pair | Synergy Score | Interpretation |
 | --- | --- | --- |
-| Firewall + Detection | $\\approx +0.031$ | Strongest: injection pattern-matching + text-feature analysis |
-| Tripwire + Detection | $\\approx +0.031$ | Canary monitoring + text-feature analysis |
-| Firewall + Trust Calculus | $\\approx +0.020$ | Pattern-based injection + authority claim detection |
-| Trust Calculus + Tripwire | $\\approx +0.020$ | Authority detection + canary monitoring |
-| Trust Calculus + Detection | $\\approx +0.020$ | Authority detection + text-feature analysis |
+| Firewall + Detection | $\approx +0.031$ | Strongest: injection pattern-matching + text-feature analysis |
+| Tripwire + Detection | $\approx +0.031$ | Canary monitoring + text-feature analysis |
+| Firewall + Trust Calculus | $\approx +0.020$ | Pattern-based injection + authority claim detection |
+| Trust Calculus + Tripwire | $\approx +0.020$ | Authority detection + canary monitoring |
+| Trust Calculus + Detection | $\approx +0.020$ | Authority detection + text-feature analysis |
 
-Synergy scores measure the detection improvement of the pair beyond the sum of their individual effects. The top synergy pairs (firewall+detection and tripwire+detection, both $\\approx +0.031$) confirm that the Detection module amplifies the contribution of upstream pattern-based and behavioral detectors. Only 5 synergy pairs were measurable on the 98-attack corpus; pairs involving Consensus, Provenance, Sandbox, or Invariants showed no measurable synergy.
+Synergy scores measure the detection improvement of the pair beyond the sum of their individual effects. The top synergy pairs (firewall+detection and tripwire+detection, both $\approx +0.031$) confirm that the Detection module amplifies the contribution of upstream pattern-based and behavioral detectors. Only 5 synergy pairs were measurable on the 98-attack corpus; pairs involving Consensus, Provenance, Sandbox, or Invariants showed no measurable synergy.
 
 ## Confidence Intervals (Empirical) {#sec:empirical-ci}
 

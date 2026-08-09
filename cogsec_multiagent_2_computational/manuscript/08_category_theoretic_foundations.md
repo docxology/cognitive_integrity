@@ -18,10 +18,12 @@ order**: $f \leq g$ iff $\mathrm{DR}(f) \leq \mathrm{DR}(g)$.  The resulting
 poset extends to a **complete lattice** $(\mathcal{L}_\text{def},\,\leq,\,\wedge,\,\vee,\,\bot,\,\top)$
 with:
 
-$$\bot = \mathrm{DR}^{-1}(0),\qquad \top = \mathrm{DR}^{-1}(1),$$ {#eq:lattice-bounds}
-$$f \wedge g = \mathrm{DR}^{-1}\!\bigl(\min(\mathrm{DR}(f),\mathrm{DR}(g))\bigr),$$ {#eq:lattice-meet}
-$$f \vee g = \mathrm{DR}^{-1}\!\bigl(1 - (1-\mathrm{DR}(f))(1-\mathrm{DR}(g))\bigr).$$ {#eq:lattice-join}
-
+$$\bot = \mathrm{DR}^{-1}(0),\qquad \top = \mathrm{DR}^{-1}(1),$$
+\label{eq:lattice-bounds}
+$$f \wedge g = \mathrm{DR}^{-1}\!\bigl(\min(\mathrm{DR}(f),\mathrm{DR}(g))\bigr),$$
+\label{eq:lattice-meet}
+$$f \vee g = \mathrm{DR}^{-1}\!\bigl(1 - (1-\mathrm{DR}(f))(1-\mathrm{DR}(g))\bigr).$$
+\label{eq:lattice-join}
 The join formula $f \vee g$ is precisely the **series composition** detection
 rate from Part 1, Theorem 3.1 \cite{friedman2026cogsec1}: independent
 miss-events multiply, so the combined detection equals $\mathrm{DR}(f) + \mathrm{DR}(g) - \mathrm{DR}(f)\cdot\mathrm{DR}(g)$.
@@ -76,8 +78,8 @@ $\mathbf{Def}$ is enriched over the monoidal category $([0,1], \times, 1)$
 (unit interval with multiplication), assigning to each hom-set the
 **detection-distance**:
 
-$$\mathbf{Def}(f,g) = \bigl|\mathrm{DR}(f) - \mathrm{DR}(g)\bigr| \in [0,1].$$ {#eq:detection-distance}
-
+$$\mathbf{Def}(f,g) = \bigl|\mathrm{DR}(f) - \mathrm{DR}(g)\bigr| \in [0,1].$$
+\label{eq:detection-distance}
 This enrichment makes $\mathbf{Def}$ a *Lawvere metric space* where distance
 measures how much two defenses differ in efficacy.  The Cauchy-completion of
 $\mathbf{Def}$ with respect to this metric yields the ideal defense $\top$.
@@ -107,8 +109,8 @@ Different multiagent architectures induce functors $F : \mathbf{Arch}_1 \to
 validated on architecture $\mathbf{Arch}_1$ **lifts** to $\mathbf{Arch}_2$
 via the **left Kan extension** $\mathrm{Lan}_F D$:
 
-$$\mathrm{Lan}_F D(\sigma_2) = \mathrm{colim}_{F(\sigma_1) \to \sigma_2} D(\sigma_1).$$ {#eq:kan-extension}
-
+$$\mathrm{Lan}_F D(\sigma_2) = \mathrm{colim}_{F(\sigma_1) \to \sigma_2} D(\sigma_1).$$
+\label{eq:kan-extension}
 Implemented as `left_kan_extension()` / `right_kan_extension()` in
 `src/formal/category_theory_advanced.py`, this provides a principled
 architecture-transfer mechanism that preserves detection-rate lower bounds
@@ -118,9 +120,10 @@ architecture-transfer mechanism that preserves detection-rate lower bounds
 
 A cognitive attack is modelled as a **lens** $(s,\,a) \to (b,\,t)$:
 
-$$\mathrm{get}: s \to a \quad (\text{observe belief state}),$$ {#eq:lens-get}
-$$\mathrm{set}: s \times b \to t \quad (\text{overwrite belief state with adversarial content}).$$ {#eq:lens-set}
-
+$$\mathrm{get}: s \to a \quad (\text{observe belief state}),$$
+\label{eq:lens-get}
+$$\mathrm{set}: s \times b \to t \quad (\text{overwrite belief state with adversarial content}).$$
+\label{eq:lens-set}
 A CIF defense module is the corresponding **profunctor optic** that mediates
 the lens: it intercepts the $\mathrm{set}$ action, applies detection and
 sandboxing, and returns a *residual* that either permits or blocks the write.

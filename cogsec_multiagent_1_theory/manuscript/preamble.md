@@ -8,6 +8,9 @@ This file contains LaTeX packages and commands for the Cognitive Security Framew
 % Core mathematical packages
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{mathtools}
+% Permit bibliography and theorem prose to break without overfull boxes.
+\setlength{\emergencystretch}{3em}
+\sloppy % allow long theorem/reference prose to break cleanly
 
 % Algorithm formatting
 \usepackage{algorithm}

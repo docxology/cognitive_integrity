@@ -27,7 +27,7 @@ config = TrustConfig(
     alpha=0.3,   # Base trust weight
     beta=0.5,    # Reputation weight
     gamma=0.2,   # Context trust weight
-    decay=0.8,   # Delegation decay factor (delta)
+    decay=0.8,   # Balanced-profile delegation decay factor (delta)
 )
 
 # 2. Initialize Trust Calculus
@@ -75,6 +75,7 @@ The trust calculus is tested in `tests/test_trust.py`, covering:
 
 - Composite trust computation (weighted combination).
 - Bounded delegation decay ($\delta^d$ monotone decrease).
+- Profile convention: $\delta=0.80$ is balanced operation; $\delta=0.60$ is high assurance.
 - Path trust computation.
 - TrustMatrix pairwise lookups and updates.
 - ReputationTracker time-based decay.
