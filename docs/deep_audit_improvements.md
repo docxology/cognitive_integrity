@@ -8,7 +8,9 @@ file [`TODO_DEEP_SCOPING.md`](../TODO_DEEP_SCOPING.md), and the git history.
 
 Round numbering is taken from the commit messages; rounds 1–2 predate the
 explicitly numbered round 3/4/5 commits and are the 2026-08-03/04 red-team
-implementation. All dates are the actual commit dates (`git log`).
+implementation. Round 6 was a four-tab fleet round (2026-08-05) whose changes
+were verified and landed by the orchestrator. All dates are the actual commit
+dates (`git log`).
 
 ## One-line commit log (rounds)
 
@@ -77,6 +79,28 @@ ca941f3 2026-08-03 round 1 — fix(part1): hostile-red-team findings P1-1..P1-22
   consistency, data-utility tests.
 - **Part 3:** posture/checklist/risk/trust/pitfall/timeline/domain figure
   scripts made deterministic; pitfalls additions.
+
+## Round 6 — 4-tab fleet additions (2026-08-05)
+
+Four herdr agents (p2core, part1, part3, docs) ran in disjoint subtrees; the
+orchestrator verified then committed. (Source: `TODO_DEEP_SCOPING.md` § Round 6.)
+
+- **Part 1:** proof-status subsection in `S01_proofs.md`; fresh red-team; +25 real
+  tests (409 passed / 97.68%, was 384/96.16%); ruff 0; verify PASS.
+- **Part 3:** m6 DRY trust-depth; M5 render asserts; m7 unassessed risk; m10
+  weights doc; m8 matrix doc (907 passed / 98.79%, was 884); ruff 0.
+- **docs:** `docs/README.md` index + this ledger.
+- **Part 2 (orchestrator):** de-flake latency test upper bound 2.0x → 6.0x.
+- Part 2 fleet tree (p2core) was **reverted, not committed** (cross-file suite
+  ordering destabilization; F-Algebra artifact mismatch code 28 vs committed 25);
+  scoped forward one-at-a-time with tests + artifact regen.
+
+## Round 7 (2026-08-08) — fleet deep-review
+
+Four-lane fleet deep-review of the program (cog1 = Part 1 theory, cog2 = Part 2
+computational, cog3 = Part 3 practical, cogdocs = program docs). The authoritative
+record for this round is each part's `docs/AUDIT_ROUND7_2026-08-08.md`, written by
+the owning lane; `TODO_DEEP_SCOPING.md` will be updated by the orchestrator.
 
 ## Notes
 

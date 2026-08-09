@@ -128,3 +128,29 @@ Tests after sync + remediations: Paper 1 **355** passed, Paper 2 **2422** passed
 3. Paper 3: `src/types.py` + remove stub classes from `__init__.py`; migrate `test_practical.py`.
 4. Split Paper 2 `tests/test_statistics.py` mirroring `src/statistics/`.
 5. Fix injector hardcoded fallbacks; wire composer rates to measured ablation outputs or label as illustrative in UI.
+
+---
+
+## Status check (2026-08-08)
+
+Point-in-time audit; verified against the current tree on 2026-08-08:
+
+- **SKILL.md signpost findings are resolved.** The two "Doc / signpost drift"
+  items ("Paper 3 `SKILL.md` references nonexistent `scripts/generate_visuals.py`";
+  "Paper 1 `SKILL.md` references nonexistent `scripts/generate_figures.py`") no
+  longer hold: both SKILL.md files now reference existing scripts
+  (`05_threat_taxonomy_figure.py` / `01_posture_radar_figure.py`).
+- **File-size table is still approximately current** (same files, minor growth):
+  `composable.py` 1099 (listed ~1080), `agent_guidelines.py` 966 (~959),
+  `visualization.py` 950 (~943), `risk_assessment.py` 917 (~910),
+  `test_statistics.py` 1933 (~1923), `test_composition.py` 1675 (~1661),
+  `test_coverage_boost.py` 1159 (~1155).
+- **S1 forked CIF core is still present** (Part 1 flat `src/*.py` vs Part 2
+  `src/core/`); the shared `cif_core` extraction remains deferred as documented in
+  "Recommended follow-on" item 1.
+- **Test counts have grown** since this audit (Part 1 355 → 409, Part 2 2422 →
+  3354, Part 3 872 → 907 per the 2026-08-05 program baselines); expected growth,
+  not a contradiction.
+- **Path note still accurate**: sidecar checkout remains
+  `projects/working/cognitive_integrity/` (symlinked in template); standalone
+  checkout has no repo-root entry point.

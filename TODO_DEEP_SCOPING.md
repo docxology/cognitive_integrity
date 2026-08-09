@@ -1,7 +1,7 @@
 # Cognitive Integrity Program - Per-Paper TODO Deep Scoping
 
-**Date:** 2026-07-06 (original) / **Last reviewed:** 2026-08-05
-**Auditor:** autonomous hostile red-team review - 3 parallel audits of Parts 1/2 + lead pass on Part 3; rounds 2026-08-04 and 2026-08-05 re-ran all gates and implemented the open engineering items
+**Date:** 2026-07-06 (original) / **Last reviewed:** 2026-08-08
+**Auditor:** autonomous hostile red-team review - 3 parallel audits of Parts 1/2 + lead pass on Part 3; rounds 2026-08-04 and 2026-08-05 re-ran all gates and implemented the open engineering items; Round 7 (2026-08-08) 4-lane herdr fleet deep review + implement-all (see below)
 **Scope:** All three papers in `cognitive_integrity/` (Part 1 theory, Part 2 computational, Part 3+4 practical)
 **Status legend:** `DONE` verified at HEAD (see commit SHAs) | `OPEN` tracked forward | `PARTIAL` partially addressed | `[A]` author decision | `[H]` agent-scoped work | `[H+A]` both
 
@@ -216,3 +216,74 @@ Four herdr agents (p2core, part1, part3, docs) ran in disjoint subtrees, no vers
 
 ### Part 2 fleet tree (p2core) REVERTED, NOT committed
 Solid P2-RT-1..15 findings were reverted: they destabilized cross-file suite ordering (each run failed a different test) and the F-Algebra addition left an un-reconciled artifact mismatch (code 28 vs committed 25). Scoped forward one-at-a-time with tests + artifact regen.
+
+
+---
+
+## Round 7 - 4-lane fleet deep review + implement-all (2026-08-08)
+
+Four herdr agents (cog1=Part1, cog2=Part2, cog3=Part3, cogdocs=docs) ran in disjoint
+subtree mirrors (no version-control ops in tabs); orchestrator verified on disk and
+committed. Per-lane records: `docs/AUDIT_ROUND7_2026-08-08.md` + each part's
+`<part>/docs/AUDIT_ROUND7_2026-08-08.md`.
+
+### Part 1 (cog1) - 420 passed / 97.71% (was 409 / 97.68%); ruff 0; verify PASS
+- MAJOR: 13 bare `{#eq:...}` pandoc attribute lines in S02 broke the LaTeX PDF build;
+  converted to in-equation \label declarations (PDF regen deferred to render pipeline).
+- MAJOR: 97 malformed `*`-for-`_` math subscript corruptions across 04/08/S02; fixed.
+- MAJOR: duplicate `cor:layered-defense` and `sec:limitations` labels (LaTeX resolves to
+  last def); re-labeled `cor:n-layer-bound` / `sec:formal-limitations`.
+- MAJOR: manuscript verifier could not catch any of the above; added
+  `check_pandoc_attributes()`, `check_math_hygiene()`, duplicate-label detection +
+  positive/negative no-mock tests.
+- MEDIUM: S01 overstated completeness; reframed as partial proof supplement, expanded
+  deferred catalog (author-math untouched).
+- MEDIUM: schematic/hardcoded figure values not marked in code; added SCHEMATIC +
+  NOT MEASURED disclosures and guard tests (ablation/fp_mitigation/trust_decay).
+- MINOR: Unicode glyph font-warning fixes; README test-count/figure-script inventory.
+- Deferred: PDF regeneration via canonical render pipeline (F10); author-math items.
+
+### Part 2 (cog2) - 3356 passed / 3 skipped (was 3354); coverage 96.96%; claims 159 MATCH /
+0 MISMATCH / 0 NOT_FOUND / 4 UNBACKED (pinned); ruff 0; verify PASS; full suite run twice
+- MAJOR: emergent-misalignment headline used single-seed 56.1%; authoritative 30-seed
+  artifact mean is 74.2933% (scenarios[4] detection_rate_mean); prose now uses the
+  30-seed mean and demotes the single-seed number.
+- MAJOR: conclusion 44.8% HDI [41.3%,48.3%] inconsistent with Bayesian table row
+  [35.5%,54.7%]; reconciled to the table interval, labeled representative.
+- MEDIUM: `QuorumVerification` `max_byzantine or default` silently converted explicit
+  f=0 to the default budget; explicit None check + non-negative/positive validation +
+  2 regression tests (P2-39).
+- MEDIUM: ablation "about 82%" corrected to artifact-backed 80%.
+- MEDIUM: colony seed-sweep mean mislabeled as Beta-Binomial posterior k=56,n=100;
+  removed the invented posterior, points to bootstrap CI.
+- Scoped (unchanged): real-mode AT threshold threading (P2-R7-06, author architecture
+  decision), simulated-control effect sizes (provenance-labeled), ablation provenance
+  metadata (P2-R7-08), 4 env-gated LLM claims (CI-pinned), P2-5/P2-F5b/P2-F11/P2-F6.
+
+### Part 3 (cog3) - 925 passed (was 907); ruff 0; verify PASS
+- MAJOR/behavior: deployment profile trust_decay_delta corrected to manuscript Section
+  05 values (medium 0.9->0.80, high 0.85->0.60); TrustDecayAnalyzer deltas aligned;
+  test updates.
+- Pitfall severities corrected to manuscript Section 07 labels (Static Tripwires 4->3,
+  Single-Orchestrator 2->4); committed figures regenerated (10 pdf/png).
+- verification.py: broken-link branch logged but never flipped `link_status` (verifier
+  could PASS with broken links); fixed + 105 lines of new verification tests.
+- Deferred: render tests upgraded in round 6 confirmed; m7/m8/m10 weight docs verified.
+
+### docs (cogdocs) - no tests; link check clean; cffconvert validate PASS
+- MAJOR: CITATION.cff `preferred-citation` lacked required `authors` - schema-INVALID
+  (round-3 "schema-valid" claim did not hold); fixed, `cffconvert --validate` passes.
+- Citation types corrected (software -> article/preprint), Part 1 titles aligned,
+  Part 3 title spacing aligned.
+- docs/README.md: mapped all three parts' `docs/audits/` dirs + TODO_DEEP_SCOPING.md;
+  deep_audit_improvements.md: restored missing Round 6 entry + Round 7 placeholder.
+- README.md: version/release-stage labels corrected (Part 1 v1.1 improved release;
+  Parts 2/3 v1.0 preprints) + explicit release plan.
+- THERMO_NUCLEAR_AUDIT: appended dated current-state status check.
+- Scoped: Part 2/3 DOIs reserved-not-public (404 today, expected); canonical Part 1
+  title divergence (author decision: 3 variants exist).
+
+### Release-readiness (fleet-wide recommendation)
+Part 1 and Part 3 are strong release candidates after the PDF render pass. Part 2 needs
+the substantive publication decisions before first release: real-mode AT threshold
+threading (P2-R7-06), simulated-control claim framing, and the 4 env-gated LLM claims.

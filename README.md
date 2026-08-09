@@ -14,17 +14,20 @@ The qualified name keeps each paper's outputs under `output/cognitive_integrity/
 
 | Reader | Start here |
 | ------ | ---------- |
-| Formal definitions, proofs, adversary taxonomy | [Part 1 v2: Formal Foundations](cogsec_multiagent_1_theory/) |
-| Empirical results, adversarial training, reproducibility | [Part 2 v2: Computational Validation](cogsec_multiagent_2_computational/) — evidence spine: [claims traceability](cogsec_multiagent_2_computational/docs/claims_traceability.md), [framework validation](cogsec_multiagent_2_computational/docs/framework_validation.md) |
+| Formal definitions, proofs, adversary taxonomy | [Part 1 (Second Edition): Formal Foundations](cogsec_multiagent_1_theory/) |
+| Empirical results, adversarial training, reproducibility | [Part 2 (Second Edition): Computational Validation](cogsec_multiagent_2_computational/) — evidence spine: [claims traceability](cogsec_multiagent_2_computational/docs/claims_traceability.md), [framework validation](cogsec_multiagent_2_computational/docs/framework_validation.md) |
 | Deployment, checklists, operator guidance, cross-domain applications (minimal math) | [Part 3+4: Practical Guide + Applications](cogsec_multiagent_3_practical/) |
 
 ## Paper Series
 
 | Part | Title | Status | DOI |
 |------|-------|--------|-----|
-| 1 v2 | [Formal Foundations](cogsec_multiagent_1_theory/) (Second Edition) | **v1.1** | [10.5281/zenodo.18364119](https://doi.org/10.5281/zenodo.18364119) |
-| 2 v2 | [Computational Validation](cogsec_multiagent_2_computational/) (Second Edition) | Preprint | [10.5281/zenodo.18364128](https://doi.org/10.5281/zenodo.18364128) |
-| 3+4 merged | [Practical Applications and Deployment Guide](cogsec_multiagent_3_practical/) (Parts 3+4 Unified) | Preprint | [10.5281/zenodo.18364130](https://doi.org/10.5281/zenodo.18364130) |
+| 1 | [Formal Foundations](cogsec_multiagent_1_theory/) (Second Edition) | v1.1 (improved release) | [10.5281/zenodo.18364119](https://doi.org/10.5281/zenodo.18364119) |
+| 2 | [Computational Validation](cogsec_multiagent_2_computational/) (Second Edition) | Preprint (v1.0) | [10.5281/zenodo.18364128](https://doi.org/10.5281/zenodo.18364128) |
+| 3+4 merged | [Practical Applications and Deployment Guide](cogsec_multiagent_3_practical/) (Parts 3+4 Unified) | Preprint (v1.0) | [10.5281/zenodo.18364130](https://doi.org/10.5281/zenodo.18364130) |
+
+Release plan: Part 1 ships as the improved **v1.1** (Second Edition); Parts 2 and
+3+4 ship as first releases (**v1.0** preprints) of their Second Edition manuscripts.
 
 ### Reading order
 
@@ -69,7 +72,7 @@ Part 1 (example; see Zenodo for each part's record):
 ```bibtex
 @article{friedman2026cogsec1,
   author = {Friedman, Daniel Ari},
-  title = {Cognitive Integrity Framework: Formal Foundations for Securing Multiagent AI Operators},
+  title = {Cognitive Integrity Framework: Formal Foundations},
   year = {2026},
   doi = {10.5281/zenodo.18364119},
   publisher = {Zenodo},
