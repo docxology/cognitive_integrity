@@ -1,4 +1,4 @@
-\\newpage
+\newpage
 
 # Why Cognitive Security Matters Now {#sec:introduction}
 

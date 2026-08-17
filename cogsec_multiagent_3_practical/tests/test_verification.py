@@ -507,3 +507,68 @@ class TestVerificationCoveragePaths:
             verifier.md_files = [tmppath / "references.bib"]
             (tmppath / "references.bib").write_text(r"\\cite{not_a_real_key}")
             assert verifier.check_citations() is True
+
+
+class TestManuscriptVerifierRound8:
+    """Pandoc-attribute, math-hygiene, and duplicate-label checks (P1 sibling)."""
+
+    def _make_verifier(self, md_content: str):
+        from src.verification import ManuscriptVerifier
+
+        tmp = tempfile.mkdtemp()
+        tmppath = Path(tmp)
+        (tmppath / "references.bib").write_text("@article{key1,}")
+        (tmppath / "manuscript.md").write_text(md_content)
+        return ManuscriptVerifier(tmp)
+
+    def test_pandoc_attributes_clean(self) -> None:
+        v = self._make_verifier(
+            "# Section {#sec:intro}\n\n![alt](fig.png){#fig:x width=80%}\n"
+        )
+        assert v.check_pandoc_attributes() is True
+
+    def test_pandoc_attributes_flags_bare_line(self) -> None:
+        v = self._make_verifier(
+            "\\begin{equation}\nx = 1\n\\end{equation}\n{#eq:foo}\n"
+        )
+        assert v.check_pandoc_attributes() is False
+
+    def test_math_hygiene_clean(self) -> None:
+        v = self._make_verifier(r"$\mathcal{T}_{i \to j}$ and $P_{\text{x}}$")
+        assert v.check_math_hygiene() is True
+
+    def test_math_hygiene_flags_subscript_star(self) -> None:
+        v = self._make_verifier(r"$\mathcal{T}*{i \to j}$")
+        assert v.check_math_hygiene() is False
+
+    def test_math_hygiene_flags_double_backslash(self) -> None:
+        v = self._make_verifier(r"$P_{\\text{detect}}$")
+        assert v.check_math_hygiene() is False
+
+    def test_math_hygiene_ignores_legit_starred(self) -> None:
+        v = self._make_verifier(
+            "\\vspace*{2cm}\n\\DeclareMathOperator*{\\argmax}{argmax}\n"
+        )
+        assert v.check_math_hygiene() is True
+
+    def test_duplicate_label_flagged(self) -> None:
+        v = self._make_verifier("\\label{cor:foo}\n...\n\\label{cor:foo}\n")
+        assert v.check_labels_and_refs() is False
+
+    def test_run_all_includes_new_checks(self) -> None:
+        from src.verification import ManuscriptVerifier
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmppath = Path(tmpdir)
+            (tmppath / "references.bib").write_text("@article{key1,}")
+            (tmppath / "manuscript.md").write_text(
+                "\\begin{equation}\nx = 1\n\\end{equation}\n{#eq:broken}\n"
+            )
+            assert ManuscriptVerifier(tmpdir).run_all() is False
+
+    def test_macro_parameters_not_counted_as_labels(self) -> None:
+        v = self._make_verifier(
+            "\\newcommand{\\trust}[2]{\\mathcal{T}_{#1 \\to #2}}\n"
+            "\\label{eq:real}\n"
+        )
+        assert v.check_labels_and_refs() is True

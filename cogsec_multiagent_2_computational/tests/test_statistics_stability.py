@@ -69,6 +69,11 @@ class TestCoefficientOfVariation:
         values = np.array([0.0, 0.0, 0.0])
         assert coefficient_of_variation(values) == 0.0
 
+    def test_zero_mean_with_spread_is_undefined(self):
+        """Signed values centered on 0 must not be reported as CV=0 (stable)."""
+        values = np.array([-1.0, 0.0, 1.0])
+        assert coefficient_of_variation(values) == float("inf")
+
     def test_identical_values_returns_zero(self):
         values = np.array([0.9, 0.9, 0.9])
         assert abs(coefficient_of_variation(values)) < 1e-10

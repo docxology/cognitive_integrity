@@ -258,10 +258,24 @@ class ManuscriptVerifier:
 
         return status
 
+    @staticmethod
+    def _escapes_root(clean_path: str) -> bool:
+        """True if the path is absolute or escapes the manuscript root (P3-M3)."""
+        p = Path(clean_path)
+        if p.is_absolute():
+            return True
+        return ".." in p.parts
+
     def check_images_and_links(self) -> bool:
-        """Verify local image paths and links."""
+        """Verify local image paths and markdown links.
+
+        Rejects absolute / parent-escaping image refs (``root / abs`` would
+        otherwise probe outside the manuscript tree) and validates markdown
+        links that were previously matched but never checked.
+        """
         logger.info("Verifying images and links...")
         status = True
+        link_status = True
 
         # Output figures directory (figures are generated here)
         output_figures_dir = self.root_dir.parent / "output" / "figures"
@@ -278,6 +292,13 @@ class ManuscriptVerifier:
 
                     # Remove potential brackets or styling
                     clean_path = img_path.split(" ")[0].split("{")[0]
+                    if self._escapes_root(clean_path):
+                        logger.warning(
+                            f"Image path escapes manuscript root (absolute or "
+                            f"'..'): '{clean_path}' in {md_file.name}"
+                        )
+                        status = False
+                        continue
                     target = self.root_dir / clean_path
 
                     if not target.exists():
@@ -295,6 +316,34 @@ class ManuscriptVerifier:
                                     )
                                     status = False
 
+                for dest in self.link_pattern.findall(content):
+                    d = dest.split(" ")[0]
+                    if not d or d.startswith("#") or d.startswith("http"):
+                        continue
+                    if Path(d).suffix.lower() in {
+                        ".png", ".jpg", ".jpeg", ".svg", ".pdf", ".gif", ".webp",
+                    }:
+                        continue
+                    if d.startswith("file:"):
+                        logger.warning(
+                            f"file: link (non-portable/disallowed) '{dest}' in {md_file.name}"
+                        )
+                        link_status = False
+                        continue
+                    if self._escapes_root(d):
+                        logger.warning(
+                            f"Link target escapes manuscript root: '{dest}' in {md_file.name}"
+                        )
+                        link_status = False
+                        continue
+                    local = (md_file.parent / d).resolve()
+                    if not local.exists():
+                        logger.warning(
+                            f"Broken or unresolvable link target '{dest}' in {md_file.name}"
+                        )
+                        link_status = False
+
+        status = status and link_status
         return status
 
     def check_style(self) -> bool:

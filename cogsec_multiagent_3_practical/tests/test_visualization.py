@@ -144,7 +144,7 @@ class TestFivePillarsData:
             provenance_score=0.5,
         )
         assert data.data["values"] == [0.9, 0.8, 0.7, 0.6, 0.5]
-        assert data.metadata["overall_score"] == 0.7  # (0.9+0.8+0.7+0.6+0.5)/5
+        assert data.metadata["overall_score"] == pytest.approx(0.7)  # (0.9+0.8+0.7+0.6+0.5)/5
         assert "Provenance" in data.metadata["weakest_pillar"]
         assert "Firewall" in data.metadata["strongest_pillar"]
 

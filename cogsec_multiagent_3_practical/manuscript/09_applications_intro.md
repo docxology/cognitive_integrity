@@ -68,7 +68,7 @@ This paper makes the following contributions:
 - **C5:** Temporal scale analysis demonstrating CIF's applicability across more than ten orders of magnitude in OODA cycle time.
 - **C6:** Retrospective validation through six documented AI agent security incidents (2024--2025), confirming that all incidents map to the universal attack pattern taxonomy and would have been detectable by the appropriate CIF mechanism.
 
-## Reading Companion: Where to Find Specific Topics {#sec:reading-companion}
+## Reading Companion: Where to Find Specific Topics {#sec:applications-reading-companion}
 
 This paper is designed to stand alone as the applied, domain-facing reference of the series. Where a formal construct, empirical measurement, or engineering technique is developed more fully elsewhere, the table below points the way.
 

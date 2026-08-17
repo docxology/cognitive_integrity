@@ -56,6 +56,13 @@ class TrustCalculus:
         Returns:
             Weighted trust score [0,1]
         """
+        for name, value in (
+            ("base_trust", base_trust),
+            ("reputation", reputation),
+            ("context_trust", context_trust),
+        ):
+            if not np.isfinite(value) or not (0.0 <= float(value) <= 1.0):
+                raise ValueError(f"{name} must be a finite value in [0, 1], got {value!r}")
         return (
             self.config.alpha * base_trust
             + self.config.beta * reputation

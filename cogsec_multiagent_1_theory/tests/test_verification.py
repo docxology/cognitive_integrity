@@ -477,3 +477,70 @@ class TestManuscriptVerifierRound7:
             "\\label{eq:real}\n"
         )
         assert v.check_labels_and_refs() is True
+
+
+class TestManuscriptVerifierPathEscape:
+    """Sibling of Part-3 P3-M3: absolute / parent-escaping refs must fail."""
+
+    def test_escapes_root_detects_absolute_and_parent(self):
+        from src.verification import ManuscriptVerifier
+
+        assert ManuscriptVerifier._escapes_root("/etc/passwd") is True
+        assert ManuscriptVerifier._escapes_root("../outside.png") is True
+        assert ManuscriptVerifier._escapes_root("a/../../outside.png") is True
+        assert ManuscriptVerifier._escapes_root("figures/posture.png") is False
+
+    def test_image_absolute_path_flagged(self):
+        from src.verification import ManuscriptVerifier
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmppath = Path(tmpdir)
+            (tmppath / "references.bib").write_text("")
+            (tmppath / "manuscript.md").write_text("![x](/etc/passwd.png)")
+            assert ManuscriptVerifier(tmpdir).check_images_and_links() is False
+
+    def test_image_parent_escape_flagged(self):
+        from src.verification import ManuscriptVerifier
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmppath = Path(tmpdir)
+            (tmppath / "references.bib").write_text("")
+            (tmppath / "manuscript.md").write_text("![x](../outside.png)")
+            assert ManuscriptVerifier(tmpdir).check_images_and_links() is False
+
+    def test_file_link_flagged(self):
+        from src.verification import ManuscriptVerifier
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmppath = Path(tmpdir)
+            (tmppath / "references.bib").write_text("")
+            (tmppath / "manuscript.md").write_text("[secret](file:///etc/passwd)")
+            assert ManuscriptVerifier(tmpdir).check_images_and_links() is False
+
+    def test_escaping_link_flagged(self):
+        from src.verification import ManuscriptVerifier
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmppath = Path(tmpdir)
+            (tmppath / "references.bib").write_text("")
+            (tmppath / "manuscript.md").write_text("[outside](../secret.md)")
+            assert ManuscriptVerifier(tmpdir).check_images_and_links() is False
+
+    def test_broken_link_fails_check(self):
+        from src.verification import ManuscriptVerifier
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmppath = Path(tmpdir)
+            (tmppath / "references.bib").write_text("")
+            (tmppath / "manuscript.md").write_text("[missing](does_not_exist.md)")
+            assert ManuscriptVerifier(tmpdir).check_images_and_links() is False
+
+    def test_resolvable_link_passes(self):
+        from src.verification import ManuscriptVerifier
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmppath = Path(tmpdir)
+            (tmppath / "references.bib").write_text("")
+            (tmppath / "target.md").write_text("# Target")
+            (tmppath / "manuscript.md").write_text("[target](target.md)")
+            assert ManuscriptVerifier(tmpdir).check_images_and_links() is True

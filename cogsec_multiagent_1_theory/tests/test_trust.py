@@ -354,3 +354,14 @@ class TestTrustMatrixWithDecay:
         context_trust = matrix.get_trust_with_context(0, 1, context="security")
 
         assert context_trust > base_trust
+
+    def test_compute_trust_rejects_out_of_range(self):
+        calc = TrustCalculus()
+        with pytest.raises(ValueError, match="base_trust"):
+            calc.compute_trust(base_trust=1.5, reputation=0.5, context_trust=0.0)
+
+    def test_compute_trust_rejects_nan(self):
+        calc = TrustCalculus()
+        with pytest.raises(ValueError, match="reputation"):
+            calc.compute_trust(base_trust=0.5, reputation=float("nan"), context_trust=0.0)
+

@@ -67,6 +67,10 @@ class ManuscriptVerifier:
         self.img_pattern = re.compile(r"!\[.*?\]\((.*?)\)")
         self.link_pattern = re.compile(r"\[.*?\]\((.*?)\)")
 
+        # Math-hygiene checks (ported from Part 1 round-7):
+        self.subscript_star_pattern = re.compile(r"[A-Za-z}]\*[{A-Za-z]")
+        self.double_backslash_cmd_pattern = re.compile(r"\\\\[a-zA-Z]")
+
         # Style checks
         self.hyperbole_words = [
             "revolutionary",
@@ -78,6 +82,61 @@ class ManuscriptVerifier:
             "obviously",
             "undoubtedly",
         ]
+
+    def check_pandoc_attributes(self) -> bool:
+        """Check for bare ``{#label}`` attribute lines that pandoc passes
+        through as literal text (breaking the LaTeX build).
+        """
+        logger.info("Verifying pandoc attributes...")
+        status = True
+        bare_attr = re.compile(r"^\s*\{#[^}]+\}\s*$", re.MULTILINE)
+
+        for md_file in self.md_files:
+            with open(md_file, "r", encoding="utf-8") as f:
+                content = f.read()
+            for m in bare_attr.finditer(content):
+                line = content.count("\n", 0, m.start()) + 1
+                logger.warning(
+                    f"Bare pandoc attribute line {m.group(0).strip()} in "
+                    f"{md_file.name}:{line} will pass through to LaTeX as "
+                    f"literal text and break the PDF build; attach it to the "
+                    f"enclosing environment (e.g. \\label inside the equation)"
+                )
+                status = False
+        return status
+
+    def check_math_hygiene(self) -> bool:
+        """Check for LaTeX math-notational corruption that renders wrong but
+        does not fail the label/citation checks.
+        """
+        logger.info("Verifying math hygiene...")
+        status = True
+        legit_starred = ("vspace*{", "DeclareMathOperator*{")
+
+        for md_file in self.md_files:
+            with open(md_file, "r", encoding="utf-8") as f:
+                lines = f.readlines()
+
+            for i, line in enumerate(lines):
+                for m in self.subscript_star_pattern.finditer(line):
+                    ctx = line[max(0, m.start() - 20) : m.end()]
+                    if any(token in ctx for token in legit_starred):
+                        continue
+                    logger.warning(
+                        f"Subscript-star corruption '{m.group(0)}' in "
+                        f"{md_file.name}:{i + 1}: replace '*' with '_' "
+                        f"(literal stars render as binary operators in math)"
+                    )
+                    status = False
+
+                for m in self.double_backslash_cmd_pattern.finditer(line):
+                    logger.warning(
+                        f"Double-escaped control sequence '{m.group(0)}' in "
+                        f"{md_file.name}:{i + 1}: use a single backslash "
+                        f"inside math"
+                    )
+                    status = False
+        return status
 
     def check_files_exist(self) -> bool:
         """Check if essential files exist."""
@@ -135,18 +194,30 @@ class ManuscriptVerifier:
         """Check \\label definitions and \\ref usage."""
         logger.info("Verifying definition labels and references...")
         status = True
-        defined_labels = set()
+        defined_labels: dict[str, int] = {}
         # pass 1: collect labels
         for md_file in self.md_files:
             with open(md_file, "r", encoding="utf-8") as f:
                 content = f.read()
                 # LaTeX labels
                 labels = self.label_pattern.findall(content)
-                defined_labels.update(labels)
+                for label in labels:
+                    defined_labels[label] = defined_labels.get(label, 0) + 1
 
-                # Pandoc labels {#label} or {#label attr=val}
-                pandoc_labels = re.findall(r"\{#([^\s}]+)", content)
-                defined_labels.update(pandoc_labels)
+                # Pandoc identifiers start with a letter; "#1"-style LaTeX
+                # macro parameters must not be counted as labels.
+                pandoc_labels = re.findall(r"\{#([A-Za-z][^}]*)\}", content)
+                for label in pandoc_labels:
+                    defined_labels[label] = defined_labels.get(label, 0) + 1
+
+        for label, count in sorted(defined_labels.items()):
+            if count > 1:
+                logger.warning(
+                    f"Duplicate label '{label}' defined {count} times; "
+                    f"\\cref resolves to the last definition - rename one "
+                    f"occurrence"
+                )
+                status = False
 
         # pass 2: check refs
         for md_file in self.md_files:
@@ -333,6 +404,8 @@ class ManuscriptVerifier:
 
         results = {
             "Files": self.check_files_exist(),
+            "Pandoc Attributes": self.check_pandoc_attributes(),
+            "Math Hygiene": self.check_math_hygiene(),
             "Citations": self.check_citations(),
             "Labels/Refs": self.check_labels_and_refs(),
             "Images/Links": self.check_images_and_links(),

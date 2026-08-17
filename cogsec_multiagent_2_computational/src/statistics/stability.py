@@ -220,10 +220,14 @@ def coefficient_of_variation(values: np.ndarray) -> float:
     Returns 0.0 when the mean is zero to avoid division by zero.
     """
     values = np.asarray(values, dtype=float)
-    mean = np.mean(values)
+    mean = float(np.mean(values))
+    std = float(np.std(values))
+    # All-zero (or otherwise identically zero) is a defined CV of 0.
+    # A zero mean with nonzero spread is undefined — returning 0.0 here
+    # would label a wildly oscillating signed series as "stable".
     if mean == 0.0:
-        return 0.0
-    return float(np.std(values) / abs(mean))
+        return 0.0 if std == 0.0 else float("inf")
+    return float(std / abs(mean))
 
 
 def _mean_of_dicts(dicts: List[Dict[str, float]]) -> Dict[str, float]:
