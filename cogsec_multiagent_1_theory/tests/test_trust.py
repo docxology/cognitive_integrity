@@ -365,3 +365,26 @@ class TestTrustMatrixWithDecay:
         with pytest.raises(ValueError, match="reputation"):
             calc.compute_trust(base_trust=0.5, reputation=float("nan"), context_trust=0.0)
 
+    def test_delegate_trust_rejects_bad_depth(self):
+        calc = TrustCalculus()
+        with pytest.raises(ValueError, match="depth"):
+            calc.delegate_trust(0.9, 0.7, depth=-1)
+
+    def test_delegate_trust_zero_depth_is_identity(self):
+        calc = TrustCalculus()
+        assert calc.delegate_trust(0.9, 0.7, depth=0) == 0.7
+
+    def test_delegate_trust_rejects_out_of_range_source(self):
+        calc = TrustCalculus()
+        with pytest.raises(ValueError, match="source_trust"):
+            calc.delegate_trust(1.5, 0.7, depth=1)
+
+    def test_path_trust_rejects_nan_edge(self):
+        calc = TrustCalculus()
+        with pytest.raises(ValueError, match="path_trusts"):
+            calc.compute_path_trust([0.9, float("nan")])
+
+    def test_trust_matrix_rejects_nonpositive_n(self):
+        with pytest.raises(ValueError, match="n_agents"):
+            TrustMatrix(n_agents=0)
+

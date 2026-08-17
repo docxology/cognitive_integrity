@@ -78,6 +78,8 @@ class ByzantineConsensus:
         Raises:
             ValueError: If n < 3f + 1
         """
+        if n_agents < 1:
+            raise ValueError("n_agents must be positive")
         self.n_agents = n_agents
         self.config = config or ConsensusConfig()
 
@@ -86,6 +88,9 @@ class ByzantineConsensus:
             self.max_byzantine = (n_agents - 1) // 3
         else:
             self.max_byzantine = max_byzantine
+
+        if self.max_byzantine < 0:
+            raise ValueError("max_byzantine must be non-negative")
 
         # Verify Byzantine tolerance
         if n_agents < 3 * self.max_byzantine + 1:

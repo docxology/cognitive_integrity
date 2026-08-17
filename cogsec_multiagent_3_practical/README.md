@@ -38,14 +38,13 @@ This paper unifies two previously separate works into a single comprehensive ref
 |------|-------|-------|--------|-----|
 | 1 | Formal Foundations | Theory, proofs, formalisms | **Published** | [10.5281/zenodo.18364119](https://doi.org/10.5281/zenodo.18364119) |
 | 2 | Computational Validation | Empirical results, algorithms | Preprint | [10.5281/zenodo.18364128](https://doi.org/10.5281/zenodo.18364128) |
+| **3+4 (This)** | Practical Guidance + Applications | Deployment checklists, guidelines, cross-domain CIF-AD-OODA | Preprint | [10.5281/zenodo.18364130](https://doi.org/10.5281/zenodo.18364130) |
 
 ## Documentation
 
 - [Documentation Index](docs/README.md) — Part 3+4 documentation and claims→code map
 - [Part 1 docs](../cogsec_multiagent_1_theory/docs/README.md) — formal foundations
 - [Part 2 docs](../cogsec_multiagent_2_computational/docs/README.md) — computational validation
-
-| **3+4 (This)** | Practical Guidance + Applications | Deployment checklists, guidelines, cross-domain CIF-AD-OODA | Preprint | [10.5281/zenodo.18364130](https://doi.org/10.5281/zenodo.18364130) |
 
 ## Project Structure
 

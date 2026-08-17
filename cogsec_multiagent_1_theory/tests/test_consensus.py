@@ -178,6 +178,15 @@ class TestQuorumVerification:
         # quorum = ceil((7 + 0 + 1) / 2) = 4, not the inflated (7+2+1)/2 = 5
         assert quorum.quorum == 4
 
+    def test_invalid_agent_count_rejected(self):
+        """Quorum verification requires at least one agent."""
+        with pytest.raises(ValueError, match="n_agents must be positive"):
+            QuorumVerification(n_agents=0, max_byzantine=0)
+
+    def test_negative_byzantine_budget_rejected(self):
+        with pytest.raises(ValueError, match="max_byzantine"):
+            QuorumVerification(n_agents=4, max_byzantine=-1)
+
     def test_approval_reaches_quorum(self):
         """Action approved when quorum reached."""
         quorum = QuorumVerification(n_agents=4, max_byzantine=1)
@@ -655,3 +664,8 @@ class TestCombinedByzantineEdgeCases:
 
         assert len(consensus._combined_votes["prop"]) == 1
         assert consensus._combined_votes["prop"][0].belief == 0.2
+
+    def test_consensus_rejects_nonpositive_n(self):
+        with pytest.raises(ValueError, match="n_agents must be positive"):
+            ByzantineConsensus(n_agents=0, max_byzantine=0)
+

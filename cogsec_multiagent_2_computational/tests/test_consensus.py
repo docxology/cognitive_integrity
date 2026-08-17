@@ -639,3 +639,8 @@ class TestCombinedWeightedConfidence:
         )
 
         assert consensus.get_combined_weighted_average("prop") == pytest.approx(0.1)
+
+    def test_consensus_rejects_nonpositive_n(self):
+        with pytest.raises(ValueError, match="n_agents must be positive"):
+            ByzantineConsensus(n_agents=0, max_byzantine=0)
+

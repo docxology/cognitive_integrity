@@ -15,6 +15,21 @@ import numpy as np
 # Module logger for tracking trust computation
 logger = logging.getLogger(__name__)
 
+def _require_unit_interval(name: str, value: float) -> None:
+    """Raise if *value* is not a finite number in [0, 1]."""
+    if not np.isfinite(value) or not (0.0 <= float(value) <= 1.0):
+        raise ValueError(f"{name} must be a finite value in [0, 1], got {value!r}")
+
+
+def _require_nonnegative_depth(depth: int) -> None:
+    """Raise if *depth* is not an integer >= 0.
+
+    d=0 is the identity hop (delta**0 == 1) used by decay-curve figures.
+    """
+    if isinstance(depth, bool) or not isinstance(depth, (int, np.integer)) or int(depth) < 0:
+        raise ValueError(f"depth must be an integer >= 0, got {depth!r}")
+
+
 
 @dataclass
 class TrustConfig:
@@ -56,13 +71,9 @@ class TrustCalculus:
         Returns:
             Weighted trust score [0,1]
         """
-        for name, value in (
-            ("base_trust", base_trust),
-            ("reputation", reputation),
-            ("context_trust", context_trust),
-        ):
-            if not np.isfinite(value) or not (0.0 <= float(value) <= 1.0):
-                raise ValueError(f"{name} must be a finite value in [0, 1], got {value!r}")
+        _require_unit_interval("base_trust", base_trust)
+        _require_unit_interval("reputation", reputation)
+        _require_unit_interval("context_trust", context_trust)
         return (
             self.config.alpha * base_trust
             + self.config.beta * reputation
@@ -83,7 +94,10 @@ class TrustCalculus:
         Returns:
             Bounded delegated trust
         """
-        return min(source_trust, target_trust) * (self.config.decay**depth)
+        _require_unit_interval("source_trust", source_trust)
+        _require_unit_interval("target_trust", target_trust)
+        _require_nonnegative_depth(depth)
+        return min(source_trust, target_trust) * (self.config.decay ** int(depth))
 
     def compute_path_trust(self, path_trusts: List[float]) -> float:
         """
@@ -103,6 +117,8 @@ class TrustCalculus:
         """
         if not path_trusts:
             return 0.0
+        for i, edge in enumerate(path_trusts):
+            _require_unit_interval(f"path_trusts[{i}]", edge)
 
         # delta applied once for the total depth, not compounded per hop
         # (per-hop compounding over-decays: a 4-hop chain of 1.0s would
@@ -118,6 +134,8 @@ class TrustMatrix:
     """
 
     def __init__(self, n_agents: int, config: Optional[TrustConfig] = None):
+        if n_agents < 1:
+            raise ValueError("n_agents must be positive")
         self.n_agents = n_agents
         self.config = config or TrustConfig()
         self.calculus = TrustCalculus(self.config)

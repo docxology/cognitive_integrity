@@ -63,6 +63,8 @@ class ByzantineConsensus:
             max_byzantine: Maximum Byzantine agents (default: (n-1)/3)
             config: Consensus configuration
         """
+        if n_agents < 1:
+            raise ValueError("n_agents must be positive")
         self.n_agents = n_agents
         self.config = config or ConsensusConfig()
 
@@ -71,6 +73,9 @@ class ByzantineConsensus:
             self.max_byzantine = (n_agents - 1) // 3
         else:
             self.max_byzantine = max_byzantine
+
+        if self.max_byzantine < 0:
+            raise ValueError("max_byzantine must be non-negative")
 
         # Verify Byzantine tolerance
         if n_agents < 3 * self.max_byzantine + 1:
@@ -223,6 +228,11 @@ class QuorumVerification:
             self.max_byzantine = (n_agents - 1) // 3
         else:
             self.max_byzantine = max_byzantine
+
+        if self.max_byzantine < 0:
+            raise ValueError("max_byzantine must be non-negative")
+        if n_agents < 1:
+            raise ValueError("n_agents must be positive")
 
         # Quorum threshold: ceil((n + f + 1) / 2)
         self.quorum = int(np.ceil((n_agents + self.max_byzantine + 1) / 2))
