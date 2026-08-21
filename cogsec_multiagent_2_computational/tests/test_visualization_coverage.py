@@ -483,3 +483,41 @@ class TestStatisticalTablesEffectSizes:
         assert "\\begin{table}" in table
         assert "\\end{table}" in table
         assert "Cohen" in table
+
+
+class TestAblationStudyFigureCoverage:
+    def test_plot_ablation_study_legacy_dict_format(self, tmp_path):
+        from src.visualization.figures.ablation_study import plot_ablation_study
+        data_dir = tmp_path / "data"
+        data_dir.mkdir(parents=True, exist_ok=True)
+        legacy_data = {
+            "metadata": {"note": "legacy"},
+            "full_cif": {"detection": 0.965, "delta": 0.0},
+            "minus_firewall": {"detection": 0.85, "delta": -0.115},
+            "minus_tripwire": {"detection": 0.88, "delta": -0.085},
+            "minus_invariants": {"detection": 0.91, "delta": -0.055},
+            "minus_sandbox": {"detection": 0.94, "delta": -0.025},
+        }
+        with open(data_dir / "ablation_results.json", "w") as f:
+            json.dump(legacy_data, f)
+
+        fig_dir = tmp_path / "figures"
+        fig = plot_ablation_study(output_dir=fig_dir)
+        assert fig is not None
+        has_pdf = (fig_dir / "ablation_study.pdf").exists()
+        has_png = (fig_dir / "ablation_study.png").exists()
+        assert has_pdf or has_png
+
+    def test_plot_ablation_study_empty_removal_list(self, tmp_path):
+        from src.visualization.figures.ablation_study import plot_ablation_study
+        data_dir = tmp_path / "data"
+        data_dir.mkdir(parents=True, exist_ok=True)
+        empty_data = {
+            "component_removal": []
+        }
+        with open(data_dir / "ablation_results.json", "w") as f:
+            json.dump(empty_data, f)
+
+        fig_dir = tmp_path / "figures"
+        fig = plot_ablation_study(output_dir=fig_dir)
+        assert fig is not None

@@ -19,10 +19,7 @@ from ..style import FONTSIZE, SEMANTIC_COLORS, add_source_annotation, apply_styl
 matplotlib.use("Agg")
 logger = __import__('logging').getLogger(__name__)
 
-try:
-    from ablation.minimal_config import MinimalConfigSearch
-except (ImportError, ModuleNotFoundError):
-    MinimalConfigSearch = None  # type: ignore[assignment,misc]
+
 
 def _load_ablation_data(output_dir: Path) -> tuple:
     """Load ablation results from ablation_results.json."""
