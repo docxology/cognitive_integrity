@@ -171,7 +171,7 @@ class ManuscriptVerifier:
 
     def get_bib_keys(self) -> Set[str]:
         """Extract keys from references.bib."""
-        keys = set()
+        keys: set[str] = set()
         if not self.bib_file.exists():
             return keys
 
