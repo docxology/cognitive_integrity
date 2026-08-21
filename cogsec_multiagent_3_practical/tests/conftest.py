@@ -2,7 +2,7 @@
 
 # Unique pytest_plugins declaration prevents conftest collection conflicts
 # when running tests from multiple projects simultaneously
-pytest_plugins = []
+pytest_plugins: list[str] = []
 
 import pytest
 

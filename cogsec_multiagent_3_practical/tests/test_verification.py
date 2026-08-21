@@ -509,6 +509,20 @@ class TestVerificationCoveragePaths:
             assert verifier.check_citations() is True
 
 
+    def test_configure_logging_idempotent(self):
+        """_configure_verification_logging returns early when logging is already configured."""
+        import logging
+
+        from src.verification import _configure_verification_logging, logger
+
+        handler = logging.NullHandler()
+        logger.addHandler(handler)
+        try:
+            _configure_verification_logging(None)
+        finally:
+            logger.removeHandler(handler)
+
+
 class TestManuscriptVerifierRound8:
     """Pandoc-attribute, math-hygiene, and duplicate-label checks (P1 sibling)."""
 

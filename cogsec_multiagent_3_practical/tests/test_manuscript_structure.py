@@ -133,7 +133,7 @@ def test_src_module_exists(module):
 
 def test_identity_module_imports():
     """identity module must import cleanly and expose expected functions."""
-    from identity import merged_from, package_id, paper_parts
+    from src.identity import merged_from, package_id, paper_parts
 
     assert callable(package_id)
     assert callable(merged_from)
@@ -142,7 +142,7 @@ def test_identity_module_imports():
 
 def test_identity_coherence():
     """Identity metadata must be internally coherent."""
-    from identity import merged_from, package_id, paper_parts
+    from src.identity import merged_from, package_id, paper_parts
 
     pid = package_id()
     merged = merged_from()

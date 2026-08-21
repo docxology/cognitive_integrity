@@ -188,7 +188,7 @@ class TestRenderPostureRadar:
         data = get_five_pillars_data(firewall_score=0.5)
         fig = render_posture_radar(data)
         assert isinstance(fig, plt.Figure)
-        plt.close(fig)
+        plt.close(fig)  # type: ignore[arg-type]
 
     def test_render_with_provided_axes(self) -> None:
         """Test rendering onto provided axes."""
@@ -196,7 +196,7 @@ class TestRenderPostureRadar:
         fig, ax = plt.subplots(subplot_kw=dict(projection="polar"))
         result = render_posture_radar(data, ax=ax)
         assert result is fig
-        plt.close(fig)
+        plt.close(fig)  # type: ignore[arg-type]
 
     def test_render_all_scores_high(self) -> None:
         """Test rendering with all high scores."""
@@ -211,7 +211,7 @@ class TestRenderPostureRadar:
         # Data line + 4 threshold fills + 1 data fill (Polygon patches) (M5).
         assert len(fig.axes[0].lines) == 1
         assert len(fig.axes[0].patches) == 5
-        plt.close(fig)
+        plt.close(fig)  # type: ignore[arg-type]
 
 
 # =============================================================================
@@ -259,7 +259,7 @@ class TestRenderChecklistFlowchart:
         data = get_deployment_phases_data()
         fig = render_checklist_flowchart(data)
         assert isinstance(fig, plt.Figure)
-        plt.close(fig)
+        plt.close(fig)  # type: ignore[arg-type]
 
     def test_render_with_provided_axes(self) -> None:
         """Test rendering onto provided axes."""
@@ -267,7 +267,7 @@ class TestRenderChecklistFlowchart:
         fig, ax = plt.subplots(figsize=(14, 8))
         result = render_checklist_flowchart(data, ax=ax)
         assert result is fig
-        plt.close(fig)
+        plt.close(fig)  # type: ignore[arg-type]
 
 
 # =============================================================================
@@ -322,7 +322,7 @@ class TestRenderRiskMatrix:
         data = get_risk_matrix_data()
         fig = render_risk_matrix(data)
         assert isinstance(fig, plt.Figure)
-        plt.close(fig)
+        plt.close(fig)  # type: ignore[arg-type]
 
     def test_render_with_custom_risks(self) -> None:
         """Test rendering with custom risks."""
@@ -337,7 +337,7 @@ class TestRenderRiskMatrix:
         assert len(ax.images) == 1
         assert len(ax.lines) == len(custom_risks)
         assert len(ax.texts) == len(custom_risks)
-        plt.close(fig)
+        plt.close(fig)  # type: ignore[arg-type]
 
     def test_render_with_provided_axes(self) -> None:
         """Test rendering onto provided axes."""
@@ -345,7 +345,7 @@ class TestRenderRiskMatrix:
         fig, ax = plt.subplots(figsize=(12, 10))
         result = render_risk_matrix(data, ax=ax)
         assert result is fig
-        plt.close(fig)
+        plt.close(fig)  # type: ignore[arg-type]
 
 
 # =============================================================================
@@ -421,7 +421,7 @@ class TestRenderTrustDecay:
         data = get_trust_decay_data()
         fig = render_trust_decay(data)
         assert isinstance(fig, plt.Figure)
-        plt.close(fig)
+        plt.close(fig)  # type: ignore[arg-type]
 
     def test_render_with_aggressive_delta(self) -> None:
         """Test rendering with aggressive (low) delta."""
@@ -430,7 +430,7 @@ class TestRenderTrustDecay:
         # Data line + 50%/10% hlines (plus practical-depth vline) (M5).
         assert len(fig.axes[0].lines) >= 3
         assert len(fig.axes[0].collections) >= 1  # fill_between
-        plt.close(fig)
+        plt.close(fig)  # type: ignore[arg-type]
 
     def test_render_with_provided_axes(self) -> None:
         """Test rendering onto provided axes."""
@@ -438,7 +438,7 @@ class TestRenderTrustDecay:
         fig, ax = plt.subplots(figsize=(10, 6))
         result = render_trust_decay(data, ax=ax)
         assert result is fig
-        plt.close(fig)
+        plt.close(fig)  # type: ignore[arg-type]
 
 
 # =============================================================================
@@ -485,7 +485,7 @@ class TestRenderPitfallSeverity:
         data = get_pitfalls_data()
         fig = render_pitfall_severity(data)
         assert isinstance(fig, plt.Figure)
-        plt.close(fig)
+        plt.close(fig)  # type: ignore[arg-type]
 
     def test_render_with_provided_axes(self) -> None:
         """Test rendering onto provided axes."""
@@ -493,7 +493,7 @@ class TestRenderPitfallSeverity:
         fig, ax = plt.subplots(figsize=(12, 8))
         result = render_pitfall_severity(data, ax=ax)
         assert result is fig
-        plt.close(fig)
+        plt.close(fig)  # type: ignore[arg-type]
 
 
 # =============================================================================
@@ -545,7 +545,7 @@ class TestRenderTimeline:
         data = get_timeline_data()
         fig = render_timeline(data)
         assert isinstance(fig, plt.Figure)
-        plt.close(fig)
+        plt.close(fig)  # type: ignore[arg-type]
 
     def test_render_with_provided_axes(self) -> None:
         """Test rendering onto provided axes."""
@@ -553,7 +553,7 @@ class TestRenderTimeline:
         fig, ax = plt.subplots(figsize=(14, 6))
         result = render_timeline(data, ax=ax)
         assert result is fig
-        plt.close(fig)
+        plt.close(fig)  # type: ignore[arg-type]
 
 
 # =============================================================================
@@ -601,7 +601,7 @@ class TestIntegration:
 
         # Verify figure was created and has content
         assert len(fig.axes) > 0
-        plt.close(fig)
+        plt.close(fig)  # type: ignore[arg-type]
 
     def test_full_workflow_risk_matrix(self) -> None:
         """Test complete workflow for risk matrix."""
@@ -613,7 +613,7 @@ class TestIntegration:
         fig = render_risk_matrix(data)
 
         assert len(fig.axes) > 0
-        plt.close(fig)
+        plt.close(fig)  # type: ignore[arg-type]
 
     def test_full_workflow_trust_decay(self) -> None:
         """Test complete workflow for trust decay."""
@@ -621,7 +621,7 @@ class TestIntegration:
         fig = render_trust_decay(data)
 
         assert len(fig.axes) > 0
-        plt.close(fig)
+        plt.close(fig)  # type: ignore[arg-type]
 
     def test_multiple_figures_same_session(self) -> None:
         """Test creating multiple figures in same session."""
@@ -638,7 +638,7 @@ class TestIntegration:
         assert len(figures) == 6
         for fig in figures:
             assert isinstance(fig, plt.Figure)
-            plt.close(fig)
+            plt.close(fig)  # type: ignore[arg-type]
 
 
 # =============================================================================
@@ -666,7 +666,7 @@ class TestRenderArtistAssertions:
         assert len(ax.patches) == 5
         texts = [t.get_text() for t in ax.get_xticklabels()]
         assert len(texts) == 5 and all(texts)
-        plt.close(fig)
+        plt.close(fig)  # type: ignore[arg-type]
 
     def test_checklist_flowchart_draws_all_boxes(self) -> None:
         data = get_deployment_phases_data()
@@ -677,7 +677,7 @@ class TestRenderArtistAssertions:
         assert all(isinstance(p, plt.Rectangle) for p in ax.patches)
         asserts = [t.get_text() for t in ax.texts]
         assert "Pre-Deployment" in asserts
-        plt.close(fig)
+        plt.close(fig)  # type: ignore[arg-type]
 
     def test_risk_matrix_draws_image_and_points(self) -> None:
         risks = [
@@ -690,7 +690,7 @@ class TestRenderArtistAssertions:
         assert len(ax.images) == 1  # heatmap
         assert len(ax.lines) == len(risks)  # one marker per risk point
         assert len(ax.texts) == len(risks)  # one annotation per risk point
-        plt.close(fig)
+        plt.close(fig)  # type: ignore[arg-type]
 
     def test_trust_decay_draws_curve_thresholds_fill(self) -> None:
         data = get_trust_decay_data(delta=0.5, max_depth=5)
@@ -699,7 +699,7 @@ class TestRenderArtistAssertions:
         # data line + 50%/10% hlines (practical-depth vline also short delta).
         assert len(ax.lines) >= 3
         assert len(ax.collections) >= 1  # fill_between region
-        plt.close(fig)
+        plt.close(fig)  # type: ignore[arg-type]
 
     def test_pitfall_severity_draws_one_bar_per_pitfall(self) -> None:
         data = get_pitfalls_data()
@@ -709,7 +709,7 @@ class TestRenderArtistAssertions:
         assert len(containers) == 1
         assert len(containers[0]) == len(data.data["pitfalls"])  # 8 bars
         # Highest-severity pitfall is rendered at the top (inverted y).
-        plt.close(fig)
+        plt.close(fig)  # type: ignore[arg-type]
 
     def test_timeline_draws_one_bar_per_phase(self) -> None:
         data = get_timeline_data()
@@ -719,7 +719,7 @@ class TestRenderArtistAssertions:
         texts = [t.get_text() for t in ax.texts]
         for phase in data.data["phases"]:
             assert phase.name in texts
-        plt.close(fig)
+        plt.close(fig)  # type: ignore[arg-type]
 
 
 # =============================================================================
@@ -743,7 +743,7 @@ class TestFigureDeterminism:
         buf = io.BytesIO()
         fig = render_fn()
         fig.savefig(buf, format="png", dpi=100)
-        plt.close(fig)
+        plt.close(fig)  # type: ignore[arg-type]
         return buf.getvalue()
 
     def test_posture_radar_deterministic(self) -> None:
