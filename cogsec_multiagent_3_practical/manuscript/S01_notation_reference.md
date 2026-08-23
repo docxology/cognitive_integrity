@@ -14,6 +14,7 @@ This paper intentionally minimizes mathematical notation to maximize accessibili
 | $[A]$ | Design Matrix | Maps Functional Requirements to Defense Provisions |
 | $\{FR\}$ | Functional Requirements | What the system must protect |
 | $\{DP\}$ | Defense Provisions | What CIF mechanisms provide |
+| $\text{INV}_k$ | Individual invariant predicate | "A hard rule the system checks at runtime; Part 1 writes this $I_k$" |
 | $\Omega_k$ | Adversary class $k$ | Capability tier: 1=external (input control), 2=peripheral (tool/data channels), 3=agent-level (single compromised agent), 4=coordination (inter-agent channels), 5=systemic (orchestrator) |
 
 ## CIF-AD-OODA Notation

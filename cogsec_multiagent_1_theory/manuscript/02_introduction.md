@@ -321,10 +321,10 @@ Deployment checklists and operator-posture guidance & Part 3 (DOI: 10.5281/zenod
 Monitoring, drift detection playbooks, cost--benefit analysis & Part 3, \S{5c}--\S{5d} \\
 Case studies showing CIF in complex realistic deployments & Part 3, \S{6b} \\
 Open problems / research directions for practitioners & Part 3 (DOI: 10.5281/zenodo.18364130), \S{7} (Future Work) \\
-Domain-specific goal-hijacking analyses across ten operational sectors & Part 3, \S{3.01}--\S{3.10} \\
-Three universal attack patterns (FR Polarity Inversion, Constraint Relaxation, Context Boundary Violation) & Part 3, \S{4} (Discussion) \\
-Four novel defense extensions (verification channel separation, active perturbation probing, physics-informed invariants, semiotic decoupling) & Part 3, \S{3.06} (Biowarfare), \S{3.08} (Trade Wars), \S{3.09} (Infrastructure) \\
-Retrospective analysis of documented 2024--2025 AI-agent security incidents & Part 3, S02 (Real-World Incidents) \\
+Domain-specific goal-hijacking analyses across ten operational sectors & Part 3, \S{9c}--\S{9l} \\
+Three universal attack patterns (FR Polarity Inversion, Constraint Relaxation, Context Boundary Violation) & Part 3, \S{10} (Cross-Domain Discussion) \\
+Four novel defense extensions (verification channel separation, active perturbation probing, physics-informed invariants, semiotic decoupling) & Part 3, \S{9h} (Biowarfare), \S{9j} (Trade Wars), \S{9k} (Infrastructure), \S{9f} (Drone Wars) \\
+Retrospective analysis of documented 2024--2025 AI-agent security incidents & Part 3, S03 (Real-World Incidents) \\
 \bottomrule
 \end{tabular}
 \end{table}

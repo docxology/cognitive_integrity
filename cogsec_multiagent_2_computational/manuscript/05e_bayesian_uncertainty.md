@@ -33,12 +33,12 @@ Table: Beta-Binomial posteriors for major detection claims. Prior: $\mathrm{Beta
 | Multi-seed pipeline (representative seed) | 45 | 100 | $\mathrm{Beta}(46, 56)$ | $[0.355, 0.547]$ |
 | Ablation full pipeline TPR | 12 | 98 | $\mathrm{Beta}(13, 87)$ | $[0.068, 0.197]$ |
 | LLM validation (Claude Code) | 4 | 5 | $\mathrm{Beta}(5, 2)$ | $[0.409, 0.982]$ |
-| LLM validation (CrewAI) | 5 | 5 | $\mathrm{Beta}(6, 1)$ | $[0.570, 1.000]$ |
+| LLM validation (CrewAI) | 5 | 5 | $\mathrm{Beta}(6, 1)$ | $[0.607, 1.000]$ |
 | Parametric full CIF (direct injection) | 92 | 100 | $\mathrm{Beta}(93, 9)$ | $[0.856, 0.963]$ |
 | Colony: Sybil infiltration | 20 | 20 | $\mathrm{Beta}(21, 1)$ | $[0.867, 1.000]$ |
 | Colony: Emergent misalignment (30-seed mean) | — | 30 seeds | Not Beta-Binomial; bootstrap CI in \cref{sec:colony-results} | 0.743 point estimate |
 
-The multi-seed posterior under the uniform prior has a posterior median detection rate of $0.453$ with a 95\% HDI of $[0.355, 0.547]$. This interval width (0.192) reflects the moderate per-seed sample size ($n = 100$); the 30-seed run characterizes between-seed variability and the seeds are not pooled as independent Bernoulli trials. Two observations are immediately visible. First, the LLM validation results have extremely wide HDIs (Claude Code width 0.573, CrewAI width 0.430) due to small sample sizes ($n = 5$ per architecture); these cannot support the 80–100\% detection range claimed in the abstract without acknowledging the wide credible intervals. Second, the ablation TPR posterior concentrates around $0.13$ ($n = 98$) whereas the multi-seed aggregate concentrates around $0.45$, quantifying the 32-percentage-point gap as a structurally separated posterior rather than a sampling coincidence (see \cref{sec:bayes-factors}).
+The multi-seed posterior under the uniform prior has a posterior median detection rate of $0.453$ with a 95\% HDI of $[0.355, 0.547]$. This interval width (0.192) reflects the moderate per-seed sample size ($n = 100$); the 30-seed run characterizes between-seed variability and the seeds are not pooled as independent Bernoulli trials. Two observations are immediately visible. First, the LLM validation results have extremely wide HDIs (Claude Code width 0.573, CrewAI width 0.393) due to small sample sizes ($n = 5$ per architecture); these cannot support the 80–100\% detection range claimed in the abstract without acknowledging the wide credible intervals. Second, the ablation TPR posterior concentrates around $0.13$ ($n = 98$) whereas the multi-seed aggregate concentrates around $0.45$, quantifying the 32-percentage-point gap as a structurally separated posterior rather than a sampling coincidence (see \cref{sec:bayes-factors}).
 
 ## Bayes Factors for the Parametric-Empirical Gap {#sec:bayes-factors}
 
@@ -69,14 +69,14 @@ Table: Required sample size $n^*$ for $\pm 5$ pp HDI at each mode's estimated tr
 
 | Evaluation Mode | Est.\ True Rate | Current $n$ | Required $n^*$ | Adequate? |
 | --- | --- | --- | --- | --- |
-| Parametric simulation | 0.94 | 3{,}800 | 89 | yes |
-| Colony structured scenarios | 0.90 | 20--100 | 111 | partial |
-| Multi-seed pipeline (aggregate) | 0.45 | 1{,}000 | 385 | yes |
-| LLM validation (per architecture) | 0.80 | 5--10 | 246 | **no** |
-| Ablation TPR | 0.12 | 97 | 411 | **no** |
+| Parametric simulation | 0.96 | 3{,}800 | 75 | yes |
+| Colony structured scenarios | 0.90 | 20--100 | 145 | partial |
+| Multi-seed pipeline (aggregate) | 0.45 | 3{,}000 | 380 | yes |
+| LLM validation (per architecture) | 0.80 | 5--10 | 245 | **no** |
+| Ablation TPR | 0.12 | 98 | 165 | **no** |
 
 
-Two results in \cref{tab:power-analysis} warrant attention. The LLM validation evaluations (currently $n = 5$--$10$ per architecture) achieve only $\pm 13$ to $\pm 18$ percentage points of precision at the observed $80\%$ rate. A minimum of $n = 246$ evaluations per architecture is required to bring the HDI half-width down to $\pm 5$ pp. This is the single largest precision deficit in the current study and the highest-priority methodological gap for future replications. The ablation TPR evaluation has similar underpowering at the current low detection rate, though its low absolute value bounds the practical consequences of this imprecision.
+Two results in \cref{tab:power-analysis} warrant attention. The LLM validation evaluations (currently $n = 5$--$10$ per architecture) achieve only $\pm 29$ to $\pm 22$ percentage points of precision at the observed $80\%$ rate (the 95\% HDI at $n=5$ is $[0.409, 0.982]$). A minimum of $n = 245$ evaluations per architecture is required to bring the HDI half-width down to $\pm 5$ pp. This is the single largest precision deficit in the current study and the highest-priority methodological gap for future replications. The ablation TPR evaluation has similar underpowering at the current low detection rate, though its low absolute value bounds the practical consequences of this imprecision.
 
 \begin{remark}[Underpowering vs.\ Publication Bias]\label{rem:not-publication-bias}
 The underpowering documented here is a limitation of the current study, not an indicator of publication bias. The parametric simulations are adequately powered at $n = 3{,}800$; the colony structured scenarios are adequately powered in aggregate; the multi-seed pipeline, at $n = 100$ per seed, achieves roughly $\pm 10$ pp per seed and reaches $\pm 3$ pp only in aggregate across all 30 seeds. All detection rates in \cref{tab:bayesian-posteriors} are reported with honest credible intervals that reflect the sample size used. The appropriate response to \cref{tab:power-analysis} is replication at the required $n^*$, not reinterpretation of the existing point estimates.

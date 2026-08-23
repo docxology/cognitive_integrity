@@ -3,10 +3,12 @@
 # Red-Team Evaluation Framework {#sec:redteam-evaluation}
 
 > **Cross-paper reading guide.**
-> Red-team methodology builds on the adversary capability taxonomy in
-> Part 1 \cite{friedman2026cogsec1} §3.2–3.4. Practical deployment of red-team
-> infrastructure is discussed in the merged Part 3+4 \cite{friedman2026cogsec3} §4.2
-> (practitioner red-team checklists) and §5.3.2 (incident-response integration).
+> Red-team methodology builds on the $\Omega$ technique ladder of
+> \cref{sec:omega-mapping}; Part 1's access-based adversary classes are a
+> different partition and do not correspond by index. Practical deployment of
+> red-team infrastructure is discussed in the merged Part 3+4
+> \cite{friedman2026cogsec3}: its Attack Landscape section (§4), its Per-Role
+> Security Hardening section (§4b), and its Incident Response section (§5b).
 >
 > **Status.** Values below are generated deterministically by
 > `scripts/run_redteam.py --seed 42` → `output/data/redteam_evaluation_results.json`

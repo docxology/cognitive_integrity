@@ -3,10 +3,11 @@
 # Adversarial Training Evaluation {#sec:adversarial-training}
 
 > **Cross-paper reading guide.**
-> The adversary capability taxonomy ($\Omega_1$–$\Omega_5$) is formally defined in
-> Part 1 \cite{friedman2026cogsec1} §3.2. Deployment implications of adversarial
-> training cycles are discussed in the merged Part 3+4 \cite{friedman2026cogsec3} §4.1
-> (deployment checklists) and §5.3 (iterative hardening protocols).
+> The $\Omega$ ladder used in this paper is the technique ladder of
+> \cref{sec:omega-mapping}, not Part 1's access-based adversary classes; the two
+> do not correspond by index. Deployment implications of adversarial training
+> cycles are discussed in the merged Part 3+4 \cite{friedman2026cogsec3}: its
+> Deployment Guide (§5) and its Per-Role Security Hardening section (§4b).
 >
 > **Status.** Values are generated deterministically by
 > `scripts/run_adversarial_training.py --seed 42` →

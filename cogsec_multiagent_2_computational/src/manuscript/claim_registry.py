@@ -1696,7 +1696,7 @@ _SETUP: tuple[Claim, ...] = (
     _c(
         "04.power_ms_dr",
         "04_experimental_setup.md",
-        r"\| Multi-seed pipeline \(30 seeds\) \| 30 \| DR = (\d+\.\d+) \|",
+        r"\| Multi-seed pipeline \(30 seeds \$\\times\$ 100\) \| 3\{,\}000 \| DR = (\d+\.\d+) \|",
         lambda gt: gt.ms_mean(),
         F3,
         "fraction",

@@ -39,13 +39,13 @@ Table: Power summary: sample size required for $\pm 5$ pp HDI at the estimated t
 
 | Evaluation Mode | Est.\ True Rate | Current $N$ | Required $N^*$ | Adequately Powered? |
 | :--- | :---: | :---: | :---: | :---: |
-| Parametric simulation | 0.94 | 3{,}800 | 89 | Yes |
-| Colony structured scenarios | 0.90 | 20--100 | 111 | Partial |
-| Multi-seed pipeline (aggregate) | 0.45 | 1{,}000 | 385 | Yes |
-| LLM validation (per architecture) | 0.80 | 5--10 | 246 | **No** |
-| Ablation TPR | 0.12 | 98 | 411 | **No** |
+| Parametric simulation | 0.96 | 3{,}800 | 75 | Yes |
+| Colony structured scenarios | 0.90 | 20--100 | 145 | Partial |
+| Multi-seed pipeline (aggregate) | 0.45 | 3{,}000 | 380 | Yes |
+| LLM validation (per architecture) | 0.80 | 5--10 | 245 | **No** |
+| Ablation TPR | 0.12 | 98 | 165 | **No** |
 
-*The LLM validation (N=5--10 per architecture) achieves only $\pm 13$ to $\pm 18$ percentage points of precision at the observed 80\% rate. A minimum of $N = 246$ per architecture is required for $\pm 5$ pp precision; this is the highest-priority methodological gap in the current study. Full Bayesian reanalysis with Beta-Binomial posteriors and credible intervals is presented in \cref{sec:bayesian-uncertainty}.*
+*The LLM validation (N=5--10 per architecture) achieves only $\pm 29$ to $\pm 22$ percentage points of precision at the observed 80\% rate. A minimum of $N = 245$ per architecture is required for $\pm 5$ pp precision; this is the highest-priority methodological gap in the current study. Full Bayesian reanalysis with Beta-Binomial posteriors and credible intervals is presented in \cref{sec:bayesian-uncertainty}.*
 
 ## Architecture Implementation Gap Quantification {#sec:gap-quantification}
 

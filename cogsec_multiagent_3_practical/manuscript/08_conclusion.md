@@ -26,7 +26,7 @@ Saying "the code works" requires specifying what that means. There are three hon
 
 **Level 3 — The defense ceiling is achievable** (confidence: moderate-high). The parametric simulation ($N=3{,}800$) establishes that fully-mature (Level 5) adapters achieve 96--100\% detection, consistent with the formal design. The gap between Level 3 (44.8\%) and Level 5 (96\%) is an engineering challenge, not a theoretical limitation. The roadmap in Part 2 projects +35--41 percentage points of improvement through adapter maturation.
 
-The honest operational posture is Level 2: deploy CIF for meaningful protection against $\Omega_1$--$\Omega_3$ attacks today, while investing in adapter maturation for $\Omega_4$--$\Omega_5$ coverage. Do not rely on 94\\% detection for life-safety applications until your adapters reach Level 4--5 and have been validated against your threat model.
+The honest operational posture is Level 2: deploy CIF for meaningful protection against $\Omega_1$--$\Omega_3$ attacks today, while investing in adapter maturation for $\Omega_4$--$\Omega_5$ coverage. Do not rely on 94\% detection for life-safety applications until your adapters reach Level 4--5 and have been validated against your threat model.
 
 ## Summary of Practical Recommendations
 
