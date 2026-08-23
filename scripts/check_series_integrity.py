@@ -866,7 +866,12 @@ def check_artifact_provenance() -> CheckResult:
 # ---------------------------------------------------------------------------
 
 _HARDCODED_POINTER = re.compile(
-    r"(?:Part|Paper)[~ ]?([123])\b[^.\n]{0,24}?"
+    # The gap between "Part N" and the kind word was capped at 24 characters,
+    # which let three pointers through in the form "Part 1's Runtime Defenses
+    # section (Definition 5.6)" -- 28 characters of intervening prose. The check
+    # reported PASS at zero while they were still there. [^.\n] already stops the
+    # match at a sentence boundary, so a wider window costs nothing.
+    r"(?:Part|Paper)[~ ]?([123])\b[^.\n]{0,60}?"
     r"\b(Theorem|Thm\.?|Definition|Def\.?|Lemma|Corollary|Section|Sec\.?)\s*"
     r"~?\s*(\d+(?:\.\d+)*[a-z]?)\b",
     re.IGNORECASE,

@@ -74,9 +74,82 @@
 }{% if KOMA class
   \KOMAoptions{parskip=half}}
 \makeatother
+\usepackage{longtable,booktabs,array}
+\usepackage{caption}
+\captionsetup[table]{skip=6pt}
+\newcounter{none} % for unnumbered tables
+\usepackage{calc} % for calculating minipage widths
+\usepackage{caption}
+% Make caption package work with longtable
+\makeatletter
+\def\fnum@table{\tablename~\thetable}
+\makeatother
 \setlength{\emergencystretch}{3em} % prevent overfull lines
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+% Manuscript macro/package fallbacks (newcommand -> providecommand).
+% Core mathematical packages
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+% Permit bibliography and theorem prose to break without overfull boxes.
+% Algorithm formatting
+% Tables
+\usepackage{booktabs}
+\usepackage{multirow}
+% Graphics
+% Cross-referencing with smart naming
+% Configure cleveref for custom environments
+% Theorem environments with consistent numbering
+% Code listings used by supplementary implementation examples
+\usepackage{listings}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible}
+% End of theorem environment declarations
+% Math operators
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\KL}{KL}
+\DeclareMathOperator{\Tr}{Tr}
+% Custom commands for notation consistency
+\providecommand{\calA}{\mathcal{A}}
+\providecommand{\calB}{\mathcal{B}}
+\providecommand{\calC}{\mathcal{C}}
+\providecommand{\calD}{\mathcal{D}}
+\providecommand{\calF}{\mathcal{F}}
+\providecommand{\calG}{\mathcal{G}}
+\providecommand{\calH}{\mathcal{H}}
+\providecommand{\calI}{\mathcal{I}}
+\providecommand{\calM}{\mathcal{M}}
+\providecommand{\calO}{\mathcal{O}}
+\providecommand{\calP}{\mathcal{P}}
+\providecommand{\calS}{\mathcal{S}}
+\providecommand{\calT}{\mathcal{T}}
+\providecommand{\calW}{\mathcal{W}}
+% Note: \Phi is a standard LaTeX command, do not redefine
+% Trust notation
+\providecommand{\trust}[2]{\mathcal{T}_{#1 \to #2}}
+\providecommand{\trustt}[3]{\mathcal{T}_{#1 \to #2}^{#3}}
+% Belief notation
+\providecommand{\belief}[2]{\mathcal{B}_{#1}(#2)}
+\providecommand{\belieft}[3]{\mathcal{B}_{#1}^{#2}(#3)}
+% Cognitive state
+\providecommand{\cogstate}[1]{\sigma_{#1}}
+% Attack notation
+\providecommand{\attack}[1]{\mathcal{A}_{#1}}
+\providecommand{\adversary}[1]{\Omega_{#1}}
+% Defense notation
+\providecommand{\firewall}{\mathcal{F}}
+\providecommand{\sandbox}{\mathcal{S}_{box}}
+% Probability and expectation
+\providecommand{\E}{\mathbb{E}}
+\providecommand{\Prob}{\mathbb{P}}
+\providecommand{\indicator}{\mathbb{1}}
+% QED symbol
+\providecommand{\qedsymbol}{$\blacksquare$}
+% Page Layout (Slightly smaller margins)
+% Hyperlink Styling
+% List of Figures and List of Tables in TOC
+
 % Slide layout defaults for warning-clean scientific decks.
 \usepackage{etoolbox}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{}
@@ -90,6 +163,33 @@
 \setlength{\tabcolsep}{2pt}
 \AtBeginEnvironment{longtable}{\tiny\renewcommand{\arraystretch}{0.86}\setlength{\tabcolsep}{1pt}}
 \AtBeginEnvironment{tabular}{\tiny\renewcommand{\arraystretch}{0.86}\setlength{\tabcolsep}{1pt}}
+\AtBeginEnvironment{equation}{\tiny}
+\AtBeginEnvironment{equation*}{\tiny}
+\AtBeginEnvironment{align}{\tiny}
+\AtBeginEnvironment{align*}{\tiny}
+\AtBeginEnvironment{itemize}{\footnotesize}
+\AtBeginEnvironment{enumerate}{\footnotesize}
+\AtBeginEnvironment{description}{\footnotesize}
+\setbeamerfont{caption}{size=\tiny}
+\setbeamerfont{caption name}{size=\tiny}
+\setbeamerfont{normal text}{size=\small}
+\setbeamerfont{frametitle}{size=\small}
+\setbeamerfont{section title}{size=\footnotesize}
+\setbeamerfont{subsection title}{size=\footnotesize}
+\setbeamertemplate{section page}{%
+  \centering
+  \begin{beamercolorbox}[sep=12pt,center,wd=\paperwidth]{section title}
+    \parbox{0.86\paperwidth}{\centering\usebeamerfont{section title}\insertsection\par}
+  \end{beamercolorbox}
+}
+\setbeamertemplate{subsection page}{%
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,wd=\paperwidth]{subsection title}
+    \parbox{0.86\paperwidth}{\centering\usebeamerfont{subsection title}\insertsubsection\par}
+  \end{beamercolorbox}
+}
+\setlength{\abovecaptionskip}{2pt}
+\setlength{\belowcaptionskip}{0pt}
 
 % Natbib and cross-reference fallbacks — slides don't load natbib
 % or cleveref, but combined-PDF manuscript prose may emit these
@@ -104,9 +204,20 @@
 \providecommand{\citeyear}[1]{#1}
 \providecommand{\cref}[1]{\texttt{\detokenize{#1}}}
 \providecommand{\Cref}[1]{\texttt{\detokenize{#1}}}
+\providecommand{\crefrange}[2]{\texttt{\detokenize{#1}}--\texttt{\detokenize{#2}}}
+\providecommand{\Crefrange}[2]{\texttt{\detokenize{#1}}--\texttt{\detokenize{#2}}}
+\providecommand{\paragraph}[1]{\textbf{#1}\ }
+
+% Additional theorem-like environments from manuscript preamble.
+\newtheorem{observation}{Observation}
+\newtheorem{formalization}{Formalization}
+\newtheorem{principle}{Principle}
 
 \newtheorem{proposition}{Proposition}
 \newtheorem{hypothesis}{Hypothesis}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{axiom}{Axiom}
+\newtheorem{property}{Property}
 \usepackage{bookmark}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same}
@@ -131,17 +242,214 @@
 Proofs}\label{supplementary-mathematical-proofs}
 
 \begin{frame}[allowframebreaks]{Supplementary: Mathematical Proofs}
-This supplementary material provides complete formal proofs for all
-theorems stated in the main text, including preliminary definitions
+This supplementary material provides formal proofs for the theorems that
+carry proofs in this edition, including preliminary definitions
 (\cref{sec:preliminaries}), main theorem proofs
 (\crefrange{sec:thm42-proof}{sec:thm511-proof}), and additional
-supporting lemmas (\cref{sec:additional-lemmas}).
+supporting lemmas (\cref{sec:additional-lemmas}). Results stated in the
+main text that are asserted without a proof in this supplement are
+recorded explicitly in the Proof Status section
+(\cref{sec:proof-status}) so that they are not mistaken for proved
+results.
 \end{frame}
 
-\begin{frame}[allowframebreaks]{Preliminary Definitions and Notation}
-\protect\phantomsection\label{sec:preliminaries}
-\begin{block}{Notation Summary}
+\subsection{Proof Status}\label{sec:proof-status}
+
+\begin{frame}[fragile,allowframebreaks]{Proof Status}
+For transparency, this section records, by exact label, which results
+stated in the main text carry a proof and which are asserted without
+one. A result is accounted for here if it has an inline \texttt{proof}
+environment in the main text, a dedicated proof in this supplement, or
+an entry in the deferred list below;
+\breaktt{tests/test\_proof\_status.py} enforces that every theorem, lemma
+and corollary in the manuscript falls into one of those three cases, so
+the index cannot fall behind the text.
+
+\end{frame}
+
+\begin{frame}[fragile,allowframebreaks]{Proof Status}
+\textbf{Proven in this supplement.} The following theorems each have a
+dedicated \texttt{proof} environment (section given in parentheses):
+
+\end{frame}
+
+\begin{frame}[fragile,allowframebreaks]{Proof Status}
+\begin{itemize}
+\tightlist
+\item
+  Trust Boundedness (Thm. 4.2), \cref{thm:trust-bound-restated}
+  (\cref{sec:thm42-proof})
+\item
+  Belief Injection Resistance (Thm. 5.7),
+  \cref{thm:belief-injection-restated} (\cref{sec:thm57-proof})
+\item
+  No Trust Amplification (Thm. 4.7), \cref{thm:trust-amp-restated}
+  (\cref{sec:thm47-proof})
+\item
+  Goal Alignment Invariant (Thm. 5.8),
+  \cref{thm:goal-alignment-restated} (\cref{sec:thm58-proof})
+\item
+  Firewall Liveness (Thm. 5.9), \cref{thm:firewall-liveness-restated}
+  (\cref{sec:thm59-proof})
+\item
+  Byzantine Consensus Termination (Thm. 5.10),
+  \cref{thm:byzantine-restated} (\cref{sec:thm510-proof})
+\item
+  Bounded Overhead (Thm. 5.11), \cref{thm:overhead-restated}
+  (\cref{sec:thm511-proof})
+\item
+  Defense Composition Algebra, \cref{thm:composition-semiring-restated}
+  (\cref{sec:thm-composition-semiring})
+\item
+  Fisher-Rao Stealth-Impact Tight Bound, \cref{thm:fr-bound-restated}
+  (\cref{sec:thm-geometric-bound})
+\item
+  Agent Compromise Blast Radius, \cref{thm:blast-radius-restated}
+  (\cref{sec:thm-blast-radius})
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile,allowframebreaks]{Proof Status}
+Separate proofs are also given for the supporting lemmas and for the
+corollaries \cref{cor:trust-vanishing}, \cref{cor:defense-stacking}, and
+\cref{cor:consensus-safety}. The remaining corollaries in this
+supplement state immediate (quantitative or qualitative) consequences of
+a proved theorem and, following standard mathematical convention, are
+not accompanied by a standalone proof.
+
+\textbf{Asserted without proof (deferred).} The following theorems and
+corollaries stated in the main text do not have a proof in this
+supplement; they are assertions whose proofs are deferred to future
+work. They are recorded here so that they are not mistaken for proved
+results:
+
+\end{frame}
+
+\begin{frame}[fragile,allowframebreaks]{Proof Status}
+\begin{itemize}
+\tightlist
+\item
+  Aggregation Properties, \cref{thm:aggregation} (stated in
+  04\_formal\_framework.md)
+\item
+  Trust Monotonicity, \cref{thm:trust-monotonic}
+  (04\_formal\_framework.md)
+\item
+  Cross-Modality Delegation Bound, \cref{thm:cross-modality-bound}
+  (04\_formal\_framework.md)
+\item
+  Stealth-Impact Tradeoff, \cref{thm:stealth-impact}
+  (04\_formal\_framework.md)
+\item
+  Fundamental Detection Limit, \cref{thm:detection-limit}
+  (04\_formal\_framework.md)
+\item
+  Progressive Attack Detection Bound, \cref{thm:progressive-detection}
+  (04\_formal\_framework.md)
+\item
+  Optimal Threshold Selection, \cref{thm:threshold-selection}
+  (05\_defense\_mechanisms.md)
+\item
+  Firewall Completeness, \cref{thm:firewall-completeness}
+  (05\_defense\_mechanisms.md)
+\item
+  CUSUM Average Run Length, \cref{thm:cusum-arl}
+  (05\_defense\_mechanisms.md)
+\item
+  False Positive Composition, \cref{thm:fpr-composition}
+  (05\_defense\_mechanisms.md)
+\item
+  Cascade FPR Reduction, \cref{thm:cascade-fpr}
+  (06\_detection\_methods.md)
+\item
+  Pipeline TPR Bound, \cref{thm:pipeline-tpr}
+  (06\_detection\_methods.md)
+\item
+  Stack Detection Rate, \cref{cor:stack-detection}
+  (05\_defense\_mechanisms.md)
+\item
+  Layered Defense Asymptotic Guarantee, \cref{cor:layered-defense}
+  (05\_defense\_mechanisms.md)
+\item
+  Small-Step Detection Reduction, \cref{cor:small-steps}
+  (04\_formal\_framework.md; immediate consequence of the deferred
+  \cref{thm:progressive-detection})
+\item
+  Quorum Attack Cost, \cref{cor:quorum-attack-cost}
+  (S02\_eusocial\_cogsec.md)
+\item
+  Stigmergic Trust Bound, \cref{cor:stigmergic-trust}
+  (S02\_eusocial\_cogsec.md)
+\item
+  Emergent Stealth-Impact Bound, \cref{cor:emergent-stealth-impact}
+  (S02\_eusocial\_cogsec.md)
+\item
+  No Trust Amplification, \cref{thm:no-trust-amp}
+  (04\_formal\_framework.md; the model-checking restatement
+  \cref{thm:trust-bound} is proved here, the section-4 statement is not)
+\item
+  Byzantine Agreement Requirement, \cref{thm:byzantine-req}
+  (05\_defense\_mechanisms.md)
+\item
+  Neyman-Pearson Optimal Detector, \cref{thm:np-detector}
+  (06\_detection\_methods.md)
+\item
+  Detection Error Exponent, \cref{thm:error-exponent}
+  (06\_detection\_methods.md)
+\item
+  Undetectability Condition, \cref{thm:undetectability}
+  (06\_detection\_methods.md)
+\item
+  Belief Boundedness, \cref{lem:belief-bounded}
+  (04\_formal\_framework.md)
+\item
+  \cref{cor:no-amplification} (04\_formal\_framework.md)
+\item
+  \cref{cor:trust-vanish} (04\_formal\_framework.md)
+\item
+  \cref{cor:low-entropy-detectable} (04\_formal\_framework.md)
+\item
+  Pareto-Optimal Threshold, \cref{cor:pareto-threshold}
+  (05\_defense\_mechanisms.md)
+\item
+  Drift Detection Sample Complexity, \cref{cor:drift-sample}
+  (05\_defense\_mechanisms.md)
+\item
+  Consensus Attack Resistance, \cref{cor:consensus-resistance}
+  (05\_defense\_mechanisms.md)
+\item
+  Optimal AUC Bound, \cref{cor:optimal-auc} (06\_detection\_methods.md)
+\item
+  Sample Complexity for Target Accuracy, \cref{cor:sample-complexity}
+  (06\_detection\_methods.md)
+\item
+  Empirical Security Bound, \cref{cor:empirical-security}
+  (07\_formal\_verification.md)
+\item
+  Layered Defense Generalization, \cref{cor:n-layer-bound}
+  (07\_formal\_verification.md)
+\end{itemize}
+
+\begin{quote}
+\textbf{Note on \cref{cor:isolation-blast}.} This corollary is stated in
+this supplement (\cref{sec:thm-blast-radius}) immediately after the
+proved \cref{thm:blast-radius-restated}, as that theorem's
+degree-restricted consequence
+(\(\lvert \mathcal{N}(a_v) \rvert = k \le n\)). It therefore carries no
+standalone proof environment, consistent with the other corollaries
+here, and is not among the deferred results.
+\end{quote}
+\end{frame}
+
+\subsection{Preliminary Definitions and
+Notation}\label{sec:preliminaries}
+
+\begin{frame}[allowframebreaks]{Notation Summary}
 \protect\phantomsection\label{sec:notation}
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Notation Summary}
 \begin{table}[htbp]
 \centering
 \caption{Mathematical notation used throughout proofs.}
@@ -180,11 +488,14 @@ The trust along path $p = (a_0, \ldots, a_k)$ is defined as:
 \label{def:delegation-chain}
 A delegation chain of depth $d$ is a sequence of agents $(a_0, a_1, \ldots, a_d)$ where agent $a_i$ delegates authority to $a_{i+1}$.
 \end{definition}
-\end{block}
 \end{frame}
 
+\begin{frame}
+\end{frame}
+
+\subsection{Theorem 4.2: Trust Boundedness}\label{sec:thm42-proof}
+
 \begin{frame}[allowframebreaks]{Theorem 4.2: Trust Boundedness}
-\protect\phantomsection\label{sec:thm42-proof}
 \begin{theorem}[Trust Boundedness --- Restated]
 \label{thm:trust-bound-restated}
 For any delegation chain of depth $d$:
@@ -217,6 +528,9 @@ Since $\min(\mathcal{T}_{a \to b}, \mathcal{T}_{b \to c}) \leq \mathcal{T}_{a \t
 \end{equation}
 \end{proof}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Theorem 4.2: Trust Boundedness}
 \begin{lemma}[Trust Decay Bound]
 \label{lem:decay-bound}
 For any single-hop delegation:
@@ -277,6 +591,9 @@ Therefore:
 By the principle of mathematical induction, the theorem holds for all $d \geq 0$.
 \end{proof}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Theorem 4.2: Trust Boundedness}
 \begin{corollary}[Trust Vanishing]
 \label{cor:trust-vanishing}
 For any $\epsilon > 0$, there exists $D$ such that for all delegation chains of depth $d > D$:
@@ -300,9 +617,14 @@ d_{max} = \lfloor \log_{0.8} 0.1 \rfloor = 10
 \end{corollary}
 \end{frame}
 
+\begin{frame}
+\end{frame}
+
+\subsection{Theorem 5.7: Belief Injection
+Resistance}\label{sec:thm57-proof}
+
 \begin{frame}[allowframebreaks]{Theorem 5.7: Belief Injection
 Resistance}
-\protect\phantomsection\label{sec:thm57-proof}
 \begin{theorem}[Belief Injection Resistance --- Restated]
 \label{thm:belief-injection-restated}
 Under CIF with firewall detection rate $r_f$ and sandboxing verification rate $r_s$:
@@ -322,6 +644,10 @@ The firewall and sandbox operate on independent decision criteria:
 These mechanisms share no common features or state.
 \end{lemma}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Theorem 5.7: Belief Injection
+Resistance}
 \begin{proof}[Proof of \cref{lem:defense-independence}]
 By construction of the CIF architecture:
 \begin{enumerate}
@@ -333,11 +659,19 @@ By construction of the CIF architecture:
 Therefore, $P(\text{firewall detects} | \text{sandbox outcome}) = P(\text{firewall detects})$. The mechanisms are probabilistically independent.
 \end{proof}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Theorem 5.7: Belief Injection
+Resistance}
 \begin{remark}[Independence is an assumption, not a guarantee]
 \label{rem:defense-independence-scope}
 Disjoint feature sets do not by themselves guarantee probabilistic independence of detection events: an adversary can craft content that defeats both pattern matching and provenance/consistency checks, correlating the failure modes. The multiplicative detection bounds derived below (e.g.\ $(1-r_f)(1-r_s)$) therefore hold under the architectural \emph{assumption} that firewall and sandbox failure events are approximately independent (decoupled adversarial capability). If the failure modes are positively correlated, the correct bound is the union bound $P(\text{success}) \le \min(1-r_f,\,1-r_s)$, or $P(\text{success}) \le (1-r_f)(1-r_s) + \rho$ with an explicit correlation term $\rho \ge 0$. Throughout this part we adopt the independence assumption for the closed-form analyses and apply the union-bound relaxation where correlation may be material.
 \end{remark}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Theorem 5.7: Belief Injection
+Resistance}
 \begin{definition}[Attack Success]
 \label{def:attack-success}
 A belief injection attack $\mathcal{A}_{BI}$ succeeds if and only if:
@@ -375,6 +709,10 @@ P(\mathcal{A}_{BI} \text{ succeeds}) = (1 - r_f) \cdot (1 - r_s)
 \end{equation}
 \end{proof}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Theorem 5.7: Belief Injection
+Resistance}
 \begin{corollary}[Numerical Bound]
 \label{cor:numerical-bound}
 With empirical values $r_f = 0.8$ and $r_s = 0.7$:
@@ -398,8 +736,12 @@ Direct extension of \cref{thm:belief-injection-restated} by independence.
 \end{proof}
 \end{frame}
 
+\begin{frame}
+\end{frame}
+
+\subsection{Theorem 4.7: No Trust Amplification}\label{sec:thm47-proof}
+
 \begin{frame}[allowframebreaks]{Theorem 4.7: No Trust Amplification}
-\protect\phantomsection\label{sec:thm47-proof}
 \begin{theorem}[No Trust Amplification --- Restated]
 \label{thm:trust-amp-restated}
 For any path $p = (a_0, a_1, \ldots, a_k)$ in the communication graph:
@@ -422,6 +764,9 @@ For any sequence $(x_1, \ldots, x_n)$ and additional element $x_{n+1}$:
 Standard property of the minimum function.
 \end{proof}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Theorem 4.7: No Trust Amplification}
 \begin{lemma}[Decay Factor Strengthens Bound]
 \label{lem:decay-strengthens}
 For $x \leq y$ and $\delta \in (0,1)$:
@@ -486,6 +831,9 @@ Since $\delta \in (0,1)$:
 \end{equation}
 \end{proof}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Theorem 4.7: No Trust Amplification}
 \begin{corollary}[Weakest Link Principle]
 \label{cor:weakest-link}
 Trust through any path is bounded by the least trusted edge:
@@ -501,8 +849,13 @@ Multiple colluding agents cannot create trust exceeding any individual's trust w
 \end{corollary}
 \end{frame}
 
+\begin{frame}
+\end{frame}
+
+\subsection{Theorem 5.8: Goal Alignment
+Invariant}\label{sec:thm58-proof}
+
 \begin{frame}[allowframebreaks]{Theorem 5.8: Goal Alignment Invariant}
-\protect\phantomsection\label{sec:thm58-proof}
 \begin{theorem}[Goal Alignment Invariant --- Restated]
 \label{thm:goal-alignment-restated}
 If the system starts with aligned goals and all goal updates follow the delegation protocol:
@@ -521,6 +874,9 @@ Goals $\mathcal{G}_i$ are aligned if:
 \end{equation}
 \end{definition}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Theorem 5.8: Goal Alignment Invariant}
 \begin{definition}[Valid Goal Update]
 \label{def:valid-update}
 An update from $\mathcal{G}^t$ to $\mathcal{G}^{t+1}$ is valid if:
@@ -540,6 +896,9 @@ If $g \in \text{Delegate}(\mathcal{G}_{principal})$, then $g$ is aligned.
 Direct from \cref{def:goal-alignment}.
 \end{proof}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Theorem 5.8: Goal Alignment Invariant}
 \begin{lemma}[Set Union Preserves Subset]
 \label{lem:union-preserves}
 If $A \subseteq C$ and $B \subseteq C$, then $A \cup B \subseteq C$.
@@ -585,6 +944,9 @@ By \cref{lem:union-preserves}:
 Therefore $\text{Aligned}(\mathcal{G}_i^{t+1})$.
 \end{proof}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Theorem 5.8: Goal Alignment Invariant}
 \begin{corollary}[Safety Under Protocol]
 \label{cor:safety-protocol}
 An agent following CIF protocols cannot have its goals hijacked to adversarial objectives.
@@ -600,8 +962,12 @@ Goal hijacking requires violating the delegation protocol:
 \end{corollary}
 \end{frame}
 
+\begin{frame}
+\end{frame}
+
+\subsection{Theorem 5.9: Firewall Liveness}\label{sec:thm59-proof}
+
 \begin{frame}[allowframebreaks]{Theorem 5.9: Firewall Liveness}
-\protect\phantomsection\label{sec:thm59-proof}
 \begin{theorem}[Firewall Liveness --- Restated]
 \label{thm:firewall-liveness-restated}
 CIF firewall preserves liveness for legitimate inputs:
@@ -630,6 +996,9 @@ The false positive rate $\epsilon_{fp}$ is:
 \end{equation}
 \end{definition}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Theorem 5.9: Firewall Liveness}
 \begin{lemma}[Firewall Classification]
 \label{lem:firewall-classification}
 For any message $m$, the firewall produces exactly one of three outcomes:
@@ -671,6 +1040,9 @@ Since $m$ was arbitrary:
 \end{equation}
 \end{proof}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Theorem 5.9: Firewall Liveness}
 \begin{corollary}[Availability Bound]
 \label{cor:availability}
 With $\epsilon_{fp} = 0.06$, at least 94\% of legitimate messages are accepted.
@@ -682,9 +1054,14 @@ Messages in QUARANTINE can still reach verified belief state through sandbox pro
 \end{corollary}
 \end{frame}
 
+\begin{frame}
+\end{frame}
+
+\subsection{Theorem 5.10: Byzantine Consensus
+Termination}\label{sec:thm510-proof}
+
 \begin{frame}[allowframebreaks]{Theorem 5.10: Byzantine Consensus
 Termination}
-\protect\phantomsection\label{sec:thm510-proof}
 \begin{theorem}[Byzantine Consensus Termination --- Restated]
 \label{thm:byzantine-restated}
 With $n \geq 3f + 1$ agents and at most $f$ Byzantine:
@@ -705,21 +1082,40 @@ Classical result from distributed systems (Lamport, Shostak, Pease 1982). With f
 
 \begin{lemma}[Honest Majority]
 \label{lem:honest-majority}
-With $n \geq 3f + 1$:
+With $n \geq 3f + 1$, the honest population satisfies both
 \begin{equation}
 \label{eq:honest-majority}
-n - f \geq 2f + 1 > \frac{2n}{3}
+n - f \geq 2f + 1
+\qquad\text{and}\qquad
+n - f > \frac{2n}{3}.
 \end{equation}
 \end{lemma}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Theorem 5.10: Byzantine Consensus
+Termination}
 \begin{proof}
-$n - f \geq (3f + 1) - f = 2f + 1$
+For the first bound, $n - f \geq (3f + 1) - f = 2f + 1$.
 
-$\frac{2n}{3} \leq \frac{2(3f+1)}{3} = 2f + \frac{2}{3} < 2f + 1$
+For the second, $n \geq 3f + 1$ gives $f \leq \frac{n-1}{3}$, hence
+\[
+n - f \;\geq\; n - \frac{n-1}{3} \;=\; \frac{2n + 1}{3} \;>\; \frac{2n}{3}.
+\]
 
-Therefore $n - f > \frac{2n}{3}$.
+\emph{Remark.} The two bounds must be established separately; they cannot be
+chained through $2f + 1$. The intermediate inequality $2f + 1 > \frac{2n}{3}$
+holds only when $n \leq 3f + 1$, which is the converse of the hypothesis, and it
+fails as soon as the system is over-provisioned relative to its fault budget
+(for $f = 1$, $n = 10$: $2f + 1 = 3$ while $\frac{2n}{3} \approx 6.67$). The
+honest-majority conclusion itself is unaffected, since it follows from
+$f \leq \frac{n-1}{3}$ directly.
 \end{proof}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Theorem 5.10: Byzantine Consensus
+Termination}
 \begin{lemma}[Round Progression]
 \label{lem:round-progression}
 In each round, at least one of the following occurs:
@@ -754,6 +1150,10 @@ Total rounds: at most $f + 1 = O(f + 1)$.
 Therefore, termination is guaranteed with probability 1.
 \end{proof}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Theorem 5.10: Byzantine Consensus
+Termination}
 \begin{corollary}[Concrete Round Bound]
 \label{cor:concrete-rounds}
 With $f = 2$ Byzantine agents: consensus in at most 3 rounds.
@@ -769,8 +1169,12 @@ By honest majority and the $2/3$ threshold requirement.
 \end{proof}
 \end{frame}
 
+\begin{frame}
+\end{frame}
+
+\subsection{Theorem 5.11: Bounded Overhead}\label{sec:thm511-proof}
+
 \begin{frame}[allowframebreaks]{Theorem 5.11: Bounded Overhead}
-\protect\phantomsection\label{sec:thm511-proof}
 \begin{theorem}[Bounded Overhead --- Restated]
 \label{thm:overhead-restated}
 CIF adds latency:
@@ -799,6 +1203,9 @@ E[L] = \sum_i P(E_i) \cdot L_i
 \end{equation}
 \end{lemma}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Theorem 5.11: Bounded Overhead}
 \begin{proof}
 Law of total expectation.
 \end{proof}
@@ -826,27 +1233,33 @@ E[L_{CIF}] &= E[L_{firewall}] + E[\mathbb{1}[\text{quarantine}]] \cdot L_{sandbo
 &= L_{firewall} + P_q \cdot L_{sandbox} + P_v \cdot L_{verify} \nonumber
 \end{align}
 \end{proof}
+\end{frame}
 
-\begin{block}{Numerical Instantiation}
+\begin{frame}[allowframebreaks]{Numerical Instantiation}
 \protect\phantomsection\label{sec:numerical-instantiation}
-With empirical measurements:
+With the same illustrative parameters used in the main text
+(\cref{eq:latency-empirical}) --- worked-example values, not
+measurements:
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Numerical Instantiation}
 \begin{itemize}
-\item $L_{firewall} = 8\text{ms}$
-\item $L_{sandbox} = 15\text{ms}$
-\item $L_{verify} = 12\text{ms}$
+\item $L_{firewall} = 10\text{ms}$
+\item $L_{sandbox} = 5\text{ms}$
+\item $L_{verify} = 15\text{ms}$
 \item $P_q = 0.3$
 \item $P_v = 0.2$
 \end{itemize}
 
 \begin{equation}
 \label{eq:numerical-instantiation}
-E[L_{CIF}] = 8 + 0.3 \times 15 + 0.2 \times 12 = 8 + 4.5 + 2.4 = 14.9\text{ms}
+E[L_{CIF}] = 10 + 0.3 \times 5 + 0.2 \times 15 = 10 + 1.5 + 3.0 = 14.5\text{ms}
 \end{equation}
 
-With baseline \(L_{baseline} = 12\text{ms}\): \begin{equation}
+With baseline \(L_{baseline} = 11.8\text{ms}\): \begin{equation}
 \label{eq:overhead-percent}
-\text{Overhead} = \frac{14.9 - 12}{12} \times 100\% = 24.2\%
+\text{Overhead} = \frac{14.5 - 11.8}{11.8} \times 100\% \approx 22.9\%
 \end{equation}
 
 This matches the empirical observation of approximately 23\% overhead.
@@ -860,15 +1273,21 @@ L_{CIF}^{max} = L_{firewall} + L_{sandbox} + L_{verify}
 \end{equation}
 \end{corollary}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Numerical Instantiation}
 \begin{corollary}[Optimization Target]
 \label{cor:optimization-target}
 To minimize overhead, prioritize reducing $P_q$ (quarantine rate) through improved firewall precision.
 \end{corollary}
-\end{block}
 \end{frame}
 
+\begin{frame}
+\end{frame}
+
+\subsection{Additional Lemmas}\label{sec:additional-lemmas}
+
 \begin{frame}[allowframebreaks]{Additional Lemmas}
-\protect\phantomsection\label{sec:additional-lemmas}
 \begin{lemma}[Provenance Chain Integrity]
 \label{lem:provenance-chain}
 If provenance verification function $V$ is a cryptographic hash chain, then:
@@ -888,6 +1307,9 @@ By properties of cryptographic hash functions:
 Therefore, $V(\pi(\phi)) = 1$ implies $\pi(\phi)$ is the original, untampered chain.
 \end{proof}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Additional Lemmas}
 \begin{lemma}[Belief Consistency Decidability]
 \label{lem:consistency-decidable}
 For finite proposition set $\Phi$ and belief function $\mathcal{B}: \Phi \to [0,1]$:
@@ -906,16 +1328,28 @@ There are $O(|\Phi|^2)$ pairs. Each check is $O(1)$ with precomputed contradicti
 Total: $O(|\Phi|^2)$.
 \end{proof}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Additional Lemmas}
 \begin{lemma}[Trust Matrix Convergence]
 \label{lem:trust-convergence}
-Under stable interaction patterns, the reputation component $T_{rep}$ converges:
+Let outcomes be i.i.d.\ with mean $\mu$ and variance $\sigma^2$, and let the
+reputation be updated at a constant rate $\eta \in (0,1)$. Then $T_{rep}^t$
+converges \emph{in distribution} to a stationary law with
 \begin{equation}
 \label{eq:trust-convergence}
-\lim_{t \to \infty} T_{rep}^t = T_{rep}^*
+\lim_{t \to \infty} E[T_{rep}^t] = \mu,
+\qquad
+\lim_{t \to \infty} \operatorname{Var}(T_{rep}^t) = \frac{\eta}{2 - \eta}\,\sigma^2 .
 \end{equation}
-where $T_{rep}^*$ reflects the agent's true reliability.
+The reputation is therefore an unbiased but permanently noisy estimate of the
+agent's true reliability $\mu$; it does \emph{not} converge almost surely to a
+point.
 \end{lemma}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Additional Lemmas}
 \begin{proof}
 The reputation update rule is:
 \begin{equation}
@@ -925,18 +1359,37 @@ T_{rep}^{t+1} = T_{rep}^t + \eta \cdot (\text{outcome}_t - T_{rep}^t)
 
 This is an exponential moving average with learning rate $\eta$.
 
-For i.i.d. outcomes with mean $\mu$:
+Taking expectations and writing $e_t = E[T_{rep}^t] - \mu$ gives
+$e_{t+1} = (1 - \eta) e_t$, so
 \begin{equation}
 \label{eq:convergence-limit}
-E[T_{rep}^t] \to \mu \text{ as } t \to \infty
+E[T_{rep}^t] \to \mu \text{ geometrically, at rate } (1 - \eta).
 \end{equation}
 
-By the strong law of large numbers, $T_{rep}^t \to \mu$ almost surely.
+For the variance, $T_{rep}^{t+1} - \mu = (1-\eta)(T_{rep}^t - \mu) + \eta(x_t - \mu)$
+with $x_t$ independent of $T_{rep}^t$, so
+$v_{t+1} = (1-\eta)^2 v_t + \eta^2 \sigma^2$, whose fixed point is
+$v^\star = \eta^2\sigma^2 / (1 - (1-\eta)^2) = \frac{\eta}{2-\eta}\sigma^2$.
+
+\emph{Remark on the mode of convergence.} The strong law of large numbers does
+not apply here: it governs sample averages, which correspond to the decreasing
+gain $\eta_t = 1/t$, not to a constant $\eta$. With $\eta$ fixed the iterate
+retains a fixed fraction of each new observation forever, so $v^\star > 0$ and
+almost-sure convergence to a point fails. Almost-sure convergence would require
+a gain schedule satisfying the Robbins--Monro conditions,
+$\sum_t \eta_t = \infty$ and $\sum_t \eta_t^2 < \infty$. The constant-rate rule
+is nonetheless the right choice for trust: retaining sensitivity to recent
+behaviour is what lets reputation track an agent that changes, and the residual
+variance $\frac{\eta}{2-\eta}\sigma^2$ is the price of that adaptivity.
 \end{proof}
 \end{frame}
 
+\begin{frame}
+\end{frame}
+
+\subsection{Summary of Proof Techniques}\label{sec:proof-summary}
+
 \begin{frame}[allowframebreaks]{Summary of Proof Techniques}
-\protect\phantomsection\label{sec:proof-summary}
 \begin{table}[htbp]
 \centering
 \caption{Summary of proof techniques by theorem.}
@@ -945,37 +1398,53 @@ By the strong law of large numbers, $T_{rep}^t \to \mu$ almost surely.
 \toprule
 Theorem & Primary Technique & Complexity \\
 \midrule
-3.1 (Trust Boundedness) & Strong induction & $O(d)$ \\
-6.1 (Belief Injection Resistance) & Probability independence & $O(1)$ \\
-6.2 (No Trust Amplification) & Strong induction & $O(k)$ \\
-6.3 (Goal Alignment Invariant) & Induction on time & $O(t)$ \\
-6.4 (Firewall Liveness) & Complement probability & $O(1)$ \\
-6.5 (Byzantine Consensus) & Classical BFT & $O(f)$ \\
-6.6 (Bounded Overhead) & Expected value & $O(1)$ \\
+4.2 (Trust Boundedness) & Strong induction & $O(d)$ \\
+5.7 (Belief Injection Resistance) & Probability independence & $O(1)$ \\
+4.7 (No Trust Amplification) & Strong induction & $O(k)$ \\
+5.8 (Goal Alignment Invariant) & Induction on time & $O(t)$ \\
+5.9 (Firewall Liveness) & Complement probability & $O(1)$ \\
+5.10 (Byzantine Consensus) & Classical BFT & $O(f)$ \\
+5.11 (Bounded Overhead) & Expected value & $O(1)$ \\
 \bottomrule
 \end{tabular}
 \end{table}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Summary of Proof Techniques}
 All proofs are constructive and provide explicit bounds useful for
 system implementation and analysis.
 \end{frame}
 
-\begin{frame}[allowframebreaks]{v1.1 New Proofs: Defense Composition
-Algebra and Information-Geometric Bounds}
-\protect\phantomsection\label{sec:v2-proofs}
+\begin{frame}
+\end{frame}
+
+\subsection{Second-Edition Proofs: Defense Composition Algebra and
+Information-Geometric Bounds}\label{sec:v2-proofs}
+
+\begin{frame}[allowframebreaks]{Second-Edition Proofs: Defense
+Composition Algebra and Information-Geometric Bounds}
 This section contains new proofs added in the Second Edition,
 corresponding to the defense composition algebra guarantees
 (§5.7) and the information-geometric
 tightening of the stealth-impact bound (§4.5).
 \end{frame}
 
-\begin{frame}[allowframebreaks]{Theorem: Defense Composition Semiring}
-\protect\phantomsection\label{sec:thm-composition-semiring}
-\begin{theorem}[Defense Composition Semiring --- Restated]
+\begin{frame}
+\end{frame}
+
+\subsection{The Defense Composition
+Algebra}\label{sec:thm-composition-semiring}
+
+\begin{frame}[allowframebreaks]{The Defense Composition Algebra}
+\begin{theorem}[Defense Composition Algebra --- Restated]
 \label{thm:composition-semiring-restated}
-The set of CIF defenses under series ($\circ$) and parallel ($\parallel$) composition forms a closed semiring satisfying closure, associativity, identity, and distributivity.
+On a common accept/reject focal predicate, the set of CIF defenses under series ($\circ$) and parallel ($\parallel$) composition is closed, associative, carries a multiplicative identity, and is distributive --- that is, it forms a bounded distributive lattice. It is \emph{not} shown here to be a full closed semiring: neither an additive identity that annihilates the multiplicative identity nor a Kleene-star (infinite-sum) operation is constructed, and the stronger claim is not made (\cref{rem:defense-independence-scope}).
 \end{theorem}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{The Defense Composition Algebra}
 \begin{lemma}[Type Closure under Composition]
 \label{lem:type-closure}
 For any $\mathcal{D}_1, \mathcal{D}_2: \mathcal{M} \to \{\textsc{accept}, \textsc{quarantine}, \textsc{reject}\}$:
@@ -986,9 +1455,12 @@ For any $\mathcal{D}_1, \mathcal{D}_2: \mathcal{M} \to \{\textsc{accept}, \texts
 \end{lemma}
 
 \begin{proof}[Proof of \cref{lem:type-closure}]
-Series composition: $(\mathcal{D}_1 \circ \mathcal{D}_2)(m) = \textsc{accept}$ iff both accept; otherwise the more severe outcome. Parallel composition: $(\mathcal{D}_1 \parallel \mathcal{D}_2)(m) = \textsc{detect}$ iff either detects. Both operations map $\mathcal{M} \to \{\textsc{accept}, \textsc{quarantine}, \textsc{reject}\}$.
+Series composition: $(\mathcal{D}_1 \circ \mathcal{D}_2)(m) = \textsc{accept}$ iff both accept; otherwise the more severe of the two outcomes. Parallel composition: $(\mathcal{D}_1 \parallel \mathcal{D}_2)(m) = \textsc{accept}$ iff both accept --- equivalently, the composite is non-accepting iff either component is --- and otherwise takes the more severe outcome. Both operations therefore map $\mathcal{M} \to \{\textsc{accept}, \textsc{quarantine}, \textsc{reject}\}$, with no outcome outside that set.
 \end{proof}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{The Defense Composition Algebra}
 \begin{lemma}[Composition Associativity]
 \label{lem:comp-assoc}
 Series composition is associative:
@@ -1002,6 +1474,9 @@ Series composition is associative:
 For any $m \in \mathcal{M}$: the series composition is defined by $\textsc{accept}$ iff all accept. The logical $\land$ of three predicates is associative: $(A \land B) \land C = A \land (B \land C)$. The mapping from predicate conjunction to $\{\textsc{accept}, \textsc{quarantine}, \textsc{reject}\}$ is order-invariant. $\square$
 \end{proof}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{The Defense Composition Algebra}
 \begin{lemma}[Null Defense Identity]
 \label{lem:null-identity}
 The null defense $\mathcal{D}_\emptyset(m) = \textsc{accept}$ for all $m$ satisfies:
@@ -1015,14 +1490,22 @@ The null defense $\mathcal{D}_\emptyset(m) = \textsc{accept}$ for all $m$ satisf
 $(\mathcal{D} \circ \mathcal{D}_\emptyset)(m) = \textsc{accept}$ iff $\mathcal{D}(m) = \textsc{accept}$ and $\mathcal{D}_\emptyset(m) = \textsc{accept}$. Since $\mathcal{D}_\emptyset(m) = \textsc{accept}$ always, this reduces to $\mathcal{D}(m) = \textsc{accept}$. Similarly for the other direction.
 \end{proof}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{The Defense Composition Algebra}
 \begin{proof}[Main Proof of \cref{thm:composition-semiring-restated}]
-By \cref{lem:type-closure,lem:comp-assoc,lem:null-identity}, the set satisfies closure, associativity, and identity. Distributivity: $\mathcal{D}_1 \circ (\mathcal{D}_2 \parallel \mathcal{D}_3)$ means ``accept iff $\mathcal{D}_1$ accepts AND at most one of $\mathcal{D}_2, \mathcal{D}_3$ detects''---equivalently, $(\mathcal{D}_1 \circ \mathcal{D}_2) \parallel (\mathcal{D}_1 \circ \mathcal{D}_3)$. This follows from Boolean distributivity $A \land (B \lor C) = (A \land B) \lor (A \land C)$.
+By \cref{lem:type-closure,lem:comp-assoc,lem:null-identity}, the set satisfies closure, associativity, and identity. Distributivity: writing $A_i$ for the predicate ``$\mathcal{D}_i$ accepts $m$'', both operations act on the accept predicate as conjunction, so $\mathcal{D}_1 \circ (\mathcal{D}_2 \parallel \mathcal{D}_3)$ accepts iff $A_1 \land (A_2 \land A_3)$ and $(\mathcal{D}_1 \circ \mathcal{D}_2) \parallel (\mathcal{D}_1 \circ \mathcal{D}_3)$ accepts iff $(A_1 \land A_2) \land (A_1 \land A_3)$. These coincide by associativity, commutativity and idempotence of $\land$. Note that on this focal predicate $\circ$ and $\parallel$ agree; they are distinguished by the severity they assign to non-accepting outcomes, not by their acceptance semantics, which is precisely why the structure is a bounded distributive lattice rather than a semiring with two independent operations.
 \end{proof}
 \end{frame}
 
-\begin{frame}[allowframebreaks]{Theorem: Information-Geometric
-Stealth-Impact Tight Bound}
-\protect\phantomsection\label{sec:thm-geometric-bound}
+\begin{frame}
+\end{frame}
+
+\subsection{The Tight Information-Geometric Stealth-Impact
+Bound}\label{sec:thm-geometric-bound}
+
+\begin{frame}[allowframebreaks]{The Tight Information-Geometric
+Stealth-Impact Bound}
 \begin{theorem}[Fisher-Rao Stealth-Impact Tight Bound --- Restated]
 \label{thm:fr-bound-restated}
 For any cognitive attack $\mathcal{A}$ with impact measured in Fisher-Rao units:
@@ -1042,6 +1525,10 @@ d_{\mathrm{FR}}(p, q) = 2\arccos\!\left(\sum_i \sqrt{p_i q_i}\right)
 \end{equation}
 \end{lemma}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{The Tight Information-Geometric
+Stealth-Impact Bound}
 \begin{proof}
 The reparametrization $\phi_i = 2\sqrt{p_i}$ maps $\Delta^{n-1}$ to the positive orthant of $S^{n-1}$ (unit sphere). Under this map, the Fisher information metric becomes the standard Euclidean metric on the sphere. Geodesics on $S^{n-1}$ are great circle arcs. The geodesic distance between $\phi(p)$ and $\phi(q)$ is:
 \begin{equation}
@@ -1051,6 +1538,10 @@ d = \arccos(\phi(p) \cdot \phi(q)) = \arccos\!\left(\sum_i 2\sqrt{p_i} \cdot 2\s
 Scaling gives $d_{\mathrm{FR}}(p, q) = 2\arccos(\sum_i \sqrt{p_i q_i})$.
 \end{proof}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{The Tight Information-Geometric
+Stealth-Impact Bound}
 \begin{lemma}[Simplex Diameter Bound]
 \label{lem:simplex-diameter}
 The maximum Fisher-Rao distance on $\Delta^{n-1}$ is $\pi$, achieved by antipodal distributions (disjoint supports):
@@ -1073,6 +1564,10 @@ For any attack shifting belief from $p_0$ to $p_{\text{attacked}}$:
 \end{enumerate}
 \end{lemma}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{The Tight Information-Geometric
+Stealth-Impact Bound}
 \begin{proof}
 (i) Impact is the magnitude of belief change; FR distance is the natural measure of distance on the belief manifold.
 (ii) For small perturbations $\delta p$: $D_{\mathrm{KL}}(p \| p + \delta p) \approx \frac{1}{2} (\delta p)^\top G(p)(\delta p) = \frac{1}{2} d_{\mathrm{FR}}^2 + O(\|\delta p\|^3)$. Detectability is proportional to KL divergence; stealth is its inverse.
@@ -1099,6 +1594,10 @@ The bound $\pi/2$ in \Cref{eq:fr-product-2} arises from the maximum attack at th
 where $\mathcal{S}_{\mathrm{FR}} = \pi/(2r)$ normalizes stealth by the maximum possible distance $\pi/2$ (hemisphere). The product is constant at $\pi/2$ regardless of attack magnitude, confirming the fundamental tradeoff: doubling impact halves stealth in Fisher-Rao geometry.
 \end{proof}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{The Tight Information-Geometric
+Stealth-Impact Bound}
 \begin{corollary}[Drift Detection Threshold Geometric Justification]
 \label{cor:drift-threshold-geometry}
 The drift detection threshold $\theta_{\text{drift}} = 0.3$ (normalized KL) corresponds to a Fisher-Rao displacement of:
@@ -1110,8 +1609,13 @@ This is $0.775/\pi \approx 24.7\%$ of the maximum possible attack distance---a t
 \end{corollary}
 \end{frame}
 
-\begin{frame}[allowframebreaks]{Theorem: Agent Compromise Blast Radius}
-\protect\phantomsection\label{sec:thm-blast-radius}
+\begin{frame}
+\end{frame}
+
+\subsection{The Agent Compromise Blast Radius
+Bound}\label{sec:thm-blast-radius}
+
+\begin{frame}[allowframebreaks]{The Agent Compromise Blast Radius Bound}
 \begin{theorem}[Blast Radius Bound --- Restated]
 \label{thm:blast-radius-restated}
 When agent $a_v$ is compromised, the maximum trust influenced in the system is bounded by:
@@ -1130,6 +1634,9 @@ For each neighbor $a_j$ of $a_v$, \cref{thm:trust-bounded} bounds the aggregate 
 This is a per-neighbor aggregate bound; it does not multiply the neighbor and reachable-agent counts.
 \end{proof}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{The Agent Compromise Blast Radius Bound}
 \begin{corollary}[Isolation Reduces Blast Radius]
 \label{cor:isolation-blast}
 If $a_v$ has degree $|\mathcal{N}(a_v)| = k$, then:
@@ -1141,8 +1648,13 @@ Restricting the degree of agents (least-privilege communication topology) propor
 \end{corollary}
 \end{frame}
 
+\begin{frame}
+\end{frame}
+
+\subsection{Updated Summary of Proof
+Techniques}\label{sec:proof-summary-v2}
+
 \begin{frame}[allowframebreaks]{Updated Summary of Proof Techniques}
-\protect\phantomsection\label{sec:proof-summary-v2}
 \begin{table}[htbp]
 \centering
 \caption{Summary of proof techniques by theorem (v1.1 additions marked with $\dagger$).}
@@ -1168,6 +1680,9 @@ Adversary Class Separation$^\dagger$ & Information theory (KL $> 0$) & $O(1)$ & 
 \end{tabular}
 \end{table}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Updated Summary of Proof Techniques}
 All proofs in this supplement are constructive and provide explicit
 constants suitable for system implementation, parameter selection, and
 security analysis.

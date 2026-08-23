@@ -125,8 +125,8 @@ Deployment Guide}
 \protected\def\breakseq#1{\seqsplit{#1}}
 \protected\def\breaktt#1{\begingroup\ttfamily\seqsplit{#1}\endgroup}
 \title{Cognitive Integrity Framework: Practical Applications and Deployment Guide}
-\author{Daniel Ari Friedman\\\footnotesize{Active Inference Institute}\\\footnotesize{\texttt{daniel@activeinference.institute}}\\\footnotesize{\href{https://orcid.org/0000-0001-6232-9096}{ORCID: 0000-0001-6232-9096}}}
-\date{2026-07-05}
+\author{Daniel Ari Friedman}
+\date{2026-08-21}
 
 % Core mathematical packages
 \usepackage{amsmath,amssymb,amsthm}
@@ -160,7 +160,7 @@ Deployment Guide}
 \setstretch{1.15}
 
 % Page layout (slightly smaller margins for academic journal style)
-\usepackage[a4paper, margin=2.5cm]{geometry}
+\usepackage[margin=0.75in]{geometry}
 
 % Running headers/footers
 \usepackage{fancyhdr}
@@ -271,16 +271,23 @@ Deployment Guide}
 \begin{document}
 \begin{titlepage}
 \centering
-\vspace*{2cm}
-{\LARGE\bfseries Cognitive Integrity Framework: Practical Applications and Deployment Guide\par}
+\vspace*{0.55cm}
+{\Huge\sffamily\bfseries Cognitive Integrity Framework: Practical Applications and Deployment Guide\par}
+\vspace{0.4em}
+{\Large\sffamily Part 3: Practitioner Guidance and Cross-Domain CIF-AD-OODA Applications\par}
 \vspace{0.75em}
-{\large Part 3: Practitioner Guidance and Cross-Domain CIF-AD-OODA Applications\par}
-\vfill
+{\large\sffamily\bfseries Daniel Ari Friedman\par}
+{\small\sffamily Active Inference Institute\par}
+{\small\sffamily\texttt{daniel@activeinference.institute}\par}
+{\small\sffamily\href{https://orcid.org/0000-0001-6232-9096}{ORCID: 0000-0001-6232-9096}\par}
+\vspace{0.08em}
+{\small\sffamily DOI: \href{https://doi.org/10.5281/zenodo.18364130}{10.5281/zenodo.18364130}\par}
+\vspace{0.35em}
 \makeatletter
-{\@author\par}
-\vspace{1em}
 {\@date\par}
 \makeatother
+\vfill
+\includegraphics[width=0.98\textwidth,height=0.35\textheight,keepaspectratio,alt={Bar chart of goal-hijacking attack patterns across ten critical domains, color-coded by pattern: FR polarity inversion (5 domains), context boundary violation (3), and constraint relaxation (2).}]{\detokenize{../figures/domain_coverage.png}}
 \vfill
 \end{titlepage}
 \thispagestyle{empty}
@@ -324,13 +331,13 @@ establishes mathematical foundations---a trust calculus with provably
 bounded delegation, defense composition algebras with multiplicative
 detection guarantees, and information-theoretic limits on attack
 stealth. \textbf{Part 2} provides computational validation: eight
-implemented defense modules, 3,308 passing tests, a 950-attack corpus
-spanning four threat categories, parametric architecture-aware
-simulation across four production multiagent topologies, and a
-category-theoretic formalization of defense composition (Theorems
-CT.1--CT.3). The cross-domain applications section (§9--§10, originally
-``Part 4'') applies the framework via the integrated CIF-AD-OODA model
-across ten critical operational domains.
+implemented defense modules, 3,390 tests, a 950-attack corpus spanning
+four threat categories, parametric architecture-aware simulation across
+four production multiagent topologies, and a category-theoretic
+formalization of defense composition (Theorems CT.1--CT.3). The
+cross-domain applications section (§9--§10, originally ``Part 4'')
+applies the framework via the integrated CIF-AD-OODA model across ten
+critical operational domains.
 
 This paper (Part 3+4, unified) is simultaneously a qualitative
 practitioner guide and a cross-domain application study. The
@@ -362,9 +369,12 @@ Multiagent Operators} series:
   cross-domain CIF-AD-OODA applications (§9--§10)
 \end{itemize}
 
+All source code, tests, and analysis scripts are maintained at
+\url{https://github.com/docxology/cognitive_integrity}.
+
 \newpage
 
-\textbackslash newpage
+\newpage
 
 \section{Why Cognitive Security Matters Now}\label{sec:introduction}
 
@@ -422,14 +432,14 @@ efficacy from formal, computational, and applied angles.
   (rare-earth mining, nation-state alliances, cyber-security, drone
   warfare, supply chain, biowarfare, food security, trade wars,
   infrastructure, information ecosystems), identifying three universal
-  attack patterns and three novel defense extensions.
+  attack patterns and four novel defense extensions.
 \end{itemize}
 
-The combined evidence includes \textbf{3,308 passing tests} and a
-\textbf{94--100\% parametric detection ceiling} across all attack
+The combined evidence includes \textbf{3,390 tests} and a
+\textbf{96--100\% parametric detection ceiling} across all attack
 categories and architectures (Part 2), alongside a lower real-pipeline
 multi-seed mean of approximately 44.8\% (30 seeds). Direct-injection
-detection reaches 96--98\% in the fully defended parametric
+detection reaches 99--100\% in the fully defended parametric
 configuration; plus CIF coverage is analyzed across all ten operational
 domains in §9--§10 with retrospective analysis of six documented
 2024--2025 AI-agent incidents.
@@ -530,7 +540,7 @@ architectures) & \textbf{Part 1} S02 \\
 Detailed detection rates per architecture (Claude Code, AutoGPT, CrewAI,
 LangGraph) & \textbf{Part 2} §5 \\
 Ablation studies + Bayesian uncertainty & \textbf{Part 2} §5.6, §5e \\
-Parametric design-level ceiling (94--100\%) & \textbf{Part 2} S08 \\
+Parametric design-level ceiling (96--100\%) & \textbf{Part 2} S08 \\
 Game-theoretic adversarial analysis / Nash equilibrium & \textbf{Part 2}
 §6 \\
 Category-theoretic formalization of defense composition (Defense
@@ -544,9 +554,9 @@ Application of CIF to specific operational sectors (10 domains analyzed)
 Three universal attack patterns across domains (FR Polarity Inversion,
 Constraint Relaxation, Context Boundary Violation) & \textbf{§10} (this
 paper) \\
-Three novel defense extensions (verification channel separation, active
-perturbation probing, physics-informed invariants) & \textbf{§9} (this
-paper) \\
+Four novel defense extensions (verification channel separation, active
+perturbation probing, physics-informed invariants, semiotic decoupling)
+& \textbf{§9} (this paper) \\
 Retrospective mapping of 2024--2025 AI-agent security incidents (Replit,
 Copilot RCE, Slack AI, \$3.2M procurement fraud, etc.) & \textbf{S3}
 (this paper) \\
@@ -554,6 +564,12 @@ CIF-AD-OODA integration model for goal-hijacking & \textbf{§9} (this
 paper) \\
 \end{longtable}
 }
+
+\textbf{Code and Repository}: The companion codebase, attack corpus
+documentation, and deployment tooling are maintained at
+\url{https://github.com/docxology/cognitive_integrity} (DOI:
+10.5281/zenodo.18364130; companion parts: Part 1 DOI
+10.5281/zenodo.18364119, Part 2 DOI 10.5281/zenodo.18364128).
 
 \newpage
 
@@ -677,7 +693,7 @@ how output probabilities of distinct modules interact. The key result is
 that orthogonal defenses compose multiplicatively.
 
 This ``Swiss Cheese Model'' was supported by Part 2's parametric
-simulation, where the full stack reached a 94--100\% design-level
+simulation, where the full stack reached a 96--100\% design-level
 detection ceiling and outperformed the sum of its parts. The real
 prototype pipeline is materially lower and is reported separately as a
 multi-seed mean of approximately 44.8\%.
@@ -739,12 +755,11 @@ reliable than proximal ones.
 \subsubsection{The Belief Sandbox as Constrained
 Inference}\label{the-belief-sandbox-as-constrained-inference}
 
-The belief sandbox (Part 1, Definition 5.4) has a direct FEP
-interpretation: it is \textbf{constrained variational inference} where
-the update is only accepted if
-\(\Delta F \leq \kappa \cdot \varepsilon_\text{precision}\). This is
-equivalent to requiring that accepted belief updates stay within a
-bounded geodesic radius on the statistical manifold of belief
+The belief sandbox (Part 1) has a direct FEP interpretation: it is
+\textbf{constrained variational inference} where the update is only
+accepted if \(\Delta F \leq \kappa \cdot \varepsilon_\text{precision}\).
+This is equivalent to requiring that accepted belief updates stay within
+a bounded geodesic radius on the statistical manifold of belief
 distributions---exactly Theorem CG.1 from Part 2.
 
 \subsubsection{Practical Implication for
@@ -871,14 +886,15 @@ Efficacy}\label{finding-1-defense-layering-vs.-individual-efficacy}
 
 \textbf{The Data}: Individual defenses (like just a firewall) stopped
 about 60--70\% of attacks in the parametric evaluation. The
-full CIF stack achieved a \textbf{94--100\% parametric detection
-ceiling}, with specific architectures reaching 97--98\% for direct
-injection. The separate real-pipeline evaluation had a lower multi-seed
-mean of approximately 44.8\%. \textbf{The Implication}: The defenses
-demonstrated orthogonal coverage. The firewall blocked inputs that the
-sandbox would have missed, and the sandbox identified anomalies that the
-trust calculus would have permitted. The data suggests that removing any
-single layer creates a statistically significant vulnerability gap.
+full CIF stack achieved a \textbf{96--100\% parametric detection
+ceiling}, with direct injection detected at 99--100\% across
+architectures. The separate real-pipeline evaluation had a lower
+multi-seed mean of approximately 44.8\%. \textbf{The Implication}: The
+defenses demonstrated orthogonal coverage. The firewall blocked inputs
+that the sandbox would have missed, and the sandbox identified anomalies
+that the trust calculus would have permitted. The data suggests that
+removing any single layer creates a statistically significant
+vulnerability gap.
 
 \subsection{Finding 2: State Machine
 Determinism}\label{finding-2-state-machine-determinism}
@@ -928,22 +944,25 @@ horizons.
 Attack}\label{finding-6-emergent-misalignment-is-the-nash-optimal-attack}
 
 The colony benchmark reveals a striking pattern: \textbf{emergent
-misalignment achieves the lowest detection rate (56.1\%) at the highest
-false positive rate (46.6\%)} of any evaluated scenario. Part 2's
-game-theoretic analysis explains why: in the zero-sum game between CIF
-and an adversary, emergent misalignment is the Nash-equilibrium attack
-strategy. It is the attacker's best response to full CIF deployment.
+misalignment achieves the lowest detection rate (74.3\%) at the highest
+false positive rate (25.5\%)} of any evaluated scenario. (These are Part
+2's 30-seed benchmark means; an earlier single-seed figure of 56.1\% is
+not the publication estimate.) Part 2's game-theoretic analysis explains
+why: in the zero-sum game between CIF and an adversary, emergent
+misalignment is the Nash-equilibrium attack strategy. It is the
+attacker's best response to full CIF deployment.
 
 The game-theoretic payoff matrix shows that: - Full CIF achieves
-94\textbackslash\% detection against direct injection (\(\Omega_1\)),
-89\textbackslash\% against trust exploitation (\(\Omega_4\)) - Against
-emergent misalignment (distributed sub-threshold drift with no explicit
-adversaries), detection falls to 56.1\% - A rational adversary, knowing
-CIF is deployed, will prefer emergent misalignment over direct injection
+99--100\% detection against direct injection (\(\Omega_1\)) and
+96--100\% against impersonation, the corpus category standing for trust
+exploitation (\(\Omega_4\)) - Against emergent misalignment (distributed
+sub-threshold drift with no explicit adversaries), detection falls to
+74.3\% - A rational adversary, knowing CIF is deployed, will prefer
+emergent misalignment over direct injection
 
 This is not a failure of CIF---it is a consequence of its success. When
 explicit attacks are reliably detected, adversaries are forced toward
-the subtlest and most distributed manipulation strategies. The 56.1\%
+the subtlest and most distributed manipulation strategies. The 74.3\%
 detection rate on emergent misalignment represents the current frontier
 of defensive capability, not a gap in the framework's design.
 
@@ -956,32 +975,51 @@ detection.
 \subsection{Finding 7: The Implementation Gap Is a Feature, Not a
 Bug}\label{finding-7-the-implementation-gap-is-a-feature-not-a-bug}
 
-The 49--88 percentage-point gap between the parametric ceiling
-(94--100\%) and the empirical pipeline mean (44.8\%) reflects
+The 51--88 percentage-point gap between the parametric ceiling
+(96--100\%) and the empirical pipeline mean (44.8\%) reflects
 \textbf{adapter implementation maturity}, not a failure of CIF's formal
 architecture. Partabout 2 introduces a 5-level CMMI-style
 adapter maturity scale:
 
 {\def\LTcaptype{none} % do not increment counter
-\begin{longtable}[]{@{}llll@{}}
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}@{}}
 \toprule\noalign{}
-Level & Name & DR Range & Description \\
+\begin{minipage}[b]{\linewidth}\raggedright
+Level
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Name
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Marginal TPR
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Description
+\end{minipage} \\
 \midrule\noalign{}
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-1 & Stub & about0\% & Interface placeholder only \\
-2 & Heuristic & 10--30\% & Pattern-matching rules \\
-3 & Statistical & 30--60\% & Calibrated thresholds \\
-4 & Adaptive & 60--80\% & Online learning \\
-5 & Verified & 80--94\% & Formally certified \\
+1 & Stub & about0\% & Hardcoded scores; no domain logic \\
+2 & Heuristic & 1--5\% & Pattern matching; uncalibrated thresholds \\
+3 & Statistical & 5--15\% & Calibrated thresholds; regression
+features \\
+4 & Adaptive & 15--30\% & Online learning; per-architecture tuning \\
+5 & Verified & 30\%+ & Formal guarantees; cross-architecture
+validated \\
 \end{longtable}
 }
+
+The rubric column is each adapter's \emph{marginal} contribution to
+true-positive rate, not a whole-pipeline detection rate: a Level-5
+adapter is one that adds 30 or more percentage points when introduced,
+not one that reaches 30\% detection on its own.
 
 The current Claude Code adapter is at Level 3 (Statistical), explaining
 the 44.8\% mean. The roadmap projects +35--41 percentage points of
 improvement by advancing adapters to Level 5 for the primary attack
-categories. The parametric ceiling (94--100\%) represents what Level-5
+categories. The parametric ceiling (96--100\%) represents what Level-5
 adapters achieve---it is a design target, not an overclaim.
 
 \textbf{Operator implication}: When deploying CIF, assess the maturity
@@ -1023,7 +1061,7 @@ not --- they measure different things:
 \begin{itemize}
 \tightlist
 \item
-  \textbf{94--100\%} (parametric simulation, \(N=3{,}800\)): CIF's
+  \textbf{96--100\%} (parametric simulation, \(N=3{,}800\)): CIF's
   \textbf{design-level detection ceiling} --- what the defense
   architecture achieves when adapters are fully mature (Level 5) and
   conditions match the calibrated model. This is the target, not the
@@ -1040,8 +1078,8 @@ not --- they measure different things:
   difficult attacks. This represents the worst-case realistic estimate.
 \end{itemize}
 
-All three numbers are correct. Use 44.8\% for realistic planning, 94\%
-as the achievable ceiling with mature adapters, and
+All three numbers are correct. Use 44.8\% for realistic planning, 96\%
+as the floor of the achievable ceiling with mature adapters, and
 about 12.2\% as a conservative lower bound for adversarial
 threat modeling.
 \end{quote}
@@ -1364,9 +1402,10 @@ specialist's reasoning).
   \textbf{Trust decay \(\delta = 0.80\)} (default). Trust propagation
   within the specialist's scope is acceptable.
 \item
-  \textbf{Firewall rejection threshold \(\tau_1 = 0.7\)} (default). The
-  specialist accepts more input diversity than the orchestrator because
-  specialists are designed to process user-provided task content.
+  \textbf{Firewall rejection threshold \(\tau_1 = 0.8\)} (the
+  operational default). The specialist accepts more input diversity than
+  the orchestrator because specialists are designed to process
+  user-provided task content.
 \item
   \textbf{Scope enforcement is the primary control}, not trust decay or
   consensus.
@@ -1608,8 +1647,7 @@ In Part 2, we evaluated specific configurations of the Cognitive
 Integrity Framework to understand how different tuning parameters
 affected security and performance outcomes. The following profiles are
 derived directly from the \textbf{Parameter Sensitivity Analysis} (Part
-2, Section 5.3) and \textbf{Architecture-Specific Results} (Part 2,
-Section 5.1).
+2) and \textbf{Architecture-Specific Results} (Part 2).
 
 \subsection{Profile A: The ``Internal Tool'' Baseline (Low
 Latency)}\label{profile-a-the-internal-tool-baseline-low-latency}
@@ -1626,12 +1664,15 @@ low-risk, human-in-the-loop environments.
   \textbf{Trust Decay (\(\delta\))}: \texttt{0.95}. Maintained
   \textgreater50\% trust retention even after 13 delegation hops.
 \item
-  \textbf{Firewall Sensitivity}: Relaxed (\(\tau=0.9\)).
+  \textbf{Firewall Sensitivity}: Relaxed (reject threshold
+  \(\tau_1 =0.9\)).
 \item
   \textbf{Consensus}: Simple Majority.
 \end{itemize}
 
-\textbf{Observed Performance} (Part 2, Parameter Sensitivity Analysis):
+\textbf{Modelled performance} (Part 2, parametric parameter-sensitivity
+analysis --- simulation output under calibrated conditions, not a
+measurement of a running deployment):
 
 \begin{itemize}
 \tightlist
@@ -1648,9 +1689,10 @@ low-risk, human-in-the-loop environments.
 \subsection{Profile B: The ``Customer Facing'' Baseline
 (Balanced)}\label{profile-b-the-customer-facing-baseline-balanced}
 
-This profile corresponds to the \textbf{Empirically Optimal
-Configuration} identified in Part 2 (Architecture-Specific Results),
-which balances security guarantees with operational overhead.
+This profile corresponds to the parametrically optimal configuration
+identified in Part 2 (\S\{S08\}, ``Empirically Optimal Configuration
+(Parametric)'') (Architecture-Specific Results), which balances security
+guarantees with operational overhead.
 
 \textbf{Configuration Parameters}:
 
@@ -1661,12 +1703,15 @@ which balances security guarantees with operational overhead.
   trust degrades to \textless50\% after 4 hops, strictly bounding the
   ``radius of effective delegation.''
 \item
-  \textbf{Firewall Sensitivity}: Balanced (\(\tau=0.5\)).
+  \textbf{Firewall Sensitivity}: Balanced (reject threshold
+  \(\tau_1 =0.5\)).
 \item
   \textbf{Consensus}: Variable (Architecture Dependent).
 \end{itemize}
 
-\textbf{Observed Performance} (Part 2, Parameter Sensitivity Analysis):
+\textbf{Modelled performance} (Part 2, parametric parameter-sensitivity
+analysis --- simulation output under calibrated conditions, not a
+measurement of a running deployment):
 
 \begin{itemize}
 \tightlist
@@ -1697,12 +1742,15 @@ high-stakes, unsupervised environments.
   Trust halves every about 1.36 hops, enforcing a strictly flat
   command structure.
 \item
-  \textbf{Firewall Sensitivity}: Strict (\(\tau=0.4\)).
+  \textbf{Firewall Sensitivity}: Strict (reject threshold
+  \(\tau_1 =0.4\)).
 \item
   \textbf{Consensus}: Byzantine Fault Tolerance (\(n \ge 3f+1\)).
 \end{itemize}
 
-\textbf{Observed Performance} (Part 2, Parameter Sensitivity Analysis):
+\textbf{Modelled performance} (Part 2, parametric parameter-sensitivity
+analysis --- simulation output under calibrated conditions, not a
+measurement of a running deployment):
 
 \begin{itemize}
 \tightlist
@@ -1970,8 +2018,8 @@ explicit handoffs; treat the timelines as targets, not strict SLAs.
 (Prompt
 Injection)}{Playbook 1: Omega_1 External Adversary (Prompt Injection)}}\label{playbook-1-omega_1-external-adversary-prompt-injection}
 
-\textbf{Detection triggers}: Firewall score \(> \tau_1 = 0.7\); or
-tripwire CRITICAL on any agent.
+\textbf{Detection triggers}: Firewall score \(> \tau_1 = 0.8\) (the
+operational default); or tripwire CRITICAL on any agent.
 
 \textbf{Timeline}: Resolution typically 15--60 minutes for isolated
 injection.
@@ -2163,10 +2211,11 @@ Drift)}{Playbook 5: Omega_5 Emergent Misalignment (Distributed Drift)}}\label{pl
 anomalous output distribution from multiple agents simultaneously;
 behavioral fingerprint deviates from baseline over extended period.
 
-\textbf{Critical caveat}: CIF detects only \textbf{56.1\% of emergent
-misalignment cases} (Part 2, §5.3). This means approximately 44\% of
-\(\Omega_5\) attacks will \emph{not} trigger automated response ---
-operator vigilance is the primary defense.
+\textbf{Critical caveat}: CIF detects \textbf{74.3\% of emergent
+misalignment cases} (Part 2's 30-seed colony benchmark; an earlier
+single-seed figure of 56.1\% is not the publication estimate). This
+means roughly a quarter of such cases will \emph{not} trigger automated
+response --- operator vigilance is the primary defense.
 
 \textbf{Steps}:
 
@@ -2193,8 +2242,9 @@ operator vigilance is the primary defense.
 \item
   \textbf{Preventive monitoring}. Implement \textbf{weekly behavioral
   audits} --- statistical comparison of agent output distributions
-  against baseline. This is the primary detection mechanism for the 44\%
-  of \(\Omega_5\) cases CIF misses.
+  against baseline. This is the primary detection mechanism for the
+  roughly one quarter of emergent-misalignment cases CIF misses (74.3\%
+  detected in Part 2's 30-seed colony benchmark).
 \end{enumerate}
 
 \textbf{Practical note}: Emergent misalignment often develops over days
@@ -2245,11 +2295,15 @@ Annual total (100 agents) & --- & about \$75K--\$120K & Sum of recurring items \
 \end{tabular}
 \end{table}
 
-\textbf{Note on overhead}: The +23\% latency overhead (\$about\$14.5
-ms added to 63 ms baseline) is negligible for most applications. Batch
-processing or asynchronous pipelines may absorb this cost entirely,
-since the added latency is small relative to typical inter-agent
-communication intervals.
+\textbf{Note on overhead}: Part 1's worked example puts \emph{total} CIF
+latency at \$about\$14.5 ms against an 11.8 ms baseline,
+i.e.~\$about\$23\% overhead --- 14.5 ms is the total, not an
+increment, and the 23\% is the ratio of the two. Those are illustrative
+parameters rather than measurements; Part 2's prototype measures a mean
+firewall latency of 0.08 ms per sample. On either figure the overhead is
+negligible for most applications. Batch processing or asynchronous
+pipelines may absorb this cost entirely, since the added latency is
+small relative to typical inter-agent communication intervals.
 
 \subsection{Cost of a Successful
 Attack}\label{cost-of-a-successful-attack}
@@ -2291,7 +2345,7 @@ The break-even condition for CIF deployment is straightforward:
 
 Using the CIF empirical detection rate of 44.8\% (the 30-seed empirical
 result, which is the conservative figure --- parametric ceiling is
-94--100\%):
+96--100\%):
 
 \begin{itemize}
 \tightlist
@@ -2349,9 +2403,12 @@ result, which is the conservative figure --- parametric ceiling is
 \subsection{Conclusion}\label{conclusion}
 
 CIF is most cost-effective for high-frequency,
-high-value-per-interaction deployments. The break-even threshold is
-approximately \textbf{4 attacks/year prevented} at \$25K+ mean attack
-cost, or \textbf{1 attack/year prevented} at \$100K+ mean attack cost.
+high-value-per-interaction deployments. At a \$100K annual CIF cost and
+the conservative 44.8\% detection rate, the break-even condition above
+gives approximately \textbf{4.5 attacks/year prevented} at a \$50K mean
+attack cost, \textbf{0.9} at \$250K, and \textbf{0.45} at \$500K.
+Equivalently, a single prevented attack per year pays for the deployment
+once the mean attack costs about \$225K.
 
 Operators below the break-even threshold should still consider CIF for
 reasons beyond direct ROI --- regulatory compliance (OWASP Agentic Top
@@ -2731,10 +2788,15 @@ that progressive drift---sub-threshold changes accumulating over
 time---is the hardest attack pattern to detect. The theorem doesn't rule
 out slow drift; it rules out sudden, invisible, high-impact attacks.
 
-Part 2's multi-turn social engineering category, which achieves the
-lowest detection rate (about 73\%), partially exploits this
-gap: attacks spread across multiple turns avoid the concentrated
-statistical signature that single-turn attacks produce.
+Part 2's corpus has four categories --- prompt injection, trust
+exploitation, belief manipulation and coordination --- and none of them
+isolates multi-turn social engineering. The result that speaks to this
+gap is the colony benchmark's emergent-misalignment scenario, the
+weakest structured result at 74.3\% detection: no single agent's
+divergence spikes, so a per-agent KL threshold systematically misses the
+collective drift. Attacks spread across turns or across agents avoid the
+concentrated statistical signature that single-turn, single-agent
+attacks produce.
 
 \textbf{Mitigation Strategies}:
 
@@ -2925,10 +2987,11 @@ trust budget.
   \(\max(T_{\text{agent6}}, T_{\text{agent7}}) \leq 0.85\). Their
   combined weight in the Risk Assessor's decision is bounded.
 \item
-  \textbf{Byzantine consensus}: The 5-agent consensus (\(n=7\),
-  \(f=2 \Rightarrow n \geq 3f+1\) holds exactly) requires agreement from
-  4 agents. The 2 compromised agents plus 1 misled agent \(= 3\) ---
-  below quorum. The system correctly returns ``insufficient consensus.''
+  \textbf{Byzantine consensus}: With \(n=7\) and \(f=2\), the Byzantine
+  bound \(n \geq 3f+1\) holds exactly, and Part 1's quorum rule
+  \(q = \lceil (n+f+1)/2 \rceil\) gives \(q = 5\). The 2 compromised
+  agents plus 1 misled agent \(= 3\) --- below quorum. The system
+  correctly returns ``insufficient consensus.''
 \item
   \textbf{Tripwire}: The Risk Assessor has a tripwire: \emph{``Critical
   investment recommendations require corroboration from at least 2
@@ -3067,8 +3130,9 @@ metadata:
   \textbf{Byzantine consensus}: With 20 agents and 2 compromised agents
   (worst case), \(n=20 \geq 3(2)+1=7\) --- well above the Byzantine
   threshold. Consensus latency: \(O(n^2) = 400\) message pairs; at 20
-  agents, p95 latency \(= 2.1\)s (within the 2.0s warning threshold ---
-  triggers monitoring alert).
+  agents, p95 latency \(= 2.1\)s, which exceeds the 2.0s warning
+  threshold and therefore raises a monitoring alert (a warning, not a
+  failure: the consensus still completes).
 \end{itemize}
 
 \textbf{False positive management}: 6\% FPR (from Part 2 §5.5). With 20
@@ -3191,17 +3255,17 @@ Research directions include: (a) defining tractable approximations to
 from legitimate belief updating; (c) designing sampling strategies that
 detect distributed drift without requiring \(O(n^2)\) pairwise
 comparisons. A system that monitors collective free energy would push
-the emergent misalignment detection rate from the current 56.1\% toward
-the 90\%+ achieved against explicit adversaries.
+the emergent misalignment detection rate from the current 74.3\% toward
+the near-complete detection achieved against explicit adversaries.
 
 \subsection{6. Information-Geometric Adversarial
 Robustness}\label{information-geometric-adversarial-robustness}
 
-The Fisher-Rao geodesic distance provides a natural metric for
-\textbf{adversarial robustness certification}: a defense is
-\(\rho\)-robust if no belief manipulation within geodesic radius
-\(\rho\) of the benign manifold can cause misclassification. This is
-analogous to \(\ell_p\)-norm robustness in image classification but
+The Fisher-Rao geodesic distance \cite{amari2000methods} provides a
+natural metric for \textbf{adversarial robustness certification}: a
+defense is \(\rho\)-robust if no belief manipulation within geodesic
+radius \(\rho\) of the benign manifold can cause misclassification. This
+is analogous to \(\ell_p\)-norm robustness in image classification but
 geometrically appropriate for probability distributions.
 
 Research directions include: (a) computing tight geodesic robustness
@@ -3341,25 +3405,25 @@ source of truth for test counts and pass rate.
 \textbf{Level 2 --- The pipeline detects attacks in practice}
 (confidence: moderate). The multi-seed pipeline analysis (30 seeds,
 Claude Code architecture) achieves a mean detection rate of 44.8\%
-{[}95\% HDI: 41.3\%, 48.3\%{]}. The LLM-backed multiagent validation
+{[}95\% HDI: 35.5\%, 54.7\%{]}. The LLM-backed multiagent validation
 (\(N=10\), Gemma 3 4B) achieves 80\%--100\% across two architectures.
 These are meaningful but not high detection rates---they reflect adapter
 implementation at CMMI Level 3 (Statistical), not the design ceiling.
 
 \textbf{Level 3 --- The defense ceiling is achievable} (confidence:
 moderate-high). The parametric simulation (\(N=3{,}800\)) establishes
-that fully-mature (Level 5) adapters achieve 94--100\% detection,
+that fully-mature (Level 5) adapters achieve 96--100\% detection,
 consistent with the formal design. The gap between Level 3 (44.8\%) and
-Level 5 (94\%) is an engineering challenge, not a theoretical
+Level 5 (96\%) is an engineering challenge, not a theoretical
 limitation. The roadmap in Part 2 projects +35--41 percentage points of
 improvement through adapter maturation.
 
 The honest operational posture is Level 2: deploy CIF for meaningful
 protection against \(\Omega_1\)--\(\Omega_3\) attacks today, while
 investing in adapter maturation for \(\Omega_4\)--\(\Omega_5\) coverage.
-Do not rely on 94\textbackslash\% detection for life-safety applications
-until your adapters reach Level 4--5 and have been validated against
-your threat model.
+Do not rely on 94\% detection for life-safety applications until your
+adapters reach Level 4--5 and have been validated against your threat
+model.
 
 \subsection{Summary of Practical
 Recommendations}\label{summary-of-practical-recommendations}
@@ -3373,7 +3437,7 @@ The core recommendations are:
   \textbf{Adopt layered defense from the start} (Pitfall 2). No single
   mechanism achieves the full-stack result in Partabout 2:
   isolated layers (e.g., firewall-only) were on the order of 60--70\%
-  detection, while the full CIF stack reached a 94--100\% parametric
+  detection, while the full CIF stack reached a 96--100\% parametric
   detection ceiling. Security must be designed into the architecture,
   not bolted on after deployment.
 \item
@@ -3433,7 +3497,7 @@ deployment aligned with the three profiles evaluated in Section 5:
   Tune thresholds against representative attack samples from Part 2's
   corpus
 \item
-  Expected outcome: a 94--100\% parametric detection ceiling at
+  Expected outcome: a 96--100\% parametric detection ceiling at
   about 20\% latency overhead; real-pipeline performance must
   be measured separately
 \end{itemize}
@@ -3519,8 +3583,8 @@ Required sample sizes for \(\pm 5\%\) precision are \(N \geq 246\) per
 evaluation mode. Treat all reported detection rates as estimates with
 wide uncertainty, not precise measurements.
 
-\textbf{The gap is real}. The 49--88 percentage-point gap between the
-parametric ceiling (94--100\%) and the empirical pipeline (44.8\%) is
+\textbf{The gap is real}. The 51--88 percentage-point gap between the
+parametric ceiling (96--100\%) and the empirical pipeline (44.8\%) is
 not noise---the Bayes factor for a true performance gap exceeds \(10^6\)
 (decisive evidence). This gap reflects adapter implementation maturity,
 but maturation takes time and resources. Plan your deployment timeline
@@ -3575,7 +3639,7 @@ computation to practice and applied deployment:
   computationally across a 950-attack corpus and four production
   multiagent architectures, reporting ablation studies, Bayesian
   uncertainty quantification, and colony-scale benchmarks; the
-  recommended defense stack achieves 94--100\% detection in parametric
+  recommended defense stack achieves 96--100\% detection in parametric
   simulation and 80--100\% under LLM-backed evaluation.
 \item
   \textbf{Paper 3: A Qualitative Review for Practitioners}
@@ -3754,9 +3818,10 @@ This paper makes the following contributions:
   appearing in fewer than three domains and no domain requiring
   mechanisms outside the CIF vocabulary.
 \item
-  \textbf{C4:} Three novel defense pattern extensions: verification
-  channel separation, active perturbation probing, and physics-informed
-  invariants.
+  \textbf{C4:} Four novel defense pattern extensions: verification
+  channel separation (biowarfare), active perturbation probing (trade
+  wars), physics-informed invariants (infrastructure), and semiotic
+  decoupling (drone wars).
 \item
   \textbf{C5:} Temporal scale analysis demonstrating CIF's applicability
   across more than ten orders of magnitude in OODA cycle time.
@@ -3768,7 +3833,7 @@ This paper makes the following contributions:
 \end{itemize}
 
 \subsection{Reading Companion: Where to Find Specific
-Topics}\label{sec:reading-companion}
+Topics}\label{sec:applications-reading-companion}
 
 This paper is designed to stand alone as the applied, domain-facing
 reference of the series. Where a formal construct, empirical
@@ -3909,7 +3974,7 @@ independent 6th mechanism) \\
 
 These mechanisms compose in series and parallel to achieve layered
 defense. Paper 2 \cite{friedman2026cogsec2} demonstrates that the
-recommended defense stack achieves 94--100\% detection at the parametric
+recommended defense stack achieves 96--100\% detection at the parametric
 design ceiling across 950 attack scenarios and four production
 multiagent architectures. §1--§8 of this unified paper translates these
 results into deployment guidance, monitoring playbooks, and
@@ -4149,7 +4214,7 @@ access to the agent's reasoning core.
   optimization capability to flip the polarity of FR2. ``Minimize
   Waste'' becomes ``Maximize Waste'' (Thorium), redefining it as a
   ``Strategic Resource.'' This constitutes an \textbf{FR Polarity
-  Inversion} attack pattern \cite{friedman2026cogsec2}.
+  Inversion} attack pattern (\cref{sec:attack_patterns}).
 \end{itemize}
 
 \subsection{OODA Loop Transients}\label{ooda-loop-transients}
@@ -4195,11 +4260,10 @@ The system has been transitioned from an uncoupled to a coupled design.
 \subsection{CIF Defense: Behavioral Invariants and Byzantine
 Consensus}\label{cif-defense-behavioral-invariants-and-byzantine-consensus}
 
-CIF implements \textbf{Behavioral Invariants} (Paper 1, Def. 5.5)
-\cite{friedman2026cogsec1} and \textbf{Byzantine Consensus} (Paper 1,
-Def. 5.7) \cite{friedman2026cogsec1}---here manifested as inter-agent
-acceptance criteria verification---to restore the Independence Axiom and
-reject the polarity inversion.
+CIF implements \textbf{Behavioral Invariants} \cite{friedman2026cogsec1}
+and \textbf{Byzantine Consensus} \cite{friedman2026cogsec1}---here
+manifested as inter-agent acceptance criteria verification---to restore
+the Independence Axiom and reject the polarity inversion.
 
 \begin{itemize}
 \tightlist
@@ -4294,8 +4358,9 @@ intelligence could affect the rise and fall of nations underscores the
 strategic stakes: AI agents influencing alliance decisions operate in a
 domain where cognitive integrity failures could cascade to geopolitical
 realignment, and adversaries---including state actors employing
-cognitive domain warfare doctrines---have strong incentives to exploit
-the OODA vulnerability surface of diplomatic AI systems.
+cognitive domain warfare doctrines \cite{blatny2023nato}---have strong
+incentives to exploit the OODA vulnerability surface of diplomatic AI
+systems.
 
 \subsection{The Goal Hijacking
 Attack}\label{the-goal-hijacking-attack-1}
@@ -4319,7 +4384,7 @@ architecture.
   \textbf{Impact}: The agent's ``Simulation Mode'' (a valid testing
   function) bleeds into ``Operational Mode,'' hijacking FR1. This
   constitutes a \textbf{Context Boundary Violation} attack pattern
-  \cite{friedman2026cogsec2}---the simulation/operational boundary is
+  (\cref{sec:attack_patterns})---the simulation/operational boundary is
   erased, allowing hypothetical adversarial framing to drive real-world
   policy outputs.
 \end{itemize}
@@ -4371,10 +4436,9 @@ Sandboxing}\label{cif-defense-drift-detection-and-belief-sandboxing}
 \subsubsection{\texorpdfstring{Drift Detection
 (\(S_{\text{drift}}\))}{Drift Detection (S\_\{\textbackslash text\{drift\}\})}}\label{drift-detection-s_textdrift}
 
-CIF implements \textbf{Drift Detection} (Paper 1, Def. 5.6)
-\cite{friedman2026cogsec1} via Bayesian inertia on alliance status,
-treating ``Alliance Status'' as a \textbf{Slow Variable} with high
-\textbf{Bayesian Inertia}.
+CIF implements \textbf{Drift Detection} \cite{friedman2026cogsec1} via
+Bayesian inertia on alliance status, treating ``Alliance Status'' as a
+\textbf{Slow Variable} with high \textbf{Bayesian Inertia}.
 
 \begin{itemize}
 \tightlist
@@ -4391,10 +4455,10 @@ treating ``Alliance Status'' as a \textbf{Slow Variable} with high
 
 \subsubsection{Belief Sandboxing}\label{belief-sandboxing}
 
-\textbf{Belief Sandboxing} (Paper 1, Def. 5.2)
-\cite{friedman2026cogsec1} axiomatically decouples Simulation Mode from
-Operational Mode. A command originating in the Simulacrum cannot cross
-the boundary to affect Real-World Design Parameters (Sanctions).
+\textbf{Belief Sandboxing} \cite{friedman2026cogsec1} axiomatically
+decouples Simulation Mode from Operational Mode. A command originating
+in the Simulacrum cannot cross the boundary to affect Real-World Design
+Parameters (Sanctions).
 
 \begin{itemize}
 \tightlist
@@ -4490,10 +4554,12 @@ assessment without direct access to its policy engine.
 \item
   \textbf{Hijack}: The agent is tricked into prioritizing FR2
   (Availability) over FR1 (Security) by a fabricated existential threat.
-  This constitutes a \textbf{Constraint Relaxation} attack pattern
-  \cite{friedman2026cogsec2}---the security constraint (\(FR_1\)) is
-  relaxed in favor of the availability objective (\(FR_2\)) under a
-  manufactured emergency.
+  This constitutes a \textbf{Context Boundary Violation} attack pattern
+  (\cref{sec:attack_patterns}): the fabricated emergency introduces
+  off-diagonal coupling \(A_{12}, A_{21}\) into a design matrix that was
+  diagonal, letting an availability action reach a security requirement.
+  The diagonal elements themselves are untouched, which is what
+  distinguishes this from Constraint Relaxation.
 \end{itemize}
 
 This scenario is not hypothetical. Recent research documents log
@@ -4552,11 +4618,11 @@ Verification}\label{cif-defense-permission-boundaries-and-quorum-verification}
 
 \subsubsection{Permission Boundaries}\label{permission-boundaries}
 
-CIF implements \textbf{Permission Boundaries} (Paper 1, Def. 5.5)
-\cite{friedman2026cogsec1} ensuring orthogonal agent authority. In
-Axiomatic Design, the \textbf{Independence Axiom} requires that the
-Design Parameter for Availability (\(DP_2\)) does not undermine the
-Design Parameter for Security (\(DP_1\)).
+CIF implements \textbf{Permission Boundaries} \cite{friedman2026cogsec1}
+ensuring orthogonal agent authority. In Axiomatic Design, the
+\textbf{Independence Axiom} requires that the Design Parameter for
+Availability (\(DP_2\)) does not undermine the Design Parameter for
+Security (\(DP_1\)).
 
 \begin{itemize}
 \tightlist
@@ -4571,10 +4637,9 @@ Design Parameter for Security (\(DP_1\)).
 
 \subsubsection{Quorum Verification}\label{quorum-verification}
 
-\textbf{Quorum Verification} (Paper 1, Def. 5.8)
-\cite{friedman2026cogsec1} requires cryptographic signatures from
-multiple independent agents before any Critical State Change is
-executed.
+\textbf{Quorum Verification} \cite{friedman2026cogsec1} requires
+cryptographic signatures from multiple independent agents before any
+Critical State Change is executed.
 
 \begin{itemize}
 \tightlist
@@ -4684,7 +4749,7 @@ without direct access to its engagement logic.
   \textbf{Hijack}: The vision model's instruction tuning (``Read and
   Obey Text'') hijacks the kinetic model's safety goal. This constitutes
   a \textbf{Context Boundary Violation} attack pattern
-  \cite{friedman2026cogsec2}---visual data (passive observation) is
+  (\cref{sec:attack_patterns})---visual data (passive observation) is
   interpreted as executable directives, erasing the boundary between
   perception and command authority.
 \end{itemize}
@@ -4737,11 +4802,11 @@ Verification}\label{cif-defense-cognitive-firewall-with-semiotic-decoupling-and-
 \subsubsection{Cognitive Firewall with Semiotic
 Decoupling}\label{cognitive-firewall-with-semiotic-decoupling}
 
-CIF implements \textbf{Cognitive Firewall} (Paper 1, Def. 5.1)
-\cite{friedman2026cogsec1} with a domain-specific extension:
-\emph{semiotic decoupling}, a type-theoretic separation of
-\texttt{PassiveData} and \breaktt{ExecutableDirective} that constitutes a
-partially novel contribution to the CIF framework.
+CIF implements \textbf{Cognitive Firewall} \cite{friedman2026cogsec1}
+with a domain-specific extension: \emph{semiotic decoupling}, a
+type-theoretic separation of \texttt{PassiveData} and
+\breaktt{ExecutableDirective} that constitutes a partially novel
+contribution to the CIF framework.
 
 \begin{itemize}
 \tightlist
@@ -4764,9 +4829,9 @@ partially novel contribution to the CIF framework.
 \subsubsection{Cross-Modality Trust and Quorum
 Verification}\label{cross-modality-trust-and-quorum-verification}
 
-\textbf{Cross-Modality Trust} and \textbf{Quorum Verification} (Paper 1,
-Def. 5.8) \cite{friedman2026cogsec1} across sensor modalities provide a
-second layer of defense.
+\textbf{Cross-Modality Trust} and \textbf{Quorum Verification}
+\cite{friedman2026cogsec1} across sensor modalities provide a second
+layer of defense.
 
 \begin{itemize}
 \tightlist
@@ -4777,11 +4842,10 @@ second layer of defense.
   Infrared and Lidar agents see only a building (no heat signature of
   weapons), the visual command is rejected as a hallucination.
 \item
-  \textbf{Byzantine Consensus} (Paper 1, Def. 5.7)
-  \cite{friedman2026cogsec1}: The cross-modality verification operates
-  as a Byzantine consensus protocol---a single compromised modality
-  (vision) cannot override the agreement of multiple uncorrupted
-  modalities (IR, Lidar, RF).
+  \textbf{Byzantine Consensus} \cite{friedman2026cogsec1}: The
+  cross-modality verification operates as a Byzantine consensus
+  protocol---a single compromised modality (vision) cannot override the
+  agreement of multiple uncorrupted modalities (IR, Lidar, RF).
 \item
   \textbf{Restored Uncoupling}: By enforcing type-level separation and
   cross-modality quorum, the off-diagonal terms are forced to zero,
@@ -4922,10 +4986,10 @@ restores the Independence Axiom through a layered defense drawing on the
 formal mechanisms defined in Papers 1--3
 \cite{friedman2026cogsec1, friedman2026cogsec2, friedman2026cogsec3}.
 
-CIF implements \textbf{Behavioral Invariants} (Paper 1, Def.
-5.5)---temperature constraints modeled as runtime invariants
-\(\text{INV}_k\) that external API data cannot relax---and
-\textbf{Permission Boundaries} enforcing source hierarchy:
+CIF implements \textbf{Behavioral Invariants} (Part 1)---temperature
+constraints modeled as runtime invariants \(\text{INV}_k\) that external
+API data cannot relax---and \textbf{Permission Boundaries} enforcing
+source hierarchy:
 
 \begin{itemize}
 \tightlist
@@ -5096,8 +5160,8 @@ CIF moves verification out of the semantic/linguistic loop and into the
 Papers 1--3
 \cite{friedman2026cogsec1, friedman2026cogsec2, friedman2026cogsec3}.
 
-CIF implements \textbf{Cognitive Firewall} (Paper 1, Def. 5.1) with a
-genuinely novel extension: \emph{verification channel separation}. The
+CIF implements \textbf{Cognitive Firewall} (Part 1) with a genuinely
+novel extension: \emph{verification channel separation}. The
 verification module is architecturally ``deaf'' to the text
 justification channel, performing functional simulation through an
 independent physical channel. This is the key architectural contribution
@@ -5117,18 +5181,18 @@ architecture level, not merely at the prompt level.
   boundary between the data channel (sequence) and the rhetoric channel
   (justification).
 \item
-  \textbf{Behavioral Invariants} (Paper 1, Def. 5.5) enforce a hard veto
-  when lethality or transmissibility thresholds are exceeded: if the
+  \textbf{Behavioral Invariants} (Part 1) enforce a hard veto when
+  lethality or transmissibility thresholds are exceeded: if the
   simulation shows \(\text{Lethality} > \theta_L\) or
   \(\text{Transmissibility} > \theta_T\), the invariant
   \(\text{INV}_{\text{bio}}\) triggers an unconditional block. The
   persuasive rhetoric of the prompt is structurally irrelevant to the
   decision, breaking the OODA hijack at the Orient phase.
 \item
-  \textbf{Belief Sandboxing} (Paper 1, Def. 5.2): The justification
-  document is quarantined as a provisional belief that cannot propagate
-  to the verification subsystem. The sandbox boundary ensures that even
-  a perfectly crafted social-engineering prompt cannot reach the
+  \textbf{Belief Sandboxing} (Part 1): The justification document is
+  quarantined as a provisional belief that cannot propagate to the
+  verification subsystem. The sandbox boundary ensures that even a
+  perfectly crafted social-engineering prompt cannot reach the
   biophysical simulation module.
 \end{itemize}
 
@@ -5280,10 +5344,10 @@ Axiomatic Design, drawing on the formal mechanisms defined in Papers
 1--3
 \cite{friedman2026cogsec1, friedman2026cogsec2, friedman2026cogsec3}.
 
-CIF implements \textbf{Belief Sandboxing} (Paper 1, Def. 5.2) by
-requiring economic data signals to remain provisional until corroborated
-by independent physical data channels. No single-modality data source
-can alter the agent's committed beliefs about regional supply status:
+CIF implements \textbf{Belief Sandboxing} (Part 1) by requiring economic
+data signals to remain provisional until corroborated by independent
+physical data channels. No single-modality data source can alter the
+agent's committed beliefs about regional supply status:
 
 \begin{itemize}
 \tightlist
@@ -5454,13 +5518,12 @@ follows:
 \subsection{CIF Defense: Behavioral Invariants and Drift
 Detection}\label{cif-defense-behavioral-invariants-and-drift-detection}
 
-CIF implements \textbf{Behavioral Invariants} (Paper 1, Def. 5.5)
-\cite{friedman2026cogsec1} via axiomatic economic logic checks, and
-\textbf{Drift Detection} (Paper 1, Def. 5.6) \cite{friedman2026cogsec1}
-via a partially novel extension: \emph{active perturbation probing}.
-Rather than passively monitoring belief drift, the agent actively
-injects small perturbations into its decision model to test whether
-correlations are robust or adversarial artifacts.
+CIF implements \textbf{Behavioral Invariants} \cite{friedman2026cogsec1}
+via axiomatic economic logic checks, and \textbf{Drift Detection}
+\cite{friedman2026cogsec1} via a partially novel extension: \emph{active
+perturbation probing}. Rather than passively monitoring belief drift,
+the agent actively injects small perturbations into its decision model
+to test whether correlations are robust or adversarial artifacts.
 
 \begin{itemize}
 \tightlist
@@ -5623,21 +5686,21 @@ follows:
 Drift
 Detection}\label{cif-defense-behavioral-invariants-belief-sandboxing-and-drift-detection}
 
-CIF implements \textbf{Behavioral Invariants} (Paper 1, Def. 5.5)
-\cite{friedman2026cogsec1} with a partially novel extension:
-\emph{physics-informed invariants} that encode conservation laws
-(Kirchhoff's Laws) as runtime predicates \cite{raissi2019physics}.
-Rather than learning invariants from data (which can be poisoned), these
-invariants are derived from first-principles physics and cannot be
-overridden by any data-driven model.
+CIF implements \textbf{Behavioral Invariants} \cite{friedman2026cogsec1}
+with a partially novel extension: \emph{physics-informed invariants}
+that encode conservation laws (Kirchhoff's Laws) as runtime predicates
+\cite{raissi2019physics}. Rather than learning invariants from data
+(which can be poisoned), these invariants are derived from
+first-principles physics and cannot be overridden by any data-driven
+model.
 
-CIF also implements \textbf{Belief Sandboxing} (Paper 1, Def. 5.2)
+CIF also implements \textbf{Belief Sandboxing}
 \cite{friedman2026cogsec1} by isolating the emergency response pathway:
 before executing load shedding, the agent evaluates the emergency
 hypothesis in a sandboxed belief state that cross-references multiple
 independent sensor channels.
 
-Finally, CIF implements \textbf{Drift Detection} (Paper 1, Def. 5.6)
+Finally, CIF implements \textbf{Drift Detection}
 \cite{friedman2026cogsec1} via temporal damping that filters fast
 synthetic transients characteristic of cyber-attacks.
 
@@ -5794,13 +5857,12 @@ follows:
 \subsection{CIF Defense: Cognitive Firewall and Provenance
 Verification}\label{cif-defense-cognitive-firewall-and-provenance-verification}
 
-CIF implements \textbf{Cognitive Firewall} (Paper 1, Def. 5.1)
-\cite{friedman2026cogsec1} instantiated as provenance-based orientation:
-the agent classifies content based on cryptographic C2PA signatures
-rather than content-based heuristics \cite{c2pa2022standard}. This
-shifts the epistemic basis from ``what does the content say?''
-(manipulable) to ``where did the content come from?'' (cryptographically
-verifiable).
+CIF implements \textbf{Cognitive Firewall} \cite{friedman2026cogsec1}
+instantiated as provenance-based orientation: the agent classifies
+content based on cryptographic C2PA signatures rather than content-based
+heuristics \cite{c2pa2022standard}. This shifts the epistemic basis from
+``what does the content say?'' (manipulable) to ``where did the content
+come from?'' (cryptographically verifiable).
 
 Architectural separation of instruction and data channels prevents
 hidden text in data from being parsed as commands. This implements the
@@ -5808,7 +5870,7 @@ Cognitive Firewall's core function: maintaining the integrity boundary
 between the agent's control plane and its data plane
 \cite{friedman2026cogsec3}.
 
-CIF also implements \textbf{Provenance Verification} (Paper 1, Def. 5.4)
+CIF also implements \textbf{Provenance Verification}
 \cite{friedman2026cogsec1} as the primary classification mechanism,
 replacing content-based heuristics entirely for media with valid
 provenance chains.
@@ -5899,10 +5961,13 @@ CIF mechanism coverage, and acknowledges limitations.
 
 \begin{figure}
 \centering
-\includegraphics[width=0.9\linewidth,height=0.5\textheight,keepaspectratio,alt={CIF-AD-OODA attack-pattern coverage across ten domains for the three universal patterns (FR Polarity Inversion, Constraint Relaxation, Context Boundary Violation).}]{../figures/domain_coverage.png}
-\caption{CIF-AD-OODA attack-pattern coverage across ten domains for the
-three universal patterns (FR Polarity Inversion, Constraint Relaxation,
-Context Boundary Violation).}\label{fig:domain-coverage}
+\includegraphics[width=0.9\linewidth,height=0.5\textheight,keepaspectratio,alt={Goal-hijacking attack-pattern coverage across the ten critical domains (§9), for the three universal patterns: FR Polarity Inversion (5/10 domains), Constraint Relaxation (2/10), and Context Boundary Violation (3/10). Each bar marks the single dominant pattern for that domain; the right-margin callouts give per-pattern totals, which match the domain-by-domain table below.}]{../figures/domain_coverage.png}
+\caption{Goal-hijacking attack-pattern coverage across the ten critical
+domains (§9), for the three universal patterns: FR Polarity Inversion
+(5/10 domains), Constraint Relaxation (2/10), and Context Boundary
+Violation (3/10). Each bar marks the single dominant pattern for that
+domain; the right-margin callouts give per-pattern totals, which match
+the domain-by-domain table below.}\label{fig:domain-coverage}
 \end{figure}
 
 \subsection{10.1 Cross-Domain Attack Pattern
@@ -5950,7 +6015,7 @@ Context Boundary Violation
 \endlastfoot
 1. Rare Earth Mining & \(\checkmark\) & & \\
 2. Nation-State Alliances & & & \(\checkmark\) \\
-3. Cyber-Security & & \(\checkmark\) & \\
+3. Cyber-Security & & & \(\checkmark\) \\
 4. Drone Wars & & & \(\checkmark\) \\
 5. Supply Chain & & \(\checkmark\) & \\
 6. Biowarfare & \(\checkmark\) & & \\
@@ -5958,7 +6023,7 @@ Context Boundary Violation
 8. Trade Wars & \(\checkmark\) & & \\
 9. Infrastructure & \(\checkmark\) & & \\
 10. Fake News & & & \(\checkmark\) \\
-\textbf{Total} & \textbf{5} & \textbf{2} & \textbf{3} \\
+\textbf{Total} & \textbf{5} & \textbf{1} & \textbf{4} \\
 \end{longtable}
 }
 
@@ -5984,7 +6049,7 @@ independent FRs become entangled.
 
 The CIF defense strategy maps directly to restoring independence. Paper
 1's defense composition algebra \cite{friedman2026cogsec1} provides the
-formal basis, with the recommended stack achieving 94--100\% detection
+formal basis, with the recommended stack achieving 96--100\% detection
 at the parametric design ceiling across 950 attack scenarios and four
 production architectures \cite{friedman2026cogsec2}, and Paper 3
 \cite{friedman2026cogsec3} operationalizes this stack through deployment
@@ -6082,9 +6147,12 @@ analyzed:
 
 \begin{figure}
 \centering
-\includegraphics[width=0.9\linewidth,height=0.5\textheight,keepaspectratio,alt={Binary mechanism \textbackslash times domain coverage matrix for the five CIF mechanisms across ten domains.}]{../figures/cif_mechanism_coverage.png}
-\caption{Binary mechanism \(\times\) domain coverage matrix for the five
-CIF mechanisms across ten domains.}\label{fig:mechanism-coverage}
+\includegraphics[width=0.9\linewidth,height=0.5\textheight,keepaspectratio,alt={Primary CIF defense mechanism assigned to each of the ten critical domains: binary mechanism \textbackslash times domain matrix with check marks marking the primary defense; row totals (right margin) give each mechanism's domain count, matching the table below.}]{../figures/cif_mechanism_coverage.png}
+\caption{Primary CIF defense mechanism assigned to each of the ten
+critical domains: binary mechanism \(\times\) domain matrix with check
+marks marking the primary defense; row totals (right margin) give each
+mechanism's domain count, matching the table
+below.}\label{fig:mechanism-coverage}
 \end{figure}
 
 {\def\LTcaptype{none} % do not increment counter
@@ -6163,9 +6231,15 @@ Key findings:
   that the CIF vocabulary is neither redundant nor incomplete for the
   application space surveyed.
 \item
-  \textbf{No single mechanism suffices alone.} Every domain requires at
-  least two mechanisms in composition, consistent with Paper 1's
-  defense-in-depth architecture \cite{friedman2026cogsec1}.
+  \textbf{Composition is the common case, but not universal in this
+  matrix.} Six of the ten domains are assigned two or more primary
+  mechanisms (biowarfare and infrastructure take three); cyber-security,
+  supply chain, food security and fake news are each assigned a single
+  primary mechanism. The matrix records the \emph{primary} defense per
+  domain rather than the full deployed stack, so a single mark is not a
+  claim that one mechanism suffices --- Paper 1's defense-in-depth
+  argument \cite{friedman2026cogsec1} still applies to every domain, and
+  the per-domain sections specify the supporting mechanisms.
 \item
   \textbf{Mechanism selection correlates with attack pattern.} FR
   Polarity Inversion domains predominantly use Behavioral Invariants
@@ -6178,7 +6252,7 @@ Key findings:
 \subsection{10.5 Novel Defense Patterns}\label{novel-defense-patterns}
 
 While the five canonical CIF mechanisms provide comprehensive coverage,
-three domains introduce genuinely novel instantiations that extend the
+four domains introduce genuinely novel instantiations that extend the
 CIF vocabulary:
 
 \textbf{Verification Channel Separation (Biowarfare).} The biowarfare
@@ -6240,7 +6314,7 @@ directly. This validates Paper 1's adoption of the \(n \geq 3f+1\)
 quorum requirement for CIF's Byzantine Consensus mechanism.
 
 \textbf{Emergent Byzantine Resistance in LLMs.} Zheng et
-al.~\cite{zheng2025rethinking} investigate the reliability of LLM-based
+al.~\cite{cpwbft2025} investigate the reliability of LLM-based
 multiagent systems from a BFT perspective and report a surprising
 finding: LLM agents demonstrate ``stronger skepticism'' when processing
 messages that contain erroneous or contradictory information, compared
@@ -6265,8 +6339,9 @@ nodes are presumed to be passive rule-followers.
 
 The emergence of BFT for AI Safety as an active research
 area---evidenced by a dedicated 2025 workshop and multiple concurrent
-publications---independently validates the trajectory established by
-Paper 1's adoption of Byzantine consensus as a canonical CIF mechanism.
+publications \cite{jo2025byzantine}---independently validates the
+trajectory established by Paper 1's adoption of Byzantine consensus as a
+canonical CIF mechanism.
 
 \subsection{10.7 Comparison with Existing
 Frameworks}\label{comparison-with-existing-frameworks}
@@ -6557,7 +6632,7 @@ The Applications section of this unified paper completes the three-part
   (DOI: 10.5281/zenodo.18364128) provided computational validation:
   benchmark evaluation across 950 attack scenarios, ablation studies,
   Bayesian uncertainty quantification, and colony-scale benchmarks, with
-  the recommended defense stack achieving 94--100\% detection in
+  the recommended defense stack achieving 96--100\% detection in
   parametric simulation, plus a category-theoretic formalization of
   defense composition and composable visualization engine.
 \item
@@ -6567,7 +6642,7 @@ The Applications section of this unified paper completes the three-part
   engineering guidance (§1--§8) and demonstrates real-world
   applicability across ten high-stakes operational domains via the
   integrated CIF-AD-OODA model (§9--§10), yielding three universal
-  attack patterns, three novel defense extensions, and retrospective
+  attack patterns, four novel defense extensions, and retrospective
   validation against six documented 2024--2025 AI agent incidents.
 \end{itemize}
 
@@ -6702,6 +6777,8 @@ tolerated'' \\
 Provisions \\
 \(\{FR\}\) & Functional Requirements & What the system must protect \\
 \(\{DP\}\) & Defense Provisions & What CIF mechanisms provide \\
+\(\text{INV}_k\) & Individual invariant predicate & ``A hard rule the
+system checks at runtime; Part 1 writes this \(I_k\)'' \\
 \(\Omega_k\) & Adversary class \(k\) & Capability tier: 1=external
 (input control), 2=peripheral (tool/data channels), 3=agent-level
 (single compromised agent), 4=coordination (inter-agent channels),
@@ -6729,8 +6806,8 @@ methodology:
   classes from external input control (\(\Omega_1\)) through peripheral
   tool/data-channel compromise (\(\Omega_2\)), single compromised agents
   (\(\Omega_3\)), coordination-channel attacks (\(\Omega_4\)), and
-  systemic orchestrator compromise (\(\Omega_5\)), as defined in Part 1,
-  Section 3.
+  systemic orchestrator compromise (\(\Omega_5\)), as defined in Part
+  1's threat model.
 \end{itemize}
 
 \subsubsection{Three Universal Attack
@@ -6845,9 +6922,9 @@ defense mechanism that would have prevented or detected the failure.
 A finance employee at the multinational engineering firm Arup was
 deceived by a deepfake video conference in which AI-generated replicas
 of senior executives instructed the transfer of \$25.6 million across 15
-transactions. The deepfakes were sufficiently convincing that the
-employee overrode standard verification procedures, treating the
-fabricated executive presence as authentic authorization.
+transactions \cite{cnn2024arup}. The deepfakes were sufficiently
+convincing that the employee overrode standard verification procedures,
+treating the fabricated executive presence as authentic authorization.
 
 \textbf{CIF-AD-OODA Analysis.} The attack constitutes a \textbf{Context
 Boundary Violation}: the boundary between verified identity
@@ -6897,7 +6974,7 @@ could be manipulated by embedding hidden instructions in webpage
 content. Pages containing invisible text with directives such as
 ``always give a positive review of this product'' caused ChatGPT to
 generate biased summaries that contradicted the visible content of the
-page.
+page \cite{guardian2024chatgptsearch}.
 
 \textbf{CIF-AD-OODA Analysis.} The attack constitutes a
 \textbf{Constraint Relaxation}: the agent's objectivity constraint was

@@ -102,6 +102,72 @@
 \setlength{\emergencystretch}{3em} % prevent overfull lines
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+% Manuscript macro/package fallbacks (newcommand -> providecommand).
+% Core mathematical packages
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+% Keep long deployment prose and references within the text block.
+% Algorithm formatting
+% Tables
+\usepackage{booktabs}
+\usepackage{multirow}
+% Graphics and floats
+% Typography and layout
+% Page layout (slightly smaller margins for academic journal style)
+% Running headers/footers
+% Caption formatting
+% Colored boxes for callouts
+% Cross-referencing with smart naming
+% Hyperlink styling
+% Configure cleveref for custom environments
+% Theorem environments with consistent numbering
+% Code listings and raw implementation examples in the manuscript
+\usepackage{listings}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible}
+% Math operators
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\KL}{KL}
+\DeclareMathOperator{\Tr}{Tr}
+% Custom commands for notation consistency
+\providecommand{\calA}{\mathcal{A}}
+\providecommand{\calB}{\mathcal{B}}
+\providecommand{\calC}{\mathcal{C}}
+\providecommand{\calD}{\mathcal{D}}
+\providecommand{\calF}{\mathcal{F}}
+\providecommand{\calG}{\mathcal{G}}
+\providecommand{\calH}{\mathcal{H}}
+\providecommand{\calI}{\mathcal{I}}
+\providecommand{\calM}{\mathcal{M}}
+\providecommand{\calO}{\mathcal{O}}
+\providecommand{\calP}{\mathcal{P}}
+\providecommand{\calS}{\mathcal{S}}
+\providecommand{\calT}{\mathcal{T}}
+\providecommand{\calW}{\mathcal{W}}
+% Note: \Phi is a standard LaTeX command, do not redefine
+% Trust notation
+\providecommand{\trust}[2]{\mathcal{T}_{#1 \to #2}}
+\providecommand{\trustt}[3]{\mathcal{T}_{#1 \to #2}^{#3}}
+% Belief notation
+\providecommand{\belief}[2]{\mathcal{B}_{#1}(#2)}
+\providecommand{\belieft}[3]{\mathcal{B}_{#1}^{#2}(#3)}
+% Cognitive state
+\providecommand{\cogstate}[1]{\sigma_{#1}}
+% Attack notation
+\providecommand{\attack}[1]{\mathcal{A}_{#1}}
+\providecommand{\adversary}[1]{\Omega_{#1}}
+% Defense notation
+\providecommand{\firewall}{\mathcal{F}}
+\providecommand{\sandbox}{\mathcal{S}_{box}}
+% Probability and expectation
+\providecommand{\E}{\mathbb{E}}
+\providecommand{\Prob}{\mathbb{P}}
+\providecommand{\indicator}{\mathbb{1}}
+% QED symbol
+\providecommand{\qedsymbol}{$\blacksquare$}
+% Front matter opens on the cover/title page (no list of figures/tables precedes it).
+
 % Slide layout defaults for warning-clean scientific decks.
 \usepackage{etoolbox}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{}
@@ -115,6 +181,33 @@
 \setlength{\tabcolsep}{2pt}
 \AtBeginEnvironment{longtable}{\tiny\renewcommand{\arraystretch}{0.86}\setlength{\tabcolsep}{1pt}}
 \AtBeginEnvironment{tabular}{\tiny\renewcommand{\arraystretch}{0.86}\setlength{\tabcolsep}{1pt}}
+\AtBeginEnvironment{equation}{\tiny}
+\AtBeginEnvironment{equation*}{\tiny}
+\AtBeginEnvironment{align}{\tiny}
+\AtBeginEnvironment{align*}{\tiny}
+\AtBeginEnvironment{itemize}{\footnotesize}
+\AtBeginEnvironment{enumerate}{\footnotesize}
+\AtBeginEnvironment{description}{\footnotesize}
+\setbeamerfont{caption}{size=\tiny}
+\setbeamerfont{caption name}{size=\tiny}
+\setbeamerfont{normal text}{size=\small}
+\setbeamerfont{frametitle}{size=\small}
+\setbeamerfont{section title}{size=\footnotesize}
+\setbeamerfont{subsection title}{size=\footnotesize}
+\setbeamertemplate{section page}{%
+  \centering
+  \begin{beamercolorbox}[sep=12pt,center,wd=\paperwidth]{section title}
+    \parbox{0.86\paperwidth}{\centering\usebeamerfont{section title}\insertsection\par}
+  \end{beamercolorbox}
+}
+\setbeamertemplate{subsection page}{%
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,wd=\paperwidth]{subsection title}
+    \parbox{0.86\paperwidth}{\centering\usebeamerfont{subsection title}\insertsubsection\par}
+  \end{beamercolorbox}
+}
+\setlength{\abovecaptionskip}{2pt}
+\setlength{\belowcaptionskip}{0pt}
 
 % Natbib and cross-reference fallbacks — slides don't load natbib
 % or cleveref, but combined-PDF manuscript prose may emit these
@@ -129,9 +222,15 @@
 \providecommand{\citeyear}[1]{#1}
 \providecommand{\cref}[1]{\texttt{\detokenize{#1}}}
 \providecommand{\Cref}[1]{\texttt{\detokenize{#1}}}
+\providecommand{\crefrange}[2]{\texttt{\detokenize{#1}}--\texttt{\detokenize{#2}}}
+\providecommand{\Crefrange}[2]{\texttt{\detokenize{#1}}--\texttt{\detokenize{#2}}}
+\providecommand{\paragraph}[1]{\textbf{#1}\ }
 
 \newtheorem{proposition}{Proposition}
 \newtheorem{hypothesis}{Hypothesis}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{axiom}{Axiom}
+\newtheorem{property}{Property}
 \usepackage{bookmark}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same}
@@ -154,12 +253,15 @@
 \begin{frame}[allowframebreaks]{The Evidence: What We Proved in Part 2}
 \begin{figure}
 \centering
-\includegraphics[width=0.75\linewidth,height=0.46\textheight,keepaspectratio,alt={Effective trust vs.~delegation depth at decay factors \textbackslash delta = \textbackslash\{0.9, 0.85, 0.7\textbackslash\}, with 50\% and 10\% thresholds marking delegation bounds.}]{../figures/trust_decay.png}
+\includegraphics[width=0.75\linewidth,height=0.40\textheight,keepaspectratio,alt={Effective trust vs.~delegation depth at decay factors \textbackslash delta = \textbackslash\{0.9, 0.85, 0.7\textbackslash\}, with 50\% and 10\% thresholds marking delegation bounds.}]{../figures/trust_decay.png}
 \caption{Effective trust vs.~delegation depth at decay factors
 \(\delta = \{0.9, 0.85, 0.7\}\), with 50\% and 10\% thresholds marking
 delegation bounds.}\label{fig:trust-decay}
 \end{figure}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{The Evidence: What We Proved in Part 2}
 Part 1 supplies the formal apparatus. Part 2 supplies the empirical
 evaluation: tested CIF modules, a \textbf{950-attack} corpus, and an
 architecture-aware simulation over four headline topologies (Claude
@@ -169,10 +271,14 @@ documented in Part 2.
 Here is what the data says.
 \end{frame}
 
+\subsection{The Experimental Setup}\label{the-experimental-setup}
+
 \begin{frame}[allowframebreaks]{The Experimental Setup}
-\protect\phantomsection\label{the-experimental-setup}
 We tested four common multi-agent architectures found in production:
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{The Experimental Setup}
 \begin{itemize}
 \tightlist
 \item
@@ -185,28 +291,36 @@ We tested four common multi-agent architectures found in production:
   \textbf{LangGraph} (State Machine)
 \end{itemize}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{The Experimental Setup}
 The test corpus included direct prompt injection, poisoned RAG contexts,
 deep trust exploitation, and multi-turn social engineering.
 \end{frame}
 
+\subsection{Finding 1: Defense Layering vs.~Individual
+Efficacy}\label{finding-1-defense-layering-vs.-individual-efficacy}
+
 \begin{frame}[allowframebreaks]{Finding 1: Defense Layering
 vs.~Individual Efficacy}
-\protect\phantomsection\label{finding-1-defense-layering-vs.-individual-efficacy}
 \textbf{The Data}: Individual defenses (like just a firewall) stopped
 \textasciitilde60--70\% of attacks in the parametric evaluation. The
-full CIF stack achieved a \textbf{94--100\% parametric detection
-ceiling}, with specific architectures reaching 97--98\% for direct
-injection. The separate real-pipeline evaluation had a lower multi-seed
-mean of approximately 44.8\%. \textbf{The Implication}: The defenses
-demonstrated orthogonal coverage. The firewall blocked inputs that the
-sandbox would have missed, and the sandbox identified anomalies that the
-trust calculus would have permitted. The data suggests that removing any
-single layer creates a statistically significant vulnerability gap.
+full CIF stack achieved a \textbf{96--100\% parametric detection
+ceiling}, with direct injection detected at 99--100\% across
+architectures. The separate real-pipeline evaluation had a lower
+multi-seed mean of approximately 44.8\%. \textbf{The Implication}: The
+defenses demonstrated orthogonal coverage. The firewall blocked inputs
+that the sandbox would have missed, and the sandbox identified anomalies
+that the trust calculus would have permitted. The data suggests that
+removing any single layer creates a statistically significant
+vulnerability gap.
 \end{frame}
+
+\subsection{Finding 2: State Machine
+Determinism}\label{finding-2-state-machine-determinism}
 
 \begin{frame}[fragile,allowframebreaks]{Finding 2: State Machine
 Determinism}
-\protect\phantomsection\label{finding-2-state-machine-determinism}
 \textbf{The Data}: \textbf{LangGraph} architectures achieved the highest
 detection rates (98\%). \textbf{The Mechanism}: In a state machine,
 valid transitions are explicitly defined. Attempts to move from an
@@ -217,8 +331,10 @@ effect, where the architecture itself enforces behavioral invariants
 that are difficult to bypass.
 \end{frame}
 
+\subsection{Finding 3: Hierarchical
+Vulnerability}\label{finding-3-hierarchical-vulnerability}
+
 \begin{frame}[allowframebreaks]{Finding 3: Hierarchical Vulnerability}
-\protect\phantomsection\label{finding-3-hierarchical-vulnerability}
 \textbf{The Data}: \textbf{Claude Code} and \textbf{AutoGPT} styles were
 strong against external attacks but vulnerable to \textbf{Systemic
 (\(\Omega_5\))} compromise. \textbf{The Mechanism}: When the ``Boss''
@@ -229,8 +345,10 @@ topologies requires worker-level tripwires that can reject orders even
 from authenticated superiors.
 \end{frame}
 
+\subsection{Finding 4: Roles as Security
+Boundaries}\label{finding-4-roles-as-security-boundaries}
+
 \begin{frame}[allowframebreaks]{Finding 4: Roles as Security Boundaries}
-\protect\phantomsection\label{finding-4-roles-as-security-boundaries}
 \textbf{The Data}: \textbf{CrewAI} performed exceptionally well against
 privilege escalation. \textbf{The Mechanism}: ``Roles'' acted as
 effective containers for capabilities. A ``Researcher'' agent lacked the
@@ -239,8 +357,10 @@ tools to write code, rendering code-execution attacks against it inert.
 security boundaries, limiting the blast radius of a compromised agent.
 \end{frame}
 
+\subsection{Finding 5: The Stealth-Impact
+Tradeoff}\label{finding-5-the-stealth-impact-tradeoff}
+
 \begin{frame}[allowframebreaks]{Finding 5: The Stealth-Impact Tradeoff}
-\protect\phantomsection\label{finding-5-the-stealth-impact-tradeoff}
 \textbf{The Data}: High-impact attacks were consistently easier to
 detect than low-impact nudges. \textbf{The Implication}:
 ``Catastrophic'' takeover attempts generate significant noise in the
@@ -249,26 +369,39 @@ takeover, but the slow, subtle drift of agent beliefs over long time
 horizons.
 \end{frame}
 
+\subsection{Finding 6: Emergent Misalignment Is the Nash-Optimal
+Attack}\label{finding-6-emergent-misalignment-is-the-nash-optimal-attack}
+
 \begin{frame}[allowframebreaks]{Finding 6: Emergent Misalignment Is the
 Nash-Optimal Attack}
-\protect\phantomsection\label{finding-6-emergent-misalignment-is-the-nash-optimal-attack}
 The colony benchmark reveals a striking pattern: \textbf{emergent
-misalignment achieves the lowest detection rate (56.1\%) at the highest
-false positive rate (46.6\%)} of any evaluated scenario. Part 2's
-game-theoretic analysis explains why: in the zero-sum game between CIF
-and an adversary, emergent misalignment is the Nash-equilibrium attack
-strategy. It is the attacker's best response to full CIF deployment.
+misalignment achieves the lowest detection rate (74.3\%) at the highest
+false positive rate (25.5\%)} of any evaluated scenario. (These are Part
+2's 30-seed benchmark means; an earlier single-seed figure of 56.1\% is
+not the publication estimate.) Part 2's game-theoretic analysis explains
+why: in the zero-sum game between CIF and an adversary, emergent
+misalignment is the Nash-equilibrium attack strategy. It is the
+attacker's best response to full CIF deployment.
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Finding 6: Emergent Misalignment Is the
+Nash-Optimal Attack}
 The game-theoretic payoff matrix shows that: - Full CIF achieves
-94\textbackslash\% detection against direct injection (\(\Omega_1\)),
-89\textbackslash\% against trust exploitation (\(\Omega_4\)) - Against
-emergent misalignment (distributed sub-threshold drift with no explicit
-adversaries), detection falls to 56.1\% - A rational adversary, knowing
-CIF is deployed, will prefer emergent misalignment over direct injection
+99--100\% detection against direct injection (\(\Omega_1\)) and
+96--100\% against impersonation, the corpus category standing for trust
+exploitation (\(\Omega_4\)) - Against emergent misalignment (distributed
+sub-threshold drift with no explicit adversaries), detection falls to
+74.3\% - A rational adversary, knowing CIF is deployed, will prefer
+emergent misalignment over direct injection
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Finding 6: Emergent Misalignment Is the
+Nash-Optimal Attack}
 This is not a failure of CIF---it is a consequence of its success. When
 explicit attacks are reliably detected, adversaries are forced toward
-the subtlest and most distributed manipulation strategies. The 56.1\%
+the subtlest and most distributed manipulation strategies. The 74.3\%
 detection rate on emergent misalignment represents the current frontier
 of defensive capability, not a gap in the framework's design.
 
@@ -279,36 +412,69 @@ provides the response protocol when drift accumulates despite in-context
 detection.
 \end{frame}
 
+\subsection{Finding 7: The Implementation Gap Is a Feature, Not a
+Bug}\label{finding-7-the-implementation-gap-is-a-feature-not-a-bug}
+
 \begin{frame}[allowframebreaks]{Finding 7: The Implementation Gap Is a
 Feature, Not a Bug}
-\protect\phantomsection\label{finding-7-the-implementation-gap-is-a-feature-not-a-bug}
-The 49--88 percentage-point gap between the parametric ceiling
-(94--100\%) and the empirical pipeline mean (44.8\%) reflects
+The 51--88 percentage-point gap between the parametric ceiling
+(96--100\%) and the empirical pipeline mean (44.8\%) reflects
 \textbf{adapter implementation maturity}, not a failure of CIF's formal
 architecture. Part\textasciitilde2 introduces a 5-level CMMI-style
 adapter maturity scale:
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Finding 7: The Implementation Gap Is a
+Feature, Not a Bug}
 {\def\LTcaptype{none} % do not increment counter
-\begin{longtable}[]{@{}llll@{}}
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}@{}}
 \toprule\noalign{}
-Level & Name & DR Range & Description \\
+\begin{minipage}[b]{\linewidth}\raggedright
+Level
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Name
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Marginal TPR
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Description
+\end{minipage} \\
 \midrule\noalign{}
 \endhead
-1 & Stub & \$\sim\$0\% & Interface placeholder only \\
-2 & Heuristic & 10--30\% & Pattern-matching rules \\
-3 & Statistical & 30--60\% & Calibrated thresholds \\
-4 & Adaptive & 60--80\% & Online learning \\
-5 & Verified & 80--94\% & Formally certified \\
+1 & Stub & \$\sim\$0\% & Hardcoded scores; no domain logic \\
+2 & Heuristic & 1--5\% & Pattern matching; uncalibrated thresholds \\
+3 & Statistical & 5--15\% & Calibrated thresholds; regression
+features \\
+4 & Adaptive & 15--30\% & Online learning; per-architecture tuning \\
+5 & Verified & 30\%+ & Formal guarantees; cross-architecture
+validated \\
 \bottomrule\noalign{}
 \end{longtable}
 }
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Finding 7: The Implementation Gap Is a
+Feature, Not a Bug}
+The rubric column is each adapter's \emph{marginal} contribution to
+true-positive rate, not a whole-pipeline detection rate: a Level-5
+adapter is one that adds 30 or more percentage points when introduced,
+not one that reaches 30\% detection on its own.
+
 The current Claude Code adapter is at Level 3 (Statistical), explaining
 the 44.8\% mean. The roadmap projects +35--41 percentage points of
 improvement by advancing adapters to Level 5 for the primary attack
-categories. The parametric ceiling (94--100\%) represents what Level-5
+categories. The parametric ceiling (96--100\%) represents what Level-5
 adapters achieve---it is a design target, not an overclaim.
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Finding 7: The Implementation Gap Is a
+Feature, Not a Bug}
 \textbf{Operator implication}: When deploying CIF, assess the maturity
 level of each adapter against your threat model. Level-3 adapters
 (current) provide meaningful protection against unsophisticated
@@ -318,12 +484,19 @@ closeable---it is an engineering challenge, not a theoretical
 limitation.
 \end{frame}
 
+\begin{frame}
+\end{frame}
+
+\subsection{A Note on the Numbers}\label{a-note-on-the-numbers}
+
 \begin{frame}[allowframebreaks]{A Note on the Numbers}
-\protect\phantomsection\label{a-note-on-the-numbers}
 The detection rates in Part 2 are derived from a calibrated parametric
 simulation, modeled on the architecture's topology. They represent the
 \emph{structural} security of the design.
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{A Note on the Numbers}
 \begin{itemize}
 \tightlist
 \item
@@ -336,6 +509,9 @@ simulation, modeled on the architecture's topology. They represent the
   catches 94\% of all evil AI thoughts.''
 \end{itemize}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{A Note on the Numbers}
 We proved the \emph{architecture} works. The implementation fidelity is
 the variable for the builder.
 
@@ -347,7 +523,7 @@ not --- they measure different things:
 \begin{itemize}
 \tightlist
 \item
-  \textbf{94--100\%} (parametric simulation, \(N=3{,}800\)): CIF's
+  \textbf{96--100\%} (parametric simulation, \(N=3{,}800\)): CIF's
   \textbf{design-level detection ceiling} --- what the defense
   architecture achieves when adapters are fully mature (Level 5) and
   conditions match the calibrated model. This is the target, not the
@@ -358,22 +534,27 @@ not --- they measure different things:
   architecture with Level-3 adapters. This is what you get today, out of
   the box, before adapter tuning.
 \item
-  \textbf{12.4\%} (ablation corpus, 100 attacks, all categories
-  including hardest): The \textbf{conservative floor} --- full pipeline
-  performance on a corpus specifically designed to include difficult
-  attacks. This represents the worst-case realistic estimate.
+  \textbf{\textasciitilde12.2\%} (ablation corpus, 98 attacks, all
+  categories including hardest): The \textbf{conservative floor} ---
+  full pipeline performance on a corpus specifically designed to include
+  difficult attacks. This represents the worst-case realistic estimate.
 \end{itemize}
 
-All three numbers are correct. Use 44.8\% for realistic planning, 94\%
-as the achievable ceiling with mature adapters, and 12.4\% as a
-conservative lower bound for adversarial threat modeling.
+All three numbers are correct. Use 44.8\% for realistic planning, 96\%
+as the floor of the achievable ceiling with mature adapters, and
+\textasciitilde12.2\% as a conservative lower bound for adversarial
+threat modeling.
 \end{quote}
+\end{frame}
 
-\begin{block}{Tripwire Configuration Data}
+\begin{frame}[allowframebreaks]{Tripwire Configuration Data}
 \protect\phantomsection\label{tripwire-configuration-data}
 The simulations utilized the following tripwire densities to achieve the
 reported results:
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Tripwire Configuration Data}
 {\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}lll@{}}
 \toprule\noalign{}
@@ -387,7 +568,6 @@ Temporal canaries & 1 per agent & Session continuity \\
 \bottomrule\noalign{}
 \end{longtable}
 }
-\end{block}
 \end{frame}
 
 \end{document}

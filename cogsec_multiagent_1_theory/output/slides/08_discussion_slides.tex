@@ -74,9 +74,82 @@
 }{% if KOMA class
   \KOMAoptions{parskip=half}}
 \makeatother
+\usepackage{longtable,booktabs,array}
+\usepackage{caption}
+\captionsetup[table]{skip=6pt}
+\newcounter{none} % for unnumbered tables
+\usepackage{calc} % for calculating minipage widths
+\usepackage{caption}
+% Make caption package work with longtable
+\makeatletter
+\def\fnum@table{\tablename~\thetable}
+\makeatother
 \setlength{\emergencystretch}{3em} % prevent overfull lines
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+% Manuscript macro/package fallbacks (newcommand -> providecommand).
+% Core mathematical packages
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+% Permit bibliography and theorem prose to break without overfull boxes.
+% Algorithm formatting
+% Tables
+\usepackage{booktabs}
+\usepackage{multirow}
+% Graphics
+% Cross-referencing with smart naming
+% Configure cleveref for custom environments
+% Theorem environments with consistent numbering
+% Code listings used by supplementary implementation examples
+\usepackage{listings}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible}
+% End of theorem environment declarations
+% Math operators
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\KL}{KL}
+\DeclareMathOperator{\Tr}{Tr}
+% Custom commands for notation consistency
+\providecommand{\calA}{\mathcal{A}}
+\providecommand{\calB}{\mathcal{B}}
+\providecommand{\calC}{\mathcal{C}}
+\providecommand{\calD}{\mathcal{D}}
+\providecommand{\calF}{\mathcal{F}}
+\providecommand{\calG}{\mathcal{G}}
+\providecommand{\calH}{\mathcal{H}}
+\providecommand{\calI}{\mathcal{I}}
+\providecommand{\calM}{\mathcal{M}}
+\providecommand{\calO}{\mathcal{O}}
+\providecommand{\calP}{\mathcal{P}}
+\providecommand{\calS}{\mathcal{S}}
+\providecommand{\calT}{\mathcal{T}}
+\providecommand{\calW}{\mathcal{W}}
+% Note: \Phi is a standard LaTeX command, do not redefine
+% Trust notation
+\providecommand{\trust}[2]{\mathcal{T}_{#1 \to #2}}
+\providecommand{\trustt}[3]{\mathcal{T}_{#1 \to #2}^{#3}}
+% Belief notation
+\providecommand{\belief}[2]{\mathcal{B}_{#1}(#2)}
+\providecommand{\belieft}[3]{\mathcal{B}_{#1}^{#2}(#3)}
+% Cognitive state
+\providecommand{\cogstate}[1]{\sigma_{#1}}
+% Attack notation
+\providecommand{\attack}[1]{\mathcal{A}_{#1}}
+\providecommand{\adversary}[1]{\Omega_{#1}}
+% Defense notation
+\providecommand{\firewall}{\mathcal{F}}
+\providecommand{\sandbox}{\mathcal{S}_{box}}
+% Probability and expectation
+\providecommand{\E}{\mathbb{E}}
+\providecommand{\Prob}{\mathbb{P}}
+\providecommand{\indicator}{\mathbb{1}}
+% QED symbol
+\providecommand{\qedsymbol}{$\blacksquare$}
+% Page Layout (Slightly smaller margins)
+% Hyperlink Styling
+% List of Figures and List of Tables in TOC
+
 % Slide layout defaults for warning-clean scientific decks.
 \usepackage{etoolbox}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{}
@@ -90,6 +163,33 @@
 \setlength{\tabcolsep}{2pt}
 \AtBeginEnvironment{longtable}{\tiny\renewcommand{\arraystretch}{0.86}\setlength{\tabcolsep}{1pt}}
 \AtBeginEnvironment{tabular}{\tiny\renewcommand{\arraystretch}{0.86}\setlength{\tabcolsep}{1pt}}
+\AtBeginEnvironment{equation}{\tiny}
+\AtBeginEnvironment{equation*}{\tiny}
+\AtBeginEnvironment{align}{\tiny}
+\AtBeginEnvironment{align*}{\tiny}
+\AtBeginEnvironment{itemize}{\footnotesize}
+\AtBeginEnvironment{enumerate}{\footnotesize}
+\AtBeginEnvironment{description}{\footnotesize}
+\setbeamerfont{caption}{size=\tiny}
+\setbeamerfont{caption name}{size=\tiny}
+\setbeamerfont{normal text}{size=\small}
+\setbeamerfont{frametitle}{size=\small}
+\setbeamerfont{section title}{size=\footnotesize}
+\setbeamerfont{subsection title}{size=\footnotesize}
+\setbeamertemplate{section page}{%
+  \centering
+  \begin{beamercolorbox}[sep=12pt,center,wd=\paperwidth]{section title}
+    \parbox{0.86\paperwidth}{\centering\usebeamerfont{section title}\insertsection\par}
+  \end{beamercolorbox}
+}
+\setbeamertemplate{subsection page}{%
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,wd=\paperwidth]{subsection title}
+    \parbox{0.86\paperwidth}{\centering\usebeamerfont{subsection title}\insertsubsection\par}
+  \end{beamercolorbox}
+}
+\setlength{\abovecaptionskip}{2pt}
+\setlength{\belowcaptionskip}{0pt}
 
 % Natbib and cross-reference fallbacks — slides don't load natbib
 % or cleveref, but combined-PDF manuscript prose may emit these
@@ -104,9 +204,20 @@
 \providecommand{\citeyear}[1]{#1}
 \providecommand{\cref}[1]{\texttt{\detokenize{#1}}}
 \providecommand{\Cref}[1]{\texttt{\detokenize{#1}}}
+\providecommand{\crefrange}[2]{\texttt{\detokenize{#1}}--\texttt{\detokenize{#2}}}
+\providecommand{\Crefrange}[2]{\texttt{\detokenize{#1}}--\texttt{\detokenize{#2}}}
+\providecommand{\paragraph}[1]{\textbf{#1}\ }
+
+% Additional theorem-like environments from manuscript preamble.
+\newtheorem{observation}{Observation}
+\newtheorem{formalization}{Formalization}
+\newtheorem{principle}{Principle}
 
 \newtheorem{proposition}{Proposition}
 \newtheorem{hypothesis}{Hypothesis}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{axiom}{Axiom}
+\newtheorem{property}{Property}
 \usepackage{bookmark}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same}
@@ -134,62 +245,81 @@ Directions}\label{sec:discussion}
 Limitations, and Future Directions}
 This section examines the theoretical implications of the Cognitive
 Integrity Framework (\cref{sec:theoretical-implications}), formal
-limitations and boundary conditions (\cref{sec:limitations}),
-relationship to prior work (\cref{sec:related-work}), governance
-implications (\cref{sec:governance}), and future research directions
+limitations (\cref{sec:formal-limitations}) and boundary conditions
+(\cref{sec:limitations}), relationship to prior work
+(\cref{sec:related-work}), governance implications
+(\cref{sec:governance}), and future research directions
 (\cref{sec:future-directions}).
 \end{frame}
 
-\begin{frame}[allowframebreaks]{Empirical Validation Summary}
-\protect\phantomsection\label{empirical-validation-summary}
+\subsection{Empirical Validation Summary (Part
+2)}\label{empirical-validation-summary-part-2}
+
+\begin{frame}[allowframebreaks]{Empirical Validation Summary (Part 2)}
 The formal mechanisms proposed in this paper have been validated through
 extensive architecture-aware parametric simulation in \textbf{Part 2:
 Computational Validation} \cite{friedman2026cogsec2}. In experiments
-across six production multiagent architectures (including hierarchical,
-role-based, and peer-to-peer topologies), the parametric simulation
-establishes a design-level detection ceiling of \textbf{94--100\%}
+across the four production multiagent architectures Part 2 evaluates
+(Claude Code, AutoGPT, CrewAI, LangGraph), the parametric simulation
+establishes a design-level detection ceiling of \textbf{96--100\%}
 against a corpus of 950 cognitive attacks; the prototype pipeline
-achieves a mean detection rate of \textbf{44.7\%} {[}CI: 43.4\%,
-46.2\%{]} across 30 random seeds (Part 2, \S\{5.1\}).
+achieves a mean detection rate of \textbf{44.8\%} {[}95\% CI: 43.2\%,
+46.4\%{]} across 30 random seeds (Part 2, Results).
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Empirical Validation Summary (Part 2)}
 Key empirical findings include:
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Empirical Validation Summary (Part 2)}
 \begin{enumerate}
 \tightlist
 \item
-  \textbf{Defense Composition}: Consistent with Theorem 3.1 and 3.2,
-  layered defenses composed multiplicatively, with the full framework
-  significantly outperforming any single mechanism. Ablation studies
-  (Part 2, \S\{5.6\}) confirm that removing the Detection module causes
-  the largest detection rate drop, followed by Tripwires and Invariants.
+  \textbf{Defense Composition}: Consistent with the series and parallel
+  detection-rate theorems (\cref{thm:series-detection},
+  \cref{thm:parallel-detection}), layered defenses composed
+  multiplicatively, with the full framework outperforming any single
+  mechanism. Part 2's ablation studies confirm that removing the
+  Detection module causes the largest drop, followed by the Trust
+  Calculus.
 \item
   \textbf{Trust Boundedness}: The \(\delta^d\) trust decay parameter
   successfully prevented ``trust laundering'\,' amplification attacks in
   all tested topologies, validating Formula 4.
 \item
   \textbf{Architecture Dependence}: As predicted by our threat model,
-  peer-to-peer architectures showed the greatest vulnerability to
-  lateral movement (mitigated by the Trust Calculus), while hierarchical
-  architectures were most sensitive to orchestrator compromise
-  (requiring strict tripwires).
+  the architecture with the lowest parametric detection in Part 2 is
+  AutoGPT's autonomous-mesh topology, whose distributed trust structure
+  offers the widest lateral-movement surface; hierarchical topologies
+  concentrate risk in orchestrator compromise instead. No peer-to-peer
+  architecture was evaluated.
 \item
-  \textbf{Adversarial Training}: Five rounds of adversarial training on
-  the Claude Code architecture improved hardened detection rates from
-  38.9\% to 48.1\%, with the round-to-round gain showing geometric decay
-  toward a Nash equilibrium of approximately 50.5\% --- confirming that
-  the bottleneck is adapter implementation maturity, not the defense
-  algorithm quality (Part 2, \S\{5g\}).
+  \textbf{Adversarial Training}: In Part 2's closed-form
+  adversarial-training design model, five rounds on the Claude Code
+  architecture raise hardened detection from 52.0\% (Round 1) to 67.9\%
+  (Round 5), \(+23.2\) pp over the pre-AT baseline. The per-round gain
+  sequence \((7.3, 5.6, 5.0, 2.9, 2.4)\) pp is approximately linear
+  rather than geometrically decaying, and the projected Nash equilibrium
+  of 100.0\% is a property of the model's assumed gains, not a measured
+  equilibrium. These are design-model values, not pipeline-in-the-loop
+  measurements.
 \end{enumerate}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Empirical Validation Summary (Part 2)}
 These results confirm that the abstract properties proven
 here---boundedness, composition, and detectability---translate into
 concrete security improvements when implemented in realistic agent
 architectures.
 \end{frame}
 
-\begin{frame}[allowframebreaks]{Theoretical Implications}
-\protect\phantomsection\label{sec:theoretical-implications}
-\begin{block}{Why Composable Defenses Are Necessary}
+\subsection{Theoretical
+Implications}\label{sec:theoretical-implications}
+
+\begin{frame}[allowframebreaks]{Why Composable Defenses Are Necessary}
 \protect\phantomsection\label{why-composable-defenses-are-necessary}
 The defense composition algebra (\cref{thm:series-detection},
 \cref{thm:parallel-detection}) formalizes a principle implicit in
@@ -197,6 +327,9 @@ security practice: layered defenses provide multiplicative rather than
 additive protection. Each defense mechanism addresses a distinct attack
 surface:
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Why Composable Defenses Are Necessary}
 \begin{table}[htbp]
 \centering
 \caption{Defense mechanisms and their target attack surfaces.}
@@ -214,20 +347,26 @@ Byzantine Consensus & Coordination attacks \\
 \end{tabular}
 \end{table}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Why Composable Defenses Are Necessary}
 The orthogonality of these surfaces explains why no single mechanism
 suffices: an attack that bypasses input filtering may still violate
 behavioral invariants; an attack that evades pattern matching may still
 trigger belief drift detection.
 
-Empirical ablation studies in Part 2 (\S\{5.6\}) validate this
-theoretical prediction: removing the Cognitive Firewall causes the
-largest detection rate drop (\(-13\%\)), followed by Tripwires
-(\(-9\%\)) and Provenance Tracking (\(-7\%\)). No individual mechanism
-provides comparable detection rates to the full ensemble---confirming
-the multiplicative composition theorem (\cref{thm:series-detection}).
-\end{block}
+Empirical ablation studies in Part 2 validate this theoretical
+prediction: removing the Detection module causes the largest drop
+(\(\Delta\text{TPR} \approx -0.051\) on the 98-attack ablation corpus),
+followed by the Trust Calculus (\(\approx -0.020\)); Firewall,
+Invariants and Tripwire tie behind it at \(\approx -0.010\), and
+Consensus, Provenance and Sandbox show no marginal contribution on that
+corpus. No individual mechanism provides comparable detection rates to
+the full ensemble---confirming the multiplicative composition theorem
+(\cref{thm:series-detection}).
+\end{frame}
 
-\begin{block}{The Trust Boundedness Guarantee}
+\begin{frame}[allowframebreaks]{The Trust Boundedness Guarantee}
 \protect\phantomsection\label{the-trust-boundedness-guarantee}
 The bounded trust theorem (\cref{thm:trust-bounded}) represents a
 structural guarantee against trust amplification attacks. Unlike
@@ -236,8 +375,14 @@ detection-based defenses that may be evaded by novel attacks, the
 adversary capability, and any delegation chain length. This makes it a
 \emph{formal} rather than \emph{empirical} security property.
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{The Trust Boundedness Guarantee}
 The decay factor \(\delta \in [0, 1)\) creates a tradeoff:
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{The Trust Boundedness Guarantee}
 \begin{itemize}
 \tightlist
 \item
@@ -246,14 +391,17 @@ The decay factor \(\delta \in [0, 1)\) creates a tradeoff:
   Higher \(\delta\): More delegation flexibility, weaker bounds
 \end{itemize}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{The Trust Boundedness Guarantee}
 Organizations must calibrate this tradeoff based on their threat model
 (\cref{sec:operator-posture} in Part 3). Domain-calibrated \(\delta\)
 choices --- from millisecond OODA cycles in drone swarms to year-scale
 diplomatic agents --- are analyzed in Part 3 \cite{friedman2026cogsec3}
 across ten critical operational domains.
-\end{block}
+\end{frame}
 
-\begin{block}{Information-Theoretic Detection Limits}
+\begin{frame}[allowframebreaks]{Information-Theoretic Detection Limits}
 \protect\phantomsection\label{information-theoretic-detection-limits}
 The stealth-impact fundamental limit (\cref{thm:stealth-impact})
 establishes that certain attacks are \emph{provably} undetectable
@@ -266,13 +414,18 @@ This has practical implications: security architectures should not
 promise detection of all possible attacks. Instead, they should
 characterize the detection boundary and provide containment for attacks
 that cross it.
-\end{block}
+\end{frame}
 
-\begin{block}{Architecture-Specific Vulnerability Patterns}
+\begin{frame}[allowframebreaks]{Architecture-Specific Vulnerability
+Patterns}
 \protect\phantomsection\label{architecture-specific-vulnerability-patterns}
 The formal framework reveals why different multiagent architectures
 exhibit different vulnerability profiles:
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Architecture-Specific Vulnerability
+Patterns}
 \begin{table}[htbp]
 \centering
 \caption{Theoretical vulnerability analysis by architecture type.}
@@ -289,18 +442,24 @@ State machine & State integrity assumption & State hash verification \\
 \end{tabular}
 \end{table}
 
-These are structural properties of the architectures themselves, not
-implementation-specific weaknesses.
-\end{block}
 \end{frame}
 
-\begin{frame}[allowframebreaks]{Formal Limitations}
-\protect\phantomsection\label{sec:limitations}
-\begin{block}{Assumption Dependencies}
+\begin{frame}[allowframebreaks]{Architecture-Specific Vulnerability
+Patterns}
+These are structural properties of the architectures themselves, not
+implementation-specific weaknesses.
+\end{frame}
+
+\subsection{Formal Limitations}\label{sec:formal-limitations}
+
+\begin{frame}[allowframebreaks]{Assumption Dependencies}
 \protect\phantomsection\label{assumption-dependencies}
 The formal guarantees of CIF depend on specific assumptions. Violation
 of these assumptions degrades or eliminates security properties:
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Assumption Dependencies}
 \begin{table}[htbp]
 \centering
 \caption{Impact of assumption violations on formal guarantees.}
@@ -316,9 +475,9 @@ Known attack patterns & Zero-day evasion possible \\
 \bottomrule
 \end{tabular}
 \end{table}
-\end{block}
+\end{frame}
 
-\begin{block}{Scalability Constraints}
+\begin{frame}[allowframebreaks]{Scalability Constraints}
 \protect\phantomsection\label{scalability-constraints}
 The formal framework imposes scaling limitations:
 
@@ -337,12 +496,15 @@ larger systems.
 Consensus latency (\cref{eq:consensus-scaling}) suggests that Byzantine
 consensus should be reserved for critical decisions rather than applied
 universally.
-\end{block}
+\end{frame}
 
-\begin{block}{Inherent Detection Gaps}
+\begin{frame}[allowframebreaks]{Inherent Detection Gaps}
 \protect\phantomsection\label{inherent-detection-gaps}
 Certain attack types are formally difficult to detect:
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Inherent Detection Gaps}
 \begin{itemize}
 \tightlist
 \item
@@ -356,13 +518,16 @@ Certain attack types are formally difficult to detect:
   \(\Omega_1\)--\(\Omega_4\) threat model
 \end{itemize}
 
-These are not implementation failures but formal limitations of the
-detection paradigm.
-\end{block}
 \end{frame}
 
+\begin{frame}[allowframebreaks]{Inherent Detection Gaps}
+These are not implementation failures but formal limitations of the
+detection paradigm.
+\end{frame}
+
+\subsection{Relationship to Prior Work}\label{sec:related-work}
+
 \begin{frame}[allowframebreaks]{Relationship to Prior Work}
-\protect\phantomsection\label{sec:related-work}
 CIF builds on and extends several research traditions:
 
 \textbf{Byzantine Fault Tolerance}: Classical BFT (PBFT, etc.) assumes
@@ -373,10 +538,14 @@ manipulation---agents that appear functional but hold corrupted beliefs.
 etc.) focus on authorization decisions. CIF addresses continuous trust
 evolution with provable decay bounds.
 
-\textbf{AI Safety and Alignment}: Constitutional AI and similar
-approaches address single-agent alignment. CIF extends these concepts to
-multi-agent coordination integrity.
+\textbf{AI Safety and Alignment}: Constitutional AI
+\cite{bai2022constitutional} and similar approaches address single-agent
+alignment. CIF extends these concepts to multi-agent coordination
+integrity.
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Relationship to Prior Work}
 \textbf{Prompt Injection Defenses}: Existing defenses focus on
 single-agent scenarios. CIF addresses the propagation and amplification
 of attacks across agent networks.
@@ -392,6 +561,9 @@ that directly inform CIF's trust calculus. AIC's treatment of BOLTS
 components (Business, Operations, Legal, Technical, Social) also informs
 our analysis of cyberphysical cognitive systems where cognitive security
 spans multiple operational domains. Critically, the Active Inference
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Relationship to Prior Work}
 perspective illuminates why belief manipulation attacks are particularly
 dangerous: agents minimizing variational free energy will actively seek
 information confirming their current beliefs, creating self-reinforcing
@@ -407,6 +579,9 @@ organized by type (Vulnerability, Exploit, Remedy, Practice,
 Accelerator, Moderator, Condition). Where CIF provides provable
 guarantees and formal composition rules, the Atlas offers an
 empirically-grounded taxonomy of observed attack patterns and defensive
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Relationship to Prior Work}
 practices---such as the Devil's Advocate and Key Assumptions Check
 techniques for countering groupthink and confirmation bias. The
 hierarchical parent-child structure of Atlas patterns maps naturally
@@ -418,12 +593,15 @@ The novel contribution is the integration of these concerns into a
 unified formal framework with composable guarantees.
 \end{frame}
 
-\begin{frame}[allowframebreaks]{Governance and Policy Implications}
-\protect\phantomsection\label{sec:governance}
-\begin{block}{The Regulatory Gap}
+\subsection{Governance and Policy Implications}\label{sec:governance}
+
+\begin{frame}[allowframebreaks]{The Regulatory Gap}
 \protect\phantomsection\label{the-regulatory-gap}
 Current AI regulation lacks cognitive security provisions:
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{The Regulatory Gap}
 \begin{table}[htbp]
 \centering
 \caption{Regulatory gaps for cognitive security.}
@@ -438,114 +616,145 @@ ISO 42001 & AI management systems & Process-focused, not cognitive-state focused
 \bottomrule
 \end{tabular}
 \end{table}
-\end{block}
+\end{frame}
 
-\begin{block}{Recommendations for Policy}
+\begin{frame}[allowframebreaks]{Recommendations for Policy}
 \protect\phantomsection\label{recommendations-for-policy}
 We propose that regulators consider:
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Recommendations for Policy}
 \begin{enumerate}
 \item \textbf{Cognitive Security Audits}: Mandatory assessment of inter-agent trust mechanisms for high-risk deployments
 \item \textbf{Transparency Requirements}: Disclosure of trust hierarchies and delegation policies
 \item \textbf{Incident Reporting}: New category for cognitive attacks
 \item \textbf{Certification Pathways}: Industry certification for cognitive security practices
 \end{enumerate}
-\end{block}
 \end{frame}
 
-\begin{frame}[allowframebreaks]{Future Theoretical Directions}
-\protect\phantomsection\label{sec:future-directions}
-\begin{block}{Adaptive Defense Theory}
+\subsection{Future Theoretical Directions}\label{sec:future-directions}
+
+\begin{frame}[allowframebreaks]{Adaptive Defense Theory}
 \protect\phantomsection\label{adaptive-defense-theory}
 The detection degradation problem suggests a need for adaptive defenses.
 Formal treatment as a game-theoretic equilibrium:
 
 \begin{equation}
 \label{eq:adaptive-defense}
-\pi^{*}*{\text{defense}} = \argmax*{\pi} \mathbb{E}\left[\sum_t \gamma^t r(s_t, a_t)\right]
+\pi^{*}_{\text{defense}} = \argmax_{\pi} \mathbb{E}\left[\sum_t \gamma^t r(s_t, a_t)\right]
 \end{equation}
 
 requires solving the partial observability problem---defenders cannot
 directly observe attacker intent.
-\end{block}
+\end{frame}
 
-\begin{block}{Cross-System Trust Federation}
+\begin{frame}[allowframebreaks]{Cross-System Trust Federation}
 \protect\phantomsection\label{cross-system-trust-federation}
 Extending trust calculus across organizational boundaries:
 
 \begin{equation}
 \label{eq:cross-system-trust}
-\mathcal{T}*{i \to j}^{\text{cross}} = f(\mathcal{T}*{\text{local}}, \mathcal{T}*{\text{reputation}}, \mathcal{T}*{\text{attestation}})
+\mathcal{T}_{i \to j}^{\text{cross}} = f(\mathcal{T}_{\text{local}}, \mathcal{T}_{\text{reputation}}, \mathcal{T}_{\text{attestation}})
 \end{equation}
 
 The primary challenge is trust calibration---mapping heterogeneous trust
 semantics across systems with different threat models.
-\end{block}
+\end{frame}
 
-\begin{block}{Emergent Behavior Security}
+\begin{frame}[allowframebreaks]{Emergent Behavior Security}
 \protect\phantomsection\label{emergent-behavior-security}
 As multiagent systems scale, emergent collective behaviors become
 security-relevant. Open questions include:
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Emergent Behavior Security}
 \begin{itemize}
 \item Formal characterization of beneficial vs. malicious emergence
 \item Detection of emergent coordination patterns indicating compromise
 \item Sandboxing that preserves beneficial emergence while constraining malicious emergence
 \end{itemize}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Emergent Behavior Security}
 The colony cognitive security perspective developed in
 \cref{sec:eusocial-cogsec} provides initial formal foundations for these
 questions.
-\end{block}
+\end{frame}
 
-\begin{block}{Long-Horizon Agent Security}
+\begin{frame}[allowframebreaks]{Long-Horizon Agent Security}
 \protect\phantomsection\label{long-horizon-agent-security}
 Agents operating over extended time horizons (days, weeks, months) face
 additional challenges:
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Long-Horizon Agent Security}
 \begin{itemize}
 \item \textbf{Memory integrity}: Verification of accumulated knowledge
 \item \textbf{Goal stability}: Distinguishing legitimate evolution from adversarial drift
 \item \textbf{Temporal consistency}: Decisions consistent with historical context
 \end{itemize}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Long-Horizon Agent Security}
 The trust calculus extends naturally to temporal trust:
 \(\mathcal{T}^{t} = \mathcal{T}^{t-1} \cdot \delta_{\text{time}}\) where
 \(\delta_{\text{time}}\) encodes trust decay over time.
-\end{block}
+\end{frame}
 
-\begin{block}{The Cognitive Security Research Agenda}
+\begin{frame}[allowframebreaks]{The Cognitive Security Research Agenda}
 \protect\phantomsection\label{the-cognitive-security-research-agenda}
 We propose a research agenda organized by time horizon:
 
 \textbf{Near-term (1--2 years)}:
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{The Cognitive Security Research Agenda}
 \begin{itemize}
 \item Standardized formal verification benchmarks
 \item Integration of CIF mechanisms into production frameworks
 \item Theoretical analysis of real-world attack patterns
 \end{itemize}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{The Cognitive Security Research Agenda}
 \textbf{Medium-term (2--5 years)}:
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{The Cognitive Security Research Agenda}
 \begin{itemize}
 \item Game-theoretic foundations for adaptive defenses
 \item Cross-organizational trust federation protocols
 \item Hardware-backed cognitive security guarantees
 \end{itemize}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{The Cognitive Security Research Agenda}
 \textbf{Long-term (5+ years)}:
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{The Cognitive Security Research Agenda}
 \begin{itemize}
 \item Formal verification of emergent agent behavior
 \item Self-healing cognitive security systems
 \item Integration with broader AI safety theory
 \end{itemize}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{The Cognitive Security Research Agenda}
 The formal foundations established in this work---bounded trust,
 composable defenses, information-theoretic limits---provide a stable
 basis for this evolving research program.
-\end{block}
 \end{frame}
 
 \end{document}

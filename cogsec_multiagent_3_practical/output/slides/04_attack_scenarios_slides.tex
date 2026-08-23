@@ -74,6 +74,16 @@
 }{% if KOMA class
   \KOMAoptions{parskip=half}}
 \makeatother
+\usepackage{longtable,booktabs,array}
+\usepackage{caption}
+\captionsetup[table]{skip=6pt}
+\newcounter{none} % for unnumbered tables
+\usepackage{calc} % for calculating minipage widths
+\usepackage{caption}
+% Make caption package work with longtable
+\makeatletter
+\def\fnum@table{\tablename~\thetable}
+\makeatother
 \usepackage{graphicx}
 \makeatletter
 \newsavebox\pandoc@box
@@ -92,6 +102,72 @@
 \setlength{\emergencystretch}{3em} % prevent overfull lines
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+% Manuscript macro/package fallbacks (newcommand -> providecommand).
+% Core mathematical packages
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+% Keep long deployment prose and references within the text block.
+% Algorithm formatting
+% Tables
+\usepackage{booktabs}
+\usepackage{multirow}
+% Graphics and floats
+% Typography and layout
+% Page layout (slightly smaller margins for academic journal style)
+% Running headers/footers
+% Caption formatting
+% Colored boxes for callouts
+% Cross-referencing with smart naming
+% Hyperlink styling
+% Configure cleveref for custom environments
+% Theorem environments with consistent numbering
+% Code listings and raw implementation examples in the manuscript
+\usepackage{listings}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible}
+% Math operators
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\KL}{KL}
+\DeclareMathOperator{\Tr}{Tr}
+% Custom commands for notation consistency
+\providecommand{\calA}{\mathcal{A}}
+\providecommand{\calB}{\mathcal{B}}
+\providecommand{\calC}{\mathcal{C}}
+\providecommand{\calD}{\mathcal{D}}
+\providecommand{\calF}{\mathcal{F}}
+\providecommand{\calG}{\mathcal{G}}
+\providecommand{\calH}{\mathcal{H}}
+\providecommand{\calI}{\mathcal{I}}
+\providecommand{\calM}{\mathcal{M}}
+\providecommand{\calO}{\mathcal{O}}
+\providecommand{\calP}{\mathcal{P}}
+\providecommand{\calS}{\mathcal{S}}
+\providecommand{\calT}{\mathcal{T}}
+\providecommand{\calW}{\mathcal{W}}
+% Note: \Phi is a standard LaTeX command, do not redefine
+% Trust notation
+\providecommand{\trust}[2]{\mathcal{T}_{#1 \to #2}}
+\providecommand{\trustt}[3]{\mathcal{T}_{#1 \to #2}^{#3}}
+% Belief notation
+\providecommand{\belief}[2]{\mathcal{B}_{#1}(#2)}
+\providecommand{\belieft}[3]{\mathcal{B}_{#1}^{#2}(#3)}
+% Cognitive state
+\providecommand{\cogstate}[1]{\sigma_{#1}}
+% Attack notation
+\providecommand{\attack}[1]{\mathcal{A}_{#1}}
+\providecommand{\adversary}[1]{\Omega_{#1}}
+% Defense notation
+\providecommand{\firewall}{\mathcal{F}}
+\providecommand{\sandbox}{\mathcal{S}_{box}}
+% Probability and expectation
+\providecommand{\E}{\mathbb{E}}
+\providecommand{\Prob}{\mathbb{P}}
+\providecommand{\indicator}{\mathbb{1}}
+% QED symbol
+\providecommand{\qedsymbol}{$\blacksquare$}
+% Front matter opens on the cover/title page (no list of figures/tables precedes it).
+
 % Slide layout defaults for warning-clean scientific decks.
 \usepackage{etoolbox}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{}
@@ -105,6 +181,33 @@
 \setlength{\tabcolsep}{2pt}
 \AtBeginEnvironment{longtable}{\tiny\renewcommand{\arraystretch}{0.86}\setlength{\tabcolsep}{1pt}}
 \AtBeginEnvironment{tabular}{\tiny\renewcommand{\arraystretch}{0.86}\setlength{\tabcolsep}{1pt}}
+\AtBeginEnvironment{equation}{\tiny}
+\AtBeginEnvironment{equation*}{\tiny}
+\AtBeginEnvironment{align}{\tiny}
+\AtBeginEnvironment{align*}{\tiny}
+\AtBeginEnvironment{itemize}{\footnotesize}
+\AtBeginEnvironment{enumerate}{\footnotesize}
+\AtBeginEnvironment{description}{\footnotesize}
+\setbeamerfont{caption}{size=\tiny}
+\setbeamerfont{caption name}{size=\tiny}
+\setbeamerfont{normal text}{size=\small}
+\setbeamerfont{frametitle}{size=\small}
+\setbeamerfont{section title}{size=\footnotesize}
+\setbeamerfont{subsection title}{size=\footnotesize}
+\setbeamertemplate{section page}{%
+  \centering
+  \begin{beamercolorbox}[sep=12pt,center,wd=\paperwidth]{section title}
+    \parbox{0.86\paperwidth}{\centering\usebeamerfont{section title}\insertsection\par}
+  \end{beamercolorbox}
+}
+\setbeamertemplate{subsection page}{%
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,wd=\paperwidth]{subsection title}
+    \parbox{0.86\paperwidth}{\centering\usebeamerfont{subsection title}\insertsubsection\par}
+  \end{beamercolorbox}
+}
+\setlength{\abovecaptionskip}{2pt}
+\setlength{\belowcaptionskip}{0pt}
 
 % Natbib and cross-reference fallbacks — slides don't load natbib
 % or cleveref, but combined-PDF manuscript prose may emit these
@@ -119,9 +222,15 @@
 \providecommand{\citeyear}[1]{#1}
 \providecommand{\cref}[1]{\texttt{\detokenize{#1}}}
 \providecommand{\Cref}[1]{\texttt{\detokenize{#1}}}
+\providecommand{\crefrange}[2]{\texttt{\detokenize{#1}}--\texttt{\detokenize{#2}}}
+\providecommand{\Crefrange}[2]{\texttt{\detokenize{#1}}--\texttt{\detokenize{#2}}}
+\providecommand{\paragraph}[1]{\textbf{#1}\ }
 
 \newtheorem{proposition}{Proposition}
 \newtheorem{hypothesis}{Hypothesis}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{axiom}{Axiom}
+\newtheorem{property}{Property}
 \usepackage{bookmark}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same}
@@ -143,13 +252,16 @@
 \begin{frame}[allowframebreaks]{The Attack Landscape: Five Vectors}
 \begin{figure}
 \centering
-\includegraphics[width=0.85\linewidth,height=0.46\textheight,keepaspectratio,alt={Cognitive-security risk heatmap: impact \textbackslash times likelihood for eight named risks (Direct/Indirect Injection, Trust Laundering, Belief Manipulation, Goal Hijacking, Context Poisoning, Multi-turn Attacks, Consensus Subversion).}]{../figures/risk_matrix.png}
+\includegraphics[width=0.85\linewidth,height=0.40\textheight,keepaspectratio,alt={Cognitive-security risk heatmap: impact \textbackslash times likelihood for eight named risks (Direct/Indirect Injection, Trust Laundering, Belief Manipulation, Goal Hijacking, Context Poisoning, Multi-turn Attacks, Consensus Subversion).}]{../figures/risk_matrix.png}
 \caption{Cognitive-security risk heatmap: impact \(\times\) likelihood
 for eight named risks (Direct/Indirect Injection, Trust Laundering,
 Belief Manipulation, Goal Hijacking, Context Poisoning, Multi-turn
 Attacks, Consensus Subversion).}\label{fig:risk-matrix}
 \end{figure}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{The Attack Landscape: Five Vectors}
 This section details five concrete attack vectors from the Part 2
 corpus, illustrating the mechanism and the CIF layer that answers it.
 The vectors here are adversarial-input archetypes; for the complementary
@@ -171,8 +283,16 @@ visible to a human, but the agent sees it. The agent's output (``No
 risks found'') is now poisoned. The Orchestrator receives this ``clean''
 report and approves a risky transaction.
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Vector 1: The Nested Injection
+(External, \(\Omega_1\))}
 \textbf{The Defense}:
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Vector 1: The Nested Injection
+(External, \(\Omega_1\))}
 \begin{itemize}
 \tightlist
 \item
@@ -188,6 +308,10 @@ report and approves a risky transaction.
   Source).
 \end{itemize}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Vector 1: The Nested Injection
+(External, \(\Omega_1\))}
 \textbf{Real-World Parallel}: Visual injection attacks (Qi et al., 2024)
 and Universal Adversarial Triggers.
 \end{frame}
@@ -203,6 +327,10 @@ the Security Agent and deploys the vulnerable code.
 
 \textbf{The Defense}:
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Vector 2: The Poisoned Tool (Peripheral,
+\(\Omega_2\))}
 \begin{itemize}
 \tightlist
 \item
@@ -217,6 +345,10 @@ the Security Agent and deploys the vulnerable code.
   independent verifications.''
 \end{itemize}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Vector 2: The Poisoned Tool (Peripheral,
+\(\Omega_2\))}
 \textbf{Real-World Parallel}: ToolHijacker (2025) and supply chain
 attacks.
 \end{frame}
@@ -232,6 +364,10 @@ it is an Admin. It attempts the refund. The API checks the agent's
 
 \textbf{The Defense}:
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Vector 3: Identity Confusion (Agent,
+\(\Omega_3\))}
 \begin{itemize}
 \tightlist
 \item
@@ -245,6 +381,10 @@ it is an Admin. It attempts the refund. The API checks the agent's
   is instantly quarantined.
 \end{itemize}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Vector 3: Identity Confusion (Agent,
+\(\Omega_3\))}
 \textbf{Real-World Parallel}: Privilege escalation via context
 poisoning.
 \end{frame}
@@ -260,6 +400,10 @@ two other agents.
 
 \textbf{The Defense}:
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Vector 4: Reputation Farming
+(Coordination, \(\Omega_4\))}
 \begin{itemize}
 \tightlist
 \item
@@ -271,6 +415,10 @@ two other agents.
   with high reputation, one agent is still one vote.
 \end{itemize}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Vector 4: Reputation Farming
+(Coordination, \(\Omega_4\))}
 \textbf{Real-World Parallel}: Sybil attacks and social influence
 operations.
 \end{frame}
@@ -285,6 +433,10 @@ following orders from a corrupt leader.
 
 \textbf{The Defense}:
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Vector 5: The Orchestrator Takeover
+(Systemic, \(\Omega_5\))}
 \begin{itemize}
 \tightlist
 \item
@@ -297,6 +449,10 @@ following orders from a corrupt leader.
   \emph{pattern} of alerts. ``Why did the alert rate drop to zero?''
 \end{itemize}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Vector 5: The Orchestrator Takeover
+(Systemic, \(\Omega_5\))}
 \textbf{Real-World Parallel}: Sleeper Agents (Hubinger et al., 2024) and
 insider threats.
 \end{frame}

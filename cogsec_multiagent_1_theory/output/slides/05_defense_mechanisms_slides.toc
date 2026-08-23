@@ -1,1 +1,8 @@
 \beamer@sectionintoc {1}{Defense Mechanisms: Architectural, Runtime, and Coordination Layers}{2}{0}{1}
+\beamer@subsectionintoc {1}{1}{Cognitive Security Operator Posture}{4}{0}{1}
+\beamer@subsectionintoc {1}{2}{Architectural Defenses}{22}{0}{1}
+\beamer@subsectionintoc {1}{3}{Runtime Defenses}{32}{0}{1}
+\beamer@subsectionintoc {1}{4}{Coordination Defenses}{38}{0}{1}
+\beamer@subsectionintoc {1}{5}{Defense Composition}{43}{0}{1}
+\beamer@subsectionintoc {1}{6}{Cost-Benefit Analysis}{50}{0}{1}
+\beamer@subsectionintoc {1}{7}{Formal Defense Composition Guarantees}{58}{0}{1}

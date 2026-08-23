@@ -80,7 +80,8 @@ The red-team generator adapts attacks along three axes per round:
 
 The adaptation is implemented in `src/redteam/generator.py::AdversarialGenerator`
 and uses the $\Omega_3$–$\Omega_5$ adversary capability levels from
-Part 1 \cite{friedman2026cogsec1} Definition 4.
+Part 1's Agent-Level, Coordination, and Systemic Adversary definitions
+\cite{friedman2026cogsec1}.
 
 ## Results {#sec:at-results}
 

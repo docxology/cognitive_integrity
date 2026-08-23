@@ -67,7 +67,7 @@ result: Result[list[DefenseResult], DetectionEvent] = pipeline.run(message, cont
 
 See Supplement~\ref{sec:s09-functional-api} for full specification.
 
-4. **Cognitive Tripwire Monitoring** (\cref{alg:tripwire-impl}). Continuous monitoring of canary beliefs for unauthorized modifications, implementing Part 1's Runtime Defenses section (Definition 5.6). Severity is classified via a uniform 4-tier system (LOW, MEDIUM, HIGH, CRITICAL) based on drift magnitude. Implemented in `src/core/tripwire.py`.
+4. **Cognitive Tripwire Monitoring** (\cref{alg:tripwire-impl}). Continuous monitoring of canary beliefs for unauthorized modifications, implementing Part 1's Canary Belief and Tripwire Alert Condition definitions. Severity is classified via a uniform 4-tier system (LOW, MEDIUM, HIGH, CRITICAL) based on drift magnitude. Implemented in `src/core/tripwire.py`.
 
 ### Monadic Type Signature
 

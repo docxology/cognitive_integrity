@@ -74,6 +74,16 @@
 }{% if KOMA class
   \KOMAoptions{parskip=half}}
 \makeatother
+\usepackage{longtable,booktabs,array}
+\usepackage{caption}
+\captionsetup[table]{skip=6pt}
+\newcounter{none} % for unnumbered tables
+\usepackage{calc} % for calculating minipage widths
+\usepackage{caption}
+% Make caption package work with longtable
+\makeatletter
+\def\fnum@table{\tablename~\thetable}
+\makeatother
 \usepackage{graphicx}
 \makeatletter
 \newsavebox\pandoc@box
@@ -92,6 +102,69 @@
 \setlength{\emergencystretch}{3em} % prevent overfull lines
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+% Manuscript macro/package fallbacks (newcommand -> providecommand).
+% Core mathematical packages
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+% Permit bibliography and theorem prose to break without overfull boxes.
+% Algorithm formatting
+% Tables
+\usepackage{booktabs}
+\usepackage{multirow}
+% Graphics
+% Cross-referencing with smart naming
+% Configure cleveref for custom environments
+% Theorem environments with consistent numbering
+% Code listings used by supplementary implementation examples
+\usepackage{listings}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible}
+% End of theorem environment declarations
+% Math operators
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\KL}{KL}
+\DeclareMathOperator{\Tr}{Tr}
+% Custom commands for notation consistency
+\providecommand{\calA}{\mathcal{A}}
+\providecommand{\calB}{\mathcal{B}}
+\providecommand{\calC}{\mathcal{C}}
+\providecommand{\calD}{\mathcal{D}}
+\providecommand{\calF}{\mathcal{F}}
+\providecommand{\calG}{\mathcal{G}}
+\providecommand{\calH}{\mathcal{H}}
+\providecommand{\calI}{\mathcal{I}}
+\providecommand{\calM}{\mathcal{M}}
+\providecommand{\calO}{\mathcal{O}}
+\providecommand{\calP}{\mathcal{P}}
+\providecommand{\calS}{\mathcal{S}}
+\providecommand{\calT}{\mathcal{T}}
+\providecommand{\calW}{\mathcal{W}}
+% Note: \Phi is a standard LaTeX command, do not redefine
+% Trust notation
+\providecommand{\trust}[2]{\mathcal{T}_{#1 \to #2}}
+\providecommand{\trustt}[3]{\mathcal{T}_{#1 \to #2}^{#3}}
+% Belief notation
+\providecommand{\belief}[2]{\mathcal{B}_{#1}(#2)}
+\providecommand{\belieft}[3]{\mathcal{B}_{#1}^{#2}(#3)}
+% Cognitive state
+\providecommand{\cogstate}[1]{\sigma_{#1}}
+% Attack notation
+\providecommand{\attack}[1]{\mathcal{A}_{#1}}
+\providecommand{\adversary}[1]{\Omega_{#1}}
+% Defense notation
+\providecommand{\firewall}{\mathcal{F}}
+\providecommand{\sandbox}{\mathcal{S}_{box}}
+% Probability and expectation
+\providecommand{\E}{\mathbb{E}}
+\providecommand{\Prob}{\mathbb{P}}
+\providecommand{\indicator}{\mathbb{1}}
+% QED symbol
+\providecommand{\qedsymbol}{$\blacksquare$}
+% Page Layout (Slightly smaller margins)
+% Hyperlink Styling
+% List of Figures and List of Tables in TOC
+
 % Slide layout defaults for warning-clean scientific decks.
 \usepackage{etoolbox}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{}
@@ -105,6 +178,33 @@
 \setlength{\tabcolsep}{2pt}
 \AtBeginEnvironment{longtable}{\tiny\renewcommand{\arraystretch}{0.86}\setlength{\tabcolsep}{1pt}}
 \AtBeginEnvironment{tabular}{\tiny\renewcommand{\arraystretch}{0.86}\setlength{\tabcolsep}{1pt}}
+\AtBeginEnvironment{equation}{\tiny}
+\AtBeginEnvironment{equation*}{\tiny}
+\AtBeginEnvironment{align}{\tiny}
+\AtBeginEnvironment{align*}{\tiny}
+\AtBeginEnvironment{itemize}{\footnotesize}
+\AtBeginEnvironment{enumerate}{\footnotesize}
+\AtBeginEnvironment{description}{\footnotesize}
+\setbeamerfont{caption}{size=\tiny}
+\setbeamerfont{caption name}{size=\tiny}
+\setbeamerfont{normal text}{size=\small}
+\setbeamerfont{frametitle}{size=\small}
+\setbeamerfont{section title}{size=\footnotesize}
+\setbeamerfont{subsection title}{size=\footnotesize}
+\setbeamertemplate{section page}{%
+  \centering
+  \begin{beamercolorbox}[sep=12pt,center,wd=\paperwidth]{section title}
+    \parbox{0.86\paperwidth}{\centering\usebeamerfont{section title}\insertsection\par}
+  \end{beamercolorbox}
+}
+\setbeamertemplate{subsection page}{%
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,wd=\paperwidth]{subsection title}
+    \parbox{0.86\paperwidth}{\centering\usebeamerfont{subsection title}\insertsubsection\par}
+  \end{beamercolorbox}
+}
+\setlength{\abovecaptionskip}{2pt}
+\setlength{\belowcaptionskip}{0pt}
 
 % Natbib and cross-reference fallbacks — slides don't load natbib
 % or cleveref, but combined-PDF manuscript prose may emit these
@@ -119,9 +219,20 @@
 \providecommand{\citeyear}[1]{#1}
 \providecommand{\cref}[1]{\texttt{\detokenize{#1}}}
 \providecommand{\Cref}[1]{\texttt{\detokenize{#1}}}
+\providecommand{\crefrange}[2]{\texttt{\detokenize{#1}}--\texttt{\detokenize{#2}}}
+\providecommand{\Crefrange}[2]{\texttt{\detokenize{#1}}--\texttt{\detokenize{#2}}}
+\providecommand{\paragraph}[1]{\textbf{#1}\ }
+
+% Additional theorem-like environments from manuscript preamble.
+\newtheorem{observation}{Observation}
+\newtheorem{formalization}{Formalization}
+\newtheorem{principle}{Principle}
 
 \newtheorem{proposition}{Proposition}
 \newtheorem{hypothesis}{Hypothesis}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{axiom}{Axiom}
+\newtheorem{property}{Property}
 \usepackage{bookmark}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same}
@@ -157,15 +268,18 @@ three categories: architectural (\cref{sec:arch-defenses}), runtime
 (\cref{sec:cost-benefit}).
 \end{frame}
 
+\subsection{Cognitive Security Operator
+Posture}\label{sec:operator-posture}
+
 \begin{frame}[allowframebreaks]{Cognitive Security Operator Posture}
-\protect\phantomsection\label{sec:operator-posture}
 Before examining specific defense mechanisms, we introduce the
 conceptual framework that guides their deployment: the
 \textbf{cognitive security operator posture}. This is the proactive
 defensive stance required when securing systems whose attack surface
 spans beliefs, goals, and inter-agent coordination.
+\end{frame}
 
-\begin{block}{Definition and Principles}
+\begin{frame}[allowframebreaks]{Definition and Principles}
 \protect\phantomsection\label{definition-and-principles}
 \begin{definition}[Cognitive Security Operator Posture]
 \label{def:operator-posture}
@@ -179,32 +293,42 @@ The cognitive security operator posture is a defensive configuration characteriz
 \end{enumerate}
 \end{definition}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Definition and Principles}
 This posture differs fundamentally from traditional perimeter security,
 which assumes trusted internals protected by boundary defenses. In
 cognitive systems, the ``perimeter'\,' is the agent's reasoning process
 itself---attacks can originate from legitimate, authenticated channels
 and manifest as corrupted beliefs rather than malformed packets.
-\end{block}
+\end{frame}
 
-\begin{block}{The Observer Effect Challenge}
+\begin{frame}[allowframebreaks]{The Observer Effect Challenge}
 \protect\phantomsection\label{the-observer-effect-challenge}
 A distinct challenge in cognitive security is the
 \textbf{observer effect}: monitoring changes behavior. When agents know
 their beliefs are being monitored, several phenomena emerge:
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{The Observer Effect Challenge}
 \begin{itemize}
 \item \textbf{Adversarial adaptation}: Attackers modify payloads to avoid detection patterns
 \item \textbf{Stealth pressure}: Attacks become more subtle, trading impact for evasion
 \item \textbf{Monitoring overhead}: Continuous observation consumes resources and adds latency
 \end{itemize}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{The Observer Effect Challenge}
 The operator posture embraces this dynamic rather than fighting it. By
 making monitoring visible and consistent, we shift the adversarial game
 toward smaller, slower attacks that our drift detection can identify
 over time (\cref{sec:runtime-defenses}).
-\end{block}
+\end{frame}
 
-\begin{block}{Operational Security for Cognitive Systems}
+\begin{frame}[allowframebreaks]{Operational Security for Cognitive
+Systems}
 \protect\phantomsection\label{operational-security-for-cognitive-systems}
 Traditional operational security (OPSEC) focuses on protecting
 information from adversaries. CogSec (cognitive security) extends this
@@ -212,6 +336,10 @@ to protecting reasoning processes:
 
 \textbf{Cognitive Hygiene Practices}:
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Operational Security for Cognitive
+Systems}
 \begin{enumerate}
 \item \textbf{Belief Provenance}: Track the source of every high-confidence belief; reject beliefs without verifiable provenance
 \item \textbf{Goal Anchoring}: Periodically reaffirm goals against original principal instructions; detect goal drift
@@ -226,13 +354,16 @@ to protecting reasoning processes:
 \end{equation} Each task receives isolated cognitive state, preventing
 cross-contamination. A compromised task cannot pollute beliefs used by
 other tasks.
-\end{block}
+\end{frame}
 
-\begin{block}{Incident Response for Cognitive Attacks}
+\begin{frame}[allowframebreaks]{Incident Response for Cognitive Attacks}
 \protect\phantomsection\label{incident-response-for-cognitive-attacks}
 When cognitive attacks are detected, the response differs from
 traditional incident response:
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Incident Response for Cognitive Attacks}
 \begin{table}[htbp]
 \centering
 \caption{Cognitive incident response escalation.}
@@ -250,20 +381,29 @@ L5 & Principal goal corruption detected & Full system halt, require principal re
 \end{tabular}
 \end{table}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Incident Response for Cognitive Attacks}
 \textbf{Cognitive Forensics}:
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Incident Response for Cognitive Attacks}
 \begin{enumerate}
 \item \textbf{Belief Archaeology}: Trace corrupted beliefs back to injection point through provenance chains
 \item \textbf{Trust Graph Analysis}: Identify trust relationships exploited for laundering
 \item \textbf{Temporal Reconstruction}: Replay agent history to identify when compromise occurred
 \item \textbf{Counterfactual Analysis}: Determine what decisions would have differed without attack influence
 \end{enumerate}
-\end{block}
+\end{frame}
 
-\begin{block}{Posture Configuration by Environment}
+\begin{frame}[allowframebreaks]{Posture Configuration by Environment}
 \protect\phantomsection\label{posture-configuration-by-environment}
 Different deployment contexts require different postures:
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Posture Configuration by Environment}
 \begin{table}[htbp]
 \centering
 \caption{Operator posture configuration by deployment context (illustrative guidelines).}
@@ -281,17 +421,23 @@ Critical Infrastructure & Very High & Full + Redundant & Aggressive (L1) \\
 \end{tabular}
 \end{table}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Posture Configuration by Environment}
 The principle is \textbf{posture proportionality}: defensive overhead
 scales with consequence severity. A development agent can accept higher
 risk; an infrastructure operator requires aggressive monitoring and low
 escalation thresholds.
-\end{block}
+\end{frame}
 
-\begin{block}{Operator Posture Checklist}
+\begin{frame}[allowframebreaks]{Operator Posture Checklist}
 \protect\phantomsection\label{operator-posture-checklist}
 The following checklist provides actionable guidance for engineers
 deploying multiagent systems:
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Operator Posture Checklist}
 \begin{table}[htbp]
 \centering
 \caption{Operator Posture Checklist for Cognitive Security}
@@ -311,12 +457,11 @@ Temporal & Treat each session as potentially post-compromise & Assume temporal c
 \bottomrule
 \end{tabular}
 \end{table}
-\end{block}
 \end{frame}
 
-\begin{frame}[allowframebreaks]{Architectural Defenses}
-\protect\phantomsection\label{sec:arch-defenses}
-\begin{block}{Cognitive Firewall}
+\subsection{Architectural Defenses}\label{sec:arch-defenses}
+
+\begin{frame}[allowframebreaks]{Cognitive Firewall}
 \protect\phantomsection\label{cognitive-firewall}
 \begin{definition}[Cognitive Firewall]
 \label{def:firewall}
@@ -340,6 +485,9 @@ A classification function on incoming messages:
 where $D_{\text{inj}}$ detects injection attempts and $D_{\text{sus}}$ scores suspicious content.
 \end{definition}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Cognitive Firewall}
 \begin{table}[htbp]
 \centering
 \caption{Firewall detector components.}
@@ -362,9 +510,9 @@ The optimal threshold minimizes false negatives subject to false positive constr
 \tau^* = \argmin_\tau \text{FNR}(\tau) \quad \text{s.t.} \quad \text{FPR}(\tau) \leq \epsilon
 \end{equation}
 \end{theorem}
-\end{block}
+\end{frame}
 
-\begin{block}{Belief Sandboxing}
+\begin{frame}[allowframebreaks]{Belief Sandboxing}
 \protect\phantomsection\label{belief-sandboxing}
 \begin{definition}[Belief Sandbox]
 \label{def:belief-sandbox}
@@ -404,12 +552,22 @@ update $Q$.  This connection bridges the CIF trust calculus with the
 broader active inference literature (Part~2, Theorem~FEP.2).
 \end{remark}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Belief Sandboxing}
 \begin{figure}
 \centering
-\pandocbounded{\includegraphics[keepaspectratio,alt={Belief Sandbox Architecture}]{../figures/belief_sandbox.pdf}}
-\caption{Belief Sandbox Architecture}\label{fig:belief-sandbox}
+\pandocbounded{\includegraphics[keepaspectratio,alt={Belief Sandbox Architecture: the lifecycle of an unverified proposition from ingestion through provisional (sandboxed) storage, verification checks, and promotion to the verified belief base or rejection. Sandboxed propositions cannot influence goals or be delegated onward.}]{../figures/belief_sandbox.pdf}}
+\caption{Belief Sandbox Architecture: the lifecycle of an unverified
+proposition from ingestion through provisional (sandboxed) storage,
+verification checks, and promotion to the verified belief base or
+rejection. Sandboxed propositions cannot influence goals or be delegated
+onward.}\label{fig:belief-sandbox}
 \end{figure}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Belief Sandboxing}
 \Cref{fig:belief-sandbox} illustrates the sandbox architecture, showing
 how incoming beliefs are partitioned into verified and provisional sets
 based on source trust \(\mathcal{T}_{i \to s}\) and provenance
@@ -419,6 +577,9 @@ consistency requirements.
 
 \textbf{Sandbox Promotion Protocol}:
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Belief Sandboxing}
 \begin{enumerate}
 \item Receive belief $\phi$ from source $s$
 \item If $\mathcal{T}_{i \to s} < \tau_{\text{trust}}$: add $\phi$ to $\mathcal{B}_{\text{provisional}}$ with provenance $\pi(\phi)$ and TTL
@@ -426,9 +587,9 @@ consistency requirements.
 \item If all pass: promote to $\mathcal{B}_{\text{verified}}$
 \item Expiry: remove if TTL exceeded without promotion
 \end{enumerate}
-\end{block}
+\end{frame}
 
-\begin{block}{Permission Boundaries}
+\begin{frame}[allowframebreaks]{Permission Boundaries}
 \protect\phantomsection\label{permission-boundaries}
 \begin{definition}[Effective Permissions]
 \label{def:effective-perms}
@@ -438,12 +599,11 @@ Least-privilege enforcement across agent hierarchy:
 \mathcal{P}_{\text{eff}}(a_i) = \mathcal{P}_{\text{role}}(a_i) \cap \mathcal{P}_{\text{delegated}}(a_i) \cap \mathcal{P}_{\text{context}}(a_i)
 \end{equation}
 \end{definition}
-\end{block}
 \end{frame}
 
-\begin{frame}[allowframebreaks]{Runtime Defenses}
-\protect\phantomsection\label{sec:runtime-defenses}
-\begin{block}{Cognitive Tripwires}
+\subsection{Runtime Defenses}\label{sec:runtime-defenses}
+
+\begin{frame}[allowframebreaks]{Cognitive Tripwires}
 \protect\phantomsection\label{cognitive-tripwires}
 \begin{definition}[Canary Belief]
 \label{def:canary}
@@ -462,6 +622,9 @@ Known-state beliefs that trigger alerts if modified:
 \end{equation}
 \end{definition}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Cognitive Tripwires}
 \begin{table}[htbp]
 \centering
 \caption{Tripwire categories and detection targets.}
@@ -477,9 +640,9 @@ Temporal &``Session started at $T$'' & Context manipulation \\
 \bottomrule
 \end{tabular}
 \end{table}
-\end{block}
+\end{frame}
 
-\begin{block}{Behavioral Invariants}
+\begin{frame}[allowframebreaks]{Behavioral Invariants}
 \protect\phantomsection\label{behavioral-invariants}
 \begin{definition}[Invariant Set]
 \label{def:invariant-set}
@@ -500,6 +663,9 @@ Pre-defined predicates that must hold:
 
 \textbf{Core Invariants}:
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Behavioral Invariants}
 \begin{enumerate}
 \item[\textsc{inv-1}:] Never execute code from untrusted sources
 \item[\textsc{inv-2}:] Never leak principal credentials
@@ -507,9 +673,9 @@ Pre-defined predicates that must hold:
 \item[\textsc{inv-4}:] Always verify tool outputs before downstream use
 \item[\textsc{inv-5}:] Never trust delegated trust $>$ direct trust
 \end{enumerate}
-\end{block}
+\end{frame}
 
-\begin{block}{Drift Detection}
+\begin{frame}[allowframebreaks]{Drift Detection}
 \protect\phantomsection\label{drift-detection}
 \begin{definition}[Drift Detection]
 \label{def:drift-detection}
@@ -520,12 +686,11 @@ D_{\text{KL}}(\mathcal{B}_i^t \| \mathcal{B}_i^{t-w}) > \theta_{\text{drift}} \R
 \end{equation}
 where $w$ is the sliding window size.
 \end{definition}
-\end{block}
 \end{frame}
 
-\begin{frame}[allowframebreaks]{Coordination Defenses}
-\protect\phantomsection\label{sec:coord-defenses}
-\begin{block}{Byzantine-Tolerant Consensus}
+\subsection{Coordination Defenses}\label{sec:coord-defenses}
+
+\begin{frame}[allowframebreaks]{Byzantine-Tolerant Consensus}
 \protect\phantomsection\label{byzantine-tolerant-consensus}
 \begin{theorem}[Byzantine Agreement Requirement]
 \label{thm:byzantine-req}
@@ -547,9 +712,9 @@ n \geq 3f + 1
 \end{cases}
 \end{equation}
 \end{definition}
-\end{block}
+\end{frame}
 
-\begin{block}{Quorum Verification}
+\begin{frame}[allowframebreaks]{Quorum Verification}
 \protect\phantomsection\label{quorum-verification}
 \begin{definition}[Quorum Requirement]
 \label{def:quorum}
@@ -560,12 +725,15 @@ Critical actions require multi-agent approval:
 \end{equation}
 where $q = \lceil \frac{n + f + 1}{2} \rceil$.
 \end{definition}
-\end{block}
+\end{frame}
 
-\begin{block}{Spotcheck Pattern}
+\begin{frame}[allowframebreaks]{Spotcheck Pattern}
 \protect\phantomsection\label{spotcheck-pattern}
 \textbf{Spotcheck Protocol}:
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Spotcheck Pattern}
 \begin{enumerate}
 \item Assign task $T$ to agent $A$
 \item With probability $p_{\text{check}}$: assign same task to verifier $V$
@@ -573,21 +741,22 @@ where $q = \lceil \frac{n + f + 1}{2} \rceil$.
 \item If divergent: escalate to human
 \item Track accuracy per agent for reputation
 \end{enumerate}
-\end{block}
 \end{frame}
 
+\subsection{Defense Composition}\label{sec:defense-composition}
+
 \begin{frame}[allowframebreaks]{Defense Composition}
-\protect\phantomsection\label{sec:defense-composition}
 \begin{figure}
 \centering
-\includegraphics[width=0.8\linewidth,height=0.46\textheight,keepaspectratio,alt={Schematic ablation study (illustrative, not measured): representative marginal contribution of each CIF defense module to the composed defense. Measured ablation results are reported in Part 2.}]{../figures/ablation_study.pdf}
+\includegraphics[width=0.8\linewidth,height=0.40\textheight,keepaspectratio,alt={Schematic ablation study (illustrative, not measured): representative marginal contribution of each CIF defense module to the composed defense. Measured ablation results are reported in Part 2.}]{../figures/ablation_study.pdf}
 \caption{Schematic ablation study (illustrative, not measured):
 representative marginal contribution of each CIF defense module to the
 composed defense. Measured ablation results are reported in Part
 2.}\label{fig:ablation-study}
 \end{figure}
+\end{frame}
 
-\begin{block}{Composition Algebra}
+\begin{frame}[allowframebreaks]{Composition Algebra}
 \protect\phantomsection\label{composition-algebra}
 \begin{definition}[Defense Composition]
 \label{def:defense-composition}
@@ -604,6 +773,9 @@ Defenses compose in series ($\circ$) or parallel ($\parallel$):
 \mathcal{D}_1 \parallel \mathcal{D}_2: \textsc{detect} \iff \mathcal{D}_1(m) = \textsc{detect} \lor \mathcal{D}_2(m) = \textsc{detect}
 \end{equation}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Composition Algebra}
 \begin{theorem}[Series Detection Rate]
 \label{thm:series-detection}
 For series composition:
@@ -626,6 +798,9 @@ P(\text{detect}) = 1 - \prod_{d \in \mathcal{D}} (1 - P_d(\text{detect}))
 \end{equation}
 \end{theorem}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Composition Algebra}
 \begin{proof}
 Attack succeeds only if it evades all defenses.
 \end{proof}
@@ -644,10 +819,13 @@ For parallel composition (conservative):
 \text{FPR}(\mathcal{D}_1 \parallel \mathcal{D}_2) \leq \text{FPR}(\mathcal{D}_1) + \text{FPR}(\mathcal{D}_2)
 \end{equation}
 \end{theorem}
-\end{block}
+\end{frame}
 
-\begin{block}{Composition Rules}
+\begin{frame}[allowframebreaks]{Composition Rules}
 \protect\phantomsection\label{composition-rules}
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Composition Rules}
 \begin{itemize}
 \item[\textbf{C-Order}:] Apply low-latency, high-precision defenses first
 \item[\textbf{C-Diverse}:] Combine defenses with orthogonal detection methods
@@ -682,14 +860,14 @@ Layer & Defense & Latency & $P_{\text{detect}}$ \\
 Assuming independence, the full stack (\cref{tab:defense-stack}) achieves:
 \begin{equation}
 \label{eq:stack-detection}
-P_{\\text{detect}} = 1 - (1-0.80)(1-0.70)(1-0.60)(1-0.65)(1-0.55)(1-0.90) \\approx 0.9996
+P_{\text{detect}} = 1 - (1-0.80)(1-0.70)(1-0.60)(1-0.65)(1-0.55)(1-0.90) \approx 0.9996
 \end{equation}
 \end{corollary}
-\end{block}
 \end{frame}
 
+\subsection{Cost-Benefit Analysis}\label{sec:cost-benefit}
+
 \begin{frame}[allowframebreaks]{Cost-Benefit Analysis}
-\protect\phantomsection\label{sec:cost-benefit}
 \begin{definition}[Defense Cost]
 \label{def:defense-cost}
 Total cost of defense deployment:
@@ -699,6 +877,9 @@ C_{\text{total}}(\mathcal{D}) = C_{\text{compute}} + C_{\text{latency}} + C_{\te
 \end{equation}
 \end{definition}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Cost-Benefit Analysis}
 \begin{table}[htbp]
 \centering
 \caption{Cost model components.}
@@ -724,6 +905,9 @@ B_{\text{total}}(\mathcal{D}) = P_{\text{attack}} \cdot P_{\text{detect}}(\mathc
 \end{equation}
 \end{definition}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Cost-Benefit Analysis}
 \begin{table}[htbp]
 \centering
 \caption{Cost-benefit analysis by defense mechanism.}
@@ -742,8 +926,9 @@ Spotcheck & $10^4$ & Variable & Low & Medium & 2.9x \\
 \bottomrule
 \end{tabular}
 \end{table}
+\end{frame}
 
-\begin{block}{Optimal Defense Portfolio}
+\begin{frame}[allowframebreaks]{Optimal Defense Portfolio}
 \protect\phantomsection\label{optimal-defense-portfolio}
 \begin{definition}[Portfolio Optimization]
 \label{def:portfolio-opt}
@@ -754,6 +939,9 @@ Spotcheck & $10^4$ & Variable & Low & Medium & 2.9x \\
 subject to: $C_{\text{compute}}(\mathcal{D}) \leq B_{\text{compute}}$, $\max_d L_d \leq L_{\max}$, $\text{FPR}(\mathcal{D}) \leq \epsilon_{\text{fp}}$.
 \end{definition}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Optimal Defense Portfolio}
 \begin{table}[htbp]
 \centering
 \caption{Deployment recommendations by risk profile.}
@@ -781,6 +969,9 @@ The center (Full CIF) represents the ensemble detection zone where all
 mechanisms contribute.}\label{fig:defense-composition}
 \end{figure}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Optimal Defense Portfolio}
 \Cref{fig:defense-composition} illustrates the defense composition using
 series (\(\circ\)) and parallel (\(\parallel\)) arrangements. Each
 defense mechanism targets specific attack patterns: the Cognitive
@@ -789,19 +980,21 @@ Sandbox catches belief-layer attacks, Tripwire Monitors detect
 identity-layer exploits, and Anomaly Detection identifies behavioral
 drift. Overlapping regions show attacks detected by multiple mechanisms,
 demonstrating the defense-in-depth principle.
-\end{block}
 \end{frame}
 
+\subsection{Formal Defense Composition
+Guarantees}\label{sec:defense-formal-guarantees}
+
 \begin{frame}[allowframebreaks]{Formal Defense Composition Guarantees}
-\protect\phantomsection\label{sec:defense-formal-guarantees}
 \emph{This section provides rigorous formal guarantees for the five
 canonical CIF defenses and their composition algebra. These results
 extend the composition theorems from
-Section\textasciitilde{}\ref{sec:defense-composition} with complete
+Section\textasciitilde{}\breaktt{sec:defense-composition} with complete
 proofs and explicit security bounds.}
+\end{frame}
 
-\begin{block}{Canonical Defense 1: Cognitive Firewall --- Formal
-Specification}
+\begin{frame}[allowframebreaks]{Canonical Defense 1: Cognitive Firewall
+--- Formal Specification}
 \protect\phantomsection\label{canonical-defense-1-cognitive-firewall-formal-specification}
 The Cognitive Firewall
 \(\mathcal{F}: \mathcal{M} \to \{\textsc{accept}, \textsc{quarantine}, \textsc{reject}\}\)
@@ -816,6 +1009,10 @@ The cognitive firewall classifies every message into exactly one of three outcom
 \end{equation}
 \end{theorem}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Canonical Defense 1: Cognitive Firewall
+--- Formal Specification}
 \begin{theorem}[Firewall False Positive Monotonicity]
 \label{thm:firewall-fpr-monotone}
 Increasing the rejection threshold $\tau_1$ decreases false positive rate and decreases true positive rate monotonically:
@@ -829,6 +1026,10 @@ Increasing the rejection threshold $\tau_1$ decreases false positive rate and de
 By the definition of $\mathcal{F}$: rejection requires $D_{\text{inj}}(m) > \tau_1$. Increasing $\tau_1$ tightens this condition. Since TPR = $P(D_{\text{inj}}(m) > \tau_1 \mid m \in \mathcal{A})$ and both probabilities are CDFs of continuous distributions, they are non-increasing in $\tau_1$.
 \end{proof}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Canonical Defense 1: Cognitive Firewall
+--- Formal Specification}
 \begin{corollary}[Pareto-Optimal Threshold]
 \label{cor:pareto-threshold}
 The optimal threshold $\tau_1^*$ lies on the Pareto frontier:
@@ -838,10 +1039,10 @@ The optimal threshold $\tau_1^*$ lies on the Pareto frontier:
 \end{equation}
 This frontier is precisely the ROC curve (Definition~6.4).
 \end{corollary}
-\end{block}
+\end{frame}
 
-\begin{block}{Canonical Defense 2: Belief Sandboxing --- Formal
-Specification}
+\begin{frame}[allowframebreaks]{Canonical Defense 2: Belief Sandboxing
+--- Formal Specification}
 \protect\phantomsection\label{canonical-defense-2-belief-sandboxing-formal-specification}
 \begin{theorem}[Sandbox Isolation Guarantee]
 \label{thm:sandbox-isolation}
@@ -857,6 +1058,10 @@ until $\phi$ satisfies the promotion criteria.
 By construction: action preconditions are evaluated against $\mathcal{B}_{\text{verified}}$ only (Rule T-Act, Eq.~37). The permission layer enforces $\mathcal{P}_{\text{eff}}$ which does not consult $\mathcal{B}_{\text{provisional}}$.
 \end{proof}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Canonical Defense 2: Belief Sandboxing
+--- Formal Specification}
 \begin{theorem}[Sandbox Promotion Soundness]
 \label{thm:sandbox-soundness}
 Beliefs promoted from sandbox to verified satisfy all three promotion criteria simultaneously:
@@ -869,10 +1074,10 @@ Beliefs promoted from sandbox to verified satisfy all three promotion criteria s
 \begin{proof}
 By Rule S-Promote (Eq.~58): promotion is conditional on all three criteria. The rule is the only mechanism for transferring beliefs from $\mathcal{B}_{\text{provisional}}$ to $\mathcal{B}_{\text{verified}}$.
 \end{proof}
-\end{block}
+\end{frame}
 
-\begin{block}{Canonical Defense 3: Behavioral Invariants --- Formal
-Specification}
+\begin{frame}[allowframebreaks]{Canonical Defense 3: Behavioral
+Invariants --- Formal Specification}
 \protect\phantomsection\label{canonical-defense-3-behavioral-invariants-formal-specification}
 \begin{definition}[Invariant Specification Language]
 \label{def:invariant-spec}
@@ -892,6 +1097,10 @@ Core invariants INV-1 through INV-5 are expressed as:
 \end{align}
 \end{definition}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Canonical Defense 3: Behavioral
+Invariants --- Formal Specification}
 \begin{theorem}[Invariant Completeness under Valid Transitions]
 \label{thm:invariant-completeness}
 If all invariants hold at time $t$ and the system executes a valid transition $\alpha$, then all invariants hold at $t+1$:
@@ -904,14 +1113,14 @@ If all invariants hold at time $t$ and the system executes a valid transition $\
 \begin{proof}
 By case analysis on transition types. \textbf{T-Receive}: message rejected if it would violate INV-1 or INV-2; invariants preserved. \textbf{T-Update}: Bayesian update preserves belief boundedness; INV-2 enforced by credential policy check before update. \textbf{T-Act}: INV-1 and INV-3 checked as action preconditions; action blocked if not satisfied. \textbf{T-Communicate}: INV-5 checked before trust delegation. All transitions preserve invariants or are blocked.
 \end{proof}
-\end{block}
+\end{frame}
 
-\begin{block}{Canonical Defense 4: Drift Detection --- Formal
-Specification}
+\begin{frame}[allowframebreaks]{Canonical Defense 4: Drift Detection ---
+Formal Specification}
 \protect\phantomsection\label{canonical-defense-4-drift-detection-formal-specification}
 \begin{definition}[CUSUM Drift Detector]
 \label{def:cusum-detector}
-The Cumulative Sum (CUSUM) drift detector maintains a running statistic:
+The Cumulative Sum (CUSUM) drift detector \cite{page1954continuous} maintains a running statistic:
 \begin{equation}
 \label{eq:cusum}
 g_t = \max(0, g_{t-1} + D_{\mathrm{KL}}(\mathcal{B}_i^t \| \mathcal{B}_i^{t-1}) - \nu)
@@ -928,6 +1137,10 @@ Under no-attack null hypothesis, the average run length (ARL) of the CUSUM detec
 \end{equation}
 \end{theorem}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Canonical Defense 4: Drift Detection ---
+Formal Specification}
 Under attack with mean shift \(\mu_1 > \nu\): \begin{equation}
 \label{eq:cusum-arl1}
 \text{ARL}_1 \approx \frac{1}{(\mu_1 - \nu)^2} \cdot O(\log \text{ARL}_0)
@@ -939,12 +1152,12 @@ minimizes \(\text{ARL}_1\) for given \(\text{ARL}_0\).
 
 \begin{corollary}[Drift Detection Sample Complexity]
 \label{cor:drift-sample}
-For drift magnitude $\mu_1 = 0.3$ (normalized KL) and ARL$_0 = 1000$ (low false alarm rate), the CUSUM detector achieves ARL$_1 \approx 15$ steps with $\nu = 0.15$, $h \approx 4.6$.
+For drift magnitude $\mu_1 = 0.3$ (normalized KL) and Wald's optimal reference value $\nu = \mu_1/2 = 0.15$, attaining ARL$_0 = 1000$ under \cref{eq:cusum-arl} requires a decision interval of $h \approx 13.0$; the frequently quoted $h \approx 4.6$ yields ARL$_0 \approx 35$ under the same formula, a false-alarm rate roughly $28\times$ higher. The corresponding ARL$_1$ follows from \cref{eq:cusum-arl1}, whose $O(\log \text{ARL}_0)$ factor carries an unspecified constant: taking that constant as unity gives ARL$_1 \approx 310$ steps. Deployments should calibrate $h$ against a measured null distribution rather than adopting either figure directly.
 \end{corollary}
-\end{block}
+\end{frame}
 
-\begin{block}{Canonical Defense 5: Byzantine Consensus --- Formal
-Specification}
+\begin{frame}[allowframebreaks]{Canonical Defense 5: Byzantine Consensus
+--- Formal Specification}
 \protect\phantomsection\label{canonical-defense-5-byzantine-consensus-formal-specification}
 \begin{theorem}[Cognitive Byzantine Agreement]
 \label{thm:cog-byz-agreement}
@@ -964,38 +1177,51 @@ Under the CIF Byzantine consensus protocol with $n \geq 3f+1$ agents and at most
 \end{enumerate}
 \end{theorem}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Canonical Defense 5: Byzantine Consensus
+--- Formal Specification}
 \begin{proof}
 Follows from the classical Byzantine agreement theorem (Lamport et al., 1982). The CIF cognitive Byzantine agreement (Definition~\ref{def:cog-byzantine}) implements the standard protocol with belief values as the consensus object. The $n \geq 3f+1$ requirement ensures that the $2f+1$ non-faulty majority can always agree despite $f$ adversarial votes, and the supermajority threshold $2n/3$ guarantees that no faulty coalition can block or subvert consensus.
 \end{proof}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Canonical Defense 5: Byzantine Consensus
+--- Formal Specification}
 \begin{corollary}[Consensus Attack Resistance]
 \label{cor:consensus-resistance}
 No coalition of at most $f$ faulty agents can cause non-faulty agents to disagree or accept a false consensus belief.
 \end{corollary}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Canonical Defense 5: Byzantine Consensus
+--- Formal Specification}
 \begin{table}[htbp]
 \centering
-\caption{Byzantine consensus performance bounds for varying $n$ and $f$.}
+\caption{Byzantine consensus performance bounds for varying $n$ and $f$. Quorum is $q = \lceil (n+f+1)/2 \rceil$; the round count is the $f+1$ worst-case bound of \cref{thm:byzantine-termination}, of which \cref{cor:concrete-rounds} ($f = 2$, 3 rounds) is the second row.}
 \label{tab:byz-performance}
 \begin{tabular}{@{}lllll@{}}
 \toprule
 $n$ agents & Max faulty $f$ & Quorum $q$ & Message complexity & Rounds \\
 \midrule
-4 & 1 & 3 & $O(n^2)$ & 3 \\
+4 & 1 & 3 & $O(n^2)$ & 2 \\
 7 & 2 & 5 & $O(n^2)$ & 3 \\
-10 & 3 & 7 & $O(n^2)$ & 3 \\
-25 & 8 & 17 & $O(n^2)$ & 3 \\
-100 & 33 & 67 & $O(n^2 \log n)$ & $O(\log n)$ \\
+10 & 3 & 7 & $O(n^2)$ & 4 \\
+25 & 8 & 17 & $O(n^2)$ & 9 \\
+100 & 33 & 67 & $O(n^2)$ & 34 \\
 \bottomrule
 \end{tabular}
 \end{table}
-\end{block}
+\end{frame}
 
-\begin{block}{Defense Composition Algebra: Complete Specification}
+\begin{frame}[allowframebreaks]{Defense Composition Algebra: Complete
+Specification}
 \protect\phantomsection\label{defense-composition-algebra-complete-specification}
 \begin{theorem}[Composition Algebra Closure]
 \label{thm:composition-closure}
-The set of CIF defenses $\mathcal{D}$ under series ($\circ$) and parallel ($\parallel$) composition forms a closed semiring:
+On a common accept/reject focal predicate, the set of CIF defenses $\mathcal{D}$ under series ($\circ$) and parallel ($\parallel$) composition forms a bounded distributive lattice --- it satisfies closure, associativity, identity and distributivity (see the scope remark below for what is \emph{not} claimed):
 \begin{enumerate}
 \item \textbf{Closure}: $\mathcal{D}_1, \mathcal{D}_2 \in \mathcal{D} \Rightarrow \mathcal{D}_1 \circ \mathcal{D}_2 \in \mathcal{D}$ and $\mathcal{D}_1 \parallel \mathcal{D}_2 \in \mathcal{D}$
 \item \textbf{Associativity}: $(\mathcal{D}_1 \circ \mathcal{D}_2) \circ \mathcal{D}_3 = \mathcal{D}_1 \circ (\mathcal{D}_2 \circ \mathcal{D}_3)$
@@ -1004,15 +1230,27 @@ The set of CIF defenses $\mathcal{D}$ under series ($\circ$) and parallel ($\par
 \end{enumerate}
 \end{theorem}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Defense Composition Algebra: Complete
+Specification}
 \begin{proof}
 Closure: both composition operators produce functions $\mathcal{M} \to \{\textsc{accept}, \textsc{quarantine}, \textsc{reject}\}$, so the output type is preserved. Associativity follows from Boolean operator associativity. The null defense $\mathcal{D}_\emptyset(m) = \textsc{accept}$ for all $m$ is the identity. Distributivity follows from logic: $A \land (B \lor C) \equiv (A \land B) \lor (A \land C)$ instantiated on the accept/reject conditions.
 \end{proof}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Defense Composition Algebra: Complete
+Specification}
 \begin{remark}[Scope of the composition-algebra claim]
 \label{rem:composition-algebra-scope}
 $\circ$ and $\parallel$ are defined here on a common accept/compare focal predicate so that closure, associativity, identity, and both distributive laws hold; under that reading the algebra is a bounded distributive lattice, not in general a \emph{field}-like structure. A full \emph{closed semiring} additionally requires a commutative additive identity that annihilates the multiplicative identity and a Kleene-star (infinite-sum) operation, neither of which is constructed or proven here. The claim should therefore be read as ``the defense-composition operators form a bounded distributive lattice under the stated independence assumption (\cref{rem:defense-independence-scope}),'' not as a complete closed semiring.
 \end{remark}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Defense Composition Algebra: Complete
+Specification}
 \begin{theorem}[Defense Composition Detection Rate Bound]
 \label{thm:composition-bound}
 For any composition of defenses $\mathcal{D}_1, \ldots, \mathcal{D}_k$ with individual rates $r_1, \ldots, r_k$:
@@ -1027,6 +1265,10 @@ This is monotone increasing in each $r_i$, bounded in $[r_{\max}, 1)$, and conve
 By induction on $k$. Base: $k=1$, the formula gives $r_1$. Step: by \cref{thm:series-detection}, $P_{\text{detect}}(\mathcal{D}_1 \circ \mathcal{D}_{k+1}) = P_{\text{detect}}(\mathcal{D}_1) + (1 - P_{\text{detect}}(\mathcal{D}_1)) \cdot r_{k+1}$. Applying the inductive hypothesis and simplifying gives $1 - \prod_{i=1}^{k+1}(1-r_i)$. Monotonicity: $\partial/\partial r_j [1 - \prod(1-r_i)] = \prod_{i \neq j}(1-r_i) > 0$.
 \end{proof}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Defense Composition Algebra: Complete
+Specification}
 \begin{corollary}[Layered Defense Asymptotic Guarantee]
 \label{cor:layered-defense}
 The full CIF stack (5 defenses with $r_i \geq 0.55$) achieves:
@@ -1036,7 +1278,6 @@ P_{\text{detect}} \geq 1 - (0.45)^5 = 1 - 0.0185 = 0.9815
 \end{equation}
 This bound is conservative; empirical rates exceed $0.994$ with the recommended configuration.
 \end{corollary}
-\end{block}
 \end{frame}
 
 \end{document}

@@ -666,7 +666,7 @@ By case analysis on transition types. \textbf{T-Receive}: message rejected if it
 
 \begin{definition}[CUSUM Drift Detector]
 \label{def:cusum-detector}
-The Cumulative Sum (CUSUM) drift detector maintains a running statistic:
+The Cumulative Sum (CUSUM) drift detector \cite{page1954continuous} maintains a running statistic:
 \begin{equation}
 \label{eq:cusum}
 g_t = \max(0, g_{t-1} + D_{\mathrm{KL}}(\mathcal{B}_i^t \| \mathcal{B}_i^{t-1}) - \nu)

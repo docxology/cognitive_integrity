@@ -7,34 +7,102 @@
 \headcommand {\beamer@framepages {2}{2}}
 \headcommand {\slideentry {1}{0}{2}{2/3}{}{0}}
 \headcommand {\beamer@framepages {2}{3}}
-\headcommand {\slideentry {1}{0}{2}{2/4}{}{0}}
-\headcommand {\beamer@framepages {2}{4}}
-\headcommand {\slideentry {1}{0}{3}{5/5}{}{0}}
+\headcommand {\slideentry {1}{0}{3}{4/4}{}{0}}
+\headcommand {\beamer@framepages {4}{4}}
+\headcommand {\beamer@subsectionpages {1}{4}}
+\headcommand {\beamer@subsectionentry {0}{1}{1}{5}{Profile A: The ``Internal Tool'' Baseline (Low Latency)}}
+\headcommand {\slideentry {1}{1}{1}{5/5}{Profile A: The ``Internal Tool'' Baseline (Low Latency)}{0}}
 \headcommand {\beamer@framepages {5}{5}}
-\headcommand {\slideentry {1}{0}{4}{6/6}{}{0}}
+\headcommand {\slideentry {1}{1}{2}{6/6}{Profile A: The ``Internal Tool'' Baseline (Low Latency)}{0}}
 \headcommand {\beamer@framepages {6}{6}}
-\headcommand {\slideentry {1}{0}{4}{6/7}{}{0}}
-\headcommand {\beamer@framepages {6}{7}}
-\headcommand {\slideentry {1}{0}{5}{8/8}{}{0}}
+\headcommand {\slideentry {1}{1}{3}{7/7}{Profile A: The ``Internal Tool'' Baseline (Low Latency)}{0}}
+\headcommand {\beamer@framepages {7}{7}}
+\headcommand {\slideentry {1}{1}{4}{8/8}{Profile A: The ``Internal Tool'' Baseline (Low Latency)}{0}}
 \headcommand {\beamer@framepages {8}{8}}
-\headcommand {\slideentry {1}{0}{5}{8/9}{}{0}}
-\headcommand {\beamer@framepages {8}{9}}
-\headcommand {\slideentry {1}{0}{6}{10/10}{}{0}}
+\headcommand {\slideentry {1}{1}{5}{9/9}{Profile A: The ``Internal Tool'' Baseline (Low Latency)}{0}}
+\headcommand {\beamer@framepages {9}{9}}
+\headcommand {\beamer@subsectionpages {5}{9}}
+\headcommand {\beamer@subsectionentry {0}{1}{2}{10}{Profile B: The ``Customer Facing'' Baseline (Balanced)}}
+\headcommand {\slideentry {1}{2}{1}{10/10}{Profile B: The ``Customer Facing'' Baseline (Balanced)}{0}}
 \headcommand {\beamer@framepages {10}{10}}
-\headcommand {\slideentry {1}{0}{6}{10/11}{}{0}}
-\headcommand {\beamer@framepages {10}{11}}
-\headcommand {\slideentry {1}{0}{7}{12/12}{}{0}}
+\headcommand {\slideentry {1}{2}{2}{11/11}{Profile B: The ``Customer Facing'' Baseline (Balanced)}{0}}
+\headcommand {\beamer@framepages {11}{11}}
+\headcommand {\slideentry {1}{2}{3}{12/12}{Profile B: The ``Customer Facing'' Baseline (Balanced)}{0}}
 \headcommand {\beamer@framepages {12}{12}}
-\headcommand {\slideentry {1}{0}{8}{13/13}{}{0}}
+\headcommand {\slideentry {1}{2}{4}{13/13}{Profile B: The ``Customer Facing'' Baseline (Balanced)}{0}}
 \headcommand {\beamer@framepages {13}{13}}
-\headcommand {\slideentry {1}{0}{8}{13/14}{}{0}}
-\headcommand {\beamer@framepages {13}{14}}
-\headcommand {\slideentry {1}{0}{9}{15/15}{}{0}}
+\headcommand {\slideentry {1}{2}{5}{14/14}{Profile B: The ``Customer Facing'' Baseline (Balanced)}{0}}
+\headcommand {\beamer@framepages {14}{14}}
+\headcommand {\beamer@subsectionpages {10}{14}}
+\headcommand {\beamer@subsectionentry {0}{1}{3}{15}{Profile C: The ``Autonomous Operator'' Baseline (High Assurance)}}
+\headcommand {\slideentry {1}{3}{1}{15/15}{Profile C: The ``Autonomous Operator'' Baseline (High Assurance)}{0}}
 \headcommand {\beamer@framepages {15}{15}}
-\headcommand {\slideentry {1}{0}{9}{15/16}{}{0}}
-\headcommand {\beamer@framepages {15}{16}}
-\headcommand {\beamer@partpages {1}{16}}
-\headcommand {\beamer@subsectionpages {1}{16}}
-\headcommand {\beamer@sectionpages {1}{16}}
-\headcommand {\beamer@documentpages {16}}
-\headcommand {\gdef \inserttotalframenumber {16}}
+\headcommand {\slideentry {1}{3}{2}{16/16}{Profile C: The ``Autonomous Operator'' Baseline (High Assurance)}{0}}
+\headcommand {\beamer@framepages {16}{16}}
+\headcommand {\slideentry {1}{3}{3}{17/17}{Profile C: The ``Autonomous Operator'' Baseline (High Assurance)}{0}}
+\headcommand {\beamer@framepages {17}{17}}
+\headcommand {\slideentry {1}{3}{4}{18/18}{Profile C: The ``Autonomous Operator'' Baseline (High Assurance)}{0}}
+\headcommand {\beamer@framepages {18}{18}}
+\headcommand {\slideentry {1}{3}{5}{19/19}{Profile C: The ``Autonomous Operator'' Baseline (High Assurance)}{0}}
+\headcommand {\beamer@framepages {19}{19}}
+\headcommand {\slideentry {1}{3}{6}{20/20}{Profile C: The ``Autonomous Operator'' Baseline (High Assurance)}{0}}
+\headcommand {\beamer@framepages {20}{20}}
+\headcommand {\beamer@subsectionpages {15}{20}}
+\headcommand {\beamer@subsectionentry {0}{1}{4}{21}{Architecture-Specific Observations}}
+\headcommand {\slideentry {1}{4}{1}{21/21}{Architecture-Specific Observations}{0}}
+\headcommand {\beamer@framepages {21}{21}}
+\headcommand {\slideentry {1}{4}{2}{22/22}{Architecture-Specific Observations}{0}}
+\headcommand {\beamer@framepages {22}{22}}
+\headcommand {\slideentry {1}{4}{3}{23/23}{Architecture-Specific Observations}{0}}
+\headcommand {\beamer@framepages {23}{23}}
+\headcommand {\slideentry {1}{4}{4}{24/24}{Architecture-Specific Observations}{0}}
+\headcommand {\beamer@framepages {24}{24}}
+\headcommand {\slideentry {1}{4}{5}{25/25}{Architecture-Specific Observations}{0}}
+\headcommand {\beamer@framepages {25}{25}}
+\headcommand {\beamer@subsectionpages {21}{25}}
+\headcommand {\beamer@subsectionentry {0}{1}{5}{26}{Minimal Viable Implementation}}
+\headcommand {\slideentry {1}{5}{1}{26/26}{Minimal Viable Implementation}{0}}
+\headcommand {\beamer@framepages {26}{26}}
+\headcommand {\slideentry {1}{5}{2}{27/27}{Minimal Viable Implementation}{0}}
+\headcommand {\beamer@framepages {27}{27}}
+\headcommand {\slideentry {1}{5}{3}{28/28}{Minimal Viable Implementation}{0}}
+\headcommand {\beamer@framepages {28}{28}}
+\headcommand {\slideentry {1}{5}{4}{29/29}{Minimal Viable Implementation}{0}}
+\headcommand {\beamer@framepages {29}{29}}
+\headcommand {\slideentry {1}{5}{5}{30/30}{Minimal Viable Implementation}{0}}
+\headcommand {\beamer@framepages {30}{30}}
+\headcommand {\beamer@subsectionpages {26}{30}}
+\headcommand {\beamer@subsectionentry {0}{1}{6}{31}{Alignment with Emerging Standards}}
+\headcommand {\slideentry {1}{6}{1}{31/31}{Alignment with Emerging Standards}{0}}
+\headcommand {\beamer@framepages {31}{31}}
+\headcommand {\slideentry {1}{6}{2}{32/32}{Alignment with Emerging Standards}{0}}
+\headcommand {\beamer@framepages {32}{32}}
+\headcommand {\slideentry {1}{6}{3}{33/33}{Alignment with Emerging Standards}{0}}
+\headcommand {\beamer@framepages {33}{33}}
+\headcommand {\slideentry {1}{6}{4}{34/34}{Alignment with Emerging Standards}{0}}
+\headcommand {\beamer@framepages {34}{34}}
+\headcommand {\slideentry {1}{6}{5}{35/35}{Alignment with Emerging Standards}{0}}
+\headcommand {\beamer@framepages {35}{35}}
+\headcommand {\slideentry {1}{6}{6}{36/36}{Alignment with Emerging Standards}{0}}
+\headcommand {\beamer@framepages {36}{36}}
+\headcommand {\slideentry {1}{6}{7}{37/37}{Alignment with Emerging Standards}{0}}
+\headcommand {\beamer@framepages {37}{37}}
+\headcommand {\slideentry {1}{6}{8}{38/38}{Alignment with Emerging Standards}{0}}
+\headcommand {\beamer@framepages {38}{38}}
+\headcommand {\beamer@subsectionpages {31}{38}}
+\headcommand {\beamer@subsectionentry {0}{1}{7}{39}{CIF Composer: Interactive Deployment Planning Tool}}
+\headcommand {\slideentry {1}{7}{1}{39/39}{CIF Composer: Interactive Deployment Planning Tool}{0}}
+\headcommand {\beamer@framepages {39}{39}}
+\headcommand {\slideentry {1}{7}{2}{40/40}{CIF Composer: Interactive Deployment Planning Tool}{0}}
+\headcommand {\beamer@framepages {40}{40}}
+\headcommand {\slideentry {1}{7}{3}{41/41}{CIF Composer: Interactive Deployment Planning Tool}{0}}
+\headcommand {\beamer@framepages {41}{41}}
+\headcommand {\slideentry {1}{7}{4}{42/42}{CIF Composer: Interactive Deployment Planning Tool}{0}}
+\headcommand {\beamer@framepages {42}{42}}
+\headcommand {\slideentry {1}{7}{5}{43/43}{CIF Composer: Interactive Deployment Planning Tool}{0}}
+\headcommand {\beamer@framepages {43}{43}}
+\headcommand {\beamer@partpages {1}{43}}
+\headcommand {\beamer@subsectionpages {39}{43}}
+\headcommand {\beamer@sectionpages {1}{43}}
+\headcommand {\beamer@documentpages {43}}
+\headcommand {\gdef \inserttotalframenumber {43}}

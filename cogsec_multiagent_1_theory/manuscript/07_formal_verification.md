@@ -524,7 +524,7 @@ TLA+ & Consensus Integrity & Proved (S01) & \cref{thm:byzantine-termination} \\
 
 ### Counterexample Analysis {#sec:counterexample}
 
-When verification fails, model checkers produce counterexamples. Analysis procedure:
+When verification fails, model checkers produce counterexamples \cite{clarke1999model}. Analysis procedure:
 
 \begin{enumerate}
 \item \textbf{Extract trace}: Sequence of states leading to violation

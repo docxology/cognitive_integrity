@@ -74,9 +74,85 @@
 }{% if KOMA class
   \KOMAoptions{parskip=half}}
 \makeatother
+\usepackage{longtable,booktabs,array}
+\usepackage{caption}
+\captionsetup[table]{skip=6pt}
+\newcounter{none} % for unnumbered tables
+\usepackage{calc} % for calculating minipage widths
+\usepackage{caption}
+% Make caption package work with longtable
+\makeatletter
+\def\fnum@table{\tablename~\thetable}
+\makeatother
 \setlength{\emergencystretch}{3em} % prevent overfull lines
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+% Manuscript macro/package fallbacks (newcommand -> providecommand).
+% Core mathematical packages
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+% Keep long deployment prose and references within the text block.
+% Algorithm formatting
+% Tables
+\usepackage{booktabs}
+\usepackage{multirow}
+% Graphics and floats
+% Typography and layout
+% Page layout (slightly smaller margins for academic journal style)
+% Running headers/footers
+% Caption formatting
+% Colored boxes for callouts
+% Cross-referencing with smart naming
+% Hyperlink styling
+% Configure cleveref for custom environments
+% Theorem environments with consistent numbering
+% Code listings and raw implementation examples in the manuscript
+\usepackage{listings}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible}
+% Math operators
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\KL}{KL}
+\DeclareMathOperator{\Tr}{Tr}
+% Custom commands for notation consistency
+\providecommand{\calA}{\mathcal{A}}
+\providecommand{\calB}{\mathcal{B}}
+\providecommand{\calC}{\mathcal{C}}
+\providecommand{\calD}{\mathcal{D}}
+\providecommand{\calF}{\mathcal{F}}
+\providecommand{\calG}{\mathcal{G}}
+\providecommand{\calH}{\mathcal{H}}
+\providecommand{\calI}{\mathcal{I}}
+\providecommand{\calM}{\mathcal{M}}
+\providecommand{\calO}{\mathcal{O}}
+\providecommand{\calP}{\mathcal{P}}
+\providecommand{\calS}{\mathcal{S}}
+\providecommand{\calT}{\mathcal{T}}
+\providecommand{\calW}{\mathcal{W}}
+% Note: \Phi is a standard LaTeX command, do not redefine
+% Trust notation
+\providecommand{\trust}[2]{\mathcal{T}_{#1 \to #2}}
+\providecommand{\trustt}[3]{\mathcal{T}_{#1 \to #2}^{#3}}
+% Belief notation
+\providecommand{\belief}[2]{\mathcal{B}_{#1}(#2)}
+\providecommand{\belieft}[3]{\mathcal{B}_{#1}^{#2}(#3)}
+% Cognitive state
+\providecommand{\cogstate}[1]{\sigma_{#1}}
+% Attack notation
+\providecommand{\attack}[1]{\mathcal{A}_{#1}}
+\providecommand{\adversary}[1]{\Omega_{#1}}
+% Defense notation
+\providecommand{\firewall}{\mathcal{F}}
+\providecommand{\sandbox}{\mathcal{S}_{box}}
+% Probability and expectation
+\providecommand{\E}{\mathbb{E}}
+\providecommand{\Prob}{\mathbb{P}}
+\providecommand{\indicator}{\mathbb{1}}
+% QED symbol
+\providecommand{\qedsymbol}{$\blacksquare$}
+% Front matter opens on the cover/title page (no list of figures/tables precedes it).
+
 % Slide layout defaults for warning-clean scientific decks.
 \usepackage{etoolbox}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{}
@@ -90,6 +166,33 @@
 \setlength{\tabcolsep}{2pt}
 \AtBeginEnvironment{longtable}{\tiny\renewcommand{\arraystretch}{0.86}\setlength{\tabcolsep}{1pt}}
 \AtBeginEnvironment{tabular}{\tiny\renewcommand{\arraystretch}{0.86}\setlength{\tabcolsep}{1pt}}
+\AtBeginEnvironment{equation}{\tiny}
+\AtBeginEnvironment{equation*}{\tiny}
+\AtBeginEnvironment{align}{\tiny}
+\AtBeginEnvironment{align*}{\tiny}
+\AtBeginEnvironment{itemize}{\footnotesize}
+\AtBeginEnvironment{enumerate}{\footnotesize}
+\AtBeginEnvironment{description}{\footnotesize}
+\setbeamerfont{caption}{size=\tiny}
+\setbeamerfont{caption name}{size=\tiny}
+\setbeamerfont{normal text}{size=\small}
+\setbeamerfont{frametitle}{size=\small}
+\setbeamerfont{section title}{size=\footnotesize}
+\setbeamerfont{subsection title}{size=\footnotesize}
+\setbeamertemplate{section page}{%
+  \centering
+  \begin{beamercolorbox}[sep=12pt,center,wd=\paperwidth]{section title}
+    \parbox{0.86\paperwidth}{\centering\usebeamerfont{section title}\insertsection\par}
+  \end{beamercolorbox}
+}
+\setbeamertemplate{subsection page}{%
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,wd=\paperwidth]{subsection title}
+    \parbox{0.86\paperwidth}{\centering\usebeamerfont{subsection title}\insertsubsection\par}
+  \end{beamercolorbox}
+}
+\setlength{\abovecaptionskip}{2pt}
+\setlength{\belowcaptionskip}{0pt}
 
 % Natbib and cross-reference fallbacks — slides don't load natbib
 % or cleveref, but combined-PDF manuscript prose may emit these
@@ -104,9 +207,15 @@
 \providecommand{\citeyear}[1]{#1}
 \providecommand{\cref}[1]{\texttt{\detokenize{#1}}}
 \providecommand{\Cref}[1]{\texttt{\detokenize{#1}}}
+\providecommand{\crefrange}[2]{\texttt{\detokenize{#1}}--\texttt{\detokenize{#2}}}
+\providecommand{\Crefrange}[2]{\texttt{\detokenize{#1}}--\texttt{\detokenize{#2}}}
+\providecommand{\paragraph}[1]{\textbf{#1}\ }
 
 \newtheorem{proposition}{Proposition}
 \newtheorem{hypothesis}{Hypothesis}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{axiom}{Axiom}
+\newtheorem{property}{Property}
 \usepackage{bookmark}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same}
@@ -154,6 +263,10 @@ trends, and defense activation patterns. The challenge is presenting
 high-dimensional agent state in a way that supports rapid operator
 decision-making.
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{1. Trust Visualization and Operator
+Interfaces}
 \textbf{Research Direction}: Dashboard architectures that connect to the
 CIF Python SDK, enabling real-time trust graph visualization and drift
 monitoring for production multiagent deployments.
@@ -171,6 +284,10 @@ verification impractical.
 would enable the trust calculus to operate in heterogeneous
 multi-framework deployments.
 
+\end{frame}
+
+\begin{frame}[fragile,allowframebreaks]{2. Standardized Agent Identity
+Protocols}
 \textbf{Research Direction}: RFC-style specification for
 \breaktt{x-agent-identity} headers with cryptographic attestation.
 \end{frame}
@@ -186,6 +303,9 @@ biological coordination. Insect colonies achieve collective immunity
 through indirect communication (pheromone trails) rather than direct
 voting.
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{3. Stigmergic Security Protocols}
 \textbf{Research Direction}: Stigmergic security protocols where agents
 leave ``trust trails'' in shared environments, enabling scalable
 consensus without direct agent-to-agent messaging.
@@ -219,26 +339,33 @@ monitor the \textbf{colony-level variational free energy}
 coordination term penalizes inconsistency between agents' generative
 models.
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{5. Collective Free Energy Monitoring}
 Research directions include: (a) defining tractable approximations to
 \(F_\text{colony}\) that can be computed from inter-agent message logs;
 (b) identifying the FEP signature of emergent misalignment as distinct
 from legitimate belief updating; (c) designing sampling strategies that
 detect distributed drift without requiring \(O(n^2)\) pairwise
 comparisons. A system that monitors collective free energy would push
-the emergent misalignment detection rate from the current 56.1\% toward
-the 90\%+ achieved against explicit adversaries.
+the emergent misalignment detection rate from the current 74.3\% toward
+the near-complete detection achieved against explicit adversaries.
 \end{frame}
 
 \begin{frame}[allowframebreaks]{6. Information-Geometric Adversarial
 Robustness}
 \protect\phantomsection\label{information-geometric-adversarial-robustness}
-The Fisher-Rao geodesic distance provides a natural metric for
-\textbf{adversarial robustness certification}: a defense is
-\(\rho\)-robust if no belief manipulation within geodesic radius
-\(\rho\) of the benign manifold can cause misclassification. This is
-analogous to \(\ell_p\)-norm robustness in image classification but
+The Fisher-Rao geodesic distance \cite{amari2000methods} provides a
+natural metric for \textbf{adversarial robustness certification}: a
+defense is \(\rho\)-robust if no belief manipulation within geodesic
+radius \(\rho\) of the benign manifold can cause misclassification. This
+is analogous to \(\ell_p\)-norm robustness in image classification but
 geometrically appropriate for probability distributions.
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{6. Information-Geometric Adversarial
+Robustness}
 Research directions include: (a) computing tight geodesic robustness
 certificates for each CIF defense module; (b) designing adversarial
 training procedures that maximize geodesic robustness (analogous to PGD
@@ -265,6 +392,9 @@ adversarial non-stationarity; (c) decentralized Nash re-estimation in
 colony deployments where each agent observes only its local attack
 distribution. The arms race simulation (Part 2) suggests that adaptive
 defenders can maintain positive value even as attackers improve---the
+\end{frame}
+
+\begin{frame}[allowframebreaks]{7. Game-Theoretic Adaptive Defense}
 key is re-estimation latency.
 \end{frame}
 
@@ -278,6 +408,9 @@ from verified components with composition-level security
 guarantees---analogous to how type systems provide
 correctness-by-construction.
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{8. Categorical Security Abstractions}
 Research directions include: (a) defining a monoidal category of defense
 mechanisms where the tensor product represents parallel composition and
 the monoid identity represents the null defense; (b) identifying
@@ -293,6 +426,9 @@ cybersecurity and compositional security verification.
 \protect\phantomsection\label{contributing}
 The CIF codebases are open for extension. Useful starting points:
 
+\end{frame}
+
+\begin{frame}[fragile,allowframebreaks]{Contributing}
 \begin{itemize}
 \tightlist
 \item

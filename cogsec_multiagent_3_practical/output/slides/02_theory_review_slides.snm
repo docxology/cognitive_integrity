@@ -1,12 +1,5 @@
-\beamer@slide {sec:adversary-hierarchy}{3}
-\beamer@slide {sec:trust-calculus-review}{5}
-\beamer@slide {sec:firewall-review}{7}
-\beamer@slide {sec:stealth-impact-review}{8}
-\beamer@slide {sec:composition-review}{9}
-\beamer@slide {sec:fep-connection}{10}
-\beamer@slide {what-is-free-energy}{10}
-\beamer@slide {attacks-as-free-energy-increases}{10}
-\beamer@slide {trust-as-precision-weighting}{10}
-\beamer@slide {the-belief-sandbox-as-constrained-inference}{10}
-\beamer@slide {practical-implication-for-operators}{10}
-\beamer@slide {sec:category-theory-crossref}{14}
+\beamer@slide {what-is-free-energy}{20}
+\beamer@slide {attacks-as-free-energy-increases}{21}
+\beamer@slide {trust-as-precision-weighting}{23}
+\beamer@slide {the-belief-sandbox-as-constrained-inference}{24}
+\beamer@slide {practical-implication-for-operators}{25}

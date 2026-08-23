@@ -102,6 +102,72 @@
 \setlength{\emergencystretch}{3em} % prevent overfull lines
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+% Manuscript macro/package fallbacks (newcommand -> providecommand).
+% Core mathematical packages
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+% Keep long deployment prose and references within the text block.
+% Algorithm formatting
+% Tables
+\usepackage{booktabs}
+\usepackage{multirow}
+% Graphics and floats
+% Typography and layout
+% Page layout (slightly smaller margins for academic journal style)
+% Running headers/footers
+% Caption formatting
+% Colored boxes for callouts
+% Cross-referencing with smart naming
+% Hyperlink styling
+% Configure cleveref for custom environments
+% Theorem environments with consistent numbering
+% Code listings and raw implementation examples in the manuscript
+\usepackage{listings}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible}
+% Math operators
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\KL}{KL}
+\DeclareMathOperator{\Tr}{Tr}
+% Custom commands for notation consistency
+\providecommand{\calA}{\mathcal{A}}
+\providecommand{\calB}{\mathcal{B}}
+\providecommand{\calC}{\mathcal{C}}
+\providecommand{\calD}{\mathcal{D}}
+\providecommand{\calF}{\mathcal{F}}
+\providecommand{\calG}{\mathcal{G}}
+\providecommand{\calH}{\mathcal{H}}
+\providecommand{\calI}{\mathcal{I}}
+\providecommand{\calM}{\mathcal{M}}
+\providecommand{\calO}{\mathcal{O}}
+\providecommand{\calP}{\mathcal{P}}
+\providecommand{\calS}{\mathcal{S}}
+\providecommand{\calT}{\mathcal{T}}
+\providecommand{\calW}{\mathcal{W}}
+% Note: \Phi is a standard LaTeX command, do not redefine
+% Trust notation
+\providecommand{\trust}[2]{\mathcal{T}_{#1 \to #2}}
+\providecommand{\trustt}[3]{\mathcal{T}_{#1 \to #2}^{#3}}
+% Belief notation
+\providecommand{\belief}[2]{\mathcal{B}_{#1}(#2)}
+\providecommand{\belieft}[3]{\mathcal{B}_{#1}^{#2}(#3)}
+% Cognitive state
+\providecommand{\cogstate}[1]{\sigma_{#1}}
+% Attack notation
+\providecommand{\attack}[1]{\mathcal{A}_{#1}}
+\providecommand{\adversary}[1]{\Omega_{#1}}
+% Defense notation
+\providecommand{\firewall}{\mathcal{F}}
+\providecommand{\sandbox}{\mathcal{S}_{box}}
+% Probability and expectation
+\providecommand{\E}{\mathbb{E}}
+\providecommand{\Prob}{\mathbb{P}}
+\providecommand{\indicator}{\mathbb{1}}
+% QED symbol
+\providecommand{\qedsymbol}{$\blacksquare$}
+% Front matter opens on the cover/title page (no list of figures/tables precedes it).
+
 % Slide layout defaults for warning-clean scientific decks.
 \usepackage{etoolbox}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{}
@@ -115,6 +181,33 @@
 \setlength{\tabcolsep}{2pt}
 \AtBeginEnvironment{longtable}{\tiny\renewcommand{\arraystretch}{0.86}\setlength{\tabcolsep}{1pt}}
 \AtBeginEnvironment{tabular}{\tiny\renewcommand{\arraystretch}{0.86}\setlength{\tabcolsep}{1pt}}
+\AtBeginEnvironment{equation}{\tiny}
+\AtBeginEnvironment{equation*}{\tiny}
+\AtBeginEnvironment{align}{\tiny}
+\AtBeginEnvironment{align*}{\tiny}
+\AtBeginEnvironment{itemize}{\footnotesize}
+\AtBeginEnvironment{enumerate}{\footnotesize}
+\AtBeginEnvironment{description}{\footnotesize}
+\setbeamerfont{caption}{size=\tiny}
+\setbeamerfont{caption name}{size=\tiny}
+\setbeamerfont{normal text}{size=\small}
+\setbeamerfont{frametitle}{size=\small}
+\setbeamerfont{section title}{size=\footnotesize}
+\setbeamerfont{subsection title}{size=\footnotesize}
+\setbeamertemplate{section page}{%
+  \centering
+  \begin{beamercolorbox}[sep=12pt,center,wd=\paperwidth]{section title}
+    \parbox{0.86\paperwidth}{\centering\usebeamerfont{section title}\insertsection\par}
+  \end{beamercolorbox}
+}
+\setbeamertemplate{subsection page}{%
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,wd=\paperwidth]{subsection title}
+    \parbox{0.86\paperwidth}{\centering\usebeamerfont{subsection title}\insertsubsection\par}
+  \end{beamercolorbox}
+}
+\setlength{\abovecaptionskip}{2pt}
+\setlength{\belowcaptionskip}{0pt}
 
 % Natbib and cross-reference fallbacks — slides don't load natbib
 % or cleveref, but combined-PDF manuscript prose may emit these
@@ -129,9 +222,15 @@
 \providecommand{\citeyear}[1]{#1}
 \providecommand{\cref}[1]{\texttt{\detokenize{#1}}}
 \providecommand{\Cref}[1]{\texttt{\detokenize{#1}}}
+\providecommand{\crefrange}[2]{\texttt{\detokenize{#1}}--\texttt{\detokenize{#2}}}
+\providecommand{\Crefrange}[2]{\texttt{\detokenize{#1}}--\texttt{\detokenize{#2}}}
+\providecommand{\paragraph}[1]{\textbf{#1}\ }
 
 \newtheorem{proposition}{Proposition}
 \newtheorem{hypothesis}{Hypothesis}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{axiom}{Axiom}
+\newtheorem{property}{Property}
 \usepackage{bookmark}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same}
@@ -159,12 +258,16 @@ Shows}\label{sec:pitfalls}
 Shows}
 \begin{figure}
 \centering
-\includegraphics[width=0.8\linewidth,height=0.46\textheight,keepaspectratio,alt={Common pitfalls by severity across security/configuration/operational categories (e.g.~implicit trust in outputs, missing input validation).}]{../figures/pitfall_severity.png}
+\includegraphics[width=0.8\linewidth,height=0.40\textheight,keepaspectratio,alt={Common pitfalls by severity across security/configuration/operational categories (e.g.~implicit trust in outputs, missing input validation).}]{../figures/pitfall_severity.png}
 \caption{Common pitfalls by severity across
 security/configuration/operational categories (e.g.~implicit trust in
 outputs, missing input validation).}\label{fig:pitfall-severity}
 \end{figure}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Common Pitfalls and What the Research
+Shows}
 The CIF research identifies recurring failure modes in multiagent
 deployments. This section catalogs eight anti-patterns, each assessed
 through what Parts 1 and 2 add to the problem and its mitigation.
@@ -186,6 +289,9 @@ entire system---adversarial content enters through a low-trust source
 and exits through a high-trust agent, with no mechanism to track or
 attenuate the trust transfer.
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Pitfall 1: Implicit Trust (Critical)}
 Part 2's simulation confirms that trust exploitation attacks achieve
 their highest success rates against architectures without trust decay.
 The \(\delta^d\) mechanism isn't optional hardening---it's the
@@ -194,6 +300,9 @@ failures.
 
 \textbf{Mitigation Strategies}:
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Pitfall 1: Implicit Trust (Critical)}
 \begin{enumerate}
 \tightlist
 \item
@@ -219,6 +328,10 @@ together. Retrofitted defenses create integration gaps---bypass
 opportunities at the boundaries between the original architecture and
 the bolted-on security layer.
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Pitfall 2: Security as Afterthought
+(Critical)}
 Part 2's architecture-specific results show that systems with natural
 security affordances (LangGraph's explicit state transitions, CrewAI's
 role boundaries) outperform systems where security must be externally
@@ -226,6 +339,10 @@ imposed. Architecture is security posture.
 
 \textbf{Mitigation Strategies}:
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Pitfall 2: Security as Afterthought
+(Critical)}
 \begin{enumerate}
 \tightlist
 \item
@@ -251,6 +368,10 @@ The same defense module can range from too-strict (high false positive
 rate, operational friction) to too-permissive (attacks succeed
 undetected) depending on threshold settings.
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Pitfall 3: Uncalibrated Thresholds
+(High)}
 The risk-profile-based configuration in Section 5 provides calibrated
 starting points. But these are starting points---production thresholds
 should be tuned against representative attack samples from Part 2's
@@ -258,6 +379,10 @@ corpus.
 
 \textbf{Mitigation Strategies}:
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Pitfall 3: Uncalibrated Thresholds
+(High)}
 \begin{enumerate}
 \tightlist
 \item
@@ -284,6 +409,10 @@ qualitatively new attack surfaces. The adversary hierarchy
 consensus, and systemic properties that don't exist in single-agent
 systems.
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Pitfall 4: Individual-Only Security
+(High)}
 Part 2's results show that coordination attacks (sybil, timing, quorum
 manipulation) are the \emph{hardest} to detect---precisely because they
 exploit emergent properties of the agent collective rather than
@@ -291,6 +420,10 @@ vulnerabilities in individual agents.
 
 \textbf{Mitigation Strategies}:
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Pitfall 4: Individual-Only Security
+(High)}
 \begin{enumerate}
 \tightlist
 \item
@@ -317,8 +450,14 @@ silently---giving false confidence in detection coverage.
 The analog in traditional security is static honeypots: effective
 initially but useless once adversaries learn to recognize them.
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Pitfall 5: Static Tripwires (Medium)}
 \textbf{Mitigation Strategies}:
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Pitfall 5: Static Tripwires (Medium)}
 \begin{enumerate}
 \tightlist
 \item
@@ -344,13 +483,30 @@ that progressive drift---sub-threshold changes accumulating over
 time---is the hardest attack pattern to detect. The theorem doesn't rule
 out slow drift; it rules out sudden, invisible, high-impact attacks.
 
-Part 2's multi-turn social engineering category, which achieves the
-lowest detection rate (\textasciitilde73\%), partially exploits this
-gap: attacks spread across multiple turns avoid the concentrated
-statistical signature that single-turn attacks produce.
+\end{frame}
 
+\begin{frame}[allowframebreaks]{Pitfall 6: Ignoring Progressive Drift
+(Medium)}
+Part 2's corpus has four categories --- prompt injection, trust
+exploitation, belief manipulation and coordination --- and none of them
+isolates multi-turn social engineering. The result that speaks to this
+gap is the colony benchmark's emergent-misalignment scenario, the
+weakest structured result at 74.3\% detection: no single agent's
+divergence spikes, so a per-agent KL threshold systematically misses the
+collective drift. Attacks spread across turns or across agents avoid the
+concentrated statistical signature that single-turn, single-agent
+attacks produce.
+
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Pitfall 6: Ignoring Progressive Drift
+(Medium)}
 \textbf{Mitigation Strategies}:
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Pitfall 6: Ignoring Progressive Drift
+(Medium)}
 \begin{enumerate}
 \tightlist
 \item
@@ -380,8 +536,16 @@ This is the cognitive security equivalent of running a production system
 without structured logging. When something goes wrong---and it
 will---the ability to investigate depends entirely on what was recorded.
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Pitfall 7: Insufficient Logging
+(Medium)}
 \textbf{Mitigation Strategies}:
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Pitfall 7: Insufficient Logging
+(Medium)}
 \begin{enumerate}
 \tightlist
 \item
@@ -408,6 +572,10 @@ control. Section 4's Scenario 5 illustrates the consequences: the
 attacker controls the entity responsible for coordinating defense,
 rendering downstream defenses moot.
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Pitfall 8: Single-Orchestrator Reliance
+(High)}
 Part 2's hierarchical architecture results confirm the pattern:
 hierarchical systems show strong \emph{average} detection because the
 orchestrator is a natural defense chokepoint, but they have the worst
@@ -416,6 +584,10 @@ single point of failure.
 
 \textbf{Mitigation Strategies}:
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Pitfall 8: Single-Orchestrator Reliance
+(High)}
 \begin{enumerate}
 \tightlist
 \item
@@ -432,6 +604,9 @@ single point of failure.
 
 \begin{frame}[allowframebreaks]{Summary Checklist}
 \protect\phantomsection\label{summary-checklist}
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Summary Checklist}
 {\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
@@ -462,6 +637,9 @@ Single orchestrator & Orchestrator monitored? & \(\square\) \\
 \end{longtable}
 }
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Summary Checklist}
 Address unchecked items before production deployment.
 \end{frame}
 

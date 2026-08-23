@@ -87,6 +87,72 @@
 \setlength{\emergencystretch}{3em} % prevent overfull lines
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+% Manuscript macro/package fallbacks (newcommand -> providecommand).
+% Core mathematical packages
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+% Keep long deployment prose and references within the text block.
+% Algorithm formatting
+% Tables
+\usepackage{booktabs}
+\usepackage{multirow}
+% Graphics and floats
+% Typography and layout
+% Page layout (slightly smaller margins for academic journal style)
+% Running headers/footers
+% Caption formatting
+% Colored boxes for callouts
+% Cross-referencing with smart naming
+% Hyperlink styling
+% Configure cleveref for custom environments
+% Theorem environments with consistent numbering
+% Code listings and raw implementation examples in the manuscript
+\usepackage{listings}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible}
+% Math operators
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\KL}{KL}
+\DeclareMathOperator{\Tr}{Tr}
+% Custom commands for notation consistency
+\providecommand{\calA}{\mathcal{A}}
+\providecommand{\calB}{\mathcal{B}}
+\providecommand{\calC}{\mathcal{C}}
+\providecommand{\calD}{\mathcal{D}}
+\providecommand{\calF}{\mathcal{F}}
+\providecommand{\calG}{\mathcal{G}}
+\providecommand{\calH}{\mathcal{H}}
+\providecommand{\calI}{\mathcal{I}}
+\providecommand{\calM}{\mathcal{M}}
+\providecommand{\calO}{\mathcal{O}}
+\providecommand{\calP}{\mathcal{P}}
+\providecommand{\calS}{\mathcal{S}}
+\providecommand{\calT}{\mathcal{T}}
+\providecommand{\calW}{\mathcal{W}}
+% Note: \Phi is a standard LaTeX command, do not redefine
+% Trust notation
+\providecommand{\trust}[2]{\mathcal{T}_{#1 \to #2}}
+\providecommand{\trustt}[3]{\mathcal{T}_{#1 \to #2}^{#3}}
+% Belief notation
+\providecommand{\belief}[2]{\mathcal{B}_{#1}(#2)}
+\providecommand{\belieft}[3]{\mathcal{B}_{#1}^{#2}(#3)}
+% Cognitive state
+\providecommand{\cogstate}[1]{\sigma_{#1}}
+% Attack notation
+\providecommand{\attack}[1]{\mathcal{A}_{#1}}
+\providecommand{\adversary}[1]{\Omega_{#1}}
+% Defense notation
+\providecommand{\firewall}{\mathcal{F}}
+\providecommand{\sandbox}{\mathcal{S}_{box}}
+% Probability and expectation
+\providecommand{\E}{\mathbb{E}}
+\providecommand{\Prob}{\mathbb{P}}
+\providecommand{\indicator}{\mathbb{1}}
+% QED symbol
+\providecommand{\qedsymbol}{$\blacksquare$}
+% Front matter opens on the cover/title page (no list of figures/tables precedes it).
+
 % Slide layout defaults for warning-clean scientific decks.
 \usepackage{etoolbox}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{}
@@ -100,6 +166,33 @@
 \setlength{\tabcolsep}{2pt}
 \AtBeginEnvironment{longtable}{\tiny\renewcommand{\arraystretch}{0.86}\setlength{\tabcolsep}{1pt}}
 \AtBeginEnvironment{tabular}{\tiny\renewcommand{\arraystretch}{0.86}\setlength{\tabcolsep}{1pt}}
+\AtBeginEnvironment{equation}{\tiny}
+\AtBeginEnvironment{equation*}{\tiny}
+\AtBeginEnvironment{align}{\tiny}
+\AtBeginEnvironment{align*}{\tiny}
+\AtBeginEnvironment{itemize}{\footnotesize}
+\AtBeginEnvironment{enumerate}{\footnotesize}
+\AtBeginEnvironment{description}{\footnotesize}
+\setbeamerfont{caption}{size=\tiny}
+\setbeamerfont{caption name}{size=\tiny}
+\setbeamerfont{normal text}{size=\small}
+\setbeamerfont{frametitle}{size=\small}
+\setbeamerfont{section title}{size=\footnotesize}
+\setbeamerfont{subsection title}{size=\footnotesize}
+\setbeamertemplate{section page}{%
+  \centering
+  \begin{beamercolorbox}[sep=12pt,center,wd=\paperwidth]{section title}
+    \parbox{0.86\paperwidth}{\centering\usebeamerfont{section title}\insertsection\par}
+  \end{beamercolorbox}
+}
+\setbeamertemplate{subsection page}{%
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,wd=\paperwidth]{subsection title}
+    \parbox{0.86\paperwidth}{\centering\usebeamerfont{subsection title}\insertsubsection\par}
+  \end{beamercolorbox}
+}
+\setlength{\abovecaptionskip}{2pt}
+\setlength{\belowcaptionskip}{0pt}
 
 % Natbib and cross-reference fallbacks — slides don't load natbib
 % or cleveref, but combined-PDF manuscript prose may emit these
@@ -114,9 +207,15 @@
 \providecommand{\citeyear}[1]{#1}
 \providecommand{\cref}[1]{\texttt{\detokenize{#1}}}
 \providecommand{\Cref}[1]{\texttt{\detokenize{#1}}}
+\providecommand{\crefrange}[2]{\texttt{\detokenize{#1}}--\texttt{\detokenize{#2}}}
+\providecommand{\Crefrange}[2]{\texttt{\detokenize{#1}}--\texttt{\detokenize{#2}}}
+\providecommand{\paragraph}[1]{\textbf{#1}\ }
 
 \newtheorem{proposition}{Proposition}
 \newtheorem{hypothesis}{Hypothesis}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{axiom}{Axiom}
+\newtheorem{property}{Property}
 \usepackage{bookmark}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same}
@@ -146,8 +245,9 @@ Integrity Framework (CIF) formal specification defined in Part 1 of this
 series.
 \end{frame}
 
+\subsection{Minimal Notation Used}\label{minimal-notation-used}
+
 \begin{frame}[allowframebreaks]{Minimal Notation Used}
-\protect\phantomsection\label{minimal-notation-used}
 {\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.2424}}
@@ -172,18 +272,26 @@ tolerated'' \\
 Provisions \\
 \(\{FR\}\) & Functional Requirements & What the system must protect \\
 \(\{DP\}\) & Defense Provisions & What CIF mechanisms provide \\
-\(\Omega_k\) & Adversary class \(k\) & Capability tier (1=passive,
-2=injection, 3=spoofing, 4=belief manipulation, 5=coordinated) \\
+\(\text{INV}_k\) & Individual invariant predicate & ``A hard rule the
+system checks at runtime; Part 1 writes this \(I_k\)'' \\
+\(\Omega_k\) & Adversary class \(k\) & Capability tier: 1=external
+(input control), 2=peripheral (tool/data channels), 3=agent-level
+(single compromised agent), 4=coordination (inter-agent channels),
+5=systemic (orchestrator) \\
 \bottomrule\noalign{}
 \end{longtable}
 }
 \end{frame}
 
+\subsection{CIF-AD-OODA Notation}\label{cif-ad-ooda-notation}
+
 \begin{frame}[allowframebreaks]{CIF-AD-OODA Notation}
-\protect\phantomsection\label{cif-ad-ooda-notation}
 The cross-domain analysis (Sections 9c--9l) uses the CIF-AD-OODA
 methodology:
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{CIF-AD-OODA Notation}
 \begin{itemize}
 \tightlist
 \item
@@ -195,15 +303,22 @@ methodology:
   \textbf{Transient Coupling} \([A']\): The coupling matrix during an
   active attack, showing which defenses are bypassed.
 \item
-  \textbf{Adversary Classes} \(\Omega_1\)--\(\Omega_5\): Five capability
-  tiers from passive eavesdropping (\(\Omega_1\)) through coordinated
-  multi-agent attacks (\(\Omega_5\)), as defined in Part 1, Section 3.
+  \textbf{Adversary Classes} \(\Omega_1\)--\(\Omega_5\): Five adversary
+  classes from external input control (\(\Omega_1\)) through peripheral
+  tool/data-channel compromise (\(\Omega_2\)), single compromised agents
+  (\(\Omega_3\)), coordination-channel attacks (\(\Omega_4\)), and
+  systemic orchestrator compromise (\(\Omega_5\)), as defined in Part
+  1's threat model.
 \end{itemize}
+\end{frame}
 
-\begin{block}{Three Universal Attack Patterns}
+\begin{frame}[allowframebreaks]{Three Universal Attack Patterns}
 \protect\phantomsection\label{three-universal-attack-patterns}
 Across all ten domains, attacks reduce to three canonical patterns:
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Three Universal Attack Patterns}
 {\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.2903}}
@@ -229,33 +344,48 @@ agent contexts & Provenance Tracking + Trust Calculus \\
 \bottomrule\noalign{}
 \end{longtable}
 }
-\end{block}
+\end{frame}
+
+\subsection{Trust Decay Explanation}\label{trust-decay-explanation}
+
+\begin{frame}[allowframebreaks]{Trust Decay Explanation}
+The symbol δ is a parameter, not a universal constant. For an
+illustrative example, δ = 0.8 means:
+
 \end{frame}
 
 \begin{frame}[allowframebreaks]{Trust Decay Explanation}
-\protect\phantomsection\label{trust-decay-explanation}
-When we write δ = 0.9, this means:
-
 \begin{itemize}
 \tightlist
 \item
   Direct trust: 100\% of assigned value
 \item
-  One delegation: 90\% of source trust
+  One delegation: 80\% of source trust
 \item
-  Two delegations: 81\% of source trust
+  Two delegations: 64\% of source trust
 \item
-  Three delegations: 73\% of source trust
+  Three delegations: 51.2\% of source trust
 \end{itemize}
 
-A lower δ (e.g., 0.85) means faster decay, providing more security but
-limiting delegation utility.
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Trust Decay Explanation}
+The executable Part 3 deployment profiles use δ = 0.80 for balanced
+operation and δ = 0.60 for high assurance. Those are implementation
+defaults, not a claim that either value is optimal for every threat
+model. A lower δ means faster decay, providing more security against
+long delegation chains while limiting delegation utility.
+\end{frame}
+
+\subsection{Byzantine Tolerance
+Explanation}\label{byzantine-tolerance-explanation}
+
+\begin{frame}[allowframebreaks]{Byzantine Tolerance Explanation}
+When we say n \ensuremath{\ge} 3f + 1:
+
 \end{frame}
 
 \begin{frame}[allowframebreaks]{Byzantine Tolerance Explanation}
-\protect\phantomsection\label{byzantine-tolerance-explanation}
-When we say n ≥ 3f + 1:
-
 \begin{itemize}
 \tightlist
 \item
@@ -267,8 +397,9 @@ When we say n ≥ 3f + 1:
 \end{itemize}
 \end{frame}
 
+\subsection{Full Notation Reference}\label{full-notation-reference}
+
 \begin{frame}[fragile,allowframebreaks]{Full Notation Reference}
-\protect\phantomsection\label{full-notation-reference}
 For complete formal definitions of all CIF notation, see Part 1
 supplementary \textbf{S03}
 (\breaktt{cogsec\_multiagent\_1\_theory/manuscript/S03\_notation.md} in
@@ -276,6 +407,9 @@ this repository's cognitive\_integrity program tree).
 
 The Part 1 specification uses on the order of 100 symbols covering:
 
+\end{frame}
+
+\begin{frame}[fragile,allowframebreaks]{Full Notation Reference}
 \begin{itemize}
 \tightlist
 \item

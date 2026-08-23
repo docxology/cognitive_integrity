@@ -74,9 +74,85 @@
 }{% if KOMA class
   \KOMAoptions{parskip=half}}
 \makeatother
+\usepackage{longtable,booktabs,array}
+\usepackage{caption}
+\captionsetup[table]{skip=6pt}
+\newcounter{none} % for unnumbered tables
+\usepackage{calc} % for calculating minipage widths
+\usepackage{caption}
+% Make caption package work with longtable
+\makeatletter
+\def\fnum@table{\tablename~\thetable}
+\makeatother
 \setlength{\emergencystretch}{3em} % prevent overfull lines
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+% Manuscript macro/package fallbacks (newcommand -> providecommand).
+% Core mathematical packages
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+% Keep long deployment prose and references within the text block.
+% Algorithm formatting
+% Tables
+\usepackage{booktabs}
+\usepackage{multirow}
+% Graphics and floats
+% Typography and layout
+% Page layout (slightly smaller margins for academic journal style)
+% Running headers/footers
+% Caption formatting
+% Colored boxes for callouts
+% Cross-referencing with smart naming
+% Hyperlink styling
+% Configure cleveref for custom environments
+% Theorem environments with consistent numbering
+% Code listings and raw implementation examples in the manuscript
+\usepackage{listings}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible}
+% Math operators
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\KL}{KL}
+\DeclareMathOperator{\Tr}{Tr}
+% Custom commands for notation consistency
+\providecommand{\calA}{\mathcal{A}}
+\providecommand{\calB}{\mathcal{B}}
+\providecommand{\calC}{\mathcal{C}}
+\providecommand{\calD}{\mathcal{D}}
+\providecommand{\calF}{\mathcal{F}}
+\providecommand{\calG}{\mathcal{G}}
+\providecommand{\calH}{\mathcal{H}}
+\providecommand{\calI}{\mathcal{I}}
+\providecommand{\calM}{\mathcal{M}}
+\providecommand{\calO}{\mathcal{O}}
+\providecommand{\calP}{\mathcal{P}}
+\providecommand{\calS}{\mathcal{S}}
+\providecommand{\calT}{\mathcal{T}}
+\providecommand{\calW}{\mathcal{W}}
+% Note: \Phi is a standard LaTeX command, do not redefine
+% Trust notation
+\providecommand{\trust}[2]{\mathcal{T}_{#1 \to #2}}
+\providecommand{\trustt}[3]{\mathcal{T}_{#1 \to #2}^{#3}}
+% Belief notation
+\providecommand{\belief}[2]{\mathcal{B}_{#1}(#2)}
+\providecommand{\belieft}[3]{\mathcal{B}_{#1}^{#2}(#3)}
+% Cognitive state
+\providecommand{\cogstate}[1]{\sigma_{#1}}
+% Attack notation
+\providecommand{\attack}[1]{\mathcal{A}_{#1}}
+\providecommand{\adversary}[1]{\Omega_{#1}}
+% Defense notation
+\providecommand{\firewall}{\mathcal{F}}
+\providecommand{\sandbox}{\mathcal{S}_{box}}
+% Probability and expectation
+\providecommand{\E}{\mathbb{E}}
+\providecommand{\Prob}{\mathbb{P}}
+\providecommand{\indicator}{\mathbb{1}}
+% QED symbol
+\providecommand{\qedsymbol}{$\blacksquare$}
+% Front matter opens on the cover/title page (no list of figures/tables precedes it).
+
 % Slide layout defaults for warning-clean scientific decks.
 \usepackage{etoolbox}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{}
@@ -90,6 +166,33 @@
 \setlength{\tabcolsep}{2pt}
 \AtBeginEnvironment{longtable}{\tiny\renewcommand{\arraystretch}{0.86}\setlength{\tabcolsep}{1pt}}
 \AtBeginEnvironment{tabular}{\tiny\renewcommand{\arraystretch}{0.86}\setlength{\tabcolsep}{1pt}}
+\AtBeginEnvironment{equation}{\tiny}
+\AtBeginEnvironment{equation*}{\tiny}
+\AtBeginEnvironment{align}{\tiny}
+\AtBeginEnvironment{align*}{\tiny}
+\AtBeginEnvironment{itemize}{\footnotesize}
+\AtBeginEnvironment{enumerate}{\footnotesize}
+\AtBeginEnvironment{description}{\footnotesize}
+\setbeamerfont{caption}{size=\tiny}
+\setbeamerfont{caption name}{size=\tiny}
+\setbeamerfont{normal text}{size=\small}
+\setbeamerfont{frametitle}{size=\small}
+\setbeamerfont{section title}{size=\footnotesize}
+\setbeamerfont{subsection title}{size=\footnotesize}
+\setbeamertemplate{section page}{%
+  \centering
+  \begin{beamercolorbox}[sep=12pt,center,wd=\paperwidth]{section title}
+    \parbox{0.86\paperwidth}{\centering\usebeamerfont{section title}\insertsection\par}
+  \end{beamercolorbox}
+}
+\setbeamertemplate{subsection page}{%
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,wd=\paperwidth]{subsection title}
+    \parbox{0.86\paperwidth}{\centering\usebeamerfont{subsection title}\insertsubsection\par}
+  \end{beamercolorbox}
+}
+\setlength{\abovecaptionskip}{2pt}
+\setlength{\belowcaptionskip}{0pt}
 
 % Natbib and cross-reference fallbacks — slides don't load natbib
 % or cleveref, but combined-PDF manuscript prose may emit these
@@ -104,9 +207,15 @@
 \providecommand{\citeyear}[1]{#1}
 \providecommand{\cref}[1]{\texttt{\detokenize{#1}}}
 \providecommand{\Cref}[1]{\texttt{\detokenize{#1}}}
+\providecommand{\crefrange}[2]{\texttt{\detokenize{#1}}--\texttt{\detokenize{#2}}}
+\providecommand{\Crefrange}[2]{\texttt{\detokenize{#1}}--\texttt{\detokenize{#2}}}
+\providecommand{\paragraph}[1]{\textbf{#1}\ }
 
 \newtheorem{proposition}{Proposition}
 \newtheorem{hypothesis}{Hypothesis}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{axiom}{Axiom}
+\newtheorem{property}{Property}
 \usepackage{bookmark}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same}
@@ -133,11 +242,16 @@ core definitions and theorems using the same notation as the Part 1
 manuscript.
 \end{frame}
 
+\subsection{\texorpdfstring{The Adversary Hierarchy
+(\(\Omega\))}{The Adversary Hierarchy (\textbackslash Omega)}}\label{sec:adversary-hierarchy}
+
 \begin{frame}[allowframebreaks]{The Adversary Hierarchy (\(\Omega\))}
-\protect\phantomsection\label{sec:adversary-hierarchy}
 Part 1 formalized the ``Scope of Threat'' through a hierarchical
 taxonomy. This hierarchy allows precise definition of defensive scope.
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{The Adversary Hierarchy (\(\Omega\))}
 \begin{itemize}
 \tightlist
 \item
@@ -160,6 +274,9 @@ taxonomy. This hierarchy allows precise definition of defensive scope.
   orchestrator or infrastructure. The system's rules are compromised.
 \end{itemize}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{The Adversary Hierarchy (\(\Omega\))}
 The simulations in Part 2 show defense difficulty rising non-linearly
 with this hierarchy: \(\Omega_1\) attacks are largely caught by
 surface-level filters (see Part 2 for category-level rates), while
@@ -167,8 +284,10 @@ surface-level filters (see Part 2 for category-level rates), while
 and remain structurally harder to flag than single-channel injections.
 \end{frame}
 
+\subsection{\texorpdfstring{The Trust Calculus
+(\(T\))}{The Trust Calculus (T)}}\label{sec:trust-calculus-review}
+
 \begin{frame}[allowframebreaks]{The Trust Calculus (\(T\))}
-\protect\phantomsection\label{sec:trust-calculus-review}
 A central contribution of Part 1 is the \textbf{Trust Calculus}, a
 formal system for reasoning about belief reliability. It defines Trust
 (\(T\)) not as a binary permission but as a continuous property of a
@@ -186,6 +305,9 @@ distance from the source.}
 \emph{where \(\delta\) is the decay factor (\(0 < \delta < 1\)).}
 \end{quote}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{The Trust Calculus (\(T\))}
 This theorem provides the mathematical basis for the ``Trust Decay''
 mechanism evaluated in Part 2. It ensures that uncertainty is preserved
 and amplified effectively as information travels through the network.
@@ -198,12 +320,17 @@ between CIF's trust update rules and variational free energy for the
 shared generative-model setup used there.}
 \end{frame}
 
+\subsection{\texorpdfstring{The Cognitive Firewall
+(\(\Phi\))}{The Cognitive Firewall (\textbackslash Phi)}}\label{sec:firewall-review}
+
 \begin{frame}[allowframebreaks]{The Cognitive Firewall (\(\Phi\))}
-\protect\phantomsection\label{sec:firewall-review}
 The \textbf{Cognitive Firewall} is defined in Part 1 as a function
 \(\Phi\) that maps inputs to decisions based on three verification
 layers:
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{The Cognitive Firewall (\(\Phi\))}
 \begin{enumerate}
 \tightlist
 \item
@@ -217,12 +344,17 @@ layers:
   anomalies.
 \end{enumerate}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{The Cognitive Firewall (\(\Phi\))}
 In the Part 2 experiments, this modular structure was shown to be the
 primary defense against \(\Omega_1\) (External) attacks.
 \end{frame}
 
+\subsection{The Stealth-Impact
+Tradeoff}\label{sec:stealth-impact-review}
+
 \begin{frame}[allowframebreaks]{The Stealth-Impact Tradeoff}
-\protect\phantomsection\label{sec:stealth-impact-review}
 Part 1 provides a theoretical bound on attack performance, formalized as
 the Stealth-Impact Tradeoff.
 
@@ -238,30 +370,34 @@ this: High-impact attacks were detected 98\% of the time, while
 low-impact attacks were detected only 74\% of the time.
 \end{frame}
 
+\subsection{Defense Composition}\label{sec:composition-review}
+
 \begin{frame}[allowframebreaks]{Defense Composition}
-\protect\phantomsection\label{sec:composition-review}
 Finally, Part 1 defines the \textbf{Composition Algebra}, determining
 how output probabilities of distinct modules interact. The key result is
 that orthogonal defenses compose multiplicatively.
 
 This ``Swiss Cheese Model'' was supported by Part 2's parametric
-simulation, where the full stack reached a 94--100\% design-level
+simulation, where the full stack reached a 96--100\% design-level
 detection ceiling and outperformed the sum of its parts. The real
 prototype pipeline is materially lower and is reported separately as a
 multi-seed mean of approximately 44.8\%.
 \end{frame}
 
+\subsection{The Science Behind Belief Updates: Free
+Energy}\label{sec:fep-connection}
+
 \begin{frame}[allowframebreaks]{The Science Behind Belief Updates: Free
 Energy}
-\protect\phantomsection\label{sec:fep-connection}
 The Cognitive Integrity Framework's formal mechanisms have a deep
 connection to the \textbf{Free Energy Principle (FEP)}---the leading
 computational theory of how intelligent agents maintain coherent beliefs
 about their environment \cite{friston2010free}. Understanding this
 connection helps explain \emph{why} CIF's defenses work, not just
 \emph{that} they work.
+\end{frame}
 
-\begin{block}{What Is Free Energy?}
+\begin{frame}[allowframebreaks]{What Is Free Energy?}
 \protect\phantomsection\label{what-is-free-energy}
 In computational neuroscience, \textbf{variational free energy} \(F\)
 measures how well an agent's internal model \(Q\) of the world matches
@@ -273,9 +409,9 @@ The first term penalizes divergence from the prior; the second rewards
 accurate prediction of observations. Healthy cognition minimizes
 \(F\)---beliefs that minimize free energy are accurate, coherent, and
 resistant to manipulation.
-\end{block}
+\end{frame}
 
-\begin{block}{Attacks as Free Energy Increases}
+\begin{frame}[allowframebreaks]{Attacks as Free Energy Increases}
 \protect\phantomsection\label{attacks-as-free-energy-increases}
 From the FEP perspective, \textbf{a cognitive attack is any intervention
 that forces an agent's free energy up}. Prompt injections, belief
@@ -284,6 +420,9 @@ manipulation, and trust exploitation all work by injecting observations
 the agent's belief state \(Q\) away from its prior \(P\) in ways that
 serve the attacker's goals rather than the agent's.
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Attacks as Free Energy Increases}
 CIF formalizes this in Part 2 (FEP.1): an attack \(\omega\) is detected
 when
 \(\Delta F(\omega) = F(Q_\text{attacked}) - F(Q_\text{baseline}) > \kappa_\text{FEP}\).
@@ -291,9 +430,9 @@ The threshold \(\kappa_\text{FEP}\) is set by the precision of the
 agent's prior---agents with strong, well-calibrated priors (high
 precision) require larger perturbations to shift their beliefs, making
 them more attack-resistant.
-\end{block}
+\end{frame}
 
-\begin{block}{Trust as Precision Weighting}
+\begin{frame}[allowframebreaks]{Trust as Precision Weighting}
 \protect\phantomsection\label{trust-as-precision-weighting}
 CIF's trust calculus (the \(\delta^d\) decay) has a natural
 interpretation under FEP: \textbf{trust score = precision weight}. When
@@ -304,23 +443,26 @@ agent \(A\) receives a message from agent \(B\) with trust score
 (\(\delta^d\)) corresponds to precision attenuation in distal
 channels---the same mechanism that makes far-away sensory signals less
 reliable than proximal ones.
-\end{block}
+\end{frame}
 
-\begin{block}{The Belief Sandbox as Constrained Inference}
+\begin{frame}[allowframebreaks]{The Belief Sandbox as Constrained
+Inference}
 \protect\phantomsection\label{the-belief-sandbox-as-constrained-inference}
-The belief sandbox (Part 1, Definition 5.4) has a direct FEP
-interpretation: it is \textbf{constrained variational inference} where
-the update is only accepted if
-\(\Delta F \leq \kappa \cdot \varepsilon_\text{precision}\). This is
-equivalent to requiring that accepted belief updates stay within a
-bounded geodesic radius on the statistical manifold of belief
+The belief sandbox (Part 1) has a direct FEP interpretation: it is
+\textbf{constrained variational inference} where the update is only
+accepted if \(\Delta F \leq \kappa \cdot \varepsilon_\text{precision}\).
+This is equivalent to requiring that accepted belief updates stay within
+a bounded geodesic radius on the statistical manifold of belief
 distributions---exactly Theorem CG.1 from Part 2.
-\end{block}
+\end{frame}
 
-\begin{block}{Practical Implication for Operators}
+\begin{frame}[allowframebreaks]{Practical Implication for Operators}
 \protect\phantomsection\label{practical-implication-for-operators}
 This connection is not just theoretical. It means:
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Practical Implication for Operators}
 \begin{enumerate}
 \tightlist
 \item
@@ -343,14 +485,18 @@ This connection is not just theoretical. It means:
   detection.
 \end{enumerate}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Practical Implication for Operators}
 For the full mathematical treatment, see Part\textasciitilde2's
 theoretical-connections and information-geometry sections.
-\end{block}
 \end{frame}
+
+\subsection{Category-Theoretic Formalization of Defense
+Composition}\label{sec:category-theory-crossref}
 
 \begin{frame}[fragile,allowframebreaks]{Category-Theoretic Formalization
 of Defense Composition}
-\protect\phantomsection\label{sec:category-theory-crossref}
 Part 2 (§1c, §2c) extends the composition algebra of Part 1 into a full
 category-theoretic framework. This formalization is relevant to
 practitioners because it provides \emph{structural guarantees} --- not
@@ -363,6 +509,10 @@ CIF defense suite forms a category whose objects are cognitive states
 formalizes \emph{short-circuit detection}: once any module fires,
 subsequent modules do not override the event.
 
+\end{frame}
+
+\begin{frame}[fragile,allowframebreaks]{Category-Theoretic Formalization
+of Defense Composition}
 \textbf{Three key theorems} (Part 2, Theorems CT.1--CT.3): -
 \textbf{CT.1 (Category Laws)}: Defense composition satisfies identity
 and associativity --- the algebraic scaffold that makes multi-layer
@@ -375,6 +525,10 @@ architecture adapter) that maps morphisms while preserving composition
 structure cannot reduce the composite detection rate below the guarantee
 of Theorem 3.1.
 
+\end{frame}
+
+\begin{frame}[fragile,allowframebreaks]{Category-Theoretic Formalization
+of Defense Composition}
 \textbf{Practical value for operators}: The categorical framing enables
 \emph{type-checked composition} (incompatible modules are refused at
 composition time), \emph{empirical law verification} (the
@@ -386,6 +540,10 @@ CIF deployment, the Defense Category \(\calD\) provides the structural
 language to specify \emph{what it means} for two defense modules to
 compose correctly.
 
+\end{frame}
+
+\begin{frame}[fragile,allowframebreaks]{Category-Theoretic Formalization
+of Defense Composition}
 Part 2 also provides a \textbf{composable visualization engine}
 (\texttt{DefenseGraph}, \texttt{CategoryDiagram}, \texttt{LatticeViz},
 \texttt{OperadPlot}, \texttt{MonadFlow}, \texttt{LensDiagram}) and an

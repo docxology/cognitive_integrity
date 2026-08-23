@@ -1,4 +1,4 @@
-\begin{thebibliography}{71}
+\begin{thebibliography}{76}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -10,6 +10,12 @@
 \newblock 2025 {AI} security incidents report.
 \newblock Technical report, Adversa AI, 2025.
 \newblock URL \url{https://adversa.ai/ai-security-incidents-2025/}.
+
+\bibitem[Amari and Nagaoka(2000)]{amari2000methods}
+Shun-ichi Amari and Hiroshi Nagaoka.
+\newblock \emph{Methods of Information Geometry}.
+\newblock American Mathematical Society, 2000.
+\newblock ISBN 978-0-8218-0531-2.
 
 \bibitem[Amiti et~al.(2019)Amiti, Redding, and Weinstein]{amiti2019impact}
 Mary Amiti, Stephen~J. Redding, and David~E. Weinstein.
@@ -38,6 +44,12 @@ V.~Balaram.
 \newblock \emph{Geoscience Frontiers}, 10\penalty0 (4):\penalty0 1285--1303,
   2019.
 \newblock \doi{10.1016/j.gsf.2018.12.005}.
+
+\bibitem[Blatny and Masakowski(2023)]{blatny2023nato}
+Jan~M. Blatny and Yvonne Masakowski.
+\newblock Mitigating and responding to cognitive warfare.
+\newblock Sto technical report, NATO Science and Technology Organization, 2023.
+\newblock NATO STO-TR-HFM-ET-356.
 
 \bibitem[Bondar(2025)]{bondar2025ukraine}
 Kateryna Bondar.
@@ -75,21 +87,13 @@ Nicholas Carlini and David Wagner.
   2017.
 \newblock \doi{10.1109/SP.2017.49}.
 
-\bibitem[Chen et~al.(2025{\natexlab{a}})]{promptinjection2025soc}
+\bibitem[Chen et~al.(2025)]{promptinjection2025soc}
 Wei Chen et~al.
 \newblock Prompt injection attacks in {LLM}-powered {SOC} workflows: A security
   analysis.
-\newblock \emph{Computers \& Security}, 2025{\natexlab{a}}.
+\newblock \emph{Computers \& Security}, 2025.
 \newblock \doi{10.1016/j.cose.2025.104200}.
 \newblock Documents log injection vulnerabilities in LLM-powered SIEM tools.
-
-\bibitem[Chen et~al.(2025{\natexlab{b}})Chen, Liu, and
-  Wang]{aiagentssurvey2025}
-Xiang Chen, Yang Liu, and Zheng Wang.
-\newblock {AI} agents under threat: A survey of key security challenges and
-  future pathways.
-\newblock \emph{ACM Computing Surveys}, 2025{\natexlab{b}}.
-\newblock \doi{10.1145/3716628}.
 
 \bibitem[{Cloud Security Alliance}(2025)]{csa2025maestro}
 {Cloud Security Alliance}.
@@ -136,8 +140,17 @@ Edoardo Debenedetti, Jie Zhang, and Nicholas Carlini.
   NAACL 2025}, 2025.
 \newblock Attack success rate $>$90\% against 12 published defenses.
 
+\bibitem[Deng et~al.(2025)Deng, Guo, Han, Ma, Xiong, Wen, and
+  Xiang]{aiagentssurvey2025}
+Zehang Deng, Yongjian Guo, Changzhou Han, Wanlun Ma, Junwu Xiong, Sheng Wen,
+  and Yang Xiang.
+\newblock {AI} agents under threat: A survey of key security challenges and
+  future pathways.
+\newblock \emph{ACM Computing Surveys}, 2025.
+\newblock \doi{10.1145/3716628}.
+
 \bibitem[deVadoss and Artzt(2025)]{devadoss2025bft}
-Jacob deVadoss and Zack Artzt.
+John deVadoss and Matthias Artzt.
 \newblock A byzantine fault tolerance approach towards {AI} safety.
 \newblock \emph{arXiv preprint}, 2025.
 \newblock URL \url{https://arxiv.org/abs/2504.14668}.
@@ -177,6 +190,7 @@ Pablo~D. Fajgelbaum, Pinelopi~K. Goldberg, Patrick~J. Kennedy, and Amit~K.
 Daniel~Ari Friedman.
 \newblock Cognitive integrity framework: Formal foundations for multiagent
   security, 2026{\natexlab{a}}.
+\newblock URL \url{https://github.com/docxology/cognitive_integrity}.
 \newblock Part 1: Theoretical Foundations --- Trust Calculus with $\delta^d$
   bounded delegation, Defense Composition Algebra, adversary taxonomy
   $\Omega_1$--$\Omega_5$, information-theoretic stealth--impact bounds, five
@@ -184,8 +198,9 @@ Daniel~Ari Friedman.
 
 \bibitem[Friedman(2026{\natexlab{b}})]{friedman2026cogsec2}
 Daniel~Ari Friedman.
-\newblock Cognitive integrity framework: Computational validation (second
-  edition), 2026{\natexlab{b}}.
+\newblock Cognitive integrity framework: Computational validation and empirical
+  analysis, 2026{\natexlab{b}}.
+\newblock URL \url{https://github.com/docxology/cognitive_integrity}.
 \newblock Part 2: Implementation and Empirical Analysis (Second Edition) ---
   950-attack corpus, multi-tier evaluation, ablation studies, Bayesian
   uncertainty, parametric architecture-aware simulation across four production
@@ -200,11 +215,12 @@ Daniel~Ari Friedman.
 Daniel~Ari Friedman.
 \newblock Cognitive integrity framework: Practical applications and deployment
   guide, 2026{\natexlab{c}}.
+\newblock URL \url{https://github.com/docxology/cognitive_integrity}.
 \newblock Part 3+4 (unified): Practitioner guidance (deployment guides,
   subagent hardening, incident-response playbooks, monitoring, cost--benefit
   analysis, common pitfalls, case studies, operator risk frameworks) combined
   with cross-domain CIF-AD-OODA applications across ten critical domains, three
-  universal attack patterns, three novel defense extensions, and retrospective
+  universal attack patterns, four novel defense extensions, and retrospective
   analysis of six documented 2024--2025 AI-agent security incidents.
 
 \bibitem[Friston(2010)]{friston2010free}
@@ -238,13 +254,25 @@ Kai Greshake, Sahar Abdelnabi, Shailesh Mishra, Christoph Endres, Thorsten
   Intelligence and Security}, pages 79--90, 2023.
 \newblock \doi{10.1145/3605764.3623985}.
 
-\bibitem[He et~al.(2025)He, Yao, Lu, et~al.]{he2025redteaming}
-Pengfei He, Bingzhe Yao, Shanshan Lu, et~al.
+\bibitem[He et~al.(2025)He, Lin, Dong, Xu, Xing, and Liu]{he2025redteaming}
+Pengfei He, Yupin Lin, Shen Dong, Han Xu, Yue Xing, and Hui Liu.
 \newblock Red-teaming {LLM} multi-agent systems via communication attacks.
 \newblock \emph{Findings of ACL}, 2025.
 \newblock URL \url{https://arxiv.org/abs/2502.14847}.
 \newblock Introduces Agent-in-the-Middle (AiTM) attack exploiting inter-agent
   communication.
+
+\bibitem[Hern(2024)]{guardian2024chatgptsearch}
+Alex Hern.
+\newblock {ChatGPT} search tool vulnerable to manipulation and deception, tests
+  show.
+\newblock The Guardian, December 2024.
+\newblock URL
+  \url{https://www.theguardian.com/technology/2024/dec/24/chatgpt-search-tool-vulnerable-to-manipulation-and-deception-tests-show}.
+\newblock Hidden text on a webpage --- font matched to the background ---
+  overrode the visible content: instructed to return a favourable review, the
+  assistant produced an entirely positive summary of a product page carrying
+  negative reviews.
 
 \bibitem[Ivanov(2020)]{ivanov2020predicting}
 Dmitry Ivanov.
@@ -254,6 +282,11 @@ Dmitry Ivanov.
 \newblock \emph{Transportation Research Part E: Logistics and Transportation
   Review}, 136:\penalty0 101922, 2020.
 \newblock \doi{10.1016/j.tre.2020.101922}.
+
+\bibitem[Jo and Park(2025)]{jo2025byzantine}
+Yongrae Jo and Chanik Park.
+\newblock Byzantine-robust decentralized coordination of {LLM} agents.
+\newblock \emph{arXiv preprint arXiv:2507.14928}, 2025.
 
 \bibitem[Kaloudi and Li(2020)]{kaloudi2020ai}
 Nektaria Kaloudi and Jingyue Li.
@@ -303,6 +336,19 @@ Yupei Liu, Yuqi Jia, Runpeng Geng, Jinyuan Jia, and Neil~Zhenqiang Gong.
 \newblock In \emph{33rd USENIX Security Symposium}, 2024.
 \newblock URL \url{https://arxiv.org/abs/2310.12815}.
 
+\bibitem[Magramo and Chen(2024)]{cnn2024arup}
+Kathleen Magramo and Heather Chen.
+\newblock Arup revealed as victim of \$25 million deepfake scam involving {Hong
+  Kong} employee.
+\newblock CNN Business, May 2024.
+\newblock URL
+  \url{https://www.cnn.com/2024/05/16/tech/arup-deepfake-scam-loss-hong-kong-intl-hnk}.
+\newblock A finance employee in Arup's Hong Kong office made 15 transfers
+  totalling HK\$200 million (about US\$25.6 million) after a video conference
+  in which every other participant was a deepfake built from publicly available
+  footage. Reported by Hong Kong police in February 2024; Arup identified
+  itself as the victim in May 2024.
+
 \bibitem[Mancheri et~al.(2019)Mancheri, Sprecher, Bailey, Batber, and Van
   Der~Voet]{mancheri2019critical}
 Nabeel~A. Mancheri, Benjamin Sprecher, Gwendolyn Bailey, J{\'e}r{\^o}me Batber,
@@ -326,11 +372,13 @@ Nabeel~A. Mancheri, Benjamin Sprecher, Gwendolyn Bailey, J{\'e}r{\^o}me Batber,
 \newblock URL \url{https://atlas.mitre.org/}.
 
 \bibitem[Narajala and Narayan(2025)]{narajala2025atfaa}
-Saisha Narajala and Vibha Narayan.
-\newblock {ATFAA} and {SHIELD}: A comprehensive threat framework and defense
-  architecture for agentic {AI} systems.
+Vineeth~Sai Narajala and Om~Narayan.
+\newblock Securing agentic {AI}: A comprehensive threat model and mitigation
+  framework for generative {AI} agents.
 \newblock \emph{arXiv preprint}, 2025.
 \newblock URL \url{https://arxiv.org/abs/2504.19956}.
+\newblock Introduces the ATFAA threat framework (nine threats across five
+  domains) and the SHIELD mitigation framework.
 
 \bibitem[{National Academies of Sciences, Engineering, and
   Medicine}(2004)]{nas2004biotechnology}
@@ -521,8 +569,10 @@ Qiusi Zhan, Zhixiang Liang, Zifan Ying, and Daniel Kang.
   ACL 2024}, 2024.
 \newblock URL \url{https://arxiv.org/abs/2403.02691}.
 
-\bibitem[Zhang et~al.(2025)Zhang, Ruan, Liu, et~al.]{zhang2025asb}
-Hanrong Zhang, Jingyuan Ruan, Jiaqi Liu, et~al.
+\bibitem[Zhang et~al.(2025)Zhang, Huang, Mei, Yao, Wang, Zhan, Wang, and
+  Zhang]{zhang2025asb}
+Hanrong Zhang, Jingyuan Huang, Kai Mei, Yifei Yao, Zhenting Wang, Chenlu Zhan,
+  Hongwei Wang, and Yongfeng Zhang.
 \newblock Agent security bench ({ASB}): Formalizing and benchmarking attacks
   and defenses in {LLM}-based agents.
 \newblock \emph{Proceedings of the International Conference on Learning
@@ -531,13 +581,13 @@ Hanrong Zhang, Jingyuan Ruan, Jiaqi Liu, et~al.
 \newblock 84.3\% average attack success rate across 10 scenarios and 400+
   tools.
 
-\bibitem[Zheng et~al.(2025)]{zheng2025rethinking}
-Yuhao Zheng et~al.
-\newblock Rethinking the reliability of multi-agent systems from a {Byzantine}
-  fault tolerance perspective.
-\newblock \emph{arXiv preprint}, 2025.
-\newblock URL \url{https://arxiv.org/abs/2511.10400}.
-\newblock LLM agents demonstrate natural Byzantine-resistant properties via
-  skepticism toward erroneous inputs.
+\bibitem[Zheng et~al.(2025)Zheng, Chen, Yin, Zhang, Zeng, and Tian]{cpwbft2025}
+Lifan Zheng, Jiawei Chen, Qinghong Yin, Jingyuan Zhang, Xinyi Zeng, and
+  Yu~Tian.
+\newblock Rethinking the reliability of multi-agent system: A perspective from
+  {Byzantine} fault tolerance.
+\newblock \emph{arXiv preprint arXiv:2511.10400}, 2025.
+\newblock Proposes CP-WBFT, a confidence-probe-weighted Byzantine consensus for
+  LLM agents; reports operation under fault rates as high as 85.7\%.
 
 \end{thebibliography}

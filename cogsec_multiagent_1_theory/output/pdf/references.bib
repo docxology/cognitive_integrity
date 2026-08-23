@@ -17,7 +17,7 @@
 
 @misc{friedman2026cogsec2,
   author    = {Friedman, Daniel Ari},
-  title     = {Cognitive Integrity Framework: Computational Validation},
+  title     = {Cognitive Integrity Framework: Computational Validation and Empirical Analysis},
   journal   = {Cognitive Security for Multiagent Operators},
   volume    = {2},
   year      = {2026},
@@ -27,12 +27,12 @@
 
 @misc{friedman2026cogsec3,
   author    = {Friedman, Daniel Ari},
-  title     = {Cognitive Integrity Framework: Practitioner Guidance and Critical Domain Applications},
+  title     = {Cognitive Integrity Framework: Practical Applications and Deployment Guide},
   journal   = {Cognitive Security for Multiagent Operators},
   volume    = {3},
   year      = {2026},
   doi       = {10.5281/zenodo.18364130},
-  note      = {Part 3 (merged from original Parts 3+4): Qualitative review and practitioner synthesis --- accessible-language distillation, deployment guides, subagent hardening, incident-response playbooks, monitoring, cost-benefit analysis, operator risk frameworks --- combined with CIF-AD-OODA applications across ten critical operational domains, three universal attack patterns (FR Polarity Inversion, Constraint Relaxation, Context Boundary Violation), three novel defense extensions, and retrospective analysis of 2024--2025 AI-agent security incidents.}
+  note      = {Part 3 (merged from original Parts 3+4): Qualitative review and practitioner synthesis --- accessible-language distillation, deployment guides, subagent hardening, incident-response playbooks, monitoring, cost-benefit analysis, operator risk frameworks --- combined with CIF-AD-OODA applications across ten critical operational domains, three universal attack patterns (FR Polarity Inversion, Constraint Relaxation, Context Boundary Violation), four novel defense extensions, and retrospective analysis of 2024--2025 AI-agent security incidents.}
 }
 
 @misc{friedman2026cogsec4,
@@ -41,7 +41,7 @@
   journal   = {Cognitive Security for Multiagent Operators},
   volume    = {3},
   year      = {2026},
-  note      = {Part 3+4 (Unified): Applications of the Cognitive Integrity Framework --- CIF-AD-OODA integration model applied across ten critical domains, three universal attack patterns (FR Polarity Inversion, Constraint Relaxation, Context Boundary Violation), three novel defense extensions (verification channel separation, active perturbation probing, physics-informed invariants), and retrospective analysis of six documented 2024--2025 AI-agent security incidents. Merged from former Part 3 (practitioner guidance) and Part 4 (cross-domain applications). DOI: 10.5281/zenodo.18364130}
+  note      = {Part 3+4 (Unified): Applications of the Cognitive Integrity Framework --- CIF-AD-OODA integration model applied across ten critical domains, three universal attack patterns (FR Polarity Inversion, Constraint Relaxation, Context Boundary Violation), four novel defense extensions (verification channel separation, active perturbation probing, physics-informed invariants, semiotic decoupling), and retrospective analysis of six documented 2024--2025 AI-agent security incidents. Merged from former Part 3 (practitioner guidance) and Part 4 (cross-domain applications). DOI: 10.5281/zenodo.18364130}
 }
 
 % Foundational Works
@@ -91,7 +91,7 @@
 }
 
 @inproceedings{perez2023hackaprompt,
-  author    = {Perez, Fábio and Ribeiro, Ivan},
+  author    = {Schulhoff, Sander and Pinto, Jeremy and Khan, Anaum and Bouchard, Louis-Fran{\c c}ois and Si, Chenglei and Anati, Svetlina and Tagliabue, Valen and Kost, Anson Liu and Carnahan, Christopher and Boyd-Graber, Jordan},
   title     = {Ignore This Title and HackAPrompt: Exposing Systemic Vulnerabilities of {LLM}s through a Global Scale Prompt Hacking Competition},
   booktitle = {Proceedings of the 2023 Conference on Empirical Methods in Natural Language Processing},
   year      = {2023},
@@ -290,18 +290,20 @@
 
 % Additional Security References
 @misc{echoleak2025,
-  author       = {Zhang, Wei and Liu, Yang},
-  title        = {{EchoLeak}: Systemic Prompt Leakage via Recursive Agent Invocation},
-  howpublished = {arXiv preprint arXiv:2501.12345},
+  author       = {{Aim Labs}},
+  title        = {{EchoLeak}: Zero-Click Data Exfiltration from {Microsoft} 365 {Copilot} via {LLM} Scope Violation},
+  howpublished = {Security advisory, {CVE-2025-32711} (CVSS 9.3)},
   year         = {2025},
-  note         = {CVE-2025-32711}
+  url          = {https://nvd.nist.gov/vuln/detail/CVE-2025-32711},
+  note         = {Zero-click indirect prompt injection: a payload hidden in an inbound email is parsed and retained by the assistant, then used to exfiltrate data already inside its retrieval scope, with no user interaction. Patched server-side by Microsoft; no exploitation observed in the wild.}
 }
 
-@article{topicattack2025,
-  author       = {Chen, Li and Wang, Bo},
-  title        = {{TopicAttack}: Semantic Drift in Long-Horizon Agent Interactions},
-  journal   = {arXiv preprint arXiv:2502.09876},
-  year         = {2025}
+@inproceedings{topicattack2025,
+  author    = {Chen, Yulin and Li, Haoran and Li, Yuexin and Liu, Yue and Song, Yangqiu and Hooi, Bryan},
+  title     = {{TopicAttack}: An Indirect Prompt Injection Attack via Topic Transition},
+  booktitle = {Proceedings of the 2025 Conference on Empirical Methods in Natural Language Processing (EMNLP)},
+  year      = {2025},
+  note      = {arXiv:2507.13686, EMNLP 2025. A generated conversational transition gradually shifts the topic toward the injected instruction, raising the injected-to-original attention ratio and exceeding 90\% attack success in most settings even against deployed defenses.}
 }
 
 @inproceedings{universal2025triggers,
@@ -311,14 +313,6 @@
   year      = {2025}
 }
 
-@techreport{supplychain2025,
-  author       = {{ReversingLabs}},
-  title        = {The State of {AI} Supply Chain Security 2025},
-  institution = {ReversingLabs},
-  year         = {2025},
-  note         = {Analysis of malicious packages in PyPI and Hugging Face}
-}
-
 @article{sleeperagents2024,
   author    = {Hubinger, Evan and others},
   title     = {Sleeper Agents: Training Deceptive {LLM}s that Persist Through Safety Training},
@@ -326,11 +320,14 @@
   year      = {2024}
 }
 
-@article{promptpwnd2025,
-  author    = {Kumar, R. and Smith, J.},
-  title     = {{PromptPwnd}: Remote Code Execution via Prompt Injection in Autonomous Agents},
-  journal   = {arXiv preprint arXiv:2503.11223},
-  year      = {2025}
+@misc{promptinjectionrce2025,
+  author       = {Vandevanter, Will},
+  title        = {Prompt Injection to {RCE} in {AI} Agents},
+  howpublished = {Trail of Bits blog},
+  year         = {2025},
+  month        = oct,
+  url          = {https://blog.trailofbits.com/2025/10/22/prompt-injection-to-rce-in-ai-agents/},
+  note         = {Argument injection against pre-approved agent tools: agents gate the command name but not its flags, so injected input reaching a permitted utility (\texttt{find}, \texttt{grep}, \texttt{git}, \texttt{go test}) can reach an execution flag such as \texttt{-exec} and obtain code execution.}
 }
 @inproceedings{zou2023universal,
   author    = {Zou, Andy and Wang, Zifan and Carlini, Nicholas and Nasr, Milad and Kolter, J. Zico and Fredrikson, Matt},
@@ -355,26 +352,26 @@
 
 % 2025 Agentic AI Security
 @article{multiagent2025defense,
-  author    = {Chen, Wei and Zhang, Yifei and Liu, Jing},
+  author    = {Hossain, S M Asif and Shayoni, Ruksat Khan and Ameen, Mohd Ruhul and Islam, Akif and Mridha, M. F. and Shin, Jungpil},
   title     = {A Multi-Agent {LLM} Defense Pipeline Against Prompt Injection Attacks},
   journal   = {arXiv preprint arXiv:2509.14285},
   year      = {2025},
-  note      = {94\% detection accuracy with multi-agent architecture}
+  note      = {Reports 100\% mitigation (attack success rate reduced to 0\%) over 400 prompt-injection instances in eight categories, against baseline attack success rates of 30\% (ChatGLM) and 20\% (Llama 2).}
 }
 
 @article{jo2025byzantine,
-  author    = {Jo, Yongrae and Kim, Seunghyun and Park, Jinho},
+  author    = {Jo, Yongrae and Park, Chanik},
   title     = {Byzantine-Robust Decentralized Coordination of {LLM} Agents},
   journal   = {arXiv preprint arXiv:2507.14928},
   year      = {2025}
 }
 
 @article{cpwbft2025,
-  author    = {Wang, Haoran and Li, Xiaoming and Chen, Yu},
-  title     = {Rethinking the Reliability of Multi-agent System: A Perspective from {B}yzantine Fault Tolerance},
+  author    = {Zheng, Lifan and Chen, Jiawei and Yin, Qinghong and Zhang, Jingyuan and Zeng, Xinyi and Tian, Yu},
+  title     = {Rethinking the Reliability of Multi-agent System: A Perspective from {Byzantine} Fault Tolerance},
   journal   = {arXiv preprint arXiv:2511.10400},
   year      = {2025},
-  note      = {+85.71\% Byzantine Fault Tolerance Improvement with CP-WBFT}
+  note      = {Proposes CP-WBFT, a confidence-probe-weighted Byzantine consensus for LLM agents; reports operation under fault rates as high as 85.7\%.}
 }
 
 @misc{owasp2025llm,
@@ -403,7 +400,7 @@
 }
 
 @article{toolhijacker2025,
-  author    = {Li, Zhengyu and Wang, Tao and Zhang, Lei},
+  author    = {Shi, Jiawen and Yuan, Zenghui and Tie, Guiyao and Zhou, Pan and Gong, Neil Zhenqiang and Sun, Lichao},
   title     = {Prompt Injection Attack to Tool Selection in {LLM} Agents},
   journal   = {arXiv preprint arXiv:2504.19793},
   year      = {2025}
@@ -418,7 +415,7 @@
 }
 
 @article{aiagentssurvey2025,
-  author    = {Chen, Xiang and Liu, Yang and Wang, Zheng},
+  author    = {Deng, Zehang and Guo, Yongjian and Han, Changzhou and Ma, Wanlun and Xiong, Junwu and Wen, Sheng and Xiang, Yang},
   title     = {{AI} Agents Under Threat: A Survey of Key Security Challenges and Future Pathways},
   journal   = {ACM Computing Surveys},
   year      = {2025},
@@ -442,15 +439,15 @@
 }
 
 @article{trustdynamics2025,
-  author    = {Garcia, Maria and Thompson, David and Lee, Sunhee},
-  title     = {Trust Dynamics in Strategic Coopetition: Computational Foundations for Requirements Engineering in Multi-Agent Systems},
+  author    = {Pant, Vik and Yu, Eric},
+  title     = {Computational Foundations for Strategic Coopetition: Formalizing Trust and Reputation Dynamics},
   journal   = {arXiv preprint arXiv:2510.24909},
   year      = {2025},
   note      = {81.7\% validation accuracy in trust trajectory prediction}
 }
 
 @article{hierarchicaltaxonomy2025,
-  author    = {Sun, Yi and Zhang, Wei and Chen, Hong},
+  author    = {Moore, David J.},
   title     = {A Taxonomy of Hierarchical Multi-Agent Systems: Design Patterns, Coordination Mechanisms, and Industrial Applications},
   journal   = {arXiv preprint arXiv:2508.12683},
   year      = {2025}
@@ -894,15 +891,6 @@
 }
 
 % Adversarial machine learning and adaptive attacks
-@inproceedings{carlini2017evaluating,
-  author    = {Carlini, Nicholas and Wagner, David},
-  title     = {Towards Evaluating the Robustness of Neural Networks},
-  booktitle = {IEEE Symposium on Security and Privacy},
-  year      = {2017},
-  doi       = {10.1109/SP.2017.49},
-  note      = {Demonstrates that many proposed defenses against adversarial examples are ineffective against adaptive attackers; motivates the adaptive adversary model and its impact on stationary-distribution assumption limitations discussed in §10.}
-}
-
 % Minimax detection theory
 @book{lehmann2005testing,
   author    = {Lehmann, Erich L. and Romano, Joseph P.},
@@ -947,3 +935,11 @@
   note      = {Extends the free-energy principle to continuous-time dynamics and generalized coordinates; provides the mathematical framework connecting precision-weighted belief updates to defense mechanisms.}
 }
 
+@book{holldobler1990ants,
+  author    = {H{\"o}lldobler, Bert and Wilson, Edward O.},
+  title     = {The Ants},
+  publisher = {Belknap Press of Harvard University Press},
+  year      = {1990},
+  isbn      = {9780674040755},
+  note      = {Pulitzer-winning comprehensive treatment of ant biology; the reference work for colony organisation, communication and caste.}
+}

@@ -162,7 +162,7 @@ Implements the trust calculus with decay and reputation updates. This is a direc
 
 ## Algorithm 4: Cognitive Tripwire Monitoring {#sec:alg-tripwire}
 
-Continuously monitors canary beliefs for unauthorized modifications. Tripwires implement Part 1's Runtime Defenses section on cognitive tripwires (Definition 5.6: Canary Belief), specifying canary beliefs $\omega \in \mathcal{W}$ that remain stable under normal operation.
+Continuously monitors canary beliefs for unauthorized modifications. Tripwires implement Part 1's Canary Belief definition, specifying canary beliefs $\omega \in \mathcal{W}$ that remain stable under normal operation.
 
 \begin{algorithm}
 \caption{Tripwire Monitoring}
@@ -257,7 +257,7 @@ Implements Byzantine fault-tolerant consensus for multi-agent decisions. This sa
 
 ## Algorithm 6: Belief Drift Detection {#sec:alg-drift}
 
-Monitors belief distributions for anomalous changes over time using KL divergence. This implements Part 1's progressive drift detection (Section 6.1, Definition 6.1).
+Monitors belief distributions for anomalous changes over time using KL divergence. This implements Part 1's Drift Detection definition.
 
 \begin{algorithm}
 \caption{Belief Drift Detection}

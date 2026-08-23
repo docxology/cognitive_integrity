@@ -84,7 +84,7 @@ This is not a hypothetical---it describes documented attack patterns in producti
 
 ### Cross-Modality Attack Surfaces
 
-Multimodal systems introduce attack vectors impossible in text-only contexts:
+Multimodal systems introduce attack vectors impossible in text-only contexts \cite{shayegani2023survey}:
 
 \textbf{Visual Injection}: Images can contain adversarial perturbations or steganographically embedded instructions invisible to humans but interpretable by vision models. A seemingly innocent diagram in a specification document could contain instructions that activate when processed by a multimodal agent \cite{qi2024visual}.
 

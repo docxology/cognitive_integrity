@@ -74,6 +74,16 @@
 }{% if KOMA class
   \KOMAoptions{parskip=half}}
 \makeatother
+\usepackage{longtable,booktabs,array}
+\usepackage{caption}
+\captionsetup[table]{skip=6pt}
+\newcounter{none} % for unnumbered tables
+\usepackage{calc} % for calculating minipage widths
+\usepackage{caption}
+% Make caption package work with longtable
+\makeatletter
+\def\fnum@table{\tablename~\thetable}
+\makeatother
 \usepackage{graphicx}
 \makeatletter
 \newsavebox\pandoc@box
@@ -92,6 +102,69 @@
 \setlength{\emergencystretch}{3em} % prevent overfull lines
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+% Manuscript macro/package fallbacks (newcommand -> providecommand).
+% Core mathematical packages
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+% Permit bibliography and theorem prose to break without overfull boxes.
+% Algorithm formatting
+% Tables
+\usepackage{booktabs}
+\usepackage{multirow}
+% Graphics
+% Cross-referencing with smart naming
+% Configure cleveref for custom environments
+% Theorem environments with consistent numbering
+% Code listings used by supplementary implementation examples
+\usepackage{listings}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible}
+% End of theorem environment declarations
+% Math operators
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\KL}{KL}
+\DeclareMathOperator{\Tr}{Tr}
+% Custom commands for notation consistency
+\providecommand{\calA}{\mathcal{A}}
+\providecommand{\calB}{\mathcal{B}}
+\providecommand{\calC}{\mathcal{C}}
+\providecommand{\calD}{\mathcal{D}}
+\providecommand{\calF}{\mathcal{F}}
+\providecommand{\calG}{\mathcal{G}}
+\providecommand{\calH}{\mathcal{H}}
+\providecommand{\calI}{\mathcal{I}}
+\providecommand{\calM}{\mathcal{M}}
+\providecommand{\calO}{\mathcal{O}}
+\providecommand{\calP}{\mathcal{P}}
+\providecommand{\calS}{\mathcal{S}}
+\providecommand{\calT}{\mathcal{T}}
+\providecommand{\calW}{\mathcal{W}}
+% Note: \Phi is a standard LaTeX command, do not redefine
+% Trust notation
+\providecommand{\trust}[2]{\mathcal{T}_{#1 \to #2}}
+\providecommand{\trustt}[3]{\mathcal{T}_{#1 \to #2}^{#3}}
+% Belief notation
+\providecommand{\belief}[2]{\mathcal{B}_{#1}(#2)}
+\providecommand{\belieft}[3]{\mathcal{B}_{#1}^{#2}(#3)}
+% Cognitive state
+\providecommand{\cogstate}[1]{\sigma_{#1}}
+% Attack notation
+\providecommand{\attack}[1]{\mathcal{A}_{#1}}
+\providecommand{\adversary}[1]{\Omega_{#1}}
+% Defense notation
+\providecommand{\firewall}{\mathcal{F}}
+\providecommand{\sandbox}{\mathcal{S}_{box}}
+% Probability and expectation
+\providecommand{\E}{\mathbb{E}}
+\providecommand{\Prob}{\mathbb{P}}
+\providecommand{\indicator}{\mathbb{1}}
+% QED symbol
+\providecommand{\qedsymbol}{$\blacksquare$}
+% Page Layout (Slightly smaller margins)
+% Hyperlink Styling
+% List of Figures and List of Tables in TOC
+
 % Slide layout defaults for warning-clean scientific decks.
 \usepackage{etoolbox}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{}
@@ -105,6 +178,33 @@
 \setlength{\tabcolsep}{2pt}
 \AtBeginEnvironment{longtable}{\tiny\renewcommand{\arraystretch}{0.86}\setlength{\tabcolsep}{1pt}}
 \AtBeginEnvironment{tabular}{\tiny\renewcommand{\arraystretch}{0.86}\setlength{\tabcolsep}{1pt}}
+\AtBeginEnvironment{equation}{\tiny}
+\AtBeginEnvironment{equation*}{\tiny}
+\AtBeginEnvironment{align}{\tiny}
+\AtBeginEnvironment{align*}{\tiny}
+\AtBeginEnvironment{itemize}{\footnotesize}
+\AtBeginEnvironment{enumerate}{\footnotesize}
+\AtBeginEnvironment{description}{\footnotesize}
+\setbeamerfont{caption}{size=\tiny}
+\setbeamerfont{caption name}{size=\tiny}
+\setbeamerfont{normal text}{size=\small}
+\setbeamerfont{frametitle}{size=\small}
+\setbeamerfont{section title}{size=\footnotesize}
+\setbeamerfont{subsection title}{size=\footnotesize}
+\setbeamertemplate{section page}{%
+  \centering
+  \begin{beamercolorbox}[sep=12pt,center,wd=\paperwidth]{section title}
+    \parbox{0.86\paperwidth}{\centering\usebeamerfont{section title}\insertsection\par}
+  \end{beamercolorbox}
+}
+\setbeamertemplate{subsection page}{%
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,wd=\paperwidth]{subsection title}
+    \parbox{0.86\paperwidth}{\centering\usebeamerfont{subsection title}\insertsubsection\par}
+  \end{beamercolorbox}
+}
+\setlength{\abovecaptionskip}{2pt}
+\setlength{\belowcaptionskip}{0pt}
 
 % Natbib and cross-reference fallbacks — slides don't load natbib
 % or cleveref, but combined-PDF manuscript prose may emit these
@@ -119,9 +219,20 @@
 \providecommand{\citeyear}[1]{#1}
 \providecommand{\cref}[1]{\texttt{\detokenize{#1}}}
 \providecommand{\Cref}[1]{\texttt{\detokenize{#1}}}
+\providecommand{\crefrange}[2]{\texttt{\detokenize{#1}}--\texttt{\detokenize{#2}}}
+\providecommand{\Crefrange}[2]{\texttt{\detokenize{#1}}--\texttt{\detokenize{#2}}}
+\providecommand{\paragraph}[1]{\textbf{#1}\ }
+
+% Additional theorem-like environments from manuscript preamble.
+\newtheorem{observation}{Observation}
+\newtheorem{formalization}{Formalization}
+\newtheorem{principle}{Principle}
 
 \newtheorem{proposition}{Proposition}
 \newtheorem{hypothesis}{Hypothesis}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{axiom}{Axiom}
+\newtheorem{property}{Property}
 \usepackage{bookmark}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same}
@@ -155,8 +266,9 @@ properties (\cref{sec:integrity-properties}), trust calculus
 (\cref{sec:detection-bounds}).
 \end{frame}
 
+\subsection{System Model}\label{sec:system-model}
+
 \begin{frame}[allowframebreaks]{System Model}
-\protect\phantomsection\label{sec:system-model}
 \begin{definition}[Multiagent Operator]
 \label{def:multiagent-operator}
 A \emph{multiagent operator} is a tuple:
@@ -167,6 +279,9 @@ A \emph{multiagent operator} is a tuple:
 where components are defined in \cref{tab:operator-components}.
 \end{definition}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{System Model}
 \begin{table}[htbp]
 \centering
 \caption{Components of the multiagent operator $\mathcal{O}$.}
@@ -185,8 +300,9 @@ Protocol & $\Gamma$ & Coordination and communication rules \\
 \end{table}
 \end{frame}
 
+\subsection{Cognitive State}\label{sec:cognitive-state}
+
 \begin{frame}[allowframebreaks]{Cognitive State}
-\protect\phantomsection\label{sec:cognitive-state}
 \emph{Intuitively, an agent's cognitive state captures everything it
 believes, wants, intends, and remembers at a given moment. This formal
 representation enables precise reasoning about how attacks manipulate
@@ -202,6 +318,9 @@ Each agent $a_i \in \mathcal{A}$ maintains cognitive state:
 with components defined in \cref{tab:cognitive-components}.
 \end{definition}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Cognitive State}
 \begin{table}[htbp]
 \centering
 \caption{Cognitive state components for agent $a_i$.}
@@ -227,8 +346,9 @@ S^t = (\sigma_1^t, \ldots, \sigma_n^t, \mathcal{S}^t, \mathcal{T}^t)
 \end{equation}
 where $\mathcal{T}^t$ denotes the trust matrix at time $t$.
 \end{definition}
+\end{frame}
 
-\begin{block}{State Transition Semantics}
+\begin{frame}[allowframebreaks]{State Transition Semantics}
 \protect\phantomsection\label{state-transition-semantics}
 \emph{The following transition rules formalize how agent states evolve.
 Each rule has the form ``if preconditions hold (above the line), then
@@ -241,6 +361,9 @@ needed.}
 State transitions follow the relation $S^t \xrightarrow{\alpha} S^{t+1}$ where $\alpha \in \{\textsc{receive}, \textsc{update}, \textsc{act}, \textsc{communicate}\}$.
 \end{definition}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{State Transition Semantics}
 The transition rules are defined as follows:
 
 \textbf{Rule T-Receive} (Message Reception): \begin{equation}
@@ -253,16 +376,22 @@ The transition rules are defined as follows:
 \frac{m \in \text{channel}(a_j, a_i) \quad \mathcal{F}(m) \in \{\textsc{reject}, \textsc{quarantine}\}}{(\sigma_i, \text{inbox}_i) \xrightarrow{\textsc{receive}} (\sigma_i, \text{inbox}_i)}
 \end{equation}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{State Transition Semantics}
 \textbf{Rule T-Update} (Belief Update): \begin{equation}
 \label{eq:rule-update}
-\frac{m \in \text{inbox}_i \quad e = \text{extract}(m) \quad s = \text{source}(m)}{\mathcal{B}_i^t \xrightarrow{\textsc{update}} \mathcal{B}_i^{t+1} = \text{BayesUpdate}(\mathcal{B}*i^t, e, \mathcal{T}*{i \to s})}
+\frac{m \in \text{inbox}_i \quad e = \text{extract}(m) \quad s = \text{source}(m)}{\mathcal{B}_i^t \xrightarrow{\textsc{update}} \mathcal{B}_i^{t+1} = \text{BayesUpdate}(\mathcal{B}_i^t, e, \mathcal{T}_{i \to s})}
 \end{equation}
 
 \textbf{Rule T-Act} (Action Execution): \begin{equation}
 \label{eq:rule-act}
-\frac{a \in \mathcal{I}*i \quad \mathcal{P}*{\text{eff}}(a_i, a) = 1 \quad \text{precond}(a, \mathcal{S}^t)}{(\sigma_i, \mathcal{S}^t) \xrightarrow{\textsc{act}} (\sigma_i', \text{effect}(a, \mathcal{S}^t))}
+\frac{a \in \mathcal{I}_i \quad \mathcal{P}_{\text{eff}}(a_i, a) = 1 \quad \text{precond}(a, \mathcal{S}^t)}{(\sigma_i, \mathcal{S}^t) \xrightarrow{\textsc{act}} (\sigma_i', \text{effect}(a, \mathcal{S}^t))}
 \end{equation}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{State Transition Semantics}
 \textbf{Rule T-Communicate} (Message Sending): \begin{equation}
 \label{eq:rule-comm}
 \frac{\mathcal{C}(a_i, a_j) = 1 \quad m = \text{compose}(\sigma_i)}{(\sigma_i, \text{channel}(a_i, a_j)) \xrightarrow{\textsc{comm}} (\sigma_i, \text{channel}(a_i, a_j) \cup \{m\})}
@@ -278,6 +407,9 @@ A transition sequence $S^0 \xrightarrow{\alpha_1} \cdots \xrightarrow{\alpha_k} 
 \end{enumerate}
 \end{definition}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{State Transition Semantics}
 \begin{theorem}[Determinism]
 \label{thm:determinism}
 Given state $S^t$ and action $\alpha$, the resulting state $S^{t+1}$ is uniquely determined.
@@ -286,11 +418,11 @@ Given state $S^t$ and action $\alpha$, the resulting state $S^{t+1}$ is uniquely
 \begin{proof}
 By case analysis on transition rules \crefrange{eq:rule-receive}{eq:rule-comm}. Each rule specifies unique postconditions.
 \end{proof}
-\end{block}
 \end{frame}
 
+\subsection{Integrity Properties}\label{sec:integrity-properties}
+
 \begin{frame}[allowframebreaks]{Integrity Properties}
-\protect\phantomsection\label{sec:integrity-properties}
 We define four core integrity properties that CIF aims to preserve.
 
 \begin{property}[Belief Consistency]
@@ -306,11 +438,14 @@ No high-confidence beliefs contradict each other.
 \label{prop:goal-alignment}
 \begin{equation}
 \label{eq:goal-alignment}
-\text{Aligned}(\mathcal{G}*i) \iff \mathcal{G}*i \subseteq \mathcal{G}*{\text{principal}} \cup \text{Delegate}(\mathcal{G}*{\text{principal}})
+\text{Aligned}(\mathcal{G}_i) \iff \mathcal{G}_i \subseteq \mathcal{G}_{\text{principal}} \cup \text{Delegate}(\mathcal{G}_{\text{principal}})
 \end{equation}
 All goals derive from the principal or valid delegation chains.
 \end{property}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Integrity Properties}
 \begin{property}[Provenance Verifiability]
 \label{prop:provenance}
 \begin{equation}
@@ -330,9 +465,9 @@ Actions require direct permission or valid delegation.
 \end{property}
 \end{frame}
 
-\begin{frame}[allowframebreaks]{Trust Calculus}
-\protect\phantomsection\label{sec:trust-calculus}
-\begin{block}{Motivation: Why Bounded Trust Matters}
+\subsection{Trust Calculus}\label{sec:trust-calculus}
+
+\begin{frame}[allowframebreaks]{Motivation: Why Bounded Trust Matters}
 \protect\phantomsection\label{sec:trust-motivation}
 Before presenting the formal trust calculus, we motivate its design
 through concrete scenarios that illustrate why naive trust models fail
@@ -342,6 +477,9 @@ in multiagent systems.
 direct trust who seeks to influence a high-value agent. In a naive trust
 model, the adversary could:
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Motivation: Why Bounded Trust Matters}
 \begin{enumerate}
 \item Establish contact with a moderately trusted intermediary agent
 \item Provide accurate information over time to build trust with the intermediary
@@ -349,6 +487,9 @@ model, the adversary could:
 \item The target accepts the content because it comes from a ``trusted'' source
 \end{enumerate}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Motivation: Why Bounded Trust Matters}
 This is \textit{trust laundering}---converting low-trust origin into
 high-trust delivery through intermediaries. Without bounded delegation,
 the adversarial content arrives at the target with the intermediary's
@@ -358,6 +499,9 @@ trust score, not the adversary's.
 architectures, agents form trust relationships bidirectionally. Without
 constraints, circular trust relationships can amplify trust scores:
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Motivation: Why Bounded Trust Matters}
 \begin{center}
 $A \xrightarrow{0.9} B \xrightarrow{0.9} C \xrightarrow{0.9} A$
 \end{center}
@@ -369,6 +513,9 @@ the \(\delta^d\) decay bound.
 \textbf{Real-World Delegation Patterns}. Modern agentic systems exhibit
 deep delegation chains. Consider Claude Code processing a user request:
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Motivation: Why Bounded Trust Matters}
 \begin{enumerate}
 \item User requests security audit $\rightarrow$ Orchestrator agent (trust: principal)
 \item Orchestrator delegates to Code Analysis agent (depth 1)
@@ -378,6 +525,9 @@ deep delegation chains. Consider Claude Code processing a user request:
 \item Remediation queries StackOverflow for fix patterns (depth 5)
 \end{enumerate}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Motivation: Why Bounded Trust Matters}
 At depth 5, should the orchestrator trust StackOverflow content with the
 same confidence as direct user input? Our trust calculus says no: with
 \(\delta = 0.9\), trust at depth 5 is at most
@@ -389,20 +539,29 @@ an image and reports ``this diagram shows system architecture,'\,' how
 should a code generation agent weight this claim? Cross-modality trust
 introduces additional considerations:
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Motivation: Why Bounded Trust Matters}
 \begin{itemize}
 \item \textbf{Modality-specific error rates}: Vision models may have different reliability profiles than language models
 \item \textbf{Adversarial input susceptibility}: Images are particularly vulnerable to adversarial perturbations
 \item \textbf{Verification difficulty}: Claims about visual content are harder to verify than claims about text or code
 \end{itemize}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Motivation: Why Bounded Trust Matters}
 Our framework addresses this through modality-adjusted base trust:
 \(T_{\text{base}}^{\text{vision}} = \eta \cdot T_{\text{base}}^{\text{text}}\)
 where \(\eta < 1\) reflects elevated adversarial risk in visual
 modalities.
-\end{block}
+\end{frame}
 
-\begin{block}{Formal Trust Model}
+\begin{frame}[allowframebreaks]{Formal Trust Model}
 \protect\phantomsection\label{formal-trust-model}
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Formal Trust Model}
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.9\textwidth]{../figures/trust_network.pdf}
@@ -410,26 +569,32 @@ modalities.
 \label{fig:trust-network}
 \end{figure}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Formal Trust Model}
 \Cref{fig:trust-network} visualizes the trust relationships in a
 representative multiagent operator. Edge weights represent trust scores
 \(\mathcal{T}_{i \to j}\), with thicker edges indicating higher trust.
 The network topology illustrates how trust propagates through delegation
 chains and highlights potential attack surfaces for trust manipulation
 attacks (\(\Omega_4\)).
-\end{block}
+\end{frame}
 
-\begin{block}{Trust Computation}
+\begin{frame}[allowframebreaks]{Trust Computation}
 \protect\phantomsection\label{trust-computation}
 \begin{definition}[Trust Function]
 \label{def:trust-function}
 Trust from agent $a_i$ to agent $a_j$ at time $t$:
 \begin{equation}
 \label{eq:trust-function}
-\mathcal{T}*{i \to j}^t = \alpha \cdot T*{\text{base}}(j) + \beta \cdot T_{\text{rep}}^t(j) + \gamma \cdot T_{\text{ctx}}^t(i,j)
+\mathcal{T}_{i \to j}^t = \alpha \cdot T_{\text{base}}(j) + \beta \cdot T_{\text{rep}}^t(j) + \gamma \cdot T_{\text{ctx}}^t(i,j)
 \end{equation}
 subject to $\alpha + \beta + \gamma = 1$, with components in \cref{tab:trust-components}.
 \end{definition}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Trust Computation}
 \begin{table}[htbp]
 \centering
 \caption{Trust function components.}
@@ -456,18 +621,21 @@ low-trust messages contribute marginally.  This correspondence provides a
 neurocomputational grounding for the trust calculus (Part~2, \S 1.2).
 \end{remark}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Trust Computation}
 \begin{definition}[Trust Delegation]
 \label{def:trust-delegation}
 When agent $a_i$ delegates trust through $a_j$ to $a_k$:
 \begin{equation}
 \label{eq:trust-delegation}
-\mathcal{T}*{i \to k}^{\text{del}} = \min(\mathcal{T}*{i \to j}, \mathcal{T}_{j \to k}) \cdot \delta^d
+\mathcal{T}_{i \to k}^{\text{del}} = \min(\mathcal{T}_{i \to j}, \mathcal{T}_{j \to k}) \cdot \delta^d
 \end{equation}
 where $\delta \in (0, 1)$ is the decay factor and $d \in \mathbb{N}$ is the delegation depth.
 \end{definition}
-\end{block}
+\end{frame}
 
-\begin{block}{Trust Algebra}
+\begin{frame}[allowframebreaks]{Trust Algebra}
 \protect\phantomsection\label{trust-algebra}
 \emph{The trust algebra provides the mathematical foundation for
 combining trust scores. The key insight is that trust through
@@ -488,6 +656,9 @@ The trust algebra $(\mathcal{T}, \otimes, \oplus, 0, 1)$ comprises:
 \end{itemize}
 \end{definition}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Trust Algebra}
 \emph{The following theorem is the central security guarantee of the
 trust calculus: it establishes that trust cannot be ``laundered''
 through delegation chains. No matter how an adversary routes content
@@ -507,6 +678,9 @@ For any delegation chain of depth $d$:
 By induction on $d$. \textbf{Base}: $d=0 \Rightarrow \mathcal{T} \leq 1$. \textbf{Step}: $\mathcal{T}^{d+1} = \min(\cdot) \cdot \delta \leq \delta^d \cdot \delta = \delta^{d+1}$.
 \end{proof}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Trust Algebra}
 \begin{corollary}
 \label{cor:no-amplification}
 Trust cannot be amplified through delegation chains.
@@ -517,6 +691,9 @@ Trust cannot be amplified through delegation chains.
 Trust vanishes exponentially: $\lim_{d \to \infty} \mathcal{T}_{i \to k}^{\text{del}} = 0$.
 \end{corollary}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Trust Algebra}
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.9\textwidth]{../figures/trust_decay.pdf}
@@ -524,11 +701,17 @@ Trust vanishes exponentially: $\lim_{d \to \infty} \mathcal{T}_{i \to k}^{\text{
 \label{fig:trust-decay}
 \end{figure}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Trust Algebra}
 \Cref{fig:trust-decay} visualizes the exponential decay of trust across
 delegation depth for various decay factors \(\delta\), demonstrating how
 the bounded delegation mechanism (\cref{thm:trust-bounded}) prevents
 trust amplification.
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Trust Algebra}
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=1.0\textwidth]{../figures/trust_calculus_comprehensive.pdf}
@@ -536,6 +719,9 @@ trust amplification.
 \label{fig:trust-calculus-comprehensive}
 \end{figure}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Trust Algebra}
 \Cref{fig:trust-calculus-comprehensive} presents the complete trust
 calculus mechanics across four panels. Panel A demonstrates the trust
 decay function
@@ -550,6 +736,9 @@ delegation chain (Theorem\textasciitilde{}\ref{thm:trust-bounded}):
 starting from \(\mathcal{T}(A \to B) = 1.0\) with \(\delta = 0.9\),
 trust decays through agents B, C, D to E with
 \(\mathcal{T}(A \to E) = 0.9^4 \times 1.0 = 0.66\). Panel D demonstrates
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Trust Algebra}
 trust laundering prevention: a malicious agent M with
 \(\mathcal{T}(M \to T) = 0.3\) attempting to exploit trusted
 intermediary T with \(\mathcal{T}(T \to V) = 0.9\) cannot achieve
@@ -570,6 +759,9 @@ T_1 \otimes (T_2 \otimes T_3) \neq (T_1 \otimes T_2) \otimes T_3
 \end{equation}
 \end{theorem}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Trust Algebra}
 \begin{proof}
 For example, with $(T_1,T_2,T_3,\delta)=(0.9,0.9,0.1,0.9)$, the left-associated
 value is $0.090$ while the right-associated value is $0.081$. Thus any
@@ -582,22 +774,28 @@ functional $\min_i T_i\,\delta^d$), rather than inferred for $\otimes$.
 Trust aggregation $\oplus$ satisfies: (i) associativity, (ii) commutativity, (iii) idempotence, (iv) identity $T \oplus 0 = T$, and (v) absorption $T \oplus 1 = 1$.
 \end{theorem}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Trust Algebra}
 \begin{theorem}[No Trust Amplification]
 \label{thm:no-trust-amp}
 For any path $p = (a_0, \ldots, a_k)$:
 \begin{equation}
 \label{eq:no-amplification}
-\mathcal{T}*{a_0 \to a_k}^{\text{path}} \leq \min*{i \in [0,k-1]} \mathcal{T}*{a_i \to a*{i+1}}
+\mathcal{T}_{a_0 \to a_k}^{\text{path}} \leq \min_{i \in [0,k-1]} \mathcal{T}_{a_i \to a_{i+1}}
 \end{equation}
+A proof of the no-amplification claim is given in the supplementary material
+(\cref{thm:trust-amp-restated}, S01), which states the identical bound under
+a dedicated label.
 \end{theorem}
 
 \begin{theorem}[Trust Monotonicity]
 \label{thm:trust-monotonic}
 Delegation is monotonic: $T_1 \leq T_1' \land T_2 \leq T_2' \Rightarrow T_1 \otimes T_2 \leq T_1' \otimes T_2'$.
 \end{theorem}
-\end{block}
+\end{frame}
 
-\begin{block}{Cross-Modality Trust}
+\begin{frame}[allowframebreaks]{Cross-Modality Trust}
 \protect\phantomsection\label{sec:cross-modality-trust}
 When agents operate across modalities---processing text, code, images,
 audio, and structured data---trust must account for modality-specific
@@ -608,11 +806,14 @@ reliability and attack susceptibility.
 For agent $a_j$ operating in modality $m$, the adjusted trust from agent $a_i$ is:
 \begin{equation}
 \label{eq:modality-trust}
-\mathcal{T}*{i \to j}^{m} = \mathcal{T}*{i \to j} \cdot \eta_m
+\mathcal{T}_{i \to j}^{m} = \mathcal{T}_{i \to j} \cdot \eta_m
 \end{equation}
 where $\eta_m \in (0, 1]$ is the modality reliability factor.
 \end{definition}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Cross-Modality Trust}
 \begin{table}[htbp]
 \centering
 \caption{Recommended modality reliability factors.}
@@ -637,16 +838,16 @@ Video & 0.60 & Combines image and temporal vulnerabilities \\
 For delegation chain crossing modalities $m_1, \ldots, m_k$:
 \begin{equation}
 \label{eq:cross-modality-bound}
-\mathcal{T}*{i \to j}^{\text{cross}} \leq \delta^d \cdot \prod*{l=1}^{k} \eta_{m_l}
+\mathcal{T}_{i \to j}^{\text{cross}} \leq \delta^d \cdot \prod_{l=1}^{k} \eta_{m_l}
 \end{equation}
 \end{theorem}
 
 This ensures that trust degradation compounds across both delegation
 depth and modality transitions, preventing adversaries from laundering
 low-trust content through modality boundaries.
-\end{block}
+\end{frame}
 
-\begin{block}{Federated Trust}
+\begin{frame}[allowframebreaks]{Federated Trust}
 \protect\phantomsection\label{sec:federated-trust}
 In enterprise deployments, multiagent systems increasingly span
 organizational boundaries. A financial services orchestrator might
@@ -660,12 +861,15 @@ these boundaries.
 A trust domain $\mathcal{D}$ is a set of agents sharing a common trust authority and consistent trust semantics.
 \end{definition}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Federated Trust}
 \begin{definition}[Cross-Domain Trust]
 \label{def:cross-domain-trust}
 For agent $a_i$ in domain $\mathcal{D}_1$ and agent $a_j$ in domain $\mathcal{D}_2$:
 \begin{equation}
 \label{eq:cross-domain-trust}
-\mathcal{T}*{i \to j}^{\text{fed}} = \mathcal{T}*{i \to \mathcal{D}*2} \cdot \mathcal{T}*{\mathcal{D}_2}(j)
+\mathcal{T}_{i \to j}^{\text{fed}} = \mathcal{T}_{i \to \mathcal{D}_2} \cdot \mathcal{T}_{\mathcal{D}_2}(j)
 \end{equation}
 where $\mathcal{T}_{i \to \mathcal{D}_2}$ is $a_i$'s trust in domain $\mathcal{D}_2$ and $\mathcal{T}_{\mathcal{D}_2}(j)$ is $a_j$'s standing within its domain.
 \end{definition}
@@ -674,12 +878,15 @@ This two-stage model captures realistic trust reasoning: an organization
 might trust a vendor (domain trust) differently than individual agents
 within that vendor (agent trust).
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Federated Trust}
 \begin{property}[Federated Trust Bound]
 \label{prop:federated-bound}
 Cross-domain trust is bounded by domain trust:
 \begin{equation}
 \label{eq:federated-bound}
-\mathcal{T}*{i \to j}^{\text{fed}} \leq \mathcal{T}*{i \to \mathcal{D}_2}
+\mathcal{T}_{i \to j}^{\text{fed}} \leq \mathcal{T}_{i \to \mathcal{D}_2}
 \end{equation}
 ensuring that untrusted domains cannot boost individual agent trust.
 \end{property}
@@ -687,14 +894,17 @@ ensuring that untrusted domains cannot boost individual agent trust.
 Federated trust introduces additional challenges that remain open
 research problems:
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Federated Trust}
 \begin{itemize}
 \item \textbf{Trust semantics heterogeneity}: Different domains may use incompatible trust scales or update rules
 \item \textbf{Trust attestation}: How can domains cryptographically attest to their internal trust assessments?
 \item \textbf{Privacy-preserving trust}: Can trust be verified without revealing sensitive internal assessments?
 \end{itemize}
-\end{block}
+\end{frame}
 
-\begin{block}{Belief Update Semantics}
+\begin{frame}[allowframebreaks]{Belief Update Semantics}
 \protect\phantomsection\label{sec:belief-update-rules}
 \begin{definition}[Evidence Structure]
 \label{def:evidence}
@@ -711,9 +921,12 @@ Upon receiving evidence $e$ from source $s$:
 Trust mixes the source likelihood with a neutral likelihood $P_0$; low-trust sources therefore have a diminished update impact rather than canceling as a common normalization factor.
 \end{definition}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Belief Update Semantics}
 \textbf{Rule B-Direct} (Direct Evidence): \begin{equation}
 \label{eq:rule-direct}
-\frac{e = \langle \phi, c, s, \pi \rangle \quad V(\pi) = 1 \quad \mathcal{T}*{i \to s} \geq \tau*{\text{trust}}}{\mathcal{B}_i^{t+1}(\phi) = \text{BayesUpdate}(\mathcal{B}*i^t(\phi), c \cdot \mathcal{T}*{i \to s})}
+\frac{e = \langle \phi, c, s, \pi \rangle \quad V(\pi) = 1 \quad \mathcal{T}_{i \to s} \geq \tau_{\text{trust}}}{\mathcal{B}_i^{t+1}(\phi) = \text{BayesUpdate}(\mathcal{B}_i^t(\phi), c \cdot \mathcal{T}_{i \to s})}
 \end{equation}
 
 \textbf{Rule B-Delegated} (Delegated Evidence): evidence received
@@ -729,51 +942,61 @@ threshold: \begin{equation}
 delegated trust after \(d\) hops, making depth-dependent attenuation
 explicit.
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Belief Update Semantics}
 \textbf{Rule B-Corroboration} (Multiple Sources): \begin{equation}
 \label{eq:rule-corroboration}
-\frac{\{e_j\}*{j=1}^k: \forall j.\, e_j = \langle \phi, c_j, s_j, \pi_j \rangle \quad |\{s_j\}| \geq \kappa}{\mathcal{B}*i^{t+1}(\phi) = 1 - \prod*{j=1}^{k}(1 - c_j \cdot \mathcal{T}*{i \to s_j})}
+\frac{\{e_j\}_{j=1}^k: \forall j.\, e_j = \langle \phi, c_j, s_j, \pi_j \rangle \quad |\{s_j\}| \geq \kappa}{\mathcal{B}_i^{t+1}(\phi) = 1 - \prod_{j=1}^{k}(1 - c_j \cdot \mathcal{T}_{i \to s_j})}
 \end{equation}
 
 \begin{lemma}[Belief Boundedness]
 \label{lem:belief-bounded}
 After any update sequence: $\forall \phi: 0 \leq \mathcal{B}_i(\phi) \leq 1$.
 \end{lemma}
-\end{block}
+\end{frame}
 
-\begin{block}{Sandboxed Belief Model}
+\begin{frame}[allowframebreaks]{Sandboxed Belief Model}
 \protect\phantomsection\label{sec:sandbox-rules}
 \begin{definition}[Sandboxed Beliefs]
 \label{def:sandbox}
 Beliefs from unverified sources enter provisional state:
 \begin{equation}
 \label{eq:sandbox-partition}
-\mathcal{B}*i = \mathcal{B}*{\text{verified}} \cup \mathcal{B}_{\text{provisional}}
+\mathcal{B}_i = \mathcal{B}_{\text{verified}} \cup \mathcal{B}_{\text{provisional}}
 \end{equation}
 \end{definition}
 
 \textbf{Rule S-Sandbox} (Enter Sandbox): \begin{equation}
 \label{eq:rule-sandbox}
-\frac{e = \langle \phi, c, s, \pi \rangle \quad (\mathcal{T}*{i \to s} < \tau*{\text{trust}} \lor V(\pi) = 0)}{\mathcal{B}*{\text{prov}} \gets \mathcal{B}*{\text{prov}} \cup \{(\phi, c, s, \pi, \text{TTL})\}}
+\frac{e = \langle \phi, c, s, \pi \rangle \quad (\mathcal{T}_{i \to s} < \tau_{\text{trust}} \lor V(\pi) = 0)}{\mathcal{B}_{\text{prov}} \gets \mathcal{B}_{\text{prov}} \cup \{(\phi, c, s, \pi, \text{TTL})\}}
 \end{equation}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Sandboxed Belief Model}
 \textbf{Rule S-Promote} (Sandbox Promotion): \begin{equation}
 \label{eq:rule-promote}
-\frac{(\phi, \ldots) \in \mathcal{B}*{\text{prov}} \quad V(\pi) = 1 \quad \text{Consistent}(\mathcal{B}*{\text{ver}} \cup \{\phi\}) \quad |\text{Corr}(\phi)| \geq \kappa}{\mathcal{B}*{\text{ver}} \gets \mathcal{B}*{\text{ver}} \cup \{\phi\}; \quad \mathcal{B}*{\text{prov}} \gets \mathcal{B}*{\text{prov}} \setminus \{(\phi, \ldots)\}}
+\frac{(\phi, \ldots) \in \mathcal{B}_{\text{prov}} \quad V(\pi) = 1 \quad \text{Consistent}(\mathcal{B}_{\text{ver}} \cup \{\phi\}) \quad |\text{Corr}(\phi)| \geq \kappa}{\mathcal{B}_{\text{ver}} \gets \mathcal{B}_{\text{ver}} \cup \{\phi\}; \quad \mathcal{B}_{\text{prov}} \gets \mathcal{B}_{\text{prov}} \setminus \{(\phi, \ldots)\}}
 \end{equation}
 
 \textbf{Rule S-Expire} (Sandbox Expiry): \begin{equation}
 \label{eq:rule-expire}
-\frac{(\phi, c, s, \pi, \text{TTL}) \in \mathcal{B}*{\text{prov}} \quad \text{TTL} \leq 0}{\mathcal{B}*{\text{prov}} \gets \mathcal{B}_{\text{prov}} \setminus \{(\phi, c, s, \pi, \text{TTL})\}}
+\frac{(\phi, c, s, \pi, \text{TTL}) \in \mathcal{B}_{\text{prov}} \quad \text{TTL} \leq 0}{\mathcal{B}_{\text{prov}} \gets \mathcal{B}_{\text{prov}} \setminus \{(\phi, c, s, \pi, \text{TTL})\}}
 \end{equation}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Sandboxed Belief Model}
 Promotion requires: (1) provenance verification \(V(\pi) = 1\), (2)
 consistency with verified beliefs, and (3) corroboration threshold
 \(\kappa\).
-\end{block}
 \end{frame}
 
+\subsection{Information-Theoretic Detection
+Bounds}\label{sec:detection-bounds}
+
 \begin{frame}[allowframebreaks]{Information-Theoretic Detection Bounds}
-\protect\phantomsection\label{sec:detection-bounds}
 \emph{Having established the trust calculus (how agents reason about
 each other) and belief update semantics (how agents incorporate
 information), we now turn to fundamental limits on attack detection.
@@ -787,10 +1010,13 @@ constraints on what is possible.}
 An attack models a communication channel from adversary to target:
 \begin{equation}
 \label{eq:attack-channel}
-\text{Channel}: \mathcal{A}*{\text{adv}} \to \sigma*{\text{target}}
+\text{Channel}: \mathcal{A}_{\text{adv}} \to \sigma_{\text{target}}
 \end{equation}
 \end{definition}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Information-Theoretic Detection Bounds}
 \begin{theorem}[Minimum Attack Entropy]
 \label{thm:min-entropy}
 For attack $\mathcal{A}$ to succeed with probability $p$:
@@ -818,6 +1044,9 @@ I(D; \mathcal{A}) = H(\mathcal{A}) - H(\mathcal{A}|D(S))
 \end{equation}
 \end{definition}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Information-Theoretic Detection Bounds}
 \begin{theorem}[Fundamental Detection Limit]
 \label{thm:detection-limit}
 No detector achieves detection rate $r$ if:
@@ -843,12 +1072,15 @@ For attack with impact $\mathcal{I}$ and stealth $\mathcal{S}$ (inverse detectab
 where $C_{\text{channel}}$ is the attack channel capacity.
 \end{theorem}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Information-Theoretic Detection Bounds}
 \begin{remark}[Geometric Sharpening of the Stealth-Impact Bound]
 \label{rem:geometric-bound}
 Theorem~\ref{thm:stealth-impact} can be sharpened using the information
 geometry of the belief manifold (Part~2, Supplement~S10).  When belief
 space is endowed with the Fisher-Rao metric
-$G_{ij}(p) = \delta_{ij}/p_i$, the Fisher-Rao geodesic distance
+$G_{ij}(p) = \delta_{ij}/p_i$ \cite{amari2000methods}, the Fisher-Rao geodesic distance
 \[
 d_{\mathrm{FR}}(p, q) = 2\arccos\!\left(\sum_i \sqrt{p_i q_i}\right)
 \]
@@ -863,8 +1095,12 @@ $\mathcal{I} \cdot \mathcal{S}$ is bounded by the diameter of the manifold:
 \]
 since $d_{\mathrm{FR}} \leq \pi$ (Hellinger antipodal distributions).
 This recovers $C_{\text{channel}} = \pi/2$ as the tight bound when impact
-is measured in natural (Fisher-Rao) units, providing a geometric
-proof of Theorem~\ref{thm:stealth-impact} with the explicit constant.
+is measured in natural (Fisher-Rao) units. It is a geometric \emph{argument}
+for the constant in Theorem~\ref{thm:stealth-impact}, not a proof of that
+theorem: the theorem itself is stated without proof and is recorded as
+deferred in the proof-status index (S01, \cref{sec:proof-status}), and the
+curvature step above assumes the impact measure is the Fisher-Rao distance
+rather than deriving that identification.
 Furthermore, the connection to KL divergence---$D_{\mathrm{KL}}(p \,\|\, p')
 \approx \tfrac{1}{2}(\Delta p)^\top G(p)(\Delta p)$ for small
 perturbations---gives geometric justification for the drift detection
@@ -873,6 +1109,9 @@ Fisher-Rao step of approximately $0.775$ radians, or roughly $25\%$ of
 the maximum possible attack distance ($r_\theta = \sqrt{2\,\theta_{\text{drift}}} = \sqrt{0.6}$).
 \end{remark}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Information-Theoretic Detection Bounds}
 \begin{table}[htbp]
 \centering
 \caption{Information-theoretic bounds by attack type.}
@@ -908,12 +1147,15 @@ Smaller step sizes exponentially reduce detection probability but require more t
 Total monitoring capacity: $B_{\text{total}} = \sum_{d \in \mathcal{D}} B_d$.
 \end{definition}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Information-Theoretic Detection Bounds}
 \begin{theorem}[Optimal Budget Allocation]
 \label{thm:optimal-allocation}
 Given attack distribution $P(\mathcal{A}_k)$ and detector sensitivities $\eta_d(\mathcal{A}_k)$:
 \begin{equation}
 \label{eq:optimal-allocation}
-B_d^* = \frac{\sum_k P(\mathcal{A}_k) \cdot \eta_d(\mathcal{A}*k)}{\sum*{d'}\sum_k P(\mathcal{A}*k) \cdot \eta*{d'}(\mathcal{A}*k)} \cdot B*{\text{total}}
+B_d^* = \frac{\sum_k P(\mathcal{A}_k) \cdot \eta_d(\mathcal{A}_k)}{\sum_{d'}\sum_k P(\mathcal{A}_k) \cdot \eta_{d'}(\mathcal{A}_k)} \cdot B_{\text{total}}
 \end{equation}
 \end{theorem}
 
@@ -921,6 +1163,9 @@ B_d^* = \frac{\sum_k P(\mathcal{A}_k) \cdot \eta_d(\mathcal{A}*k)}{\sum*{d'}\sum
 Lagrangian optimization maximizing expected detection subject to budget constraint.
 \end{proof}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Information-Theoretic Detection Bounds}
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=1.0\textwidth]{../figures/cif_architecture.pdf}
@@ -928,12 +1173,18 @@ Lagrangian optimization maximizing expected detection subject to budget constrai
 \label{fig:cif-architecture}
 \end{figure}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Information-Theoretic Detection Bounds}
 \Cref{fig:cif-architecture} presents the layered CIF architecture with
 architectural defenses (left), runtime defenses (center), and
 coordination mechanism (right). \Cref{fig:cif-comprehensive} expands
 this to show data flow, attack interception points, and defense
 composition.
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Information-Theoretic Detection Bounds}
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=1.0\textwidth]{../figures/cif_comprehensive.pdf}
@@ -941,6 +1192,9 @@ composition.
 \label{fig:cif-comprehensive}
 \end{figure}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Information-Theoretic Detection Bounds}
 \Cref{fig:cif-comprehensive} provides a detailed view of the complete
 CIF architecture, including all component formulas and their
 interactions. The defense layer implements the cognitive firewall with
@@ -957,25 +1211,32 @@ tolerance (\(n \geq 3f + 1\)). For empirical validation of detection
 rates and performance overhead, see Part 2 of this series.
 \end{frame}
 
+\subsection{CIF-AD Integration: Action-Delegation
+Coupling}\label{sec:cif-ad-coupling}
+
 \begin{frame}[allowframebreaks]{CIF-AD Integration: Action-Delegation
 Coupling}
-\protect\phantomsection\label{sec:cif-ad-coupling}
 \begin{figure}
 \centering
-\includegraphics[width=0.85\linewidth,height=0.46\textheight,keepaspectratio,alt={CIF-AD action--delegation coupling matrix showing how Functional Requirements map to Design Parameters and delegation actions, making explicit where a Goal-Hijacking transient can introduce off-diagonal coupling.}]{../figures/cif_ad_coupling.pdf}
+\includegraphics[width=0.85\linewidth,height=0.40\textheight,keepaspectratio,alt={CIF-AD action--delegation coupling matrix showing how Functional Requirements map to Design Parameters and delegation actions, making explicit where a Goal-Hijacking transient can introduce off-diagonal coupling.}]{../figures/cif_ad_coupling.pdf}
 \caption{CIF-AD action--delegation coupling matrix showing how
 Functional Requirements map to Design Parameters and delegation actions,
 making explicit where a Goal-Hijacking transient can introduce
 off-diagonal coupling.}\label{fig:cif-ad-coupling}
 \end{figure}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{CIF-AD Integration: Action-Delegation
+Coupling}
 \emph{The Cognitive Integrity Framework provides static structural
 guarantees (trust bounds, belief consistency). But multiagent operators
 are dynamic: agents act, delegate, and observe outcomes. This section
 formalizes how CIF integrates with the Action-Delegation (AD) cycle to
 provide continuous runtime security guarantees.}
+\end{frame}
 
-\begin{block}{The Action-Delegation Cycle}
+\begin{frame}[allowframebreaks]{The Action-Delegation Cycle}
 \protect\phantomsection\label{the-action-delegation-cycle}
 \begin{definition}[Action-Delegation Cycle]
 \label{def:ad-cycle}
@@ -987,9 +1248,15 @@ The Action-Delegation (AD) cycle for agent $a_i$ at time $t$ is:
 comprising: cognitive state assessment, intention formation, delegation decision, execution observation, and state update.
 \end{definition}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{The Action-Delegation Cycle}
 Each phase of the AD cycle introduces distinct attack surfaces that CIF
 must protect:
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{The Action-Delegation Cycle}
 \begin{table}[htbp]
 \centering
 \caption{AD cycle phases and corresponding CIF defenses.}
@@ -1006,9 +1273,9 @@ Update & Drift induction & KL drift detection & $D_{\text{KL}} < \theta_{\text{d
 \bottomrule
 \end{tabular}
 \end{table}
-\end{block}
+\end{frame}
 
-\begin{block}{CIF-AD Coupling Matrix}
+\begin{frame}[allowframebreaks]{CIF-AD Coupling Matrix}
 \protect\phantomsection\label{cif-ad-coupling-matrix}
 \begin{definition}[CIF-AD Coupling Matrix]
 \label{def:cif-ad-matrix}
@@ -1019,6 +1286,9 @@ The coupling matrix $\mathbf{M}_{\text{AD}} \in \mathbb{R}^{5 \times 5}$ quantif
 \end{equation}
 \end{definition}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{CIF-AD Coupling Matrix}
 \begin{table}[htbp]
 \centering
 \caption{CIF-AD coupling matrix: coverage of each defense mechanism across AD cycle phases.}
@@ -1049,27 +1319,33 @@ Moreover, the minimum column coverage exceeds $\tau_{\text{cov}} = 0.50$ for eve
 \begin{proof}
 By inspection of Table~\ref{tab:cif-ad-matrix}: minimum column maxima are Plan (0.90), Delegate (0.95), Execute (0.90), Observe (0.90), Update (0.70). All exceed $\tau_{\text{cov}} = 0.50$.
 \end{proof}
-\end{block}
 \end{frame}
+
+\subsection{CIF-OODA Integration: Temporal Security Across Decision
+Cycles}\label{sec:cif-ooda}
 
 \begin{frame}[allowframebreaks]{CIF-OODA Integration: Temporal Security
 Across Decision Cycles}
-\protect\phantomsection\label{sec:cif-ooda}
 \begin{figure}
 \centering
-\includegraphics[width=0.85\linewidth,height=0.46\textheight,keepaspectratio,alt={CIF-OODA phase diagram mapping the defense mechanisms onto the Observe--Orient--Decide--Act cycle, indicating at which phase each defense intervenes and its latency budget.}]{../figures/ooda_phase_diagram.pdf}
+\includegraphics[width=0.85\linewidth,height=0.40\textheight,keepaspectratio,alt={CIF-OODA phase diagram mapping the defense mechanisms onto the Observe--Orient--Decide--Act cycle, indicating at which phase each defense intervenes and its latency budget.}]{../figures/ooda_phase_diagram.pdf}
 \caption{CIF-OODA phase diagram mapping the defense mechanisms onto the
 Observe--Orient--Decide--Act cycle, indicating at which phase each
 defense intervenes and its latency budget.}\label{fig:ooda-phase}
 \end{figure}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{CIF-OODA Integration: Temporal Security
+Across Decision Cycles}
 \emph{The OODA loop (Observe-Orient-Decide-Act) models how agents
 process information and take action over time. Cognitive attacks often
 target specific OODA phases to corrupt decision-making while minimizing
 detectable footprint. This section formalizes the OODA-phase attack
 model and CIF's phase-specific defenses.}
+\end{frame}
 
-\begin{block}{OODA Loop Formalization}
+\begin{frame}[allowframebreaks]{OODA Loop Formalization}
 \protect\phantomsection\label{ooda-loop-formalization}
 \begin{definition}[OODA State Machine]
 \label{def:ooda-state}
@@ -1081,6 +1357,9 @@ Agent $a_i$'s OODA loop is a state machine:
 where $Q = \{\text{Observe}, \text{Orient}, \text{Decide}, \text{Act}\}$ are states, $q_0 = \text{Observe}$ is the initial state, $\Sigma = \mathcal{M} \cup \text{Events}$ is the input alphabet, and $\delta_{\text{OODA}}: Q \times \Sigma \to Q$ is the transition function.
 \end{definition}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{OODA Loop Formalization}
 The OODA loop maps to cognitive state components: \begin{align}
 \label{eq:ooda-mapping}
 \text{Observe} &\leftrightarrow \mathcal{H}_i \text{ (history accumulation)} \\
@@ -1088,9 +1367,9 @@ The OODA loop maps to cognitive state components: \begin{align}
 \text{Decide} &\leftrightarrow \mathcal{G}_i, \mathcal{I}_i \text{ (goal selection, intention formation)} \\
 \text{Act} &\leftrightarrow \text{Actions}(a_i) \text{ (execution)}
 \end{align}
-\end{block}
+\end{frame}
 
-\begin{block}{Phase-Specific Attack Taxonomy}
+\begin{frame}[allowframebreaks]{Phase-Specific Attack Taxonomy}
 \protect\phantomsection\label{phase-specific-attack-taxonomy}
 \begin{definition}[OODA Phase Attack]
 \label{def:ooda-phase-attack}
@@ -1101,6 +1380,9 @@ An attack $\mathcal{A}_{\text{OODA}}^{(q)}$ targets OODA phase $q \in Q$:
 \end{equation}
 \end{definition}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Phase-Specific Attack Taxonomy}
 \begin{table}[htbp]
 \centering
 \caption{OODA phase attacks and CIF defenses.}
@@ -1116,9 +1398,9 @@ Act & Permission escalation, side effects & Permission boundaries & Action audit
 \bottomrule
 \end{tabular}
 \end{table}
-\end{block}
+\end{frame}
 
-\begin{block}{OODA Temporal Coupling}
+\begin{frame}[allowframebreaks]{OODA Temporal Coupling}
 \protect\phantomsection\label{ooda-temporal-coupling}
 \begin{definition}[OODA Cycle Time]
 \label{def:ooda-cycle-time}
@@ -1138,9 +1420,9 @@ The CIF defense stack (Table~23) with total latency $L_{\text{total}} \leq 141$m
 \mathcal{D}^* = \argmax_{\mathcal{D}' \subseteq \mathcal{D}} P_{\text{detect}}(\mathcal{D}') \quad \text{s.t.} \quad L(\mathcal{D}') \leq \epsilon_{\text{OODA}} \cdot \tau_{\text{OODA}}
 \end{equation}
 \end{property}
-\end{block}
+\end{frame}
 
-\begin{block}{Integrative Security Guarantee}
+\begin{frame}[allowframebreaks]{Integrative Security Guarantee}
 \protect\phantomsection\label{integrative-security-guarantee}
 \begin{theorem}[CIF-OODA Security Invariant]
 \label{thm:cif-ooda-invariant}
@@ -1152,10 +1434,12 @@ P(\text{Integrity}(a_i^{t+1}) \mid \text{Integrity}(a_i^t)) \geq 1 - \prod_{d \i
 where $P_d^{\text{OODA}}$ is the detection probability of defense $d$ across all four OODA phases.
 \end{theorem}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Integrative Security Guarantee}
 \begin{proof}
 Integrity is violated only if an attack passes all defenses in all OODA phases it targets. By defense independence (Lemma~11.7), the probability of passing all defenses is $\prod_d (1 - P_d^{\text{OODA}})$. Integrity is preserved with complementary probability.
 \end{proof}
-\end{block}
 \end{frame}
 
 \end{document}

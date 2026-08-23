@@ -441,7 +441,7 @@ The likelihood ratio $\Lambda(m) = P_{\text{attack}}(m) / P_{\text{benign}}(m)$ 
 
 \begin{theorem}[Neyman-Pearson Optimal Detector]
 \label{thm:np-detector}
-The likelihood ratio test $\delta_{\text{NP}}(m) = \mathbb{1}[\Lambda(m) \geq \eta]$ maximizes TPR subject to FPR $\leq \alpha$. No other test achieves higher TPR at the same FPR.
+The likelihood ratio test $\delta_{\text{NP}}(m) = \mathbb{1}[\Lambda(m) \geq \eta]$ maximizes TPR subject to FPR $\leq \alpha$. No other test achieves higher TPR at the same FPR \cite{neyman1933ix}.
 \end{theorem}
 
 \begin{corollary}[Optimal AUC Bound]
@@ -472,7 +472,7 @@ For $n$ independent message observations, the optimal error probability decays e
 \label{eq:error-exponent}
 P_e^* \leq e^{-n C^*}
 \end{equation}
-The Chernoff information $C^*$ is the maximum achievable error exponent.
+The Chernoff information $C^*$ is the maximum achievable error exponent \cite{chernoff1952measure}.
 \end{theorem}
 
 \begin{corollary}[Sample Complexity for Target Accuracy]
@@ -497,7 +497,7 @@ The AUC of any detector is lower-bounded by the KL divergence between attack and
 \end{theorem}
 
 \begin{proof}
-By Pinsker's inequality: $\| P_{\text{attack}} - P_{\text{benign}} \|_{TV} \leq \sqrt{D_{\mathrm{KL}}/2}$. The AUC satisfies $\text{AUC} \geq \frac{1}{2}(1 + \|P_{\text{attack}} - P_{\text{benign}}\|_{TV})$. Combining and applying the bound $\|P\|_{TV} \leq 1 - e^{-D_{\mathrm{KL}}/2}$ gives the result.
+By Pinsker's inequality \cite{cover2006elements}: $\| P_{\text{attack}} - P_{\text{benign}} \|_{TV} \leq \sqrt{D_{\mathrm{KL}}/2}$. The AUC satisfies $\text{AUC} \geq \frac{1}{2}(1 + \|P_{\text{attack}} - P_{\text{benign}}\|_{TV})$. Combining and applying the bound $\|P\|_{TV} \leq 1 - e^{-D_{\mathrm{KL}}/2}$ gives the result.
 \end{proof}
 
 \begin{table}[htbp]

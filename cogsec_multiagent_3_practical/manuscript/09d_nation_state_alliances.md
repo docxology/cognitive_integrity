@@ -17,7 +17,7 @@ The uncoupled design equation per the Independence Axiom \cite{suh2001axiomatic}
 
 where $DP_1$ = diplomatic engagement protocols and conflict de-escalation parameters, and $DP_2$ = alliance network topology optimization controls. The zero off-diagonal entries ensure that stability maintenance is independent of alliance centrality optimization.
 
-RAND Corporation analysis \cite{rand2025agi} of how artificial general intelligence could affect the rise and fall of nations underscores the strategic stakes: AI agents influencing alliance decisions operate in a domain where cognitive integrity failures could cascade to geopolitical realignment, and adversaries---including state actors employing cognitive domain warfare doctrines---have strong incentives to exploit the OODA vulnerability surface of diplomatic AI systems.
+RAND Corporation analysis \cite{rand2025agi} of how artificial general intelligence could affect the rise and fall of nations underscores the strategic stakes: AI agents influencing alliance decisions operate in a domain where cognitive integrity failures could cascade to geopolitical realignment, and adversaries---including state actors employing cognitive domain warfare doctrines \cite{blatny2023nato}---have strong incentives to exploit the OODA vulnerability surface of diplomatic AI systems.
 
 ## The Goal Hijacking Attack
 

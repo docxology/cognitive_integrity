@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.3.22)  1 AUG 2026 15:07
+This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.3.22)  23 AUG 2026 12:29
 entering extended mode
  %&-line parsing enabled.
 **/Users/4d/Documents/GitHub/projects/working/cognitive_integrity/cogsec_multia
@@ -729,7 +729,7 @@ LaTeX Info: Redefining \addtolength on input line 87.
 )
 (/usr/local/texlive/2026/texmf-dist/tex/latex/unicode-math/unicode-math.sty
 (/usr/local/texlive/2026/texmf-dist/tex/latex/l3kernel/expl3.sty
-Package: expl3 2026-01-19 L3 programming layer (loader) 
+Package: expl3 2026-01-19 L3 programming layer (loader)
 
 (/usr/local/texlive/2026/texmf-dist/tex/latex/l3backend/l3backend-xetex.def
 File: l3backend-xetex.def 2025-10-09 L3 backend support: XeTeX
@@ -781,7 +781,7 @@ File: ts1enc.def 2001/06/05 v3.0e (jk/car/fm) Standard LaTeX file
 LaTeX Font Info:    Redeclaring font encoding TS1 on input line 47.
 LaTeX Encoding Info:    Redeclaring text command \capitalcedilla (encoding TS1)
  on input line 49.
-LaTeX Encoding Info:    Redeclaring text command \capitalogonek (encoding TS1) 
+LaTeX Encoding Info:    Redeclaring text command \capitalogonek (encoding TS1)
 on input line 52.
 LaTeX Encoding Info:    Redeclaring text command \capitalgrave (encoding TS1) o
 n input line 55.
@@ -801,17 +801,17 @@ LaTeX Encoding Info:    Redeclaring text command \capitalcaron (encoding TS1) o
 n input line 62.
 LaTeX Encoding Info:    Redeclaring text command \capitalbreve (encoding TS1) o
 n input line 63.
-LaTeX Encoding Info:    Redeclaring text command \capitalmacron (encoding TS1) 
+LaTeX Encoding Info:    Redeclaring text command \capitalmacron (encoding TS1)
 on input line 64.
 LaTeX Encoding Info:    Redeclaring text command \capitaldotaccent (encoding TS
 1) on input line 65.
 LaTeX Encoding Info:    Redeclaring text command \t (encoding TS1) on input lin
 e 66.
-LaTeX Encoding Info:    Redeclaring text command \capitaltie (encoding TS1) on 
+LaTeX Encoding Info:    Redeclaring text command \capitaltie (encoding TS1) on
 input line 67.
 LaTeX Encoding Info:    Redeclaring text command \newtie (encoding TS1) on inpu
 t line 68.
-LaTeX Encoding Info:    Redeclaring text command \capitalnewtie (encoding TS1) 
+LaTeX Encoding Info:    Redeclaring text command \capitalnewtie (encoding TS1)
 on input line 69.
 LaTeX Encoding Info:    Redeclaring text symbol \textcapitalcompwordmark (encod
 ing TS1) on input line 70.
@@ -827,7 +827,7 @@ LaTeX Encoding Info:    Redeclaring text symbol \textthreequartersemdash (encod
 ing TS1) on input line 75.
 LaTeX Encoding Info:    Redeclaring text symbol \textleftarrow (encoding TS1) o
 n input line 76.
-LaTeX Encoding Info:    Redeclaring text symbol \textrightarrow (encoding TS1) 
+LaTeX Encoding Info:    Redeclaring text symbol \textrightarrow (encoding TS1)
 on input line 77.
 LaTeX Encoding Info:    Redeclaring text symbol \textblank (encoding TS1) on in
 put line 78.
@@ -839,7 +839,7 @@ LaTeX Encoding Info:    Redeclaring text command \textasteriskcentered (encodin
 g TS1) on input line 81.
 LaTeX Encoding Info:    Redeclaring text symbol \textdblhyphen (encoding TS1) o
 n input line 92.
-LaTeX Encoding Info:    Redeclaring text symbol \textfractionsolidus (encoding 
+LaTeX Encoding Info:    Redeclaring text symbol \textfractionsolidus (encoding
 TS1) on input line 93.
 LaTeX Encoding Info:    Redeclaring text symbol \textzerooldstyle (encoding TS1
 ) on input line 94.
@@ -879,11 +879,11 @@ LaTeX Encoding Info:    Redeclaring text symbol \textlbrackdbl (encoding TS1) o
 n input line 116.
 LaTeX Encoding Info:    Redeclaring text symbol \textrbrackdbl (encoding TS1) o
 n input line 117.
-LaTeX Encoding Info:    Redeclaring text symbol \textuparrow (encoding TS1) on 
+LaTeX Encoding Info:    Redeclaring text symbol \textuparrow (encoding TS1) on
 input line 118.
 LaTeX Encoding Info:    Redeclaring text symbol \textdownarrow (encoding TS1) o
 n input line 119.
-LaTeX Encoding Info:    Redeclaring text symbol \textasciigrave (encoding TS1) 
+LaTeX Encoding Info:    Redeclaring text symbol \textasciigrave (encoding TS1)
 on input line 120.
 LaTeX Encoding Info:    Redeclaring text symbol \textborn (encoding TS1) on inp
 ut line 121.
@@ -893,7 +893,7 @@ LaTeX Encoding Info:    Redeclaring text symbol \textdied (encoding TS1) on inp
 ut line 123.
 LaTeX Encoding Info:    Redeclaring text symbol \textleaf (encoding TS1) on inp
 ut line 124.
-LaTeX Encoding Info:    Redeclaring text symbol \textmarried (encoding TS1) on 
+LaTeX Encoding Info:    Redeclaring text symbol \textmarried (encoding TS1) on
 input line 125.
 LaTeX Encoding Info:    Redeclaring text symbol \textmusicalnote (encoding TS1)
  on input line 126.
@@ -901,9 +901,9 @@ LaTeX Encoding Info:    Redeclaring text symbol \texttildelow (encoding TS1) on
  input line 127.
 LaTeX Encoding Info:    Redeclaring text symbol \textdblhyphenchar (encoding TS
 1) on input line 128.
-LaTeX Encoding Info:    Redeclaring text symbol \textasciibreve (encoding TS1) 
+LaTeX Encoding Info:    Redeclaring text symbol \textasciibreve (encoding TS1)
 on input line 129.
-LaTeX Encoding Info:    Redeclaring text symbol \textasciicaron (encoding TS1) 
+LaTeX Encoding Info:    Redeclaring text symbol \textasciicaron (encoding TS1)
 on input line 130.
 LaTeX Encoding Info:    Redeclaring text symbol \textacutedbl (encoding TS1) on
  input line 131.
@@ -919,7 +919,7 @@ LaTeX Encoding Info:    Redeclaring text symbol \textperthousand (encoding TS1)
  on input line 136.
 LaTeX Encoding Info:    Redeclaring text symbol \textbullet (encoding TS1) on i
 nput line 137.
-LaTeX Encoding Info:    Redeclaring text symbol \textcelsius (encoding TS1) on 
+LaTeX Encoding Info:    Redeclaring text symbol \textcelsius (encoding TS1) on
 input line 138.
 LaTeX Encoding Info:    Redeclaring text symbol \textdollaroldstyle (encoding T
 S1) on input line 139.
@@ -933,7 +933,7 @@ LaTeX Encoding Info:    Redeclaring text symbol \textwon (encoding TS1) on inpu
 t line 143.
 LaTeX Encoding Info:    Redeclaring text symbol \textnaira (encoding TS1) on in
 put line 144.
-LaTeX Encoding Info:    Redeclaring text symbol \textguarani (encoding TS1) on 
+LaTeX Encoding Info:    Redeclaring text symbol \textguarani (encoding TS1) on
 input line 145.
 LaTeX Encoding Info:    Redeclaring text symbol \textpeso (encoding TS1) on inp
 ut line 146.
@@ -943,7 +943,7 @@ LaTeX Encoding Info:    Redeclaring text symbol \textrecipe (encoding TS1) on i
 nput line 148.
 LaTeX Encoding Info:    Redeclaring text symbol \textinterrobang (encoding TS1)
  on input line 149.
-LaTeX Encoding Info:    Redeclaring text symbol \textinterrobangdown (encoding 
+LaTeX Encoding Info:    Redeclaring text symbol \textinterrobangdown (encoding
 TS1) on input line 150.
 LaTeX Encoding Info:    Redeclaring text symbol \textdong (encoding TS1) on inp
 ut line 151.
@@ -951,7 +951,7 @@ LaTeX Encoding Info:    Redeclaring text symbol \texttrademark (encoding TS1) o
 n input line 152.
 LaTeX Encoding Info:    Redeclaring text symbol \textpertenthousand (encoding T
 S1) on input line 153.
-LaTeX Encoding Info:    Redeclaring text symbol \textpilcrow (encoding TS1) on 
+LaTeX Encoding Info:    Redeclaring text symbol \textpilcrow (encoding TS1) on
 input line 154.
 LaTeX Encoding Info:    Redeclaring text symbol \textbaht (encoding TS1) on inp
 ut line 155.
@@ -961,7 +961,7 @@ LaTeX Encoding Info:    Redeclaring text symbol \textdiscount (encoding TS1) on
  input line 157.
 LaTeX Encoding Info:    Redeclaring text symbol \textestimated (encoding TS1) o
 n input line 158.
-LaTeX Encoding Info:    Redeclaring text symbol \textopenbullet (encoding TS1) 
+LaTeX Encoding Info:    Redeclaring text symbol \textopenbullet (encoding TS1)
 on input line 159.
 LaTeX Encoding Info:    Redeclaring text symbol \textservicemark (encoding TS1)
  on input line 160.
@@ -979,7 +979,7 @@ LaTeX Encoding Info:    Redeclaring text symbol \textyen (encoding TS1) on inpu
 t line 166.
 LaTeX Encoding Info:    Redeclaring text symbol \textbrokenbar (encoding TS1) o
 n input line 167.
-LaTeX Encoding Info:    Redeclaring text symbol \textsection (encoding TS1) on 
+LaTeX Encoding Info:    Redeclaring text symbol \textsection (encoding TS1) on
 input line 168.
 LaTeX Encoding Info:    Redeclaring text symbol \textasciidieresis (encoding TS
 1) on input line 169.
@@ -993,7 +993,7 @@ LaTeX Encoding Info:    Redeclaring text symbol \textlnot (encoding TS1) on inp
 ut line 173.
 LaTeX Encoding Info:    Redeclaring text symbol \textcircledP (encoding TS1) on
  input line 174.
-LaTeX Encoding Info:    Redeclaring text symbol \textregistered (encoding TS1) 
+LaTeX Encoding Info:    Redeclaring text symbol \textregistered (encoding TS1)
 on input line 175.
 LaTeX Encoding Info:    Redeclaring text symbol \textasciimacron (encoding TS1)
  on input line 176.
@@ -1005,7 +1005,7 @@ LaTeX Encoding Info:    Redeclaring text symbol \texttwosuperior (encoding TS1)
  on input line 179.
 LaTeX Encoding Info:    Redeclaring text symbol \textthreesuperior (encoding TS
 1) on input line 180.
-LaTeX Encoding Info:    Redeclaring text symbol \textasciiacute (encoding TS1) 
+LaTeX Encoding Info:    Redeclaring text symbol \textasciiacute (encoding TS1)
 on input line 181.
 LaTeX Encoding Info:    Redeclaring text symbol \textmu (encoding TS1) on input
  line 182.
@@ -1021,9 +1021,9 @@ LaTeX Encoding Info:    Redeclaring text symbol \textordmasculine (encoding TS1
 ) on input line 187.
 LaTeX Encoding Info:    Redeclaring text symbol \textsurd (encoding TS1) on inp
 ut line 188.
-LaTeX Encoding Info:    Redeclaring text symbol \textonequarter (encoding TS1) 
+LaTeX Encoding Info:    Redeclaring text symbol \textonequarter (encoding TS1)
 on input line 189.
-LaTeX Encoding Info:    Redeclaring text symbol \textonehalf (encoding TS1) on 
+LaTeX Encoding Info:    Redeclaring text symbol \textonehalf (encoding TS1) on
 input line 190.
 LaTeX Encoding Info:    Redeclaring text symbol \textthreequarters (encoding TS
 1) on input line 191.
@@ -1193,46 +1193,115 @@ Package: ltcaption 2021/01/08 v1.4c longtable captions (AR)
 ))
 \c@none=\count396
 
+(/usr/local/texlive/2026/texmf-dist/tex/latex/mathtools/mathtools.sty
+Package: mathtools 2024/10/04 v1.31 mathematical typesetting tools
+
+(/usr/local/texlive/2026/texmf-dist/tex/latex/mathtools/mhsetup.sty
+Package: mhsetup 2021/03/18 v1.4 programming setup (MH)
+)
+
+Package mathtools Warning: For best results, please load mathtools *before*
+(mathtools)                unicode-math on input line 127.
+
+\g_MT_multlinerow_int=\count397
+\l_MT_multwidth_dim=\dimen334
+\origjot=\skip77
+\l_MT_shortvdotswithinadjustabove_dim=\dimen335
+\l_MT_shortvdotswithinadjustbelow_dim=\dimen336
+\l_MT_above_intertext_sep=\dimen337
+\l_MT_below_intertext_sep=\dimen338
+\l_MT_above_shortintertext_sep=\dimen339
+\l_MT_below_shortintertext_sep=\dimen340
+\xmathstrut@box=\box88
+\xmathstrut@dim=\dimen341
+) (/usr/local/texlive/2026/texmf-dist/tex/latex/multirow/multirow.sty
+Package: multirow 2024/11/12 v2.9 Span multiple rows of a table
+\multirow@colwidth=\skip78
+\multirow@cntb=\count398
+\multirow@dima=\skip79
+\bigstrutjot=\dimen342
+)
+(/usr/local/texlive/2026/texmf-dist/tex/latex/listings/listings.sty
+\lst@mode=\count399
+\lst@gtempboxa=\box89
+\lst@token=\toks50
+\lst@length=\count400
+\lst@currlwidth=\dimen343
+\lst@column=\count401
+\lst@pos=\count402
+\lst@lostspace=\dimen344
+\lst@width=\dimen345
+\lst@newlines=\count403
+\lst@lineno=\count404
+\lst@maxwidth=\dimen346
+
+(/usr/local/texlive/2026/texmf-dist/tex/latex/listings/lstpatch.sty
+File: lstpatch.sty 2025/11/14 1.11b (Carsten Heinz)
+)
+(/usr/local/texlive/2026/texmf-dist/tex/latex/listings/lstmisc.sty
+File: lstmisc.sty 2025/11/14 1.11b (Carsten Heinz)
+\c@lstnumber=\count405
+\lst@skipnumbers=\count406
+\lst@framebox=\box90
+)
+(/usr/local/texlive/2026/texmf-dist/tex/latex/listings/listings.cfg
+File: listings.cfg 2025/11/14 1.11b listings configuration
+))
+Package: listings 2025/11/14 1.11b (Carsten Heinz)
+
+==> First Aid for listings.sty no longer applied!
+    Expected:
+        2024/09/23 1.10c (Carsten Heinz)
+    but found:
+        2025/11/14 1.11b (Carsten Heinz)
+    so I'm assuming it got fixed.
 (/usr/local/texlive/2026/texmf-dist/tex/latex/xurl/xurl.sty
 Package: xurl 2022/01/09 v 0.10 modify URL breaks
 )
 (/usr/local/texlive/2026/texmf-dist/tex/latex/seqsplit/seqsplit.sty
 Package: seqsplit 2006/08/07 v0.1 Splitting long sequences (DNA, RNA, proteins,
- etc.) 
+ etc.)
 )
-\c@proposition=\count397
-\c@hypothesis=\count398
+\c@observation=\count407
+\c@formalization=\count408
+\c@principle=\count409
+\c@proposition=\count410
+\c@hypothesis=\count411
+\c@axiom=\count412
+\c@property=\count413
 
 (/usr/local/texlive/2026/texmf-dist/tex/latex/bookmark/bookmark.sty
 Package: bookmark 2023-12-10 v1.31 PDF bookmarks (HO)
 
 (/usr/local/texlive/2026/texmf-dist/tex/latex/bookmark/bkm-dvipdfm.def
 File: bkm-dvipdfm.def 2023-12-10 v1.31 bookmark driver for dvipdfm (HO)
-\BKM@id=\count399
+\BKM@id=\count414
 ))
-No file S02_eusocial_cogsec_slides.aux.
+(/Users/4d/Documents/GitHub/projects/working/cognitive_integrity/cogsec_multiag
+ent_1_theory/output/slides/S02_eusocial_cogsec_slides.aux)
 \openout1 = `S02_eusocial_cogsec_slides.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 134.
-LaTeX Font Info:    ... okay on input line 134.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 134.
-LaTeX Font Info:    ... okay on input line 134.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 134.
-LaTeX Font Info:    ... okay on input line 134.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 134.
-LaTeX Font Info:    ... okay on input line 134.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 134.
-LaTeX Font Info:    ... okay on input line 134.
-LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 134.
-LaTeX Font Info:    ... okay on input line 134.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 134.
-LaTeX Font Info:    ... okay on input line 134.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 134.
-LaTeX Font Info:    ... okay on input line 134.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 134.
-LaTeX Font Info:    ... okay on input line 134.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 134.
-LaTeX Font Info:    ... okay on input line 134.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 235.
+LaTeX Font Info:    ... okay on input line 235.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 235.
+LaTeX Font Info:    ... okay on input line 235.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 235.
+LaTeX Font Info:    ... okay on input line 235.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 235.
+LaTeX Font Info:    ... okay on input line 235.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 235.
+LaTeX Font Info:    ... okay on input line 235.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 235.
+LaTeX Font Info:    ... okay on input line 235.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 235.
+LaTeX Font Info:    ... okay on input line 235.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 235.
+LaTeX Font Info:    ... okay on input line 235.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 235.
+LaTeX Font Info:    ... okay on input line 235.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 235.
+LaTeX Font Info:    ... okay on input line 235.
+
 *geometry* driver: auto-detecting
 *geometry* detected driver: xetex
 *geometry* verbose mode - [ preamble ] result:
@@ -1240,7 +1309,7 @@ LaTeX Font Info:    ... okay on input line 134.
 * paper: custom
 * layout: <same size as paper>
 * layoutoffset:(h,v)=(0.0pt,0.0pt)
-* modes: includehead includefoot 
+* modes: includehead includefoot
 * h-part:(L,W,R)=(28.45274pt, 307.28987pt, 28.45274pt)
 * v-part:(T,H,B)=(0.0pt, 273.14662pt, 0.0pt)
 * \paperwidth=364.19536pt
@@ -1267,71 +1336,68 @@ LaTeX Font Info:    ... okay on input line 134.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-Package hyperref Info: Link coloring OFF on input line 134.
-
-Package hyperref Warning: Rerun to get /PageLabels entry.
-
+Package hyperref Info: Link coloring OFF on input line 235.
 
 (/usr/local/texlive/2026/texmf-dist/tex/latex/translator/translator-basic-dicti
 onary-English.dict
-Dictionary: translator-basic-dictionary, Language: English 
+Dictionary: translator-basic-dictionary, Language: English
 )
 (/usr/local/texlive/2026/texmf-dist/tex/latex/translator/translator-bibliograph
 y-dictionary-English.dict
-Dictionary: translator-bibliography-dictionary, Language: English 
+Dictionary: translator-bibliography-dictionary, Language: English
 )
 (/usr/local/texlive/2026/texmf-dist/tex/latex/translator/translator-environment
 -dictionary-English.dict
-Dictionary: translator-environment-dictionary, Language: English 
+Dictionary: translator-environment-dictionary, Language: English
 )
 (/usr/local/texlive/2026/texmf-dist/tex/latex/translator/translator-months-dict
 ionary-English.dict
-Dictionary: translator-months-dictionary, Language: English 
+Dictionary: translator-months-dictionary, Language: English
 )
 (/usr/local/texlive/2026/texmf-dist/tex/latex/translator/translator-numbers-dic
 tionary-English.dict
-Dictionary: translator-numbers-dictionary, Language: English 
+Dictionary: translator-numbers-dictionary, Language: English
 )
 (/usr/local/texlive/2026/texmf-dist/tex/latex/translator/translator-theorem-dic
 tionary-English.dict
-Dictionary: translator-theorem-dictionary, Language: English 
+Dictionary: translator-theorem-dictionary, Language: English
 )
 LaTeX Font Info:    Overwriting math alphabet `\mathrm' in version `normal'
-(Font)                  OT1/lmr/m/n --> TU/lmr/m/n on input line 134.
+(Font)                  OT1/lmr/m/n --> TU/lmr/m/n on input line 235.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
-(Font)                  OT1/lmr/m/it --> TU/lmr/m/it on input line 134.
+(Font)                  OT1/lmr/m/it --> TU/lmr/m/it on input line 235.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
-(Font)                  OT1/lmr/bx/n --> TU/lmr/bx/n on input line 134.
+(Font)                  OT1/lmr/bx/n --> TU/lmr/bx/n on input line 235.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
-(Font)                  OT1/lmss/m/n --> TU/lmss/m/n on input line 134.
+(Font)                  OT1/lmss/m/n --> TU/lmss/m/n on input line 235.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  OT1/lmss/bx/n --> TU/lmss/bx/n on input line 134.
+(Font)                  OT1/lmss/bx/n --> TU/lmss/bx/n on input line 235.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
-(Font)                  OT1/lmtt/m/n --> TU/lmtt/m/n on input line 134.
+(Font)                  OT1/lmtt/m/n --> TU/lmtt/m/n on input line 235.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  OT1/lmtt/m/n --> TU/lmtt/bx/n on input line 134.
+(Font)                  OT1/lmtt/m/n --> TU/lmtt/bx/n on input line 235.
 
-Package fontspec Info: 
+Package fontspec Info:
 (fontspec)             latinmodern-math scale = 1.03015890977869.
 
 
-Package fontspec Info: 
+Package fontspec Info:
 (fontspec)             latinmodern-math scale = 1.03015890977869.
 
 
-Package fontspec Info: 
+Package fontspec Info:
 (fontspec)             latinmodern-math scale = 1.03015890977869.
 
 
-Package fontspec Info: 
+Package fontspec Info:
 (fontspec)             Font family 'latinmodern-math.otf(0)' created for font
 (fontspec)             'latinmodern-math.otf' with options
 (fontspec)             [Scale=MatchLowercase,BoldItalicFont={},ItalicFont={},Sm
 allCapsFont={},Script=Math,BoldFont={latinmodern-math.otf}].
-(fontspec)              
+(fontspec)
 (fontspec)              This font family consists of the following NFSS
 (fontspec)             series/shapes:
-(fontspec)              
+(fontspec)
 (fontspec)             - 'normal' (m/n) with NFSS spec.:
 (fontspec)             <->s*[1.03015890977869]"[latinmodern-math.otf]/OT:script
 =math;language=dflt;"
@@ -1340,39 +1406,39 @@ allCapsFont={},Script=Math,BoldFont={latinmodern-math.otf}].
 =math;language=dflt;"
 
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(0)/m/n' will be
-(Font)              scaled to size 11.28015pt on input line 134.
+(Font)              scaled to size 11.28015pt on input line 235.
 
-Package fontspec Info: 
+Package fontspec Info:
 (fontspec)             latinmodern-math scale = 1.03015890977869.
 
 
-Package fontspec Info: 
+Package fontspec Info:
 (fontspec)             latinmodern-math scale = 1.03015890977869.
 
 
-Package fontspec Info: 
+Package fontspec Info:
 (fontspec)             latinmodern-math scale = 1.03015890977869.
 
 
-Package fontspec Info: 
+Package fontspec Info:
 (fontspec)             latinmodern-math scale = 1.03015890977869.
 
 
-Package fontspec Info: 
+Package fontspec Info:
 (fontspec)             latinmodern-math scale = 1.03015890977869.
 
 
-Package fontspec Info: 
+Package fontspec Info:
 (fontspec)             Font family 'latinmodern-math.otf(1)' created for font
 (fontspec)             'latinmodern-math.otf' with options
 (fontspec)             [Scale=MatchLowercase,BoldItalicFont={},ItalicFont={},Sm
 allCapsFont={},Script=Math,SizeFeatures={{Size=9.3075-},{Size=6.57-9.3075,Font=
 latinmodern-math.otf,Style=MathScript},{Size=-6.57,Font=latinmodern-math.otf,St
 yle=MathScriptScript}},BoldFont={latinmodern-math.otf}].
-(fontspec)              
+(fontspec)
 (fontspec)              This font family consists of the following NFSS
 (fontspec)             series/shapes:
-(fontspec)              
+(fontspec)
 (fontspec)             - 'normal' (m/n) with NFSS spec.:
 (fontspec)             <9.3075->s*[1.03015890977869]"[latinmodern-math.otf]/OT:
 script=math;language=dflt;"<6.57-9.3075>s*[1.03015890977869]"[latinmodern-math.
@@ -1383,60 +1449,60 @@ dern-math.otf]/OT:script=math;language=dflt;+ssty=1;"
 =math;language=dflt;"
 
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 11.28015pt on input line 134.
+(Font)              scaled to size 11.28015pt on input line 235.
 LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
-(Font)              `operators' in the math version `normal' on input line 134.
+(Font)              `operators' in the math version `normal' on input line 235.
 
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
 (Font)                  OT1/lmr/m/n --> TU/latinmodern-math.otf(1)/m/n on input
- line 134.
+ line 235.
 LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
-(Font)              `operators' in the math version `bold' on input line 134.
+(Font)              `operators' in the math version `bold' on input line 235.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
 (Font)                  OT1/lmr/bx/n --> TU/latinmodern-math.otf(1)/b/n on inpu
-t line 134.
+t line 235.
 
-Package fontspec Info: 
+Package fontspec Info:
 (fontspec)             latinmodern-math scale = 1.03015890977869.
 
 
-Package fontspec Info: 
+Package fontspec Info:
 (fontspec)             latinmodern-math scale = 1.030261925669668.
 
 
-Package fontspec Info: 
+Package fontspec Info:
 (fontspec)             latinmodern-math scale = 1.03015890977869.
 
 
-Package fontspec Info: 
+Package fontspec Info:
 (fontspec)             latinmodern-math scale = 1.030261925669668.
 
 
-Package fontspec Info: 
+Package fontspec Info:
 (fontspec)             latinmodern-math scale = 1.03015890977869.
 
 
-Package fontspec Info: 
+Package fontspec Info:
 (fontspec)             latinmodern-math scale = 1.030261925669668.
 
 
-Package fontspec Info: 
+Package fontspec Info:
 (fontspec)             latinmodern-math scale = 1.03015890977869.
 
 
-Package fontspec Info: 
+Package fontspec Info:
 (fontspec)             latinmodern-math scale = 1.030261925669668.
 
 
-Package fontspec Info: 
+Package fontspec Info:
 (fontspec)             latinmodern-math scale = 1.03015890977869.
 
 
-Package fontspec Info: 
+Package fontspec Info:
 (fontspec)             latinmodern-math scale = 1.030261925669668.
 
 
-Package fontspec Info: 
+Package fontspec Info:
 (fontspec)             Font family 'latinmodern-math.otf(2)' created for font
 (fontspec)             'latinmodern-math.otf' with options
 (fontspec)             [Scale=MatchLowercase,BoldItalicFont={},ItalicFont={},Sm
@@ -1454,10 +1520,10 @@ justment={\fontdimen
 (fontspec)             =2.82004pt\relax \fontdimen 19\font =2.25603pt\relax
 (fontspec)             \fontdimen 22\font =2.82004pt\relax \fontdimen 20\font
 (fontspec)             =0pt\relax \fontdimen 21\font =0pt\relax }].
-(fontspec)              
+(fontspec)
 (fontspec)              This font family consists of the following NFSS
 (fontspec)             series/shapes:
-(fontspec)              
+(fontspec)
 (fontspec)             - 'normal' (m/n) with NFSS spec.:
 (fontspec)             <9.3075->s*[1.030261925669668]"[latinmodern-math.otf]/OT
 :script=math;language=dflt;"<6.57-9.3075>s*[1.030261925669668]"[latinmodern-mat
@@ -1468,57 +1534,57 @@ nmodern-math.otf]/OT:script=math;language=dflt;+ssty=1;"
 t=math;language=dflt;"
 
 LaTeX Font Info:    Encoding `OMS' has changed to `TU' for symbol font
-(Font)              `symbols' in the math version `normal' on input line 134.
+(Font)              `symbols' in the math version `normal' on input line 235.
 LaTeX Font Info:    Overwriting symbol font `symbols' in version `normal'
 (Font)                  OMS/lmsy/m/n --> TU/latinmodern-math.otf(2)/m/n on inpu
-t line 134.
+t line 235.
 LaTeX Font Info:    Encoding `OMS' has changed to `TU' for symbol font
-(Font)              `symbols' in the math version `bold' on input line 134.
+(Font)              `symbols' in the math version `bold' on input line 235.
 LaTeX Font Info:    Overwriting symbol font `symbols' in version `bold'
 (Font)                  OMS/lmsy/b/n --> TU/latinmodern-math.otf(2)/b/n on inpu
-t line 134.
+t line 235.
 
-Package fontspec Info: 
+Package fontspec Info:
 (fontspec)             latinmodern-math scale = 1.03015890977869.
 
 
-Package fontspec Info: 
+Package fontspec Info:
 (fontspec)             latinmodern-math scale = 1.030055893887712.
 
 
-Package fontspec Info: 
+Package fontspec Info:
 (fontspec)             latinmodern-math scale = 1.03015890977869.
 
 
-Package fontspec Info: 
+Package fontspec Info:
 (fontspec)             latinmodern-math scale = 1.030055893887712.
 
 
-Package fontspec Info: 
+Package fontspec Info:
 (fontspec)             latinmodern-math scale = 1.03015890977869.
 
 
-Package fontspec Info: 
+Package fontspec Info:
 (fontspec)             latinmodern-math scale = 1.030055893887712.
 
 
-Package fontspec Info: 
+Package fontspec Info:
 (fontspec)             latinmodern-math scale = 1.03015890977869.
 
 
-Package fontspec Info: 
+Package fontspec Info:
 (fontspec)             latinmodern-math scale = 1.030055893887712.
 
 
-Package fontspec Info: 
+Package fontspec Info:
 (fontspec)             latinmodern-math scale = 1.03015890977869.
 
 
-Package fontspec Info: 
+Package fontspec Info:
 (fontspec)             latinmodern-math scale = 1.030055893887712.
 
 
-Package fontspec Info: 
+Package fontspec Info:
 (fontspec)             Font family 'latinmodern-math.otf(3)' created for font
 (fontspec)             'latinmodern-math.otf' with options
 (fontspec)             [Scale=MatchLowercase,BoldItalicFont={},ItalicFont={},Sm
@@ -1530,10 +1596,10 @@ justment={\fontdimen
 (fontspec)             =2.25603pt\relax \fontdimen 10\font =1.88379pt\relax
 (fontspec)             \fontdimen 11\font =1.25209pt\relax \fontdimen 12\font
 (fontspec)             =6.7681pt\relax \fontdimen 13\font =0pt\relax }].
-(fontspec)              
+(fontspec)
 (fontspec)              This font family consists of the following NFSS
 (fontspec)             series/shapes:
-(fontspec)              
+(fontspec)
 (fontspec)             - 'normal' (m/n) with NFSS spec.:
 (fontspec)             <9.3075->s*[1.030055893887712]"[latinmodern-math.otf]/OT
 :script=math;language=dflt;"<6.57-9.3075>s*[1.030055893887712]"[latinmodern-mat
@@ -1544,24 +1610,43 @@ nmodern-math.otf]/OT:script=math;language=dflt;+ssty=1;"
 t=math;language=dflt;"
 
 LaTeX Font Info:    Encoding `OMX' has changed to `TU' for symbol font
-(Font)              `largesymbols' in the math version `normal' on input line 1
-34.
+(Font)              `largesymbols' in the math version `normal' on input line 2
+35.
 LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `normal'
 (Font)                  OMX/lmex/m/n --> TU/latinmodern-math.otf(3)/m/n on inpu
-t line 134.
+t line 235.
 LaTeX Font Info:    Encoding `OMX' has changed to `TU' for symbol font
-(Font)              `largesymbols' in the math version `bold' on input line 134
+(Font)              `largesymbols' in the math version `bold' on input line 235
 .
 LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
 (Font)                  OMX/lmex/m/n --> TU/latinmodern-math.otf(3)/b/n on inpu
-t line 134.
-LaTeX Info: Redefining \microtypecontext on input line 134.
-Package microtype Info: Applying patch `item' on input line 134.
-Package microtype Info: Applying patch `toc' on input line 134.
-Package microtype Info: Applying patch `eqnum' on input line 134.
-Package microtype Info: Applying patch `footnote' on input line 134.
-Package microtype Info: Applying patch `verbatim' on input line 134.
-LaTeX Info: Redefining \microtypesetup on input line 134.
+t line 235.
+
+
+Package unicode-math Warning: Using \overbracket and \underbracket from
+(unicode-math)                `mathtools' package.
+(unicode-math)
+(unicode-math)                 Use \Uoverbracket and \Uunderbracket for
+(unicode-math)                original `unicode-math' definition.
+
+
+Package unicode-math Warning: I'm going to overwrite the following commands
+(unicode-math)                from the `mathtools' package:
+(unicode-math)
+(unicode-math)                     \dblcolon, \coloneqq, \Coloneqq, \eqqcolon.
+(unicode-math)
+(unicode-math)
+(unicode-math)                 Note that since I won't overwrite the other
+(unicode-math)                colon-like commands, using them will lead to
+(unicode-math)                inconsistencies.
+
+LaTeX Info: Redefining \microtypecontext on input line 235.
+Package microtype Info: Applying patch `item' on input line 235.
+Package microtype Info: Applying patch `toc' on input line 235.
+Package microtype Info: Applying patch `eqnum' on input line 235.
+Package microtype Info: Applying patch `footnote' on input line 235.
+Package microtype Info: Applying patch `verbatim' on input line 235.
+LaTeX Info: Redefining \microtypesetup on input line 235.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using protrusion set `basicmath'.
 Package microtype Info: No adjustment of tracking.
@@ -1572,52 +1657,37 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
 Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: listings package is loaded.
 Package caption Info: End \AtBeginDocument code.
+\c@lstlisting=\count415
 
-No file S02_eusocial_cogsec_slides.nav.
-[1
-
-] [2
+(/Users/4d/Documents/GitHub/projects/working/cognitive_integrity/cogsec_multiag
+ent_1_theory/output/slides/S02_eusocial_cogsec_slides.nav) [1
 
 ]
-LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <10.95> not available
-(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 183.
-
-
-! LaTeX Error: Environment observation undefined.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.183 \end{frame}
-                 
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 7.8961pt on input line 183.
+(Font)              scaled to size 7.8961pt on input line 242.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 5.64008pt on input line 183.
-LaTeX Font Info:    Trying to load font information for OML+lmm on input line 1
-83.
+(Font)              scaled to size 5.64008pt on input line 242.
+LaTeX Font Info:    Trying to load font information for OML+lmm on input line 2
+42.
+
 (/usr/local/texlive/2026/texmf-dist/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 11.28131pt on input line 183.
+(Font)              scaled to size 11.28131pt on input line 242.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 7.89691pt on input line 183.
+(Font)              scaled to size 7.89691pt on input line 242.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 5.64066pt on input line 183.
+(Font)              scaled to size 5.64066pt on input line 242.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 11.27914pt on input line 183.
+(Font)              scaled to size 11.27914pt on input line 242.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 7.8954pt on input line 183.
+(Font)              scaled to size 7.8954pt on input line 242.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 5.63957pt on input line 183.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 183
+(Font)              scaled to size 5.63957pt on input line 242.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 242
 .
 
 (/usr/local/texlive/2026/texmf-dist/tex/latex/amsfonts/umsa.fd
@@ -1626,7 +1696,7 @@ File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 (/usr/local/texlive/2026/texmf-dist/tex/latex/microtype/mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 183
+LaTeX Font Info:    Trying to load font information for U+msb on input line 242
 .
 
 (/usr/local/texlive/2026/texmf-dist/tex/latex/amsfonts/umsb.fd
@@ -1634,727 +1704,308 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 (/usr/local/texlive/2026/texmf-dist/tex/latex/microtype/mt-msb.cfg
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
-)
+) [2
 
-! LaTeX Error: \begin{beamercolorbox} on input line 183 ended by \end{observati
-on}.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.183 \end{frame}
-                 
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
+]
 [3
 
 ]
-Underfull \vbox (badness 1112) detected at line 183
- []
+LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <10.95> not available
+(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 256.
+ [4
 
-
-Overfull \vbox (107.52182pt too high) detected at line 183
- []
-
-[4
-
+] [5
 
 ]
-
-! LaTeX Error: Environment property undefined.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.410 \end{frame}
-                 
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-! You can't use `macro parameter character #' in horizontal mode.
-<inserted text> ...^T)\right ) \end {equation} {##
-                                                  eq:non-decomposability} fo...
-l.410 \end{frame}
-                 
-Sorry, but I'm not programmed to handle this case;
-I'll just pretend that you didn't ask for it.
-If you're in the wrong mode, you might be able to
-return to the right one by typing `I}' or `I$' or `I\par'.
-
-
-! LaTeX Error: \begin{beamercolorbox} on input line 410 ended by \end{property}
-.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.410 \end{frame}
-                 
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
-(/usr/local/texlive/2026/texmf-dist/tex/latex/microtype/mt-LatinModernRoman.cfg
-File: mt-LatinModernRoman.cfg 2026/02/26 v1.2 microtype config. file: Latin Mod
-ern Roman (RS)
-)
-
-! LaTeX Error: Environment observation undefined.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.410 \end{frame}
-                 
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
-! LaTeX Error: \begin{beamercolorbox} on input line 410 ended by \end{observati
-on}.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.410 \end{frame}
-                 
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
-Underfull \vbox (badness 1112) detected at line 410
- []
-
-[5
-
-]
-Underfull \vbox (badness 1112) detected at line 410
- []
-
-
-Overfull \vbox (2222.76964pt too high) detected at line 410
- []
-
-[6
-
-
-]
-
-! LaTeX Error: Environment property undefined.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.522 \end{frame}
-                 
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
-! LaTeX Error: \begin{beamercolorbox} on input line 522 ended by \end{property}
-.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.522 \end{frame}
-                 
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
 LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <7.665> not available
-(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 522.
+(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 285.
 LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <5.475> not available
-(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 522.
+(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 285.
+ [6
 
-! LaTeX Error: Environment property undefined.
+] [7
 
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.522 \end{frame}
-                 
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
+] [8
 
-
-! LaTeX Error: \begin{beamercolorbox} on input line 522 ended by \end{property}
-.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.522 \end{frame}
-                 
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-[7
+] [9
 
 ]
-Underfull \vbox (badness 1112) detected at line 522
- []
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
+(Font)              scaled to size 6.18091pt on input line 320.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
+(Font)              scaled to size 5.15076pt on input line 320.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
+(Font)              scaled to size 6.18155pt on input line 320.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
+(Font)              scaled to size 5.15129pt on input line 320.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
+(Font)              scaled to size 6.18036pt on input line 320.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
+(Font)              scaled to size 5.1503pt on input line 320.
+ [10
 
-
-Overfull \vbox (812.44228pt too high) detected at line 522
- []
-
-[8
-
-
-]
-
-LaTeX Warning: Citation `friedman2026cogsec3' on page 9 undefined on input line
- 602.
-
-
-! LaTeX Error: Environment observation undefined.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.602 \end{frame}
-                 
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
-Overfull \hbox (7.82562pt too wide) detected at line 602
-[]
- []
-
-
-! LaTeX Error: \begin{beamercolorbox} on input line 602 ended by \end{observati
-on}.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.602 \end{frame}
-                 
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
-Underfull \vbox (badness 1112) detected at line 602
- []
-
-[9
+] [11
 
 ]
-Underfull \vbox (badness 1112) detected at line 602
- []
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
+(Font)              scaled to size 9.27136pt on input line 344.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
+(Font)              scaled to size 9.27232pt on input line 344.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
+(Font)              scaled to size 9.27054pt on input line 344.
+ [12
 
-
-Overfull \vbox (298.70828pt too high) detected at line 602
- []
-
-[10
-
-
-]
-
-! LaTeX Error: Environment formalization undefined.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.813 \end{frame}
-                 
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-! You can't use `macro parameter character #' in horizontal mode.
-<inserted text> ... + \epsilon \end {equation} {##
-                                                  eq:recruitment-signal-inje...
-l.813 \end{frame}
-                 
-Sorry, but I'm not programmed to handle this case;
-I'll just pretend that you didn't ask for it.
-If you're in the wrong mode, you might be able to
-return to the right one by typing `I}' or `I$' or `I\par'.
-
-
-! LaTeX Error: \begin{beamercolorbox} on input line 813 ended by \end{formaliza
-tion}.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.813 \end{frame}
-                 
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
-! LaTeX Error: Environment formalization undefined.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.813 \end{frame}
-                 
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-! You can't use `macro parameter character #' in horizontal mode.
-<inserted text> ...xt {sybil}} \end {equation} {##
-                                                  eq:sybil-initial-trust} Sy...
-l.813 \end{frame}
-                 
-Sorry, but I'm not programmed to handle this case;
-I'll just pretend that you didn't ask for it.
-If you're in the wrong mode, you might be able to
-return to the right one by typing `I}' or `I$' or `I\par'.
-
-! You can't use `macro parameter character #' in horizontal mode.
-<inserted text> ...thcal {T}_k \end {equation} {##
-                                                  eq:sybil-trust-accumulatio...
-l.813 \end{frame}
-                 
-Sorry, but I'm not programmed to handle this case;
-I'll just pretend that you didn't ask for it.
-If you're in the wrong mode, you might be able to
-return to the right one by typing `I}' or `I$' or `I\par'.
-
-
-! LaTeX Error: \begin{beamercolorbox} on input line 813 ended by \end{formaliza
-tion}.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.813 \end{frame}
-                 
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
-! LaTeX Error: Environment formalization undefined.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.813 \end{frame}
-                 
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-! You can't use `macro parameter character #' in horizontal mode.
-<inserted text> ...\{\alpha \} \end {equation} {##
-                                                  eq:quorum-prevention} \par...
-l.813 \end{frame}
-                 
-Sorry, but I'm not programmed to handle this case;
-I'll just pretend that you didn't ask for it.
-If you're in the wrong mode, you might be able to
-return to the right one by typing `I}' or `I$' or `I\par'.
-
-! You can't use `macro parameter character #' in horizontal mode.
-<inserted text> ...licious}}\} \end {equation} {##
-                                                  eq:false-quorum-injection}...
-l.813 \end{frame}
-                 
-Sorry, but I'm not programmed to handle this case;
-I'll just pretend that you didn't ask for it.
-If you're in the wrong mode, you might be able to
-return to the right one by typing `I}' or `I$' or `I\par'.
-
-
-! LaTeX Error: \begin{beamercolorbox} on input line 813 ended by \end{formaliza
-tion}.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.813 \end{frame}
-                 
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
-! LaTeX Error: Environment formalization undefined.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.813 \end{frame}
-                 
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
-Overfull \hbox (105.03325pt too wide) detected at line 813
-[][] [] [][][] [] [][] [] [] [][] [] [][] [] [][][] [] [][][] [] [][] [][] [] [
-] [] [] []
- []
-
-! You can't use `macro parameter character #' in horizontal mode.
-<inserted text> ...)\}\right ) \end {equation} {##
-                                                  eq:belief-cascade-propagat...
-l.813 \end{frame}
-                 
-Sorry, but I'm not programmed to handle this case;
-I'll just pretend that you didn't ask for it.
-If you're in the wrong mode, you might be able to
-return to the right one by typing `I}' or `I$' or `I\par'.
-
-
-! LaTeX Error: \begin{beamercolorbox} on input line 813 ended by \end{formaliza
-tion}.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.813 \end{frame}
-                 
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
-! LaTeX Error: Environment formalization undefined.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.813 \end{frame}
-                 
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-! You can't use `macro parameter character #' in horizontal mode.
-<inserted text> ...athcal {O}} \end {equation} {##
-                                                  eq:emergent-misalignment-c...
-l.813 \end{frame}
-                 
-Sorry, but I'm not programmed to handle this case;
-I'll just pretend that you didn't ask for it.
-If you're in the wrong mode, you might be able to
-return to the right one by typing `I}' or `I$' or `I\par'.
-
-
-! LaTeX Error: \begin{beamercolorbox} on input line 813 ended by \end{formaliza
-tion}.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.813 \end{frame}
-                 
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-[11
-
-]
-Underfull \vbox (badness 1112) detected at line 813
- []
-
-
-Overfull \vbox (1416.5464pt too high) detected at line 813
- []
-
-[12
-
-
-]
-LaTeX Font Info:    Font shape `TU/lmss/bx/it' in size <10.95> not available
-(Font)              Font shape `TU/lmss/bx/sl' tried instead on input line 839.
-
- [13
+] [13
 
 ] [14
 
+]
+LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <6> not available
+(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 398.
+ [15
 
 ]
-
-! LaTeX Error: Environment principle undefined.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.907 \end{frame}
-                 
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
-! LaTeX Error: \begin{beamer@framepauses} on input line 907 ended by \end{princ
-iple}.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.907 \end{frame}
-                 
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
-! LaTeX Error: Environment principle undefined.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.907 \end{frame}
-                 
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
-! LaTeX Error: \begin{beamer@framepauses} on input line 907 ended by \end{princ
-iple}.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.907 \end{frame}
-                 
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
-! LaTeX Error: Environment principle undefined.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.907 \end{frame}
-                 
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
-! LaTeX Error: \begin{beamer@framepauses} on input line 907 ended by \end{princ
-iple}.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.907 \end{frame}
-                 
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
-! LaTeX Error: Environment principle undefined.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.907 \end{frame}
-                 
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-! You can't use `macro parameter character #' in horizontal mode.
-<inserted text> ... (t - t_0)) \end {equation} {##
-                                                  eq:stigmergic-trust-decay}...
-l.907 \end{frame}
-                 
-Sorry, but I'm not programmed to handle this case;
-I'll just pretend that you didn't ask for it.
-If you're in the wrong mode, you might be able to
-return to the right one by typing `I}' or `I$' or `I\par'.
-
-
-! LaTeX Error: \begin{beamer@framepauses} on input line 907 ended by \end{princ
-iple}.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.907 \end{frame}
-                 
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
-LaTeX Warning: Citation `friedman2026cogsec3' on page 15 undefined on input lin
-e 907.
-
-[15
-
-] [16
-
+(/usr/local/texlive/2026/texmf-dist/tex/latex/microtype/mt-LatinModernRoman.cfg
+File: mt-LatinModernRoman.cfg 2026/02/26 v1.2 microtype config. file: Latin Mod
+ern Roman (RS)
+) [16
 
 ] [17
 
-
 ] [18
 
-]
-Underfull \vbox (badness 1112) detected at line 942
- []
+] [19
 
-
-Overfull \vbox (51.89973pt too high) detected at line 942
- []
-
-[19
-
-
-]
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 14.83417pt on input line 949.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 10.30151pt on input line 949.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 7.21106pt on input line 949.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 14.83571pt on input line 949.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 10.30258pt on input line 949.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 7.2118pt on input line 949.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 14.83284pt on input line 949.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 10.3006pt on input line 949.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 7.21042pt on input line 949.
- [20
+] [20
 
 ] [21
 
-]
-Underfull \vbox (badness 1112) detected at line 1044
- []
-
-
-Overfull \vbox (674.18051pt too high) detected at line 1044
- []
-
-[22
-
+] [22
 
 ] [23
 
 ] [24
 
+] [25
 
-]
-
-LaTeX Warning: Reference `thm:redundancy-resilience' on page 25 undefined on in
-put line 1115.
-
-! You can't use `macro parameter character #' in horizontal mode.
-<inserted text> ...hcal {F}_c) \end {equation} {##
-                                                  eq:honest-info-sufficiency...
-l.1115 \end{frame}
-                  
-Sorry, but I'm not programmed to handle this case;
-I'll just pretend that you didn't ask for it.
-If you're in the wrong mode, you might be able to
-return to the right one by typing `I}' or `I$' or `I\par'.
-
-! You can't use `macro parameter character #' in horizontal mode.
-<inserted text> ...hcal {F}_c) \end {equation} {##
-                                                  eq:honest-agent-capacity} ...
-l.1115 \end{frame}
-                  
-Sorry, but I'm not programmed to handle this case;
-I'll just pretend that you didn't ask for it.
-If you're in the wrong mode, you might be able to
-return to the right one by typing `I}' or `I$' or `I\par'.
-
-! You can't use `macro parameter character #' in horizontal mode.
-<inserted text> ...frac {1}{3} \end {equation} {##
-                                                  eq:byzantine-honest-majori...
-l.1115 \end{frame}
-                  
-Sorry, but I'm not programmed to handle this case;
-I'll just pretend that you didn't ask for it.
-If you're in the wrong mode, you might be able to
-return to the right one by typing `I}' or `I$' or `I\par'.
-
-! You can't use `macro parameter character #' in horizontal mode.
-<inserted text> ... }}\right ) \end {equation} {##
-                                                  eq:byzantine-info-combined...
-l.1115 \end{frame}
-                  
-Sorry, but I'm not programmed to handle this case;
-I'll just pretend that you didn't ask for it.
-If you're in the wrong mode, you might be able to
-return to the right one by typing `I}' or `I$' or `I\par'.
-
-
-Underfull \vbox (badness 1112) detected at line 1115
- []
-
-[25
-
-]
-Underfull \vbox (badness 1112) detected at line 1115
- []
-
-
-Overfull \vbox (203.52773pt too high) detected at line 1115
- []
-
-[26
-
+] [26
 
 ] [27
+
+]
+LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <9> not available
+(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 571.
+LaTeX Font Info:    Font shape `TU/lmss/bx/it' in size <9> not available
+(Font)              Font shape `TU/lmss/bx/sl' tried instead on input line 571.
+
+ [28
+
+] [29
+
+]
+[30
+
+] [31
+
+] [32
+
+] [33
+
+] [34
+
+]
+LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <5> not available
+(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 658.
+ [35
+
+] [36
+
+] [37
+
+] [38
+
+] [39
+
+] [40
+
+] [41
+
+] [42
+
+]
+
+LaTeX Warning: Citation `friedman2026cogsec3' on page 43 undefined on input lin
+e 765.
+
+[43
+
+] [44
+
+] [45
+
+] [46
+
+] [47
+
+] [48
+
+] [49
+
+] [50
+
+] [51
+
+
+] [52
+
+] [53
+
+] [54
+
+] [55
+
+
+] [56
+
+] [57
+
+]
+[58
+
+] [59
+
+] [60
+
+] [61
+
+] [62
+
+] [63
+
+] [64
+
+] [65
+
+] [66
+
+] [67
+
+] [68
+
+] [69
+
+]
+LaTeX Font Info:    Font shape `TU/lmss/bx/it' in size <10.95> not available
+(Font)              Font shape `TU/lmss/bx/sl' tried instead on input line 1101
+.
+ [70
+
+] [71
+
+] [72
+
+]
+[73
+
+] [74
+
+] [75
+
+] [76
+
+]
+
+LaTeX Warning: Citation `friedman2026cogsec3' on page 77 undefined on input lin
+e 1183.
+
+[77
+
+] [78
+
+] [79
+
+] [80
+
+] [81
+
+] [82
+
+] [83
+
+] [84
+
+] [85
+
+] [86
+
+] [87
+
+] [88
+
+
+] [89
+
+
+] [90
+
+] [91
+
+]
+[92
+
+]
+
+LaTeX Warning: Citation `wilson1971insect' on page 93 undefined on input line 1
+364.
+
+
+LaTeX Warning: Citation `holldobler1990ants' on page 93 undefined on input line
+ 1364.
+
+
+LaTeX Warning: Citation `bonabeau1999swarm' on page 93 undefined on input line
+1364.
+
+
+LaTeX Warning: Citation `seeley2010honeybee' on page 93 undefined on input line
+ 1364.
+
+
+LaTeX Warning: Citation `grasse1959reconstruction' on page 93 undefined on inpu
+t line 1364.
+
+
+LaTeX Warning: Citation `lenoir2001chemical' on page 93 undefined on input line
+ 1364.
+
+
+LaTeX Warning: Citation `kilner2011cuckoos' on page 93 undefined on input line
+1364.
+
+[93
+
+] [94
+
+] [95
+
+]
+Underfull \vbox (badness 1168) detected at line 1407
+ []
+
+[96
+
+]
+Underfull \vbox (badness 1168) detected at line 1407
+ []
+
+
+Overfull \vbox (52.70099pt too high) detected at line 1407
+ []
+
+[97
+
+
+] [98
 
 ]
 \tf@nav=\write5
@@ -2382,19 +2033,16 @@ L3 programming layer <2026-01-19>
 
 LaTeX Warning: There were undefined references.
 
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
- ) 
+ )
 Here is how much of TeX's memory you used:
- 31406 strings out of 468168
- 636143 string characters out of 5432815
- 1236603 words of memory out of 5000000
- 59543 multiletter control sequences out of 15000+600000
- 634248 words of font info for 102 fonts, out of 8000000 for 9000
+ 33627 strings out of 468168
+ 671538 string characters out of 5432815
+ 1218685 words of memory out of 5000000
+ 61725 multiletter control sequences out of 15000+600000
+ 634321 words of font info for 111 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 128i,16n,123p,1128b,1003s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 128i,16n,123p,1128b,817s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
 Output written on /Users/4d/Documents/GitHub/projects/working/cognitive_integri
-ty/cogsec_multiagent_1_theory/output/slides/S02_eusocial_cogsec_slides.pdf (27 
+ty/cogsec_multiagent_1_theory/output/slides/S02_eusocial_cogsec_slides.pdf (98
 pages).

@@ -1,11 +1,2 @@
 \beamer@slide {fig:trust-decay}{2}
-\beamer@slide {the-experimental-setup}{3}
-\beamer@slide {finding-1-defense-layering-vs.-individual-efficacy}{4}
-\beamer@slide {finding-2-state-machine-determinism}{5}
-\beamer@slide {finding-3-hierarchical-vulnerability}{6}
-\beamer@slide {finding-4-roles-as-security-boundaries}{7}
-\beamer@slide {finding-5-the-stealth-impact-tradeoff}{8}
-\beamer@slide {finding-6-emergent-misalignment-is-the-nash-optimal-attack}{9}
-\beamer@slide {finding-7-the-implementation-gap-is-a-feature-not-a-bug}{11}
-\beamer@slide {a-note-on-the-numbers}{13}
-\beamer@slide {tripwire-configuration-data}{13}
+\beamer@slide {tripwire-configuration-data}{33}

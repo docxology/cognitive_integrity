@@ -1,1 +1,8 @@
 \beamer@sectionintoc {1}{Deployment Profiles: Evaluated Configurations from Part 2}{1}{0}{1}
+\beamer@subsectionintoc {1}{1}{Profile A: The ``Internal Tool'' Baseline (Low Latency)}{5}{0}{1}
+\beamer@subsectionintoc {1}{2}{Profile B: The ``Customer Facing'' Baseline (Balanced)}{10}{0}{1}
+\beamer@subsectionintoc {1}{3}{Profile C: The ``Autonomous Operator'' Baseline (High Assurance)}{15}{0}{1}
+\beamer@subsectionintoc {1}{4}{Architecture-Specific Observations}{21}{0}{1}
+\beamer@subsectionintoc {1}{5}{Minimal Viable Implementation}{26}{0}{1}
+\beamer@subsectionintoc {1}{6}{Alignment with Emerging Standards}{31}{0}{1}
+\beamer@subsectionintoc {1}{7}{CIF Composer: Interactive Deployment Planning Tool}{39}{0}{1}

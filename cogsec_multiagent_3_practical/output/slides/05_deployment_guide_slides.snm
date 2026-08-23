@@ -1,13 +1,6 @@
 \beamer@slide {fig:posture-radar}{2}
 \beamer@slide {fig:checklist-flowchart}{2}
-\beamer@slide {profile-a-the-internal-tool-baseline-low-latency}{5}
-\beamer@slide {profile-b-the-customer-facing-baseline-balanced}{6}
-\beamer@slide {profile-c-the-autonomous-operator-baseline-high-assurance}{8}
-\beamer@slide {architecture-specific-observations}{10}
-\beamer@slide {langgraph-state-machines}{10}
-\beamer@slide {crewai-role-based}{10}
-\beamer@slide {minimal-viable-implementation}{12}
-\beamer@slide {alignment-with-emerging-standards}{13}
-\beamer@slide {owasp-top-10-for-agentic-applications-2026}{13}
-\beamer@slide {nist-zero-trust-architecture-for-ai-agents}{13}
-\beamer@slide {sec:cif-composer}{15}
+\beamer@slide {langgraph-state-machines}{23}
+\beamer@slide {crewai-role-based}{24}
+\beamer@slide {owasp-top-10-for-agentic-applications-2026}{33}
+\beamer@slide {nist-zero-trust-architecture-for-ai-agents}{35}

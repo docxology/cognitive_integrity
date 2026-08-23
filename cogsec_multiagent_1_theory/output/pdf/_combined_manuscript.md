@@ -125,7 +125,7 @@ This is not a hypothetical---it describes documented attack patterns in producti
 
 ### Cross-Modality Attack Surfaces
 
-Multimodal systems introduce attack vectors impossible in text-only contexts:
+Multimodal systems introduce attack vectors impossible in text-only contexts \cite{shayegani2023survey}:
 
 \textbf{Visual Injection}: Images can contain adversarial perturbations or steganographically embedded instructions invisible to humans but interpretable by vision models. A seemingly innocent diagram in a specification document could contain instructions that activate when processed by a multimodal agent \cite{qi2024visual}.
 
@@ -135,7 +135,7 @@ Multimodal systems introduce attack vectors impossible in text-only contexts:
 
 \textbf{Cross-Modal Persistence}: An instruction injected via one modality (e.g., hidden text in an image) can persist in agent memory and affect behavior in another modality (e.g., code generation). The attack surface is the Cartesian product of input modalities, memory mechanisms, and output modalities.
 
-### The Scale of Exposure
+### The Scale of Cognitive Exposure
 
 Enterprise adoption of agentic AI has accelerated beyond early projections:
 
@@ -149,7 +149,7 @@ Enterprise adoption of agentic AI has accelerated beyond early projections:
 
 The attack surface scales superlinearly with adoption. Each agent-to-agent communication channel, each tool integration, each persistent memory system creates potential entry points for cognitive manipulation. A single compromised peripheral service can affect every agent system that queries it.
 
-### Why Traditional (Cyberphysical) Security Is Incomplete
+### Why Traditional Cyberphysical Security Is Incomplete
 
 Traditional cybersecurity operates on a clear trust boundary model: inside the perimeter is trusted, outside is untrusted, and security controls mediate the boundary. This model fails for cognitive systems because:
 
@@ -240,8 +240,8 @@ The proliferation of multiagent AI systems introduces security considerations th
 
 \textbf{Emerging Attack Surface}:
 \begin{itemize}
-\item Inter-agent communication channels lack authentication standards---ARIA model proposes cryptographically verifiable delegation \cite{trustdynamics2025}
-\item Trust delegation mechanisms operate without formal verification---recent work on CP-WBFT achieves 85.71\% Byzantine fault tolerance improvement \cite{cpwbft2025}
+\item Inter-agent communication channels lack authentication standards, so delegated trust is asserted rather than verified; computational treatments of trust and reputation dynamics model the asymmetry directly---cooperation accrues trust gradually while a violation erodes it sharply \cite{trustdynamics2025}
+\item Trust delegation mechanisms operate without formal verification---CP-WBFT, a confidence-probe-weighted Byzantine consensus for LLM agents, reports operation at fault rates as high as 85.7\% \cite{cpwbft2025}
 \item Belief provenance remains largely untracked in production systems---cognitive degradation attacks exploit this gap \cite{cdr2025}
 \end{itemize}
 
@@ -290,7 +290,7 @@ We present a defense composition algebra enabling formal reasoning about series 
 
 \textbf{RQ4: Fundamental Bounds}. \textit{What are the information-theoretic limits on cognitive attack detection?}
 
-We derive the stealth-impact tradeoff theorem establishing fundamental bounds on detection independent of defense implementation. We prove that attacks cannot simultaneously achieve high impact and complete undetectability, providing theoretical grounding for defense design (\cref{sec:detection-bounds}).
+We state the stealth-impact tradeoff theorem, which bounds detection independently of defense implementation, and give an information-geometric argument for its constant. The theorem asserts that attacks cannot simultaneously achieve high impact and complete undetectability; its full proof is deferred, and the proof-status index (S01, \cref{sec:proof-status}) records which results in this paper are proved and which are asserted (\cref{sec:detection-bounds}).
 
 ## Contributions {#sec:contributions}
 
@@ -362,10 +362,10 @@ Deployment checklists and operator-posture guidance & Part 3 (DOI: 10.5281/zenod
 Monitoring, drift detection playbooks, cost--benefit analysis & Part 3, \S{5c}--\S{5d} \\
 Case studies showing CIF in complex realistic deployments & Part 3, \S{6b} \\
 Open problems / research directions for practitioners & Part 3 (DOI: 10.5281/zenodo.18364130), \S{7} (Future Work) \\
-Domain-specific goal-hijacking analyses across ten operational sectors & Part 3, \S{3.01}--\S{3.10} \\
-Three universal attack patterns (FR Polarity Inversion, Constraint Relaxation, Context Boundary Violation) & Part 3, \S{4} (Discussion) \\
-Three novel defense extensions (verification channel separation, active perturbation probing, physics-informed invariants) & Part 3, \S{3.06} (Biowarfare), \S{3.08} (Trade Wars), \S{3.09} (Infrastructure) \\
-Retrospective analysis of documented 2024--2025 AI-agent security incidents & Part 3, S02 (Real-World Incidents) \\
+Domain-specific goal-hijacking analyses across ten operational sectors & Part 3, \S{9c}--\S{9l} \\
+Three universal attack patterns (FR Polarity Inversion, Constraint Relaxation, Context Boundary Violation) & Part 3, \S{10} (Cross-Domain Discussion) \\
+Four novel defense extensions (verification channel separation, active perturbation probing, physics-informed invariants, semiotic decoupling) & Part 3, \S{9h} (Biowarfare), \S{9j} (Trade Wars), \S{9k} (Infrastructure), \S{9f} (Drone Wars) \\
+Retrospective analysis of documented 2024--2025 AI-agent security incidents & Part 3, S03 (Real-World Incidents) \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -428,7 +428,7 @@ Systemic & $\Omega_5$ & Orchestrator & Full control & Framework compromise \\
 
 \Cref{tab:adversary-classes} presents the five-tier adversary hierarchy. We assume an honest orchestrator for $\Omega_1$--$\Omega_4$; class $\Omega_5$ attacks require physical or supply-chain compromise outside our threat model.
 
-## Formal Mathematical Characterization of Adversary Classes {#sec:adversary-formal}
+## Formal Characterization of the Adversary Classes {#sec:adversary-formal}
 
 We now provide rigorous mathematical characterizations for each adversary class $\Omega_k$. These extend the descriptive table above with information-theoretic bounds, capability monotonicity guarantees, and formal distinguishability criteria.
 
@@ -495,22 +495,32 @@ where $a_v$ is the victim/compromised agent, $\sigma_v = \langle \mathcal{B}_v, 
 
 \begin{theorem}[Agent Compromise Blast Radius]
 \label{thm:blast-radius}
-When agent $a_v \in \Omega_3$ is fully compromised, the maximum influenced trust is:
+When agent $a_v \in \Omega_3$ is fully compromised, its \emph{trust-influence blast
+radius} is the trust it can propagate onward through each neighbour that
+delegates to it --- one delegation hop, so each contribution decays by $\delta$:
 \begin{equation}
 \label{eq:blast-radius}
-\text{BlastRadius}(a_v) = \sum_{a_j \in \mathcal{N}(a_v)} \mathcal{T}_{a_j \to a_v} \cdot |\text{Reachable}(a_j)|
+\text{BlastRadius}(a_v) = \sum_{a_j \in \mathcal{N}(a_v)} \delta \cdot \mathcal{T}_{a_j \to a_v}
 \end{equation}
 The CIF trust decay bound (\cref{thm:trust-bounded}) limits this to:
 \begin{equation}
 \label{eq:blast-radius-bound}
 \text{BlastRadius}(a_v) \leq n \cdot \delta \cdot \max_{a_j} \mathcal{T}_{a_j \to a_v}
 \end{equation}
-*Reachability factor alignment (H7): the \cref{eq:blast-radius} definition includes an explicit
-$|\text{Reachable}(a_j)|$ factor as the intuitive influence interpretation; the trust-decay bound
-(\cref{eq:blast-radius-bound}) is stated on the trust-influence measure, where each reachable hop
-contributes at most $\delta \cdot \mathcal{T}$, so the aggregate is capped at $n \cdot \delta \cdot \max_j \mathcal{T}$.
-The supplementary restatement (\cref{thm:blast-radius-restated}) states the bound consistently and
-does not multiply the neighbor and reachable-agent counts (see S01, \cref{sec:thm-blast-radius}).*
+where $n = |\mathcal{N}(a_v)|$. The $\delta$ belongs to the definition, not only to
+the bound: the quantity of interest is influence \emph{propagated through} the
+compromised agent, which costs one delegation hop. The undecayed sum
+$\sum_{a_j} \mathcal{T}_{a_j \to a_v}$ is the direct trust placed in $a_v$ and is
+bounded only by $n \cdot \max_{a_j} \mathcal{T}_{a_j \to a_v}$.
+
+The reachability-weighted quantity
+$\sum_{a_j \in \mathcal{N}(a_v)} \mathcal{T}_{a_j \to a_v} \cdot |\text{Reachable}(a_j)|$
+is a different measure --- it counts how many agents each neighbour can in turn
+influence --- and \cref{eq:blast-radius-bound} does not bound it: multiplying the
+neighbour and reachable-agent counts admits an $O(n^2)$ term. The bound above is
+stated on the trust-influence measure only, and the supplementary restatement
+(\cref{thm:blast-radius-restated}) follows the same convention
+(S01, \cref{sec:thm-blast-radius}).
 \end{theorem}
 
 \begin{proof}
@@ -874,7 +884,7 @@ Incremental belief shifts below per-step detection threshold.
 
 \textbf{Detection}: Provenance verification, cross-reference validation
 
-\textbf{Recent Variant}: \textit{PromptPwnd} \cite{promptpwnd2025} demonstrated that manipulating tool error logs could coerce an agent into executing arbitrary code to "fix" the error.
+\textbf{Recent Variant}: Argument injection against pre-approved tools \cite{promptinjectionrce2025}. Agents commonly gate the tool *name* against an allowlist but not its *arguments*, so injected content that reaches a permitted utility can supply an execution flag (for example \texttt{-exec} on \texttt{find}, or the equivalent on \texttt{go test}) and obtain code execution without ever invoking a denied command. This is the peripheral-class analogue of a confused-deputy attack: the allowlist authorises the deputy, and the adversary supplies its orders.
 
 ### Scenario $\Omega_2'$: Browser-Fetched Adversarial Content (OpenClaw)
 
@@ -1455,7 +1465,7 @@ A trust domain $\mathcal{D}$ is a set of agents sharing a common trust authority
 For agent $a_i$ in domain $\mathcal{D}_1$ and agent $a_j$ in domain $\mathcal{D}_2$:
 \begin{equation}
 \label{eq:cross-domain-trust}
-\mathcal{T}_{i \to j}^{\text{fed}} = \mathcal{T}_{i \to \mathcal{D}*2} \cdot \mathcal{T}_{\mathcal{D}_2}(j)
+\mathcal{T}_{i \to j}^{\text{fed}} = \mathcal{T}_{i \to \mathcal{D}_2} \cdot \mathcal{T}_{\mathcal{D}_2}(j)
 \end{equation}
 where $\mathcal{T}_{i \to \mathcal{D}_2}$ is $a_i$'s trust in domain $\mathcal{D}_2$ and $\mathcal{T}_{\mathcal{D}_2}(j)$ is $a_j$'s standing within its domain.
 \end{definition}
@@ -1624,7 +1634,7 @@ where $C_{\text{channel}}$ is the attack channel capacity.
 Theorem~\ref{thm:stealth-impact} can be sharpened using the information
 geometry of the belief manifold (Part~2, Supplement~S10).  When belief
 space is endowed with the Fisher-Rao metric
-$G_{ij}(p) = \delta_{ij}/p_i$, the Fisher-Rao geodesic distance
+$G_{ij}(p) = \delta_{ij}/p_i$ \cite{amari2000methods}, the Fisher-Rao geodesic distance
 \[
 d_{\mathrm{FR}}(p, q) = 2\arccos\!\left(\sum_i \sqrt{p_i q_i}\right)
 \]
@@ -1639,8 +1649,12 @@ $\mathcal{I} \cdot \mathcal{S}$ is bounded by the diameter of the manifold:
 \]
 since $d_{\mathrm{FR}} \leq \pi$ (Hellinger antipodal distributions).
 This recovers $C_{\text{channel}} = \pi/2$ as the tight bound when impact
-is measured in natural (Fisher-Rao) units, providing a geometric
-proof of Theorem~\ref{thm:stealth-impact} with the explicit constant.
+is measured in natural (Fisher-Rao) units. It is a geometric \emph{argument}
+for the constant in Theorem~\ref{thm:stealth-impact}, not a proof of that
+theorem: the theorem itself is stated without proof and is recorded as
+deferred in the proof-status index (S01, \cref{sec:proof-status}), and the
+curvature step above assumes the impact measure is the Fisher-Rao distance
+rather than deriving that identification.
 Furthermore, the connection to KL divergence---$D_{\mathrm{KL}}(p \,\|\, p')
 \approx \tfrac{1}{2}(\Delta p)^\top G(p)(\Delta p)$ for small
 perturbations---gives geometric justification for the drift detection
@@ -2115,7 +2129,7 @@ update $Q$.  This connection bridges the CIF trust calculus with the
 broader active inference literature (Part~2, Theorem~FEP.2).
 \end{remark}
 
-![Belief Sandbox Architecture](figures/belief_sandbox.pdf){#fig:belief-sandbox}
+![Belief Sandbox Architecture: the lifecycle of an unverified proposition from ingestion through provisional (sandboxed) storage, verification checks, and promotion to the verified belief base or rejection. Sandboxed propositions cannot influence goals or be delegated onward.](figures/belief_sandbox.pdf){#fig:belief-sandbox}
 
 \Cref{fig:belief-sandbox} illustrates the sandbox architecture, showing how incoming beliefs are partitioned into verified and provisional sets based on source trust $\mathcal{T}_{i \to s}$ and provenance verification $V(\pi)$. The promotion protocol transfers beliefs from provisional to verified status upon meeting corroboration and consistency requirements.
 
@@ -2560,7 +2574,7 @@ By case analysis on transition types. \textbf{T-Receive}: message rejected if it
 
 \begin{definition}[CUSUM Drift Detector]
 \label{def:cusum-detector}
-The Cumulative Sum (CUSUM) drift detector maintains a running statistic:
+The Cumulative Sum (CUSUM) drift detector \cite{page1954continuous} maintains a running statistic:
 \begin{equation}
 \label{eq:cusum}
 g_t = \max(0, g_{t-1} + D_{\mathrm{KL}}(\mathcal{B}_i^t \| \mathcal{B}_i^{t-1}) - \nu)
@@ -2587,7 +2601,7 @@ The ratio $\text{ARL}_0 / \text{ARL}_1$ quantifies the detector's discrimination
 
 \begin{corollary}[Drift Detection Sample Complexity]
 \label{cor:drift-sample}
-For drift magnitude $\mu_1 = 0.3$ (normalized KL) and ARL$_0 = 1000$ (low false alarm rate), the CUSUM detector achieves ARL$_1 \approx 15$ steps with $\nu = 0.15$, $h \approx 4.6$.
+For drift magnitude $\mu_1 = 0.3$ (normalized KL) and Wald's optimal reference value $\nu = \mu_1/2 = 0.15$, attaining ARL$_0 = 1000$ under \cref{eq:cusum-arl} requires a decision interval of $h \approx 13.0$; the frequently quoted $h \approx 4.6$ yields ARL$_0 \approx 35$ under the same formula, a false-alarm rate roughly $28\times$ higher. The corresponding ARL$_1$ follows from \cref{eq:cusum-arl1}, whose $O(\log \text{ARL}_0)$ factor carries an unspecified constant: taking that constant as unity gives ARL$_1 \approx 310$ steps. Deployments should calibrate $h$ against a measured null distribution rather than adopting either figure directly.
 \end{corollary}
 
 ### Canonical Defense 5: Byzantine Consensus — Formal Specification
@@ -2621,17 +2635,17 @@ No coalition of at most $f$ faulty agents can cause non-faulty agents to disagre
 
 \begin{table}[htbp]
 \centering
-\caption{Byzantine consensus performance bounds for varying $n$ and $f$.}
+\caption{Byzantine consensus performance bounds for varying $n$ and $f$. Quorum is $q = \lceil (n+f+1)/2 \rceil$; the round count is the $f+1$ worst-case bound of \cref{thm:byzantine-termination}, of which \cref{cor:concrete-rounds} ($f = 2$, 3 rounds) is the second row.}
 \label{tab:byz-performance}
 \begin{tabular}{@{}lllll@{}}
 \toprule
 $n$ agents & Max faulty $f$ & Quorum $q$ & Message complexity & Rounds \\
 \midrule
-4 & 1 & 3 & $O(n^2)$ & 3 \\
+4 & 1 & 3 & $O(n^2)$ & 2 \\
 7 & 2 & 5 & $O(n^2)$ & 3 \\
-10 & 3 & 7 & $O(n^2)$ & 3 \\
-25 & 8 & 17 & $O(n^2)$ & 3 \\
-100 & 33 & 67 & $O(n^2 \log n)$ & $O(\log n)$ \\
+10 & 3 & 7 & $O(n^2)$ & 4 \\
+25 & 8 & 17 & $O(n^2)$ & 9 \\
+100 & 33 & 67 & $O(n^2)$ & 34 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -2640,7 +2654,7 @@ $n$ agents & Max faulty $f$ & Quorum $q$ & Message complexity & Rounds \\
 
 \begin{theorem}[Composition Algebra Closure]
 \label{thm:composition-closure}
-The set of CIF defenses $\mathcal{D}$ under series ($\circ$) and parallel ($\parallel$) composition forms a closed semiring:
+On a common accept/reject focal predicate, the set of CIF defenses $\mathcal{D}$ under series ($\circ$) and parallel ($\parallel$) composition forms a bounded distributive lattice --- it satisfies closure, associativity, identity and distributivity (see the scope remark below for what is \emph{not} claimed):
 \begin{enumerate}
 \item \textbf{Closure}: $\mathcal{D}_1, \mathcal{D}_2 \in \mathcal{D} \Rightarrow \mathcal{D}_1 \circ \mathcal{D}_2 \in \mathcal{D}$ and $\mathcal{D}_1 \parallel \mathcal{D}_2 \in \mathcal{D}$
 \item \textbf{Associativity}: $(\mathcal{D}_1 \circ \mathcal{D}_2) \circ \mathcal{D}_3 = \mathcal{D}_1 \circ (\mathcal{D}_2 \circ \mathcal{D}_3)$
@@ -2695,7 +2709,7 @@ This bound is conservative; empirical rates exceed $0.994$ with the recommended 
 
 This section presents the formal foundations for cognitive attack detection. We define anomaly detection metrics (\cref{sec:anomaly-detection}), ROC curve framework (\cref{sec:roc-analysis}), multi-detector fusion theory (\cref{sec:detector-fusion}), online vs. batch trade-offs (\cref{sec:online-batch}), false positive mitigation strategies (\cref{sec:fp-mitigation}), provenance analysis (\cref{sec:provenance}), and real-time monitoring architecture (\cref{sec:monitoring}).
 
-> **Note**: For algorithm implementations and empirical performance results, see Part 2 of this series \cite{friedman2026cogsec2}. Empirically, the multi-stage pipeline achieves a parametric design ceiling of 96--100\% detection rate on a 950-attack corpus across four architectures; the prototype pipeline achieves a mean of 44.7\% [CI: 43.4\%, 46.2\%] across 30 seeds, with per-$\Omega$-class detection rates ranging from 97\% ($\Omega_1$, passive) to 49\% ($\Omega_5$, coordinated) after adversarial training hardening (Part 2, §5g).
+> **Note**: For algorithm implementations and empirical performance results, see Part 2 of this series \cite{friedman2026cogsec2}. Empirically, the multi-stage pipeline achieves a parametric design ceiling of 96--100\% detection rate on a 950-attack corpus across four architectures; the prototype pipeline achieves a mean of 44.8\% [95\% CI: 43.2\%, 46.4\%] across 30 seeds. Part 2 reports no measured per-$\Omega$-class detection rates: the corpus carries a design-level $\Omega$ classification rather than a runtime label, so per-class rates are not evaluated.
 
 ## Anomaly Detection {#sec:anomaly-detection}
 
@@ -2729,7 +2743,7 @@ Max delta & $\lambda$ & Sudden belief injection \\
 For normally distributed baseline drift, the threshold $\theta = \mu_{\text{baseline}} + k \cdot \sigma_{\text{baseline}}$ with $k = 3$ provides $99.7\%$ confidence under the null hypothesis of no attack.
 \end{property}
 
-### Behavioral Deviation
+### Behavioral Deviation Scoring
 
 \begin{definition}[Deviation Score]
 \label{def:deviation-score}
@@ -3103,7 +3117,7 @@ L4 & Systemic compromise & System shutdown \\
 \end{tabular}
 \end{table}
 
-### Empirical Validation
+### Empirical Validation Cross-Reference
 
 The detection methods presented in this section have been empirically validated in Part 2 of this series. Key results include:
 
@@ -3132,7 +3146,7 @@ The likelihood ratio $\Lambda(m) = P_{\text{attack}}(m) / P_{\text{benign}}(m)$ 
 
 \begin{theorem}[Neyman-Pearson Optimal Detector]
 \label{thm:np-detector}
-The likelihood ratio test $\delta_{\text{NP}}(m) = \mathbb{1}[\Lambda(m) \geq \eta]$ maximizes TPR subject to FPR $\leq \alpha$. No other test achieves higher TPR at the same FPR.
+The likelihood ratio test $\delta_{\text{NP}}(m) = \mathbb{1}[\Lambda(m) \geq \eta]$ maximizes TPR subject to FPR $\leq \alpha$. No other test achieves higher TPR at the same FPR \cite{neyman1933ix}.
 \end{theorem}
 
 \begin{corollary}[Optimal AUC Bound]
@@ -3163,7 +3177,7 @@ For $n$ independent message observations, the optimal error probability decays e
 \label{eq:error-exponent}
 P_e^* \leq e^{-n C^*}
 \end{equation}
-The Chernoff information $C^*$ is the maximum achievable error exponent.
+The Chernoff information $C^*$ is the maximum achievable error exponent \cite{chernoff1952measure}.
 \end{theorem}
 
 \begin{corollary}[Sample Complexity for Target Accuracy]
@@ -3188,7 +3202,7 @@ The AUC of any detector is lower-bounded by the KL divergence between attack and
 \end{theorem}
 
 \begin{proof}
-By Pinsker's inequality: $\| P_{\text{attack}} - P_{\text{benign}} \|_{TV} \leq \sqrt{D_{\mathrm{KL}}/2}$. The AUC satisfies $\text{AUC} \geq \frac{1}{2}(1 + \|P_{\text{attack}} - P_{\text{benign}}\|_{TV})$. Combining and applying the bound $\|P\|_{TV} \leq 1 - e^{-D_{\mathrm{KL}}/2}$ gives the result.
+By Pinsker's inequality \cite{cover2006elements}: $\| P_{\text{attack}} - P_{\text{benign}} \|_{TV} \leq \sqrt{D_{\mathrm{KL}}/2}$. The AUC satisfies $\text{AUC} \geq \frac{1}{2}(1 + \|P_{\text{attack}} - P_{\text{benign}}\|_{TV})$. Combining and applying the bound $\|P\|_{TV} \leq 1 - e^{-D_{\mathrm{KL}}/2}$ gives the result.
 \end{proof}
 
 \begin{table}[htbp]
@@ -3303,7 +3317,7 @@ where $\alpha_{\text{lr}}$ is the learning rate and $C_{\text{FN}}, C_{\text{FP}
 
 This adaptive mechanism allows the pipeline to respond to shifting attack distributions, reducing the staleness problem that affects static threshold configurations.
 
-> **Empirical validation of this section's theory**: The detection methods formalized here are empirically evaluated in Part 2 \cite{friedman2026cogsec2}. Key findings: (1) the multi-stage pipeline shows biased escalation consistent with \cref{thm:pipeline-tpr}; (2) adversarial training across five rounds demonstrates adaptive threshold adjustment consistent with \cref{def:adaptive-threshold}, converging from a 55.3\% evasion rate to 24.9\% after hardening; (3) per-stage miss rates attributed to $\Omega_3$--$\Omega_5$ adversary classes explain the residual detection gap between the parametric ceiling and prototype performance (Part 2, §5g, §S08).
+> **Empirical validation of this section's theory**: The detection methods formalized here are empirically evaluated in Part 2 \cite{friedman2026cogsec2}. Key findings: (1) the multi-stage pipeline shows biased escalation consistent with \cref{thm:pipeline-tpr}; (2) adversarial training across five rounds demonstrates adaptive threshold adjustment consistent with \cref{def:adaptive-threshold}, raising hardened detection from 52.0\% at Round 1 to 67.9\% at Round 5 in Part 2's closed-form design model; (3) per-stage miss rates attributed to $\Omega_3$--$\Omega_5$ adversary classes explain the residual detection gap between the parametric ceiling and prototype performance (Part 2, §5g, §S08).
 
 
 
@@ -3398,7 +3412,7 @@ P(\text{success}) \leq \prod_{i=1}^{n} (1 - r_i)
 \end{equation}
 \end{corollary}
 
-### Trust Boundedness {#sec:trust-bound-proof}
+### No Trust Amplification (Model-Checking Target) {#sec:trust-bound-proof}
 
 \begin{theorem}[No Trust Amplification]
 \label{thm:trust-bound}
@@ -3730,11 +3744,11 @@ Expected latency is sum of:
 \item Verification (conditional): $L_{verify} \cdot P(\text{belief promoted})$
 \end{enumerate}
 
-With empirical measurements:
+With illustrative parameters (these are worked-example values chosen to exercise the bound, not measurements; Part 2 reports a mean firewall latency of 0.08\,ms per sample on its prototype pipeline, and the deployment-scale constants below are not derived from it):
 \begin{itemize}
-\item $L_{firewall} \approx 10\text{ms}$
-\item $L_{sandbox} \approx 5\text{ms}$, $P(\text{quarantine}) \approx 0.3$
-\item $L_{verify} \approx 15\text{ms}$, $P(\text{verify}) \approx 0.2$
+\item $L_{firewall} = 10\text{ms}$
+\item $L_{sandbox} = 5\text{ms}$, $P(\text{quarantine}) = 0.3$
+\item $L_{verify} = 15\text{ms}$, $P(\text{verify}) = 0.2$
 \end{itemize}
 
 \begin{equation}
@@ -3814,29 +3828,31 @@ Eventual detection & theoretical bound; executable run in Part 2 §S04 & \cref{t
 
 ### Verification Results Summary {#sec:verification-summary}
 
-The following table summarizes the expected verification outcomes for each tool-property combination based on the formal specifications above. These guarantees follow from the CTL/LTL property specifications (\cref{sec:temporal-properties}) applied to the state space definition (\cref{sec:state-space}). Empirical execution of these verification configurations, including runtime measurements and counterexample analysis, is presented in Part 2.
+The following table records which property each tool is configured to check and the status of the corresponding analytical result. It is a plan, not a set of outcomes: no model-checking run is executed in this paper. These guarantees follow from the CTL/LTL property specifications (\cref{sec:temporal-properties}) applied to the state space definition (\cref{sec:state-space}). Empirical execution of these verification configurations, including runtime measurements and counterexample analysis, is presented in Part 2.
 
 \begin{table}[htbp]
 \centering
-\caption{Verification results across tools.}
+\caption{Model-checking plan: the property each tool is configured to check, and
+the status of the corresponding analytical result. No run of these configurations
+is reported in this paper; execution is Part 2's.}
 \label{tab:verification-results}
 \begin{tabular}{@{}llll@{}}
 \toprule
-Tool & Property & Guarantee & Reference \\
+Tool & Property to check & Status of the analytical result & Reference \\
 \midrule
-NuSMV & Belief Integrity & Proven & \cref{thm:belief-injection} \\
-NuSMV & Trust Bounded & Proven & \cref{thm:trust-bound} \\
-SPIN & No Deadlock & Verified & \cref{thm:firewall-liveness} \\
-SPIN & Eventual Detection & Verified & \cref{thm:progressive-detection} \\
-TLA+ & Type Invariant & Validated & \cref{def:system-state} \\
-TLA+ & Consensus Integrity & Validated & \cref{thm:byzantine-termination} \\
+NuSMV & Belief Integrity & Proved (S01) & \cref{thm:belief-injection} \\
+NuSMV & No Trust Amplification & Proved (S01) & \cref{thm:trust-bound} \\
+SPIN & No Deadlock & Proved (S01) & \cref{thm:firewall-liveness} \\
+SPIN & Eventual Detection & Asserted, proof deferred & \cref{thm:progressive-detection} \\
+TLA+ & Type Invariant & Definitional & \cref{def:system-state} \\
+TLA+ & Consensus Integrity & Proved (S01) & \cref{thm:byzantine-termination} \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 ### Counterexample Analysis {#sec:counterexample}
 
-When verification fails, model checkers produce counterexamples. Analysis procedure:
+When verification fails, model checkers produce counterexamples \cite{clarke1999model}. Analysis procedure:
 
 \begin{enumerate}
 \item \textbf{Extract trace}: Sequence of states leading to violation
@@ -3874,16 +3890,16 @@ When verification fails, model checkers produce counterexamples. Analysis proced
 
 This section examines the theoretical implications of the Cognitive Integrity Framework (\cref{sec:theoretical-implications}), formal limitations (\cref{sec:formal-limitations}) and boundary conditions (\cref{sec:limitations}), relationship to prior work (\cref{sec:related-work}), governance implications (\cref{sec:governance}), and future research directions (\cref{sec:future-directions}).
 
-## Empirical Validation Summary
+## Empirical Validation Summary (Part 2)
 
-The formal mechanisms proposed in this paper have been validated through extensive architecture-aware parametric simulation in **Part 2: Computational Validation** \cite{friedman2026cogsec2}. In experiments across six production multiagent architectures (including hierarchical, role-based, and peer-to-peer topologies), the parametric simulation establishes a design-level detection ceiling of **94--100\%** against a corpus of 950 cognitive attacks; the prototype pipeline achieves a mean detection rate of **44.7\%** [CI: 43.4\%, 46.2\%] across 30 random seeds (Part 2, \S{5.1}).
+The formal mechanisms proposed in this paper have been validated through extensive architecture-aware parametric simulation in **Part 2: Computational Validation** \cite{friedman2026cogsec2}. In experiments across the four production multiagent architectures Part 2 evaluates (Claude Code, AutoGPT, CrewAI, LangGraph), the parametric simulation establishes a design-level detection ceiling of **96--100\%** against a corpus of 950 cognitive attacks; the prototype pipeline achieves a mean detection rate of **44.8\%** [95\% CI: 43.2\%, 46.4\%] across 30 random seeds (Part 2, Results).
 
 Key empirical findings include:
 
-1. **Defense Composition**: Consistent with Theorem 3.1 and 3.2, layered defenses composed multiplicatively, with the full framework significantly outperforming any single mechanism. Ablation studies (Part 2, \S{5.6}) confirm that removing the Detection module causes the largest detection rate drop, followed by Tripwires and Invariants.
+1. **Defense Composition**: Consistent with the series and parallel detection-rate theorems (\cref{thm:series-detection}, \cref{thm:parallel-detection}), layered defenses composed multiplicatively, with the full framework outperforming any single mechanism. Part 2's ablation studies confirm that removing the Detection module causes the largest drop, followed by the Trust Calculus.
 2. **Trust Boundedness**: The $\delta^d$ trust decay parameter successfully prevented ``trust laundering'' amplification attacks in all tested topologies, validating Formula 4.
-3. **Architecture Dependence**: As predicted by our threat model, peer-to-peer architectures showed the greatest vulnerability to lateral movement (mitigated by the Trust Calculus), while hierarchical architectures were most sensitive to orchestrator compromise (requiring strict tripwires).
-4. **Adversarial Training**: Five rounds of adversarial training on the Claude Code architecture improved hardened detection rates from 38.9\% to 48.1\%, with the round-to-round gain showing geometric decay toward a Nash equilibrium of approximately 50.5\% --- confirming that the bottleneck is adapter implementation maturity, not the defense algorithm quality (Part 2, \S{5g}).
+3. **Architecture Dependence**: As predicted by our threat model, the architecture with the lowest parametric detection in Part 2 is AutoGPT's autonomous-mesh topology, whose distributed trust structure offers the widest lateral-movement surface; hierarchical topologies concentrate risk in orchestrator compromise instead. No peer-to-peer architecture was evaluated.
+4. **Adversarial Training**: In Part 2's closed-form adversarial-training design model, five rounds on the Claude Code architecture raise hardened detection from 52.0\% (Round 1) to 67.9\% (Round 5), $+23.2$ pp over the pre-AT baseline. The per-round gain sequence $(7.3, 5.6, 5.0, 2.9, 2.4)$ pp is approximately linear rather than geometrically decaying, and the projected Nash equilibrium of 100.0\% is a property of the model's assumed gains, not a measured equilibrium. These are design-model values, not pipeline-in-the-loop measurements.
 
 These results confirm that the abstract properties proven here---boundedness, composition, and detectability---translate into concrete security improvements when implemented in realistic agent architectures.
 
@@ -3912,7 +3928,7 @@ Byzantine Consensus & Coordination attacks \\
 
 The orthogonality of these surfaces explains why no single mechanism suffices: an attack that bypasses input filtering may still violate behavioral invariants; an attack that evades pattern matching may still trigger belief drift detection.
 
-Empirical ablation studies in Part 2 (\S{5.6}) validate this theoretical prediction: removing the Cognitive Firewall causes the largest detection rate drop ($-13\%$), followed by Tripwires ($-9\%$) and Provenance Tracking ($-7\%$). No individual mechanism provides comparable detection rates to the full ensemble---confirming the multiplicative composition theorem (\cref{thm:series-detection}).
+Empirical ablation studies in Part 2 validate this theoretical prediction: removing the Detection module causes the largest drop ($\Delta\text{TPR} \approx -0.051$ on the 98-attack ablation corpus), followed by the Trust Calculus ($\approx -0.020$); Firewall, Invariants and Tripwire tie behind it at $\approx -0.010$, and Consensus, Provenance and Sandbox show no marginal contribution on that corpus. No individual mechanism provides comparable detection rates to the full ensemble---confirming the multiplicative composition theorem (\cref{thm:series-detection}).
 
 ### The Trust Boundedness Guarantee
 
@@ -4008,7 +4024,7 @@ CIF builds on and extends several research traditions:
 
 **Trust Management Systems**: Prior systems (PolicyMaker, SPKI, etc.) focus on authorization decisions. CIF addresses continuous trust evolution with provable decay bounds.
 
-**AI Safety and Alignment**: Constitutional AI and similar approaches address single-agent alignment. CIF extends these concepts to multi-agent coordination integrity.
+**AI Safety and Alignment**: Constitutional AI \cite{bai2022constitutional} and similar approaches address single-agent alignment. CIF extends these concepts to multi-agent coordination integrity.
 
 **Prompt Injection Defenses**: Existing defenses focus on single-agent scenarios. CIF addresses the propagation and amplification of attacks across agent networks.
 
@@ -4290,7 +4306,7 @@ The shift from single-model inference to multiagent operators is not merely an e
 
 CIF provides both theoretical foundations and practical mechanisms for this challenge. The trust calculus offers provable guarantees against amplification attacks. The defense composition algebra enables principled reasoning about layered security. The information-theoretic bounds establish fundamental limits on adversary capabilities. Together, these formal contributions move cognitive security from ad-hoc defenses to principled engineering.
 
-**Part 2** of this series provides empirical validation demonstrating that these formal mechanisms translate to practical protection across diverse production architectures (parametric detection ceiling: 94--100\%; pipeline mean: 44.7\%). **Part 3** offers a combined qualitative review and practitioner's synthesis---accessible-language distillation of theoretical and empirical findings, deployment checklists, incident response playbooks, and risk assessment frameworks---together with CIF applications across ten critical operational domains through the CIF-AD-OODA integration model, identifying universal goal-hijacking patterns and validating CIF coverage against documented 2024--2025 AI agent incidents. Together, the three papers provide a comprehensive framework for understanding, implementing, operating, and deploying cognitive security in multiagent AI systems.
+**Part 2** of this series provides empirical validation demonstrating that these formal mechanisms translate to practical protection across diverse production architectures (parametric detection ceiling: 96--100\%; pipeline mean: 44.8\%). **Part 3** offers a combined qualitative review and practitioner's synthesis---accessible-language distillation of theoretical and empirical findings, deployment checklists, incident response playbooks, and risk assessment frameworks---together with CIF applications across ten critical operational domains through the CIF-AD-OODA integration model, identifying universal goal-hijacking patterns and validating CIF coverage against documented 2024--2025 AI agent incidents. Together, the three papers provide a comprehensive framework for understanding, implementing, operating, and deploying cognitive security in multiagent AI systems.
 
 The formal gaps identified in this work---semantic equivalence attacks, progressive drift, orchestrator compromise---define the frontier for future research, while the provable guarantees (bounded trust, composable defenses, information-theoretic limits) provide the stable theoretical foundation on which that research can build.
 
@@ -4478,7 +4494,7 @@ The stealth-impact bound $\mathcal{I} \cdot \mathcal{S} \leq \pi/2$ (Remark~\ref
 \item \textbf{OODA Cycle Time Bounds}: Property~\ref{prop:ooda-latency} gives a sufficient condition but not a tight bound on the minimum OODA cycle time compatible with full CIF monitoring. Characterizing this bound as a function of defense portfolio is open.
 \end{enumerate}
 
-> **What Part 2 validates empirically**: Part 2 \cite{friedman2026cogsec2} tests CIF under conditions that stress several of the assumptions above. Specifically: (1) Assumptions 1--2 (honest orchestrator, bounded faults) are validated by architecture-specific experiments across hierarchical, peer-to-peer, and role-based topologies; (2) Assumption 3 (independent defenses) is tested via ablation studies showing synergy between Tripwire + Detection ($+0.025$ beyond additive); (3) Assumption 4 (stationary distributions) is tested via five rounds of adversarial training confirming distribution shift degrades static detectors; and (4) Assumption 5 (bounded compute) is implicitly bounded by the 950-attack corpus scope. The 49--88 percentage-point gap between parametric ceiling and prototype pipeline performance is attributed to adapter implementation maturity, not to violation of the formal assumptions (Part 2, §7 Conclusion).
+> **What Part 2 validates empirically**: Part 2 \cite{friedman2026cogsec2} tests CIF under conditions that stress several of the assumptions above. Specifically: (1) Assumptions 1--2 (honest orchestrator, bounded faults) are validated by architecture-specific experiments across the hierarchical, autonomous-mesh, role-based and graph-based topologies of Part 2's four adapters; (2) Assumption 3 (independent defenses) is tested via ablation studies showing two pairs tied for the strongest synergy---Firewall + Detection and Tripwire + Detection, both $+0.031$ beyond additive; (3) Assumption 4 (stationary distributions) is tested via five rounds of adversarial training confirming distribution shift degrades static detectors; and (4) Assumption 5 (bounded compute) is implicitly bounded by the 950-attack corpus scope. The 51--88 percentage-point gap between parametric ceiling and prototype pipeline performance is attributed to adapter implementation maturity, not to violation of the formal assumptions (Part 2, §7 Conclusion).
 
 
 
@@ -4495,7 +4511,7 @@ This supplementary material provides formal proofs for the theorems that carry p
 
 ## Proof Status {#sec:proof-status}
 
-For transparency, this section records, by exact label, which results stated in the main text carry a proof in this supplement and which are asserted without proof.
+For transparency, this section records, by exact label, which results stated in the main text carry a proof and which are asserted without one. A result is accounted for here if it has an inline `proof` environment in the main text, a dedicated proof in this supplement, or an entry in the deferred list below; `tests/test_proof_status.py` enforces that every theorem, lemma and corollary in the manuscript falls into one of those three cases, so the index cannot fall behind the text.
 
 **Proven in this supplement.** The following theorems each have a dedicated `proof` environment (section given in parentheses):
 
@@ -4506,7 +4522,7 @@ For transparency, this section records, by exact label, which results stated in 
 - Firewall Liveness (Thm. 5.9), \cref{thm:firewall-liveness-restated} (\cref{sec:thm59-proof})
 - Byzantine Consensus Termination (Thm. 5.10), \cref{thm:byzantine-restated} (\cref{sec:thm510-proof})
 - Bounded Overhead (Thm. 5.11), \cref{thm:overhead-restated} (\cref{sec:thm511-proof})
-- Defense Composition Semiring, \cref{thm:composition-semiring-restated} (\cref{sec:thm-composition-semiring})
+- Defense Composition Algebra, \cref{thm:composition-semiring-restated} (\cref{sec:thm-composition-semiring})
 - Fisher-Rao Stealth-Impact Tight Bound, \cref{thm:fr-bound-restated} (\cref{sec:thm-geometric-bound})
 - Agent Compromise Blast Radius, \cref{thm:blast-radius-restated} (\cref{sec:thm-blast-radius})
 
@@ -4532,9 +4548,25 @@ Separate proofs are also given for the supporting lemmas and for the corollaries
 - Quorum Attack Cost, \cref{cor:quorum-attack-cost} (S02_eusocial\_cogsec.md)
 - Stigmergic Trust Bound, \cref{cor:stigmergic-trust} (S02_eusocial\_cogsec.md)
 - Emergent Stealth-Impact Bound, \cref{cor:emergent-stealth-impact} (S02_eusocial\_cogsec.md)
+- No Trust Amplification, \cref{thm:no-trust-amp} (04_formal\_framework.md; the model-checking restatement \cref{thm:trust-bound} is proved here, the section-4 statement is not)
+- Byzantine Agreement Requirement, \cref{thm:byzantine-req} (05_defense\_mechanisms.md)
+- Neyman-Pearson Optimal Detector, \cref{thm:np-detector} (06_detection\_methods.md)
+- Detection Error Exponent, \cref{thm:error-exponent} (06_detection\_methods.md)
+- Undetectability Condition, \cref{thm:undetectability} (06_detection\_methods.md)
+- Belief Boundedness, \cref{lem:belief-bounded} (04_formal\_framework.md)
+- \cref{cor:no-amplification} (04_formal\_framework.md)
+- \cref{cor:trust-vanish} (04_formal\_framework.md)
+- \cref{cor:low-entropy-detectable} (04_formal\_framework.md)
+- Pareto-Optimal Threshold, \cref{cor:pareto-threshold} (05_defense\_mechanisms.md)
+- Drift Detection Sample Complexity, \cref{cor:drift-sample} (05_defense\_mechanisms.md)
+- Consensus Attack Resistance, \cref{cor:consensus-resistance} (05_defense\_mechanisms.md)
+- Optimal AUC Bound, \cref{cor:optimal-auc} (06_detection\_methods.md)
+- Sample Complexity for Target Accuracy, \cref{cor:sample-complexity} (06_detection\_methods.md)
+- Empirical Security Bound, \cref{cor:empirical-security} (07_formal\_verification.md)
+- Layered Defense Generalization, \cref{cor:n-layer-bound} (07_formal\_verification.md)
 
 > **Note on \cref{cor:isolation-blast}.**
-> An earlier audit listed \cref{cor:isolation-blast} among the asserted results. Re-reading the source, this corollary is stated in this supplement (\cref{sec:thm-blast-radius}), immediately after the proved \cref{thm:blast-radius-restated}, as that theorem's degree-restricted consequence ($\lvert \mathcal{N}(a_v) \rvert = k \le n$). It therefore carries no standalone proof environment -- consistent with the other corollaries in this supplement -- and is not deferred. It is recorded here only because the prior audit flagged it, so that its status is unambiguous.
+> This corollary is stated in this supplement (\cref{sec:thm-blast-radius}) immediately after the proved \cref{thm:blast-radius-restated}, as that theorem's degree-restricted consequence ($\lvert \mathcal{N}(a_v) \rvert = k \le n$). It therefore carries no standalone proof environment, consistent with the other corollaries here, and is not among the deferred results.
 
 ## Preliminary Definitions and Notation {#sec:preliminaries}
 
@@ -5106,19 +5138,30 @@ Classical result from distributed systems (Lamport, Shostak, Pease 1982). With f
 
 \begin{lemma}[Honest Majority]
 \label{lem:honest-majority}
-With $n \geq 3f + 1$:
+With $n \geq 3f + 1$, the honest population satisfies both
 \begin{equation}
 \label{eq:honest-majority}
-n - f \geq 2f + 1 > \frac{2n}{3}
+n - f \geq 2f + 1
+\qquad\text{and}\qquad
+n - f > \frac{2n}{3}.
 \end{equation}
 \end{lemma}
 
 \begin{proof}
-$n - f \geq (3f + 1) - f = 2f + 1$
+For the first bound, $n - f \geq (3f + 1) - f = 2f + 1$.
 
-$\frac{2n}{3} \leq \frac{2(3f+1)}{3} = 2f + \frac{2}{3} < 2f + 1$
+For the second, $n \geq 3f + 1$ gives $f \leq \frac{n-1}{3}$, hence
+\[
+n - f \;\geq\; n - \frac{n-1}{3} \;=\; \frac{2n + 1}{3} \;>\; \frac{2n}{3}.
+\]
 
-Therefore $n - f > \frac{2n}{3}$.
+\emph{Remark.} The two bounds must be established separately; they cannot be
+chained through $2f + 1$. The intermediate inequality $2f + 1 > \frac{2n}{3}$
+holds only when $n \leq 3f + 1$, which is the converse of the hypothesis, and it
+fails as soon as the system is over-provisioned relative to its fault budget
+(for $f = 1$, $n = 10$: $2f + 1 = 3$ while $\frac{2n}{3} \approx 6.67$). The
+honest-majority conclusion itself is unaffected, since it follows from
+$f \leq \frac{n-1}{3}$ directly.
 \end{proof}
 
 \begin{lemma}[Round Progression]
@@ -5231,24 +5274,25 @@ E[L_{CIF}] &= E[L_{firewall}] + E[\mathbb{1}[\text{quarantine}]] \cdot L_{sandbo
 
 ### Numerical Instantiation {#sec:numerical-instantiation}
 
-With empirical measurements:
+With the same illustrative parameters used in the main text
+(\cref{eq:latency-empirical}) --- worked-example values, not measurements:
 \begin{itemize}
-\item $L_{firewall} = 8\text{ms}$
-\item $L_{sandbox} = 15\text{ms}$
-\item $L_{verify} = 12\text{ms}$
+\item $L_{firewall} = 10\text{ms}$
+\item $L_{sandbox} = 5\text{ms}$
+\item $L_{verify} = 15\text{ms}$
 \item $P_q = 0.3$
 \item $P_v = 0.2$
 \end{itemize}
 
 \begin{equation}
 \label{eq:numerical-instantiation}
-E[L_{CIF}] = 8 + 0.3 \times 15 + 0.2 \times 12 = 8 + 4.5 + 2.4 = 14.9\text{ms}
+E[L_{CIF}] = 10 + 0.3 \times 5 + 0.2 \times 15 = 10 + 1.5 + 3.0 = 14.5\text{ms}
 \end{equation}
 
-With baseline $L_{baseline} = 12\text{ms}$:
+With baseline $L_{baseline} = 11.8\text{ms}$:
 \begin{equation}
 \label{eq:overhead-percent}
-\text{Overhead} = \frac{14.9 - 12}{12} \times 100\% = 24.2\%
+\text{Overhead} = \frac{14.5 - 11.8}{11.8} \times 100\% \approx 22.9\%
 \end{equation}
 
 This matches the empirical observation of approximately 23\% overhead.
@@ -5310,12 +5354,18 @@ Total: $O(|\Phi|^2)$.
 
 \begin{lemma}[Trust Matrix Convergence]
 \label{lem:trust-convergence}
-Under stable interaction patterns, the reputation component $T_{rep}$ converges:
+Let outcomes be i.i.d.\ with mean $\mu$ and variance $\sigma^2$, and let the
+reputation be updated at a constant rate $\eta \in (0,1)$. Then $T_{rep}^t$
+converges \emph{in distribution} to a stationary law with
 \begin{equation}
 \label{eq:trust-convergence}
-\lim_{t \to \infty} T_{rep}^t = T_{rep}^*
+\lim_{t \to \infty} E[T_{rep}^t] = \mu,
+\qquad
+\lim_{t \to \infty} \operatorname{Var}(T_{rep}^t) = \frac{\eta}{2 - \eta}\,\sigma^2 .
 \end{equation}
-where $T_{rep}^*$ reflects the agent's true reliability.
+The reputation is therefore an unbiased but permanently noisy estimate of the
+agent's true reliability $\mu$; it does \emph{not} converge almost surely to a
+point.
 \end{lemma}
 
 \begin{proof}
@@ -5327,13 +5377,28 @@ T_{rep}^{t+1} = T_{rep}^t + \eta \cdot (\text{outcome}_t - T_{rep}^t)
 
 This is an exponential moving average with learning rate $\eta$.
 
-For i.i.d. outcomes with mean $\mu$:
+Taking expectations and writing $e_t = E[T_{rep}^t] - \mu$ gives
+$e_{t+1} = (1 - \eta) e_t$, so
 \begin{equation}
 \label{eq:convergence-limit}
-E[T_{rep}^t] \to \mu \text{ as } t \to \infty
+E[T_{rep}^t] \to \mu \text{ geometrically, at rate } (1 - \eta).
 \end{equation}
 
-By the strong law of large numbers, $T_{rep}^t \to \mu$ almost surely.
+For the variance, $T_{rep}^{t+1} - \mu = (1-\eta)(T_{rep}^t - \mu) + \eta(x_t - \mu)$
+with $x_t$ independent of $T_{rep}^t$, so
+$v_{t+1} = (1-\eta)^2 v_t + \eta^2 \sigma^2$, whose fixed point is
+$v^\star = \eta^2\sigma^2 / (1 - (1-\eta)^2) = \frac{\eta}{2-\eta}\sigma^2$.
+
+\emph{Remark on the mode of convergence.} The strong law of large numbers does
+not apply here: it governs sample averages, which correspond to the decreasing
+gain $\eta_t = 1/t$, not to a constant $\eta$. With $\eta$ fixed the iterate
+retains a fixed fraction of each new observation forever, so $v^\star > 0$ and
+almost-sure convergence to a point fails. Almost-sure convergence would require
+a gain schedule satisfying the Robbins--Monro conditions,
+$\sum_t \eta_t = \infty$ and $\sum_t \eta_t^2 < \infty$. The constant-rate rule
+is nonetheless the right choice for trust: retaining sensitivity to recent
+behaviour is what lets reputation track an agent that changes, and the residual
+variance $\frac{\eta}{2-\eta}\sigma^2$ is the price of that adaptivity.
 \end{proof}
 
 ---
@@ -5363,17 +5428,17 @@ All proofs are constructive and provide explicit bounds useful for system implem
 
 ---
 
-## v1.1 New Proofs: Defense Composition Algebra and Information-Geometric Bounds {#sec:v2-proofs}
+## Second-Edition Proofs: Defense Composition Algebra and Information-Geometric Bounds {#sec:v2-proofs}
 
 This section contains new proofs added in the Second Edition, corresponding to the defense composition algebra guarantees (§\ref{sec:defense-formal-guarantees}) and the information-geometric tightening of the stealth-impact bound (§\ref{sec:detection-bounds}).
 
 ---
 
-## Theorem: Defense Composition Semiring {#sec:thm-composition-semiring}
+## The Defense Composition Algebra {#sec:thm-composition-semiring}
 
-\begin{theorem}[Defense Composition Semiring --- Restated]
+\begin{theorem}[Defense Composition Algebra --- Restated]
 \label{thm:composition-semiring-restated}
-The set of CIF defenses under series ($\circ$) and parallel ($\parallel$) composition forms a closed semiring satisfying closure, associativity, identity, and distributivity.
+On a common accept/reject focal predicate, the set of CIF defenses under series ($\circ$) and parallel ($\parallel$) composition is closed, associative, carries a multiplicative identity, and is distributive --- that is, it forms a bounded distributive lattice. It is \emph{not} shown here to be a full closed semiring: neither an additive identity that annihilates the multiplicative identity nor a Kleene-star (infinite-sum) operation is constructed, and the stronger claim is not made (\cref{rem:defense-independence-scope}).
 \end{theorem}
 
 \begin{lemma}[Type Closure under Composition]
@@ -5386,7 +5451,7 @@ For any $\mathcal{D}_1, \mathcal{D}_2: \mathcal{M} \to \{\textsc{accept}, \texts
 \end{lemma}
 
 \begin{proof}[Proof of \cref{lem:type-closure}]
-Series composition: $(\mathcal{D}_1 \circ \mathcal{D}_2)(m) = \textsc{accept}$ iff both accept; otherwise the more severe outcome. Parallel composition: $(\mathcal{D}_1 \parallel \mathcal{D}_2)(m) = \textsc{detect}$ iff either detects. Both operations map $\mathcal{M} \to \{\textsc{accept}, \textsc{quarantine}, \textsc{reject}\}$.
+Series composition: $(\mathcal{D}_1 \circ \mathcal{D}_2)(m) = \textsc{accept}$ iff both accept; otherwise the more severe of the two outcomes. Parallel composition: $(\mathcal{D}_1 \parallel \mathcal{D}_2)(m) = \textsc{accept}$ iff both accept --- equivalently, the composite is non-accepting iff either component is --- and otherwise takes the more severe outcome. Both operations therefore map $\mathcal{M} \to \{\textsc{accept}, \textsc{quarantine}, \textsc{reject}\}$, with no outcome outside that set.
 \end{proof}
 
 \begin{lemma}[Composition Associativity]
@@ -5416,12 +5481,12 @@ $(\mathcal{D} \circ \mathcal{D}_\emptyset)(m) = \textsc{accept}$ iff $\mathcal{D
 \end{proof}
 
 \begin{proof}[Main Proof of \cref{thm:composition-semiring-restated}]
-By \cref{lem:type-closure,lem:comp-assoc,lem:null-identity}, the set satisfies closure, associativity, and identity. Distributivity: $\mathcal{D}_1 \circ (\mathcal{D}_2 \parallel \mathcal{D}_3)$ means ``accept iff $\mathcal{D}_1$ accepts AND at most one of $\mathcal{D}_2, \mathcal{D}_3$ detects''---equivalently, $(\mathcal{D}_1 \circ \mathcal{D}_2) \parallel (\mathcal{D}_1 \circ \mathcal{D}_3)$. This follows from Boolean distributivity $A \land (B \lor C) = (A \land B) \lor (A \land C)$.
+By \cref{lem:type-closure,lem:comp-assoc,lem:null-identity}, the set satisfies closure, associativity, and identity. Distributivity: writing $A_i$ for the predicate ``$\mathcal{D}_i$ accepts $m$'', both operations act on the accept predicate as conjunction, so $\mathcal{D}_1 \circ (\mathcal{D}_2 \parallel \mathcal{D}_3)$ accepts iff $A_1 \land (A_2 \land A_3)$ and $(\mathcal{D}_1 \circ \mathcal{D}_2) \parallel (\mathcal{D}_1 \circ \mathcal{D}_3)$ accepts iff $(A_1 \land A_2) \land (A_1 \land A_3)$. These coincide by associativity, commutativity and idempotence of $\land$. Note that on this focal predicate $\circ$ and $\parallel$ agree; they are distinguished by the severity they assign to non-accepting outcomes, not by their acceptance semantics, which is precisely why the structure is a bounded distributive lattice rather than a semiring with two independent operations.
 \end{proof}
 
 ---
 
-## Theorem: Information-Geometric Stealth-Impact Tight Bound {#sec:thm-geometric-bound}
+## The Tight Information-Geometric Stealth-Impact Bound {#sec:thm-geometric-bound}
 
 \begin{theorem}[Fisher-Rao Stealth-Impact Tight Bound --- Restated]
 \label{thm:fr-bound-restated}
@@ -5511,7 +5576,7 @@ This is $0.775/\pi \approx 24.7\%$ of the maximum possible attack distance---a t
 
 ---
 
-## Theorem: Agent Compromise Blast Radius {#sec:thm-blast-radius}
+## The Agent Compromise Blast Radius Bound {#sec:thm-blast-radius}
 
 \begin{theorem}[Blast Radius Bound --- Restated]
 \label{thm:blast-radius-restated}
@@ -5685,7 +5750,7 @@ This formulation captures key biological phenomena:
 
 The lack of explicit provenance in stigmergic communication creates attack surfaces absent in direct agent-to-agent channels (\cref{sec:trust-calculus}).
 
-### Biological Defense Mechanisms: Lessons from Ants and Bees {#sec:biological-defenses}
+### Biological Defense Mechanisms: Lessons from Social Insects {#sec:biological-defenses}
 
 Eusocial insects have evolved sophisticated security mechanisms over 100+ million years of evolutionary pressure. These mechanisms provide non-obvious design principles for AI cognitive security.
 
@@ -6070,7 +6135,7 @@ Colony CogSec mechanisms integrate with the CIF defense stack (\cref{sec:defense
 
 The full CIF with colony extensions achieves defense in depth against both individual-targeted and colony-targeted attacks.
 
-> **Note**: For implementation guidance, operational checklists, and practical deployment advice, see Part 3 \cite{friedman2026cogsec3}: Section 2 (Operator Posture). For domain-specific application of colony-level defenses across critical operational sectors (including ten high-stakes domains, three universal attack patterns, and retrospective analysis of 2024--2025 AI-agent incidents) see Part 3, §3.
+> **Note**: For implementation guidance, operational checklists, and practical deployment advice, see Part 3 \cite{friedman2026cogsec3}, its Deployment Profiles section. For domain-specific application of colony-level defenses across critical operational sectors (including ten high-stakes domains, three universal attack patterns, and retrospective analysis of 2024--2025 AI-agent incidents) see Part 3, §3.
 
 ---
 
@@ -6143,21 +6208,21 @@ Colony CogSec opens several research directions beyond the scope of this work, m
 
 ## References {#sec:eusocial-references}
 
-The following references supplement the main bibliography (\cref{sec:references}) with eusocial intelligence literature:
+The eusocial-intelligence literature this supplement draws on is cited through the main bibliography (\cref{sec:references}) rather than repeated as a second, hand-maintained list, so there is one record per work and no opportunity for the two to disagree:
 
-- Wilson, E.O. (1971). *The Insect Societies*. Belknap Press. — Foundational treatment of eusociality.
-- Hölldobler, B., & Wilson, E.O. (1990). *The Ants*. Belknap Press. — Comprehensive ant biology.
-- Bonabeau, E., Dorigo, M., & Theraulaz, G. (1999). *Swarm Intelligence: From Natural to Artificial Systems*. Oxford University Press. — Computational swarm intelligence.
-- Seeley, T.D. (2010). *Honeybee Democracy*. Princeton University Press. — Collective decision-making in bee swarms.
-- Grassé, P.-P. (1959). La reconstruction du nid et les coordinations interindividuelles chez Bellicositermes natalensis. — Original stigmergy concept.
-- Lenoir, A., et al. (2001). Chemical ecology and social parasitism in ants. *Annual Review of Entomology*, 46, 573–599.
-- Kilner, R.M., & Langmore, N.E. (2011). Cuckoos versus hosts in insects and birds. *Biological Reviews*, 86, 836–852.
+- Foundational treatment of eusociality: \cite{wilson1971insect}.
+- Comprehensive ant biology: \cite{holldobler1990ants}.
+- Computational swarm intelligence: \cite{bonabeau1999swarm}.
+- Collective decision-making in bee swarms: \cite{seeley2010honeybee}.
+- The original stigmergy concept: \cite{grasse1959reconstruction}.
+- Chemical ecology and social parasitism in ants: \cite{lenoir2001chemical}.
+- Brood parasitism across insects and birds: \cite{kilner2011cuckoos}.
 
 ---
 
 ## Proofs {#sec:eusocial-proofs}
 
-### Proof of Theorem \ref{thm:redundancy-resilience} {#sec:proof-redundancy-resilience}
+### Proof of the Redundancy-Resilience Theorem {#sec:proof-redundancy-resilience}
 
 \begin{proof}
 Consider a stigmergic operator $\mathcal{O}_\Sigma$ with $n$ agents, of which fraction $f$ are Byzantine (adversary-controlled).

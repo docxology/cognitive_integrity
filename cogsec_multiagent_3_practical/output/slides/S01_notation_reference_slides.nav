@@ -7,20 +7,52 @@
 \headcommand {\beamer@framepages {2}{2}}
 \headcommand {\slideentry {1}{0}{2}{3/3}{}{0}}
 \headcommand {\beamer@framepages {3}{3}}
-\headcommand {\slideentry {1}{0}{3}{4/4}{}{0}}
+\headcommand {\beamer@subsectionpages {2}{3}}
+\headcommand {\beamer@subsectionentry {0}{1}{1}{4}{Minimal Notation Used}}
+\headcommand {\slideentry {1}{1}{1}{4/4}{Minimal Notation Used}{0}}
 \headcommand {\beamer@framepages {4}{4}}
-\headcommand {\slideentry {1}{0}{4}{5/5}{}{0}}
+\headcommand {\slideentry {1}{1}{2}{5/5}{Minimal Notation Used}{0}}
 \headcommand {\beamer@framepages {5}{5}}
-\headcommand {\slideentry {1}{0}{4}{5/6}{}{0}}
-\headcommand {\beamer@framepages {5}{6}}
-\headcommand {\slideentry {1}{0}{5}{7/7}{}{0}}
+\headcommand {\beamer@subsectionpages {4}{5}}
+\headcommand {\beamer@subsectionentry {0}{1}{2}{6}{CIF-AD-OODA Notation}}
+\headcommand {\slideentry {1}{2}{1}{6/6}{CIF-AD-OODA Notation}{0}}
+\headcommand {\beamer@framepages {6}{6}}
+\headcommand {\slideentry {1}{2}{2}{7/7}{CIF-AD-OODA Notation}{0}}
 \headcommand {\beamer@framepages {7}{7}}
-\headcommand {\slideentry {1}{0}{6}{8/8}{}{0}}
+\headcommand {\slideentry {1}{2}{3}{8/8}{CIF-AD-OODA Notation}{0}}
 \headcommand {\beamer@framepages {8}{8}}
-\headcommand {\slideentry {1}{0}{7}{9/9}{}{0}}
+\headcommand {\slideentry {1}{2}{4}{9/9}{CIF-AD-OODA Notation}{0}}
 \headcommand {\beamer@framepages {9}{9}}
-\headcommand {\beamer@partpages {1}{9}}
-\headcommand {\beamer@subsectionpages {2}{9}}
-\headcommand {\beamer@sectionpages {2}{9}}
-\headcommand {\beamer@documentpages {9}}
-\headcommand {\gdef \inserttotalframenumber {9}}
+\headcommand {\slideentry {1}{2}{5}{10/10}{CIF-AD-OODA Notation}{0}}
+\headcommand {\beamer@framepages {10}{10}}
+\headcommand {\beamer@subsectionpages {6}{10}}
+\headcommand {\beamer@subsectionentry {0}{1}{3}{11}{Trust Decay Explanation}}
+\headcommand {\slideentry {1}{3}{1}{11/11}{Trust Decay Explanation}{0}}
+\headcommand {\beamer@framepages {11}{11}}
+\headcommand {\slideentry {1}{3}{2}{12/12}{Trust Decay Explanation}{0}}
+\headcommand {\beamer@framepages {12}{12}}
+\headcommand {\slideentry {1}{3}{3}{13/13}{Trust Decay Explanation}{0}}
+\headcommand {\beamer@framepages {13}{13}}
+\headcommand {\slideentry {1}{3}{4}{14/14}{Trust Decay Explanation}{0}}
+\headcommand {\beamer@framepages {14}{14}}
+\headcommand {\beamer@subsectionpages {11}{14}}
+\headcommand {\beamer@subsectionentry {0}{1}{4}{15}{Byzantine Tolerance Explanation}}
+\headcommand {\slideentry {1}{4}{1}{15/15}{Byzantine Tolerance Explanation}{0}}
+\headcommand {\beamer@framepages {15}{15}}
+\headcommand {\slideentry {1}{4}{2}{16/16}{Byzantine Tolerance Explanation}{0}}
+\headcommand {\beamer@framepages {16}{16}}
+\headcommand {\slideentry {1}{4}{3}{17/17}{Byzantine Tolerance Explanation}{0}}
+\headcommand {\beamer@framepages {17}{17}}
+\headcommand {\beamer@subsectionpages {15}{17}}
+\headcommand {\beamer@subsectionentry {0}{1}{5}{18}{Full Notation Reference}}
+\headcommand {\slideentry {1}{5}{1}{18/18}{Full Notation Reference}{0}}
+\headcommand {\beamer@framepages {18}{18}}
+\headcommand {\slideentry {1}{5}{2}{19/19}{Full Notation Reference}{0}}
+\headcommand {\beamer@framepages {19}{19}}
+\headcommand {\slideentry {1}{5}{3}{20/20}{Full Notation Reference}{0}}
+\headcommand {\beamer@framepages {20}{20}}
+\headcommand {\beamer@partpages {1}{20}}
+\headcommand {\beamer@subsectionpages {18}{20}}
+\headcommand {\beamer@sectionpages {2}{20}}
+\headcommand {\beamer@documentpages {20}}
+\headcommand {\gdef \inserttotalframenumber {20}}

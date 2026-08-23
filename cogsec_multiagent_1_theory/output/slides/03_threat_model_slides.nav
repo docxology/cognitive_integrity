@@ -7,28 +7,166 @@
 \headcommand {\beamer@framepages {2}{2}}
 \headcommand {\slideentry {1}{0}{2}{3/3}{}{0}}
 \headcommand {\beamer@framepages {3}{3}}
-\headcommand {\slideentry {1}{0}{3}{4/4}{}{0}}
+\headcommand {\beamer@subsectionpages {2}{3}}
+\headcommand {\beamer@subsectionentry {0}{1}{1}{4}{Adversary Classes}}
+\headcommand {\slideentry {1}{1}{1}{4/4}{Adversary Classes}{0}}
 \headcommand {\beamer@framepages {4}{4}}
-\headcommand {\slideentry {1}{0}{4}{5/5}{}{0}}
+\headcommand {\slideentry {1}{1}{2}{5/5}{Adversary Classes}{0}}
 \headcommand {\beamer@framepages {5}{5}}
-\headcommand {\slideentry {1}{0}{4}{5/6}{}{0}}
-\headcommand {\beamer@framepages {5}{6}}
-\headcommand {\slideentry {1}{0}{5}{7/7}{}{0}}
+\headcommand {\slideentry {1}{1}{3}{6/6}{Adversary Classes}{0}}
+\headcommand {\beamer@framepages {6}{6}}
+\headcommand {\slideentry {1}{1}{4}{7/7}{Adversary Classes}{0}}
 \headcommand {\beamer@framepages {7}{7}}
-\headcommand {\slideentry {1}{0}{5}{7/8}{}{0}}
-\headcommand {\beamer@framepages {7}{8}}
-\headcommand {\slideentry {1}{0}{6}{9/9}{}{0}}
+\headcommand {\beamer@subsectionpages {4}{7}}
+\headcommand {\beamer@subsectionentry {0}{1}{2}{8}{Formal Characterization of the Adversary Classes}}
+\headcommand {\slideentry {1}{2}{1}{8/8}{Formal Characterization of the Adversary Classes}{0}}
+\headcommand {\beamer@framepages {8}{8}}
+\headcommand {\slideentry {1}{2}{2}{9/9}{Formal Characterization of the Adversary Classes}{0}}
 \headcommand {\beamer@framepages {9}{9}}
-\headcommand {\slideentry {1}{0}{7}{10/10}{}{0}}
+\headcommand {\slideentry {1}{2}{3}{10/10}{Formal Characterization of the Adversary Classes}{0}}
 \headcommand {\beamer@framepages {10}{10}}
-\headcommand {\slideentry {1}{0}{7}{10/11}{}{0}}
-\headcommand {\beamer@framepages {10}{11}}
-\headcommand {\slideentry {1}{0}{8}{12/12}{}{0}}
+\headcommand {\slideentry {1}{2}{4}{11/11}{Formal Characterization of the Adversary Classes}{0}}
+\headcommand {\beamer@framepages {11}{11}}
+\headcommand {\slideentry {1}{2}{5}{12/12}{Formal Characterization of the Adversary Classes}{0}}
 \headcommand {\beamer@framepages {12}{12}}
-\headcommand {\slideentry {1}{0}{8}{12/13}{}{0}}
-\headcommand {\beamer@framepages {12}{13}}
-\headcommand {\beamer@partpages {1}{13}}
-\headcommand {\beamer@subsectionpages {2}{13}}
-\headcommand {\beamer@sectionpages {2}{13}}
-\headcommand {\beamer@documentpages {13}}
-\headcommand {\gdef \inserttotalframenumber {14}}
+\headcommand {\slideentry {1}{2}{6}{13/13}{Formal Characterization of the Adversary Classes}{0}}
+\headcommand {\beamer@framepages {13}{13}}
+\headcommand {\slideentry {1}{2}{7}{14/14}{Formal Characterization of the Adversary Classes}{0}}
+\headcommand {\beamer@framepages {14}{14}}
+\headcommand {\slideentry {1}{2}{8}{15/15}{Formal Characterization of the Adversary Classes}{0}}
+\headcommand {\beamer@framepages {15}{15}}
+\headcommand {\slideentry {1}{2}{9}{16/16}{Formal Characterization of the Adversary Classes}{0}}
+\headcommand {\beamer@framepages {16}{16}}
+\headcommand {\slideentry {1}{2}{9}{16/17}{Formal Characterization of the Adversary Classes}{0}}
+\headcommand {\beamer@framepages {16}{17}}
+\headcommand {\slideentry {1}{2}{10}{18/18}{Formal Characterization of the Adversary Classes}{0}}
+\headcommand {\beamer@framepages {18}{18}}
+\headcommand {\slideentry {1}{2}{11}{19/19}{Formal Characterization of the Adversary Classes}{0}}
+\headcommand {\beamer@framepages {19}{19}}
+\headcommand {\slideentry {1}{2}{12}{20/20}{Formal Characterization of the Adversary Classes}{0}}
+\headcommand {\beamer@framepages {20}{20}}
+\headcommand {\slideentry {1}{2}{13}{21/21}{Formal Characterization of the Adversary Classes}{0}}
+\headcommand {\beamer@framepages {21}{21}}
+\headcommand {\slideentry {1}{2}{14}{22/22}{Formal Characterization of the Adversary Classes}{0}}
+\headcommand {\beamer@framepages {22}{22}}
+\headcommand {\slideentry {1}{2}{15}{23/23}{Formal Characterization of the Adversary Classes}{0}}
+\headcommand {\beamer@framepages {23}{23}}
+\headcommand {\beamer@subsectionpages {8}{23}}
+\headcommand {\beamer@subsectionentry {0}{1}{3}{24}{Attack Complexity Analysis}}
+\headcommand {\slideentry {1}{3}{1}{24/24}{Attack Complexity Analysis}{0}}
+\headcommand {\beamer@framepages {24}{24}}
+\headcommand {\slideentry {1}{3}{2}{25/25}{Attack Complexity Analysis}{0}}
+\headcommand {\beamer@framepages {25}{25}}
+\headcommand {\slideentry {1}{3}{3}{26/26}{Attack Complexity Analysis}{0}}
+\headcommand {\beamer@framepages {26}{26}}
+\headcommand {\beamer@subsectionpages {24}{26}}
+\headcommand {\beamer@subsectionentry {0}{1}{4}{27}{Detectability Analysis}}
+\headcommand {\slideentry {1}{4}{1}{27/27}{Detectability Analysis}{0}}
+\headcommand {\beamer@framepages {27}{27}}
+\headcommand {\slideentry {1}{4}{2}{28/28}{Detectability Analysis}{0}}
+\headcommand {\beamer@framepages {28}{28}}
+\headcommand {\beamer@subsectionpages {27}{28}}
+\headcommand {\beamer@subsectionentry {0}{1}{5}{29}{Adversarial Capabilities}}
+\headcommand {\slideentry {1}{5}{1}{29/29}{Adversarial Capabilities}{0}}
+\headcommand {\beamer@framepages {29}{29}}
+\headcommand {\slideentry {1}{5}{2}{30/30}{Adversarial Capabilities}{0}}
+\headcommand {\beamer@framepages {30}{30}}
+\headcommand {\slideentry {1}{5}{3}{31/31}{Adversarial Capabilities}{0}}
+\headcommand {\beamer@framepages {31}{31}}
+\headcommand {\slideentry {1}{5}{3}{31/32}{Adversarial Capabilities}{0}}
+\headcommand {\beamer@framepages {31}{32}}
+\headcommand {\beamer@subsectionpages {29}{32}}
+\headcommand {\beamer@subsectionentry {0}{1}{6}{33}{Attack Taxonomy}}
+\headcommand {\slideentry {1}{6}{1}{33/33}{Attack Taxonomy}{0}}
+\headcommand {\beamer@framepages {33}{33}}
+\headcommand {\slideentry {1}{6}{2}{34/34}{Attack Taxonomy}{0}}
+\headcommand {\beamer@framepages {34}{34}}
+\headcommand {\slideentry {1}{6}{3}{35/35}{Attack Taxonomy}{0}}
+\headcommand {\beamer@framepages {35}{35}}
+\headcommand {\slideentry {1}{6}{4}{36/36}{Attack Taxonomy}{0}}
+\headcommand {\beamer@framepages {36}{36}}
+\headcommand {\slideentry {1}{6}{4}{36/37}{Attack Taxonomy}{0}}
+\headcommand {\beamer@framepages {36}{37}}
+\headcommand {\slideentry {1}{6}{4}{36/38}{Attack Taxonomy}{0}}
+\headcommand {\beamer@framepages {36}{38}}
+\headcommand {\slideentry {1}{6}{4}{36/39}{Attack Taxonomy}{0}}
+\headcommand {\beamer@framepages {36}{39}}
+\headcommand {\slideentry {1}{6}{5}{40/40}{Attack Taxonomy}{0}}
+\headcommand {\beamer@framepages {40}{40}}
+\headcommand {\slideentry {1}{6}{6}{41/41}{Attack Taxonomy}{0}}
+\headcommand {\beamer@framepages {41}{41}}
+\headcommand {\slideentry {1}{6}{7}{42/42}{Attack Taxonomy}{0}}
+\headcommand {\beamer@framepages {42}{42}}
+\headcommand {\slideentry {1}{6}{8}{43/43}{Attack Taxonomy}{0}}
+\headcommand {\beamer@framepages {43}{43}}
+\headcommand {\slideentry {1}{6}{9}{44/44}{Attack Taxonomy}{0}}
+\headcommand {\beamer@framepages {44}{44}}
+\headcommand {\slideentry {1}{6}{10}{45/45}{Attack Taxonomy}{0}}
+\headcommand {\beamer@framepages {45}{45}}
+\headcommand {\slideentry {1}{6}{11}{46/46}{Attack Taxonomy}{0}}
+\headcommand {\beamer@framepages {46}{46}}
+\headcommand {\slideentry {1}{6}{12}{47/47}{Attack Taxonomy}{0}}
+\headcommand {\beamer@framepages {47}{47}}
+\headcommand {\slideentry {1}{6}{13}{48/48}{Attack Taxonomy}{0}}
+\headcommand {\beamer@framepages {48}{48}}
+\headcommand {\slideentry {1}{6}{13}{48/49}{Attack Taxonomy}{0}}
+\headcommand {\beamer@framepages {48}{49}}
+\headcommand {\slideentry {1}{6}{14}{50/50}{Attack Taxonomy}{0}}
+\headcommand {\beamer@framepages {50}{50}}
+\headcommand {\slideentry {1}{6}{15}{51/51}{Attack Taxonomy}{0}}
+\headcommand {\beamer@framepages {51}{51}}
+\headcommand {\beamer@subsectionpages {33}{51}}
+\headcommand {\beamer@subsectionentry {0}{1}{7}{52}{Attack Scenarios by Class}}
+\headcommand {\slideentry {1}{7}{1}{52/52}{Attack Scenarios by Class}{0}}
+\headcommand {\beamer@framepages {52}{52}}
+\headcommand {\slideentry {1}{7}{2}{53/53}{Attack Scenarios by Class}{0}}
+\headcommand {\beamer@framepages {53}{53}}
+\headcommand {\slideentry {1}{7}{3}{54/54}{Attack Scenarios by Class}{0}}
+\headcommand {\beamer@framepages {54}{54}}
+\headcommand {\slideentry {1}{7}{4}{55/55}{Attack Scenarios by Class}{0}}
+\headcommand {\beamer@framepages {55}{55}}
+\headcommand {\slideentry {1}{7}{5}{56/56}{Attack Scenarios by Class}{0}}
+\headcommand {\beamer@framepages {56}{56}}
+\headcommand {\slideentry {1}{7}{6}{57/57}{Attack Scenarios by Class}{0}}
+\headcommand {\beamer@framepages {57}{57}}
+\headcommand {\slideentry {1}{7}{7}{58/58}{Attack Scenarios by Class}{0}}
+\headcommand {\beamer@framepages {58}{58}}
+\headcommand {\slideentry {1}{7}{8}{59/59}{Attack Scenarios by Class}{0}}
+\headcommand {\beamer@framepages {59}{59}}
+\headcommand {\slideentry {1}{7}{9}{60/60}{Attack Scenarios by Class}{0}}
+\headcommand {\beamer@framepages {60}{60}}
+\headcommand {\slideentry {1}{7}{10}{61/61}{Attack Scenarios by Class}{0}}
+\headcommand {\beamer@framepages {61}{61}}
+\headcommand {\beamer@subsectionpages {52}{61}}
+\headcommand {\beamer@subsectionentry {0}{1}{8}{62}{Attack-Defense Quick Reference}}
+\headcommand {\slideentry {1}{8}{1}{62/62}{Attack-Defense Quick Reference}{0}}
+\headcommand {\beamer@framepages {62}{62}}
+\headcommand {\slideentry {1}{8}{2}{63/63}{Attack-Defense Quick Reference}{0}}
+\headcommand {\beamer@framepages {63}{63}}
+\headcommand {\slideentry {1}{8}{3}{64/64}{Attack-Defense Quick Reference}{0}}
+\headcommand {\beamer@framepages {64}{64}}
+\headcommand {\beamer@subsectionpages {62}{64}}
+\headcommand {\beamer@subsectionentry {0}{1}{9}{65}{Attack Composition}}
+\headcommand {\slideentry {1}{9}{1}{65/65}{Attack Composition}{0}}
+\headcommand {\beamer@framepages {65}{65}}
+\headcommand {\slideentry {1}{9}{2}{66/66}{Attack Composition}{0}}
+\headcommand {\beamer@framepages {66}{66}}
+\headcommand {\slideentry {1}{9}{3}{67/67}{Attack Composition}{0}}
+\headcommand {\beamer@framepages {67}{67}}
+\headcommand {\slideentry {1}{9}{4}{68/68}{Attack Composition}{0}}
+\headcommand {\beamer@framepages {68}{68}}
+\headcommand {\beamer@subsectionpages {65}{68}}
+\headcommand {\beamer@subsectionentry {0}{1}{10}{69}{Threat Model Assumptions}}
+\headcommand {\slideentry {1}{10}{1}{69/69}{Threat Model Assumptions}{0}}
+\headcommand {\beamer@framepages {69}{69}}
+\headcommand {\slideentry {1}{10}{2}{70/70}{Threat Model Assumptions}{0}}
+\headcommand {\beamer@framepages {70}{70}}
+\headcommand {\slideentry {1}{10}{2}{70/71}{Threat Model Assumptions}{0}}
+\headcommand {\beamer@framepages {70}{71}}
+\headcommand {\slideentry {1}{10}{3}{72/72}{Threat Model Assumptions}{0}}
+\headcommand {\beamer@framepages {72}{72}}
+\headcommand {\beamer@partpages {1}{72}}
+\headcommand {\beamer@subsectionpages {69}{72}}
+\headcommand {\beamer@sectionpages {2}{72}}
+\headcommand {\beamer@documentpages {72}}
+\headcommand {\gdef \inserttotalframenumber {72}}

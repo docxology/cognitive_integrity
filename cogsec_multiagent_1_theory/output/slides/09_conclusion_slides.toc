@@ -1,1 +1,4 @@
 \beamer@sectionintoc {1}{Conclusion: Summary and Actionable Recommendations}{2}{0}{1}
+\beamer@subsectionintoc {1}{1}{Summary}{3}{0}{1}
+\beamer@subsectionintoc {1}{2}{Actionable Recommendations}{11}{0}{1}
+\beamer@subsectionintoc {1}{3}{Closing Statement}{37}{0}{1}

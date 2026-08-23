@@ -74,9 +74,85 @@
 }{% if KOMA class
   \KOMAoptions{parskip=half}}
 \makeatother
+\usepackage{longtable,booktabs,array}
+\usepackage{caption}
+\captionsetup[table]{skip=6pt}
+\newcounter{none} % for unnumbered tables
+\usepackage{calc} % for calculating minipage widths
+\usepackage{caption}
+% Make caption package work with longtable
+\makeatletter
+\def\fnum@table{\tablename~\thetable}
+\makeatother
 \setlength{\emergencystretch}{3em} % prevent overfull lines
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+% Manuscript macro/package fallbacks (newcommand -> providecommand).
+% Core mathematical packages
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+% Keep long deployment prose and references within the text block.
+% Algorithm formatting
+% Tables
+\usepackage{booktabs}
+\usepackage{multirow}
+% Graphics and floats
+% Typography and layout
+% Page layout (slightly smaller margins for academic journal style)
+% Running headers/footers
+% Caption formatting
+% Colored boxes for callouts
+% Cross-referencing with smart naming
+% Hyperlink styling
+% Configure cleveref for custom environments
+% Theorem environments with consistent numbering
+% Code listings and raw implementation examples in the manuscript
+\usepackage{listings}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible}
+% Math operators
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\KL}{KL}
+\DeclareMathOperator{\Tr}{Tr}
+% Custom commands for notation consistency
+\providecommand{\calA}{\mathcal{A}}
+\providecommand{\calB}{\mathcal{B}}
+\providecommand{\calC}{\mathcal{C}}
+\providecommand{\calD}{\mathcal{D}}
+\providecommand{\calF}{\mathcal{F}}
+\providecommand{\calG}{\mathcal{G}}
+\providecommand{\calH}{\mathcal{H}}
+\providecommand{\calI}{\mathcal{I}}
+\providecommand{\calM}{\mathcal{M}}
+\providecommand{\calO}{\mathcal{O}}
+\providecommand{\calP}{\mathcal{P}}
+\providecommand{\calS}{\mathcal{S}}
+\providecommand{\calT}{\mathcal{T}}
+\providecommand{\calW}{\mathcal{W}}
+% Note: \Phi is a standard LaTeX command, do not redefine
+% Trust notation
+\providecommand{\trust}[2]{\mathcal{T}_{#1 \to #2}}
+\providecommand{\trustt}[3]{\mathcal{T}_{#1 \to #2}^{#3}}
+% Belief notation
+\providecommand{\belief}[2]{\mathcal{B}_{#1}(#2)}
+\providecommand{\belieft}[3]{\mathcal{B}_{#1}^{#2}(#3)}
+% Cognitive state
+\providecommand{\cogstate}[1]{\sigma_{#1}}
+% Attack notation
+\providecommand{\attack}[1]{\mathcal{A}_{#1}}
+\providecommand{\adversary}[1]{\Omega_{#1}}
+% Defense notation
+\providecommand{\firewall}{\mathcal{F}}
+\providecommand{\sandbox}{\mathcal{S}_{box}}
+% Probability and expectation
+\providecommand{\E}{\mathbb{E}}
+\providecommand{\Prob}{\mathbb{P}}
+\providecommand{\indicator}{\mathbb{1}}
+% QED symbol
+\providecommand{\qedsymbol}{$\blacksquare$}
+% Front matter opens on the cover/title page (no list of figures/tables precedes it).
+
 % Slide layout defaults for warning-clean scientific decks.
 \usepackage{etoolbox}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{}
@@ -90,6 +166,33 @@
 \setlength{\tabcolsep}{2pt}
 \AtBeginEnvironment{longtable}{\tiny\renewcommand{\arraystretch}{0.86}\setlength{\tabcolsep}{1pt}}
 \AtBeginEnvironment{tabular}{\tiny\renewcommand{\arraystretch}{0.86}\setlength{\tabcolsep}{1pt}}
+\AtBeginEnvironment{equation}{\tiny}
+\AtBeginEnvironment{equation*}{\tiny}
+\AtBeginEnvironment{align}{\tiny}
+\AtBeginEnvironment{align*}{\tiny}
+\AtBeginEnvironment{itemize}{\footnotesize}
+\AtBeginEnvironment{enumerate}{\footnotesize}
+\AtBeginEnvironment{description}{\footnotesize}
+\setbeamerfont{caption}{size=\tiny}
+\setbeamerfont{caption name}{size=\tiny}
+\setbeamerfont{normal text}{size=\small}
+\setbeamerfont{frametitle}{size=\small}
+\setbeamerfont{section title}{size=\footnotesize}
+\setbeamerfont{subsection title}{size=\footnotesize}
+\setbeamertemplate{section page}{%
+  \centering
+  \begin{beamercolorbox}[sep=12pt,center,wd=\paperwidth]{section title}
+    \parbox{0.86\paperwidth}{\centering\usebeamerfont{section title}\insertsection\par}
+  \end{beamercolorbox}
+}
+\setbeamertemplate{subsection page}{%
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,wd=\paperwidth]{subsection title}
+    \parbox{0.86\paperwidth}{\centering\usebeamerfont{subsection title}\insertsubsection\par}
+  \end{beamercolorbox}
+}
+\setlength{\abovecaptionskip}{2pt}
+\setlength{\belowcaptionskip}{0pt}
 
 % Natbib and cross-reference fallbacks — slides don't load natbib
 % or cleveref, but combined-PDF manuscript prose may emit these
@@ -104,9 +207,15 @@
 \providecommand{\citeyear}[1]{#1}
 \providecommand{\cref}[1]{\texttt{\detokenize{#1}}}
 \providecommand{\Cref}[1]{\texttt{\detokenize{#1}}}
+\providecommand{\crefrange}[2]{\texttt{\detokenize{#1}}--\texttt{\detokenize{#2}}}
+\providecommand{\Crefrange}[2]{\texttt{\detokenize{#1}}--\texttt{\detokenize{#2}}}
+\providecommand{\paragraph}[1]{\textbf{#1}\ }
 
 \newtheorem{proposition}{Proposition}
 \newtheorem{hypothesis}{Hypothesis}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{axiom}{Axiom}
+\newtheorem{property}{Property}
 \usepackage{bookmark}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same}
@@ -134,8 +243,9 @@ This series began with a theory (Part 1) and moved to an experiment
 (Part 2). It ends here, with a synthesis and a call to engineering.
 \end{frame}
 
-\begin{frame}[fragile,allowframebreaks]{The Theory Holds}
-\protect\phantomsection\label{the-theory-holds}
+\subsection{The Theory Holds}\label{the-theory-holds}
+
+\begin{frame}[allowframebreaks]{The Theory Holds}
 We proved that trust can be bounded. We proved that defenses can be
 composed algebraically. We proved that stealth and impact are inversely
 related. These are not just academic curiosities; they are foundational
@@ -150,6 +260,9 @@ detection-preserving chain cannot yield a non-detecting composite under
 the stated assumptions. That is a property of the composition law, not a
 separate empirical fit.
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{The Theory Holds}
 \textbf{Free energy connection}: FEP.1--FEP.2 state a correspondence
 between CIF's trust update and precision-weighted active inference under
 the generative model used in Part\textasciitilde2, so variational free
@@ -163,8 +276,10 @@ without triggering the sandbox. This is a structural guarantee
 independent of attack sophistication---it holds for any manipulation
 that preserves probability mass, including attacks that current
 classifiers cannot detect by pattern.
+\end{frame}
 
-\begin{block}{The Code Works---At Three Levels}
+\begin{frame}[fragile,allowframebreaks]{The Code Works---At Three
+Levels}
 \protect\phantomsection\label{the-code-worksat-three-levels}
 Saying ``the code works'' requires specifying what that means. There are
 three honest answers, each true at a different level:
@@ -178,42 +293,58 @@ corpus through all 8 modules with 0\% routing failure in the reported
 Part 2 run. Use the current \texttt{uv\ run\ pytest} output as the
 source of truth for test counts and pass rate.
 
+\end{frame}
+
+\begin{frame}[fragile,allowframebreaks]{The Code Works---At Three
+Levels}
 \textbf{Level 2 --- The pipeline detects attacks in practice}
 (confidence: moderate). The multi-seed pipeline analysis (30 seeds,
 Claude Code architecture) achieves a mean detection rate of 44.8\%
-{[}95\% HDI: 41.3\%, 48.3\%{]}. The LLM-backed multiagent validation
+{[}95\% HDI: 35.5\%, 54.7\%{]}. The LLM-backed multiagent validation
 (\(N=10\), Gemma 3 4B) achieves 80\%--100\% across two architectures.
 These are meaningful but not high detection rates---they reflect adapter
 implementation at CMMI Level 3 (Statistical), not the design ceiling.
 
+\end{frame}
+
+\begin{frame}[fragile,allowframebreaks]{The Code Works---At Three
+Levels}
 \textbf{Level 3 --- The defense ceiling is achievable} (confidence:
 moderate-high). The parametric simulation (\(N=3{,}800\)) establishes
-that fully-mature (Level 5) adapters achieve 94--100\% detection,
+that fully-mature (Level 5) adapters achieve 96--100\% detection,
 consistent with the formal design. The gap between Level 3 (44.8\%) and
-Level 5 (94\%) is an engineering challenge, not a theoretical
+Level 5 (96\%) is an engineering challenge, not a theoretical
 limitation. The roadmap in Part 2 projects +35--41 percentage points of
 improvement through adapter maturation.
 
+\end{frame}
+
+\begin{frame}[fragile,allowframebreaks]{The Code Works---At Three
+Levels}
 The honest operational posture is Level 2: deploy CIF for meaningful
 protection against \(\Omega_1\)--\(\Omega_3\) attacks today, while
 investing in adapter maturation for \(\Omega_4\)--\(\Omega_5\) coverage.
-Do not rely on 94\textbackslash\% detection for life-safety applications
-until your adapters reach Level 4--5 and have been validated against
-your threat model.
-\end{block}
+Do not rely on 94\% detection for life-safety applications until your
+adapters reach Level 4--5 and have been validated against your threat
+model.
 \end{frame}
 
+\subsection{Summary of Practical
+Recommendations}\label{summary-of-practical-recommendations}
+
 \begin{frame}[allowframebreaks]{Summary of Practical Recommendations}
-\protect\phantomsection\label{summary-of-practical-recommendations}
 The preceding sections distill the CIF series into actionable guidance.
 The core recommendations are:
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Summary of Practical Recommendations}
 \begin{enumerate}
 \item
   \textbf{Adopt layered defense from the start} (Pitfall 2). No single
   mechanism achieves the full-stack result in Part\textasciitilde2:
   isolated layers (e.g., firewall-only) were on the order of 60--70\%
-  detection, while the full CIF stack reached a 94--100\% parametric
+  detection, while the full CIF stack reached a 96--100\% parametric
   detection ceiling. Security must be designed into the architecture,
   not bolted on after deployment.
 \item
@@ -240,13 +371,17 @@ The core recommendations are:
 \end{enumerate}
 \end{frame}
 
+\subsection{Maturity Roadmap}\label{maturity-roadmap}
+
 \begin{frame}[allowframebreaks]{Maturity Roadmap}
-\protect\phantomsection\label{maturity-roadmap}
 Organizations adopting cognitive security should plan a staged
 deployment aligned with the three profiles evaluated in Section 5:
 
 \textbf{Stage 1: Minimal Viable Implementation} (Weeks 1--4)
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Maturity Roadmap}
 \begin{itemize}
 \tightlist
 \item
@@ -260,8 +395,14 @@ deployment aligned with the three profiles evaluated in Section 5:
   success to \textless5\%
 \end{itemize}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Maturity Roadmap}
 \textbf{Stage 2: Balanced Deployment} (Months 2--3)
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Maturity Roadmap}
 \begin{itemize}
 \tightlist
 \item
@@ -274,13 +415,19 @@ deployment aligned with the three profiles evaluated in Section 5:
   Tune thresholds against representative attack samples from Part 2's
   corpus
 \item
-  Expected outcome: a 94--100\% parametric detection ceiling at
+  Expected outcome: a 96--100\% parametric detection ceiling at
   \textasciitilde20\% latency overhead; real-pipeline performance must
   be measured separately
 \end{itemize}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Maturity Roadmap}
 \textbf{Stage 3: High Assurance} (Months 4--6)
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Maturity Roadmap}
 \begin{itemize}
 \tightlist
 \item
@@ -298,10 +445,16 @@ deployment aligned with the three profiles evaluated in Section 5:
   for unsupervised autonomous agents
 \end{itemize}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Maturity Roadmap}
 \textbf{Stage 4 (Months 7--12): Adapter Maturation and Verified
 Coverage} \emph{Target: 80--86\% detection rate, Level-4--5 adapters for
 primary attack categories}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Maturity Roadmap}
 \begin{itemize}
 \tightlist
 \item
@@ -323,6 +476,9 @@ primary attack categories}
   approaches parametric ceiling as adapters mature
 \end{itemize}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Maturity Roadmap}
 \emph{Milestone}: 80--86\% empirical detection rate on the standard
 attack corpus with 95\% HDI width \(\leq 10\%\).
 
@@ -330,8 +486,9 @@ At each stage, validate against the Summary Checklist in Section 6
 before advancing. Address unchecked items before production deployment.
 \end{frame}
 
+\subsection{The Next Step is Yours}\label{the-next-step-is-yours}
+
 \begin{frame}[allowframebreaks]{The Next Step is Yours}
-\protect\phantomsection\label{the-next-step-is-yours}
 As we move beyond simple prompt engineering, the era of
 \textbf{Cognitive Security Engineering} has begun.
 
@@ -343,11 +500,15 @@ mathematically grounded, architecturally sound defense systems.
 The CIF is our contribution to that structure. It is a toolbox, not a
 bible. Take it. Fork it. Break it. Improve it.
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{The Next Step is Yours}
 The agents are coming online. Let's make sure they are safe.
 \end{frame}
 
+\subsection{A Note on Uncertainty}\label{sec:uncertainty-note}
+
 \begin{frame}[allowframebreaks]{A Note on Uncertainty}
-\protect\phantomsection\label{sec:uncertainty-note}
 This guide has tried to be honest about what CIF can and cannot do. The
 practical guidance---configuration tables, playbooks, monitoring
 thresholds, case studies---is grounded in the best available evidence.
@@ -362,8 +523,11 @@ Required sample sizes for \(\pm 5\%\) precision are \(N \geq 246\) per
 evaluation mode. Treat all reported detection rates as estimates with
 wide uncertainty, not precise measurements.
 
-\textbf{The gap is real}. The 49--88 percentage-point gap between the
-parametric ceiling (94--100\%) and the empirical pipeline (44.8\%) is
+\end{frame}
+
+\begin{frame}[allowframebreaks]{A Note on Uncertainty}
+\textbf{The gap is real}. The 51--88 percentage-point gap between the
+parametric ceiling (96--100\%) and the empirical pipeline (44.8\%) is
 not noise---the Bayes factor for a true performance gap exceeds \(10^6\)
 (decisive evidence). This gap reflects adapter implementation maturity,
 but maturation takes time and resources. Plan your deployment timeline
@@ -377,6 +541,9 @@ reported. The game-theoretic analysis (Part 2) establishes the Nash
 equilibrium for the current payoff matrix, but a patient adversary will
 probe for gaps. The layered defense architecture provides
 resilience---bypassing one layer still encounters others---but no
+\end{frame}
+
+\begin{frame}[allowframebreaks]{A Note on Uncertainty}
 detection system is perfectly robust to adaptive adversaries.
 
 \textbf{Uncertainty is not a reason not to deploy}. CIF provides

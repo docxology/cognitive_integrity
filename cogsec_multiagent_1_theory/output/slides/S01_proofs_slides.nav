@@ -7,98 +7,238 @@
 \headcommand {\beamer@framepages {2}{2}}
 \headcommand {\slideentry {1}{0}{2}{3/3}{}{0}}
 \headcommand {\beamer@framepages {3}{3}}
-\headcommand {\slideentry {1}{0}{3}{4/4}{}{0}}
+\headcommand {\beamer@subsectionpages {2}{3}}
+\headcommand {\beamer@subsectionentry {0}{1}{1}{4}{Proof Status}}
+\headcommand {\slideentry {1}{1}{1}{4/4}{Proof Status}{0}}
 \headcommand {\beamer@framepages {4}{4}}
-\headcommand {\slideentry {1}{0}{3}{4/5}{}{0}}
-\headcommand {\beamer@framepages {4}{5}}
-\headcommand {\slideentry {1}{0}{4}{6/6}{}{0}}
+\headcommand {\slideentry {1}{1}{2}{5/5}{Proof Status}{0}}
+\headcommand {\beamer@framepages {5}{5}}
+\headcommand {\slideentry {1}{1}{3}{6/6}{Proof Status}{0}}
 \headcommand {\beamer@framepages {6}{6}}
-\headcommand {\slideentry {1}{0}{4}{6/7}{}{0}}
-\headcommand {\beamer@framepages {6}{7}}
-\headcommand {\slideentry {1}{0}{4}{6/8}{}{0}}
-\headcommand {\beamer@framepages {6}{8}}
-\headcommand {\slideentry {1}{0}{4}{6/9}{}{0}}
-\headcommand {\beamer@framepages {6}{9}}
-\headcommand {\slideentry {1}{0}{5}{10/10}{}{0}}
-\headcommand {\beamer@framepages {10}{10}}
-\headcommand {\slideentry {1}{0}{5}{10/11}{}{0}}
-\headcommand {\beamer@framepages {10}{11}}
-\headcommand {\slideentry {1}{0}{5}{10/12}{}{0}}
-\headcommand {\beamer@framepages {10}{12}}
-\headcommand {\slideentry {1}{0}{5}{10/13}{}{0}}
-\headcommand {\beamer@framepages {10}{13}}
-\headcommand {\slideentry {1}{0}{5}{10/14}{}{0}}
-\headcommand {\beamer@framepages {10}{14}}
-\headcommand {\slideentry {1}{0}{6}{15/15}{}{0}}
+\headcommand {\slideentry {1}{1}{4}{7/7}{Proof Status}{0}}
+\headcommand {\beamer@framepages {7}{7}}
+\headcommand {\slideentry {1}{1}{5}{8/8}{Proof Status}{0}}
+\headcommand {\beamer@framepages {8}{8}}
+\headcommand {\slideentry {1}{1}{6}{9/9}{Proof Status}{0}}
+\headcommand {\beamer@framepages {9}{9}}
+\headcommand {\slideentry {1}{1}{6}{9/10}{Proof Status}{0}}
+\headcommand {\beamer@framepages {9}{10}}
+\headcommand {\slideentry {1}{1}{6}{9/11}{Proof Status}{0}}
+\headcommand {\beamer@framepages {9}{11}}
+\headcommand {\slideentry {1}{1}{6}{9/12}{Proof Status}{0}}
+\headcommand {\beamer@framepages {9}{12}}
+\headcommand {\beamer@subsectionpages {4}{12}}
+\headcommand {\beamer@subsectionentry {0}{1}{2}{13}{Preliminary Definitions and Notation}}
+\headcommand {\slideentry {1}{2}{1}{13/13}{Preliminary Definitions and Notation}{0}}
+\headcommand {\beamer@framepages {13}{13}}
+\headcommand {\slideentry {1}{2}{2}{14/14}{Preliminary Definitions and Notation}{0}}
+\headcommand {\beamer@framepages {14}{14}}
+\headcommand {\slideentry {1}{2}{3}{15/15}{Preliminary Definitions and Notation}{0}}
 \headcommand {\beamer@framepages {15}{15}}
-\headcommand {\slideentry {1}{0}{6}{15/16}{}{0}}
+\headcommand {\slideentry {1}{2}{3}{15/16}{Preliminary Definitions and Notation}{0}}
 \headcommand {\beamer@framepages {15}{16}}
-\headcommand {\slideentry {1}{0}{6}{15/17}{}{0}}
-\headcommand {\beamer@framepages {15}{17}}
-\headcommand {\slideentry {1}{0}{7}{18/18}{}{0}}
+\headcommand {\slideentry {1}{2}{4}{17/17}{Preliminary Definitions and Notation}{0}}
+\headcommand {\beamer@framepages {17}{17}}
+\headcommand {\beamer@subsectionpages {13}{17}}
+\headcommand {\beamer@subsectionentry {0}{1}{3}{18}{Theorem 4.2: Trust Boundedness}}
+\headcommand {\slideentry {1}{3}{1}{18/18}{Theorem 4.2: Trust Boundedness}{0}}
 \headcommand {\beamer@framepages {18}{18}}
-\headcommand {\slideentry {1}{0}{7}{18/19}{}{0}}
-\headcommand {\beamer@framepages {18}{19}}
-\headcommand {\slideentry {1}{0}{7}{18/20}{}{0}}
-\headcommand {\beamer@framepages {18}{20}}
-\headcommand {\slideentry {1}{0}{7}{18/21}{}{0}}
-\headcommand {\beamer@framepages {18}{21}}
-\headcommand {\slideentry {1}{0}{8}{22/22}{}{0}}
-\headcommand {\beamer@framepages {22}{22}}
-\headcommand {\slideentry {1}{0}{8}{22/23}{}{0}}
-\headcommand {\beamer@framepages {22}{23}}
-\headcommand {\slideentry {1}{0}{8}{22/24}{}{0}}
-\headcommand {\beamer@framepages {22}{24}}
-\headcommand {\slideentry {1}{0}{9}{25/25}{}{0}}
+\headcommand {\slideentry {1}{3}{2}{19/19}{Theorem 4.2: Trust Boundedness}{0}}
+\headcommand {\beamer@framepages {19}{19}}
+\headcommand {\slideentry {1}{3}{2}{19/20}{Theorem 4.2: Trust Boundedness}{0}}
+\headcommand {\beamer@framepages {19}{20}}
+\headcommand {\slideentry {1}{3}{3}{21/21}{Theorem 4.2: Trust Boundedness}{0}}
+\headcommand {\beamer@framepages {21}{21}}
+\headcommand {\slideentry {1}{3}{3}{21/22}{Theorem 4.2: Trust Boundedness}{0}}
+\headcommand {\beamer@framepages {21}{22}}
+\headcommand {\slideentry {1}{3}{4}{23/23}{Theorem 4.2: Trust Boundedness}{0}}
+\headcommand {\beamer@framepages {23}{23}}
+\headcommand {\slideentry {1}{3}{5}{24/24}{Theorem 4.2: Trust Boundedness}{0}}
+\headcommand {\beamer@framepages {24}{24}}
+\headcommand {\beamer@subsectionpages {18}{24}}
+\headcommand {\beamer@subsectionentry {0}{1}{4}{25}{Theorem 5.7: Belief Injection Resistance}}
+\headcommand {\slideentry {1}{4}{1}{25/25}{Theorem 5.7: Belief Injection Resistance}{0}}
 \headcommand {\beamer@framepages {25}{25}}
-\headcommand {\slideentry {1}{0}{9}{25/26}{}{0}}
-\headcommand {\beamer@framepages {25}{26}}
-\headcommand {\slideentry {1}{0}{9}{25/27}{}{0}}
-\headcommand {\beamer@framepages {25}{27}}
-\headcommand {\slideentry {1}{0}{9}{25/28}{}{0}}
-\headcommand {\beamer@framepages {25}{28}}
-\headcommand {\slideentry {1}{0}{9}{25/29}{}{0}}
-\headcommand {\beamer@framepages {25}{29}}
-\headcommand {\slideentry {1}{0}{10}{30/30}{}{0}}
-\headcommand {\beamer@framepages {30}{30}}
-\headcommand {\slideentry {1}{0}{10}{30/31}{}{0}}
-\headcommand {\beamer@framepages {30}{31}}
-\headcommand {\slideentry {1}{0}{10}{30/32}{}{0}}
-\headcommand {\beamer@framepages {30}{32}}
-\headcommand {\slideentry {1}{0}{11}{33/33}{}{0}}
+\headcommand {\slideentry {1}{4}{2}{26/26}{Theorem 5.7: Belief Injection Resistance}{0}}
+\headcommand {\beamer@framepages {26}{26}}
+\headcommand {\slideentry {1}{4}{3}{27/27}{Theorem 5.7: Belief Injection Resistance}{0}}
+\headcommand {\beamer@framepages {27}{27}}
+\headcommand {\slideentry {1}{4}{4}{28/28}{Theorem 5.7: Belief Injection Resistance}{0}}
+\headcommand {\beamer@framepages {28}{28}}
+\headcommand {\slideentry {1}{4}{5}{29/29}{Theorem 5.7: Belief Injection Resistance}{0}}
+\headcommand {\beamer@framepages {29}{29}}
+\headcommand {\slideentry {1}{4}{5}{29/30}{Theorem 5.7: Belief Injection Resistance}{0}}
+\headcommand {\beamer@framepages {29}{30}}
+\headcommand {\slideentry {1}{4}{6}{31/31}{Theorem 5.7: Belief Injection Resistance}{0}}
+\headcommand {\beamer@framepages {31}{31}}
+\headcommand {\slideentry {1}{4}{7}{32/32}{Theorem 5.7: Belief Injection Resistance}{0}}
+\headcommand {\beamer@framepages {32}{32}}
+\headcommand {\beamer@subsectionpages {25}{32}}
+\headcommand {\beamer@subsectionentry {0}{1}{5}{33}{Theorem 4.7: No Trust Amplification}}
+\headcommand {\slideentry {1}{5}{1}{33/33}{Theorem 4.7: No Trust Amplification}{0}}
 \headcommand {\beamer@framepages {33}{33}}
-\headcommand {\slideentry {1}{0}{11}{33/34}{}{0}}
-\headcommand {\beamer@framepages {33}{34}}
-\headcommand {\slideentry {1}{0}{11}{33/35}{}{0}}
-\headcommand {\beamer@framepages {33}{35}}
-\headcommand {\slideentry {1}{0}{12}{36/36}{}{0}}
-\headcommand {\beamer@framepages {36}{36}}
-\headcommand {\slideentry {1}{0}{13}{37/37}{}{0}}
+\headcommand {\slideentry {1}{5}{2}{34/34}{Theorem 4.7: No Trust Amplification}{0}}
+\headcommand {\beamer@framepages {34}{34}}
+\headcommand {\slideentry {1}{5}{3}{35/35}{Theorem 4.7: No Trust Amplification}{0}}
+\headcommand {\beamer@framepages {35}{35}}
+\headcommand {\slideentry {1}{5}{3}{35/36}{Theorem 4.7: No Trust Amplification}{0}}
+\headcommand {\beamer@framepages {35}{36}}
+\headcommand {\slideentry {1}{5}{4}{37/37}{Theorem 4.7: No Trust Amplification}{0}}
 \headcommand {\beamer@framepages {37}{37}}
-\headcommand {\slideentry {1}{0}{14}{38/38}{}{0}}
+\headcommand {\slideentry {1}{5}{5}{38/38}{Theorem 4.7: No Trust Amplification}{0}}
 \headcommand {\beamer@framepages {38}{38}}
-\headcommand {\slideentry {1}{0}{14}{38/39}{}{0}}
-\headcommand {\beamer@framepages {38}{39}}
-\headcommand {\slideentry {1}{0}{14}{38/40}{}{0}}
-\headcommand {\beamer@framepages {38}{40}}
-\headcommand {\slideentry {1}{0}{15}{41/41}{}{0}}
+\headcommand {\beamer@subsectionpages {33}{38}}
+\headcommand {\beamer@subsectionentry {0}{1}{6}{39}{Theorem 5.8: Goal Alignment Invariant}}
+\headcommand {\slideentry {1}{6}{1}{39/39}{Theorem 5.8: Goal Alignment Invariant}{0}}
+\headcommand {\beamer@framepages {39}{39}}
+\headcommand {\slideentry {1}{6}{2}{40/40}{Theorem 5.8: Goal Alignment Invariant}{0}}
+\headcommand {\beamer@framepages {40}{40}}
+\headcommand {\slideentry {1}{6}{3}{41/41}{Theorem 5.8: Goal Alignment Invariant}{0}}
 \headcommand {\beamer@framepages {41}{41}}
-\headcommand {\slideentry {1}{0}{15}{41/42}{}{0}}
-\headcommand {\beamer@framepages {41}{42}}
-\headcommand {\slideentry {1}{0}{15}{41/43}{}{0}}
-\headcommand {\beamer@framepages {41}{43}}
-\headcommand {\slideentry {1}{0}{15}{41/44}{}{0}}
-\headcommand {\beamer@framepages {41}{44}}
-\headcommand {\slideentry {1}{0}{15}{41/45}{}{0}}
-\headcommand {\beamer@framepages {41}{45}}
-\headcommand {\slideentry {1}{0}{16}{46/46}{}{0}}
+\headcommand {\slideentry {1}{6}{4}{42/42}{Theorem 5.8: Goal Alignment Invariant}{0}}
+\headcommand {\beamer@framepages {42}{42}}
+\headcommand {\slideentry {1}{6}{4}{42/43}{Theorem 5.8: Goal Alignment Invariant}{0}}
+\headcommand {\beamer@framepages {42}{43}}
+\headcommand {\slideentry {1}{6}{5}{44/44}{Theorem 5.8: Goal Alignment Invariant}{0}}
+\headcommand {\beamer@framepages {44}{44}}
+\headcommand {\slideentry {1}{6}{6}{45/45}{Theorem 5.8: Goal Alignment Invariant}{0}}
+\headcommand {\beamer@framepages {45}{45}}
+\headcommand {\beamer@subsectionpages {39}{45}}
+\headcommand {\beamer@subsectionentry {0}{1}{7}{46}{Theorem 5.9: Firewall Liveness}}
+\headcommand {\slideentry {1}{7}{1}{46/46}{Theorem 5.9: Firewall Liveness}{0}}
 \headcommand {\beamer@framepages {46}{46}}
-\headcommand {\slideentry {1}{0}{16}{46/47}{}{0}}
-\headcommand {\beamer@framepages {46}{47}}
-\headcommand {\slideentry {1}{0}{17}{48/48}{}{0}}
+\headcommand {\slideentry {1}{7}{2}{47/47}{Theorem 5.9: Firewall Liveness}{0}}
+\headcommand {\beamer@framepages {47}{47}}
+\headcommand {\slideentry {1}{7}{3}{48/48}{Theorem 5.9: Firewall Liveness}{0}}
 \headcommand {\beamer@framepages {48}{48}}
-\headcommand {\beamer@partpages {1}{48}}
-\headcommand {\beamer@subsectionpages {2}{48}}
-\headcommand {\beamer@sectionpages {2}{48}}
-\headcommand {\beamer@documentpages {48}}
-\headcommand {\gdef \inserttotalframenumber {48}}
+\headcommand {\slideentry {1}{7}{3}{48/49}{Theorem 5.9: Firewall Liveness}{0}}
+\headcommand {\beamer@framepages {48}{49}}
+\headcommand {\slideentry {1}{7}{4}{50/50}{Theorem 5.9: Firewall Liveness}{0}}
+\headcommand {\beamer@framepages {50}{50}}
+\headcommand {\slideentry {1}{7}{5}{51/51}{Theorem 5.9: Firewall Liveness}{0}}
+\headcommand {\beamer@framepages {51}{51}}
+\headcommand {\beamer@subsectionpages {46}{51}}
+\headcommand {\beamer@subsectionentry {0}{1}{8}{52}{Theorem 5.10: Byzantine Consensus Termination}}
+\headcommand {\slideentry {1}{8}{1}{52/52}{Theorem 5.10: Byzantine Consensus Termination}{0}}
+\headcommand {\beamer@framepages {52}{52}}
+\headcommand {\slideentry {1}{8}{2}{53/53}{Theorem 5.10: Byzantine Consensus Termination}{0}}
+\headcommand {\beamer@framepages {53}{53}}
+\headcommand {\slideentry {1}{8}{3}{54/54}{Theorem 5.10: Byzantine Consensus Termination}{0}}
+\headcommand {\beamer@framepages {54}{54}}
+\headcommand {\slideentry {1}{8}{4}{55/55}{Theorem 5.10: Byzantine Consensus Termination}{0}}
+\headcommand {\beamer@framepages {55}{55}}
+\headcommand {\slideentry {1}{8}{4}{55/56}{Theorem 5.10: Byzantine Consensus Termination}{0}}
+\headcommand {\beamer@framepages {55}{56}}
+\headcommand {\slideentry {1}{8}{5}{57/57}{Theorem 5.10: Byzantine Consensus Termination}{0}}
+\headcommand {\beamer@framepages {57}{57}}
+\headcommand {\slideentry {1}{8}{6}{58/58}{Theorem 5.10: Byzantine Consensus Termination}{0}}
+\headcommand {\beamer@framepages {58}{58}}
+\headcommand {\beamer@subsectionpages {52}{58}}
+\headcommand {\beamer@subsectionentry {0}{1}{9}{59}{Theorem 5.11: Bounded Overhead}}
+\headcommand {\slideentry {1}{9}{1}{59/59}{Theorem 5.11: Bounded Overhead}{0}}
+\headcommand {\beamer@framepages {59}{59}}
+\headcommand {\slideentry {1}{9}{2}{60/60}{Theorem 5.11: Bounded Overhead}{0}}
+\headcommand {\beamer@framepages {60}{60}}
+\headcommand {\slideentry {1}{9}{3}{61/61}{Theorem 5.11: Bounded Overhead}{0}}
+\headcommand {\beamer@framepages {61}{61}}
+\headcommand {\slideentry {1}{9}{3}{61/62}{Theorem 5.11: Bounded Overhead}{0}}
+\headcommand {\beamer@framepages {61}{62}}
+\headcommand {\slideentry {1}{9}{4}{63/63}{Theorem 5.11: Bounded Overhead}{0}}
+\headcommand {\beamer@framepages {63}{63}}
+\headcommand {\slideentry {1}{9}{5}{64/64}{Theorem 5.11: Bounded Overhead}{0}}
+\headcommand {\beamer@framepages {64}{64}}
+\headcommand {\slideentry {1}{9}{6}{65/65}{Theorem 5.11: Bounded Overhead}{0}}
+\headcommand {\beamer@framepages {65}{65}}
+\headcommand {\slideentry {1}{9}{7}{66/66}{Theorem 5.11: Bounded Overhead}{0}}
+\headcommand {\beamer@framepages {66}{66}}
+\headcommand {\beamer@subsectionpages {59}{66}}
+\headcommand {\beamer@subsectionentry {0}{1}{10}{67}{Additional Lemmas}}
+\headcommand {\slideentry {1}{10}{1}{67/67}{Additional Lemmas}{0}}
+\headcommand {\beamer@framepages {67}{67}}
+\headcommand {\slideentry {1}{10}{2}{68/68}{Additional Lemmas}{0}}
+\headcommand {\beamer@framepages {68}{68}}
+\headcommand {\slideentry {1}{10}{3}{69/69}{Additional Lemmas}{0}}
+\headcommand {\beamer@framepages {69}{69}}
+\headcommand {\slideentry {1}{10}{4}{70/70}{Additional Lemmas}{0}}
+\headcommand {\beamer@framepages {70}{70}}
+\headcommand {\slideentry {1}{10}{5}{71/71}{Additional Lemmas}{0}}
+\headcommand {\beamer@framepages {71}{71}}
+\headcommand {\slideentry {1}{10}{5}{71/72}{Additional Lemmas}{0}}
+\headcommand {\beamer@framepages {71}{72}}
+\headcommand {\slideentry {1}{10}{6}{73/73}{Additional Lemmas}{0}}
+\headcommand {\beamer@framepages {73}{73}}
+\headcommand {\beamer@subsectionpages {67}{73}}
+\headcommand {\beamer@subsectionentry {0}{1}{11}{74}{Summary of Proof Techniques}}
+\headcommand {\slideentry {1}{11}{1}{74/74}{Summary of Proof Techniques}{0}}
+\headcommand {\beamer@framepages {74}{74}}
+\headcommand {\slideentry {1}{11}{2}{75/75}{Summary of Proof Techniques}{0}}
+\headcommand {\beamer@framepages {75}{75}}
+\headcommand {\slideentry {1}{11}{3}{76/76}{Summary of Proof Techniques}{0}}
+\headcommand {\beamer@framepages {76}{76}}
+\headcommand {\slideentry {1}{11}{4}{77/77}{Summary of Proof Techniques}{0}}
+\headcommand {\beamer@framepages {77}{77}}
+\headcommand {\beamer@subsectionpages {74}{77}}
+\headcommand {\beamer@subsectionentry {0}{1}{12}{78}{Second-Edition Proofs: Defense Composition Algebra and Information-Geometric Bounds}}
+\headcommand {\slideentry {1}{12}{1}{78/78}{Second-Edition Proofs: Defense Composition Algebra and Information-Geometric Bounds}{0}}
+\headcommand {\beamer@framepages {78}{78}}
+\headcommand {\slideentry {1}{12}{2}{79/79}{Second-Edition Proofs: Defense Composition Algebra and Information-Geometric Bounds}{0}}
+\headcommand {\beamer@framepages {79}{79}}
+\headcommand {\slideentry {1}{12}{3}{80/80}{Second-Edition Proofs: Defense Composition Algebra and Information-Geometric Bounds}{0}}
+\headcommand {\beamer@framepages {80}{80}}
+\headcommand {\beamer@subsectionpages {78}{80}}
+\headcommand {\beamer@subsectionentry {0}{1}{13}{81}{The Defense Composition Algebra}}
+\headcommand {\slideentry {1}{13}{1}{81/81}{The Defense Composition Algebra}{0}}
+\headcommand {\beamer@framepages {81}{81}}
+\headcommand {\slideentry {1}{13}{2}{82/82}{The Defense Composition Algebra}{0}}
+\headcommand {\beamer@framepages {82}{82}}
+\headcommand {\slideentry {1}{13}{3}{83/83}{The Defense Composition Algebra}{0}}
+\headcommand {\beamer@framepages {83}{83}}
+\headcommand {\slideentry {1}{13}{4}{84/84}{The Defense Composition Algebra}{0}}
+\headcommand {\beamer@framepages {84}{84}}
+\headcommand {\slideentry {1}{13}{5}{85/85}{The Defense Composition Algebra}{0}}
+\headcommand {\beamer@framepages {85}{85}}
+\headcommand {\slideentry {1}{13}{6}{86/86}{The Defense Composition Algebra}{0}}
+\headcommand {\beamer@framepages {86}{86}}
+\headcommand {\slideentry {1}{13}{7}{87/87}{The Defense Composition Algebra}{0}}
+\headcommand {\beamer@framepages {87}{87}}
+\headcommand {\beamer@subsectionpages {81}{87}}
+\headcommand {\beamer@subsectionentry {0}{1}{14}{88}{The Tight Information-Geometric Stealth-Impact Bound}}
+\headcommand {\slideentry {1}{14}{1}{88/88}{The Tight Information-Geometric Stealth-Impact Bound}{0}}
+\headcommand {\beamer@framepages {88}{88}}
+\headcommand {\slideentry {1}{14}{2}{89/89}{The Tight Information-Geometric Stealth-Impact Bound}{0}}
+\headcommand {\beamer@framepages {89}{89}}
+\headcommand {\slideentry {1}{14}{3}{90/90}{The Tight Information-Geometric Stealth-Impact Bound}{0}}
+\headcommand {\beamer@framepages {90}{90}}
+\headcommand {\slideentry {1}{14}{4}{91/91}{The Tight Information-Geometric Stealth-Impact Bound}{0}}
+\headcommand {\beamer@framepages {91}{91}}
+\headcommand {\slideentry {1}{14}{5}{92/92}{The Tight Information-Geometric Stealth-Impact Bound}{0}}
+\headcommand {\beamer@framepages {92}{92}}
+\headcommand {\slideentry {1}{14}{5}{92/93}{The Tight Information-Geometric Stealth-Impact Bound}{0}}
+\headcommand {\beamer@framepages {92}{93}}
+\headcommand {\slideentry {1}{14}{6}{94/94}{The Tight Information-Geometric Stealth-Impact Bound}{0}}
+\headcommand {\beamer@framepages {94}{94}}
+\headcommand {\slideentry {1}{14}{7}{95/95}{The Tight Information-Geometric Stealth-Impact Bound}{0}}
+\headcommand {\beamer@framepages {95}{95}}
+\headcommand {\beamer@subsectionpages {88}{95}}
+\headcommand {\beamer@subsectionentry {0}{1}{15}{96}{The Agent Compromise Blast Radius Bound}}
+\headcommand {\slideentry {1}{15}{1}{96/96}{The Agent Compromise Blast Radius Bound}{0}}
+\headcommand {\beamer@framepages {96}{96}}
+\headcommand {\slideentry {1}{15}{2}{97/97}{The Agent Compromise Blast Radius Bound}{0}}
+\headcommand {\beamer@framepages {97}{97}}
+\headcommand {\slideentry {1}{15}{3}{98/98}{The Agent Compromise Blast Radius Bound}{0}}
+\headcommand {\beamer@framepages {98}{98}}
+\headcommand {\slideentry {1}{15}{4}{99/99}{The Agent Compromise Blast Radius Bound}{0}}
+\headcommand {\beamer@framepages {99}{99}}
+\headcommand {\beamer@subsectionpages {96}{99}}
+\headcommand {\beamer@subsectionentry {0}{1}{16}{100}{Updated Summary of Proof Techniques}}
+\headcommand {\slideentry {1}{16}{1}{100/100}{Updated Summary of Proof Techniques}{0}}
+\headcommand {\beamer@framepages {100}{100}}
+\headcommand {\slideentry {1}{16}{2}{101/101}{Updated Summary of Proof Techniques}{0}}
+\headcommand {\beamer@framepages {101}{101}}
+\headcommand {\slideentry {1}{16}{3}{102/102}{Updated Summary of Proof Techniques}{0}}
+\headcommand {\beamer@framepages {102}{102}}
+\headcommand {\beamer@partpages {1}{102}}
+\headcommand {\beamer@subsectionpages {100}{102}}
+\headcommand {\beamer@sectionpages {2}{102}}
+\headcommand {\beamer@documentpages {102}}
+\headcommand {\gdef \inserttotalframenumber {102}}

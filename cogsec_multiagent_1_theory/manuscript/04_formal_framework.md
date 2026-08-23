@@ -608,7 +608,7 @@ where $C_{\text{channel}}$ is the attack channel capacity.
 Theorem~\ref{thm:stealth-impact} can be sharpened using the information
 geometry of the belief manifold (Part~2, Supplement~S10).  When belief
 space is endowed with the Fisher-Rao metric
-$G_{ij}(p) = \delta_{ij}/p_i$, the Fisher-Rao geodesic distance
+$G_{ij}(p) = \delta_{ij}/p_i$ \cite{amari2000methods}, the Fisher-Rao geodesic distance
 \[
 d_{\mathrm{FR}}(p, q) = 2\arccos\!\left(\sum_i \sqrt{p_i q_i}\right)
 \]

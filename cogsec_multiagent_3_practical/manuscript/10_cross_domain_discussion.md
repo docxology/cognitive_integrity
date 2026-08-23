@@ -106,7 +106,7 @@ Paper 1's Byzantine Consensus mechanism ($\mathcal{B}_{\text{consensus}}$) \cite
 
 The implications for CIF are twofold. First, the deVadoss-Artzt isomorphism confirms that Paper 1's quorum formula is not merely an analogy but a formally justified bound: a multiagent system with $n$ agents can tolerate $f$ goal-hijacked agents if and only if $n \geq 3f+1$, with the bound being tight. Second, the Zheng et al. finding suggests that CIF's Byzantine Consensus may be more effective in LLM-based systems than classical BFT would predict, because the "honest" agents are not merely following protocol but are actively skeptical of anomalous inputs. This represents a potential advantage of cognitive agents over traditional distributed systems, where honest nodes are presumed to be passive rule-followers.
 
-The emergence of BFT for AI Safety as an active research area---evidenced by a dedicated 2025 workshop and multiple concurrent publications---independently validates the trajectory established by Paper 1's adoption of Byzantine consensus as a canonical CIF mechanism.
+The emergence of BFT for AI Safety as an active research area---evidenced by a dedicated 2025 workshop and multiple concurrent publications \cite{jo2025byzantine}---independently validates the trajectory established by Paper 1's adoption of Byzantine consensus as a canonical CIF mechanism.
 
 ## 10.7 Comparison with Existing Frameworks
 

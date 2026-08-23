@@ -1,5 +1,4 @@
 \frametitle{Finding 2: State Machine Determinism}
-\protect\phantomsection\label{finding-2-state-machine-determinism}
 \textbf{The Data}: \textbf{LangGraph} architectures achieved the highest
 detection rates (98\%). \textbf{The Mechanism}: In a state machine,
 valid transitions are explicitly defined. Attempts to move from an

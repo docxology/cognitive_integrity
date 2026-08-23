@@ -1,1 +1,6 @@
 \beamer@sectionintoc {1}{Notation Reference}{2}{0}{1}
+\beamer@subsectionintoc {1}{1}{Minimal Notation Used}{4}{0}{1}
+\beamer@subsectionintoc {1}{2}{CIF-AD-OODA Notation}{6}{0}{1}
+\beamer@subsectionintoc {1}{3}{Trust Decay Explanation}{11}{0}{1}
+\beamer@subsectionintoc {1}{4}{Byzantine Tolerance Explanation}{15}{0}{1}
+\beamer@subsectionintoc {1}{5}{Full Notation Reference}{18}{0}{1}

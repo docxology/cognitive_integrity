@@ -44,7 +44,7 @@ Research directions include: (a) defining tractable approximations to $F_\text{c
 
 ## 6. Information-Geometric Adversarial Robustness
 
-The Fisher-Rao geodesic distance provides a natural metric for **adversarial robustness certification**: a defense is $\rho$-robust if no belief manipulation within geodesic radius $\rho$ of the benign manifold can cause misclassification. This is analogous to $\ell_p$-norm robustness in image classification but geometrically appropriate for probability distributions.
+The Fisher-Rao geodesic distance \cite{amari2000methods} provides a natural metric for **adversarial robustness certification**: a defense is $\rho$-robust if no belief manipulation within geodesic radius $\rho$ of the benign manifold can cause misclassification. This is analogous to $\ell_p$-norm robustness in image classification but geometrically appropriate for probability distributions.
 
 Research directions include: (a) computing tight geodesic robustness certificates for each CIF defense module; (b) designing adversarial training procedures that maximize geodesic robustness (analogous to PGD training but using natural gradient steps); (c) establishing whether geodesic certification is composable—whether a $\rho$-robust Firewall and $\rho$-robust Sandbox yield a $\rho'$-robust composition with characterizable $\rho'$. This direction connects CIF to the certified robustness literature in adversarial machine learning.
 

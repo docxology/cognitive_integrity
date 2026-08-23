@@ -74,6 +74,16 @@
 }{% if KOMA class
   \KOMAoptions{parskip=half}}
 \makeatother
+\usepackage{longtable,booktabs,array}
+\usepackage{caption}
+\captionsetup[table]{skip=6pt}
+\newcounter{none} % for unnumbered tables
+\usepackage{calc} % for calculating minipage widths
+\usepackage{caption}
+% Make caption package work with longtable
+\makeatletter
+\def\fnum@table{\tablename~\thetable}
+\makeatother
 \usepackage{graphicx}
 \makeatletter
 \newsavebox\pandoc@box
@@ -92,6 +102,69 @@
 \setlength{\emergencystretch}{3em} % prevent overfull lines
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+% Manuscript macro/package fallbacks (newcommand -> providecommand).
+% Core mathematical packages
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+% Permit bibliography and theorem prose to break without overfull boxes.
+% Algorithm formatting
+% Tables
+\usepackage{booktabs}
+\usepackage{multirow}
+% Graphics
+% Cross-referencing with smart naming
+% Configure cleveref for custom environments
+% Theorem environments with consistent numbering
+% Code listings used by supplementary implementation examples
+\usepackage{listings}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible}
+% End of theorem environment declarations
+% Math operators
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\KL}{KL}
+\DeclareMathOperator{\Tr}{Tr}
+% Custom commands for notation consistency
+\providecommand{\calA}{\mathcal{A}}
+\providecommand{\calB}{\mathcal{B}}
+\providecommand{\calC}{\mathcal{C}}
+\providecommand{\calD}{\mathcal{D}}
+\providecommand{\calF}{\mathcal{F}}
+\providecommand{\calG}{\mathcal{G}}
+\providecommand{\calH}{\mathcal{H}}
+\providecommand{\calI}{\mathcal{I}}
+\providecommand{\calM}{\mathcal{M}}
+\providecommand{\calO}{\mathcal{O}}
+\providecommand{\calP}{\mathcal{P}}
+\providecommand{\calS}{\mathcal{S}}
+\providecommand{\calT}{\mathcal{T}}
+\providecommand{\calW}{\mathcal{W}}
+% Note: \Phi is a standard LaTeX command, do not redefine
+% Trust notation
+\providecommand{\trust}[2]{\mathcal{T}_{#1 \to #2}}
+\providecommand{\trustt}[3]{\mathcal{T}_{#1 \to #2}^{#3}}
+% Belief notation
+\providecommand{\belief}[2]{\mathcal{B}_{#1}(#2)}
+\providecommand{\belieft}[3]{\mathcal{B}_{#1}^{#2}(#3)}
+% Cognitive state
+\providecommand{\cogstate}[1]{\sigma_{#1}}
+% Attack notation
+\providecommand{\attack}[1]{\mathcal{A}_{#1}}
+\providecommand{\adversary}[1]{\Omega_{#1}}
+% Defense notation
+\providecommand{\firewall}{\mathcal{F}}
+\providecommand{\sandbox}{\mathcal{S}_{box}}
+% Probability and expectation
+\providecommand{\E}{\mathbb{E}}
+\providecommand{\Prob}{\mathbb{P}}
+\providecommand{\indicator}{\mathbb{1}}
+% QED symbol
+\providecommand{\qedsymbol}{$\blacksquare$}
+% Page Layout (Slightly smaller margins)
+% Hyperlink Styling
+% List of Figures and List of Tables in TOC
+
 % Slide layout defaults for warning-clean scientific decks.
 \usepackage{etoolbox}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{}
@@ -105,6 +178,33 @@
 \setlength{\tabcolsep}{2pt}
 \AtBeginEnvironment{longtable}{\tiny\renewcommand{\arraystretch}{0.86}\setlength{\tabcolsep}{1pt}}
 \AtBeginEnvironment{tabular}{\tiny\renewcommand{\arraystretch}{0.86}\setlength{\tabcolsep}{1pt}}
+\AtBeginEnvironment{equation}{\tiny}
+\AtBeginEnvironment{equation*}{\tiny}
+\AtBeginEnvironment{align}{\tiny}
+\AtBeginEnvironment{align*}{\tiny}
+\AtBeginEnvironment{itemize}{\footnotesize}
+\AtBeginEnvironment{enumerate}{\footnotesize}
+\AtBeginEnvironment{description}{\footnotesize}
+\setbeamerfont{caption}{size=\tiny}
+\setbeamerfont{caption name}{size=\tiny}
+\setbeamerfont{normal text}{size=\small}
+\setbeamerfont{frametitle}{size=\small}
+\setbeamerfont{section title}{size=\footnotesize}
+\setbeamerfont{subsection title}{size=\footnotesize}
+\setbeamertemplate{section page}{%
+  \centering
+  \begin{beamercolorbox}[sep=12pt,center,wd=\paperwidth]{section title}
+    \parbox{0.86\paperwidth}{\centering\usebeamerfont{section title}\insertsection\par}
+  \end{beamercolorbox}
+}
+\setbeamertemplate{subsection page}{%
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,wd=\paperwidth]{subsection title}
+    \parbox{0.86\paperwidth}{\centering\usebeamerfont{subsection title}\insertsubsection\par}
+  \end{beamercolorbox}
+}
+\setlength{\abovecaptionskip}{2pt}
+\setlength{\belowcaptionskip}{0pt}
 
 % Natbib and cross-reference fallbacks — slides don't load natbib
 % or cleveref, but combined-PDF manuscript prose may emit these
@@ -119,9 +219,20 @@
 \providecommand{\citeyear}[1]{#1}
 \providecommand{\cref}[1]{\texttt{\detokenize{#1}}}
 \providecommand{\Cref}[1]{\texttt{\detokenize{#1}}}
+\providecommand{\crefrange}[2]{\texttt{\detokenize{#1}}--\texttt{\detokenize{#2}}}
+\providecommand{\Crefrange}[2]{\texttt{\detokenize{#1}}--\texttt{\detokenize{#2}}}
+\providecommand{\paragraph}[1]{\textbf{#1}\ }
+
+% Additional theorem-like environments from manuscript preamble.
+\newtheorem{observation}{Observation}
+\newtheorem{formalization}{Formalization}
+\newtheorem{principle}{Principle}
 
 \newtheorem{proposition}{Proposition}
 \newtheorem{hypothesis}{Hypothesis}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{axiom}{Axiom}
+\newtheorem{property}{Property}
 \usepackage{bookmark}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same}
@@ -156,21 +267,26 @@ detection. We define anomaly detection metrics
 (\cref{sec:fp-mitigation}), provenance analysis (\cref{sec:provenance}),
 and real-time monitoring architecture (\cref{sec:monitoring}).
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Detection Methods: Anomaly Detection,
+ROC Analysis, and Provenance Tracking}
 \begin{quote}
 \textbf{Note}: For algorithm implementations and empirical performance
 results, see Part 2 of this series \cite{friedman2026cogsec2}.
 Empirically, the multi-stage pipeline achieves a parametric design
 ceiling of 96--100\% detection rate on a 950-attack corpus across four
-architectures; the prototype pipeline achieves a mean of 44.7\% {[}CI:
-43.4\%, 46.2\%{]} across 30 seeds, with per-\(\Omega\)-class detection
-rates ranging from 97\% (\(\Omega_1\), passive) to 49\% (\(\Omega_5\),
-coordinated) after adversarial training hardening (Part 2, §5g).
+architectures; the prototype pipeline achieves a mean of 44.8\% {[}95\%
+CI: 43.2\%, 46.4\%{]} across 30 seeds. Part 2 reports no measured
+per-\(\Omega\)-class detection rates: the corpus carries a design-level
+\(\Omega\) classification rather than a runtime label, so per-class
+rates are not evaluated.
 \end{quote}
 \end{frame}
 
-\begin{frame}[allowframebreaks]{Anomaly Detection}
-\protect\phantomsection\label{sec:anomaly-detection}
-\begin{block}{Cognitive Drift Scoring}
+\subsection{Anomaly Detection}\label{sec:anomaly-detection}
+
+\begin{frame}[allowframebreaks]{Cognitive Drift Scoring}
 \protect\phantomsection\label{cognitive-drift-scoring}
 \begin{definition}[Drift Score]
 \label{def:drift-score}
@@ -181,6 +297,9 @@ S_{\text{drift}}(t) = D_{\text{KL}}(\mathcal{B}_i^t \| \mathcal{B}_i^{t-w}) + \l
 \end{equation}
 \end{definition}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Cognitive Drift Scoring}
 \begin{table}[htbp]
 \centering
 \caption{Drift score components and detection targets.}
@@ -199,10 +318,10 @@ Max delta & $\lambda$ & Sudden belief injection \\
 \label{prop:drift-threshold}
 For normally distributed baseline drift, the threshold $\theta = \mu_{\text{baseline}} + k \cdot \sigma_{\text{baseline}}$ with $k = 3$ provides $99.7\%$ confidence under the null hypothesis of no attack.
 \end{property}
-\end{block}
+\end{frame}
 
-\begin{block}{Behavioral Deviation}
-\protect\phantomsection\label{behavioral-deviation}
+\begin{frame}[allowframebreaks]{Behavioral Deviation Scoring}
+\protect\phantomsection\label{behavioral-deviation-scoring}
 \begin{definition}[Deviation Score]
 \label{def:deviation-score}
 The behavioral deviation score aggregates normalized feature anomalies:
@@ -212,9 +331,9 @@ S_{\text{dev}}(a_i, t) = \sum_{k=1}^K w_k \cdot \frac{|f_k(\sigma_i^t) - \mu_k|}
 \end{equation}
 where $f_k$ are feature extractors and $(w_k, \mu_k, \sigma_k)$ are learned parameters.
 \end{definition}
-\end{block}
+\end{frame}
 
-\begin{block}{Ensemble Detection}
+\begin{frame}[allowframebreaks]{Ensemble Detection}
 \protect\phantomsection\label{ensemble-detection}
 \begin{definition}[Ensemble Detector]
 \label{def:ensemble-detector}
@@ -225,21 +344,26 @@ P(\text{attack} \mid \mathbf{S}) = \sigma\left(\sum_d w_d \cdot S_d - b\right)
 \end{equation}
 where $\sigma$ is the sigmoid function and weights $(w_d, b)$ are learned from labeled examples.
 \end{definition}
-\end{block}
 \end{frame}
 
+\subsection{ROC Curve Analysis}\label{sec:roc-analysis}
+
 \begin{frame}[allowframebreaks]{ROC Curve Analysis}
-\protect\phantomsection\label{sec:roc-analysis}
 \begin{figure}
 \centering
-\includegraphics[width=0.85\linewidth,height=0.46\textheight,keepaspectratio,alt={Receiver Operating Characteristic (ROC) curves for CIF detection across attack categories (illustrative/schematic operating points under the Neyman-Pearson framework; the curves themselves are labeled Theoretical, not empirical measurements).}]{../figures/roc_curves.pdf}
+\includegraphics[width=0.85\linewidth,height=0.40\textheight,keepaspectratio,alt={Receiver Operating Characteristic (ROC) curves for CIF detection across attack categories (illustrative/schematic operating points under the Neyman-Pearson framework; the sandbox/tripwire/anomaly/full-CIF curves are labeled Theoretical, not empirical measurements, whereas the Cognitive Firewall curve is the Part-1 curve measured over the module's small test corpus --- measured eval curves are reported in Part 2).}]{../figures/roc_curves.pdf}
 \caption{Receiver Operating Characteristic (ROC) curves for CIF
 detection across attack categories (illustrative/schematic operating
-points under the Neyman-Pearson framework; the curves themselves are
-labeled Theoretical, not empirical measurements).}\label{fig:roc-curves}
+points under the Neyman-Pearson framework; the
+sandbox/tripwire/anomaly/full-CIF curves are labeled Theoretical, not
+empirical measurements, whereas the Cognitive Firewall curve is the
+Part-1 curve measured over the module's small test corpus --- measured
+eval curves are reported in Part 2).}\label{fig:roc-curves}
 \end{figure}
+\end{frame}
 
-\begin{block}{Receiver Operating Characteristic Framework}
+\begin{frame}[allowframebreaks]{Receiver Operating Characteristic
+Framework}
 \protect\phantomsection\label{receiver-operating-characteristic-framework}
 \begin{definition}[ROC Curve]
 \label{def:roc-curve}
@@ -265,6 +389,10 @@ where the rates are defined as:
 \end{equation}
 \end{definition}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Receiver Operating Characteristic
+Framework}
 \begin{table}[htbp]
 \centering
 \caption{AUC interpretation scale.}
@@ -280,9 +408,9 @@ $0.9$--$1.0$ & Excellent discrimination \\
 \bottomrule
 \end{tabular}
 \end{table}
-\end{block}
+\end{frame}
 
-\begin{block}{Confidence Intervals for AUC}
+\begin{frame}[allowframebreaks]{Confidence Intervals for AUC}
 \protect\phantomsection\label{confidence-intervals-for-auc}
 \begin{definition}[AUC Confidence Interval]
 \label{def:auc-ci}
@@ -297,12 +425,11 @@ where:
 \text{Var}(\text{AUC}) = \frac{1}{n_a} \sum_{i=1}^{n_a} (V_1^i - \text{AUC})^2 + \frac{1}{n_b} \sum_{j=1}^{n_b} (V_0^j - \text{AUC})^2
 \end{equation}
 \end{definition}
-\end{block}
 \end{frame}
 
-\begin{frame}[allowframebreaks]{Multi-Detector Fusion}
-\protect\phantomsection\label{sec:detector-fusion}
-\begin{block}{Fusion Strategies}
+\subsection{Multi-Detector Fusion}\label{sec:detector-fusion}
+
+\begin{frame}[allowframebreaks]{Fusion Strategies}
 \protect\phantomsection\label{fusion-strategies}
 \begin{definition}[Score-Level Fusion]
 \label{def:score-fusion}
@@ -330,9 +457,9 @@ Neural network combining scores:
 S_{\text{fused}} = \text{MLP}(S_1, \ldots, S_k; \theta)
 \end{equation}
 \end{definition}
-\end{block}
+\end{frame}
 
-\begin{block}{Diversity-Aware Fusion}
+\begin{frame}[allowframebreaks]{Diversity-Aware Fusion}
 \protect\phantomsection\label{diversity-aware-fusion}
 \begin{definition}[Detector Diversity]
 \label{def:detector-diversity}
@@ -352,16 +479,21 @@ e_{\text{fusion}} \leq \prod_i e_i + (1 - \bar{\delta}) \cdot \max_i e_i
 where $\bar{\delta}$ is the average pairwise diversity.
 \end{theorem}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Diversity-Aware Fusion}
 \begin{proof}
 When detectors make independent errors (high diversity), the fusion error is the product of individual errors. Error correlation reduces this benefit proportionally to $(1 - \bar{\delta})$.
 \end{proof}
-\end{block}
 \end{frame}
 
-\begin{frame}[allowframebreaks]{Online vs.~Batch Detection}
-\protect\phantomsection\label{sec:online-batch}
-\begin{block}{Comparison Framework}
+\subsection{Online vs.~Batch Detection}\label{sec:online-batch}
+
+\begin{frame}[allowframebreaks]{Comparison Framework}
 \protect\phantomsection\label{comparison-framework}
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Comparison Framework}
 \begin{table}[htbp]
 \centering
 \caption{Online vs. batch detection trade-offs.}
@@ -379,9 +511,9 @@ Use Case & Real-time response & Forensics, tuning \\
 \bottomrule
 \end{tabular}
 \end{table}
-\end{block}
+\end{frame}
 
-\begin{block}{Streaming Detector Model}
+\begin{frame}[allowframebreaks]{Streaming Detector Model}
 \protect\phantomsection\label{streaming-detector-model}
 \begin{definition}[Streaming Detector]
 \label{def:streaming-detector}
@@ -393,9 +525,9 @@ D_{\text{online}}(m_t) &= f(m_t, \text{state}_{t-1}) \\
 \text{state}_t &= g(\text{state}_{t-1}, m_t)
 \end{align}
 \end{definition}
-\end{block}
+\end{frame}
 
-\begin{block}{Hybrid Detection Architecture}
+\begin{frame}[allowframebreaks]{Hybrid Detection Architecture}
 \protect\phantomsection\label{hybrid-detection-architecture}
 \begin{definition}[Hybrid Detection System]
 \label{def:hybrid-detection}
@@ -409,20 +541,21 @@ Combines online and batch detection via feedback loop:
 \text{Batch Path}: H \xrightarrow{\text{analyze}} \text{patterns} \xrightarrow{\text{update}} \text{filters}
 \end{equation}
 \end{definition}
-\end{block}
 \end{frame}
 
+\subsection{False Positive Mitigation}\label{sec:fp-mitigation}
+
 \begin{frame}[allowframebreaks]{False Positive Mitigation}
-\protect\phantomsection\label{sec:fp-mitigation}
 \begin{figure}
 \centering
-\includegraphics[width=0.8\linewidth,height=0.46\textheight,keepaspectratio,alt={False-positive mitigation (illustrative schematic): how the detection threshold and confidence calibration shape the false-positive / true-positive tradeoff.}]{../figures/fp_mitigation.pdf}
+\includegraphics[width=0.8\linewidth,height=0.40\textheight,keepaspectratio,alt={False-positive mitigation (illustrative schematic): how the detection threshold and confidence calibration shape the false-positive / true-positive tradeoff.}]{../figures/fp_mitigation.pdf}
 \caption{False-positive mitigation (illustrative schematic): how the
 detection threshold and confidence calibration shape the false-positive
 / true-positive tradeoff.}\label{fig:fp-mitigation}
 \end{figure}
+\end{frame}
 
-\begin{block}{Strategy 1: Confirmation Cascade}
+\begin{frame}[allowframebreaks]{Strategy 1: Confirmation Cascade}
 \protect\phantomsection\label{strategy-1-confirmation-cascade}
 \begin{definition}[Confirmation Cascade]
 \label{def:confirmation-cascade}
@@ -445,9 +578,9 @@ For a multi-stage cascade:
 \text{FPR}_{\text{cascade}} = \text{FPR}_1 \cdot P(\text{confirm}_2 \mid \text{FP}_1) \cdot P(\text{confirm}_3 \mid \text{FP}_2)
 \end{equation}
 \end{theorem}
-\end{block}
+\end{frame}
 
-\begin{block}{Strategy 2: Temporal Smoothing}
+\begin{frame}[allowframebreaks]{Strategy 2: Temporal Smoothing}
 \protect\phantomsection\label{strategy-2-temporal-smoothing}
 \begin{definition}[Smoothed Detection]
 \label{def:smoothed-detection}
@@ -466,9 +599,9 @@ Require sustained anomaly over window $w$:
 \text{Alert if } \frac{1}{w} \sum_{i=t-w+1}^{t} \mathbb{1}[S_i > \tau] > p_{\text{sustained}}
 \end{equation}
 \end{definition}
-\end{block}
+\end{frame}
 
-\begin{block}{Strategy 3: Contextual Whitelisting}
+\begin{frame}[allowframebreaks]{Strategy 3: Contextual Whitelisting}
 \protect\phantomsection\label{strategy-3-contextual-whitelisting}
 \begin{definition}[Context-Aware Whitelist]
 \label{def:context-whitelist}
@@ -477,9 +610,9 @@ Require sustained anomaly over window $w$:
 \text{Suppress}(\text{alert}) \iff \text{context}(\text{alert}) \in \mathcal{W}_{\text{known}}
 \end{equation}
 \end{definition}
-\end{block}
+\end{frame}
 
-\begin{block}{Strategy 4: Cost-Sensitive Thresholding}
+\begin{frame}[allowframebreaks]{Strategy 4: Cost-Sensitive Thresholding}
 \protect\phantomsection\label{strategy-4-cost-sensitive-thresholding}
 \begin{definition}[Cost-Sensitive Threshold]
 \label{def:cost-threshold}
@@ -489,12 +622,11 @@ Optimize for total cost rather than accuracy:
 \tau^* = \argmin_\tau \left[ C_{\text{FP}} \cdot \text{FPR}(\tau) + C_{\text{FN}} \cdot \text{FNR}(\tau) \right]
 \end{equation}
 \end{definition}
-\end{block}
 \end{frame}
 
-\begin{frame}[allowframebreaks]{Provenance Analysis}
-\protect\phantomsection\label{sec:provenance}
-\begin{block}{Information Flow Tracking}
+\subsection{Provenance Analysis}\label{sec:provenance}
+
+\begin{frame}[allowframebreaks]{Information Flow Tracking}
 \protect\phantomsection\label{information-flow-tracking}
 \begin{definition}[Taint Label]
 \label{def:taint-label}
@@ -513,9 +645,12 @@ Each belief carries provenance tags:
 \end{equation}
 \end{definition}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Information Flow Tracking}
 \begin{table}[htbp]
 \centering
-\caption{Taint categories with trust levels.}
+\caption{Taint categories with trust levels. (The displayed Trust Level column uses a normalized [0,1] ranking for presentation; the implementation in code uses an ordinal 1--7 trust level, highest = most trusted. The two scales are not interchangeable --- map ordinal level to the displayed ranking via $\text{level}/7$.)}
 \label{tab:taint-categories}
 \begin{tabular}{@{}lll@{}}
 \toprule
@@ -531,9 +666,9 @@ Category & Trust Level & Example \\
 \bottomrule
 \end{tabular}
 \end{table}
-\end{block}
+\end{frame}
 
-\begin{block}{Causal Attribution}
+\begin{frame}[allowframebreaks]{Causal Attribution}
 \protect\phantomsection\label{causal-attribution}
 \begin{definition}[Causal Attribution]
 \label{def:causal-attribution}
@@ -543,9 +678,9 @@ Identify likely source of compromised beliefs via Bayesian inference:
 P(\text{source}_j \mid \phi \in \mathcal{B}_i^{\text{compromised}}) = \frac{P(\phi \mid \text{source}_j) \cdot P(\text{source}_j)}{\sum_k P(\phi \mid \text{source}_k) \cdot P(\text{source}_k)}
 \end{equation}
 \end{definition}
-\end{block}
+\end{frame}
 
-\begin{block}{Provenance Graph Analysis}
+\begin{frame}[allowframebreaks]{Provenance Graph Analysis}
 \protect\phantomsection\label{provenance-graph-analysis}
 \begin{definition}[Provenance Graph]
 \label{def:provenance-graph}
@@ -556,6 +691,9 @@ G = (V, E) \text{ where } V = \mathcal{B}_i, \; E = \{(\psi, \phi) : \psi \in \t
 \end{equation}
 \end{definition}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Provenance Graph Analysis}
 \begin{table}[htbp]
 \centering
 \caption{Provenance graph attack indicators.}
@@ -571,12 +709,11 @@ Temporal anomalies & Future timestamp forgery \\
 \bottomrule
 \end{tabular}
 \end{table}
-\end{block}
 \end{frame}
 
-\begin{frame}[allowframebreaks]{Real-Time Monitoring}
-\protect\phantomsection\label{sec:monitoring}
-\begin{block}{Alert Aggregation}
+\subsection{Real-Time Monitoring}\label{sec:monitoring}
+
+\begin{frame}[allowframebreaks]{Alert Aggregation}
 \protect\phantomsection\label{alert-aggregation}
 \begin{definition}[Alert Aggregation]
 \label{def:alert-aggregation}
@@ -590,10 +727,13 @@ Prevent alert fatigue through correlation:
 \end{cases}
 \end{equation}
 \end{definition}
-\end{block}
+\end{frame}
 
-\begin{block}{Response Escalation}
+\begin{frame}[allowframebreaks]{Response Escalation}
 \protect\phantomsection\label{response-escalation}
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Response Escalation}
 \begin{table}[htbp]
 \centering
 \caption{Response escalation levels.}
@@ -610,20 +750,25 @@ L4 & Systemic compromise & System shutdown \\
 \bottomrule
 \end{tabular}
 \end{table}
-\end{block}
+\end{frame}
 
-\begin{block}{Empirical Validation}
-\protect\phantomsection\label{empirical-validation}
+\begin{frame}[allowframebreaks]{Empirical Validation Cross-Reference}
+\protect\phantomsection\label{empirical-validation-cross-reference}
 The detection methods presented in this section have been empirically
 validated in Part 2 of this series. Key results include:
 
 \textbf{ROC Analysis}: Receiver Operating Characteristic curves
 demonstrate the tradeoff between True Positive Rate and False Positive
-Rate for each detector type. The ensemble achieves AUC \(> 0.84\), with
+Rate for each detector type. For the theoretical ensemble reference
+curves (Part 2, \S\{4\}), the ensemble achieves AUC \(> 0.84\), with
 individual mechanisms ranging from \(0.74\) (Belief Sandbox) to \(0.81\)
-(Tripwire Monitor). See Part 2, \S\{4\} for detailed ROC curves and
-confidence intervals.
+(Tripwire Monitor). (These are the theory-guided Part-2 curves; the
+Part-1 measured firewall curve over the module's small corpus is shown
+in the ROC figure in this section.)
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Empirical Validation Cross-Reference}
 \textbf{Detection Performance by Attack Type}: Detection rates vary
 across the five adversary classes (\(\Omega_1\)--\(\Omega_5\)). The
 Cognitive Firewall excels at \(\Omega_1\) (external) attacks while
@@ -635,17 +780,19 @@ Tripwires and Invariants provide stronger coverage for \(\Omega_3\)
 smoothing, and contextual whitelisting strategies reduce false positive
 rates by \(>80\%\) while maintaining \(>90\%\) true positive rates. See
 Part 2, \S\{5.4\} for quantitative analysis of each mitigation strategy.
-\end{block}
 \end{frame}
 
+\subsection{Information-Theoretic Detection
+Limits}\label{sec:it-detection-limits}
+
 \begin{frame}[allowframebreaks]{Information-Theoretic Detection Limits}
-\protect\phantomsection\label{sec:it-detection-limits}
 \emph{The previous sections presented detection mechanisms. This section
 establishes what is fundamentally achievable by any detector, regardless
 of implementation. These limits follow from information theory and
 cannot be overcome by cleverer algorithms.}
+\end{frame}
 
-\begin{block}{Neyman-Pearson Detection Framework}
+\begin{frame}[allowframebreaks]{Neyman-Pearson Detection Framework}
 \protect\phantomsection\label{neyman-pearson-detection-framework}
 \begin{definition}[Cognitive Security Hypothesis Test]
 \label{def:hyp-test}
@@ -660,9 +807,12 @@ The likelihood ratio $\Lambda(m) = P_{\text{attack}}(m) / P_{\text{benign}}(m)$ 
 
 \begin{theorem}[Neyman-Pearson Optimal Detector]
 \label{thm:np-detector}
-The likelihood ratio test $\delta_{\text{NP}}(m) = \mathbb{1}[\Lambda(m) \geq \eta]$ maximizes TPR subject to FPR $\leq \alpha$. No other test achieves higher TPR at the same FPR.
+The likelihood ratio test $\delta_{\text{NP}}(m) = \mathbb{1}[\Lambda(m) \geq \eta]$ maximizes TPR subject to FPR $\leq \alpha$. No other test achieves higher TPR at the same FPR \cite{neyman1933ix}.
 \end{theorem}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Neyman-Pearson Detection Framework}
 \begin{corollary}[Optimal AUC Bound]
 \label{cor:optimal-auc}
 The AUC of any detector is bounded by:
@@ -672,9 +822,10 @@ The AUC of any detector is bounded by:
 \end{equation}
 where $m_1 \sim P_{\text{attack}}$ and $m_0 \sim P_{\text{benign}}$. This is the Bayes-optimal discriminability.
 \end{corollary}
-\end{block}
+\end{frame}
 
-\begin{block}{Chernoff Information and Error Exponents}
+\begin{frame}[allowframebreaks]{Chernoff Information and Error
+Exponents}
 \protect\phantomsection\label{chernoff-information-and-error-exponents}
 \begin{definition}[Chernoff Information]
 \label{def:chernoff}
@@ -692,9 +843,13 @@ For $n$ independent message observations, the optimal error probability decays e
 \label{eq:error-exponent}
 P_e^* \leq e^{-n C^*}
 \end{equation}
-The Chernoff information $C^*$ is the maximum achievable error exponent.
+The Chernoff information $C^*$ is the maximum achievable error exponent \cite{chernoff1952measure}.
 \end{theorem}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Chernoff Information and Error
+Exponents}
 \begin{corollary}[Sample Complexity for Target Accuracy]
 \label{cor:sample-complexity}
 To achieve error probability $\leq \epsilon$, the minimum number of observations required is:
@@ -704,9 +859,10 @@ n^* = \left\lceil \frac{\log(1/\epsilon)}{C^*} \right\rceil
 \end{equation}
 This is the information-theoretic minimum; no detector can achieve the same accuracy with fewer samples.
 \end{corollary}
-\end{block}
+\end{frame}
 
-\begin{block}{KL Divergence and Detection Rate Coupling}
+\begin{frame}[allowframebreaks]{KL Divergence and Detection Rate
+Coupling}
 \protect\phantomsection\label{kl-divergence-and-detection-rate-coupling}
 \begin{theorem}[KL-AUC Coupling]
 \label{thm:kl-auc-coupling}
@@ -718,9 +874,13 @@ The AUC of any detector is lower-bounded by the KL divergence between attack and
 \end{theorem}
 
 \begin{proof}
-By Pinsker's inequality: $\| P_{\text{attack}} - P_{\text{benign}} \|_{TV} \leq \sqrt{D_{\mathrm{KL}}/2}$. The AUC satisfies $\text{AUC} \geq \frac{1}{2}(1 + \|P_{\text{attack}} - P_{\text{benign}}\|_{TV})$. Combining and applying the bound $\|P\|_{TV} \leq 1 - e^{-D_{\mathrm{KL}}/2}$ gives the result.
+By Pinsker's inequality \cite{cover2006elements}: $\| P_{\text{attack}} - P_{\text{benign}} \|_{TV} \leq \sqrt{D_{\mathrm{KL}}/2}$. The AUC satisfies $\text{AUC} \geq \frac{1}{2}(1 + \|P_{\text{attack}} - P_{\text{benign}}\|_{TV})$. Combining and applying the bound $\|P\|_{TV} \leq 1 - e^{-D_{\mathrm{KL}}/2}$ gives the result.
 \end{proof}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{KL Divergence and Detection Rate
+Coupling}
 \begin{table}[htbp]
 \centering
 \caption{Information-theoretic detectability by attack class.}
@@ -737,9 +897,9 @@ $\Omega_5$ (Systemic) & 0.2 & 0.61 & 46 & 0.65 \\
 \bottomrule
 \end{tabular}
 \end{table}
-\end{block}
+\end{frame}
 
-\begin{block}{Fundamental Undetectability Regime}
+\begin{frame}[allowframebreaks]{Fundamental Undetectability Regime}
 \protect\phantomsection\label{fundamental-undetectability-regime}
 \begin{definition}[Undetectable Attack]
 \label{def:undetectable}
@@ -756,30 +916,38 @@ for any detector with finite observation budget $n$.
 Attack $\mathcal{A}$ with $D_{\mathrm{KL}}(P_{\text{attack}} \| P_{\text{benign}}) < 4\epsilon^2$ is $\epsilon$-undetectable for any detector observing fewer than $n^* = O(1/D_{\mathrm{KL}})$ samples.
 \end{theorem}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Fundamental Undetectability Regime}
 \begin{remark}[Implication for Defense Strategy]
 \label{rem:undetectability-implication}
 Theorem~\ref{thm:undetectability} establishes that sufficiently subtle attacks are provably undetectable within bounded observation windows. This motivates the CIF's containment strategy: when detection is impossible, the bounded trust calculus and action restrictions limit attack impact even without detection. This converts a ``detect-and-respond'' model to a ``bound-and-contain'' model for the stealthiest attacks.
 \end{remark}
-\end{block}
 \end{frame}
 
+\subsection{Multi-Stage Detection
+Pipeline}\label{sec:multi-stage-pipeline}
+
 \begin{frame}[allowframebreaks]{Multi-Stage Detection Pipeline}
-\protect\phantomsection\label{sec:multi-stage-pipeline}
 \begin{figure}
 \centering
-\includegraphics[width=0.85\linewidth,height=0.46\textheight,keepaspectratio,alt={Schematic detection-performance curves (illustrative, theory-guided, not measured): detection rate by attack category across representative defense stages. Measured pipeline results are reported in Part 2.}]{../figures/detection_performance.pdf}
+\includegraphics[width=0.85\linewidth,height=0.40\textheight,keepaspectratio,alt={Schematic detection-performance curves (illustrative, theory-guided, not measured): detection rate by attack category across representative defense stages. Measured pipeline results are reported in Part 2.}]{../figures/detection_performance.pdf}
 \caption{Schematic detection-performance curves (illustrative,
 theory-guided, not measured): detection rate by attack category across
 representative defense stages. Measured pipeline results are reported in
 Part 2.}\label{fig:detection-performance}
 \end{figure}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Multi-Stage Detection Pipeline}
 \emph{Real systems cannot run all detectors on all messages
 simultaneously. This section formalizes a staged pipeline that applies
 computationally cheap detectors first, escalating to expensive detectors
 only when lower stages trigger.}
+\end{frame}
 
-\begin{block}{Pipeline Architecture}
+\begin{frame}[allowframebreaks]{Pipeline Architecture}
 \protect\phantomsection\label{pipeline-architecture}
 \begin{definition}[Multi-Stage Detection Pipeline]
 \label{def:multi-stage}
@@ -791,6 +959,9 @@ A $k$-stage detection pipeline is a sequence of detectors with increasing accura
 with \textbf{escalation rule}: message $m$ advances to stage $i+1$ if and only if $\mathcal{D}_i(m) \geq \theta_i$ (above suspicion threshold).
 \end{definition}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Pipeline Architecture}
 \begin{table}[htbp]
 \centering
 \caption{Recommended multi-stage detection pipeline configuration.}
@@ -822,6 +993,9 @@ For typical values ($\rho_i \approx 0.15$ per stage), this achieves near-full ac
 Expected cost is the sum over stages of stage cost times probability of reaching that stage. The probability of reaching stage $i$ is $\prod_{j=1}^{i-1} \rho_j$ by the Markov property of the escalation chain.
 \end{proof}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Pipeline Architecture}
 \begin{theorem}[Pipeline TPR Bound]
 \label{thm:pipeline-tpr}
 The pipeline's overall TPR is:
@@ -831,9 +1005,9 @@ The pipeline's overall TPR is:
 \end{equation}
 Since attacks are more likely to escalate than benign messages ($\rho_i^{\text{attack}} > \rho_i^{\text{benign}}$), the pipeline is biased toward detecting attacks.
 \end{theorem}
-\end{block}
+\end{frame}
 
-\begin{block}{Adaptive Threshold Selection}
+\begin{frame}[allowframebreaks]{Adaptive Threshold Selection}
 \protect\phantomsection\label{adaptive-threshold-selection}
 \begin{definition}[Adaptive Threshold]
 \label{def:adaptive-threshold}
@@ -845,6 +1019,9 @@ Thresholds adapt to observed attack frequency via online Bayesian update:
 where $\alpha_{\text{lr}}$ is the learning rate and $C_{\text{FN}}, C_{\text{FP}}$ are cost weights.
 \end{definition}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Adaptive Threshold Selection}
 This adaptive mechanism allows the pipeline to respond to shifting
 attack distributions, reducing the staleness problem that affects static
 threshold configurations.
@@ -855,13 +1032,13 @@ methods formalized here are empirically evaluated in Part 2
 \cite{friedman2026cogsec2}. Key findings: (1) the multi-stage pipeline
 shows biased escalation consistent with \cref{thm:pipeline-tpr}; (2)
 adversarial training across five rounds demonstrates adaptive threshold
-adjustment consistent with \cref{def:adaptive-threshold}, converging
-from a 55.3\% evasion rate to 24.9\% after hardening; (3) per-stage miss
-rates attributed to \(\Omega_3\)--\(\Omega_5\) adversary classes explain
-the residual detection gap between the parametric ceiling and prototype
-performance (Part 2, §5g, §S08).
+adjustment consistent with \cref{def:adaptive-threshold}, raising
+hardened detection from 52.0\% at Round 1 to 67.9\% at Round 5 in Part
+2's closed-form design model; (3) per-stage miss rates attributed to
+\(\Omega_3\)--\(\Omega_5\) adversary classes explain the residual
+detection gap between the parametric ceiling and prototype performance
+(Part 2, §5g, §S08).
 \end{quote}
-\end{block}
 \end{frame}
 
 \end{document}

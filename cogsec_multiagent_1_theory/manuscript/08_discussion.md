@@ -138,7 +138,7 @@ CIF builds on and extends several research traditions:
 
 **Trust Management Systems**: Prior systems (PolicyMaker, SPKI, etc.) focus on authorization decisions. CIF addresses continuous trust evolution with provable decay bounds.
 
-**AI Safety and Alignment**: Constitutional AI and similar approaches address single-agent alignment. CIF extends these concepts to multi-agent coordination integrity.
+**AI Safety and Alignment**: Constitutional AI \cite{bai2022constitutional} and similar approaches address single-agent alignment. CIF extends these concepts to multi-agent coordination integrity.
 
 **Prompt Injection Defenses**: Existing defenses focus on single-agent scenarios. CIF addresses the propagation and amplification of attacks across agent networks.
 

@@ -112,9 +112,82 @@
 \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{#1}}
 \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
 \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\usepackage{longtable,booktabs,array}
+\usepackage{caption}
+\captionsetup[table]{skip=6pt}
+\newcounter{none} % for unnumbered tables
+\usepackage{calc} % for calculating minipage widths
+\usepackage{caption}
+% Make caption package work with longtable
+\makeatletter
+\def\fnum@table{\tablename~\thetable}
+\makeatother
 \setlength{\emergencystretch}{3em} % prevent overfull lines
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+% Manuscript macro/package fallbacks (newcommand -> providecommand).
+% Core mathematical packages
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+% Permit bibliography and theorem prose to break without overfull boxes.
+% Algorithm formatting
+% Tables
+\usepackage{booktabs}
+\usepackage{multirow}
+% Graphics
+% Cross-referencing with smart naming
+% Configure cleveref for custom environments
+% Theorem environments with consistent numbering
+% Code listings used by supplementary implementation examples
+\usepackage{listings}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible}
+% End of theorem environment declarations
+% Math operators
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\KL}{KL}
+\DeclareMathOperator{\Tr}{Tr}
+% Custom commands for notation consistency
+\providecommand{\calA}{\mathcal{A}}
+\providecommand{\calB}{\mathcal{B}}
+\providecommand{\calC}{\mathcal{C}}
+\providecommand{\calD}{\mathcal{D}}
+\providecommand{\calF}{\mathcal{F}}
+\providecommand{\calG}{\mathcal{G}}
+\providecommand{\calH}{\mathcal{H}}
+\providecommand{\calI}{\mathcal{I}}
+\providecommand{\calM}{\mathcal{M}}
+\providecommand{\calO}{\mathcal{O}}
+\providecommand{\calP}{\mathcal{P}}
+\providecommand{\calS}{\mathcal{S}}
+\providecommand{\calT}{\mathcal{T}}
+\providecommand{\calW}{\mathcal{W}}
+% Note: \Phi is a standard LaTeX command, do not redefine
+% Trust notation
+\providecommand{\trust}[2]{\mathcal{T}_{#1 \to #2}}
+\providecommand{\trustt}[3]{\mathcal{T}_{#1 \to #2}^{#3}}
+% Belief notation
+\providecommand{\belief}[2]{\mathcal{B}_{#1}(#2)}
+\providecommand{\belieft}[3]{\mathcal{B}_{#1}^{#2}(#3)}
+% Cognitive state
+\providecommand{\cogstate}[1]{\sigma_{#1}}
+% Attack notation
+\providecommand{\attack}[1]{\mathcal{A}_{#1}}
+\providecommand{\adversary}[1]{\Omega_{#1}}
+% Defense notation
+\providecommand{\firewall}{\mathcal{F}}
+\providecommand{\sandbox}{\mathcal{S}_{box}}
+% Probability and expectation
+\providecommand{\E}{\mathbb{E}}
+\providecommand{\Prob}{\mathbb{P}}
+\providecommand{\indicator}{\mathbb{1}}
+% QED symbol
+\providecommand{\qedsymbol}{$\blacksquare$}
+% Page Layout (Slightly smaller margins)
+% Hyperlink Styling
+% List of Figures and List of Tables in TOC
+
 % Slide layout defaults for warning-clean scientific decks.
 \usepackage{etoolbox}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{}
@@ -128,6 +201,33 @@
 \setlength{\tabcolsep}{2pt}
 \AtBeginEnvironment{longtable}{\tiny\renewcommand{\arraystretch}{0.86}\setlength{\tabcolsep}{1pt}}
 \AtBeginEnvironment{tabular}{\tiny\renewcommand{\arraystretch}{0.86}\setlength{\tabcolsep}{1pt}}
+\AtBeginEnvironment{equation}{\tiny}
+\AtBeginEnvironment{equation*}{\tiny}
+\AtBeginEnvironment{align}{\tiny}
+\AtBeginEnvironment{align*}{\tiny}
+\AtBeginEnvironment{itemize}{\footnotesize}
+\AtBeginEnvironment{enumerate}{\footnotesize}
+\AtBeginEnvironment{description}{\footnotesize}
+\setbeamerfont{caption}{size=\tiny}
+\setbeamerfont{caption name}{size=\tiny}
+\setbeamerfont{normal text}{size=\small}
+\setbeamerfont{frametitle}{size=\small}
+\setbeamerfont{section title}{size=\footnotesize}
+\setbeamerfont{subsection title}{size=\footnotesize}
+\setbeamertemplate{section page}{%
+  \centering
+  \begin{beamercolorbox}[sep=12pt,center,wd=\paperwidth]{section title}
+    \parbox{0.86\paperwidth}{\centering\usebeamerfont{section title}\insertsection\par}
+  \end{beamercolorbox}
+}
+\setbeamertemplate{subsection page}{%
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,wd=\paperwidth]{subsection title}
+    \parbox{0.86\paperwidth}{\centering\usebeamerfont{subsection title}\insertsubsection\par}
+  \end{beamercolorbox}
+}
+\setlength{\abovecaptionskip}{2pt}
+\setlength{\belowcaptionskip}{0pt}
 
 % Natbib and cross-reference fallbacks — slides don't load natbib
 % or cleveref, but combined-PDF manuscript prose may emit these
@@ -142,9 +242,20 @@
 \providecommand{\citeyear}[1]{#1}
 \providecommand{\cref}[1]{\texttt{\detokenize{#1}}}
 \providecommand{\Cref}[1]{\texttt{\detokenize{#1}}}
+\providecommand{\crefrange}[2]{\texttt{\detokenize{#1}}--\texttt{\detokenize{#2}}}
+\providecommand{\Crefrange}[2]{\texttt{\detokenize{#1}}--\texttt{\detokenize{#2}}}
+\providecommand{\paragraph}[1]{\textbf{#1}\ }
+
+% Additional theorem-like environments from manuscript preamble.
+\newtheorem{observation}{Observation}
+\newtheorem{formalization}{Formalization}
+\newtheorem{principle}{Principle}
 
 \newtheorem{proposition}{Proposition}
 \newtheorem{hypothesis}{Hypothesis}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{axiom}{Axiom}
+\newtheorem{property}{Property}
 \usepackage{bookmark}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same}
@@ -178,9 +289,9 @@ This section establishes safety properties
 (\cref{sec:model-checking}).
 \end{frame}
 
-\begin{frame}[allowframebreaks]{Safety Properties}
-\protect\phantomsection\label{sec:safety-properties}
-\begin{block}{Belief Integrity}
+\subsection{Safety Properties}\label{sec:safety-properties}
+
+\begin{frame}[allowframebreaks]{Belief Integrity}
 \protect\phantomsection\label{sec:belief-integrity-proof}
 \begin{theorem}[Belief Injection Resistance]
 \label{thm:belief-injection}
@@ -240,6 +351,9 @@ P(\mathcal{A}_{BI} \text{ succeeds}) = P(E_f \cap E_s) = (1 - r_f) \cdot (1 - r_
 \end{equation}
 \end{proof}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Belief Integrity}
 \begin{corollary}[Empirical Security Bound]
 \label{cor:empirical-security}
 With $r_f = 0.8$ and $r_s = 0.7$:
@@ -250,16 +364,17 @@ P(\text{success}) \leq (1 - 0.8)(1 - 0.7) = 0.2 \cdot 0.3 = 0.06
 \end{corollary}
 
 \begin{corollary}[Layered Defense Generalization]
-\label{cor:layered-defense}
+\label{cor:n-layer-bound}
 For $n$ independent defense layers with rates $r_1, \ldots, r_n$:
 \begin{equation}
 \label{eq:n-layer-bound}
 P(\text{success}) \leq \prod_{i=1}^{n} (1 - r_i)
 \end{equation}
 \end{corollary}
-\end{block}
+\end{frame}
 
-\begin{block}{Trust Boundedness}
+\begin{frame}[allowframebreaks]{No Trust Amplification (Model-Checking
+Target)}
 \protect\phantomsection\label{sec:trust-bound-proof}
 \begin{theorem}[No Trust Amplification]
 \label{thm:trust-bound}
@@ -287,9 +402,9 @@ By trust delegation rule (\cref{def:trust-delegation}) and induction on path len
 &= \min_{i \in [0,k]} \mathcal{T}_{a_i \to a_{i+1}} \nonumber
 \end{align}
 \end{proof}
-\end{block}
+\end{frame}
 
-\begin{block}{Goal Alignment Preservation}
+\begin{frame}[allowframebreaks]{Goal Alignment Preservation}
 \protect\phantomsection\label{sec:goal-alignment-proof}
 \begin{theorem}[Goal Alignment Invariant]
 \label{thm:goal-alignment}
@@ -303,11 +418,11 @@ If the system starts with aligned goals and all goal updates follow the delegati
 \begin{proof}
 ValidUpdate requires new goals derive from principal or valid delegation chain. By induction on time $t$, alignment is preserved at every step.
 \end{proof}
-\end{block}
 \end{frame}
 
+\subsection{Invariant Preservation Lemmas}\label{sec:invariant-lemmas}
+
 \begin{frame}[allowframebreaks]{Invariant Preservation Lemmas}
-\protect\phantomsection\label{sec:invariant-lemmas}
 \begin{lemma}[Belief Consistency Preservation]
 \label{lem:belief-consistency}
 If $\mathcal{B}_i^t$ is consistent and the belief update follows Rule B-DIRECT or B-DELEGATED (\cref{sec:belief-update-rules}), then $\mathcal{B}_i^{t+1}$ is consistent.
@@ -341,6 +456,9 @@ Therefore, only consistent updates reach $\mathcal{B}_{verified}$.
 Same argument, with additional trust decay ensuring lower confidence for delegated evidence.
 \end{proof}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Invariant Preservation Lemmas}
 \begin{lemma}[Trust Matrix Preservation]
 \label{lem:trust-preservation}
 The trust matrix $\mathcal{T}$ remains well-formed after any valid update:
@@ -374,6 +492,9 @@ For delegation (\cref{def:trust-delegation}):
 Since $\min(\cdot) \leq 1$ and $\delta \in (0, 1)$, we have $\mathcal{T}_{i \to k}^{del} \in [0, 1]$.
 \end{proof}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Invariant Preservation Lemmas}
 \begin{lemma}[Provenance Chain Integrity]
 \label{lem:provenance-integrity}
 Every belief in $\mathcal{B}_{verified}$ has a valid, verifiable provenance chain.
@@ -397,6 +518,9 @@ By construction of the sandbox, beliefs can only enter $\mathcal{B}_{verified}$ 
 In both cases, provenance is verified. By induction on the history of $\mathcal{B}_{verified}$, all beliefs have valid provenance.
 \end{proof}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Invariant Preservation Lemmas}
 \begin{lemma}[Permission Boundary Preservation]
 \label{lem:permission-boundary}
 Effective permissions never exceed granted permissions:
@@ -416,6 +540,9 @@ By \cref{def:permission-layer}:
 Since intersection can only reduce permissions ($A \cap B \cap C \subseteq A$), we have $\mathcal{P}_{effective}(a_i, \text{action}) \leq \mathcal{P}_{role}(a_i, \text{action})$ for all actions.
 \end{proof}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Invariant Preservation Lemmas}
 \begin{lemma}[Firewall Completeness]
 \label{lem:firewall-completeness}
 Every incoming message is classified by the firewall.
@@ -439,9 +566,9 @@ Since $D_{inj}$ and $D_{sus}$ are defined for all messages, and the conditions a
 \end{proof}
 \end{frame}
 
-\begin{frame}[allowframebreaks]{Liveness Properties}
-\protect\phantomsection\label{sec:liveness-properties}
-\begin{block}{Non-Blocking}
+\subsection{Liveness Properties}\label{sec:liveness-properties}
+
+\begin{frame}[allowframebreaks]{Non-Blocking}
 \protect\phantomsection\label{sec:non-blocking}
 \begin{theorem}[Firewall Liveness]
 \label{thm:firewall-liveness}
@@ -455,9 +582,9 @@ CIF firewall preserves liveness for legitimate inputs:
 \begin{proof}
 By firewall design, false positive rate is bounded by $\epsilon_{fp}$. Legitimate messages are rejected only on false positive, establishing the bound.
 \end{proof}
-\end{block}
+\end{frame}
 
-\begin{block}{Progress Guarantee}
+\begin{frame}[allowframebreaks]{Progress Guarantee}
 \protect\phantomsection\label{sec:progress-guarantee}
 \begin{theorem}[Byzantine Consensus Termination]
 \label{thm:byzantine-termination}
@@ -471,13 +598,15 @@ P(\text{consensus reached in } O(f+1) \text{ rounds}) = 1
 \begin{proof}
 Standard Byzantine agreement result (Lamport et al., 1982). With honest majority $n \geq 3f + 1$, the PBFT protocol guarantees termination in $f+1$ rounds.
 \end{proof}
-\end{block}
 \end{frame}
 
-\begin{frame}[allowframebreaks]{Complexity Bounds}
-\protect\phantomsection\label{sec:complexity-bounds}
-\begin{block}{Space Complexity}
+\subsection{Complexity Bounds}\label{sec:complexity-bounds}
+
+\begin{frame}[allowframebreaks]{Space Complexity}
 \protect\phantomsection\label{sec:space-complexity}
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Space Complexity}
 \begin{table}[htbp]
 \centering
 \caption{Per-component space complexity.}
@@ -523,10 +652,13 @@ Global:
 
 Total for $n$ agents: $O(n \cdot (|\Phi| \cdot d + k + w) + n^2)$.
 \end{proof}
-\end{block}
+\end{frame}
 
-\begin{block}{Time Complexity}
+\begin{frame}[allowframebreaks]{Time Complexity}
 \protect\phantomsection\label{sec:time-complexity}
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Time Complexity}
 \begin{table}[htbp]
 \centering
 \caption{Per-operation time complexity.}
@@ -566,6 +698,9 @@ Message processing pipeline:
 Provenance verification can be bounded by timeout. Total: $O(|m| + d)$.
 \end{proof}
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Time Complexity}
 \begin{theorem}[Consensus Round Complexity]
 \label{thm:consensus-complexity}
 Byzantine consensus requires $O((f+1) \cdot n^2)$ message complexity.
@@ -579,9 +714,9 @@ Standard PBFT result:
 \item Total: $O((f+1) \cdot n^2)$
 \end{itemize}
 \end{proof}
-\end{block}
+\end{frame}
 
-\begin{block}{Latency Overhead}
+\begin{frame}[allowframebreaks]{Latency Overhead}
 \protect\phantomsection\label{sec:latency-overhead}
 \begin{theorem}[Bounded Latency Overhead]
 \label{thm:latency-overhead}
@@ -600,11 +735,11 @@ Expected latency is sum of:
 \item Verification (conditional): $L_{verify} \cdot P(\text{belief promoted})$
 \end{enumerate}
 
-With empirical measurements:
+With illustrative parameters (these are worked-example values chosen to exercise the bound, not measurements; Part 2 reports a mean firewall latency of 0.08\,ms per sample on its prototype pipeline, and the deployment-scale constants below are not derived from it):
 \begin{itemize}
-\item $L_{firewall} \approx 10\text{ms}$
-\item $L_{sandbox} \approx 5\text{ms}$, $P(\text{quarantine}) \approx 0.3$
-\item $L_{verify} \approx 15\text{ms}$, $P(\text{verify}) \approx 0.2$
+\item $L_{firewall} = 10\text{ms}$
+\item $L_{sandbox} = 5\text{ms}$, $P(\text{quarantine}) = 0.3$
+\item $L_{verify} = 15\text{ms}$, $P(\text{verify}) = 0.2$
 \end{itemize}
 
 \begin{equation}
@@ -614,12 +749,11 @@ L_{CIF} \approx 10 + 5 \cdot 0.3 + 15 \cdot 0.2 = 10 + 1.5 + 3 = 14.5\text{ms}
 
 Compared to baseline $\approx 11.8\text{ms}$: overhead factor $\approx 1.23$ (23\%).
 \end{proof}
-\end{block}
 \end{frame}
 
-\begin{frame}[fragile,allowframebreaks]{Formal Model Checking}
-\protect\phantomsection\label{sec:model-checking}
-\begin{block}{State Space Definition}
+\subsection{Formal Model Checking}\label{sec:model-checking}
+
+\begin{frame}[allowframebreaks]{State Space Definition}
 \protect\phantomsection\label{sec:state-space}
 \begin{definition}[System State]
 \label{def:system-state-verification}
@@ -630,9 +764,9 @@ s = (\sigma_1, \ldots, \sigma_n, \mathcal{S}, \mathcal{T})
 \end{equation}
 where $\sigma_i$ is agent $i$'s cognitive state, $\mathcal{S}$ is shared state, and $\mathcal{T}$ is the trust matrix.
 \end{definition}
-\end{block}
+\end{frame}
 
-\begin{block}{Temporal Properties}
+\begin{frame}[allowframebreaks]{Temporal Properties}
 \protect\phantomsection\label{sec:temporal-properties}
 We verify the following CTL (Computation Tree Logic) properties:
 
@@ -662,9 +796,9 @@ AG(AF(\text{tripwire\_checked}))
 \end{equation}
 ``Tripwires are checked infinitely often.''
 \end{property}
-\end{block}
+\end{frame}
 
-\begin{block}{Model Checking Results}
+\begin{frame}[allowframebreaks]{Model Checking Results}
 \protect\phantomsection\label{sec:mc-results}
 The following table summarizes the expected state space exploration for
 each property based on formal analysis of the CIF specification. These
@@ -674,6 +808,9 @@ analysis (\cref{sec:complexity-bounds}). Actual model checking execution
 using NuSMV, SPIN, and TLA+ tooling is presented in Part 2 of this
 series, along with full implementation configurations.
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Model Checking Results}
 \begin{table}[htbp]
 \centering
 \caption{Model checking verification results. ``Verified'' here denotes a theoretical state-space bound established in this part; executable NuSMV/SPIN/TLA+ runs are deferred to Part 2 \S 04 (S04). No model checker was executed in this part.}
@@ -696,42 +833,51 @@ and verification parameters are provided in Part 2: Computational
 Validation, which presents the executable implementations and empirical
 verification results.
 \end{quote}
-\end{block}
+\end{frame}
 
-\begin{block}{Verification Results Summary}
+\begin{frame}[allowframebreaks]{Verification Results Summary}
 \protect\phantomsection\label{sec:verification-summary}
-The following table summarizes the expected verification outcomes for
-each tool-property combination based on the formal specifications above.
-These guarantees follow from the CTL/LTL property specifications
+The following table records which property each tool is configured to
+check and the status of the corresponding analytical result. It is a
+plan, not a set of outcomes: no model-checking run is executed in this
+paper. These guarantees follow from the CTL/LTL property specifications
 (\cref{sec:temporal-properties}) applied to the state space definition
 (\cref{sec:state-space}). Empirical execution of these verification
 configurations, including runtime measurements and counterexample
 analysis, is presented in Part 2.
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Verification Results Summary}
 \begin{table}[htbp]
 \centering
-\caption{Verification results across tools.}
+\caption{Model-checking plan: the property each tool is configured to check, and
+the status of the corresponding analytical result. No run of these configurations
+is reported in this paper; execution is Part 2's.}
 \label{tab:verification-results}
 \begin{tabular}{@{}llll@{}}
 \toprule
-Tool & Property & Guarantee & Reference \\
+Tool & Property to check & Status of the analytical result & Reference \\
 \midrule
-NuSMV & Belief Integrity & Proven & \cref{thm:belief-injection} \\
-NuSMV & Trust Bounded & Proven & \cref{thm:trust-bound} \\
-SPIN & No Deadlock & Verified & \cref{thm:firewall-liveness} \\
-SPIN & Eventual Detection & Verified & \cref{thm:progressive-detection} \\
-TLA+ & Type Invariant & Validated & \cref{def:system-state} \\
-TLA+ & Consensus Integrity & Validated & \cref{thm:byzantine-termination} \\
+NuSMV & Belief Integrity & Proved (S01) & \cref{thm:belief-injection} \\
+NuSMV & No Trust Amplification & Proved (S01) & \cref{thm:trust-bound} \\
+SPIN & No Deadlock & Proved (S01) & \cref{thm:firewall-liveness} \\
+SPIN & Eventual Detection & Asserted, proof deferred & \cref{thm:progressive-detection} \\
+TLA+ & Type Invariant & Definitional & \cref{def:system-state} \\
+TLA+ & Consensus Integrity & Proved (S01) & \cref{thm:byzantine-termination} \\
 \bottomrule
 \end{tabular}
 \end{table}
-\end{block}
+\end{frame}
 
-\begin{block}{Counterexample Analysis}
+\begin{frame}[fragile,allowframebreaks]{Counterexample Analysis}
 \protect\phantomsection\label{sec:counterexample}
-When verification fails, model checkers produce counterexamples.
-Analysis procedure:
+When verification fails, model checkers produce counterexamples
+\cite{clarke1999model}. Analysis procedure:
 
+\end{frame}
+
+\begin{frame}[fragile,allowframebreaks]{Counterexample Analysis}
 \begin{enumerate}
 \item \textbf{Extract trace}: Sequence of states leading to violation
 \item \textbf{Identify trigger}: First state where invariant fails
@@ -758,7 +904,6 @@ Analysis procedure:
 \textbf{Fix}: Add predicate \(|\text{Corroborate}(\phi)| \geq \kappa\)
 to Rule S-PROMOTE (\cref{sec:sandbox-rules}).
 \end{quote}
-\end{block}
 \end{frame}
 
 \end{document}

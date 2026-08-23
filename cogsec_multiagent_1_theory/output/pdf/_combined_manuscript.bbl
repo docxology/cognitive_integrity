@@ -1,9 +1,38 @@
-\begin{thebibliography}{53}
+\begin{thebibliography}{62}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
   \providecommand{\doi}[1]{doi: #1}\else
   \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[{Aim Labs}(2025)]{echoleak2025}
+{Aim Labs}.
+\newblock {EchoLeak}: Zero-click data exfiltration from {Microsoft} 365
+  {Copilot} via {LLM} scope violation.
+\newblock Security advisory, {CVE-2025-32711} (CVSS 9.3), 2025.
+\newblock URL \url{https://nvd.nist.gov/vuln/detail/CVE-2025-32711}.
+\newblock Zero-click indirect prompt injection: a payload hidden in an inbound
+  email is parsed and retained by the assistant, then used to exfiltrate data
+  already inside its retrieval scope, with no user interaction. Patched
+  server-side by Microsoft; no exploitation observed in the wild.
+
+\bibitem[Amari and Nagaoka(2000)]{amari2000methods}
+Shun-ichi Amari and Hiroshi Nagaoka.
+\newblock \emph{Methods of Information Geometry}.
+\newblock American Mathematical Society, 2000.
+\newblock Foundational text on information geometry; defines the Fisher-Rao
+  metric, geodesics on the probability simplex, and the natural gradient. The
+  Fisher-Rao distance $d_{\mathrm{FR}}(p,q) = 2\arccos(\sum_i\sqrt{p_i q_i})$
+  used in the stealth-impact bound is derived from the sphere isometry of the
+  probability simplex.
+
+\bibitem[Bai et~al.(2022)Bai, Kadavath, Kundu, Askell, Kernion, Jones, Chen,
+  Goldie, Mirhoseini, McKinnon, et~al.]{bai2022constitutional}
+Yuntao Bai, Saurav Kadavath, Sandipan Kundu, Amanda Askell, Jackson Kernion,
+  Andy Jones, Anna Chen, Anna Goldie, Azalia Mirhoseini, Cameron McKinnon,
+  et~al.
+\newblock Constitutional {AI}: Harmlessness from {AI} feedback.
+\newblock \emph{arXiv preprint arXiv:2212.08073}, 2022.
 
 \bibitem[Bonabeau et~al.(1999)Bonabeau, Dorigo, and
   Theraulaz]{bonabeau1999swarm}
@@ -28,10 +57,34 @@ Patrick Chao, Alexander Robey, Edgar Dobriban, Hamed Hassani, George~J. Pappas,
   language models.
 \newblock \emph{arXiv preprint arXiv:2404.01318}, 2024.
 
-\bibitem[Chen and Wang(2025)]{topicattack2025}
-Li~Chen and Bo~Wang.
-\newblock {TopicAttack}: Semantic drift in long-horizon agent interactions.
-\newblock \emph{arXiv preprint arXiv:2502.09876}, 2025.
+\bibitem[Chen et~al.(2025)Chen, Li, Li, Liu, Song, and Hooi]{topicattack2025}
+Yulin Chen, Haoran Li, Yuexin Li, Yue Liu, Yangqiu Song, and Bryan Hooi.
+\newblock {TopicAttack}: An indirect prompt injection attack via topic
+  transition.
+\newblock In \emph{Proceedings of the 2025 Conference on Empirical Methods in
+  Natural Language Processing (EMNLP)}, 2025.
+\newblock arXiv:2507.13686, EMNLP 2025. A generated conversational transition
+  gradually shifts the topic toward the injected instruction, raising the
+  injected-to-original attention ratio and exceeding 90\% attack success in
+  most settings even against deployed defenses.
+
+\bibitem[Chernoff(1952)]{chernoff1952measure}
+Herman Chernoff.
+\newblock A measure of asymptotic efficiency for tests of a hypothesis based on
+  the sum of observations.
+\newblock \emph{Annals of Mathematical Statistics}, 23\penalty0 (4):\penalty0
+  493--507, 1952.
+\newblock \doi{10.1214/aoms/1177729330}.
+\newblock Introduces Chernoff information $C^*$ as the maximum error exponent
+  for hypothesis testing; the sample complexity bound $n^* =
+  \lceil\log(1/\epsilon)/C^*\rceil$ for attack detection derives from this
+  result.
+
+\bibitem[Clarke et~al.(1999)Clarke, Grumberg, and Peled]{clarke1999model}
+Edmund~M. Clarke, Orna Grumberg, and Doron~A. Peled.
+\newblock \emph{Model Checking}.
+\newblock MIT Press, 1999.
+\newblock ISBN 978-0262032704.
 
 \bibitem[{Cloud Security Alliance}(2025)]{cdr2025}
 {Cloud Security Alliance}.
@@ -81,6 +134,14 @@ R.~J. Cordes, Daniel~Ari Friedman, and {contributors}.
 \newblock ATLAS-23 Initiative. Specifies a generalized system for managing
   patterns of practice and risk in cognitive security.
 
+\bibitem[Cover and Thomas(2006)]{cover2006elements}
+Thomas~M. Cover and Joy~A. Thomas.
+\newblock \emph{Elements of Information Theory}.
+\newblock Wiley-Interscience, 2nd edition, 2006.
+\newblock Comprehensive reference for information theory; Pinsker's inequality
+  $\|P-Q\|_{\mathrm{TV}} \leq \sqrt{D_{\mathrm{KL}}(P\|Q)/2}$ (Lemma 11.6.1) is
+  used in the KL-AUC coupling proof.
+
 \bibitem[Currie et~al.(2006)Currie, Poulsen, Mendenhall, Boomsma, and
   Billen]{currie2006coevolved}
 Cameron~R. Currie, Michael Poulsen, John Mendenhall, Jacobus~J. Boomsma, and
@@ -129,23 +190,23 @@ Hermogenes Fern{\'a}ndez-Mar{\'\i}n, Jess~K. Zimmerman, Stephen~A. Rehner, and
 
 \bibitem[Friedman(2026{\natexlab{a}})]{friedman2026cogsec2}
 Daniel~Ari Friedman.
-\newblock Cognitive integrity framework: Computational validation,
-  2026{\natexlab{a}}.
+\newblock Cognitive integrity framework: Computational validation and empirical
+  analysis, 2026{\natexlab{a}}.
 \newblock Part 2: Implementation and Empirical Analysis --- 950-attack corpus,
   multi-tier evaluation, ablation studies, Bayesian uncertainty, and parametric
   architecture-aware simulation across four production multiagent topologies.
 
 \bibitem[Friedman(2026{\natexlab{b}})]{friedman2026cogsec3}
 Daniel~Ari Friedman.
-\newblock Cognitive integrity framework: Practitioner guidance and critical
-  domain applications, 2026{\natexlab{b}}.
+\newblock Cognitive integrity framework: Practical applications and deployment
+  guide, 2026{\natexlab{b}}.
 \newblock Part 3 (merged from original Parts 3+4): Qualitative review and
   practitioner synthesis --- accessible-language distillation, deployment
   guides, subagent hardening, incident-response playbooks, monitoring,
   cost-benefit analysis, operator risk frameworks --- combined with CIF-AD-OODA
   applications across ten critical operational domains, three universal attack
   patterns (FR Polarity Inversion, Constraint Relaxation, Context Boundary
-  Violation), three novel defense extensions, and retrospective analysis of
+  Violation), four novel defense extensions, and retrospective analysis of
   2024--2025 AI-agent security incidents.
 
 \bibitem[Friston et~al.(2010)Friston, Daunizeau, and Kiebel]{friston2010action}
@@ -157,13 +218,6 @@ Karl~J. Friston, Jean Daunizeau, and Stefan~J. Kiebel.
 \newblock Foundational formulation of action selection as free-energy
   minimization; establishes the variational principle underlying belief
   updating that the belief sandbox constrains.
-
-\bibitem[Garcia et~al.(2025)Garcia, Thompson, and Lee]{trustdynamics2025}
-Maria Garcia, David Thompson, and Sunhee Lee.
-\newblock Trust dynamics in strategic coopetition: Computational foundations
-  for requirements engineering in multi-agent systems.
-\newblock \emph{arXiv preprint arXiv:2510.24909}, 2025.
-\newblock 81.7\% validation accuracy in trust trajectory prediction.
 
 \bibitem[Grass{\'e}(1959)]{grasse1959reconstruction}
 Pierre-Paul Grass{\'e}.
@@ -180,6 +234,14 @@ Christoph Gr{\"u}ter and Walter~M. Farina.
   242--247, 2009.
 \newblock \doi{10.1016/j.tree.2008.12.007}.
 
+\bibitem[H{\"o}lldobler and Wilson(1990)]{holldobler1990ants}
+Bert H{\"o}lldobler and Edward~O. Wilson.
+\newblock \emph{The Ants}.
+\newblock Belknap Press of Harvard University Press, 1990.
+\newblock ISBN 9780674040755.
+\newblock Pulitzer-winning comprehensive treatment of ant biology; the
+  reference work for colony organisation, communication and caste.
+
 \bibitem[Hubinger et~al.(2024)]{sleeperagents2024}
 Evan Hubinger et~al.
 \newblock Sleeper agents: Training deceptive {LLM}s that persist through safety
@@ -192,8 +254,8 @@ Duncan~E. Jackson and Francis L.~W. Ratnieks.
 \newblock \emph{Current Biology}, 16\penalty0 (15):\penalty0 R570--R574, 2006.
 \newblock \doi{10.1016/j.cub.2006.07.015}.
 
-\bibitem[Jo et~al.(2025)Jo, Kim, and Park]{jo2025byzantine}
-Yongrae Jo, Seunghyun Kim, and Jinho Park.
+\bibitem[Jo and Park(2025)]{jo2025byzantine}
+Yongrae Jo and Chanik Park.
 \newblock Byzantine-robust decentralized coordination of {LLM} agents.
 \newblock \emph{arXiv preprint arXiv:2507.14928}, 2025.
 
@@ -213,23 +275,12 @@ Matthias Konrad, Meghan~L. Vyleta, Fabian~J. Theis, Miriam Stock, Sandra
 \newblock \emph{PLoS Biology}, 10\penalty0 (4):\penalty0 e1001300, 2012.
 \newblock \doi{10.1371/journal.pbio.1001300}.
 
-\bibitem[Kumar and Smith(2025)]{promptpwnd2025}
-R.~Kumar and J.~Smith.
-\newblock {PromptPwnd}: Remote code execution via prompt injection in
-  autonomous agents.
-\newblock \emph{arXiv preprint arXiv:2503.11223}, 2025.
-
 \bibitem[Lenoir et~al.(2001)Lenoir, D'Ettorre, Errard, and
   Hefetz]{lenoir2001chemical}
 Alain Lenoir, Patrizia D'Ettorre, Christine Errard, and Abraham Hefetz.
 \newblock Chemical ecology and social parasitism in ants.
 \newblock \emph{Annual Review of Entomology}, 46:\penalty0 573--599, 2001.
 \newblock \doi{10.1146/annurev.ento.46.1.573}.
-
-\bibitem[Li et~al.(2025)Li, Wang, and Zhang]{toolhijacker2025}
-Zhengyu Li, Tao Wang, and Lei Zhang.
-\newblock Prompt injection attack to tool selection in {LLM} agents.
-\newblock \emph{arXiv preprint arXiv:2504.19793}, 2025.
 
 \bibitem[Liu et~al.(2023)Liu, Yu, Zhang, Xu, Lei, Lai, Gu, Ding, Men, Yang,
   et~al.]{liu2023agentbench}
@@ -258,6 +309,17 @@ Gr{\'e}goire Mialon, Roberto Dess{\`\i}, Maria Lomeli, Christoforos Nalmpantis,
   Ram Pasunuru, Roberta Raber, et~al.
 \newblock {GAIA}: A benchmark for general {AI} assistants.
 \newblock \emph{arXiv preprint arXiv:2311.12983}, 2023.
+
+\bibitem[Neyman and Pearson(1933)]{neyman1933ix}
+Jerzy Neyman and Egon~S. Pearson.
+\newblock On the problem of the most efficient tests of statistical hypotheses.
+\newblock \emph{Philosophical Transactions of the Royal Society A},
+  231:\penalty0 289--337, 1933.
+\newblock \doi{10.1098/rsta.1933.0009}.
+\newblock Foundation of optimal hypothesis testing; the Neyman-Pearson lemma
+  establishes the likelihood ratio test as the uniformly most powerful test,
+  providing the theoretical basis for the optimal cognitive attack detector
+  described in §6.
 
 \bibitem[{OpenClaw}(2026)]{openclaw2026}
 {OpenClaw}.
@@ -294,6 +356,22 @@ Gr{\'e}goire Mialon, Roberto Dess{\`\i}, Maria Lomeli, Christoforos Nalmpantis,
 \newblock URL
   \url{https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/}.
 \newblock Released December 2025.
+
+\bibitem[Page(1954)]{page1954continuous}
+Ewan~S. Page.
+\newblock Continuous inspection schemes.
+\newblock \emph{Biometrika}, 41\penalty0 (1--2):\penalty0 100--115, 1954.
+\newblock \doi{10.1093/biomet/41.1-2.100}.
+\newblock Original CUSUM (Cumulative Sum) sequential change-point detection
+  algorithm. Used as the canonical drift detection method for the Orient phase
+  of the OODA monitor.
+
+\bibitem[Pant and Yu(2025)]{trustdynamics2025}
+Vik Pant and Eric Yu.
+\newblock Computational foundations for strategic coopetition: Formalizing
+  trust and reputation dynamics.
+\newblock \emph{arXiv preprint arXiv:2510.24909}, 2025.
+\newblock 81.7\% validation accuracy in trust trajectory prediction.
 
 \bibitem[Parr and Friston(2019)]{parr2019generalised}
 Thomas Parr and Karl~J. Friston.
@@ -348,6 +426,20 @@ Ana~B. Sendova-Franks, Richard~K. Hayward, Benjamin Wulf, Tobias Klimber,
 \newblock \emph{Animal Behaviour}, 80\penalty0 (1):\penalty0 185--198, 2010.
 \newblock \doi{10.1016/j.anbehav.2010.04.019}.
 
+\bibitem[Shayegani et~al.(2023)Shayegani, Mamun, Fu, Zaree, Dong, and
+  Abu-Ghazaleh]{shayegani2023survey}
+Erfan Shayegani, Md~Abdullah~Al Mamun, Yu~Fu, Pedram Zaree, Yue Dong, and Nael
+  Abu-Ghazaleh.
+\newblock Survey of vulnerabilities in large language models revealed by
+  adversarial attacks.
+\newblock \emph{arXiv preprint arXiv:2310.10844}, 2023.
+
+\bibitem[Shi et~al.(2025)Shi, Yuan, Tie, Zhou, Gong, and Sun]{toolhijacker2025}
+Jiawen Shi, Zenghui Yuan, Guiyao Tie, Pan Zhou, Neil~Zhenqiang Gong, and Lichao
+  Sun.
+\newblock Prompt injection attack to tool selection in {LLM} agents.
+\newblock \emph{arXiv preprint arXiv:2504.19793}, 2025.
+
 \bibitem[Simone et~al.(2009)Simone, Evans, and Spivak]{simone2009resin}
 Marla Simone, Jay~D. Evans, and Marla Spivak.
 \newblock Resin collection and social immunity in honey bees.
@@ -374,12 +466,16 @@ Robert~K. Vander~Meer and Lucia~E. Alonso.
 \newblock In \emph{Pheromone Communication in Social Insects}, pages 159--192.
   Westview Press, 1998.
 
-\bibitem[Wang et~al.(2025)Wang, Li, and Chen]{cpwbft2025}
-Haoran Wang, Xiaoming Li, and Yu~Chen.
-\newblock Rethinking the reliability of multi-agent system: A perspective from
-  {B}yzantine fault tolerance.
-\newblock \emph{arXiv preprint arXiv:2511.10400}, 2025.
-\newblock +85.71\% Byzantine Fault Tolerance Improvement with CP-WBFT.
+\bibitem[Vandevanter(2025)]{promptinjectionrce2025}
+Will Vandevanter.
+\newblock Prompt injection to {RCE} in {AI} agents.
+\newblock Trail of Bits blog, October 2025.
+\newblock URL
+  \url{https://blog.trailofbits.com/2025/10/22/prompt-injection-to-rce-in-ai-agents/}.
+\newblock Argument injection against pre-approved agent tools: agents gate the
+  command name but not its flags, so injected input reaching a permitted
+  utility (\texttt{find}, \texttt{grep}, \texttt{git}, \texttt{go test}) can
+  reach an execution flag such as \texttt{-exec} and obtain code execution.
 
 \bibitem[Waters et~al.(2010)Waters, Holbrook, Fewell, and
   Harrison]{waters2010metabolism}
@@ -408,11 +504,14 @@ Edward~O. Wilson, N.~I. Durlach, and Louis~M. Roth.
 \newblock \emph{Psyche}, 65:\penalty0 108--114, 1958.
 \newblock \doi{10.1155/1958/69391}.
 
-\bibitem[Zhang and Liu(2025)]{echoleak2025}
-Wei Zhang and Yang Liu.
-\newblock {EchoLeak}: Systemic prompt leakage via recursive agent invocation.
-\newblock arXiv preprint arXiv:2501.12345, 2025.
-\newblock CVE-2025-32711.
+\bibitem[Zheng et~al.(2025)Zheng, Chen, Yin, Zhang, Zeng, and Tian]{cpwbft2025}
+Lifan Zheng, Jiawei Chen, Qinghong Yin, Jingyuan Zhang, Xinyi Zeng, and
+  Yu~Tian.
+\newblock Rethinking the reliability of multi-agent system: A perspective from
+  {Byzantine} fault tolerance.
+\newblock \emph{arXiv preprint arXiv:2511.10400}, 2025.
+\newblock Proposes CP-WBFT, a confidence-probe-weighted Byzantine consensus for
+  LLM agents; reports operation under fault rates as high as 85.7\%.
 
 \bibitem[Zou et~al.(2025)]{universal2025triggers}
 Andy Zou et~al.
