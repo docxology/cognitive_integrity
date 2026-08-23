@@ -82,6 +82,15 @@ every number they quoted from Part 2 was typed by hand. The ledger closes that: 
 `shared-quantities` check gates every ledger variable across all three manuscripts, and a
 stated number that disagrees with its artifact fails the build.
 
+The series test count is derived too. It was typed by hand three times and stale three times
+(2,283, then 3,308, then 3,369), because it changes whenever anyone adds a test.
+`scripts/collect_test_inventory.py` records the real counts into
+`test_inventory.json`; `--check` recollects and fails if the recorded numbers have moved, so
+a commit that adds tests without refreshing the inventory is caught rather than left to rot
+in an abstract. It counts *collected* tests rather than passes, because collection is
+deterministic and side-effect free while a pass count depends on the environment a given run
+happened to have.
+
 The matching write path is `scripts/inject_series_values.py`: it rewrites any governed site
 whose number has drifted from its artifact, reusing the ledger's own patterns so the two
 mechanisms cannot disagree about where a number lives. Reporting is the default; `--write`

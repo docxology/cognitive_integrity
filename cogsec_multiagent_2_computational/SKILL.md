@@ -52,7 +52,7 @@ Invoke this skill when:
 ## Commands
 
 ```bash
-# Full test suite (3369 passed / 3 skipped; ~90-160s with coverage)
+# Full test suite (3,380 collected (3,377 pass / 3 skip); ~90-160s with coverage)
 uv run pytest projects/cognitive_integrity/cogsec_multiagent_2_computational/tests/ -q
 
 # Run specific module tests
@@ -78,7 +78,7 @@ uv run python -c "from projects.cognitive_integrity.cogsec_multiagent_2_computat
 
 ## Performance Notes
 
-- Test suite is large (3369 passed / 3 skipped with --cov; ~90s-2.6min).
+- Test suite is large (3,380 collected (3,377 pass / 3 skip) with --cov; ~90s-2.6min).
 - Uses `pytest-timeout` (2s default per test) to catch hangs.
 - Parallel execution possible: `pytest -n auto` (requires pytest-xdist).
 

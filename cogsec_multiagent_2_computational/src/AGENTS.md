@@ -105,7 +105,7 @@ Sibling-paper sections that cite this codebase's metrics:
 | ------- | ------- | -------------- |
 | Paper 1 | §8 Discussion | Ablation deltas from `src.ablation` |
 | Paper 1 | §9 Conclusion | Headline detection rate |
-| Part 3+4 | §3 Evidence | 96–100% parametric ceiling, 3,369 passing tests |
+| Part 3+4 | §3 Evidence | 96–100% parametric ceiling, 3,380 tests |
 | Part 3+4 | §5 Deployment | Per-component configuration guidance |
 | Part 3+4 | §5b Incident Response | Adversary class detection rates |
 | Part 3+4 | §2 Methodology | 96–100% ceiling as validation anchor |

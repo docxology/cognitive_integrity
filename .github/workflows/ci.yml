@@ -336,6 +336,28 @@ jobs:
         continue-on-error: true
         run: python3 scripts/check_series_integrity.py --only cross-paper-pointers
 
+      - name: Test inventory is current
+        # The series test count is quoted in Part 3's abstract. It was typed by
+        # hand three times and stale three times. It is now derived from this
+        # inventory, so a commit that adds tests without refreshing it fails
+        # here rather than leaving the paper quoting yesterday's number.
+        # Needs each part's venv, so it runs in the per-part job image below;
+        # here we only assert the artifact exists and parses.
+        run: |
+          python3 - <<'PY'
+          import json, pathlib, sys
+          p = pathlib.Path("cogsec_multiagent_2_computational/output/data/test_inventory.json")
+          if not p.is_file():
+              sys.exit("test_inventory.json is missing; run scripts/collect_test_inventory.py")
+          d = json.loads(p.read_text())
+          for key in ("per_part", "program_level", "total", "data_origin"):
+              if key not in d:
+                  sys.exit(f"test_inventory.json has no {key!r}")
+          if d["total"] != sum(d["per_part"].values()) + d["program_level"]:
+              sys.exit("test_inventory.json total does not equal its own parts")
+          print(f"test inventory present and self-consistent: {d['total']} tests")
+          PY
+
       - name: Series write path agrees with the read path
         # The injector must find nothing to change on a tree the gate calls
         # clean. If these two disagree, one of them is wrong about where a

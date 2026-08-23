@@ -264,6 +264,22 @@ def at_rounds() -> float:
     return float(_obj("adversarial_training_results.json")["n_rounds"])
 
 
+def part2_test_count() -> float:
+    """Tests in Part 2's suite, from the collected inventory.
+
+    Quoted by Part 3, and typed by hand until now: it was published as 2,283,
+    then 3,308, then 3,369, each correct on the day it was written. Collection
+    counts rather than pass counts, because collection is deterministic and a
+    pass count depends on the environment a given run happened to have.
+    """
+    return float(_obj("test_inventory.json")["per_part"]["cogsec_multiagent_2_computational"])
+
+
+def series_test_count() -> float:
+    """Every test in the series, including the program-level suites."""
+    return float(_obj("test_inventory.json")["total"])
+
+
 def gap_low() -> float:
     """Parametric floor minus the multi-seed mean: the narrow end of the gap."""
     return parametric_ceiling_low() - multiseed_mean()
@@ -598,6 +614,25 @@ LEDGER: tuple[LedgerVariable, ...] = (
         description="Adversarial-training rounds run.",
         artifact="adversarial_training_results.json",
         deriver=at_rounds,
+        unit="count",
+        pattern=None,
+    ),
+    LedgerVariable(
+        id="part2_test_count",
+        description="Tests in Part 2's suite; quoted by Part 3 and previously hand-typed.",
+        artifact="test_inventory.json",
+        deriver=part2_test_count,
+        unit="count",
+        # Three thousand-separator spellings are in use across the tree:
+        # a plain comma, pandoc's ``{,}``, and none at all.
+        pattern=re.compile(r"\*{0,2}(\d[,]\d{3}|\d\{,\}\d{3}|\d{4})\*{0,2}\s+(?:passing\s+)?tests"),
+        require=("test",),
+    ),
+    LedgerVariable(
+        id="series_test_count",
+        description="Every test across the three parts plus the program-level suites.",
+        artifact="test_inventory.json",
+        deriver=series_test_count,
         unit="count",
         pattern=None,
     ),
