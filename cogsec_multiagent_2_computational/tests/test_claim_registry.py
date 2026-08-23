@@ -1073,3 +1073,82 @@ class TestUnitsOnRealClaims:
         for claim in CLAIMS:
             if claim.unit == "percent":
                 assert PCT1 <= claim.tolerance <= 0.01, claim.id
+
+
+# ---------------------------------------------------------------------------
+# Coverage: which sections the registry actually inspects
+# ---------------------------------------------------------------------------
+
+#: Manuscript files that report measured or derived results. A file here with no
+#: registered claim is a section over which ``verify_claims.py`` would print
+#: success no matter what it said -- which is exactly what happened: the
+#: registry covered 8 of 36 files, and five results sections (sensitivity,
+#: Bayesian uncertainty, gap analysis, adversarial training, red-team) had zero.
+#: Several real errors were later found in precisely those sections.
+RESULTS_BEARING = (
+    "00_abstract.md",
+    "04_experimental_setup.md",
+    "05_results.md",
+    "05b_statistical_significance.md",
+    "05d_ablation_and_scalability.md",
+    "05g_adversarial_training.md",
+    "05h_redteam_evaluation.md",
+    "06_discussion.md",
+    "07_conclusion.md",
+    "S08_parametric_analysis.md",
+)
+
+#: Results sections still awaiting claims, each with the reason. An entry here
+#: is a debt with a name, not an exemption: emptying this tuple is the goal.
+UNCOVERED_WITH_REASON = {
+    "05c_sensitivity_analysis.md": (
+        "sensitivity_results.json is a parametric response surface; its prose "
+        "quotes best-values and indices that need patterns written against the "
+        "sweep structure rather than scalars"
+    ),
+    "05e_bayesian_uncertainty.md": (
+        "its posteriors are computed at write time from statistics.bayesian "
+        "rather than read from an artifact; pinning them needs either an emitted "
+        "artifact or derivers that call BetaPosterior directly"
+    ),
+    "05f_architecture_gap_analysis.md": (
+        "its maturity levels are an editorial assessment; only the delta-TPR "
+        "column is artifact-backed, and that duplicates the ablation claims"
+    ),
+}
+
+
+def test_every_results_bearing_section_has_at_least_one_claim() -> None:
+    """A results section with no claim is a section the gate cannot see."""
+    from collections import Counter
+
+    covered = Counter(claim.file for claim in CLAIMS)
+    missing = [name for name in RESULTS_BEARING if not covered.get(name)]
+    assert not missing, (
+        "results sections with no registered claim -- verify_claims.py would "
+        f"report success over anything they said: {missing}"
+    )
+
+
+def test_the_uncovered_list_names_only_real_files() -> None:
+    """A debt list that names a file that no longer exists is not a debt."""
+    manuscript = Path(__file__).parent.parent / "manuscript"
+    for name in UNCOVERED_WITH_REASON:
+        assert (manuscript / name).is_file(), f"{name} is listed as uncovered but does not exist"
+
+
+def test_the_uncovered_list_is_actually_uncovered() -> None:
+    """If a listed section has since gained claims, remove it from the list."""
+    from collections import Counter
+
+    covered = Counter(claim.file for claim in CLAIMS)
+    stale = [name for name in UNCOVERED_WITH_REASON if covered.get(name)]
+    assert not stale, (
+        f"these are listed as uncovered but now carry claims; drop them from "
+        f"UNCOVERED_WITH_REASON: {stale}"
+    )
+
+
+def test_no_results_section_is_both_required_and_excused() -> None:
+    overlap = set(RESULTS_BEARING) & set(UNCOVERED_WITH_REASON)
+    assert not overlap, overlap

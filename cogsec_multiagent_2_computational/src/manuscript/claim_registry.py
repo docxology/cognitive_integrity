@@ -317,6 +317,55 @@ class GroundTruth:
             f"{mean_key!r} or non-empty {values_key!r}"
         )
 
+    # -- Sections that carried no registered claim at all ------------------
+    #
+    # The registry covered 8 of 36 manuscript files. Five results-bearing
+    # sections -- sensitivity, Bayesian uncertainty, gap analysis, adversarial
+    # training and red-team evaluation -- had zero claims, so verify_claims
+    # printed "every manuscript claim matches the data" no matter what those
+    # sections said. These accessors close that.
+
+    def at_field(self, field: str) -> float:
+        """A top-level scalar from the adversarial-training results."""
+        data = self.payload("adversarial_training_results.json")
+        if field not in data:
+            raise ClaimDataUnavailable(f"adversarial_training_results.json has no {field!r}")
+        return float(data[field])
+
+    def at_round_field(self, round_number: int, field: str) -> float:
+        """A per-round value from the adversarial-training sequence."""
+        for row in self.payload("adversarial_training_results.json")["rounds"]:
+            if int(row["round"]) == round_number:
+                if field not in row:
+                    raise ClaimDataUnavailable(f"AT round {round_number} has no {field!r}")
+                return float(row[field])
+        raise ClaimDataUnavailable(f"no adversarial-training round {round_number}")
+
+    def redteam_field(self, field: str) -> float:
+        data = self.payload("redteam_evaluation_results.json")
+        if field not in data:
+            raise ClaimDataUnavailable(f"redteam_evaluation_results.json has no {field!r}")
+        return float(data[field])
+
+    def redteam_per_omega(self) -> float:
+        """Attacks generated per omega level; raises unless every level matches."""
+        counts = set(self.payload("redteam_evaluation_results.json")["omega_level_counts"].values())
+        if len(counts) != 1:
+            raise ClaimDataUnavailable(f"omega levels have unequal counts: {sorted(counts)}")
+        return float(counts.pop())
+
+    def redteam_denominator(self, field: str) -> float:
+        data = self.payload("redteam_evaluation_results.json")["evasion_denominator"]
+        if field not in data:
+            raise ClaimDataUnavailable(f"evasion_denominator has no {field!r}")
+        return float(data[field])
+
+    def sensitivity_index(self, parameter: str) -> float:
+        data = self.payload("sensitivity_results.json")["sensitivity_index"]
+        if parameter not in data:
+            raise ClaimDataUnavailable(f"sensitivity_index has no {parameter!r}")
+        return float(data[parameter])
+
     def colony_field(self, name: str, field: str) -> float:
         """A numeric field of colony scenario ``name``."""
         return self._colony_metric(self.colony_scenario(name), field)
@@ -1902,6 +1951,77 @@ _BASELINE: tuple[Claim, ...] = (
 )
 
 #: Every claim the reader-side checker enforces.
+#: Claims for the five results sections that previously had none. Their absence
+#: meant verify_claims.py could report success over fabricated numbers in
+#: exactly the sections where several real errors were later found.
+_PREVIOUSLY_UNCOVERED: tuple[Claim, ...] = (
+    _c(
+        "05g.baseline_dr",
+        "05g_adversarial_training.md",
+        r"\| 0 \(baseline\) \| Original \d+ \| (\d+\.\d)% \|",
+        lambda gt: gt.at_field("baseline_dr"),
+        PCT1,
+        "percent",
+    ),
+    _c(
+        "05g.final_hardened_dr",
+        "05g_adversarial_training.md",
+        r"from 52\.0% \(Round 1\) to (\d+\.\d)% \(Round 5\)",
+        lambda gt: gt.at_field("final_hardened_dr"),
+        PCT1,
+        "percent",
+    ),
+    _c(
+        "05g.total_delta",
+        "05g_adversarial_training.md",
+        r"a cumulative improvement of \+(\d+\.\d) pp",
+        lambda gt: gt.at_field("total_delta_dr"),
+        PCT1,
+        "percent",
+    ),
+    _c(
+        "05g.round1_hardened",
+        "05g_adversarial_training.md",
+        r"from (\d+\.\d)% \(Round 1\) to",
+        lambda gt: gt.at_round_field(1, "hardened_dr"),
+        PCT1,
+        "percent",
+    ),
+    _c(
+        "05h.corpus_size",
+        "05h_redteam_evaluation.md",
+        r"in the (\d+)-sample corpus",
+        lambda gt: gt.redteam_denominator("corpus_size"),
+        EXACT,
+        "count",
+    ),
+    _c(
+        "05h.distinct_payloads",
+        "05h_redteam_evaluation.md",
+        r"\((\d+) distinct payloads",
+        lambda gt: gt.redteam_denominator("corpus_distinct_payloads"),
+        EXACT,
+        "count",
+    ),
+    _c(
+        "05h.per_omega",
+        "05h_redteam_evaluation.md",
+        r"generates \$M=(\d+)\$ attacks per \$\\Omega\$ level",
+        lambda gt: gt.redteam_per_omega(),
+        EXACT,
+        "count",
+    ),
+    _c(
+        "05h.attacks_generated",
+        "05h_redteam_evaluation.md",
+        r"per \$\\Omega\$ level \((\d+) total",
+        lambda gt: gt.redteam_field("n_attacks_generated"),
+        EXACT,
+        "count",
+    ),
+)
+
+
 CLAIMS: tuple[Claim, ...] = (
     _ABSTRACT
     + _RESULTS
@@ -1912,6 +2032,7 @@ CLAIMS: tuple[Claim, ...] = (
     + _SETUP
     + _SUPPLEMENT
     + _BASELINE
+    + _PREVIOUSLY_UNCOVERED
 )
 
 

@@ -19,7 +19,7 @@ We decompose this quantity into three non-overlapping components:
 \item \emph{Interaction Gap} $G_{\text{interaction}}$: the portion attributable to emergent multi-module interactions not captured by the parametric model's independence assumption (the product form $\prod (1 - r_i)$).
 \end{enumerate}
 
-The total gap decomposes additively: $G_{\text{total}} = G_{\text{adapter}} + G_{\text{distribution}} + G_{\text{interaction}}$. Empirically, the ablation-study pattern---Detection module carries 42\% of pipeline TPR ($\Delta\mathrm{TPR}_{\text{contribution}} = -0.052$), while Sandbox and Consensus contribute $\leq 0.002$---is consistent with $G_{\text{adapter}}$ being dominant. Modules that in principle have high detection potential (per the parametric rates) but measured near-zero marginal contribution in ablation are the signature of adapter-maturity-dominated gaps; modules whose ablation contribution matches the parametric prediction are closer to maturity.
+The total gap decomposes additively: $G_{\text{total}} = G_{\text{adapter}} + G_{\text{distribution}} + G_{\text{interaction}}$. Empirically, the ablation-study pattern---Detection module carries 42\% of pipeline TPR ($\Delta\mathrm{TPR} = -0.051$), while Sandbox and Consensus contribute exactly $0.000$ on this corpus---is consistent with $G_{\text{adapter}}$ being dominant. Modules that in principle have high detection potential (per the parametric rates) but measured near-zero marginal contribution in ablation are the signature of adapter-maturity-dominated gaps; modules whose ablation contribution matches the parametric prediction are closer to maturity.
 
 ## Adapter Maturity Scale {#sec:maturity-scale}
 

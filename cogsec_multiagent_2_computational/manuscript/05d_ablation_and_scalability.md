@@ -87,29 +87,38 @@ $^\ddagger$\textit{95\% CIs computed via bootstrap resampling ($B = 1{,}000$ ite
 
 Table: Detection time regression coefficients. {#tab:detection-regression}
 
-| Coefficient | Estimate | SE | 95\% CI | $p$ |
+| Coefficient | Estimate (ms) | SE | 95\% CI | $p$ |
 | --- | --- | --- | --- | --- |
-| $\beta_0$ (intercept) | 4.5 | 1.1 | [2.3, 6.7] | $<$0.0001 |
-| $\beta_1$ (linear) | 1.5 | 0.3 | [0.9, 2.1] | $<$0.0001 |
-| $\beta_2$ (quadratic) | 0.020 | 0.003 | [0.014, 0.026] | $<$0.0001 |
+| $\beta_0$ (intercept) | 0.0253 | 0.0108 | [-0.0003, 0.0509] | 0.0519 |
+| $\beta_1$ (linear) | 0.0555 | 0.0008 | [0.0537, 0.0573] | $<$0.0001 |
+| $\beta_2$ (quadratic) | 0.00046 | 0.00001 | [0.00044, 0.00047] | $<$0.0001 |
 
-$R^2 = 0.9998$, indicating excellent fit. The dominant linear term ($\beta_1 = 1.5$) confirms approximately linear scaling up to 50 agents, with the quadratic contribution ($\beta_2 = 0.020$) becoming material only beyond this range.
+$R^2 = 0.99997$ over $n = 10$ agent counts (median latency per count). Both the linear and
+quadratic terms are significant; the intercept is not, consistent with a cost that is entirely
+per-agent rather than fixed. The linear term dominates at small $n$, but the quadratic term is
+real and takes over as $n$ grows: at 100 agents the $\beta_2 n^2$ contribution (4.6 ms) already
+exceeds the $\beta_1 n$ contribution (5.6 ms) by nearly half, which is the $O(n^2)$ trust-matrix
+construction becoming visible, with the quadratic contribution ($\beta_2 = 0.020$) becoming material only beyond this range.
 
 **Memory model**: $M = \gamma_0 + \gamma_1 \cdot n + \gamma_2 \cdot n^2$
 
-\cref{tab:memory-regression} gives the fitted memory-growth coefficients; at measured scales (2--100 agents) memory growth is approximately linear.
+\cref{tab:memory-regression} gives the fitted memory-growth coefficients over the measured range (2--100 agents).
 
 Table: Memory usage regression coefficients. {#tab:memory-regression}
 
-| Coefficient | Estimate | SE | 95\% CI | $p$ |
+| Coefficient | Estimate (KiB) | SE | 95\% CI | $p$ |
 | --- | --- | --- | --- | --- |
-| $\gamma_0$ (intercept) | 50.2 | 5.6 | [39.0, 61.4] | $<$0.0001 |
-| $\gamma_1$ (linear) | 8.2 | 1.2 | [5.8, 10.6] | $<$0.0001 |
-| $\gamma_2$ (quadratic) | 0.001 | 0.012 | [-0.023, 0.025] | 0.93 |
+| $\gamma_0$ (intercept) | 7.457 | 0.303 | [6.740, 8.174] | $<$0.0001 |
+| $\gamma_1$ (linear) | -0.201 | 0.022 | [-0.252, -0.149] | $<$0.0001 |
+| $\gamma_2$ (quadratic) | 0.0327 | 0.0002 | [0.0322, 0.0332] | $<$0.0001 |
 
-Memory growth is approximately linear for the measured range (2--100 agents), with the quadratic term insignificant ($p = 0.93$). The intercept ($\gamma_0 \approx 50$ MB) reflects baseline framework overhead independent of agent count. The dominant linear term ($\gamma_1 \approx 8.2$ MB/agent) corresponds to per-agent state storage; the trust matrix contribution ($O(n^2)$) is negligible at these scales because the matrix entries are small floating-point values.
+Memory growth is **quadratic**, not linear, across the measured range: $\gamma_2$ is significant
+($p < 0.0001$, CI excluding zero) and dominates beyond roughly a dozen agents, while the negative
+linear term is a curve-fitting artifact of the small-$n$ end rather than a saving. This is the
+$O(n^2)$ trust-matrix storage behaving exactly as the complexity analysis predicts, and it is
+visible in the measurement rather than merely anticipated. The intercept ($\gamma_0 \approx 7.5$ KiB) is baseline framework overhead independent of agent count, and the quadratic term ($\gamma_2 \approx 0.033$ KiB per agent-pair) is the trust matrix itself. The practical consequence is the opposite of a linear reading: memory is negligible at deployment scales in the tens of agents (0.31 MB at $n = 100$) but grows as $n^2$, so a colony an order of magnitude larger pays a hundredfold, not tenfold.
 
-\textit{Note: The measured peak memory of 873 MB at $n=100$ confirms approximately linear memory growth at practical agent counts. The $O(n^2)$ trust-matrix storage would become dominant only at larger scales ($n > 500$). Practitioners should reference the directly measured values in the table for deployment sizing.}
+\textit{Note: The measured peak traced allocation at $n=100$ is 0.31 MB, and the fitted model is quadratic. The $O(n^2)$ trust-matrix storage would become dominant only at larger scales ($n > 500$). Practitioners should reference the directly measured values in the table for deployment sizing.}
 
 ## Message Volume Scaling {#sec:volume-scaling}
 

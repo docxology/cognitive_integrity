@@ -124,8 +124,13 @@ manuscript. Nothing compared the three papers to each other, which is how a shar
 came to be published as two different numbers in two papers that cite each other.
 
 ```bash
-python3 scripts/check_series_integrity.py            # all checks
-python3 scripts/check_series_integrity.py --only bibliography
+# the gating set — this is what CI runs and what must exit 0
+python3 scripts/check_series_integrity.py \
+  --only shared-quantities --only bibliography --only truncation \
+  --only math-hygiene --only artifact-provenance
+
+python3 scripts/check_series_integrity.py            # adds the advisory pointer lint,
+                                                     # so a bare run exits 1 by design
 python3 scripts/check_series_integrity.py --json     # machine-readable
 ```
 
