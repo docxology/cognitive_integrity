@@ -348,6 +348,25 @@ def gap_high() -> float:
     return parametric_ceiling_high() - ablation_full_tpr()
 
 
+def ablation_series_prediction() -> float:
+    """Series-composition prediction from the solo mechanism rates: 1 - prod(1 - r_i)."""
+    data = _obj("ablation_results.json")
+    synergies = data.get("top_synergies") or []
+    solo: dict[str, float] = {}
+    for pair in synergies:
+        for side in ("a", "b"):
+            name, rate = pair.get(side), pair.get(f"tpr_{side}")
+            if name is None or rate is None:
+                continue
+            solo[name] = float(rate)
+    if not solo:
+        raise MissingArtifact("no solo mechanism rates in the ablation artifact")
+    missed = 1.0
+    for rate in solo.values():
+        missed *= 1.0 - rate
+    return (1.0 - missed) * 100.0
+
+
 def domain_count() -> float:
     """Counted from Part 3's files, not typed: 09c..09l are the domain sections."""
     root = REPO_ROOT / PARTS["3"] / "manuscript"
@@ -620,7 +639,27 @@ LEDGER: tuple[LedgerVariable, ...] = (
         artifact="ablation_results.json",
         deriver=ablation_full_tpr,
         unit="percent",
-        pattern=None,
+        pattern=re.compile(r"against a measured\s+(\d+\.\d)\\%"),
+        require=("measured",),
+        parts=("2",),
+        tolerance=0.05,
+    ),
+    LedgerVariable(
+        id="ablation_series_prediction",
+        description=(
+            "What the series composition rule 1 - prod(1 - r_i) predicts from the solo "
+            "mechanism rates the ablation records. The detection-performance figure "
+            "compares it against the measured full-pipeline TPR; the two agreeing to "
+            "within half a point is the sharpest test of the composition algebra in the "
+            "series, and it is only a test while both numbers come from the artifact."
+        ),
+        artifact="ablation_results.json",
+        deriver=ablation_series_prediction,
+        unit="percent",
+        pattern=re.compile(r"predicts\s+(\d+\.\d)\\%"),
+        require=("composition", "predicts"),
+        parts=("2",),
+        tolerance=0.05,
     ),
     LedgerVariable(
         id="ablation_corpus_size",

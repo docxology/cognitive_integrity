@@ -30,6 +30,15 @@ def _load_detection_data(output_dir: Path) -> dict:
     return data
 
 
+def _load_ablation_data(output_dir: Path) -> dict:
+    """Read the ablation artifact, the source of every number in Panel A."""
+    path = output_dir.parent / "data" / "ablation_results.json"
+    if not path.exists():
+        path = Path(__file__).resolve().parents[3] / "output" / "data" / "ablation_results.json"
+    with open(path) as handle:
+        return json.load(handle)
+
+
 def plot_detection_performance(output_dir: str | Path = "output/figures") -> plt.Figure:
     """Generate detection performance comparison figure.
 
@@ -52,34 +61,54 @@ def plot_detection_performance(output_dir: str | Path = "output/figures") -> plt
         "full_cif": SEMANTIC_COLORS["full_cif"],
     }
 
-    # Panel A: Overall detection by defense configuration
+    # Panel A: single-mechanism vs. full-pipeline detection, from the ablation run.
+    #
+    # This panel used to label its bars "Firewall Only", "Sandbox Only",
+    # "Tripwires Only" and "Invariants Only" while plotting the mean detection
+    # rate of architectures 1-4 from full_evaluation_results.json -- a different
+    # evaluation arm entirely, and one whose values (~0.94) are an order of
+    # magnitude above what any single mechanism actually achieves.  The FPR
+    # series was a hardcoded list that appears in no artifact, and the "F1"
+    # was 2t(1-f)/(t+(1-f)), which is not F1.
+    #
+    # Everything below is read from ablation_results.json.  Single-mechanism
+    # rates come from the pairwise synergy records, which carry each
+    # mechanism's solo TPR and FPR; only the four mechanisms that appear there
+    # can be plotted, so the panel shows those four and says so.
     ax1 = axes[0]
-    defenses = [
-        "Baseline",
-        "Firewall\nOnly",
-        "Sandbox\nOnly",
-        "Tripwires\nOnly",
-        "Invariants\nOnly",
-        "Full CIF",
-    ]
+    ablation = _load_ablation_data(output_dir)
 
-    # Individual mechanism detection rates
-    individual_rates = [0.78, 0.65, 0.82, 0.71]
-    theoretical_cif = compute_series_detection_rate(individual_rates)
-    logger.info("Theoretical Full CIF detection rate (Theorem 3.1): %.4f", theoretical_cif)
+    solo: dict[str, tuple[float, float]] = {}
+    for pair in ablation["top_synergies"]:
+        for side in ("a", "b"):
+            solo[pair[side]] = (float(pair[f"tpr_{side}"]), float(pair.get(f"fpr_{side}", 0.0)))
 
-    # Load real evaluation data for Panel A
-    eval_data_path = output_dir.parent / "data" / "full_evaluation_results.json"
-    if not eval_data_path.exists():
-        eval_data_path = Path(__file__).resolve().parent.parent.parent.parent / "output" / "data" / "full_evaluation_results.json"  # noqa: E501
-    from data.result_loaders import evaluation_to_detection_matrix
-    archs, cats, matrix = evaluation_to_detection_matrix(path=str(eval_data_path))
-    arch_means = [float(matrix[i].mean()) for i in range(len(archs))]
-    overall_cif = float(np.mean(arch_means))
-    tpr = [0.00] + arch_means[:4] + [overall_cif]
-    fpr = [0.00, 0.12, 0.05, 0.08, 0.03, 0.06]
-    f1 = [0.00] + [2*t*(1-f)/(t+(1-f)) if (t+(1-f)) > 0 else 0.0 for t, f in zip(tpr[1:], fpr[1:])]
-    logger.info("Panel A using real evaluation data from %s", eval_data_path)
+    mechanisms = sorted(solo, key=lambda name: solo[name][0])
+    defenses = ["Baseline"] + [m.replace("_", "\n").title() + "\nOnly" for m in mechanisms] + ["Full CIF"]
+
+    full = ablation["full_pipeline"]
+    tpr = [0.0] + [solo[m][0] for m in mechanisms] + [float(full["tpr"])]
+    fpr = [0.0] + [solo[m][1] for m in mechanisms] + [float(full["fpr"])]
+
+    # With FPR measured at zero, precision is exactly 1 and F1 reduces to
+    # 2r/(1+r).  Computing it from the measured pair rather than assuming
+    # precision keeps the identity visible if a future run has a non-zero FPR.
+    def _f1(recall: float, false_positive_rate: float) -> float:
+        if recall <= 0:
+            return 0.0
+        precision = 1.0 if false_positive_rate == 0 else recall / (recall + false_positive_rate)
+        return 2 * precision * recall / (precision + recall)
+
+    f1 = [_f1(t, f) for t, f in zip(tpr, fpr)]
+
+    theoretical_cif = compute_series_detection_rate([solo[m][0] for m in mechanisms])
+    logger.info(
+        "Panel A from ablation_results.json: %d single mechanisms, full-pipeline TPR %.4f, "
+        "series-composition prediction %.4f",
+        len(mechanisms),
+        full["tpr"],
+        theoretical_cif,
+    )
 
     x = np.arange(len(defenses))
     width = 0.25
@@ -90,54 +119,86 @@ def plot_detection_performance(output_dir: str | Path = "output/figures") -> plt
 
     ax1.annotate(
         f"Theoretical: {theoretical_cif:.2f}",
-        xy=(5 - width, theoretical_cif),
-        xytext=(4.0, theoretical_cif + 0.08),
+        xy=(len(defenses) - 1 - width, theoretical_cif),
+        xytext=(len(defenses) - 2.0, theoretical_cif + 0.08),
         fontsize=FONTSIZE["small"],
         color=SEMANTIC_COLORS["full_cif"],
         arrowprops=dict(arrowstyle="->", color=SEMANTIC_COLORS["full_cif"], lw=1),
     )
 
     ax1.set_ylabel("Score", fontsize=12)
-    ax1.set_title("A. Detection Metrics by Defense Configuration", fontsize=12, fontweight="bold")
+    ax1.set_title(
+        "A. Single-Mechanism vs. Full-Pipeline Detection (ablation run)",
+        fontsize=12,
+        fontweight="bold",
+    )
     ax1.set_xticks(x)
     ax1.set_xticklabels(defenses, fontsize=FONTSIZE["base"])
     ax1.legend(loc="upper left", fontsize=FONTSIZE["base"])
-    ax1.set_ylim(0, 1.1)
+    ax1.set_ylim(0, max(max(tpr), max(f1), theoretical_cif) * 1.35)
     ax1.grid(True, alpha=0.3, axis="y")
 
-    # Panel B: Detection rate by attack type — load real generated data
+    # Panel B: measured detection rate per architecture, by attack category.
+    #
+    # This panel previously drew three series -- "Baseline", "Firewall Only"
+    # and "Full CIF" -- of which only the third was measured.  "Baseline" was
+    # a hardcoded list of zeros, and "Firewall Only" was the Full CIF value
+    # multiplied by 0.80, so the "significant gap" the caption drew attention
+    # to was exactly 20% by construction, in every category, for every run.
+    #
+    # detection_data.json carries per-architecture means by category and their
+    # bootstrap half-widths, and nothing else; there is no per-mechanism
+    # breakdown by attack category anywhere in the pipeline.  So the panel now
+    # plots what was actually measured, with the intervals the artifact ships.
     generated = _load_detection_data(output_dir)
 
     ax2 = axes[1]
     categories = generated["categories"]
     means = generated["means"]  # [arch][category]
-
-    n_arch = len(means)
-    n_cat = len(categories)
-    full_cif_means = [
-        sum(means[a][c] for a in range(n_arch)) / n_arch
-        for c in range(n_cat)
-    ]
+    cis = generated["cis"]  # [arch][category], bootstrap half-widths
+    architectures = generated["architectures"]
 
     attack_types = [c.replace(" ", "\n") for c in categories]
-    baseline = [0.0] * n_cat
-    firewall = [m * 0.80 for m in full_cif_means]
-    full_cif_vals = full_cif_means
-    logger.info("Panel B using generated detection data (%d categories)", n_cat)
+    n_arch = len(means)
+    logger.info(
+        "Panel B: %d architectures x %d categories, measured, with bootstrap CIs",
+        n_arch,
+        len(categories),
+    )
 
     x = np.arange(len(attack_types))
-    width = 0.25
-
-    ax2.bar(x - width, baseline, width, label="Baseline", color=colors["baseline"], edgecolor="black")  # noqa: E501
-    ax2.bar(x, firewall, width, label="Firewall Only", color=colors["firewall"], edgecolor="black")
-    ax2.bar(x + width, full_cif_vals, width, label="Full CIF", color=colors["full_cif"], edgecolor="black")  # noqa: E501
+    width = 0.8 / n_arch
+    palette = [
+        SEMANTIC_COLORS["firewall"],
+        SEMANTIC_COLORS["sandbox"],
+        SEMANTIC_COLORS["tripwire"],
+        SEMANTIC_COLORS["full_cif"],
+    ]
+    for a, architecture in enumerate(architectures):
+        offset = (a - (n_arch - 1) / 2) * width
+        ax2.bar(
+            x + offset,
+            means[a],
+            width,
+            yerr=cis[a],
+            capsize=3,
+            label=architecture,
+            color=palette[a % len(palette)],
+            edgecolor="black",
+        )
 
     ax2.set_ylabel("Detection Rate", fontsize=12)
-    ax2.set_title("B. Detection Rate by Attack Type", fontsize=12, fontweight="bold")
+    ax2.set_title(
+        "B. Measured Detection Rate by Attack Type and Architecture",
+        fontsize=12,
+        fontweight="bold",
+    )
     ax2.set_xticks(x)
     ax2.set_xticklabels(attack_types, fontsize=FONTSIZE["base"])
-    ax2.legend(loc="upper right", fontsize=FONTSIZE["base"])
-    ax2.set_ylim(0, 1.1)
+    # Four architectures put the legend on top of the tallest group; give it
+    # its own band above the bars rather than letting it cover a data point.
+    ax2.set_ylim(0, 1.32)
+    ax2.legend(loc="upper center", ncol=4, fontsize=FONTSIZE["small"], frameon=False)
     ax2.grid(True, alpha=0.3, axis="y")
 
     plt.tight_layout()
