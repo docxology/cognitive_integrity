@@ -26,7 +26,7 @@ Credible intervals are reported as 95\% Highest Density Intervals (HDI), compute
 
 \cref{tab:bayesian-posteriors} restates each major detection claim from \cref{sec:results} and \cref{sec:parametric-analysis} as a Beta posterior with an explicit 95\% HDI, computed via `BetaPosterior(1 + k, 1 + n - k).hdi(0.95)`. For the multi-seed pipeline, $n = 100$ is the per-seed evaluation size (30 seeds, 100 samples each, seed 42 as representative) and $k = 45$ is the corresponding integer detection count at the 0.448 mean rate.
 
-Table: Beta-Binomial posteriors for major detection claims. Prior: $\mathrm{Beta {#tab:bayesian-posteriors}
+Table: Beta-Binomial posteriors for major detection claims. Prior: $\mathrm{Beta}(1, 1)$; posterior $\mathrm{Beta}(1 + k,\, 1 + n - k)$; 95\% HDI computed via \texttt{BetaPosterior.hdi()}. {#tab:bayesian-posteriors}
 
 | Result | $k$ | $n$ | Posterior | 95\% HDI |
 | --- | --- | --- | --- | --- |

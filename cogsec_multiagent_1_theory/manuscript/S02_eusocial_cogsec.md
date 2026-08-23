@@ -104,7 +104,7 @@ This formulation captures key biological phenomena:
 
 The lack of explicit provenance in stigmergic communication creates attack surfaces absent in direct agent-to-agent channels (\cref{sec:trust-calculus}).
 
-### Biological Defense Mechanisms: Lessons from Ants and Bees {#sec:biological-defenses}
+### Biological Defense Mechanisms: Lessons from Social Insects {#sec:biological-defenses}
 
 Eusocial insects have evolved sophisticated security mechanisms over 100+ million years of evolutionary pressure. These mechanisms provide non-obvious design principles for AI cognitive security.
 
@@ -576,7 +576,7 @@ The following references supplement the main bibliography (\cref{sec:references}
 
 ## Proofs {#sec:eusocial-proofs}
 
-### Proof of Theorem \ref{thm:redundancy-resilience} {#sec:proof-redundancy-resilience}
+### Proof of the Redundancy-Resilience Theorem {#sec:proof-redundancy-resilience}
 
 \begin{proof}
 Consider a stigmergic operator $\mathcal{O}_\Sigma$ with $n$ agents, of which fraction $f$ are Byzantine (adversary-controlled).

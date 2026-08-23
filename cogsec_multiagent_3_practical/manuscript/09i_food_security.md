@@ -50,7 +50,7 @@ Following the OODA framework \cite{boyd1987patterns}:
 
 CIF couples the **Economic FR** to a **Physical FR** in the Axiomatic Design, drawing on the formal mechanisms defined in Papers 1--3 \cite{friedman2026cogsec1, friedman2026cogsec2, friedman2026cogsec3}.
 
-CIF implements **Belief Sandboxing** (Paper 1, Def. 5.2) by requiring economic data signals to remain provisional until corroborated by independent physical data channels. No single-modality data source can alter the agent's committed beliefs about regional supply status:
+CIF implements **Belief Sandboxing** (Part 1) by requiring economic data signals to remain provisional until corroborated by independent physical data channels. No single-modality data source can alter the agent's committed beliefs about regional supply status:
 
 * **Belief Sandboxing**: The "Surplus" signal from the economic data feed (futures market) is quarantined as a **provisional belief**. It cannot propagate to the routing decision module until it passes cross-modal validation. This prevents the poisoned market signal from immediately corrupting the agent's world model at the Orient phase.
 * **Cross-Modal Corroboration**: The provisionally sandboxed economic signal must be corroborated by independent physical data channels---"Satellite Biomass" imagery, "Soil Moisture" sensors, or port throughput telemetry (Physical Data). This cross-modal verification is an instance of the **Trust Calculus's** cross-modality trust factor (Paper 2) \cite{friedman2026cogsec2}: the composite trust score $\tau_{\text{composite}}$ requires agreement across modalities before a belief is promoted from provisional to committed status.

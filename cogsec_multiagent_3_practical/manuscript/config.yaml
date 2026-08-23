@@ -1,125 +1,142 @@
 paper:
-  title: "Cognitive Integrity Framework: Practical Applications and Deployment Guide"
-  subtitle: "Part 3: Practitioner Guidance and Cross-Domain CIF-AD-OODA Applications"
-  short_title: "CIF Practical & Applications"
+  title: 'Cognitive Integrity Framework: Practical Applications and Deployment Guide'
+  subtitle: 'Part 3: Practitioner Guidance and Cross-Domain CIF-AD-OODA Applications'
+  short_title: CIF Practical & Applications
   version: "1.0"
-  type: "review"
-  series: "Cognitive Security for Multiagent Operators"
-  part: "3+4"
-  doi: "10.5281/zenodo.18364130"
-  date: "2026-07-05"
-
+  type: review
+  series: Cognitive Security for Multiagent Operators
+  part: 3+4
+  doi: 10.5281/zenodo.18364130
+  date: '2026-08-21'
+  cover:
+    image: ../output/figures/domain_coverage.png
+    title: CIF-AD-OODA Cross-Domain Threat and Defense Synthesis
+    alt: "Bar chart of goal-hijacking attack patterns across ten critical domains, color-coded by pattern: FR polarity inversion (5 domains), context boundary violation (3), and constraint relaxation (2)."
 authors:
-  - name: "Daniel Ari Friedman"
-    email: "daniel@activeinference.institute"
-    orcid: "0000-0001-6232-9096"
-    affiliation: "Active Inference Institute"
-    corresponding: true
-
+- name: Daniel Ari Friedman
+  email: daniel@activeinference.institute
+  orcid: 0000-0001-6232-9096
+  affiliation: Active Inference Institute
+  corresponding: true
 keywords:
-  - cognitive security
-  - AI safety
-  - multiagent systems
-  - qualitative review
-  - trust calculus
-  - defense composition
-  - deployment guidance
-  - agentic AI security
-  - goal hijacking
-  - cognitive integrity framework
-  - OODA loop
-  - axiomatic design
-  - critical infrastructure
-  - supply chain security
-  - information warfare
-  - adversarial AI
-  - cross-domain analysis
-  - category theory
-  - composable defenses
-
-abstract: |
-  This unified paper (originally Parts 3 and 4 of the Cognitive Security for Multiagent
-  Operators series) combines the practitioner deployment guide with a rigorous cross-domain
-  application of the Cognitive Integrity Framework (CIF).
-
-  **Practitioner Guidance (§1–§8).** Translates the formal results of Parts 1 and 2 into
-  accessible engineering guidance: operator posture assessment, human oversight checklists,
-  agent security invariants, deployment configuration, risk assessment, attack scenarios,
-  subagent hardening, incident-response playbooks, monitoring strategies, cost–benefit
-  analysis, common pitfalls, case studies, and operator risk frameworks.
-
-  **Cross-Domain Applications (§9–§10).** The CIF-AD-OODA integration model is applied
-  to analyze Goal Hijacking across ten critical domains. Cross-domain synthesis reveals
-  three universal attack patterns and three novel defense extensions.
-
-  This is Part 3+4 of a three-part series:
-  - Part 1 (DOI: 10.5281/zenodo.18364119): Formal foundations and theoretical analysis
-  - Part 2 (DOI: 10.5281/zenodo.18364128): Computational validation and implementation
-  - Part 3+4 (this paper): Practitioner guidance and cross-domain CIF-AD-OODA applications
-
+- cognitive security
+- AI safety
+- multiagent systems
+- qualitative review
+- trust calculus
+- defense composition
+- deployment guidance
+- agentic AI security
+- goal hijacking
+- cognitive integrity framework
+- OODA loop
+- axiomatic design
+- critical infrastructure
+- supply chain security
+- information warfare
+- adversarial AI
+- cross-domain analysis
+- category theory
+- composable defenses
+abstract: "This unified paper (originally Parts 3 and 4 of the Cognitive Security\
+  \ for Multiagent\nOperators series) combines the practitioner deployment guide with\
+  \ a rigorous cross-domain\napplication of the Cognitive Integrity Framework (CIF).\n\
+  \n**Practitioner Guidance (\xA71\u2013\xA78).** Translates the formal results of\
+  \ Parts 1 and 2 into\naccessible engineering guidance: operator posture assessment,\
+  \ human oversight checklists,\nagent security invariants, deployment configuration,\
+  \ risk assessment, attack scenarios,\nsubagent hardening, incident-response playbooks,\
+  \ monitoring strategies, cost\u2013benefit\nanalysis, common pitfalls, case studies,\
+  \ and operator risk frameworks.\n\n**Cross-Domain Applications (\xA79\u2013\xA7\
+  10).** The CIF-AD-OODA integration model is applied\nto analyze Goal Hijacking across\
+  \ ten critical domains. Cross-domain synthesis reveals\nthree universal attack patterns\
+  \ and three novel defense extensions.\n\nThis is Part 3+4 of a three-part series:\n\
+  - Part 1 (DOI: 10.5281/zenodo.18364119): Formal foundations and theoretical analysis\n\
+  - Part 2 (DOI: 10.5281/zenodo.18364128): Computational validation and implementation\n\
+  - Part 3+4 (this paper): Practitioner guidance and cross-domain CIF-AD-OODA applications\n"
 series:
-  structure: "3-part"
+  structure: 3-part
   parts:
-    - number: 1
-      title: "Formal Foundations"
-      doi: "10.5281/zenodo.18364119"
-      short: "Part 1"
-    - number: 2
-      title: "Computational Validation (Second Edition)"
-      doi: "10.5281/zenodo.18364128"
-      short: "Part 2"
-    - number: "3+4"
-      title: "Practitioner Guide and Cross-Domain Applications (this paper)"
-      doi: "10.5281/zenodo.18364130"
-      short: "Part 3+4"
-
+  - number: 1
+    title: Formal Foundations
+    doi: 10.5281/zenodo.18364119
+    short: Part 1
+  - number: 2
+    title: Computational Validation (Second Edition)
+    doi: 10.5281/zenodo.18364128
+    short: Part 2
+  - number: 3+4
+    title: Practitioner Guide and Cross-Domain Applications (this paper)
+    doi: 10.5281/zenodo.18364130
+    short: Part 3+4
 figures:
   posture_radar:
-    path: "figures/posture_radar.png"
-    caption: "Five-Pillar operator posture assessment radar (Cognitive Firewall, Belief Sandbox, Identity Tripwire, Behavioral Invariants, Provenance), color-coded against readiness thresholds."
-    label: "fig:posture-radar"
-    width: "0.80\\linewidth"
+    path: figures/posture_radar.png
+    caption: Five-Pillar operator posture assessment radar (Cognitive Firewall, Belief
+      Sandbox, Identity Tripwire, Behavioral Invariants, Provenance), color-coded
+      against readiness thresholds.
+    label: fig:posture-radar
+    width: 0.80\linewidth
   checklist_flowchart:
-    path: "figures/checklist_flowchart.png"
-    caption: "Pre-deployment $\\rightarrow$ Integration $\\rightarrow$ Testing $\\rightarrow$ Operational checklist flowchart mapping CIF enforcement points to deployment phases."
-    label: "fig:checklist-flowchart"
-    width: "0.85\\linewidth"
+    path: figures/checklist_flowchart.png
+    caption: Pre-deployment $\rightarrow$ Integration $\rightarrow$ Testing $\rightarrow$
+      Operational checklist flowchart mapping CIF enforcement points to deployment
+      phases.
+    label: fig:checklist-flowchart
+    width: 0.85\linewidth
   risk_matrix:
-    path: "figures/risk_matrix.png"
-    caption: "Cognitive-security risk heatmap: impact $\\times$ likelihood for eight named risks (Direct/Indirect Injection, Trust Laundering, Belief Manipulation, Goal Hijacking, Context Poisoning, Multi-turn Attacks, Consensus Subversion)."
-    label: "fig:risk-matrix"
-    width: "0.85\\linewidth"
+    path: figures/risk_matrix.png
+    caption: 'Cognitive-security risk heatmap: impact $\times$ likelihood for eight
+      named risks (Direct/Indirect Injection, Trust Laundering, Belief Manipulation,
+      Goal Hijacking, Context Poisoning, Multi-turn Attacks, Consensus Subversion).'
+    label: fig:risk-matrix
+    width: 0.85\linewidth
   trust_decay:
-    path: "figures/trust_decay.png"
-    caption: "Effective trust vs.\ delegation depth at decay factors $\\delta = \\{0.9, 0.85, 0.7\\}$, with 50\\% and 10\\% thresholds marking delegation bounds."
-    label: "fig:trust-decay"
-    width: "0.75\\linewidth"
+    path: figures/trust_decay.png
+    caption: Effective trust vs. delegation depth at decay factors $\delta = \{0.9,
+      0.85, 0.7\}$, with 50\% and 10\% thresholds marking delegation bounds.
+    label: fig:trust-decay
+    width: 0.75\linewidth
   pitfall_severity:
-    path: "figures/pitfall_severity.png"
-    caption: "Common pitfalls by severity across security/configuration/operational categories (e.g. implicit trust in outputs, missing input validation)."
-    label: "fig:pitfall-severity"
-    width: "0.80\\linewidth"
+    path: figures/pitfall_severity.png
+    caption: Common pitfalls by severity across security/configuration/operational
+      categories (e.g. implicit trust in outputs, missing input validation).
+    label: fig:pitfall-severity
+    width: 0.80\linewidth
   timeline:
-    path: "figures/timeline.png"
-    caption: "Deployment lifecycle phases (Pre-Deployment $\\rightarrow$ Operational $\\rightarrow$ Incident Response) with CIF security activities."
-    label: "fig:timeline"
-    width: "0.85\\linewidth"
+    path: figures/timeline.png
+    caption: Deployment lifecycle phases (Pre-Deployment $\rightarrow$ Operational
+      $\rightarrow$ Incident Response) with CIF security activities.
+    label: fig:timeline
+    width: 0.85\linewidth
   domain_coverage:
-    path: "figures/domain_coverage.png"
-    caption: "CIF-AD-OODA attack-pattern coverage across ten domains for the three universal patterns (FR Polarity Inversion, Constraint Relaxation, Context Boundary Violation)."
-    label: "fig:domain-coverage"
-    width: "0.90\\linewidth"
+    path: figures/domain_coverage.png
+    caption: CIF-AD-OODA attack-pattern coverage across ten domains for the three
+      universal patterns (FR Polarity Inversion, Constraint Relaxation, Context Boundary
+      Violation).
+    label: fig:domain-coverage
+    width: 0.90\linewidth
   cif_mechanism_coverage:
-    path: "figures/cif_mechanism_coverage.png"
-    caption: "Binary mechanism $\\times$ domain coverage matrix for the five CIF mechanisms across ten domains."
-    label: "fig:mechanism-coverage"
-    width: "0.90\\linewidth"
-
+    path: figures/cif_mechanism_coverage.png
+    caption: Binary mechanism $\times$ domain coverage matrix for the five CIF mechanisms
+      across ten domains.
+    label: fig:mechanism-coverage
+    width: 0.90\linewidth
 llm:
   translations:
     enabled: true
-    languages: [zh, es, ar, ru, hi, fr, de]
+    languages:
+    - zh
+    - es
+    - ar
+    - ru
+    - hi
+    - fr
+    - de
   review:
     enabled: true
     types:
-      - executive_summary
+    - executive_summary
+rendering:
+  cover_height_fraction: 0.35
+publication:
+  doi: 10.5281/zenodo.18364130

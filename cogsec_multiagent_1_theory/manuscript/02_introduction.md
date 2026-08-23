@@ -94,7 +94,7 @@ Multimodal systems introduce attack vectors impossible in text-only contexts:
 
 \textbf{Cross-Modal Persistence}: An instruction injected via one modality (e.g., hidden text in an image) can persist in agent memory and affect behavior in another modality (e.g., code generation). The attack surface is the Cartesian product of input modalities, memory mechanisms, and output modalities.
 
-### The Scale of Exposure
+### The Scale of Cognitive Exposure
 
 Enterprise adoption of agentic AI has accelerated beyond early projections:
 
@@ -108,7 +108,7 @@ Enterprise adoption of agentic AI has accelerated beyond early projections:
 
 The attack surface scales superlinearly with adoption. Each agent-to-agent communication channel, each tool integration, each persistent memory system creates potential entry points for cognitive manipulation. A single compromised peripheral service can affect every agent system that queries it.
 
-### Why Traditional (Cyberphysical) Security Is Incomplete
+### Why Traditional Cyberphysical Security Is Incomplete
 
 Traditional cybersecurity operates on a clear trust boundary model: inside the perimeter is trusted, outside is untrusted, and security controls mediate the boundary. This model fails for cognitive systems because:
 
@@ -199,8 +199,8 @@ The proliferation of multiagent AI systems introduces security considerations th
 
 \textbf{Emerging Attack Surface}:
 \begin{itemize}
-\item Inter-agent communication channels lack authentication standards---ARIA model proposes cryptographically verifiable delegation \cite{trustdynamics2025}
-\item Trust delegation mechanisms operate without formal verification---recent work on CP-WBFT achieves 85.71\% Byzantine fault tolerance improvement \cite{cpwbft2025}
+\item Inter-agent communication channels lack authentication standards, so delegated trust is asserted rather than verified; computational treatments of trust and reputation dynamics model the asymmetry directly---cooperation accrues trust gradually while a violation erodes it sharply \cite{trustdynamics2025}
+\item Trust delegation mechanisms operate without formal verification---CP-WBFT, a confidence-probe-weighted Byzantine consensus for LLM agents, reports operation at fault rates as high as 85.7\% \cite{cpwbft2025}
 \item Belief provenance remains largely untracked in production systems---cognitive degradation attacks exploit this gap \cite{cdr2025}
 \end{itemize}
 

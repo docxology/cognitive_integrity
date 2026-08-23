@@ -210,7 +210,7 @@ def create_cif_architecture_figure(output_dir: Path) -> Path:
         xytext=(11.5, 5.5),
         arrowprops=dict(arrowstyle="<->", color="#888", linestyle="--", lw=1.5),
     )
-    ax.text(12.2, 6.5, "Synergy\\n+9%", fontsize=8, color="#666", ha="left", va="center")
+    ax.text(12.2, 6.5, "Defense synergy\n+9%", fontsize=8, color="#666", ha="left", va="center")
 
     # Add data flow annotation
     ax.text(

@@ -48,7 +48,7 @@ The sign inversion on $A_{22}$ reflects the polarity flip (Minimize $\to$ Maximi
 
 ## CIF Defense: Behavioral Invariants and Byzantine Consensus
 
-CIF implements **Behavioral Invariants** (Paper 1, Def. 5.5) \cite{friedman2026cogsec1} and **Byzantine Consensus** (Paper 1, Def. 5.7) \cite{friedman2026cogsec1}---here manifested as inter-agent acceptance criteria verification---to restore the Independence Axiom and reject the polarity inversion.
+CIF implements **Behavioral Invariants** \cite{friedman2026cogsec1} and **Byzantine Consensus** \cite{friedman2026cogsec1}---here manifested as inter-agent acceptance criteria verification---to restore the Independence Axiom and reject the polarity inversion.
 
 * **Behavioral Invariants via Permission Boundaries**: Each agent's FR polarity is encoded as an immutable invariant at initialization. The Processing Agent's FR2 is bound to the constraint $\text{sign}(FR_2) = -1$ (minimize). Any attempted polarity flip triggers a constraint violation before the OODA Decide phase can execute \cite{friedman2026cogsec3}.
 * **Byzantine Consensus through Neighbor Vetting**: The Processing Agent (now maximizing Thorium) must hand off material to the Storage Agent. The Storage Agent's FRs have *not* been hijacked.

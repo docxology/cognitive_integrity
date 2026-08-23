@@ -12,7 +12,7 @@ This paper provided computational validation of the Cognitive Integrity Framewor
 
 **Multi-Tier Evaluation**: We evaluated CIF through five complementary modes: (1) multi-seed pipeline evaluation (30 seeds, mean DR = 44.8\%); (2) real ablation studies (98-attack corpus, full pipeline TPR = 12.2\%); (3) LLM-backed multiagent validation ($N=10$, Gemma 3 4B); (4) colony benchmarks at scale (20--100 agents); and (5) parametric simulation ($N=3{,}800$) establishing the design-level coverage ceiling at 96--100\%.
 
-**Categorical Defense Algebra**: We formalized CIF's composition rules as a category (DefenseCategory) satisfying proven laws CT.1--CT.3, establishing that the series detection formula (Part 1, Theorem 3.2a) is a categorical consequence under the short-circuit pipeline semantics rather than an independent empirical result. Composition inherits those laws by construction for morphisms that satisfy the DefenseCategory axioms.
+**Categorical Defense Algebra**: We formalized CIF's composition rules as a category (DefenseCategory) satisfying proven laws CT.1--CT.3, establishing that the series detection formula (Part 1's Series Detection Rate theorem) is a categorical consequence under the short-circuit pipeline semantics rather than an independent empirical result. Composition inherits those laws by construction for morphisms that satisfy the DefenseCategory axioms.
 
 **Free Energy Connection**: We established a formal isomorphism between CIF's trust calculus and precision-weighted active inference under the Free Energy Principle (FEP.1--FEP.2), connecting cognitive security to computational neuroscience. The trust decay parameter $\delta$ corresponds to precision attenuation in hierarchical generative models, and CIF's belief sandbox implements constrained variational inference.
 
@@ -20,7 +20,7 @@ This paper provided computational validation of the Cognitive Integrity Framewor
 
 **Bayesian Uncertainty Quantification**: We supplemented point estimates with Beta-Binomial posteriors and established that: (a) the parametric--empirical gap has Bayes factor $\text{BF}_{10} \gg 10^6$ under the explicitly simulated-control model; (b) the LLM validation ($N=5$--$10$ per architecture) is severely underpowered (required $N \geq 246$ for $\pm 5\%$ precision); and (c) the representative multi-seed estimate (mean 44.8\%, 95\% HDI [35.5\%, 54.7\%]) is reported with uncertainty.
 
-**Honest Gap Characterization**: We documented the 49--88 percentage-point gap between parametric design ceiling and current empirical performance (parametric ceiling 96--100\% vs.\ pipeline mean 44.8\% and ablation 12.2\% respectively), attributing it to adapter implementation maturity rather than fundamental architectural limitations.
+**Honest Gap Characterization**: We documented the 51--88 percentage-point gap between parametric design ceiling and current empirical performance (parametric ceiling 96--100\% vs.\ pipeline mean 44.8\% and ablation 12.2\% respectively), attributing it to adapter implementation maturity rather than fundamental architectural limitations.
 
 ## Key Findings
 

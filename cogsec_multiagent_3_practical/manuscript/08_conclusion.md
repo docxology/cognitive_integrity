@@ -22,9 +22,9 @@ Saying "the code works" requires specifying what that means. There are three hon
 
 **Level 1 — The architecture is correctly implemented** (confidence: high, conditional on the current project test run). Every defense module—firewall, sandbox, trust calculus, tripwires, Byzantine consensus, provenance, drift detection, invariant checker—is independently tested. The `SeriesPipeline` routes the 950-attack corpus through all 8 modules with 0\% routing failure in the reported Part 2 run. Use the current `uv run pytest` output as the source of truth for test counts and pass rate.
 
-**Level 2 — The pipeline detects attacks in practice** (confidence: moderate). The multi-seed pipeline analysis (30 seeds, Claude Code architecture) achieves a mean detection rate of 44.8\% [95\% HDI: 41.3\%, 48.3\%]. The LLM-backed multiagent validation ($N=10$, Gemma 3 4B) achieves 80\%--100\% across two architectures. These are meaningful but not high detection rates—they reflect adapter implementation at CMMI Level 3 (Statistical), not the design ceiling.
+**Level 2 — The pipeline detects attacks in practice** (confidence: moderate). The multi-seed pipeline analysis (30 seeds, Claude Code architecture) achieves a mean detection rate of 44.8\% [95\% HDI: 35.5\%, 54.7\%]. The LLM-backed multiagent validation ($N=10$, Gemma 3 4B) achieves 80\%--100\% across two architectures. These are meaningful but not high detection rates—they reflect adapter implementation at CMMI Level 3 (Statistical), not the design ceiling.
 
-**Level 3 — The defense ceiling is achievable** (confidence: moderate-high). The parametric simulation ($N=3{,}800$) establishes that fully-mature (Level 5) adapters achieve 94--100\% detection, consistent with the formal design. The gap between Level 3 (44.8\%) and Level 5 (94\%) is an engineering challenge, not a theoretical limitation. The roadmap in Part 2 projects +35--41 percentage points of improvement through adapter maturation.
+**Level 3 — The defense ceiling is achievable** (confidence: moderate-high). The parametric simulation ($N=3{,}800$) establishes that fully-mature (Level 5) adapters achieve 96--100\% detection, consistent with the formal design. The gap between Level 3 (44.8\%) and Level 5 (96\%) is an engineering challenge, not a theoretical limitation. The roadmap in Part 2 projects +35--41 percentage points of improvement through adapter maturation.
 
 The honest operational posture is Level 2: deploy CIF for meaningful protection against $\Omega_1$--$\Omega_3$ attacks today, while investing in adapter maturation for $\Omega_4$--$\Omega_5$ coverage. Do not rely on 94\\% detection for life-safety applications until your adapters reach Level 4--5 and have been validated against your threat model.
 
@@ -32,7 +32,7 @@ The honest operational posture is Level 2: deploy CIF for meaningful protection 
 
 The preceding sections distill the CIF series into actionable guidance. The core recommendations are:
 
-1. **Adopt layered defense from the start** (Pitfall 2). No single mechanism achieves the full-stack result in Part~2: isolated layers (e.g., firewall-only) were on the order of 60--70% detection, while the full CIF stack reached a 94–100% parametric detection ceiling. Security must be designed into the architecture, not bolted on after deployment.
+1. **Adopt layered defense from the start** (Pitfall 2). No single mechanism achieves the full-stack result in Part~2: isolated layers (e.g., firewall-only) were on the order of 60--70% detection, while the full CIF stack reached a 96–100% parametric detection ceiling. Security must be designed into the architecture, not bolted on after deployment.
 
 2. **Implement trust decay on every delegation chain** (Pitfall 1). The Trust Calculus with $\delta \leq 0.8$ prevents trust laundering across all tested architectures. This is not optional hardening---it is the structural foundation that prevents systemic compromise from local failures.
 
@@ -59,7 +59,7 @@ Organizations adopting cognitive security should plan a staged deployment aligne
 - Deploy drift detection with sliding-window analysis
 - Implement structured provenance logging
 - Tune thresholds against representative attack samples from Part 2's corpus
-- Expected outcome: a 94–100% parametric detection ceiling at ~20% latency overhead; real-pipeline performance must be measured separately
+- Expected outcome: a 96–100% parametric detection ceiling at ~20% latency overhead; real-pipeline performance must be measured separately
 
 **Stage 3: High Assurance** (Months 4--6)
 
@@ -98,7 +98,7 @@ This guide has tried to be honest about what CIF can and cannot do. The practica
 
 **Sample sizes are small**. The LLM validation used $N=5$ attacks per architecture. The colony benchmarks used 1 scenario per attack type. The multi-seed analysis used 30 seeds. These are sufficient for preliminary evidence but severely underpowered for precise estimation. Required sample sizes for $\pm 5\%$ precision are $N \geq 246$ per evaluation mode. Treat all reported detection rates as estimates with wide uncertainty, not precise measurements.
 
-**The gap is real**. The 49--88 percentage-point gap between the parametric ceiling (94--100\%) and the empirical pipeline (44.8\%) is not noise—the Bayes factor for a true performance gap exceeds $10^6$ (decisive evidence). This gap reflects adapter implementation maturity, but maturation takes time and resources. Plan your deployment timeline and security posture accordingly.
+**The gap is real**. The 51--88 percentage-point gap between the parametric ceiling (96--100\%) and the empirical pipeline (44.8\%) is not noise—the Bayes factor for a true performance gap exceeds $10^6$ (decisive evidence). This gap reflects adapter implementation maturity, but maturation takes time and resources. Plan your deployment timeline and security posture accordingly.
 
 **Adaptive adversaries are not modeled**. All evaluations used a fixed attack corpus. A sophisticated adversary who observes CIF's defenses and adapts (Debenedetti et al.'s adaptive attacks \cite{adaptive2025attacks}) could achieve lower detection rates than reported. The game-theoretic analysis (Part 2) establishes the Nash equilibrium for the current payoff matrix, but a patient adversary will probe for gaps. The layered defense architecture provides resilience—bypassing one layer still encounters others—but no detection system is perfectly robust to adaptive adversaries.
 

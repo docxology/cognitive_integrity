@@ -50,17 +50,17 @@ The off-diagonal term $A_{12}$ allows visual sensor data (nominally part of the 
 
 ### Cognitive Firewall with Semiotic Decoupling
 
-CIF implements **Cognitive Firewall** (Paper 1, Def. 5.1) \cite{friedman2026cogsec1} with a domain-specific extension: *semiotic decoupling*, a type-theoretic separation of `PassiveData` and `ExecutableDirective` that constitutes a partially novel contribution to the CIF framework.
+CIF implements **Cognitive Firewall** \cite{friedman2026cogsec1} with a domain-specific extension: *semiotic decoupling*, a type-theoretic separation of `PassiveData` and `ExecutableDirective` that constitutes a partially novel contribution to the CIF framework.
 
 * **Data vs. Directive Type Enforcement**: Text read from the physical environment is strictly typed as `PassiveData`, not `ExecutableDirective`. The OODA loop is hard-coded to ignore "Commands" sourced from the visual field. This type-level enforcement ensures that no sequence of visual inputs---regardless of syntactic content---can promote itself to directive status \cite{friedman2026cogsec3}.
 * **Semiotic Boundary**: The decoupling between the Symbol (visual pattern) and the Referent (engagement command) is enforced at the type system level, not by content filtering. An adversarial patch that perfectly mimics a valid command string is still rejected because its *provenance type* is `PassiveData`, not its content.
 
 ### Cross-Modality Trust and Quorum Verification
 
-**Cross-Modality Trust** and **Quorum Verification** (Paper 1, Def. 5.8) \cite{friedman2026cogsec1} across sensor modalities provide a second layer of defense.
+**Cross-Modality Trust** and **Quorum Verification** \cite{friedman2026cogsec1} across sensor modalities provide a second layer of defense.
 
 * **Cognitive Latency**: The system enforces a mandatory latency on "Override" commands. It queries the Swarm Consensus: "I see a Target Override. Do other sensors confirm a threat signature?" If the Infrared and Lidar agents see only a building (no heat signature of weapons), the visual command is rejected as a hallucination.
-* **Byzantine Consensus** (Paper 1, Def. 5.7) \cite{friedman2026cogsec1}: The cross-modality verification operates as a Byzantine consensus protocol---a single compromised modality (vision) cannot override the agreement of multiple uncorrupted modalities (IR, Lidar, RF).
+* **Byzantine Consensus** \cite{friedman2026cogsec1}: The cross-modality verification operates as a Byzantine consensus protocol---a single compromised modality (vision) cannot override the agreement of multiple uncorrupted modalities (IR, Lidar, RF).
 * **Restored Uncoupling**: By enforcing type-level separation and cross-modality quorum, the off-diagonal terms are forced to zero, restoring the Independence Axiom.
 
 ## Summary

@@ -54,20 +54,12 @@ REAL_DATA = PROJECT_ROOT / "output" / "data"
 #
 # To refresh after a prose fix:
 #   uv run python scripts/verify_claims.py --only-failures
-# These four claims are UNBACKED (not MISMATCH/NOT_FOUND): the LLM validation
-# arm's artifact reports status='skipped' because COGSEC_RUN_LLM_ANALYSIS was
-# not set when llm_demo_results.json was generated. They cannot be value-
-# reconciled without re-running the Ollama-backed LLM demo, so they are pinned
-# as the only known-unreconciled claims. Every non-LLM claim is reconciled
-# (0 MISMATCH, 0 NOT_FOUND as of the release-hardening pass).
-KNOWN_UNRECONCILED = frozenset(
-    {
-        "abstract.llm_dr_low",
-        "abstract.llm_dr_high",
-        "05b.llm_claude_dr",
-        "05b.llm_crewai_dr",
-    }
-)
+# Empty as of 2026-08-21: the Ollama-backed LLM demo (gemma3:4b) was re-run
+# with COGSEC_RUN_LLM_ANALYSIS=1, so llm_demo_results.json now carries real
+# measurements and all 163 shipped claims reconcile (0 MISMATCH, 0 NOT_FOUND,
+# 0 UNBACKED). Keep this set for pinning any future known-unreconciled claims;
+# the anti-drift tests above fail the moment a new unsupported number appears.
+KNOWN_UNRECONCILED = frozenset()
 
 
 # ── synthetic fixtures ──────────────────────────────────────────────────
@@ -928,10 +920,15 @@ class TestShippedRegistry:
         stale = sorted(KNOWN_UNRECONCILED - set(claim_ids()))
         assert stale == [], f"KNOWN_UNRECONCILED names claims that no longer exist: {stale}"
 
-    def test_the_gate_is_currently_red(self, real_report):
-        """Documents the state this wave hands to manuscript reconciliation."""
-        assert not real_report.ok
-        assert len(real_report.failures) > 0
+    def test_the_gate_is_green_after_reconciliation(self, real_report):
+        """The full registry must pass against the shipped tree.
+
+        Previously this asserted the gate was red while four LLM claims were
+        UNBACKED (status='skipped' artifact). After re-running the real
+        Ollama-backed demo (2026-08-21), every claim reconciles and the gate
+        is green; new drift still fails via test_no_new_drift_beyond_the_pinned_set.
+        """
+        assert real_report.ok, f"unreconciled claims: {real_report.failures}"
 
 
 class TestShippedRegistryPositiveControls:
@@ -1027,20 +1024,20 @@ class TestVerifyClaimsCli:
             check=False,
         )
 
-    def test_exits_nonzero_on_the_current_tree(self, tmp_path):
+    def test_exits_zero_on_the_reconciled_tree(self, tmp_path):
         """Run from an unrelated cwd: defaults must resolve to the project."""
         proc = self._run(tmp_path)
-        assert proc.returncode == 1
-        assert "FAILED:" in proc.stdout
+        assert proc.returncode == 0
+        assert "OK:" in proc.stdout
         assert "VERDICT" in proc.stdout
 
     def test_writes_a_parseable_json_report(self, tmp_path):
         out = tmp_path / "nested" / "report.json"
-        proc = self._run(tmp_path, "--only-failures", "--json", str(out))
-        assert proc.returncode == 1
+        proc = self._run(tmp_path, "--json", str(out))
+        assert proc.returncode == 0
         payload = json.loads(out.read_text(encoding="utf-8"))
         assert payload["counts"]["total"] == len(CLAIMS)
-        assert payload["ok"] is False
+        assert payload["ok"] is True
 
     def test_missing_data_dir_still_fails_closed(self, tmp_path):
         """No data must never be reported as 'everything checks out'."""

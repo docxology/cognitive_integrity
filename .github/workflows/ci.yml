@@ -296,3 +296,48 @@ jobs:
 
       - name: Test (pytest)
         run: uv run pytest tests/ -q
+
+  series-integrity:
+    # Program-level gate. Every job above is scoped to ONE part: each part runs
+    # its own tests, its own verify_manuscript.py, and Part 2 runs its claim
+    # registry over its own manuscript. Nothing checked the series as a whole,
+    # which is how a shared quantity came to be published as two different
+    # numbers in two papers that cite each other, and how a section could be
+    # deleted from Part 2 while Part 1 kept citing its contents.
+    #
+    # Gating, not advisory: it is stdlib-only, needs no install step, and every
+    # check refuses to pass on an empty input set.
+    name: series integrity (cross-paper)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Cross-paper integrity (gating)
+        run: >-
+          python3 scripts/check_series_integrity.py
+          --only shared-quantities --only bibliography --only truncation
+
+      - name: Cross-paper pointer lint (advisory)
+        # Hardcoded "Part 1, Definition 5.4"-style pointers are unverifiable by
+        # construction: the renderer assigns those numbers per part. Part 3's
+        # were audited and every one named a different result than its sentence
+        # was about, so they were converted to named references. Part 2's were
+        # audited too and mostly resolve correctly, so this stays advisory
+        # rather than forcing a churn-only rewrite of ~44 accurate pointers.
+        # Blocker to promote it to gating: convert Part 2's remaining numbered
+        # pointers (chiefly 02a_defense_algorithms.md, S07_algorithm_pseudocode.md,
+        # 01c_theoretical_connections.md) to named references.
+        continue-on-error: true
+        run: python3 scripts/check_series_integrity.py --only cross-paper-pointers
+
+      - name: Tests for the gate itself
+        # A checker that cannot fail is worse than no checker; these tests drive
+        # each check against a planted defect and require it to be caught.
+        run: |
+          python3 -m pip install --quiet pytest
+          python3 -m pytest tests/test_series_integrity.py -q

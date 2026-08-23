@@ -174,7 +174,7 @@ Comprehensive technical documentation is available in [`docs/`](docs/):
 | LLM validation (Gemma 3 4B, N=10) | 80–100% | Per architecture |
 | Colony benchmarks (20–100 agents) | 81–100% | Structured scenarios |
 | Colony stress tests (500 agents) | Valid | No errors; DR stable |
-| Parametric simulation ceiling | 94–100% | Design-level maximum |
+| Parametric simulation ceiling | 96–100% | Design-level maximum |
 | Property-based test coverage | 19/19 pass | Hypothesis library |
 
 ## Repository

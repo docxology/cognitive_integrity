@@ -17,7 +17,7 @@ The attack corpus is generated programmatically via deterministic random seeds (
 
 ## Full Attack Corpus Statistics {#sec:corpus-stats}
 
-![Cognitive Attack Taxonomy. Hierarchical visualization of the 950-attack corpus organized by primary category (Prompt Injection, Trust Exploitation, Belief Manipulation, Coordination Attacks) and subcategory. Node size indicates attack count; color intensity indicates baseline success rate against undefended systems. The taxonomy classifies attacks by five adversary capability classes (Part 1, Definition 4): $\Omega_1$ (passive eavesdropping), $\Omega_2$ (message injection), $\Omega_3$ (identity spoofing), $\Omega_4$ (belief manipulation), and $\Omega_5$ (coordinated multi-agent attacks). Prompt injection dominates in volume (500 attacks, 53\% of corpus) while coordination attacks show highest baseline success rate (82\%) due to their ability to exploit the absence of inter-agent verification. Generated deterministically with seed 42 via \texttt{AttackCorpus.generate()}.](figures/comprehensive_taxonomy.pdf){#fig:comprehensive-taxonomy width=95%}
+![Cognitive Attack Taxonomy. Hierarchical visualization of the 950-attack corpus organized by primary category (Prompt Injection, Trust Exploitation, Belief Manipulation, Coordination Attacks) and subcategory. Node size indicates attack count; color intensity indicates baseline success rate against undefended systems. The figure's five columns are Part 1's access-based adversary classes: $\Omega_1$ external (user input), $\Omega_2$ peripheral (tool/API), $\Omega_3$ agent-level (single agent), $\Omega_4$ coordination (inter-agent), and $\Omega_5$ systemic (orchestrator). Prompt injection dominates in volume (500 attacks, 53\% of corpus) while coordination attacks show highest baseline success rate (82\%) due to their ability to exploit the absence of inter-agent verification. Generated deterministically with seed 42 via \texttt{AttackCorpus.generate()}.](figures/comprehensive_taxonomy.pdf){#fig:comprehensive-taxonomy width=95%}
 
 The cognitive attack taxonomy (\cref{fig:comprehensive-taxonomy}) organizes our 950-attack corpus into a hierarchical structure that reflects both the attack mechanisms and their relative prevalence in the wild.
 
@@ -123,7 +123,7 @@ The following subsections provide detailed attack examples, methodology, and eth
 
 ## Adversary Capability Taxonomy: Ω_1–Ω_5 Mapping {#sec:omega-mapping}
 
-> **v1.0 note.** The Ω_1–Ω_5 capability taxonomy is defined in Part 1 §3.2. The
+> **Note.** The Ω_1–Ω_5 *technique* ladder used below is this paper's own (see above); Part 1's Ω classes are access-based and do not correspond by index. The
 > mapping below is a *design-level classification* based on each attack
 > subcategory's theoretical requirements; the `AttackSample` type does not carry
 > a runtime `omega_level` field. The counts are derived from
@@ -145,11 +145,21 @@ Table: Attack corpus composition — actual counts from AttackCorpus.generate(se
 
 ### Ω-Level Mapping (Design-Level)
 
-The following table maps each attack subcategory to its *theoretical* adversary
-capability level per Part 1 Definition 4. This is a design-level taxonomy, not a
-runtime annotation: `AttackCorpus.generate()` does not populate an `omega_level`
-field. The counts per Ω level are therefore the sums of the subcategory counts
-mapped above.
+The following table maps each attack subcategory to a *theoretical* adversary
+capability level. Two distinct ladders carry the symbol Ω in this series and they
+are **not** interchangeable. Part 1's classes are defined by *access* --- external
+input, peripheral tool/API, agent-level, coordination, systemic --- whereas the
+ladder used here and by `src/redteam/generator.py::OmegaLevel` is defined by
+*technique*: passive observation, injection, impersonation, belief manipulation,
+coordination. The two do not align by index: this corpus's ``Ω₂ (injection)''
+bucket spans Part 1's external ($\Omega_1$) and peripheral ($\Omega_2$) classes,
+because direct injection arrives through user input while indirect injection
+arrives through fetched tool content. Where this paper writes Ω it means the
+technique ladder below.
+
+This is a design-level taxonomy, not a runtime annotation: `AttackCorpus.generate()`
+does not populate an `omega_level` field. The counts per Ω level are therefore the
+sums of the subcategory counts mapped above.
 
 Table: Ω-level mapping by attack subcategory (design-level classification). {#tab:omega-level-mapping}
 

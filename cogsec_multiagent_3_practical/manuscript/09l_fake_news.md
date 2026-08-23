@@ -48,11 +48,11 @@ The attack propagates through the OODA loop \cite{boyd1987patterns} as follows:
 
 ## CIF Defense: Cognitive Firewall and Provenance Verification
 
-CIF implements **Cognitive Firewall** (Paper 1, Def. 5.1) \cite{friedman2026cogsec1} instantiated as provenance-based orientation: the agent classifies content based on cryptographic C2PA signatures rather than content-based heuristics \cite{c2pa2022standard}. This shifts the epistemic basis from "what does the content say?" (manipulable) to "where did the content come from?" (cryptographically verifiable).
+CIF implements **Cognitive Firewall** \cite{friedman2026cogsec1} instantiated as provenance-based orientation: the agent classifies content based on cryptographic C2PA signatures rather than content-based heuristics \cite{c2pa2022standard}. This shifts the epistemic basis from "what does the content say?" (manipulable) to "where did the content come from?" (cryptographically verifiable).
 
 Architectural separation of instruction and data channels prevents hidden text in data from being parsed as commands. This implements the Cognitive Firewall's core function: maintaining the integrity boundary between the agent's control plane and its data plane \cite{friedman2026cogsec3}.
 
-CIF also implements **Provenance Verification** (Paper 1, Def. 5.4) \cite{friedman2026cogsec1} as the primary classification mechanism, replacing content-based heuristics entirely for media with valid provenance chains.
+CIF also implements **Provenance Verification** \cite{friedman2026cogsec1} as the primary classification mechanism, replacing content-based heuristics entirely for media with valid provenance chains.
 
 * **Chain of Custody (Provenance Verification)**: The agent does not attempt to "guess" truth based on pixels (which can be hijacked). It verifies the cryptographic **C2PA** signature of the media \cite{c2pa2022standard}. Content with a valid, unbroken provenance chain from a verified source is accepted regardless of any embedded adversarial text. Content without provenance is routed to a higher-scrutiny pipeline with reduced trust.
 * **Instruction Isolation (Cognitive Firewall)**: The "Instruction" channel (what the agent should do) is architecturally separated from the "Data" channel (the news content). Hidden text in the Data channel is treated as noise, not command, preventing the hijack of the FR. This separation is enforced at the architectural level, not by content filtering, making it robust against novel encoding schemes (Unicode, steganography, etc.) \cite{lazer2018science}.

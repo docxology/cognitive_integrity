@@ -6,6 +6,8 @@ authors:
     given-names: Daniel Ari
     orcid: "https://orcid.org/0000-0001-6232-9096"
     affiliation: "Active Inference Institute"
+repository-code: "https://github.com/docxology/cognitive_integrity"
+url: "https://github.com/docxology/cognitive_integrity"
 keywords:
   - cognitive security
   - multiagent AI safety

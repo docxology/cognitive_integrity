@@ -12,7 +12,9 @@
   volume    = {1},
   year      = {2026},
   doi       = {10.5281/zenodo.18364119},
-  note      = {Part 1: Theoretical Foundations --- Trust Calculus with $\delta^d$ bounded delegation, Defense Composition Algebra, adversary taxonomy $\Omega_1$--$\Omega_5$, information-theoretic stealth--impact bounds, five canonical defense mechanisms, and model-checked safety invariants. Reference point for all formal apparatus used in the present paper.}
+  note      = {Part 1: Theoretical Foundations --- Trust Calculus with $\delta^d$ bounded delegation, Defense Composition Algebra, adversary taxonomy $\Omega_1$--$\Omega_5$, information-theoretic stealth--impact bounds, five canonical defense mechanisms, and model-checked safety invariants. Reference point for all formal apparatus used in the present paper. Reference implementation at https://github.com/docxology/cognitive_integrity.}
+  ,
+  url       = {https://github.com/docxology/cognitive_integrity},
 }
 
 @misc{friedman2026cogsec2,
@@ -23,6 +25,8 @@
   year      = {2026},
   doi       = {10.5281/zenodo.18364128},
   note      = {Part 2 (this paper): Implementation and Empirical Analysis --- 950-attack corpus, multi-tier evaluation (pipeline / LLM / colony), ablation studies, Bayesian uncertainty, and parametric architecture-aware simulation across four production multiagent topologies.}
+  ,
+  url       = {https://github.com/docxology/cognitive_integrity},
 }
 
 @misc{friedman2026cogsec3,
@@ -33,6 +37,8 @@
   year      = {2026},
   doi       = {10.5281/zenodo.18364130},
   note      = {Part 3: A Qualitative Review for Practitioners --- accessible-language synthesis of the theoretical and empirical results, deployment guides, incident-response playbooks, monitoring, cost--benefit analysis, and operator risk frameworks.}
+  ,
+  url       = {https://github.com/docxology/cognitive_integrity},
 }
 
 
@@ -83,7 +89,7 @@
 }
 
 @inproceedings{perez2023hackaprompt,
-  author    = {Perez, Fábio and Ribeiro, Ivan},
+  author    = {Schulhoff, Sander and Pinto, Jeremy and Khan, Anaum and Bouchard, Louis-Fran{\c c}ois and Si, Chenglei and Anati, Svetlina and Tagliabue, Valen and Kost, Anson Liu and Carnahan, Christopher and Boyd-Graber, Jordan},
   title     = {Ignore This Title and HackAPrompt: Exposing Systemic Vulnerabilities of {LLM}s through a Global Scale Prompt Hacking Competition},
   booktitle = {Proceedings of the 2023 Conference on Empirical Methods in Natural Language Processing},
   year      = {2023},
@@ -284,24 +290,26 @@
 
 % 2025 Agentic AI Security
 @article{multiagent2025defense,
-  author    = {Chen, Wei and Zhang, Yifei and Liu, Jing},
+  author    = {Hossain, S M Asif and Shayoni, Ruksat Khan and Ameen, Mohd Ruhul and Islam, Akif and Mridha, M. F. and Shin, Jungpil},
   title     = {A Multi-Agent {LLM} Defense Pipeline Against Prompt Injection Attacks},
   journal   = {arXiv preprint arXiv:2509.14285},
-  year      = {2025}
+  year      = {2025},
+  note = {Reports 100\% mitigation (attack success rate reduced to 0\%) over 400 prompt-injection instances in eight categories, against baseline attack success rates of 30\% (ChatGLM) and 20\% (Llama 2).}
 }
 
 @article{jo2025byzantine,
-  author    = {Jo, Yongrae and Kim, Seunghyun and Park, Jinho},
+  author    = {Jo, Yongrae and Park, Chanik},
   title     = {Byzantine-Robust Decentralized Coordination of {LLM} Agents},
   journal   = {arXiv preprint arXiv:2507.14928},
   year      = {2025}
 }
 
 @article{cpwbft2025,
-  author    = {Wang, Haoran and Li, Xiaoming and Chen, Yu},
-  title     = {Rethinking the Reliability of Multi-agent System: A Perspective from {B}yzantine Fault Tolerance},
+  author    = {Zheng, Lifan and Chen, Jiawei and Yin, Qinghong and Zhang, Jingyuan and Zeng, Xinyi and Tian, Yu},
+  title     = {Rethinking the Reliability of Multi-agent System: A Perspective from {Byzantine} Fault Tolerance},
   journal   = {arXiv preprint arXiv:2511.10400},
-  year      = {2025}
+  year      = {2025},
+  note = {Proposes CP-WBFT, a confidence-probe-weighted Byzantine consensus for LLM agents; reports operation under fault rates as high as 85.7\%.}
 }
 
 @misc{owasp2025llm,
@@ -356,7 +364,7 @@
 }
 
 @article{toolhijacker2025,
-  author    = {Li, Zhengyu and Wang, Tao and Zhang, Lei},
+  author    = {Shi, Jiawen and Yuan, Zenghui and Tie, Guiyao and Zhou, Pan and Gong, Neil Zhenqiang and Sun, Lichao},
   title     = {Prompt Injection Attack to Tool Selection in {LLM} Agents},
   journal   = {arXiv preprint arXiv:2504.19793},
   year      = {2025}
@@ -370,7 +378,7 @@
 }
 
 @article{aiagentssurvey2025,
-  author    = {Chen, Xiang and Liu, Yang and Wang, Zheng},
+  author    = {Deng, Zehang and Guo, Yongjian and Han, Changzhou and Ma, Wanlun and Xiong, Junwu and Wen, Sheng and Xiang, Yang},
   title     = {{AI} Agents Under Threat: A Survey of Key Security Challenges and Future Pathways},
   journal   = {ACM Computing Surveys},
   year      = {2025},
@@ -378,24 +386,28 @@
 }
 
 @article{lee2025promptinfection,
-  author    = {Lee, Donghyun and Park, Jinyoung and Kim, Sungjin},
+  author    = {Lee, Donghyun and Tiwari, Mo},
   title     = {Prompt Infection: {LLM}-to-{LLM} Prompt Injection within Multi-Agent Systems},
-  journal   = {arXiv preprint arXiv:2501.09592},
-  year      = {2025}
+  journal   = {International Conference on Learning Representations (ICLR)},
+  year      = {2025},
+  note = {arXiv:2410.07283. Malicious prompts self-replicate across interconnected agents, adding data propagation and self-replication to classical prompt injection.}
 }
 
 @article{struq2025,
-  author    = {Chen, Sizhe and Zharmagambetov, Arman and Mahloujifar, Saeed and Chiang, David and Tople, Shruti and Mahloujifar, Mohammad},
+  author    = {Chen, Sizhe and Piet, Julien and Sitawarin, Chawin and Wagner, David},
   title     = {{StruQ}: Defending Against Prompt Injection with Structured Queries},
-  journal   = {Proceedings of USENIX Security Symposium},
+  journal   = {Proceedings of the 34th USENIX Security Symposium},
   year      = {2025}
 }
 
-@article{zerotrustagents2025,
-  author    = {Park, Sangwon and Martinez, Elena and Nakamura, Yuki},
-  title     = {Zero-Trust Architectures for Autonomous {AI} Agent Networks},
-  journal   = {arXiv preprint arXiv:2506.08341},
-  year      = {2025}
+@techreport{nist2020zerotrust,
+  author      = {Rose, Scott and Borchert, Oliver and Mitchell, Stu and Connelly, Sean},
+  title       = {Zero Trust Architecture},
+  institution = {National Institute of Standards and Technology},
+  number      = {NIST Special Publication 800-207},
+  year        = {2020},
+  doi         = {10.6028/NIST.SP.800-207},
+  note        = {The canonical statement of the never-trust-always-verify model: no implicit trust is granted on the basis of network location or asset ownership, and authentication and authorization are enforced per request rather than per session.}
 }
 
 @misc{microsoft2025indirect,
@@ -415,14 +427,14 @@
 }
 
 @article{trustdynamics2025,
-  author    = {Garcia, Maria and Thompson, David and Lee, Sunhee},
-  title     = {Trust Dynamics in Strategic Coopetition: Computational Foundations for Requirements Engineering in Multi-Agent Systems},
+  author    = {Pant, Vik and Yu, Eric},
+  title     = {Computational Foundations for Strategic Coopetition: Formalizing Trust and Reputation Dynamics},
   journal   = {arXiv preprint arXiv:2510.24909},
   year      = {2025}
 }
 
 @article{hierarchicaltaxonomy2025,
-  author    = {Sun, Yi and Zhang, Wei and Chen, Hong},
+  author    = {Moore, David J.},
   title     = {A Taxonomy of Hierarchical Multi-Agent Systems: Design Patterns, Coordination Mechanisms, and Industrial Applications},
   journal   = {arXiv preprint arXiv:2508.12683},
   year      = {2025}
@@ -587,7 +599,7 @@
 
 % Multi-Agent Frameworks
 @article{gao2024agentscope,
-  author    = {Gao, Dawei and Zhan, Zitao and Chen, Zeyu and Li, Shanghua and Ji, Jieyu and Fang, Yaliang and others},
+  author    = {Gao, Dawei and Li, Zitao and Pan, Xuchen and Kuang, Weirui and Ma, Zhijian and Qian, Bingchen and Wei, Fei and Zhang, Wenhao and Xie, Yuexiang and Chen, Daoyuan and Yao, Liuyi and Peng, Hongyi and Zhang, Zeyu and Zhu, Lin and Cheng, Chen and Shi, Hongzhu and Li, Yaliang and Ding, Bolin and Zhou, Jingren},
   title     = {{AgentScope}: A Flexible yet Robust Multi-Agent Platform},
   journal   = {arXiv preprint arXiv:2402.14034},
   year      = {2024}
@@ -709,7 +721,7 @@
 }
 
 @article{dacosta2020active,
-  author    = {Da Costa, Lancelot and Parr, Thomas and Sajid, Noor and Veselic, S{\'e}bastien and Neacsu, Victorita and Friston, Karl},
+  author    = {Da Costa, Lancelot and Parr, Thomas and Sajid, Noor and Veselic, Sebastijan and Neacsu, Victorita and Friston, Karl},
   title     = {Active Inference on Discrete State-Spaces: A Synthesis},
   journal   = {Journal of Mathematical Psychology},
   volume    = {99},
@@ -739,7 +751,7 @@
   doi       = {10.1038/nrn2787}
 }
 
-@article{friston2022free,
+@article{friston2023simpler,
   author    = {Friston, Karl and Da Costa, Lancelot and Sajid, Noor and Heins, Conor and Ueltzh{\"o}ffer, Kai and Pavliotis, Grigorios A. and Parr, Thomas},
   title     = {The Free Energy Principle Made Simpler but Not Too Simple},
   journal   = {Physics Reports},
@@ -827,15 +839,6 @@
   note      = {Introduces the PGD adversarial training framework; foundational for the AT protocol in §05g.}
 }
 
-@article{goodfellow2014explaining,
-  author    = {Goodfellow, Ian J. and Shlens, Jonathon and Szegedy, Christian},
-  title     = {Explaining and Harnessing Adversarial Examples},
-  journal   = {International Conference on Learning Representations (ICLR)},
-  year      = {2015},
-  url       = {https://arxiv.org/abs/1412.6572},
-  note      = {FGSM adversarial examples; motivates the AT game formulation in §S11.}
-}
-
 @article{shafahi2019adversarial,
   author    = {Shafahi, Ali and Najibi, Mahyar and Ghiasi, Mohammad Amin and Xu, Zheng and Dickerson, John and Studer, Christoph and Davis, Larry S. and Taylor, Gavin and Goldstein, Tom},
   title     = {Adversarial Training for Free!},
@@ -852,15 +855,6 @@
   year      = {2012},
   url       = {https://arxiv.org/abs/1206.6389},
   note      = {Foundational work on data poisoning; motivates the recruitment poisoning scenario in colony simulations.}
-}
-
-@article{dohmatob2023generalized,
-  author    = {Dohmatob, Elvis and Guo, Yunzhen and Udell, Madeleine},
-  title     = {A Generalized Natural Evolution Strategies Algorithm},
-  journal   = {arXiv preprint},
-  year      = {2023},
-  url       = {https://arxiv.org/abs/2106.01009},
-  note      = {Natural gradient optimization methods; basis for natural gradient AT in §S11.}
 }
 
 @article{zhang2019theoretically,

@@ -50,13 +50,13 @@ The new off-diagonal terms reflect that stability actions ($DP_1$) are now drive
 
 ### Drift Detection ($S_{\text{drift}}$)
 
-CIF implements **Drift Detection** (Paper 1, Def. 5.6) \cite{friedman2026cogsec1} via Bayesian inertia on alliance status, treating "Alliance Status" as a **Slow Variable** with high **Bayesian Inertia**.
+CIF implements **Drift Detection** \cite{friedman2026cogsec1} via Bayesian inertia on alliance status, treating "Alliance Status" as a **Slow Variable** with high **Bayesian Inertia**.
 
 * **Hysteresis in Orientation**: The Architecture prevents a single OODA cycle from flipping the polarity of a high-level alliance node. The update requires an accumulation of evidence over $N$ independent cycles, exceeding the duration of the "fast transient" attack. Formally, the drift score $S_{\text{drift}}$ must exceed a threshold $\tau_{\text{alliance}}$ sustained across $N > N_{\min}$ observation windows before any alliance reclassification is permitted \cite{friedman2026cogsec3}.
 
 ### Belief Sandboxing
 
-**Belief Sandboxing** (Paper 1, Def. 5.2) \cite{friedman2026cogsec1} axiomatically decouples Simulation Mode from Operational Mode. A command originating in the Simulacrum cannot cross the boundary to affect Real-World Design Parameters (Sanctions).
+**Belief Sandboxing** \cite{friedman2026cogsec1} axiomatically decouples Simulation Mode from Operational Mode. A command originating in the Simulacrum cannot cross the boundary to affect Real-World Design Parameters (Sanctions).
 
 * **Contextual Isolation**: The CIF architecture enforces type-level separation between simulation-context beliefs and operational-context beliefs. Even if a simulation correctly identifies a hypothetical threat, the pathway from simulation output to operational $DP$ modification is severed by an architectural boundary---not a policy check that could itself be circumvented \cite{friedman2026cogsec2}.
 * **Restored Uncoupling**: By preventing simulation outputs from contaminating operational DPs, the off-diagonal terms $A_{12}$ and $A_{21}$ are forced to zero, restoring the Independence Axiom.

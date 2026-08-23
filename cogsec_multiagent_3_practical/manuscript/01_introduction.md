@@ -22,7 +22,7 @@ The Cognitive Integrity Framework (CIF) was developed to secure these systems, a
 * **Part 2: Computational Validation** (DOI: 10.5281/zenodo.18364128) implemented this theory in Python and tested it against a corpus of 950 attacks across four production architectures, reporting ablation studies, Bayesian uncertainty quantification, colony-scale benchmarks at 20--100 agents, and a category-theoretic formalization of defense composition (Defense Category $\calD$, Theorems CT.1--CT.3) with a composable visualization engine and interactive CIF Composer web UI.
 * **Applications (§9--§10, this paper):** The integrated CIF-AD-OODA analytical model is applied across ten critical domains (rare-earth mining, nation-state alliances, cyber-security, drone warfare, supply chain, biowarfare, food security, trade wars, infrastructure, information ecosystems), identifying three universal attack patterns and three novel defense extensions.
 
-The combined evidence includes **3,308 passing tests** and a **94--100% parametric detection ceiling** across all attack categories and architectures (Part 2), alongside a lower real-pipeline multi-seed mean of approximately 44.8% (30 seeds). Direct-injection detection reaches 96--98% in the fully defended parametric configuration; plus CIF coverage is analyzed across all ten operational domains in §9--§10 with retrospective analysis of six documented 2024--2025 AI-agent incidents.
+The combined evidence includes **3,369 passing tests** and a **96--100% parametric detection ceiling** across all attack categories and architectures (Part 2), alongside a lower real-pipeline multi-seed mean of approximately 44.8% (30 seeds). Direct-injection detection reaches 96--98% in the fully defended parametric configuration; plus CIF coverage is analyzed across all ten operational domains in §9--§10 with retrospective analysis of six documented 2024--2025 AI-agent incidents.
 
 ## The Purpose of This Guide
 
@@ -57,7 +57,7 @@ This paper is designed to stand alone as the practitioner's reference of the ser
 | 950-attack corpus generation, examples, ethics | **Part 2** (DOI: 10.5281/zenodo.18364128), §3 + S03 |
 | Detailed detection rates per architecture (Claude Code, AutoGPT, CrewAI, LangGraph) | **Part 2** §5 |
 | Ablation studies + Bayesian uncertainty | **Part 2** §5.6, §5e |
-| Parametric design-level ceiling (94–100%) | **Part 2** S08 |
+| Parametric design-level ceiling (96–100%) | **Part 2** S08 |
 | Game-theoretic adversarial analysis / Nash equilibrium | **Part 2** §6 |
 | Category-theoretic formalization of defense composition (Defense Category $\calD$, Theorems CT.1–CT.3) | **Part 2** §1c, §2c |
 | Composable visualization engine + CIF Composer interactive web UI | **Part 2** (output/web/cif_composer.html) |
@@ -68,3 +68,5 @@ This paper is designed to stand alone as the practitioner's reference of the ser
 | Three novel defense extensions (verification channel separation, active perturbation probing, physics-informed invariants) | **§9** (this paper) |
 | Retrospective mapping of 2024–2025 AI-agent security incidents (Replit, Copilot RCE, Slack AI, \$3.2M procurement fraud, etc.) | **S3** (this paper) |
 | CIF-AD-OODA integration model for goal-hijacking | **§9** (this paper) |
+
+**Code and Repository**: The companion codebase, attack corpus documentation, and deployment tooling are maintained at <https://github.com/docxology/cognitive_integrity> (DOI: 10.5281/zenodo.18364130; companion parts: Part 1 DOI 10.5281/zenodo.18364119, Part 2 DOI 10.5281/zenodo.18364128).

@@ -6,6 +6,7 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
+
 name = "cogsec-multiagent-computational"
 version = "1.0.0"
 description = "Cognitive Integrity Framework: Computational Validation and Empirical Analysis (Second Edition)"
@@ -13,6 +14,7 @@ authors = [
     {name = "Daniel Ari Friedman", email = "daniel@activeinference.institute"}
 ]
 requires-python = ">=3.10"
+
 dependencies = [
     "numpy>=1.24.0",
     "scipy>=1.10.0",
@@ -119,3 +121,6 @@ check_untyped_defs = true
 
 [tool.uv]
 package = true
+
+[project.urls]
+Repository = "https://github.com/docxology/cognitive_integrity"

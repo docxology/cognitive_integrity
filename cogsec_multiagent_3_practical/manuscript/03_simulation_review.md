@@ -19,7 +19,7 @@ The test corpus included direct prompt injection, poisoned RAG contexts, deep tr
 
 ## Finding 1: Defense Layering vs. Individual Efficacy
 
-**The Data**: Individual defenses (like just a firewall) stopped ~60--70% of attacks in the parametric evaluation. The full CIF stack achieved a **94--100% parametric detection ceiling**, with specific architectures reaching 97--98% for direct injection. The separate real-pipeline evaluation had a lower multi-seed mean of approximately 44.8%.
+**The Data**: Individual defenses (like just a firewall) stopped ~60--70% of attacks in the parametric evaluation. The full CIF stack achieved a **96--100% parametric detection ceiling**, with specific architectures reaching 97--98% for direct injection. The separate real-pipeline evaluation had a lower multi-seed mean of approximately 44.8%.
 **The Implication**: The defenses demonstrated orthogonal coverage. The firewall blocked inputs that the sandbox would have missed, and the sandbox identified anomalies that the trust calculus would have permitted. The data suggests that removing any single layer creates a statistically significant vulnerability gap.
 
 ## Finding 2: State Machine Determinism
@@ -47,7 +47,7 @@ The test corpus included direct prompt injection, poisoned RAG contexts, deep tr
 
 ## Finding 6: Emergent Misalignment Is the Nash-Optimal Attack
 
-The colony benchmark reveals a striking pattern: **emergent misalignment achieves the lowest detection rate (56.1\%) at the highest false positive rate (46.6\%)** of any evaluated scenario. Part 2's game-theoretic analysis explains why: in the zero-sum game between CIF and an adversary, emergent misalignment is the Nash-equilibrium attack strategy. It is the attacker's best response to full CIF deployment.
+The colony benchmark reveals a striking pattern: **emergent misalignment achieves the lowest detection rate (74.3\%) at the highest false positive rate (25.5\%)** of any evaluated scenario. (These are Part 2's 30-seed benchmark means; an earlier single-seed figure of 56.1\% is not the publication estimate.) Part 2's game-theoretic analysis explains why: in the zero-sum game between CIF and an adversary, emergent misalignment is the Nash-equilibrium attack strategy. It is the attacker's best response to full CIF deployment.
 
 The game-theoretic payoff matrix shows that:
 - Full CIF achieves 94\\% detection against direct injection ($\Omega_1$), 89\\% against trust exploitation ($\Omega_4$)
@@ -60,7 +60,7 @@ This is not a failure of CIF—it is a consequence of its success. When explicit
 
 ## Finding 7: The Implementation Gap Is a Feature, Not a Bug
 
-The 49--88 percentage-point gap between the parametric ceiling (94--100\%) and the empirical pipeline mean (44.8\%) reflects **adapter implementation maturity**, not a failure of CIF's formal architecture. Part~2 introduces a 5-level CMMI-style adapter maturity scale:
+The 51--88 percentage-point gap between the parametric ceiling (96--100\%) and the empirical pipeline mean (44.8\%) reflects **adapter implementation maturity**, not a failure of CIF's formal architecture. Part~2 introduces a 5-level CMMI-style adapter maturity scale:
 
 | Level | Name | DR Range | Description |
 | :--- | :--- | :--- | :--- |
@@ -70,7 +70,7 @@ The 49--88 percentage-point gap between the parametric ceiling (94--100\%) and t
 | 4 | Adaptive | 60--80\% | Online learning |
 | 5 | Verified | 80--94\% | Formally certified |
 
-The current Claude Code adapter is at Level 3 (Statistical), explaining the 44.8\% mean. The roadmap projects +35--41 percentage points of improvement by advancing adapters to Level 5 for the primary attack categories. The parametric ceiling (94--100\%) represents what Level-5 adapters achieve—it is a design target, not an overclaim.
+The current Claude Code adapter is at Level 3 (Statistical), explaining the 44.8\% mean. The roadmap projects +35--41 percentage points of improvement by advancing adapters to Level 5 for the primary attack categories. The parametric ceiling (96--100\%) represents what Level-5 adapters achieve—it is a design target, not an overclaim.
 
 **Operator implication**: When deploying CIF, assess the maturity level of each adapter against your threat model. Level-3 adapters (current) provide meaningful protection against unsophisticated $\Omega_1$--$\Omega_2$ attacks; Level-4--5 adapters (planned) are required for $\Omega_4$--$\Omega_5$ protection. The gap is closeable—it is an engineering challenge, not a theoretical limitation.
 
@@ -87,7 +87,7 @@ We proved the *architecture* works. The implementation fidelity is the variable 
 
 > **A Note on Three Numbers**: Throughout this guide you will encounter three detection rates that may seem contradictory. They are not — they measure different things:
 >
-> - **94--100\%** (parametric simulation, $N=3{,}800$): CIF's **design-level detection ceiling** — what the defense architecture achieves when adapters are fully mature (Level 5) and conditions match the calibrated model. This is the target, not the current reality.
+> - **96--100\%** (parametric simulation, $N=3{,}800$): CIF's **design-level detection ceiling** — what the defense architecture achieves when adapters are fully mature (Level 5) and conditions match the calibrated model. This is the target, not the current reality.
 > - **44.8\%** [95\% HDI: 41.3\%, 48.3\%] (multi-seed pipeline, 30 seeds): The **current empirical baseline** for the Claude Code architecture with Level-3 adapters. This is what you get today, out of the box, before adapter tuning.
 > - **~12.2\%** (ablation corpus, 98 attacks, all categories including hardest): The **conservative floor** — full pipeline performance on a corpus specifically designed to include difficult attacks. This represents the worst-case realistic estimate.
 >

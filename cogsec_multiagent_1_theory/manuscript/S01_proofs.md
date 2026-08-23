@@ -17,7 +17,7 @@ For transparency, this section records, by exact label, which results stated in 
 - Firewall Liveness (Thm. 5.9), \cref{thm:firewall-liveness-restated} (\cref{sec:thm59-proof})
 - Byzantine Consensus Termination (Thm. 5.10), \cref{thm:byzantine-restated} (\cref{sec:thm510-proof})
 - Bounded Overhead (Thm. 5.11), \cref{thm:overhead-restated} (\cref{sec:thm511-proof})
-- Defense Composition Semiring, \cref{thm:composition-semiring-restated} (\cref{sec:thm-composition-semiring})
+- Defense Composition Algebra, \cref{thm:composition-semiring-restated} (\cref{sec:thm-composition-semiring})
 - Fisher-Rao Stealth-Impact Tight Bound, \cref{thm:fr-bound-restated} (\cref{sec:thm-geometric-bound})
 - Agent Compromise Blast Radius, \cref{thm:blast-radius-restated} (\cref{sec:thm-blast-radius})
 
@@ -874,17 +874,17 @@ All proofs are constructive and provide explicit bounds useful for system implem
 
 ---
 
-## v1.1 New Proofs: Defense Composition Algebra and Information-Geometric Bounds {#sec:v2-proofs}
+## Second-Edition Proofs: Defense Composition Algebra and Information-Geometric Bounds {#sec:v2-proofs}
 
 This section contains new proofs added in the Second Edition, corresponding to the defense composition algebra guarantees (§\ref{sec:defense-formal-guarantees}) and the information-geometric tightening of the stealth-impact bound (§\ref{sec:detection-bounds}).
 
 ---
 
-## Theorem: Defense Composition Semiring {#sec:thm-composition-semiring}
+## The Defense Composition Algebra {#sec:thm-composition-semiring}
 
-\begin{theorem}[Defense Composition Semiring --- Restated]
+\begin{theorem}[Defense Composition Algebra --- Restated]
 \label{thm:composition-semiring-restated}
-The set of CIF defenses under series ($\circ$) and parallel ($\parallel$) composition forms a closed semiring satisfying closure, associativity, identity, and distributivity.
+On a common accept/reject focal predicate, the set of CIF defenses under series ($\circ$) and parallel ($\parallel$) composition is closed, associative, carries a multiplicative identity, and is distributive --- that is, it forms a bounded distributive lattice. It is \emph{not} shown here to be a full closed semiring: neither an additive identity that annihilates the multiplicative identity nor a Kleene-star (infinite-sum) operation is constructed, and the stronger claim is not made (\cref{rem:defense-independence-scope}).
 \end{theorem}
 
 \begin{lemma}[Type Closure under Composition]
@@ -897,7 +897,7 @@ For any $\mathcal{D}_1, \mathcal{D}_2: \mathcal{M} \to \{\textsc{accept}, \texts
 \end{lemma}
 
 \begin{proof}[Proof of \cref{lem:type-closure}]
-Series composition: $(\mathcal{D}_1 \circ \mathcal{D}_2)(m) = \textsc{accept}$ iff both accept; otherwise the more severe outcome. Parallel composition: $(\mathcal{D}_1 \parallel \mathcal{D}_2)(m) = \textsc{detect}$ iff either detects. Both operations map $\mathcal{M} \to \{\textsc{accept}, \textsc{quarantine}, \textsc{reject}\}$.
+Series composition: $(\mathcal{D}_1 \circ \mathcal{D}_2)(m) = \textsc{accept}$ iff both accept; otherwise the more severe of the two outcomes. Parallel composition: $(\mathcal{D}_1 \parallel \mathcal{D}_2)(m) = \textsc{accept}$ iff both accept --- equivalently, the composite is non-accepting iff either component is --- and otherwise takes the more severe outcome. Both operations therefore map $\mathcal{M} \to \{\textsc{accept}, \textsc{quarantine}, \textsc{reject}\}$, with no outcome outside that set.
 \end{proof}
 
 \begin{lemma}[Composition Associativity]
@@ -927,12 +927,12 @@ $(\mathcal{D} \circ \mathcal{D}_\emptyset)(m) = \textsc{accept}$ iff $\mathcal{D
 \end{proof}
 
 \begin{proof}[Main Proof of \cref{thm:composition-semiring-restated}]
-By \cref{lem:type-closure,lem:comp-assoc,lem:null-identity}, the set satisfies closure, associativity, and identity. Distributivity: $\mathcal{D}_1 \circ (\mathcal{D}_2 \parallel \mathcal{D}_3)$ means ``accept iff $\mathcal{D}_1$ accepts AND at most one of $\mathcal{D}_2, \mathcal{D}_3$ detects''---equivalently, $(\mathcal{D}_1 \circ \mathcal{D}_2) \parallel (\mathcal{D}_1 \circ \mathcal{D}_3)$. This follows from Boolean distributivity $A \land (B \lor C) = (A \land B) \lor (A \land C)$.
+By \cref{lem:type-closure,lem:comp-assoc,lem:null-identity}, the set satisfies closure, associativity, and identity. Distributivity: writing $A_i$ for the predicate ``$\mathcal{D}_i$ accepts $m$'', both operations act on the accept predicate as conjunction, so $\mathcal{D}_1 \circ (\mathcal{D}_2 \parallel \mathcal{D}_3)$ accepts iff $A_1 \land (A_2 \land A_3)$ and $(\mathcal{D}_1 \circ \mathcal{D}_2) \parallel (\mathcal{D}_1 \circ \mathcal{D}_3)$ accepts iff $(A_1 \land A_2) \land (A_1 \land A_3)$. These coincide by associativity, commutativity and idempotence of $\land$. Note that on this focal predicate $\circ$ and $\parallel$ agree; they are distinguished by the severity they assign to non-accepting outcomes, not by their acceptance semantics, which is precisely why the structure is a bounded distributive lattice rather than a semiring with two independent operations.
 \end{proof}
 
 ---
 
-## Theorem: Information-Geometric Stealth-Impact Tight Bound {#sec:thm-geometric-bound}
+## The Tight Information-Geometric Stealth-Impact Bound {#sec:thm-geometric-bound}
 
 \begin{theorem}[Fisher-Rao Stealth-Impact Tight Bound --- Restated]
 \label{thm:fr-bound-restated}
@@ -1022,7 +1022,7 @@ This is $0.775/\pi \approx 24.7\%$ of the maximum possible attack distance---a t
 
 ---
 
-## Theorem: Agent Compromise Blast Radius {#sec:thm-blast-radius}
+## The Agent Compromise Blast Radius Bound {#sec:thm-blast-radius}
 
 \begin{theorem}[Blast Radius Bound --- Restated]
 \label{thm:blast-radius-restated}

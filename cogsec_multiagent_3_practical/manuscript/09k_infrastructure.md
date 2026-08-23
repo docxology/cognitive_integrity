@@ -50,11 +50,11 @@ The attack propagates through the OODA loop \cite{boyd1987patterns} as follows:
 
 ## CIF Defense: Behavioral Invariants, Belief Sandboxing, and Drift Detection
 
-CIF implements **Behavioral Invariants** (Paper 1, Def. 5.5) \cite{friedman2026cogsec1} with a partially novel extension: *physics-informed invariants* that encode conservation laws (Kirchhoff's Laws) as runtime predicates \cite{raissi2019physics}. Rather than learning invariants from data (which can be poisoned), these invariants are derived from first-principles physics and cannot be overridden by any data-driven model.
+CIF implements **Behavioral Invariants** \cite{friedman2026cogsec1} with a partially novel extension: *physics-informed invariants* that encode conservation laws (Kirchhoff's Laws) as runtime predicates \cite{raissi2019physics}. Rather than learning invariants from data (which can be poisoned), these invariants are derived from first-principles physics and cannot be overridden by any data-driven model.
 
-CIF also implements **Belief Sandboxing** (Paper 1, Def. 5.2) \cite{friedman2026cogsec1} by isolating the emergency response pathway: before executing load shedding, the agent evaluates the emergency hypothesis in a sandboxed belief state that cross-references multiple independent sensor channels.
+CIF also implements **Belief Sandboxing** \cite{friedman2026cogsec1} by isolating the emergency response pathway: before executing load shedding, the agent evaluates the emergency hypothesis in a sandboxed belief state that cross-references multiple independent sensor channels.
 
-Finally, CIF implements **Drift Detection** (Paper 1, Def. 5.6) \cite{friedman2026cogsec1} via temporal damping that filters fast synthetic transients characteristic of cyber-attacks.
+Finally, CIF implements **Drift Detection** \cite{friedman2026cogsec1} via temporal damping that filters fast synthetic transients characteristic of cyber-attacks.
 
 * **Conservation of Energy (Physics-Informed Behavioral Invariant)**: The agent checks if the reported "High Load" is physically consistent with the current flow at the substations (Kirchhoff's Laws). If $\sum I_{in} \neq \sum I_{out}$ beyond noise margins, the sensor data is rejected. These physics-informed invariants provide an unforgeable ground truth that no adversarial data injection can circumvent \cite{raissi2019physics, friedman2026cogsec3}.
 * **Slow-Transient Filter (Drift Detection via Temporal Damping)**: The "Emergency Shed" FR has a built-in temporal damper. It requires the overload condition to persist for $> \Delta t$ (defined by thermal limits) before acting, filtering out fast, synthetic OODA transients that are characteristic of cyber-attacks. This temporal requirement exploits the fundamental asymmetry between real thermal events (which evolve on physical timescales) and injected data (which can appear instantaneously) \cite{liang2017review}.

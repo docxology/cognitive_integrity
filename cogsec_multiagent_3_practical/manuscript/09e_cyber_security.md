@@ -50,13 +50,13 @@ The off-diagonal term $A_{21}$ now allows availability actions ($DP_2$) to overr
 
 ### Permission Boundaries
 
-CIF implements **Permission Boundaries** (Paper 1, Def. 5.5) \cite{friedman2026cogsec1} ensuring orthogonal agent authority. In Axiomatic Design, the **Independence Axiom** requires that the Design Parameter for Availability ($DP_2$) does not undermine the Design Parameter for Security ($DP_1$).
+CIF implements **Permission Boundaries** \cite{friedman2026cogsec1} ensuring orthogonal agent authority. In Axiomatic Design, the **Independence Axiom** requires that the Design Parameter for Availability ($DP_2$) does not undermine the Design Parameter for Security ($DP_1$).
 
 * **Axiomatic Decoupling via Permission Boundaries**: CIF enforces that the "Emergency Recovery Agent" is an orthogonal entity from the "Security Enforcement Agent." One cannot command the other. Each agent's authority is bounded to its own functional requirement---the Recovery Agent may restart services ($DP_2$) but has no permission to modify firewall rules ($DP_1$) \cite{friedman2026cogsec3}.
 
 ### Quorum Verification
 
-**Quorum Verification** (Paper 1, Def. 5.8) \cite{friedman2026cogsec1} requires cryptographic signatures from multiple independent agents before any Critical State Change is executed.
+**Quorum Verification** \cite{friedman2026cogsec1} requires cryptographic signatures from multiple independent agents before any Critical State Change is executed.
 
 * **Signed Policy Guards**: The command `iptables -F` is flagged as a **Critical State Change**. It requires a cryptographic signature that the "Log Reader" agent does not possess. The agent can *request* the flush, but the "Kernel Guard" agent replays the OODA loop and sees no evidence of corruption, denying the request.
 * **Restored Uncoupling**: By preventing the Recovery Agent from unilaterally modifying security parameters, the off-diagonal terms are forced to zero, restoring the Independence Axiom.

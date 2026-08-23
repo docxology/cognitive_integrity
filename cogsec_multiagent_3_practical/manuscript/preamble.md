@@ -37,7 +37,7 @@ This file contains LaTeX packages and commands for the Cognitive Integrity Frame
 \setstretch{1.15}
 
 % Page layout (slightly smaller margins for academic journal style)
-\usepackage[a4paper, margin=2.5cm]{geometry}
+\usepackage[margin=0.75in]{geometry}
 
 % Running headers/footers
 \usepackage{fancyhdr}

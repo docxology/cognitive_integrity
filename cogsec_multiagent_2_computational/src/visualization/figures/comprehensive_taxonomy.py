@@ -306,16 +306,17 @@ def plot_comprehensive_taxonomy(output_dir: str | Path = "output/figures") -> pl
             color=cls["color"],
         )
 
-    # Severity progression arrow
+    # Severity progression arrow (placed in the gap between rows so it does
+    # not strike through the middle row of attack-type boxes)
     ax.annotate(
         "",
-        xy=(15.2, 4.5),
-        xytext=(0.5, 4.5),
+        xy=(16.0, 4.05),
+        xytext=(0.3, 4.05),
         arrowprops=dict(arrowstyle="-|>", color="#7F8C8D", lw=2, mutation_scale=20),
     )
     ax.text(
         7.85,
-        4.1,
+        4.32,
         "Increasing Severity & Stealth →",
         ha="center",
         va="center",

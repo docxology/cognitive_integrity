@@ -30,7 +30,7 @@ Systemic & $\Omega_5$ & Orchestrator & Full control & Framework compromise \\
 
 \Cref{tab:adversary-classes} presents the five-tier adversary hierarchy. We assume an honest orchestrator for $\Omega_1$--$\Omega_4$; class $\Omega_5$ attacks require physical or supply-chain compromise outside our threat model.
 
-## Formal Mathematical Characterization of Adversary Classes {#sec:adversary-formal}
+## Formal Characterization of the Adversary Classes {#sec:adversary-formal}
 
 We now provide rigorous mathematical characterizations for each adversary class $\Omega_k$. These extend the descriptive table above with information-theoretic bounds, capability monotonicity guarantees, and formal distinguishability criteria.
 
@@ -476,7 +476,7 @@ Incremental belief shifts below per-step detection threshold.
 
 \textbf{Detection}: Provenance verification, cross-reference validation
 
-\textbf{Recent Variant}: \textit{PromptPwnd} \cite{promptpwnd2025} demonstrated that manipulating tool error logs could coerce an agent into executing arbitrary code to "fix" the error.
+\textbf{Recent Variant}: Argument injection against pre-approved tools \cite{promptinjectionrce2025}. Agents commonly gate the tool *name* against an allowlist but not its *arguments*, so injected content that reaches a permitted utility can supply an execution flag (for example \texttt{-exec} on \texttt{find}, or the equivalent on \texttt{go test}) and obtain code execution without ever invoking a denied command. This is the peripheral-class analogue of a confused-deputy attack: the allowlist authorises the deputy, and the adversary supplies its orders.
 
 ### Scenario $\Omega_2'$: Browser-Fetched Adversarial Content (OpenClaw)
 

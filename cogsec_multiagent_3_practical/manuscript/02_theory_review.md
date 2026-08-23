@@ -50,7 +50,7 @@ This formalism suggests that catastrophic attacks are inherently easier to detec
 
 Finally, Part 1 defines the **Composition Algebra**, determining how output probabilities of distinct modules interact. The key result is that orthogonal defenses compose multiplicatively.
 
-This "Swiss Cheese Model" was supported by Part 2's parametric simulation, where the full stack reached a 94--100% design-level detection ceiling and outperformed the sum of its parts. The real prototype pipeline is materially lower and is reported separately as a multi-seed mean of approximately 44.8%.
+This "Swiss Cheese Model" was supported by Part 2's parametric simulation, where the full stack reached a 96--100% design-level detection ceiling and outperformed the sum of its parts. The real prototype pipeline is materially lower and is reported separately as a multi-seed mean of approximately 44.8%.
 
 ## The Science Behind Belief Updates: Free Energy {#sec:fep-connection}
 
@@ -76,7 +76,7 @@ CIF's trust calculus (the $\delta^d$ decay) has a natural interpretation under F
 
 ### The Belief Sandbox as Constrained Inference
 
-The belief sandbox (Part 1, Definition 5.4) has a direct FEP interpretation: it is **constrained variational inference** where the update is only accepted if $\Delta F \leq \kappa \cdot \varepsilon_\text{precision}$. This is equivalent to requiring that accepted belief updates stay within a bounded geodesic radius on the statistical manifold of belief distributions—exactly Theorem CG.1 from Part 2.
+The belief sandbox (Part 1) has a direct FEP interpretation: it is **constrained variational inference** where the update is only accepted if $\Delta F \leq \kappa \cdot \varepsilon_\text{precision}$. This is equivalent to requiring that accepted belief updates stay within a bounded geodesic radius on the statistical manifold of belief distributions—exactly Theorem CG.1 from Part 2.
 
 ### Practical Implication for Operators
 

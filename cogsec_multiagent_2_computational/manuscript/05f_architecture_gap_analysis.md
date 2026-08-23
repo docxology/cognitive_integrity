@@ -38,7 +38,7 @@ Table: Adapter maturity rubric and typical marginal TPR contribution. {#tab:matu
 
 Using the ablation contributions from \cref{sec:extended-ablation}, each CIF module can be placed on this scale:
 
-Table: Current adapter maturity assessment per module. Evidence: $\Delta\mathrm{TPR {#tab:module-maturity}
+Table: Current adapter maturity assessment per module. Evidence: $\Delta\mathrm{TPR}$ is the measured marginal detection-rate contribution when the module is removed (from \cref{tab:component-removal}); failure-mode letters follow the Type A--D taxonomy in \cref{sec:failure-modes}. {#tab:module-maturity}
 
 | Module | Level | Evidence | Primary Failure Mode |
 | --- | --- | --- | --- |

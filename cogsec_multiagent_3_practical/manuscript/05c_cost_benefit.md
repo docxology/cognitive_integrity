@@ -58,7 +58,7 @@ The break-even condition for CIF deployment is straightforward:
 
 $$\text{attacks\_prevented\_per\_year} = \frac{\text{annual CIF cost}}{\text{mean attack cost} \times \text{detection rate}}$$
 
-Using the CIF empirical detection rate of 44.8% (the 30-seed empirical result, which is the conservative figure — parametric ceiling is 94–100%):
+Using the CIF empirical detection rate of 44.8% (the 30-seed empirical result, which is the conservative figure — parametric ceiling is 96–100%):
 
 * **Low-severity scenario**: Annual CIF cost \$100K, mean attack cost \$50K. Break-even at $100{,}000 / (50{,}000 \times 0.448) \approx 4.5$ attacks/year prevented.
 * **Moderate-severity scenario**: Annual CIF cost \$100K, mean attack cost \$500K. Break-even at $\approx 0.45$ attacks/year prevented — one prevented attack every two years covers the deployment.

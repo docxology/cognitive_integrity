@@ -475,15 +475,23 @@ def render_risk_matrix(data: FigureData, ax: Axes | None = None) -> Figure | Sub
     ax.set_xlabel("Likelihood", fontsize=12, fontweight="bold")
     ax.set_ylabel("Impact", fontsize=12, fontweight="bold")
 
-    # Plot risk points
+    # Plot risk points; alternate label placement so risks sharing a cell
+    # (e.g. Goal Hijacking and Trust Laundering at impact 5 / likelihood 2)
+    # do not have overlapping labels.
+    placed: dict[tuple[int, int], int] = {}
     for risk in risks:
         x = risk["likelihood"] - 1  # Convert to 0-indexed
         y = risk["impact"] - 1
         ax.plot(x, y, "ko", markersize=12, markeredgewidth=2, markerfacecolor="white")
+        n = placed.get((x, y), 0)
+        placed[(x, y)] = n + 1
+        # First label above-right; later labels in the same cell stack upward.
+        dy = 5 + 13 * n
+        dx = 5
         ax.annotate(
             risk["name"],
             (x, y),
-            xytext=(5, 5),
+            xytext=(dx, dy),
             textcoords="offset points",
             fontsize=8,
             fontweight="bold",

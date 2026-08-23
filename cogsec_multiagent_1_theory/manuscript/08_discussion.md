@@ -4,9 +4,9 @@
 
 This section examines the theoretical implications of the Cognitive Integrity Framework (\cref{sec:theoretical-implications}), formal limitations (\cref{sec:formal-limitations}) and boundary conditions (\cref{sec:limitations}), relationship to prior work (\cref{sec:related-work}), governance implications (\cref{sec:governance}), and future research directions (\cref{sec:future-directions}).
 
-## Empirical Validation Summary
+## Empirical Validation Summary (Part 2)
 
-The formal mechanisms proposed in this paper have been validated through extensive architecture-aware parametric simulation in **Part 2: Computational Validation** \cite{friedman2026cogsec2}. In experiments across six production multiagent architectures (including hierarchical, role-based, and peer-to-peer topologies), the parametric simulation establishes a design-level detection ceiling of **94--100\%** against a corpus of 950 cognitive attacks; the prototype pipeline achieves a mean detection rate of **44.7\%** [CI: 43.4\%, 46.2\%] across 30 random seeds (Part 2, \S{5.1}).
+The formal mechanisms proposed in this paper have been validated through extensive architecture-aware parametric simulation in **Part 2: Computational Validation** \cite{friedman2026cogsec2}. In experiments across the four production multiagent architectures Part 2 evaluates (Claude Code, AutoGPT, CrewAI, LangGraph), the parametric simulation establishes a design-level detection ceiling of **96--100\%** against a corpus of 950 cognitive attacks; the prototype pipeline achieves a mean detection rate of **44.8\%** [95\% CI: 43.2\%, 46.4\%] across 30 random seeds (Part 2, Results).
 
 Key empirical findings include:
 

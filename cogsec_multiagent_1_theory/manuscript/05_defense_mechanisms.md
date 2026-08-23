@@ -221,7 +221,7 @@ update $Q$.  This connection bridges the CIF trust calculus with the
 broader active inference literature (Part~2, Theorem~FEP.2).
 \end{remark}
 
-![Belief Sandbox Architecture](figures/belief_sandbox.pdf){#fig:belief-sandbox}
+![Belief Sandbox Architecture: the lifecycle of an unverified proposition from ingestion through provisional (sandboxed) storage, verification checks, and promotion to the verified belief base or rejection. Sandboxed propositions cannot influence goals or be delegated onward.](figures/belief_sandbox.pdf){#fig:belief-sandbox}
 
 \Cref{fig:belief-sandbox} illustrates the sandbox architecture, showing how incoming beliefs are partitioned into verified and provisional sets based on source trust $\mathcal{T}_{i \to s}$ and provenance verification $V(\pi)$. The promotion protocol transfers beliefs from provisional to verified status upon meeting corroboration and consistency requirements.
 
@@ -746,7 +746,7 @@ $n$ agents & Max faulty $f$ & Quorum $q$ & Message complexity & Rounds \\
 
 \begin{theorem}[Composition Algebra Closure]
 \label{thm:composition-closure}
-The set of CIF defenses $\mathcal{D}$ under series ($\circ$) and parallel ($\parallel$) composition forms a closed semiring:
+On a common accept/reject focal predicate, the set of CIF defenses $\mathcal{D}$ under series ($\circ$) and parallel ($\parallel$) composition forms a bounded distributive lattice --- it satisfies closure, associativity, identity and distributivity (see the scope remark below for what is \emph{not} claimed):
 \begin{enumerate}
 \item \textbf{Closure}: $\mathcal{D}_1, \mathcal{D}_2 \in \mathcal{D} \Rightarrow \mathcal{D}_1 \circ \mathcal{D}_2 \in \mathcal{D}$ and $\mathcal{D}_1 \parallel \mathcal{D}_2 \in \mathcal{D}$
 \item \textbf{Associativity}: $(\mathcal{D}_1 \circ \mathcal{D}_2) \circ \mathcal{D}_3 = \mathcal{D}_1 \circ (\mathcal{D}_2 \circ \mathcal{D}_3)$

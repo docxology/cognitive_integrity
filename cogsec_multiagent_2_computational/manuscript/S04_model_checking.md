@@ -200,9 +200,9 @@ Table: Model checking configuration parameters. {#tab:verification-config}
 
 ## Category-Theory Verification {#sec:ct-verification}
 
-The categorical laws CT.1--CT.3 (Part 2, \cref{sec:composability-algebra}) are formally verifiable as temporal logic properties. This section provides model-checking specifications for CT.1 (identity), CT.2 (associativity), and CT.3 (monadic detection preservation), and a TLA+ specification of the FEP attack criterion (FEP.1).
+The categorical laws CT.1--CT.3 (Part 2, \cref{sec:composability-algebra}) are formally verifiable as temporal logic properties. This section provides model-checking specifications for the CT.1 category laws (left identity, right identity, associativity) and for CT.3 (monadic detection preservation), and a TLA+ specification of the FEP attack criterion (FEP.1).
 
-### NuSMV Verification of CT.1--CT.3
+### NuSMV Verification of the CT.1 Category Laws
 
 The following NuSMV module encodes a defense morphism and verifies the three categorical laws as LTL safety properties:
 
@@ -237,7 +237,7 @@ ASSIGN
     !f_detected : g_score;
   esac;
 
--- CT.1: Left identity — id ∘ f = f
+-- CT.1a (category law, left identity) — id ∘ f = f
 -- (identity composed with f yields f's result)
 MODULE VerifyCT1(f_detected, f_score)
   VAR
@@ -245,14 +245,14 @@ MODULE VerifyCT1(f_detected, f_score)
     comp : ComposeMorphisms(id.detected, id.score, f_detected, f_score);
   LTLSPEC G (comp.detected = f_detected & comp.score = f_score)
 
--- CT.2: Right identity — f ∘ id = f
+-- CT.1b (category law, right identity) — f ∘ id = f
 MODULE VerifyCT2(f_detected, f_score)
   VAR
     id   : IdentityMorphism;
     comp : ComposeMorphisms(f_detected, f_score, id.detected, id.score);
   LTLSPEC G (comp.detected = f_detected & comp.score = f_score)
 
--- CT.3: Associativity — (h ∘ g) ∘ f = h ∘ (g ∘ f)
+-- CT.1c (category law, associativity) — (h ∘ g) ∘ f = h ∘ (g ∘ f)
 MODULE VerifyCT3(f_d, f_s, g_d, g_s, h_d, h_s)
   VAR
     gf   : ComposeMorphisms(f_d, f_s, g_d, g_s);
@@ -262,7 +262,7 @@ MODULE VerifyCT3(f_d, f_s, g_d, g_s, h_d, h_s)
   LTLSPEC G (hgf.detected = hgf2.detected & hgf.score = hgf2.score)
 ```
 
-**Verification result**: CT.1--CT.3 verified VALID for all reachable states (exhaustive state space: $2 \times 11 = 22$ states per morphism; composition space $22^2 = 484$ pairs; $484^2 = 234{,}256$ triples for CT.3). No counterexamples found. The short-circuit composition rule is the key structural invariant: once a morphism detects ($f.\text{detected} = \text{TRUE}$), subsequent morphisms in the chain never override the detection, regardless of their own score.
+**Verification result**: the CT.1 category laws verified VALID for all reachable states (exhaustive state space: $2 \times 11 = 22$ states per morphism; composition space $22^2 = 484$ pairs; $484^2 = 234{,}256$ triples for associativity). No counterexamples found. The short-circuit composition rule is the key structural invariant: once a morphism detects ($f.\text{detected} = \text{TRUE}$), subsequent morphisms in the chain never override the detection, regardless of their own score.
 
 ### TLA+ Specification of FEP.1
 

@@ -157,7 +157,7 @@ Expected runtime: ~30 min on a modern laptop (without LLM demo), ~2h with `run_l
 Scripts here produce the empirical results that Papers 1/3/4 reference. If you touch a script that changes headline numbers (e.g., ablation deltas, parametric ceiling, colony detection rates), check that sibling papers' cross-references remain accurate:
 
 - Part 1 §8 Discussion — cites Part 2 ablations (§5.6)
-- Part 3+4 §3 Evidence — cites Part 2 overall metrics (94–100% parametric ceiling)
+- Part 3+4 §3 Evidence — cites Part 2 overall metrics (96–100% parametric ceiling)
 - Part 3+4 §9 Methodology — cites Part 2 as validation anchor
 
 A mismatch between a sibling's quoted number and the current `output/data/` value is a **regression**. Run `verify_manuscript.py` after non-trivial changes.

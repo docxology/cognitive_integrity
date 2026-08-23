@@ -52,7 +52,7 @@ Invoke this skill when:
 ## Commands
 
 ```bash
-# Full test suite (3338 passed / 3 skipped; ~90-160s with coverage)
+# Full test suite (3369 passed / 3 skipped; ~90-160s with coverage)
 uv run pytest projects/cognitive_integrity/cogsec_multiagent_2_computational/tests/ -q
 
 # Run specific module tests
@@ -74,11 +74,11 @@ uv run python -c "from projects.cognitive_integrity.cogsec_multiagent_2_computat
 
 - Defers to **Part 1** for formal definitions and theorem statements.
 - Feeds results to **Part 3+4** for deployment guidance and domain applications.
-- All headline metrics (e.g., "94–100% at the parametric ceiling") originate here; consult `docs/claims_traceability.md` for precise sources.
+- All headline metrics (e.g., "96–100% at the parametric ceiling") originate here; consult `docs/claims_traceability.md` for precise sources.
 
 ## Performance Notes
 
-- Test suite is large (3338 passed / 3 skipped with --cov; ~90s-2.6min).
+- Test suite is large (3369 passed / 3 skipped with --cov; ~90s-2.6min).
 - Uses `pytest-timeout` (2s default per test) to catch hangs.
 - Parallel execution possible: `pytest -n auto` (requires pytest-xdist).
 

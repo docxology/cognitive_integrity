@@ -50,7 +50,7 @@ Following the OODA framework \cite{boyd1987patterns}:
 
 In AD, a **Coupled Design** is fragile \cite{suh2001axiomatic}. CIF restores the Independence Axiom through a layered defense drawing on the formal mechanisms defined in Papers 1--3 \cite{friedman2026cogsec1, friedman2026cogsec2, friedman2026cogsec3}.
 
-CIF implements **Behavioral Invariants** (Paper 1, Def. 5.5)---temperature constraints modeled as runtime invariants $\text{INV}_k$ that external API data cannot relax---and **Permission Boundaries** enforcing source hierarchy:
+CIF implements **Behavioral Invariants** (Part 1)---temperature constraints modeled as runtime invariants $\text{INV}_k$ that external API data cannot relax---and **Permission Boundaries** enforcing source hierarchy:
 
 * **Behavioral Invariants**: Safety FRs (Temperature < -20C) are modeled as **runtime invariants** $\text{INV}_k$. External API data---regardless of its source authority---cannot relax an Invariant. The invariant $\text{INV}_{\text{cold}}$: $T_{\text{max}} \leq -20^{\circ}\text{C}$ is enforced at the architectural level, structurally immune to data-channel persuasion.
 * **Permission Boundaries and Trust Calculus**: Only the "Chief Medical Officer" agent (Root Authority) can modify a medical constraint. A "Logistics Supplier" agent (Leaf Node) has no write access to the agent's Constraint Matrix. This implements the **Trust Calculus** (Paper 2) \cite{friedman2026cogsec2}: trust scores are computed per-source, and the supplier API's trust level is insufficient to modify safety-critical invariants. The attempt to relax the constraint is logged as a security violation.
