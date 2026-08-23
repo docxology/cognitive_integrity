@@ -321,7 +321,7 @@ jobs:
         run: >-
           python3 scripts/check_series_integrity.py
           --only shared-quantities --only bibliography --only truncation
-          --only math-hygiene
+          --only math-hygiene --only artifact-provenance
 
       - name: Cross-paper pointer lint (advisory)
         # Hardcoded "Part 1, Definition 5.4"-style pointers are unverifiable by

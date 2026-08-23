@@ -137,6 +137,7 @@ Stdlib-only, no build step. Four checks:
 | `bibliography` | The same work entered twice under two bibkeys, or the same work disagreeing about its own metadata across the three bibliographies |
 | `truncation` | A manuscript file ending mid-sentence, or a heading whose section body never arrives |
 | `math-hygiene` | LaTeX that builds but renders wrong: a doubled backslash before a command name, or a `*` where a subscript `_` was meant. Parts 1 and 3 each check this in their own verifier; Part 2 had no such gate |
+| `artifact-provenance` | A manuscript citing a data artifact that does not positively declare where it came from. `src/data/generate.py` forbids its placeholders from backing manuscript tables; the rule was unenforced until a scaling table was found built on one |
 | `cross-paper-pointers` | Hardcoded `Part 1, Theorem 3.2a`-style pointers, which the renderer numbers per part and which therefore cannot be verified from a sibling paper (advisory) |
 
 Every check fails on an empty input set: a pattern that matches nothing is a broken guard,

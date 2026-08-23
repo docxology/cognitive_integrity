@@ -92,7 +92,7 @@ def _build_tree(root: Path, *, part_text: dict[str, str], bibs: dict[str, str]) 
         json.dumps(_PARAMETRIC_ROWS), encoding="utf-8"
     )
     (data / "multi_seed_results.json").write_text(
-        json.dumps({"tpr_mean": 0.448}), encoding="utf-8"
+        json.dumps({"data_origin": "real_pipeline", "tpr_mean": 0.448}), encoding="utf-8"
     )
     return root
 
@@ -110,7 +110,8 @@ def _body(ceiling: str = "96") -> str:
         f"{ceiling}--100\\% across the sweep.\n\n"
         "We evaluate over a 950-attack corpus spanning four production "
         "multiagent architectures.\n\n"
-        "The pipeline achieves a mean detection rate of 44.8\\% across 30 seeds.\n"
+        "The pipeline achieves a mean detection rate of 44.8\\% across 30 seeds.\n\n"
+        "Data from `output/data/multi_seed_results.json`.\n"
     )
 
 
@@ -138,7 +139,8 @@ def test_clean_tree_passes_every_check(clean_tree):
     If this ever fails, the negative tests below prove nothing.
     """
     module = _load_module(clean_tree)
-    for name in ("shared-quantities", "bibliography", "truncation", "math-hygiene", "cross-paper-pointers"):
+    for name in ("shared-quantities", "bibliography", "truncation", "math-hygiene",
+                 "artifact-provenance", "cross-paper-pointers"):
         result = module.CHECKS[name]()
         assert result.ok, f"{name} flagged a clean tree: {[p.message for p in result.problems]}"
 
@@ -371,6 +373,68 @@ def test_math_hygiene_allows_legitimately_starred_commands(tmp_path):
     )
     module = _load_module(tree)
     assert module.CHECKS["math-hygiene"]().ok
+
+
+def test_artifact_provenance_rejects_an_undeclared_artifact(tmp_path):
+    tree = _build_tree(
+        tmp_path / "undeclared",
+        part_text={"1": CEILING_OK,
+                   "2": CEILING_OK + "\nData from `output/data/mystery.json`.\n",
+                   "3": CEILING_OK},
+        bibs={},
+    )
+    module = _load_module(tree)
+    (module.DATA_DIR / "mystery.json").write_text(json.dumps({"values": [1, 2]}), encoding="utf-8")
+    result = module.CHECKS["artifact-provenance"]()
+    assert not result.ok
+    assert any("declares no provenance" in p.message for p in result.problems)
+
+
+def test_artifact_provenance_rejects_a_self_declared_placeholder(tmp_path):
+    tree = _build_tree(
+        tmp_path / "placeholder",
+        part_text={"1": CEILING_OK,
+                   "2": CEILING_OK + "\nData from `output/data/fake.json`.\n",
+                   "3": CEILING_OK},
+        bibs={},
+    )
+    module = _load_module(tree)
+    (module.DATA_DIR / "fake.json").write_text(
+        json.dumps({"data_origin": "synthetic", "values": [1]}), encoding="utf-8"
+    )
+    result = module.CHECKS["artifact-provenance"]()
+    assert not result.ok
+    assert any("a placeholder, not a result" in p.message for p in result.problems)
+
+
+def test_artifact_provenance_accepts_a_declared_non_measured_origin(tmp_path):
+    """The paper separates measured from parametric; both are honest if declared."""
+    tree = _build_tree(
+        tmp_path / "parametric",
+        part_text={"1": CEILING_OK,
+                   "2": CEILING_OK + "\nData from `output/data/sim.json`.\n",
+                   "3": CEILING_OK},
+        bibs={},
+    )
+    module = _load_module(tree)
+    (module.DATA_DIR / "sim.json").write_text(
+        json.dumps({"data_origin": "parametric_simulation", "values": [1]}), encoding="utf-8"
+    )
+    assert module.CHECKS["artifact-provenance"]().ok
+
+
+def test_artifact_provenance_rejects_a_citation_of_a_missing_file(tmp_path):
+    tree = _build_tree(
+        tmp_path / "missingfile",
+        part_text={"1": CEILING_OK,
+                   "2": CEILING_OK + "\nData from `output/data/absent.json`.\n",
+                   "3": CEILING_OK},
+        bibs={},
+    )
+    module = _load_module(tree)
+    result = module.CHECKS["artifact-provenance"]()
+    assert not result.ok
+    assert any("does not exist" in p.message for p in result.problems)
 
 # ---------------------------------------------------------------------------
 # Structural invariants of the registry itself

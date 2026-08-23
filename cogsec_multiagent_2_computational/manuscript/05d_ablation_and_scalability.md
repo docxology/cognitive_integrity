@@ -4,7 +4,7 @@
 
 This section quantifies the contribution of individual defense components and characterizes performance scaling with agent count and message volume. All values are auto-injected from generated data files.
 
-> **Reproducibility**: Ablation data from `scripts/run_ablation.py` → `output/data/ablation_results.json`. Scalability data from `scripts/run_scalability.py` → `output/data/scalability_data.json`.
+> **Reproducibility**: Ablation data from `scripts/run_ablation.py` → `output/data/ablation_results.json`. Scalability data from `scripts/run_scalability.py` → `output/data/scalability_results.json` (`data_origin: real_pipeline`). Note that the `scalability_data.json` file in the same directory is a `DataGenerator` placeholder that exists only so visualization tests have a schema-valid file; per that module's own rule it is not a source for manuscript tables.
 
 ## Defense Component Contributions {#sec:component-removal}
 
@@ -53,22 +53,29 @@ Table: Component synergy analysis (real pipeline, 98-attack corpus). {#tab:syner
 
 ## Agent Count Scaling {#sec:agent-scaling}
 
-\cref{tab:agent-scaling} reports end-to-end detection time and memory as agent count scales from 2 to 100. Data from `scripts/run_scalability.py` → `output/data/scalability_data.json`.
+\cref{tab:agent-scaling} reports measured per-round latency and peak traced memory as agent
+count scales from 2 to 100, from `scripts/run_scalability.py` →
+`output/data/scalability_results.json` (`data_origin: real_pipeline`). One round is a colony
+broadcast at $n$ agents: a `TrustMatrix(n)` is constructed and materialised ($O(n^2)$ framework
+state), then $n$ messages are evaluated through the full eight-module pipeline from
+`create_full_pipeline()` ($O(n)$ detection cost). Latency is wall-clock per round over 15 timed
+repeats after 3 warm-up rounds; memory is the `tracemalloc` peak traced allocation for one round,
+which measures the framework's own allocation rather than process RSS.
 
 Table: Performance scaling with agent count. {#tab:agent-scaling}
 
-| Agents | Detection Time | 95\% CI$^\ddagger$ | Memory | Consensus Time | 95\% CI$^\ddagger$ |
+| Agents | Latency (ms) | 95\% CI | Peak traced memory (MB) | Min (ms) | Max (ms) |
 | --- | --- | --- | --- | --- | --- |
-| 2 | 7ms | [6.0, 8.1] | 63MB | --- | --- |
-| 3 | 8ms | [6.8, 9.3] | 75MB | --- | --- |
-| 5 | 14ms | [12.1, 16.4] | 91MB | --- | --- |
-| 7 | 19ms | [15.9, 21.5] | 108MB | --- | --- |
-| 10 | 22ms | [18.5, 25.0] | 135MB | --- | --- |
-| 15 | 30ms | [25.8, 34.9] | 173MB | --- | --- |
-| 20 | 41ms | [35.1, 47.6] | 216MB | --- | --- |
-| 30 | 69ms | [58.9, 79.7] | 294MB | --- | --- |
-| 50 | 131ms | [111.8, 151.2] | 460MB | --- | --- |
-| 100 | 356ms | [302.7, 409.5] | 873MB | --- | --- |
+| 2 | 0.133 | [0.131, 0.135] | 0.01 | 0.130 | 0.146 |
+| 3 | 0.196 | [0.194, 0.198] | 0.01 | 0.191 | 0.205 |
+| 5 | 0.320 | [0.305, 0.335] | 0.01 | 0.305 | 0.426 |
+| 7 | 0.447 | [0.434, 0.461] | 0.01 | 0.434 | 0.534 |
+| 10 | 0.651 | [0.630, 0.672] | 0.01 | 0.614 | 0.753 |
+| 15 | 0.974 | [0.955, 0.992] | 0.01 | 0.944 | 1.065 |
+| 20 | 1.297 | [1.294, 1.301] | 0.02 | 1.286 | 1.312 |
+| 30 | 2.158 | [2.121, 2.194] | 0.03 | 2.072 | 2.292 |
+| 50 | 3.954 | [3.906, 4.002] | 0.08 | 3.872 | 4.181 |
+| 100 | 10.175 | [10.087, 10.264] | 0.31 | 9.948 | 10.644 |
 
 $^\ddagger$\textit{95\% CIs computed via bootstrap resampling ($B = 1{,}000$ iterations) over 10 independent runs per agent count. Detection time measured end-to-end including network simulation latency.}
 

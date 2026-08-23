@@ -111,6 +111,10 @@ def build_success_payload(all_results: dict, model: str) -> dict:
     }
     return {
         "schema_version": RESULT_SCHEMA_VERSION,
+        # Declared so a reader (and the series provenance gate) can tell this
+        # apart from a DataGenerator placeholder without inspecting its shape.
+        "data_origin": "real_pipeline",
+        "source_script": "scripts/run_llm_demo.py",
         "status": "ok",
         "reason": None,
         "model": model,

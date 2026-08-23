@@ -771,6 +771,122 @@ def check_math_hygiene() -> CheckResult:
     return result
 
 
+
+# ---------------------------------------------------------------------------
+# Check: cited-artifact provenance
+# ---------------------------------------------------------------------------
+
+#: A manuscript reference to a shipped data artifact, e.g.
+#: ``output/data/scalability_results.json``.
+_CITED_ARTIFACT = re.compile(r"output/data/([A-Za-z0-9_]+\.json)")
+
+#: ``data_origin`` values that mark a file as a *placeholder*. The paper draws
+#: honest distinctions between measured, parametric and design-model results, so
+#: the rule is not "must be measured" -- it is "must say which it is, and must
+#: not be a DataGenerator stand-in".
+_SYNTHETIC_ORIGINS = frozenset(
+    {"synthetic", "generated", "placeholder", "datagenerator", "mock", "fake", "stub"}
+)
+
+#: Keys any of which counts as a provenance declaration.
+_PROVENANCE_KEYS = ("data_origin", "source_script", "generator")
+
+#: Structural artifacts that carry no measurements and therefore have nothing to
+#: declare: a registry of figure labels, and the composer UI's module/preset
+#: configuration. Listed explicitly so the exemption is reviewable rather than
+#: inferred from shape.
+_STRUCTURAL_ARTIFACTS = frozenset({"figure_registry.json", "composer_data.json"})
+
+
+def check_artifact_provenance() -> CheckResult:
+    """A manuscript may only cite artifacts that declare real provenance.
+
+    ``src/data/generate.py`` states in its own module docstring that
+    ``DataGenerator`` outputs "must NOT be used for manuscript figures or
+    tables" -- they are schema-valid placeholders for visualization tests. That
+    rule was unenforced, and Part 2's agent-scaling table was built from
+    ``scalability_data.json`` (a placeholder with no provenance keys) while the
+    real measurement sat unused in ``scalability_results.json``, overstating
+    per-round latency by roughly 35x.
+
+    The rule here is fail-safe in the honest direction: a cited artifact must
+    positively declare a real ``data_origin``.  A missing declaration is a
+    failure, not a pass, because that is exactly what the placeholder looks
+    like.
+    """
+    result = CheckResult("artifact-provenance")
+    for part in PARTS:
+        for path in manuscript_files(part):
+            for number, line in iter_lines(path):
+                for match in _CITED_ARTIFACT.finditer(line):
+                    name = match.group(1)
+                    result.scanned += 1
+                    artifact = DATA_DIR / name
+                    if not artifact.is_file():
+                        result.problems.append(
+                            Problem(
+                                result.name,
+                                rel(path),
+                                number,
+                                f"cites {name}, which does not exist under "
+                                f"{rel(DATA_DIR)}",
+                            )
+                        )
+                        continue
+                    try:
+                        payload = json.loads(artifact.read_text(encoding="utf-8"))
+                    except json.JSONDecodeError as exc:
+                        result.problems.append(
+                            Problem(result.name, rel(path), number,
+                                    f"cites {name}, which is not valid JSON: {exc}")
+                        )
+                        continue
+                    if name in _STRUCTURAL_ARTIFACTS:
+                        continue
+                    # A list-shaped artifact carries provenance in a sidecar.
+                    if (DATA_DIR / f"{artifact.stem}.provenance.json").is_file():
+                        continue
+                    declared = None
+                    if isinstance(payload, dict):
+                        for key in _PROVENANCE_KEYS:
+                            if payload.get(key):
+                                declared = str(payload[key])
+                                break
+                    if declared is None:
+                        result.problems.append(
+                            Problem(
+                                result.name,
+                                rel(path),
+                                number,
+                                f"cites {name}, which declares no provenance "
+                                f"({' / '.join(_PROVENANCE_KEYS)}). DataGenerator "
+                                f"placeholders look exactly like this, so a missing "
+                                f"declaration is a failure rather than a pass.",
+                            )
+                        )
+                    elif declared.lower() in _SYNTHETIC_ORIGINS:
+                        result.problems.append(
+                            Problem(
+                                result.name,
+                                rel(path),
+                                number,
+                                f"cites {name}, which declares itself {declared!r}: "
+                                f"a placeholder, not a result. src/data/generate.py "
+                                f"states these must not back manuscript tables.",
+                            )
+                        )
+    if result.scanned == 0:
+        result.problems.append(
+            Problem(
+                result.name,
+                "scripts/check_series_integrity.py",
+                0,
+                "no manuscript cites any output/data artifact; the pattern is broken",
+            )
+        )
+    return result
+
+
 # ---------------------------------------------------------------------------
 # Check: cross-paper pointers
 # ---------------------------------------------------------------------------
@@ -819,6 +935,7 @@ CHECKS: dict[str, Callable[[], CheckResult]] = {
     "bibliography": check_bibliography,
     "truncation": check_truncation,
     "math-hygiene": check_math_hygiene,
+    "artifact-provenance": check_artifact_provenance,
     "cross-paper-pointers": check_cross_paper_pointers,
 }
 
