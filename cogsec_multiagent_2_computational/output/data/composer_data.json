@@ -1,0 +1,652 @@
+{
+  "schema_version": "1.0.0",
+  "modules": {
+    "Firewall": {
+      "detection_rate": 0.91,
+      "latency_ms": 12.0,
+      "omega_class": "Injection",
+      "morphism_type": "CognitiveState → DefenseResult",
+      "description": "Pattern-matching firewall for prompt-injection attacks.",
+      "color": "#e74c3c",
+      "handles_attack_types": [
+        "direct_injection",
+        "indirect_injection",
+        "nested_injection"
+      ]
+    },
+    "Detection": {
+      "detection_rate": 0.88,
+      "latency_ms": 18.0,
+      "omega_class": "Steganographic",
+      "morphism_type": "CognitiveState → DefenseResult",
+      "description": "Statistical anomaly detection for steganographic payloads.",
+      "color": "#e67e22",
+      "handles_attack_types": [
+        "indirect_injection",
+        "belief_injection"
+      ]
+    },
+    "Tripwire": {
+      "detection_rate": 0.85,
+      "latency_ms": 8.0,
+      "omega_class": "Sleeper",
+      "morphism_type": "CognitiveState → DefenseResult",
+      "description": "Canary-based detection for sleeper/timing attacks.",
+      "color": "#f39c12",
+      "handles_attack_types": [
+        "timing_attack",
+        "belief_drift"
+      ]
+    },
+    "TrustCalc": {
+      "detection_rate": 0.82,
+      "latency_ms": 22.0,
+      "omega_class": "Social",
+      "morphism_type": "CognitiveState → DefenseResult",
+      "description": "Trust-score calculator for social-engineering and impersonation.",
+      "color": "#27ae60",
+      "handles_attack_types": [
+        "impersonation",
+        "trust_inflation",
+        "delegation_abuse"
+      ]
+    },
+    "Consensus": {
+      "detection_rate": 0.79,
+      "latency_ms": 35.0,
+      "omega_class": "Byzantine",
+      "morphism_type": "CognitiveState → DefenseResult",
+      "description": "Byzantine-fault-tolerant consensus checker.",
+      "color": "#2980b9",
+      "handles_attack_types": [
+        "sybil_attack",
+        "consensus_poisoning"
+      ]
+    },
+    "Provenance": {
+      "detection_rate": 0.76,
+      "latency_ms": 28.0,
+      "omega_class": "Provenance",
+      "morphism_type": "CognitiveState → DefenseResult",
+      "description": "Cryptographic provenance chain verifier.",
+      "color": "#8e44ad",
+      "handles_attack_types": [
+        "belief_fabrication",
+        "delegation_abuse"
+      ]
+    },
+    "Sandbox": {
+      "detection_rate": 0.73,
+      "latency_ms": 55.0,
+      "omega_class": "Resource",
+      "morphism_type": "CognitiveState → DefenseResult",
+      "description": "Execution sandbox for resource-abuse detection.",
+      "color": "#16a085",
+      "handles_attack_types": [
+        "timing_attack",
+        "sybil_attack"
+      ]
+    },
+    "Invariants": {
+      "detection_rate": 0.7,
+      "latency_ms": 15.0,
+      "omega_class": "Logic",
+      "morphism_type": "CognitiveState → DefenseResult",
+      "description": "Formal invariant checker for belief-state consistency.",
+      "color": "#2c3e50",
+      "handles_attack_types": [
+        "belief_drift",
+        "belief_fabrication",
+        "belief_injection"
+      ]
+    }
+  },
+  "algebra": {
+    "series": {
+      "name": "Series Composition",
+      "theorem": "Theorem 3.1",
+      "formula": "R = 1 − ∏(1 − rᵢ)",
+      "latency_formula": "L = Σ lᵢ",
+      "description": "Modules evaluated left-to-right; early exit on first detection. Combined miss rate is the product of individual miss rates."
+    },
+    "parallel": {
+      "name": "Parallel Composition (Max Fusion)",
+      "theorem": "Theorem 3.2",
+      "formula": "R = 1 − ∏(1 − rᵢ)  [max fusion ≡ series]",
+      "latency_formula": "L = max(lᵢ)",
+      "description": "All modules run concurrently; max score is taken. Under max fusion the detection formula is identical to series composition."
+    },
+    "hybrid": {
+      "name": "Hybrid (Two-Stage)",
+      "theorem": "Corollary 3.3",
+      "formula": "R = 1 − (1 − R_fast)(1 − R_deep)",
+      "latency_formula": "L = max(l_fast) + Σ(l_deep)",
+      "description": "Fast stage runs in parallel for low-latency screening; deep stage runs in series for high-accuracy verification. The combined rate is complementary across the two independent stages."
+    },
+    "weighted_parallel": {
+      "name": "Weighted Parallel Fusion",
+      "theorem": "Theorem 3.2 (weighted variant)",
+      "formula": "R ≈ P(Σ wᵢXᵢ > θ)  via normal approximation",
+      "latency_formula": "L = max(lᵢ)",
+      "description": "Each module's Bernoulli output is weighted; the weighted sum is compared to a threshold θ (default 0.5). Uses a Gaussian approximation for tractable computation."
+    }
+  },
+  "presets": {
+    "full_stack": {
+      "label": "Full Stack (Series)",
+      "modules": [
+        "Firewall",
+        "Detection",
+        "Tripwire",
+        "TrustCalc",
+        "Consensus",
+        "Provenance",
+        "Sandbox",
+        "Invariants"
+      ],
+      "deep_modules": null,
+      "strategy": "series",
+      "description": "All 8 modules in series — maximum detection, highest latency.",
+      "detection_rate": 1.0,
+      "latency_ms": 193.0
+    },
+    "minimal_viable": {
+      "label": "Minimal Viable (MVP)",
+      "modules": [
+        "Firewall",
+        "Detection",
+        "Consensus"
+      ],
+      "deep_modules": null,
+      "strategy": "series",
+      "description": "Minimal 3-module series covering injection, anomaly, and Byzantine.",
+      "detection_rate": 0.9977,
+      "latency_ms": 65.0
+    },
+    "fast_path": {
+      "label": "Fast Path (Parallel)",
+      "modules": [
+        "Firewall",
+        "Detection",
+        "Tripwire"
+      ],
+      "deep_modules": null,
+      "strategy": "parallel",
+      "description": "Top-3 fast modules in parallel — lowest latency screening.",
+      "detection_rate": 0.9984,
+      "latency_ms": 18.0
+    },
+    "hybrid": {
+      "label": "Hybrid (Fast → Deep)",
+      "modules": [
+        "Firewall",
+        "Detection"
+      ],
+      "deep_modules": [
+        "Consensus",
+        "Provenance",
+        "Invariants"
+      ],
+      "strategy": "hybrid",
+      "description": "Fast parallel stage (Firewall + Detection) feeds into deep series stage (Consensus + Provenance + Invariants). Balances speed and accuracy.",
+      "detection_rate": 0.9998,
+      "latency_ms": 96.0
+    }
+  },
+  "category_theory": {
+    "verification_results": {
+      "summary": {
+        "total": 25,
+        "passed": 25,
+        "failed": 0
+      },
+      "results": {
+        "lattice.reflexivity": true,
+        "lattice.antisymmetry": true,
+        "lattice.transitivity": true,
+        "lattice.bottom_element": true,
+        "lattice.top_element": true,
+        "lattice.meet_existence": true,
+        "lattice.join_existence": true,
+        "monoidal.left_unitor": true,
+        "monoidal.right_unitor": true,
+        "monoidal.associator": true,
+        "monoidal.symmetry": true,
+        "operad.operad_unit": true,
+        "operad.operad_associativity": true,
+        "enriched.enriched_identity": true,
+        "enriched.enriched_composition_law": true,
+        "kan_extensions.lan_dominates_fw": true,
+        "kan_extensions.ran_wellformed_fw": true,
+        "kan_extensions.lan_dominates_det": true,
+        "kan_extensions.ran_wellformed_det": true,
+        "monad.left_unit": true,
+        "monad.right_unit": true,
+        "monad.associativity": true,
+        "lenses.get_put": true,
+        "lenses.put_get": true,
+        "lenses.put_put": true
+      },
+      "by_structure": {
+        "lattice": {
+          "reflexivity": true,
+          "antisymmetry": true,
+          "transitivity": true,
+          "bottom_element": true,
+          "top_element": true,
+          "meet_existence": true,
+          "join_existence": true
+        },
+        "monoidal": {
+          "left_unitor": true,
+          "right_unitor": true,
+          "associator": true,
+          "symmetry": true
+        },
+        "operad": {
+          "operad_unit": true,
+          "operad_associativity": true
+        },
+        "enriched": {
+          "enriched_identity": true,
+          "enriched_composition_law": true
+        },
+        "kan_extensions": {
+          "lan_dominates_fw": true,
+          "ran_wellformed_fw": true,
+          "lan_dominates_det": true,
+          "ran_wellformed_det": true
+        },
+        "monad": {
+          "left_unit": true,
+          "right_unit": true,
+          "associativity": true
+        },
+        "lenses": {
+          "get_put": true,
+          "put_get": true,
+          "put_put": true
+        }
+      }
+    },
+    "lattice": {
+      "elements": [
+        {
+          "rate": 0.0,
+          "name": "D(0.00)"
+        },
+        {
+          "rate": 0.3,
+          "name": "D(0.30)"
+        },
+        {
+          "rate": 0.5,
+          "name": "D(0.50)"
+        },
+        {
+          "rate": 0.7,
+          "name": "D(0.70)"
+        },
+        {
+          "rate": 1.0,
+          "name": "D(1.00)"
+        }
+      ],
+      "bottom": {
+        "rate": 0.0,
+        "name": "⊥"
+      },
+      "top": {
+        "rate": 1.0,
+        "name": "⊤"
+      },
+      "meets": [
+        {
+          "a": "D(0.00)",
+          "a_rate": 0.0,
+          "b": "D(0.00)",
+          "b_rate": 0.0,
+          "meet": 0.0
+        },
+        {
+          "a": "D(0.00)",
+          "a_rate": 0.0,
+          "b": "D(0.30)",
+          "b_rate": 0.3,
+          "meet": 0.0
+        },
+        {
+          "a": "D(0.00)",
+          "a_rate": 0.0,
+          "b": "D(0.50)",
+          "b_rate": 0.5,
+          "meet": 0.0
+        },
+        {
+          "a": "D(0.00)",
+          "a_rate": 0.0,
+          "b": "D(0.70)",
+          "b_rate": 0.7,
+          "meet": 0.0
+        },
+        {
+          "a": "D(0.00)",
+          "a_rate": 0.0,
+          "b": "D(1.00)",
+          "b_rate": 1.0,
+          "meet": 0.0
+        },
+        {
+          "a": "D(0.30)",
+          "a_rate": 0.3,
+          "b": "D(0.30)",
+          "b_rate": 0.3,
+          "meet": 0.3
+        },
+        {
+          "a": "D(0.30)",
+          "a_rate": 0.3,
+          "b": "D(0.50)",
+          "b_rate": 0.5,
+          "meet": 0.3
+        },
+        {
+          "a": "D(0.30)",
+          "a_rate": 0.3,
+          "b": "D(0.70)",
+          "b_rate": 0.7,
+          "meet": 0.3
+        },
+        {
+          "a": "D(0.30)",
+          "a_rate": 0.3,
+          "b": "D(1.00)",
+          "b_rate": 1.0,
+          "meet": 0.3
+        },
+        {
+          "a": "D(0.50)",
+          "a_rate": 0.5,
+          "b": "D(0.50)",
+          "b_rate": 0.5,
+          "meet": 0.5
+        },
+        {
+          "a": "D(0.50)",
+          "a_rate": 0.5,
+          "b": "D(0.70)",
+          "b_rate": 0.7,
+          "meet": 0.5
+        },
+        {
+          "a": "D(0.50)",
+          "a_rate": 0.5,
+          "b": "D(1.00)",
+          "b_rate": 1.0,
+          "meet": 0.5
+        },
+        {
+          "a": "D(0.70)",
+          "a_rate": 0.7,
+          "b": "D(0.70)",
+          "b_rate": 0.7,
+          "meet": 0.7
+        },
+        {
+          "a": "D(0.70)",
+          "a_rate": 0.7,
+          "b": "D(1.00)",
+          "b_rate": 1.0,
+          "meet": 0.7
+        },
+        {
+          "a": "D(1.00)",
+          "a_rate": 1.0,
+          "b": "D(1.00)",
+          "b_rate": 1.0,
+          "meet": 1.0
+        }
+      ],
+      "joins": [
+        {
+          "a": "D(0.00)",
+          "a_rate": 0.0,
+          "b": "D(0.00)",
+          "b_rate": 0.0,
+          "join": 0.0
+        },
+        {
+          "a": "D(0.00)",
+          "a_rate": 0.0,
+          "b": "D(0.30)",
+          "b_rate": 0.3,
+          "join": 0.3
+        },
+        {
+          "a": "D(0.00)",
+          "a_rate": 0.0,
+          "b": "D(0.50)",
+          "b_rate": 0.5,
+          "join": 0.5
+        },
+        {
+          "a": "D(0.00)",
+          "a_rate": 0.0,
+          "b": "D(0.70)",
+          "b_rate": 0.7,
+          "join": 0.7
+        },
+        {
+          "a": "D(0.00)",
+          "a_rate": 0.0,
+          "b": "D(1.00)",
+          "b_rate": 1.0,
+          "join": 1.0
+        },
+        {
+          "a": "D(0.30)",
+          "a_rate": 0.3,
+          "b": "D(0.30)",
+          "b_rate": 0.3,
+          "join": 0.51
+        },
+        {
+          "a": "D(0.30)",
+          "a_rate": 0.3,
+          "b": "D(0.50)",
+          "b_rate": 0.5,
+          "join": 0.65
+        },
+        {
+          "a": "D(0.30)",
+          "a_rate": 0.3,
+          "b": "D(0.70)",
+          "b_rate": 0.7,
+          "join": 0.79
+        },
+        {
+          "a": "D(0.30)",
+          "a_rate": 0.3,
+          "b": "D(1.00)",
+          "b_rate": 1.0,
+          "join": 1.0
+        },
+        {
+          "a": "D(0.50)",
+          "a_rate": 0.5,
+          "b": "D(0.50)",
+          "b_rate": 0.5,
+          "join": 0.75
+        },
+        {
+          "a": "D(0.50)",
+          "a_rate": 0.5,
+          "b": "D(0.70)",
+          "b_rate": 0.7,
+          "join": 0.85
+        },
+        {
+          "a": "D(0.50)",
+          "a_rate": 0.5,
+          "b": "D(1.00)",
+          "b_rate": 1.0,
+          "join": 1.0
+        },
+        {
+          "a": "D(0.70)",
+          "a_rate": 0.7,
+          "b": "D(0.70)",
+          "b_rate": 0.7,
+          "join": 0.91
+        },
+        {
+          "a": "D(0.70)",
+          "a_rate": 0.7,
+          "b": "D(1.00)",
+          "b_rate": 1.0,
+          "join": 1.0
+        },
+        {
+          "a": "D(1.00)",
+          "a_rate": 1.0,
+          "b": "D(1.00)",
+          "b_rate": 1.0,
+          "join": 1.0
+        }
+      ],
+      "hasse_edges": [
+        {
+          "from": "D(0.00)",
+          "to": "D(0.30)"
+        },
+        {
+          "from": "D(0.30)",
+          "to": "D(0.50)"
+        },
+        {
+          "from": "D(0.50)",
+          "to": "D(0.70)"
+        },
+        {
+          "from": "D(0.70)",
+          "to": "D(1.00)"
+        }
+      ]
+    },
+    "monoidal": {
+      "tensor_product": {
+        "symbol": "⊗",
+        "implementation": "categorical_product (parallel max-fusion)",
+        "description": "f ⊗ g runs both morphisms and takes max score"
+      },
+      "unit": {
+        "symbol": "I",
+        "implementation": "identity_morphism",
+        "description": "Never detects; score = 0.0"
+      },
+      "coherence": {
+        "left_unitor": true,
+        "right_unitor": true,
+        "associator": true,
+        "symmetry": true
+      },
+      "axioms": [
+        {
+          "name": "Left Unitor",
+          "formula": "λ_f : I ⊗ f ≅ f",
+          "passed": true
+        },
+        {
+          "name": "Right Unitor",
+          "formula": "ρ_f : f ⊗ I ≅ f",
+          "passed": true
+        },
+        {
+          "name": "Associator (Pentagon)",
+          "formula": "α_{f,g,h} : (f ⊗ g) ⊗ h ≅ f ⊗ (g ⊗ h)",
+          "passed": true
+        },
+        {
+          "name": "Symmetry (Hexagon)",
+          "formula": "σ_{f,g} : f ⊗ g ≅ g ⊗ f",
+          "passed": true
+        }
+      ]
+    },
+    "operad": {
+      "operations": [
+        {
+          "name": "series_n",
+          "symbol": "∘",
+          "type": "planar-tree (non-symmetric)",
+          "description": "Sequential composition: f₁ ∘ f₂ ∘ … ∘ fₙ",
+          "arities": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ]
+        },
+        {
+          "name": "parallel_n",
+          "symbol": "⊕",
+          "type": "symmetric (grafting)",
+          "description": "Parallel composition: f₁ ⊕ f₂ ⊕ … ⊕ fₙ (order-invariant)",
+          "arities": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ]
+        }
+      ],
+      "axioms": [
+        {
+          "name": "Unit",
+          "formula": "series₁(f) ≅ f",
+          "description": "Unary series composition is the identity",
+          "passed": true
+        },
+        {
+          "name": "Associativity",
+          "formula": "(f ∘₂ g) ∘₂ h ≅ f ∘₂ (g ∘₂ h)",
+          "description": "Series composition is associative",
+          "passed": true
+        }
+      ],
+      "tree_example": {
+        "label": "series₃(f, g, h)",
+        "type": "series",
+        "root": {
+          "op": "series_3",
+          "children": [
+            {
+              "op": "leaf",
+              "morphism": "f",
+              "rate": 0.7
+            },
+            {
+              "op": "leaf",
+              "morphism": "g",
+              "rate": 0.5
+            },
+            {
+              "op": "leaf",
+              "morphism": "h",
+              "rate": 0.3
+            }
+          ]
+        },
+        "combined_rate": 0.895
+      }
+    }
+  }
+}

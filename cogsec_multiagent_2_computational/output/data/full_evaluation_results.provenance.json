@@ -1,0 +1,9 @@
+{
+  "data_origin": "parametric_simulation",
+  "source_script": "scripts/run_full_evaluation.py",
+  "seed": 42,
+  "mode": "simulation",
+  "note": "Parametric ceiling / simulation origin: these rows model CIF behaviour with calibrated base rates; they are NOT empirically measured pipeline evidence (P2-5).",
+  "rows": 16,
+  "sha256": "d3bd9448abbee8ef69aaa625bef7e75a99e9f6a06fd42440c09e071fd11548ce"
+}

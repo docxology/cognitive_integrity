@@ -582,10 +582,30 @@ def test_every_artifact_the_ledger_reads_is_tracked_by_git():
     series_ledger.DATA_DIR = REPO_ROOT / series_ledger.PARTS["2"] / "output" / "data"
     series_ledger._CACHE.clear()
 
-    needed = sorted(
-        {v.artifact for v in series_ledger.LEDGER if v.artifact.endswith(".json")}
-    )
-    assert needed, "the ledger names no artifacts; the introspection is broken"
+    # Two populations must be tracked, and the first guard only covered one:
+    # what the ledger *derives* from, and what the manuscripts *cite*. The
+    # provenance check consults the second, which is strictly larger, so a clean
+    # clone still failed after the ledger artifacts were added.
+    from_ledger = {v.artifact for v in series_ledger.LEDGER if v.artifact.endswith(".json")}
+
+    cited: set[str] = set()
+    for part in series_ledger.PARTS:
+        for path in series_ledger.manuscript_files(part):
+            cited.update(
+                re.findall(r"output/data/([A-Za-z0-9_.]+\.json)",
+                           path.read_text(encoding="utf-8", errors="replace"))
+            )
+    # A list-shaped artifact carries provenance in a sidecar, which must ship too.
+    sidecars = {
+        f"{name[:-5]}.provenance.json"
+        for name in cited | from_ledger
+        if (REPO_ROOT / series_ledger.PARTS["2"] / "output" / "data"
+            / f"{name[:-5]}.provenance.json").is_file()
+    }
+
+    needed = sorted(from_ledger | cited | sidecars)
+    assert from_ledger, "the ledger names no artifacts; the introspection is broken"
+    assert cited, "no manuscript cites an artifact; the scan is broken"
 
     root = REPO_ROOT
     missing = []
