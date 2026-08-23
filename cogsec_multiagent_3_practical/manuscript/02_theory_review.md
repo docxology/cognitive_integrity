@@ -18,7 +18,7 @@ The simulations in Part 2 show defense difficulty rising non-linearly with this 
 
 A central contribution of Part 1 is the **Trust Calculus**, a formal system for reasoning about belief reliability. It defines Trust ($T$) not as a binary permission but as a continuous property of a belief $b$, denoted as $T(b) \in [0, 1]$.
 
-The formal definition of Trust Update (Theorem 3.1 in Part 1) establishes that trust must decay across delegation chains:
+Part 1's Trust Boundedness theorem establishes that trust must decay across delegation chains:
 
 > **Theorem 3.1 (Trust Preservation)**: *For any delegation chain $C = \{a_1 \to a_2 \to \dots \to a_n\}$, the trust in the final output cannot exceed the trust of the weakest link, degraded by the distance from the source.*
 > $$ T(result) \le \min_{i} T(a_i) \cdot \delta^{\lvert C\rvert} $$

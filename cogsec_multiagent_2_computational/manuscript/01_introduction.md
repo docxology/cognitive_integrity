@@ -76,9 +76,9 @@ Our analysis assumes a multiagent deliberation system where $n$ agents collabora
 
 This paper assumes familiarity with the formal framework developed in Part 1, particularly:
 
-- **Trust Calculus** (Section 3 and 4 of Part 1): Bounded delegation with $\delta^d$ decay
-- **Defense Composition Algebra** (Section 5 of Part 1): Series and parallel composition theorems
-- **Integrity Properties** (Section 7 of Part 1): Belief consistency, goal preservation, trust boundedness
+- **Trust Calculus** (Part 1's Cognitive Integrity Framework section): Bounded delegation with $\delta^d$ decay
+- **Defense Composition Algebra** (Part 1's Defense Mechanisms section): Series and parallel composition theorems
+- **Integrity Properties** (Part 1's Formal Verification section): Belief consistency, goal preservation, trust boundedness
 
 All notation follows the canonical reference in Part 1 Appendix (\cref{sec:notation-reference}). For practical deployment guidance and domain-specific applications across critical operational sectors, see the unified Part 3+4 paper (DOI: 10.5281/zenodo.18364130).
 
@@ -134,7 +134,7 @@ Table: Cross-paper navigation from Part 2 topics to sibling developments. {#tab:
 | Deployment guides, subagent hardening, incident response, monitoring, cost--benefit | Part 3 (DOI: 10.5281/zenodo.18364130), \S{5}--\S{6} |
 | Accessible-language explanations of these empirical results for non-specialists | Part 3, \S{3} (Evidence) |
 | Operator risk frameworks + common pitfalls | Part 3, \S{5c}, \S{6} |
-| Domain-specific application of these results in ten operational sectors | Part 3+4, Sections 9--10 |
+| Domain-specific application of these results in ten operational sectors | Part 3's applied domains and cross-domain analysis |
 | Three universal attack patterns (FR Polarity Inversion, Constraint Relaxation, Context Boundary Violation) across domains | Part 3's cross-domain analysis |
 | Retrospective analysis of documented 2024--2025 AI-agent security incidents | Part 3+4, Supplement S03 |
 

@@ -1,6 +1,6 @@
 # Appendix: Model Checking Tool Configurations {#sec:model-checking-tools}
 
-This supplementary section provides executable configurations for formal verification tools referenced in Section 7 of Part 1 \cite{friedman2026cogsec1} (Theoretical Foundations). These configurations implement the state space definitions, temporal properties, and safety invariants formally specified in Part 1. Readers should consult Part 1's formal verification section for the underlying theory; the configurations below serve as practical reference implementations.
+This supplementary section provides executable configurations for formal verification tools referenced in Part 1's Formal Verification section \cite{friedman2026cogsec1}. These configurations implement the state space definitions, temporal properties, and safety invariants formally specified in Part 1. Readers should consult Part 1's formal verification section for the underlying theory; the configurations below serve as practical reference implementations.
 
 > **Cross-paper reading guide.**
 > • **Theoretical foundations** — state-space definitions (Part 1's Agent Cognitive State and System State definitions), CTL/LTL temporal property specifications, and invariant-preservation lemmas are in Part 1's formal verification section.

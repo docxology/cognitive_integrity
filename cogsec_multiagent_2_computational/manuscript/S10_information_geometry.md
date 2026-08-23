@@ -169,5 +169,5 @@ where the bound uses $\sin(x) \leq x$. The stealth–impact bound from Part 1's 
 \text{Impact} \leq f(\text{KL}_{\max}(r)) = f\!\left(2\sin^2(\theta_{\text{drift}}/4)\right),
 \end{equation}
 \label{eq:stealth-impact-bound}
-where $f(\cdot)$ is the impact function from Definition 4.2 in Part 1. The information geometry thus provides a complete derivation of the stealth–impact bound from first principles, without requiring the empirical calibration of the drift threshold.
+where $f(\cdot)$ is the impact quantity introduced in Part 1's Stealth-Impact Tradeoff theorem. The information geometry thus provides a complete derivation of the stealth–impact bound from first principles, without requiring the empirical calibration of the drift threshold.
 

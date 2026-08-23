@@ -146,22 +146,27 @@ def plot_detection_performance(output_dir: str | Path = "output/figures") -> plt
     # multiplied by 0.80, so the "significant gap" the caption drew attention
     # to was exactly 20% by construction, in every category, for every run.
     #
-    # detection_data.json carries per-architecture means by category and their
-    # bootstrap half-widths, and nothing else; there is no per-mechanism
-    # breakdown by attack category anywhere in the pipeline.  So the panel now
-    # plots what was actually measured, with the intervals the artifact ships.
+    # What this panel is NOT: measured. An earlier repair here replaced one
+    # fabrication with another, plotting detection_data.json as "measured" with
+    # "the bootstrap intervals the artifact ships".  Neither half is true.
+    # src/data/generate.py::generate_detection_data hardcodes a 4x4 base_means
+    # matrix and adds N(0, 0.005); its `cis` are i.i.d. Uniform(0.008, 0.025)
+    # draws with no resampling behind them and no relation to sample size.  The
+    # only per-architecture-by-category artifact in the repo is a calibrated
+    # model, so the panel says so and the fake intervals are not drawn at all --
+    # an error bar asserts a sampling distribution, and there is none here.
     generated = _load_detection_data(output_dir)
 
     ax2 = axes[1]
     categories = generated["categories"]
     means = generated["means"]  # [arch][category]
-    cis = generated["cis"]  # [arch][category], bootstrap half-widths
     architectures = generated["architectures"]
 
     attack_types = [c.replace(" ", "\n") for c in categories]
     n_arch = len(means)
     logger.info(
-        "Panel B: %d architectures x %d categories, measured, with bootstrap CIs",
+        "Panel B: %d architectures x %d categories from the calibrated model "
+        "(detection_data.json is generated, not measured)",
         n_arch,
         len(categories),
     )
@@ -180,8 +185,6 @@ def plot_detection_performance(output_dir: str | Path = "output/figures") -> plt
             x + offset,
             means[a],
             width,
-            yerr=cis[a],
-            capsize=3,
             label=architecture,
             color=palette[a % len(palette)],
             edgecolor="black",
@@ -189,7 +192,7 @@ def plot_detection_performance(output_dir: str | Path = "output/figures") -> plt
 
     ax2.set_ylabel("Detection Rate", fontsize=12)
     ax2.set_title(
-        "B. Measured Detection Rate by Attack Type and Architecture",
+        "B. Calibrated Model: Detection Rate by Attack Type (not measured)",
         fontsize=12,
         fontweight="bold",
     )

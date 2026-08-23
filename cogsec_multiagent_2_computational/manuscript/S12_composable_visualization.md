@@ -38,8 +38,8 @@ Edge width is proportional to $\mathrm{DR}(f)$.
 
 `CategoryDiagram` extends `DefenseGraph` with composition paths: clicking
 a sequence of morphisms renders the composed morphism and its combined
-detection rate (series: Theorem 3.1 \cite{friedman2026cogsec1}; parallel:
-Theorem 3.2 \cite{friedman2026cogsec1}). The diagram highlights commutativity
+detection rate (series and parallel: Part 1's Series Detection Rate and
+Parallel Detection Rate theorems \cite{friedman2026cogsec1}). The diagram highlights commutativity
 witnesses (pentagon/hexagon cells) from the symmetric monoidal structure
 (§\ref{sec:monoidal-category}).
 

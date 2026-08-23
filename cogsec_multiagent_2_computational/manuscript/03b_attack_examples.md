@@ -267,7 +267,7 @@ CIF Response: TIMEOUT (round deadline exceeded, restart)
 
 Analysis of the attack corpus reveals several cross-cutting insights for defense design:
 
-> **Lesson 1: Layered detection is essential.** No single mechanism detects all attack categories. Pattern matching excels at known injection signatures but fails on semantically-equivalent paraphrases. Anomaly detection catches novel attacks but generates false positives on legitimate edge cases. The composition of complementary mechanisms (Part 1, Theorems 3.1-3.2) provides robust coverage.
+> **Lesson 1: Layered detection is essential.** No single mechanism detects all attack categories. Pattern matching excels at known injection signatures but fails on semantically-equivalent paraphrases. Anomaly detection catches novel attacks but generates false positives on legitimate edge cases. The composition of complementary mechanisms (Part 1's Series and Parallel Detection Rate theorems) provides robust coverage.
 
 > **Lesson 2: Trust bounds prevent cascading failures.** Attacks like Example \ref{ex:trust-inflation} and \ref{ex:delegation-abuse} attempt to leverage trust chains. The exponential decay ($\delta^d$) ensures that even successful initial compromise cannot propagate unboundedly through the system.
 

@@ -36,7 +36,7 @@ over all 950-attack detection-rate measurements via `verify_all_axioms()`.
 ## Symmetric Monoidal Category {#sec:monoidal-category}
 
 **Definition 8.1 (Defense Category).** $\mathbf{Def}$ is the category whose:
-- *objects* are cognitive states $\sigma \in \Sigma$ (Definition 2.1, Part 1 \cite{friedman2026cogsec1});
+- *objects* are cognitive states $\sigma \in \Sigma$ (Part 1's Agent Cognitive State definition \cite{friedman2026cogsec1});
 - *morphisms* $f : \sigma \to \sigma'$ are CIF defense operations
   (firewall, sandbox, tripwire, trust calculus, Byzantine consensus, provenance);
 - *composition* is sequential pipeline application; identity is the pass-through.

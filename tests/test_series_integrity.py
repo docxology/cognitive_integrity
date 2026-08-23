@@ -556,6 +556,60 @@ def test_cross_paper_pointers_does_not_reach_across_an_unrelated_part(tmp_path):
     assert result.ok, [p.message for p in result.problems]
 
 
+def test_cross_paper_pointers_catches_plurals_and_both_orders(tmp_path):
+    """Three shapes the check could not see, each real in the corpus.
+
+    The alternation was singular, so "Part 1, Theorems 3.1-3.2" was invisible.
+    The pattern required "Part N" to come first, so "Theorem 3.1 in Part 1" was
+    invisible. And a pointer whose only part marker is the series bibkey --
+    "Theorem 3.1 \\cite{friedman2026cogsec1}" -- named no part at all.
+    """
+    cases = (
+        "Defenses compose predictably (Part 1, Theorems 3.1 and 3.2).",
+        "The formal definition of Trust Update (Theorem 3.1 in Part 1) establishes decay.",
+        "detection rate (series: Theorem 3.1 \\cite{friedman2026cogsec1}).",
+    )
+    for index, text in enumerate(cases):
+        tree = _build_tree(
+            tmp_path / f"form{index}",
+            part_text={"1": CEILING_OK, "2": CEILING_OK + f"\n{text}\n", "3": CEILING_OK},
+            bibs={},
+        )
+        module = _load_module(tree)
+        assert not module.CHECKS["cross-paper-pointers"]().ok, f"missed: {text}"
+
+
+def test_cross_paper_pointers_reports_one_site_once(tmp_path):
+    """The three forms overlap. A line matched by two of them is one defect."""
+    tree = _build_tree(
+        tmp_path / "dedupe",
+        part_text={
+            "1": CEILING_OK,
+            "2": CEILING_OK + "\nSee Section 7 of Part 1 \\cite{friedman2026cogsec1} for this.\n",
+            "3": CEILING_OK,
+        },
+        bibs={},
+    )
+    module = _load_module(tree)
+    result = module.CHECKS["cross-paper-pointers"]()
+    assert len(result.problems) == 1, [p.message for p in result.problems]
+
+
+def test_cross_paper_pointers_is_not_vacuous_when_the_glob_breaks(tmp_path):
+    """`scanned` counts violations here, so zero is the CLEAN state.
+
+    Every other check guards vacuity with `scanned == 0`, which for this one
+    would mean "no defects" -- so a broken glob would read as a pass, in the one
+    check whose whole purpose is catching what nothing else looks at.
+    """
+    tree = _build_tree(tmp_path / "vacuous", part_text={}, bibs={})
+    module = _load_module(tree)
+    module.manuscript_files = lambda part: []
+    result = module.CHECKS["cross-paper-pointers"]()
+    assert not result.ok
+    assert any("glob is broken" in p.message for p in result.problems)
+
+
 def test_cross_paper_pointers_ignores_self_references(tmp_path):
     """Part 2 citing its own §5 is the per-part verifier's business, not ours."""
     tree = _build_tree(

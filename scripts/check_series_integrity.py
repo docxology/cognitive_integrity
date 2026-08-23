@@ -891,30 +891,84 @@ _HARDCODED_POINTER = re.compile(
 )
 
 
+#: A result kind, in either number. "Theorems 3.1--3.2" is the same defect as
+#: "Theorem 3.1" and was missed for as long as the alternation was singular.
+_KIND = (
+    r"(Theorems?|Thms?\.?|Definitions?|Defs?\.?|Lemmas?|Corollar(?:y|ies)"
+    r"|Propositions?|Sections?|Secs?\.?|\\S|\u00a7)"
+)
+_NUM = r"(\d+(?:\.\d+)*[a-z]?)"
+
+#: Three orders occur in the corpus, and only the first was ever checked.
+_POINTER_FORMS = (
+    # "Part 1's Runtime Defenses section (Definition 5.6)"
+    re.compile(r"(?:Part|Paper)[~ ]?([123])\b" + _POINTER_GAP + r"(?<![A-Za-z])" + _KIND + r"\s*~?\s*" + _NUM + r"\b", re.IGNORECASE),
+    # "Theorem 3.1 in Part 1", "Definition 4.2 (Part 1)"
+    re.compile(r"(?<![A-Za-z])" + _KIND + r"\s*~?\s*" + _NUM + r"[^.\n]{0,20}?\b(?:in|of|from)\s+(?:Part|Paper)[~ ]?([123])\b", re.IGNORECASE),
+    # "Theorem 3.1 \cite{friedman2026cogsec1}" -- no "Part N" literal at all
+    re.compile(r"(?<![A-Za-z])" + _KIND + r"\s*~?\s*" + _NUM + r"[^.\n]{0,24}?\\cite[a-zA-Z]*\{[^}]*friedman2026cogsec([123])[^}]*\}", re.IGNORECASE),
+)
+
+
+def _pointer_hits(line: str) -> list[tuple[str, str, str, str]]:
+    """Every cross-paper pointer on a line, as (target, kind, numeral, text)."""
+    hits: list[tuple[str, str, str, str]] = []
+    for index, pattern in enumerate(_POINTER_FORMS):
+        for match in pattern.finditer(line):
+            if index == 0:
+                target, kind, numeral = match.group(1), match.group(2), match.group(3)
+            else:
+                kind, numeral, target = match.group(1), match.group(2), match.group(3)
+            hits.append((target, kind, numeral, match.group(0)))
+    return hits
+
+
 def check_cross_paper_pointers() -> CheckResult:
     result = CheckResult("cross-paper-pointers")
+    # `scanned` here counts violations, not inputs, so `scanned == 0` is the
+    # clean state and cannot double as the anti-vacuity guard the other checks
+    # use. Files are counted separately: a broken glob would otherwise read as
+    # a pass, which is exactly the failure mode this gate exists to prevent.
+    files_seen = 0
+    seen: set[tuple[str, int, str, str, str]] = set()
     for part in PARTS:
         for path in manuscript_files(part):
+            files_seen += 1
             for number, line in iter_lines(path):
-                for match in _HARDCODED_POINTER.finditer(line):
-                    target, kind, numeral = match.groups()
+                for target, kind, numeral, text in _pointer_hits(line):
                     if target == part:
                         # A self-reference should use \cref, but that is the
                         # per-part verifier's business, not this gate's.
                         continue
+                    # The three forms overlap and capture different spans of the
+                    # same pointer, so dedupe on what the pointer MEANS, not on
+                    # the text one form happened to match.
+                    key = (rel(path), number, kind.rstrip("s.").lower(), numeral, target)
+                    if key in seen:
+                        continue
+                    seen.add(key)
                     result.scanned += 1
                     result.problems.append(
                         Problem(
                             result.name,
                             rel(path),
                             number,
-                            f"hardcoded cross-paper pointer {match.group(0)!r}: "
+                            f"hardcoded cross-paper pointer {text!r}: "
                             f"{kind} numbers in Part {target} are assigned by the "
                             f"renderer and cannot be verified from Part {part}. "
                             f"Name the result instead (e.g. \"Part {target}'s "
                             f"Series Detection Rate theorem\").",
                         )
                     )
+    if files_seen == 0:
+        result.problems.append(
+            Problem(
+                result.name,
+                "scripts/check_series_integrity.py",
+                0,
+                "no manuscript files scanned at all; the glob is broken",
+            )
+        )
     return result
 
 
