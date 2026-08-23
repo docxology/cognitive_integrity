@@ -111,6 +111,7 @@ def _body(ceiling: str = "96") -> str:
         "We evaluate over a 950-attack corpus spanning four production "
         "multiagent architectures.\n\n"
         "The pipeline achieves a mean detection rate of 44.8\\% across 30 seeds.\n\n"
+        f"Treat {ceiling}\\% as the achievable ceiling with mature adapters.\n\n"
         "Data from `output/data/multi_seed_results.json`.\n"
     )
 
@@ -435,6 +436,16 @@ def test_artifact_provenance_rejects_a_citation_of_a_missing_file(tmp_path):
     result = module.CHECKS["artifact-provenance"]()
     assert not result.ok
     assert any("does not exist" in p.message for p in result.problems)
+
+
+def test_bare_ceiling_form_is_gated_and_excludes_range_digits(gate):
+    """A ceiling written as one number must be checked; "100" must not be read as "00"."""
+    q = next(x for x in gate.SHARED_QUANTITIES if x.id == "parametric_ceiling_low_bare")
+    stale = "Use 94\\% as the achievable ceiling with mature adapters"
+    hits = [m.group(1) for m in q.pattern.finditer(stale) if q.in_scope(stale, m)]
+    assert hits == ["94"], hits
+    ranged = "a design-level ceiling of 96--100\\% across the sweep"
+    assert [m.group(1) for m in q.pattern.finditer(ranged) if q.in_scope(ranged, m)] == []
 
 # ---------------------------------------------------------------------------
 # Structural invariants of the registry itself

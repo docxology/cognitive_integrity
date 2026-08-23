@@ -62,13 +62,17 @@ This is not a failure of CIF—it is a consequence of its success. When explicit
 
 The 51--88 percentage-point gap between the parametric ceiling (96--100\%) and the empirical pipeline mean (44.8\%) reflects **adapter implementation maturity**, not a failure of CIF's formal architecture. Part~2 introduces a 5-level CMMI-style adapter maturity scale:
 
-| Level | Name | DR Range | Description |
+| Level | Name | Marginal TPR | Description |
 | :--- | :--- | :--- | :--- |
-| 1 | Stub | $\sim$0\% | Interface placeholder only |
-| 2 | Heuristic | 10--30\% | Pattern-matching rules |
-| 3 | Statistical | 30--60\% | Calibrated thresholds |
-| 4 | Adaptive | 60--80\% | Online learning |
-| 5 | Verified | 80--94\% | Formally certified |
+| 1 | Stub | $\sim$0\% | Hardcoded scores; no domain logic |
+| 2 | Heuristic | 1--5\% | Pattern matching; uncalibrated thresholds |
+| 3 | Statistical | 5--15\% | Calibrated thresholds; regression features |
+| 4 | Adaptive | 15--30\% | Online learning; per-architecture tuning |
+| 5 | Verified | 30\%+ | Formal guarantees; cross-architecture validated |
+
+The rubric column is each adapter's *marginal* contribution to true-positive rate,
+not a whole-pipeline detection rate: a Level-5 adapter is one that adds 30 or more
+percentage points when introduced, not one that reaches 30\% detection on its own.
 
 The current Claude Code adapter is at Level 3 (Statistical), explaining the 44.8\% mean. The roadmap projects +35--41 percentage points of improvement by advancing adapters to Level 5 for the primary attack categories. The parametric ceiling (96--100\%) represents what Level-5 adapters achieve—it is a design target, not an overclaim.
 
@@ -91,7 +95,7 @@ We proved the *architecture* works. The implementation fidelity is the variable 
 > - **44.8\%** [95\% HDI: 41.3\%, 48.3\%] (multi-seed pipeline, 30 seeds): The **current empirical baseline** for the Claude Code architecture with Level-3 adapters. This is what you get today, out of the box, before adapter tuning.
 > - **~12.2\%** (ablation corpus, 98 attacks, all categories including hardest): The **conservative floor** — full pipeline performance on a corpus specifically designed to include difficult attacks. This represents the worst-case realistic estimate.
 >
-> All three numbers are correct. Use 44.8\% for realistic planning, 94\% as the achievable ceiling with mature adapters, and ~12.2\% as a conservative lower bound for adversarial threat modeling.
+> All three numbers are correct. Use 44.8\% for realistic planning, 96\% as the floor of the achievable ceiling with mature adapters, and ~12.2\% as a conservative lower bound for adversarial threat modeling.
 
 ### Tripwire Configuration Data
 

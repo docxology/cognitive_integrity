@@ -109,18 +109,23 @@ Status), not pipeline-in-the-loop measurements.*
    from 52.0% (Round 1) to 67.9% (Round 5), a cumulative improvement of +23.2 pp over
    the pre-AT baseline.
 
-2. **Increasing adversarial difficulty**: Base DR rises from 30.9% to 76.0% across
-   rounds as attacks adapt to previous defenses. This is the opposite of diminishing
-   returns — the adversary becomes more effective at exploiting remaining gaps even
-   as the defense improves.
+2. **Later attack sets are easier for the unhardened baseline, not harder**: Base DR
+   --- the unhardened configuration's detection rate on each round's fresh attack
+   set --- rises from 30.9% to 76.0%. A *rising* base detection rate means the
+   generator's later attacks are more, not less, detectable by an untouched
+   detector. The generator drifts toward patterns the baseline already recognises
+   rather than toward genuinely novel evasions, which is a property of the
+   generator, not evidence that the adversary is gaining ground.
 
 3. **No significant regression**: Re-evaluation on the original 950-attack corpus
    after each refinement round shows monotonically improving detection rates,
    confirming that targeted improvements generalize rather than overfit.
 
-4. **Attack novelty**: Round 5 attacks achieve 76.0% detection rate (i.e., 24.0%
-   evasion) on the Round-5 hardened configuration, indicating that novel attacks
-   continue to find gaps even after 5 rounds of hardening.
+4. **Residual evasion after five rounds**: on the original 950-attack corpus the
+   Round-5 hardened configuration reaches 67.9% detection, leaving 32.1% evasion.
+   (The 76.0% figure in the same row is the *Base DR* column --- the unhardened
+   baseline against the Round-5 attack set --- and is not a property of the
+   hardened configuration.)
 
 ## Convergence Analysis {#sec:at-convergence}
 

@@ -83,6 +83,6 @@ Using the CIF empirical detection rate of 44.8% (the 30-seed empirical result, w
 
 ## Conclusion
 
-CIF is most cost-effective for high-frequency, high-value-per-interaction deployments. The break-even threshold is approximately **4 attacks/year prevented** at \$25K+ mean attack cost, or **1 attack/year prevented** at \$100K+ mean attack cost.
+CIF is most cost-effective for high-frequency, high-value-per-interaction deployments. At a \$100K annual CIF cost and the conservative 44.8\% detection rate, the break-even condition above gives approximately **4.5 attacks/year prevented** at a \$50K mean attack cost, **0.9** at \$250K, and **0.45** at \$500K. Equivalently, a single prevented attack per year pays for the deployment once the mean attack costs about \$225K.
 
 Operators below the break-even threshold should still consider CIF for reasons beyond direct ROI — regulatory compliance (OWASP Agentic Top 10, NIST Zero Trust), customer-trust signaling, and insurance/liability reduction may justify deployment even when attack frequency alone does not. Conversely, operators far above the break-even threshold (high-traffic, high-value) should view the deployment cost analysis as a floor, not a ceiling: the true cost of a single $\Omega_4$ attack at enterprise scale can exceed a decade of CIF operating cost in a single incident.

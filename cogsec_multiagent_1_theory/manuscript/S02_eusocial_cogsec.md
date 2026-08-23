@@ -562,15 +562,15 @@ Colony CogSec opens several research directions beyond the scope of this work, m
 
 ## References {#sec:eusocial-references}
 
-The following references supplement the main bibliography (\cref{sec:references}) with eusocial intelligence literature:
+The eusocial-intelligence literature this supplement draws on is cited through the main bibliography (\cref{sec:references}) rather than repeated as a second, hand-maintained list, so there is one record per work and no opportunity for the two to disagree:
 
-- Wilson, E.O. (1971). *The Insect Societies*. Belknap Press. — Foundational treatment of eusociality.
-- Hölldobler, B., & Wilson, E.O. (1990). *The Ants*. Belknap Press. — Comprehensive ant biology.
-- Bonabeau, E., Dorigo, M., & Theraulaz, G. (1999). *Swarm Intelligence: From Natural to Artificial Systems*. Oxford University Press. — Computational swarm intelligence.
-- Seeley, T.D. (2010). *Honeybee Democracy*. Princeton University Press. — Collective decision-making in bee swarms.
-- Grassé, P.-P. (1959). La reconstruction du nid et les coordinations interindividuelles chez Bellicositermes natalensis. — Original stigmergy concept.
-- Lenoir, A., et al. (2001). Chemical ecology and social parasitism in ants. *Annual Review of Entomology*, 46, 573–599.
-- Kilner, R.M., & Langmore, N.E. (2011). Cuckoos versus hosts in insects and birds. *Biological Reviews*, 86, 836–852.
+- Foundational treatment of eusociality: \cite{wilson1971insect}.
+- Comprehensive ant biology: \cite{holldobler1990ants}.
+- Computational swarm intelligence: \cite{bonabeau1999swarm}.
+- Collective decision-making in bee swarms: \cite{seeley2010honeybee}.
+- The original stigmergy concept: \cite{grasse1959reconstruction}.
+- Chemical ecology and social parasitism in ants: \cite{lenoir2001chemical}.
+- Brood parasitism across insects and birds: \cite{kilner2011cuckoos}.
 
 ---
 

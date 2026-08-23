@@ -16,7 +16,7 @@ This profile corresponds to the "High Usability" configuration tested in the sen
 * **Firewall Sensitivity**: Relaxed ($\tau=0.9$).
 * **Consensus**: Simple Majority.
 
-**Observed Performance** (Part 2, Parameter Sensitivity Analysis):
+**Modelled performance** (Part 2, parametric parameter-sensitivity analysis --- simulation output under calibrated conditions, not a measurement of a running deployment):
 
 * **Latency Overhead**: Minimal (~15% baseline).
 * **Detection Rate**: **87%** (vs 94% optimal).
@@ -24,7 +24,7 @@ This profile corresponds to the "High Usability" configuration tested in the sen
 
 ## Profile B: The "Customer Facing" Baseline (Balanced)
 
-This profile corresponds to the **Empirically Optimal Configuration** identified in Part 2 (Architecture-Specific Results), which balances security guarantees with operational overhead.
+This profile corresponds to the parametrically optimal configuration identified in Part 2 (\S{S08}, "Empirically Optimal Configuration (Parametric)") (Architecture-Specific Results), which balances security guarantees with operational overhead.
 
 **Configuration Parameters**:
 
@@ -32,7 +32,7 @@ This profile corresponds to the **Empirically Optimal Configuration** identified
 * **Firewall Sensitivity**: Balanced ($\tau=0.5$).
 * **Consensus**: Variable (Architecture Dependent).
 
-**Observed Performance** (Part 2, Parameter Sensitivity Analysis):
+**Modelled performance** (Part 2, parametric parameter-sensitivity analysis --- simulation output under calibrated conditions, not a measurement of a running deployment):
 
 * **Latency Overhead**: Reduced detection latency (~8.5s for drift detection).
 * **Detection Rate**: **94%**.
@@ -48,7 +48,7 @@ This profile corresponds to the "Byzantine-Heavy" configuration tested in Part 2
 * **Firewall Sensitivity**: Strict ($\tau=0.4$).
 * **Consensus**: Byzantine Fault Tolerance ($n \ge 3f+1$).
 
-**Observed Performance** (Part 2, Parameter Sensitivity Analysis):
+**Modelled performance** (Part 2, parametric parameter-sensitivity analysis --- simulation output under calibrated conditions, not a measurement of a running deployment):
 
 * **Latency Overhead**: Significant (+35-48% depending on corroboration count).
 * **Detection Rate**: **95%** (general) to **98%** (LangGraph-specific).

@@ -296,6 +296,24 @@ SHARED_QUANTITIES: tuple[SharedQuantity, ...] = (
         unit="percent",
     ),
     SharedQuantity(
+        id="parametric_ceiling_low_bare",
+        # A bare "96\\%" used as the ceiling, e.g. "96\\% as the achievable
+        # ceiling" or "the simulation's 96--100\\% design-level ceiling". The
+        # range-shaped pattern above misses this form entirely, which is how a
+        # stale 94 survived a sweep of every NN--100 occurrence.
+        # Not preceded by a digit or dash (so the "00" inside "100" and the
+        # high end of "96--100" are both excluded), and not itself the low end
+        # of a range (which the range-shaped quantity above already gates).
+        pattern=re.compile(r"(?<![\d\-–—])(\d{2})\s*\\?%(?!\s*(?:--|–|—)\s*\d)"),
+        require=("design-level ceiling", "achievable ceiling", "design ceiling"),
+        exclude=_OTHER_ARMS,
+        deriver=parametric_ceiling_low,
+        tolerance=0.001,
+        unit="percent",
+        min_occurrences=1,
+        note="A ceiling quoted as a single number rather than a range.",
+    ),
+    SharedQuantity(
         id="attack_corpus_size",
         pattern=re.compile(rf"(\d{{3}})\s*{DASH}?\s*attack\b(?=[- ]?(?:corpus|set)\b)"),
         require=("corpus", "set"),

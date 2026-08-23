@@ -2,7 +2,7 @@
 
 # Architecture Implementation Gap Analysis {#sec:architecture-gap-analysis}
 
-The Bayes factor in \cref{sec:bayes-factors} establishes that the gap between the parametric simulation's 94\% design-level ceiling and the real pipeline's 44.8\% multi-seed mean is structural rather than statistical. This section decomposes that gap into attributable components, assesses the maturity of each defense module adapter, identifies the dominant failure mode per module, and projects the detection-rate recovery achievable at each maturity level. The result is an ordered roadmap whose cumulative effect is projected to raise real-pipeline detection from $\approx 45\%$ toward the $80$--$86\%$ range without any change to the CIF formal framework itself.
+The Bayes factor in \cref{sec:bayes-factors} establishes that the gap between the parametric simulation's 96--100\% design-level ceiling and the real pipeline's 44.8\% multi-seed mean is structural rather than statistical. This section decomposes that gap into attributable components, assesses the maturity of each defense module adapter, identifies the dominant failure mode per module, and projects the detection-rate recovery achievable at each maturity level. The result is an ordered roadmap whose cumulative effect is projected to raise real-pipeline detection from $\approx 45\%$ toward the $80$--$86\%$ range without any change to the CIF formal framework itself.
 
 ## Gap Attribution Framework {#sec:gap-attribution}
 
