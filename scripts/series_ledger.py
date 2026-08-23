@@ -826,6 +826,12 @@ def main(argv: Sequence[str] | None = None) -> int:
     args = parser.parse_args(list(argv) if argv is not None else None)
 
     values = derive_all()
+    # A variable that fails to derive is a failure in every mode. Reporting it
+    # in the JSON body while exiting 0 would let a machine consumer treat a
+    # broken ledger as a healthy one, which is the shape of hollow green the
+    # rest of this apparatus exists to prevent.
+    underivable = sorted(k for k, v in values.items() if isinstance(v, dict) and "error" in v)
+
     if args.coverage:
         report = coverage_report()
         if args.json:
@@ -833,11 +839,15 @@ def main(argv: Sequence[str] | None = None) -> int:
         else:
             for key, val in report.items():
                 print(f"{key:<32} {val}")
-        return 0
+        if underivable:
+            print(f"underivable variables: {underivable}", file=sys.stderr)
+        return 1 if underivable else 0
 
     if args.json:
         print(json.dumps(values, indent=2))
-        return 0
+        if underivable:
+            print(f"underivable variables: {underivable}", file=sys.stderr)
+        return 1 if underivable else 0
 
     failed = 0
     for var in LEDGER:

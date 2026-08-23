@@ -50,7 +50,7 @@ abstract: "This paper presents comprehensive computational validation of the Cog
   \ consensus, extended in this\nSecond Edition with adversarial training modules,\
   \ red-teaming infrastructure, and\nexpanded colony simulations at 100+ agent scale.\n\
   \nMulti-tier evaluation using a 950-attack corpus (expanded with \u03A9_1\u2013\u03A9\
-  _5 taxonomy):\nreal pipeline evaluation yields mean 44.7% detection across 30 seeds\
+  _5 taxonomy):\nreal pipeline evaluation yields mean 44.8% detection across 30 seeds\
   \ (Claude Code);\nLLM-backed validation (N=10, Gemma 3 4B) achieves 80-100% across\
   \ two architectures;\ncolony benchmarks show 81-100% on structured adversarial scenarios\
   \ at 20-100 agent\nscale (extended to 500 agents in stress tests). Parametric simulation\

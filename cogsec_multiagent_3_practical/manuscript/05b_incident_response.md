@@ -108,6 +108,6 @@ This is the most consequential playbook — $\Omega_3$ compromise typically requ
 2. **[10–30 min] Behavioral fingerprinting**. Sample recent outputs from all agents. Compare statistical distribution of outputs to baseline behavioral fingerprint.
 3. **[30–90 min] Gradual restart**. Start with most-constrained agents (reporters, validators) in high-security mode. Observe for 30 minutes before enabling specialists.
 4. **[90–180 min] Orchestrator verification**. If orchestrator behavior has changed, this is the most serious scenario. Verify orchestrator's interaction history against human-approved task definitions.
-5. **Preventive monitoring**. Implement **weekly behavioral audits** — statistical comparison of agent output distributions against baseline. This is the primary detection mechanism for the 44% of $\Omega_5$ cases CIF misses.
+5. **Preventive monitoring**. Implement **weekly behavioral audits** — statistical comparison of agent output distributions against baseline. This is the primary detection mechanism for the roughly one quarter of emergent-misalignment cases CIF misses (74.3\% detected in Part 2's 30-seed colony benchmark).
 
 **Practical note**: Emergent misalignment often develops over days or weeks, not minutes. The most effective defense is not detection-after-the-fact but **baseline maintenance**: capture agent behavioral fingerprints at deployment and compare weekly. A drift that is invisible in any single interaction may be visible as a distribution shift across thousands of interactions.
