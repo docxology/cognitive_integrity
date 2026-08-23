@@ -17,8 +17,8 @@ CIF deployment cost has two components: a one-time integration cost (engineering
 Cost Category & One-Time & Recurring & Source \\
 \midrule
 Integration engineering & 2--4 weeks FTE (\textasciitilde\$20K--\$40K) & --- & Middleware complexity estimate \\
-Latency overhead & --- & +23\% processing cost & Part 2, §5.2 \\
-Memory overhead & --- & +22\% infrastructure cost at 100 agents & Part 2, §5.2 \\
+Latency overhead & --- & +23\% processing cost & Part 2, Supplement S08 (parametric overall summary) \\
+Memory overhead & --- & +22\% infrastructure cost at 100 agents & Part 2, Supplement S08 (per-architecture parametric performance tables) \\
 Monitoring operations & --- & \textasciitilde0.5 FTE/year (\$50K--\$80K) & Enterprise estimate \\
 Incident response capacity & --- & \textasciitilde0.25 FTE/year (\$25K--\$40K) & Enterprise estimate \\
 \midrule

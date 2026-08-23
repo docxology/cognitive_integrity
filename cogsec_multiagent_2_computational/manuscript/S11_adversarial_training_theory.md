@@ -126,7 +126,7 @@ the Nash equilibrium most impactful for $\Omega_5$ defense.
 
 ## Adversarial Training and the Stealth–Impact Bound {#sec:at-stealth-bound}
 
-The stealth–impact bound from Part 1 \cite{friedman2026cogsec1} §4.3 states that
+The stealth–impact bound from Part 1's Stealth-Impact Tradeoff theorem \cite{friedman2026cogsec1} (Information-Theoretic Detection Bounds) states that
 for any attack in the Fisher-Rao ball of radius $r$ around the baseline,
 the maximum impact is bounded by $I_{\max}(r)$. Adversarial training's effect on
 this bound is:

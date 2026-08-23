@@ -90,7 +90,7 @@ For the full mathematical treatment, see Part~2's theoretical-connections and in
 
 ## Category-Theoretic Formalization of Defense Composition {#sec:category-theory-crossref}
 
-Part 2 (§1c, §2c) extends the composition algebra of Part 1 into a full category-theoretic framework. This formalization is relevant to practitioners because it provides *structural guarantees* — not just empirical observations — about how CIF defenses combine.
+Part 2's Theoretical Connections and Composability Algebra sections extend the composition algebra of Part 1 into a full category-theoretic framework. This formalization is relevant to practitioners because it provides *structural guarantees* — not just empirical observations — about how CIF defenses combine.
 
 **The Defense Category $\calD$** (Part 2, Definition CT.1): The CIF defense suite forms a category whose objects are cognitive states $\cogstate{} \in \Sigma$ and whose morphisms are detection functions $f : \cogstate{} \to \mathrm{DefenseResult}$. The composition rule formalizes *short-circuit detection*: once any module fires, subsequent modules do not override the event.
 

@@ -5,7 +5,7 @@ This supplementary section provides executable configurations for formal verific
 > **Cross-paper reading guide.**
 > • **Theoretical foundations** — state-space definitions (Part 1's Agent Cognitive State and System State definitions), CTL/LTL temporal property specifications, and invariant-preservation lemmas are in Part 1's formal verification section.
 > • **Empirical verification runs** (trace logs, counterexamples, performance) — this supplement + [`src/formal/`](../src/formal/) (NuSMV, SPIN, TLA+ spec generators).
-> • **Deployment-facing implications** of the verified invariants (what operators can rely on) are summarized in Part 3 \cite{friedman2026cogsec3} §2.
+> • **Deployment-facing implications** of the verified invariants (what operators can rely on) are summarized in Part 3 \cite{friedman2026cogsec3}, in its *The Formal Foundation: Concepts from Part 1* review section.
 > • **Domain-specific invariants** — physics-informed invariants introduced as a novel defense extension for infrastructure, verification-channel separation for biowarfare, and active-perturbation probing for trade-war agents are specified and analyzed in unified Part 3+4 \cite{friedman2026cogsec3}, Sections 9.08, 9.06, and 9.09.
 
 ## NuSMV Configuration {#sec:nusmv-config}

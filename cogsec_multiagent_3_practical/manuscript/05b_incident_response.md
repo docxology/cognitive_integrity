@@ -32,7 +32,7 @@ The playbooks below are organized by adversary class ($\Omega_1$ through $\Omega
 3. **[10–20 min] Triage**. Identify injection point (which message?), payload type (identity? scope? credential?), and affected belief(s).
 4. **[20–30 min] Containment**. Roll back affected beliefs to last verified state. Invalidate any actions taken since the infection point.
 5. **[30–45 min] Recovery**. Re-inject from trusted source. Run belief consistency check. Verify invariants.
-6. **[45–60 min] Hardening**. Update firewall pattern library with injection variant. Log to attack corpus (Part 2, §3.1) for future training.
+6. **[45–60 min] Hardening**. Update firewall pattern library with injection variant. Log to attack corpus (Part 2's Attack Corpus section) for future training.
 
 **Signs of escalation to $\Omega_3$**: the injected instruction attempts to change the agent's role, modify its trust scores, or alter its goal set. If any of these, escalate to Playbook 3.
 

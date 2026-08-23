@@ -865,15 +865,28 @@ def check_artifact_provenance() -> CheckResult:
 # Check: cross-paper pointers
 # ---------------------------------------------------------------------------
 
+#: What may sit between "Part N" and the kind word. A flat character budget does
+#: not work here: too tight and it misses "Part 1's Runtime Defenses section
+#: (Definition 5.6)"; too loose and it matches across a sentence that merely
+#: mentions another part, as in "Part 2 for the experimentalists, and the
+#: Applications section (\u00a79--\u00a710)", where the \u00a7 belongs to the citing paper.
+#: These three shapes are what actually occurs in the corpus.
+_POINTER_GAP = (
+    r"(?:"
+    r"[^.\n]{0,25}?"                                # tight juxtaposition
+    r"|[\s,]*\\cite[a-zA-Z]*\{[^}]*\}[\s,]*"          # separated only by a \cite
+    r"|['\u2019]s(?:(?!Part|Paper)[^.\n]){0,60}?"       # possessive: Part 1's <name> (
+    r")"
+)
+
 _HARDCODED_POINTER = re.compile(
-    # The gap between "Part N" and the kind word was capped at 24 characters,
-    # which let three pointers through in the form "Part 1's Runtime Defenses
-    # section (Definition 5.6)" -- 28 characters of intervening prose. The check
-    # reported PASS at zero while they were still there. [^.\n] already stops the
-    # match at a sentence boundary, so a wider window costs nothing.
-    r"(?:Part|Paper)[~ ]?([123])\b[^.\n]{0,60}?"
-    r"\b(Theorem|Thm\.?|Definition|Def\.?|Lemma|Corollary|Section|Sec\.?)\s*"
-    r"~?\s*(\d+(?:\.\d+)*[a-z]?)\b",
+    # \b cannot precede \u00a7 or a backslash, so word-boundary duty is done by the
+    # negative lookbehind, which still keeps "Subsection 5" from matching. The
+    # section sign was missing from this alternation entirely, hiding 29 pointers
+    # written "Part 1 \\cite{...} \u00a74.3" from a check reporting PASS at zero.
+    r"(?:Part|Paper)[~ ]?([123])\b" + _POINTER_GAP +
+    r"(?<![A-Za-z])(Theorem|Thm\.?|Definition|Def\.?|Lemma|Corollary|Section|Sec\.?|\\S|\u00a7)"
+    r"\s*~?\s*(\d+(?:\.\d+)*[a-z]?)\b",
     re.IGNORECASE,
 )
 

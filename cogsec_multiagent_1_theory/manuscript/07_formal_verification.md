@@ -482,7 +482,7 @@ The following table summarizes the expected state space exploration for each pro
 
 \begin{table}[htbp]
 \centering
-\caption{Model checking verification results. ``Verified'' here denotes a theoretical state-space bound established in this part; executable NuSMV/SPIN/TLA+ runs are deferred to Part 2 \S 04 (S04). No model checker was executed in this part.}
+\caption{Model checking verification results. ``Verified'' here denotes a theoretical state-space bound established in this part; executable NuSMV/SPIN/TLA+ runs are deferred to Part 2's ``Model Checking Tool Configurations'' appendix (S04). No model checker was executed in this part.}
 \label{tab:mc-results}
 \begin{tabular}{@{}lll@{}}
 \toprule

@@ -5,8 +5,8 @@
 This supplement develops the information-geometric structure of the CIF belief state space and shows how this geometry illuminates three otherwise disconnected aspects of the framework: the drift-detection threshold $\theta_{\text{drift}} = 0.3$, the sandbox corroboration threshold $\kappa$, and the choice of canary-belief probability $\tau_{\text{canary}}$ for tripwires. Implementations of the constructions below are in [`src/analysis/information_geometry.py`](../src/analysis/information_geometry.py); the numerical checks on curvature and geodesic lengths are in \texttt{tests/test\_information\_geometry.py}.
 
 > **Cross-paper reading guide.**
-> • **Formal stealth–impact bound** (which the Fisher–Rao construction realizes) is stated and proved in Part 1 \cite{friedman2026cogsec1} §4.3.
-> • **Operational implications** of the geodesic attack path for active-inference-based monitoring are discussed in Part 3 \cite{friedman2026cogsec3} §2 (theory review).
+> • **Formal stealth–impact bound** (which the Fisher–Rao construction realizes) is stated as Part 1's Stealth-Impact Tradeoff theorem \cite{friedman2026cogsec1}, which that paper's Proof Status index records as asserted without proof.
+> • **Operational implications** of the geodesic attack path for active-inference-based monitoring are discussed in Part 3 \cite{friedman2026cogsec3}'s theory-review section, under The Science Behind Belief Updates: Free Energy (Practical Implication for Operators).
 > • **Domain applications** — the geodesic framework applies to high-stakes sectors where adversarial inputs stay within a stealth budget; see Part 3 \cite{friedman2026cogsec3}, its Distilling Fake from Real News domain (information ecosystems, fake-news detection) in particular, where the Fisher--Rao metric informs distribution-shift monitoring.
 
 > **Reproducibility.** All geometric quantities (Fisher–Rao distances, geodesic paths, natural gradient directions) can be regenerated from [`src/analysis/information_geometry.py`](../src/analysis/information_geometry.py). Thin orchestrator: invoke via the publication suite (`uv run python scripts/run_publication_suite.py`) or directly via `StatisticalManifold` / `geodesic_attack_path`.
@@ -164,7 +164,7 @@ The Fisher-Rao geodesic distance provides the tightest information-theoretic con
 \text{KL}_{\max}(r) = 2\sin^2(r/2) \leq r^2/2,
 \end{equation}
 \label{eq:stealth-kl-bound}
-where the bound uses $\sin(x) \leq x$. The stealth–impact bound from Part 1 \cite{friedman2026cogsec1} §4.3 is recovered by substituting $r = \theta_{\text{drift}} / 2$ (half the detection radius):
+where the bound uses $\sin(x) \leq x$. The stealth–impact bound from Part 1's Stealth-Impact Tradeoff theorem \cite{friedman2026cogsec1} (its Information-Theoretic Detection Bounds section) is recovered by substituting $r = \theta_{\text{drift}} / 2$ (half the detection radius):
 \begin{equation}
 \text{Impact} \leq f(\text{KL}_{\max}(r)) = f\!\left(2\sin^2(\theta_{\text{drift}}/4)\right),
 \end{equation}

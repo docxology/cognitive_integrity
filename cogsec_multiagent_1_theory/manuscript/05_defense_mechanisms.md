@@ -205,7 +205,7 @@ generative model prior $P$, penalised by explanatory adequacy.
 A cognitive attack $\omega$ is effective if and only if it induces a free energy
 increase $\Delta F(\omega) > \kappa_{\mathrm{FEP}}$, where $\kappa_{\mathrm{FEP}}$
 is the sandbox's corroboration threshold $\kappa$ scaled by the source
-precision $\epsilon_{\text{prec}}$ (Part~2, \S 1.2):
+precision $\epsilon_{\text{prec}}$ (Part~2, Theorem~FEP.1, ``Attack-FEP Equivalence''):
 \[
 \Delta F(\omega) = F\!\left(Q_{\text{attacked}}\right) - F\!\left(Q_{\text{baseline}}\right)
 \leq \kappa \cdot \epsilon_{\text{prec}}.

@@ -496,6 +496,66 @@ def test_cross_paper_pointers_accepts_a_named_reference(tmp_path):
     assert module.CHECKS["cross-paper-pointers"]().ok
 
 
+def test_cross_paper_pointers_catches_the_section_sign(tmp_path):
+    """The section sign was absent from the pattern's alternation entirely.
+
+    29 pointers written "Part 1 \\cite{...} \u00a74.3" were invisible while the check
+    reported PASS at zero scanned, which reads as "there are none" rather than
+    "I cannot see them". Both spellings the corpus uses are pinned here.
+    """
+    for text in ("Part 1 \\cite{friedman2026cogsec1} \u00a74.3", "Part~1, \\S 1.2"):
+        tree = _build_tree(
+            tmp_path / f"sign{abs(hash(text))}",
+            part_text={"1": CEILING_OK, "2": CEILING_OK + f"\nSee {text} for the bound.\n", "3": CEILING_OK},
+            bibs={},
+        )
+        module = _load_module(tree)
+        result = module.CHECKS["cross-paper-pointers"]()
+        assert not result.ok, f"the section sign in {text!r} was not seen"
+
+
+def test_cross_paper_pointers_catches_a_possessive_reference(tmp_path):
+    """"Part 1's Runtime Defenses section (Definition 5.6)" -- 28 characters of
+    prose between the part and the kind word, where the budget was 24. Three
+    pointers hid in that four-character margin.
+    """
+    tree = _build_tree(
+        tmp_path / "possessive",
+        part_text={
+            "1": CEILING_OK,
+            "2": CEILING_OK + "\nThis implements Part 1's Runtime Defenses section (Definition 5.6).\n",
+            "3": CEILING_OK,
+        },
+        bibs={},
+    )
+    module = _load_module(tree)
+    assert not module.CHECKS["cross-paper-pointers"]().ok
+
+
+def test_cross_paper_pointers_does_not_reach_across_an_unrelated_part(tmp_path):
+    """The counterweight to the wider window.
+
+    "Part 2 for the experimentalists, and the Applications section (\u00a79--\u00a710)"
+    names Part 2 and then a section of the CITING paper. A window loose enough to
+    span that would report a defect where there is none, and a check that cries
+    wolf is a check that gets ignored.
+    """
+    tree = _build_tree(
+        tmp_path / "acrosspart",
+        part_text={
+            "1": CEILING_OK,
+            "2": CEILING_OK,
+            "3": CEILING_OK
+            + "\nWe wrote Part 1 for the theorists, Part 2 for the experimentalists, "
+            "and the Applications section (\u00a79--\u00a710) for domain experts.\n",
+        },
+        bibs={},
+    )
+    module = _load_module(tree)
+    result = module.CHECKS["cross-paper-pointers"]()
+    assert result.ok, [p.message for p in result.problems]
+
+
 def test_cross_paper_pointers_ignores_self_references(tmp_path):
     """Part 2 citing its own §5 is the per-part verifier's business, not ours."""
     tree = _build_tree(

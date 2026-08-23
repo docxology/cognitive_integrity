@@ -489,7 +489,7 @@ Colony CogSec mechanisms integrate with the CIF defense stack (\cref{sec:defense
 
 The full CIF with colony extensions achieves defense in depth against both individual-targeted and colony-targeted attacks.
 
-> **Note**: For implementation guidance, operational checklists, and practical deployment advice, see Part 3 \cite{friedman2026cogsec3}, its Deployment Profiles section. For domain-specific application of colony-level defenses across critical operational sectors (including ten high-stakes domains, three universal attack patterns, and retrospective analysis of 2024--2025 AI-agent incidents) see Part 3, §3.
+> **Note**: For implementation guidance, operational checklists, and practical deployment advice, see Part 3 \cite{friedman2026cogsec3}, its Deployment Profiles section. For domain-specific application of colony-level defenses across critical operational sectors (including ten high-stakes domains, three universal attack patterns, and retrospective analysis of 2024--2025 AI-agent incidents) see Part 3's *Part II: Applications* section and its supplementary catalog of documented AI-agent incidents.
 
 ---
 

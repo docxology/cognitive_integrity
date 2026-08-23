@@ -5,8 +5,8 @@
 This supplement provides the complete specification for CIF's functional and monadic defense interfaces. The framework described here is implemented in \texttt{src/core/monad.py} and \texttt{src/formal/category\_theory.py}; the formal laws that the interface satisfies are proved in \cref{sec:monadic-laws} and \cref{sec:category-theory}. This specification is the normative reference for call-site code that composes defense modules using the typed Result interface; for the procedural (class-based) interface, see \cref{sec:framework-api} (Supplement S5).
 
 > **Cross-paper reading guide.**
-> • **Formal basis** — category-theoretic foundations (monadic laws, functor composition, natural transformations) are proved in Part 1 \cite{friedman2026cogsec1} and extended here for the empirical setting.
-> • **Deployment guidance** — deciding between the procedural API (S5) and the functional API (S9) in production depends on your integration constraints; Part 3 \cite{friedman2026cogsec3} §5 (Deployment Guide) surveys this tradeoff.
+> • **Formal basis** — the monadic laws, functor composition and natural transformations are developed in this paper's category-theoretic foundations section; what Part 1 \cite{friedman2026cogsec1} supplies is the defense composition algebra they are built to model.
+> • **Deployment guidance** — deciding between the procedural API (S5) and the functional API (S9) in production depends on your integration constraints. No part of this series surveys that choice empirically; it is an engineering judgement about the calling code.
 > • **Domain applications** — the functional API is especially useful in high-assurance operational domains (infrastructure, biowarfare) where explicit error propagation is required; see unified Part 3+4 \cite{friedman2026cogsec3}, Sections 9.06 and 9.10.
 
 > **Reproducibility.** Empirical verification of the monadic laws and category laws runs as part of \texttt{uv run pytest tests/test\_formal.py}. Each law has a generator-based test that samples random morphisms and checks equality. Tests use real numerical data only — see [`src/AGENTS.md`](../src/AGENTS.md) for the no-mocks policy.
