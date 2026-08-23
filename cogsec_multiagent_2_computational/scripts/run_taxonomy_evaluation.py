@@ -1,0 +1,299 @@
+#!/usr/bin/env python3
+"""Measure detection across the full attack taxonomy and the full defense lattice.
+
+S08's per-architecture tables report a six-way attack taxonomy crossed with five
+defense configurations: 23 tables, 294 numeric cells.  None of it was measured.
+The only artifact behind them, ``full_evaluation_results.json``, carries four
+categories, no defense axis, and a provenance sidecar saying in as many words
+that it is ``parametric_simulation`` and "NOT empirically measured pipeline
+evidence".  Of S08's six attack families, exactly one -- direct injection --
+appears in that artifact at all.
+
+The corpus, meanwhile, has had twelve real attack categories and 950 items the
+whole time.  ``AttackCorpus.generate`` produces them deterministically and
+``evaluate_component_subset`` already runs any component subset through the real
+pipeline.  What was missing was only the join: nobody had run every family
+through every configuration and written it down.
+
+So this does that, exhaustively rather than for the eighteen configurations the
+two reported axes strictly need.  One pipeline evaluation costs about 0.07 ms,
+which puts the entire subset lattice -- all :math:`2^8 = 256` combinations of
+the eight defense components -- at roughly half a minute.  When the complete
+answer is that cheap, sampling it is a false economy: the lattice yields the
+X-only and leave-one-out axes as slices, and also exact Shapley values, every
+pairwise synergy, and the marginal contribution of any component in any context,
+none of which can be recovered from the eighteen.
+
+    python3 scripts/run_taxonomy_evaluation.py            # run and write
+    python3 scripts/run_taxonomy_evaluation.py --check    # fail if stale
+    python3 scripts/run_taxonomy_evaluation.py --axes     # 18 configs, not 256
+
+Determinism and idempotence
+---------------------------
+Everything here is a pure function of ``--seed``: the corpus, the benign set,
+and every adapter are deterministic and no noise is added.  Re-running writes a
+byte-identical artifact, so ``--check`` can diff rather than re-measure, and two
+components with identical behaviour produce an exactly-zero delta rather than a
+small signed number that looks like a finding.
+
+The output carries the corpus digest.  A corpus change that would silently
+invalidate every cell instead shows up as a digest mismatch under ``--check``.
+"""
+
+from __future__ import annotations
+
+import argparse
+import hashlib
+import itertools
+import json
+import math
+import sys
+from collections import defaultdict
+from pathlib import Path
+from typing import Iterable, Sequence
+
+REPO = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(REPO / "src"))
+
+from ablation.runner import BENIGN_MESSAGES, COMPONENT_TO_MODULE  # noqa: E402
+from attacks.corpus import AttackCorpus  # noqa: E402
+from composition.factory import create_pipeline_without  # noqa: E402
+
+OUTPUT = REPO / "output" / "data" / "taxonomy_evaluation_results.json"
+
+#: The eight defense components, in the order the ablation registry lists them.
+COMPONENTS: tuple[str, ...] = tuple(COMPONENT_TO_MODULE)
+
+#: The corpus's twelve categories roll up into the six families S08 reports.
+#: This mapping is the whole reason the S08 tables can be regenerated rather
+#: than retired: every family is a union of categories the corpus really has,
+#: so a six-way number is an aggregate of measurements and not an interpolation.
+FAMILY_OF: dict[str, str] = {
+    "direct_injection": "direct_injection",
+    "indirect_injection": "indirect_injection",
+    "nested_injection": "nested_injection",
+    "impersonation": "trust_exploitation",
+    "trust_inflation": "trust_exploitation",
+    "delegation_abuse": "trust_exploitation",
+    "belief_drift": "belief_manipulation",
+    "belief_fabrication": "belief_manipulation",
+    "belief_injection": "belief_manipulation",
+    "sybil_attack": "coordination",
+    "consensus_poisoning": "coordination",
+    "timing_attack": "coordination",
+}
+
+
+class TaxonomyMismatch(RuntimeError):
+    """The corpus stopped matching the family map."""
+
+
+def _subset_key(subset: Sequence[str]) -> str:
+    return "+".join(sorted(subset)) if subset else "baseline"
+
+
+def _corpus_digest(samples: Sequence[object]) -> str:
+    """A digest of what was actually evaluated, not of the file that made it."""
+    digest = hashlib.sha256()
+    for sample in samples:
+        digest.update(f"{sample.id}\x00{sample.category.value}\x00".encode())
+        digest.update(sample.payload.encode())
+        digest.update(b"\x01")
+    return digest.hexdigest()
+
+
+def _evaluate(subset: Sequence[str], samples: Sequence[object]) -> dict[str, object]:
+    """Detection by category for one component subset, plus its FPR."""
+    if not subset:
+        # create_pipeline_without rejects an empty pipeline, and a stack with no
+        # defense modules detects nothing by construction. Answer the degenerate
+        # case directly rather than fabricating a rate for it.
+        per_category = {
+            category: {"n": count, "detected": 0, "tpr": 0.0}
+            for category, count in _category_counts(samples).items()
+        }
+        return {"per_category": per_category, "false_positives": 0, "fpr": 0.0}
+
+    excluded = [
+        module for name, module in COMPONENT_TO_MODULE.items() if name not in set(subset)
+    ]
+    pipeline = create_pipeline_without(excluded)
+
+    detected: dict[str, int] = defaultdict(int)
+    total: dict[str, int] = defaultdict(int)
+    for sample in samples:
+        category = sample.category.value
+        total[category] += 1
+        if pipeline.evaluate(sample.payload).detected:
+            detected[category] += 1
+
+    false_positives = sum(
+        1 for message in BENIGN_MESSAGES if pipeline.evaluate(message).detected
+    )
+    per_category = {
+        category: {
+            "n": count,
+            "detected": detected[category],
+            "tpr": detected[category] / count if count else 0.0,
+        }
+        for category, count in sorted(total.items())
+    }
+    return {
+        "per_category": per_category,
+        "false_positives": false_positives,
+        "fpr": false_positives / len(BENIGN_MESSAGES) if BENIGN_MESSAGES else 0.0,
+    }
+
+
+def _category_counts(samples: Sequence[object]) -> dict[str, int]:
+    counts: dict[str, int] = defaultdict(int)
+    for sample in samples:
+        counts[sample.category.value] += 1
+    return dict(sorted(counts.items()))
+
+
+def _subsets(mode: str) -> Iterable[tuple[str, ...]]:
+    """Every subset, or just the two reported axes."""
+    if mode == "lattice":
+        for size in range(len(COMPONENTS) + 1):
+            yield from itertools.combinations(COMPONENTS, size)
+        return
+    yield ()
+    for component in COMPONENTS:  # X-only
+        yield (component,)
+    for component in COMPONENTS:  # leave-one-out
+        yield tuple(c for c in COMPONENTS if c != component)
+    yield COMPONENTS
+
+
+def _shapley(cells: dict[str, dict], family_tpr: dict[str, dict[str, float]]) -> dict[str, float]:
+    """Exact Shapley value per component, over the whole-corpus TPR.
+
+    Exact rather than sampled, because the full lattice is present: every
+    marginal contribution is a lookup, so there is nothing to approximate.
+    """
+    n = len(COMPONENTS)
+    values: dict[str, float] = {}
+    for component in COMPONENTS:
+        others = [c for c in COMPONENTS if c != component]
+        total = 0.0
+        for size in range(len(others) + 1):
+            weight = math.factorial(size) * math.factorial(n - size - 1) / math.factorial(n)
+            for coalition in itertools.combinations(others, size):
+                without = family_tpr[_subset_key(coalition)]["overall"]
+                with_it = family_tpr[_subset_key((*coalition, component))]["overall"]
+                total += weight * (with_it - without)
+        values[component] = total
+    return values
+
+
+def build(seed: int, mode: str) -> dict[str, object]:
+    corpus = list(AttackCorpus.generate(seed=seed))
+    if not corpus:
+        raise TaxonomyMismatch("the corpus generated zero samples")
+
+    counts = _category_counts(corpus)
+    unmapped = sorted(set(counts) - set(FAMILY_OF))
+    if unmapped:
+        raise TaxonomyMismatch(
+            f"corpus categories with no family: {unmapped}. Extend FAMILY_OF rather "
+            f"than dropping them, or the six-way roll-up silently loses attacks."
+        )
+
+    cells: dict[str, dict] = {}
+    family_tpr: dict[str, dict[str, float]] = {}
+    for subset in _subsets(mode):
+        key = _subset_key(subset)
+        cell = _evaluate(subset, corpus)
+        cells[key] = cell
+
+        by_family_detected: dict[str, int] = defaultdict(int)
+        by_family_total: dict[str, int] = defaultdict(int)
+        for category, record in cell["per_category"].items():
+            family = FAMILY_OF[category]
+            by_family_detected[family] += record["detected"]
+            by_family_total[family] += record["n"]
+        rolled = {
+            family: by_family_detected[family] / by_family_total[family]
+            for family in sorted(by_family_total)
+        }
+        rolled["overall"] = sum(by_family_detected.values()) / sum(by_family_total.values())
+        family_tpr[key] = rolled
+        cell["per_family"] = rolled
+
+    payload: dict[str, object] = {
+        "data_origin": "real_pipeline",
+        "source_script": "scripts/run_taxonomy_evaluation.py",
+        "generator": {
+            "module": "src/composition/factory.py",
+            "function": "create_pipeline_without",
+            "deterministic": True,
+        },
+        "note": (
+            "Every cell is a real pipeline evaluation of the full 950-item corpus. "
+            "No value here is calibrated, interpolated or modelled."
+        ),
+        "seed": seed,
+        "mode": mode,
+        "components": list(COMPONENTS),
+        "corpus_size": len(corpus),
+        "corpus_digest": _corpus_digest(corpus),
+        "category_counts": counts,
+        "family_of": FAMILY_OF,
+        "n_benign": len(BENIGN_MESSAGES),
+        "configurations": len(cells),
+        "cells": cells,
+    }
+    if mode == "lattice":
+        payload["shapley_overall_tpr"] = _shapley(cells, family_tpr)
+    return payload
+
+
+def main(argv: Sequence[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    parser.add_argument("--seed", type=int, default=42)
+    parser.add_argument(
+        "--axes",
+        action="store_true",
+        help="evaluate only the 18 reported configurations instead of all 256",
+    )
+    parser.add_argument("--check", action="store_true", help="fail if the artifact is stale")
+    args = parser.parse_args(list(argv) if argv is not None else None)
+
+    mode = "axes" if args.axes else "lattice"
+    try:
+        fresh = build(args.seed, mode)
+    except TaxonomyMismatch as exc:
+        print(f"taxonomy evaluation: FAILED -- {exc}", file=sys.stderr)
+        return 2
+
+    if args.check:
+        if not OUTPUT.is_file():
+            print(f"missing {OUTPUT.relative_to(REPO)}; run without --check", file=sys.stderr)
+            return 1
+        stored = json.loads(OUTPUT.read_text(encoding="utf-8"))
+        drift = [
+            key
+            for key in ("corpus_digest", "cells", "category_counts", "configurations")
+            if stored.get(key) != fresh[key]
+        ]
+        if drift:
+            print(f"taxonomy evaluation is stale; changed: {drift}")
+            return 1
+        print(f"taxonomy evaluation: current ({fresh['configurations']} configurations)")
+        return 0
+
+    OUTPUT.parent.mkdir(parents=True, exist_ok=True)
+    OUTPUT.write_text(json.dumps(fresh, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    full = fresh["cells"][_subset_key(COMPONENTS)]
+    print(f"wrote {OUTPUT.relative_to(REPO)}: {fresh['configurations']} configurations")
+    print(f"  corpus: {fresh['corpus_size']} attacks in {len(fresh['category_counts'])} categories")
+    print(f"  full stack: TPR {full['per_family']['overall']:.4f}  FPR {full['fpr']:.4f}")
+    for family, rate in sorted(full["per_family"].items()):
+        if family != "overall":
+            print(f"    {family:<22} {rate:.4f}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
