@@ -57,9 +57,20 @@ from typing import Iterable, Sequence
 REPO = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO / "src"))
 
-from ablation.runner import BENIGN_MESSAGES, COMPONENT_TO_MODULE  # noqa: E402
+from ablation.runner import COMPONENT_TO_MODULE  # noqa: E402
 from attacks.corpus import AttackCorpus  # noqa: E402
 from composition.factory import create_pipeline_without  # noqa: E402
+from evaluation.benign_corpus import BenignCorpus  # noqa: E402
+
+#: The negative arm. Deliberately NOT ablation.runner.BENIGN_MESSAGES, which is
+#: 50 plainly-innocuous strings: measured against those, false-positive rates
+#: come out near zero and every threshold looks generous. BenignCorpus is the
+#: designed negative set -- 120 items, half a `hard` stratum of legitimate
+#: messages carrying attack-adjacent vocabulary -- and it is the only one that
+#: makes an FPR number mean anything. Against the easy set this pipeline
+#: appears to reach 74% detection at no cost; against this one, Youden's J is
+#: negative below tau = 0.56.
+BENIGN_MESSAGES: list[str] = [item.text for item in BenignCorpus.generate()]
 
 OUTPUT = REPO / "output" / "data" / "taxonomy_evaluation_results.json"
 OUTPUT_EXTENDED = REPO / "output" / "data" / "taxonomy_evaluation_extended.json"

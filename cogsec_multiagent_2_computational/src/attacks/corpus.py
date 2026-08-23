@@ -242,20 +242,18 @@ class AttackCorpus:
     def generate(cls, seed: int = 42, *, extended: bool = False) -> "AttackCorpus":
         """Generate the attack corpus: 950 published samples, or 1475 extended.
 
-        ``extended=False`` is the published corpus and the default, deliberately.
-        Every measured number in this series -- the ablation deltas, the
-        baseline comparison, the red-team evaluation, the multi-seed means --
-        is measured against those 950 items, and silently growing the corpus
-        would invalidate all of them at once while leaving the prose unchanged.
+        ``extended=True`` is the integrated corpus and the default: 1475 items
+        across fifteen categories, and the only corpus that exercises all eight
+        defense modules. The earlier 950-item corpus contained no instance of
+        what the provenance, sandbox and consensus adapters detect, which is
+        why the full defense lattice gave all three a Shapley value of exactly
+        zero in every one of its 256 coalitions. A corpus that cannot reach
+        three of eight mechanisms cannot measure the framework, and every
+        number this series reports is now measured against one that can.
 
-        ``extended=True`` adds 525 samples in three families that probe the
-        provenance, sandbox and consensus modules. The full defense lattice
-        showed those three with a Shapley value of exactly zero in all 256
-        coalitions, which reads as three defenses that do not work; it was
-        instead that the 950 items contained no instance of what they detect.
-        The extension exists to tell those two cases apart, and it is a
-        separate corpus rather than a replacement so that the comparison
-        between them stays available.
+        ``extended=False`` reproduces those original 950 items unchanged. It is
+        kept for the comparison and for reproducing previously published
+        figures, not because two corpora are wanted going forward.
 
         Uses the four generator modules to produce samples for each
         category, assigns unique IDs, and returns the corpus.

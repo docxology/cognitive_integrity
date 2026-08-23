@@ -165,8 +165,8 @@
       }
     },
     "consensus+detection": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 6,
+      "fpr": 0.05,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -240,8 +240,8 @@
       }
     },
     "consensus+detection+firewall": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 24,
+      "fpr": 0.2,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -315,8 +315,8 @@
       }
     },
     "consensus+detection+firewall+invariants": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 24,
+      "fpr": 0.2,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -390,8 +390,8 @@
       }
     },
     "consensus+detection+firewall+invariants+provenance": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 24,
+      "fpr": 0.2,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -465,8 +465,8 @@
       }
     },
     "consensus+detection+firewall+invariants+provenance+sandbox": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 24,
+      "fpr": 0.2,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -540,8 +540,8 @@
       }
     },
     "consensus+detection+firewall+invariants+provenance+sandbox+tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 27,
+      "fpr": 0.225,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -615,8 +615,8 @@
       }
     },
     "consensus+detection+firewall+invariants+provenance+sandbox+tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 31,
+      "fpr": 0.25833333333333336,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -690,8 +690,8 @@
       }
     },
     "consensus+detection+firewall+invariants+provenance+sandbox+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 28,
+      "fpr": 0.23333333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -765,8 +765,8 @@
       }
     },
     "consensus+detection+firewall+invariants+provenance+tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 27,
+      "fpr": 0.225,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -840,8 +840,8 @@
       }
     },
     "consensus+detection+firewall+invariants+provenance+tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 31,
+      "fpr": 0.25833333333333336,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -915,8 +915,8 @@
       }
     },
     "consensus+detection+firewall+invariants+provenance+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 28,
+      "fpr": 0.23333333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -990,8 +990,8 @@
       }
     },
     "consensus+detection+firewall+invariants+sandbox": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 24,
+      "fpr": 0.2,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -1065,8 +1065,8 @@
       }
     },
     "consensus+detection+firewall+invariants+sandbox+tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 27,
+      "fpr": 0.225,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -1140,8 +1140,8 @@
       }
     },
     "consensus+detection+firewall+invariants+sandbox+tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 31,
+      "fpr": 0.25833333333333336,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -1215,8 +1215,8 @@
       }
     },
     "consensus+detection+firewall+invariants+sandbox+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 28,
+      "fpr": 0.23333333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -1290,8 +1290,8 @@
       }
     },
     "consensus+detection+firewall+invariants+tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 27,
+      "fpr": 0.225,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -1365,8 +1365,8 @@
       }
     },
     "consensus+detection+firewall+invariants+tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 31,
+      "fpr": 0.25833333333333336,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -1440,8 +1440,8 @@
       }
     },
     "consensus+detection+firewall+invariants+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 28,
+      "fpr": 0.23333333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -1515,8 +1515,8 @@
       }
     },
     "consensus+detection+firewall+provenance": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 24,
+      "fpr": 0.2,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -1590,8 +1590,8 @@
       }
     },
     "consensus+detection+firewall+provenance+sandbox": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 24,
+      "fpr": 0.2,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -1665,8 +1665,8 @@
       }
     },
     "consensus+detection+firewall+provenance+sandbox+tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 27,
+      "fpr": 0.225,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -1740,8 +1740,8 @@
       }
     },
     "consensus+detection+firewall+provenance+sandbox+tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 31,
+      "fpr": 0.25833333333333336,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -1815,8 +1815,8 @@
       }
     },
     "consensus+detection+firewall+provenance+sandbox+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 28,
+      "fpr": 0.23333333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -1890,8 +1890,8 @@
       }
     },
     "consensus+detection+firewall+provenance+tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 27,
+      "fpr": 0.225,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -1965,8 +1965,8 @@
       }
     },
     "consensus+detection+firewall+provenance+tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 31,
+      "fpr": 0.25833333333333336,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -2040,8 +2040,8 @@
       }
     },
     "consensus+detection+firewall+provenance+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 28,
+      "fpr": 0.23333333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -2115,8 +2115,8 @@
       }
     },
     "consensus+detection+firewall+sandbox": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 24,
+      "fpr": 0.2,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -2190,8 +2190,8 @@
       }
     },
     "consensus+detection+firewall+sandbox+tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 27,
+      "fpr": 0.225,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -2265,8 +2265,8 @@
       }
     },
     "consensus+detection+firewall+sandbox+tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 31,
+      "fpr": 0.25833333333333336,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -2340,8 +2340,8 @@
       }
     },
     "consensus+detection+firewall+sandbox+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 28,
+      "fpr": 0.23333333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -2415,8 +2415,8 @@
       }
     },
     "consensus+detection+firewall+tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 27,
+      "fpr": 0.225,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -2490,8 +2490,8 @@
       }
     },
     "consensus+detection+firewall+tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 31,
+      "fpr": 0.25833333333333336,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -2565,8 +2565,8 @@
       }
     },
     "consensus+detection+firewall+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 28,
+      "fpr": 0.23333333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -2640,8 +2640,8 @@
       }
     },
     "consensus+detection+invariants": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 6,
+      "fpr": 0.05,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -2715,8 +2715,8 @@
       }
     },
     "consensus+detection+invariants+provenance": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 6,
+      "fpr": 0.05,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -2790,8 +2790,8 @@
       }
     },
     "consensus+detection+invariants+provenance+sandbox": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 6,
+      "fpr": 0.05,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -2865,8 +2865,8 @@
       }
     },
     "consensus+detection+invariants+provenance+sandbox+tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 13,
+      "fpr": 0.10833333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -2940,8 +2940,8 @@
       }
     },
     "consensus+detection+invariants+provenance+sandbox+tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 17,
+      "fpr": 0.14166666666666666,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -3015,8 +3015,8 @@
       }
     },
     "consensus+detection+invariants+provenance+sandbox+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 10,
+      "fpr": 0.08333333333333333,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -3090,8 +3090,8 @@
       }
     },
     "consensus+detection+invariants+provenance+tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 13,
+      "fpr": 0.10833333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -3165,8 +3165,8 @@
       }
     },
     "consensus+detection+invariants+provenance+tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 17,
+      "fpr": 0.14166666666666666,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -3240,8 +3240,8 @@
       }
     },
     "consensus+detection+invariants+provenance+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 10,
+      "fpr": 0.08333333333333333,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -3315,8 +3315,8 @@
       }
     },
     "consensus+detection+invariants+sandbox": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 6,
+      "fpr": 0.05,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -3390,8 +3390,8 @@
       }
     },
     "consensus+detection+invariants+sandbox+tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 13,
+      "fpr": 0.10833333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -3465,8 +3465,8 @@
       }
     },
     "consensus+detection+invariants+sandbox+tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 17,
+      "fpr": 0.14166666666666666,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -3540,8 +3540,8 @@
       }
     },
     "consensus+detection+invariants+sandbox+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 10,
+      "fpr": 0.08333333333333333,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -3615,8 +3615,8 @@
       }
     },
     "consensus+detection+invariants+tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 13,
+      "fpr": 0.10833333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -3690,8 +3690,8 @@
       }
     },
     "consensus+detection+invariants+tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 17,
+      "fpr": 0.14166666666666666,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -3765,8 +3765,8 @@
       }
     },
     "consensus+detection+invariants+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 10,
+      "fpr": 0.08333333333333333,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -3840,8 +3840,8 @@
       }
     },
     "consensus+detection+provenance": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 6,
+      "fpr": 0.05,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -3915,8 +3915,8 @@
       }
     },
     "consensus+detection+provenance+sandbox": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 6,
+      "fpr": 0.05,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -3990,8 +3990,8 @@
       }
     },
     "consensus+detection+provenance+sandbox+tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 13,
+      "fpr": 0.10833333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -4065,8 +4065,8 @@
       }
     },
     "consensus+detection+provenance+sandbox+tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 17,
+      "fpr": 0.14166666666666666,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -4140,8 +4140,8 @@
       }
     },
     "consensus+detection+provenance+sandbox+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 10,
+      "fpr": 0.08333333333333333,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -4215,8 +4215,8 @@
       }
     },
     "consensus+detection+provenance+tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 13,
+      "fpr": 0.10833333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -4290,8 +4290,8 @@
       }
     },
     "consensus+detection+provenance+tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 17,
+      "fpr": 0.14166666666666666,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -4365,8 +4365,8 @@
       }
     },
     "consensus+detection+provenance+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 10,
+      "fpr": 0.08333333333333333,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -4440,8 +4440,8 @@
       }
     },
     "consensus+detection+sandbox": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 6,
+      "fpr": 0.05,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -4515,8 +4515,8 @@
       }
     },
     "consensus+detection+sandbox+tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 13,
+      "fpr": 0.10833333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -4590,8 +4590,8 @@
       }
     },
     "consensus+detection+sandbox+tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 17,
+      "fpr": 0.14166666666666666,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -4665,8 +4665,8 @@
       }
     },
     "consensus+detection+sandbox+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 10,
+      "fpr": 0.08333333333333333,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -4740,8 +4740,8 @@
       }
     },
     "consensus+detection+tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 13,
+      "fpr": 0.10833333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -4815,8 +4815,8 @@
       }
     },
     "consensus+detection+tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 17,
+      "fpr": 0.14166666666666666,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -4890,8 +4890,8 @@
       }
     },
     "consensus+detection+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 10,
+      "fpr": 0.08333333333333333,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -4965,8 +4965,8 @@
       }
     },
     "consensus+firewall": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 18,
+      "fpr": 0.15,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -5040,8 +5040,8 @@
       }
     },
     "consensus+firewall+invariants": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 18,
+      "fpr": 0.15,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -5115,8 +5115,8 @@
       }
     },
     "consensus+firewall+invariants+provenance": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 18,
+      "fpr": 0.15,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -5190,8 +5190,8 @@
       }
     },
     "consensus+firewall+invariants+provenance+sandbox": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 18,
+      "fpr": 0.15,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -5265,8 +5265,8 @@
       }
     },
     "consensus+firewall+invariants+provenance+sandbox+tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 21,
+      "fpr": 0.175,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -5340,8 +5340,8 @@
       }
     },
     "consensus+firewall+invariants+provenance+sandbox+tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 25,
+      "fpr": 0.20833333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -5415,8 +5415,8 @@
       }
     },
     "consensus+firewall+invariants+provenance+sandbox+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 22,
+      "fpr": 0.18333333333333332,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -5490,8 +5490,8 @@
       }
     },
     "consensus+firewall+invariants+provenance+tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 21,
+      "fpr": 0.175,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -5565,8 +5565,8 @@
       }
     },
     "consensus+firewall+invariants+provenance+tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 25,
+      "fpr": 0.20833333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -5640,8 +5640,8 @@
       }
     },
     "consensus+firewall+invariants+provenance+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 22,
+      "fpr": 0.18333333333333332,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -5715,8 +5715,8 @@
       }
     },
     "consensus+firewall+invariants+sandbox": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 18,
+      "fpr": 0.15,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -5790,8 +5790,8 @@
       }
     },
     "consensus+firewall+invariants+sandbox+tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 21,
+      "fpr": 0.175,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -5865,8 +5865,8 @@
       }
     },
     "consensus+firewall+invariants+sandbox+tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 25,
+      "fpr": 0.20833333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -5940,8 +5940,8 @@
       }
     },
     "consensus+firewall+invariants+sandbox+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 22,
+      "fpr": 0.18333333333333332,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -6015,8 +6015,8 @@
       }
     },
     "consensus+firewall+invariants+tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 21,
+      "fpr": 0.175,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -6090,8 +6090,8 @@
       }
     },
     "consensus+firewall+invariants+tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 25,
+      "fpr": 0.20833333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -6165,8 +6165,8 @@
       }
     },
     "consensus+firewall+invariants+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 22,
+      "fpr": 0.18333333333333332,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -6240,8 +6240,8 @@
       }
     },
     "consensus+firewall+provenance": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 18,
+      "fpr": 0.15,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -6315,8 +6315,8 @@
       }
     },
     "consensus+firewall+provenance+sandbox": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 18,
+      "fpr": 0.15,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -6390,8 +6390,8 @@
       }
     },
     "consensus+firewall+provenance+sandbox+tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 21,
+      "fpr": 0.175,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -6465,8 +6465,8 @@
       }
     },
     "consensus+firewall+provenance+sandbox+tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 25,
+      "fpr": 0.20833333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -6540,8 +6540,8 @@
       }
     },
     "consensus+firewall+provenance+sandbox+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 22,
+      "fpr": 0.18333333333333332,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -6615,8 +6615,8 @@
       }
     },
     "consensus+firewall+provenance+tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 21,
+      "fpr": 0.175,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -6690,8 +6690,8 @@
       }
     },
     "consensus+firewall+provenance+tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 25,
+      "fpr": 0.20833333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -6765,8 +6765,8 @@
       }
     },
     "consensus+firewall+provenance+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 22,
+      "fpr": 0.18333333333333332,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -6840,8 +6840,8 @@
       }
     },
     "consensus+firewall+sandbox": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 18,
+      "fpr": 0.15,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -6915,8 +6915,8 @@
       }
     },
     "consensus+firewall+sandbox+tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 21,
+      "fpr": 0.175,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -6990,8 +6990,8 @@
       }
     },
     "consensus+firewall+sandbox+tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 25,
+      "fpr": 0.20833333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -7065,8 +7065,8 @@
       }
     },
     "consensus+firewall+sandbox+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 22,
+      "fpr": 0.18333333333333332,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -7140,8 +7140,8 @@
       }
     },
     "consensus+firewall+tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 21,
+      "fpr": 0.175,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -7215,8 +7215,8 @@
       }
     },
     "consensus+firewall+tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 25,
+      "fpr": 0.20833333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -7290,8 +7290,8 @@
       }
     },
     "consensus+firewall+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 22,
+      "fpr": 0.18333333333333332,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -7590,8 +7590,8 @@
       }
     },
     "consensus+invariants+provenance+sandbox+tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 7,
+      "fpr": 0.058333333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -7665,8 +7665,8 @@
       }
     },
     "consensus+invariants+provenance+sandbox+tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 11,
+      "fpr": 0.09166666666666666,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -7740,8 +7740,8 @@
       }
     },
     "consensus+invariants+provenance+sandbox+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 4,
+      "fpr": 0.03333333333333333,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -7815,8 +7815,8 @@
       }
     },
     "consensus+invariants+provenance+tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 7,
+      "fpr": 0.058333333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -7890,8 +7890,8 @@
       }
     },
     "consensus+invariants+provenance+tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 11,
+      "fpr": 0.09166666666666666,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -7965,8 +7965,8 @@
       }
     },
     "consensus+invariants+provenance+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 4,
+      "fpr": 0.03333333333333333,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -8115,8 +8115,8 @@
       }
     },
     "consensus+invariants+sandbox+tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 7,
+      "fpr": 0.058333333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -8190,8 +8190,8 @@
       }
     },
     "consensus+invariants+sandbox+tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 11,
+      "fpr": 0.09166666666666666,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -8265,8 +8265,8 @@
       }
     },
     "consensus+invariants+sandbox+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 4,
+      "fpr": 0.03333333333333333,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -8340,8 +8340,8 @@
       }
     },
     "consensus+invariants+tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 7,
+      "fpr": 0.058333333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -8415,8 +8415,8 @@
       }
     },
     "consensus+invariants+tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 11,
+      "fpr": 0.09166666666666666,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -8490,8 +8490,8 @@
       }
     },
     "consensus+invariants+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 4,
+      "fpr": 0.03333333333333333,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -8715,8 +8715,8 @@
       }
     },
     "consensus+provenance+sandbox+tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 7,
+      "fpr": 0.058333333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -8790,8 +8790,8 @@
       }
     },
     "consensus+provenance+sandbox+tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 11,
+      "fpr": 0.09166666666666666,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -8865,8 +8865,8 @@
       }
     },
     "consensus+provenance+sandbox+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 4,
+      "fpr": 0.03333333333333333,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -8940,8 +8940,8 @@
       }
     },
     "consensus+provenance+tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 7,
+      "fpr": 0.058333333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -9015,8 +9015,8 @@
       }
     },
     "consensus+provenance+tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 11,
+      "fpr": 0.09166666666666666,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -9090,8 +9090,8 @@
       }
     },
     "consensus+provenance+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 4,
+      "fpr": 0.03333333333333333,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -9240,8 +9240,8 @@
       }
     },
     "consensus+sandbox+tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 7,
+      "fpr": 0.058333333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -9315,8 +9315,8 @@
       }
     },
     "consensus+sandbox+tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 11,
+      "fpr": 0.09166666666666666,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -9390,8 +9390,8 @@
       }
     },
     "consensus+sandbox+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 4,
+      "fpr": 0.03333333333333333,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -9465,8 +9465,8 @@
       }
     },
     "consensus+tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 7,
+      "fpr": 0.058333333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -9540,8 +9540,8 @@
       }
     },
     "consensus+tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 11,
+      "fpr": 0.09166666666666666,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -9615,8 +9615,8 @@
       }
     },
     "consensus+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 4,
+      "fpr": 0.03333333333333333,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -9690,8 +9690,8 @@
       }
     },
     "detection": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 6,
+      "fpr": 0.05,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -9765,8 +9765,8 @@
       }
     },
     "detection+firewall": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 24,
+      "fpr": 0.2,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -9840,8 +9840,8 @@
       }
     },
     "detection+firewall+invariants": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 24,
+      "fpr": 0.2,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -9915,8 +9915,8 @@
       }
     },
     "detection+firewall+invariants+provenance": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 24,
+      "fpr": 0.2,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -9990,8 +9990,8 @@
       }
     },
     "detection+firewall+invariants+provenance+sandbox": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 24,
+      "fpr": 0.2,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -10065,8 +10065,8 @@
       }
     },
     "detection+firewall+invariants+provenance+sandbox+tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 27,
+      "fpr": 0.225,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -10140,8 +10140,8 @@
       }
     },
     "detection+firewall+invariants+provenance+sandbox+tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 31,
+      "fpr": 0.25833333333333336,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -10215,8 +10215,8 @@
       }
     },
     "detection+firewall+invariants+provenance+sandbox+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 28,
+      "fpr": 0.23333333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -10290,8 +10290,8 @@
       }
     },
     "detection+firewall+invariants+provenance+tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 27,
+      "fpr": 0.225,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -10365,8 +10365,8 @@
       }
     },
     "detection+firewall+invariants+provenance+tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 31,
+      "fpr": 0.25833333333333336,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -10440,8 +10440,8 @@
       }
     },
     "detection+firewall+invariants+provenance+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 28,
+      "fpr": 0.23333333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -10515,8 +10515,8 @@
       }
     },
     "detection+firewall+invariants+sandbox": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 24,
+      "fpr": 0.2,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -10590,8 +10590,8 @@
       }
     },
     "detection+firewall+invariants+sandbox+tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 27,
+      "fpr": 0.225,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -10665,8 +10665,8 @@
       }
     },
     "detection+firewall+invariants+sandbox+tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 31,
+      "fpr": 0.25833333333333336,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -10740,8 +10740,8 @@
       }
     },
     "detection+firewall+invariants+sandbox+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 28,
+      "fpr": 0.23333333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -10815,8 +10815,8 @@
       }
     },
     "detection+firewall+invariants+tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 27,
+      "fpr": 0.225,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -10890,8 +10890,8 @@
       }
     },
     "detection+firewall+invariants+tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 31,
+      "fpr": 0.25833333333333336,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -10965,8 +10965,8 @@
       }
     },
     "detection+firewall+invariants+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 28,
+      "fpr": 0.23333333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -11040,8 +11040,8 @@
       }
     },
     "detection+firewall+provenance": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 24,
+      "fpr": 0.2,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -11115,8 +11115,8 @@
       }
     },
     "detection+firewall+provenance+sandbox": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 24,
+      "fpr": 0.2,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -11190,8 +11190,8 @@
       }
     },
     "detection+firewall+provenance+sandbox+tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 27,
+      "fpr": 0.225,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -11265,8 +11265,8 @@
       }
     },
     "detection+firewall+provenance+sandbox+tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 31,
+      "fpr": 0.25833333333333336,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -11340,8 +11340,8 @@
       }
     },
     "detection+firewall+provenance+sandbox+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 28,
+      "fpr": 0.23333333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -11415,8 +11415,8 @@
       }
     },
     "detection+firewall+provenance+tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 27,
+      "fpr": 0.225,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -11490,8 +11490,8 @@
       }
     },
     "detection+firewall+provenance+tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 31,
+      "fpr": 0.25833333333333336,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -11565,8 +11565,8 @@
       }
     },
     "detection+firewall+provenance+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 28,
+      "fpr": 0.23333333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -11640,8 +11640,8 @@
       }
     },
     "detection+firewall+sandbox": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 24,
+      "fpr": 0.2,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -11715,8 +11715,8 @@
       }
     },
     "detection+firewall+sandbox+tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 27,
+      "fpr": 0.225,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -11790,8 +11790,8 @@
       }
     },
     "detection+firewall+sandbox+tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 31,
+      "fpr": 0.25833333333333336,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -11865,8 +11865,8 @@
       }
     },
     "detection+firewall+sandbox+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 28,
+      "fpr": 0.23333333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -11940,8 +11940,8 @@
       }
     },
     "detection+firewall+tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 27,
+      "fpr": 0.225,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -12015,8 +12015,8 @@
       }
     },
     "detection+firewall+tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 31,
+      "fpr": 0.25833333333333336,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -12090,8 +12090,8 @@
       }
     },
     "detection+firewall+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 28,
+      "fpr": 0.23333333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -12165,8 +12165,8 @@
       }
     },
     "detection+invariants": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 6,
+      "fpr": 0.05,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -12240,8 +12240,8 @@
       }
     },
     "detection+invariants+provenance": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 6,
+      "fpr": 0.05,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -12315,8 +12315,8 @@
       }
     },
     "detection+invariants+provenance+sandbox": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 6,
+      "fpr": 0.05,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -12390,8 +12390,8 @@
       }
     },
     "detection+invariants+provenance+sandbox+tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 13,
+      "fpr": 0.10833333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -12465,8 +12465,8 @@
       }
     },
     "detection+invariants+provenance+sandbox+tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 17,
+      "fpr": 0.14166666666666666,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -12540,8 +12540,8 @@
       }
     },
     "detection+invariants+provenance+sandbox+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 10,
+      "fpr": 0.08333333333333333,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -12615,8 +12615,8 @@
       }
     },
     "detection+invariants+provenance+tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 13,
+      "fpr": 0.10833333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -12690,8 +12690,8 @@
       }
     },
     "detection+invariants+provenance+tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 17,
+      "fpr": 0.14166666666666666,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -12765,8 +12765,8 @@
       }
     },
     "detection+invariants+provenance+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 10,
+      "fpr": 0.08333333333333333,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -12840,8 +12840,8 @@
       }
     },
     "detection+invariants+sandbox": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 6,
+      "fpr": 0.05,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -12915,8 +12915,8 @@
       }
     },
     "detection+invariants+sandbox+tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 13,
+      "fpr": 0.10833333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -12990,8 +12990,8 @@
       }
     },
     "detection+invariants+sandbox+tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 17,
+      "fpr": 0.14166666666666666,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -13065,8 +13065,8 @@
       }
     },
     "detection+invariants+sandbox+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 10,
+      "fpr": 0.08333333333333333,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -13140,8 +13140,8 @@
       }
     },
     "detection+invariants+tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 13,
+      "fpr": 0.10833333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -13215,8 +13215,8 @@
       }
     },
     "detection+invariants+tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 17,
+      "fpr": 0.14166666666666666,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -13290,8 +13290,8 @@
       }
     },
     "detection+invariants+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 10,
+      "fpr": 0.08333333333333333,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -13365,8 +13365,8 @@
       }
     },
     "detection+provenance": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 6,
+      "fpr": 0.05,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -13440,8 +13440,8 @@
       }
     },
     "detection+provenance+sandbox": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 6,
+      "fpr": 0.05,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -13515,8 +13515,8 @@
       }
     },
     "detection+provenance+sandbox+tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 13,
+      "fpr": 0.10833333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -13590,8 +13590,8 @@
       }
     },
     "detection+provenance+sandbox+tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 17,
+      "fpr": 0.14166666666666666,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -13665,8 +13665,8 @@
       }
     },
     "detection+provenance+sandbox+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 10,
+      "fpr": 0.08333333333333333,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -13740,8 +13740,8 @@
       }
     },
     "detection+provenance+tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 13,
+      "fpr": 0.10833333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -13815,8 +13815,8 @@
       }
     },
     "detection+provenance+tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 17,
+      "fpr": 0.14166666666666666,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -13890,8 +13890,8 @@
       }
     },
     "detection+provenance+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 10,
+      "fpr": 0.08333333333333333,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -13965,8 +13965,8 @@
       }
     },
     "detection+sandbox": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 6,
+      "fpr": 0.05,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -14040,8 +14040,8 @@
       }
     },
     "detection+sandbox+tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 13,
+      "fpr": 0.10833333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -14115,8 +14115,8 @@
       }
     },
     "detection+sandbox+tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 17,
+      "fpr": 0.14166666666666666,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -14190,8 +14190,8 @@
       }
     },
     "detection+sandbox+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 10,
+      "fpr": 0.08333333333333333,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -14265,8 +14265,8 @@
       }
     },
     "detection+tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 13,
+      "fpr": 0.10833333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -14340,8 +14340,8 @@
       }
     },
     "detection+tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 17,
+      "fpr": 0.14166666666666666,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -14415,8 +14415,8 @@
       }
     },
     "detection+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 10,
+      "fpr": 0.08333333333333333,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -14490,8 +14490,8 @@
       }
     },
     "firewall": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 18,
+      "fpr": 0.15,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -14565,8 +14565,8 @@
       }
     },
     "firewall+invariants": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 18,
+      "fpr": 0.15,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -14640,8 +14640,8 @@
       }
     },
     "firewall+invariants+provenance": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 18,
+      "fpr": 0.15,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -14715,8 +14715,8 @@
       }
     },
     "firewall+invariants+provenance+sandbox": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 18,
+      "fpr": 0.15,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -14790,8 +14790,8 @@
       }
     },
     "firewall+invariants+provenance+sandbox+tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 21,
+      "fpr": 0.175,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -14865,8 +14865,8 @@
       }
     },
     "firewall+invariants+provenance+sandbox+tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 25,
+      "fpr": 0.20833333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -14940,8 +14940,8 @@
       }
     },
     "firewall+invariants+provenance+sandbox+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 22,
+      "fpr": 0.18333333333333332,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -15015,8 +15015,8 @@
       }
     },
     "firewall+invariants+provenance+tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 21,
+      "fpr": 0.175,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -15090,8 +15090,8 @@
       }
     },
     "firewall+invariants+provenance+tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 25,
+      "fpr": 0.20833333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -15165,8 +15165,8 @@
       }
     },
     "firewall+invariants+provenance+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 22,
+      "fpr": 0.18333333333333332,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -15240,8 +15240,8 @@
       }
     },
     "firewall+invariants+sandbox": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 18,
+      "fpr": 0.15,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -15315,8 +15315,8 @@
       }
     },
     "firewall+invariants+sandbox+tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 21,
+      "fpr": 0.175,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -15390,8 +15390,8 @@
       }
     },
     "firewall+invariants+sandbox+tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 25,
+      "fpr": 0.20833333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -15465,8 +15465,8 @@
       }
     },
     "firewall+invariants+sandbox+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 22,
+      "fpr": 0.18333333333333332,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -15540,8 +15540,8 @@
       }
     },
     "firewall+invariants+tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 21,
+      "fpr": 0.175,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -15615,8 +15615,8 @@
       }
     },
     "firewall+invariants+tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 25,
+      "fpr": 0.20833333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -15690,8 +15690,8 @@
       }
     },
     "firewall+invariants+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 22,
+      "fpr": 0.18333333333333332,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -15765,8 +15765,8 @@
       }
     },
     "firewall+provenance": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 18,
+      "fpr": 0.15,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -15840,8 +15840,8 @@
       }
     },
     "firewall+provenance+sandbox": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 18,
+      "fpr": 0.15,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -15915,8 +15915,8 @@
       }
     },
     "firewall+provenance+sandbox+tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 21,
+      "fpr": 0.175,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -15990,8 +15990,8 @@
       }
     },
     "firewall+provenance+sandbox+tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 25,
+      "fpr": 0.20833333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -16065,8 +16065,8 @@
       }
     },
     "firewall+provenance+sandbox+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 22,
+      "fpr": 0.18333333333333332,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -16140,8 +16140,8 @@
       }
     },
     "firewall+provenance+tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 21,
+      "fpr": 0.175,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -16215,8 +16215,8 @@
       }
     },
     "firewall+provenance+tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 25,
+      "fpr": 0.20833333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -16290,8 +16290,8 @@
       }
     },
     "firewall+provenance+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 22,
+      "fpr": 0.18333333333333332,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -16365,8 +16365,8 @@
       }
     },
     "firewall+sandbox": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 18,
+      "fpr": 0.15,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -16440,8 +16440,8 @@
       }
     },
     "firewall+sandbox+tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 21,
+      "fpr": 0.175,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -16515,8 +16515,8 @@
       }
     },
     "firewall+sandbox+tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 25,
+      "fpr": 0.20833333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -16590,8 +16590,8 @@
       }
     },
     "firewall+sandbox+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 22,
+      "fpr": 0.18333333333333332,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -16665,8 +16665,8 @@
       }
     },
     "firewall+tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 21,
+      "fpr": 0.175,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -16740,8 +16740,8 @@
       }
     },
     "firewall+tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 25,
+      "fpr": 0.20833333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -16815,8 +16815,8 @@
       }
     },
     "firewall+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 22,
+      "fpr": 0.18333333333333332,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -17115,8 +17115,8 @@
       }
     },
     "invariants+provenance+sandbox+tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 7,
+      "fpr": 0.058333333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -17190,8 +17190,8 @@
       }
     },
     "invariants+provenance+sandbox+tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 11,
+      "fpr": 0.09166666666666666,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -17265,8 +17265,8 @@
       }
     },
     "invariants+provenance+sandbox+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 4,
+      "fpr": 0.03333333333333333,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -17340,8 +17340,8 @@
       }
     },
     "invariants+provenance+tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 7,
+      "fpr": 0.058333333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -17415,8 +17415,8 @@
       }
     },
     "invariants+provenance+tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 11,
+      "fpr": 0.09166666666666666,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -17490,8 +17490,8 @@
       }
     },
     "invariants+provenance+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 4,
+      "fpr": 0.03333333333333333,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -17640,8 +17640,8 @@
       }
     },
     "invariants+sandbox+tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 7,
+      "fpr": 0.058333333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -17715,8 +17715,8 @@
       }
     },
     "invariants+sandbox+tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 11,
+      "fpr": 0.09166666666666666,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -17790,8 +17790,8 @@
       }
     },
     "invariants+sandbox+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 4,
+      "fpr": 0.03333333333333333,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -17865,8 +17865,8 @@
       }
     },
     "invariants+tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 7,
+      "fpr": 0.058333333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -17940,8 +17940,8 @@
       }
     },
     "invariants+tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 11,
+      "fpr": 0.09166666666666666,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -18015,8 +18015,8 @@
       }
     },
     "invariants+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 4,
+      "fpr": 0.03333333333333333,
       "per_category": {
         "belief_drift": {
           "detected": 3,
@@ -18240,8 +18240,8 @@
       }
     },
     "provenance+sandbox+tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 7,
+      "fpr": 0.058333333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -18315,8 +18315,8 @@
       }
     },
     "provenance+sandbox+tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 11,
+      "fpr": 0.09166666666666666,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -18390,8 +18390,8 @@
       }
     },
     "provenance+sandbox+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 4,
+      "fpr": 0.03333333333333333,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -18465,8 +18465,8 @@
       }
     },
     "provenance+tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 7,
+      "fpr": 0.058333333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -18540,8 +18540,8 @@
       }
     },
     "provenance+tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 11,
+      "fpr": 0.09166666666666666,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -18615,8 +18615,8 @@
       }
     },
     "provenance+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 4,
+      "fpr": 0.03333333333333333,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -18765,8 +18765,8 @@
       }
     },
     "sandbox+tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 7,
+      "fpr": 0.058333333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -18840,8 +18840,8 @@
       }
     },
     "sandbox+tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 11,
+      "fpr": 0.09166666666666666,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -18915,8 +18915,8 @@
       }
     },
     "sandbox+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 4,
+      "fpr": 0.03333333333333333,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -18990,8 +18990,8 @@
       }
     },
     "tripwire": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 7,
+      "fpr": 0.058333333333333334,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -19065,8 +19065,8 @@
       }
     },
     "tripwire+trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 11,
+      "fpr": 0.09166666666666666,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -19140,8 +19140,8 @@
       }
     },
     "trust_calculus": {
-      "false_positives": 0,
-      "fpr": 0.0,
+      "false_positives": 4,
+      "fpr": 0.03333333333333333,
       "per_category": {
         "belief_drift": {
           "detected": 0,
@@ -19253,81 +19253,81 @@
     "module": "src/composition/factory.py"
   },
   "mode": "lattice",
-  "n_benign": 50,
+  "n_benign": 120,
   "note": "Every cell is a real pipeline evaluation of the full 950-item corpus. No value here is calibrated, interpolated or modelled.",
   "per_module_calibration": {
     "modules": {
       "consensus": {
-        "benign_score_max_calibration": 0.09257142857142857,
+        "benign_score_max_calibration": 0.33428571428571424,
         "shipped_holdout": {
           "fpr": 0.0,
           "tpr": 0.0
         },
         "shipped_threshold": 0.5,
         "youden_holdout": {
-          "fpr": 0.16,
-          "tpr": 0.42105263157894735
+          "fpr": 0.18333333333333332,
+          "tpr": 0.33052631578947367
         },
-        "youden_threshold": 0.0,
+        "youden_threshold": 0.04,
         "zero_fpr_holdout": {
-          "fpr": 0.04,
-          "tpr": 0.16842105263157894
+          "fpr": 0.03333333333333333,
+          "tpr": 0.03368421052631579
         },
-        "zero_fpr_threshold": 0.095
+        "zero_fpr_threshold": 0.335
       },
       "detection": {
-        "benign_score_max_calibration": 0.3426749648601929,
+        "benign_score_max_calibration": 0.5613817989662057,
         "shipped_holdout": {
           "fpr": 0.0,
           "tpr": 0.05473684210526316
         },
         "shipped_threshold": 0.5,
         "youden_holdout": {
-          "fpr": 0.08,
-          "tpr": 0.6378947368421053
+          "fpr": 0.11666666666666667,
+          "tpr": 0.37473684210526315
         },
-        "youden_threshold": 0.345,
+        "youden_threshold": 0.38,
         "zero_fpr_holdout": {
-          "fpr": 0.08,
-          "tpr": 0.6378947368421053
+          "fpr": 0.0,
+          "tpr": 0.01263157894736842
         },
-        "zero_fpr_threshold": 0.345
+        "zero_fpr_threshold": 0.5625
       },
       "firewall": {
-        "benign_score_max_calibration": 0.19990798131653278,
+        "benign_score_max_calibration": 0.5598757592534122,
         "shipped_holdout": {
-          "fpr": 0.0,
+          "fpr": 0.08333333333333333,
           "tpr": 0.05052631578947368
         },
         "shipped_threshold": 0.5,
         "youden_holdout": {
-          "fpr": 0.0,
-          "tpr": 0.23578947368421052
+          "fpr": 0.45,
+          "tpr": 0.36
         },
-        "youden_threshold": 0.2,
+        "youden_threshold": 0.185,
         "zero_fpr_holdout": {
           "fpr": 0.0,
-          "tpr": 0.23578947368421052
+          "tpr": 0.01263157894736842
         },
-        "zero_fpr_threshold": 0.2
+        "zero_fpr_threshold": 0.56
       },
       "invariants": {
-        "benign_score_max_calibration": 0.0,
+        "benign_score_max_calibration": 0.5,
         "shipped_holdout": {
           "fpr": 0.0,
           "tpr": 0.004210526315789474
         },
         "shipped_threshold": 0.5,
         "youden_holdout": {
-          "fpr": 0.0,
+          "fpr": 0.1,
           "tpr": 0.13052631578947368
         },
         "youden_threshold": 0.0,
         "zero_fpr_holdout": {
           "fpr": 0.0,
-          "tpr": 0.13052631578947368
+          "tpr": 0.004210526315789474
         },
-        "zero_fpr_threshold": 0.0
+        "zero_fpr_threshold": 0.5
       },
       "provenance": {
         "benign_score_max_calibration": 0.0,
@@ -19355,51 +19355,51 @@
         },
         "shipped_threshold": 0.5,
         "youden_holdout": {
-          "fpr": 0.0,
+          "fpr": 0.03333333333333333,
           "tpr": 0.00631578947368421
         },
         "youden_threshold": 0.0,
         "zero_fpr_holdout": {
-          "fpr": 0.0,
+          "fpr": 0.03333333333333333,
           "tpr": 0.00631578947368421
         },
         "zero_fpr_threshold": 0.0
       },
       "tripwire": {
-        "benign_score_max_calibration": 0.0,
+        "benign_score_max_calibration": 1.0,
         "shipped_holdout": {
-          "fpr": 0.0,
+          "fpr": 0.05,
           "tpr": 0.029473684210526315
         },
         "shipped_threshold": 0.5,
         "youden_holdout": {
           "fpr": 0.0,
-          "tpr": 0.029473684210526315
+          "tpr": 0.0
         },
-        "youden_threshold": 0.0,
+        "youden_threshold": 1.0,
         "zero_fpr_holdout": {
           "fpr": 0.0,
-          "tpr": 0.029473684210526315
+          "tpr": 0.0
         },
-        "zero_fpr_threshold": 0.0
+        "zero_fpr_threshold": 1.0
       },
       "trust": {
-        "benign_score_max_calibration": 0.0,
+        "benign_score_max_calibration": 0.4,
         "shipped_holdout": {
           "fpr": 0.0,
           "tpr": 0.0
         },
         "shipped_threshold": 0.5,
         "youden_holdout": {
-          "fpr": 0.0,
+          "fpr": 0.13333333333333333,
           "tpr": 0.08842105263157894
         },
         "youden_threshold": 0.0,
         "zero_fpr_holdout": {
           "fpr": 0.0,
-          "tpr": 0.08842105263157894
+          "tpr": 0.0
         },
-        "zero_fpr_threshold": 0.0
+        "zero_fpr_threshold": 0.4
       }
     },
     "n_calibration": 475,
@@ -19420,22 +19420,9 @@
   },
   "source_script": "scripts/run_taxonomy_evaluation.py",
   "threshold_sweep": {
-    "benign_score_max": 0.36674028644481166,
-    "benign_score_median": 0.31610084201879096,
-    "best_at_zero_fpr": {
-      "fpr": 0.0,
-      "per_family": {
-        "belief_manipulation": 0.48,
-        "coordination": 0.69,
-        "direct_injection": 0.575,
-        "indirect_injection": 0.685,
-        "nested_injection": 0.4,
-        "trust_exploitation": 0.57
-      },
-      "threshold": 0.37,
-      "tpr": 0.5757894736842105,
-      "youden_j": 0.5757894736842105
-    },
+    "benign_score_max": 1.0,
+    "benign_score_median": 0.39624004979480926,
+    "best_at_zero_fpr": null,
     "grid": [
       {
         "fpr": 1.0,
@@ -19466,7 +19453,7 @@
         "youden_j": -0.02421052631578946
       },
       {
-        "fpr": 0.98,
+        "fpr": 1.0,
         "per_family": {
           "belief_manipulation": 0.86,
           "coordination": 0.98,
@@ -19477,10 +19464,10 @@
         },
         "threshold": 0.29,
         "tpr": 0.9694736842105263,
-        "youden_j": -0.010526315789473717
+        "youden_j": -0.030526315789473735
       },
       {
-        "fpr": 0.94,
+        "fpr": 1.0,
         "per_family": {
           "belief_manipulation": 0.8533333333333334,
           "coordination": 0.95,
@@ -19491,10 +19478,10 @@
         },
         "threshold": 0.295,
         "tpr": 0.9610526315789474,
-        "youden_j": 0.021052631578947434
+        "youden_j": -0.03894736842105262
       },
       {
-        "fpr": 0.88,
+        "fpr": 1.0,
         "per_family": {
           "belief_manipulation": 0.84,
           "coordination": 0.94,
@@ -19505,10 +19492,10 @@
         },
         "threshold": 0.3,
         "tpr": 0.9442105263157895,
-        "youden_j": 0.0642105263157895
+        "youden_j": -0.0557894736842105
       },
       {
-        "fpr": 0.8,
+        "fpr": 0.9916666666666667,
         "per_family": {
           "belief_manipulation": 0.8133333333333334,
           "coordination": 0.92,
@@ -19519,10 +19506,10 @@
         },
         "threshold": 0.305,
         "tpr": 0.9305263157894736,
-        "youden_j": 0.1305263157894736
+        "youden_j": -0.06114035087719305
       },
       {
-        "fpr": 0.64,
+        "fpr": 0.9833333333333333,
         "per_family": {
           "belief_manipulation": 0.78,
           "coordination": 0.9,
@@ -19533,10 +19520,10 @@
         },
         "threshold": 0.31,
         "tpr": 0.9052631578947369,
-        "youden_j": 0.26526315789473687
+        "youden_j": -0.0780701754385964
       },
       {
-        "fpr": 0.52,
+        "fpr": 0.95,
         "per_family": {
           "belief_manipulation": 0.74,
           "coordination": 0.89,
@@ -19547,10 +19534,10 @@
         },
         "threshold": 0.315,
         "tpr": 0.8747368421052631,
-        "youden_j": 0.35473684210526313
+        "youden_j": -0.07526315789473681
       },
       {
-        "fpr": 0.46,
+        "fpr": 0.925,
         "per_family": {
           "belief_manipulation": 0.7133333333333334,
           "coordination": 0.86,
@@ -19561,10 +19548,10 @@
         },
         "threshold": 0.32,
         "tpr": 0.8463157894736842,
-        "youden_j": 0.3863157894736842
+        "youden_j": -0.0786842105263158
       },
       {
-        "fpr": 0.28,
+        "fpr": 0.9,
         "per_family": {
           "belief_manipulation": 0.6733333333333333,
           "coordination": 0.85,
@@ -19575,10 +19562,10 @@
         },
         "threshold": 0.325,
         "tpr": 0.8126315789473684,
-        "youden_j": 0.5326315789473683
+        "youden_j": -0.08736842105263165
       },
       {
-        "fpr": 0.14,
+        "fpr": 0.825,
         "per_family": {
           "belief_manipulation": 0.6333333333333333,
           "coordination": 0.84,
@@ -19589,10 +19576,10 @@
         },
         "threshold": 0.33,
         "tpr": 0.7884210526315789,
-        "youden_j": 0.6484210526315789
+        "youden_j": -0.036578947368421044
       },
       {
-        "fpr": 0.1,
+        "fpr": 0.8083333333333333,
         "per_family": {
           "belief_manipulation": 0.6,
           "coordination": 0.82,
@@ -19603,10 +19590,10 @@
         },
         "threshold": 0.335,
         "tpr": 0.7694736842105263,
-        "youden_j": 0.6694736842105263
+        "youden_j": -0.03885964912280704
       },
       {
-        "fpr": 0.06,
+        "fpr": 0.7583333333333333,
         "per_family": {
           "belief_manipulation": 0.5533333333333333,
           "coordination": 0.75,
@@ -19617,10 +19604,10 @@
         },
         "threshold": 0.34,
         "tpr": 0.7378947368421053,
-        "youden_j": 0.6778947368421053
+        "youden_j": -0.020438596491228034
       },
       {
-        "fpr": 0.04,
+        "fpr": 0.7416666666666667,
         "per_family": {
           "belief_manipulation": 0.54,
           "coordination": 0.72,
@@ -19631,10 +19618,10 @@
         },
         "threshold": 0.345,
         "tpr": 0.7178947368421053,
-        "youden_j": 0.6778947368421052
+        "youden_j": -0.023771929824561444
       },
       {
-        "fpr": 0.04,
+        "fpr": 0.725,
         "per_family": {
           "belief_manipulation": 0.5333333333333333,
           "coordination": 0.71,
@@ -19645,10 +19632,10 @@
         },
         "threshold": 0.35,
         "tpr": 0.6989473684210527,
-        "youden_j": 0.6589473684210526
+        "youden_j": -0.026052631578947327
       },
       {
-        "fpr": 0.04,
+        "fpr": 0.7083333333333334,
         "per_family": {
           "belief_manipulation": 0.52,
           "coordination": 0.7,
@@ -19659,10 +19646,10 @@
         },
         "threshold": 0.355,
         "tpr": 0.6694736842105263,
-        "youden_j": 0.6294736842105263
+        "youden_j": -0.03885964912280704
       },
       {
-        "fpr": 0.04,
+        "fpr": 0.6916666666666667,
         "per_family": {
           "belief_manipulation": 0.5066666666666667,
           "coordination": 0.7,
@@ -19673,10 +19660,10 @@
         },
         "threshold": 0.36,
         "tpr": 0.6305263157894737,
-        "youden_j": 0.5905263157894737
+        "youden_j": -0.06114035087719294
       },
       {
-        "fpr": 0.04,
+        "fpr": 0.6333333333333333,
         "per_family": {
           "belief_manipulation": 0.5066666666666667,
           "coordination": 0.7,
@@ -19687,10 +19674,10 @@
         },
         "threshold": 0.365,
         "tpr": 0.6,
-        "youden_j": 0.5599999999999999
+        "youden_j": -0.033333333333333326
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.6,
         "per_family": {
           "belief_manipulation": 0.48,
           "coordination": 0.69,
@@ -19701,10 +19688,10 @@
         },
         "threshold": 0.37,
         "tpr": 0.5757894736842105,
-        "youden_j": 0.5757894736842105
+        "youden_j": -0.02421052631578946
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.575,
         "per_family": {
           "belief_manipulation": 0.47333333333333333,
           "coordination": 0.68,
@@ -19715,10 +19702,10 @@
         },
         "threshold": 0.375,
         "tpr": 0.5515789473684211,
-        "youden_j": 0.5515789473684211
+        "youden_j": -0.023421052631578898
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.5416666666666666,
         "per_family": {
           "belief_manipulation": 0.46,
           "coordination": 0.67,
@@ -19729,10 +19716,10 @@
         },
         "threshold": 0.38,
         "tpr": 0.5326315789473685,
-        "youden_j": 0.5326315789473685
+        "youden_j": -0.009035087719298174
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.5333333333333333,
         "per_family": {
           "belief_manipulation": 0.44,
           "coordination": 0.64,
@@ -19743,10 +19730,10 @@
         },
         "threshold": 0.385,
         "tpr": 0.511578947368421,
-        "youden_j": 0.511578947368421
+        "youden_j": -0.021754385964912304
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.525,
         "per_family": {
           "belief_manipulation": 0.43333333333333335,
           "coordination": 0.56,
@@ -19757,10 +19744,10 @@
         },
         "threshold": 0.39,
         "tpr": 0.48105263157894734,
-        "youden_j": 0.48105263157894734
+        "youden_j": -0.04394736842105268
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.5083333333333333,
         "per_family": {
           "belief_manipulation": 0.41333333333333333,
           "coordination": 0.5,
@@ -19771,10 +19758,10 @@
         },
         "threshold": 0.395,
         "tpr": 0.4515789473684211,
-        "youden_j": 0.4515789473684211
+        "youden_j": -0.056754385964912224
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.4,
         "per_family": {
           "belief_manipulation": 0.3466666666666667,
           "coordination": 0.19,
@@ -19785,10 +19772,10 @@
         },
         "threshold": 0.4,
         "tpr": 0.32842105263157895,
-        "youden_j": 0.32842105263157895
+        "youden_j": -0.07157894736842108
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.4,
         "per_family": {
           "belief_manipulation": 0.32,
           "coordination": 0.15,
@@ -19799,10 +19786,10 @@
         },
         "threshold": 0.405,
         "tpr": 0.30736842105263157,
-        "youden_j": 0.30736842105263157
+        "youden_j": -0.09263157894736845
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.4,
         "per_family": {
           "belief_manipulation": 0.32,
           "coordination": 0.15,
@@ -19813,10 +19800,10 @@
         },
         "threshold": 0.41,
         "tpr": 0.3,
-        "youden_j": 0.3
+        "youden_j": -0.10000000000000003
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.39166666666666666,
         "per_family": {
           "belief_manipulation": 0.32,
           "coordination": 0.12,
@@ -19827,10 +19814,10 @@
         },
         "threshold": 0.415,
         "tpr": 0.29157894736842105,
-        "youden_j": 0.29157894736842105
+        "youden_j": -0.10008771929824561
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.39166666666666666,
         "per_family": {
           "belief_manipulation": 0.31333333333333335,
           "coordination": 0.12,
@@ -19841,10 +19828,10 @@
         },
         "threshold": 0.42,
         "tpr": 0.2873684210526316,
-        "youden_j": 0.2873684210526316
+        "youden_j": -0.10429824561403506
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.39166666666666666,
         "per_family": {
           "belief_manipulation": 0.3,
           "coordination": 0.1,
@@ -19855,10 +19842,10 @@
         },
         "threshold": 0.425,
         "tpr": 0.28,
-        "youden_j": 0.28
+        "youden_j": -0.11166666666666664
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.39166666666666666,
         "per_family": {
           "belief_manipulation": 0.29333333333333333,
           "coordination": 0.1,
@@ -19869,10 +19856,10 @@
         },
         "threshold": 0.43,
         "tpr": 0.27473684210526317,
-        "youden_j": 0.27473684210526317
+        "youden_j": -0.1169298245614035
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.39166666666666666,
         "per_family": {
           "belief_manipulation": 0.2866666666666667,
           "coordination": 0.07,
@@ -19883,10 +19870,10 @@
         },
         "threshold": 0.435,
         "tpr": 0.26526315789473687,
-        "youden_j": 0.26526315789473687
+        "youden_j": -0.1264035087719298
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.39166666666666666,
         "per_family": {
           "belief_manipulation": 0.2866666666666667,
           "coordination": 0.07,
@@ -19897,10 +19884,10 @@
         },
         "threshold": 0.44,
         "tpr": 0.26,
-        "youden_j": 0.26
+        "youden_j": -0.13166666666666665
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.39166666666666666,
         "per_family": {
           "belief_manipulation": 0.28,
           "coordination": 0.07,
@@ -19911,10 +19898,10 @@
         },
         "threshold": 0.445,
         "tpr": 0.25157894736842107,
-        "youden_j": 0.25157894736842107
+        "youden_j": -0.1400877192982456
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.39166666666666666,
         "per_family": {
           "belief_manipulation": 0.26666666666666666,
           "coordination": 0.07,
@@ -19925,10 +19912,10 @@
         },
         "threshold": 0.45,
         "tpr": 0.24,
-        "youden_j": 0.24
+        "youden_j": -0.15166666666666667
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.38333333333333336,
         "per_family": {
           "belief_manipulation": 0.24,
           "coordination": 0.07,
@@ -19939,10 +19926,10 @@
         },
         "threshold": 0.455,
         "tpr": 0.2294736842105263,
-        "youden_j": 0.2294736842105263
+        "youden_j": -0.15385964912280706
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.36666666666666664,
         "per_family": {
           "belief_manipulation": 0.23333333333333334,
           "coordination": 0.07,
@@ -19953,10 +19940,10 @@
         },
         "threshold": 0.46,
         "tpr": 0.21368421052631578,
-        "youden_j": 0.21368421052631578
+        "youden_j": -0.15298245614035086
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.36666666666666664,
         "per_family": {
           "belief_manipulation": 0.19333333333333333,
           "coordination": 0.07,
@@ -19967,10 +19954,10 @@
         },
         "threshold": 0.465,
         "tpr": 0.19789473684210526,
-        "youden_j": 0.19789473684210526
+        "youden_j": -0.16877192982456138
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.36666666666666664,
         "per_family": {
           "belief_manipulation": 0.18666666666666668,
           "coordination": 0.07,
@@ -19981,10 +19968,10 @@
         },
         "threshold": 0.47,
         "tpr": 0.19052631578947368,
-        "youden_j": 0.19052631578947368
+        "youden_j": -0.17614035087719296
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.275,
         "per_family": {
           "belief_manipulation": 0.18,
           "coordination": 0.06,
@@ -19995,10 +19982,10 @@
         },
         "threshold": 0.475,
         "tpr": 0.17684210526315788,
-        "youden_j": 0.17684210526315788
+        "youden_j": -0.09815789473684214
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.275,
         "per_family": {
           "belief_manipulation": 0.17333333333333334,
           "coordination": 0.05,
@@ -20009,10 +19996,10 @@
         },
         "threshold": 0.48,
         "tpr": 0.16736842105263158,
-        "youden_j": 0.16736842105263158
+        "youden_j": -0.10763157894736844
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.275,
         "per_family": {
           "belief_manipulation": 0.17333333333333334,
           "coordination": 0.05,
@@ -20023,10 +20010,10 @@
         },
         "threshold": 0.485,
         "tpr": 0.16210526315789472,
-        "youden_j": 0.16210526315789472
+        "youden_j": -0.1128947368421053
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.275,
         "per_family": {
           "belief_manipulation": 0.16666666666666666,
           "coordination": 0.04,
@@ -20037,10 +20024,10 @@
         },
         "threshold": 0.49,
         "tpr": 0.1568421052631579,
-        "youden_j": 0.1568421052631579
+        "youden_j": -0.11815789473684213
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.275,
         "per_family": {
           "belief_manipulation": 0.16666666666666666,
           "coordination": 0.04,
@@ -20051,10 +20038,10 @@
         },
         "threshold": 0.495,
         "tpr": 0.15263157894736842,
-        "youden_j": 0.15263157894736842
+        "youden_j": -0.1223684210526316
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.225,
         "per_family": {
           "belief_manipulation": 0.16666666666666666,
           "coordination": 0.04,
@@ -20065,10 +20052,10 @@
         },
         "threshold": 0.5,
         "tpr": 0.13473684210526315,
-        "youden_j": 0.13473684210526315
+        "youden_j": -0.09026315789473685
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.21666666666666667,
         "per_family": {
           "belief_manipulation": 0.14666666666666667,
           "coordination": 0.04,
@@ -20079,10 +20066,10 @@
         },
         "threshold": 0.505,
         "tpr": 0.12736842105263158,
-        "youden_j": 0.12736842105263158
+        "youden_j": -0.0892982456140351
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.21666666666666667,
         "per_family": {
           "belief_manipulation": 0.13333333333333333,
           "coordination": 0.03,
@@ -20093,10 +20080,10 @@
         },
         "threshold": 0.51,
         "tpr": 0.11894736842105263,
-        "youden_j": 0.11894736842105263
+        "youden_j": -0.09771929824561404
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.20833333333333334,
         "per_family": {
           "belief_manipulation": 0.13333333333333333,
           "coordination": 0.02,
@@ -20107,10 +20094,10 @@
         },
         "threshold": 0.515,
         "tpr": 0.11368421052631579,
-        "youden_j": 0.11368421052631579
+        "youden_j": -0.09464912280701755
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.20833333333333334,
         "per_family": {
           "belief_manipulation": 0.12666666666666668,
           "coordination": 0.02,
@@ -20121,10 +20108,10 @@
         },
         "threshold": 0.52,
         "tpr": 0.10842105263157895,
-        "youden_j": 0.10842105263157895
+        "youden_j": -0.0999122807017544
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.2,
         "per_family": {
           "belief_manipulation": 0.06666666666666667,
           "coordination": 0.02,
@@ -20135,10 +20122,10 @@
         },
         "threshold": 0.525,
         "tpr": 0.09157894736842105,
-        "youden_j": 0.09157894736842105
+        "youden_j": -0.10842105263157896
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.19166666666666668,
         "per_family": {
           "belief_manipulation": 0.04666666666666667,
           "coordination": 0.02,
@@ -20149,10 +20136,10 @@
         },
         "threshold": 0.53,
         "tpr": 0.08105263157894736,
-        "youden_j": 0.08105263157894736
+        "youden_j": -0.11061403508771932
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.19166666666666668,
         "per_family": {
           "belief_manipulation": 0.03333333333333333,
           "coordination": 0.02,
@@ -20163,10 +20150,10 @@
         },
         "threshold": 0.535,
         "tpr": 0.07789473684210527,
-        "youden_j": 0.07789473684210527
+        "youden_j": -0.11377192982456141
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.19166666666666668,
         "per_family": {
           "belief_manipulation": 0.02666666666666667,
           "coordination": 0.02,
@@ -20177,10 +20164,10 @@
         },
         "threshold": 0.54,
         "tpr": 0.07052631578947369,
-        "youden_j": 0.07052631578947369
+        "youden_j": -0.12114035087719299
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.175,
         "per_family": {
           "belief_manipulation": 0.02,
           "coordination": 0.02,
@@ -20191,10 +20178,10 @@
         },
         "threshold": 0.545,
         "tpr": 0.06736842105263158,
-        "youden_j": 0.06736842105263158
+        "youden_j": -0.10763157894736841
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.125,
         "per_family": {
           "belief_manipulation": 0.02,
           "coordination": 0.02,
@@ -20205,10 +20192,10 @@
         },
         "threshold": 0.55,
         "tpr": 0.06631578947368422,
-        "youden_j": 0.06631578947368422
+        "youden_j": -0.05868421052631578
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.06666666666666667,
         "per_family": {
           "belief_manipulation": 0.02,
           "coordination": 0.01,
@@ -20219,10 +20206,10 @@
         },
         "threshold": 0.555,
         "tpr": 0.06,
-        "youden_j": 0.06
+        "youden_j": -0.006666666666666668
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.03333333333333333,
         "per_family": {
           "belief_manipulation": 0.02,
           "coordination": 0.01,
@@ -20233,10 +20220,10 @@
         },
         "threshold": 0.56,
         "tpr": 0.045263157894736845,
-        "youden_j": 0.045263157894736845
+        "youden_j": 0.011929824561403513
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.025,
         "per_family": {
           "belief_manipulation": 0.02,
           "coordination": 0.0,
@@ -20247,10 +20234,10 @@
         },
         "threshold": 0.565,
         "tpr": 0.03894736842105263,
-        "youden_j": 0.03894736842105263
+        "youden_j": 0.013947368421052632
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.025,
         "per_family": {
           "belief_manipulation": 0.02,
           "coordination": 0.0,
@@ -20261,10 +20248,10 @@
         },
         "threshold": 0.57,
         "tpr": 0.03368421052631579,
-        "youden_j": 0.03368421052631579
+        "youden_j": 0.008684210526315787
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.025,
         "per_family": {
           "belief_manipulation": 0.02,
           "coordination": 0.0,
@@ -20275,10 +20262,10 @@
         },
         "threshold": 0.575,
         "tpr": 0.031578947368421054,
-        "youden_j": 0.031578947368421054
+        "youden_j": 0.006578947368421052
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.025,
         "per_family": {
           "belief_manipulation": 0.02,
           "coordination": 0.0,
@@ -20289,10 +20276,10 @@
         },
         "threshold": 0.58,
         "tpr": 0.02736842105263158,
-        "youden_j": 0.02736842105263158
+        "youden_j": 0.0023684210526315787
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.025,
         "per_family": {
           "belief_manipulation": 0.02,
           "coordination": 0.0,
@@ -20303,10 +20290,10 @@
         },
         "threshold": 0.585,
         "tpr": 0.02736842105263158,
-        "youden_j": 0.02736842105263158
+        "youden_j": 0.0023684210526315787
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.025,
         "per_family": {
           "belief_manipulation": 0.02,
           "coordination": 0.0,
@@ -20317,10 +20304,10 @@
         },
         "threshold": 0.59,
         "tpr": 0.02736842105263158,
-        "youden_j": 0.02736842105263158
+        "youden_j": 0.0023684210526315787
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.025,
         "per_family": {
           "belief_manipulation": 0.02,
           "coordination": 0.0,
@@ -20331,10 +20318,10 @@
         },
         "threshold": 0.595,
         "tpr": 0.02631578947368421,
-        "youden_j": 0.02631578947368421
+        "youden_j": 0.0013157894736842077
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.025,
         "per_family": {
           "belief_manipulation": 0.02,
           "coordination": 0.0,
@@ -20345,10 +20332,10 @@
         },
         "threshold": 0.6,
         "tpr": 0.023157894736842106,
-        "youden_j": 0.023157894736842106
+        "youden_j": -0.001842105263157895
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.025,
         "per_family": {
           "belief_manipulation": 0.02,
           "coordination": 0.0,
@@ -20359,10 +20346,10 @@
         },
         "threshold": 0.605,
         "tpr": 0.021052631578947368,
-        "youden_j": 0.021052631578947368
+        "youden_j": -0.0039473684210526334
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.025,
         "per_family": {
           "belief_manipulation": 0.02,
           "coordination": 0.0,
@@ -20373,10 +20360,10 @@
         },
         "threshold": 0.61,
         "tpr": 0.02,
-        "youden_j": 0.02
+        "youden_j": -0.005000000000000001
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.025,
         "per_family": {
           "belief_manipulation": 0.02,
           "coordination": 0.0,
@@ -20387,10 +20374,10 @@
         },
         "threshold": 0.615,
         "tpr": 0.018947368421052633,
-        "youden_j": 0.018947368421052633
+        "youden_j": -0.0060526315789473685
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.025,
         "per_family": {
           "belief_manipulation": 0.02,
           "coordination": 0.0,
@@ -20401,10 +20388,10 @@
         },
         "threshold": 0.62,
         "tpr": 0.018947368421052633,
-        "youden_j": 0.018947368421052633
+        "youden_j": -0.0060526315789473685
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.025,
         "per_family": {
           "belief_manipulation": 0.02,
           "coordination": 0.0,
@@ -20415,10 +20402,10 @@
         },
         "threshold": 0.625,
         "tpr": 0.017894736842105262,
-        "youden_j": 0.017894736842105262
+        "youden_j": -0.0071052631578947395
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.025,
         "per_family": {
           "belief_manipulation": 0.02,
           "coordination": 0.0,
@@ -20429,10 +20416,10 @@
         },
         "threshold": 0.63,
         "tpr": 0.017894736842105262,
-        "youden_j": 0.017894736842105262
+        "youden_j": -0.0071052631578947395
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.025,
         "per_family": {
           "belief_manipulation": 0.02,
           "coordination": 0.0,
@@ -20443,10 +20430,10 @@
         },
         "threshold": 0.635,
         "tpr": 0.017894736842105262,
-        "youden_j": 0.017894736842105262
+        "youden_j": -0.0071052631578947395
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.025,
         "per_family": {
           "belief_manipulation": 0.02,
           "coordination": 0.0,
@@ -20457,10 +20444,10 @@
         },
         "threshold": 0.64,
         "tpr": 0.017894736842105262,
-        "youden_j": 0.017894736842105262
+        "youden_j": -0.0071052631578947395
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.025,
         "per_family": {
           "belief_manipulation": 0.02,
           "coordination": 0.0,
@@ -20471,10 +20458,10 @@
         },
         "threshold": 0.645,
         "tpr": 0.017894736842105262,
-        "youden_j": 0.017894736842105262
+        "youden_j": -0.0071052631578947395
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.025,
         "per_family": {
           "belief_manipulation": 0.02,
           "coordination": 0.0,
@@ -20485,10 +20472,10 @@
         },
         "threshold": 0.65,
         "tpr": 0.017894736842105262,
-        "youden_j": 0.017894736842105262
+        "youden_j": -0.0071052631578947395
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.025,
         "per_family": {
           "belief_manipulation": 0.02,
           "coordination": 0.0,
@@ -20499,10 +20486,10 @@
         },
         "threshold": 0.655,
         "tpr": 0.017894736842105262,
-        "youden_j": 0.017894736842105262
+        "youden_j": -0.0071052631578947395
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.025,
         "per_family": {
           "belief_manipulation": 0.02,
           "coordination": 0.0,
@@ -20513,10 +20500,10 @@
         },
         "threshold": 0.66,
         "tpr": 0.017894736842105262,
-        "youden_j": 0.017894736842105262
+        "youden_j": -0.0071052631578947395
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.025,
         "per_family": {
           "belief_manipulation": 0.02,
           "coordination": 0.0,
@@ -20527,10 +20514,10 @@
         },
         "threshold": 0.665,
         "tpr": 0.017894736842105262,
-        "youden_j": 0.017894736842105262
+        "youden_j": -0.0071052631578947395
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.025,
         "per_family": {
           "belief_manipulation": 0.02,
           "coordination": 0.0,
@@ -20541,10 +20528,10 @@
         },
         "threshold": 0.67,
         "tpr": 0.017894736842105262,
-        "youden_j": 0.017894736842105262
+        "youden_j": -0.0071052631578947395
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.025,
         "per_family": {
           "belief_manipulation": 0.02,
           "coordination": 0.0,
@@ -20555,10 +20542,10 @@
         },
         "threshold": 0.675,
         "tpr": 0.017894736842105262,
-        "youden_j": 0.017894736842105262
+        "youden_j": -0.0071052631578947395
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.025,
         "per_family": {
           "belief_manipulation": 0.02,
           "coordination": 0.0,
@@ -20569,10 +20556,10 @@
         },
         "threshold": 0.68,
         "tpr": 0.017894736842105262,
-        "youden_j": 0.017894736842105262
+        "youden_j": -0.0071052631578947395
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.025,
         "per_family": {
           "belief_manipulation": 0.02,
           "coordination": 0.0,
@@ -20583,10 +20570,10 @@
         },
         "threshold": 0.685,
         "tpr": 0.017894736842105262,
-        "youden_j": 0.017894736842105262
+        "youden_j": -0.0071052631578947395
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.025,
         "per_family": {
           "belief_manipulation": 0.02,
           "coordination": 0.0,
@@ -20597,10 +20584,10 @@
         },
         "threshold": 0.69,
         "tpr": 0.017894736842105262,
-        "youden_j": 0.017894736842105262
+        "youden_j": -0.0071052631578947395
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.025,
         "per_family": {
           "belief_manipulation": 0.02,
           "coordination": 0.0,
@@ -20611,10 +20598,10 @@
         },
         "threshold": 0.695,
         "tpr": 0.017894736842105262,
-        "youden_j": 0.017894736842105262
+        "youden_j": -0.0071052631578947395
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.025,
         "per_family": {
           "belief_manipulation": 0.02,
           "coordination": 0.0,
@@ -20625,10 +20612,10 @@
         },
         "threshold": 0.7,
         "tpr": 0.017894736842105262,
-        "youden_j": 0.017894736842105262
+        "youden_j": -0.0071052631578947395
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.025,
         "per_family": {
           "belief_manipulation": 0.02,
           "coordination": 0.0,
@@ -20639,10 +20626,10 @@
         },
         "threshold": 0.705,
         "tpr": 0.017894736842105262,
-        "youden_j": 0.017894736842105262
+        "youden_j": -0.0071052631578947395
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.025,
         "per_family": {
           "belief_manipulation": 0.02,
           "coordination": 0.0,
@@ -20653,10 +20640,10 @@
         },
         "threshold": 0.71,
         "tpr": 0.017894736842105262,
-        "youden_j": 0.017894736842105262
+        "youden_j": -0.0071052631578947395
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.025,
         "per_family": {
           "belief_manipulation": 0.02,
           "coordination": 0.0,
@@ -20667,10 +20654,10 @@
         },
         "threshold": 0.715,
         "tpr": 0.017894736842105262,
-        "youden_j": 0.017894736842105262
+        "youden_j": -0.0071052631578947395
       },
       {
-        "fpr": 0.0,
+        "fpr": 0.025,
         "per_family": {
           "belief_manipulation": 0.02,
           "coordination": 0.0,
@@ -20681,23 +20668,23 @@
         },
         "threshold": 0.72,
         "tpr": 0.017894736842105262,
-        "youden_j": 0.017894736842105262
+        "youden_j": -0.0071052631578947395
       }
     ],
     "shipped_threshold": 0.5,
     "youden_optimal": {
-      "fpr": 0.06,
+      "fpr": 0.025,
       "per_family": {
-        "belief_manipulation": 0.5533333333333333,
-        "coordination": 0.75,
-        "direct_injection": 0.715,
-        "indirect_injection": 0.895,
-        "nested_injection": 0.72,
-        "trust_exploitation": 0.745
+        "belief_manipulation": 0.02,
+        "coordination": 0.0,
+        "direct_injection": 0.145,
+        "indirect_injection": 0.015,
+        "nested_injection": 0.0,
+        "trust_exploitation": 0.01
       },
-      "threshold": 0.34,
-      "tpr": 0.7378947368421053,
-      "youden_j": 0.6778947368421053
+      "threshold": 0.565,
+      "tpr": 0.03894736842105263,
+      "youden_j": 0.013947368421052632
     }
   }
 }

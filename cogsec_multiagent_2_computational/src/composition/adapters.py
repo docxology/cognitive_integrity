@@ -15,6 +15,7 @@ import math
 import re
 import time
 from collections import Counter
+from .calibration import DEFAULT_THRESHOLD
 from typing import Any, Dict, List, Optional
 
 from composition.pipeline import DefenseModule
@@ -57,10 +58,10 @@ class FirewallAdapter(DefenseModule):
     def name(self) -> str:
         return "CognitiveFirewall"
 
-    def __init__(self, *, threshold: float = 0.5) -> None:
+    def __init__(self, *, threshold: float | None = None) -> None:
         from core.firewall import EnhancedCognitiveFirewall
 
-        self._threshold = threshold
+        self._threshold = DEFAULT_THRESHOLD if threshold is None else threshold
         self._firewall = EnhancedCognitiveFirewall(use_semantic=True)
 
     def evaluate(
@@ -111,12 +112,12 @@ class DetectionAdapter(DefenseModule):
     def __init__(
         self,
         *,
-        threshold: float = 0.5,
+        threshold: float | None = None,
         baseline_mean: float = 200,
         baseline_std: float = 150,
         feature_weights: Optional[Dict[str, float]] = None,
     ) -> None:
-        self._threshold = threshold
+        self._threshold = DEFAULT_THRESHOLD if threshold is None else threshold
         self._baseline_mean = baseline_mean
         self._baseline_std = baseline_std
         # Default equal-weight across the four features.
@@ -243,12 +244,12 @@ class TripwireAdapter(DefenseModule):
     def __init__(
         self,
         *,
-        threshold: float = 0.5,
+        threshold: float | None = None,
         shift_indicators: Optional[List[str]] = None,
     ) -> None:
         from core.tripwire import CognitiveTripwire
 
-        self._threshold = threshold
+        self._threshold = DEFAULT_THRESHOLD if threshold is None else threshold
         # Use caller-supplied list or fall back to the class default.
         self._SHIFT_INDICATORS: List[str] = (
             shift_indicators if shift_indicators is not None
@@ -342,7 +343,7 @@ class TrustAdapter(DefenseModule):
     def __init__(
         self,
         *,
-        threshold: float = 0.5,
+        threshold: float | None = None,
         authority_pattern: Optional[str] = None,
         urgency_pattern: Optional[str] = None,
         delegation_pattern: Optional[str] = None,
@@ -350,7 +351,7 @@ class TrustAdapter(DefenseModule):
     ) -> None:
         from core.trust import TrustCalculus
 
-        self._threshold = threshold
+        self._threshold = DEFAULT_THRESHOLD if threshold is None else threshold
         self._match_weight = match_weight
         self._AUTHORITY_RE = re.compile(
             authority_pattern or self._DEFAULT_AUTHORITY_PATTERN, re.IGNORECASE
@@ -421,13 +422,13 @@ class ConsensusAdapter(DefenseModule):
     def __init__(
         self,
         *,
-        threshold: float = 0.5,
+        threshold: float | None = None,
         n_agents: int = 7,
         sensitivity_profiles: Optional[List[float]] = None,
     ) -> None:
         from core.consensus import ByzantineConsensus
 
-        self._threshold = threshold
+        self._threshold = DEFAULT_THRESHOLD if threshold is None else threshold
         self._SENSITIVITY_PROFILES: List[float] = (
             sensitivity_profiles if sensitivity_profiles is not None
             else list(self._DEFAULT_SENSITIVITY_PROFILES)
@@ -526,10 +527,10 @@ class ProvenanceAdapter(DefenseModule):
     def name(self) -> str:
         return "ProvenanceAnalysis"
 
-    def __init__(self, *, threshold: float = 0.5) -> None:
+    def __init__(self, *, threshold: float | None = None) -> None:
         from core.provenance import ProvenanceChain
 
-        self._threshold = threshold
+        self._threshold = DEFAULT_THRESHOLD if threshold is None else threshold
         self._provenance = ProvenanceChain()
 
     def evaluate(
@@ -586,10 +587,10 @@ class SandboxAdapter(DefenseModule):
     def name(self) -> str:
         return "SandboxBypassDetector"
 
-    def __init__(self, *, threshold: float = 0.5) -> None:
+    def __init__(self, *, threshold: float | None = None) -> None:
         from core.sandbox import SandboxManager
 
-        self._threshold = threshold
+        self._threshold = DEFAULT_THRESHOLD if threshold is None else threshold
         self._sandbox = SandboxManager()
 
     def evaluate(
@@ -652,10 +653,10 @@ class InvariantsAdapter(DefenseModule):
     def name(self) -> str:
         return "InvariantViolationDetector"
 
-    def __init__(self, *, threshold: float = 0.5) -> None:
+    def __init__(self, *, threshold: float | None = None) -> None:
         from core.invariants import InvariantChecker
 
-        self._threshold = threshold
+        self._threshold = DEFAULT_THRESHOLD if threshold is None else threshold
         self._checker = InvariantChecker()
 
     def evaluate(

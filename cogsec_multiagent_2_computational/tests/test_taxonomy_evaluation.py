@@ -115,31 +115,48 @@ def test_modules_the_corpus_never_exercises_are_visible(payload) -> None:
         assert payload["cells"][component]["per_family"]["overall"] == 0.0
 
 
-def test_the_shipped_threshold_sits_above_every_benign_score(payload) -> None:
-    """The sweep's reason for existing, pinned as a fact about the data.
+def test_the_benign_ceiling_reaches_the_top_of_the_scale(payload) -> None:
+    """The correction to an earlier, wrong version of this test.
 
-    Adapters decide ``score > 0.5``. No benign message in the set scores above
-    0.367, so everything between those two numbers is detection discarded for
-    no false-positive benefit. If a future change moves either number, the
-    paper's calibration argument needs revisiting and this fails first.
+    It used to assert that no benign message scores above 0.367 and therefore
+    that the 0.5 threshold discards detection for free. Both halves were an
+    artifact of the negative set: ``ablation.runner.BENIGN_MESSAGES`` is 50
+    plainly-innocuous strings. Measured against ``BenignCorpus`` -- the designed
+    negative arm, half of it a ``hard`` stratum carrying attack-adjacent
+    vocabulary -- benign text reaches 1.000, the top of the scale.
+
+    There is no headroom above the benign ceiling, because the ceiling is the
+    ceiling.
     """
     sweep = payload["threshold_sweep"]
-    assert sweep["benign_score_max"] < sweep["shipped_threshold"], (
-        "the benign ceiling has risen above the operating threshold; the "
-        "calibration argument no longer holds as written"
+    assert sweep["benign_score_max"] > sweep["shipped_threshold"], (
+        "benign scores no longer exceed the operating threshold; if the negative "
+        "arm changed, every false-positive number in the papers needs re-deriving"
     )
 
 
-def test_a_better_operating_point_exists_at_no_false_positive_cost(payload) -> None:
-    """Strictly more detection at the same zero FPR, or the claim is wrong."""
-    sweep = payload["threshold_sweep"]
-    shipped = next(
-        p for p in sweep["grid"] if p["threshold"] == pytest.approx(sweep["shipped_threshold"])
+def test_no_threshold_separates_attacks_from_hard_benign_text(payload) -> None:
+    """The finding, stated as a test.
+
+    The earlier version asserted the opposite -- that a strictly better
+    operating point exists at zero false positives. Against the easy negative
+    set it appeared to; against the designed one it does not exist at any
+    threshold. Youden's J peaks at 0.043, which is close enough to zero that
+    the detector is barely distinguishable from a coin weighted to say "no".
+
+    If a future change to the detectors makes this fail, that is a genuine
+    improvement and this test should be rewritten to pin the new separation.
+    """
+    grid = payload["threshold_sweep"]["grid"]
+    best_j = max(point["youden_j"] for point in grid)
+    assert best_j < 0.10, (
+        f"peak Youden J is now {best_j:.3f}; the detectors have gained real "
+        f"discriminative power and the papers' framing needs updating"
     )
-    clean = sweep["best_at_zero_fpr"]
-    assert clean is not None
-    assert clean["fpr"] == 0.0 == shipped["fpr"]
-    assert clean["tpr"] > shipped["tpr"]
+    below = [p for p in grid if p["threshold"] < 0.5]
+    assert all(p["youden_j"] < 0.10 for p in below), (
+        "a low-threshold operating point now separates the classes"
+    )
 
 
 def test_the_sweep_is_monotone(payload) -> None:
