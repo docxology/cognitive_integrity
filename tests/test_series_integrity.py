@@ -622,6 +622,69 @@ def test_every_artifact_the_ledger_reads_is_tracked_by_git():
         f"git add -f each of: {missing}"
     )
 
+
+def test_artifact_provenance_rejects_an_empty_sidecar(tmp_path):
+    """A sidecar that exists but declares nothing satisfied the old test."""
+    tree = _build_tree(
+        tmp_path / "emptyside",
+        part_text={"1": CEILING_OK,
+                   "2": CEILING_OK + "\nData from `output/data/listy.json`.\n",
+                   "3": CEILING_OK},
+        bibs={},
+    )
+    module = _load_module(tree)
+    (module.DATA_DIR / "listy.json").write_text(json.dumps([{"x": 1}]), encoding="utf-8")
+    (module.DATA_DIR / "listy.provenance.json").write_text("{}", encoding="utf-8")
+    result = module.CHECKS["artifact-provenance"]()
+    assert not result.ok
+    assert any("declares no provenance" in p.message for p in result.problems)
+
+
+def test_artifact_provenance_accepts_a_sidecar_that_declares(tmp_path):
+    tree = _build_tree(
+        tmp_path / "goodside",
+        part_text={"1": CEILING_OK,
+                   "2": CEILING_OK + "\nData from `output/data/listy.json`.\n",
+                   "3": CEILING_OK},
+        bibs={},
+    )
+    module = _load_module(tree)
+    (module.DATA_DIR / "listy.json").write_text(json.dumps([{"x": 1}]), encoding="utf-8")
+    (module.DATA_DIR / "listy.provenance.json").write_text(
+        json.dumps({"data_origin": "real_pipeline"}), encoding="utf-8"
+    )
+    assert module.CHECKS["artifact-provenance"]().ok
+
+
+def test_artifact_provenance_sees_a_bare_filename_citation(tmp_path):
+    """Prose cites files by name as well as by path."""
+    tree = _build_tree(
+        tmp_path / "barename",
+        part_text={"1": CEILING_OK,
+                   "2": CEILING_OK + "\nSee the `mystery.json` results.\n",
+                   "3": CEILING_OK},
+        bibs={},
+    )
+    module = _load_module(tree)
+    (module.DATA_DIR / "mystery.json").write_text(json.dumps({"v": 1}), encoding="utf-8")
+    result = module.CHECKS["artifact-provenance"]()
+    assert not result.ok
+    assert any("declares no provenance" in p.message for p in result.problems)
+
+
+def test_artifact_provenance_ignores_a_sentence_disclaiming_an_artifact(tmp_path):
+    """Naming a file to warn readers off it is the honest act, not a citation."""
+    tree = _build_tree(
+        tmp_path / "disclaim",
+        part_text={"1": CEILING_OK,
+                   "2": CEILING_OK + "\nNote that `mystery.json` is a placeholder, not a source.\n",
+                   "3": CEILING_OK},
+        bibs={},
+    )
+    module = _load_module(tree)
+    (module.DATA_DIR / "mystery.json").write_text(json.dumps({"v": 1}), encoding="utf-8")
+    assert module.CHECKS["artifact-provenance"]().ok
+
 # ---------------------------------------------------------------------------
 # Structural invariants of the registry itself
 # ---------------------------------------------------------------------------

@@ -38,6 +38,12 @@ BODY_FILES = (
     "S02_eusocial_cogsec.md",
 )
 
+#: Whatever ends a result's own neighbourhood: the next result, or a heading.
+_NEXT_BLOCK = re.compile(
+    r"\\begin\{(?:theorem|lemma|corollary|definition|proposition)\}|^#{1,6}\s",
+    re.MULTILINE,
+)
+
 _RESULT = re.compile(
     r"\\begin\{(theorem|lemma|corollary)\}(?:\[([^\]]*)\])?\s*\n\\label\{([^}]+)\}"
 )
@@ -51,10 +57,21 @@ def _results() -> dict[str, tuple[str, str, str, bool]]:
         for match in _RESULT.finditer(text):
             kind, title, label = match.group(1), match.group(2) or "", match.group(3)
             end = text.find(f"\\end{{{kind}}}", match.end())
-            # An inline proof follows the environment closely; 400 characters is
-            # generous enough for a blank line and a short remark in between,
-            # and tight enough that it cannot reach the *next* result's proof.
-            tail = text[end : end + 400] if end != -1 else ""
+            # The window must stop at whatever comes next, not at a character
+            # count. A fixed 400-character span reached past an unproved result
+            # into the following theorem's proof and credited the wrong one:
+            # cor:sample-complexity has no proof, but the KL-AUC theorem two
+            # paragraphs later does.
+            if end == -1:
+                found[label] = (kind, title, name, False)
+                continue
+            rest = text[end:]
+            boundary = len(rest)
+            for stop in _NEXT_BLOCK.finditer(rest):
+                if stop.start() > 0:
+                    boundary = stop.start()
+                    break
+            tail = rest[:boundary]
             found[label] = (kind, title, name, "\\begin{proof}" in tail)
     return found
 

@@ -643,7 +643,12 @@ def check_math_hygiene() -> CheckResult:
 
 #: A manuscript reference to a shipped data artifact, e.g.
 #: ``output/data/scalability_results.json``.
-_CITED_ARTIFACT = re.compile(r"output/data/([A-Za-z0-9_]+\.json)")
+# Both citation forms appear: the full path, and a bare filename in prose
+#: ("the scalability_results.json file"). Only matching the path form let a
+#: bare-filename citation of an undeclared artifact through.
+_CITED_ARTIFACT = re.compile(
+    r"(?:output/data/|`)([A-Za-z0-9_]+(?:\.provenance)?\.json)"
+)
 
 #: ``data_origin`` values that mark a file as a *placeholder*. The paper draws
 #: honest distinctions between measured, parametric and design-model results, so
@@ -685,6 +690,20 @@ def check_artifact_provenance() -> CheckResult:
             for number, line in iter_lines(path):
                 for match in _CITED_ARTIFACT.finditer(line):
                     name = match.group(1)
+                    # A sentence warning readers *off* an artifact names it too.
+                    # Requiring provenance of a file the prose is disclaiming
+                    # inverts the check: the disclaimer is the honest act.
+                    lowered = line.lower()
+                    if any(
+                        phrase in lowered
+                        for phrase in (
+                            "placeholder",
+                            "not a source",
+                            "must not",
+                            "do not use",
+                        )
+                    ):
+                        continue
                     result.scanned += 1
                     artifact = DATA_DIR / name
                     if not artifact.is_file():
@@ -708,8 +727,30 @@ def check_artifact_provenance() -> CheckResult:
                         continue
                     if name in _STRUCTURAL_ARTIFACTS:
                         continue
-                    # A list-shaped artifact carries provenance in a sidecar.
-                    if (DATA_DIR / f"{artifact.stem}.provenance.json").is_file():
+                    # A list-shaped artifact carries provenance in a sidecar, but
+                    # the sidecar has to say something: an empty file, or one
+                    # that declares nothing, satisfied the old existence test.
+                    sidecar = DATA_DIR / f"{artifact.stem}.provenance.json"
+                    if sidecar.is_file():
+                        try:
+                            side = json.loads(sidecar.read_text(encoding="utf-8"))
+                        except json.JSONDecodeError:
+                            side = None
+                        if isinstance(side, dict) and any(
+                            side.get(key) for key in _PROVENANCE_KEYS
+                        ):
+                            continue
+                        result.problems.append(
+                            Problem(
+                                result.name,
+                                rel(path),
+                                number,
+                                f"cites {name}, whose sidecar {sidecar.name} declares no "
+                                f"provenance ({' / '.join(_PROVENANCE_KEYS)}). An empty "
+                                f"sidecar satisfied the file-exists test while saying "
+                                f"nothing at all.",
+                            )
+                        )
                         continue
                     declared = None
                     if isinstance(payload, dict):

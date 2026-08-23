@@ -76,6 +76,37 @@ Program: CITATION.cff schema-valid.
 
 ---
 
+## Round 11 (2026-08-23) — triple-check, auto-injection, gate mutation testing
+
+A second seven-lens review, this one adversarially re-verifying Round 10's own fixes and
+mutation-testing the gates it added. 89 of 96 findings survived verification, 34 at HIGH.
+Most of what it found in the gates was self-inflicted, which is the point of running it.
+
+**Auto-injection now exists for the whole series.** `scripts/series_ledger.py` derives 32
+variables from the artifacts (nothing stored), `scripts/inject_series_values.py` writes them
+back, and `scripts/collect_test_inventory.py` derives the test count that had gone stale
+three times. Gated prose sites went from 95 to 175. Two variables derive structurally rather
+than from a field: the domain count from Part 3's section files, and the ablation denominator
+from the measurement resolution.
+
+**Gates that could not fail, all fixed:** `parametric_ceiling_high` captured a literal 100;
+`truncation` read only a file's last line; the proof-status test-of-the-test never invoked
+the audit; the proof-detection window reached into the *next* theorem's proof; seven cited
+artifacts were untracked so the gate was red on any clean clone; the provenance check
+accepted an empty sidecar and missed bare-filename citations.
+
+### Still open after Round 11
+
+| ID | What is left |
+|----|--------------|
+| S08 six-way tables | Resolved by disclosure, not measurement. Regenerating them needs a real six-way run; retiring them means dropping to the artifact's four categories. Author call. |
+| R11-02, R11-03 | S06's Python integration example cannot construct a firewall and its rejection branch fails open; S09 is normatively wrong about the module it specifies. Both need the code read against the spec, then one of the two changed. |
+| R11-04 | `tau_1 = 0.7` is published in eight places as "the Part 2 implementation" but no config object holds (0.7, 0.5). Either the default changes or the claim does. |
+| R11-05 | The bibliography gate's title-disagreement branch is unreachable by construction, and three DOIs differ across bibs. |
+| P2AI-06..09 | The injector writes 15 labels no registry claim inspects; §05e's Bayesian numbers have no artifact to pin against; 15 ledger variables are derived but ungated. |
+| figures F01 | `fig:detection-performance` plots per-architecture means under per-mechanism labels. Fixing it means choosing which quantity the panel is meant to show. |
+| N9, N10, BIB-11, H1--H3, H5 | Carried forward from Round 10: symbol overloading, uncited bibliography entries, the author-math backlog. |
+
 ## Open backlog (by severity)
 
 ### Author decisions surfaced by Round 10

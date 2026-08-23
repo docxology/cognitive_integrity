@@ -56,6 +56,7 @@ Separate proofs are also given for the supporting lemmas and for the corollaries
 - Drift Detection Sample Complexity, \cref{cor:drift-sample} (05_defense\_mechanisms.md)
 - Consensus Attack Resistance, \cref{cor:consensus-resistance} (05_defense\_mechanisms.md)
 - Optimal AUC Bound, \cref{cor:optimal-auc} (06_detection\_methods.md)
+- Sample Complexity for Target Accuracy, \cref{cor:sample-complexity} (06_detection\_methods.md)
 - Empirical Security Bound, \cref{cor:empirical-security} (07_formal\_verification.md)
 - Layered Defense Generalization, \cref{cor:n-layer-bound} (07_formal\_verification.md)
 
