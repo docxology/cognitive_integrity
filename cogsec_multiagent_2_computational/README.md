@@ -168,7 +168,7 @@ Comprehensive technical documentation is available in [`docs/`](docs/):
 
 | Evaluation Mode | Detection Rate | Notes |
 | :--- | :---: | :--- |
-| Multi-seed pipeline (N=30, Claude Code) | 44.7% mean | CV=0.097 |
+| Multi-seed pipeline (30 seeds x 100, Claude Code) | 44.8% mean | CV=0.097; FPR 25.8% |
 | After 5 rounds of adversarial training | 48.1% | +3.4 pp over baseline |
 | Projected Nash equilibrium DR | 50.5% | Geometric series projection |
 | LLM validation (Gemma 3 4B, N=10) | 80–100% | Per architecture |

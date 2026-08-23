@@ -101,7 +101,7 @@ The analog in traditional security is static honeypots: effective initially but 
 
 **What the research shows**: Part 1's stealth-impact tradeoff theorem bounds *per-interaction* impact but explicitly acknowledges that progressive drift---sub-threshold changes accumulating over time---is the hardest attack pattern to detect. The theorem doesn't rule out slow drift; it rules out sudden, invisible, high-impact attacks.
 
-Part 2's multi-turn social engineering category, which achieves the lowest detection rate (~73\%), partially exploits this gap: attacks spread across multiple turns avoid the concentrated statistical signature that single-turn attacks produce.
+Part 2's corpus has four categories --- prompt injection, trust exploitation, belief manipulation and coordination --- and none of them isolates multi-turn social engineering. The result that speaks to this gap is the colony benchmark's emergent-misalignment scenario, the weakest structured result at 74.3\% detection: no single agent's divergence spikes, so a per-agent KL threshold systematically misses the collective drift. Attacks spread across turns or across agents avoid the concentrated statistical signature that single-turn, single-agent attacks produce.
 
 **Mitigation Strategies**:
 

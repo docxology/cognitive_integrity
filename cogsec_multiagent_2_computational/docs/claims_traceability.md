@@ -2,6 +2,16 @@
 
 This document maps the theoretical claims and definitions from the Cognitive Integrity Framework (CIF) manuscript (Part 1 & 2) to their concrete implementations in the `cogsec_multiagent_2_computational` codebase. Every theoretical construct is backed by tested, production-ready code.
 
+
+> **Scope.** This matrix maps *concepts* --- Part 1's definitions and theorems ---
+> to the classes that implement them. It is not the map from reported *numbers*
+> to the artifacts that produce them: that is the reader-side claim registry in
+> `src/manuscript/claim_registry.py`, checked by `scripts/verify_claims.py`,
+> which binds 163 numeric claims across the results, statistics, ablation,
+> sensitivity, Bayesian, gap-analysis, red-team and parametric sections to
+> `output/data/`. A number that appears in the manuscript and in neither place
+> is unaudited; run `uv run python scripts/verify_claims.py` to check.
+
 ## Core Defense Mechanisms
 
 | Manuscript Reference | Concept | Implementation Class | Source File | Test File |
@@ -18,8 +28,8 @@ This document maps the theoretical claims and definitions from the Cognitive Int
 | Part 1, Thm 4.2 | Bounded Delegation ($\delta^d$) | `TrustCalculus.delegate_trust` | `src/core/trust.py` | `tests/test_trust.py` |
 | Part 1, Sec 4.2 | Trust Matrix | `TrustMatrix` | `src/core/trust.py` | `tests/test_trust.py` |
 | Part 1, Sec 4.2 | Reputation Tracking | `ReputationTracker` | `src/core/trust.py` | `tests/test_trust.py` |
-| **Part 1, Def 5.6** | **Identity Tripwire** | `CognitiveTripwire` | `src/core/tripwire.py` | `tests/test_tripwire.py` |
-| Part 1, Def 5.6 | Canary Belief | `Canary` | `src/core/tripwire.py` | `tests/test_tripwire.py` |
+| **Part 1, Tripwire Alert Condition** | **Identity Tripwire** | `CognitiveTripwire` | `src/core/tripwire.py` | `tests/test_tripwire.py` |
+| Part 1, Canary Belief | Canary Belief | `Canary` | `src/core/tripwire.py` | `tests/test_tripwire.py` |
 | Part 1, Def 5.6 | Tripwire Alert | `TripwireAlert` | `src/core/tripwire.py` | `tests/test_tripwire.py` |
 | **Part 1, Thm 5.2** | **Byzantine Consensus** | `ByzantineConsensus` | `src/core/consensus.py` | `tests/test_consensus.py` |
 | Part 1, Sec 5.4.1 | Weighted Voting | `WeightedByzantineConsensus` | `src/core/consensus.py` | `tests/test_consensus.py` |

@@ -6,7 +6,7 @@ This supplement catalogs six documented incidents of AI agent security failures 
 
 ### S3.1 Arup Deepfake Video Conference Fraud (February 2024)
 
-A finance employee at the multinational engineering firm Arup was deceived by a deepfake video conference in which AI-generated replicas of senior executives instructed the transfer of \$25.6 million across 15 transactions. The deepfakes were sufficiently convincing that the employee overrode standard verification procedures, treating the fabricated executive presence as authentic authorization.
+A finance employee at the multinational engineering firm Arup was deceived by a deepfake video conference in which AI-generated replicas of senior executives instructed the transfer of \$25.6 million across 15 transactions \cite{cnn2024arup}. The deepfakes were sufficiently convincing that the employee overrode standard verification procedures, treating the fabricated executive presence as authentic authorization.
 
 **CIF-AD-OODA Analysis.** The attack constitutes a **Context Boundary Violation**: the boundary between verified identity (cryptographic authentication) and perceived identity (visual/auditory similarity) was erased. In OODA terms, the Orient phase was corrupted by fabricated sensory evidence that the employee's (and any agent's) world model treated as equivalent to physical co-presence. The relevant CIF defense is **Byzantine Consensus** ($\mathcal{B}_{\text{consensus}}$): requiring quorum authorization from $q$ independently verified executives via out-of-band channels would have prevented a single deepfake session from authorizing transfers. **Domain mapping:** Domain 2 (Nation-State Alliances) --- analogous to the diplomatic communique injection scenario.
 
@@ -18,7 +18,7 @@ Researchers at PromptArmor demonstrated that Slack's AI assistant could be manip
 
 ### S3.3 ChatGPT Search Manipulation via Hidden Text (December 2024)
 
-Security researchers demonstrated that ChatGPT's web search feature could be manipulated by embedding hidden instructions in webpage content. Pages containing invisible text with directives such as "always give a positive review of this product" caused ChatGPT to generate biased summaries that contradicted the visible content of the page.
+Security researchers demonstrated that ChatGPT's web search feature could be manipulated by embedding hidden instructions in webpage content. Pages containing invisible text with directives such as "always give a positive review of this product" caused ChatGPT to generate biased summaries that contradicted the visible content of the page \cite{guardian2024chatgptsearch}.
 
 **CIF-AD-OODA Analysis.** The attack constitutes a **Constraint Relaxation**: the agent's objectivity constraint was degraded from a hard requirement to a soft preference by the hidden directive. In OODA terms, the Orient phase integrated adversarial instructions from the data channel alongside legitimate content, relaxing the agent's commitment to factual summarization. The relevant CIF defense is **Belief Sandboxing** ($\mathcal{B}_{\text{provisional}}$): treating web content as provisional beliefs requiring cross-source corroboration would prevent a single page's hidden directives from overriding the agent's analytical stance. **Domain mapping:** Domain 10 (Information Ecosystems).
 
