@@ -250,6 +250,10 @@ def _body(ceiling: str = "96") -> str:
     for rate in solo.values():
         missed *= 1.0 - rate
     series_prediction = (1.0 - missed) * 100
+    at = _ARTIFACTS["adversarial_training_results.json"]
+    at_base = at["baseline_dr"] * 100
+    at_hardened = at["final_hardened_dr"] * 100
+    at_delta = at["total_delta_dr"] * 100
 
     return (
         "# Body\n\n"
@@ -272,6 +276,9 @@ def _body(ceiling: str = "96") -> str:
         f"and its operational default $\\tau_2 = {FIXTURE_TAU2}$ quarantines.\\n\\n"
         f"Deployment ships that operational default: tau_1: {FIXTURE_TAU1} in the config.\\n\\n"
         f"Part 1's reference implementation deliberately uses {FIXTURE_TAU1_REFERENCE}.\\n\\n"
+        f"The Round-5 hardened configuration reaches {at_hardened:.1f}\\% detection.\\n\\n"
+        f"AT-Round-5 gives a cumulative improvement of +{at_delta:.1f} pp over the\\n"
+        f"pre-AT baseline ({at_base:.1f}\\%).\\n\\n"
         f"The composition rule predicts {series_prediction:.1f}\\% against a measured "
         f"{full_tpr:.1f}\\%.\\n\\n"
         "Data from `output/data/multi_seed_results.json`.\n"

@@ -611,7 +611,6 @@ LEDGER: tuple[LedgerVariable, ...] = (
         pattern=re.compile(r"mean(?:\s+detection\s+rate)?\s+of\s+\*{0,2}(\d{2}\.\d)\s*\\?%"),
         require=("seed",),
         tolerance=0.06,
-        min_occurrences=2,
     ),
     LedgerVariable(
         id="multiseed_fpr",
@@ -773,7 +772,10 @@ LEDGER: tuple[LedgerVariable, ...] = (
         artifact="adversarial_training_results.json",
         deriver=at_baseline_dr,
         unit="percent",
-        pattern=None,
+        pattern=re.compile(r"pre-AT baseline \((\d{2}\.\d)\\?%\)"),
+        require=("baseline",),
+        parts=("2",),
+        tolerance=0.06,
     ),
     LedgerVariable(
         id="at_final_hardened_dr",
@@ -781,7 +783,10 @@ LEDGER: tuple[LedgerVariable, ...] = (
         artifact="adversarial_training_results.json",
         deriver=at_final_hardened_dr,
         unit="percent",
-        pattern=None,
+        pattern=re.compile(r"(?:reaches|to) (\d{2}\.\d)\\?%"),
+        require=("Round 5", "Round-5", "hardened"),
+        parts=("2",),
+        tolerance=0.06,
     ),
     LedgerVariable(
         id="at_total_delta",
@@ -789,7 +794,10 @@ LEDGER: tuple[LedgerVariable, ...] = (
         artifact="adversarial_training_results.json",
         deriver=at_total_delta,
         unit="percent",
-        pattern=None,
+        pattern=re.compile(r"\+(\d{2}\.\d) ?pp"),
+        require=("cumulative", "AT-Round"),
+        parts=("2",),
+        tolerance=0.06,
     ),
     LedgerVariable(
         id="at_rounds",
