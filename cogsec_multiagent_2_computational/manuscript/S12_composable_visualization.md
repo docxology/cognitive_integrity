@@ -1,4 +1,4 @@
-\\newpage
+\newpage
 
 # Supplement S12: Composable Visualization Engine {#sec:composable-visualization}
 

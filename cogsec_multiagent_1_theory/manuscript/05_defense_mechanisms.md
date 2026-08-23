@@ -693,7 +693,7 @@ The ratio $\text{ARL}_0 / \text{ARL}_1$ quantifies the detector's discrimination
 
 \begin{corollary}[Drift Detection Sample Complexity]
 \label{cor:drift-sample}
-For drift magnitude $\mu_1 = 0.3$ (normalized KL) and ARL$_0 = 1000$ (low false alarm rate), the CUSUM detector achieves ARL$_1 \approx 15$ steps with $\nu = 0.15$, $h \approx 4.6$.
+For drift magnitude $\mu_1 = 0.3$ (normalized KL) and Wald's optimal reference value $\nu = \mu_1/2 = 0.15$, attaining ARL$_0 = 1000$ under \cref{eq:cusum-arl} requires a decision interval of $h \approx 13.0$; the frequently quoted $h \approx 4.6$ yields ARL$_0 \approx 35$ under the same formula, a false-alarm rate roughly $28\times$ higher. The corresponding ARL$_1$ follows from \cref{eq:cusum-arl1}, whose $O(\log \text{ARL}_0)$ factor carries an unspecified constant: taking that constant as unity gives ARL$_1 \approx 310$ steps. Deployments should calibrate $h$ against a measured null distribution rather than adopting either figure directly.
 \end{corollary}
 
 ### Canonical Defense 5: Byzantine Consensus — Formal Specification
@@ -727,17 +727,17 @@ No coalition of at most $f$ faulty agents can cause non-faulty agents to disagre
 
 \begin{table}[htbp]
 \centering
-\caption{Byzantine consensus performance bounds for varying $n$ and $f$.}
+\caption{Byzantine consensus performance bounds for varying $n$ and $f$. Quorum is $q = \lceil (n+f+1)/2 \rceil$; the round count is the $f+1$ worst-case bound of \cref{thm:byzantine-termination}, of which \cref{cor:concrete-rounds} ($f = 2$, 3 rounds) is the second row.}
 \label{tab:byz-performance}
 \begin{tabular}{@{}lllll@{}}
 \toprule
 $n$ agents & Max faulty $f$ & Quorum $q$ & Message complexity & Rounds \\
 \midrule
-4 & 1 & 3 & $O(n^2)$ & 3 \\
+4 & 1 & 3 & $O(n^2)$ & 2 \\
 7 & 2 & 5 & $O(n^2)$ & 3 \\
-10 & 3 & 7 & $O(n^2)$ & 3 \\
-25 & 8 & 17 & $O(n^2)$ & 3 \\
-100 & 33 & 67 & $O(n^2 \log n)$ & $O(\log n)$ \\
+10 & 3 & 7 & $O(n^2)$ & 4 \\
+25 & 8 & 17 & $O(n^2)$ & 9 \\
+100 & 33 & 67 & $O(n^2)$ & 34 \\
 \bottomrule
 \end{tabular}
 \end{table}

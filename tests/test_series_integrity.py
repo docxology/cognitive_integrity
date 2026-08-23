@@ -138,7 +138,7 @@ def test_clean_tree_passes_every_check(clean_tree):
     If this ever fails, the negative tests below prove nothing.
     """
     module = _load_module(clean_tree)
-    for name in ("shared-quantities", "bibliography", "truncation", "cross-paper-pointers"):
+    for name in ("shared-quantities", "bibliography", "truncation", "math-hygiene", "cross-paper-pointers"):
         result = module.CHECKS[name]()
         assert result.ok, f"{name} flagged a clean tree: {[p.message for p in result.problems]}"
 
@@ -337,6 +337,40 @@ def test_cross_paper_pointers_ignores_self_references(tmp_path):
     module = _load_module(tree)
     assert module.CHECKS["cross-paper-pointers"]().ok
 
+
+
+def test_math_hygiene_catches_a_double_escaped_command(tmp_path):
+    tree = _build_tree(
+        tmp_path / "doubleesc",
+        part_text={"1": CEILING_OK, "2": CEILING_OK + "\nSee \\\\cref{sec:x} for detail.\n", "3": CEILING_OK},
+        bibs={},
+    )
+    module = _load_module(tree)
+    result = module.CHECKS["math-hygiene"]()
+    assert not result.ok
+    assert any("double-escaped" in p.message for p in result.problems)
+
+
+def test_math_hygiene_catches_a_subscript_star(tmp_path):
+    tree = _build_tree(
+        tmp_path / "star",
+        part_text={"1": CEILING_OK, "2": CEILING_OK + "\nThe ratio $\\mathcal{F}*c(x)$ holds.\n", "3": CEILING_OK},
+        bibs={},
+    )
+    module = _load_module(tree)
+    result = module.CHECKS["math-hygiene"]()
+    assert not result.ok
+    assert any("subscript-star" in p.message for p in result.problems)
+
+
+def test_math_hygiene_allows_legitimately_starred_commands(tmp_path):
+    tree = _build_tree(
+        tmp_path / "legitstar",
+        part_text={"1": CEILING_OK, "2": CEILING_OK + "\n\\vspace*{1em}\n", "3": CEILING_OK},
+        bibs={},
+    )
+    module = _load_module(tree)
+    assert module.CHECKS["math-hygiene"]().ok
 
 # ---------------------------------------------------------------------------
 # Structural invariants of the registry itself

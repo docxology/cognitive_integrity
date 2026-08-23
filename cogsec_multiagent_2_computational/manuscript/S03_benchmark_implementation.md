@@ -42,7 +42,7 @@ where:
 \begin{align}
 \text{DR}_c &= \text{Colony-level detection rate} \\
 \text{FPR}_c &= \text{Colony-level false positive rate} \\
-\text{Resilience} &= \frac{\mathcal{F}_c(\text{under attack})}{\mathcal{F}*c(\text{baseline})} \\
+\text{Resilience} &= \frac{\mathcal{F}_c(\text{under attack})}{\mathcal{F}_c(\text{baseline})} \\
 \text{Recovery} &= \max(0,\, 1 - t_{\text{recovery}} / t_{\max}) \text{ (normalized; } t_{\max} = 60\text{s default, configurable)}
 \end{align}
 with weights $w_i$ summing to 1.

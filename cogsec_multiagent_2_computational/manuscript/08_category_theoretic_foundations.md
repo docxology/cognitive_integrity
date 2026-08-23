@@ -1,4 +1,4 @@
-\\newpage
+\newpage
 
 # Category-Theoretic Foundations of Defense Composition {#sec:category-theoretic-foundations}
 

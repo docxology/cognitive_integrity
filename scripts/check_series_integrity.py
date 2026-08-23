@@ -696,6 +696,81 @@ def check_truncation() -> CheckResult:
     return result
 
 
+
+# ---------------------------------------------------------------------------
+# Check: math hygiene
+# ---------------------------------------------------------------------------
+
+#: ``\mathcal{T}*{i \to j}`` where ``_`` was meant: a literal star renders as a
+#: binary operator instead of a subscript.
+_SUBSCRIPT_STAR = re.compile(r"[A-Za-z}]\*[{A-Za-z]")
+
+#: A doubled backslash before a command name: pandoc emits a line break followed
+#: by literal text rather than the control sequence.
+_DOUBLE_BACKSLASH_CMD = re.compile(r"\\\\[a-zA-Z]")
+
+#: Starred commands that are legitimately spelled with a star.
+_LEGIT_STARRED = (
+    "vspace*{",
+    "hspace*{",
+    "DeclareMathOperator*{",
+    "newtheorem*{",
+    "section*{",
+    "subsection*{",
+)
+
+
+def check_math_hygiene() -> CheckResult:
+    """Sweep all three parts for LaTeX corruption that renders wrong but builds.
+
+    Parts 1 and 3 each run this inside their own ``verify_manuscript.py``; Part 2
+    has no math-hygiene gate at all, so the same corruption sits uncaught there.
+    Running it from the series gate covers every part with one implementation
+    instead of asking each to grow its own copy.
+    """
+    result = CheckResult("math-hygiene")
+    for part in PARTS:
+        for path in manuscript_files(part):
+            result.scanned += 1
+            for number, line in iter_lines(path):
+                for match in _SUBSCRIPT_STAR.finditer(line):
+                    context = line[max(0, match.start() - 24) : match.end()]
+                    if any(token in context for token in _LEGIT_STARRED):
+                        continue
+                    result.problems.append(
+                        Problem(
+                            result.name,
+                            rel(path),
+                            number,
+                            f"subscript-star corruption {match.group(0)!r}: replace "
+                            f"'*' with '_' (a literal star renders as a binary "
+                            f"operator, so the expression builds but means "
+                            f"something else)",
+                        )
+                    )
+                for match in _DOUBLE_BACKSLASH_CMD.finditer(line):
+                    result.problems.append(
+                        Problem(
+                            result.name,
+                            rel(path),
+                            number,
+                            f"double-escaped control sequence {match.group(0)!r}: "
+                            f"use a single backslash inside math, or the renderer "
+                            f"emits a line break followed by literal text",
+                        )
+                    )
+    if result.scanned == 0:
+        result.problems.append(
+            Problem(
+                result.name,
+                "scripts/check_series_integrity.py",
+                0,
+                "scanned zero manuscript files; the glob is broken",
+            )
+        )
+    return result
+
+
 # ---------------------------------------------------------------------------
 # Check: cross-paper pointers
 # ---------------------------------------------------------------------------
@@ -743,6 +818,7 @@ CHECKS: dict[str, Callable[[], CheckResult]] = {
     "shared-quantities": check_shared_quantities,
     "bibliography": check_bibliography,
     "truncation": check_truncation,
+    "math-hygiene": check_math_hygiene,
     "cross-paper-pointers": check_cross_paper_pointers,
 }
 

@@ -28,7 +28,7 @@ The coefficient of variation (CV = 0.097) exceeds the 0.05 stability threshold, 
 
 ### Ablation Effect Sizes
 
-We quantify the marginal contribution of each defense component using the real ablation data ($N=98$ attacks, prototype pipeline) in \\cref{tab:real-component-effects}:
+We quantify the marginal contribution of each defense component using the real ablation data ($N=98$ attacks, prototype pipeline) in \cref{tab:real-component-effects}:
 
 Table: Component removal impact with effect sizes (real pipeline). {#tab:real-component-effects}
 

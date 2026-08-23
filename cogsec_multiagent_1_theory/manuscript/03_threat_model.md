@@ -97,22 +97,28 @@ where $a_v$ is the victim/compromised agent, $\sigma_v = \langle \mathcal{B}_v, 
 
 \begin{theorem}[Agent Compromise Blast Radius]
 \label{thm:blast-radius}
-When agent $a_v \in \Omega_3$ is fully compromised, the maximum influenced trust is:
+When agent $a_v \in \Omega_3$ is fully compromised, its \emph{trust-influence blast radius}
+is the delegated trust its neighbours place in it:
 \begin{equation}
 \label{eq:blast-radius}
-\text{BlastRadius}(a_v) = \sum_{a_j \in \mathcal{N}(a_v)} \mathcal{T}_{a_j \to a_v} \cdot |\text{Reachable}(a_j)|
+\text{BlastRadius}(a_v) = \sum_{a_j \in \mathcal{N}(a_v)} \mathcal{T}_{a_j \to a_v}
 \end{equation}
 The CIF trust decay bound (\cref{thm:trust-bounded}) limits this to:
 \begin{equation}
 \label{eq:blast-radius-bound}
 \text{BlastRadius}(a_v) \leq n \cdot \delta \cdot \max_{a_j} \mathcal{T}_{a_j \to a_v}
 \end{equation}
-*Reachability factor alignment (H7): the \cref{eq:blast-radius} definition includes an explicit
-$|\text{Reachable}(a_j)|$ factor as the intuitive influence interpretation; the trust-decay bound
-(\cref{eq:blast-radius-bound}) is stated on the trust-influence measure, where each reachable hop
-contributes at most $\delta \cdot \mathcal{T}$, so the aggregate is capped at $n \cdot \delta \cdot \max_j \mathcal{T}$.
-The supplementary restatement (\cref{thm:blast-radius-restated}) states the bound consistently and
-does not multiply the neighbor and reachable-agent counts (see S01, \cref{sec:thm-blast-radius}).*
+where $n = |\mathcal{N}(a_v)|$ and each delegated edge contributes at most
+$\delta \cdot \mathcal{T}$.
+
+The reachability-weighted quantity
+$\sum_{a_j \in \mathcal{N}(a_v)} \mathcal{T}_{a_j \to a_v} \cdot |\text{Reachable}(a_j)|$
+is a different measure --- it counts how many agents each neighbour can in turn
+influence --- and \cref{eq:blast-radius-bound} does not bound it: multiplying the
+neighbour and reachable-agent counts admits an $O(n^2)$ term. The bound above is
+stated on the trust-influence measure only, and the supplementary restatement
+(\cref{thm:blast-radius-restated}) follows the same convention
+(S01, \cref{sec:thm-blast-radius}).
 \end{theorem}
 
 \begin{proof}

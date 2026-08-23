@@ -6,7 +6,7 @@ This supplementary material provides formal proofs for the theorems that carry p
 
 ## Proof Status {#sec:proof-status}
 
-For transparency, this section records, by exact label, which results stated in the main text carry a proof in this supplement and which are asserted without proof.
+For transparency, this section records, by exact label, which results stated in the main text carry a proof and which are asserted without one. A result is accounted for here if it has an inline `proof` environment in the main text, a dedicated proof in this supplement, or an entry in the deferred list below; `tests/test_proof_status.py` enforces that every theorem, lemma and corollary in the manuscript falls into one of those three cases, so the index cannot fall behind the text.
 
 **Proven in this supplement.** The following theorems each have a dedicated `proof` environment (section given in parentheses):
 
@@ -43,6 +43,21 @@ Separate proofs are also given for the supporting lemmas and for the corollaries
 - Quorum Attack Cost, \cref{cor:quorum-attack-cost} (S02_eusocial\_cogsec.md)
 - Stigmergic Trust Bound, \cref{cor:stigmergic-trust} (S02_eusocial\_cogsec.md)
 - Emergent Stealth-Impact Bound, \cref{cor:emergent-stealth-impact} (S02_eusocial\_cogsec.md)
+- No Trust Amplification, \cref{thm:no-trust-amp} (04_formal\_framework.md; the model-checking restatement \cref{thm:trust-bound} is proved here, the section-4 statement is not)
+- Byzantine Agreement Requirement, \cref{thm:byzantine-req} (05_defense\_mechanisms.md)
+- Neyman-Pearson Optimal Detector, \cref{thm:np-detector} (06_detection\_methods.md)
+- Detection Error Exponent, \cref{thm:error-exponent} (06_detection\_methods.md)
+- Undetectability Condition, \cref{thm:undetectability} (06_detection\_methods.md)
+- Belief Boundedness, \cref{lem:belief-bounded} (04_formal\_framework.md)
+- \cref{cor:no-amplification} (04_formal\_framework.md)
+- \cref{cor:trust-vanish} (04_formal\_framework.md)
+- \cref{cor:low-entropy-detectable} (04_formal\_framework.md)
+- Pareto-Optimal Threshold, \cref{cor:pareto-threshold} (05_defense\_mechanisms.md)
+- Drift Detection Sample Complexity, \cref{cor:drift-sample} (05_defense\_mechanisms.md)
+- Consensus Attack Resistance, \cref{cor:consensus-resistance} (05_defense\_mechanisms.md)
+- Optimal AUC Bound, \cref{cor:optimal-auc} (06_detection\_methods.md)
+- Empirical Security Bound, \cref{cor:empirical-security} (07_formal\_verification.md)
+- Layered Defense Generalization, \cref{cor:n-layer-bound} (07_formal\_verification.md)
 
 > **Note on \cref{cor:isolation-blast}.**
 > This corollary is stated in this supplement (\cref{sec:thm-blast-radius}) immediately after the proved \cref{thm:blast-radius-restated}, as that theorem's degree-restricted consequence ($\lvert \mathcal{N}(a_v) \rvert = k \le n$). It therefore carries no standalone proof environment, consistent with the other corollaries here, and is not among the deferred results.
@@ -833,12 +848,18 @@ Total: $O(|\Phi|^2)$.
 
 \begin{lemma}[Trust Matrix Convergence]
 \label{lem:trust-convergence}
-Under stable interaction patterns, the reputation component $T_{rep}$ converges:
+Let outcomes be i.i.d.\ with mean $\mu$ and variance $\sigma^2$, and let the
+reputation be updated at a constant rate $\eta \in (0,1)$. Then $T_{rep}^t$
+converges \emph{in distribution} to a stationary law with
 \begin{equation}
 \label{eq:trust-convergence}
-\lim_{t \to \infty} T_{rep}^t = T_{rep}^*
+\lim_{t \to \infty} E[T_{rep}^t] = \mu,
+\qquad
+\lim_{t \to \infty} \operatorname{Var}(T_{rep}^t) = \frac{\eta}{2 - \eta}\,\sigma^2 .
 \end{equation}
-where $T_{rep}^*$ reflects the agent's true reliability.
+The reputation is therefore an unbiased but permanently noisy estimate of the
+agent's true reliability $\mu$; it does \emph{not} converge almost surely to a
+point.
 \end{lemma}
 
 \begin{proof}
@@ -850,13 +871,28 @@ T_{rep}^{t+1} = T_{rep}^t + \eta \cdot (\text{outcome}_t - T_{rep}^t)
 
 This is an exponential moving average with learning rate $\eta$.
 
-For i.i.d. outcomes with mean $\mu$:
+Taking expectations and writing $e_t = E[T_{rep}^t] - \mu$ gives
+$e_{t+1} = (1 - \eta) e_t$, so
 \begin{equation}
 \label{eq:convergence-limit}
-E[T_{rep}^t] \to \mu \text{ as } t \to \infty
+E[T_{rep}^t] \to \mu \text{ geometrically, at rate } (1 - \eta).
 \end{equation}
 
-By the strong law of large numbers, $T_{rep}^t \to \mu$ almost surely.
+For the variance, $T_{rep}^{t+1} - \mu = (1-\eta)(T_{rep}^t - \mu) + \eta(x_t - \mu)$
+with $x_t$ independent of $T_{rep}^t$, so
+$v_{t+1} = (1-\eta)^2 v_t + \eta^2 \sigma^2$, whose fixed point is
+$v^\star = \eta^2\sigma^2 / (1 - (1-\eta)^2) = \frac{\eta}{2-\eta}\sigma^2$.
+
+\emph{Remark on the mode of convergence.} The strong law of large numbers does
+not apply here: it governs sample averages, which correspond to the decreasing
+gain $\eta_t = 1/t$, not to a constant $\eta$. With $\eta$ fixed the iterate
+retains a fixed fraction of each new observation forever, so $v^\star > 0$ and
+almost-sure convergence to a point fails. Almost-sure convergence would require
+a gain schedule satisfying the Robbins--Monro conditions,
+$\sum_t \eta_t = \infty$ and $\sum_t \eta_t^2 < \infty$. The constant-rate rule
+is nonetheless the right choice for trust: retaining sensitivity to recent
+behaviour is what lets reputation track an agent that changes, and the residual
+variance $\frac{\eta}{2-\eta}\sigma^2$ is the price of that adaptivity.
 \end{proof}
 
 ---

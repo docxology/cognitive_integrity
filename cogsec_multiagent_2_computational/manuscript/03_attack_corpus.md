@@ -117,9 +117,9 @@ The attack surface map (\cref{fig:attack-surface}) visualizes how these attack c
 
 The following subsections provide detailed attack examples, methodology, and ethical considerations:
 
-- **Attack Examples** (\\cref{sec:attack-examples}): Sanitized examples for all four categories — prompt injection (direct, indirect, nested), trust exploitation (impersonation, inflation, delegation abuse), belief manipulation (injection, fabrication, drift), and coordination attacks (Sybil, consensus poisoning, timing). See `03b_attack_examples.md`.
+- **Attack Examples** (\cref{sec:attack-examples}): Sanitized examples for all four categories — prompt injection (direct, indirect, nested), trust exploitation (impersonation, inflation, delegation abuse), belief manipulation (injection, fabrication, drift), and coordination attacks (Sybil, consensus poisoning, timing). See `03b_attack_examples.md`.
 
-- **Methodology and Ethics** (\\cref{sec:generation-methodology}): Attack generation methodology, effectiveness analysis, ethical considerations (responsible disclosure, dual-use, human subjects), and data availability. See `03c_attack_ethics.md`.
+- **Methodology and Ethics** (\cref{sec:generation-methodology}): Attack generation methodology, effectiveness analysis, ethical considerations (responsible disclosure, dual-use, human subjects), and data availability. See `03c_attack_ethics.md`.
 
 ## Adversary Capability Taxonomy: Ω_1–Ω_5 Mapping {#sec:omega-mapping}
 
