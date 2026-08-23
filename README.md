@@ -50,7 +50,7 @@ Active Inference Institute
 - **Operator-facing synthesis** with checklists, risk framing, and deployment guidance (Part 3)
 - **CIF-AD-OODA integration** and ten-domain applied analysis of goal hijacking (Part 3+4)
 - **Three universal attack patterns** — FR Polarity Inversion, Constraint Relaxation, Context Boundary Violation (Part 3+4)
-- **Three defense extensions** in the cross-domain study — verification channel separation, active perturbation probing, physics-informed invariants
+- **Four defense extensions** in the cross-domain study — verification channel separation, active perturbation probing, physics-informed invariants, semiotic decoupling
 
 ## Documentation
 

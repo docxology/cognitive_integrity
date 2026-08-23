@@ -8,6 +8,7 @@ machine-checkable contract between the running code and the manuscript.
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 
 import pytest
@@ -124,6 +125,87 @@ def test_component_hierarchy_ordering_matches_manuscript(ablation: dict) -> None
     ms = (Path(__file__).parent.parent / "manuscript" / "05_results.md").read_text()
     assert "Trust Calculus ($\\approx -0.020$)" in ms
     assert "three-way tie among Tripwires, Invariants, and Firewall" in ms
+
+
+#: Orderings the ablation artifact refutes. Scoping a guard to the one file that
+#: was already fixed is how the same defect survived in five sibling sections:
+#: 05_results.md was corrected and checked, while 05b, 06, 07 and the abstract
+#: kept publishing hierarchies that dropped Trust Calculus or demoted Invariants.
+#: These patterns are therefore swept across *every* manuscript file.
+_REFUTED_ORDERINGS = (
+    # Firewall placed above Trust Calculus, whose delta is exactly double it.
+    r"Detection\s+module\s*\$?>?\$?\s*Firewall",
+    # Trust Calculus omitted from the leading group.
+    r"followed\s+by\s+Tripwires\s+and\s+Invariants",
+    r"top\s+three\s+(?:components|harmful\s+removals)[^.]*?\(Detection,\s*Tripwires,\s*Invariants\)",
+    # Deltas the artifact does not contain.
+    r"\$\\Delta\\text\{TPR\}\$\s+between\s+\$-0\.005\$\s+and\s+\$-0\.009\$",
+    r"\\approx\s*-0\.011\$",
+)
+
+
+@pytest.mark.parametrize("pattern", _REFUTED_ORDERINGS)
+def test_no_manuscript_file_states_a_refuted_component_ordering(pattern: str) -> None:
+    """Sweep every manuscript section for orderings the artifact refutes.
+
+    The artifact gives detection (-0.051) >> trust_calculus (-0.020) > a
+    three-way tie at -0.010 (firewall, invariants, tripwire) > three components
+    at exactly 0.000, and two pairs tied at the top synergy.  Any prose that
+    contradicts that shape is a defect wherever it appears, so this guard is
+    written against the *class* of wrong statement rather than against the
+    specific files that once carried it.
+    """
+    manuscript = Path(__file__).parent.parent / "manuscript"
+    offenders = [
+        path.name
+        for path in sorted(manuscript.glob("*.md"))
+        if re.search(pattern, path.read_text(encoding="utf-8"))
+    ]
+    assert not offenders, (
+        f"pattern {pattern!r} (an ordering the ablation artifact refutes) "
+        f"appears in: {offenders}"
+    )
+
+
+
+def test_no_manuscript_file_names_a_single_strongest_synergy_pair() -> None:
+    """"Strongest synergy" must be reported as the tie the artifact measures.
+
+    ``firewall+detection`` and ``tripwire+detection`` are equal to the last bit
+    of a float (0.030612244897959176 both).  A regex ban on one pair's name is
+    the wrong shape of guard: the *correct* sentence also names that pair, in
+    the course of saying the two tie.  So the check is on the claim, not the
+    string -- any sentence asserting a strongest synergy must either say it is
+    a tie or name both pairs.  Naming one alone is the defect.
+    """
+    manuscript = Path(__file__).parent.parent / "manuscript"
+    offenders: list[str] = []
+    for path in sorted(manuscript.glob("*.md")):
+        for sentence in re.split(r"(?<=[.;])\s+", path.read_text(encoding="utf-8")):
+            if not re.search(r"strongest\s+synerg", sentence, re.IGNORECASE):
+                continue
+            names_tie = re.search(r"\btie\b|\btied\b|two pairs", sentence, re.IGNORECASE)
+            names_both = re.search(
+                r"Firewall\s*\+\s*Detection", sentence, re.IGNORECASE
+            ) and re.search(r"Tripwire\s*\+\s*Detection", sentence, re.IGNORECASE)
+            if not (names_tie or names_both):
+                offenders.append(f"{path.name}: {sentence.strip()[:110]}")
+    assert not offenders, (
+        "a strongest-synergy claim names one pair where the artifact measures an "
+        f"exact tie: {offenders}"
+    )
+
+
+def test_the_single_strongest_synergy_guard_is_not_vacuous() -> None:
+    """The guard must reject the sentence the abstract used to carry."""
+    bad = "the Tripwire + Detection pair exhibits the strongest synergy (+0.031)."
+    assert re.search(r"strongest\s+synerg", bad, re.IGNORECASE)
+    assert not re.search(r"\btie\b|\btied\b|two pairs", bad, re.IGNORECASE)
+
+def test_the_refuted_ordering_sweep_is_not_vacuous(tmp_path: Path) -> None:
+    """A sweep that can never fire proves nothing; prove it can."""
+    planted = "Detection module $>$ Firewall $>$ Trust Calculus"
+    assert any(re.search(p, planted) for p in _REFUTED_ORDERINGS)
 
 
 def test_strongest_synergy_is_a_tie_between_two_detection_pairs(ablation: dict) -> None:

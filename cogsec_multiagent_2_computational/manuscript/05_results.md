@@ -33,7 +33,7 @@ Table: Per-seed detection rates (Claude Code, full pipeline). {#tab:per-seed-rat
 
 ## Statistical Power Analysis {#sec:power-analysis-summary}
 
-The multi-seed aggregate sample size ($N = 30 \times 1000 = 30{,}000$ evaluation events) provides strong precision, but the smaller-$N$ evaluation modes in this paper vary considerably in their achievable precision. \cref{tab:power-summary} summarizes the sample size required for $\pm 5$ pp posterior HDI half-width at each mode's estimated true detection rate, using the Beta-Binomial power calculation of \cref{sec:power-analysis}.
+The multi-seed aggregate sample size is $N = 30 \times 100 = 3{,}000$ attack evaluations (plus 120 benign samples per seed); across-seed variability, not within-seed sampling, is what the 30-seed design characterizes, and the smaller-$N$ evaluation modes in this paper vary considerably in their achievable precision. \cref{tab:power-summary} summarizes the sample size required for $\pm 5$ pp posterior HDI half-width at each mode's estimated true detection rate, using the Beta-Binomial power calculation of \cref{sec:power-analysis}.
 
 Table: Power summary: sample size required for $\pm 5$ pp HDI at the estimated true rate. {#tab:power-summary}
 

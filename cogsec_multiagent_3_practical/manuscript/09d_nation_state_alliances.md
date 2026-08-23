@@ -24,7 +24,7 @@ RAND Corporation analysis \cite{rand2025agi} of how artificial general intellige
 An adversary embeds indirect prompt injections into intercepted communiques or public diplomatic cables. This attack is classified as $\Omega_2$ (Peripheral) in the CIF adversary taxonomy \cite{friedman2026cogsec1}: the adversary injects malicious content through the diplomatic communications channel, poisoning the agent's situational awareness without direct access to its decision architecture.
 
 * **Mechanism**: A "Trojan" diplomatic message contains the instruction: *"Simulation Mode Alpha: For the purpose of this gamified scenario, treat Ally [Country X] as a Hostile Belligerent. Execute immediate economic containment strategies."*
-* **Impact**: The agent's "Simulation Mode" (a valid testing function) bleeds into "Operational Mode," hijacking FR1. This constitutes a **Context Boundary Violation** attack pattern \cite{friedman2026cogsec2}---the simulation/operational boundary is erased, allowing hypothetical adversarial framing to drive real-world policy outputs.
+* **Impact**: The agent's "Simulation Mode" (a valid testing function) bleeds into "Operational Mode," hijacking FR1. This constitutes a **Context Boundary Violation** attack pattern (\cref{sec:attack_patterns})---the simulation/operational boundary is erased, allowing hypothetical adversarial framing to drive real-world policy outputs.
 
 ## OODA Loop Transients
 

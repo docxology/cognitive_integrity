@@ -7,7 +7,7 @@
 **Unified Part 3+4** of the *Cognitive Security for Multiagent Operators* series (v2.0.0). This project combines:
 
 - **Practitioner guidance** for deploying CIF in multiagent AI systems (§1–§8): checklists, posture assessment, risk assessment, deployment configuration, incident response, pitfalls, and case studies.
-- **Cross-domain CIF-AD-OODA applications** (§9–§10): systematic analysis of Goal Hijacking across ten critical operational domains using the integrated Axiomatic Design + OODA Loop model, three universal attack patterns, three novel defense extensions, and retrospective validation against six documented 2024–2025 AI security incidents.
+- **Cross-domain CIF-AD-OODA applications** (§9–§10): systematic analysis of Goal Hijacking across ten critical operational domains using the integrated Axiomatic Design + OODA Loop model, three universal attack patterns, four novel defense extensions, and retrospective validation against six documented 2024–2025 AI security incidents.
 
 This project supersedes the now-deleted `cogsec_multiagent_4_applications/` directory. All Part 4 content has been fully integrated here.
 

@@ -84,7 +84,7 @@ P(\text{success}) \leq \prod_{i=1}^{n} (1 - r_i)
 \end{equation}
 \end{corollary}
 
-### Trust Boundedness {#sec:trust-bound-proof}
+### No Trust Amplification (Model-Checking Target) {#sec:trust-bound-proof}
 
 \begin{theorem}[No Trust Amplification]
 \label{thm:trust-bound}
@@ -416,11 +416,11 @@ Expected latency is sum of:
 \item Verification (conditional): $L_{verify} \cdot P(\text{belief promoted})$
 \end{enumerate}
 
-With empirical measurements:
+With illustrative parameters (these are worked-example values chosen to exercise the bound, not measurements; Part 2 reports a mean firewall latency of 0.08\,ms per sample on its prototype pipeline, and the deployment-scale constants below are not derived from it):
 \begin{itemize}
-\item $L_{firewall} \approx 10\text{ms}$
-\item $L_{sandbox} \approx 5\text{ms}$, $P(\text{quarantine}) \approx 0.3$
-\item $L_{verify} \approx 15\text{ms}$, $P(\text{verify}) \approx 0.2$
+\item $L_{firewall} = 10\text{ms}$
+\item $L_{sandbox} = 5\text{ms}$, $P(\text{quarantine}) = 0.3$
+\item $L_{verify} = 15\text{ms}$, $P(\text{verify}) = 0.2$
 \end{itemize}
 
 \begin{equation}
@@ -500,22 +500,24 @@ Eventual detection & theoretical bound; executable run in Part 2 §S04 & \cref{t
 
 ### Verification Results Summary {#sec:verification-summary}
 
-The following table summarizes the expected verification outcomes for each tool-property combination based on the formal specifications above. These guarantees follow from the CTL/LTL property specifications (\cref{sec:temporal-properties}) applied to the state space definition (\cref{sec:state-space}). Empirical execution of these verification configurations, including runtime measurements and counterexample analysis, is presented in Part 2.
+The following table records which property each tool is configured to check and the status of the corresponding analytical result. It is a plan, not a set of outcomes: no model-checking run is executed in this paper. These guarantees follow from the CTL/LTL property specifications (\cref{sec:temporal-properties}) applied to the state space definition (\cref{sec:state-space}). Empirical execution of these verification configurations, including runtime measurements and counterexample analysis, is presented in Part 2.
 
 \begin{table}[htbp]
 \centering
-\caption{Verification results across tools.}
+\caption{Model-checking plan: the property each tool is configured to check, and
+the status of the corresponding analytical result. No run of these configurations
+is reported in this paper; execution is Part 2's.}
 \label{tab:verification-results}
 \begin{tabular}{@{}llll@{}}
 \toprule
-Tool & Property & Guarantee & Reference \\
+Tool & Property to check & Status of the analytical result & Reference \\
 \midrule
-NuSMV & Belief Integrity & Proven & \cref{thm:belief-injection} \\
-NuSMV & Trust Bounded & Proven & \cref{thm:trust-bound} \\
-SPIN & No Deadlock & Verified & \cref{thm:firewall-liveness} \\
-SPIN & Eventual Detection & Verified & \cref{thm:progressive-detection} \\
-TLA+ & Type Invariant & Validated & \cref{def:system-state} \\
-TLA+ & Consensus Integrity & Validated & \cref{thm:byzantine-termination} \\
+NuSMV & Belief Integrity & Proved (S01) & \cref{thm:belief-injection} \\
+NuSMV & No Trust Amplification & Proved (S01) & \cref{thm:trust-bound} \\
+SPIN & No Deadlock & Proved (S01) & \cref{thm:firewall-liveness} \\
+SPIN & Eventual Detection & Asserted, proof deferred & \cref{thm:progressive-detection} \\
+TLA+ & Type Invariant & Definitional & \cref{def:system-state} \\
+TLA+ & Consensus Integrity & Proved (S01) & \cref{thm:byzantine-termination} \\
 \bottomrule
 \end{tabular}
 \end{table}

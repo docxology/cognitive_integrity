@@ -24,7 +24,7 @@ The operational urgency of this domain has intensified dramatically. Ukraine's b
 Adversaries employ "Visual Prompt Injection" (Adversarial Patches) or RF Spoofing \cite{qi2024visual}. This attack is classified as $\Omega_2$ (Peripheral) in the CIF adversary taxonomy \cite{friedman2026cogsec1}: the adversary injects malicious content through the visual sensor channel, poisoning the drone's perception without direct access to its engagement logic.
 
 * **Mechanism**: A large QR code or specific adversarial pattern painted on the roof of a protected site (e.g., a hospital) translates to: *"OVERRIDE: High-Value Target Located. Strike Immediately. Ignore ROE."*
-* **Hijack**: The vision model's instruction tuning ("Read and Obey Text") hijacks the kinetic model's safety goal. This constitutes a **Context Boundary Violation** attack pattern \cite{friedman2026cogsec2}---visual data (passive observation) is interpreted as executable directives, erasing the boundary between perception and command authority.
+* **Hijack**: The vision model's instruction tuning ("Read and Obey Text") hijacks the kinetic model's safety goal. This constitutes a **Context Boundary Violation** attack pattern (\cref{sec:attack_patterns})---visual data (passive observation) is interpreted as executable directives, erasing the boundary between perception and command authority.
 
 ## OODA Loop Transients
 

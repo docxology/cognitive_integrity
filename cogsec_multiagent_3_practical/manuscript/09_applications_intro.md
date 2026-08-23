@@ -64,7 +64,7 @@ This paper makes the following contributions:
 - **C1:** A unified CIF-AD-OODA integration model for analyzing Goal Hijacking attacks and defenses across arbitrary operational domains.
 - **C2:** Identification of three universal attack patterns---FR Polarity Inversion, Constraint Relaxation, and Context Boundary Violation---through cross-domain synthesis.
 - **C3:** Validation that all five canonical CIF mechanisms provide adequate coverage across ten critical domains, with no mechanism appearing in fewer than three domains and no domain requiring mechanisms outside the CIF vocabulary.
-- **C4:** Three novel defense pattern extensions: verification channel separation, active perturbation probing, and physics-informed invariants.
+- **C4:** Four novel defense pattern extensions: verification channel separation (biowarfare), active perturbation probing (trade wars), physics-informed invariants (infrastructure), and semiotic decoupling (drone wars).
 - **C5:** Temporal scale analysis demonstrating CIF's applicability across more than ten orders of magnitude in OODA cycle time.
 - **C6:** Retrospective validation through six documented AI agent security incidents (2024--2025), confirming that all incidents map to the universal attack pattern taxonomy and would have been detectable by the appropriate CIF mechanism.
 

@@ -45,7 +45,7 @@ Separate proofs are also given for the supporting lemmas and for the corollaries
 - Emergent Stealth-Impact Bound, \cref{cor:emergent-stealth-impact} (S02_eusocial\_cogsec.md)
 
 > **Note on \cref{cor:isolation-blast}.**
-> An earlier audit listed \cref{cor:isolation-blast} among the asserted results. Re-reading the source, this corollary is stated in this supplement (\cref{sec:thm-blast-radius}), immediately after the proved \cref{thm:blast-radius-restated}, as that theorem's degree-restricted consequence ($\lvert \mathcal{N}(a_v) \rvert = k \le n$). It therefore carries no standalone proof environment -- consistent with the other corollaries in this supplement -- and is not deferred. It is recorded here only because the prior audit flagged it, so that its status is unambiguous.
+> This corollary is stated in this supplement (\cref{sec:thm-blast-radius}) immediately after the proved \cref{thm:blast-radius-restated}, as that theorem's degree-restricted consequence ($\lvert \mathcal{N}(a_v) \rvert = k \le n$). It therefore carries no standalone proof environment, consistent with the other corollaries here, and is not among the deferred results.
 
 ## Preliminary Definitions and Notation {#sec:preliminaries}
 
@@ -617,19 +617,30 @@ Classical result from distributed systems (Lamport, Shostak, Pease 1982). With f
 
 \begin{lemma}[Honest Majority]
 \label{lem:honest-majority}
-With $n \geq 3f + 1$:
+With $n \geq 3f + 1$, the honest population satisfies both
 \begin{equation}
 \label{eq:honest-majority}
-n - f \geq 2f + 1 > \frac{2n}{3}
+n - f \geq 2f + 1
+\qquad\text{and}\qquad
+n - f > \frac{2n}{3}.
 \end{equation}
 \end{lemma}
 
 \begin{proof}
-$n - f \geq (3f + 1) - f = 2f + 1$
+For the first bound, $n - f \geq (3f + 1) - f = 2f + 1$.
 
-$\frac{2n}{3} \leq \frac{2(3f+1)}{3} = 2f + \frac{2}{3} < 2f + 1$
+For the second, $n \geq 3f + 1$ gives $f \leq \frac{n-1}{3}$, hence
+\[
+n - f \;\geq\; n - \frac{n-1}{3} \;=\; \frac{2n + 1}{3} \;>\; \frac{2n}{3}.
+\]
 
-Therefore $n - f > \frac{2n}{3}$.
+\emph{Remark.} The two bounds must be established separately; they cannot be
+chained through $2f + 1$. The intermediate inequality $2f + 1 > \frac{2n}{3}$
+holds only when $n \leq 3f + 1$, which is the converse of the hypothesis, and it
+fails as soon as the system is over-provisioned relative to its fault budget
+(for $f = 1$, $n = 10$: $2f + 1 = 3$ while $\frac{2n}{3} \approx 6.67$). The
+honest-majority conclusion itself is unaffected, since it follows from
+$f \leq \frac{n-1}{3}$ directly.
 \end{proof}
 
 \begin{lemma}[Round Progression]
@@ -742,24 +753,25 @@ E[L_{CIF}] &= E[L_{firewall}] + E[\mathbb{1}[\text{quarantine}]] \cdot L_{sandbo
 
 ### Numerical Instantiation {#sec:numerical-instantiation}
 
-With empirical measurements:
+With the same illustrative parameters used in the main text
+(\cref{eq:latency-empirical}) --- worked-example values, not measurements:
 \begin{itemize}
-\item $L_{firewall} = 8\text{ms}$
-\item $L_{sandbox} = 15\text{ms}$
-\item $L_{verify} = 12\text{ms}$
+\item $L_{firewall} = 10\text{ms}$
+\item $L_{sandbox} = 5\text{ms}$
+\item $L_{verify} = 15\text{ms}$
 \item $P_q = 0.3$
 \item $P_v = 0.2$
 \end{itemize}
 
 \begin{equation}
 \label{eq:numerical-instantiation}
-E[L_{CIF}] = 8 + 0.3 \times 15 + 0.2 \times 12 = 8 + 4.5 + 2.4 = 14.9\text{ms}
+E[L_{CIF}] = 10 + 0.3 \times 5 + 0.2 \times 15 = 10 + 1.5 + 3.0 = 14.5\text{ms}
 \end{equation}
 
-With baseline $L_{baseline} = 12\text{ms}$:
+With baseline $L_{baseline} = 11.8\text{ms}$:
 \begin{equation}
 \label{eq:overhead-percent}
-\text{Overhead} = \frac{14.9 - 12}{12} \times 100\% = 24.2\%
+\text{Overhead} = \frac{14.5 - 11.8}{11.8} \times 100\% \approx 22.9\%
 \end{equation}
 
 This matches the empirical observation of approximately 23\% overhead.

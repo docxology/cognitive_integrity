@@ -13,7 +13,7 @@ Program directory containing the Cognitive Security for Multiagent Operators res
 | Project | Description | DOI |
 | ------- | ----------- | --- |
 | `cogsec_multiagent_1_theory/` | Part 1 v2: Theoretical foundations — trust calculus, defense composition algebra, adversary taxonomy, CIF-AD-OODA | 10.5281/zenodo.18364119 |
-| `cogsec_multiagent_2_computational/` | Part 2 v2: Computational validation — 950-attack corpus, adversarial training, red-teaming, colony 500-agent stress | 10.5281/zenodo.18364128 |
+| `cogsec_multiagent_2_computational/` | Part 2 v2: Computational validation — 950-attack corpus, adversarial training, red-teaming, colony detection benchmarks at 20--100 agents plus no-error stress runs at 100--500 | 10.5281/zenodo.18364128 |
 | `cogsec_multiagent_3_practical/` | Part 3+4 merged: Practical guidance + cross-domain CIF-AD-OODA applications | 10.5281/zenodo.18364130 |
 
 ## Series overview
@@ -27,7 +27,7 @@ The Cognitive Integrity Framework (CIF) provides defense-in-depth security for m
 - **Tripwire / Drift Detection**: Canary belief monitoring, KL-divergence surveillance
 - **Provenance Tracking**: Information flow with taint labels
 
-Part 3+4 additionally contributes three novel defense extensions: verification channel separation, active perturbation probing, and physics-informed invariants.
+Part 3+4 additionally contributes four novel defense extensions: verification channel separation, active perturbation probing, physics-informed invariants, and semiotic decoupling (the fourth is the type-theoretic PassiveData/ExecutableDirective separation introduced in the drone-wars domain).
 
 ## Cross-paper reading guide
 

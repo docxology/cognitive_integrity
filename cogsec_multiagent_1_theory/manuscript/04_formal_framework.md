@@ -623,8 +623,12 @@ $\mathcal{I} \cdot \mathcal{S}$ is bounded by the diameter of the manifold:
 \]
 since $d_{\mathrm{FR}} \leq \pi$ (Hellinger antipodal distributions).
 This recovers $C_{\text{channel}} = \pi/2$ as the tight bound when impact
-is measured in natural (Fisher-Rao) units, providing a geometric
-proof of Theorem~\ref{thm:stealth-impact} with the explicit constant.
+is measured in natural (Fisher-Rao) units. It is a geometric \emph{argument}
+for the constant in Theorem~\ref{thm:stealth-impact}, not a proof of that
+theorem: the theorem itself is stated without proof and is recorded as
+deferred in the proof-status index (S01, \cref{sec:proof-status}), and the
+curvature step above assumes the impact measure is the Fisher-Rao distance
+rather than deriving that identification.
 Furthermore, the connection to KL divergence---$D_{\mathrm{KL}}(p \,\|\, p')
 \approx \tfrac{1}{2}(\Delta p)^\top G(p)(\Delta p)$ for small
 perturbations---gives geometric justification for the drift detection

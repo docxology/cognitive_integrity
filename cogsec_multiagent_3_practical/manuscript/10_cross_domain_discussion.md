@@ -83,7 +83,7 @@ Key findings:
 
 1. **Behavioral Invariants are the most universal mechanism** (5/10 domains), reflecting their role as the "last line of defense"---hard predicates that trigger regardless of semantic content.
 2. **All five mechanisms appear in at least 3 domains**, confirming that the CIF vocabulary is neither redundant nor incomplete for the application space surveyed.
-3. **No single mechanism suffices alone.** Every domain requires at least two mechanisms in composition, consistent with Paper 1's defense-in-depth architecture \cite{friedman2026cogsec1}.
+3. **Composition is the common case, but not universal in this matrix.** Six of the ten domains are assigned two or more primary mechanisms (biowarfare and infrastructure take three); cyber-security, supply chain, food security and fake news are each assigned a single primary mechanism. The matrix records the *primary* defense per domain rather than the full deployed stack, so a single mark is not a claim that one mechanism suffices --- Paper 1's defense-in-depth argument \cite{friedman2026cogsec1} still applies to every domain, and the per-domain sections specify the supporting mechanisms.
 4. **Mechanism selection correlates with attack pattern.** FR Polarity Inversion domains predominantly use Behavioral Invariants (the inverted FR violates a hard predicate). Context Boundary Violation domains predominantly use Cognitive Firewall or Belief Sandboxing (the boundary enforcement prevents cross-context contamination).
 
 ## 10.5 Novel Defense Patterns

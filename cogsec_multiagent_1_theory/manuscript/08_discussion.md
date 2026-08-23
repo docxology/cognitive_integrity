@@ -10,10 +10,10 @@ The formal mechanisms proposed in this paper have been validated through extensi
 
 Key empirical findings include:
 
-1. **Defense Composition**: Consistent with Theorem 3.1 and 3.2, layered defenses composed multiplicatively, with the full framework significantly outperforming any single mechanism. Ablation studies (Part 2, \S{5.6}) confirm that removing the Detection module causes the largest detection rate drop, followed by Tripwires and Invariants.
+1. **Defense Composition**: Consistent with the series and parallel detection-rate theorems (\cref{thm:series-detection}, \cref{thm:parallel-detection}), layered defenses composed multiplicatively, with the full framework outperforming any single mechanism. Part 2's ablation studies confirm that removing the Detection module causes the largest drop, followed by the Trust Calculus.
 2. **Trust Boundedness**: The $\delta^d$ trust decay parameter successfully prevented ``trust laundering'' amplification attacks in all tested topologies, validating Formula 4.
-3. **Architecture Dependence**: As predicted by our threat model, peer-to-peer architectures showed the greatest vulnerability to lateral movement (mitigated by the Trust Calculus), while hierarchical architectures were most sensitive to orchestrator compromise (requiring strict tripwires).
-4. **Adversarial Training**: Five rounds of adversarial training on the Claude Code architecture improved hardened detection rates from 38.9\% to 48.1\%, with the round-to-round gain showing geometric decay toward a Nash equilibrium of approximately 50.5\% --- confirming that the bottleneck is adapter implementation maturity, not the defense algorithm quality (Part 2, \S{5g}).
+3. **Architecture Dependence**: As predicted by our threat model, the architecture with the lowest parametric detection in Part 2 is AutoGPT's autonomous-mesh topology, whose distributed trust structure offers the widest lateral-movement surface; hierarchical topologies concentrate risk in orchestrator compromise instead. No peer-to-peer architecture was evaluated.
+4. **Adversarial Training**: In Part 2's closed-form adversarial-training design model, five rounds on the Claude Code architecture raise hardened detection from 52.0\% (Round 1) to 67.9\% (Round 5), $+23.2$ pp over the pre-AT baseline. The per-round gain sequence $(7.3, 5.6, 5.0, 2.9, 2.4)$ pp is approximately linear rather than geometrically decaying, and the projected Nash equilibrium of 100.0\% is a property of the model's assumed gains, not a measured equilibrium. These are design-model values, not pipeline-in-the-loop measurements.
 
 These results confirm that the abstract properties proven here---boundedness, composition, and detectability---translate into concrete security improvements when implemented in realistic agent architectures.
 
@@ -42,7 +42,7 @@ Byzantine Consensus & Coordination attacks \\
 
 The orthogonality of these surfaces explains why no single mechanism suffices: an attack that bypasses input filtering may still violate behavioral invariants; an attack that evades pattern matching may still trigger belief drift detection.
 
-Empirical ablation studies in Part 2 (\S{5.6}) validate this theoretical prediction: removing the Cognitive Firewall causes the largest detection rate drop ($-13\%$), followed by Tripwires ($-9\%$) and Provenance Tracking ($-7\%$). No individual mechanism provides comparable detection rates to the full ensemble---confirming the multiplicative composition theorem (\cref{thm:series-detection}).
+Empirical ablation studies in Part 2 validate this theoretical prediction: removing the Detection module causes the largest drop ($\Delta\text{TPR} \approx -0.051$ on the 98-attack ablation corpus), followed by the Trust Calculus ($\approx -0.020$); Firewall, Invariants and Tripwire tie behind it at $\approx -0.010$, and Consensus, Provenance and Sandbox show no marginal contribution on that corpus. No individual mechanism provides comparable detection rates to the full ensemble---confirming the multiplicative composition theorem (\cref{thm:series-detection}).
 
 ### The Trust Boundedness Guarantee
 

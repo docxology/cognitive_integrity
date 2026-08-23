@@ -1295,7 +1295,7 @@ _STATISTICAL: tuple[Claim, ...] = (
     _c(
         "05b.top3_share_summary",
         "05b_statistical_significance.md",
-        r"account for about (\d+)\\% of the summed negative",
+        r"rising to about (\d+)\\% with any one of the tied triple",
         lambda gt: gt.top_n_harmful_share(3),
         PCT0,
         "percent",
@@ -1351,7 +1351,7 @@ _STATISTICAL: tuple[Claim, ...] = (
     _c(
         "05b.summary_detection_delta",
         "05b_statistical_significance.md",
-        r"Detection module \(\$\\Delta\\text\{TPR\} \\approx -([\d.]+)\$\) is the dominant",
+        r"Detection module \(\$\\Delta\\text\{TPR\} \\approx -([\d.]+)\$\) \$\\gg\$ Trust Calculus",
         lambda gt: gt.component_delta_magnitude("detection"),
         F3,
         "fraction",
@@ -1359,7 +1359,7 @@ _STATISTICAL: tuple[Claim, ...] = (
     _c(
         "05b.summary_synergy",
         "05b_statistical_significance.md",
-        r"strongest synergy \(\$\\approx \+([\d.]+)\$\), confirming",
+        r"both \$\\approx \+([\d.]+)\$---confirming complementary",
         lambda gt: gt.synergy("tripwire", "detection"),
         F3,
         "fraction",

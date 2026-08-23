@@ -27,7 +27,7 @@ Annual total (100 agents) & --- & \textasciitilde\$75K--\$120K & Sum of recurrin
 \end{tabular}
 \end{table}
 
-**Note on overhead**: The +23% latency overhead ($\approx$14.5 ms added to 63 ms baseline) is negligible for most applications. Batch processing or asynchronous pipelines may absorb this cost entirely, since the added latency is small relative to typical inter-agent communication intervals.
+**Note on overhead**: Part 1's worked example puts *total* CIF latency at $\approx$14.5 ms against an 11.8 ms baseline, i.e. $\approx$23% overhead --- 14.5 ms is the total, not an increment, and the 23% is the ratio of the two. Those are illustrative parameters rather than measurements; Part 2's prototype measures a mean firewall latency of 0.08 ms per sample. On either figure the overhead is negligible for most applications. Batch processing or asynchronous pipelines may absorb this cost entirely, since the added latency is small relative to typical inter-agent communication intervals.
 
 ## Cost of a Successful Attack
 

@@ -49,7 +49,7 @@ abstract: "This unified paper (originally Parts 3 and 4 of the Cognitive Securit
   \ and operator risk frameworks.\n\n**Cross-Domain Applications (\xA79\u2013\xA7\
   10).** The CIF-AD-OODA integration model is applied\nto analyze Goal Hijacking across\
   \ ten critical domains. Cross-domain synthesis reveals\nthree universal attack patterns\
-  \ and three novel defense extensions.\n\nThis is Part 3+4 of a three-part series:\n\
+  \ and four novel defense extensions.\n\nThis is Part 3+4 of a three-part series:\n\
   - Part 1 (DOI: 10.5281/zenodo.18364119): Formal foundations and theoretical analysis\n\
   - Part 2 (DOI: 10.5281/zenodo.18364128): Computational validation and implementation\n\
   - Part 3+4 (this paper): Practitioner guidance and cross-domain CIF-AD-OODA applications\n"

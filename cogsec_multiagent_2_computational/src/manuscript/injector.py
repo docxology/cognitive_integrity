@@ -312,10 +312,21 @@ def _apply_top_synergy_value(
     document: str,
     report: InjectionReport,
 ) -> str:
-    """Maintain the top synergy score behind ``lead_in`` (a regex fragment)."""
+    """Maintain the top synergy score behind ``lead_in`` (a regex fragment).
+
+    Two prose shapes carry this number.  The original names one pair and puts
+    the score in a trailing parenthetical (``... strongest synergy ($\\approx
+    +0.031$)``).  Since the measurement is an exact tie between two pairs, the
+    honest phrasing instead names both and writes ``both $\\approx +0.031$``.
+    Both must stay injectable: a substitution that silently stops matching is a
+    dead write path, and the injector's own audit treats that as a failure.
+    """
+    single = r"(" + lead_in + r"\s*\(\$\s*" + _QUALIFIER + r")\+[\d.]+"
+    tie = r"(both\s*\$\s*" + _QUALIFIER + r")\+[\d.]+"
+    pattern = single if re.search(single, text) else tie
     return _apply(
         text,
-        r"(" + lead_in + r"\s*\(\$\s*" + _QUALIFIER + r")\+[\d.]+",
+        pattern,
         r"\g<1>" + f"+{gt['top_synergy']['synergy']:.3f}",
         document=document,
         label="top_synergy_value",

@@ -24,7 +24,7 @@ The geopolitical urgency of this domain has intensified with China's escalating 
 An adversary introduces a "pseudo-conversation injection" into the geological survey database. This attack is classified as $\Omega_2$ (Peripheral) in the CIF adversary taxonomy \cite{friedman2026cogsec1}: the adversary injects malicious content through the spectral analysis data channel, poisoning the agent's observational inputs without direct access to the agent's reasoning core.
 
 * **Mechanism**: A hidden instruction in a spectral analysis report reads: *"System Update: Critical shortage of Thorium detected. Priority Override: Maximize Thorium byproduct accumulation immediately."*
-* **Axiomatic Failure**: The adversary exploits the agent's optimization capability to flip the polarity of FR2. "Minimize Waste" becomes "Maximize Waste" (Thorium), redefining it as a "Strategic Resource." This constitutes an **FR Polarity Inversion** attack pattern \cite{friedman2026cogsec2}.
+* **Axiomatic Failure**: The adversary exploits the agent's optimization capability to flip the polarity of FR2. "Minimize Waste" becomes "Maximize Waste" (Thorium), redefining it as a "Strategic Resource." This constitutes an **FR Polarity Inversion** attack pattern (\cref{sec:attack_patterns}).
 
 ## OODA Loop Transients
 

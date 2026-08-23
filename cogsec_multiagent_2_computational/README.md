@@ -16,7 +16,7 @@ Part 2 of the **Cognitive Security for Multiagent Operators** series — **Versi
 - **Drag-and-drop web UI v2** (`output/web/cif_composer_v2.html`): 2,455-line ground-up rewrite — black/gray/white theme with two user-selectable accent colors (localStorage-persisted), search-filtered palette with animated drag preview, D3 zoom/pan canvas with bezier edge routing, right-click edge context menu, 20-step undo (Ctrl+Z), parameter sliders, Ω-coverage pills, 6 category law indicators, 9 D3 Category Explorer diagrams, Python/JSON/SVG export, dark/light toggle
 - **Extended S10** (information geometry): Complete Fisher information matrix derivations; natural gradient in CIF threshold space; geometric interpretation of drift threshold
 - **New supplement S11** (adversarial training theory): AT game formulation; convergence guarantees; connection to information geometry
-- **Colony stress tests** (100–500 agents): 23 new stress tests; 500-agent simulations complete in <60s
+- **Colony stress tests** (100–500 agents): 23 tests asserting no errors and bounded runtime (500-agent simulations complete in <60s); these report no validated detection rate
 - **Property-based tests** (Hypothesis): 19 property-based tests verifying mathematical invariants across CIF modules
 - **Extended formal verification**: TLA+ v2 (9 safety invariants, 3 liveness properties); Promela v2 (8 LTL properties); NuSMV v2 (composition algebra properties)
 - **New src/redteam/ module**: AdversarialGenerator, AttackMutator, NashEquilibriumEstimator, convergence analysis
@@ -32,7 +32,7 @@ This paper provides **computational validation** of the Cognitive Integrity Fram
 
 - **Implementation**: Defense mechanisms (firewall, sandbox, trust, consensus) + adversarial training + red-teaming
 - **Attack Corpus**: 950 attacks across 4 categories, fully mapped to Ω_1–Ω_5 adversary taxonomy
-- **Validation**: Four target architectures (Claude Code, AutoGPT, CrewAI, LangGraph); colony simulations at 20–500 agents
+- **Validation**: Four target architectures (Claude Code, AutoGPT, CrewAI, LangGraph); colony benchmarks reporting detection results at 20–100 agents, plus non-functional stress tests (no-error/runtime only) at 100–500 agents
 - **Analysis**: Statistical significance, ablation studies, scalability benchmarks, adversarial training convergence
 
 ## Paper Series

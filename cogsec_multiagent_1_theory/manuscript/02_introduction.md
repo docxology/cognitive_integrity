@@ -249,7 +249,7 @@ We present a defense composition algebra enabling formal reasoning about series 
 
 \textbf{RQ4: Fundamental Bounds}. \textit{What are the information-theoretic limits on cognitive attack detection?}
 
-We derive the stealth-impact tradeoff theorem establishing fundamental bounds on detection independent of defense implementation. We prove that attacks cannot simultaneously achieve high impact and complete undetectability, providing theoretical grounding for defense design (\cref{sec:detection-bounds}).
+We state the stealth-impact tradeoff theorem, which bounds detection independently of defense implementation, and give an information-geometric argument for its constant. The theorem asserts that attacks cannot simultaneously achieve high impact and complete undetectability; its full proof is deferred, and the proof-status index (S01, \cref{sec:proof-status}) records which results in this paper are proved and which are asserted (\cref{sec:detection-bounds}).
 
 ## Contributions {#sec:contributions}
 
@@ -323,7 +323,7 @@ Case studies showing CIF in complex realistic deployments & Part 3, \S{6b} \\
 Open problems / research directions for practitioners & Part 3 (DOI: 10.5281/zenodo.18364130), \S{7} (Future Work) \\
 Domain-specific goal-hijacking analyses across ten operational sectors & Part 3, \S{3.01}--\S{3.10} \\
 Three universal attack patterns (FR Polarity Inversion, Constraint Relaxation, Context Boundary Violation) & Part 3, \S{4} (Discussion) \\
-Three novel defense extensions (verification channel separation, active perturbation probing, physics-informed invariants) & Part 3, \S{3.06} (Biowarfare), \S{3.08} (Trade Wars), \S{3.09} (Infrastructure) \\
+Four novel defense extensions (verification channel separation, active perturbation probing, physics-informed invariants, semiotic decoupling) & Part 3, \S{3.06} (Biowarfare), \S{3.08} (Trade Wars), \S{3.09} (Infrastructure) \\
 Retrospective analysis of documented 2024--2025 AI-agent security incidents & Part 3, S02 (Real-World Incidents) \\
 \bottomrule
 \end{tabular}
