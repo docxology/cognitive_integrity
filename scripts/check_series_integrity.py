@@ -388,13 +388,55 @@ def check_bibliography() -> CheckResult:
                 seen[signature] = entry
             by_title.setdefault(signature[0], []).append((part, path, entry))
 
+    # One bibkey must mean one work. Grouping by title cannot see this: it is
+    # the opposite grouping, and it is the more dangerous defect, because a
+    # reader following the same \cite in two papers lands on two sources.
+    by_key: dict[str, list[tuple[str, Path, BibEntry]]] = {}
+    for part in PARTS:
+        path = manuscript_dir(part) / "references.bib"
+        if not path.is_file():
+            continue
+        for entry in parse_bib(path):
+            by_key.setdefault(entry.key, []).append((part, path, entry))
+
+    for key, sightings in by_key.items():
+        if len({part for part, _, _ in sightings}) < 2:
+            continue
+        for attribute, normaliser in (
+            ("title", normalise_title),
+            ("doi", lambda value: value.strip().lower()),
+        ):
+            values = {
+                normaliser(entry.fields.get(attribute, ""))
+                for _, _, entry in sightings
+                if entry.fields.get(attribute)
+            }
+            if len(values) > 1:
+                for part, path, entry in sightings:
+                    stated = entry.fields.get(attribute, "")
+                    if not stated:
+                        continue
+                    result.problems.append(
+                        Problem(
+                            result.name,
+                            rel(path),
+                            entry.line,
+                            f"bibkey {key!r} resolves to a different {attribute} in "
+                            f"another part; one key must mean one work "
+                            f"(this file says {stated[:70]!r})",
+                        )
+                    )
+                break
+
     # The same work must not disagree about itself across the three papers.
     for title_key, sightings in by_title.items():
         if len({part for part, _, _ in sightings}) < 2:
             continue
+        # No "title" here: these entries were grouped by normalised title, so
+        # that comparison is unreachable by construction. The bibkey pass above
+        # is where a title disagreement can actually surface.
         for attribute, normaliser in (
             ("year", lambda value: value.strip()),
-            ("title", normalise_title),
             ("author", normalise_people),
             ("doi", lambda value: value.strip().lower()),
         ):

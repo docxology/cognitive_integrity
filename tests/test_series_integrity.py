@@ -685,6 +685,57 @@ def test_artifact_provenance_ignores_a_sentence_disclaiming_an_artifact(tmp_path
     (module.DATA_DIR / "mystery.json").write_text(json.dumps({"v": 1}), encoding="utf-8")
     assert module.CHECKS["artifact-provenance"]().ok
 
+
+def test_bibliography_catches_one_bibkey_meaning_two_works(tmp_path):
+    """The dangerous direction: same \\cite, different source per paper.
+
+    Grouping entries by title cannot see this -- it is the opposite grouping --
+    and it is what let `parr2019generalised` point at the Biological Cybernetics
+    paper in two parts and a Scientific Reports paper in the third.
+    """
+    one = """@article{shared2020work,
+  author = {Ada Lovelace},
+  title  = {The First Paper},
+  year   = {2020},
+  doi    = {10.1000/first}
+}
+"""
+    other = """@article{shared2020work,
+  author = {Alan Turing},
+  title  = {A Completely Different Paper},
+  year   = {2020},
+  doi    = {10.1000/second}
+}
+"""
+    tree = _build_tree(
+        tmp_path / "keycollide",
+        part_text={"1": CEILING_OK, "2": CEILING_OK, "3": CEILING_OK},
+        bibs={"1": one, "2": other},
+    )
+    module = _load_module(tree)
+    result = module.CHECKS["bibliography"]()
+    assert not result.ok
+    assert any("resolves to a different" in p.message for p in result.problems), [
+        p.message for p in result.problems
+    ]
+
+
+def test_bibliography_accepts_one_bibkey_meaning_one_work(tmp_path):
+    same = """@article{shared2020work,
+  author = {Ada Lovelace},
+  title  = {The First Paper},
+  year   = {2020},
+  doi    = {10.1000/first}
+}
+"""
+    tree = _build_tree(
+        tmp_path / "keyagree",
+        part_text={"1": CEILING_OK, "2": CEILING_OK, "3": CEILING_OK},
+        bibs={"1": same, "2": same},
+    )
+    module = _load_module(tree)
+    assert module.CHECKS["bibliography"]().ok
+
 # ---------------------------------------------------------------------------
 # Structural invariants of the registry itself
 # ---------------------------------------------------------------------------
