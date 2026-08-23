@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.3.22)  23 AUG 2026 12:29
+This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.3.22)  23 AUG 2026 14:15
 entering extended mode
  %&-line parsing enabled.
 **/Users/4d/Documents/GitHub/projects/working/cognitive_integrity/cogsec_multia
@@ -1916,7 +1916,7 @@ LaTeX Font Info:    Font shape `TU/lmss/bx/it' in size <10.95> not available
 ]
 
 LaTeX Warning: Citation `friedman2026cogsec3' on page 77 undefined on input lin
-e 1183.
+e 1185.
 
 [77
 
@@ -1956,31 +1956,31 @@ e 1183.
 ]
 
 LaTeX Warning: Citation `wilson1971insect' on page 93 undefined on input line 1
-364.
+366.
 
 
 LaTeX Warning: Citation `holldobler1990ants' on page 93 undefined on input line
- 1364.
+ 1366.
 
 
 LaTeX Warning: Citation `bonabeau1999swarm' on page 93 undefined on input line
-1364.
+1366.
 
 
 LaTeX Warning: Citation `seeley2010honeybee' on page 93 undefined on input line
- 1364.
+ 1366.
 
 
 LaTeX Warning: Citation `grasse1959reconstruction' on page 93 undefined on inpu
-t line 1364.
+t line 1366.
 
 
 LaTeX Warning: Citation `lenoir2001chemical' on page 93 undefined on input line
- 1364.
+ 1366.
 
 
 LaTeX Warning: Citation `kilner2011cuckoos' on page 93 undefined on input line
-1364.
+1366.
 
 [93
 
@@ -1989,17 +1989,17 @@ LaTeX Warning: Citation `kilner2011cuckoos' on page 93 undefined on input line
 ] [95
 
 ]
-Underfull \vbox (badness 1168) detected at line 1407
+Underfull \vbox (badness 1168) detected at line 1409
  []
 
 [96
 
 ]
-Underfull \vbox (badness 1168) detected at line 1407
+Underfull \vbox (badness 1168) detected at line 1409
  []
 
 
-Overfull \vbox (52.70099pt too high) detected at line 1407
+Overfull \vbox (52.70099pt too high) detected at line 1409
  []
 
 [97
@@ -2035,10 +2035,10 @@ LaTeX Warning: There were undefined references.
 
  )
 Here is how much of TeX's memory you used:
- 33627 strings out of 468168
- 671538 string characters out of 5432815
+ 33628 strings out of 468168
+ 671549 string characters out of 5432815
  1218685 words of memory out of 5000000
- 61725 multiletter control sequences out of 15000+600000
+ 61726 multiletter control sequences out of 15000+600000
  634321 words of font info for 111 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  128i,16n,123p,1128b,817s stack positions out of 10000i,1000n,20000p,200000b,200000s

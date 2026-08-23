@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.3.22)  23 AUG 2026 12:34
+This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.3.22)  23 AUG 2026 14:20
 entering extended mode
  %&-line parsing enabled.
 **_combined_manuscript.tex
@@ -1909,32 +1909,32 @@ File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
  [6] [7] [8]
 ignored: Infinite glue shrinkage found in box being split [9] [10]
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 12.0pt on input line 584.
+(Font)              scaled to size 12.0pt on input line 599.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 8.0pt on input line 584.
+(Font)              scaled to size 8.0pt on input line 599.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 6.0pt on input line 584.
+(Font)              scaled to size 6.0pt on input line 599.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 12.0011pt on input line 584.
+(Font)              scaled to size 12.0011pt on input line 599.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 8.00073pt on input line 584.
+(Font)              scaled to size 8.00073pt on input line 599.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 6.00055pt on input line 584.
+(Font)              scaled to size 6.00055pt on input line 599.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 11.99872pt on input line 584.
+(Font)              scaled to size 11.99872pt on input line 599.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 7.99915pt on input line 584.
+(Font)              scaled to size 7.99915pt on input line 599.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 5.99936pt on input line 584.
+(Font)              scaled to size 5.99936pt on input line 599.
  [11] [12] [13]
 File: ../figures/trust_decay.png Graphic file (type bmp)
 <../figures/trust_decay.png>
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 9.0pt on input line 854.
+(Font)              scaled to size 9.0pt on input line 870.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 9.00082pt on input line 854.
+(Font)              scaled to size 9.00082pt on input line 870.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 8.99904pt on input line 854.
+(Font)              scaled to size 8.99904pt on input line 870.
  [14]
 ignored: Infinite glue shrinkage found in box being split [15] [16] [17]
 File: ../figures/risk_matrix.png Graphic file (type bmp)
@@ -1942,24 +1942,24 @@ File: ../figures/risk_matrix.png Graphic file (type bmp)
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 1132.
+(hyperref)                removing `subscript' on input line 1148.
 
 [18]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 1164.
+(hyperref)                removing `subscript' on input line 1180.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 1194.
+(hyperref)                removing `subscript' on input line 1210.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 1223.
+(hyperref)                removing `subscript' on input line 1239.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 1251.
+(hyperref)                removing `subscript' on input line 1267.
 
 [19] [20] [21] [22] [23] [24]
 File: ../figures/posture_radar.png Graphic file (type bmp)
@@ -1973,108 +1973,113 @@ File: ../figures/timeline.png Graphic file (type bmp)
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 2019.
+(hyperref)                removing `subscript' on input line 2035.
 
 [30]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 2064.
+(hyperref)                removing `subscript' on input line 2080.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 2111.
+(hyperref)                removing `subscript' on input line 2127.
 
 [31]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 2161.
+(hyperref)                removing `subscript' on input line 2177.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 2208.
+(hyperref)                removing `subscript' on input line 2224.
 
 [32] [33]
-Overfull \hbox (88.23111pt too wide) in paragraph at lines 2283--2296
+Underfull \hbox (badness 1983) in paragraph at lines 2304--2305
+\TU/lmr/m/n/10 (parametric overall sum-
+ []
+
+
+Overfull \hbox (88.23111pt too wide) in paragraph at lines 2299--2312
  [][]
  []
 
 
-Underfull \hbox (badness 1478) in paragraph at lines 2325--2326
+Underfull \hbox (badness 1478) in paragraph at lines 2341--2342
 []|\TU/lmr/m/n/10 Data breach cost (IBM 2024:
  []
 
 
-Underfull \hbox (badness 6641) in paragraph at lines 2328--2329
+Underfull \hbox (badness 6641) in paragraph at lines 2344--2345
 []|\TU/lmr/m/n/10 Scale-dependent; financial or
  []
 
 [34] [35]
-Underfull \hbox (badness 10000) in paragraph at lines 2468--2468
+Underfull \hbox (badness 10000) in paragraph at lines 2484--2484
 []|\TU/lmr/m/n/10 Firewall rejec-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 2469--2469
+Underfull \hbox (badness 10000) in paragraph at lines 2485--2485
 []|\TU/lmr/m/n/10 Trust matrix
  []
 
 
-Underfull \hbox (badness 5954) in paragraph at lines 2469--2469
+Underfull \hbox (badness 5954) in paragraph at lines 2485--2485
 []|\TU/lmr/m/n/10 Average pairwise
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 2470--2470
+Underfull \hbox (badness 10000) in paragraph at lines 2486--2486
 []|\TU/lmr/m/n/10 Per-agent $[][]$
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 2471--2471
+Underfull \hbox (badness 10000) in paragraph at lines 2487--2487
 \TU/lmr/m/n/10 interaction pat-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 2472--2472
+Underfull \hbox (badness 10000) in paragraph at lines 2488--2488
 []|\TU/lmr/m/n/10 False positive
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 2472--2472
+Underfull \hbox (badness 10000) in paragraph at lines 2488--2488
 []|\TU/lmr/m/n/10 % of reviewed
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 2472--2472
+Underfull \hbox (badness 10000) in paragraph at lines 2488--2488
 \TU/lmr/m/n/10 alerts confirmed
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 2473--2473
+Underfull \hbox (badness 10000) in paragraph at lines 2489--2489
 []|\TU/lmr/m/n/10 Consensus la-
  []
 
 
-Underfull \hbox (badness 1831) in paragraph at lines 2473--2473
+Underfull \hbox (badness 1831) in paragraph at lines 2489--2489
 []|\TU/lmr/m/n/10 95th pct consen-
  []
 
 
-Overfull \hbox (36.62126pt too wide) in paragraph at lines 2464--2476
+Overfull \hbox (36.62126pt too wide) in paragraph at lines 2480--2492
  [][]
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 2498--2498
+Underfull \hbox (badness 10000) in paragraph at lines 2514--2514
 []|\TU/lmr/m/n/10 Two+ metrics in
  []
 
 
-Underfull \hbox (badness 7851) in paragraph at lines 2498--2498
+Underfull \hbox (badness 7851) in paragraph at lines 2514--2514
 []|\TU/lmr/m/n/10 Agent quarantine +
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 2499--2499
+Underfull \hbox (badness 10000) in paragraph at lines 2515--2515
 []|\TU/lmr/m/n/10 Playbook execution
  []
 
@@ -2084,28 +2089,28 @@ File: ../figures/pitfall_severity.png Graphic file (type bmp)
  [39] [40] [41] [42]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 2953.
+(hyperref)                removing `subscript' on input line 2969.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 3018.
+(hyperref)                removing `subscript' on input line 3034.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 3018.
+(hyperref)                removing `subscript' on input line 3034.
 
 [43]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 3098.
+(hyperref)                removing `subscript' on input line 3114.
 
 [44] [45] [46] [47] [48] [49] [50] [51] [52] [53]
-Underfull \hbox (badness 10000) in paragraph at lines 3853--3853
+Underfull \hbox (badness 10000) in paragraph at lines 3873--3873
 []|\TU/lmr/m/n/9 Trust Calculus, $[][][][][][]$ decay theorem, no-
  []
 
 
-Underfull \hbox (badness 2035) in paragraph at lines 3863--3863
+Underfull \hbox (badness 2035) in paragraph at lines 3883--3883
 []|\TU/lmr/m/n/9 Category-theoretic formalization + free-energy /
  []
 
@@ -2135,7 +2140,7 @@ L3 programming layer <2026-01-19>
 Here is how much of TeX's memory you used:
  52560 strings out of 468168
  1230016 string characters out of 5432815
- 1951410 words of memory out of 5000000
+ 1952410 words of memory out of 5000000
  80483 multiletter control sequences out of 15000+600000
  634173 words of font info for 110 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191

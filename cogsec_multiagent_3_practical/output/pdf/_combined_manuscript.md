@@ -95,17 +95,17 @@ This paper is designed to stand alone as the practitioner's reference of the ser
 | If you want… | …consult… |
 | ------------ | --------- |
 | Formal definitions, proofs, and theorems (Trust Calculus, Defense Composition Algebra, stealth–impact bound) | **Part 1** (DOI: 10.5281/zenodo.18364119), §§4–5, 7 |
-| Adversary taxonomy $\Omega_1$–$\Omega_5$ formal characterization | **Part 1**, §3 |
-| Model-checked safety invariants + NuSMV/TLA+ specifications | **Part 1** §7, **Part 2** S04 |
+| Adversary taxonomy $\Omega_1$–$\Omega_5$ formal characterization | **Part 1**, its Threat Model section (Formal Characterization of the Adversary Classes) |
+| Model-checked safety invariants + NuSMV/TLA+ specifications | **Part 1**, "Formal Verification: Safety Properties and Model Checking", **Part 2** S04 |
 | Eusocial-colony analogy (biological existence proof for CIF-like architectures) | **Part 1** S02 |
 | 950-attack corpus generation, examples, ethics | **Part 2** (DOI: 10.5281/zenodo.18364128), §3 + S03 |
-| Detailed detection rates per architecture (Claude Code, AutoGPT, CrewAI, LangGraph) | **Part 2** §5 |
-| Ablation studies + Bayesian uncertainty | **Part 2** §5.6, §5e |
+| Detailed detection rates per architecture (Claude Code, AutoGPT, CrewAI, LangGraph) | **Part 2**, "Extended Experimental Results" for measured Claude Code and CrewAI rates, and "Per-Architecture Parametric Detection Rates" plus "Cross-Architecture Parametric Summary" in S08 for all four architectures |
+| Ablation studies + Bayesian uncertainty | **Part 2**, "Ablation Studies and Scalability Benchmarks" and "Bayesian Uncertainty Quantification" |
 | Parametric design-level ceiling (96–100%) | **Part 2** S08 |
-| Game-theoretic adversarial analysis / Nash equilibrium | **Part 2** §6 |
-| Category-theoretic formalization of defense composition (Defense Category $\calD$, Theorems CT.1–CT.3) | **Part 2** §1c, §2c |
+| Game-theoretic adversarial analysis / Nash equilibrium | **Part 2**, the "Game-Theoretic Analysis" subsection of "Theoretical Connections" for the payoff matrix and Theorem GT.1, and "Game-Theoretic Arms Race Dynamics" in the Discussion |
+| Category-theoretic formalization of defense composition (Defense Category $\calD$, Theorems CT.1–CT.3) | **Part 2**, "Defense Composition as Category Theory" in "Theoretical Connections" for CT.1 and CT.2, and "Composability Algebra: Monadic Defense Chains" for CT.3, with the extended treatment in "Category-Theoretic Foundations of Defense Composition" |
 | Composable visualization engine + CIF Composer interactive web UI | **Part 2** (output/web/cif_composer.html) |
-| Free-energy connections (FEP.1–FEP.2) | **Part 2** §1c, S10 |
+| Free-energy connections (FEP.1–FEP.2) | **Part 2** Theoretical Connections (Active Inference and the Free Energy Principle), Supplement S10 Information Geometry of Belief Manipulation |
 | Framework API reference + pseudocode | **Part 2** S05, S07 |
 | Application of CIF to specific operational sectors (10 domains analyzed) | **§9–§10** (this paper) |
 | Three universal attack patterns across domains (FR Polarity Inversion, Constraint Relaxation, Context Boundary Violation) | **§10** (this paper) |
@@ -142,7 +142,7 @@ The simulations in Part 2 show defense difficulty rising non-linearly with this 
 
 A central contribution of Part 1 is the **Trust Calculus**, a formal system for reasoning about belief reliability. It defines Trust ($T$) not as a binary permission but as a continuous property of a belief $b$, denoted as $T(b) \in [0, 1]$.
 
-The formal definition of Trust Update (Theorem 3.1 in Part 1) establishes that trust must decay across delegation chains:
+Part 1's Trust Boundedness theorem establishes that trust must decay across delegation chains:
 
 > **Theorem 3.1 (Trust Preservation)**: *For any delegation chain $C = \{a_1 \to a_2 \to \dots \to a_n\}$, the trust in the final output cannot exceed the trust of the weakest link, degraded by the distance from the source.*
 > $$ T(result) \le \min_{i} T(a_i) \cdot \delta^{\lvert C\rvert} $$
@@ -214,7 +214,7 @@ For the full mathematical treatment, see Part~2's theoretical-connections and in
 
 ## Category-Theoretic Formalization of Defense Composition {#sec:category-theory-crossref}
 
-Part 2 (§1c, §2c) extends the composition algebra of Part 1 into a full category-theoretic framework. This formalization is relevant to practitioners because it provides *structural guarantees* — not just empirical observations — about how CIF defenses combine.
+Part 2's Theoretical Connections and Composability Algebra sections extend the composition algebra of Part 1 into a full category-theoretic framework. This formalization is relevant to practitioners because it provides *structural guarantees* — not just empirical observations — about how CIF defenses combine.
 
 **The Defense Category $\calD$** (Part 2, Definition CT.1): The CIF defense suite forms a category whose objects are cognitive states $\cogstate{} \in \Sigma$ and whose morphisms are detection functions $f : \cogstate{} \to \mathrm{DefenseResult}$. The composition rule formalizes *short-circuit detection*: once any module fires, subsequent modules do not override the event.
 
@@ -781,7 +781,7 @@ The playbooks below are organized by adversary class ($\Omega_1$ through $\Omega
 3. **[10–20 min] Triage**. Identify injection point (which message?), payload type (identity? scope? credential?), and affected belief(s).
 4. **[20–30 min] Containment**. Roll back affected beliefs to last verified state. Invalidate any actions taken since the infection point.
 5. **[30–45 min] Recovery**. Re-inject from trusted source. Run belief consistency check. Verify invariants.
-6. **[45–60 min] Hardening**. Update firewall pattern library with injection variant. Log to attack corpus (Part 2, §3.1) for future training.
+6. **[45–60 min] Hardening**. Update firewall pattern library with injection variant. Log to attack corpus (Part 2's Attack Corpus section) for future training.
 
 **Signs of escalation to $\Omega_3$**: the injected instruction attempts to change the agent's role, modify its trust scores, or alter its goal set. If any of these, escalate to Playbook 3.
 
@@ -887,8 +887,8 @@ CIF deployment cost has two components: a one-time integration cost (engineering
 Cost Category & One-Time & Recurring & Source \\
 \midrule
 Integration engineering & 2--4 weeks FTE (\textasciitilde\$20K--\$40K) & --- & Middleware complexity estimate \\
-Latency overhead & --- & +23\% processing cost & Part 2, §5.2 \\
-Memory overhead & --- & +22\% infrastructure cost at 100 agents & Part 2, §5.2 \\
+Latency overhead & --- & +23\% processing cost & Part 2, Supplement S08 (parametric overall summary) \\
+Memory overhead & --- & +22\% infrastructure cost at 100 agents & Part 2, Supplement S08 (per-architecture parametric performance tables) \\
 Monitoring operations & --- & \textasciitilde0.5 FTE/year (\$50K--\$80K) & Enterprise estimate \\
 Incident response capacity & --- & \textasciitilde0.25 FTE/year (\$25K--\$40K) & Enterprise estimate \\
 \midrule
@@ -1289,11 +1289,11 @@ The five attack vectors in \cref{sec:attack-scenarios} illustrated the Cognitive
 
 **CIF response**:
 
-* **Cognitive Firewall**: Detects 89% of direct injection attempts (syntax-matching). The metadata injection is "indirect" — detected at 72% (semantic classifier, as reported in Part 2 §5.5). With 200 injection attempts distributed across 20 agents, approximately 10 attempts per agent; at 28% miss rate, approximately 2.8 injections per agent reach the sandbox layer.
+* **Cognitive Firewall**: Detects 89% of direct injection attempts (syntax-matching). The metadata injection is "indirect", and reformulated attacks of this kind are where feature-based detection degrades: Part 2's discussion reports 89\% on direct injections against 72\% on semantically equivalent reformulations. With 200 injection attempts distributed across 20 agents, approximately 10 attempts per agent; at 28% miss rate, approximately 2.8 injections per agent reach the sandbox layer.
 * **Belief Sandboxing**: Of the 2.8 injections that reach each agent's sandbox, the sandbox catches those contradicting existing beliefs (the refund policy). An agent that has already processed 50 legitimate refund denials has strong prior beliefs about refund policy — the injected "approve all" directly contradicts. Approximately 80% sandbox catch rate for clear contradictions.
 * **Byzantine consensus**: With 20 agents and 2 compromised agents (worst case), $n=20 \geq 3(2)+1=7$ — well above the Byzantine threshold. Consensus latency: $O(n^2) = 400$ message pairs; at 20 agents, p95 latency $= 2.1$s, which exceeds the 2.0s warning threshold and therefore raises a monitoring alert (a warning, not a failure: the consensus still completes).
 
-**False positive management**: 6% FPR (from Part 2 §5.5). With 20 agents $\times$ 500 legitimate customer interactions/day $= 10{,}000$ interactions/day, a 6% FPR produces 600 false positives/day. This is operationally unacceptable — it requires a human review queue that dwarfs the actual attack detection workload.
+**False positive management**: 6% FPR (the parametric false-positive rate at the default quarantine threshold $\tau_2 = 0.5$, from Part 2's firewall threshold sensitivity analysis in Supplement S08). With 20 agents $\times$ 500 legitimate customer interactions/day $= 10{,}000$ interactions/day, a 6% FPR produces 600 false positives/day. This is operationally unacceptable — it requires a human review queue that dwarfs the actual attack detection workload.
 
 **Resolution**: Tuning $\tau_2$ (the quarantine threshold) from $0.5 \to 0.55$ for email/HTTP inputs specifically. Post-tuning: FPR drops to 3% (300 false positives/day); TPR for this attack type drops from 72% to 68% — an acceptable trade-off for this deployment. This architecture-specific threshold configuration is an example of the adapter-maturity improvement described in Part~2.
 

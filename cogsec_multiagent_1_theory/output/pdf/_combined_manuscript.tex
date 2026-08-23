@@ -2027,7 +2027,7 @@ $\mathcal{T}_{i\to j}$ is proportional to the precision $\rho_j$ with
 which agent $i$ should weight messages from agent $j$ when updating its
 posterior beliefs.  High-trust messages dominate the belief update;
 low-trust messages contribute marginally.  This correspondence provides a
-neurocomputational grounding for the trust calculus (Part~2, \S 1.2).
+neurocomputational grounding for the trust calculus (Part~2, Theorem~FEP.2, ``Trust-Precision Duality'').
 \end{remark}
 
 \begin{definition}[Trust Delegation]
@@ -2973,7 +2973,7 @@ generative model prior $P$, penalised by explanatory adequacy.
 A cognitive attack $omega$ is effective if and only if it induces a free energy
 increase $Delta F(omega) > kappa_{\mathrm{FEP}}$, where $kappa_{\mathrm{FEP}}$
 is the sandbox's corroboration threshold $kappa$ scaled by the source
-precision $epsilon_{\text{prec}}$ (Part~2, \S 1.2):
+precision $epsilon_{\text{prec}}$ (Part~2, Theorem~FEP.1, ``Attack-FEP Equivalence''):
 \[
 \Delta F(\omega) = F\!\left(Q_{\text{attacked}}\right) - F\!\left(Q_{\text{baseline}}\right)
 \leq \kappa \cdot \epsilon_{\text{prec}}.
@@ -4319,7 +4319,8 @@ hardened detection from 52.0\% at Round 1 to 67.9\% at Round 5 in Part
 2's closed-form design model; (3) per-stage miss rates attributed to
 \(\Omega_3\)--\(\Omega_5\) adversary classes explain the residual
 detection gap between the parametric ceiling and prototype performance
-(Part 2, §5g, §S08).
+(Part 2, ``Adversarial Training Evaluation'' and the ``Parametric
+Simulation Analysis'' supplement).
 \end{quote}
 
 \newpage
@@ -4822,7 +4823,7 @@ series, along with full implementation configurations.
 
 \begin{table}[htbp]
 \centering
-\caption{Model checking verification results. ``Verified'' here denotes a theoretical state-space bound established in this part; executable NuSMV/SPIN/TLA+ runs are deferred to Part 2 \S 04 (S04). No model checker was executed in this part.}
+\caption{Model checking verification results. ``Verified'' here denotes a theoretical state-space bound established in this part; executable NuSMV/SPIN/TLA+ runs are deferred to Part 2's ``Model Checking Tool Configurations'' appendix (S04). No model checker was executed in this part.}
 \label{tab:mc-results}
 \begin{tabular}{@{}lll@{}}
 \toprule
@@ -5895,7 +5896,7 @@ detectors; and (4) Assumption 5 (bounded compute) is implicitly bounded
 by the 950-attack corpus scope. The 51--88 percentage-point gap between
 parametric ceiling and prototype pipeline performance is attributed to
 adapter implementation maturity, not to violation of the formal
-assumptions (Part 2, §7 Conclusion).
+assumptions (Part 2's Conclusion, ``Honest Gap Characterization'').
 \end{quote}
 
 \newpage
@@ -7949,7 +7950,9 @@ practical deployment advice, see Part 3 \cite{friedman2026cogsec3}, its
 Deployment Profiles section. For domain-specific application of
 colony-level defenses across critical operational sectors (including ten
 high-stakes domains, three universal attack patterns, and retrospective
-analysis of 2024--2025 AI-agent incidents) see Part 3, §3.
+analysis of 2024--2025 AI-agent incidents) see Part 3's \emph{Part II:
+Applications} section and its supplementary catalog of documented
+AI-agent incidents.
 \end{quote}
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}

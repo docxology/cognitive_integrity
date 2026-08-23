@@ -1293,7 +1293,7 @@ $\mathcal{T}_{i\to j}$ is proportional to the precision $\rho_j$ with
 which agent $i$ should weight messages from agent $j$ when updating its
 posterior beliefs.  High-trust messages dominate the belief update;
 low-trust messages contribute marginally.  This correspondence provides a
-neurocomputational grounding for the trust calculus (Part~2, \S 1.2).
+neurocomputational grounding for the trust calculus (Part~2, Theorem~FEP.2, ``Trust-Precision Duality'').
 \end{remark}
 
 \begin{definition}[Trust Delegation]
@@ -2113,7 +2113,7 @@ generative model prior $P$, penalised by explanatory adequacy.
 A cognitive attack $\omega$ is effective if and only if it induces a free energy
 increase $\Delta F(\omega) > \kappa_{\mathrm{FEP}}$, where $\kappa_{\mathrm{FEP}}$
 is the sandbox's corroboration threshold $\kappa$ scaled by the source
-precision $\epsilon_{\text{prec}}$ (Part~2, \S 1.2):
+precision $\epsilon_{\text{prec}}$ (Part~2, Theorem~FEP.1, ``Attack-FEP Equivalence''):
 \[
 \Delta F(\omega) = F\!\left(Q_{\text{attacked}}\right) - F\!\left(Q_{\text{baseline}}\right)
 \leq \kappa \cdot \epsilon_{\text{prec}}.
@@ -3317,7 +3317,7 @@ where $\alpha_{\text{lr}}$ is the learning rate and $C_{\text{FN}}, C_{\text{FP}
 
 This adaptive mechanism allows the pipeline to respond to shifting attack distributions, reducing the staleness problem that affects static threshold configurations.
 
-> **Empirical validation of this section's theory**: The detection methods formalized here are empirically evaluated in Part 2 \cite{friedman2026cogsec2}. Key findings: (1) the multi-stage pipeline shows biased escalation consistent with \cref{thm:pipeline-tpr}; (2) adversarial training across five rounds demonstrates adaptive threshold adjustment consistent with \cref{def:adaptive-threshold}, raising hardened detection from 52.0\% at Round 1 to 67.9\% at Round 5 in Part 2's closed-form design model; (3) per-stage miss rates attributed to $\Omega_3$--$\Omega_5$ adversary classes explain the residual detection gap between the parametric ceiling and prototype performance (Part 2, §5g, §S08).
+> **Empirical validation of this section's theory**: The detection methods formalized here are empirically evaluated in Part 2 \cite{friedman2026cogsec2}. Key findings: (1) the multi-stage pipeline shows biased escalation consistent with \cref{thm:pipeline-tpr}; (2) adversarial training across five rounds demonstrates adaptive threshold adjustment consistent with \cref{def:adaptive-threshold}, raising hardened detection from 52.0\% at Round 1 to 67.9\% at Round 5 in Part 2's closed-form design model; (3) per-stage miss rates attributed to $\Omega_3$--$\Omega_5$ adversary classes explain the residual detection gap between the parametric ceiling and prototype performance (Part 2, "Adversarial Training Evaluation" and the "Parametric Simulation Analysis" supplement).
 
 
 
@@ -3810,7 +3810,7 @@ The following table summarizes the expected state space exploration for each pro
 
 \begin{table}[htbp]
 \centering
-\caption{Model checking verification results. ``Verified'' here denotes a theoretical state-space bound established in this part; executable NuSMV/SPIN/TLA+ runs are deferred to Part 2 \S 04 (S04). No model checker was executed in this part.}
+\caption{Model checking verification results. ``Verified'' here denotes a theoretical state-space bound established in this part; executable NuSMV/SPIN/TLA+ runs are deferred to Part 2's ``Model Checking Tool Configurations'' appendix (S04). No model checker was executed in this part.}
 \label{tab:mc-results}
 \begin{tabular}{@{}lll@{}}
 \toprule
@@ -4494,7 +4494,7 @@ The stealth-impact bound $\mathcal{I} \cdot \mathcal{S} \leq \pi/2$ (Remark~\ref
 \item \textbf{OODA Cycle Time Bounds}: Property~\ref{prop:ooda-latency} gives a sufficient condition but not a tight bound on the minimum OODA cycle time compatible with full CIF monitoring. Characterizing this bound as a function of defense portfolio is open.
 \end{enumerate}
 
-> **What Part 2 validates empirically**: Part 2 \cite{friedman2026cogsec2} tests CIF under conditions that stress several of the assumptions above. Specifically: (1) Assumptions 1--2 (honest orchestrator, bounded faults) are validated by architecture-specific experiments across the hierarchical, autonomous-mesh, role-based and graph-based topologies of Part 2's four adapters; (2) Assumption 3 (independent defenses) is tested via ablation studies showing two pairs tied for the strongest synergy---Firewall + Detection and Tripwire + Detection, both $+0.031$ beyond additive; (3) Assumption 4 (stationary distributions) is tested via five rounds of adversarial training confirming distribution shift degrades static detectors; and (4) Assumption 5 (bounded compute) is implicitly bounded by the 950-attack corpus scope. The 51--88 percentage-point gap between parametric ceiling and prototype pipeline performance is attributed to adapter implementation maturity, not to violation of the formal assumptions (Part 2, §7 Conclusion).
+> **What Part 2 validates empirically**: Part 2 \cite{friedman2026cogsec2} tests CIF under conditions that stress several of the assumptions above. Specifically: (1) Assumptions 1--2 (honest orchestrator, bounded faults) are validated by architecture-specific experiments across the hierarchical, autonomous-mesh, role-based and graph-based topologies of Part 2's four adapters; (2) Assumption 3 (independent defenses) is tested via ablation studies showing two pairs tied for the strongest synergy---Firewall + Detection and Tripwire + Detection, both $+0.031$ beyond additive; (3) Assumption 4 (stationary distributions) is tested via five rounds of adversarial training confirming distribution shift degrades static detectors; and (4) Assumption 5 (bounded compute) is implicitly bounded by the 950-attack corpus scope. The 51--88 percentage-point gap between parametric ceiling and prototype pipeline performance is attributed to adapter implementation maturity, not to violation of the formal assumptions (Part 2's Conclusion, "Honest Gap Characterization").
 
 
 
@@ -6135,7 +6135,7 @@ Colony CogSec mechanisms integrate with the CIF defense stack (\cref{sec:defense
 
 The full CIF with colony extensions achieves defense in depth against both individual-targeted and colony-targeted attacks.
 
-> **Note**: For implementation guidance, operational checklists, and practical deployment advice, see Part 3 \cite{friedman2026cogsec3}, its Deployment Profiles section. For domain-specific application of colony-level defenses across critical operational sectors (including ten high-stakes domains, three universal attack patterns, and retrospective analysis of 2024--2025 AI-agent incidents) see Part 3, §3.
+> **Note**: For implementation guidance, operational checklists, and practical deployment advice, see Part 3 \cite{friedman2026cogsec3}, its Deployment Profiles section. For domain-specific application of colony-level defenses across critical operational sectors (including ten high-stakes domains, three universal attack patterns, and retrospective analysis of 2024--2025 AI-agent incidents) see Part 3's *Part II: Applications* section and its supplementary catalog of documented AI-agent incidents.
 
 ---
 
