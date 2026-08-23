@@ -439,7 +439,7 @@ A trust domain $\mathcal{D}$ is a set of agents sharing a common trust authority
 For agent $a_i$ in domain $\mathcal{D}_1$ and agent $a_j$ in domain $\mathcal{D}_2$:
 \begin{equation}
 \label{eq:cross-domain-trust}
-\mathcal{T}_{i \to j}^{\text{fed}} = \mathcal{T}_{i \to \mathcal{D}*2} \cdot \mathcal{T}_{\mathcal{D}_2}(j)
+\mathcal{T}_{i \to j}^{\text{fed}} = \mathcal{T}_{i \to \mathcal{D}_2} \cdot \mathcal{T}_{\mathcal{D}_2}(j)
 \end{equation}
 where $\mathcal{T}_{i \to \mathcal{D}_2}$ is $a_i$'s trust in domain $\mathcal{D}_2$ and $\mathcal{T}_{\mathcal{D}_2}(j)$ is $a_j$'s standing within its domain.
 \end{definition}

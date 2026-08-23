@@ -84,6 +84,14 @@ def plot_trust_decay(output_dir: str | Path = "output/figures") -> plt.Figure:
     # Panel B: Trust preservation under attack scenarios
     ax2 = axes[1]
 
+    # SCHEMATIC. These four values are chosen to illustrate the shape of the
+    # argument -- more layers retain more trust under attack -- and are not
+    # measurements: no artifact under output/data produces them, and 0.94 in
+    # particular is a stale headline the series has since corrected to a
+    # measured 96--100% ceiling. They are labelled as schematic in the panel
+    # title and the caption so no reader takes them for evidence. Replacing
+    # them with a derivation requires a trust-retention experiment that does
+    # not yet exist; inventing one here would be worse than saying so.
     scenarios = ["No Defense", "Firewall Only", "Trust Decay\n(δ=0.9)", "Full CIF"]
     initial_trust = [1.0, 1.0, 1.0, 1.0]
     after_attack = [0.15, 0.45, 0.72, 0.94]
@@ -109,7 +117,11 @@ def plot_trust_decay(output_dir: str | Path = "output/figures") -> plt.Figure:
     )
 
     ax2.set_ylabel("Trust Integrity", fontsize=12)
-    ax2.set_title("B. Trust Preservation Under Attack", fontsize=13, fontweight="bold")
+    ax2.set_title(
+        "B. Trust Preservation Under Attack (schematic)",
+        fontsize=13,
+        fontweight="bold",
+    )
     ax2.set_xticks(x)
     ax2.set_xticklabels(scenarios, fontsize=10)
     ax2.legend(loc="upper left", fontsize=FONTSIZE["base"])

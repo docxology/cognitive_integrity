@@ -566,7 +566,9 @@ def check_truncation() -> CheckResult:
 
 #: ``\mathcal{T}*{i \to j}`` where ``_`` was meant: a literal star renders as a
 #: binary operator instead of a subscript.
-_SUBSCRIPT_STAR = re.compile(r"[A-Za-z}]\*[{A-Za-z]")
+# The subscripted token may be a digit: ``\mathcal{D}*2`` for ``\mathcal{D}_2``
+#: renders as a multiplication and was invisible while this required a letter.
+_SUBSCRIPT_STAR = re.compile(r"[A-Za-z}]\*[{A-Za-z0-9]")
 
 #: A doubled backslash before a command name: pandoc emits a line break followed
 #: by literal text rather than the control sequence.

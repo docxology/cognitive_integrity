@@ -97,19 +97,23 @@ where $a_v$ is the victim/compromised agent, $\sigma_v = \langle \mathcal{B}_v, 
 
 \begin{theorem}[Agent Compromise Blast Radius]
 \label{thm:blast-radius}
-When agent $a_v \in \Omega_3$ is fully compromised, its \emph{trust-influence blast radius}
-is the delegated trust its neighbours place in it:
+When agent $a_v \in \Omega_3$ is fully compromised, its \emph{trust-influence blast
+radius} is the trust it can propagate onward through each neighbour that
+delegates to it --- one delegation hop, so each contribution decays by $\delta$:
 \begin{equation}
 \label{eq:blast-radius}
-\text{BlastRadius}(a_v) = \sum_{a_j \in \mathcal{N}(a_v)} \mathcal{T}_{a_j \to a_v}
+\text{BlastRadius}(a_v) = \sum_{a_j \in \mathcal{N}(a_v)} \delta \cdot \mathcal{T}_{a_j \to a_v}
 \end{equation}
 The CIF trust decay bound (\cref{thm:trust-bounded}) limits this to:
 \begin{equation}
 \label{eq:blast-radius-bound}
 \text{BlastRadius}(a_v) \leq n \cdot \delta \cdot \max_{a_j} \mathcal{T}_{a_j \to a_v}
 \end{equation}
-where $n = |\mathcal{N}(a_v)|$ and each delegated edge contributes at most
-$\delta \cdot \mathcal{T}$.
+where $n = |\mathcal{N}(a_v)|$. The $\delta$ belongs to the definition, not only to
+the bound: the quantity of interest is influence \emph{propagated through} the
+compromised agent, which costs one delegation hop. The undecayed sum
+$\sum_{a_j} \mathcal{T}_{a_j \to a_v}$ is the direct trust placed in $a_v$ and is
+bounded only by $n \cdot \max_{a_j} \mathcal{T}_{a_j \to a_v}$.
 
 The reachability-weighted quantity
 $\sum_{a_j \in \mathcal{N}(a_v)} \mathcal{T}_{a_j \to a_v} \cdot |\text{Reachable}(a_j)|$

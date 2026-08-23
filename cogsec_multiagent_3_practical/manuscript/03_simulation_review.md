@@ -50,7 +50,7 @@ The test corpus included direct prompt injection, poisoned RAG contexts, deep tr
 The colony benchmark reveals a striking pattern: **emergent misalignment achieves the lowest detection rate (74.3\%) at the highest false positive rate (25.5\%)** of any evaluated scenario. (These are Part 2's 30-seed benchmark means; an earlier single-seed figure of 56.1\% is not the publication estimate.) Part 2's game-theoretic analysis explains why: in the zero-sum game between CIF and an adversary, emergent misalignment is the Nash-equilibrium attack strategy. It is the attacker's best response to full CIF deployment.
 
 The game-theoretic payoff matrix shows that:
-- Full CIF achieves 94\% detection against direct injection ($\Omega_1$), 89\% against trust exploitation ($\Omega_4$)
+- Full CIF achieves 99--100\% detection against direct injection ($\Omega_1$) and 96--100\% against impersonation, the corpus category standing for trust exploitation ($\Omega_4$)
 - Against emergent misalignment (distributed sub-threshold drift with no explicit adversaries), detection falls to 74.3\%
 - A rational adversary, knowing CIF is deployed, will prefer emergent misalignment over direct injection
 

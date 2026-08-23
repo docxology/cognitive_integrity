@@ -481,6 +481,10 @@ LEDGER: tuple[LedgerVariable, ...] = (
         require=("direct-injection", "direct injection"),
         exclude=OTHER_ARMS,
         guard=near("direct injection", "direct-injection"),
+        # A sentence may pair this range with another category's range of the
+        # same shape ("99--100% against direct injection and 96--100% against
+        # impersonation"); direct injection is the one stated first.
+        first_only=True,
     ),
     LedgerVariable(
         id="parametric_ceiling_low_bare",

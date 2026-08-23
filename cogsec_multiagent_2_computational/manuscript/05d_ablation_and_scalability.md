@@ -98,7 +98,7 @@ quadratic terms are significant; the intercept is not, consistent with a cost th
 per-agent rather than fixed. The linear term dominates at small $n$, but the quadratic term is
 real and takes over as $n$ grows: at 100 agents the $\beta_2 n^2$ contribution (4.6 ms) already
 exceeds the $\beta_1 n$ contribution (5.6 ms) by nearly half, which is the $O(n^2)$ trust-matrix
-construction becoming visible, with the quadratic contribution ($\beta_2 = 0.020$) becoming material only beyond this range.
+construction becoming visible, with the quadratic contribution ($\beta_2 = 0.00046$ ms per agent-pair) already material at this range.
 
 **Memory model**: $M = \gamma_0 + \gamma_1 \cdot n + \gamma_2 \cdot n^2$
 
