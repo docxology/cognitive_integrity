@@ -623,3 +623,76 @@ sys.exit(g.main(argv=["--output", {out!r}],
         assert late_date == _expected_creation_date("1700000000")
         assert early_date != late_date
         assert early_hash != late_hash
+
+
+# ---------------------------------------------------------------------------
+# Committed figures must match what the generators produce
+# ---------------------------------------------------------------------------
+
+
+class TestTrackedFiguresAreRegenerable:
+    """A committed figure that no longer regenerates is a stale illustration.
+
+    The ablation figure diverged from its generator and nothing noticed: the
+    committed PNG ordered the components differently from a fresh run and
+    labelled Trust Calculus with the wrong delta, while the prose beside it
+    described a third arrangement. The generators are deterministic -- two runs
+    are byte-identical -- so a mismatch means the committed bytes are stale, not
+    that the comparison is flaky.
+    """
+
+    def test_generation_is_deterministic(self, tmp_path):
+        """Establish determinism first, or the comparison below proves nothing."""
+        import subprocess
+        import sys
+
+        root = Path(__file__).parent.parent
+        outs = []
+        for run in ("a", "b"):
+            out = tmp_path / run
+            proc = subprocess.run(
+                [sys.executable, str(root / "scripts" / "generate_all_figures.py"),
+                 "--output", str(out)],
+                cwd=str(root), capture_output=True, text=True, timeout=600,
+            )
+            assert proc.returncode == 0, proc.stdout + proc.stderr
+            outs.append(out)
+
+        first = {p.name: p.read_bytes() for p in outs[0].glob("*.png")}
+        second = {p.name: p.read_bytes() for p in outs[1].glob("*.png")}
+        assert first, "no figures were produced; the generator sweep is vacuous"
+        differing = [name for name in first if first[name] != second.get(name)]
+        assert not differing, (
+            f"figure generation is not deterministic for {differing}; the "
+            f"regeneration check below cannot be trusted until it is"
+        )
+
+    def test_every_committed_figure_matches_a_fresh_run(self, tmp_path):
+        import subprocess
+        import sys
+
+        root = Path(__file__).parent.parent
+        out = tmp_path / "fresh"
+        proc = subprocess.run(
+            [sys.executable, str(root / "scripts" / "generate_all_figures.py"),
+             "--output", str(out)],
+            cwd=str(root), capture_output=True, text=True, timeout=600,
+        )
+        assert proc.returncode == 0, proc.stdout + proc.stderr
+
+        committed_dir = root / "output" / "figures"
+        fresh = sorted(out.glob("*.png"))
+        assert fresh, "no figures were produced"
+
+        stale = []
+        for produced in fresh:
+            committed = committed_dir / produced.name
+            if not committed.is_file():
+                stale.append(f"{produced.name} (not committed)")
+            elif committed.read_bytes() != produced.read_bytes():
+                stale.append(f"{produced.name} (committed bytes differ)")
+        assert not stale, (
+            "committed figures do not match their generators; run "
+            "`python scripts/generate_all_figures.py` and commit the result: "
+            f"{stale}"
+        )

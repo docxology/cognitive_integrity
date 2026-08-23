@@ -31,10 +31,14 @@ def _load_ablation_data(output_dir: Path) -> tuple:
 
     if "component_removal" in data:
         removal_list = data["component_removal"]
-        if removal_list:
-            full_tpr = removal_list[0]["tpr"] + removal_list[0]["delta_tpr"]
-        else:
-            full_tpr = 0.965
+        # Read the declared full-pipeline rate rather than reconstructing it.
+        # Reconstructing it as ``tpr + delta_tpr`` had the sign backwards --
+        # delta_tpr is the loss from removing a module, so adding it subtracts
+        # the loss twice and put the "Full CIF" bar at 0.020 where the artifact
+        # says 0.122. A missing key is now loud: generate_all_figures collects
+        # generator exceptions and exits 1, which is what should happen when the
+        # evidence a figure draws is absent.
+        full_tpr = float(data["full_pipeline"]["tpr"])
 
         components = ["Full CIF"]
         detection = [full_tpr]
@@ -101,16 +105,29 @@ def plot_ablation_study(output_dir: str | Path = "output/figures") -> Figure:
     ax.barh(y_pos, detection, color=colors, edgecolor="black", linewidth=1)
 
     for i, (det, d) in enumerate(zip(detection, delta)):
-        ax.text(det + 0.005, i, f"{det:.2f}", va="center", fontsize=10, fontweight="bold")
+        ax.text(det + max(detection) * 0.02, i, f"{det:.3f}", va="center", fontsize=10, fontweight="bold")
         if d != 0:
-            ax.text(0.72, i, f"Δ = {d:+.2f}", va="center", fontsize=10, color="#7F8C8D", style="italic")  # noqa: E501
+                # Trailing each bar's own value label rather than sharing a fixed
+            # column: a fixed column collides with the legend, and the literal
+            # it used before assumed the old 0.70--1.00 window.
+            ax.text(det + max(detection) * 0.13, i, f"Δ = {d:+.3f}", va="center", fontsize=10, color="#7F8C8D", style="italic")  # noqa: E501
 
     ax.set_yticks(y_pos)
     ax.set_yticklabels(components, fontsize=11)
     ax.set_xlabel("Detection Rate", fontsize=12)
     ax.set_title("Ablation Study: Defense Component Contribution", fontsize=14, fontweight="bold", pad=15)  # noqa: E501
-    ax.set_xlim(0.70, 1.0)
-    ax.axvline(x=0.94, color=SEMANTIC_COLORS["firewall"], linestyle="--", alpha=0.5, linewidth=1.5)
+    # The axis follows the data. A hardcoded 0.70--1.00 window put every bar
+    # outside the canvas -- the figure shipped, and was cited, with no bars at
+    # all -- because the measured rates are around 0.12.
+    ax.set_xlim(0.0, max(detection) * 1.42)
+    ax.axvline(
+        x=detection[0],
+        color=SEMANTIC_COLORS["firewall"],
+        linestyle="--",
+        alpha=0.5,
+        linewidth=1.5,
+        label="Full CIF",
+    )
     ax.grid(True, alpha=0.3, axis="x")
 
     legend_elements = [
@@ -119,7 +136,18 @@ def plot_ablation_study(output_dir: str | Path = "output/figures") -> Figure:
         Patch(facecolor=SEMANTIC_COLORS["invariants"], edgecolor="black", label="Moderate (−0.07 < Δ ≤ −0.04)"),  # noqa: E501
         Patch(facecolor=SEMANTIC_COLORS["sandbox"], edgecolor="black", label="Minor (Δ > −0.04)"),
     ]
-    ax.legend(handles=legend_elements, loc="lower right", fontsize=FONTSIZE["base"], title="Impact Severity")  # noqa: E501
+    # Outside the axes: every in-axes corner now carries either a bar, a value
+    # label or a delta label, and an overlapping legend hides the data it is
+    # meant to explain.
+    ax.legend(
+        handles=legend_elements,
+        # Upper right: the zero-delta rows carry no delta label, so that
+        # corner is the only region with no data or annotation in it.
+        loc="upper right",
+        fontsize=FONTSIZE["base"],
+        title="Impact Severity",
+        framealpha=0.95,
+    )
 
     add_source_annotation(fig, "src/visualization/figures/ablation_study.py")
     save_figure(fig, "ablation_study", output_dir=output_dir)

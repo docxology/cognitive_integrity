@@ -4,9 +4,9 @@
   "note": "Counts are pytest collection totals, not pass counts: collection is deterministic and side-effect free, whereas a pass count depends on the environment a given run happened to have.",
   "per_part": {
     "cogsec_multiagent_1_theory": 442,
-    "cogsec_multiagent_2_computational": 3384,
+    "cogsec_multiagent_2_computational": 3386,
     "cogsec_multiagent_3_practical": 935
   },
   "program_level": 50,
-  "total": 4811
+  "total": 4813
 }

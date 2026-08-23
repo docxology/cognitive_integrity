@@ -10,6 +10,7 @@ Covers the specific missing lines in:
 from __future__ import annotations
 
 import json
+import pytest
 
 import matplotlib
 import matplotlib.pyplot as plt
@@ -508,16 +509,21 @@ class TestAblationStudyFigureCoverage:
         has_png = (fig_dir / "ablation_study.png").exists()
         assert has_pdf or has_png
 
-    def test_plot_ablation_study_empty_removal_list(self, tmp_path):
+    def test_plot_ablation_study_refuses_an_artifact_with_no_full_pipeline(self, tmp_path):
+        """A missing full-pipeline rate must be loud, not filled in.
+
+        This branch used to fall back to a literal 0.965 when the artifact had
+        no component-removal rows, so a figure drawn from absent evidence looked
+        exactly like one drawn from a measurement. generate_all_figures collects
+        generator exceptions and exits 1, which is what should happen when the
+        data a figure illustrates is not there.
+        """
         from src.visualization.figures.ablation_study import plot_ablation_study
         data_dir = tmp_path / "data"
         data_dir.mkdir(parents=True, exist_ok=True)
-        empty_data = {
-            "component_removal": []
-        }
         with open(data_dir / "ablation_results.json", "w") as f:
-            json.dump(empty_data, f)
+            json.dump({"component_removal": []}, f)
 
         fig_dir = tmp_path / "figures"
-        fig = plot_ablation_study(output_dir=fig_dir)
-        assert fig is not None
+        with pytest.raises(KeyError):
+            plot_ablation_study(output_dir=fig_dir)
