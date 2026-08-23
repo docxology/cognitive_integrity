@@ -23,11 +23,15 @@ DOMAINS = [
 ]
 DOMAINS_SHORT = ["RE", "NS", "Cy", "Dr", "SC", "Bio", "FS", "TW", "Inf", "FN"]
 
+# Row 3 (Cyber-Security) is a Context Boundary Violation, not a Constraint
+# Relaxation: its post-attack design matrix introduces off-diagonal A_12/A_21
+# into a matrix that was diagonal and leaves the diagonal magnitudes intact,
+# which is Pattern 3's signature. See 09e_cyber_security.md.
 ATTACK_PATTERNS = np.array(
     [
         [1, 0, 0],
         [0, 0, 1],
-        [0, 1, 0],
+        [0, 0, 1],
         [0, 0, 1],
         [0, 1, 0],
         [1, 0, 0],

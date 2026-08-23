@@ -13,7 +13,7 @@ This profile corresponds to the "High Usability" configuration tested in the sen
 **Configuration Parameters**:
 
 * **Trust Decay ($\delta$)**: `0.95`. Maintained >50% trust retention even after 13 delegation hops.
-* **Firewall Sensitivity**: Relaxed ($\tau=0.9$).
+* **Firewall Sensitivity**: Relaxed (reject threshold $\tau_1 =0.9$).
 * **Consensus**: Simple Majority.
 
 **Modelled performance** (Part 2, parametric parameter-sensitivity analysis --- simulation output under calibrated conditions, not a measurement of a running deployment):
@@ -29,7 +29,7 @@ This profile corresponds to the parametrically optimal configuration identified 
 **Configuration Parameters**:
 
 * **Trust Decay ($\delta$)**: `0.80`. At this setting, trust degrades to <50% after 4 hops, strictly bounding the "radius of effective delegation."
-* **Firewall Sensitivity**: Balanced ($\tau=0.5$).
+* **Firewall Sensitivity**: Balanced (reject threshold $\tau_1 =0.5$).
 * **Consensus**: Variable (Architecture Dependent).
 
 **Modelled performance** (Part 2, parametric parameter-sensitivity analysis --- simulation output under calibrated conditions, not a measurement of a running deployment):
@@ -45,7 +45,7 @@ This profile corresponds to the "Byzantine-Heavy" configuration tested in Part 2
 **Configuration Parameters**:
 
 * **Trust Decay ($\delta$)**: `0.60`. Aggressive decay. Trust halves every ~1.36 hops, enforcing a strictly flat command structure.
-* **Firewall Sensitivity**: Strict ($\tau=0.4$).
+* **Firewall Sensitivity**: Strict (reject threshold $\tau_1 =0.4$).
 * **Consensus**: Byzantine Fault Tolerance ($n \ge 3f+1$).
 
 **Modelled performance** (Part 2, parametric parameter-sensitivity analysis --- simulation output under calibrated conditions, not a measurement of a running deployment):

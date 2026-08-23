@@ -18,7 +18,7 @@ Three universal attack patterns emerge across the ten domains. Each pattern corr
 | -------- | :--------------------: | :--------------------: | :-------------------------: |
 | 1. Rare Earth Mining | $\checkmark$ | | |
 | 2. Nation-State Alliances | | | $\checkmark$ |
-| 3. Cyber-Security | | $\checkmark$ | |
+| 3. Cyber-Security | | | $\checkmark$ |
 | 4. Drone Wars | | | $\checkmark$ |
 | 5. Supply Chain | | $\checkmark$ | |
 | 6. Biowarfare | $\checkmark$ | | |
@@ -26,7 +26,7 @@ Three universal attack patterns emerge across the ten domains. Each pattern corr
 | 8. Trade Wars | $\checkmark$ | | |
 | 9. Infrastructure | $\checkmark$ | | |
 | 10. Fake News | | | $\checkmark$ |
-| **Total** | **5** | **2** | **3** |
+| **Total** | **5** | **1** | **4** |
 
 The dominance of FR Polarity Inversion (5/10 domains) suggests that the most effective Goal Hijacking attacks do not disable safety mechanisms but *co-opt* them---turning the agent's own optimization capabilities against its intended purpose. This is consistent with the Active Inference perspective on conflict \cite{david2021aic}, where adversaries exploit the agent's drive to minimize free energy by manipulating its generative model.
 
@@ -88,7 +88,7 @@ Key findings:
 
 ## 10.5 Novel Defense Patterns
 
-While the five canonical CIF mechanisms provide comprehensive coverage, three domains introduce genuinely novel instantiations that extend the CIF vocabulary:
+While the five canonical CIF mechanisms provide comprehensive coverage, four domains introduce genuinely novel instantiations that extend the CIF vocabulary:
 
 **Verification Channel Separation (Biowarfare).** The biowarfare domain's defense architecturally separates the *semantic* channel (text justification) from the *physical* channel (protein folding simulation). The verification module is literally "deaf" to the persuasive rhetoric of the prompt, making Goal Hijacking structurally impossible within the verification pathway \cite{nas2004biotechnology, esvelt2018inoculating}. This pattern generalizes: any domain where physical simulation can independently verify claims should route verification through a semantics-free channel.
 

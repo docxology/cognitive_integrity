@@ -4,7 +4,10 @@
 **Owner:** Daniel Ari Friedman
 **Status:** Round 10 (cross-paper) complete at HEAD. Round 10 found that every gate in this
 repository was scoped to a single part, so cross-paper drift was structurally invisible; a
-program-level gate now exists (`scripts/check_series_integrity.py`, wired into CI).
+program-level gate now exists (`scripts/check_series_integrity.py`, wired into CI) with five
+gating checks --- shared-quantities, bibliography, truncation, math-hygiene and
+artifact-provenance --- plus an advisory cross-paper-pointer lint. Each was written because a
+real defect had already passed through the space it now covers.
 **Auditor:** seven-lens review with adversarial verification of every finding; 113 of 114
 findings survived verification, 44 at HIGH
 **Scope:** All three papers in `cognitive_integrity/` (Part 1 theory, Part 2 computational, Part 3+4 practical)
@@ -19,7 +22,7 @@ findings survived verification, 44 at HIGH
 | 1 | 437 passed / 0 skipped | PASS (7/7) | |
 | 2 | 3369 passed / 3 skipped | claim registry 163/163 MATCH | |
 | 3 | 935 passed / 0 skipped | PASS (8/8) | |
-| series | 25 passed (`tests/test_series_integrity.py`) | gate PASS | new in Round 10 |
+| series | 33 passed (`tests/test_series_integrity.py`) | gate PASS | new in Round 10 |
 
 Measured 2026-08-22. The series row is the new program-level gate; it had no predecessor,
 which is the finding that organises this round.
@@ -99,14 +102,20 @@ Program: CITATION.cff schema-valid.
   It has now drifted three times. Emitting it into a Part 2 artifact and hydrating a
   `{{TOKEN}}` at render time is the fix that holds.
 
-### Round 10 findings not yet implemented
+### Round 10 findings still open
 
-113 findings survived adversarial verification; the table above records those closed. The
-remainder are recorded in the review output and are dominated by three classes: Part 2
-presenting `DataGenerator` output as end-to-end measurement in §05d, three mutually
-inconsistent component-hierarchy orderings across §05f/§06/§07, and a false Honest-Majority
-lemma in Part 1 whose proof inverts its own hypothesis. Each changes what a paper claims and
-is an author call, not a mechanical correction.
+113 findings survived adversarial verification. All HIGH findings and the great majority of
+MED are closed across the seven Round-10 commits; what remains is listed below, and every
+remaining item is either an author decision or a judgement call about what a paper should
+claim rather than a mechanical correction.
+
+| ID | What is left |
+|----|--------------|
+| N9, N10 | Symbol overloading: `d` carries three unrelated meanings in Part 2 (delegation depth, distance, dimension) and only one is documented; Part 1's supplement lists $\lambda$, $\rho$ and $M$ with two meanings each while the body carries four for $\rho$. Disambiguating means choosing new symbols, which is an author call. |
+| crossref-MISSED-28 | Part 3's game-theoretic payoff bullets quote numbers that match no Part 2 table. Either re-derive them from `src/analysis/game_theory.py` or drop the bullets. |
+| P3-06 | Case Study 3's threshold-tuning result runs opposite to Part 2's measured direction. Resolving it needs the case study re-run, not a text edit. |
+| BIB-11 | Roughly half of every bibliography is uncited. Gating this would fail with ~150 violations on day one, so it is recorded rather than enforced; the honest fix is a pruning pass. |
+| H1--H3, H5 | The standing author-math backlog (defense independence, closed-semiring axioms, the Fisher-Rao bound, KL-AUC direction). Round 10 made the *claims* honest --- each is now recorded as asserted rather than proved --- but the proofs remain open. |
 
 ### Major — Scoped (deferred)
 - **H2 (Part 2) — Real-mode AT is a structural no-op.** Refined thresholds are never threaded into the real detector. **Acceptance:** defensible mapping onto detector parameters + held-out delta>0 + regression test. Author architecture decision.

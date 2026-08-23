@@ -42,9 +42,18 @@ class TestDomainCoveragePayload:
         assert np.asarray(payload["attack_patterns"]).shape == (10, 3)
         assert np.asarray(payload["coverage_matrix"]).shape == (5, 10)
 
-    def test_attack_pattern_totals_are_5_2_3(self):
+    def test_attack_pattern_totals_are_5_1_4(self):
+        """Column totals of the pattern matrix, pinned to the manuscript table.
+
+        Cyber-Security was previously counted as a Constraint Relaxation, giving
+        5/2/3.  Its post-attack design matrix introduces off-diagonal coupling
+        into a diagonal matrix while leaving the diagonal magnitudes intact,
+        which is the Context Boundary Violation signature, so the totals are
+        5/1/4.  This pin exists so the matrix, the section-10.1 table and the
+        per-domain sections cannot drift apart.
+        """
         totals = ATTACK_PATTERNS.sum(axis=0).tolist()
-        assert totals == [5, 2, 3], totals
+        assert totals == [5, 1, 4], totals
 
     def test_mechanism_row_totals_are_3_4_5_3_3(self):
         totals = COVERAGE_MATRIX.sum(axis=1).tolist()
