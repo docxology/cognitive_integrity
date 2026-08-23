@@ -155,6 +155,17 @@ _ARTIFACTS: dict[str, object] = {
         "framework_track": [{"n_agents": 2}, {"n_agents": 100}],
     },
     "redteam_evaluation_results.json": {"data_origin": "real_pipeline", "n_attacks_generated": 950},
+    "test_inventory.json": {
+        "data_origin": "real_pipeline",
+        "source_script": "scripts/collect_test_inventory.py",
+        "per_part": {
+            "cogsec_multiagent_1_theory": 441,
+            "cogsec_multiagent_2_computational": 3380,
+            "cogsec_multiagent_3_practical": 935,
+        },
+        "program_level": 49,
+        "total": 4805,
+    },
     "adversarial_training_results.json": {
         "source_script": "scripts/run_adversarial_training.py",
         "baseline_dr": 0.447,
@@ -192,6 +203,7 @@ def _body(ceiling: str = "96") -> str:
     emergent = colony["detection_rate_mean"] * 100
     low = int(ceiling) - mean
     high = 100 - abl["full_pipeline"]["tpr"] * 100
+    tests_p2 = _ARTIFACTS["test_inventory.json"]["per_part"]["cogsec_multiagent_2_computational"]
 
     return (
         "# Body\n\n"
@@ -208,6 +220,7 @@ def _body(ceiling: str = "96") -> str:
         f"Emergent misalignment detection reaches {emergent:.1f}\\%.\n\n"
         f"There is a {low:.0f}--{high:.0f} percentage-point gap to close.\n\n"
         "The study spans ten domains; those ten domains are analysed in turn.\n\n"
+        f"The evidence includes {tests_p2:,} tests.\n\n"
         "Data from `output/data/multi_seed_results.json`.\n"
     )
 
