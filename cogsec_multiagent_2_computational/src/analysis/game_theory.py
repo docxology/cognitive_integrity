@@ -17,7 +17,10 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import List, Tuple
 
+import json
+
 import numpy as np
+from pathlib import Path
 from scipy.optimize import linprog
 
 # ---------------------------------------------------------------------------
@@ -288,9 +291,22 @@ def compute_cif_payoff_matrix() -> Tuple[np.ndarray, List[str], List[str]]:
     """Construct the attacker x defender payoff matrix for CIF.
 
     Rows are the six top-level attack families and columns are six
-    deployment configurations of the CIF defense stack.  Values are
-    approximate detection rates from the Paper 2 S08 parametric
-    simulation study.
+    deployment configurations of the CIF defense stack.
+
+    Provenance, which is not uniform across the matrix and matters:
+
+    * 35 of the 36 cells are design-model values from the S08 parametric
+      response surface.  No measurement stands behind them; the pipeline has
+      no per-family-by-per-mechanism evaluation arm.
+    * One cell -- ``(emergent_misalignment, full_cif)`` -- does have a measured
+      counterpart, and it is read from ``colony_results.json`` rather than
+      typed here.  That artifact is ``data_origin: real_pipeline``, 30 repeats,
+      and gives 0.7429.  The literal that used to sit in this cell was 0.56,
+      the single-seed figure the manuscripts explicitly retract as "not the
+      publication estimate" -- while the Nash result computed from it was
+      quoted as a finding.  Substituting the published value moves the game
+      value from 0.56 to 0.61 and moves the attacker's pure best response from
+      emergent misalignment to coordination.
 
     Returns:
         Tuple ``(M, attack_labels, defense_labels)`` where ``M`` has
@@ -320,11 +336,36 @@ def compute_cif_payoff_matrix() -> Tuple[np.ndarray, List[str], List[str]]:
             [0.00,    0.30,    0.25,    0.60,      0.75,    0.84],  # trust
             [0.00,    0.40,    0.60,    0.50,      0.70,    0.82],  # belief
             [0.00,    0.20,    0.15,    0.40,      0.55,    0.61],  # coord
-            [0.00,    0.15,    0.10,    0.30,      0.45,    0.56],  # emergent
+            [0.00,    0.15,    0.10,    0.30,      0.45,    np.nan],  # emergent
         ],
         dtype=float,
     )
+    M[attack_labels.index("emergent_misalignment"), defense_labels.index("full_cif")] = (
+        _measured_emergent_full_cif()
+    )
     return M, attack_labels, defense_labels
+
+
+def _measured_emergent_full_cif() -> float:
+    """The one payoff cell with a measurement behind it, read from the artifact."""
+    for candidate in (
+        Path(__file__).resolve().parents[2] / "output" / "data" / "colony_results.json",
+        Path("output/data/colony_results.json"),
+    ):
+        if candidate.is_file():
+            with open(candidate) as handle:
+                payload = json.load(handle)
+            for scenario in payload.get("scenarios", []):
+                if scenario.get("scenario") == "emergent_misalignment":
+                    return float(scenario["detection_rate_mean"])
+            raise ValueError(
+                f"{candidate} has no emergent_misalignment scenario; the payoff "
+                f"matrix cannot be built without its one measured cell"
+            )
+    raise FileNotFoundError(
+        "colony_results.json is missing; refusing to fall back to a typed literal "
+        "for the one cell of this matrix that is supposed to be measured"
+    )
 
 
 # ---------------------------------------------------------------------------

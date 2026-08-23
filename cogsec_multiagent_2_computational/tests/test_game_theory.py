@@ -158,3 +158,49 @@ def test_solve_handles_simple_2x2_matrix():
     assert res.defender_strategy == pytest.approx(
         np.array([0.5, 0.5]), abs=1e-6
     )
+
+
+def test_the_one_measured_payoff_cell_comes_from_the_artifact() -> None:
+    """The emergent-misalignment cell must not be a typed literal.
+
+    It carried 0.56 -- the single-seed figure the manuscripts explicitly
+    retract as "not the publication estimate" -- while a Nash result computed
+    from it was published as a finding. Reading it from colony_results.json is
+    what makes that impossible to repeat: change the benchmark and the
+    equilibrium changes with it, or the build fails.
+    """
+    import json
+    from pathlib import Path
+
+    from analysis.game_theory import compute_cif_payoff_matrix
+
+    matrix, attacks, defenses = compute_cif_payoff_matrix()
+    artifact = json.loads(
+        (Path(__file__).resolve().parents[1] / "output" / "data" / "colony_results.json").read_text()
+    )
+    measured = next(
+        s["detection_rate_mean"]
+        for s in artifact["scenarios"]
+        if s["scenario"] == "emergent_misalignment"
+    )
+    cell = matrix[attacks.index("emergent_misalignment"), defenses.index("full_cif")]
+    assert cell == pytest.approx(measured), (
+        f"payoff cell {cell} does not match the benchmark {measured}"
+    )
+    assert cell != pytest.approx(0.56, abs=1e-9), "the retracted single-seed value is back"
+
+
+def test_the_equilibrium_follows_the_measured_cell() -> None:
+    """Guard the conclusion, not just the input.
+
+    On the published benchmark the attacker's best response is coordination.
+    If someone re-hardcodes the cell, this fails alongside the one above rather
+    than leaving the paper's headline quietly resting on a stale number.
+    """
+    from analysis.game_theory import compute_cif_payoff_matrix, solve_zero_sum_game
+
+    matrix, attacks, defenses = compute_cif_payoff_matrix()
+    result = solve_zero_sum_game(matrix)
+    assert defenses[result.defender_pure_best] == "full_cif"
+    assert attacks[result.attacker_pure_best] == "coordination"
+    assert result.game_value == pytest.approx(0.61, abs=5e-3)

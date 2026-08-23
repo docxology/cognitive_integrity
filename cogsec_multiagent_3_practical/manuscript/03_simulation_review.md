@@ -45,14 +45,16 @@ The test corpus included direct prompt injection, poisoned RAG contexts, deep tr
 **The Data**: High-impact attacks were consistently easier to detect than low-impact nudges.
 **The Implication**: "Catastrophic" takeover attempts generate significant noise in the system state. The primary challenge for defenders is not the sudden takeover, but the slow, subtle drift of agent beliefs over long time horizons.
 
-## Finding 6: Emergent Misalignment Is the Nash-Optimal Attack
+## Finding 6: Emergent Misalignment Is the Hardest Scenario to Detect
 
-The colony benchmark reveals a striking pattern: **emergent misalignment achieves the lowest detection rate (74.3\%) at the highest false positive rate (25.5\%)** of any evaluated scenario. (These are Part 2's 30-seed benchmark means; an earlier single-seed figure of 56.1\% is not the publication estimate.) Part 2's game-theoretic analysis explains why: in the zero-sum game between CIF and an adversary, emergent misalignment is the Nash-equilibrium attack strategy. It is the attacker's best response to full CIF deployment.
+The colony benchmark reveals a striking pattern: **emergent misalignment achieves the lowest detection rate (74.3\%) at the highest false positive rate (25.5\%)** of any evaluated scenario. (These are Part 2's 30-seed benchmark means; an earlier single-seed figure of 56.1\% is not the publication estimate.) Part 2's game-theoretic analysis does not explain why, and it is worth being exact about that. Its payoff matrix is a design model: thirty-five of its thirty-six cells have no measurement behind them, and the one that does is this scenario. On the published 74.3\% the equilibrium moves to coordination with game value 0.61; it named emergent misalignment only while the matrix still carried the retracted single-seed 56.1\%. What survives is the measurement itself: of the five scenarios the colony benchmark actually runs, emergent misalignment is the hardest to detect, and by a clear margin.
 
-The game-theoretic payoff matrix shows that:
+Part 2's parametric evaluation and colony benchmark show that:
 - Full CIF achieves 99--100\% detection against direct injection ($\Omega_1$) and 96--100\% against impersonation, the corpus category standing for trust exploitation ($\Omega_4$)
 - Against emergent misalignment (distributed sub-threshold drift with no explicit adversaries), detection falls to 74.3\%
-- A rational adversary, knowing CIF is deployed, will prefer emergent misalignment over direct injection
+- A rational adversary, knowing CIF is deployed, is pushed away from direct injection. Where exactly it
+  is pushed *to* is a design-model question rather than a measured one: on the published numbers Part 2's
+  payoff matrix puts the equilibrium at coordination, not emergent misalignment
 
 This is not a failure of CIF—it is a consequence of its success. When explicit attacks are reliably detected, adversaries are forced toward the subtlest and most distributed manipulation strategies. The 74.3\% detection rate on emergent misalignment represents the current frontier of defensive capability, not a gap in the framework's design.
 

@@ -119,7 +119,7 @@ The trust-precision duality situates CIF within the active inference literature 
 
 CIF evaluation can be framed as a two-player zero-sum game $\calG = (\Omega, D, M)$ where the attacker chooses an attack type $a \in \Omega = \{\adversary{1}, \ldots, \adversary{6}\}$ (the six Part 1 attack categories), the defender chooses a configuration $d \in D = \{d_1, \ldots, d_6\}$ (six defense configurations from no-defense to full CIF), and the payoff $M[a, d]$ is the empirical detection probability for that pairing. The defender maximizes $M$; the attacker minimizes it.
 
-**Table: CIF payoff matrix $M[a, d]$ (empirical detection rate by attack type and defense configuration).** \emph{Source:} \texttt{src/analysis/game\_theory.py::compute\_cif\_payoff\_matrix()}. {#tab:payoff-matrix}
+**Table: CIF payoff matrix $M[a, d]$ (detection rate by attack type and defense configuration).** \emph{Source:} \texttt{src/analysis/game\_theory.py::compute\_cif\_payoff\_matrix()}. {#tab:payoff-matrix}
 
 | Attack Type | No Defense | Firewall | Sandbox | Tripwires | CIF-$\neg$C | Full CIF |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -128,18 +128,30 @@ CIF evaluation can be framed as a two-player zero-sum game $\calG = (\Omega, D, 
 | Trust Exploitation | 0.00 | 0.30 | 0.25 | 0.60 | 0.75 | 0.84 |
 | Belief Manipulation | 0.00 | 0.40 | 0.60 | 0.50 | 0.70 | 0.82 |
 | Coordination | 0.00 | 0.20 | 0.15 | 0.40 | 0.55 | 0.61 |
-| Emergent Misalignment | 0.00 | 0.15 | 0.10 | 0.30 | 0.45 | 0.56 |
+| Emergent Misalignment | 0.00 | 0.15 | 0.10 | 0.30 | 0.45 | 0.74 |
+
+*Provenance is not uniform across this table.* Thirty-five of its thirty-six
+cells are design-model values from the S08 parametric response surface; the
+pipeline has no per-family-by-per-mechanism evaluation arm, so no measurement
+stands behind them. One cell does have a measured counterpart --- emergent
+misalignment under Full CIF --- and it is read from
+\texttt{colony\_results.json} (\texttt{data\_origin: real\_pipeline}, 30
+repeats) rather than typed. That cell previously carried 0.56, the single-seed
+figure this series elsewhere retracts as not the publication estimate, and the
+equilibrium below was computed from it. On the published 0.74 the game value
+moves from 0.56 to 0.61 and the attacker's best response moves from emergent
+misalignment to coordination.
 
 
 By the minimax theorem, the game value is
 \begin{equation}
-v^* = \max_{d \in D} \min_{a \in \Omega} M[a, d] = \min_{a \in \Omega} \max_{d \in D} M[a, d] \approx 0.56,
+v^* = \max_{d \in D} \min_{a \in \Omega} M[a, d] = \min_{a \in \Omega} \max_{d \in D} M[a, d] \approx 0.61,
 \end{equation}
 \label{eq:minimax-game-value}
-achieved at the pure strategy pair $(a^*, d^*) = (\text{Emergent Misalignment}, \text{Full CIF})$. In particular, Full CIF weakly dominates every alternative defense configuration column-wise in \cref{tab:payoff-matrix}, so the minimax-optimal defense is the pure strategy ``Full CIF''---no mixed strategy improves on it at current adapter maturity. The attacker's Nash best-response is likewise pure: emergent misalignment minimizes detection across all defense configurations.
+achieved at the pure strategy pair $(a^*, d^*) = (\text{Coordination}, \text{Full CIF})$. In particular, Full CIF weakly dominates every alternative defense configuration column-wise in \cref{tab:payoff-matrix}, so the minimax-optimal defense is the pure strategy ``Full CIF''---no mixed strategy improves on it at current adapter maturity. The attacker's Nash best-response is likewise pure: emergent misalignment minimizes detection across all defense configurations.
 
 \begin{theorem}[CIF Nash Equilibrium, GT.1]
-The CIF defense game $\calG$ admits a unique pure-strategy Nash equilibrium $(d^* = \text{Full CIF}, a^* = \text{Emergent Misalignment})$ with game value $v^* \approx 0.56$. Full CIF strictly dominates every proper subset configuration; no mixed strategy yields a higher defender payoff.
+The CIF defense game $\calG$ admits a unique pure-strategy Nash equilibrium $(d^* = \text{Full CIF}, a^* = \text{Coordination})$ with game value $v^* \approx 0.61$. Full CIF strictly dominates every proper subset configuration; no mixed strategy yields a higher defender payoff.
 \end{theorem}
 \label{thm:cif-nash}
 
