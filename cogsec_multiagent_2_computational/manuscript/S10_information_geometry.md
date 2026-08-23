@@ -39,7 +39,7 @@ An adversary that seeks to drive agent $i$'s beliefs from a baseline $p^{(0)}$ t
 \label{eq:geodesic-attack-path}
 a great-circle arc on the Hellinger hemisphere. The helper \texttt{geodesic\_attack\_path()} in \texttt{src/analysis/information\_geometry.py} constructs $\gamma_{\text{attack}}$ and samples it at a configurable step count.
 
-The connection to CIF's drift detector (Part 1, Definition 6.1) comes from the following standard fact: for small steps $\delta$ from a distribution $p$,
+The connection to CIF's drift detector (Part 1's Drift Score definition) comes from the following standard fact: for small steps $\delta$ from a distribution $p$,
 \begin{equation}
 \KL[p \,\|\, p + \delta] = \frac{1}{2}\, \delta^{\top} G(p) \delta + O(\|\delta\|^3).
 \end{equation}
@@ -48,7 +48,7 @@ That is, the KL divergence is (to second order) the squared Fisher-Rao distance.
 
 ## Defense as Curvature Constraint {#sec:s10-curvature-constraint}
 
-The sandbox's corroboration criterion (Part 1, Definition 5.4) can be restated geometrically. A belief update is provisionally allowed inside the sandbox, but promotion to the verified partition requires corroboration count $\geq \kappa$; equivalently, it requires that the updated belief lie within a geodesic ball around a multiply-witnessed reference.
+The sandbox's corroboration criterion (Part 1's Sandbox Promotion Soundness theorem) can be restated geometrically. A belief update is provisionally allowed inside the sandbox, but promotion to the verified partition requires corroboration count $\geq \kappa$; equivalently, it requires that the updated belief lie within a geodesic ball around a multiply-witnessed reference.
 
 \begin{theorem}[Curvature Constraint Defense, CG.1]
 The CIF belief sandbox with corroboration threshold $\kappa$ and per-step update precision $\epsilon_{\text{precision}}$ implements a geodesic ball constraint of radius

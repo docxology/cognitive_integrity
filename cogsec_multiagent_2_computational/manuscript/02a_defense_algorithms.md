@@ -10,7 +10,7 @@ This section summarizes the six core CIF defense algorithms and their correspond
 
 The CIF defense suite comprises six algorithms, each implementing a specific formal mechanism from Part 1:
 
-1. **Cognitive Firewall Classification** (\cref{alg:firewall-impl}). Multi-stage detection pipeline implementing Part 1, Definition 5.3: three-stage filtering ($F_{sig} \to F_{sem} \to F_{anom}$) with combined threat scoring. Implemented in `src/core/firewall.py`.
+1. **Cognitive Firewall Classification** (\cref{alg:firewall-impl}). Multi-stage detection pipeline implementing Part 1's Firewall Decision Rules definition: three-stage filtering ($F_{sig} \to F_{sem} \to F_{anom}$) with combined threat scoring. Implemented in `src/core/firewall.py`.
 
 ### Monadic Type Signature
 
@@ -29,7 +29,7 @@ result: Result[list[DefenseResult], DetectionEvent] = pipeline.run(message, cont
 
 See Supplement~\ref{sec:s09-functional-api} for full specification.
 
-2. **Belief Sandboxing** (\cref{alg:sandbox-impl}). Provisional belief management with $\kappa$-corroboration promotion, implementing Part 1, Definition 5.4 and Property 5.2. Beliefs are quarantined until they meet provenance, consistency, and corroboration criteria. Implemented in `src/core/sandbox.py`.
+2. **Belief Sandboxing** (\cref{alg:sandbox-impl}). Provisional belief management with $\kappa$-corroboration promotion, implementing Part 1's Belief Sandbox definition and Property 5.2. Beliefs are quarantined until they meet provenance, consistency, and corroboration criteria. Implemented in `src/core/sandbox.py`.
 
 ### Monadic Type Signature
 
@@ -48,7 +48,7 @@ result: Result[list[DefenseResult], DetectionEvent] = pipeline.run(message, cont
 
 See Supplement~\ref{sec:s09-functional-api} for full specification.
 
-3. **Trust Update with Bounded Delegation** (\cref{alg:trust-impl}). Trust calculus with $\delta^d$ decay implementing Part 1, Theorem 4.2 (Trust Boundedness). Trust cannot be inflated through delegation chains. Integrates base trust, reputation tracking, and contextual modifiers. Implemented in `src/core/trust.py`.
+3. **Trust Update with Bounded Delegation** (\cref{alg:trust-impl}). Trust calculus with $\delta^d$ decay implementing Part 1's Trust Boundedness theorem (Trust Boundedness). Trust cannot be inflated through delegation chains. Integrates base trust, reputation tracking, and contextual modifiers. Implemented in `src/core/trust.py`.
 
 ### Monadic Type Signature
 
@@ -67,7 +67,7 @@ result: Result[list[DefenseResult], DetectionEvent] = pipeline.run(message, cont
 
 See Supplement~\ref{sec:s09-functional-api} for full specification.
 
-4. **Cognitive Tripwire Monitoring** (\cref{alg:tripwire-impl}). Continuous monitoring of canary beliefs for unauthorized modifications, implementing Part 1, Section 5.3 (Definition 5.6). Severity is classified via a uniform 4-tier system (LOW, MEDIUM, HIGH, CRITICAL) based on drift magnitude. Implemented in `src/core/tripwire.py`.
+4. **Cognitive Tripwire Monitoring** (\cref{alg:tripwire-impl}). Continuous monitoring of canary beliefs for unauthorized modifications, implementing Part 1's Runtime Defenses section (Definition 5.6). Severity is classified via a uniform 4-tier system (LOW, MEDIUM, HIGH, CRITICAL) based on drift magnitude. Implemented in `src/core/tripwire.py`.
 
 ### Monadic Type Signature
 
@@ -86,7 +86,7 @@ result: Result[list[DefenseResult], DetectionEvent] = pipeline.run(message, cont
 
 See Supplement~\ref{sec:s09-functional-api} for full specification.
 
-5. **Byzantine Consensus Protocol** (\cref{alg:byzantine-impl}). Byzantine fault-tolerant consensus satisfying Part 1, Theorem 5.2, ensuring agreement when $f < n/3$ agents are Byzantine. Three-phase protocol: vote collection, echo verification, and supermajority decision. Implemented in `src/core/consensus.py`.
+5. **Byzantine Consensus Protocol** (\cref{alg:byzantine-impl}). Byzantine fault-tolerant consensus satisfying Part 1's Byzantine Agreement Requirement theorem, ensuring agreement when $f < n/3$ agents are Byzantine. Three-phase protocol: vote collection, echo verification, and supermajority decision. Implemented in `src/core/consensus.py`.
 
 ### Monadic Type Signature
 
@@ -105,7 +105,7 @@ result: Result[list[DefenseResult], DetectionEvent] = pipeline.run(message, cont
 
 See Supplement~\ref{sec:s09-functional-api} for full specification.
 
-6. **Belief Drift Detection** (\cref{alg:drift-impl}). KL-divergence-based drift monitoring implementing Part 1, Definition 6.1. Combines distributional divergence with maximum belief delta for anomaly scoring. Implemented in `src/core/detection.py`.
+6. **Belief Drift Detection** (\cref{alg:drift-impl}). KL-divergence-based drift monitoring implementing Part 1's Drift Score definition. Combines distributional divergence with maximum belief delta for anomaly scoring. Implemented in `src/core/detection.py`.
 
 ### Monadic Type Signature
 

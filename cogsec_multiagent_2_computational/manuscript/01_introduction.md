@@ -135,7 +135,7 @@ Table: Cross-paper navigation from Part 2 topics to sibling developments. {#tab:
 | Accessible-language explanations of these empirical results for non-specialists | Part 3, \S{3} (Evidence) |
 | Operator risk frameworks + common pitfalls | Part 3, \S{5c}, \S{6} |
 | Domain-specific application of these results in ten operational sectors | Part 3+4, Sections 9--10 |
-| Three universal attack patterns (FR Polarity Inversion, Constraint Relaxation, Context Boundary Violation) across domains | Part 3+4, Section 10 |
+| Three universal attack patterns (FR Polarity Inversion, Constraint Relaxation, Context Boundary Violation) across domains | Part 3's cross-domain analysis |
 | Retrospective analysis of documented 2024--2025 AI-agent security incidents | Part 3+4, Supplement S03 |
 
 **Code Availability**: All source modules, tests, and analysis scripts for this part are maintained at <https://github.com/docxology/cognitive_integrity> (DOI: 10.5281/zenodo.18364128).

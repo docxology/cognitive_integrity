@@ -163,10 +163,15 @@ _ARTIFACTS: dict[str, object] = {
             {"removed": "tripwire", "delta_tpr": -1 / 98},
             {"removed": "consensus", "delta_tpr": 0.0},
         ],
+        # tpr_a/tpr_b are each mechanism's solo rate; ablation_series_prediction
+        # recovers the set of mechanisms from these records, so they must be here.
         "top_synergies": [
-            {"a": "firewall", "b": "detection", "synergy": 3 / 98},
-            {"a": "tripwire", "b": "detection", "synergy": 3 / 98},
-            {"a": "firewall", "b": "trust_calculus", "synergy": 2 / 98},
+            {"a": "firewall", "b": "detection", "synergy": 3 / 98,
+             "tpr_a": 1 / 98, "tpr_b": 5 / 98, "fpr_a": 0.0, "fpr_b": 0.0},
+            {"a": "tripwire", "b": "detection", "synergy": 3 / 98,
+             "tpr_a": 1 / 98, "tpr_b": 5 / 98, "fpr_a": 0.0, "fpr_b": 0.0},
+            {"a": "firewall", "b": "trust_calculus", "synergy": 2 / 98,
+             "tpr_a": 1 / 98, "tpr_b": 2 / 98, "fpr_a": 0.0, "fpr_b": 0.0},
         ],
     },
     "colony_results.json": {
@@ -236,6 +241,15 @@ def _body(ceiling: str = "96") -> str:
     tests_p2 = _ARTIFACTS["test_inventory.json"]["per_part"]["cogsec_multiagent_2_computational"]
     di = [r["detection_rate"] for r in rows if r["attack_category"] == "direct_injection"]
     di_low, di_high = min(di) * 100, max(di) * 100
+    full_tpr = abl["full_pipeline"]["tpr"] * 100
+    solo = {}
+    for pair in abl["top_synergies"]:
+        for side in ("a", "b"):
+            solo[pair[side]] = pair[f"tpr_{side}"]
+    missed = 1.0
+    for rate in solo.values():
+        missed *= 1.0 - rate
+    series_prediction = (1.0 - missed) * 100
 
     return (
         "# Body\n\n"
@@ -258,6 +272,8 @@ def _body(ceiling: str = "96") -> str:
         f"and its operational default $\\tau_2 = {FIXTURE_TAU2}$ quarantines.\\n\\n"
         f"Deployment ships that operational default: tau_1: {FIXTURE_TAU1} in the config.\\n\\n"
         f"Part 1's reference implementation deliberately uses {FIXTURE_TAU1_REFERENCE}.\\n\\n"
+        f"The composition rule predicts {series_prediction:.1f}\\% against a measured "
+        f"{full_tpr:.1f}\\%.\\n\\n"
         "Data from `output/data/multi_seed_results.json`.\n"
     )
 

@@ -23,7 +23,7 @@ The cross-domain analysis (Sections 9c–9l) uses the CIF-AD-OODA methodology:
 
 - **Design Matrix** $[A]$: A matrix where rows represent Functional Requirements ($FR$) and columns represent Defense Provisions ($DP$). Each entry $A_{ij}$ indicates whether defense $j$ covers requirement $i$.
 - **Transient Coupling** $[A']$: The coupling matrix during an active attack, showing which defenses are bypassed.
-- **Adversary Classes** $\Omega_1$–$\Omega_5$: Five adversary classes from external input control ($\Omega_1$) through peripheral tool/data-channel compromise ($\Omega_2$), single compromised agents ($\Omega_3$), coordination-channel attacks ($\Omega_4$), and systemic orchestrator compromise ($\Omega_5$), as defined in Part 1, Section 3.
+- **Adversary Classes** $\Omega_1$–$\Omega_5$: Five adversary classes from external input control ($\Omega_1$) through peripheral tool/data-channel compromise ($\Omega_2$), single compromised agents ($\Omega_3$), coordination-channel attacks ($\Omega_4$), and systemic orchestrator compromise ($\Omega_5$), as defined in Part 1's threat model.
 
 ### Three Universal Attack Patterns
 

@@ -60,7 +60,7 @@ Table: Production deployment checklist. {#tab:deploy-checklist}
 
 **Tripwire setup**:
 \begin{itemize}
-\item Define canary beliefs for each agent (canary belief definition (Part 1, Definition 7))
+\item Define canary beliefs for each agent (canary belief definition (Part 1's Canary Belief definition))
 \item Set expected probability values
 \item Configure drift thresholds (\cref{tab:tripwire-params})
 \item Set monitoring intervals
@@ -68,7 +68,7 @@ Table: Production deployment checklist. {#tab:deploy-checklist}
 
 **Consensus configuration**:
 \begin{itemize}
-\item Verify $n \geq 3f + 1$ for expected Byzantine count (Byzantine termination theorem (Part 1, Theorem 5))
+\item Verify $n \geq 3f + 1$ for expected Byzantine count (Byzantine termination theorem (Part 1's Byzantine Consensus Termination theorem))
 \item Set round timeout based on network latency
 \item Configure quorum thresholds (\cref{tab:consensus-params})
 \end{itemize}
@@ -86,7 +86,7 @@ Table: Production deployment checklist. {#tab:deploy-checklist}
 **Performance validation**:
 \begin{itemize}
 \item Measure baseline latency
-\item Verify overhead within 23\% target (latency overhead theorem (Part 1, Theorem 6))
+\item Verify overhead within 23\% target (latency overhead theorem (Part 1's Bounded Latency Overhead theorem))
 \item Confirm throughput meets requirements
 \item Monitor memory usage over 24h
 \end{itemize}

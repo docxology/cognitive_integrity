@@ -25,7 +25,7 @@ $$f \wedge g = \mathrm{DR}^{-1}\!\bigl(\min(\mathrm{DR}(f),\mathrm{DR}(g))\bigr)
 $$f \vee g = \mathrm{DR}^{-1}\!\bigl(1 - (1-\mathrm{DR}(f))(1-\mathrm{DR}(g))\bigr).$$
 \label{eq:lattice-join}
 The join formula $f \vee g$ is precisely the **series composition** detection
-rate from Part 1, Theorem 3.1 \cite{friedman2026cogsec1}: independent
+rate from Part 1's Series Detection Rate theorem \cite{friedman2026cogsec1}: independent
 miss-events multiply, so the combined detection equals $\mathrm{DR}(f) + \mathrm{DR}(g) - \mathrm{DR}(f)\cdot\mathrm{DR}(g)$.
 
 **Axiom verification** (`DefenseLattice`, `src/formal/category_theory_advanced.py`):

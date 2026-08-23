@@ -2,7 +2,7 @@
 
 # Composability Algebra: Monadic Defense Chains {#sec:composability-algebra}
 
-The series and parallel composition theorems of Part 1 (Section 5) specify the \emph{outcome} of composing defense modules, but not the idiomatic way to build such compositions in code. This section develops the missing algebra: a typed, monadic interface whose composition laws are formally verified and whose implementation (\texttt{src/core/monad.py}) produces detection outcomes identical to the existing \texttt{SeriesPipeline}.
+The series and parallel composition theorems of Part 1 (the Defense Mechanisms section) specify the \emph{outcome} of composing defense modules, but not the idiomatic way to build such compositions in code. This section develops the missing algebra: a typed, monadic interface whose composition laws are formally verified and whose implementation (\texttt{src/core/monad.py}) produces detection outcomes identical to the existing \texttt{SeriesPipeline}.
 
 ## Railway-Oriented Programming for Defense {#sec:railway-oriented}
 

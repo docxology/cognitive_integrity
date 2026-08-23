@@ -273,7 +273,7 @@ Analysis of the attack corpus reveals several cross-cutting insights for defense
 
 > **Lesson 3: Canary beliefs catch state manipulation.** Identity and principal tripwires (Examples \ref{ex:impersonation}, \ref{ex:belief-injection}) provide an independent verification layer that does not depend on detecting the attack vector itself.
 
-> **Lesson 4: Byzantine tolerance requires honest majority.** Coordination attacks succeed only when $f \geq \lfloor n/3 \rfloor$. Proper agent vetting and quorum sizing (Part 1, Theorem 5.2) are prerequisites for consensus security.
+> **Lesson 4: Byzantine tolerance requires honest majority.** Coordination attacks succeed only when $f \geq \lfloor n/3 \rfloor$. Proper agent vetting and quorum sizing (Part 1's Byzantine Agreement Requirement theorem) are prerequisites for consensus security.
 
 > **Lesson 5: Attack sophistication correlates with multi-mechanism evasion.** Low-complexity attacks (Examples \ref{ex:direct-injection}, \ref{ex:belief-injection}) are reliably caught by single mechanisms. Expert-level attacks (Examples \ref{ex:progressive-drift}, \ref{ex:timing-attack}) are designed to evade specific detectors and require the full CIF stack. The Spearman correlation between sophistication and single-mechanism evasion success ($\rho = 0.67$, $p < 0.001$) quantifies this relationship, motivating layered deployment.
 

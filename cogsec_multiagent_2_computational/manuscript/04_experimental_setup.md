@@ -151,7 +151,7 @@ Despite strong overall performance, specific attack types remain challenging:
 \begin{itemize}
 \item **Semantic equivalent attacks**: Rephrased injections that preserve meaning evade pattern-matching
 \item **Progressive drift**: Sub-threshold changes accumulate below detection windows
-\item **Orchestrator compromise**: Outside our threat model (our honest orchestrator assumption (Part 1, Section 2))
+\item **Orchestrator compromise**: Outside our threat model (our honest orchestrator assumption (Part 1's Honest Orchestrator axiom))
 \end{itemize}
 
 These gaps define the frontier for future defense research.
@@ -161,9 +161,9 @@ These gaps define the frontier for future defense research.
 The empirical results validate that CIF's formal mechanisms translate to practical protection. The key insight is not the specific detection rates achieved---which reflect current attack sophistication and will degrade as adversaries adapt---but rather the \textit{structural} properties:
 
 \begin{enumerate}
-\item Trust cannot be amplified through delegation (Part 1, Theorem 2)
+\item Trust cannot be amplified through delegation (Part 1's No Trust Amplification theorem)
 \item Defenses compose predictably (Part 1, Theorems 3.1 and 3.2)
-\item Information-theoretic bounds constrain the stealth-impact tradeoff (Part 1, Theorem 4)
+\item Information-theoretic bounds constrain the stealth-impact tradeoff (Part 1's Stealth-Impact Tradeoff theorem)
 \end{enumerate}
 
 These properties hold independent of specific detection thresholds and provide the foundation for long-term security assurance.

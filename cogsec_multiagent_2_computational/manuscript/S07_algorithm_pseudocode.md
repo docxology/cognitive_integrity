@@ -14,18 +14,18 @@ Table: CIF defense algorithm quick reference — formal basis, complexity, and i
 
 | Algorithm | Formal Basis | Per-Message Complexity | Space | Implementation |
 | --- | --- | --- | --- | --- |
-| 1. Cognitive Firewall | Part 1, Def. 5.3 | $O(\|m\| \cdot \|\mathcal{P}\| + d)$ | $O(d + \|\mathcal{P}\|)$ | `src/core/firewall.py` |
-| 2. Belief Sandboxing | Part 1, Def. 5.4, Prop. 5.2 | $O(1)$ add; $O(\|\mathcal{B}_{prov}\| \cdot \kappa)$ promote | $O(N_{max})$ | `src/core/sandbox.py` |
-| 3. Trust Update | Part 1, Theorem 4.2 | $O(1)$ direct; $O(d)$ transitive | $O(n^2)$ matrix | `src/core/trust.py` |
-| 4. Tripwire Monitoring | Part 1, Def. 5.6 | $O(\|\mathcal{W}\|)$ | $O(\|\mathcal{W}\|)$ | `src/core/tripwire.py` |
-| 5. Byzantine Consensus | Part 1, Theorem 5.2 | $O(n^2)$ messages/round | $O(n)$ per agent | `src/core/consensus.py` |
-| 6. Drift Detection | Part 1, Def. 6.1 | $O(\|\text{domain}(\mathcal{B})\|)$ | $O(w \cdot \|\text{domain}\|)$ | `src/core/detection.py` |
+| 1. Cognitive Firewall | Part 1's Firewall Decision Rules definition | $O(\|m\| \cdot \|\mathcal{P}\| + d)$ | $O(d + \|\mathcal{P}\|)$ | `src/core/firewall.py` |
+| 2. Belief Sandboxing | Part 1's Belief Sandbox definition, Prop. 5.2 | $O(1)$ add; $O(\|\mathcal{B}_{prov}\| \cdot \kappa)$ promote | $O(N_{max})$ | `src/core/sandbox.py` |
+| 3. Trust Update | Part 1's Trust Boundedness theorem | $O(1)$ direct; $O(d)$ transitive | $O(n^2)$ matrix | `src/core/trust.py` |
+| 4. Tripwire Monitoring | Part 1's Canary Belief definition | $O(\|\mathcal{W}\|)$ | $O(\|\mathcal{W}\|)$ | `src/core/tripwire.py` |
+| 5. Byzantine Consensus | Part 1's Byzantine Agreement Requirement theorem | $O(n^2)$ messages/round | $O(n)$ per agent | `src/core/consensus.py` |
+| 6. Drift Detection | Part 1's Drift Score definition | $O(\|\text{domain}(\mathcal{B})\|)$ | $O(w \cdot \|\text{domain}\|)$ | `src/core/detection.py` |
 
 Where: $d$ = embedding dimension, $\|\mathcal{P}\|$ = pattern count, $\kappa$ = corroboration threshold, $n$ = agent count, $w$ = sliding window size, $N_{max}$ = sandbox capacity limit.
 
 ## Algorithm 1: Cognitive Firewall Classification {#sec:alg-firewall}
 
-The cognitive firewall classifies incoming messages using a multi-stage detection pipeline. This implements the formal Cognitive Firewall definition from Part 1, Section 5.2.1, specifying three-stage filtering ($F_{sig} \to F_{sem} \to F_{anom}$) with combined threat scoring (Part 1, Definition 5.3).
+The cognitive firewall classifies incoming messages using a multi-stage detection pipeline. This implements Part 1's Cognitive Firewall definition. The three-stage filtering it uses ($F_{sig} \to F_{sem} \to F_{anom}$) is this paper's refinement: Part 1 specifies two detectors, $D_{\text{inj}}$ and $D_{\text{sus}}$, and fixes only their combination (Part 1's Firewall Decision Rules definition).
 
 \begin{algorithm}
 \caption{Cognitive Firewall Classification}
@@ -68,7 +68,7 @@ The cognitive firewall classifies incoming messages using a multi-stage detectio
 
 ## Algorithm 2: Belief Sandboxing {#sec:alg-sandbox}
 
-Manages provisional beliefs with verification and promotion logic. This implements Part 1, Section 5.2.2 sandboxing rules, including the promotion rule requiring $\kappa$-corroboration (Part 1, Definition 5.4 and Property 5.2).
+Manages provisional beliefs with verification and promotion logic. This implements Part 1's sandboxing rules, including the promotion rule requiring $\kappa$-corroboration (Part 1's Belief Sandbox definition for the partition, and its Sandbox Promotion Soundness theorem for the criterion).
 
 \begin{algorithm}
 \caption{Belief Sandbox Operations}
@@ -119,7 +119,7 @@ Manages provisional beliefs with verification and promotion logic. This implemen
 
 ## Algorithm 3: Trust Update with Bounded Delegation {#sec:alg-trust}
 
-Implements the trust calculus with decay and reputation updates. This is a direct implementation of Part 1's Trust Algebra (Section 4), including bounded delegation with $\delta^d$ decay (Theorem 4.2: Trust Boundedness). Trust cannot be inflated through delegation chains.
+Implements the trust calculus with decay and reputation updates. This is a direct implementation of Part 1's Trust Algebra, including bounded delegation with $\delta^d$ decay (its Trust Boundedness theorem). Trust cannot be inflated through delegation chains.
 
 \begin{algorithm}
 \caption{Trust Update Operations}
@@ -162,7 +162,7 @@ Implements the trust calculus with decay and reputation updates. This is a direc
 
 ## Algorithm 4: Cognitive Tripwire Monitoring {#sec:alg-tripwire}
 
-Continuously monitors canary beliefs for unauthorized modifications. Tripwires implement Part 1, Section 5.3 (Definition 5.6: Canary Belief), specifying canary beliefs $\omega \in \mathcal{W}$ that remain stable under normal operation.
+Continuously monitors canary beliefs for unauthorized modifications. Tripwires implement Part 1's Runtime Defenses section on cognitive tripwires (Definition 5.6: Canary Belief), specifying canary beliefs $\omega \in \mathcal{W}$ that remain stable under normal operation.
 
 \begin{algorithm}
 \caption{Tripwire Monitoring}
@@ -209,7 +209,7 @@ Continuously monitors canary beliefs for unauthorized modifications. Tripwires i
 
 ## Algorithm 5: Byzantine Consensus Protocol {#sec:alg-byzantine}
 
-Implements Byzantine fault-tolerant consensus for multi-agent decisions. This satisfies Part 1, Section 5.4.1 (Theorem 5.2), ensuring agreement when at most $f$ agents are Byzantine and $n \geq 3f + 1$.
+Implements Byzantine fault-tolerant consensus for multi-agent decisions. This satisfies Part 1's Byzantine Agreement Requirement theorem, ensuring agreement when at most $f$ agents are Byzantine and $n \geq 3f + 1$.
 
 \begin{algorithm}
 \caption{Byzantine Consensus Protocol}
