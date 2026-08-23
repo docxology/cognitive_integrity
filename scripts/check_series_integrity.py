@@ -345,10 +345,23 @@ def normalise_people(authors: str) -> str:
     return re.sub(r"[^a-z]", "", folded.lower())
 
 
+def _cited_keys(part: str) -> set[str]:
+    """Every bibkey the prose actually cites, in either citation syntax."""
+    cited: set[str] = set()
+    for path in manuscript_files(part):
+        text = path.read_text(encoding="utf-8", errors="replace")
+        for match in re.finditer(r"\\cite[a-zA-Z]*\*?(?:\[[^\]]*\])*\{([^}]*)\}", text):
+            cited |= {key.strip() for key in match.group(1).split(",") if key.strip()}
+        for match in re.finditer(r"(?<![\w`])@([A-Za-z][\w:.#$%&+?<>~/-]*)", text):
+            cited.add(match.group(1).rstrip(".,;:"))
+    return cited
+
+
 def check_bibliography() -> CheckResult:
     result = CheckResult("bibliography")
     by_title: dict[str, list[tuple[str, Path, BibEntry]]] = {}
     total = 0
+    uncited: dict[str, int] = {}
 
     for part in PARTS:
         path = manuscript_dir(part) / "references.bib"
@@ -359,6 +372,7 @@ def check_bibliography() -> CheckResult:
             continue
         entries = parse_bib(path)
         total += len(entries)
+        uncited[part] = len({e.key for e in entries} - _cited_keys(part))
         if not entries:
             result.problems.append(
                 Problem(result.name, rel(path), 0, "parsed zero entries")
@@ -471,6 +485,18 @@ def check_bibliography() -> CheckResult:
                 0,
                 "no bibliography entries parsed at all; the parser is broken",
             )
+        )
+
+    if uncited:
+        # Advisory, deliberately not a failure: pandoc emits only cited works, so
+        # an uncited entry never reaches a reader and is not a defect in the
+        # paper. It is worth counting anyway. Both fabricated sources this series
+        # has shipped -- the two supplychain2025 entries, whose titles matched no
+        # real publication -- were uncited, which is exactly why nothing caught
+        # them: no reader saw them and no check looked at them. A visible count
+        # means the pile cannot quietly grow.
+        result.note = "uncited entries (not rendered; never reach a reader): " + ", ".join(
+            f"Part {part} {count}" for part, count in sorted(uncited.items())
         )
     return result
 
@@ -927,6 +953,9 @@ def main(argv: Iterable[str] | None = None) -> int:
         for result in results:
             status = "PASS" if result.ok else f"FAIL ({len(result.problems)})"
             print(f"{result.name:<24} {status}   [{result.scanned} scanned]")
+            if result.note:
+                for line in result.note.splitlines():
+                    print(f"  note: {line}")
             for problem in result.problems:
                 print(problem.render())
         print("-" * 60)

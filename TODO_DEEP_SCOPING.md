@@ -1,13 +1,17 @@
 # Cognitive Integrity Program - Per-Paper TODO Deep Scoping
 
-**Date:** 2026-07-06 (original) / **Last reviewed:** 2026-08-22
+**Date:** 2026-07-06 (original) / **Last reviewed:** 2026-08-23
 **Owner:** Daniel Ari Friedman
-**Status:** Round 10 (cross-paper) complete at HEAD. Round 10 found that every gate in this
-repository was scoped to a single part, so cross-paper drift was structurally invisible; a
-program-level gate now exists (`scripts/check_series_integrity.py`, wired into CI) with five
-gating checks --- shared-quantities, bibliography, truncation, math-hygiene and
-artifact-provenance --- plus an advisory cross-paper-pointer lint. Each was written because a
-real defect had already passed through the space it now covers.
+**Status:** Every gate in this repository used to be scoped to a single part, which made
+cross-paper drift structurally invisible. A program-level gate now exists
+(`scripts/check_series_integrity.py`, wired into CI) with six gating checks ---
+shared-quantities, bibliography, truncation, math-hygiene, artifact-provenance and
+cross-paper-pointers --- and a matching write path (`scripts/inject_series_values.py`)
+that rewrites every shared number from its artifact. Both read one ledger
+(`scripts/series_ledger.py`), because two mechanisms with separate ideas of where a
+number lives is the defect class the whole apparatus exists to catch. Each check was
+written because a real defect had already passed through the space it now covers, and
+each is mutation-tested, because a gate that cannot fail is worse than no gate.
 **Auditor:** seven-lens review with adversarial verification of every finding; 113 of 114
 findings survived verification, 44 at HIGH
 **Scope:** All three papers in `cognitive_integrity/` (Part 1 theory, Part 2 computational, Part 3+4 practical)
@@ -95,17 +99,46 @@ the audit; the proof-detection window reached into the *next* theorem's proof; s
 artifacts were untracked so the gate was red on any clean clone; the provenance check
 accepted an empty sidecar and missed bare-filename citations.
 
-### Still open after Round 11
+### Still open
 
 | ID | What is left |
 |----|--------------|
 | S08 six-way tables | Resolved by disclosure, not measurement. Regenerating them needs a real six-way run; retiring them means dropping to the artifact's four categories. Author call. |
-| R11-02, R11-03 | S06's Python integration example cannot construct a firewall and its rejection branch fails open; S09 is normatively wrong about the module it specifies. Both need the code read against the spec, then one of the two changed. |
-| R11-04 | `tau_1 = 0.7` is published in eight places as "the Part 2 implementation" but no config object holds (0.7, 0.5). Either the default changes or the claim does. |
-| R11-05 | The bibliography gate's title-disagreement branch is unreachable by construction, and three DOIs differ across bibs. |
-| P2AI-06..09 | The injector writes 15 labels no registry claim inspects; §05e's Bayesian numbers have no artifact to pin against; 15 ledger variables are derived but ungated. |
-| figures F01 | `fig:detection-performance` plots per-architecture means under per-mechanism labels. Fixing it means choosing which quantity the panel is meant to show. |
-| N9, N10, BIB-11, H1--H3, H5 | Carried forward from Round 10: symbol overloading, uncited bibliography entries, the author-math backlog. |
+| P2AI-06..08 | The injector writes 15 labels no registry claim inspects, and 05e's Bayesian numbers have no artifact to pin against. |
+| N9, N10 | Symbol overloading across the three papers. |
+| BIB-11 | 169 bibliography entries are defined and never cited (Part 1 47, Part 2 49, Part 3 73). Not a defect a reader can see --- pandoc emits only cited works, and there is no `nocite` --- but it is where both fabricated `supplychain2025` entries hid, so the bibliography check now reports the count as an advisory. Pruning is an author call. |
+| H1--H3, H5 | The author-math backlog, carried forward. |
+
+### Closed since
+
+- **R11-02** --- S06's integration example is rewritten against the shipped API and is
+  now executed as a test (`test_manuscript_code_examples.py`), so it cannot drift from
+  the code again without failing the suite.
+- **R11-03 / R11-04** --- `FirewallConfig.injection_threshold` has been 0.8 since the
+  fork with Part 1; five sites across Parts 2 and 3 published 0.7 as the implementation
+  default, including S05's API reference and a deployment-guide YAML block that
+  contradicted the Python block in the same supplement. The three thresholds are now
+  ledger variables read out of the dataclass with `ast`, and the prose says "operational
+  default" wherever it states the shipped value --- which is what separates it from
+  S08's parametric optimum and Part 3's per-profile tuning, three different quantities
+  that had been sharing one symbol.
+- **R11-05** --- The bibliography gate's unreachable title branch is replaced by a
+  bibkey-collision pass, which found the real defect underneath: one bibkey resolving to
+  two different works, four times over. The divergent DOIs were those collisions and
+  went with them; DOIs now agree across all three bibliographies.
+- **figures F01** --- Both panels of `fig:detection-performance` plotted series nobody
+  measured: Panel A labelled per-architecture means as per-mechanism ablations over a
+  hardcoded FPR list, and Panel B's "Firewall Only" was the Full CIF value times 0.80,
+  making the gap it asked the reader to notice exactly 20% by construction. Both now
+  read their artifacts. The true numbers are a better result: series composition
+  predicts 12.6% against a measured 12.2%.
+- **P2AI-09** --- Partially. `ablation_full_tpr` and the new
+  `ablation_series_prediction` are now gated at the figure caption they govern.
+- **Cross-paper pointers** --- Part 2 cited Part 1 forty-three times by
+  renderer-assigned number and twelve pointed at a different result than the citing
+  sentence described, including one citation ("arms-race bounds in Part 1, Section 4")
+  to a bound Part 1 does not contain. All forty-three are resolved to named results; the
+  check is now gating rather than advisory and passes at zero.
 
 ## Open backlog (by severity)
 
