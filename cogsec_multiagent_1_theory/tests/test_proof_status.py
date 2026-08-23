@@ -20,6 +20,7 @@ Anything else is an unaudited claim.
 from __future__ import annotations
 
 import re
+import sys
 from pathlib import Path
 
 import pytest
@@ -104,14 +105,67 @@ def test_the_index_names_no_result_the_manuscript_does_not_contain() -> None:
     assert not dangling, f"Proof Status names labels that no longer exist: {dangling}"
 
 
-@pytest.mark.parametrize(
-    "planted",
-    [
-        "\\begin{theorem}[Planted]\n\\label{thm:planted-unaudited}\nA claim.\n\\end{theorem}\n",
-    ],
-)
-def test_the_audit_can_actually_fail(planted: str, tmp_path: Path) -> None:
-    """A guard that cannot fire proves nothing; prove this one fires."""
-    label = re.search(r"\\label\{([^}]+)\}", planted).group(1)
-    assert label not in _indexed_labels()
-    assert "\\begin{proof}" not in planted
+def test_the_audit_can_actually_fail(tmp_path: Path, monkeypatch) -> None:
+    """Prove the audit fires, by running it against a tree with a planted result.
+
+    The first version of this test asserted properties of the planted *string*
+    -- that its label was absent from the index and that it carried no proof --
+    without ever calling the audit.  Every assertion passed with the audit
+    deleted outright, which makes it decoration rather than a test.  This one
+    reroots the module at a synthetic manuscript and calls the real predicate.
+    """
+    manuscript = tmp_path / "manuscript"
+    manuscript.mkdir()
+
+    # A minimal but honest tree: one result that proves itself inline, one
+    # declared deferred, and a Proof Status section naming the deferred one.
+    (manuscript / "04_formal_framework.md").write_text(
+        "# Framework\n\n"
+        "\\begin{theorem}[Proved Inline]\n\\label{thm:proved-inline}\nA claim.\n"
+        "\\end{theorem}\n\n\\begin{proof}\nBecause.\n\\end{proof}\n\n"
+        "\\begin{theorem}[Declared Deferred]\n\\label{thm:declared-deferred}\n"
+        "Another claim.\n\\end{theorem}\n",
+        encoding="utf-8",
+    )
+    (manuscript / "S01_proofs.md").write_text(
+        "# Proofs\n\n## Proof Status\n\n"
+        "**Asserted without proof (deferred).**\n\n"
+        "- Declared Deferred, \\cref{thm:declared-deferred}\n\n"
+        "## Preliminary Definitions\n\nNothing.\n",
+        encoding="utf-8",
+    )
+
+    module = sys.modules[__name__]
+    monkeypatch.setattr(module, "MANUSCRIPT", manuscript)
+    monkeypatch.setattr(module, "BODY_FILES", ("04_formal_framework.md",))
+
+    # Baseline: the honest tree passes, or the negative case below proves nothing.
+    test_every_result_is_proved_inline_restated_or_declared_deferred()
+
+    # Now plant a result that neither proves itself nor appears in the index.
+    (manuscript / "04_formal_framework.md").write_text(
+        (manuscript / "04_formal_framework.md").read_text(encoding="utf-8")
+        + "\n\\begin{corollary}[Unaudited]\n\\label{cor:unaudited}\n"
+        "An unaudited claim.\n\\end{corollary}\n",
+        encoding="utf-8",
+    )
+    with pytest.raises(AssertionError, match="cor:unaudited"):
+        test_every_result_is_proved_inline_restated_or_declared_deferred()
+
+
+def test_the_dangling_index_check_can_actually_fail(tmp_path: Path, monkeypatch) -> None:
+    """The reverse direction must fire too: an index entry with no result."""
+    manuscript = tmp_path / "manuscript"
+    manuscript.mkdir()
+    (manuscript / "04_formal_framework.md").write_text("# Framework\n\nNothing.\n", encoding="utf-8")
+    (manuscript / "S01_proofs.md").write_text(
+        "# Proofs\n\n## Proof Status\n\n"
+        "- Vanished Result, \\cref{thm:vanished}\n\n"
+        "## Preliminary Definitions\n\nNothing.\n",
+        encoding="utf-8",
+    )
+    module = sys.modules[__name__]
+    monkeypatch.setattr(module, "MANUSCRIPT", manuscript)
+    monkeypatch.setattr(module, "BODY_FILES", ("04_formal_framework.md",))
+    with pytest.raises(AssertionError, match="thm:vanished"):
+        test_the_index_names_no_result_the_manuscript_does_not_contain()

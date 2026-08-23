@@ -19,7 +19,7 @@ The test corpus included direct prompt injection, poisoned RAG contexts, deep tr
 
 ## Finding 1: Defense Layering vs. Individual Efficacy
 
-**The Data**: Individual defenses (like just a firewall) stopped ~60--70% of attacks in the parametric evaluation. The full CIF stack achieved a **96--100% parametric detection ceiling**, with specific architectures reaching 97--98% for direct injection. The separate real-pipeline evaluation had a lower multi-seed mean of approximately 44.8%.
+**The Data**: Individual defenses (like just a firewall) stopped ~60--70% of attacks in the parametric evaluation. The full CIF stack achieved a **96--100% parametric detection ceiling**, with direct injection detected at 99--100% across architectures. The separate real-pipeline evaluation had a lower multi-seed mean of approximately 44.8%.
 **The Implication**: The defenses demonstrated orthogonal coverage. The firewall blocked inputs that the sandbox would have missed, and the sandbox identified anomalies that the trust calculus would have permitted. The data suggests that removing any single layer creates a statistically significant vulnerability gap.
 
 ## Finding 2: State Machine Determinism

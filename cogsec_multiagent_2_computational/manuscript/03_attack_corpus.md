@@ -1,5 +1,5 @@
 
-ewpage
+\newpage
 
 # Attack Corpus {#sec:attack-corpus}
 
@@ -83,6 +83,10 @@ Table: Coordination attack subcategory statistics. {#tab:coord-subcats}
 
 ### Detailed Statistics by Source {#sec:source-stats}
 
+The three tables below break the corpus down by difficulty, by category against
+difficulty, and by attack target. All counts are the generator's own output at
+seed 42.
+
 ### Difficulty Distribution {#sec:difficulty-dist}
 
 Table: Attack corpus difficulty distribution (actual generator output, seed 42). {#tab:difficulty-dist}
@@ -96,6 +100,9 @@ Table: Attack corpus difficulty distribution (actual generator output, seed 42).
 This distribution reflects the template system's internal difficulty tagging; `hard` attacks employ multi-step indirection or semantic paraphrase, while `easy` attacks are direct injection strings. The corpus is intentionally skewed toward harder instances to stress-test detection components.
 
 ### Category × Difficulty Cross-Tabulation
+
+The cross-tabulation is given per category in the difficulty table above; the
+target distribution that follows is the third view of the same 950 samples.
 
 ### Target Distribution {#sec:target-dist}
 

@@ -117,6 +117,63 @@ def parametric_ceiling_high() -> float:
     return max(float(r["detection_rate"]) for r in _parametric()) * 100.0
 
 
+def direct_injection_low() -> float:
+    rates = [float(r["detection_rate"]) for r in _parametric()
+             if r.get("attack_category") == "direct_injection"]
+    if not rates:
+        raise MissingArtifact("no direct_injection rows in the parametric artifact")
+    return min(rates) * 100.0
+
+
+def direct_injection_high() -> float:
+    rates = [float(r["detection_rate"]) for r in _parametric()
+             if r.get("attack_category") == "direct_injection"]
+    if not rates:
+        raise MissingArtifact("no direct_injection rows in the parametric artifact")
+    return max(rates) * 100.0
+
+
+def near(*words: str, chars: int = 50, unless: tuple[str, ...] = ()) -> "Callable[[re.Match[str], str], bool]":
+    """A guard requiring one of ``words`` within ``chars`` of the match.
+
+    ``require`` uses a wide window so a quantity can be recognised from a
+    sentence's general subject.  That is too coarse when two quantities of the
+    same shape share one sentence -- "the full CIF stack achieved a 96--100%
+    ceiling, with direct injection at 99--100%" puts both subjects in both
+    windows.  Proximity is what actually separates them, and ``unless`` handles
+    the case where even the tight window still catches the neighbour.
+    """
+    lowered = tuple(w.lower() for w in words)
+    blocked = tuple(w.lower() for w in unless)
+
+    def _guard(match: "re.Match[str]", line: str) -> bool:
+        start = max(0, match.start() - chars)
+        window = line[start : match.end() + chars].lower()
+        if any(w in window for w in blocked):
+            return False
+        return any(w in window for w in lowered)
+
+    return _guard
+
+
+def _low_end_is_the_ceiling_floor(match: "re.Match[str]", line: str) -> bool:
+    """True when this range's low end is the parametric ceiling floor.
+
+    Distinguishes "the full CIF stack reached a 96--100% ceiling" from the
+    "isolated layers were on the order of 60--70% detection" sitting in the same
+    sentence, where the word "ceiling" is in context for both.
+    """
+    # The low end is inside the match, not before it: the pattern spans the
+    # whole range and captures only its high end.
+    low = re.match(r"\s*(\d{2})", match.group(0))
+    if not low:
+        return False
+    try:
+        return abs(float(low.group(1)) - parametric_ceiling_low()) < 0.001
+    except (MissingArtifact, KeyError, TypeError, ValueError):
+        return False
+
+
 def architecture_count() -> float:
     return float(len({str(r["architecture"]) for r in _parametric()}))
 
@@ -343,6 +400,13 @@ class LedgerVariable:
     #: rate, say -- only the first in-context match is this quantity. Context
     #: keywords cannot separate them: they share the row.
     first_only: bool = False
+    #: An extra structural test on a candidate match, for quantities that
+    #: keywords cannot isolate. The high end of the ceiling range is the case
+    #: that forced this: a sentence can carry both "60--70% for isolated
+    #: layers" and "96--100% ceiling", and "ceiling" is in context for both.
+    #: What separates them is that only one has the ceiling floor as its low
+    #: end, which is a property of the match, not of the surrounding words.
+    guard: Callable[[re.Match[str], str], bool] | None = None
 
     def __post_init__(self) -> None:
         if self.pattern is not None:
@@ -362,7 +426,11 @@ class LedgerVariable:
         window = line[start : match.end() + CONTEXT_WINDOW].lower()
         if any(token in window for token in self.exclude):
             return False
-        return any(token in window for token in self.require)
+        if not any(token in window for token in self.require):
+            return False
+        if self.guard is not None and not self.guard(match, line):
+            return False
+        return True
 
     def value(self) -> float:
         return float(self.deriver())
@@ -384,6 +452,8 @@ LEDGER: tuple[LedgerVariable, ...] = (
         pattern=re.compile(rf"(\d{{2}})\s*{DASH}\s*100\s*\\?%"),
         require=("parametric", "design ceiling", "design-level", "coverage ceiling", "design target"),
         exclude=OTHER_ARMS,
+        guard=near("ceiling", "design-level", "design target",
+                   unless=("direct injection", "direct-injection")),
         min_occurrences=2,
     ),
     LedgerVariable(
@@ -392,10 +462,25 @@ LEDGER: tuple[LedgerVariable, ...] = (
         artifact="full_evaluation_results.json",
         deriver=parametric_ceiling_high,
         unit="percent",
-        pattern=re.compile(rf"\d{{2}}\s*{DASH}\s*(100)\s*\\?%"),
+        # Capturing a literal 100 would mean the check can only ever match text
+        # that is already right: a wrong high end simply would not match, and the
+        # quantity would look absent rather than wrong.
+        pattern=re.compile(rf"\d{{2}}\s*{DASH}\s*(\d{{2,3}})\s*\\?%"),
         require=("parametric", "design ceiling", "design-level", "coverage ceiling", "design target"),
         exclude=OTHER_ARMS,
+        guard=_low_end_is_the_ceiling_floor,
         min_occurrences=2,
+    ),
+    LedgerVariable(
+        id="direct_injection_range_low",
+        description="Lowest parametric detection rate on direct injection, across architectures.",
+        artifact="full_evaluation_results.json",
+        deriver=direct_injection_low,
+        unit="percent",
+        pattern=re.compile(rf"(\d{{2}})\s*{DASH}\s*\d{{2,3}}\s*\\?%"),
+        require=("direct-injection", "direct injection"),
+        exclude=OTHER_ARMS,
+        guard=near("direct injection", "direct-injection"),
     ),
     LedgerVariable(
         id="parametric_ceiling_low_bare",

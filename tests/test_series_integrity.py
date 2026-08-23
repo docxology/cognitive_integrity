@@ -62,16 +62,16 @@ def gate():
 #: as the real full_evaluation_results.json so the fixture exercises the real
 #: derivers rather than a degenerate special case.
 _PARAMETRIC_ROWS = [
-    {"architecture": arch, "n_attacks": n, "detection_rate": rate}
-    for arch, (n, rate) in (
-        ("A", (500, 0.96)),
-        ("A", (450, 1.0)),
-        ("B", (500, 0.98)),
-        ("B", (450, 1.0)),
-        ("C", (500, 1.0)),
-        ("C", (450, 1.0)),
-        ("D", (500, 0.99)),
-        ("D", (450, 1.0)),
+    {"architecture": arch, "attack_category": cat, "n_attacks": n, "detection_rate": rate}
+    for arch, cat, n, rate in (
+        ("A", "direct_injection", 500, 0.99),
+        ("A", "impersonation", 450, 0.96),
+        ("B", "direct_injection", 500, 1.0),
+        ("B", "impersonation", 450, 0.98),
+        ("C", "direct_injection", 500, 1.0),
+        ("C", "impersonation", 450, 1.0),
+        ("D", "direct_injection", 500, 1.0),
+        ("D", "impersonation", 450, 0.99),
     )
 ]
 
@@ -204,6 +204,8 @@ def _body(ceiling: str = "96") -> str:
     low = int(ceiling) - mean
     high = 100 - abl["full_pipeline"]["tpr"] * 100
     tests_p2 = _ARTIFACTS["test_inventory.json"]["per_part"]["cogsec_multiagent_2_computational"]
+    di = [r["detection_rate"] for r in rows if r["attack_category"] == "direct_injection"]
+    di_low, di_high = min(di) * 100, max(di) * 100
 
     return (
         "# Body\n\n"
@@ -218,6 +220,7 @@ def _body(ceiling: str = "96") -> str:
         f"Ablation uses a {abl_n}-attack ablation corpus; the {abl_n}-attack ablation corpus "
         "is a stratified subsample.\n\n"
         f"Emergent misalignment detection reaches {emergent:.1f}\\%.\n\n"
+        f"Direct injection is detected at {di_low:.0f}--{di_high:.0f}\\%.\n\n"
         f"There is a {low:.0f}--{high:.0f} percentage-point gap to close.\n\n"
         "The study spans ten domains; those ten domains are analysed in turn.\n\n"
         f"The evidence includes {tests_p2:,} tests.\n\n"
@@ -559,6 +562,45 @@ def test_bare_ceiling_form_is_gated_and_excludes_range_digits(gate):
     assert hits == ["94"], hits
     ranged = "a design-level ceiling of 96--100\\% across the sweep"
     assert [m.group(1) for m in q.pattern.finditer(ranged) if q.in_scope(ranged, m)] == []
+
+
+def test_every_artifact_the_ledger_reads_is_tracked_by_git():
+    """A gate that cannot run on a clean clone is a gate nobody has.
+
+    output/ is gitignored, and the shipped artifacts are force-added one at a
+    time. Three that the ledger derives from had never been added, so CI's
+    gating step would have failed on any fresh checkout with "cannot derive
+    ground truth" -- red from the first build, for a reason unrelated to the
+    manuscripts.
+    """
+    import subprocess
+
+    # _load_module reroots the shared series_ledger module, and pytest may have
+    # run a rerooted test first. Load a private copy pinned to the real repo.
+    series_ledger = _load_module().__dict__["sys"].modules["series_ledger"]
+    series_ledger.REPO_ROOT = REPO_ROOT
+    series_ledger.DATA_DIR = REPO_ROOT / series_ledger.PARTS["2"] / "output" / "data"
+    series_ledger._CACHE.clear()
+
+    needed = sorted(
+        {v.artifact for v in series_ledger.LEDGER if v.artifact.endswith(".json")}
+    )
+    assert needed, "the ledger names no artifacts; the introspection is broken"
+
+    root = REPO_ROOT
+    missing = []
+    for name in needed:
+        rel = f"{series_ledger.PARTS['2']}/output/data/{name}"
+        proc = subprocess.run(
+            ["git", "ls-files", "--error-unmatch", rel],
+            cwd=str(root), capture_output=True, text=True,
+        )
+        if proc.returncode != 0:
+            missing.append(rel)
+    assert not missing, (
+        "ledger artifacts not tracked by git; a clean clone cannot run the gate. "
+        f"git add -f each of: {missing}"
+    )
 
 # ---------------------------------------------------------------------------
 # Structural invariants of the registry itself

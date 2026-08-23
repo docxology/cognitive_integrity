@@ -1,0 +1,54 @@
+{
+  "n_rounds": 5,
+  "baseline_dr": 0.447,
+  "final_hardened_dr": 0.6793378953474445,
+  "total_delta_dr": 0.23233789534744448,
+  "projected_nash_dr": 1.0,
+  "rounds": [
+    {
+      "round": 1,
+      "base_dr": 0.3089528292024557,
+      "hardened_dr": 0.5197347803621322,
+      "delta_dr": 0.07273478036213216,
+      "gap_closed": "indirect injection"
+    },
+    {
+      "round": 2,
+      "base_dr": 0.36320602025137183,
+      "hardened_dr": 0.5757503704450688,
+      "delta_dr": 0.12875037044506882,
+      "gap_closed": "trust inflation variants"
+    },
+    {
+      "round": 3,
+      "base_dr": 0.49384862363545257,
+      "hardened_dr": 0.6261541050150394,
+      "delta_dr": 0.17915410501503942,
+      "gap_closed": "delegation abuse"
+    },
+    {
+      "round": 4,
+      "base_dr": 0.6505835239912954,
+      "hardened_dr": 0.6552529639391236,
+      "delta_dr": 0.20825296393912357,
+      "gap_closed": "belief cascade variants"
+    },
+    {
+      "round": 5,
+      "base_dr": 0.76,
+      "hardened_dr": 0.6793378953474445,
+      "delta_dr": 0.23233789534744448,
+      "gap_closed": "multi-hop sybil routing"
+    }
+  ],
+  "projected_nash_dr_independent_estimate": 1.0,
+  "omega_level_dr": {
+    "omega_1_passive": 1.0,
+    "omega_2_injection": 1.0,
+    "omega_3_impersonation": 1.0,
+    "omega_4_belief_manip": 0.8627591270912545,
+    "omega_5_coordinated": 0.6929246532543933
+  },
+  "source_script": "scripts/run_adversarial_training.py",
+  "seed": 42
+}

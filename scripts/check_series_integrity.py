@@ -440,59 +440,114 @@ def check_bibliography() -> CheckResult:
 #: A line that legitimately ends a file without sentence punctuation.
 _STRUCTURAL_END = re.compile(
     r"^\s*(?:[-*+]\s|\d+\.\s|\||#{1,6}\s|```|~~~|\$\$|:::|<!--|>\s*$"
-    r"|\\(?:end\{|newpage|clearpage|pagebreak|vfill|hrulefill))"
+    r"|\\(?:end\{|newpage|clearpage|pagebreak|vfill|hrulefill)"
+    # A "\textbf{Label}: value" line is a labelled field, not a sentence.
+    r"|\\textbf\{)"
 )
 #: Trailing emphasis/quote markers that may follow the terminator: a sentence
 #: closing an italic run ends ``...benchmarks.*``, which is complete prose.
-_SENTENCE_END = re.compile(r"[.!?:;)}\]\"'”’][*_`\"'”’)\]]*\s*$|\\\\\s*$|-{3,}\s*$")
+_SENTENCE_END = re.compile(
+    r"[.!?:;)}\]\"'”’][*_`\"'”’)\]]*\s*$"
+    r"|\\\\\s*$"
+    r"|-{3,}\s*$"
+    # A proof or derivation closing on a QED mark is finished.
+    r"|(?:\\blacksquare|\\square|\\qed)\s*\$?\s*$"
+)
 
 
 def check_truncation() -> CheckResult:
+    """Every section must end in finished prose, not only the file.
+
+    The first version of this check inspected a file's last non-blank line and
+    nothing else.  That would have missed the very defect it was written for had
+    the severed section not happened to be last: Part 2's adversarial-training
+    section ended mid-clause, and if another section had followed it the file's
+    final line would have been fine and the check silent.
+
+    So the unit is the *section*: for each heading, the last non-blank line
+    before the next heading must end like finished prose, and a heading with no
+    body at all is a defect wherever it sits.
+    """
     result = CheckResult("truncation")
     for part in PARTS:
         for path in manuscript_files(part):
-            lines = [
-                line
-                for line in path.read_text(encoding="utf-8", errors="replace").splitlines()
-            ]
+            text = path.read_text(encoding="utf-8", errors="replace")
+            lines = text.splitlines()
             result.scanned += 1
-            trailing = [(n, s) for n, s in enumerate(lines, 1) if s.strip()]
-            if not trailing:
-                result.problems.append(
-                    Problem(result.name, rel(path), 0, "file is empty")
-                )
+
+            fenced: set[int] = set()
+            in_fence = False
+            for n, raw in enumerate(lines, 1):
+                if raw.lstrip().startswith(("```", "~~~")):
+                    in_fence = not in_fence
+                    fenced.add(n)
+                elif in_fence:
+                    fenced.add(n)
+
+            numbered = [(n, s) for n, s in enumerate(lines, 1) if s.strip()]
+            if not numbered:
+                result.problems.append(Problem(result.name, rel(path), 0, "file is empty"))
                 continue
 
-            last_number, last_line = trailing[-1]
-            stripped = last_line.strip()
-            if not (_STRUCTURAL_END.match(last_line) or _SENTENCE_END.search(stripped)):
+            # Split into blocks: a heading and everything up to the next one.
+            heading_at = [i for i, (_, s) in enumerate(numbered) if re.match(r"^#{1,6}\s", s)]
+            boundaries = heading_at + [len(numbered)]
+            blocks: list[tuple[int, list[tuple[int, str]]]] = []
+            if heading_at and heading_at[0] > 0:
+                blocks.append((0, numbered[: heading_at[0]]))
+            for index, start_index in enumerate(heading_at):
+                blocks.append((start_index, numbered[start_index : boundaries[index + 1]]))
+            if not heading_at:
+                blocks.append((0, numbered))
+
+            for start_index, block in blocks:
+                if not block:
+                    continue
+                head_number, head_text = block[0]
+                body = block[1:] if re.match(r"^#{1,6}\s", head_text) else block
+                if re.match(r"^#{1,6}\s", head_text) and not body:
+                    # A parent heading immediately followed by a deeper one is
+                    # ordinary structure, not an empty section. Only a heading
+                    # whose successor is at the same or a shallower level has
+                    # genuinely nothing under it.
+                    level = len(head_text) - len(head_text.lstrip("#"))
+                    following = numbered[start_index + 1 :]
+                    next_head = next(
+                        (s for _, s in following if re.match(r"^#{1,6}\s", s)), None
+                    )
+                    if next_head is not None:
+                        next_level = len(next_head) - len(next_head.lstrip("#"))
+                        if next_level > level:
+                            continue
+                    result.problems.append(
+                        Problem(
+                            result.name,
+                            rel(path),
+                            head_number,
+                            f"section {head_text.strip()!r} has no body",
+                        )
+                    )
+                    continue
+                if not body:
+                    continue
+                last_number, last_line = body[-1]
+                stripped = last_line.strip()
+                if _STRUCTURAL_END.match(last_line) or _SENTENCE_END.search(stripped):
+                    continue
+                # A line inside a fenced block is not prose and has no sentence
+                # terminator to find.
+                if last_number in fenced:
+                    continue
                 result.problems.append(
                     Problem(
                         result.name,
                         rel(path),
                         last_number,
-                        "file ends mid-sentence: "
-                        f"{stripped[-72:]!r}. A severed clause ships into the "
-                        "rendered PDF and no per-part verifier catches it.",
+                        f"section ends mid-sentence: {stripped[-72:]!r}. A severed clause "
+                        f"ships into the rendered PDF and no per-part verifier catches it.",
                     )
                 )
 
-            # A heading whose section body never arrives.
-            for index, (number, line) in enumerate(trailing):
-                if not re.match(r"^#{1,6}\s", line):
-                    continue
-                rest = trailing[index + 1 :]
-                if not rest:
-                    result.problems.append(
-                        Problem(
-                            result.name,
-                            rel(path),
-                            number,
-                            f"section {line.strip()!r} has no body -- the heading "
-                            "is the last content in the file",
-                        )
-                    )
-                    break
     if result.scanned == 0:
         result.problems.append(
             Problem(
@@ -503,7 +558,6 @@ def check_truncation() -> CheckResult:
             )
         )
     return result
-
 
 
 # ---------------------------------------------------------------------------
