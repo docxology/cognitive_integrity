@@ -19262,5 +19262,1286 @@
     "tripwire": 0.02842105263157897,
     "trust_calculus": 0.025263157894736807
   },
-  "source_script": "scripts/run_taxonomy_evaluation.py"
+  "source_script": "scripts/run_taxonomy_evaluation.py",
+  "threshold_sweep": {
+    "benign_score_max": 0.36674028644481166,
+    "benign_score_median": 0.31610084201879096,
+    "best_at_zero_fpr": {
+      "fpr": 0.0,
+      "per_family": {
+        "belief_manipulation": 0.48,
+        "coordination": 0.69,
+        "direct_injection": 0.575,
+        "indirect_injection": 0.685,
+        "nested_injection": 0.4,
+        "trust_exploitation": 0.57
+      },
+      "threshold": 0.37,
+      "tpr": 0.5757894736842105,
+      "youden_j": 0.5757894736842105
+    },
+    "grid": [
+      {
+        "fpr": 1.0,
+        "per_family": {
+          "belief_manipulation": 0.8933333333333333,
+          "coordination": 1.0,
+          "direct_injection": 1.0,
+          "indirect_injection": 1.0,
+          "nested_injection": 1.0,
+          "trust_exploitation": 0.985
+        },
+        "threshold": 0.28,
+        "tpr": 0.98,
+        "youden_j": -0.020000000000000018
+      },
+      {
+        "fpr": 1.0,
+        "per_family": {
+          "belief_manipulation": 0.88,
+          "coordination": 0.99,
+          "direct_injection": 1.0,
+          "indirect_injection": 1.0,
+          "nested_injection": 1.0,
+          "trust_exploitation": 0.98
+        },
+        "threshold": 0.285,
+        "tpr": 0.9757894736842105,
+        "youden_j": -0.02421052631578946
+      },
+      {
+        "fpr": 0.98,
+        "per_family": {
+          "belief_manipulation": 0.86,
+          "coordination": 0.98,
+          "direct_injection": 0.995,
+          "indirect_injection": 1.0,
+          "nested_injection": 1.0,
+          "trust_exploitation": 0.975
+        },
+        "threshold": 0.29,
+        "tpr": 0.9694736842105263,
+        "youden_j": -0.010526315789473717
+      },
+      {
+        "fpr": 0.94,
+        "per_family": {
+          "belief_manipulation": 0.8533333333333334,
+          "coordination": 0.95,
+          "direct_injection": 0.99,
+          "indirect_injection": 1.0,
+          "nested_injection": 0.99,
+          "trust_exploitation": 0.965
+        },
+        "threshold": 0.295,
+        "tpr": 0.9610526315789474,
+        "youden_j": 0.021052631578947434
+      },
+      {
+        "fpr": 0.88,
+        "per_family": {
+          "belief_manipulation": 0.84,
+          "coordination": 0.94,
+          "direct_injection": 0.955,
+          "indirect_injection": 1.0,
+          "nested_injection": 0.99,
+          "trust_exploitation": 0.935
+        },
+        "threshold": 0.3,
+        "tpr": 0.9442105263157895,
+        "youden_j": 0.0642105263157895
+      },
+      {
+        "fpr": 0.8,
+        "per_family": {
+          "belief_manipulation": 0.8133333333333334,
+          "coordination": 0.92,
+          "direct_injection": 0.94,
+          "indirect_injection": 0.99,
+          "nested_injection": 0.99,
+          "trust_exploitation": 0.925
+        },
+        "threshold": 0.305,
+        "tpr": 0.9305263157894736,
+        "youden_j": 0.1305263157894736
+      },
+      {
+        "fpr": 0.64,
+        "per_family": {
+          "belief_manipulation": 0.78,
+          "coordination": 0.9,
+          "direct_injection": 0.905,
+          "indirect_injection": 0.965,
+          "nested_injection": 0.99,
+          "trust_exploitation": 0.9
+        },
+        "threshold": 0.31,
+        "tpr": 0.9052631578947369,
+        "youden_j": 0.26526315789473687
+      },
+      {
+        "fpr": 0.52,
+        "per_family": {
+          "belief_manipulation": 0.74,
+          "coordination": 0.89,
+          "direct_injection": 0.87,
+          "indirect_injection": 0.94,
+          "nested_injection": 0.97,
+          "trust_exploitation": 0.86
+        },
+        "threshold": 0.315,
+        "tpr": 0.8747368421052631,
+        "youden_j": 0.35473684210526313
+      },
+      {
+        "fpr": 0.46,
+        "per_family": {
+          "belief_manipulation": 0.7133333333333334,
+          "coordination": 0.86,
+          "direct_injection": 0.83,
+          "indirect_injection": 0.935,
+          "nested_injection": 0.91,
+          "trust_exploitation": 0.835
+        },
+        "threshold": 0.32,
+        "tpr": 0.8463157894736842,
+        "youden_j": 0.3863157894736842
+      },
+      {
+        "fpr": 0.28,
+        "per_family": {
+          "belief_manipulation": 0.6733333333333333,
+          "coordination": 0.85,
+          "direct_injection": 0.785,
+          "indirect_injection": 0.925,
+          "nested_injection": 0.84,
+          "trust_exploitation": 0.8
+        },
+        "threshold": 0.325,
+        "tpr": 0.8126315789473684,
+        "youden_j": 0.5326315789473683
+      },
+      {
+        "fpr": 0.14,
+        "per_family": {
+          "belief_manipulation": 0.6333333333333333,
+          "coordination": 0.84,
+          "direct_injection": 0.765,
+          "indirect_injection": 0.925,
+          "nested_injection": 0.76,
+          "trust_exploitation": 0.78
+        },
+        "threshold": 0.33,
+        "tpr": 0.7884210526315789,
+        "youden_j": 0.6484210526315789
+      },
+      {
+        "fpr": 0.1,
+        "per_family": {
+          "belief_manipulation": 0.6,
+          "coordination": 0.82,
+          "direct_injection": 0.745,
+          "indirect_injection": 0.915,
+          "nested_injection": 0.75,
+          "trust_exploitation": 0.76
+        },
+        "threshold": 0.335,
+        "tpr": 0.7694736842105263,
+        "youden_j": 0.6694736842105263
+      },
+      {
+        "fpr": 0.06,
+        "per_family": {
+          "belief_manipulation": 0.5533333333333333,
+          "coordination": 0.75,
+          "direct_injection": 0.715,
+          "indirect_injection": 0.895,
+          "nested_injection": 0.72,
+          "trust_exploitation": 0.745
+        },
+        "threshold": 0.34,
+        "tpr": 0.7378947368421053,
+        "youden_j": 0.6778947368421053
+      },
+      {
+        "fpr": 0.04,
+        "per_family": {
+          "belief_manipulation": 0.54,
+          "coordination": 0.72,
+          "direct_injection": 0.7,
+          "indirect_injection": 0.885,
+          "nested_injection": 0.7,
+          "trust_exploitation": 0.71
+        },
+        "threshold": 0.345,
+        "tpr": 0.7178947368421053,
+        "youden_j": 0.6778947368421052
+      },
+      {
+        "fpr": 0.04,
+        "per_family": {
+          "belief_manipulation": 0.5333333333333333,
+          "coordination": 0.71,
+          "direct_injection": 0.68,
+          "indirect_injection": 0.865,
+          "nested_injection": 0.69,
+          "trust_exploitation": 0.675
+        },
+        "threshold": 0.35,
+        "tpr": 0.6989473684210527,
+        "youden_j": 0.6589473684210526
+      },
+      {
+        "fpr": 0.04,
+        "per_family": {
+          "belief_manipulation": 0.52,
+          "coordination": 0.7,
+          "direct_injection": 0.67,
+          "indirect_injection": 0.795,
+          "nested_injection": 0.67,
+          "trust_exploitation": 0.64
+        },
+        "threshold": 0.355,
+        "tpr": 0.6694736842105263,
+        "youden_j": 0.6294736842105263
+      },
+      {
+        "fpr": 0.04,
+        "per_family": {
+          "belief_manipulation": 0.5066666666666667,
+          "coordination": 0.7,
+          "direct_injection": 0.63,
+          "indirect_injection": 0.74,
+          "nested_injection": 0.57,
+          "trust_exploitation": 0.61
+        },
+        "threshold": 0.36,
+        "tpr": 0.6305263157894737,
+        "youden_j": 0.5905263157894737
+      },
+      {
+        "fpr": 0.04,
+        "per_family": {
+          "belief_manipulation": 0.5066666666666667,
+          "coordination": 0.7,
+          "direct_injection": 0.595,
+          "indirect_injection": 0.7,
+          "nested_injection": 0.48,
+          "trust_exploitation": 0.585
+        },
+        "threshold": 0.365,
+        "tpr": 0.6,
+        "youden_j": 0.5599999999999999
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.48,
+          "coordination": 0.69,
+          "direct_injection": 0.575,
+          "indirect_injection": 0.685,
+          "nested_injection": 0.4,
+          "trust_exploitation": 0.57
+        },
+        "threshold": 0.37,
+        "tpr": 0.5757894736842105,
+        "youden_j": 0.5757894736842105
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.47333333333333333,
+          "coordination": 0.68,
+          "direct_injection": 0.565,
+          "indirect_injection": 0.655,
+          "nested_injection": 0.3,
+          "trust_exploitation": 0.555
+        },
+        "threshold": 0.375,
+        "tpr": 0.5515789473684211,
+        "youden_j": 0.5515789473684211
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.46,
+          "coordination": 0.67,
+          "direct_injection": 0.55,
+          "indirect_injection": 0.63,
+          "nested_injection": 0.27,
+          "trust_exploitation": 0.535
+        },
+        "threshold": 0.38,
+        "tpr": 0.5326315789473685,
+        "youden_j": 0.5326315789473685
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.44,
+          "coordination": 0.64,
+          "direct_injection": 0.545,
+          "indirect_injection": 0.585,
+          "nested_injection": 0.27,
+          "trust_exploitation": 0.515
+        },
+        "threshold": 0.385,
+        "tpr": 0.511578947368421,
+        "youden_j": 0.511578947368421
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.43333333333333335,
+          "coordination": 0.56,
+          "direct_injection": 0.54,
+          "indirect_injection": 0.535,
+          "nested_injection": 0.27,
+          "trust_exploitation": 0.47
+        },
+        "threshold": 0.39,
+        "tpr": 0.48105263157894734,
+        "youden_j": 0.48105263157894734
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.41333333333333333,
+          "coordination": 0.5,
+          "direct_injection": 0.535,
+          "indirect_injection": 0.475,
+          "nested_injection": 0.26,
+          "trust_exploitation": 0.445
+        },
+        "threshold": 0.395,
+        "tpr": 0.4515789473684211,
+        "youden_j": 0.4515789473684211
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.3466666666666667,
+          "coordination": 0.19,
+          "direct_injection": 0.53,
+          "indirect_injection": 0.33,
+          "nested_injection": 0.19,
+          "trust_exploitation": 0.25
+        },
+        "threshold": 0.4,
+        "tpr": 0.32842105263157895,
+        "youden_j": 0.32842105263157895
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.32,
+          "coordination": 0.15,
+          "direct_injection": 0.525,
+          "indirect_injection": 0.315,
+          "nested_injection": 0.14,
+          "trust_exploitation": 0.235
+        },
+        "threshold": 0.405,
+        "tpr": 0.30736842105263157,
+        "youden_j": 0.30736842105263157
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.32,
+          "coordination": 0.15,
+          "direct_injection": 0.52,
+          "indirect_injection": 0.31,
+          "nested_injection": 0.13,
+          "trust_exploitation": 0.215
+        },
+        "threshold": 0.41,
+        "tpr": 0.3,
+        "youden_j": 0.3
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.32,
+          "coordination": 0.12,
+          "direct_injection": 0.515,
+          "indirect_injection": 0.305,
+          "nested_injection": 0.12,
+          "trust_exploitation": 0.205
+        },
+        "threshold": 0.415,
+        "tpr": 0.29157894736842105,
+        "youden_j": 0.29157894736842105
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.31333333333333335,
+          "coordination": 0.12,
+          "direct_injection": 0.515,
+          "indirect_injection": 0.305,
+          "nested_injection": 0.12,
+          "trust_exploitation": 0.19
+        },
+        "threshold": 0.42,
+        "tpr": 0.2873684210526316,
+        "youden_j": 0.2873684210526316
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.3,
+          "coordination": 0.1,
+          "direct_injection": 0.515,
+          "indirect_injection": 0.3,
+          "nested_injection": 0.11,
+          "trust_exploitation": 0.185
+        },
+        "threshold": 0.425,
+        "tpr": 0.28,
+        "youden_j": 0.28
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.29333333333333333,
+          "coordination": 0.1,
+          "direct_injection": 0.515,
+          "indirect_injection": 0.29,
+          "nested_injection": 0.1,
+          "trust_exploitation": 0.18
+        },
+        "threshold": 0.43,
+        "tpr": 0.27473684210526317,
+        "youden_j": 0.27473684210526317
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.2866666666666667,
+          "coordination": 0.07,
+          "direct_injection": 0.515,
+          "indirect_injection": 0.29,
+          "nested_injection": 0.08,
+          "trust_exploitation": 0.165
+        },
+        "threshold": 0.435,
+        "tpr": 0.26526315789473687,
+        "youden_j": 0.26526315789473687
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.2866666666666667,
+          "coordination": 0.07,
+          "direct_injection": 0.515,
+          "indirect_injection": 0.28,
+          "nested_injection": 0.06,
+          "trust_exploitation": 0.16
+        },
+        "threshold": 0.44,
+        "tpr": 0.26,
+        "youden_j": 0.26
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.28,
+          "coordination": 0.07,
+          "direct_injection": 0.515,
+          "indirect_injection": 0.275,
+          "nested_injection": 0.02,
+          "trust_exploitation": 0.15
+        },
+        "threshold": 0.445,
+        "tpr": 0.25157894736842107,
+        "youden_j": 0.25157894736842107
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.26666666666666666,
+          "coordination": 0.07,
+          "direct_injection": 0.515,
+          "indirect_injection": 0.255,
+          "nested_injection": 0.02,
+          "trust_exploitation": 0.125
+        },
+        "threshold": 0.45,
+        "tpr": 0.24,
+        "youden_j": 0.24
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.24,
+          "coordination": 0.07,
+          "direct_injection": 0.515,
+          "indirect_injection": 0.235,
+          "nested_injection": 0.02,
+          "trust_exploitation": 0.115
+        },
+        "threshold": 0.455,
+        "tpr": 0.2294736842105263,
+        "youden_j": 0.2294736842105263
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.23333333333333334,
+          "coordination": 0.07,
+          "direct_injection": 0.5,
+          "indirect_injection": 0.215,
+          "nested_injection": 0.0,
+          "trust_exploitation": 0.09
+        },
+        "threshold": 0.46,
+        "tpr": 0.21368421052631578,
+        "youden_j": 0.21368421052631578
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.19333333333333333,
+          "coordination": 0.07,
+          "direct_injection": 0.48,
+          "indirect_injection": 0.195,
+          "nested_injection": 0.0,
+          "trust_exploitation": 0.085
+        },
+        "threshold": 0.465,
+        "tpr": 0.19789473684210526,
+        "youden_j": 0.19789473684210526
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.18666666666666668,
+          "coordination": 0.07,
+          "direct_injection": 0.47,
+          "indirect_injection": 0.185,
+          "nested_injection": 0.0,
+          "trust_exploitation": 0.075
+        },
+        "threshold": 0.47,
+        "tpr": 0.19052631578947368,
+        "youden_j": 0.19052631578947368
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.18,
+          "coordination": 0.06,
+          "direct_injection": 0.43,
+          "indirect_injection": 0.17,
+          "nested_injection": 0.0,
+          "trust_exploitation": 0.075
+        },
+        "threshold": 0.475,
+        "tpr": 0.17684210526315788,
+        "youden_j": 0.17684210526315788
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.17333333333333334,
+          "coordination": 0.05,
+          "direct_injection": 0.43,
+          "indirect_injection": 0.145,
+          "nested_injection": 0.0,
+          "trust_exploitation": 0.065
+        },
+        "threshold": 0.48,
+        "tpr": 0.16736842105263158,
+        "youden_j": 0.16736842105263158
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.17333333333333334,
+          "coordination": 0.05,
+          "direct_injection": 0.425,
+          "indirect_injection": 0.125,
+          "nested_injection": 0.0,
+          "trust_exploitation": 0.065
+        },
+        "threshold": 0.485,
+        "tpr": 0.16210526315789472,
+        "youden_j": 0.16210526315789472
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.16666666666666666,
+          "coordination": 0.04,
+          "direct_injection": 0.425,
+          "indirect_injection": 0.11,
+          "nested_injection": 0.0,
+          "trust_exploitation": 0.065
+        },
+        "threshold": 0.49,
+        "tpr": 0.1568421052631579,
+        "youden_j": 0.1568421052631579
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.16666666666666666,
+          "coordination": 0.04,
+          "direct_injection": 0.42,
+          "indirect_injection": 0.095,
+          "nested_injection": 0.0,
+          "trust_exploitation": 0.065
+        },
+        "threshold": 0.495,
+        "tpr": 0.15263157894736842,
+        "youden_j": 0.15263157894736842
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.16666666666666666,
+          "coordination": 0.04,
+          "direct_injection": 0.405,
+          "indirect_injection": 0.075,
+          "nested_injection": 0.0,
+          "trust_exploitation": 0.015
+        },
+        "threshold": 0.5,
+        "tpr": 0.13473684210526315,
+        "youden_j": 0.13473684210526315
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.14666666666666667,
+          "coordination": 0.04,
+          "direct_injection": 0.395,
+          "indirect_injection": 0.065,
+          "nested_injection": 0.0,
+          "trust_exploitation": 0.015
+        },
+        "threshold": 0.505,
+        "tpr": 0.12736842105263158,
+        "youden_j": 0.12736842105263158
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.13333333333333333,
+          "coordination": 0.03,
+          "direct_injection": 0.385,
+          "indirect_injection": 0.05,
+          "nested_injection": 0.0,
+          "trust_exploitation": 0.015
+        },
+        "threshold": 0.51,
+        "tpr": 0.11894736842105263,
+        "youden_j": 0.11894736842105263
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.13333333333333333,
+          "coordination": 0.02,
+          "direct_injection": 0.37,
+          "indirect_injection": 0.05,
+          "nested_injection": 0.0,
+          "trust_exploitation": 0.01
+        },
+        "threshold": 0.515,
+        "tpr": 0.11368421052631579,
+        "youden_j": 0.11368421052631579
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.12666666666666668,
+          "coordination": 0.02,
+          "direct_injection": 0.35,
+          "indirect_injection": 0.05,
+          "nested_injection": 0.0,
+          "trust_exploitation": 0.01
+        },
+        "threshold": 0.52,
+        "tpr": 0.10842105263157895,
+        "youden_j": 0.10842105263157895
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.06666666666666667,
+          "coordination": 0.02,
+          "direct_injection": 0.32,
+          "indirect_injection": 0.045,
+          "nested_injection": 0.0,
+          "trust_exploitation": 0.01
+        },
+        "threshold": 0.525,
+        "tpr": 0.09157894736842105,
+        "youden_j": 0.09157894736842105
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.04666666666666667,
+          "coordination": 0.02,
+          "direct_injection": 0.29,
+          "indirect_injection": 0.04,
+          "nested_injection": 0.0,
+          "trust_exploitation": 0.01
+        },
+        "threshold": 0.53,
+        "tpr": 0.08105263157894736,
+        "youden_j": 0.08105263157894736
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.03333333333333333,
+          "coordination": 0.02,
+          "direct_injection": 0.285,
+          "indirect_injection": 0.04,
+          "nested_injection": 0.0,
+          "trust_exploitation": 0.01
+        },
+        "threshold": 0.535,
+        "tpr": 0.07789473684210527,
+        "youden_j": 0.07789473684210527
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.02666666666666667,
+          "coordination": 0.02,
+          "direct_injection": 0.255,
+          "indirect_injection": 0.04,
+          "nested_injection": 0.0,
+          "trust_exploitation": 0.01
+        },
+        "threshold": 0.54,
+        "tpr": 0.07052631578947369,
+        "youden_j": 0.07052631578947369
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.02,
+          "coordination": 0.02,
+          "direct_injection": 0.245,
+          "indirect_injection": 0.04,
+          "nested_injection": 0.0,
+          "trust_exploitation": 0.01
+        },
+        "threshold": 0.545,
+        "tpr": 0.06736842105263158,
+        "youden_j": 0.06736842105263158
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.02,
+          "coordination": 0.02,
+          "direct_injection": 0.24,
+          "indirect_injection": 0.04,
+          "nested_injection": 0.0,
+          "trust_exploitation": 0.01
+        },
+        "threshold": 0.55,
+        "tpr": 0.06631578947368422,
+        "youden_j": 0.06631578947368422
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.02,
+          "coordination": 0.01,
+          "direct_injection": 0.215,
+          "indirect_injection": 0.04,
+          "nested_injection": 0.0,
+          "trust_exploitation": 0.01
+        },
+        "threshold": 0.555,
+        "tpr": 0.06,
+        "youden_j": 0.06
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.02,
+          "coordination": 0.01,
+          "direct_injection": 0.16,
+          "indirect_injection": 0.025,
+          "nested_injection": 0.0,
+          "trust_exploitation": 0.01
+        },
+        "threshold": 0.56,
+        "tpr": 0.045263157894736845,
+        "youden_j": 0.045263157894736845
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.02,
+          "coordination": 0.0,
+          "direct_injection": 0.145,
+          "indirect_injection": 0.015,
+          "nested_injection": 0.0,
+          "trust_exploitation": 0.01
+        },
+        "threshold": 0.565,
+        "tpr": 0.03894736842105263,
+        "youden_j": 0.03894736842105263
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.02,
+          "coordination": 0.0,
+          "direct_injection": 0.13,
+          "indirect_injection": 0.005,
+          "nested_injection": 0.0,
+          "trust_exploitation": 0.01
+        },
+        "threshold": 0.57,
+        "tpr": 0.03368421052631579,
+        "youden_j": 0.03368421052631579
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.02,
+          "coordination": 0.0,
+          "direct_injection": 0.125,
+          "indirect_injection": 0.0,
+          "nested_injection": 0.0,
+          "trust_exploitation": 0.01
+        },
+        "threshold": 0.575,
+        "tpr": 0.031578947368421054,
+        "youden_j": 0.031578947368421054
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.02,
+          "coordination": 0.0,
+          "direct_injection": 0.105,
+          "indirect_injection": 0.0,
+          "nested_injection": 0.0,
+          "trust_exploitation": 0.01
+        },
+        "threshold": 0.58,
+        "tpr": 0.02736842105263158,
+        "youden_j": 0.02736842105263158
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.02,
+          "coordination": 0.0,
+          "direct_injection": 0.105,
+          "indirect_injection": 0.0,
+          "nested_injection": 0.0,
+          "trust_exploitation": 0.01
+        },
+        "threshold": 0.585,
+        "tpr": 0.02736842105263158,
+        "youden_j": 0.02736842105263158
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.02,
+          "coordination": 0.0,
+          "direct_injection": 0.105,
+          "indirect_injection": 0.0,
+          "nested_injection": 0.0,
+          "trust_exploitation": 0.01
+        },
+        "threshold": 0.59,
+        "tpr": 0.02736842105263158,
+        "youden_j": 0.02736842105263158
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.02,
+          "coordination": 0.0,
+          "direct_injection": 0.1,
+          "indirect_injection": 0.0,
+          "nested_injection": 0.0,
+          "trust_exploitation": 0.01
+        },
+        "threshold": 0.595,
+        "tpr": 0.02631578947368421,
+        "youden_j": 0.02631578947368421
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.02,
+          "coordination": 0.0,
+          "direct_injection": 0.085,
+          "indirect_injection": 0.0,
+          "nested_injection": 0.0,
+          "trust_exploitation": 0.01
+        },
+        "threshold": 0.6,
+        "tpr": 0.023157894736842106,
+        "youden_j": 0.023157894736842106
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.02,
+          "coordination": 0.0,
+          "direct_injection": 0.075,
+          "indirect_injection": 0.0,
+          "nested_injection": 0.0,
+          "trust_exploitation": 0.01
+        },
+        "threshold": 0.605,
+        "tpr": 0.021052631578947368,
+        "youden_j": 0.021052631578947368
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.02,
+          "coordination": 0.0,
+          "direct_injection": 0.07,
+          "indirect_injection": 0.0,
+          "nested_injection": 0.0,
+          "trust_exploitation": 0.01
+        },
+        "threshold": 0.61,
+        "tpr": 0.02,
+        "youden_j": 0.02
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.02,
+          "coordination": 0.0,
+          "direct_injection": 0.065,
+          "indirect_injection": 0.0,
+          "nested_injection": 0.0,
+          "trust_exploitation": 0.01
+        },
+        "threshold": 0.615,
+        "tpr": 0.018947368421052633,
+        "youden_j": 0.018947368421052633
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.02,
+          "coordination": 0.0,
+          "direct_injection": 0.065,
+          "indirect_injection": 0.0,
+          "nested_injection": 0.0,
+          "trust_exploitation": 0.01
+        },
+        "threshold": 0.62,
+        "tpr": 0.018947368421052633,
+        "youden_j": 0.018947368421052633
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.02,
+          "coordination": 0.0,
+          "direct_injection": 0.06,
+          "indirect_injection": 0.0,
+          "nested_injection": 0.0,
+          "trust_exploitation": 0.01
+        },
+        "threshold": 0.625,
+        "tpr": 0.017894736842105262,
+        "youden_j": 0.017894736842105262
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.02,
+          "coordination": 0.0,
+          "direct_injection": 0.06,
+          "indirect_injection": 0.0,
+          "nested_injection": 0.0,
+          "trust_exploitation": 0.01
+        },
+        "threshold": 0.63,
+        "tpr": 0.017894736842105262,
+        "youden_j": 0.017894736842105262
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.02,
+          "coordination": 0.0,
+          "direct_injection": 0.06,
+          "indirect_injection": 0.0,
+          "nested_injection": 0.0,
+          "trust_exploitation": 0.01
+        },
+        "threshold": 0.635,
+        "tpr": 0.017894736842105262,
+        "youden_j": 0.017894736842105262
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.02,
+          "coordination": 0.0,
+          "direct_injection": 0.06,
+          "indirect_injection": 0.0,
+          "nested_injection": 0.0,
+          "trust_exploitation": 0.01
+        },
+        "threshold": 0.64,
+        "tpr": 0.017894736842105262,
+        "youden_j": 0.017894736842105262
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.02,
+          "coordination": 0.0,
+          "direct_injection": 0.06,
+          "indirect_injection": 0.0,
+          "nested_injection": 0.0,
+          "trust_exploitation": 0.01
+        },
+        "threshold": 0.645,
+        "tpr": 0.017894736842105262,
+        "youden_j": 0.017894736842105262
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.02,
+          "coordination": 0.0,
+          "direct_injection": 0.06,
+          "indirect_injection": 0.0,
+          "nested_injection": 0.0,
+          "trust_exploitation": 0.01
+        },
+        "threshold": 0.65,
+        "tpr": 0.017894736842105262,
+        "youden_j": 0.017894736842105262
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.02,
+          "coordination": 0.0,
+          "direct_injection": 0.06,
+          "indirect_injection": 0.0,
+          "nested_injection": 0.0,
+          "trust_exploitation": 0.01
+        },
+        "threshold": 0.655,
+        "tpr": 0.017894736842105262,
+        "youden_j": 0.017894736842105262
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.02,
+          "coordination": 0.0,
+          "direct_injection": 0.06,
+          "indirect_injection": 0.0,
+          "nested_injection": 0.0,
+          "trust_exploitation": 0.01
+        },
+        "threshold": 0.66,
+        "tpr": 0.017894736842105262,
+        "youden_j": 0.017894736842105262
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.02,
+          "coordination": 0.0,
+          "direct_injection": 0.06,
+          "indirect_injection": 0.0,
+          "nested_injection": 0.0,
+          "trust_exploitation": 0.01
+        },
+        "threshold": 0.665,
+        "tpr": 0.017894736842105262,
+        "youden_j": 0.017894736842105262
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.02,
+          "coordination": 0.0,
+          "direct_injection": 0.06,
+          "indirect_injection": 0.0,
+          "nested_injection": 0.0,
+          "trust_exploitation": 0.01
+        },
+        "threshold": 0.67,
+        "tpr": 0.017894736842105262,
+        "youden_j": 0.017894736842105262
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.02,
+          "coordination": 0.0,
+          "direct_injection": 0.06,
+          "indirect_injection": 0.0,
+          "nested_injection": 0.0,
+          "trust_exploitation": 0.01
+        },
+        "threshold": 0.675,
+        "tpr": 0.017894736842105262,
+        "youden_j": 0.017894736842105262
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.02,
+          "coordination": 0.0,
+          "direct_injection": 0.06,
+          "indirect_injection": 0.0,
+          "nested_injection": 0.0,
+          "trust_exploitation": 0.01
+        },
+        "threshold": 0.68,
+        "tpr": 0.017894736842105262,
+        "youden_j": 0.017894736842105262
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.02,
+          "coordination": 0.0,
+          "direct_injection": 0.06,
+          "indirect_injection": 0.0,
+          "nested_injection": 0.0,
+          "trust_exploitation": 0.01
+        },
+        "threshold": 0.685,
+        "tpr": 0.017894736842105262,
+        "youden_j": 0.017894736842105262
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.02,
+          "coordination": 0.0,
+          "direct_injection": 0.06,
+          "indirect_injection": 0.0,
+          "nested_injection": 0.0,
+          "trust_exploitation": 0.01
+        },
+        "threshold": 0.69,
+        "tpr": 0.017894736842105262,
+        "youden_j": 0.017894736842105262
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.02,
+          "coordination": 0.0,
+          "direct_injection": 0.06,
+          "indirect_injection": 0.0,
+          "nested_injection": 0.0,
+          "trust_exploitation": 0.01
+        },
+        "threshold": 0.695,
+        "tpr": 0.017894736842105262,
+        "youden_j": 0.017894736842105262
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.02,
+          "coordination": 0.0,
+          "direct_injection": 0.06,
+          "indirect_injection": 0.0,
+          "nested_injection": 0.0,
+          "trust_exploitation": 0.01
+        },
+        "threshold": 0.7,
+        "tpr": 0.017894736842105262,
+        "youden_j": 0.017894736842105262
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.02,
+          "coordination": 0.0,
+          "direct_injection": 0.06,
+          "indirect_injection": 0.0,
+          "nested_injection": 0.0,
+          "trust_exploitation": 0.01
+        },
+        "threshold": 0.705,
+        "tpr": 0.017894736842105262,
+        "youden_j": 0.017894736842105262
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.02,
+          "coordination": 0.0,
+          "direct_injection": 0.06,
+          "indirect_injection": 0.0,
+          "nested_injection": 0.0,
+          "trust_exploitation": 0.01
+        },
+        "threshold": 0.71,
+        "tpr": 0.017894736842105262,
+        "youden_j": 0.017894736842105262
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.02,
+          "coordination": 0.0,
+          "direct_injection": 0.06,
+          "indirect_injection": 0.0,
+          "nested_injection": 0.0,
+          "trust_exploitation": 0.01
+        },
+        "threshold": 0.715,
+        "tpr": 0.017894736842105262,
+        "youden_j": 0.017894736842105262
+      },
+      {
+        "fpr": 0.0,
+        "per_family": {
+          "belief_manipulation": 0.02,
+          "coordination": 0.0,
+          "direct_injection": 0.06,
+          "indirect_injection": 0.0,
+          "nested_injection": 0.0,
+          "trust_exploitation": 0.01
+        },
+        "threshold": 0.72,
+        "tpr": 0.017894736842105262,
+        "youden_j": 0.017894736842105262
+      }
+    ],
+    "shipped_threshold": 0.5,
+    "youden_optimal": {
+      "fpr": 0.06,
+      "per_family": {
+        "belief_manipulation": 0.5533333333333333,
+        "coordination": 0.75,
+        "direct_injection": 0.715,
+        "indirect_injection": 0.895,
+        "nested_injection": 0.72,
+        "trust_exploitation": 0.745
+      },
+      "threshold": 0.34,
+      "tpr": 0.7378947368421053,
+      "youden_j": 0.6778947368421053
+    }
+  }
 }

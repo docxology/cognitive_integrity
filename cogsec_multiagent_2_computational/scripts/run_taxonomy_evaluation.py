@@ -145,6 +145,57 @@ def _evaluate(subset: Sequence[str], samples: Sequence[object]) -> dict[str, obj
     }
 
 
+def threshold_sweep(samples: Sequence[object], grid: Sequence[float]) -> dict[str, object]:
+    """Detection and false-positive rates as a function of the decision threshold.
+
+    The adapters decide ``score > threshold`` with ``threshold=0.5`` by default,
+    and the whole-corpus rate at that operating point is 13.5%.  That number
+    reads as a capability ceiling and is not one: the benign messages top out at
+    0.367, so the shipped threshold sits a sixth of the scale above anything a
+    legitimate message produces.  Everything between the benign ceiling and 0.5
+    is detection given away for no false-positive benefit at all.
+
+    Recording the sweep rather than the single operating point is what makes
+    that visible, and what lets the paper state a calibrated result instead of
+    an artifact of one default.
+    """
+    scored_attacks: dict[str, list[float]] = defaultdict(list)
+    pipeline = create_pipeline_without([])
+    for sample in samples:
+        scored_attacks[FAMILY_OF[sample.category.value]].append(
+            pipeline.evaluate(sample.payload).score
+        )
+    benign = [pipeline.evaluate(message).score for message in BENIGN_MESSAGES]
+    every_attack = [score for scores in scored_attacks.values() for score in scores]
+
+    points = []
+    for threshold in grid:
+        tpr = sum(1 for s in every_attack if s > threshold) / len(every_attack)
+        fpr = sum(1 for s in benign if s > threshold) / len(benign)
+        points.append(
+            {
+                "threshold": round(threshold, 4),
+                "tpr": tpr,
+                "fpr": fpr,
+                "youden_j": tpr - fpr,
+                "per_family": {
+                    family: sum(1 for s in scores if s > threshold) / len(scores)
+                    for family, scores in sorted(scored_attacks.items())
+                },
+            }
+        )
+    best = max(points, key=lambda p: p["youden_j"])
+    zero_fpr = [p for p in points if p["fpr"] == 0.0]
+    return {
+        "grid": points,
+        "benign_score_max": max(benign),
+        "benign_score_median": sorted(benign)[len(benign) // 2],
+        "shipped_threshold": 0.5,
+        "youden_optimal": best,
+        "best_at_zero_fpr": max(zero_fpr, key=lambda p: p["tpr"]) if zero_fpr else None,
+    }
+
+
 def _category_counts(samples: Sequence[object]) -> dict[str, int]:
     counts: dict[str, int] = defaultdict(int)
     for sample in samples:
@@ -246,6 +297,8 @@ def build(seed: int, mode: str) -> dict[str, object]:
     }
     if mode == "lattice":
         payload["shapley_overall_tpr"] = _shapley(cells, family_tpr)
+    grid = [round(0.28 + 0.005 * i, 4) for i in range(0, 89)]
+    payload["threshold_sweep"] = threshold_sweep(corpus, grid)
     return payload
 
 
@@ -292,6 +345,13 @@ def main(argv: Sequence[str] | None = None) -> int:
     for family, rate in sorted(full["per_family"].items()):
         if family != "overall":
             print(f"    {family:<22} {rate:.4f}")
+    sweep = fresh["threshold_sweep"]
+    best, clean = sweep["youden_optimal"], sweep["best_at_zero_fpr"]
+    print(f"  benign scores top out at {sweep['benign_score_max']:.3f}; "
+          f"the shipped threshold is {sweep['shipped_threshold']}")
+    print(f"  J-optimal tau={best['threshold']:.3f}: TPR {best['tpr']:.4f}  FPR {best['fpr']:.4f}")
+    if clean:
+        print(f"  best at zero FPR tau={clean['threshold']:.3f}: TPR {clean['tpr']:.4f}")
     return 0
 
 

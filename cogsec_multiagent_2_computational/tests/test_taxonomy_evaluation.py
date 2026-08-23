@@ -113,3 +113,42 @@ def test_modules_the_corpus_never_exercises_are_visible(payload) -> None:
     assert silent, "expected the corpus-coverage gap to be visible in the artifact"
     for component in silent:
         assert payload["cells"][component]["per_family"]["overall"] == 0.0
+
+
+def test_the_shipped_threshold_sits_above_every_benign_score(payload) -> None:
+    """The sweep's reason for existing, pinned as a fact about the data.
+
+    Adapters decide ``score > 0.5``. No benign message in the set scores above
+    0.367, so everything between those two numbers is detection discarded for
+    no false-positive benefit. If a future change moves either number, the
+    paper's calibration argument needs revisiting and this fails first.
+    """
+    sweep = payload["threshold_sweep"]
+    assert sweep["benign_score_max"] < sweep["shipped_threshold"], (
+        "the benign ceiling has risen above the operating threshold; the "
+        "calibration argument no longer holds as written"
+    )
+
+
+def test_a_better_operating_point_exists_at_no_false_positive_cost(payload) -> None:
+    """Strictly more detection at the same zero FPR, or the claim is wrong."""
+    sweep = payload["threshold_sweep"]
+    shipped = next(
+        p for p in sweep["grid"] if p["threshold"] == pytest.approx(sweep["shipped_threshold"])
+    )
+    clean = sweep["best_at_zero_fpr"]
+    assert clean is not None
+    assert clean["fpr"] == 0.0 == shipped["fpr"]
+    assert clean["tpr"] > shipped["tpr"]
+
+
+def test_the_sweep_is_monotone(payload) -> None:
+    """TPR and FPR must both fall as the threshold rises.
+
+    A non-monotone sweep means the scores or the comparison are wrong, and
+    every calibration number downstream would be built on it.
+    """
+    grid = sorted(payload["threshold_sweep"]["grid"], key=lambda p: p["threshold"])
+    for earlier, later in zip(grid, grid[1:]):
+        assert later["tpr"] <= earlier["tpr"] + 1e-12
+        assert later["fpr"] <= earlier["fpr"] + 1e-12
