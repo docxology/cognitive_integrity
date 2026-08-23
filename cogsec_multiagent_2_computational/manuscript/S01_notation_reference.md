@@ -35,7 +35,7 @@ This paper uses notation from the Cognitive Integrity Framework (CIF) formal spe
 |--------|---------|------------------|
 | $D_i$ | Defense mechanism $i$ | Definition 5 |
 | $r_i$ | Detection rate of defense $i$ | Definition 6 |
-| $\tau_1$ | Hard-reject threshold (Part 2 implementation: $\tau_1 = 0.7$) | \cref{sec:firewall-api} |
+| $\tau_1$ | Hard-reject threshold (Part 2 default: $\tau_1 = 0.8$; Part 1's reference implementation uses 0.7) | \cref{sec:firewall-api} |
 | $\tau_2$ | Quarantine threshold (Part 2 implementation: $\tau_2 = 0.5$); $\tau_2 < \tau_1$ required | \cref{sec:firewall-api} |
 | $\epsilon_{\text{drift}}$ | Drift detection threshold (generic) | Equation 8 |
 | $\epsilon_{\text{critical}}$ | Drift severity: CRITICAL ($\epsilon > 0.30$; default) | \cref{sec:deployment} |

@@ -39,11 +39,13 @@ Table: Cognitive firewall configuration parameters. {#tab:firewall-params}
 
 | Parameter | Symbol | Default | Range | Description |
 | --- | --- | --- | --- | --- |
-| Reject threshold | $\tau_1$ | 0.7 | $(\tau_2, 1)$ | Hard block; inputs above this score are rejected outright |
+| Reject threshold | $\tau_1$ | 0.8 | $(\tau_2, 1)$ | Hard block; inputs above this score are rejected outright |
 | Quarantine threshold | $\tau_2$ | 0.5 | $(0, \tau_1)$ | Sandbox routing; inputs in $(\tau_2, \tau_1]$ are quarantined |
 | Injection weight | $w_1$ | 0.4 | $[0, 1]$ | Pattern match weight |
 | Semantic weight | $w_2$ | 0.3 | $[0, 1]$ | Embedding similarity weight |
 | Anomaly weight | $w_3$ | 0.3 | $[0, 1]$ | Structural analysis weight |
+
+*Defaults are `FirewallConfig`'s, this paper's operational configuration. Part 1's reference implementation deliberately uses a different pair ($\tau_1 = 0.7$, $\tau_2 = 0.4$) for illustration; `src/core/firewall.py` records that fork and both defaults are pinned in their own test suites. The parametric sweep in S08 reports a different optimum again, which is a property of the response surface rather than of the shipped configuration.*
 
 **Threshold ordering constraint**: $\tau_1 > \tau_2$ is required; setting $\tau_1 = \tau_2$ collapses the three-tier decision (REJECT / QUARANTINE / ACCEPT) to binary REJECT/ACCEPT, eliminating the sandbox routing path entirely.
 
