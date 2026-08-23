@@ -74,8 +74,13 @@ class TestAttackCategory:
         ):
             assert cat.top_category == "coordination"
 
-    def test_has_twelve_members(self):
-        assert len(AttackCategory) == 12
+    def test_has_twelve_published_categories_plus_three_extension_families(self):
+        """12 published + 3 that probe provenance, sandbox and consensus."""
+        from attacks.validation import EXTENSION_CATEGORIES, PUBLISHED_CATEGORIES
+
+        assert len(PUBLISHED_CATEGORIES) == 12
+        assert len(EXTENSION_CATEGORIES) == 3
+        assert len(AttackCategory) == 15
 
 
 # ---------------------------------------------------------------------------

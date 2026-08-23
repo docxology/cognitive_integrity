@@ -14,7 +14,7 @@ from typing import Any, Dict, List, Optional
 # ---------------------------------------------------------------------------
 
 class AttackCategory(Enum):
-    """Top-level attack categories (4 categories, 12 subcategories)."""
+    """Top-level attack categories (5 categories, 15 subcategories)."""
 
     # Prompt injection attacks (500 of 950)
     DIRECT_INJECTION = "direct_injection"
@@ -36,6 +36,15 @@ class AttackCategory(Enum):
     CONSENSUS_POISONING = "consensus_poisoning"
     TIMING_ATTACK = "timing_attack"
 
+    # Provenance and isolation attacks (525 of 1475). Added because the full
+    # defense lattice showed provenance, sandbox and consensus with a Shapley
+    # value of exactly zero in all 256 coalitions: the corpus contained no
+    # instance of what those three modules detect, so the evaluation never
+    # tested them.
+    PROVENANCE_LAUNDERING = "provenance_laundering"
+    SANDBOX_ESCAPE = "sandbox_escape"
+    BYZANTINE_MANIPULATION = "byzantine_manipulation"
+
     @property
     def top_category(self) -> str:
         """Return the top-level category name."""
@@ -52,6 +61,9 @@ class AttackCategory(Enum):
             "sybil_attack": "coordination",
             "consensus_poisoning": "coordination",
             "timing_attack": "coordination",
+            "provenance_laundering": "provenance_and_isolation",
+            "sandbox_escape": "provenance_and_isolation",
+            "byzantine_manipulation": "provenance_and_isolation",
         }
         return _map[self.value]
 

@@ -899,7 +899,7 @@ class TestAttackCategory:
     """Tests for the AttackCategory enum."""
 
     def test_all_members_exist(self):
-        assert len(AttackCategory) == 12
+        assert len(AttackCategory) == 15
 
     def test_injection_top_category(self):
         assert AttackCategory.DIRECT_INJECTION.top_category == "injection"

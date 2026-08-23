@@ -86,6 +86,9 @@ _CATEGORY_PREFIX = {
     AttackCategory.SYBIL_ATTACK: "CRD-S",
     AttackCategory.CONSENSUS_POISONING: "CRD-C",
     AttackCategory.TIMING_ATTACK: "CRD-T",
+    AttackCategory.PROVENANCE_LAUNDERING: "PRI-P",
+    AttackCategory.SANDBOX_ESCAPE: "PRI-S",
+    AttackCategory.BYZANTINE_MANIPULATION: "PRI-B",
 }
 
 _TOP_CATEGORY_MAP = {
@@ -236,8 +239,23 @@ class AttackCorpus:
     # -- generation --
 
     @classmethod
-    def generate(cls, seed: int = 42) -> "AttackCorpus":
-        """Generate the full 950-sample attack corpus.
+    def generate(cls, seed: int = 42, *, extended: bool = False) -> "AttackCorpus":
+        """Generate the attack corpus: 950 published samples, or 1475 extended.
+
+        ``extended=False`` is the published corpus and the default, deliberately.
+        Every measured number in this series -- the ablation deltas, the
+        baseline comparison, the red-team evaluation, the multi-seed means --
+        is measured against those 950 items, and silently growing the corpus
+        would invalidate all of them at once while leaving the prose unchanged.
+
+        ``extended=True`` adds 525 samples in three families that probe the
+        provenance, sandbox and consensus modules. The full defense lattice
+        showed those three with a Shapley value of exactly zero in all 256
+        coalitions, which reads as three defenses that do not work; it was
+        instead that the 950 items contained no instance of what they detect.
+        The extension exists to tell those two cases apart, and it is a
+        separate corpus rather than a replacement so that the comparison
+        between them stays available.
 
         Uses the four generator modules to produce samples for each
         category, assigns unique IDs, and returns the corpus.
@@ -251,6 +269,9 @@ class AttackCorpus:
         from .generators.belief_manipulation import generate_all_belief_manipulation
         from .generators.coordination import generate_all_coordination
         from .generators.injection import generate_all_injection
+        from .generators.provenance_and_isolation import (
+            generate_all_provenance_and_isolation,
+        )
         from .generators.trust_exploitation import generate_all_trust_exploitation
 
         rng = np.random.default_rng(seed)
@@ -260,6 +281,8 @@ class AttackCorpus:
         raw_samples.extend(generate_all_trust_exploitation(rng))   # 200
         raw_samples.extend(generate_all_belief_manipulation(rng))  # 150
         raw_samples.extend(generate_all_coordination(rng))         # 100
+        if extended:
+            raw_samples.extend(generate_all_provenance_and_isolation(rng))  # 525
 
         # Assign unique IDs and create AttackSample objects
         counters: Dict[str, int] = {}

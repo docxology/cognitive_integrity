@@ -48,6 +48,8 @@ import itertools
 import json
 import math
 import sys
+
+import numpy as np
 from collections import defaultdict
 from pathlib import Path
 from typing import Iterable, Sequence
@@ -60,6 +62,7 @@ from attacks.corpus import AttackCorpus  # noqa: E402
 from composition.factory import create_pipeline_without  # noqa: E402
 
 OUTPUT = REPO / "output" / "data" / "taxonomy_evaluation_results.json"
+OUTPUT_EXTENDED = REPO / "output" / "data" / "taxonomy_evaluation_extended.json"
 
 #: The eight defense components, in the order the ablation registry lists them.
 COMPONENTS: tuple[str, ...] = tuple(COMPONENT_TO_MODULE)
@@ -81,6 +84,11 @@ FAMILY_OF: dict[str, str] = {
     "sybil_attack": "coordination",
     "consensus_poisoning": "coordination",
     "timing_attack": "coordination",
+    # Added with the corpus extension: the three families that exercise the
+    # modules the original 950 items never reached.
+    "provenance_laundering": "provenance_laundering",
+    "sandbox_escape": "sandbox_escape",
+    "byzantine_manipulation": "byzantine_manipulation",
 }
 
 
@@ -196,6 +204,73 @@ def threshold_sweep(samples: Sequence[object], grid: Sequence[float]) -> dict[st
     }
 
 
+def per_module_calibration(samples: Sequence[object], seed: int) -> dict[str, object]:
+    """What each module could contribute if its threshold matched its own scale.
+
+    Every one of the eight adapters ships ``threshold = 0.5``.  They do not
+    share a score scale: six of them never score a benign message above 0.0 at
+    all, the firewall tops out at 0.20 on benign input and the consensus
+    adapter at 0.10.  A single global default across eight different scales is
+    not a calibration, and the cost is measurable -- the consensus adapter
+    discriminates well (median 0.31 on the attacks it is built for against a
+    0.10 benign ceiling) and contributes exactly nothing, because 0.5 is five
+    times its own ceiling.
+
+    Thresholds are chosen on a calibration half and reported on a held-out
+    half.  Choosing and reporting on the same corpus would make every number
+    below an upper bound rather than an estimate, which is precisely the error
+    the parametric tables already make.
+    """
+    from composition.factory import MODULE_REGISTRY
+
+    rng = np.random.default_rng(seed)
+    order = rng.permutation(len(samples))
+    split = len(samples) // 2
+    calibrate = [samples[i] for i in order[:split]]
+    holdout = [samples[i] for i in order[split:]]
+    benign_split = len(BENIGN_MESSAGES) // 2
+    benign_cal = BENIGN_MESSAGES[:benign_split]
+    benign_hold = BENIGN_MESSAGES[benign_split:]
+
+    grid = [i / 400 for i in range(401)]
+    modules: dict[str, object] = {}
+    for name, cls in MODULE_REGISTRY.items():
+        module = cls()
+        cal_attack = [module.evaluate(s.payload).score for s in calibrate]
+        cal_benign = [module.evaluate(m).score for m in benign_cal]
+        hold_attack = [module.evaluate(s.payload).score for s in holdout]
+        hold_benign = [module.evaluate(m).score for m in benign_hold]
+
+        def rates(scores_a, scores_b, threshold):
+            tpr = sum(1 for x in scores_a if x > threshold) / len(scores_a)
+            fpr = sum(1 for x in scores_b if x > threshold) / len(scores_b) if scores_b else 0.0
+            return tpr, fpr
+
+        chosen = max(grid, key=lambda t: (lambda r: r[0] - r[1])(rates(cal_attack, cal_benign, t)))
+        clean = [t for t in grid if rates(cal_attack, cal_benign, t)[1] == 0.0]
+        chosen_clean = max(clean, key=lambda t: rates(cal_attack, cal_benign, t)[0]) if clean else chosen
+
+        j_tpr, j_fpr = rates(hold_attack, hold_benign, chosen)
+        c_tpr, c_fpr = rates(hold_attack, hold_benign, chosen_clean)
+        s_tpr, s_fpr = rates(hold_attack, hold_benign, 0.5)
+        modules[name] = {
+            "shipped_threshold": float(getattr(module, "_threshold", 0.5)),
+            "benign_score_max_calibration": max(cal_benign) if cal_benign else 0.0,
+            "youden_threshold": chosen,
+            "youden_holdout": {"tpr": j_tpr, "fpr": j_fpr},
+            "zero_fpr_threshold": chosen_clean,
+            "zero_fpr_holdout": {"tpr": c_tpr, "fpr": c_fpr},
+            "shipped_holdout": {"tpr": s_tpr, "fpr": s_fpr},
+        }
+    return {
+        "protocol": "thresholds chosen on a random half, reported on the held-out half",
+        "seed": seed,
+        "n_calibration": len(calibrate),
+        "n_holdout": len(holdout),
+        "modules": modules,
+    }
+
+
 def _category_counts(samples: Sequence[object]) -> dict[str, int]:
     counts: dict[str, int] = defaultdict(int)
     for sample in samples:
@@ -238,8 +313,8 @@ def _shapley(cells: dict[str, dict], family_tpr: dict[str, dict[str, float]]) ->
     return values
 
 
-def build(seed: int, mode: str) -> dict[str, object]:
-    corpus = list(AttackCorpus.generate(seed=seed))
+def build(seed: int, mode: str, *, extended: bool = False) -> dict[str, object]:
+    corpus = list(AttackCorpus.generate(seed=seed, extended=extended))
     if not corpus:
         raise TaxonomyMismatch("the corpus generated zero samples")
 
@@ -286,6 +361,7 @@ def build(seed: int, mode: str) -> dict[str, object]:
         ),
         "seed": seed,
         "mode": mode,
+        "corpus_variant": "extended" if extended else "published",
         "components": list(COMPONENTS),
         "corpus_size": len(corpus),
         "corpus_digest": _corpus_digest(corpus),
@@ -299,6 +375,7 @@ def build(seed: int, mode: str) -> dict[str, object]:
         payload["shapley_overall_tpr"] = _shapley(cells, family_tpr)
     grid = [round(0.28 + 0.005 * i, 4) for i in range(0, 89)]
     payload["threshold_sweep"] = threshold_sweep(corpus, grid)
+    payload["per_module_calibration"] = per_module_calibration(corpus, seed)
     return payload
 
 
@@ -310,21 +387,27 @@ def main(argv: Sequence[str] | None = None) -> int:
         action="store_true",
         help="evaluate only the 18 reported configurations instead of all 256",
     )
+    parser.add_argument(
+        "--extended",
+        action="store_true",
+        help="use the 1475-item corpus that probes provenance, sandbox and consensus",
+    )
     parser.add_argument("--check", action="store_true", help="fail if the artifact is stale")
     args = parser.parse_args(list(argv) if argv is not None else None)
 
     mode = "axes" if args.axes else "lattice"
     try:
-        fresh = build(args.seed, mode)
+        fresh = build(args.seed, mode, extended=args.extended)
     except TaxonomyMismatch as exc:
         print(f"taxonomy evaluation: FAILED -- {exc}", file=sys.stderr)
         return 2
 
+    target = OUTPUT_EXTENDED if args.extended else OUTPUT
     if args.check:
-        if not OUTPUT.is_file():
-            print(f"missing {OUTPUT.relative_to(REPO)}; run without --check", file=sys.stderr)
+        if not target.is_file():
+            print(f"missing {target.relative_to(REPO)}; run without --check", file=sys.stderr)
             return 1
-        stored = json.loads(OUTPUT.read_text(encoding="utf-8"))
+        stored = json.loads(target.read_text(encoding="utf-8"))
         drift = [
             key
             for key in ("corpus_digest", "cells", "category_counts", "configurations")
@@ -336,10 +419,10 @@ def main(argv: Sequence[str] | None = None) -> int:
         print(f"taxonomy evaluation: current ({fresh['configurations']} configurations)")
         return 0
 
-    OUTPUT.parent.mkdir(parents=True, exist_ok=True)
-    OUTPUT.write_text(json.dumps(fresh, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(json.dumps(fresh, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     full = fresh["cells"][_subset_key(COMPONENTS)]
-    print(f"wrote {OUTPUT.relative_to(REPO)}: {fresh['configurations']} configurations")
+    print(f"wrote {target.relative_to(REPO)}: {fresh['configurations']} configurations")
     print(f"  corpus: {fresh['corpus_size']} attacks in {len(fresh['category_counts'])} categories")
     print(f"  full stack: TPR {full['per_family']['overall']:.4f}  FPR {full['fpr']:.4f}")
     for family, rate in sorted(full["per_family"].items()):

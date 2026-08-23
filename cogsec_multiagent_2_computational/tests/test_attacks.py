@@ -446,10 +446,26 @@ class TestAttackCorpusUniqueness:
         expected_subcats = set(EXPECTED_SUBCATEGORY_DISTRIBUTION.keys())
         assert subcats == expected_subcats
 
-    def test_all_12_attack_categories_present(self, corpus: AttackCorpus):
-        """All 12 AttackCategory enum values appear in the corpus."""
+    def test_every_published_category_is_present(self, corpus: AttackCorpus):
+        """All 12 published categories appear, and none of the extension's.
+
+        This deliberately compares against PUBLISHED_CATEGORIES rather than
+        set(AttackCategory). The enum also carries the three extension families
+        that probe provenance, sandbox and consensus; asserting on the enum
+        would make adding any category fail here, in a test about the corpus.
+        """
+        from attacks.validation import EXTENSION_CATEGORIES, PUBLISHED_CATEGORIES
+
         cats = {s.category for s in corpus}
-        assert cats == set(AttackCategory)
+        assert cats == PUBLISHED_CATEGORIES
+        assert not cats & EXTENSION_CATEGORIES
+
+    def test_the_extended_corpus_adds_exactly_the_extension_families(self):
+        """And the extension is additive: it never drops a published category."""
+        from attacks.validation import EXTENSION_CATEGORIES, PUBLISHED_CATEGORIES
+
+        extended = {s.category for s in AttackCorpus.generate(seed=42, extended=True)}
+        assert extended == PUBLISHED_CATEGORIES | EXTENSION_CATEGORIES
 
 
 # ===========================================================================

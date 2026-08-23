@@ -41,7 +41,27 @@ EXPECTED_SUBCATEGORY_DISTRIBUTION = {
     "timing_attack": 30,
 }
 
-ALL_CATEGORIES = set(AttackCategory)
+#: The published corpus's twelve categories. Deliberately NOT ``set(AttackCategory)``:
+#: the enum also carries the three extension families, and a validator that
+#: demands every enum member appear would reject the 950-item corpus every
+#: measured number in this series is built on, the moment a category is added.
+PUBLISHED_CATEGORIES = {
+    category
+    for category in AttackCategory
+    if category.value in EXPECTED_SUBCATEGORY_DISTRIBUTION
+}
+
+#: What the extended corpus must additionally contain.
+EXTENSION_CATEGORIES = set(AttackCategory) - PUBLISHED_CATEGORIES
+
+EXPECTED_EXTENDED_SUBCATEGORY_DISTRIBUTION = {
+    **EXPECTED_SUBCATEGORY_DISTRIBUTION,
+    "provenance_laundering": 175,
+    "sandbox_escape": 175,
+    "byzantine_manipulation": 175,
+}
+
+EXPECTED_EXTENDED_TOTAL = EXPECTED_TOTAL + 525
 
 # ---------------------------------------------------------------------------
 # Validation report
@@ -161,14 +181,28 @@ def validate_corpus(
     report.invalid = invalid_count
     report.valid = report.total - invalid_count
 
+    # Which corpus is this? The extension is a separate corpus, not a
+    # replacement, so it is validated against its own expectations rather than
+    # loosening the published ones.
+    extended = bool(observed_categories & EXTENSION_CATEGORIES)
+    expected_total = EXPECTED_EXTENDED_TOTAL if extended else EXPECTED_TOTAL
+    expected_subcategories = (
+        EXPECTED_EXTENDED_SUBCATEGORY_DISTRIBUTION
+        if extended
+        else EXPECTED_SUBCATEGORY_DISTRIBUTION
+    )
+    required_categories = (
+        PUBLISHED_CATEGORIES | EXTENSION_CATEGORIES if extended else PUBLISHED_CATEGORIES
+    )
+
     # Total count check
-    if report.total != EXPECTED_TOTAL:
+    if report.total != expected_total:
         report.errors.append(
-            f"Expected {EXPECTED_TOTAL} samples, got {report.total}"
+            f"Expected {expected_total} samples, got {report.total}"
         )
 
     # Category coverage check
-    missing_cats = ALL_CATEGORIES - observed_categories
+    missing_cats = required_categories - observed_categories
     if missing_cats:
         for cat in missing_cats:
             report.errors.append(f"Missing category: {cat.value}")
@@ -187,7 +221,7 @@ def validate_corpus(
                 f"(diff={diff}, tolerance={expected * tolerance:.0f})"
             )
 
-    for subcat, expected in EXPECTED_SUBCATEGORY_DISTRIBUTION.items():
+    for subcat, expected in expected_subcategories.items():
         actual = report.subcategory_distribution.get(subcat, 0)
         if actual != expected:
             report.warnings.append(
