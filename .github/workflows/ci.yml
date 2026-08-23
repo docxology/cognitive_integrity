@@ -336,9 +336,15 @@ jobs:
         continue-on-error: true
         run: python3 scripts/check_series_integrity.py --only cross-paper-pointers
 
+      - name: Series write path agrees with the read path
+        # The injector must find nothing to change on a tree the gate calls
+        # clean. If these two disagree, one of them is wrong about where a
+        # number lives, and the manuscripts are the thing that suffers.
+        run: python3 scripts/inject_series_values.py
+
       - name: Tests for the gate itself
         # A checker that cannot fail is worse than no checker; these tests drive
         # each check against a planted defect and require it to be caught.
         run: |
           python3 -m pip install --quiet pytest
-          python3 -m pytest tests/test_series_integrity.py -q
+          python3 -m pytest tests/ -q

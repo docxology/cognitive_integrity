@@ -82,6 +82,17 @@ every number they quoted from Part 2 was typed by hand. The ledger closes that: 
 `shared-quantities` check gates every ledger variable across all three manuscripts, and a
 stated number that disagrees with its artifact fails the build.
 
+The matching write path is `scripts/inject_series_values.py`: it rewrites any governed site
+whose number has drifted from its artifact, reusing the ledger's own patterns so the two
+mechanisms cannot disagree about where a number lives. Reporting is the default; `--write`
+applies. It refuses to run at all if any variable fails to derive, because injecting a subset
+would leave some numbers sourced from the artifacts and some not.
+
+```bash
+python3 scripts/inject_series_values.py           # report drift, change nothing
+python3 scripts/inject_series_values.py --write   # rewrite from the artifacts
+```
+
 Two variables are derived structurally rather than from an artifact: the applied-domain count
 is obtained by counting Part 3's `09c..09l` section files, and the ablation denominator is
 recovered from the measurement resolution (with an n-sample corpus every delta is a multiple
