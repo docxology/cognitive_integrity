@@ -188,8 +188,8 @@ cif:
 
   firewall:
     enabled: true
-    tau_1: 0.7        # Hard reject; inputs above this score are rejected outright
-    tau_2: 0.5        # Quarantine; inputs in (tau_2, tau_1] are sandboxed
+    tau_1: 0.8        # Hard reject, operational default; inputs above this score are rejected outright
+    tau_2: 0.5        # Quarantine, operational default; inputs in (tau_2, tau_1] are sandboxed
     weights:
       injection: 0.4
       semantic: 0.3

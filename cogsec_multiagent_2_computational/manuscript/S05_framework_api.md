@@ -42,7 +42,7 @@ Table: Firewall module API: Classes for message classification and threat detect
 
 | Class | Description |
 | --- | --- |
-| \texttt{CognitiveFirewall} | Three-tier classifier (ACCEPT/QUARANTINE/REJECT) using dual thresholds: $\tau_1 = 0.7$ (REJECT, hard-reject; inputs scoring above this are blocked outright) and $\tau_2 = 0.5$ (QUARANTINE; inputs scoring in $(\tau_2, \tau_1]$ are sandboxed). Combines pattern matching, semantic analysis, and anomaly detection. |
+| \texttt{CognitiveFirewall} | Three-tier classifier (ACCEPT/QUARANTINE/REJECT) using dual thresholds, at their operational default $\tau_1 = 0.8$ (REJECT, hard-reject; inputs scoring above this are blocked outright) and operational default $\tau_2 = 0.5$ (QUARANTINE; inputs scoring in $(\tau_2, \tau_1]$ are sandboxed). Combines pattern matching, semantic analysis, and anomaly detection. |
 | \texttt{PatternDetector} | Heuristic pattern matching with 15 injection patterns and 20 suspicious indicators. Weighted scoring based on pattern severity. |
 | \texttt{SemanticSimilarityDetector} | Embedding-based similarity to known malicious patterns. Supports custom embedding models or hash-based fallback. |
 | \texttt{MultiStageClassifier} | Orchestrates multi-stage detection pipeline with configurable stage weights. |

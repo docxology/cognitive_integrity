@@ -41,6 +41,7 @@ same shape.  If you cannot write a safe pattern, still add the variable with
 from __future__ import annotations
 
 import argparse
+import ast
 import json
 import math
 import re
@@ -351,6 +352,59 @@ def domain_count() -> float:
     """Counted from Part 3's files, not typed: 09c..09l are the domain sections."""
     root = REPO_ROOT / PARTS["3"] / "manuscript"
     return float(len([p for p in root.glob("09[c-z]_*.md")]))
+
+
+def _dataclass_default(part: str, relative: str, class_name: str, field: str) -> float:
+    """Read a dataclass field's default straight out of the source.
+
+    The firewall thresholds are the one pair of published numbers that live in
+    Python rather than in a JSON artifact, and they are the pair the series got
+    wrong: five prose sites stated the implementation default as 0.7 while
+    ``FirewallConfig`` had shipped 0.8 since the fork with Part 1.  Parsing the
+    source with :mod:`ast` rather than importing it keeps this deriver usable
+    from the program root, which has no virtualenv of its own, and keeps a
+    manuscript gate from executing the package it is auditing.
+    """
+    path = REPO_ROOT / PARTS[part] / relative
+    if not path.is_file():
+        raise MissingArtifact(f"{relative} is missing from Part {part}")
+    tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
+    for node in ast.walk(tree):
+        if not (isinstance(node, ast.ClassDef) and node.name == class_name):
+            continue
+        for stmt in node.body:
+            if (
+                isinstance(stmt, ast.AnnAssign)
+                and isinstance(stmt.target, ast.Name)
+                and stmt.target.id == field
+            ):
+                if stmt.value is None:
+                    raise MissingArtifact(
+                        f"{class_name}.{field} has no default to publish"
+                    )
+                try:
+                    return float(ast.literal_eval(stmt.value))
+                except (ValueError, TypeError) as exc:
+                    raise MissingArtifact(
+                        f"{class_name}.{field} default is not a number: {exc}"
+                    ) from exc
+        raise MissingArtifact(f"{class_name} has no field {field!r}")
+    raise MissingArtifact(f"{relative} defines no class {class_name!r}")
+
+
+def firewall_tau1() -> float:
+    """The operational reject threshold: Part 2's ``FirewallConfig`` default."""
+    return _dataclass_default("2", "src/core/firewall.py", "FirewallConfig", "injection_threshold")
+
+
+def firewall_tau2() -> float:
+    """The operational quarantine threshold, from the same dataclass."""
+    return _dataclass_default("2", "src/core/firewall.py", "FirewallConfig", "suspicious_threshold")
+
+
+def firewall_tau1_reference() -> float:
+    """Part 1's deliberately different reference-implementation default."""
+    return _dataclass_default("1", "src/firewall.py", "FirewallConfig", "injection_threshold")
 
 
 # ---------------------------------------------------------------------------
@@ -744,6 +798,52 @@ LEDGER: tuple[LedgerVariable, ...] = (
         pattern=re.compile(rf"\d{{2}}\s*{DASH}\s*(\d{{2}})\s+percentage[- ]point gap"),
         require=("gap",),
         tolerance=0.6,
+    ),
+    LedgerVariable(
+        id="firewall_tau1",
+        description=(
+            "Reject threshold as shipped: FirewallConfig.injection_threshold. Five prose "
+            "sites published 0.7 as the implementation default while the dataclass had "
+            "held 0.8 since the fork with Part 1's reference implementation."
+        ),
+        artifact="cogsec_multiagent_2_computational/src/core/firewall.py",
+        deriver=firewall_tau1,
+        unit="threshold",
+        pattern=re.compile(r"(?:\\tau_1\s*=\s*|tau_1:\s+)(\d\.\d+)"),
+        # "operational default" is the phrase the papers now use wherever they
+        # state the shipped value.  It is what separates this quantity from the
+        # two neighbours that share its shape and cannot be told apart by the
+        # symbol alone: S08's parametric optimum (also a tau_1, also written
+        # "tau_1 = 0.7", but a sweep result rather than a default) and Part 3's
+        # per-profile tuning, whose whole point is to differ from the default.
+        require=("operational default",),
+        parts=("2", "3"),
+        min_occurrences=4,
+    ),
+    LedgerVariable(
+        id="firewall_tau2",
+        description="Quarantine threshold as shipped: FirewallConfig.suspicious_threshold.",
+        artifact="cogsec_multiagent_2_computational/src/core/firewall.py",
+        deriver=firewall_tau2,
+        unit="threshold",
+        pattern=re.compile(r"(?:\\tau_2\s*=\s*|tau_2:\s+)(\d\.\d+)"),
+        require=("operational default",),
+        parts=("2", "3"),
+        min_occurrences=2,
+    ),
+    LedgerVariable(
+        id="firewall_tau1_reference",
+        description=(
+            "Part 1's reference-implementation reject threshold. Deliberately different "
+            "from Part 2's operational default; gated so the documented fork stays a "
+            "fork rather than quietly becoming a contradiction."
+        ),
+        artifact="cogsec_multiagent_1_theory/src/firewall.py",
+        deriver=firewall_tau1_reference,
+        unit="threshold",
+        pattern=re.compile(r"reference implementation deliberately uses (\d\.\d+)"),
+        require=("reference implementation",),
+        parts=("2",),
     ),
     LedgerVariable(
         id="domain_count",

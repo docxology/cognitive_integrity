@@ -48,7 +48,7 @@ Specialists are domain-focused workers: the coding agent, the research agent, th
 **Recommended configuration**:
 
 * **Trust decay $\delta = 0.80$** (default). Trust propagation within the specialist's scope is acceptable.
-* **Firewall rejection threshold $\tau_1 = 0.7$** (default). The specialist accepts more input diversity than the orchestrator because specialists are designed to process user-provided task content.
+* **Firewall rejection threshold $\tau_1 = 0.8$** (the operational default). The specialist accepts more input diversity than the orchestrator because specialists are designed to process user-provided task content.
 * **Scope enforcement is the primary control**, not trust decay or consensus.
 
 **Mandatory tripwires**:

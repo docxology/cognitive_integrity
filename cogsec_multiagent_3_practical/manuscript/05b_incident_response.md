@@ -21,7 +21,7 @@ The playbooks below are organized by adversary class ($\Omega_1$ through $\Omega
 
 ## Playbook 1: $\Omega_1$ External Adversary (Prompt Injection)
 
-**Detection triggers**: Firewall score $> \tau_1 = 0.7$; or tripwire CRITICAL on any agent.
+**Detection triggers**: Firewall score $> \tau_1 = 0.8$ (the operational default); or tripwire CRITICAL on any agent.
 
 **Timeline**: Resolution typically 15–60 minutes for isolated injection.
 

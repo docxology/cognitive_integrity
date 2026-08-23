@@ -84,6 +84,13 @@ _CLEAN_BIB = """@article{real2024work,
 """
 
 
+#: Fixture threshold defaults. Distinct from production (0.8 / 0.5 / 0.7) on
+#: purpose -- see the comment in _build_tree.
+FIXTURE_TAU1 = 0.77
+FIXTURE_TAU2 = 0.33
+FIXTURE_TAU1_REFERENCE = 0.66
+
+
 def _build_tree(root: Path, *, part_text: dict[str, str], bibs: dict[str, str]) -> Path:
     gate = _load_module()
     for part, package in gate.PARTS.items():
@@ -102,6 +109,29 @@ def _build_tree(root: Path, *, part_text: dict[str, str], bibs: dict[str, str]) 
         (p3 / f"09{letter}_domain.md").write_text(
             f"# Domain {letter}\n\nA domain section.\n", encoding="utf-8"
         )
+
+    # The firewall thresholds are the one published pair that lives in Python
+    # rather than in a JSON artifact, so the fixture must ship the dataclasses
+    # the derivers parse. The defaults here are deliberately NOT the production
+    # ones: if a deriver ever ignored its argument and read the real tree, these
+    # tests would keep passing against production data and prove nothing.
+    src2 = root / gate.PARTS["2"] / "src" / "core"
+    src2.mkdir(parents=True, exist_ok=True)
+    (src2 / "firewall.py").write_text(
+        "from dataclasses import dataclass\n\n\n"
+        "@dataclass\nclass FirewallConfig:\n"
+        f"    injection_threshold: float = {FIXTURE_TAU1}\n"
+        f"    suspicious_threshold: float = {FIXTURE_TAU2}\n",
+        encoding="utf-8",
+    )
+    src1 = root / gate.PARTS["1"] / "src"
+    src1.mkdir(parents=True, exist_ok=True)
+    (src1 / "firewall.py").write_text(
+        "from dataclasses import dataclass\n\n\n"
+        "@dataclass\nclass FirewallConfig:\n"
+        f"    injection_threshold: float = {FIXTURE_TAU1_REFERENCE}\n",
+        encoding="utf-8",
+    )
 
     data = root / gate.PARTS["2"] / "output" / "data"
     data.mkdir(parents=True, exist_ok=True)
@@ -224,6 +254,10 @@ def _body(ceiling: str = "96") -> str:
         f"There is a {low:.0f}--{high:.0f} percentage-point gap to close.\n\n"
         "The study spans ten domains; those ten domains are analysed in turn.\n\n"
         f"The evidence includes {tests_p2:,} tests.\n\n"
+        f"The firewall's operational default $\\tau_1 = {FIXTURE_TAU1}$ rejects outright, "
+        f"and its operational default $\\tau_2 = {FIXTURE_TAU2}$ quarantines.\\n\\n"
+        f"Deployment ships that operational default: tau_1: {FIXTURE_TAU1} in the config.\\n\\n"
+        f"Part 1's reference implementation deliberately uses {FIXTURE_TAU1_REFERENCE}.\\n\\n"
         "Data from `output/data/multi_seed_results.json`.\n"
     )
 
