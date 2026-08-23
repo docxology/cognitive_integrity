@@ -40,7 +40,7 @@ The CIF series has established validated trust metrics (Trust Calculus) and filt
 
 The most pressing open problem in cognitive security is detecting **emergent misalignment**—the collective drift of agent beliefs without any single agent behaving explicitly maliciously. The FEP connection developed in Part 2 suggests a natural generalization: monitor the **colony-level variational free energy** $F_\text{colony} = \sum_i F_i + F_\text{coordination}$, where the coordination term penalizes inconsistency between agents' generative models.
 
-Research directions include: (a) defining tractable approximations to $F_\text{colony}$ that can be computed from inter-agent message logs; (b) identifying the FEP signature of emergent misalignment as distinct from legitimate belief updating; (c) designing sampling strategies that detect distributed drift without requiring $O(n^2)$ pairwise comparisons. A system that monitors collective free energy would push the emergent misalignment detection rate from the current 56.1\% toward the 90\%+ achieved against explicit adversaries.
+Research directions include: (a) defining tractable approximations to $F_\text{colony}$ that can be computed from inter-agent message logs; (b) identifying the FEP signature of emergent misalignment as distinct from legitimate belief updating; (c) designing sampling strategies that detect distributed drift without requiring $O(n^2)$ pairwise comparisons. A system that monitors collective free energy would push the emergent misalignment detection rate from the current 74.3\% toward the near-complete detection achieved against explicit adversaries.
 
 ## 6. Information-Geometric Adversarial Robustness
 

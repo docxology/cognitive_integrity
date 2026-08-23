@@ -100,7 +100,7 @@ This is the most consequential playbook — $\Omega_3$ compromise typically requ
 
 **Detection triggers**: Colony drift score exceeds threshold; anomalous output distribution from multiple agents simultaneously; behavioral fingerprint deviates from baseline over extended period.
 
-**Critical caveat**: CIF detects only **56.1% of emergent misalignment cases** (Part 2, §5.3). This means approximately 44% of $\Omega_5$ attacks will *not* trigger automated response — operator vigilance is the primary defense.
+**Critical caveat**: CIF detects **74.3% of emergent misalignment cases** (Part 2's 30-seed colony benchmark; an earlier single-seed figure of 56.1% is not the publication estimate). This means roughly a quarter of such cases will *not* trigger automated response — operator vigilance is the primary defense.
 
 **Steps**:
 

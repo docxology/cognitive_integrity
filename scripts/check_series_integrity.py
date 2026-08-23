@@ -115,240 +115,25 @@ class CheckResult:
 
 
 # ---------------------------------------------------------------------------
-# Ground truth derived from Part 2's shipped artifacts
+# Ground truth: the series ledger
 # ---------------------------------------------------------------------------
+#
+# Every derived number lives in scripts/series_ledger.py, which recomputes it
+# from Part 2's shipped artifacts. This module used to carry its own copy of the
+# quantity table; two tables that must agree is the same defect class the gate
+# exists to catch, so there is now one.
 
-
-class MissingArtifact(RuntimeError):
-    """Raised when a derived quantity's backing artifact is absent."""
-
-
-def _load(name: str) -> object:
-    path = DATA_DIR / name
-    if not path.is_file():
-        raise MissingArtifact(f"{path.relative_to(REPO_ROOT)} is missing")
-    try:
-        return json.loads(path.read_text(encoding="utf-8"))
-    except json.JSONDecodeError as exc:  # pragma: no cover - corrupt artifact
-        raise MissingArtifact(f"{path.name} is not valid JSON: {exc}") from exc
-
-
-def _parametric_rows() -> list[dict]:
-    rows = _load("full_evaluation_results.json")
-    if not isinstance(rows, list) or not rows:
-        raise MissingArtifact("full_evaluation_results.json holds no rows")
-    return [r for r in rows if isinstance(r, dict)]
-
-
-def parametric_ceiling_low() -> float:
-    """Lowest single parametric detection rate, as a percentage."""
-    return min(float(r["detection_rate"]) for r in _parametric_rows()) * 100.0
-
-
-def parametric_ceiling_high() -> float:
-    return max(float(r["detection_rate"]) for r in _parametric_rows()) * 100.0
-
-
-def architecture_count() -> float:
-    return float(len({str(r["architecture"]) for r in _parametric_rows()}))
-
-
-def corpus_size() -> float:
-    """Attacks per architecture in the parametric sweep."""
-    per_arch: dict[str, int] = {}
-    for row in _parametric_rows():
-        arch = str(row["architecture"])
-        per_arch[arch] = per_arch.get(arch, 0) + int(row["n_attacks"])
-    sizes = set(per_arch.values())
-    if len(sizes) != 1:
-        raise MissingArtifact(f"architectures disagree on corpus size: {per_arch}")
-    return float(sizes.pop())
-
-
-def multiseed_mean() -> float:
-    data = _load("multi_seed_results.json")
-    if not isinstance(data, dict):
-        raise MissingArtifact("multi_seed_results.json is not an object")
-    for key in ("tpr_mean", "detection_rate_mean", "mean_detection_rate"):
-        if key in data:
-            return float(data[key]) * 100.0
-    raise MissingArtifact("multi_seed_results.json has no mean detection-rate key")
-
-
-# ---------------------------------------------------------------------------
-# Shared-quantity table
-# ---------------------------------------------------------------------------
-
-
-#: How far either side of a match to look for the context keywords that decide
-#: whether the match really is this quantity.
-CONTEXT_WINDOW = 110
-
-
-@dataclass(frozen=True)
-class SharedQuantity:
-    """A number that appears in more than one paper and must agree everywhere.
-
-    Matching a bare numeric shape is not enough: a single sentence in Part 2's
-    abstract carries the LLM arm's ``80--100%``, the colony arm's ``81--100%``
-    and the parametric ceiling's ``96--100%``, all in the same shape.  So a
-    match counts as this quantity only when, inside a window of
-    :data:`CONTEXT_WINDOW` characters either side, at least one ``require``
-    keyword is present and no ``exclude`` keyword is.  ``exclude`` is what
-    keeps a neighbouring arm's identically-shaped range from being compared
-    against this quantity's ground truth.
-    """
-
-    id: str
-    pattern: re.Pattern[str]
-    require: tuple[str, ...]
-    deriver: Callable[[], float] | None
-    tolerance: float
-    unit: str
-    exclude: tuple[str, ...] = ()
-    parts: tuple[str, ...] = ("1", "2", "3")
-    min_occurrences: int = 2
-    note: str = ""
-
-    def __post_init__(self) -> None:
-        if self.pattern.groups != 1:
-            raise ValueError(
-                f"{self.id}: pattern needs exactly one capturing group, "
-                f"has {self.pattern.groups}"
-            )
-
-    def in_scope(self, line: str, match: re.Match[str]) -> bool:
-        start = max(0, match.start() - CONTEXT_WINDOW)
-        window = line[start : match.end() + CONTEXT_WINDOW].lower()
-        if any(token in window for token in self.exclude):
-            return False
-        return any(token in window for token in self.require)
-
-
-WORD_NUMBERS = {
-    "one": 1.0,
-    "two": 2.0,
-    "three": 3.0,
-    "four": 4.0,
-    "five": 5.0,
-    "six": 6.0,
-    "seven": 7.0,
-    "eight": 8.0,
-    "nine": 9.0,
-    "ten": 10.0,
-}
-
-
-def _to_number(literal: str) -> float:
-    text = literal.strip().replace(",", "").replace("{", "").replace("}", "")
-    if text.lower() in WORD_NUMBERS:
-        return WORD_NUMBERS[text.lower()]
-    return float(text)
-
-
-#: Evaluation arms whose ranges share the ``NN--100%`` shape with the
-#: parametric ceiling and must never be compared against it.
-_OTHER_ARMS = (
-    "llm-backed",
-    "llm validation",
-    "llm-backed evaluation",
-    "colony",
-    "gemma",
-    "hdi",
-    "evaluation modes",
-    "across evaluation",
-    "variation across",
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from series_ledger import (  # noqa: E402
+    CONTEXT_WINDOW,
+    DASH,
+    LEDGER,
+    MissingArtifact,
+    LedgerVariable,
+    to_number,
 )
 
-SHARED_QUANTITIES: tuple[SharedQuantity, ...] = (
-    SharedQuantity(
-        id="parametric_ceiling_low",
-        pattern=re.compile(rf"(\d{{2}})\s*{DASH}\s*100\s*\\?%"),
-        require=(
-            "parametric",
-            "design ceiling",
-            "design-level",
-            "coverage ceiling",
-            "design target",
-        ),
-        exclude=_OTHER_ARMS,
-        deriver=parametric_ceiling_low,
-        tolerance=0.001,
-        unit="percent",
-        note=(
-            "The low end of the parametric design ceiling. Derived as the minimum "
-            "per-cell detection rate in full_evaluation_results.json."
-        ),
-    ),
-    SharedQuantity(
-        id="parametric_ceiling_high",
-        pattern=re.compile(rf"\d{{2}}\s*{DASH}\s*(100)\s*\\?%"),
-        require=(
-            "parametric",
-            "design ceiling",
-            "design-level",
-            "coverage ceiling",
-            "design target",
-        ),
-        exclude=_OTHER_ARMS,
-        deriver=parametric_ceiling_high,
-        tolerance=0.001,
-        unit="percent",
-    ),
-    SharedQuantity(
-        id="parametric_ceiling_low_bare",
-        # A bare "96\\%" used as the ceiling, e.g. "96\\% as the achievable
-        # ceiling" or "the simulation's 96--100\\% design-level ceiling". The
-        # range-shaped pattern above misses this form entirely, which is how a
-        # stale 94 survived a sweep of every NN--100 occurrence.
-        # Not preceded by a digit or dash (so the "00" inside "100" and the
-        # high end of "96--100" are both excluded), and not itself the low end
-        # of a range (which the range-shaped quantity above already gates).
-        pattern=re.compile(r"(?<![\d\-–—])(\d{2})\s*\\?%(?!\s*(?:--|–|—)\s*\d)"),
-        require=("design-level ceiling", "achievable ceiling", "design ceiling"),
-        exclude=_OTHER_ARMS,
-        deriver=parametric_ceiling_low,
-        tolerance=0.001,
-        unit="percent",
-        min_occurrences=1,
-        note="A ceiling quoted as a single number rather than a range.",
-    ),
-    SharedQuantity(
-        id="attack_corpus_size",
-        pattern=re.compile(rf"(\d{{3}})\s*{DASH}?\s*attack\b(?=[- ]?(?:corpus|set)\b)"),
-        require=("corpus", "set"),
-        # The 98-attack ablation subsample is a different denominator.
-        exclude=("ablation",),
-        deriver=corpus_size,
-        tolerance=0.001,
-        unit="count",
-        note="Corpus size per architecture, from AttackCorpus.generate(seed=42).",
-    ),
-    SharedQuantity(
-        id="architecture_count",
-        pattern=re.compile(
-            r"\b(four|five|six|seven|eight|\d+)\s+production\s+multiagent\s+"
-            r"(?:architectures|systems|topologies)"
-        ),
-        require=("production",),
-        deriver=architecture_count,
-        tolerance=0.001,
-        unit="count",
-        note="Number of distinct architectures in the parametric sweep.",
-    ),
-    SharedQuantity(
-        id="multiseed_mean",
-        pattern=re.compile(
-            r"mean(?:\s+detection\s+rate)?\s+of\s+\*{0,2}(\d{2}\.\d)\s*\\?%"
-        ),
-        require=("seed",),
-        deriver=multiseed_mean,
-        tolerance=0.06,
-        unit="percent",
-        note="30-seed pipeline mean detection rate, from multi_seed_results.json.",
-    ),
-)
-
+SHARED_QUANTITIES = LEDGER
 
 # ---------------------------------------------------------------------------
 # File walking
@@ -388,8 +173,10 @@ def iter_lines(path: Path) -> Iterator[tuple[int, str]]:
 def check_shared_quantities() -> CheckResult:
     result = CheckResult("shared-quantities")
     for quantity in SHARED_QUANTITIES:
+        if quantity.pattern is None:
+            continue
         try:
-            derived = quantity.deriver() if quantity.deriver else None
+            derived = quantity.value()
         except (MissingArtifact, KeyError, TypeError, ValueError) as exc:
             result.problems.append(
                 Problem(
@@ -406,11 +193,15 @@ def check_shared_quantities() -> CheckResult:
         for part in quantity.parts:
             for path in manuscript_files(part):
                 for number, line in iter_lines(path):
+                    seen_on_line = False
                     for match in quantity.pattern.finditer(line):
                         if not quantity.in_scope(line, match):
                             continue
+                        if quantity.first_only and seen_on_line:
+                            break
+                        seen_on_line = True
                         try:
-                            value = _to_number(match.group(1))
+                            value = to_number(match.group(1))
                         except ValueError:
                             result.problems.append(
                                 Problem(
@@ -463,7 +254,7 @@ def check_shared_quantities() -> CheckResult:
                         number,
                         f"{quantity.id}: states {value:g} but the shipped artifact "
                         f"gives {derived:g}"
-                        + (f" ({quantity.note})" if quantity.note else ""),
+                        + (f" ({quantity.description})" if quantity.description else ""),
                     )
                 )
     return result

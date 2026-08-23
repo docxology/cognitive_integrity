@@ -65,6 +65,28 @@ Stdlib-only, no build step. Four checks:
 | `math-hygiene` | LaTeX that builds but renders wrong: a doubled backslash before a command name, or a `*` where a subscript `_` was meant. Parts 1 and 3 each check this in their own verifier; Part 2 had no such gate |
 | `artifact-provenance` | A manuscript citing a data artifact that does not positively declare where it came from. `src/data/generate.py` forbids its placeholders from backing manuscript tables; the rule was unenforced until a scaling table was found built on one |
 | `cross-paper-pointers` | Hardcoded `Part 1, Theorem 3.2a`-style pointers, which the renderer numbers per part and which therefore cannot be verified from a sibling paper (advisory) |
+### The series ledger
+
+`scripts/series_ledger.py` is the single source of truth for every number the papers share.
+Each variable binds a name to a *deriver* that recomputes the value from a shipped artifact
+under Part 2's `output/data/`; nothing in it stores a number.
+
+```bash
+python3 scripts/series_ledger.py             # every derived value
+python3 scripts/series_ledger.py --coverage  # how much of the prose is managed
+```
+
+Part 2 already ran derive-then-verify on its own manuscript (`injector.py` writes measured
+values in, `claim_registry.py` reads them back and re-derives). Parts 1 and 3 had neither, so
+every number they quoted from Part 2 was typed by hand. The ledger closes that: the
+`shared-quantities` check gates every ledger variable across all three manuscripts, and a
+stated number that disagrees with its artifact fails the build.
+
+Two variables are derived structurally rather than from an artifact: the applied-domain count
+is obtained by counting Part 3's `09c..09l` section files, and the ablation denominator is
+recovered from the measurement resolution (with an n-sample corpus every delta is a multiple
+of 1/n, so the smallest non-zero delta *is* 1/n). Neither is typed anywhere.
+
 
 Every check fails on an empty input set: a pattern that matches nothing is a broken guard,
 not a clean run. `tests/test_series_integrity.py` drives each check against a planted defect

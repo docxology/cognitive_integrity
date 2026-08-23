@@ -37,6 +37,15 @@ def _load_module(monkeypatch_root: Path | None = None):
     if monkeypatch_root is not None:
         module.REPO_ROOT = monkeypatch_root
         module.DATA_DIR = monkeypatch_root / module.PARTS["2"] / "output" / "data"
+        # The gate sources its quantities from series_ledger, which carries its
+        # own REPO_ROOT, DATA_DIR and artifact cache. Rerooting only the gate
+        # would leave every deriver reading the real repository, and the tests
+        # would silently assert against production data.
+        ledger = sys.modules.get("series_ledger")
+        if ledger is not None:
+            ledger.REPO_ROOT = monkeypatch_root
+            ledger.DATA_DIR = module.DATA_DIR
+            ledger._CACHE.clear()
     return module
 
 
@@ -86,34 +95,125 @@ def _build_tree(root: Path, *, part_text: dict[str, str], bibs: dict[str, str]) 
         (manuscript / "references.bib").write_text(
             bibs.get(part, _CLEAN_BIB), encoding="utf-8"
         )
+    # domain_count derives structurally, by counting Part 3's 09c..09l section
+    # files rather than reading a typed number, so the fixture must have them.
+    p3 = root / gate.PARTS["3"] / "manuscript"
+    for letter in "cdefghijkl":
+        (p3 / f"09{letter}_domain.md").write_text(
+            f"# Domain {letter}\n\nA domain section.\n", encoding="utf-8"
+        )
+
     data = root / gate.PARTS["2"] / "output" / "data"
     data.mkdir(parents=True, exist_ok=True)
-    (data / "full_evaluation_results.json").write_text(
-        json.dumps(_PARAMETRIC_ROWS), encoding="utf-8"
-    )
-    (data / "multi_seed_results.json").write_text(
-        json.dumps({"data_origin": "real_pipeline", "tpr_mean": 0.448}), encoding="utf-8"
-    )
+    for name, payload in _ARTIFACTS.items():
+        (data / name).write_text(json.dumps(payload), encoding="utf-8")
     return root
+
+
+#: A complete synthetic artifact set: every file the ledger derives from, with
+#: the same shape as the real ones. Values are chosen so the fixture prose below
+#: is internally consistent (ceiling 96--100, mean 44.8, corpus 950, 4 arches).
+_ARTIFACTS: dict[str, object] = {
+    "full_evaluation_results.json": _PARAMETRIC_ROWS,
+    "multi_seed_results.json": {
+        "data_origin": "real_pipeline",
+        "tpr_mean": 0.448,
+        "fpr_mean": 0.2575,
+        "overall_cv": 0.0967,
+        "n_seeds": 30,
+    },
+    "ablation_results.json": {
+        "data_origin": "real_pipeline",
+        "full_pipeline": {"tpr": 12 / 98},
+        "component_removal": [
+            {"removed": "detection", "delta_tpr": -5 / 98},
+            {"removed": "trust_calculus", "delta_tpr": -2 / 98},
+            {"removed": "firewall", "delta_tpr": -1 / 98},
+            {"removed": "invariants", "delta_tpr": -1 / 98},
+            {"removed": "tripwire", "delta_tpr": -1 / 98},
+            {"removed": "consensus", "delta_tpr": 0.0},
+        ],
+        "top_synergies": [
+            {"a": "firewall", "b": "detection", "synergy": 3 / 98},
+            {"a": "tripwire", "b": "detection", "synergy": 3 / 98},
+            {"a": "firewall", "b": "trust_calculus", "synergy": 2 / 98},
+        ],
+    },
+    "colony_results.json": {
+        "data_origin": "real_pipeline",
+        "scenarios": [
+            {
+                "scenario": "emergent_misalignment",
+                "detection_rate_mean": 0.743,
+                "false_positive_rate_mean": 0.255,
+            }
+        ],
+    },
+    "cross_validation_results.json": {"data_origin": "real_pipeline", "k": 5, "mean_tpr": 0.16},
+    "scalability_results.json": {
+        "data_origin": "real_pipeline",
+        "framework_track": [{"n_agents": 2}, {"n_agents": 100}],
+    },
+    "redteam_evaluation_results.json": {"data_origin": "real_pipeline", "n_attacks_generated": 950},
+    "adversarial_training_results.json": {
+        "source_script": "scripts/run_adversarial_training.py",
+        "baseline_dr": 0.447,
+        "final_hardened_dr": 0.679,
+        "total_delta_dr": 0.232,
+        "n_rounds": 5,
+    },
+}
 
 
 def _body(ceiling: str = "96") -> str:
     """A minimal body carrying every gated quantity exactly once.
 
-    Every quantity must appear, because the gate treats a pattern that matches
-    nothing as a failure; a fixture that omits one would trip the anti-vacuity
-    guard rather than the check under test.
+    Every gated quantity must appear, because the gate treats a pattern that
+    matches nothing as a failure -- a fixture that omitted one would trip the
+    anti-vacuity guard rather than the check under test.
+
+    The numbers are computed from ``_ARTIFACTS`` rather than typed, for the same
+    reason the manuscripts must not type them: a fixture with its own hardcoded
+    copy of a value drifts from the artifact the moment either changes, and then
+    the test asserts against a number nobody derived.
     """
+    ms = _ARTIFACTS["multi_seed_results.json"]
+    abl = _ARTIFACTS["ablation_results.json"]
+    colony = _ARTIFACTS["colony_results.json"]["scenarios"][0]
+    rows = _ARTIFACTS["full_evaluation_results.json"]
+
+    mean = ms["tpr_mean"] * 100
+    fpr = ms["fpr_mean"] * 100
+    seeds = ms["n_seeds"]
+    instances = sum(int(r["n_attacks"]) for r in rows)
+    per_arch = sum(int(r["n_attacks"]) for r in rows if r["architecture"] == "A")
+    n_arch = len({r["architecture"] for r in rows})
+    abl_n = round(1 / min(abs(c["delta_tpr"]) for c in abl["component_removal"] if c["delta_tpr"]))
+    emergent = colony["detection_rate_mean"] * 100
+    low = int(ceiling) - mean
+    high = 100 - abl["full_pipeline"]["tpr"] * 100
+
     return (
         "# Body\n\n"
         f"The parametric simulation establishes a design-level ceiling of "
         f"{ceiling}--100\\% across the sweep.\n\n"
-        "We evaluate over a 950-attack corpus spanning four production "
-        "multiagent architectures.\n\n"
-        "The pipeline achieves a mean detection rate of 44.8\\% across 30 seeds.\n\n"
         f"Treat {ceiling}\\% as the achievable ceiling with mature adapters.\n\n"
+        f"We evaluate over a {per_arch}-attack corpus spanning {_word(n_arch)} production "
+        "multiagent architectures.\n\n"
+        f"The parametric simulation ($N = 3{{,}}{instances - 3000}$) covers every cell.\n\n"
+        f"The pipeline achieves a mean detection rate of {mean:.1f}\\% across {seeds} seeds.\n\n"
+        f"That multi-seed pipeline arm shows a {fpr:.1f}\\% false-positive rate.\n\n"
+        f"Ablation uses a {abl_n}-attack ablation corpus; the {abl_n}-attack ablation corpus "
+        "is a stratified subsample.\n\n"
+        f"Emergent misalignment detection reaches {emergent:.1f}\\%.\n\n"
+        f"There is a {low:.0f}--{high:.0f} percentage-point gap to close.\n\n"
+        "The study spans ten domains; those ten domains are analysed in turn.\n\n"
         "Data from `output/data/multi_seed_results.json`.\n"
     )
+
+
+def _word(n: int) -> str:
+    return {1: "one", 2: "two", 3: "three", 4: "four", 5: "five"}.get(n, str(n))
 
 
 CEILING_OK = _body("96")
@@ -452,9 +552,40 @@ def test_bare_ceiling_form_is_gated_and_excludes_range_digits(gate):
 # ---------------------------------------------------------------------------
 
 
-def test_every_shared_quantity_has_exactly_one_capturing_group(gate):
+def test_every_gated_quantity_has_exactly_one_capturing_group(gate):
     for quantity in gate.SHARED_QUANTITIES:
+        if quantity.pattern is None:
+            continue
         assert quantity.pattern.groups == 1, quantity.id
+
+
+def test_every_gated_quantity_declares_context_keywords(gate):
+    """A gated pattern without context collides with same-shaped neighbours."""
+    for quantity in gate.SHARED_QUANTITIES:
+        if quantity.pattern is None:
+            continue
+        assert quantity.require, quantity.id
+
+
+def test_every_ledger_variable_derives_from_the_real_artifacts(gate):
+    """Anti-vacuity: a deriver that raises would silently stop gating."""
+    import series_ledger
+
+    failures = []
+    for var in series_ledger.LEDGER:
+        try:
+            var.value()
+        except Exception as exc:  # noqa: BLE001 - report, never mask
+            failures.append(f"{var.id}: {type(exc).__name__}: {exc}")
+    assert not failures, failures
+
+
+def test_the_ledger_gates_a_meaningful_share_of_its_variables(gate):
+    import series_ledger
+
+    gated = [v for v in series_ledger.LEDGER if v.pattern is not None]
+    assert len(series_ledger.LEDGER) >= 25, len(series_ledger.LEDGER)
+    assert len(gated) >= 12, len(gated)
 
 
 def test_shared_quantity_ids_are_unique(gate):

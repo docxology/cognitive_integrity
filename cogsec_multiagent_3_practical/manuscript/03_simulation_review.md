@@ -51,10 +51,10 @@ The colony benchmark reveals a striking pattern: **emergent misalignment achieve
 
 The game-theoretic payoff matrix shows that:
 - Full CIF achieves 94\% detection against direct injection ($\Omega_1$), 89\% against trust exploitation ($\Omega_4$)
-- Against emergent misalignment (distributed sub-threshold drift with no explicit adversaries), detection falls to 56.1\%
+- Against emergent misalignment (distributed sub-threshold drift with no explicit adversaries), detection falls to 74.3\%
 - A rational adversary, knowing CIF is deployed, will prefer emergent misalignment over direct injection
 
-This is not a failure of CIF—it is a consequence of its success. When explicit attacks are reliably detected, adversaries are forced toward the subtlest and most distributed manipulation strategies. The 56.1\% detection rate on emergent misalignment represents the current frontier of defensive capability, not a gap in the framework's design.
+This is not a failure of CIF—it is a consequence of its success. When explicit attacks are reliably detected, adversaries are forced toward the subtlest and most distributed manipulation strategies. The 74.3\% detection rate on emergent misalignment represents the current frontier of defensive capability, not a gap in the framework's design.
 
 **Operator implication**: Deploy colony-scale entropy monitoring and schedule periodic manual behavioral audits (weekly for high-stakes deployments). The $\Omega_5$ playbook (\cref{sec:incident-response}) provides the response protocol when drift accumulates despite in-context detection.
 
