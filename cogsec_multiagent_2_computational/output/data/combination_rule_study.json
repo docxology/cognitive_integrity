@@ -1,0 +1,103 @@
+{
+  "data_origin": "real_pipeline",
+  "modules": [
+    "firewall",
+    "detection",
+    "tripwire",
+    "trust",
+    "consensus",
+    "provenance",
+    "sandbox",
+    "invariants"
+  ],
+  "note": "Every reported number is measured on the third split, which is used for nothing else. Selecting and reporting on one split inflated an earlier version of this result from 0.254 to 0.323.",
+  "protocol": {
+    "attacks": 1475,
+    "benign": 120,
+    "select_on": 40,
+    "standardise_on": 40,
+    "test_on": 40
+  },
+  "results": {
+    "per_module_benign_scale": {
+      "consensus": {
+        "attack_mean": 0.06705582854553313,
+        "benign_max": 0.33749999999999997,
+        "benign_mean": 0.048744387146851184
+      },
+      "detection": {
+        "attack_mean": 0.34863823517565556,
+        "benign_max": 0.5613817989662057,
+        "benign_mean": 0.3657083489396291
+      },
+      "firewall": {
+        "attack_mean": 0.1961098674090654,
+        "benign_max": 0.5538483514203144,
+        "benign_mean": 0.24447587163434426
+      },
+      "invariants": {
+        "attack_mean": 0.037118644067796615,
+        "benign_max": 0.5,
+        "benign_mean": 0.043333333333333335
+      },
+      "provenance": {
+        "attack_mean": 0.024915254237288135,
+        "benign_max": 0.0,
+        "benign_mean": 0.0
+      },
+      "sandbox": {
+        "attack_mean": 0.047864406779661015,
+        "benign_max": 0.15,
+        "benign_mean": 0.0025
+      },
+      "tripwire": {
+        "attack_mean": 0.017538983050847456,
+        "benign_max": 0.19999999999999996,
+        "benign_mean": 0.004583333333333333
+      },
+      "trust": {
+        "attack_mean": 0.025491525423728813,
+        "benign_max": 0.4,
+        "benign_mean": 0.030000000000000002
+      }
+    },
+    "shipped_max_rule": {
+      "at_default_0_5": {
+        "fpr": 0.15,
+        "tpr": 0.1710794297352342,
+        "youden_j": 0.021079429735234217
+      },
+      "held_out": {
+        "fpr": 0.525,
+        "tpr": 0.45621181262729127,
+        "youden_j": -0.06878818737270875
+      },
+      "threshold": 0.3821778107867564
+    },
+    "standardised_all_modules": {
+      "held_out": {
+        "fpr": 0.325,
+        "tpr": 0.37678207739307534,
+        "youden_j": 0.05178207739307533
+      },
+      "threshold": 2.2396330340453123
+    },
+    "standardised_best_subset": {
+      "held_out": {
+        "fpr": 0.225,
+        "tpr": 0.4786150712830957,
+        "youden_j": 0.2536150712830957
+      },
+      "selection_half_j": 0.283739837398374,
+      "subset": [
+        "consensus",
+        "provenance",
+        "sandbox",
+        "invariants"
+      ],
+      "threshold": 0.0
+    }
+  },
+  "seed": 7,
+  "source_script": "scripts/run_combination_rule_study.py"
+}
