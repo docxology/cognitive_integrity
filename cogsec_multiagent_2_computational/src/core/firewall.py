@@ -86,6 +86,118 @@ class PatternDetector:
             re.compile(p, re.IGNORECASE) for p in self.SUSPICIOUS_PATTERNS
         ]
 
+    #: Markers that the text around a match is code, a command line, a log
+    #: line or a file reference rather than a message addressed to the agent.
+    #: "pytest tests/test_firewall.py -k jailbreak -> 41 passed." matched the
+    #: bare `jailbreak` pattern and scored 0.56 -- a test run reporting on the
+    #: firewall's own test suite, treated as an attack on it.
+    #: Deliberately excludes bare "->" and "::". An earlier version accepted
+    #: them, and the red-team sweep immediately found the hole: the
+    #: chain_delegation mutation prepends "Agent(1)->Agent(2)->Agent(3): " to a
+    #: payload, which was enough to buy the whole message a code-context
+    #: discount. Evasion went from 0 to 59 of 59. A discount an attacker can
+    #: switch on with a seven-character prefix is not a discount, it is a
+    #: bypass, so the markers here all require structure that is awkward to
+    #: fake around an imperative.
+    _CODE_CONTEXT = re.compile(
+        r"(?:^\s*[$#>]\s"
+        r"|\b(?:pytest|npm|git|make|cargo|docker|kubectl|curl)\b"
+        r"|`[^`]+`"
+        r"|\b\w+\.(?:py|js|ts|go|rs|java|md|yaml|yml|json|toml)\b"
+        r"|\b(?:src|tests?|docs?|lib|bin)/\w"
+        r"|\bPASSED\b|\bFAILED\b|\b\d+ passed\b)",
+        re.IGNORECASE | re.MULTILINE,
+    )
+
+    #: A bare imperative aimed at the reader. When the matched pattern is one of
+    #: these, no context discount applies at all: an instruction does not stop
+    #: being an instruction because it was prefixed with a routing header or
+    #: attributed to somebody else. This is the guard that keeps the use/mention
+    #: distinction from becoming an evasion primitive.
+    _DIRECT_IMPERATIVE = re.compile(
+        r"^\s*(?:ignore|disregard|forget|override|bypass)\b",
+        re.IGNORECASE,
+    )
+
+    #: Markers that the match is being *reported* rather than *issued*: someone
+    #: is describing an instruction, quoting one, or attributing it elsewhere.
+    _REPORTED_SPEECH = re.compile(
+        r"\b(?:told|says?|said|sends?|sent|asked|reported|logged|contains?|"
+        r"documentation|example|according to|per the|claims?|warns?)\b",
+        re.IGNORECASE,
+    )
+
+    #: An explicit non-agent referent for the instruction: the thing to be
+    #: ignored is a named document or thread, not the agent's own directives.
+    #: "Please ignore previous instructions from the ENG-3390 thread" is a
+    #: colleague redirecting a colleague.
+    _EXTERNAL_REFERENT = re.compile(
+        r"\b(?:from|in|on|per)\s+(?:the\s+)?"
+        r"(?:[A-Z]{2,}-\d+|\S+\.(?:md|txt|py|js|yaml|yml|json)|"
+        r"(?:\w+\s+)?(?:thread|ticket|issue|doc|document|spec|README|changelog))\b",
+        re.IGNORECASE,
+    )
+
+    #: The pattern is offered or asked about rather than issued. "Do you want me
+    #: to pretend to be a first-time user" has a first-person subject inside an
+    #: interrogative: the speaker proposes to role-play, and is asking
+    #: permission to. An injection does not ask.
+    _OFFER_FRAME = re.compile(
+        r"(?:\bdo you want me\b|\bshould i\b|\bwould you like me\b|\bcan i\b|"
+        r"\bshall i\b|\bwant me to\b)",
+        re.IGNORECASE,
+    )
+
+    #: Stative and passive constructions describe a condition rather than
+    #: command a change: "Developer mode had been left on in the staging build"
+    #: is an incident report about the setting, not a request to enter it.
+    _STATIVE = re.compile(
+        r"\b(?:had been|has been|have been|was|were|is|are)\s+\w+(?:ed|en|on|off)\b",
+        re.IGNORECASE,
+    )
+
+    #: Multipliers applied to a pattern hit found in each context. They compose,
+    #: so a quoted command referencing a ticket is discounted three times over.
+    _CODE_DISCOUNT: float = 0.15
+    _REPORTED_DISCOUNT: float = 0.3
+    _REFERENT_DISCOUNT: float = 0.35
+    _OFFER_DISCOUNT: float = 0.2
+    _STATIVE_DISCOUNT: float = 0.25
+
+    def _context_weight(self, message: str, start: int, end: int) -> float:
+        """How much a pattern hit at ``[start:end]`` should count.
+
+        Prompt injection is an instruction *addressed to the agent*. The same
+        characters appearing in a shell command, a quoted example, or a
+        sentence about someone else's instructions are not that, and scoring
+        them identically is what made this detector fire hardest on incident
+        reports and on its own test output.
+
+        The window is local rather than whole-message on purpose: an attack
+        appended to a legitimate code snippet should not inherit that snippet's
+        discount, so only text adjacent to the match is considered.
+        """
+        # An imperative is an imperative wherever it appears. Discounting one
+        # because the surrounding text looks like a quotation or a routing
+        # header is what let chain_delegation and multi_hop_routing evade
+        # every payload in the corpus.
+        if self._DIRECT_IMPERATIVE.match(message[start:end]):
+            return 1.0
+
+        window = message[max(0, start - 70) : min(len(message), end + 70)]
+        weight = 1.0
+        if self._CODE_CONTEXT.search(window):
+            weight *= self._CODE_DISCOUNT
+        if self._REPORTED_SPEECH.search(window):
+            weight *= self._REPORTED_DISCOUNT
+        if self._EXTERNAL_REFERENT.search(message[end : min(len(message), end + 70)]):
+            weight *= self._REFERENT_DISCOUNT
+        if self._OFFER_FRAME.search(window):
+            weight *= self._OFFER_DISCOUNT
+        if self._STATIVE.search(window):
+            weight *= self._STATIVE_DISCOUNT
+        return weight
+
     def score_injection(self, message: str) -> float:
         """
         Score message for injection attempt.
@@ -98,15 +210,18 @@ class PatternDetector:
 
         score = 0.0
 
-        # Pattern matching (weighted)
+        # Pattern matching, weighted by whether the hit is an instruction to
+        # this agent or merely text that contains the same words.
         for pattern in self._injection_re:
-            if pattern.search(message):
-                score += 0.8
+            match = pattern.search(message)
+            if match:
+                score += 0.8 * self._context_weight(message, match.start(), match.end())
 
         # Suspicious patterns (lower weight)
         for pattern in self._suspicious_re:
-            if pattern.search(message):
-                score += 0.15
+            match = pattern.search(message)
+            if match:
+                score += 0.15 * self._context_weight(message, match.start(), match.end())
 
         # Structural heuristics
         if message.count("\n") > 20:

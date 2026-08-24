@@ -8,7 +8,7 @@ This section quantifies the contribution of individual defense components and ch
 
 ## Defense Component Contributions {#sec:component-removal}
 
-\cref{fig:ablation-study} visualizes the detection-rate impact of removing each CIF component from the full ensemble. The Detection module contributes the largest marginal drop ($\Delta\text{TPR} \approx -0.051$), accounting for nearly half of all pipeline detection. The Trust Calculus is the second most impactful component ($\Delta\text{TPR} \approx -0.020$). The remaining active components (Firewall, Invariants, Tripwire) each contribute $\Delta\text{TPR} \approx -0.010$, while Provenance, Sandbox, and Consensus show no measurable independent contribution on the current 98-attack stratified corpus.
+\cref{fig:ablation-study} visualizes the detection-rate impact of removing each CIF component from the full ensemble. The Detection module contributes the largest marginal drop ($\Delta\text{TPR} \approx -0.051$), accounting for nearly half of all pipeline detection. The Firewall and Trust Calculus tie for second ($\Delta\text{TPR} \approx -0.020$). The remaining active components (Firewall, Invariants, Tripwire) each contribute $\Delta\text{TPR} \approx -0.010$, while Provenance, Sandbox, and Consensus show no measurable independent contribution on the current 98-attack stratified corpus.
 
 ![Ablation Study: Defense Component Contribution. Horizontal bar chart showing detection rate impact of removing each CIF component from the full ensemble (prototype pipeline, real corpus, 98-attack stratified sample). The Detection module contributes the largest marginal drop when removed ($\Delta\text{TPR} \approx -0.051$), followed by Trust Calculus ($\approx -0.020$), Firewall ($\approx -0.010$), Invariants ($\approx -0.010$), Tripwire ($\approx -0.010$), Consensus ($\approx +0.000$), Provenance ($\approx +0.000$), and Sandbox ($\approx +0.000$); Provenance, Sandbox, and Consensus show no measurable independent delta on this corpus. Top synergy pair (firewall+detection and tripwire+detection, tied): $\approx +0.031$ beyond additive prediction. All values sourced directly from \texttt{output/data/ablation\_results.json}.](figures/ablation_study.pdf){#fig:ablation-study width=95%}
 
@@ -21,8 +21,8 @@ Table: Component removal impact analysis (prototype pipeline, real corpus, 98-at
 | Removed Component | TPR | $\Delta$ TPR | Interpretation |
 | --- | --- | --- | --- |
 | Detection module | 0.071 | $\approx -0.051$ | Most critical: text-feature analysis accounts for 42\% of pipeline detection |
-| Trust Calculus | 0.102 | $\approx -0.020$ | Second most impactful: authority-claim pressure detection |
-| Firewall | 0.112 | $\approx -0.010$ | Pattern matching for known injection strings |
+| Trust Calculus | 0.102 | $\approx -0.020$ | Tied with the firewall: authority-claim pressure detection |
+| Firewall | 0.102 | $\approx -0.020$ | Pattern matching for known injection strings, context-weighted |
 | Invariants | 0.112 | $\approx -0.010$ | Code/credential access detection |
 | Tripwires | 0.112 | $\approx -0.010$ | Canary-belief shift detection |
 | Consensus | 0.122 | $\approx +0.000$ | No measurable independent contribution on this corpus |
@@ -44,7 +44,7 @@ Table: Component synergy analysis (real pipeline, 98-attack corpus). {#tab:syner
 | Pair | Synergy Score | Interpretation |
 | --- | --- | --- |
 | Firewall + Detection | $\approx +0.031$ | Strongest: injection pattern-matching + text-feature analysis |
-| Tripwire + Detection | $\approx +0.031$ | Canary monitoring + text-feature analysis |
+| Tripwire + Detection | $\approx +0.020$ | Canary monitoring + text-feature analysis |
 | Firewall + Trust Calculus | $\approx +0.020$ | Pattern-based injection + authority claim detection |
 | Trust Calculus + Tripwire | $\approx +0.020$ | Authority detection + canary monitoring |
 | Trust Calculus + Detection | $\approx +0.020$ | Authority detection + text-feature analysis |

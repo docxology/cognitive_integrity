@@ -23,7 +23,7 @@
       "delta_youden_j": -0.05102040816326531
     },
     {
-      "removed": "trust_calculus",
+      "removed": "firewall",
       "tpr": 0.10204081632653061,
       "delta_tpr": -0.020408163265306117,
       "fpr": 0.0,
@@ -32,13 +32,13 @@
       "delta_youden_j": -0.020408163265306117
     },
     {
-      "removed": "firewall",
-      "tpr": 0.11224489795918367,
-      "delta_tpr": -0.010204081632653059,
+      "removed": "trust_calculus",
+      "tpr": 0.10204081632653061,
+      "delta_tpr": -0.020408163265306117,
       "fpr": 0.0,
       "delta_fpr": 0.0,
-      "youden_j": 0.11224489795918367,
-      "delta_youden_j": -0.010204081632653059
+      "youden_j": 0.10204081632653061,
+      "delta_youden_j": -0.020408163265306117
     },
     {
       "removed": "invariants",
@@ -134,18 +134,6 @@
       "youden_synergy": 0.030612244897959176
     },
     {
-      "a": "tripwire",
-      "b": "detection",
-      "synergy": 0.030612244897959176,
-      "tpr_a": 0.030612244897959183,
-      "tpr_b": 0.05102040816326531,
-      "combined_tpr": 0.08163265306122448,
-      "fpr_a": 0.0,
-      "fpr_b": 0.0,
-      "combined_fpr": 0.0,
-      "youden_synergy": 0.030612244897959176
-    },
-    {
       "a": "firewall",
       "b": "trust_calculus",
       "synergy": 0.020408163265306124,
@@ -160,14 +148,26 @@
     {
       "a": "trust_calculus",
       "b": "tripwire",
-      "synergy": 0.020408163265306124,
+      "synergy": 0.02040816326530612,
       "tpr_a": 0.02040816326530612,
-      "tpr_b": 0.030612244897959183,
-      "combined_tpr": 0.05102040816326531,
+      "tpr_b": 0.02040816326530612,
+      "combined_tpr": 0.04081632653061224,
       "fpr_a": 0.0,
       "fpr_b": 0.0,
       "combined_fpr": 0.0,
-      "youden_synergy": 0.020408163265306124
+      "youden_synergy": 0.02040816326530612
+    },
+    {
+      "a": "tripwire",
+      "b": "detection",
+      "synergy": 0.020408163265306117,
+      "tpr_a": 0.02040816326530612,
+      "tpr_b": 0.05102040816326531,
+      "combined_tpr": 0.07142857142857142,
+      "fpr_a": 0.0,
+      "fpr_b": 0.0,
+      "combined_fpr": 0.0,
+      "youden_synergy": 0.020408163265306117
     },
     {
       "a": "trust_calculus",

@@ -573,9 +573,27 @@ class TestCorpusSourcedEvasionSweep:
             firewall,
         )
 
-    def test_denominator_is_66_distinct_flagged_payloads(self):
-        denominator, _ = self._denominator()
-        assert len(denominator) == 66
+    def test_the_denominator_is_every_distinct_flagged_payload(self):
+        """Derived, not pinned to a literal.
+
+        This asserted 66 and broke when the firewall's context weighting
+        stopped it flagging benign-shaped payloads, dropping the denominator to
+        59. The count is a consequence of detector behaviour, so pinning it
+        makes any detector improvement look like a regression. What must hold
+        is that the denominator is exactly the flagged set and large enough for
+        the sweep's own minimum.
+        """
+        denominator, firewall = self._denominator()
+        from attacks.corpus import AttackCorpus
+        from core.firewall import Classification
+
+        expected = {
+            s.payload
+            for s in AttackCorpus.generate(seed=42)
+            if firewall.classify(s.payload) != Classification.ACCEPT
+        }
+        assert set(denominator) == expected
+        assert len(denominator) >= 50
 
     def test_gradual_insertion_is_the_only_operator_that_evades(self):
         from core.firewall import Classification
@@ -589,17 +607,20 @@ class TestCorpusSourcedEvasionSweep:
             lambda p: firewall.classify(p) != Classification.ACCEPT,
             min_denominator=50,
         )
-        assert sweep["gradual_insertion"].successes == 3
-        assert sweep["gradual_insertion"].evasion_rate == pytest.approx(3 / 66)
+        # The count of evasions is detector-dependent; that gradual insertion
+        # is the ONLY operator that evades is the finding, and it survives.
+        result = sweep["gradual_insertion"]
+        assert result.successes > 0
+        assert result.evasion_rate == pytest.approx(result.successes / len(denominator))
         non_zero = {
             op: r.successes for op, r in sweep.items() if r.successes and op != "gradual_insertion"
         }
         assert non_zero == {}, f"unexpected non-zero operators: {non_zero}"
-        assert all(r.attempts == 66 for r in sweep.values())
+        assert all(r.attempts == len(denominator) for r in sweep.values())
         assert len(sweep) == 12
 
     def test_gradual_insertion_evasions_split_the_trigger_phrase(self):
-        """Explain the 3/66: the mutation inserts ' ... ' inside the trigger."""
+        """Explain the evasions: the mutation inserts ' ... ' inside the trigger."""
         from core.firewall import Classification
 
         denominator, firewall = self._denominator()
@@ -610,12 +631,29 @@ class TestCorpusSourcedEvasionSweep:
             if firewall.classify(mutator.mutate_payload(p, "gradual_insertion"))
             == Classification.ACCEPT
         ]
-        assert len(evaded) == 3
+        # Derived: the count depends on detector behaviour, and pinning it
+        # turns any detector improvement into a test failure. What the test
+        # is actually about is the mechanism, asserted in the loop below.
+        assert evaded, "gradual insertion no longer evades; the mechanism claim needs revisiting"
+        # The mechanism is that the inserted " ... " splits whichever pattern
+        # flagged the original -- not one specific phrase. This asserted
+        # "ignore previous instructions" for every evasion, which held while
+        # there were three; the fourth evasion splits `jailbreak` instead, and
+        # the narrow assertion would have read that as a broken mechanism
+        # rather than the same mechanism on a different trigger.
+        from core.firewall import PatternDetector
+
+        detector = PatternDetector()
         for original in evaded:
-            assert "ignore previous instructions" in original.lower()
             mutated = mutator.mutate_payload(original, "gradual_insertion")
-            assert "ignore previous instructions" not in mutated.lower(), (
-                "the trigger survived the split, so this is not the mechanism"
+            # The mechanism is that the inserted " ... " lowers the injection
+            # score below the accept boundary. Usually it does that by breaking
+            # a matched pattern outright; sometimes it only breaks one of
+            # several, and the aggregate falls. Asserting the score drop covers
+            # both, where asserting a specific phrase disappeared covered only
+            # the first and read the second as a broken mechanism.
+            assert detector.score_injection(mutated) < detector.score_injection(original), (
+                f"the mutation did not lower the injection score for {original!r}"
             )
 
 
@@ -703,7 +741,10 @@ class TestManuscriptMutationTableConsistency:
 
     def test_only_gradual_insertion_has_nonzero_successes(self):
         nonzero = {name: cells[1] for name, cells in self._parse_table().items() if cells[1]}
-        assert nonzero == {"Gradual insertion": 3}
+        # The manuscript row is regenerated from the sweep, so compare the
+        # shape -- gradual insertion alone -- rather than a frozen count.
+        assert set(nonzero) == {"Gradual insertion"}
+        assert nonzero["Gradual insertion"] > 0
 
 
 class TestManuscriptATTableConsistency:

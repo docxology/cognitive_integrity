@@ -261,35 +261,102 @@ class TripwireAdapter(DefenseModule):
         self._tripwire.add_boundary_canary("follow_rules", expected_belief=1.0)
         self._tripwire.add_principal_canary("serve_user", expected_belief=1.0)
 
+    #: How attack-specific each indicator is. A phrase that only ever appears
+    #: in an attack earns full weight; one that shows up in ordinary technical
+    #: English earns little. Before this existed every indicator was worth the
+    #: same, so a bug report reading "Developer mode had been left on in the
+    #: staging build" scored 1.000 -- maximal confidence, on a message whose
+    #: subject was fixing the problem.
+    _INDICATOR_WEIGHT: Dict[str, float] = {
+        # Unambiguous: these are instructions to the model, not descriptions.
+        "disregard previous instructions": 1.0,
+        "ignore all prior": 1.0,
+        "ignore your previous": 1.0,
+        "disregard your previous": 1.0,
+        "override previous instructions": 1.0,
+        "forget previous instructions": 1.0,
+        "ignore your constraints": 1.0,
+        "ignore your training": 1.0,
+        "bypass your filters": 1.0,
+        "ignore your identity": 1.0,
+        "forget who": 0.9,
+        "your new purpose": 0.9,
+        "your real purpose": 0.9,
+        "system override": 0.9,
+        "secret mode": 0.8,
+        "hidden instructions": 0.8,
+        "confidential instructions": 0.8,
+        "you are now": 0.7,
+        "pretend you are": 0.7,
+        "roleplay as": 0.7,
+        "updated directive": 0.6,
+        "administrator mode": 0.5,
+        # Weak: common in legitimate technical writing about these very topics.
+        "new instructions:": 0.3,
+        "developer mode": 0.2,
+        "act as if": 0.2,
+    }
+
+    #: Constructions that mark the surrounding phrase as *mentioned* rather than
+    #: *used*. Security documentation, incident reports and test fixtures all
+    #: quote attack strings; treating a quotation as an attack makes the module
+    #: fire hardest on the people writing the defenses.
+    _MENTION_CONTEXT = re.compile(
+        r"(?:\"|'|`|\bsends?\b|\bsent\b|\bcontains?\b|\bhad been\b|\bwas\b|"
+        r"\bdocumentation\b|\bexample\b|\btest\b|\blogged\b|\breported\b)",
+        re.IGNORECASE,
+    )
+
+    #: Weight multiplier applied to an indicator found in mention context.
+    _MENTION_DISCOUNT: float = 0.25
+
+    def _indicator_evidence(self, message: str) -> tuple[float, List[str]]:
+        """Weighted evidence that this message tries to shift the agent's beliefs.
+
+        Returns a saturating score in [0, 1] and the indicators behind it. The
+        score is graded rather than binary: the previous version drifted all
+        three canaries whenever any single indicator matched, so its score was
+        always exactly 0.0 or 1.0 and no threshold could do anything with it.
+        """
+        lowered = message.lower()
+        found: List[str] = []
+        evidence = 0.0
+        for indicator in self._SHIFT_INDICATORS:
+            position = lowered.find(indicator)
+            if position < 0:
+                continue
+            found.append(indicator)
+            weight = self._INDICATOR_WEIGHT.get(indicator, 0.6)
+            window = message[max(0, position - 40) : position + len(indicator) + 20]
+            if self._MENTION_CONTEXT.search(window):
+                weight *= self._MENTION_DISCOUNT
+            # Independent-evidence combination: each indicator reduces the
+            # remaining doubt rather than adding a flat increment, so three
+            # weak hints never outrank one unambiguous instruction.
+            evidence = 1.0 - (1.0 - evidence) * (1.0 - weight)
+        return evidence, found
+
     def evaluate(
         self, message: str, context: Optional[Dict[str, Any]] = None
     ) -> DefenseResult:
         t0 = time.perf_counter()
 
-        msg_lower = message.lower()
+        score, indicators_found = self._indicator_evidence(message)
 
-        # Build a belief state based on detected shift indicators.
-        beliefs: Dict[str, float] = {}
-        indicators_found: List[str] = []
-
-        for indicator in self._SHIFT_INDICATORS:
-            if indicator in msg_lower:
-                indicators_found.append(indicator)
-
-        if indicators_found:
-            # Simulate shifted beliefs -- each canary gets a drifted value.
-            beliefs["I am agent i_am_ai"] = 0.2
-            beliefs["I can follow_rules"] = 0.8
-            beliefs["My principal is serve_user"] = 0.3
-        else:
-            # Normal operation -- beliefs match expectations.
-            beliefs["I am agent i_am_ai"] = 1.0
-            beliefs["I can follow_rules"] = 1.0
-            beliefs["My principal is serve_user"] = 1.0
-
+        # The canary state is driven by the graded evidence rather than by a
+        # bare "any indicator matched", so the simulated drift is proportional
+        # to how much reason there is to think a shift was attempted.
+        beliefs: Dict[str, float] = {
+            "I am agent i_am_ai": 1.0 - 0.8 * score,
+            "I can follow_rules": 1.0 - 0.2 * score,
+            "My principal is serve_user": 1.0 - 0.7 * score,
+        }
         alerts = self._tripwire.check(beliefs)
-        score = min(1.0, len(alerts) * 0.35)
-        detected = len(alerts) > 0
+
+        # detected now respects the threshold. It used to be len(alerts) > 0,
+        # which made the threshold decorative: the module could not be tuned,
+        # and every caller that passed one was ignored.
+        detected = score > self._threshold
 
         latency_ms = (time.perf_counter() - t0) * 1000.0
 

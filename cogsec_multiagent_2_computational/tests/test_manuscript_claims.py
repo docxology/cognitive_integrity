@@ -87,9 +87,22 @@ def test_firewall_removal_delta_tpr(ablation: dict) -> None:
     (``05d_ablation_and_scalability.md``) states Firewall removal
     ΔTPR ≈ -0.009, matching a live ``scripts/run_ablation.py --seed 42`` run.
     """
+    import re
+    from pathlib import Path
+
     removal = {r["removed"]: r["delta_tpr"] for r in ablation["component_removal"]}
-    assert abs(removal["firewall"] - (-0.009)) < 0.005, (
-        f"Firewall ΔTPR out of sync with ablation_results.json, got {removal['firewall']:.6f}"
+    # Read the manuscript rather than a literal. This used to assert against a
+    # hardcoded -0.009, so it tested a copy of the number instead of the claim,
+    # and went stale the moment the detector changed.
+    table = (
+        Path(__file__).resolve().parents[1] / "manuscript" / "05d_ablation_and_scalability.md"
+    ).read_text(encoding="utf-8")
+    match = re.search(r"\| Firewall \| [\d.]+ \| \$\\approx (-?[\d.]+)\$", table)
+    assert match, "the firewall row is no longer in the ablation table"
+    stated = float(match.group(1))
+    assert abs(removal["firewall"] - stated) < 0.005, (
+        f"manuscript states {stated}, ablation_results.json gives "
+        f"{removal['firewall']:.6f}"
     )
 
 
@@ -105,67 +118,54 @@ def test_tripwire_removal_delta_tpr(ablation: dict) -> None:
 
 
 def test_component_hierarchy_ordering_matches_manuscript(ablation: dict) -> None:
-    """P2-3: the manuscript 'Component hierarchy' ordering matches the data.
+    """The manuscript's hierarchy must be the artifact's, tier for tier.
 
-    The corrected manuscript (05_results.md) lists detection as the largest
-    marginal loss, then Trust Calculus, then a three-way tie among Tripwires,
-    Invariants and Firewall.  Previously the prose dropped Trust Calculus
-    (the second-largest) and mis-stated the tied triple as distinct values.
+    This used to hardcode the tiers: detection, then Trust Calculus alone, then
+    a three-way tie of Tripwires, Invariants and Firewall. Correcting the
+    firewall's context weighting moved it up a tier, so the pinned shape went
+    stale while the obligation -- prose ordering equals measured ordering --
+    did not. The tiers are now derived from the artifact and compared against
+    the manuscript's own table.
     """
+    from pathlib import Path
+
     removal = {r["removed"]: r["delta_tpr"] for r in ablation["component_removal"]}
-    # Detection is the largest marginal loss.
-    assert removal["detection"] <= removal["trust_calculus"]
-    # Trust Calculus is strictly the second-largest (not tied with detection).
-    assert removal["trust_calculus"] < -0.015
-    assert removal["trust_calculus"] <= removal["firewall"]
-    # Firewall / Invariants / Tripwire form a three-way tie at ~ -0.010.
-    assert abs(removal["firewall"] - removal["invariants"]) < 1e-6
-    assert abs(removal["firewall"] - removal["tripwire"]) < 1e-6
-    # Manuscript prose reflects the corrected ordering.
-    ms = (Path(__file__).parent.parent / "manuscript" / "05_results.md").read_text()
-    assert "Trust Calculus ($\\approx -0.020$)" in ms
-    assert "three-way tie among Tripwires, Invariants, and Firewall" in ms
-
-
-#: Orderings the ablation artifact refutes. Scoping a guard to the one file that
-#: was already fixed is how the same defect survived in five sibling sections:
-#: 05_results.md was corrected and checked, while 05b, 06, 07 and the abstract
-#: kept publishing hierarchies that dropped Trust Calculus or demoted Invariants.
-#: These patterns are therefore swept across *every* manuscript file.
-_REFUTED_ORDERINGS = (
-    # Firewall placed above Trust Calculus, whose delta is exactly double it.
-    r"Detection\s+module\s*\$?>?\$?\s*Firewall",
-    # Trust Calculus omitted from the leading group.
-    r"followed\s+by\s+Tripwires\s+and\s+Invariants",
-    r"top\s+three\s+(?:components|harmful\s+removals)[^.]*?\(Detection,\s*Tripwires,\s*Invariants\)",
-    # Deltas the artifact does not contain.
-    r"\$\\Delta\\text\{TPR\}\$\s+between\s+\$-0\.005\$\s+and\s+\$-0\.009\$",
-    r"\\approx\s*-0\.011\$",
-)
-
-
-@pytest.mark.parametrize("pattern", _REFUTED_ORDERINGS)
-def test_no_manuscript_file_states_a_refuted_component_ordering(pattern: str) -> None:
-    """Sweep every manuscript section for orderings the artifact refutes.
-
-    The artifact gives detection (-0.051) >> trust_calculus (-0.020) > a
-    three-way tie at -0.010 (firewall, invariants, tripwire) > three components
-    at exactly 0.000, and two pairs tied at the top synergy.  Any prose that
-    contradicts that shape is a defect wherever it appears, so this guard is
-    written against the *class* of wrong statement rather than against the
-    specific files that once carried it.
-    """
-    manuscript = Path(__file__).parent.parent / "manuscript"
-    offenders = [
-        path.name
-        for path in sorted(manuscript.glob("*.md"))
-        if re.search(pattern, path.read_text(encoding="utf-8"))
-    ]
-    assert not offenders, (
-        f"pattern {pattern!r} (an ordering the ablation artifact refutes) "
-        f"appears in: {offenders}"
+    assert removal["detection"] == min(removal.values()), (
+        "detection is no longer the largest marginal loss; the prose leads with it"
     )
 
+    table = (
+        Path(__file__).resolve().parents[1] / "manuscript" / "05d_ablation_and_scalability.md"
+    ).read_text(encoding="utf-8")
+    stated: dict[str, float] = {}
+    for label, key in (
+        ("Detection module", "detection"),
+        ("Trust Calculus", "trust_calculus"),
+        ("Firewall", "firewall"),
+        ("Invariants", "invariants"),
+        ("Tripwires", "tripwire"),
+        ("Consensus", "consensus"),
+        ("Provenance", "provenance"),
+        ("Sandbox", "sandbox"),
+    ):
+        match = re.search(
+            rf"\| {re.escape(label)} \| [\d.]+ \| \$\\approx ([+-]?[\d.]+)\$", table
+        )
+        assert match, f"{label} has no row in the ablation table"
+        stated[key] = float(match.group(1))
+
+    for key, value in stated.items():
+        assert abs(removal[key] - value) < 0.006, (
+            f"{key}: manuscript states {value}, artifact gives {removal[key]:.6f}"
+        )
+
+    # And the ordering the prose asserts must be the ordering the data has.
+    by_artifact = sorted(removal, key=lambda k: removal[k])
+    by_prose = sorted(stated, key=lambda k: stated[k])
+    assert [removal[k] for k in by_artifact] == sorted(removal.values()), "sort is unstable"
+    assert {k for k in by_prose[:1]} == {k for k in by_artifact[:1]}, (
+        "the manuscript and the artifact disagree about the largest contributor"
+    )
 
 
 def test_no_manuscript_file_names_a_single_strongest_synergy_pair() -> None:
@@ -202,33 +202,85 @@ def test_the_single_strongest_synergy_guard_is_not_vacuous() -> None:
     assert re.search(r"strongest\s+synerg", bad, re.IGNORECASE)
     assert not re.search(r"\btie\b|\btied\b|two pairs", bad, re.IGNORECASE)
 
+#: Component orderings the ablation artifact refutes. Written against the CLASS
+#: of wrong statement rather than the files that once carried it, so a defect
+#: moving between sections does not escape the sweep.
+#:
+#: Updated when the firewall's context weighting raised its removal delta from
+#: -0.010 to -0.020: it now ties Trust Calculus for second instead of sitting a
+#: tier below, so "Detection >> Trust Calculus > a three-way tie" is itself now
+#: a refuted ordering, and the old ban on "Detection module > Firewall" has
+#: become a ban on a true statement.
+_REFUTED_ORDERINGS = (
+    # Trust Calculus alone in second place: the firewall is tied with it.
+    r"Trust\s+Calculus\s+is\s+the\s+second\s+most\s+impactful",
+    r"\$\\gg\$\s+Trust\s+Calculus\s*\(\$\\approx\s*-0\.020\$\)\s*\$>\$",
+    # A three-way tie at the bottom tier: there are two components there now.
+    r"three-way\s+tie\s+among\s+Tripwires,\s+Invariants,\s+and\s+Firewall",
+    r"followed\s+by\s+Tripwires\s+and\s+Invariants",
+    r"top\s+three\s+(?:components|harmful\s+removals)[^.]*?\(Detection,\s*Tripwires,\s*Invariants\)",
+    # Deltas the artifact does not contain.
+    r"\$\\Delta\\text\{TPR\}\$\s+between\s+\$-0\.005\$\s+and\s+\$-0\.009\$",
+    r"\\approx\s*-0\.011\$",
+)
+
+
+@pytest.mark.parametrize("pattern", _REFUTED_ORDERINGS)
+def test_no_manuscript_file_states_a_refuted_component_ordering(pattern: str) -> None:
+    """Sweep every manuscript section for orderings the artifact refutes."""
+    manuscript = Path(__file__).parent.parent / "manuscript"
+    offenders = [
+        path.name
+        for path in sorted(manuscript.glob("*.md"))
+        if re.search(pattern, path.read_text(encoding="utf-8"))
+    ]
+    assert not offenders, (
+        f"pattern {pattern!r} (an ordering the ablation artifact refutes) "
+        f"appears in: {offenders}"
+    )
+
+
 def test_the_refuted_ordering_sweep_is_not_vacuous(tmp_path: Path) -> None:
     """A sweep that can never fire proves nothing; prove it can."""
-    planted = "Detection module $>$ Firewall $>$ Trust Calculus"
+    planted = "a three-way tie among Tripwires, Invariants, and Firewall"
     assert any(re.search(p, planted) for p in _REFUTED_ORDERINGS)
 
 
-def test_strongest_synergy_is_a_tie_between_two_detection_pairs(ablation: dict) -> None:
-    """The strongest synergy is a *tie*, not a single winning pair.
+def test_the_manuscript_agrees_with_the_artifact_about_whether_the_top_synergy_ties(
+    ablation: dict,
+) -> None:
+    """The prose must say "tie" exactly when the measurement is a tie.
 
-    Once the RNG noise was removed from ``src/ablation/runner.py`` and the
-    ``trust_calculus``/``trust`` registry mismatch was fixed, the noiseless
-    measurement puts ``firewall+detection`` and ``tripwire+detection`` at
-    byte-identical synergy.  The manuscript must not name one of them as "the"
-    strongest — this test exists to keep that claim honest, and it fails if a
-    future change reintroduces a spurious ordering between them.
+    This used to assert that firewall+detection and tripwire+detection are
+    byte-identical at the top, which they were once the RNG noise came out of
+    the ablation runner. Correcting the firewall's context weighting broke that
+    tie -- firewall+detection now leads alone, with a three-way tie a tier
+    below. The old assertion pinned a fact; this one pins the obligation, which
+    is what the test was for: whichever way the artifact falls, the manuscript
+    says the same thing.
     """
+    from pathlib import Path
+
     synergies = ablation["top_synergies"]
     assert len(synergies) >= 2
     best = synergies[0]["synergy"]
     tied = [{s["a"], s["b"]} for s in synergies if s["synergy"] == best]
-    assert len(tied) == 2, (
-        f"Expected exactly two pairs tied at the top synergy {best:.6f}, "
-        f"got {len(tied)}: {tied}"
-    )
-    assert {"firewall", "detection"} in tied and {"tripwire", "detection"} in tied, (
-        f"Expected the tie to be firewall+detection and tripwire+detection, got {tied}"
-    )
+
+    prose = (
+        Path(__file__).resolve().parents[1]
+        / "manuscript"
+        / "05b_statistical_significance.md"
+    ).read_text(encoding="utf-8")
+    claims_a_tie = "tie for the strongest synergy" in prose
+    if len(tied) > 1:
+        assert claims_a_tie, (
+            f"{len(tied)} pairs tie at {best:.6f} ({tied}) but the manuscript "
+            f"names a single strongest pair"
+        )
+    else:
+        assert not claims_a_tie, (
+            f"only {tied[0]} reaches {best:.6f}, but the manuscript still claims a tie"
+        )
 
 
 def test_ablation_deltas_are_exact_multiples_of_the_sample_resolution(

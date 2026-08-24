@@ -1344,7 +1344,7 @@ _STATISTICAL: tuple[Claim, ...] = (
     _c(
         "05b.top3_share_summary",
         "05b_statistical_significance.md",
-        r"rising to about (\d+)\\% with any one of the tied triple",
+        r"rising to about (\d+)\\% with both of them",
         lambda gt: gt.top_n_harmful_share(3),
         PCT0,
         "percent",
@@ -1400,7 +1400,11 @@ _STATISTICAL: tuple[Claim, ...] = (
     _c(
         "05b.summary_detection_delta",
         "05b_statistical_significance.md",
-        r"Detection module \(\$\\Delta\\text\{TPR\} \\approx -([\d.]+)\$\) \$\\gg\$ Trust Calculus",
+        # The tail moved: the firewall's removal delta rose from -0.010 to
+        # -0.020 when the detector stopped scoring benign text, so it now ties
+        # Trust Calculus instead of sitting a tier below it. Re-anchored on the
+        # phrase that survives the reordering rather than on the old neighbour.
+        r"Detection module \(\$\\Delta\\text\{TPR\} \\approx -([\d.]+)\$\) \$\\gg\$ a tie",
         lambda gt: gt.component_delta_magnitude("detection"),
         F3,
         "fraction",
@@ -1408,8 +1412,12 @@ _STATISTICAL: tuple[Claim, ...] = (
     _c(
         "05b.summary_synergy",
         "05b_statistical_significance.md",
-        r"both \$\\approx \+([\d.]+)\$---confirming complementary",
-        lambda gt: gt.synergy("tripwire", "detection"),
+        # Was a two-way tie at +0.031 between Firewall+Detection and
+        # Tripwire+Detection. With the corrected detectors the tie breaks:
+        # Firewall+Detection stands alone at the top, so the claim now pins
+        # that pair rather than the tie that no longer exists.
+        r"Firewall \+ Detection is the strongest pair \(\$\\approx \+([\d.]+)\$\)",
+        lambda gt: gt.synergy("firewall", "detection"),
         F3,
         "fraction",
     ),

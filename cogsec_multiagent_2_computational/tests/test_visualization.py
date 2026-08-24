@@ -605,21 +605,38 @@ class TestSynergyTableBindsToJson:
                 f"{name} has no recorded synergy but appears in the table"
             )
 
-    def test_exact_ties_are_both_reported(self):
-        """firewall+detection and tripwire+detection are exactly tied.
+    def test_every_tied_pair_survives_to_the_table(self):
+        """A ranking must not silently drop one of an exactly-tied pair.
 
-        A ranking that silently kept one of a tied pair would misreport the
-        result; both must survive to the table.
+        This used to require the TOP synergy to be a tie, which it was while
+        firewall+detection and tripwire+detection were equal to the last bit.
+        Correcting the firewall's context weighting broke that tie and the
+        precondition failed, taking the guard with it -- so the check now runs
+        against whatever tie the artifact actually contains. There is still one
+        (three pairs at +0.020), and if a future artifact has none the test
+        says so rather than silently passing on an empty sweep.
         """
+        from collections import Counter
+
         from visualization.tables.ablation_tables import generate_synergy_table
 
         pairs = _load_json("ablation_results.json")["top_synergies"]
-        top = max(p["synergy"] for p in pairs)
-        tied = [p for p in pairs if p["synergy"] == top]
-        assert len(tied) >= 2, "precondition: the top synergy is a tie"
+        # Group at the table's display precision, not at full float precision.
+        # The four pairs that print as +0.0204 differ in their last bits
+        # (...124, ...12, ...117, ...117) -- floating-point accumulation in the
+        # subset arithmetic, not measurement noise -- so exact-equality grouping
+        # finds two ties where a reader sees four identical rows. What matters
+        # for "silently dropped a tied pair" is what the table shows.
+        counts = Counter(round(p["synergy"], 4) for p in pairs)
+        ties = {value: n for value, n in counts.items() if n >= 2}
+        assert ties, "no tied synergies in the artifact; this guard is not exercising anything"
 
         latex = generate_synergy_table()
-        assert latex.count(f"{top:+.4f}") == len(tied)
+        for value, n in ties.items():
+            assert latex.count(f"{value:+.4f}") == n, (
+                f"{n} pairs display as {value:+.4f} but the table reports "
+                f"{latex.count(f'{value:+.4f}')}"
+            )
 
 
 # ===========================================================================

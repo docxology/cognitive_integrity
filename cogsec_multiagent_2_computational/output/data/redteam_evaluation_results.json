@@ -85,10 +85,10 @@
     "gradual_insertion": {
       "operator": "gradual_insertion",
       "attempts": 66,
-      "successful": 3,
-      "evasion_rate": 0.045454545454545456,
-      "ci_low": 0.015578274334433507,
-      "ci_high": 0.1253331411324222,
+      "successful": 4,
+      "evasion_rate": 0.06060606060606061,
+      "ci_low": 0.023818614832318338,
+      "ci_high": 0.14572908678564217,
       "confidence": 0.95
     },
     "chain_delegation": {

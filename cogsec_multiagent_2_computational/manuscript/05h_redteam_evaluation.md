@@ -64,7 +64,7 @@ Table: Mutation operator evaluation (real pipeline, seed 42, $M=950$). {#tab:mut
 | Nested wrapping | 66 | 0 | 0.0\% | [0.0, 5.5\%] |
 | Indirect routing | 66 | 0 | 0.0\% | [0.0, 5.5\%] |
 | Authority prefix | 66 | 0 | 0.0\% | [0.0, 5.5\%] |
-| Gradual insertion | 66 | 3 | 4.5\% | [1.6, 12.5\%] |
+| Gradual insertion | 66 | 4 | 6.1\% | [2.4, 14.6\%] |
 | Chain delegation | 66 | 0 | 0.0\% | [0.0, 5.5\%] |
 | Belief anchoring | 66 | 0 | 0.0\% | [0.0, 5.5\%] |
 | Multi-hop routing | 66 | 0 | 0.0\% | [0.0, 5.5\%] |
