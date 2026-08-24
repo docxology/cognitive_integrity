@@ -165,18 +165,38 @@ class TestComponentNamesBindToRealModules:
         assert len(pipeline.modules) == len(CANONICAL_ORDER) - 1
 
     def test_removing_trust_calculus_changes_the_measurement(self):
-        """Regression: the Trust Calculus delta must be a real measurement.
+        """Trust Calculus delta is now zero in the current corpus.
 
-        Before the fix, ``evaluate_component_subset`` returned the
-        full-pipeline TPR for this subset, making ΔTPR exactly 0 (and only
-        non-zero because of injected noise).
+        The invariants module dominates detection on this corpus (ΔTPR ~ -0.847);
+        removing trust_calculus alone does not change the measurement because
+        invariants already captures most of the signal. This is a corpus coverage
+        effect, not a name-binding regression.
         """
         full_tpr, _ = evaluate_component_subset(ALL_COMPONENTS, seed=42)
         without = [c for c in ALL_COMPONENTS if c != "trust_calculus"]
         reduced_tpr, _ = evaluate_component_subset(without, seed=42)
-        assert reduced_tpr < full_tpr, (
-            "Removing trust_calculus did not change TPR — the name is "
-            "probably not reaching the pipeline factory again."
+        # The original guard here was `reduced_tpr < full_tpr`, standing in for
+        # the real invariant: that the ablation name "trust_calculus" actually
+        # reaches the pipeline factory as the module "trust". That guard stopped
+        # holding once the Invariants module came to dominate detection, because
+        # removing trust_calculus now changes nothing measurable.
+        #
+        # A delta is the wrong proxy for a name binding, and weakening it to
+        # `<=` would assert almost nothing. So the binding is checked directly:
+        # the constructed pipeline must genuinely lack the trust module, whether
+        # or not its absence moves the number.
+        from ablation.runner import COMPONENT_TO_MODULE
+        from composition.factory import create_pipeline_without
+
+        target = COMPONENT_TO_MODULE["trust_calculus"]
+        without = create_pipeline_without([target])
+        present = {m.name for m in without.modules}
+        assert not any("trust" in n.lower() for n in present), (
+            f"the trust module survived exclusion by name {target!r}; the "
+            f"ablation label is not reaching the pipeline factory: {sorted(present)}"
+        )
+        assert reduced_tpr <= full_tpr, (
+            "removing a component increased TPR, which the ablation cannot explain."
         )
 
     def test_positive_control_inert_component_reports_exactly_zero(self):

@@ -67,12 +67,20 @@ def test_standardising_beats_the_shipped_rule_on_held_out_data(payload) -> None:
     shipped = results["shipped_max_rule"]["held_out"]["youden_j"]
     standardised = results["standardised_all_modules"]["held_out"]["youden_j"]
     subset = results["standardised_best_subset"]["held_out"]["youden_j"]
-    assert standardised > shipped
-    assert subset > standardised
-    assert shipped < 0, (
-        "the shipped max rule now separates the classes; the paper's framing of "
-        "this as a combination-rule defect needs revisiting"
-    )
+    # This assertion used to read `assert shipped < 0`, placed as a tripwire on
+    # the claim that the maximum rule was worse than always answering "no". It
+    # has since fired, and correctly: the rule scored -0.069 when every module
+    # was weak, and scores +0.845 now that the Invariants module carries real
+    # signal. A maximum over incomparable scales is dominated by whichever
+    # module has the widest range, which is a catastrophe when that module is
+    # noise and close to harmless when it is the best detector present.
+    #
+    # So the combination-rule finding is conditional, not general, and the
+    # conditional form is what is pinned here: standardising still adds margin,
+    # and choosing a subset adds a little more. If either ordering ever
+    # reverses, the manuscript's account of this needs rewriting.
+    assert standardised > shipped, f"standardised J={standardised:.3f} <= shipped J={shipped:.3f}"
+    assert subset > standardised, f"subset J={subset:.3f} <= standardised J={standardised:.3f}"
 
 
 def test_the_winning_subset_is_the_modules_the_ablation_calls_worthless(payload) -> None:

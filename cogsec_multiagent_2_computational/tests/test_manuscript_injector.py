@@ -161,9 +161,14 @@ def _write_manuscript_files(manuscript_dir: Path) -> None:
     )
     (manuscript_dir / "05d_ablation_and_scalability.md").write_text(
         "The Detection module contributes $\\Delta\\text{TPR} \\approx -0.000$), "
-        "followed by Old ($-0.000$); Provenance, Sandbox, and Consensus show zero.\n"
-        "The top synergy tier (old-pair, both "
-        + r"$\approx +0.000$" + ") confirms synergy.\n"
+        "followed by Old ($-0.000$); Provenance, Sandbox, and Consensus show no measurable independent contribution.\n"
+        # The caption grammar moved from "followed by ..." to "costs ..."
+        # when the Invariants module became dominant. The fixture has to
+        # carry the current grammar or the substitution reads as dead.
+        "Invariants dominates: removing it costs "
+        + r"$\approx -0.000$" + " of the pipeline.\n"
+        "The strongest pair (old-pair, "
+        + r"$\approx +0.000$" + ") beyond additive prediction.\n"
         "| Detection module | 0.000 | $-0.000$ | text |\n"
         "| Firewall | 0.000 | "
         + r"$\approx -0.000$" + " | text |\n"

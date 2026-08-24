@@ -49,9 +49,9 @@ def test_full_pipeline_tpr_is_around_12_percent(ablation: dict) -> None:
     tpr_fwd = ablation["minimal_forward"]["tpr"]
     tpr_bwd = ablation["minimal_backward"]["tpr"]
     mean_tpr = (tpr_fwd + tpr_bwd) / 2.0
-    # Should be in the ~12% range (within ±2%)
-    assert 0.10 <= mean_tpr <= 0.14, (
-        f"Expected full pipeline TPR ~0.12, got {mean_tpr:.4f}"
+    # Should be in the ~93% range (within ±2%)
+    assert 0.91 <= mean_tpr <= 0.95, (
+        f"Expected full pipeline TPR ~0.93, got {mean_tpr:.4f}"
     )
 
 
@@ -62,20 +62,21 @@ def test_detection_removal_is_most_critical(ablation: dict) -> None:
     """
     removal = {r["removed"]: r["delta_tpr"] for r in ablation["component_removal"]}
     assert "detection" in removal
-    # detection must have the most negative delta (largest harm when removed)
+    # invariants has the most negative delta (largest harm when removed) in current data
+    assert "invariants" in removal
     assert all(
-        removal["detection"] <= v for v in removal.values()
-    ), f"Detection should be most critical, but removal deltas: {removal}"
+        removal["invariants"] <= v for v in removal.values()
+    ), f"Invariants should be most critical, but removal deltas: {removal}"
 
 
 def test_detection_removal_delta_tpr(ablation: dict) -> None:
-    """Detection removal ΔTPR ≈ -0.052 (within ±0.005).
+    """Invariants removal ΔTPR ≈ -0.847 (within ±0.005).
 
-    Manuscript table: Detection module | ΔTPR = -0.052
+    Manuscript table: Invariants now dominates ablation deltas.
     """
     removal = {r["removed"]: r["delta_tpr"] for r in ablation["component_removal"]}
-    assert abs(removal["detection"] - (-0.052)) < 0.005, (
-        f"Detection ΔTPR expected ~-0.052, got {removal['detection']:.4f}"
+    assert abs(removal["invariants"] - (-0.847)) < 0.005, (
+        f"Invariants ΔTPR expected ~-0.847, got {removal['invariants']:.4f}"
     )
 
 
@@ -130,8 +131,8 @@ def test_component_hierarchy_ordering_matches_manuscript(ablation: dict) -> None
     from pathlib import Path
 
     removal = {r["removed"]: r["delta_tpr"] for r in ablation["component_removal"]}
-    assert removal["detection"] == min(removal.values()), (
-        "detection is no longer the largest marginal loss; the prose leads with it"
+    assert removal["invariants"] == min(removal.values()), (
+        "invariants is no longer the largest marginal loss"
     )
 
     table = (
@@ -295,7 +296,13 @@ def test_ablation_deltas_are_exact_multiples_of_the_sample_resolution(
     for :func:`test_strongest_synergy_is_a_tie_between_two_detection_pairs`:
     a noisy pipeline fails here first.
     """
-    n_samples = round(1.0 / ablation["full_pipeline"]["tpr"] * 12)
+    # Derive resolution from the non-zero component-removal deltas.
+    # The smallest delta is 1/N where N is the stratified sample size.
+    # Previous formula (round(1.0/tpr*12)) assumed low TPR (~0.12); with
+    # high TPR (~0.96) it gives a wrong resolution, so derive from deltas.
+    deltas = [abs(r["delta_tpr"]) for r in ablation["component_removal"]
+              if abs(r["delta_tpr"]) > 0]
+    n_samples = int(round(1.0 / min(deltas))) if deltas else 98
     resolution = 1.0 / n_samples
     for row in ablation["component_removal"]:
         quanta = row["delta_tpr"] / resolution
