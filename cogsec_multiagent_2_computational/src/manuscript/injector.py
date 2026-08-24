@@ -860,9 +860,13 @@ def inject_ablation(
         report=report,
     )
 
+    # "both" only appears while the top pair is tied, and the tie broke when
+    # the Invariants rewrite changed the ablation. A substitution that can only
+    # maintain a tied value is dead the moment the tie is, so the qualifier is
+    # optional here and the sentence carries whichever form is true.
     text = _apply(
         text,
-        r"(both\s*\$\s*\\approx\s*)\+[\d.]+(\$)",
+        r"((?:both\s*)?\$\s*\\approx\s*)\+[\d.]+(\$)",
         r"\g<1>" + f"+{gt['top_synergy']['synergy']:.3f}" + r"\g<2>",
         document=document,
         label="top_synergy_value",
@@ -887,7 +891,10 @@ def inject_ablation(
         pair_label = " and ".join(pair_names)
     text = _apply(
         text,
-        r"(The top synergy tier \()[a-z+ -]+( and [a-z+ -]+)?(?=[,)])",
+        # "tier" presumes a tie; "strongest pair" is the singular form. The
+        # prose carries whichever is true, so the pattern accepts both rather
+        # than going dead the moment the measurement stops tying.
+        r"((?:The top synergy tier|The strongest pair) \()[a-z+ -]+( and [a-z+ -]+)?(?=[,)])",
         r"\g<1>" + pair_label,
         document=document,
         label="top_synergy_pair",
