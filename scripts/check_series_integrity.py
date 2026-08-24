@@ -125,11 +125,8 @@ class CheckResult:
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from series_ledger import (  # noqa: E402
-    CONTEXT_WINDOW,
-    DASH,
     LEDGER,
     MissingArtifact,
-    LedgerVariable,
     to_number,
 )
 

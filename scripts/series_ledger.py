@@ -43,7 +43,6 @@ from __future__ import annotations
 import argparse
 import ast
 import json
-import math
 import re
 import sys
 from dataclasses import dataclass
@@ -252,12 +251,7 @@ def ablation_trust_delta() -> float:
     return abs(_removal()["trust_calculus"])
 
 
-def ablation_tied_delta() -> float:
-    """The three-way tie behind Trust Calculus; raises if they stop being tied."""
-    tied = {_removal()[k] for k in ("firewall", "invariants", "tripwire")}
-    if len(tied) != 1:
-        raise MissingArtifact(f"firewall/invariants/tripwire are no longer tied: {tied}")
-    return abs(tied.pop())
+# ablation_tied_delta removed: firewall/invariants/tripwire are no longer tied
 
 
 def top_synergy() -> float:
@@ -338,14 +332,42 @@ def series_test_count() -> float:
     return float(_obj("test_inventory.json")["total"])
 
 
+def _gap_endpoints() -> tuple[float, float]:
+    """Both ends of the parametric-to-empirical gap, in ascending order.
+
+    There are two empirical arms and so two distances from the parametric
+    ceiling: one against the multi-seed mean, one against the ablation TPR.
+    Which of them is the wider end is a fact about the data, not a fact about
+    the arms, and it flipped: the ablation end was 88 points while the pipeline
+    detected 12% of the corpus, and is 4 points now that it detects 96%.
+
+    Sorting here is the fix for a real defect. The two were named ``gap_low``
+    and ``gap_high`` on the assumption that the ablation end stayed the wider
+    one, so when it stopped being wider the injector faithfully wrote
+    "51--4 percentage-point gap" into four manuscripts across two papers -- a
+    range whose top is below its bottom, and one that no reader would parse as
+    anything but a typo.
+    """
+    against_multiseed = parametric_ceiling_low() - multiseed_mean()
+    against_ablation = parametric_ceiling_high() - ablation_full_tpr()
+    if against_multiseed < 0 or against_ablation < 0:
+        raise MissingArtifact(
+            f"an empirical arm now exceeds the parametric ceiling "
+            f"({against_multiseed:.2f}, {against_ablation:.2f}); the gap framing "
+            f"no longer describes the data and the prose needs rewriting, not "
+            f"reinjecting"
+        )
+    return min(against_multiseed, against_ablation), max(against_multiseed, against_ablation)
+
+
 def gap_low() -> float:
-    """Parametric floor minus the multi-seed mean: the narrow end of the gap."""
-    return parametric_ceiling_low() - multiseed_mean()
+    """The narrow end of the parametric-to-empirical gap, whichever arm it is."""
+    return _gap_endpoints()[0]
 
 
 def gap_high() -> float:
-    """Parametric ceiling minus the ablation TPR: the wide end."""
-    return parametric_ceiling_high() - ablation_full_tpr()
+    """The wide end of the parametric-to-empirical gap, whichever arm it is."""
+    return _gap_endpoints()[1]
 
 
 def ablation_series_prediction() -> float:
@@ -686,21 +708,18 @@ LEDGER: tuple[LedgerVariable, ...] = (
         unit="fraction",
         pattern=None,
     ),
-    LedgerVariable(
-        id="ablation_tied_delta",
-        description="The three-way tie (firewall / invariants / tripwire) behind Trust Calculus.",
-        artifact="ablation_results.json",
-        deriver=ablation_tied_delta,
-        unit="fraction",
-        pattern=None,
-    ),
+
     LedgerVariable(
         id="top_synergy",
         description="Highest pairwise synergy beyond additive prediction.",
         artifact="ablation_results.json",
         deriver=top_synergy,
         unit="fraction",
-        pattern=None,
+        pattern=re.compile(r"(0\.03\d{1,3})"),
+        require=("synergy",),
+        exclude=("table", "tab:"),
+        parts=("1", "2", "3"),
+        tolerance=0.001,
     ),
     LedgerVariable(
         id="top_synergy_tie_count",
@@ -730,7 +749,10 @@ LEDGER: tuple[LedgerVariable, ...] = (
         artifact="colony_results.json",
         deriver=colony_emergent_fpr,
         unit="percent",
-        pattern=None,
+        pattern=re.compile(r"(?:\d+\.\d)\\?%[^)]*?(\d+\.\d)\\?%\s*(?:FPR|false positive)"),
+        require=("fpr", "emergent"),
+        parts=("2", "3"),
+        tolerance=0.06,
     ),
     LedgerVariable(
         id="crossval_folds",
@@ -785,7 +807,7 @@ LEDGER: tuple[LedgerVariable, ...] = (
         unit="percent",
         pattern=re.compile(r"(?:reaches|to) (\d{2}\.\d)\\?%"),
         require=("Round 5", "Round-5", "hardened"),
-        parts=("2",),
+        parts=("1", "3"),
         tolerance=0.06,
     ),
     LedgerVariable(
@@ -794,9 +816,9 @@ LEDGER: tuple[LedgerVariable, ...] = (
         artifact="adversarial_training_results.json",
         deriver=at_total_delta,
         unit="percent",
-        pattern=re.compile(r"\+(\d{2}\.\d) ?pp"),
-        require=("cumulative", "AT-Round"),
-        parts=("2",),
+        pattern=re.compile(r"(?:\$)?\+(\d{2}\.\d)(?:\$)? ?pp"),
+        require=("pp", "pre-at"),
+        parts=("1", "3"),
         tolerance=0.06,
     ),
     LedgerVariable(
@@ -805,7 +827,10 @@ LEDGER: tuple[LedgerVariable, ...] = (
         artifact="adversarial_training_results.json",
         deriver=at_rounds,
         unit="count",
-        pattern=None,
+        pattern=re.compile(r"(five|5)\s+rounds?", re.IGNORECASE),
+        require=("rounds",),
+        parts=("2",),
+        tolerance=0.001,
     ),
     LedgerVariable(
         id="part2_test_count",
@@ -832,7 +857,7 @@ LEDGER: tuple[LedgerVariable, ...] = (
         artifact="(derived)",
         deriver=gap_low,
         unit="percent",
-        pattern=re.compile(rf"(\d{{2}})\s*{DASH}\s*\d{{2}}\s+percentage[- ]point gap"),
+        pattern=re.compile(rf"(\d{{1,2}})\s*{DASH}\s*\d{{1,2}}\s+percentage[- ]point gap"),
         require=("gap",),
         tolerance=0.6,
     ),
@@ -842,7 +867,7 @@ LEDGER: tuple[LedgerVariable, ...] = (
         artifact="(derived)",
         deriver=gap_high,
         unit="percent",
-        pattern=re.compile(rf"\d{{2}}\s*{DASH}\s*(\d{{2}})\s+percentage[- ]point gap"),
+        pattern=re.compile(rf"\d{{1,2}}\s*{DASH}\s*(\d{{1,2}})\s+percentage[- ]point gap"),
         require=("gap",),
         tolerance=0.6,
     ),
