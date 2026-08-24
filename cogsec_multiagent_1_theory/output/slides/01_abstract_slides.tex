@@ -213,6 +213,15 @@
 \newtheorem{formalization}{Formalization}
 \newtheorem{principle}{Principle}
 
+% Environment-providing packages carried over from the manuscript.
+\usepackage{algpseudocode}
+
+% Non-floating stand-in for the `algorithm` float.
+\newenvironment{algorithm}[1][]{%
+  \par\medskip\noindent\rule{\linewidth}{0.4pt}\par\nobreak\small
+  \renewcommand{\caption}[1]{\par\noindent\textbf{##1}\par}}{%
+  \par\nobreak\noindent\rule{\linewidth}{0.4pt}\par\medskip}
+
 \newtheorem{proposition}{Proposition}
 \newtheorem{hypothesis}{Hypothesis}
 \newtheorem{remark}[theorem]{Remark}

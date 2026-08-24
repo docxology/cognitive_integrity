@@ -3123,7 +3123,7 @@ The detection methods presented in this section have been empirically validated 
 
 \textbf{ROC Analysis}: Receiver Operating Characteristic curves demonstrate the tradeoff between True Positive Rate and False Positive Rate for each detector type. For the theoretical ensemble reference curves (Part 2, \S{4}), the ensemble achieves AUC $> 0.84$, with individual mechanisms ranging from $0.74$ (Belief Sandbox) to $0.81$ (Tripwire Monitor). (These are the theory-guided Part-2 curves; the Part-1 measured firewall curve over the module's small corpus is shown in the ROC figure in this section.)
 
-\textbf{Detection Performance by Attack Type}: Detection rates vary across the five adversary classes ($\Omega_1$--$\Omega_5$). The Cognitive Firewall excels at $\Omega_1$ (external) attacks while Tripwires and Invariants provide stronger coverage for $\Omega_3$ (compromised agent) and $\Omega_4$ (inter-agent) attacks. See Part 2, \S{5} for the complete detection matrix.
+\textbf{Detection Performance by Component}: Part 2 measures marginal contribution per defense component, not detection rate per adversary class --- its corpus carries a design-level $\Omega$ label rather than a runtime one, so the per-$\Omega$ coverage attributed to each mechanism in this section remains a design expectation rather than a measured result. What Part 2 does measure is that one component, Behavioral Invariants, accounts for almost all of the composed pipeline's detection, and that the remaining components add little beyond it. See Part 2's "Defense Component Contributions" section.
 
 \textbf{False Positive Mitigation}: The confirmation cascade, temporal smoothing, and contextual whitelisting strategies reduce false positive rates by $>80\%$ while maintaining $>90\%$ true positive rates. See Part 2, \S{5.4} for quantitative analysis of each mitigation strategy.
 
@@ -3317,7 +3317,7 @@ where $\alpha_{\text{lr}}$ is the learning rate and $C_{\text{FN}}, C_{\text{FP}
 
 This adaptive mechanism allows the pipeline to respond to shifting attack distributions, reducing the staleness problem that affects static threshold configurations.
 
-> **Empirical validation of this section's theory**: The detection methods formalized here are empirically evaluated in Part 2 \cite{friedman2026cogsec2}. Key findings: (1) the multi-stage pipeline shows biased escalation consistent with \cref{thm:pipeline-tpr}; (2) adversarial training across five rounds demonstrates adaptive threshold adjustment consistent with \cref{def:adaptive-threshold}, raising hardened detection from 52.0\% at Round 1 to 67.9\% at Round 5 in Part 2's closed-form design model; (3) per-stage miss rates attributed to $\Omega_3$--$\Omega_5$ adversary classes explain the residual detection gap between the parametric ceiling and prototype performance (Part 2, "Adversarial Training Evaluation" and the "Parametric Simulation Analysis" supplement).
+> **Empirical validation of this section's theory**: The detection methods formalized here are empirically evaluated in Part 2 \cite{friedman2026cogsec2}. Key findings: (1) the multi-stage pipeline shows biased escalation consistent with \cref{thm:pipeline-tpr}; (2) adversarial training across five rounds demonstrates adaptive threshold adjustment consistent with \cref{def:adaptive-threshold}, raising hardened detection from 52.0\% at Round 1 to 67.9\% at Round 5 in Part 2's closed-form design model; (3) the residual gap between the parametric ceiling and prototype performance is attributed to adapter implementation maturity rather than to any per-class miss profile --- Part 2 reports no measured per-$\Omega$-class rates --- and that gap is module-specific rather than diffuse: a single component's rewrite moved the ablation arm's measured detection most of the way to the ceiling (Part 2, "Adversarial Training Evaluation", "Defense Component Contributions", and the "Parametric Simulation Analysis" supplement).
 
 
 
@@ -3896,7 +3896,7 @@ The formal mechanisms proposed in this paper have been validated through extensi
 
 Key empirical findings include:
 
-1. **Defense Composition**: Consistent with the series and parallel detection-rate theorems (\cref{thm:series-detection}, \cref{thm:parallel-detection}), layered defenses composed multiplicatively, with the full framework outperforming any single mechanism. Part 2's ablation studies confirm that removing the Detection module causes the largest drop, followed by the Trust Calculus.
+1. **Defense Composition**: Consistent with the series and parallel detection-rate theorems (\cref{thm:series-detection}, \cref{thm:parallel-detection}), layered defenses composed multiplicatively, with the full framework outperforming any single mechanism. Part 2's ablation studies qualify this: on their corpus the composition is dominated rather than balanced, with the Behavioral Invariants module accounting for almost all of the composed pipeline's detection and every other module measuring at or near zero *marginal* contribution --- what each adds beyond the rest of the stack, which is not the same quantity as what each detects alone.
 2. **Trust Boundedness**: The $\delta^d$ trust decay parameter successfully prevented ``trust laundering'' amplification attacks in all tested topologies, validating Formula 4.
 3. **Architecture Dependence**: As predicted by our threat model, the architecture with the lowest parametric detection in Part 2 is AutoGPT's autonomous-mesh topology, whose distributed trust structure offers the widest lateral-movement surface; hierarchical topologies concentrate risk in orchestrator compromise instead. No peer-to-peer architecture was evaluated.
 4. **Adversarial Training**: In Part 2's closed-form adversarial-training design model, five rounds on the Claude Code architecture raise hardened detection from 52.0\% (Round 1) to 67.9\% (Round 5), $+23.2$ pp over the pre-AT baseline. The per-round gain sequence $(7.3, 5.6, 5.0, 2.9, 2.4)$ pp is approximately linear rather than geometrically decaying, and the projected Nash equilibrium of 100.0\% is a property of the model's assumed gains, not a measured equilibrium. These are design-model values, not pipeline-in-the-loop measurements.
@@ -3928,7 +3928,7 @@ Byzantine Consensus & Coordination attacks \\
 
 The orthogonality of these surfaces explains why no single mechanism suffices: an attack that bypasses input filtering may still violate behavioral invariants; an attack that evades pattern matching may still trigger belief drift detection.
 
-Empirical ablation studies in Part 2 validate this theoretical prediction: removing the Detection module causes the largest drop ($\Delta\text{TPR} \approx -0.051$ on the 98-attack ablation corpus), followed by the Trust Calculus ($\approx -0.020$); Firewall, Invariants and Tripwire tie behind it at $\approx -0.010$, and Consensus, Provenance and Sandbox show no marginal contribution on that corpus. No individual mechanism provides comparable detection rates to the full ensemble---confirming the multiplicative composition theorem (\cref{thm:series-detection}).
+Empirical ablation studies in Part 2 test this prediction and return a sharper answer than a ranked list. On the 98-attack ablation corpus a single module dominates: removing Behavioral Invariants costs $\Delta\text{TPR} \approx -0.847$ against a full pipeline of $\approx 0.959$, the Firewall and Tripwire cost $\approx -0.010$ each, and Consensus, Detection, Provenance, Sandbox and Trust Calculus register no change at all. Those zeros are *marginal* quantities and are not evidence of zero capability: a module whose detections are a subset of another's is invisible to leave-one-out removal however much it catches on its own. What the ablation establishes is therefore weaker than the theorem and more useful than a ranking --- no single mechanism outperforms the composed ensemble, consistent with \cref{thm:series-detection}, but on this corpus the composition is dominated by one factor rather than balanced across many, so the multiplicative bound holds without being informative.
 
 ### The Trust Boundedness Guarantee
 
@@ -4219,7 +4219,7 @@ Integrity Properties & Belief consistency, goal alignment, provenance verifiabil
 
 - **Q1: Optimal trust decay functions.** Under what conditions is exponential decay ($\delta^d$) optimal? Are there task distributions or adversary models where alternative decay functions (e.g., polynomial, threshold-based) provide better security-utility tradeoffs?
 
-- **Q2: Tight detection bounds.** Can the stealth-impact bounds in Theorem 6.2 be tightened? What adversary adaptations most effectively approach the theoretical limit, and what detection enhancements can push the bound further?
+- **Q2: Tight detection bounds.** Can the stealth-impact bounds in \cref{thm:stealth-impact} be tightened? What adversary adaptations most effectively approach the theoretical limit, and what detection enhancements can push the bound further?
 
 - **Q3: Belief consistency under partial observability.** How should agents maintain belief integrity when they cannot observe the full system state? What guarantees remain achievable with bounded observation horizons?
 
@@ -4494,7 +4494,7 @@ The stealth-impact bound $\mathcal{I} \cdot \mathcal{S} \leq \pi/2$ (Remark~\ref
 \item \textbf{OODA Cycle Time Bounds}: Property~\ref{prop:ooda-latency} gives a sufficient condition but not a tight bound on the minimum OODA cycle time compatible with full CIF monitoring. Characterizing this bound as a function of defense portfolio is open.
 \end{enumerate}
 
-> **What Part 2 validates empirically**: Part 2 \cite{friedman2026cogsec2} tests CIF under conditions that stress several of the assumptions above. Specifically: (1) Assumptions 1--2 (honest orchestrator, bounded faults) are validated by architecture-specific experiments across the hierarchical, autonomous-mesh, role-based and graph-based topologies of Part 2's four adapters; (2) Assumption 3 (independent defenses) is tested via ablation studies showing two pairs tied for the strongest synergy---Firewall + Detection and Tripwire + Detection, both $+0.031$ beyond additive; (3) Assumption 4 (stationary distributions) is tested via five rounds of adversarial training confirming distribution shift degrades static detectors; and (4) Assumption 5 (bounded compute) is implicitly bounded by the 950-attack corpus scope. The 51--88 percentage-point gap between parametric ceiling and prototype pipeline performance is attributed to adapter implementation maturity, not to violation of the formal assumptions (Part 2's Conclusion, "Honest Gap Characterization").
+> **What Part 2 validates empirically**: Part 2 \cite{friedman2026cogsec2} tests CIF under conditions that stress several of the assumptions above. Specifically: (1) Assumptions 1--2 (honest orchestrator, bounded faults) are validated by architecture-specific experiments across the hierarchical, autonomous-mesh, role-based and graph-based topologies of Part 2's four adapters; (2) Assumption 3 (independent defenses) is tested via ablation studies in which the strongest pairwise synergy---Firewall + Detection, at $+0.031$ beyond additive---is roughly an order of magnitude smaller than the leave-one-out contribution of the single dominant module, so on that corpus independence is neither confirmed nor cleanly refuted; (3) Assumption 4 (stationary distributions) is tested via five rounds of adversarial training confirming distribution shift degrades static detectors; and (4) Assumption 5 (bounded compute) is implicitly bounded by the 950-attack corpus scope. The 4--51 percentage-point gap between parametric ceiling and prototype pipeline performance is attributed to adapter implementation maturity, not to violation of the formal assumptions (Part 2's Conclusion, "Honest Gap Characterization").
 
 
 
@@ -4515,13 +4515,13 @@ For transparency, this section records, by exact label, which results stated in 
 
 **Proven in this supplement.** The following theorems each have a dedicated `proof` environment (section given in parentheses):
 
-- Trust Boundedness (Thm. 4.2), \cref{thm:trust-bound-restated} (\cref{sec:thm42-proof})
-- Belief Injection Resistance (Thm. 5.7), \cref{thm:belief-injection-restated} (\cref{sec:thm57-proof})
-- No Trust Amplification (Thm. 4.7), \cref{thm:trust-amp-restated} (\cref{sec:thm47-proof})
-- Goal Alignment Invariant (Thm. 5.8), \cref{thm:goal-alignment-restated} (\cref{sec:thm58-proof})
-- Firewall Liveness (Thm. 5.9), \cref{thm:firewall-liveness-restated} (\cref{sec:thm59-proof})
-- Byzantine Consensus Termination (Thm. 5.10), \cref{thm:byzantine-restated} (\cref{sec:thm510-proof})
-- Bounded Overhead (Thm. 5.11), \cref{thm:overhead-restated} (\cref{sec:thm511-proof})
+- Trust Boundedness (main text: \cref{thm:trust-bounded}), \cref{thm:trust-bound-restated} (\cref{sec:thm42-proof})
+- Belief Injection Resistance (main text: \cref{thm:belief-injection}), \cref{thm:belief-injection-restated} (\cref{sec:thm57-proof})
+- No Trust Amplification (main text: \cref{thm:no-trust-amp}), \cref{thm:trust-amp-restated} (\cref{sec:thm47-proof})
+- Goal Alignment Invariant (main text: \cref{thm:goal-alignment}), \cref{thm:goal-alignment-restated} (\cref{sec:thm58-proof})
+- Firewall Liveness (main text: \cref{thm:firewall-liveness}), \cref{thm:firewall-liveness-restated} (\cref{sec:thm59-proof})
+- Byzantine Consensus Termination (main text: \cref{thm:byzantine-termination}), \cref{thm:byzantine-restated} (\cref{sec:thm510-proof})
+- Bounded Overhead (main text: \cref{thm:latency-overhead}), \cref{thm:overhead-restated} (\cref{sec:thm511-proof})
 - Defense Composition Algebra, \cref{thm:composition-semiring-restated} (\cref{sec:thm-composition-semiring})
 - Fisher-Rao Stealth-Impact Tight Bound, \cref{thm:fr-bound-restated} (\cref{sec:thm-geometric-bound})
 - Agent Compromise Blast Radius, \cref{thm:blast-radius-restated} (\cref{sec:thm-blast-radius})
@@ -4613,7 +4613,7 @@ A delegation chain of depth $d$ is a sequence of agents $(a_0, a_1, \ldots, a_d)
 
 ---
 
-## Theorem 4.2: Trust Boundedness {#sec:thm42-proof}
+## Trust Boundedness {#sec:thm42-proof}
 
 \begin{theorem}[Trust Boundedness --- Restated]
 \label{thm:trust-bound-restated}
@@ -4731,7 +4731,7 @@ d_{max} = \lfloor \log_{0.8} 0.1 \rfloor = 10
 
 ---
 
-## Theorem 5.7: Belief Injection Resistance {#sec:thm57-proof}
+## Belief Injection Resistance {#sec:thm57-proof}
 
 \begin{theorem}[Belief Injection Resistance --- Restated]
 \label{thm:belief-injection-restated}
@@ -4829,7 +4829,7 @@ Direct extension of \cref{thm:belief-injection-restated} by independence.
 
 ---
 
-## Theorem 4.7: No Trust Amplification {#sec:thm47-proof}
+## No Trust Amplification {#sec:thm47-proof}
 
 \begin{theorem}[No Trust Amplification --- Restated]
 \label{thm:trust-amp-restated}
@@ -4933,7 +4933,7 @@ Multiple colluding agents cannot create trust exceeding any individual's trust w
 
 ---
 
-## Theorem 5.8: Goal Alignment Invariant {#sec:thm58-proof}
+## Goal Alignment Invariant {#sec:thm58-proof}
 
 \begin{theorem}[Goal Alignment Invariant --- Restated]
 \label{thm:goal-alignment-restated}
@@ -5033,7 +5033,7 @@ Goal hijacking requires violating the delegation protocol:
 
 ---
 
-## Theorem 5.9: Firewall Liveness {#sec:thm59-proof}
+## Firewall Liveness {#sec:thm59-proof}
 
 \begin{theorem}[Firewall Liveness --- Restated]
 \label{thm:firewall-liveness-restated}
@@ -5116,7 +5116,7 @@ Messages in QUARANTINE can still reach verified belief state through sandbox pro
 
 ---
 
-## Theorem 5.10: Byzantine Consensus Termination {#sec:thm510-proof}
+## Byzantine Consensus Termination {#sec:thm510-proof}
 
 \begin{theorem}[Byzantine Consensus Termination --- Restated]
 \label{thm:byzantine-restated}
@@ -5214,7 +5214,7 @@ By honest majority and the $2/3$ threshold requirement.
 
 ---
 
-## Theorem 5.11: Bounded Overhead {#sec:thm511-proof}
+## Bounded Overhead {#sec:thm511-proof}
 
 \begin{theorem}[Bounded Overhead --- Restated]
 \label{thm:overhead-restated}
@@ -5295,7 +5295,7 @@ With baseline $L_{baseline} = 11.8\text{ms}$:
 \text{Overhead} = \frac{14.5 - 11.8}{11.8} \times 100\% \approx 22.9\%
 \end{equation}
 
-This matches the empirical observation of approximately 23\% overhead.
+The 22.9\% is a property of the illustrative constants above, not an observation: this series measures no end-to-end CIF latency overhead, and the constants used here are not derived from Part 2's measured per-sample firewall latency.
 
 \begin{corollary}[Overhead Bound]
 \label{cor:overhead-bound}
@@ -5413,13 +5413,13 @@ variance $\frac{\eta}{2-\eta}\sigma^2$ is the price of that adaptivity.
 \toprule
 Theorem & Primary Technique & Complexity \\
 \midrule
-4.2 (Trust Boundedness) & Strong induction & $O(d)$ \\
-5.7 (Belief Injection Resistance) & Probability independence & $O(1)$ \\
-4.7 (No Trust Amplification) & Strong induction & $O(k)$ \\
-5.8 (Goal Alignment Invariant) & Induction on time & $O(t)$ \\
-5.9 (Firewall Liveness) & Complement probability & $O(1)$ \\
-5.10 (Byzantine Consensus) & Classical BFT & $O(f)$ \\
-5.11 (Bounded Overhead) & Expected value & $O(1)$ \\
+Trust Boundedness & Strong induction & $O(d)$ \\
+Belief Injection Resistance & Probability independence & $O(1)$ \\
+No Trust Amplification & Strong induction & $O(k)$ \\
+Goal Alignment Invariant & Induction on time & $O(t)$ \\
+Firewall Liveness & Complement probability & $O(1)$ \\
+Byzantine Consensus & Classical BFT & $O(f)$ \\
+Bounded Overhead & Expected value & $O(1)$ \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -6286,6 +6286,7 @@ This supplement provides a comprehensive reference for the mathematical notation
 | $R_{Co}$ | Coordination resources (multi-party synchronization) | \cref{tab:resource-types} |
 | $D_{\text{score}}$ | Detectability score of an attack | \cref{def:detectability} |
 | $\mathcal{C}_{\text{adv}}$ | Adversarial capability set | \cref{def:capability-set} |
+| $\mathcal{E}$ | Communication edge set $\{(a_i, a_j) : \mathcal{C}(a_i, a_j) = 1\}$; the adversary-controlled subset is $\mathcal{E}_{\text{ctrl}} \subseteq \mathcal{E}$ (distinct from the stigmergic $\mathcal{E}$ below) | \cref{def:omega4} |
 | $\mathcal{A}_{\text{BIM}}$ | Belief injection/manipulation attack class | \cref{sec:attack-taxonomy} |
 | $\mathcal{A}_{\text{BI}}$ | Belief injection attack | \cref{thm:belief-injection} |
 
@@ -6312,6 +6313,7 @@ This supplement provides a comprehensive reference for the mathematical notation
 | $\phi, \psi$ | Individual propositions | \cref{sec:notation} |
 | $\mathcal{M}$ | Message space | \cref{def:firewall} |
 | $m$ | Individual message | \cref{def:firewall} |
+| $\Sigma$ | OODA input alphabet $\mathcal{M} \cup \text{Events}$ (distinct from the stigmergic update function $\Sigma$ of \cref{def:stigmergic-operator}) | \cref{def:ooda-state} |
 
 ## Trust Calculus Notation
 
@@ -6361,7 +6363,11 @@ This supplement provides a comprehensive reference for the mathematical notation
 | $S_{\text{drift}}$ | Drift score (belief change magnitude) | \cref{def:drift-score} |
 | $D_{\text{KL}}$ | Kullback-Leibler divergence (drift detection) | \cref{def:drift-detection} |
 | $w$ | Sliding window size | \cref{def:drift-detection} |
+| $g_t$ | CUSUM cumulative statistic at time $t$ | \cref{def:cusum-detector} |
+| $\nu$ | CUSUM allowance (reference value) | \cref{def:cusum-detector} |
+| $h$ | CUSUM decision interval (alert threshold on $g_t$) | \cref{def:cusum-detector} |
 | $\lambda$ | Max delta weight in drift scoring | \cref{eq:drift-score} |
+| $\lambda$ | Chernoff tilting parameter, $\lambda \in [0,1]$ (unrelated to the drift weight above and to the colonial-trust decay constant) | \cref{eq:chernoff} |
 | $S_{\text{dev}}$ | Behavioral deviation score | \cref{def:deviation-score} |
 | $f_k$ | Feature extractor function | \cref{eq:deviation-score} |
 | $\mu_k, \sigma_k$ | Feature mean and standard deviation | \cref{eq:deviation-score} |
@@ -6372,6 +6378,7 @@ This supplement provides a comprehensive reference for the mathematical notation
 | $S_{\text{fused}}$ | Fused detector score | \cref{def:score-fusion} |
 | $D_{\text{fused}}$ | Fused detector decision | \cref{def:decision-fusion} |
 | $\text{taint}(\phi)$ | Provenance tags for belief $\phi$ | \cref{def:taint-label} |
+| $\Lambda(m)$ | Likelihood ratio $P_{\text{attack}}(m) / P_{\text{benign}}(m)$ (capital $\Lambda$; unrelated to $\lambda$) | \cref{def:hyp-test} |
 
 ## Consensus & Coordination Notation
 
@@ -6418,7 +6425,7 @@ This supplement provides a comprehensive reference for the mathematical notation
 |:---|:---|:---|
 | $\mathcal{O}_\Sigma$ | Stigmergic operator tuple | \cref{def:stigmergic-operator} |
 | $\mathcal{E}$ | Environmental state (markers/signals) | \cref{def:stigmergic-operator} |
-| $\Sigma$ | Stigmergic update function | \cref{def:stigmergic-operator} |
+| $\Sigma$ | Stigmergic update function (distinct from the OODA input alphabet $\Sigma$ of \cref{def:ooda-state}) | \cref{def:stigmergic-operator} |
 | $\mathcal{L}$ | Set of locations | \cref{def:stigmergic-operator} |
 | $\mathcal{M}$ | Set of marker types | \cref{def:stigmergic-operator} |
 | $\mathcal{N}$ | Cyberphysical niche | \cref{def:cyberphysical-niche} |
@@ -6439,6 +6446,12 @@ This supplement provides a comprehensive reference for the mathematical notation
 | $P(\cdot)$ | Probability measure | Throughout |
 | $\mathbb{1}[\cdot]$ | Indicator function | \cref{eq:decision-fusion} |
 | $\tau$ | Generic threshold parameter | Throughout |
+| $\theta_{\text{drift}}$ | KL drift-detection threshold; distinct from the per-canary deviation tolerance $\epsilon_{\text{drift}}$ | \cref{eq:drift-detection} |
+| $\theta_{\text{total}}$, $\theta_{\text{step}}$ | Cumulative and per-step drift thresholds in a progressive-drift attack | \cref{def:progressive-drift} |
+| $\theta$ (alarm) | Baseline drift alarm threshold $\mu_{\text{baseline}} + k\,\sigma_{\text{baseline}}$ | \cref{prop:drift-threshold} |
+| $\theta_i$ | Escalation threshold at stage $i$ of the multi-stage detection pipeline | \cref{def:multi-stage} |
+| $\theta$ (fusion) | Learned parameters of the fusion network --- not a threshold | \cref{eq:learned-fusion} |
+| $r_\theta$ | Fisher-Rao displacement corresponding to $\theta_{\text{drift}}$ | \cref{rem:geometric-bound} |
 | $\epsilon$ | Small constant (error rate, deviation) | Throughout |
 | $t$ | Time index | Throughout |
 | $\models$ | Satisfaction relation (state satisfies predicate) | \cref{eq:invariant-check} |

@@ -213,6 +213,15 @@
 \newtheorem{formalization}{Formalization}
 \newtheorem{principle}{Principle}
 
+% Environment-providing packages carried over from the manuscript.
+\usepackage{algpseudocode}
+
+% Non-floating stand-in for the `algorithm` float.
+\newenvironment{algorithm}[1][]{%
+  \par\medskip\noindent\rule{\linewidth}{0.4pt}\par\nobreak\small
+  \renewcommand{\caption}[1]{\par\noindent\textbf{##1}\par}}{%
+  \par\nobreak\noindent\rule{\linewidth}{0.4pt}\par\medskip}
+
 \newtheorem{proposition}{Proposition}
 \newtheorem{hypothesis}{Hypothesis}
 \newtheorem{remark}[theorem]{Remark}
@@ -349,9 +358,9 @@ suffice for collaborative environments.
   tradeoffs?
 \item
   \textbf{Q2: Tight detection bounds.} Can the stealth-impact bounds in
-  Theorem 6.2 be tightened? What adversary adaptations most effectively
-  approach the theoretical limit, and what detection enhancements can
-  push the bound further?
+  \cref{thm:stealth-impact} be tightened? What adversary adaptations
+  most effectively approach the theoretical limit, and what detection
+  enhancements can push the bound further?
 \item
   \textbf{Q3: Belief consistency under partial observability.} How
   should agents maintain belief integrity when they cannot observe the

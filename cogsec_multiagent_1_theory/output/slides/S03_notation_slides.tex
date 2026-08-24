@@ -213,6 +213,15 @@
 \newtheorem{formalization}{Formalization}
 \newtheorem{principle}{Principle}
 
+% Environment-providing packages carried over from the manuscript.
+\usepackage{algpseudocode}
+
+% Non-floating stand-in for the `algorithm` float.
+\newenvironment{algorithm}[1][]{%
+  \par\medskip\noindent\rule{\linewidth}{0.4pt}\par\nobreak\small
+  \renewcommand{\caption}[1]{\par\noindent\textbf{##1}\par}}{%
+  \par\nobreak\noindent\rule{\linewidth}{0.4pt}\par\medskip}
+
 \newtheorem{proposition}{Proposition}
 \newtheorem{hypothesis}{Hypothesis}
 \newtheorem{remark}[theorem]{Remark}
@@ -287,6 +296,10 @@ Defined In
 \cref{def:detectability} \\
 \(\mathcal{C}_{\text{adv}}\) & Adversarial capability set &
 \cref{def:capability-set} \\
+\(\mathcal{E}\) & Communication edge set
+\(\{(a_i, a_j) : \mathcal{C}(a_i, a_j) = 1\}\); the adversary-controlled
+subset is \(\mathcal{E}_{\text{ctrl}} \subseteq \mathcal{E}\) (distinct
+from the stigmergic \(\mathcal{E}\) below) & \cref{def:omega4} \\
 \(\mathcal{A}_{\text{BIM}}\) & Belief injection/manipulation attack
 class & \cref{sec:attack-taxonomy} \\
 \(\mathcal{A}_{\text{BI}}\) & Belief injection attack &
@@ -347,6 +360,9 @@ Defined In
 \(\phi, \psi\) & Individual propositions & \cref{sec:notation} \\
 \(\mathcal{M}\) & Message space & \cref{def:firewall} \\
 \(m\) & Individual message & \cref{def:firewall} \\
+\(\Sigma\) & OODA input alphabet \(\mathcal{M} \cup \text{Events}\)
+(distinct from the stigmergic update function \(\Sigma\) of
+\cref{def:stigmergic-operator}) & \cref{def:ooda-state} \\
 \bottomrule\noalign{}
 \end{longtable}
 }
@@ -479,8 +495,17 @@ Defined In
 \(D_{\text{KL}}\) & Kullback-Leibler divergence (drift detection) &
 \cref{def:drift-detection} \\
 \(w\) & Sliding window size & \cref{def:drift-detection} \\
+\(g_t\) & CUSUM cumulative statistic at time \(t\) &
+\cref{def:cusum-detector} \\
+\(\nu\) & CUSUM allowance (reference value) &
+\cref{def:cusum-detector} \\
+\(h\) & CUSUM decision interval (alert threshold on \(g_t\)) &
+\cref{def:cusum-detector} \\
 \(\lambda\) & Max delta weight in drift scoring &
 \cref{eq:drift-score} \\
+\(\lambda\) & Chernoff tilting parameter, \(\lambda \in [0,1]\)
+(unrelated to the drift weight above and to the colonial-trust decay
+constant) & \cref{eq:chernoff} \\
 \(S_{\text{dev}}\) & Behavioral deviation score &
 \cref{def:deviation-score} \\
 \(f_k\) & Feature extractor function & \cref{eq:deviation-score} \\
@@ -498,6 +523,9 @@ Defined In
 \cref{def:decision-fusion} \\
 \(\text{taint}(\phi)\) & Provenance tags for belief \(\phi\) &
 \cref{def:taint-label} \\
+\(\Lambda(m)\) & Likelihood ratio
+\(P_{\text{attack}}(m) / P_{\text{benign}}(m)\) (capital \(\Lambda\);
+unrelated to \(\lambda\)) & \cref{def:hyp-test} \\
 \bottomrule\noalign{}
 \end{longtable}
 }
@@ -641,7 +669,8 @@ Defined In
 \cref{def:stigmergic-operator} \\
 \(\mathcal{E}\) & Environmental state (markers/signals) &
 \cref{def:stigmergic-operator} \\
-\(\Sigma\) & Stigmergic update function &
+\(\Sigma\) & Stigmergic update function (distinct from the OODA input
+alphabet \(\Sigma\) of \cref{def:ooda-state}) &
 \cref{def:stigmergic-operator} \\
 \(\mathcal{L}\) & Set of locations & \cref{def:stigmergic-operator} \\
 \(\mathcal{M}\) & Set of marker types &
@@ -691,6 +720,21 @@ Usage
 \(\mathbb{1}[\cdot]\) & Indicator function &
 \cref{eq:decision-fusion} \\
 \(\tau\) & Generic threshold parameter & Throughout \\
+\(\theta_{\text{drift}}\) & KL drift-detection threshold; distinct from
+the per-canary deviation tolerance \(\epsilon_{\text{drift}}\) &
+\cref{eq:drift-detection} \\
+\(\theta_{\text{total}}\), \(\theta_{\text{step}}\) & Cumulative and
+per-step drift thresholds in a progressive-drift attack &
+\cref{def:progressive-drift} \\
+\(\theta\) (alarm) & Baseline drift alarm threshold
+\(\mu_{\text{baseline}} + k\,\sigma_{\text{baseline}}\) &
+\cref{prop:drift-threshold} \\
+\(\theta_i\) & Escalation threshold at stage \(i\) of the multi-stage
+detection pipeline & \cref{def:multi-stage} \\
+\(\theta\) (fusion) & Learned parameters of the fusion network --- not a
+threshold & \cref{eq:learned-fusion} \\
+\(r_\theta\) & Fisher-Rao displacement corresponding to
+\(\theta_{\text{drift}}\) & \cref{rem:geometric-bound} \\
 \(\epsilon\) & Small constant (error rate, deviation) & Throughout \\
 \(t\) & Time index & Throughout \\
 \(\models\) & Satisfaction relation (state satisfies predicate) &

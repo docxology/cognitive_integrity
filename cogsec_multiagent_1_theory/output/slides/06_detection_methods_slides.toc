@@ -6,5 +6,5 @@
 \beamer@subsectionintoc {1}{5}{False Positive Mitigation}{24}{0}{1}
 \beamer@subsectionintoc {1}{6}{Provenance Analysis}{30}{0}{1}
 \beamer@subsectionintoc {1}{7}{Real-Time Monitoring}{36}{0}{1}
-\beamer@subsectionintoc {1}{8}{Information-Theoretic Detection Limits}{42}{0}{1}
-\beamer@subsectionintoc {1}{9}{Multi-Stage Detection Pipeline}{52}{0}{1}
+\beamer@subsectionintoc {1}{8}{Information-Theoretic Detection Limits}{43}{0}{1}
+\beamer@subsectionintoc {1}{9}{Multi-Stage Detection Pipeline}{53}{0}{1}

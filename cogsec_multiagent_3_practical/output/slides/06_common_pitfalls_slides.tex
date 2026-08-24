@@ -226,6 +226,15 @@
 \providecommand{\Crefrange}[2]{\texttt{\detokenize{#1}}--\texttt{\detokenize{#2}}}
 \providecommand{\paragraph}[1]{\textbf{#1}\ }
 
+% Environment-providing packages carried over from the manuscript.
+\usepackage{algpseudocode}
+
+% Non-floating stand-in for the `algorithm` float.
+\newenvironment{algorithm}[1][]{%
+  \par\medskip\noindent\rule{\linewidth}{0.4pt}\par\nobreak\small
+  \renewcommand{\caption}[1]{\par\noindent\textbf{##1}\par}}{%
+  \par\nobreak\noindent\rule{\linewidth}{0.4pt}\par\medskip}
+
 \newtheorem{proposition}{Proposition}
 \newtheorem{hypothesis}{Hypothesis}
 \newtheorem{remark}[theorem]{Remark}
@@ -413,11 +422,21 @@ systems.
 
 \begin{frame}[allowframebreaks]{Pitfall 4: Individual-Only Security
 (High)}
-Part 2's results show that coordination attacks (sybil, timing, quorum
-manipulation) are the \emph{hardest} to detect---precisely because they
-exploit emergent properties of the agent collective rather than
-vulnerabilities in individual agents.
+Part 2's colony benchmark measures the collective attack surface once
+collective-level defenses are deployed: sybil infiltration, quorum
+manipulation, and belief cascade are each detected at 100\%, while
+emergent misalignment---distributed sub-threshold drift with no explicit
+adversary and no single-agent analogue---remains the hardest scenario at
+74.3\% detection (\cref{sec:paper2-review}, Finding 6). Those are the
+numbers a system gets \emph{because} it has collective-level defenses;
+individual-only security has no mechanism that observes coordination at
+all, so the \(\Omega_3\)--\(\Omega_5\) surfaces go unwatched rather than
+merely under-detected.
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Pitfall 4: Individual-Only Security
+(High)}
 \textbf{Mitigation Strategies}:
 
 \end{frame}

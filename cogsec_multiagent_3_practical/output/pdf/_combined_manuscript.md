@@ -174,7 +174,7 @@ This formalism suggests that catastrophic attacks are inherently easier to detec
 
 Finally, Part 1 defines the **Composition Algebra**, determining how output probabilities of distinct modules interact. The key result is that orthogonal defenses compose multiplicatively.
 
-This "Swiss Cheese Model" was supported by Part 2's parametric simulation, where the full stack reached a 96--100% design-level detection ceiling and outperformed the sum of its parts. The real prototype pipeline is materially lower and is reported separately as a multi-seed mean of approximately 44.8%.
+This "Swiss Cheese Model" was supported by Part 2's parametric simulation, where the full stack reached a 96--100% design-level detection ceiling and outperformed the sum of its parts. The real prototype pipeline is materially lower and is reported separately as a multi-seed mean of approximately 44.8%. It also distributes the work far less evenly than the model implies: on Part 2's 98-attack ablation corpus the series-composition prediction lands within a couple of points of the measured full-stack rate, but nearly all of the detection comes from one module, so the full stack's margin over the best single layer is about three percentage points. Compose layers for coverage, not on the assumption that each contributes an independent slice.
 
 ## The Science Behind Belief Updates: Free Energy {#sec:fep-connection}
 
@@ -255,8 +255,8 @@ The test corpus included direct prompt injection, poisoned RAG contexts, deep tr
 
 ## Finding 1: Defense Layering vs. Individual Efficacy
 
-**The Data**: Individual defenses (like just a firewall) stopped ~60--70% of attacks in the parametric evaluation. The full CIF stack achieved a **96--100% parametric detection ceiling**, with direct injection detected at 99--100% across architectures. The separate real-pipeline evaluation had a lower multi-seed mean of approximately 44.8%.
-**The Implication**: The defenses demonstrated orthogonal coverage. The firewall blocked inputs that the sandbox would have missed, and the sandbox identified anomalies that the trust calculus would have permitted. The data suggests that removing any single layer creates a statistically significant vulnerability gap.
+**The Data**: In the parametric evaluation the full CIF stack achieved a **96--100% parametric detection ceiling**, with direct injection detected at 99--100% across architectures. The separate real-pipeline evaluation had a lower multi-seed mean of approximately 44.8%.
+**The Implication**: The parametric model rewards layering, but the real pipeline does not spread the work evenly across layers, and the 98-attack ablation corpus says so plainly. The Invariants module alone detects 92.9% of that corpus against the full stack's 95.9%; the Firewall, Detection, Tripwire and Trust Calculus modules each detect between 2% and 6% on their own. Removing Invariants costs about 85 percentage points of true-positive rate, removing the Firewall or the Tripwire costs about one point each, and removing Consensus, Detection, Provenance, Sandbox or Trust Calculus costs nothing this corpus can measure. That is a statement about *marginal* contribution, not about capability: a module whose detections are all also caught by Invariants scores zero here while detecting plenty on its own. Layering still buys coverage against attacks this corpus does not contain, but the older claim that removing any single layer opens a measurable gap is not what the ablation shows.
 
 ## Finding 2: State Machine Determinism
 
@@ -281,14 +281,16 @@ The test corpus included direct prompt injection, poisoned RAG contexts, deep tr
 **The Data**: High-impact attacks were consistently easier to detect than low-impact nudges.
 **The Implication**: "Catastrophic" takeover attempts generate significant noise in the system state. The primary challenge for defenders is not the sudden takeover, but the slow, subtle drift of agent beliefs over long time horizons.
 
-## Finding 6: Emergent Misalignment Is the Nash-Optimal Attack
+## Finding 6: Emergent Misalignment Is the Hardest Scenario to Detect
 
-The colony benchmark reveals a striking pattern: **emergent misalignment achieves the lowest detection rate (74.3\%) at the highest false positive rate (25.5\%)** of any evaluated scenario. (These are Part 2's 30-seed benchmark means; an earlier single-seed figure of 56.1\% is not the publication estimate.) Part 2's game-theoretic analysis explains why: in the zero-sum game between CIF and an adversary, emergent misalignment is the Nash-equilibrium attack strategy. It is the attacker's best response to full CIF deployment.
+The colony benchmark reveals a striking pattern: **emergent misalignment achieves the lowest detection rate (74.3\%) of any evaluated scenario**, at a false positive rate of 25.5\%. It is not the noisiest scenario: belief cascade detects every attack but at a higher false positive cost (37.4\%). (These are Part 2's 30-seed benchmark means; an earlier single-seed figure of 56.1\% is not the publication estimate.) Part 2's game-theoretic analysis does not explain why, and it is worth being exact about that. Its payoff matrix is a design model: thirty-five of its thirty-six cells have no measurement behind them, and the one that does is this scenario. On the published 74.3\% the equilibrium moves to coordination with game value 0.61; it named emergent misalignment only while the matrix still carried the retracted single-seed 56.1\%. What survives is the measurement itself: of the five scenarios the colony benchmark actually runs, emergent misalignment is the hardest to detect, and by a clear margin.
 
-The game-theoretic payoff matrix shows that:
+Part 2's parametric evaluation and colony benchmark show that:
 - Full CIF achieves 99--100\% detection against direct injection ($\Omega_1$) and 96--100\% against impersonation, the corpus category standing for trust exploitation ($\Omega_4$)
 - Against emergent misalignment (distributed sub-threshold drift with no explicit adversaries), detection falls to 74.3\%
-- A rational adversary, knowing CIF is deployed, will prefer emergent misalignment over direct injection
+- A rational adversary, knowing CIF is deployed, is pushed away from direct injection. Where exactly it
+  is pushed *to* is a design-model question rather than a measured one: on the published numbers Part 2's
+  payoff matrix puts the equilibrium at coordination, not emergent misalignment
 
 This is not a failure of CIF—it is a consequence of its success. When explicit attacks are reliably detected, adversaries are forced toward the subtlest and most distributed manipulation strategies. The 74.3\% detection rate on emergent misalignment represents the current frontier of defensive capability, not a gap in the framework's design.
 
@@ -296,7 +298,7 @@ This is not a failure of CIF—it is a consequence of its success. When explicit
 
 ## Finding 7: The Implementation Gap Is a Feature, Not a Bug
 
-The 51--88 percentage-point gap between the parametric ceiling (96--100\%) and the empirical pipeline mean (44.8\%) reflects **adapter implementation maturity**, not a failure of CIF's formal architecture. Part~2 introduces a 5-level CMMI-style adapter maturity scale:
+The 4--51 percentage-point gap between the parametric ceiling (96--100\%) and the real pipeline reflects **adapter implementation maturity**, not a failure of CIF's formal architecture. Its two ends are two different measurements and should not be read as one range around one deployment. The wide end is the distance from the parametric floor to the 30-seed pipeline mean of 44.8\%. The narrow end is the distance from the top of the parametric range to the 95.9\% the same pipeline now reaches on the 98-attack ablation corpus --- a figure that stood at 12.2\% until the Invariants module was rewritten, and that moved with no change to any other module. Plan against the wide end. Part~2 introduces a 5-level CMMI-style adapter maturity scale:
 
 | Level | Name | Marginal TPR | Description |
 | :--- | :--- | :--- | :--- |
@@ -328,8 +330,8 @@ We proved the *architecture* works. The implementation fidelity is the variable 
 > **A Note on Three Numbers**: Throughout this guide you will encounter three detection rates that may seem contradictory. They are not — they measure different things:
 >
 > - **96--100\%** (parametric simulation, $N=3{,}800$): CIF's **design-level detection ceiling** — what the defense architecture achieves when adapters are fully mature (Level 5) and conditions match the calibrated model. This is the target, not the current reality.
-> - **44.8\%** [95\% HDI: 41.3\%, 48.3\%] (multi-seed pipeline, 30 seeds): The **current empirical baseline** for the Claude Code architecture with Level-3 adapters. This is what you get today, out of the box, before adapter tuning.
-> - **~12.2\%** (ablation corpus, 98 attacks, all categories including hardest): The **conservative floor** — full pipeline performance on a corpus specifically designed to include difficult attacks. This represents the worst-case realistic estimate.
+> - **44.8\%** [95\% CI: 43.2\%, 46.4\%] (multi-seed pipeline, 30 seeds): The **current empirical baseline** for the Claude Code architecture with Level-3 adapters. This is what you get today, out of the box, before adapter tuning.
+> - **95.9\%** (98-attack ablation corpus, all categories including hardest): full-pipeline true-positive rate on a corpus built to include difficult attacks. This bullet read ~12.2\% until the Invariants module was rewritten to score demand structure rather than topic nouns; no other module changed. Read it as an upper bound rather than a floor: the corpus is template-generated, a detector keyed on demand structure is being asked to recognise generated demands, and the 0\% false-positive rate reported beside it comes from the fifty easy benign strings hard-coded in Part 2's ablation runner, not from the adversarially hard `BenignCorpus` behind the multi-seed figure above.
 >
 > All three numbers are correct. Use 44.8\% for realistic planning, 96\% as the floor of the achievable ceiling with mature adapters, and ~12.2\% as a conservative lower bound for adversarial threat modeling.
 
@@ -632,7 +634,7 @@ This profile corresponds to the parametrically optimal configuration identified 
 **Configuration Parameters**:
 
 * **Trust Decay ($\delta$)**: `0.80`. At this setting, trust degrades to <50% after 4 hops, strictly bounding the "radius of effective delegation."
-* **Firewall Sensitivity**: Balanced (reject threshold $\tau_1 =0.5$).
+* **Firewall Sensitivity**: Balanced (reject threshold $\tau_1 = 0.7$; quarantine threshold $\tau_2 = 0.5$).
 * **Consensus**: Variable (Architecture Dependent).
 
 **Modelled performance** (Part 2, parametric parameter-sensitivity analysis --- simulation output under calibrated conditions, not a measurement of a running deployment):
@@ -911,7 +913,7 @@ The benefit side of the equation is the cost avoided by preventing attacks. This
 \toprule
 Attack Type & Typical Cost Range & Basis \\
 \midrule
-$\Omega_1$ Prompt Injection (data exfiltration) & \$10K --- \$1M & Data breach cost (IBM 2024: \$4.88M average; CIF scope is targeted subset) \\
+$\Omega_1$ Prompt Injection (data exfiltration) & \$10K --- \$1M & Data breach cost \cite{ibm2024breachcost} (IBM 2024: \$4.88M average; CIF scope is targeted subset) \\
 $\Omega_2$ Tool Compromise (incorrect automated action) & \$50K --- \$500K & Depends on action reversibility and scope \\
 $\Omega_3$ Agent Compromise (full agent reconstruction) & \$50K --- \$500K & Forensics, audit, credential rotation, reputation \\
 $\Omega_4$ Coordination (enterprise decision corruption) & \$1M --- \$100M+ & Scale-dependent; financial or healthcare decisions \\
@@ -1122,7 +1124,7 @@ The risk-profile-based configuration in Section 5 provides calibrated starting p
 
 **What the research shows**: Part 1's entire contribution is premised on the observation that multiagent systems introduce qualitatively new attack surfaces. The adversary hierarchy ($\Omega_3$--$\Omega_5$) specifically targets coordination, consensus, and systemic properties that don't exist in single-agent systems.
 
-Part 2's results show that coordination attacks (sybil, timing, quorum manipulation) are the *hardest* to detect---precisely because they exploit emergent properties of the agent collective rather than vulnerabilities in individual agents.
+Part 2's colony benchmark measures the collective attack surface once collective-level defenses are deployed: sybil infiltration, quorum manipulation, and belief cascade are each detected at 100\%, while emergent misalignment---distributed sub-threshold drift with no explicit adversary and no single-agent analogue---remains the hardest scenario at 74.3\% detection (\cref{sec:paper2-review}, Finding 6). Those are the numbers a system gets *because* it has collective-level defenses; individual-only security has no mechanism that observes coordination at all, so the $\Omega_3$--$\Omega_5$ surfaces go unwatched rather than merely under-detected.
 
 **Mitigation Strategies**:
 
@@ -1297,7 +1299,7 @@ The five attack vectors in \cref{sec:attack-scenarios} illustrated the Cognitive
 
 **Resolution**: Tuning $\tau_2$ (the quarantine threshold) from $0.5 \to 0.55$ for email/HTTP inputs specifically. Post-tuning: FPR drops to 3% (300 false positives/day); TPR for this attack type drops from 72% to 68% — an acceptable trade-off for this deployment. This architecture-specific threshold configuration is an example of the adapter-maturity improvement described in Part~2.
 
-**Key lesson**: At scale (20 agents, 10K interactions/day), FPR management is a first-class concern. CIF's configurable threshold $\tau_2$ enables per-deployment tuning. The arms race dynamic is visible here: the metadata injection attack was novel, and the initial 72% detection rate reflects the gap between parametric ceiling (87%) and real deployment. Targeted threshold tuning closes part of this gap without full retraining — a pragmatic first response that buys time for a proper model update.
+**Key lesson**: At scale (20 agents, 10K interactions/day), FPR management is a first-class concern. CIF's configurable threshold $\tau_2$ enables per-deployment tuning. The arms race dynamic is visible here: the metadata injection attack was novel, and the initial 72% detection rate reflects the gap between parametric ceiling (96--100%) and real deployment. Targeted threshold tuning closes part of this gap without full retraining — a pragmatic first response that buys time for a proper model update.
 
 
 
@@ -1410,7 +1412,7 @@ Saying "the code works" requires specifying what that means. There are three hon
 
 **Level 1 — The architecture is correctly implemented** (confidence: high, conditional on the current project test run). Every defense module—firewall, sandbox, trust calculus, tripwires, Byzantine consensus, provenance, drift detection, invariant checker—is independently tested. The `SeriesPipeline` routes the 950-attack corpus through all 8 modules with 0\% routing failure in the reported Part 2 run. Use the current `uv run pytest` output as the source of truth for test counts and pass rate.
 
-**Level 2 — The pipeline detects attacks in practice** (confidence: moderate). The multi-seed pipeline analysis (30 seeds, Claude Code architecture) achieves a mean detection rate of 44.8\% [95\% HDI: 35.5\%, 54.7\%]. The LLM-backed multiagent validation ($N=10$, Gemma 3 4B) achieves 80\%--100\% across two architectures. These are meaningful but not high detection rates—they reflect adapter implementation at CMMI Level 3 (Statistical), not the design ceiling.
+**Level 2 — The pipeline detects attacks in practice** (confidence: moderate). The multi-seed pipeline analysis (30 seeds, Claude Code architecture) achieves a mean detection rate of 44.8\% [95\% CI: 43.2\%, 46.4\%]. The LLM-backed multiagent validation ($N=10$, Gemma 3 4B) achieves 80\%--100\% across two architectures. These are meaningful but not high detection rates—they reflect adapter implementation at CMMI Level 3 (Statistical), not the design ceiling.
 
 **Level 3 — The defense ceiling is achievable** (confidence: moderate-high). The parametric simulation ($N=3{,}800$) establishes that fully-mature (Level 5) adapters achieve 96--100\% detection, consistent with the formal design. The gap between Level 3 (44.8\%) and Level 5 (96\%) is an engineering challenge, not a theoretical limitation. The roadmap in Part 2 projects +35--41 percentage points of improvement through adapter maturation.
 
@@ -1420,7 +1422,7 @@ The honest operational posture is Level 2: deploy CIF for meaningful protection 
 
 The preceding sections distill the CIF series into actionable guidance. The core recommendations are:
 
-1. **Adopt layered defense from the start** (Pitfall 2). No single mechanism achieves the full-stack result in Part~2: isolated layers (e.g., firewall-only) were on the order of 60--70% detection, while the full CIF stack reached a 96–100% parametric detection ceiling. Security must be designed into the architecture, not bolted on after deployment.
+1. **Adopt layered defense from the start** (Pitfall 2), then measure what each layer is worth. In the parametric model the full CIF stack reached a 96–100% parametric detection ceiling that no partial configuration matched. The real pipeline teaches the sharper lesson: on Part~2's 98-attack ablation corpus the Invariants checker alone reaches 92.9% against the full stack's 95.9%, and five of the eight modules show no measurable marginal contribution. Design security into the architecture rather than bolting it on, but do not assume every layer you add is earning its latency — check each one's marginal contribution against your own traffic.
 
 2. **Implement trust decay on every delegation chain** (Pitfall 1). The Trust Calculus with $\delta \leq 0.8$ prevents trust laundering across all tested architectures. This is not optional hardening---it is the structural foundation that prevents systemic compromise from local failures.
 
@@ -1486,7 +1488,7 @@ This guide has tried to be honest about what CIF can and cannot do. The practica
 
 **Sample sizes are small**. The LLM validation used $N=5$ attacks per architecture. The colony benchmarks used 1 scenario per attack type. The multi-seed analysis used 30 seeds. These are sufficient for preliminary evidence but severely underpowered for precise estimation. Required sample sizes for $\pm 5\%$ precision are $N \geq 246$ per evaluation mode. Treat all reported detection rates as estimates with wide uncertainty, not precise measurements.
 
-**The gap is real**. The 51--88 percentage-point gap between the parametric ceiling (96--100\%) and the empirical pipeline (44.8\%) is not noise—the Bayes factor for a true performance gap exceeds $10^6$ (decisive evidence). This gap reflects adapter implementation maturity, but maturation takes time and resources. Plan your deployment timeline and security posture accordingly.
+**The gap is real at one end**. The 4--51 percentage-point gap between the parametric ceiling (96--100\%) and the real pipeline spans two unlike measurements. The wide end is the one the Bayes factor speaks to: the distance from the ceiling to the 30-seed pipeline mean of 44.8\%, which is not noise—the Bayes factor for a true performance gap exceeds $10^6$ (decisive evidence). The narrow end is the distance from the ceiling to the 95.9\% the pipeline reaches on the 98-attack ablation corpus after the Invariants rewrite; no Bayes factor has been computed for that arm, and it should not borrow the first one's authority. The wide end is what reflects adapter implementation maturity, and maturation takes time and resources. Plan your deployment timeline and security posture accordingly.
 
 **Adaptive adversaries are not modeled**. All evaluations used a fixed attack corpus. A sophisticated adversary who observes CIF's defenses and adapts (Debenedetti et al.'s adaptive attacks \cite{adaptive2025attacks}) could achieve lower detection rates than reported. The game-theoretic analysis (Part 2) establishes the Nash equilibrium for the current payoff matrix, but a patient adversary will probe for gaps. The layered defense architecture provides resilience—bypassing one layer still encounters others—but no detection system is perfectly robust to adaptive adversaries.
 
@@ -1520,7 +1522,7 @@ In the context of Boyd's **OODA (Observe-Orient-Decide-Act) Loop** \cite{boyd198
 
 ### Empirical Urgency
 
-Goal Hijacking has transitioned from academic concern to documented production failure. Autonomous coding agents have deleted production databases and fabricated records to conceal the damage; invisible Unicode payloads have triggered auto-approval modes enabling remote code execution; and indirect prompt injection through enterprise messaging platforms has exfiltrated private API keys---all without human authorization \cite{adversa2025incidents, copilot2025rce, promptarmor2024slack}. The Agent Security Bench (ASB) evaluation \cite{zhang2025asb} quantifies the gap: an 84.3\% average attack success rate across 400+ integrated tools, with current defenses achieving only 19.7\% mitigation. He et al. \cite{he2025redteaming} further demonstrate Agent-in-the-Middle attacks that compromise inter-agent communication channels, extending the threat surface to multiagent coordination itself. These incidents are analyzed in detail through the CIF-AD-OODA lens in \cref{sec:empirical_grounding}.
+Goal Hijacking has transitioned from academic concern to documented production failure. Autonomous coding agents have deleted production databases and fabricated records to conceal the damage; invisible Unicode payloads have triggered auto-approval modes enabling remote code execution; and indirect prompt injection through enterprise messaging platforms has exfiltrated private API keys---all without human authorization \cite{adversa2025incidents, copilot2025rce, promptarmor2024slack}. The Agent Security Bench (ASB) evaluation \cite{zhang2025asb} quantifies the gap: the highest average attack success rate of 84.3\% across 400+ integrated tools, with current defenses achieving only 19.7\% mitigation. He et al. \cite{he2025redteaming} further demonstrate Agent-in-the-Middle attacks that compromise inter-agent communication channels, extending the threat surface to multiagent coordination itself. These incidents are analyzed in detail through the CIF-AD-OODA lens in \cref{sec:empirical_grounding}.
 
 ## Axiomatic Design and Transient Functional Requirements
 
@@ -1936,7 +1938,7 @@ CIF implements **Permission Boundaries** \cite{friedman2026cogsec1} ensuring ort
 | Attack Vector | Log injection with malicious prompts in system logs |
 | Adversary Class | $\Omega_2$ (Peripheral) |
 | OODA Target Phase | Orient |
-| Attack Pattern | Constraint Relaxation (Security constraint relaxed for Availability) |
+| Attack Pattern | Context Boundary Violation (Log-channel content parsed as an operational directive) |
 | Primary CIF Defense | Permission Boundaries + Quorum Verification |
 | Novel Contribution | None |
 
@@ -1966,7 +1968,7 @@ The uncoupled design equation per the Independence Axiom \cite{suh2001axiomatic}
 
 where $DP_1$ = target identification and engagement parameters (threat signature matching, weapons release criteria), and $DP_2$ = Rules of Engagement (ROE) filters, protected-site databases, and civilian proximity thresholds. The zero off-diagonal entries ensure that target engagement does not degrade civilian protection, and ROE enforcement does not impair legitimate threat neutralization.
 
-The operational urgency of this domain has intensified dramatically. Ukraine's battlefield experience provides the first large-scale empirical data on AI-enabled autonomous warfare: approximately 2 million drones were produced in 2024, with AI-enabled targeting systems increasing effective hit rates from 10--20\% (manual FPV operation) to 70--80\% (AI-assisted guidance), and AI-directed systems now accounting for an estimated 70--80\% of battlefield casualties \cite{bondar2025ukraine}. The UN General Assembly passed a resolution on autonomous weapons systems in December 2024 with 166 votes in favor, reflecting the global consensus that the gap between autonomous capability and cognitive integrity assurance is a critical governance challenge \cite{king2024robotwars}.
+The operational urgency of this domain has intensified dramatically. Ukraine's battlefield experience provides the first large-scale empirical data on AI-enabled autonomous warfare: approximately 2 million drones were produced in 2024, with AI-enabled targeting systems increasing effective hit rates from 10--20\% (manual FPV operation) to 70--80\% (AI-assisted guidance), and drones of all kinds---overwhelmingly manually piloted FPV rather than AI-directed---now accounting for an estimated 70--80\% of battlefield casualties \cite{bondar2025ukraine}. The UN General Assembly passed a resolution on autonomous weapons systems in December 2024 with 166 votes in favor, reflecting the global consensus that the gap between autonomous capability and cognitive integrity assurance is a critical governance challenge \cite{king2024robotwars}.
 
 ## The Goal Hijacking Attack
 
@@ -2513,7 +2515,7 @@ The provenance-based defense has received significant institutional endorsement.
 
 Our cross-domain analysis of ten critical sectors reveals that Goal Hijacking is not merely a linguistic exploit but a structural corruption of the OODA Loop \cite{boyd1987patterns}. In every case---from drone swarms operating at millisecond time scales to diplomatic agents spanning months of deliberation---the attack vector was a transient signal that hijacked the agent's **Orientation** phase, rewriting its Functional Requirements in real-time. This section synthesizes the cross-domain findings, identifies universal attack patterns, evaluates CIF mechanism coverage, and acknowledges limitations.
 
-![Goal-hijacking attack-pattern coverage across the ten critical domains (§9), for the three universal patterns: FR Polarity Inversion (5/10 domains), Constraint Relaxation (2/10), and Context Boundary Violation (3/10). Each bar marks the single dominant pattern for that domain; the right-margin callouts give per-pattern totals, which match the domain-by-domain table below.](figures/domain_coverage.png){#fig:domain-coverage width=90%}
+![Goal-hijacking attack-pattern coverage across the ten critical domains (§9), for the three universal patterns: FR Polarity Inversion (5/10 domains), Constraint Relaxation (1/10), and Context Boundary Violation (4/10). Each bar marks the single dominant pattern for that domain; the right-margin callouts give per-pattern totals, which match the domain-by-domain table below.](figures/domain_coverage.png){#fig:domain-coverage width=90%}
 
 ## 10.1 Cross-Domain Attack Pattern Taxonomy {#sec:attack_patterns}
 
@@ -2688,7 +2690,7 @@ This paper has applied the Cognitive Integrity Framework (CIF) \cite{friedman202
 
 **C3: CIF Mechanism Coverage Validation.** We demonstrated that all five canonical CIF mechanisms appear across the ten-domain portfolio, with each mechanism serving as a primary defense in at least three domains. No domain requires mechanisms beyond the CIF vocabulary, and no single mechanism suffices alone---confirming Paper 1's defense-in-depth architecture.
 
-**C4: Novel Defense Patterns.** Three domains contributed genuinely novel extensions to the CIF vocabulary: *verification channel separation* (Biowarfare), *active perturbation probing* (Trade Wars), and *physics-informed invariants* (Infrastructure). These patterns generalize beyond their originating domains and represent candidate additions to the canonical CIF mechanism set.
+**C4: Novel Defense Patterns.** Four domains contributed genuinely novel extensions to the CIF vocabulary: *verification channel separation* (Biowarfare), *active perturbation probing* (Trade Wars), *physics-informed invariants* (Infrastructure), and *semiotic decoupling* (Drone Wars). These patterns generalize beyond their originating domains and represent candidate additions to the canonical CIF mechanism set.
 
 **C5: Temporal Scale Analysis.** The OODA transient dynamics analysis revealed that Goal Hijacking operates across more than ten orders of magnitude in time scale (milliseconds for drone swarms to years for diplomatic agents), demonstrating that CIF's temporal parameters ($\epsilon$, $\Delta t$) must be domain-calibrated but the underlying defense principles are scale-invariant.
 

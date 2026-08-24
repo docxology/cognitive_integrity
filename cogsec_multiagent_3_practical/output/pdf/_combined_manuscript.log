@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.3.22)  23 AUG 2026 14:20
+This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.3.22)  24 AUG 2026 16:33
 entering extended mode
  %&-line parsing enabled.
 **_combined_manuscript.tex
@@ -1930,36 +1930,35 @@ LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
 File: ../figures/trust_decay.png Graphic file (type bmp)
 <../figures/trust_decay.png>
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 9.0pt on input line 870.
+(Font)              scaled to size 9.0pt on input line 876.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 9.00082pt on input line 870.
+(Font)              scaled to size 9.00082pt on input line 876.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 8.99904pt on input line 870.
- [14]
-ignored: Infinite glue shrinkage found in box being split [15] [16] [17]
+(Font)              scaled to size 8.99904pt on input line 876.
+ [14] [15] [16] [17]
 File: ../figures/risk_matrix.png Graphic file (type bmp)
 <../figures/risk_matrix.png>
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 1148.
+(hyperref)                removing `subscript' on input line 1186.
 
 [18]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 1180.
+(hyperref)                removing `subscript' on input line 1218.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 1210.
+(hyperref)                removing `subscript' on input line 1248.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 1239.
+(hyperref)                removing `subscript' on input line 1277.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 1267.
+(hyperref)                removing `subscript' on input line 1305.
 
 [19] [20] [21] [22] [23] [24]
 File: ../figures/posture_radar.png Graphic file (type bmp)
@@ -1973,113 +1972,108 @@ File: ../figures/timeline.png Graphic file (type bmp)
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 2035.
+(hyperref)                removing `subscript' on input line 2073.
 
 [30]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 2080.
+(hyperref)                removing `subscript' on input line 2118.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 2127.
+(hyperref)                removing `subscript' on input line 2165.
 
 [31]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 2177.
+(hyperref)                removing `subscript' on input line 2215.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 2224.
+(hyperref)                removing `subscript' on input line 2262.
 
 [32] [33]
-Underfull \hbox (badness 1983) in paragraph at lines 2304--2305
+Underfull \hbox (badness 1983) in paragraph at lines 2342--2343
 \TU/lmr/m/n/10 (parametric overall sum-
  []
 
 
-Overfull \hbox (88.23111pt too wide) in paragraph at lines 2299--2312
+Overfull \hbox (88.23111pt too wide) in paragraph at lines 2337--2350
  [][]
  []
 
 
-Underfull \hbox (badness 1478) in paragraph at lines 2341--2342
-[]|\TU/lmr/m/n/10 Data breach cost (IBM 2024:
- []
-
-
-Underfull \hbox (badness 6641) in paragraph at lines 2344--2345
+Underfull \hbox (badness 6641) in paragraph at lines 2382--2383
 []|\TU/lmr/m/n/10 Scale-dependent; financial or
  []
 
 [34] [35]
-Underfull \hbox (badness 10000) in paragraph at lines 2484--2484
+Underfull \hbox (badness 10000) in paragraph at lines 2522--2522
 []|\TU/lmr/m/n/10 Firewall rejec-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 2485--2485
+Underfull \hbox (badness 10000) in paragraph at lines 2523--2523
 []|\TU/lmr/m/n/10 Trust matrix
  []
 
 
-Underfull \hbox (badness 5954) in paragraph at lines 2485--2485
+Underfull \hbox (badness 5954) in paragraph at lines 2523--2523
 []|\TU/lmr/m/n/10 Average pairwise
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 2486--2486
+Underfull \hbox (badness 10000) in paragraph at lines 2524--2524
 []|\TU/lmr/m/n/10 Per-agent $[][]$
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 2487--2487
+Underfull \hbox (badness 10000) in paragraph at lines 2525--2525
 \TU/lmr/m/n/10 interaction pat-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 2488--2488
+Underfull \hbox (badness 10000) in paragraph at lines 2526--2526
 []|\TU/lmr/m/n/10 False positive
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 2488--2488
+Underfull \hbox (badness 10000) in paragraph at lines 2526--2526
 []|\TU/lmr/m/n/10 % of reviewed
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 2488--2488
+Underfull \hbox (badness 10000) in paragraph at lines 2526--2526
 \TU/lmr/m/n/10 alerts confirmed
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 2489--2489
+Underfull \hbox (badness 10000) in paragraph at lines 2527--2527
 []|\TU/lmr/m/n/10 Consensus la-
  []
 
 
-Underfull \hbox (badness 1831) in paragraph at lines 2489--2489
+Underfull \hbox (badness 1831) in paragraph at lines 2527--2527
 []|\TU/lmr/m/n/10 95th pct consen-
  []
 
 
-Overfull \hbox (36.62126pt too wide) in paragraph at lines 2480--2492
+Overfull \hbox (36.62126pt too wide) in paragraph at lines 2518--2530
  [][]
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 2514--2514
+Underfull \hbox (badness 10000) in paragraph at lines 2552--2552
 []|\TU/lmr/m/n/10 Two+ metrics in
  []
 
 
-Underfull \hbox (badness 7851) in paragraph at lines 2514--2514
+Underfull \hbox (badness 7851) in paragraph at lines 2552--2552
 []|\TU/lmr/m/n/10 Agent quarantine +
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 2515--2515
+Underfull \hbox (badness 10000) in paragraph at lines 2553--2553
 []|\TU/lmr/m/n/10 Playbook execution
  []
 
@@ -2089,48 +2083,48 @@ File: ../figures/pitfall_severity.png Graphic file (type bmp)
  [39] [40] [41] [42]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 2969.
+(hyperref)                removing `subscript' on input line 3013.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 3034.
+(hyperref)                removing `subscript' on input line 3078.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 3034.
+(hyperref)                removing `subscript' on input line 3078.
 
 [43]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 3114.
+(hyperref)                removing `subscript' on input line 3158.
 
-[44] [45] [46] [47] [48] [49] [50] [51] [52] [53]
-Underfull \hbox (badness 10000) in paragraph at lines 3873--3873
+[44] [45] [46] [47] [48] [49] [50] [51] [52] [53] [54]
+Underfull \hbox (badness 10000) in paragraph at lines 3927--3927
 []|\TU/lmr/m/n/9 Trust Calculus, $[][][][][][]$ decay theorem, no-
  []
 
 
-Underfull \hbox (badness 2035) in paragraph at lines 3883--3883
+Underfull \hbox (badness 2035) in paragraph at lines 3937--3937
 []|\TU/lmr/m/n/9 Category-theoretic formalization + free-energy /
  []
 
-[54] [55]
-ignored: Infinite glue shrinkage found in box being split [56] [57] [58] [59] [
-60] [61] [62] [63] [64] [65] [66]
+[55] [56]
+ignored: Infinite glue shrinkage found in box being split [57] [58] [59] [60] [
+61] [62] [63] [64] [65] [66] [67]
 ignored: Infinite glue shrinkage found in box being spl
-it [67] [68]
-[69] [70] [71]
-ignored: Infinite glue shrinkage found in box being split [72] [73] [74] [
-75] [76] [77] [78] [79] [80] [81]
+it [68] [69]
+[70] [71] [72]
+ignored: Infinite glue shrinkage found in box being split [73] [74] [75] [
+76] [77] [78] [79] [80] [81] [82]
 File: ../figures/domain_coverage.png Graphic file (type bmp)
 <../figures/domain_coverage.png>
 
-ignored: Infinite glue shrinkage found in box being split [82] [83]
+ignored: Infinite glue shrinkage found in box being split [83] [84]
 File: ../figures/cif_mechanism_coverage.png Graphic file (type bmp)
 <../figures/cif_mechanism_coverage.png>
 
-[84] [85] [86] [87] [88] [89] [90] [91] [92] [93] [94] [95] [96] [97]
-(./_combined_manuscript.bbl [98] [99] [100] [101]) [102]
+[85] [86] [87] [88] [89] [90] [91] [92] [93] [94] [95] [96] [97] [98]
+(./_combined_manuscript.bbl [99] [100] [101] [102]) [103]
 (./_combined_manuscript.aux)
  ***********
 LaTeX2e <2025-11-01>
@@ -2138,12 +2132,12 @@ L3 programming layer <2026-01-19>
  ***********
  )
 Here is how much of TeX's memory you used:
- 52560 strings out of 468168
- 1230016 string characters out of 5432815
- 1952410 words of memory out of 5000000
- 80483 multiletter control sequences out of 15000+600000
+ 52563 strings out of 468168
+ 1230105 string characters out of 5432815
+ 1954560 words of memory out of 5000000
+ 80486 multiletter control sequences out of 15000+600000
  634173 words of font info for 110 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 90i,13n,114p,1017b,659s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 90i,13n,114p,1017b,661s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on _combined_manuscript.pdf (103 pages).
+Output written on _combined_manuscript.pdf (104 pages).

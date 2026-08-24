@@ -226,6 +226,15 @@
 \providecommand{\Crefrange}[2]{\texttt{\detokenize{#1}}--\texttt{\detokenize{#2}}}
 \providecommand{\paragraph}[1]{\textbf{#1}\ }
 
+% Environment-providing packages carried over from the manuscript.
+\usepackage{algpseudocode}
+
+% Non-floating stand-in for the `algorithm` float.
+\newenvironment{algorithm}[1][]{%
+  \par\medskip\noindent\rule{\linewidth}{0.4pt}\par\nobreak\small
+  \renewcommand{\caption}[1]{\par\noindent\textbf{##1}\par}}{%
+  \par\nobreak\noindent\rule{\linewidth}{0.4pt}\par\medskip}
+
 \newtheorem{proposition}{Proposition}
 \newtheorem{hypothesis}{Hypothesis}
 \newtheorem{remark}[theorem]{Remark}

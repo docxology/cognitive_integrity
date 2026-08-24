@@ -1,4 +1,4 @@
-\begin{thebibliography}{76}
+\begin{thebibliography}{77}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -274,6 +274,17 @@ Alex Hern.
   assistant produced an entirely positive summary of a product page carrying
   negative reviews.
 
+\bibitem[{IBM Security}(2024)]{ibm2024breachcost}
+{IBM Security}.
+\newblock Cost of a data breach report 2024.
+\newblock Technical report, IBM Corporation, July 2024.
+\newblock URL \url{https://www.ibm.com/reports/data-breach}.
+\newblock Annual study conducted with the Ponemon Institute. The reported
+  global average total cost of a data breach is \$4.88M. The figure is an
+  all-cause average across breached organisations, not a measurement of
+  agent-mediated exfiltration; it is used here only to bound the order of
+  magnitude of the prompt-injection cost range.
+
 \bibitem[Ivanov(2020)]{ivanov2020predicting}
 Dmitry Ivanov.
 \newblock Predicting the impacts of epidemic outbreaks on global supply chains:
@@ -298,7 +309,6 @@ Nektaria Kaloudi and Jingyue Li.
 Thomas~C. King.
 \newblock Robot wars: Autonomous drone swarms and the battlefield of tomorrow.
 \newblock \emph{Journal of Strategic Studies}, 2024.
-\newblock \doi{10.1080/01402390.2024.0000000}.
 
 \bibitem[Lamport et~al.(1982)Lamport, Shostak, and Pease]{lamport1982byzantine}
 Leslie Lamport, Robert Shostak, and Marshall Pease.
@@ -545,11 +555,16 @@ Tim Wheeler and Joachim von Braun.
 \newblock \emph{Science}, 341\penalty0 (6145):\penalty0 508--513, 2013.
 \newblock \doi{10.1126/science.1239402}.
 
-\bibitem[Wittmann et~al.(2025)]{wittmann2025biosecurity}
-Benedikt~J. Wittmann et~al.
-\newblock {AI}-designed protein sequences evade synthesis screening.
-\newblock \emph{Science}, 2025.
-\newblock \doi{10.1126/science.adq7592}.
+\bibitem[Wittmann et~al.(2025)Wittmann, Alexanian, Bartling, Beal, Clore,
+  Diggans, Flyangolts, Gemler, Mitchell, Murphy, Wheeler, and
+  Horvitz]{wittmann2025biosecurity}
+Bruce~J. Wittmann, Tessa Alexanian, Craig Bartling, Jacob Beal, Adam Clore,
+  James Diggans, Kevin Flyangolts, Bryan~T. Gemler, Tom Mitchell, Steven~T.
+  Murphy, Nicole~E. Wheeler, and Eric Horvitz.
+\newblock Strengthening nucleic acid biosecurity screening against generative
+  protein design tools.
+\newblock \emph{Science}, 390:\penalty0 82--87, 2025.
+\newblock \doi{10.1126/science.adu8578}.
 \newblock Demonstrated that AI-redesigned proteins evade existing nucleic acid
   synthesis screening tools.
 

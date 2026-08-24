@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.3.22)  23 AUG 2026 14:15
+This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.3.22)  24 AUG 2026 16:28
 entering extended mode
  %&-line parsing enabled.
 **/Users/4d/Documents/GitHub/projects/working/cognitive_integrity/cogsec_multia
@@ -1266,42 +1266,65 @@ Package: seqsplit 2006/08/07 v0.1 Splitting long sequences (DNA, RNA, proteins,
 \c@observation=\count407
 \c@formalization=\count408
 \c@principle=\count409
-\c@proposition=\count410
-\c@hypothesis=\count411
-\c@axiom=\count412
-\c@property=\count413
 
-(/usr/local/texlive/2026/texmf-dist/tex/latex/bookmark/bookmark.sty
+(/usr/local/texlive/2026/texmf-dist/tex/latex/algorithmicx/algpseudocode.sty
+Package: algpseudocode
+
+(/usr/local/texlive/2026/texmf-dist/tex/latex/base/ifthen.sty
+Package: ifthen 2024/03/16 v1.1e Standard LaTeX ifthen package (DPC)
+)
+(/usr/local/texlive/2026/texmf-dist/tex/latex/algorithmicx/algorithmicx.sty
+Package: algorithmicx 2005/04/27 v1.2 Algorithmicx
+
+Document Style algorithmicx 1.2 - a greatly improved `algorithmic' style
+\c@ALG@line=\count410
+\c@ALG@rem=\count411
+\c@ALG@nested=\count412
+\ALG@tlm=\skip80
+\ALG@thistlm=\skip81
+\c@ALG@Lnr=\count413
+\c@ALG@blocknr=\count414
+\c@ALG@storecount=\count415
+\c@ALG@tmpcounter=\count416
+\ALG@tmplength=\skip82
+)
+Document Style - pseudocode environments for use with the `algorithmicx' style
+)
+\c@proposition=\count417
+\c@hypothesis=\count418
+\c@axiom=\count419
+\c@property=\count420
+ (/usr/local/texlive/2026/texmf-dist/tex/latex/bookmark/bookmark.sty
 Package: bookmark 2023-12-10 v1.31 PDF bookmarks (HO)
 
 (/usr/local/texlive/2026/texmf-dist/tex/latex/bookmark/bkm-dvipdfm.def
 File: bkm-dvipdfm.def 2023-12-10 v1.31 bookmark driver for dvipdfm (HO)
-\BKM@id=\count414
+\BKM@id=\count421
 ))
 (/Users/4d/Documents/GitHub/projects/working/cognitive_integrity/cogsec_multiag
 ent_1_theory/output/slides/06_detection_methods_slides.aux)
 \openout1 = `06_detection_methods_slides.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 250.
-LaTeX Font Info:    ... okay on input line 250.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 250.
-LaTeX Font Info:    ... okay on input line 250.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 250.
-LaTeX Font Info:    ... okay on input line 250.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 250.
-LaTeX Font Info:    ... okay on input line 250.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 250.
-LaTeX Font Info:    ... okay on input line 250.
-LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 250.
-LaTeX Font Info:    ... okay on input line 250.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 250.
-LaTeX Font Info:    ... okay on input line 250.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 250.
-LaTeX Font Info:    ... okay on input line 250.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 250.
-LaTeX Font Info:    ... okay on input line 250.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 250.
-LaTeX Font Info:    ... okay on input line 250.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 259.
+LaTeX Font Info:    ... okay on input line 259.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 259.
+LaTeX Font Info:    ... okay on input line 259.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 259.
+LaTeX Font Info:    ... okay on input line 259.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 259.
+LaTeX Font Info:    ... okay on input line 259.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 259.
+LaTeX Font Info:    ... okay on input line 259.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 259.
+LaTeX Font Info:    ... okay on input line 259.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 259.
+LaTeX Font Info:    ... okay on input line 259.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 259.
+LaTeX Font Info:    ... okay on input line 259.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 259.
+LaTeX Font Info:    ... okay on input line 259.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 259.
+LaTeX Font Info:    ... okay on input line 259.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: xetex
@@ -1337,7 +1360,7 @@ LaTeX Font Info:    ... okay on input line 250.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-Package hyperref Info: Link coloring OFF on input line 250.
+Package hyperref Info: Link coloring OFF on input line 259.
 
 (/usr/local/texlive/2026/texmf-dist/tex/latex/translator/translator-basic-dicti
 onary-English.dict
@@ -1364,19 +1387,19 @@ tionary-English.dict
 Dictionary: translator-theorem-dictionary, Language: English
 )
 LaTeX Font Info:    Overwriting math alphabet `\mathrm' in version `normal'
-(Font)                  OT1/lmr/m/n --> TU/lmr/m/n on input line 250.
+(Font)                  OT1/lmr/m/n --> TU/lmr/m/n on input line 259.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
-(Font)                  OT1/lmr/m/it --> TU/lmr/m/it on input line 250.
+(Font)                  OT1/lmr/m/it --> TU/lmr/m/it on input line 259.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
-(Font)                  OT1/lmr/bx/n --> TU/lmr/bx/n on input line 250.
+(Font)                  OT1/lmr/bx/n --> TU/lmr/bx/n on input line 259.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
-(Font)                  OT1/lmss/m/n --> TU/lmss/m/n on input line 250.
+(Font)                  OT1/lmss/m/n --> TU/lmss/m/n on input line 259.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  OT1/lmss/bx/n --> TU/lmss/bx/n on input line 250.
+(Font)                  OT1/lmss/bx/n --> TU/lmss/bx/n on input line 259.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
-(Font)                  OT1/lmtt/m/n --> TU/lmtt/m/n on input line 250.
+(Font)                  OT1/lmtt/m/n --> TU/lmtt/m/n on input line 259.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  OT1/lmtt/m/n --> TU/lmtt/bx/n on input line 250.
+(Font)                  OT1/lmtt/m/n --> TU/lmtt/bx/n on input line 259.
 
 Package fontspec Info:
 (fontspec)             latinmodern-math scale = 1.03015890977869.
@@ -1407,7 +1430,7 @@ allCapsFont={},Script=Math,BoldFont={latinmodern-math.otf}].
 =math;language=dflt;"
 
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(0)/m/n' will be
-(Font)              scaled to size 11.28015pt on input line 250.
+(Font)              scaled to size 11.28015pt on input line 259.
 
 Package fontspec Info:
 (fontspec)             latinmodern-math scale = 1.03015890977869.
@@ -1450,18 +1473,18 @@ dern-math.otf]/OT:script=math;language=dflt;+ssty=1;"
 =math;language=dflt;"
 
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 11.28015pt on input line 250.
+(Font)              scaled to size 11.28015pt on input line 259.
 LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
-(Font)              `operators' in the math version `normal' on input line 250.
+(Font)              `operators' in the math version `normal' on input line 259.
 
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
 (Font)                  OT1/lmr/m/n --> TU/latinmodern-math.otf(1)/m/n on input
- line 250.
+ line 259.
 LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
-(Font)              `operators' in the math version `bold' on input line 250.
+(Font)              `operators' in the math version `bold' on input line 259.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
 (Font)                  OT1/lmr/bx/n --> TU/latinmodern-math.otf(1)/b/n on inpu
-t line 250.
+t line 259.
 
 Package fontspec Info:
 (fontspec)             latinmodern-math scale = 1.03015890977869.
@@ -1535,15 +1558,15 @@ nmodern-math.otf]/OT:script=math;language=dflt;+ssty=1;"
 t=math;language=dflt;"
 
 LaTeX Font Info:    Encoding `OMS' has changed to `TU' for symbol font
-(Font)              `symbols' in the math version `normal' on input line 250.
+(Font)              `symbols' in the math version `normal' on input line 259.
 LaTeX Font Info:    Overwriting symbol font `symbols' in version `normal'
 (Font)                  OMS/lmsy/m/n --> TU/latinmodern-math.otf(2)/m/n on inpu
-t line 250.
+t line 259.
 LaTeX Font Info:    Encoding `OMS' has changed to `TU' for symbol font
-(Font)              `symbols' in the math version `bold' on input line 250.
+(Font)              `symbols' in the math version `bold' on input line 259.
 LaTeX Font Info:    Overwriting symbol font `symbols' in version `bold'
 (Font)                  OMS/lmsy/b/n --> TU/latinmodern-math.otf(2)/b/n on inpu
-t line 250.
+t line 259.
 
 Package fontspec Info:
 (fontspec)             latinmodern-math scale = 1.03015890977869.
@@ -1612,16 +1635,16 @@ t=math;language=dflt;"
 
 LaTeX Font Info:    Encoding `OMX' has changed to `TU' for symbol font
 (Font)              `largesymbols' in the math version `normal' on input line 2
-50.
+59.
 LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `normal'
 (Font)                  OMX/lmex/m/n --> TU/latinmodern-math.otf(3)/m/n on inpu
-t line 250.
+t line 259.
 LaTeX Font Info:    Encoding `OMX' has changed to `TU' for symbol font
-(Font)              `largesymbols' in the math version `bold' on input line 250
+(Font)              `largesymbols' in the math version `bold' on input line 259
 .
 LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
 (Font)                  OMX/lmex/m/n --> TU/latinmodern-math.otf(3)/b/n on inpu
-t line 250.
+t line 259.
 
 
 Package unicode-math Warning: Using \overbracket and \underbracket from
@@ -1641,13 +1664,13 @@ Package unicode-math Warning: I'm going to overwrite the following commands
 (unicode-math)                colon-like commands, using them will lead to
 (unicode-math)                inconsistencies.
 
-LaTeX Info: Redefining \microtypecontext on input line 250.
-Package microtype Info: Applying patch `item' on input line 250.
-Package microtype Info: Applying patch `toc' on input line 250.
-Package microtype Info: Applying patch `eqnum' on input line 250.
-Package microtype Info: Applying patch `footnote' on input line 250.
-Package microtype Info: Applying patch `verbatim' on input line 250.
-LaTeX Info: Redefining \microtypesetup on input line 250.
+LaTeX Info: Redefining \microtypecontext on input line 259.
+Package microtype Info: Applying patch `item' on input line 259.
+Package microtype Info: Applying patch `toc' on input line 259.
+Package microtype Info: Applying patch `eqnum' on input line 259.
+Package microtype Info: Applying patch `footnote' on input line 259.
+Package microtype Info: Applying patch `verbatim' on input line 259.
+LaTeX Info: Redefining \microtypesetup on input line 259.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using protrusion set `basicmath'.
 Package microtype Info: No adjustment of tracking.
@@ -1660,35 +1683,35 @@ Package microtype Info: Loading generic protrusion settings for font family
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: listings package is loaded.
 Package caption Info: End \AtBeginDocument code.
-\c@lstlisting=\count415
+\c@lstlisting=\count422
 
 (/Users/4d/Documents/GitHub/projects/working/cognitive_integrity/cogsec_multiag
 ent_1_theory/output/slides/06_detection_methods_slides.nav) [1
 
 ]
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 7.8961pt on input line 257.
+(Font)              scaled to size 7.8961pt on input line 266.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 5.64008pt on input line 257.
+(Font)              scaled to size 5.64008pt on input line 266.
 LaTeX Font Info:    Trying to load font information for OML+lmm on input line 2
-57.
+66.
 
 (/usr/local/texlive/2026/texmf-dist/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 11.28131pt on input line 257.
+(Font)              scaled to size 11.28131pt on input line 266.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 7.89691pt on input line 257.
+(Font)              scaled to size 7.89691pt on input line 266.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 5.64066pt on input line 257.
+(Font)              scaled to size 5.64066pt on input line 266.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 11.27914pt on input line 257.
+(Font)              scaled to size 11.27914pt on input line 266.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 7.8954pt on input line 257.
+(Font)              scaled to size 7.8954pt on input line 266.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 5.63957pt on input line 257.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 257
+(Font)              scaled to size 5.63957pt on input line 266.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 266
 .
 
 (/usr/local/texlive/2026/texmf-dist/tex/latex/amsfonts/umsa.fd
@@ -1697,7 +1720,7 @@ File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 (/usr/local/texlive/2026/texmf-dist/tex/latex/microtype/mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 257
+LaTeX Font Info:    Trying to load font information for U+msb on input line 266
 .
 
 (/usr/local/texlive/2026/texmf-dist/tex/latex/amsfonts/umsb.fd
@@ -1712,14 +1735,14 @@ File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 
 ]
 LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <10.95> not available
-(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 285.
+(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 294.
 LaTeX Font Info:    Font shape `TU/lmss/bx/it' in size <10.95> not available
-(Font)              Font shape `TU/lmss/bx/sl' tried instead on input line 285.
+(Font)              Font shape `TU/lmss/bx/sl' tried instead on input line 294.
 
 
 
 LaTeX Warning: Citation `friedman2026cogsec2' on page 4 undefined on input line
- 285.
+ 294.
 
 [4
 
@@ -1727,17 +1750,17 @@ LaTeX Warning: Citation `friedman2026cogsec2' on page 4 undefined on input line
 
 ]
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 6.18091pt on input line 300.
+(Font)              scaled to size 6.18091pt on input line 309.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 5.15076pt on input line 300.
+(Font)              scaled to size 5.15076pt on input line 309.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 6.18155pt on input line 300.
+(Font)              scaled to size 6.18155pt on input line 309.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 5.15129pt on input line 300.
+(Font)              scaled to size 5.15129pt on input line 309.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 6.18036pt on input line 300.
+(Font)              scaled to size 6.18036pt on input line 309.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 5.1503pt on input line 300.
+(Font)              scaled to size 5.1503pt on input line 309.
 
 (/usr/local/texlive/2026/texmf-dist/tex/latex/microtype/mt-LatinModernRoman.cfg
 File: mt-LatinModernRoman.cfg 2026/02/26 v1.2 microtype config. file: Latin Mod
@@ -1746,9 +1769,9 @@ ern Roman (RS)
 
 ]
 LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <7.665> not available
-(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 321.
+(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 330.
 LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <5.475> not available
-(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 321.
+(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 330.
  [7
 
 ] [8
@@ -1774,9 +1797,9 @@ File: ../figures/roc_curves.pdf Graphic file (type pdf)
 
 ]
 LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <6> not available
-(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 482.
+(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 491.
 LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <5> not available
-(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 482.
+(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 491.
  [17
 
 ] [18
@@ -1784,7 +1807,7 @@ LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <5> not available
 ] [19
 
 ]
-Underfull \vbox (badness 1168) detected at line 494
+Underfull \vbox (badness 1168) detected at line 503
  []
 
 [20
@@ -1817,7 +1840,7 @@ File: ../figures/fp_mitigation.pdf Graphic file (type pdf)
 ]
 
 LaTeX Font Warning: Font shape `TU/lmss/m/sc' in size <6> not available
-(Font)              Font shape `TU/lmr/m/sc' tried instead on input line 669.
+(Font)              Font shape `TU/lmr/m/sc' tried instead on input line 678.
 
 [32
 
@@ -1832,7 +1855,7 @@ LaTeX Font Warning: Font shape `TU/lmss/m/sc' in size <6> not available
 ] [37
 
 ]
-Underfull \vbox (badness 1168) detected at line 734
+Underfull \vbox (badness 1168) detected at line 743
  []
 
 [38
@@ -1847,31 +1870,31 @@ Underfull \vbox (badness 1168) detected at line 734
 
 ] [43
 
-]
-
-LaTeX Warning: Citation `neyman1933ix' on page 44 undefined on input line 813.
-
-[44
-
-] [45
+] [44
 
 ]
 
-LaTeX Warning: Citation `chernoff1952measure' on page 46 undefined on input lin
-e 849.
+LaTeX Warning: Citation `neyman1933ix' on page 45 undefined on input line 828.
 
-[46
+[45
 
-] [47
+] [46
 
 ]
 
-LaTeX Warning: Citation `cover2006elements' on page 48 undefined on input line
-880.
+LaTeX Warning: Citation `chernoff1952measure' on page 47 undefined on input lin
+e 864.
 
-[48
+[47
 
-] [49
+] [48
+
+]
+
+LaTeX Warning: Citation `cover2006elements' on page 49 undefined on input line
+895.
+
+[49
 
 ] [50
 
@@ -1879,12 +1902,12 @@ LaTeX Warning: Citation `cover2006elements' on page 48 undefined on input line
 
 ] [52
 
+] [53
+
 ]
 File: ../figures/detection_performance.pdf Graphic file (type pdf)
 <use ../figures/detection_performance.pdf>
- [53
-
-] [54
+ [54
 
 ] [55
 
@@ -1894,12 +1917,17 @@ File: ../figures/detection_performance.pdf Graphic file (type pdf)
 
 ] [58
 
+] [59
+
 ]
 
-LaTeX Warning: Citation `friedman2026cogsec2' on page 59 undefined on input lin
-e 1043.
+LaTeX Warning: Citation `friedman2026cogsec2' on page 60 undefined on input lin
+e 1062.
 
-[59
+[60
+
+] [61
+
 
 ]
 \tf@nav=\write5
@@ -1924,14 +1952,14 @@ LaTeX Warning: There were undefined references.
 
  )
 Here is how much of TeX's memory you used:
- 33576 strings out of 468168
- 671644 string characters out of 5432815
- 1223868 words of memory out of 5000000
- 61672 multiletter control sequences out of 15000+600000
+ 34128 strings out of 468168
+ 680136 string characters out of 5432815
+ 1232590 words of memory out of 5000000
+ 62214 multiletter control sequences out of 15000+600000
  633360 words of font info for 105 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  128i,15n,123p,1129b,819s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
 Output written on /Users/4d/Documents/GitHub/projects/working/cognitive_integri
-ty/cogsec_multiagent_1_theory/output/slides/06_detection_methods_slides.pdf (59
+ty/cogsec_multiagent_1_theory/output/slides/06_detection_methods_slides.pdf (61
  pages).

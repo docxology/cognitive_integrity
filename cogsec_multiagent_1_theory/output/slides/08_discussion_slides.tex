@@ -213,6 +213,15 @@
 \newtheorem{formalization}{Formalization}
 \newtheorem{principle}{Principle}
 
+% Environment-providing packages carried over from the manuscript.
+\usepackage{algpseudocode}
+
+% Non-floating stand-in for the `algorithm` float.
+\newenvironment{algorithm}[1][]{%
+  \par\medskip\noindent\rule{\linewidth}{0.4pt}\par\nobreak\small
+  \renewcommand{\caption}[1]{\par\noindent\textbf{##1}\par}}{%
+  \par\nobreak\noindent\rule{\linewidth}{0.4pt}\par\medskip}
+
 \newtheorem{proposition}{Proposition}
 \newtheorem{hypothesis}{Hypothesis}
 \newtheorem{remark}[theorem]{Remark}
@@ -281,9 +290,12 @@ Key empirical findings include:
   detection-rate theorems (\cref{thm:series-detection},
   \cref{thm:parallel-detection}), layered defenses composed
   multiplicatively, with the full framework outperforming any single
-  mechanism. Part 2's ablation studies confirm that removing the
-  Detection module causes the largest drop, followed by the Trust
-  Calculus.
+  mechanism. Part 2's ablation studies qualify this: on their corpus the
+  composition is dominated rather than balanced, with the Behavioral
+  Invariants module accounting for almost all of the composed pipeline's
+  detection and every other module measuring at or near zero
+  \emph{marginal} contribution --- what each adds beyond the rest of the
+  stack, which is not the same quantity as what each detects alone.
 \item
   \textbf{Trust Boundedness}: The \(\delta^d\) trust decay parameter
   successfully prevented ``trust laundering'\,' amplification attacks in
@@ -355,15 +367,24 @@ suffices: an attack that bypasses input filtering may still violate
 behavioral invariants; an attack that evades pattern matching may still
 trigger belief drift detection.
 
-Empirical ablation studies in Part 2 validate this theoretical
-prediction: removing the Detection module causes the largest drop
-(\(\Delta\text{TPR} \approx -0.051\) on the 98-attack ablation corpus),
-followed by the Trust Calculus (\(\approx -0.020\)); Firewall,
-Invariants and Tripwire tie behind it at \(\approx -0.010\), and
-Consensus, Provenance and Sandbox show no marginal contribution on that
-corpus. No individual mechanism provides comparable detection rates to
-the full ensemble---confirming the multiplicative composition theorem
-(\cref{thm:series-detection}).
+Empirical ablation studies in Part 2 test this prediction and return a
+sharper answer than a ranked list. On the 98-attack ablation corpus a
+single module dominates: removing Behavioral Invariants costs
+\(\Delta\text{TPR} \approx -0.847\) against a full pipeline of
+\(\approx 0.959\), the Firewall and Tripwire cost \(\approx -0.010\)
+each, and Consensus, Detection, Provenance, Sandbox and Trust Calculus
+register no change at all. Those zeros are \emph{marginal} quantities
+and are not evidence of zero capability: a module whose detections are a
+subset of another's is invisible to leave-one-out removal however much
+it catches on its own. What the ablation establishes is therefore weaker
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Why Composable Defenses Are Necessary}
+than the theorem and more useful than a ranking --- no single mechanism
+outperforms the composed ensemble, consistent with
+\cref{thm:series-detection}, but on this corpus the composition is
+dominated by one factor rather than balanced across many, so the
+multiplicative bound holds without being informative.
 \end{frame}
 
 \begin{frame}[allowframebreaks]{The Trust Boundedness Guarantee}

@@ -211,6 +211,15 @@
 \providecommand{\Crefrange}[2]{\texttt{\detokenize{#1}}--\texttt{\detokenize{#2}}}
 \providecommand{\paragraph}[1]{\textbf{#1}\ }
 
+% Environment-providing packages carried over from the manuscript.
+\usepackage{algpseudocode}
+
+% Non-floating stand-in for the `algorithm` float.
+\newenvironment{algorithm}[1][]{%
+  \par\medskip\noindent\rule{\linewidth}{0.4pt}\par\nobreak\small
+  \renewcommand{\caption}[1]{\par\noindent\textbf{##1}\par}}{%
+  \par\nobreak\noindent\rule{\linewidth}{0.4pt}\par\medskip}
+
 \newtheorem{proposition}{Proposition}
 \newtheorem{hypothesis}{Hypothesis}
 \newtheorem{remark}[theorem]{Remark}
@@ -381,7 +390,13 @@ This ``Swiss Cheese Model'' was supported by Part 2's parametric
 simulation, where the full stack reached a 96--100\% design-level
 detection ceiling and outperformed the sum of its parts. The real
 prototype pipeline is materially lower and is reported separately as a
-multi-seed mean of approximately 44.8\%.
+multi-seed mean of approximately 44.8\%. It also distributes the work
+far less evenly than the model implies: on Part 2's 98-attack ablation
+corpus the series-composition prediction lands within a couple of points
+of the measured full-stack rate, but nearly all of the detection comes
+from one module, so the full stack's margin over the best single layer
+is about three percentage points. Compose layers for coverage, not on
+the assumption that each contributes an independent slice.
 \end{frame}
 
 \subsection{The Science Behind Belief Updates: Free

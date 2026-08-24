@@ -3,8 +3,8 @@
 \beamer@slide {pitfall-2-security-as-afterthought-critical}{8}
 \beamer@slide {pitfall-3-uncalibrated-thresholds-high}{11}
 \beamer@slide {pitfall-4-individual-only-security-high}{14}
-\beamer@slide {pitfall-5-static-tripwires-medium}{17}
-\beamer@slide {pitfall-6-ignoring-progressive-drift-medium}{20}
-\beamer@slide {pitfall-7-insufficient-logging-medium}{24}
-\beamer@slide {pitfall-8-single-orchestrator-reliance-high}{27}
-\beamer@slide {summary-checklist}{30}
+\beamer@slide {pitfall-5-static-tripwires-medium}{18}
+\beamer@slide {pitfall-6-ignoring-progressive-drift-medium}{21}
+\beamer@slide {pitfall-7-insufficient-logging-medium}{25}
+\beamer@slide {pitfall-8-single-orchestrator-reliance-high}{28}
+\beamer@slide {summary-checklist}{31}

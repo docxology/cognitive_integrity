@@ -213,6 +213,15 @@
 \newtheorem{formalization}{Formalization}
 \newtheorem{principle}{Principle}
 
+% Environment-providing packages carried over from the manuscript.
+\usepackage{algpseudocode}
+
+% Non-floating stand-in for the `algorithm` float.
+\newenvironment{algorithm}[1][]{%
+  \par\medskip\noindent\rule{\linewidth}{0.4pt}\par\nobreak\small
+  \renewcommand{\caption}[1]{\par\noindent\textbf{##1}\par}}{%
+  \par\nobreak\noindent\rule{\linewidth}{0.4pt}\par\medskip}
+
 \newtheorem{proposition}{Proposition}
 \newtheorem{hypothesis}{Hypothesis}
 \newtheorem{remark}[theorem]{Remark}
@@ -277,26 +286,27 @@ dedicated \texttt{proof} environment (section given in parentheses):
 \begin{itemize}
 \tightlist
 \item
-  Trust Boundedness (Thm. 4.2), \cref{thm:trust-bound-restated}
-  (\cref{sec:thm42-proof})
+  Trust Boundedness (main text: \cref{thm:trust-bounded}),
+  \cref{thm:trust-bound-restated} (\cref{sec:thm42-proof})
 \item
-  Belief Injection Resistance (Thm. 5.7),
+  Belief Injection Resistance (main text: \cref{thm:belief-injection}),
   \cref{thm:belief-injection-restated} (\cref{sec:thm57-proof})
 \item
-  No Trust Amplification (Thm. 4.7), \cref{thm:trust-amp-restated}
-  (\cref{sec:thm47-proof})
+  No Trust Amplification (main text: \cref{thm:no-trust-amp}),
+  \cref{thm:trust-amp-restated} (\cref{sec:thm47-proof})
 \item
-  Goal Alignment Invariant (Thm. 5.8),
+  Goal Alignment Invariant (main text: \cref{thm:goal-alignment}),
   \cref{thm:goal-alignment-restated} (\cref{sec:thm58-proof})
 \item
-  Firewall Liveness (Thm. 5.9), \cref{thm:firewall-liveness-restated}
-  (\cref{sec:thm59-proof})
+  Firewall Liveness (main text: \cref{thm:firewall-liveness}),
+  \cref{thm:firewall-liveness-restated} (\cref{sec:thm59-proof})
 \item
-  Byzantine Consensus Termination (Thm. 5.10),
-  \cref{thm:byzantine-restated} (\cref{sec:thm510-proof})
+  Byzantine Consensus Termination (main text:
+  \cref{thm:byzantine-termination}), \cref{thm:byzantine-restated}
+  (\cref{sec:thm510-proof})
 \item
-  Bounded Overhead (Thm. 5.11), \cref{thm:overhead-restated}
-  (\cref{sec:thm511-proof})
+  Bounded Overhead (main text: \cref{thm:latency-overhead}),
+  \cref{thm:overhead-restated} (\cref{sec:thm511-proof})
 \item
   Defense Composition Algebra, \cref{thm:composition-semiring-restated}
   (\cref{sec:thm-composition-semiring})
@@ -493,9 +503,9 @@ A delegation chain of depth $d$ is a sequence of agents $(a_0, a_1, \ldots, a_d)
 \begin{frame}
 \end{frame}
 
-\subsection{Theorem 4.2: Trust Boundedness}\label{sec:thm42-proof}
+\subsection{Trust Boundedness}\label{sec:thm42-proof}
 
-\begin{frame}[allowframebreaks]{Theorem 4.2: Trust Boundedness}
+\begin{frame}[allowframebreaks]{Trust Boundedness}
 \begin{theorem}[Trust Boundedness --- Restated]
 \label{thm:trust-bound-restated}
 For any delegation chain of depth $d$:
@@ -530,7 +540,7 @@ Since $\min(\mathcal{T}_{a \to b}, \mathcal{T}_{b \to c}) \leq \mathcal{T}_{a \t
 
 \end{frame}
 
-\begin{frame}[allowframebreaks]{Theorem 4.2: Trust Boundedness}
+\begin{frame}[allowframebreaks]{Trust Boundedness}
 \begin{lemma}[Trust Decay Bound]
 \label{lem:decay-bound}
 For any single-hop delegation:
@@ -593,7 +603,7 @@ By the principle of mathematical induction, the theorem holds for all $d \geq 0$
 
 \end{frame}
 
-\begin{frame}[allowframebreaks]{Theorem 4.2: Trust Boundedness}
+\begin{frame}[allowframebreaks]{Trust Boundedness}
 \begin{corollary}[Trust Vanishing]
 \label{cor:trust-vanishing}
 For any $\epsilon > 0$, there exists $D$ such that for all delegation chains of depth $d > D$:
@@ -620,11 +630,9 @@ d_{max} = \lfloor \log_{0.8} 0.1 \rfloor = 10
 \begin{frame}
 \end{frame}
 
-\subsection{Theorem 5.7: Belief Injection
-Resistance}\label{sec:thm57-proof}
+\subsection{Belief Injection Resistance}\label{sec:thm57-proof}
 
-\begin{frame}[allowframebreaks]{Theorem 5.7: Belief Injection
-Resistance}
+\begin{frame}[allowframebreaks]{Belief Injection Resistance}
 \begin{theorem}[Belief Injection Resistance --- Restated]
 \label{thm:belief-injection-restated}
 Under CIF with firewall detection rate $r_f$ and sandboxing verification rate $r_s$:
@@ -646,8 +654,7 @@ These mechanisms share no common features or state.
 
 \end{frame}
 
-\begin{frame}[allowframebreaks]{Theorem 5.7: Belief Injection
-Resistance}
+\begin{frame}[allowframebreaks]{Belief Injection Resistance}
 \begin{proof}[Proof of \cref{lem:defense-independence}]
 By construction of the CIF architecture:
 \begin{enumerate}
@@ -661,8 +668,7 @@ Therefore, $P(\text{firewall detects} | \text{sandbox outcome}) = P(\text{firewa
 
 \end{frame}
 
-\begin{frame}[allowframebreaks]{Theorem 5.7: Belief Injection
-Resistance}
+\begin{frame}[allowframebreaks]{Belief Injection Resistance}
 \begin{remark}[Independence is an assumption, not a guarantee]
 \label{rem:defense-independence-scope}
 Disjoint feature sets do not by themselves guarantee probabilistic independence of detection events: an adversary can craft content that defeats both pattern matching and provenance/consistency checks, correlating the failure modes. The multiplicative detection bounds derived below (e.g.\ $(1-r_f)(1-r_s)$) therefore hold under the architectural \emph{assumption} that firewall and sandbox failure events are approximately independent (decoupled adversarial capability). If the failure modes are positively correlated, the correct bound is the union bound $P(\text{success}) \le \min(1-r_f,\,1-r_s)$, or $P(\text{success}) \le (1-r_f)(1-r_s) + \rho$ with an explicit correlation term $\rho \ge 0$. Throughout this part we adopt the independence assumption for the closed-form analyses and apply the union-bound relaxation where correlation may be material.
@@ -670,8 +676,7 @@ Disjoint feature sets do not by themselves guarantee probabilistic independence 
 
 \end{frame}
 
-\begin{frame}[allowframebreaks]{Theorem 5.7: Belief Injection
-Resistance}
+\begin{frame}[allowframebreaks]{Belief Injection Resistance}
 \begin{definition}[Attack Success]
 \label{def:attack-success}
 A belief injection attack $\mathcal{A}_{BI}$ succeeds if and only if:
@@ -711,8 +716,7 @@ P(\mathcal{A}_{BI} \text{ succeeds}) = (1 - r_f) \cdot (1 - r_s)
 
 \end{frame}
 
-\begin{frame}[allowframebreaks]{Theorem 5.7: Belief Injection
-Resistance}
+\begin{frame}[allowframebreaks]{Belief Injection Resistance}
 \begin{corollary}[Numerical Bound]
 \label{cor:numerical-bound}
 With empirical values $r_f = 0.8$ and $r_s = 0.7$:
@@ -739,9 +743,9 @@ Direct extension of \cref{thm:belief-injection-restated} by independence.
 \begin{frame}
 \end{frame}
 
-\subsection{Theorem 4.7: No Trust Amplification}\label{sec:thm47-proof}
+\subsection{No Trust Amplification}\label{sec:thm47-proof}
 
-\begin{frame}[allowframebreaks]{Theorem 4.7: No Trust Amplification}
+\begin{frame}[allowframebreaks]{No Trust Amplification}
 \begin{theorem}[No Trust Amplification --- Restated]
 \label{thm:trust-amp-restated}
 For any path $p = (a_0, a_1, \ldots, a_k)$ in the communication graph:
@@ -766,7 +770,7 @@ Standard property of the minimum function.
 
 \end{frame}
 
-\begin{frame}[allowframebreaks]{Theorem 4.7: No Trust Amplification}
+\begin{frame}[allowframebreaks]{No Trust Amplification}
 \begin{lemma}[Decay Factor Strengthens Bound]
 \label{lem:decay-strengthens}
 For $x \leq y$ and $\delta \in (0,1)$:
@@ -833,7 +837,7 @@ Since $\delta \in (0,1)$:
 
 \end{frame}
 
-\begin{frame}[allowframebreaks]{Theorem 4.7: No Trust Amplification}
+\begin{frame}[allowframebreaks]{No Trust Amplification}
 \begin{corollary}[Weakest Link Principle]
 \label{cor:weakest-link}
 Trust through any path is bounded by the least trusted edge:
@@ -852,10 +856,9 @@ Multiple colluding agents cannot create trust exceeding any individual's trust w
 \begin{frame}
 \end{frame}
 
-\subsection{Theorem 5.8: Goal Alignment
-Invariant}\label{sec:thm58-proof}
+\subsection{Goal Alignment Invariant}\label{sec:thm58-proof}
 
-\begin{frame}[allowframebreaks]{Theorem 5.8: Goal Alignment Invariant}
+\begin{frame}[allowframebreaks]{Goal Alignment Invariant}
 \begin{theorem}[Goal Alignment Invariant --- Restated]
 \label{thm:goal-alignment-restated}
 If the system starts with aligned goals and all goal updates follow the delegation protocol:
@@ -876,7 +879,7 @@ Goals $\mathcal{G}_i$ are aligned if:
 
 \end{frame}
 
-\begin{frame}[allowframebreaks]{Theorem 5.8: Goal Alignment Invariant}
+\begin{frame}[allowframebreaks]{Goal Alignment Invariant}
 \begin{definition}[Valid Goal Update]
 \label{def:valid-update}
 An update from $\mathcal{G}^t$ to $\mathcal{G}^{t+1}$ is valid if:
@@ -898,7 +901,7 @@ Direct from \cref{def:goal-alignment}.
 
 \end{frame}
 
-\begin{frame}[allowframebreaks]{Theorem 5.8: Goal Alignment Invariant}
+\begin{frame}[allowframebreaks]{Goal Alignment Invariant}
 \begin{lemma}[Set Union Preserves Subset]
 \label{lem:union-preserves}
 If $A \subseteq C$ and $B \subseteq C$, then $A \cup B \subseteq C$.
@@ -946,7 +949,7 @@ Therefore $\text{Aligned}(\mathcal{G}_i^{t+1})$.
 
 \end{frame}
 
-\begin{frame}[allowframebreaks]{Theorem 5.8: Goal Alignment Invariant}
+\begin{frame}[allowframebreaks]{Goal Alignment Invariant}
 \begin{corollary}[Safety Under Protocol]
 \label{cor:safety-protocol}
 An agent following CIF protocols cannot have its goals hijacked to adversarial objectives.
@@ -965,9 +968,9 @@ Goal hijacking requires violating the delegation protocol:
 \begin{frame}
 \end{frame}
 
-\subsection{Theorem 5.9: Firewall Liveness}\label{sec:thm59-proof}
+\subsection{Firewall Liveness}\label{sec:thm59-proof}
 
-\begin{frame}[allowframebreaks]{Theorem 5.9: Firewall Liveness}
+\begin{frame}[allowframebreaks]{Firewall Liveness}
 \begin{theorem}[Firewall Liveness --- Restated]
 \label{thm:firewall-liveness-restated}
 CIF firewall preserves liveness for legitimate inputs:
@@ -998,7 +1001,7 @@ The false positive rate $\epsilon_{fp}$ is:
 
 \end{frame}
 
-\begin{frame}[allowframebreaks]{Theorem 5.9: Firewall Liveness}
+\begin{frame}[allowframebreaks]{Firewall Liveness}
 \begin{lemma}[Firewall Classification]
 \label{lem:firewall-classification}
 For any message $m$, the firewall produces exactly one of three outcomes:
@@ -1042,7 +1045,7 @@ Since $m$ was arbitrary:
 
 \end{frame}
 
-\begin{frame}[allowframebreaks]{Theorem 5.9: Firewall Liveness}
+\begin{frame}[allowframebreaks]{Firewall Liveness}
 \begin{corollary}[Availability Bound]
 \label{cor:availability}
 With $\epsilon_{fp} = 0.06$, at least 94\% of legitimate messages are accepted.
@@ -1057,11 +1060,9 @@ Messages in QUARANTINE can still reach verified belief state through sandbox pro
 \begin{frame}
 \end{frame}
 
-\subsection{Theorem 5.10: Byzantine Consensus
-Termination}\label{sec:thm510-proof}
+\subsection{Byzantine Consensus Termination}\label{sec:thm510-proof}
 
-\begin{frame}[allowframebreaks]{Theorem 5.10: Byzantine Consensus
-Termination}
+\begin{frame}[allowframebreaks]{Byzantine Consensus Termination}
 \begin{theorem}[Byzantine Consensus Termination --- Restated]
 \label{thm:byzantine-restated}
 With $n \geq 3f + 1$ agents and at most $f$ Byzantine:
@@ -1093,8 +1094,7 @@ n - f > \frac{2n}{3}.
 
 \end{frame}
 
-\begin{frame}[allowframebreaks]{Theorem 5.10: Byzantine Consensus
-Termination}
+\begin{frame}[allowframebreaks]{Byzantine Consensus Termination}
 \begin{proof}
 For the first bound, $n - f \geq (3f + 1) - f = 2f + 1$.
 
@@ -1114,8 +1114,7 @@ $f \leq \frac{n-1}{3}$ directly.
 
 \end{frame}
 
-\begin{frame}[allowframebreaks]{Theorem 5.10: Byzantine Consensus
-Termination}
+\begin{frame}[allowframebreaks]{Byzantine Consensus Termination}
 \begin{lemma}[Round Progression]
 \label{lem:round-progression}
 In each round, at least one of the following occurs:
@@ -1152,8 +1151,7 @@ Therefore, termination is guaranteed with probability 1.
 
 \end{frame}
 
-\begin{frame}[allowframebreaks]{Theorem 5.10: Byzantine Consensus
-Termination}
+\begin{frame}[allowframebreaks]{Byzantine Consensus Termination}
 \begin{corollary}[Concrete Round Bound]
 \label{cor:concrete-rounds}
 With $f = 2$ Byzantine agents: consensus in at most 3 rounds.
@@ -1172,9 +1170,9 @@ By honest majority and the $2/3$ threshold requirement.
 \begin{frame}
 \end{frame}
 
-\subsection{Theorem 5.11: Bounded Overhead}\label{sec:thm511-proof}
+\subsection{Bounded Overhead}\label{sec:thm511-proof}
 
-\begin{frame}[allowframebreaks]{Theorem 5.11: Bounded Overhead}
+\begin{frame}[allowframebreaks]{Bounded Overhead}
 \begin{theorem}[Bounded Overhead --- Restated]
 \label{thm:overhead-restated}
 CIF adds latency:
@@ -1205,7 +1203,7 @@ E[L] = \sum_i P(E_i) \cdot L_i
 
 \end{frame}
 
-\begin{frame}[allowframebreaks]{Theorem 5.11: Bounded Overhead}
+\begin{frame}[allowframebreaks]{Bounded Overhead}
 \begin{proof}
 Law of total expectation.
 \end{proof}
@@ -1262,7 +1260,10 @@ With baseline \(L_{baseline} = 11.8\text{ms}\): \begin{equation}
 \text{Overhead} = \frac{14.5 - 11.8}{11.8} \times 100\% \approx 22.9\%
 \end{equation}
 
-This matches the empirical observation of approximately 23\% overhead.
+The 22.9\% is a property of the illustrative constants above, not an
+observation: this series measures no end-to-end CIF latency overhead,
+and the constants used here are not derived from Part 2's measured
+per-sample firewall latency.
 
 \begin{corollary}[Overhead Bound]
 \label{cor:overhead-bound}
@@ -1398,13 +1399,13 @@ variance $\frac{\eta}{2-\eta}\sigma^2$ is the price of that adaptivity.
 \toprule
 Theorem & Primary Technique & Complexity \\
 \midrule
-4.2 (Trust Boundedness) & Strong induction & $O(d)$ \\
-5.7 (Belief Injection Resistance) & Probability independence & $O(1)$ \\
-4.7 (No Trust Amplification) & Strong induction & $O(k)$ \\
-5.8 (Goal Alignment Invariant) & Induction on time & $O(t)$ \\
-5.9 (Firewall Liveness) & Complement probability & $O(1)$ \\
-5.10 (Byzantine Consensus) & Classical BFT & $O(f)$ \\
-5.11 (Bounded Overhead) & Expected value & $O(1)$ \\
+Trust Boundedness & Strong induction & $O(d)$ \\
+Belief Injection Resistance & Probability independence & $O(1)$ \\
+No Trust Amplification & Strong induction & $O(k)$ \\
+Goal Alignment Invariant & Induction on time & $O(t)$ \\
+Firewall Liveness & Complement probability & $O(1)$ \\
+Byzantine Consensus & Classical BFT & $O(f)$ \\
+Bounded Overhead & Expected value & $O(1)$ \\
 \bottomrule
 \end{tabular}
 \end{table}

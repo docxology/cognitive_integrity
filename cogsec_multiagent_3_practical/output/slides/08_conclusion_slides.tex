@@ -211,6 +211,15 @@
 \providecommand{\Crefrange}[2]{\texttt{\detokenize{#1}}--\texttt{\detokenize{#2}}}
 \providecommand{\paragraph}[1]{\textbf{#1}\ }
 
+% Environment-providing packages carried over from the manuscript.
+\usepackage{algpseudocode}
+
+% Non-floating stand-in for the `algorithm` float.
+\newenvironment{algorithm}[1][]{%
+  \par\medskip\noindent\rule{\linewidth}{0.4pt}\par\nobreak\small
+  \renewcommand{\caption}[1]{\par\noindent\textbf{##1}\par}}{%
+  \par\nobreak\noindent\rule{\linewidth}{0.4pt}\par\medskip}
+
 \newtheorem{proposition}{Proposition}
 \newtheorem{hypothesis}{Hypothesis}
 \newtheorem{remark}[theorem]{Remark}
@@ -300,7 +309,7 @@ Levels}
 \textbf{Level 2 --- The pipeline detects attacks in practice}
 (confidence: moderate). The multi-seed pipeline analysis (30 seeds,
 Claude Code architecture) achieves a mean detection rate of 44.8\%
-{[}95\% HDI: 35.5\%, 54.7\%{]}. The LLM-backed multiagent validation
+{[}95\% CI: 43.2\%, 46.4\%{]}. The LLM-backed multiagent validation
 (\(N=10\), Gemma 3 4B) achieves 80\%--100\% across two architectures.
 These are meaningful but not high detection rates---they reflect adapter
 implementation at CMMI Level 3 (Statistical), not the design ceiling.
@@ -341,12 +350,16 @@ The core recommendations are:
 \begin{frame}[allowframebreaks]{Summary of Practical Recommendations}
 \begin{enumerate}
 \item
-  \textbf{Adopt layered defense from the start} (Pitfall 2). No single
-  mechanism achieves the full-stack result in Part\textasciitilde2:
-  isolated layers (e.g., firewall-only) were on the order of 60--70\%
-  detection, while the full CIF stack reached a 96--100\% parametric
-  detection ceiling. Security must be designed into the architecture,
-  not bolted on after deployment.
+  \textbf{Adopt layered defense from the start} (Pitfall 2), then
+  measure what each layer is worth. In the parametric model the full CIF
+  stack reached a 96--100\% parametric detection ceiling that no partial
+  configuration matched. The real pipeline teaches the sharper lesson:
+  on Part\textasciitilde2's 98-attack ablation corpus the Invariants
+  checker alone reaches 92.9\% against the full stack's 95.9\%, and five
+  of the eight modules show no measurable marginal contribution. Design
+  security into the architecture rather than bolting it on, but do not
+  assume every layer you add is earning its latency --- check each one's
+  marginal contribution against your own traffic.
 \item
   \textbf{Implement trust decay on every delegation chain} (Pitfall 1).
   The Trust Calculus with \(\delta \leq 0.8\) prevents trust laundering
@@ -526,13 +539,22 @@ wide uncertainty, not precise measurements.
 \end{frame}
 
 \begin{frame}[allowframebreaks]{A Note on Uncertainty}
-\textbf{The gap is real}. The 51--88 percentage-point gap between the
-parametric ceiling (96--100\%) and the empirical pipeline (44.8\%) is
-not noise---the Bayes factor for a true performance gap exceeds \(10^6\)
-(decisive evidence). This gap reflects adapter implementation maturity,
-but maturation takes time and resources. Plan your deployment timeline
-and security posture accordingly.
+\textbf{The gap is real at one end}. The 4--51 percentage-point gap
+between the parametric ceiling (96--100\%) and the real pipeline spans
+two unlike measurements. The wide end is the one the Bayes factor speaks
+to: the distance from the ceiling to the 30-seed pipeline mean of
+44.8\%, which is not noise---the Bayes factor for a true performance gap
+exceeds \(10^6\) (decisive evidence). The narrow end is the distance
+from the ceiling to the 95.9\% the pipeline reaches on the 98-attack
+ablation corpus after the Invariants rewrite; no Bayes factor has been
+computed for that arm, and it should not borrow the first one's
+authority. The wide end is what reflects adapter implementation
+maturity, and maturation takes time and resources. Plan your deployment
+timeline and security posture accordingly.
 
+\end{frame}
+
+\begin{frame}[allowframebreaks]{A Note on Uncertainty}
 \textbf{Adaptive adversaries are not modeled}. All evaluations used a
 fixed attack corpus. A sophisticated adversary who observes CIF's
 defenses and adapts (Debenedetti et al.'s adaptive attacks
@@ -541,11 +563,11 @@ reported. The game-theoretic analysis (Part 2) establishes the Nash
 equilibrium for the current payoff matrix, but a patient adversary will
 probe for gaps. The layered defense architecture provides
 resilience---bypassing one layer still encounters others---but no
+detection system is perfectly robust to adaptive adversaries.
+
 \end{frame}
 
 \begin{frame}[allowframebreaks]{A Note on Uncertainty}
-detection system is perfectly robust to adaptive adversaries.
-
 \textbf{Uncertainty is not a reason not to deploy}. CIF provides
 meaningful, formally-grounded protection that no single-agent guardrail
 system provides. The trust calculus's structural guarantee (trust cannot

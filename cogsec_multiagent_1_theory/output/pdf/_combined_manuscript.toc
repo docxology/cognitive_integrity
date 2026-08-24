@@ -164,16 +164,16 @@
 \contentsline {subsubsection}{\numberline {8.2.2}The Trust Boundedness Guarantee}{79}{subsubsection.8.2.2}%
 \contentsline {subsubsection}{\numberline {8.2.3}Information-Theoretic Detection Limits}{79}{subsubsection.8.2.3}%
 \contentsline {subsubsection}{\numberline {8.2.4}Architecture-Specific Vulnerability Patterns}{79}{subsubsection.8.2.4}%
-\contentsline {subsection}{\numberline {8.3}Formal Limitations}{79}{subsection.8.3}%
-\contentsline {subsubsection}{\numberline {8.3.1}Assumption Dependencies}{79}{subsubsection.8.3.1}%
+\contentsline {subsection}{\numberline {8.3}Formal Limitations}{80}{subsection.8.3}%
+\contentsline {subsubsection}{\numberline {8.3.1}Assumption Dependencies}{80}{subsubsection.8.3.1}%
 \contentsline {subsubsection}{\numberline {8.3.2}Scalability Constraints}{80}{subsubsection.8.3.2}%
 \contentsline {subsubsection}{\numberline {8.3.3}Inherent Detection Gaps}{80}{subsubsection.8.3.3}%
 \contentsline {subsection}{\numberline {8.4}Relationship to Prior Work}{80}{subsection.8.4}%
 \contentsline {subsection}{\numberline {8.5}Governance and Policy Implications}{81}{subsection.8.5}%
 \contentsline {subsubsection}{\numberline {8.5.1}The Regulatory Gap}{81}{subsubsection.8.5.1}%
 \contentsline {subsubsection}{\numberline {8.5.2}Recommendations for Policy}{81}{subsubsection.8.5.2}%
-\contentsline {subsection}{\numberline {8.6}Future Theoretical Directions}{81}{subsection.8.6}%
-\contentsline {subsubsection}{\numberline {8.6.1}Adaptive Defense Theory}{81}{subsubsection.8.6.1}%
+\contentsline {subsection}{\numberline {8.6}Future Theoretical Directions}{82}{subsection.8.6}%
+\contentsline {subsubsection}{\numberline {8.6.1}Adaptive Defense Theory}{82}{subsubsection.8.6.1}%
 \contentsline {subsubsection}{\numberline {8.6.2}Cross-System Trust Federation}{82}{subsubsection.8.6.2}%
 \contentsline {subsubsection}{\numberline {8.6.3}Emergent Behavior Security}{82}{subsubsection.8.6.3}%
 \contentsline {subsubsection}{\numberline {8.6.4}Long-Horizon Agent Security}{82}{subsubsection.8.6.4}%
@@ -207,17 +207,17 @@
 \contentsline {subsection}{\numberline {11.1}Proof Status}{93}{subsection.11.1}%
 \contentsline {subsection}{\numberline {11.2}Preliminary Definitions and Notation}{94}{subsection.11.2}%
 \contentsline {subsubsection}{\numberline {11.2.1}Notation Summary}{94}{subsubsection.11.2.1}%
-\contentsline {subsection}{\numberline {11.3}Theorem 4.2: Trust Boundedness}{95}{subsection.11.3}%
-\contentsline {subsection}{\numberline {11.4}Theorem 5.7: Belief Injection Resistance}{96}{subsection.11.4}%
-\contentsline {subsection}{\numberline {11.5}Theorem 4.7: No Trust Amplification}{97}{subsection.11.5}%
-\contentsline {subsection}{\numberline {11.6}Theorem 5.8: Goal Alignment Invariant}{98}{subsection.11.6}%
-\contentsline {subsection}{\numberline {11.7}Theorem 5.9: Firewall Liveness}{99}{subsection.11.7}%
-\contentsline {subsection}{\numberline {11.8}Theorem 5.10: Byzantine Consensus Termination}{100}{subsection.11.8}%
-\contentsline {subsection}{\numberline {11.9}Theorem 5.11: Bounded Overhead}{101}{subsection.11.9}%
+\contentsline {subsection}{\numberline {11.3}Trust Boundedness}{95}{subsection.11.3}%
+\contentsline {subsection}{\numberline {11.4}Belief Injection Resistance}{96}{subsection.11.4}%
+\contentsline {subsection}{\numberline {11.5}No Trust Amplification}{97}{subsection.11.5}%
+\contentsline {subsection}{\numberline {11.6}Goal Alignment Invariant}{98}{subsection.11.6}%
+\contentsline {subsection}{\numberline {11.7}Firewall Liveness}{99}{subsection.11.7}%
+\contentsline {subsection}{\numberline {11.8}Byzantine Consensus Termination}{100}{subsection.11.8}%
+\contentsline {subsection}{\numberline {11.9}Bounded Overhead}{101}{subsection.11.9}%
 \contentsline {subsubsection}{\numberline {11.9.1}Numerical Instantiation}{102}{subsubsection.11.9.1}%
 \contentsline {subsection}{\numberline {11.10}Additional Lemmas}{102}{subsection.11.10}%
 \contentsline {subsection}{\numberline {11.11}Summary of Proof Techniques}{103}{subsection.11.11}%
-\contentsline {subsection}{\numberline {11.12}Second-Edition Proofs: Defense Composition Algebra and Information-Geometric Bounds}{103}{subsection.11.12}%
+\contentsline {subsection}{\numberline {11.12}Second-Edition Proofs: Defense Composition Algebra and Information-Geometric Bounds}{104}{subsection.11.12}%
 \contentsline {subsection}{\numberline {11.13}The Defense Composition Algebra}{104}{subsection.11.13}%
 \contentsline {subsection}{\numberline {11.14}The Tight Information-Geometric Stealth-Impact Bound}{105}{subsection.11.14}%
 \contentsline {subsection}{\numberline {11.15}The Agent Compromise Blast Radius Bound}{106}{subsection.11.15}%
@@ -265,20 +265,20 @@
 \contentsline {subsection}{\numberline {13.4}Defense Mechanism Notation}{120}{subsection.13.4}%
 \contentsline {subsection}{\numberline {13.5}Detection \& Analysis Notation}{121}{subsection.13.5}%
 \contentsline {subsection}{\numberline {13.6}Consensus \& Coordination Notation}{121}{subsection.13.6}%
-\contentsline {subsection}{\numberline {13.7}Cost \& Performance Notation}{121}{subsection.13.7}%
+\contentsline {subsection}{\numberline {13.7}Cost \& Performance Notation}{122}{subsection.13.7}%
 \contentsline {subsection}{\numberline {13.8}Information \& Complexity Notation}{122}{subsection.13.8}%
 \contentsline {subsection}{\numberline {13.9}Stigmergic \& Colony Notation (Supplementary)}{122}{subsection.13.9}%
-\contentsline {subsection}{\numberline {13.10}General Mathematical Notation}{122}{subsection.13.10}%
+\contentsline {subsection}{\numberline {13.10}General Mathematical Notation}{123}{subsection.13.10}%
 \contentsline {subsection}{\numberline {13.11}CTL Temporal Logic Notation (Formal Verification)}{123}{subsection.13.11}%
-\contentsline {section}{\numberline {14}References}{124}{section.14}%
-\contentsline {subsection}{\numberline {14.1}Foundational Works}{124}{subsection.14.1}%
-\contentsline {subsection}{\numberline {14.2}Prompt Injection and LLM Security}{124}{subsection.14.2}%
-\contentsline {subsection}{\numberline {14.3}Constitutional AI and Alignment}{124}{subsection.14.3}%
-\contentsline {subsection}{\numberline {14.4}Multiagent Systems}{124}{subsection.14.4}%
-\contentsline {subsection}{\numberline {14.5}Trust in Distributed Systems}{124}{subsection.14.5}%
-\contentsline {subsection}{\numberline {14.6}Adversarial ML}{125}{subsection.14.6}%
-\contentsline {subsection}{\numberline {14.7}Formal Verification}{125}{subsection.14.7}%
-\contentsline {subsection}{\numberline {14.8}Cognitive Security}{125}{subsection.14.8}%
-\contentsline {subsection}{\numberline {14.9}Agent Frameworks}{125}{subsection.14.9}%
-\contentsline {subsection}{\numberline {14.10}2025 Agentic AI Security}{125}{subsection.14.10}%
-\contentsline {subsection}{\numberline {14.11}Eusocial Intelligence and Swarm Systems}{125}{subsection.14.11}%
+\contentsline {section}{\numberline {14}References}{125}{section.14}%
+\contentsline {subsection}{\numberline {14.1}Foundational Works}{125}{subsection.14.1}%
+\contentsline {subsection}{\numberline {14.2}Prompt Injection and LLM Security}{125}{subsection.14.2}%
+\contentsline {subsection}{\numberline {14.3}Constitutional AI and Alignment}{125}{subsection.14.3}%
+\contentsline {subsection}{\numberline {14.4}Multiagent Systems}{125}{subsection.14.4}%
+\contentsline {subsection}{\numberline {14.5}Trust in Distributed Systems}{125}{subsection.14.5}%
+\contentsline {subsection}{\numberline {14.6}Adversarial ML}{126}{subsection.14.6}%
+\contentsline {subsection}{\numberline {14.7}Formal Verification}{126}{subsection.14.7}%
+\contentsline {subsection}{\numberline {14.8}Cognitive Security}{126}{subsection.14.8}%
+\contentsline {subsection}{\numberline {14.9}Agent Frameworks}{126}{subsection.14.9}%
+\contentsline {subsection}{\numberline {14.10}2025 Agentic AI Security}{126}{subsection.14.10}%
+\contentsline {subsection}{\numberline {14.11}Eusocial Intelligence and Swarm Systems}{126}{subsection.14.11}%
