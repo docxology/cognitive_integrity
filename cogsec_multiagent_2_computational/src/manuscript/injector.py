@@ -672,8 +672,6 @@ def inject_abstract(
             document, "multi_seed_mean_dr", unavailable_reason(gt, "multi_seed")
         )
 
-    text = _apply_detection_delta(text, gt, document=document, report=report)
-
     # LLM detection range — only when a real LLM run produced measurements.
     if is_available(gt, "llm"):
         llm_lo = int(gt["llm_claude_dr"] * 100)
@@ -795,8 +793,6 @@ def inject_results(
     # the injector maintained it here. The row now lives only in
     # S08_parametric_analysis.md (see inject_parametric_supplement), so the
     # substitution was removed rather than left as a permanently dead pattern.
-    text = _apply_detection_delta(text, gt, document=document, report=report)
-
     changed = _finish(path, text, original, dry_run, document)
     if owns:
         report.raise_if_failed()
@@ -819,8 +815,6 @@ def inject_ablation(
     path = manuscript_dir / document
     text = path.read_text()
     original = text
-
-    text = _apply_detection_delta(text, gt, document=document, report=report)
 
     components = gt["ablation_components"]
     caption_parts = []
@@ -966,8 +960,6 @@ def inject_discussion(
     text = path.read_text()
     original = text
 
-    text = _apply_detection_delta(text, gt, document=document, report=report)
-
     if is_available(gt, "multi_seed"):
         text = _apply(
             text,
@@ -1069,8 +1061,6 @@ def inject_experimental_setup(
         report.record_unbacked(
             document, "multi_seed_mean_dr", unavailable_reason(gt, "multi_seed")
         )
-
-    text = _apply_detection_delta(text, gt, document=document, report=report)
 
     changed = _finish(path, text, original, dry_run, document)
     if owns:
@@ -1174,15 +1164,6 @@ def inject_statistical(
     # The same figure is restated inline two paragraphs down. Leaving it
     # unmaintained put a table row and its own interpretation paragraph in
     # direct contradiction (0.122 vs 0.124).
-    text = _apply(
-        text,
-        r"(full pipeline \$\s*" + _QUALIFIER + r")[\d.]+",
-        r"\g<1>" + f"{gt['full_pipeline_tpr']:.3f}",
-        document=document,
-        label="full_pipeline_tpr_prose",
-        report=report,
-    )
-    text = _apply_detection_delta(text, gt, document=document, report=report)
 
     changed = _finish(path, text, original, dry_run, document)
     if owns:
