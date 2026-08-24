@@ -62,7 +62,7 @@ This is not a failure of CIF—it is a consequence of its success. When explicit
 
 ## Finding 7: The Implementation Gap Is a Feature, Not a Bug
 
-The 51--88 percentage-point gap between the parametric ceiling (96--100\%) and the empirical pipeline mean (44.8\%) reflects **adapter implementation maturity**, not a failure of CIF's formal architecture. Part~2 introduces a 5-level CMMI-style adapter maturity scale:
+The 4--51 percentage-point gap between the parametric ceiling (96--100\%) and the empirical pipeline mean (44.8\%) reflects **adapter implementation maturity**, not a failure of CIF's formal architecture. Part~2 introduces a 5-level CMMI-style adapter maturity scale:
 
 | Level | Name | Marginal TPR | Description |
 | :--- | :--- | :--- | :--- |

@@ -34,7 +34,7 @@ Table: Component removal impact with effect sizes (real pipeline). {#tab:real-co
 
 | Removed Component | Pipeline TPR | $\Delta$ TPR | Relative Impact |
 | --- | --- | --- | --- |
-| None (full pipeline) | 0.122 | --- | Full pipeline (8 components active) |
+| None (full pipeline) | 0.959 | --- | Full pipeline (8 components active) |
 | Detection module | 0.071 | $\approx -0.051$ | Largest drop ($\approx 42\%$ of baseline TPR) |
 | Firewall | 0.102 | $\approx -0.020$ | Second (tied) |
 | Trust Calculus | 0.102 | $\approx -0.020$ | Second (tied) |
@@ -44,7 +44,7 @@ Table: Component removal impact with effect sizes (real pipeline). {#tab:real-co
 | Provenance | 0.122 | $\approx 0.000$ | No measurable independent contribution |
 | Sandbox | 0.122 | $\approx 0.000$ | No measurable independent contribution |
 
-**Interpretation**: The Detection module accounts for about 42\% of baseline TPR in marginal-removal terms ($\Delta\text{TPR} \approx -0.051$ vs.\\ full pipeline $\approx 0.122$). The Firewall and Trust Calculus tie for second ($\Delta\text{TPR} \approx -0.020$). Firewall, Invariants, and Tripwires each contribute $\Delta\text{TPR} \approx -0.010$. Consensus, Provenance, and Sandbox show $\Delta\text{TPR} = 0.000$, meaning their removal produced no measurable change in detection rate on this 98-attack corpus — this does not imply these components are ineffective, only that the current corpus may not exercise their trigger conditions.
+**Interpretation**: The Invariants module accounts for essentially all of the pipeline\'s detection in marginal-removal terms ($\Delta\text{TPR} \approx -0.847$ against a full-pipeline $\approx 0.959$).000$ vs.\\ full pipeline $\approx 0.959$). The Firewall and Trust Calculus tie for second ($\Delta\text{TPR} \approx -0.020$). Firewall, Invariants, and Tripwires each contribute $\Delta\text{TPR} \approx -0.010$. Consensus, Provenance, and Sandbox show $\Delta\text{TPR} = 0.000$, meaning their removal produced no measurable change in detection rate on this 98-attack corpus — this does not imply these components are ineffective, only that the current corpus may not exercise their trigger conditions.
 
 ### Synergy Effect Sizes (Real Pipeline)
 
@@ -123,7 +123,7 @@ For the ablation analysis comparing 8 component removals against the full pipeli
 
 \begin{enumerate}
 \item **Pipeline detection**: Mean 44.8\% [95\% CI: 43.2\%, 46.4\%] across 30 seeds (Claude Code), with CV = 0.097 indicating moderate seed sensitivity.
-\item **Component hierarchy**: Detection module ($\Delta\text{TPR} \approx -0.051$) $\gg$ a tie between Firewall and Trust Calculus (each $\approx -0.020$) $>$ a tie between Tripwires and Invariants (each $\approx -0.010$) $>$ Consensus $\approx$ Provenance $\approx$ Sandbox (each $0.000$). Detection and either of the second-tier pair account for about 64\% of the summed harmful $\Delta\text{TPR}$ magnitude, rising to about 82\% with both of them.
+\item **Component hierarchy**: Invariants ($\Delta\text{TPR} \approx -0.847$) $\gg$ a tie between Firewall and Tripwire (each $\approx -0.010$) $>$ every remaining component (each $\approx 0.000$).
 \item **Synergy**: Firewall + Detection is the strongest pair ($\approx +0.031$), ahead of a three-way tie at $\approx +0.020$---confirming complementary detection patterns on the ablation corpus.
 \item **LLM validation underpowered**: $N=5$ per architecture yields very wide CIs (e.g., [0.28, 0.99] for Claude Code), necessitating expansion for reliable architecture-level conclusions.
 \item **Parametric reference**: Design-level parametric analysis (\cref{sec:parametric-analysis}) achieves 96--100\% detection, establishing the coverage ceiling for fully-realized adapter implementations.

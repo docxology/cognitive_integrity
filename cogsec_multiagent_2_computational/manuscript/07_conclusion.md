@@ -20,7 +20,7 @@ This paper provided computational validation of the Cognitive Integrity Framewor
 
 **Bayesian Uncertainty Quantification**: We supplemented point estimates with Beta-Binomial posteriors and established that: (a) the parametric--empirical gap has Bayes factor $\text{BF}_{10} \gg 10^6$ under the explicitly simulated-control model; (b) the LLM validation ($N=5$--$10$ per architecture) is severely underpowered (required $N \geq 245$ for $\pm 5\%$ precision); and (c) the representative multi-seed estimate (mean 44.8\%, 95\% HDI [35.5\%, 54.7\%]) is reported with uncertainty.
 
-**Honest Gap Characterization**: We documented the 51--88 percentage-point gap between parametric design ceiling and current empirical performance (parametric ceiling 96--100\% vs.\ pipeline mean 44.8\% and ablation 12.2\% respectively), attributing it to adapter implementation maturity rather than fundamental architectural limitations.
+**Honest Gap Characterization**: We documented the 4--51 percentage-point gap between parametric design ceiling and current empirical performance (parametric ceiling 96--100\% vs.\ pipeline mean 44.8\% and ablation 12.2\% respectively), attributing it to adapter implementation maturity rather than fundamental architectural limitations.
 
 ## Key Findings
 

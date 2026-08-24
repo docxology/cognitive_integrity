@@ -8,28 +8,32 @@ This section quantifies the contribution of individual defense components and ch
 
 ## Defense Component Contributions {#sec:component-removal}
 
-\cref{fig:ablation-study} visualizes the detection-rate impact of removing each CIF component from the full ensemble. The Detection module contributes the largest marginal drop ($\Delta\text{TPR} \approx -0.051$), accounting for nearly half of all pipeline detection. The Firewall and Trust Calculus tie for second ($\Delta\text{TPR} \approx -0.020$). The remaining active components (Firewall, Invariants, Tripwire) each contribute $\Delta\text{TPR} \approx -0.010$, while Provenance, Sandbox, and Consensus show no measurable independent contribution on the current 98-attack stratified corpus.
+\cref{fig:ablation-study} visualizes the detection-rate impact of removing each CIF component from the full ensemble. One component dominates: removing the Invariants module costs $\Delta\text{TPR} \approx -0.847$ of the pipeline's 0.959, and the Firewall and Tripwire contribute $\approx -0.010$ each. Every other component, Detection and Trust Calculus included, has no measurable independent contribution on this corpus.
 
-![Ablation Study: Defense Component Contribution. Horizontal bar chart showing detection rate impact of removing each CIF component from the full ensemble (prototype pipeline, real corpus, 98-attack stratified sample). The Detection module contributes the largest marginal drop when removed ($\Delta\text{TPR} \approx -0.051$), followed by Trust Calculus ($\approx -0.020$), Firewall ($\approx -0.010$), Invariants ($\approx -0.010$), Tripwire ($\approx -0.010$), Consensus ($\approx +0.000$), Provenance ($\approx +0.000$), and Sandbox ($\approx +0.000$); Provenance, Sandbox, and Consensus show no measurable independent delta on this corpus. Top synergy pair (firewall+detection and tripwire+detection, tied): $\approx +0.031$ beyond additive prediction. All values sourced directly from \texttt{output/data/ablation\_results.json}.](figures/ablation_study.pdf){#fig:ablation-study width=95%}
+This is a reversal of what the same ablation reported before the Invariants module was rewritten, and the reason is worth stating rather than burying. The earlier version scored topic nouns: a message was suspicious if it contained the word "token" or "credential". That fired on a benign document describing a rate limiter's token bucket while missing 1,345 of 1,475 attacks, and it left the module contributing $\Delta\text{TPR} \approx -0.010$. The rewrite scores demand structure instead, requiring a verb acting on a sensitive object across five named invariants, on the observation that attacks demand things whereas documents mention them. The pipeline's measured detection moves from 0.122 to 0.959 on the same corpus with no change to any other module.
+
+The corollary is uncomfortable and should not be smoothed over: the components that had received the most pattern engineering, Detection and the Firewall, now measure at or near zero marginal contribution, because everything they catch the Invariants module already caught.
+
+![Ablation Study: Defense Component Contribution. Horizontal bar chart of the detection-rate cost of removing each CIF component from the full ensemble (prototype pipeline, real corpus, 98-attack stratified sample). The Invariants module dominates, followed by Firewall ($\approx -0.010$), and Tripwire ($\approx -0.010$); Consensus, Detection, Provenance, Sandbox, and Trust Calculus show no measurable independent contribution --- not because they detect nothing in isolation, but because everything they catch on this corpus the Invariants module catches too, which is what a leave-one-out delta cannot distinguish. The strongest pair beyond additive prediction is Firewall + Detection at $\approx +0.031$. All values from \texttt{output/data/ablation\_results.json}.](figures/ablation_study.pdf){#fig:ablation-study width=95%}
 
 The ablation analysis quantifies each defense component's marginal contribution on the prototype pipeline evaluated against a stratified 98-attack corpus (\cref{tab:component-removal}).
 
-> **Methodology**: Results from `scripts/run_ablation.py` → `output/data/ablation_results.json`. The full pipeline achieves $\sim$12.2\% TPR on this corpus (not 94\%); the 94\%+ figures are from the parametric simulation. The low absolute TPR reflects that the current adapter implementations demonstrate the CIF architecture using targeted pattern matching; several attack categories (indirect injection, belief manipulation, coordination) require semantic analysis not yet implemented. See §\ref{sec:ablation-summary} for discussion.
+> **Methodology**: Results from `scripts/run_ablation.py` → `output/data/ablation_results.json`. The full pipeline achieves $\sim$95.9\% TPR on this corpus. That figure has to be read with its corpus in mind: the attack corpus is generated from templates, and a detector keyed on demand structure is being asked to recognise generated demands, so 95.9\% is an upper bound relative to adversarial text written by a human trying to evade it. The false-positive side is measured against `BenignCorpus`, half of which is a deliberately hard stratum of legitimate messages carrying attack-adjacent vocabulary; that is the number to watch, and it is reported alongside every rate here.
 
 Table: Component removal impact analysis (prototype pipeline, real corpus, 98-attack stratified sample). {#tab:component-removal}
 
 | Removed Component | TPR | $\Delta$ TPR | Interpretation |
 | --- | --- | --- | --- |
-| Detection module | 0.071 | $\approx -0.051$ | Most critical: text-feature analysis accounts for 42\% of pipeline detection |
-| Trust Calculus | 0.102 | $\approx -0.020$ | Tied with the firewall: authority-claim pressure detection |
-| Firewall | 0.102 | $\approx -0.020$ | Pattern matching for known injection strings, context-weighted |
-| Invariants | 0.112 | $\approx -0.010$ | Code/credential access detection |
-| Tripwires | 0.112 | $\approx -0.010$ | Canary-belief shift detection |
-| Consensus | 0.122 | $\approx +0.000$ | No measurable independent contribution on this corpus |
-| Provenance | 0.122 | $\approx +0.000$ | No measurable independent contribution on this corpus |
-| Sandbox | 0.122 | $\approx +0.000$ | No measurable independent contribution on this corpus |
+| Invariants | 0.112 | $\approx -0.847$ | Dominant: demand structure across five named invariants |
+| Firewall | 0.949 | $\approx -0.010$ | Pattern matching for known injection strings, context-weighted |
+| Tripwires | 0.949 | $\approx -0.010$ | Canary-belief shift detection |
+| Detection module | 0.959 | $\approx +0.000$ | Subsumed: what it catches, Invariants catches first |
+| Trust Calculus | 0.959 | $\approx +0.000$ | No measurable independent contribution on this corpus |
+| Consensus | 0.959 | $\approx +0.000$ | No measurable independent contribution on this corpus |
+| Provenance | 0.959 | $\approx +0.000$ | No measurable independent contribution on this corpus |
+| Sandbox | 0.959 | $\approx +0.000$ | No measurable independent contribution on this corpus |
 
-> **Note**: The three bottom-ranked components (Consensus, Provenance, Sandbox) show $\Delta\text{TPR} = 0.000$ on this corpus, meaning their removal produced no measurable change in detection rate. This does not imply these components are ineffective — the 98-attack stratified sample may not exercise their trigger conditions, or their contribution may be in false-positive reduction (which is 0.0 for all configurations on this corpus) rather than true-positive detection. Evaluation on larger, more diverse corpora is needed to characterize these components' contributions.
+> **Note**: A $\Delta\text{TPR}$ of 0.000 under leave-one-out is not evidence that a component does nothing, and this corpus now demonstrates the point twice over. First, removal deltas are *marginal*: a component whose detections are all also caught by the Invariants module shows zero here while detecting a great deal on its own, which is what happened to the Detection module. Second, a component can be invisible to this measurement because the combination rule cannot see it. The pipeline compares a maximum across eight scores to one threshold, and those scores do not share a scale; measured in units of their own benign distributions, Consensus, Provenance, Sandbox and Invariants are the four that separate the classes best, which is the reverse of what this table showed before the Invariants rewrite. That analysis is in \texttt{scripts/run\_combination\_rule\_study.py}, and it means leave-one-out ablation understates any component the maximum rule is already discarding.
 
 ## Minimal Viable Configurations {#sec:minimal-config}
 
@@ -49,7 +53,7 @@ Table: Component synergy analysis (real pipeline, 98-attack corpus). {#tab:syner
 | Trust Calculus + Tripwire | $\approx +0.020$ | Authority detection + canary monitoring |
 | Trust Calculus + Detection | $\approx +0.020$ | Authority detection + text-feature analysis |
 
-**Finding**: The top synergy tier (firewall+detection and tripwire+detection, both $\approx +0.031$) confirms that the Detection module amplifies the contribution of upstream pattern-based and behavioral detectors. The second tier (all $\approx +0.020$) shows that Trust Calculus pairs with multiple other components to produce modest but consistent synergy. No synergy pairs involving Consensus, Provenance, Sandbox, or Invariants were measurable on this corpus. See \cref{tab:real-synergy} for effect sizes and confidence intervals.
+**Finding**: The strongest pair (firewall+detection, $\approx +0.031$) confirms that the Detection module amplifies the contribution of upstream pattern-based and behavioral detectors. The second tier (all $\approx +0.020$) shows that Trust Calculus pairs with multiple other components to produce modest but consistent synergy. No synergy pairs involving Consensus, Provenance, Sandbox, or Invariants were measurable on this corpus. See \cref{tab:real-synergy} for effect sizes and confidence intervals.
 
 ## Agent Count Scaling {#sec:agent-scaling}
 
@@ -139,7 +143,7 @@ Table: Performance scaling with message volume. {#tab:volume-scaling}
 ## Summary {#sec:ablation-summary}
 
 \begin{enumerate}
-\item **Component hierarchy (real prototype pipeline, 98-attack corpus)**: Detection module $\gg$ Trust Calculus $>$ Firewall $\approx$ Invariants $\approx$ Tripwire $>$ Consensus $\approx$ Provenance $\approx$ Sandbox. This ordering reflects the current adapter implementations; the three bottom-ranked components may show contributions on larger or more diverse corpora.
+\item **Component hierarchy (real prototype pipeline, 98-attack corpus)**: Invariants $\gg$ Firewall $\approx$ Tripwire $>$ Consensus $\approx$ Detection module $\approx$ Provenance $\approx$ Sandbox $\approx$ Trust Calculus. This ordering reflects the current adapter implementations; the three bottom-ranked components may show contributions on larger or more diverse corpora.
 \item **Coverage gap**: Full prototype pipeline achieves $\sim$12.2\% TPR on the 98-attack ablation corpus; multi-seed analysis shows $\sim$44.8\% mean DR across 30 seeds (Claude Code). The parametric simulation achieves 96--100\% (\cref{sec:parametric-analysis}). The gap reflects adapter implementation maturity, not fundamental architectural limitations.
 \item **Scalability**: Approximately linear time and memory scaling up to 100 agents. The $O(n^2)$ trust-matrix storage becomes dominant only at larger scales ($n > 500$).
 \item **Throughput limit**: $\sim$5000 msg/sec before detection degradation.
