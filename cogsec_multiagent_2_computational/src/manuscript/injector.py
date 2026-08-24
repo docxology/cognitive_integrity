@@ -835,10 +835,26 @@ def inject_ablation(
     new_order_str = ", ".join(caption_parts[:-1]) + f", and {caption_parts[-1]}"
     # Non-greedy so the replacement (which contains '.' inside numbers) stays
     # matchable on a second run — the idempotency property this module claims.
+    # The trailing clause used to name Provenance, Sandbox and Consensus as the
+    # zero-contribution set, which was true when it was written and is not now:
+    # rewriting the Invariants module left Detection and Trust Calculus at zero
+    # marginal contribution too. Hardcoding the membership of a set the data
+    # decides is how a caption goes quietly stale, so it is derived.
+    zero_components = [
+        c["removed"].replace("_", " ").title()
+        for c in components
+        if abs(c["delta_tpr"]) < 1e-9
+    ]
+    zero_clause = (
+        ", ".join(zero_components[:-1]) + f", and {zero_components[-1]}"
+        if len(zero_components) > 1
+        else (zero_components[0] if zero_components else "no component")
+    )
     text = _apply(
         text,
-        r"followed by .+?; Provenance, Sandbox, and Consensus show",
-        f"followed by {new_order_str}; Provenance, Sandbox, and Consensus show",
+        r"followed by .+?; .+? show no measurable independent contribution",
+        f"followed by {new_order_str}; {zero_clause} show no measurable "
+        f"independent contribution",
         document=document,
         label="component_order_caption",
         report=report,
