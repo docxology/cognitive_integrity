@@ -492,7 +492,11 @@ _DATA_DIR = Path(__file__).resolve().parent.parent / "output" / "data"
 class TestShippedArtifacts:
     """The checked-in results must not be DataGenerator placeholders."""
 
-    @pytest.mark.parametrize("name", _REGRESSION_NAMES)
+    # Parametrised over the whole guarded set, not over ``_REGRESSION_NAMES``.
+    # Two of the seven authoritative names were checked here; the other five
+    # shipped artifacts had no gate at all, so the exact defect these tests
+    # exist to catch could recur in any of them unnoticed.
+    @pytest.mark.parametrize("name", sorted(AUTHORITATIVE_RESULT_NAMES))
     def test_shipped_result_is_not_synthetic(self, name):
         path = _DATA_DIR / f"{name}.json"
         if not path.exists():
@@ -522,6 +526,10 @@ class TestShippedArtifacts:
         shipped = json.loads(path.read_text())
 
         def _strip(payload):
+            # List-shaped artifacts (full_evaluation_results) carry their
+            # provenance in a sidecar, so there is nothing inline to strip.
+            if not isinstance(payload, dict):
+                return payload
             return {k: v for k, v in payload.items() if k not in PROVENANCE_KEYS}
 
         assert _strip(shipped) != _strip(synthetic), (

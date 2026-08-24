@@ -29,7 +29,7 @@ This profile corresponds to the parametrically optimal configuration identified 
 **Configuration Parameters**:
 
 * **Trust Decay ($\delta$)**: `0.80`. At this setting, trust degrades to <50% after 4 hops, strictly bounding the "radius of effective delegation."
-* **Firewall Sensitivity**: Balanced (reject threshold $\tau_1 =0.5$).
+* **Firewall Sensitivity**: Balanced (reject threshold $\tau_1 = 0.7$; quarantine threshold $\tau_2 = 0.5$).
 * **Consensus**: Variable (Architecture Dependent).
 
 **Modelled performance** (Part 2, parametric parameter-sensitivity analysis --- simulation output under calibrated conditions, not a measurement of a running deployment):

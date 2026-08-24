@@ -19,8 +19,8 @@ The test corpus included direct prompt injection, poisoned RAG contexts, deep tr
 
 ## Finding 1: Defense Layering vs. Individual Efficacy
 
-**The Data**: Individual defenses (like just a firewall) stopped ~60--70% of attacks in the parametric evaluation. The full CIF stack achieved a **96--100% parametric detection ceiling**, with direct injection detected at 99--100% across architectures. The separate real-pipeline evaluation had a lower multi-seed mean of approximately 44.8%.
-**The Implication**: The defenses demonstrated orthogonal coverage. The firewall blocked inputs that the sandbox would have missed, and the sandbox identified anomalies that the trust calculus would have permitted. The data suggests that removing any single layer creates a statistically significant vulnerability gap.
+**The Data**: In the parametric evaluation the full CIF stack achieved a **96--100% parametric detection ceiling**, with direct injection detected at 99--100% across architectures. The separate real-pipeline evaluation had a lower multi-seed mean of approximately 44.8%.
+**The Implication**: The parametric model rewards layering, but the real pipeline does not spread the work evenly across layers, and the 98-attack ablation corpus says so plainly. The Invariants module alone detects 92.9% of that corpus against the full stack's 95.9%; the Firewall, Detection, Tripwire and Trust Calculus modules each detect between 2% and 6% on their own. Removing Invariants costs about 85 percentage points of true-positive rate, removing the Firewall or the Tripwire costs about one point each, and removing Consensus, Detection, Provenance, Sandbox or Trust Calculus costs nothing this corpus can measure. That is a statement about *marginal* contribution, not about capability: a module whose detections are all also caught by Invariants scores zero here while detecting plenty on its own. Layering still buys coverage against attacks this corpus does not contain, but the older claim that removing any single layer opens a measurable gap is not what the ablation shows.
 
 ## Finding 2: State Machine Determinism
 
@@ -47,7 +47,7 @@ The test corpus included direct prompt injection, poisoned RAG contexts, deep tr
 
 ## Finding 6: Emergent Misalignment Is the Hardest Scenario to Detect
 
-The colony benchmark reveals a striking pattern: **emergent misalignment achieves the lowest detection rate (74.3\%) at the highest false positive rate (25.5\%)** of any evaluated scenario. (These are Part 2's 30-seed benchmark means; an earlier single-seed figure of 56.1\% is not the publication estimate.) Part 2's game-theoretic analysis does not explain why, and it is worth being exact about that. Its payoff matrix is a design model: thirty-five of its thirty-six cells have no measurement behind them, and the one that does is this scenario. On the published 74.3\% the equilibrium moves to coordination with game value 0.61; it named emergent misalignment only while the matrix still carried the retracted single-seed 56.1\%. What survives is the measurement itself: of the five scenarios the colony benchmark actually runs, emergent misalignment is the hardest to detect, and by a clear margin.
+The colony benchmark reveals a striking pattern: **emergent misalignment achieves the lowest detection rate (74.3\%) of any evaluated scenario**, at a false positive rate of 25.5\%. It is not the noisiest scenario: belief cascade detects every attack but at a higher false positive cost (37.4\%). (These are Part 2's 30-seed benchmark means; an earlier single-seed figure of 56.1\% is not the publication estimate.) Part 2's game-theoretic analysis does not explain why, and it is worth being exact about that. Its payoff matrix is a design model: thirty-five of its thirty-six cells have no measurement behind them, and the one that does is this scenario. On the published 74.3\% the equilibrium moves to coordination with game value 0.61; it named emergent misalignment only while the matrix still carried the retracted single-seed 56.1\%. What survives is the measurement itself: of the five scenarios the colony benchmark actually runs, emergent misalignment is the hardest to detect, and by a clear margin.
 
 Part 2's parametric evaluation and colony benchmark show that:
 - Full CIF achieves 99--100\% detection against direct injection ($\Omega_1$) and 96--100\% against impersonation, the corpus category standing for trust exploitation ($\Omega_4$)
@@ -62,7 +62,7 @@ This is not a failure of CIF—it is a consequence of its success. When explicit
 
 ## Finding 7: The Implementation Gap Is a Feature, Not a Bug
 
-The 4--51 percentage-point gap between the parametric ceiling (96--100\%) and the empirical pipeline mean (44.8\%) reflects **adapter implementation maturity**, not a failure of CIF's formal architecture. Part~2 introduces a 5-level CMMI-style adapter maturity scale:
+The 4--51 percentage-point gap between the parametric ceiling (96--100\%) and the real pipeline reflects **adapter implementation maturity**, not a failure of CIF's formal architecture. Its two ends are two different measurements and should not be read as one range around one deployment. The wide end is the distance from the parametric floor to the 30-seed pipeline mean of 44.8\%. The narrow end is the distance from the top of the parametric range to the 95.9\% the same pipeline now reaches on the 98-attack ablation corpus --- a figure that stood at 12.2\% until the Invariants module was rewritten, and that moved with no change to any other module. Plan against the wide end. Part~2 introduces a 5-level CMMI-style adapter maturity scale:
 
 | Level | Name | Marginal TPR | Description |
 | :--- | :--- | :--- | :--- |
@@ -94,8 +94,8 @@ We proved the *architecture* works. The implementation fidelity is the variable 
 > **A Note on Three Numbers**: Throughout this guide you will encounter three detection rates that may seem contradictory. They are not — they measure different things:
 >
 > - **96--100\%** (parametric simulation, $N=3{,}800$): CIF's **design-level detection ceiling** — what the defense architecture achieves when adapters are fully mature (Level 5) and conditions match the calibrated model. This is the target, not the current reality.
-> - **44.8\%** [95\% HDI: 41.3\%, 48.3\%] (multi-seed pipeline, 30 seeds): The **current empirical baseline** for the Claude Code architecture with Level-3 adapters. This is what you get today, out of the box, before adapter tuning.
-> - **~12.2\%** (ablation corpus, 98 attacks, all categories including hardest): The **conservative floor** — full pipeline performance on a corpus specifically designed to include difficult attacks. This represents the worst-case realistic estimate.
+> - **44.8\%** [95\% CI: 43.2\%, 46.4\%] (multi-seed pipeline, 30 seeds): The **current empirical baseline** for the Claude Code architecture with Level-3 adapters. This is what you get today, out of the box, before adapter tuning.
+> - **95.9\%** (98-attack ablation corpus, all categories including hardest): full-pipeline true-positive rate on a corpus built to include difficult attacks. This bullet read ~12.2\% until the Invariants module was rewritten to score demand structure rather than topic nouns; no other module changed. Read it as an upper bound rather than a floor: the corpus is template-generated, a detector keyed on demand structure is being asked to recognise generated demands, and the 0\% false-positive rate reported beside it comes from the fifty easy benign strings hard-coded in Part 2's ablation runner, not from the adversarially hard `BenignCorpus` behind the multi-seed figure above.
 >
 > All three numbers are correct. Use 44.8\% for realistic planning, 96\% as the floor of the achievable ceiling with mature adapters, and ~12.2\% as a conservative lower bound for adversarial threat modeling.
 

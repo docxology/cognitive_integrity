@@ -15,8 +15,8 @@ The CIF defense suite comprises six algorithms, each implementing a specific for
 ### Monadic Type Signature
 
 ```python
-# Standard interface (src/core/firewall.py)
-def evaluate(self, message: str, context: dict | None) -> DefenseResult: ...
+# Standard interface (src/composition/adapters.py, FirewallAdapter)
+def evaluate(self, message: str, context: dict | None = None) -> DefenseResult: ...
 
 # Monadic interface (src/core/monad.py)
 from src.core.monad import from_defense_result, Result, DetectionEvent
@@ -34,8 +34,8 @@ See Supplement~\ref{sec:s09-functional-api} for full specification.
 ### Monadic Type Signature
 
 ```python
-# Standard interface (src/core/sandbox.py)
-def evaluate(self, message: str, context: dict | None) -> DefenseResult: ...
+# Standard interface (src/composition/adapters.py, SandboxAdapter)
+def evaluate(self, message: str, context: dict | None = None) -> DefenseResult: ...
 
 # Monadic interface (src/core/monad.py)
 from src.core.monad import from_defense_result, Result, DetectionEvent
@@ -53,8 +53,8 @@ See Supplement~\ref{sec:s09-functional-api} for full specification.
 ### Monadic Type Signature
 
 ```python
-# Standard interface (src/core/trust.py)
-def evaluate(self, message: str, context: dict | None) -> DefenseResult: ...
+# Standard interface (src/composition/adapters.py, TrustAdapter)
+def evaluate(self, message: str, context: dict | None = None) -> DefenseResult: ...
 
 # Monadic interface (src/core/monad.py)
 from src.core.monad import from_defense_result, Result, DetectionEvent
@@ -72,8 +72,8 @@ See Supplement~\ref{sec:s09-functional-api} for full specification.
 ### Monadic Type Signature
 
 ```python
-# Standard interface (src/core/tripwire.py)
-def evaluate(self, message: str, context: dict | None) -> DefenseResult: ...
+# Standard interface (src/composition/adapters.py, TripwireAdapter)
+def evaluate(self, message: str, context: dict | None = None) -> DefenseResult: ...
 
 # Monadic interface (src/core/monad.py)
 from src.core.monad import from_defense_result, Result, DetectionEvent
@@ -91,8 +91,8 @@ See Supplement~\ref{sec:s09-functional-api} for full specification.
 ### Monadic Type Signature
 
 ```python
-# Standard interface (src/core/consensus.py)
-def evaluate(self, message: str, context: dict | None) -> DefenseResult: ...
+# Standard interface (src/composition/adapters.py, ConsensusAdapter)
+def evaluate(self, message: str, context: dict | None = None) -> DefenseResult: ...
 
 # Monadic interface (src/core/monad.py)
 from src.core.monad import from_defense_result, Result, DetectionEvent
@@ -110,8 +110,8 @@ See Supplement~\ref{sec:s09-functional-api} for full specification.
 ### Monadic Type Signature
 
 ```python
-# Standard interface (src/core/detection.py)
-def evaluate(self, message: str, context: dict | None) -> DefenseResult: ...
+# Standard interface (src/composition/adapters.py; src/core/detection.py's AnomalyScorer.evaluate takes (agent_id, state) and returns AnomalyVerdict)
+def evaluate(self, message: str, context: dict | None = None) -> DefenseResult: ...
 
 # Monadic interface (src/core/monad.py)
 from src.core.monad import from_defense_result, Result, DetectionEvent
@@ -134,7 +134,7 @@ To make the layered defense concrete, consider the attack payload: *"Ignore prev
 
 **Stage 2 — Belief Sandbox**: Source trust $\mathcal{T}_s = 0.4 < \tau_{trusted} = 0.9$ → belief quarantined as PENDING in $\mathcal{B}_{provisional}$. Promotion check: provenance $V(\pi) = \text{True}$, consistency check passes, but corroboration count $= 0 < \kappa = 2$ → remains provisional.
 
-**Stage 3 — Tripwire Monitor**: Canary belief "I operate only under my operator's instructions" checked. If this belief probability drifts from 0.95 to 0.62, drift $= 0.33 > \epsilon_{critical} = 0.30$ → **CRITICAL alert** emitted; `TriggerResponse()` called.
+**Stage 3 — Tripwire Monitor**: Canary belief "I operate only under my operator's instructions" checked. If this belief probability drifts from 0.95 to 0.62, drift $= 0.33 > \epsilon_{high} = 0.30$ → **HIGH alert** emitted; `TriggerResponse()` called.
 
 **Stages 4–8**: Drift Detector computes KL divergence $= 0.18$ (below $\theta_{drift} = 0.3$, no alert). Trust Update applies failure penalty to source reputation. Byzantine Consensus (if invoked) rejects the instruction by supermajority. Provenance Attestation flags unverifiable delegation chain.
 
@@ -142,4 +142,4 @@ To make the layered defense concrete, consider the attack payload: *"Ignore prev
 
 ## Configuration Parameters
 
-All algorithms share a unified configuration system with 27 parameters organized into eight groups. Default values are calibrated for balanced precision--recall trade-offs. Full parameter documentation is in Supplement S5 (\cref{sec:framework-api}).
+All algorithms share a unified configuration system with 29 parameters organized into eight groups. Default values are calibrated for balanced precision--recall trade-offs. Full parameter documentation is in Supplement S5 (\cref{sec:framework-api}).

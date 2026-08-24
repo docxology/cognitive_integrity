@@ -50,7 +50,7 @@ This formalism suggests that catastrophic attacks are inherently easier to detec
 
 Finally, Part 1 defines the **Composition Algebra**, determining how output probabilities of distinct modules interact. The key result is that orthogonal defenses compose multiplicatively.
 
-This "Swiss Cheese Model" was supported by Part 2's parametric simulation, where the full stack reached a 96--100% design-level detection ceiling and outperformed the sum of its parts. The real prototype pipeline is materially lower and is reported separately as a multi-seed mean of approximately 44.8%.
+This "Swiss Cheese Model" was supported by Part 2's parametric simulation, where the full stack reached a 96--100% design-level detection ceiling and outperformed the sum of its parts. The real prototype pipeline is materially lower and is reported separately as a multi-seed mean of approximately 44.8%. It also distributes the work far less evenly than the model implies: on Part 2's 98-attack ablation corpus the series-composition prediction lands within a couple of points of the measured full-stack rate, but nearly all of the detection comes from one module, so the full stack's margin over the best single layer is about three percentage points. Compose layers for coverage, not on the assumption that each contributes an independent slice.
 
 ## The Science Behind Belief Updates: Free Energy {#sec:fep-connection}
 

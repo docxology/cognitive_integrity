@@ -203,9 +203,9 @@ cif:
 
   tripwires:
     enabled: true
-    epsilon_critical: 0.30   # Drift above this → CRITICAL alert
-    epsilon_high: 0.20       # Drift in (epsilon_high, epsilon_critical] → HIGH
-    epsilon_medium: 0.08     # Drift in (epsilon_medium, epsilon_high] → MEDIUM
+    epsilon_critical: 0.50   # Drift above this → CRITICAL alert
+    epsilon_high: 0.30       # Drift in (epsilon_high, epsilon_critical] → HIGH
+    epsilon_medium: 0.20     # Drift in (epsilon_medium, epsilon_high] → MEDIUM
     check_interval: 30
     canaries:
       - id: "identity"

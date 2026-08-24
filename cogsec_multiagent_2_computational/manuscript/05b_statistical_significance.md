@@ -2,7 +2,7 @@
 
 # Statistical Significance and Effect Sizes {#sec:statistical-validation}
 
-This section establishes the statistical validity of our empirical findings through analysis of the multi-seed pipeline results ($N=30$ seeds) and ablation data (100-attack corpus).
+This section establishes the statistical validity of our empirical findings through analysis of the multi-seed pipeline results ($N=30$ seeds) and ablation data (98-attack corpus).
 
 > **Reproducibility**: Multi-seed data from `scripts/run_multi_seed.py` → `output/data/multi_seed_results.json`. Ablation data from `scripts/run_ablation.py` → `output/data/ablation_results.json`. Parametric simulation statistics are consolidated in \cref{sec:parametric-analysis}.
 
@@ -35,16 +35,16 @@ Table: Component removal impact with effect sizes (real pipeline). {#tab:real-co
 | Removed Component | Pipeline TPR | $\Delta$ TPR | Relative Impact |
 | --- | --- | --- | --- |
 | None (full pipeline) | 0.959 | --- | Full pipeline (8 components active) |
-| Detection module | 0.071 | $\approx -0.051$ | Largest drop ($\approx 42\%$ of baseline TPR) |
-| Firewall | 0.102 | $\approx -0.020$ | Second (tied) |
-| Trust Calculus | 0.102 | $\approx -0.020$ | Second (tied) |
-| Invariants | 0.112 | $\approx -0.010$ | Third (tied) |
-| Tripwires | 0.112 | $\approx -0.010$ | Third (tied) |
-| Consensus | 0.122 | $\approx 0.000$ | No measurable independent contribution |
-| Provenance | 0.122 | $\approx 0.000$ | No measurable independent contribution |
-| Sandbox | 0.122 | $\approx 0.000$ | No measurable independent contribution |
+| Invariants | 0.112 | $\approx -0.847$ | Dominant ($\approx 88\%$ of baseline TPR) |
+| Firewall | 0.949 | $\approx -0.010$ | Second (tied) |
+| Tripwires | 0.949 | $\approx -0.010$ | Second (tied) |
+| Detection module | 0.959 | $\approx 0.000$ | No measurable marginal contribution |
+| Trust Calculus | 0.959 | $\approx 0.000$ | No measurable marginal contribution |
+| Consensus | 0.959 | $\approx 0.000$ | No measurable marginal contribution |
+| Provenance | 0.959 | $\approx 0.000$ | No measurable marginal contribution |
+| Sandbox | 0.959 | $\approx 0.000$ | No measurable marginal contribution |
 
-**Interpretation**: The Invariants module accounts for essentially all of the pipeline\'s detection in marginal-removal terms ($\Delta\text{TPR} \approx -0.847$ against a full-pipeline $\approx 0.959$).000$ vs.\\ full pipeline $\approx 0.959$). The Firewall and Trust Calculus tie for second ($\Delta\text{TPR} \approx -0.020$). Firewall, Invariants, and Tripwires each contribute $\Delta\text{TPR} \approx -0.010$. Consensus, Provenance, and Sandbox show $\Delta\text{TPR} = 0.000$, meaning their removal produced no measurable change in detection rate on this 98-attack corpus — this does not imply these components are ineffective, only that the current corpus may not exercise their trigger conditions.
+**Interpretation**: The Invariants module accounts for essentially all of the pipeline's detection in marginal-removal terms ($\Delta\text{TPR} \approx -0.847$ vs.\ full pipeline $\approx 0.959$). The Firewall and Tripwires tie for second, each contributing about $-0.010$. Detection, Trust Calculus, Consensus, Provenance, and Sandbox measure zero, meaning their removal produced no measurable change in detection rate on this 98-attack corpus — this does not imply these components are ineffective, only that the current corpus may not exercise their trigger conditions.
 
 ### Synergy Effect Sizes (Real Pipeline)
 

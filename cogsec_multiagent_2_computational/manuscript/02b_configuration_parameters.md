@@ -64,9 +64,9 @@ Table: Cognitive tripwire configuration parameters. {#tab:tripwire-params}
 
 | Parameter | Symbol | Default | Range | Description |
 | --- | --- | --- | --- | --- |
-| Critical threshold | $\epsilon_{critical}$ | 0.30 | $(0.2, 1.0)$ | Drift above this triggers CRITICAL alert |
-| High threshold | $\epsilon_{high}$ | 0.20 | $(0.1, 0.5)$ | Drift in $(\epsilon_{high}, \epsilon_{critical}]$ triggers HIGH |
-| Medium threshold | $\epsilon_{medium}$ | 0.08 | $(0, 0.2)$ | Drift in $(\epsilon_{medium}, \epsilon_{high}]$ triggers MEDIUM |
+| Critical threshold | $\epsilon_{critical}$ | 0.50 | $(0.2, 1.0)$ | Drift above this triggers CRITICAL alert |
+| High threshold | $\epsilon_{high}$ | 0.30 | $(0.1, 0.5)$ | Drift in $(\epsilon_{high}, \epsilon_{critical}]$ triggers HIGH |
+| Medium threshold | $\epsilon_{medium}$ | 0.20 | $(0, 0.3)$ | Drift in $(\epsilon_{medium}, \epsilon_{high}]$ triggers MEDIUM |
 | Check interval | $\tau_{tripwire}$ | 30s | $[5, 300]$ | Monitoring frequency |
 | Canary tolerance | $\epsilon_{canary}$ | 0.10 | $(0, 0.5)$ | Per-canary deviation tolerance |
 
@@ -79,7 +79,7 @@ Table: Drift detection configuration parameters. {#tab:drift-params}
 | Parameter | Symbol | Default | Range | Description |
 | --- | --- | --- | --- | --- |
 | KL threshold | $\theta_{drift}$ | 0.3 | $(0, 2)$ | Alert threshold |
-| Max delta weight | $\lambda$ | 0.3 | $[0, 1]$ | Sudden change weight |
+| Max delta weight | $\lambda$ | 0.5 | $[0, 1]$ | Sudden change weight |
 | Smoothing factor | $\alpha_{ema}$ | 0.1 | $(0, 1)$ | EMA decay |
 
 ## Consensus Parameters {#sec:consensus-params}

@@ -67,7 +67,7 @@ The risk-profile-based configuration in Section 5 provides calibrated starting p
 
 **What the research shows**: Part 1's entire contribution is premised on the observation that multiagent systems introduce qualitatively new attack surfaces. The adversary hierarchy ($\Omega_3$--$\Omega_5$) specifically targets coordination, consensus, and systemic properties that don't exist in single-agent systems.
 
-Part 2's results show that coordination attacks (sybil, timing, quorum manipulation) are the *hardest* to detect---precisely because they exploit emergent properties of the agent collective rather than vulnerabilities in individual agents.
+Part 2's colony benchmark measures the collective attack surface once collective-level defenses are deployed: sybil infiltration, quorum manipulation, and belief cascade are each detected at 100\%, while emergent misalignment---distributed sub-threshold drift with no explicit adversary and no single-agent analogue---remains the hardest scenario at 74.3\% detection (\cref{sec:paper2-review}, Finding 6). Those are the numbers a system gets *because* it has collective-level defenses; individual-only security has no mechanism that observes coordination at all, so the $\Omega_3$--$\Omega_5$ surfaces go unwatched rather than merely under-detected.
 
 **Mitigation Strategies**:
 

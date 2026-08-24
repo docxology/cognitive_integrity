@@ -212,7 +212,7 @@ $\tau_2 = 0.5$ maximizes F1 (0.94); values above 0.55 increase FPR disproportion
 
 ### Trust Decay Factor Sensitivity {#sec:parametric-decay-sensitivity}
 
-![Sensitivity of effective trust to the delegation decay factor: trust retention across delegation chain depth for representative $\delta$ values, showing where bounded delegation prevents trust amplification.](figures/trust_decay.pdf){#fig:trust-decay-sensitivity width=80%}
+![Trust decay sensitivity, two panels. Panel A: effective trust across delegation-chain depth for representative $\delta$ values, computed from \texttt{TrustCalculus.delegate\_trust}, showing where bounded delegation prevents trust amplification. Panel B is schematic, not a measurement: its four trust-retention bars illustrate the shape of the argument and are produced by no artifact under \texttt{output/data}.](figures/trust_decay.pdf){#fig:trust-decay-sensitivity width=80%}
 
 Table: Trust decay factor sensitivity analysis (parametric simulation). {#tab:parametric-decay-sensitivity}
 

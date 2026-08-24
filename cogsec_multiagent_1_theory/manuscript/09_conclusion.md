@@ -69,7 +69,7 @@ Integrity Properties & Belief consistency, goal alignment, provenance verifiabil
 
 - **Q1: Optimal trust decay functions.** Under what conditions is exponential decay ($\delta^d$) optimal? Are there task distributions or adversary models where alternative decay functions (e.g., polynomial, threshold-based) provide better security-utility tradeoffs?
 
-- **Q2: Tight detection bounds.** Can the stealth-impact bounds in Theorem 6.2 be tightened? What adversary adaptations most effectively approach the theoretical limit, and what detection enhancements can push the bound further?
+- **Q2: Tight detection bounds.** Can the stealth-impact bounds in \cref{thm:stealth-impact} be tightened? What adversary adaptations most effectively approach the theoretical limit, and what detection enhancements can push the bound further?
 
 - **Q3: Belief consistency under partial observability.** How should agents maintain belief integrity when they cannot observe the full system state? What guarantees remain achievable with bounded observation horizons?
 

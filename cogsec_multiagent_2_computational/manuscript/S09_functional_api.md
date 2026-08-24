@@ -22,12 +22,12 @@ Table: CIF monadic API types. {#tab:s09-types}
 | \texttt{Result[T, E]} | generic sum type | pipeline state: success or detection |
 | \texttt{Ok[T]} | $\mathrm{Result}$ variant | carries the current cognitive state |
 | \texttt{Err[E]} | $\mathrm{Result}$ variant | carries a detection event; absorbing under \texttt{bind} |
-| \texttt{DetectionEvent} | dataclass | \texttt{module\_name}, \texttt{score}, \texttt{context}, \texttt{timestamp} |
+| \texttt{DetectionEvent} | dataclass | \texttt{module\_name}, \texttt{score}, \texttt{details} |
 | \texttt{DefenseResult} | existing | per-module output; bridged via \texttt{from\_defense\_result} |
 | \texttt{DefenseModule} | existing ABC | any subclass is automatically a \texttt{DefenseProtocol} |
 | \texttt{DefenseMorphism} | categorical | $\sigma \to \mathrm{Result}[\sigma, \mathrm{DetectionEvent}]$ |
 
-The relationship between $\mathrm{DefenseResult}$ (the legacy per-module record) and $\mathrm{DetectionEvent}$ (the monadic error payload) is strictly information-preserving: \texttt{from\_defense\_result(r, module\_name)} returns $\mathrm{Ok}(\sigma)$ when \texttt{r.detected} is false and $\mathrm{Err}(\mathrm{DetectionEvent}(\ldots))$ when it is true, with all of \texttt{r.score}, \texttt{r.context}, and \texttt{r.timestamp} lifted into the event.
+The bridge from $\mathrm{DefenseResult}$ (the legacy per-module record) to $\mathrm{DetectionEvent}$ (the monadic error payload) is \texttt{from\_defense\_result(r, pass\_through=None)}: it returns $\mathrm{Ok}$ carrying \texttt{pass\_through} --- the $\mathrm{DefenseResult}$ itself when that argument is omitted --- if \texttt{r.detected} is false, and $\mathrm{Err}(\mathrm{DetectionEvent}(\ldots))$ if it is true, lifting \texttt{r.module\_name}, \texttt{r.score} and a copy of \texttt{r.details} into the event. The lift is not total: \texttt{r.latency\_ms} is not carried.
 
 ## \texttt{MonadicPipeline} Full Specification {#sec:s09-pipeline}
 

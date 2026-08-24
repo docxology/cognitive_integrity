@@ -10,7 +10,7 @@ This paper has applied the Cognitive Integrity Framework (CIF) \cite{friedman202
 
 **C3: CIF Mechanism Coverage Validation.** We demonstrated that all five canonical CIF mechanisms appear across the ten-domain portfolio, with each mechanism serving as a primary defense in at least three domains. No domain requires mechanisms beyond the CIF vocabulary, and no single mechanism suffices alone---confirming Paper 1's defense-in-depth architecture.
 
-**C4: Novel Defense Patterns.** Three domains contributed genuinely novel extensions to the CIF vocabulary: *verification channel separation* (Biowarfare), *active perturbation probing* (Trade Wars), and *physics-informed invariants* (Infrastructure). These patterns generalize beyond their originating domains and represent candidate additions to the canonical CIF mechanism set.
+**C4: Novel Defense Patterns.** Four domains contributed genuinely novel extensions to the CIF vocabulary: *verification channel separation* (Biowarfare), *active perturbation probing* (Trade Wars), *physics-informed invariants* (Infrastructure), and *semiotic decoupling* (Drone Wars). These patterns generalize beyond their originating domains and represent candidate additions to the canonical CIF mechanism set.
 
 **C5: Temporal Scale Analysis.** The OODA transient dynamics analysis revealed that Goal Hijacking operates across more than ten orders of magnitude in time scale (milliseconds for drone swarms to years for diplomatic agents), demonstrating that CIF's temporal parameters ($\epsilon$, $\Delta t$) must be domain-calibrated but the underlying defense principles are scale-invariant.
 

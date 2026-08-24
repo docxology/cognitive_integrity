@@ -10,7 +10,7 @@ This paper provided computational validation of the Cognitive Integrity Framewor
 
 **Attack Corpus**: We assembled 950 cognitive attacks across four categories (prompt injection, trust exploitation, belief manipulation, coordination attacks), enabling reproducible security evaluation of multiagent systems.
 
-**Multi-Tier Evaluation**: We evaluated CIF through five complementary modes: (1) multi-seed pipeline evaluation (30 seeds, mean DR = 44.8\%); (2) real ablation studies (98-attack corpus, full pipeline TPR = 12.2\%); (3) LLM-backed multiagent validation ($N=10$, Gemma 3 4B); (4) colony benchmarks at scale (20--100 agents); and (5) parametric simulation ($N=3{,}800$) establishing the design-level coverage ceiling at 96--100\%.
+**Multi-Tier Evaluation**: We evaluated CIF through five complementary modes: (1) multi-seed pipeline evaluation (30 seeds, mean DR = 44.8\%); (2) real ablation studies (98-attack corpus, full pipeline TPR = 95.9\%); (3) LLM-backed multiagent validation ($N=10$, Gemma 3 4B); (4) colony benchmarks at scale (20--100 agents); and (5) parametric simulation ($N=3{,}800$) establishing the design-level coverage ceiling at 96--100\%.
 
 **Categorical Defense Algebra**: We formalized CIF's composition rules as a category (DefenseCategory) satisfying proven laws CT.1--CT.3, establishing that the series detection formula (Part 1's Series Detection Rate theorem) is a categorical consequence under the short-circuit pipeline semantics rather than an independent empirical result. Composition inherits those laws by construction for morphisms that satisfy the DefenseCategory axioms.
 
@@ -26,7 +26,7 @@ This paper provided computational validation of the Cognitive Integrity Framewor
 
 The multi-tier evaluation yields four principal findings:
 
-1. **Layered defense is essential**: Ablation studies confirm that no single component accounts for a majority of detection. Detection and Trust Calculus alone account for about 70\% of the summed harmful $\Delta\text{TPR}$ from component removal on the ablation corpus, rising to about 80\% with any one of the three components tied at $-0.010$; two pairs tie for the strongest synergy---Firewall + Detection and Tripwire + Detection, both $\approx +0.031$ beyond additive prediction).
+1. **Layered defense is not what the ablation shows**: on the ablation corpus a single component carries almost all detection. Removing the Invariants module costs $\Delta\text{TPR} \approx -0.847$ of a 0.959 pipeline, the Firewall and Tripwire cost $\approx -0.010$ each, and every other component costs $\approx 0.000$. Firewall + Detection show the strongest synergy ($\approx +0.031$) beyond additive prediction, with three pairs tied a tier below. The layered architecture may still be the right design, but this measurement does not evidence it, and the earlier claim that no single component dominates is now contradicted by the artifact it cited.
 
 2. **Trust calculus prevents amplification**: The $\delta^d$ decay bound successfully prevented trust laundering across all evaluation modes---a structural guarantee verified formally (Part 1), through unit-tested implementation, and through colony-scale simulation (100\% sybil detection at 0\% FPR with 50 agents and 4 adversaries).
 
@@ -42,7 +42,7 @@ The evaluation data establishes four empirical properties relevant to deployment
 
 1. **Current pipeline detection**: Mean 44.8\% [CI: 43.2\%, 46.4\%] across 30 seeds on Claude Code, with low-to-moderate seed sensitivity (CV = 0.097; below the 0.10 practical stability threshold, though above the stated 0.05 target). Full pipeline TPR on the ablation corpus is $\sim$12\%, reflecting that the current adapters implement the CIF architecture but have not yet been tuned for high coverage.
 
-2. **Component hierarchy**: Detection module ($\Delta\text{TPR} \approx -0.051$) $\gg$ a tie between Firewall and Trust Calculus (each $\approx -0.020$) $>$ a tie between Tripwires and Invariants (each $\approx -0.010$) $>$ Consensus $\approx$ Provenance $\approx$ Sandbox (each $0.000$) --- ordered by marginal $\Delta\text{TPR}$ when each module is removed in isolation from the 98-attack ablation corpus (\cref{tab:component-removal}). The measurement resolution is $1/98 \approx 0.0102$, so the two groups of equal values are genuine ties, not an ordering the data can resolve.
+2. **Component hierarchy**: Invariants ($\Delta\text{TPR} \approx -0.847$) $\gg$ a tie between Firewall and Tripwires (each $\approx -0.010$) $>$ Detection $\approx$ Trust Calculus $\approx$ Consensus $\approx$ Provenance $\approx$ Sandbox (each $0.000$) --- ordered by marginal $\Delta\text{TPR}$ when each module is removed in isolation from the 98-attack ablation corpus (\cref{tab:component-removal}). The measurement resolution is $1/98 \approx 0.0102$, so the two groups of equal values are genuine ties, not an ordering the data can resolve. A zero here is a statement about marginal contribution, not about capability: the Detection module's detections are a subset of the Invariants module's on this corpus, which is invisible to a leave-one-out delta.
 
 3. **Scale-dependent performance**: Colony benchmarks show robust detection (81--100\%) for structured adversarial attacks at 20--100 agent scale, but degraded performance on emergent collective behaviors.
 

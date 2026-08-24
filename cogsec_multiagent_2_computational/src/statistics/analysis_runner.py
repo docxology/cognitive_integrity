@@ -250,14 +250,14 @@ def run_full_analysis(
     dict
         Complete statistical results.
     """
-    from statistics.assumptions import check_parametric_assumptions
-    from statistics.effect_size import cohens_d
-    from statistics.hypothesis import (
+    from .assumptions import check_parametric_assumptions
+    from .effect_size import cohens_d
+    from .hypothesis import (
         test_h1_cif_vs_baseline,
         test_h2_cif_vs_components,
         test_h3_per_architecture,
     )
-    from statistics.nonparametric import kruskal_wallis
+    from .nonparametric import kruskal_wallis
 
     cif = data["cif_scores"]
     baseline = data["baseline_scores"]

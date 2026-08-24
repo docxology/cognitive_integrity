@@ -43,7 +43,7 @@ Table: Firewall module API: Classes for message classification and threat detect
 | Class | Description |
 | --- | --- |
 | \texttt{CognitiveFirewall} | Three-tier classifier (ACCEPT/QUARANTINE/REJECT) using dual thresholds, at their operational default $\tau_1 = 0.8$ (REJECT, hard-reject; inputs scoring above this are blocked outright) and operational default $\tau_2 = 0.5$ (QUARANTINE; inputs scoring in $(\tau_2, \tau_1]$ are sandboxed). Combines pattern matching, semantic analysis, and anomaly detection. |
-| \texttt{PatternDetector} | Heuristic pattern matching with 15 injection patterns and 20 suspicious indicators. Weighted scoring based on pattern severity. |
+| \texttt{PatternDetector} | Heuristic pattern matching with 13 injection patterns and 7 suspicious indicators. Weighted scoring based on pattern severity. |
 | \texttt{SemanticSimilarityDetector} | Embedding-based similarity to known malicious patterns. Supports custom embedding models or hash-based fallback. |
 | \texttt{MultiStageClassifier} | Orchestrates multi-stage detection pipeline with configurable stage weights. |
 | \texttt{EnhancedCognitiveFirewall} | Extended firewall with provenance tracking and audit logging. |
@@ -107,8 +107,9 @@ Table: Sandbox module API: Classes for belief sandboxing and promotion. {#tab:sa
 
 | Class | Description |
 | --- | --- |
-| \texttt{SandboxManager} | Manages verified and provisional belief partitions. Enforces TTL expiry and consistency checks. |
-| \texttt{BeliefPartition} | Container for beliefs with shared trust properties. Supports batch operations. |
+| \texttt{SandboxManager} | Coordinates the belief state, promotion criteria and expiry: enforces per-belief TTL (\texttt{cleanup\_expired}, \texttt{extend\_ttl}) and the provisional-store cap from \texttt{SandboxConfig}. |
+| \texttt{BeliefState} | Holds the two partitions as belief dictionaries; supports add, promote, demote and partition lookup. |
+| \texttt{BeliefPartition} | Two-member enum (\texttt{VERIFIED}, \texttt{PROVISIONAL}) tagging which partition a belief occupies; returned by \texttt{BeliefState.get\_partition}. |
 | \texttt{PromotionCriteria} | Configurable criteria for promoting beliefs from provisional to verified. |
 
 ## Tripwire Module {#sec:tripwire-api}

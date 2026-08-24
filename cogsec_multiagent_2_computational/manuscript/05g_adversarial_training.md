@@ -154,7 +154,7 @@ from current empirical pipeline performance.
 
 Per-$\Omega$ detection rates are deliberately **not** reported here. The only
 per-level numbers the codebase can produce come from
-`RedTeamEvaluator.omega_level_dr()`, which scales one hardened detection rate by a
+`AdversarialTrainer.omega_level_dr()`, which scales one hardened detection rate by a
 fixed per-level constant; they are a property of those constants, not a measurement
 of per-class performance. An earlier revision tabulated them, and this section
 retains its label only so that cross-references from the rest of the series resolve.

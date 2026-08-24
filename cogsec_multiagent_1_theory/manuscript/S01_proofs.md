@@ -10,13 +10,13 @@ For transparency, this section records, by exact label, which results stated in 
 
 **Proven in this supplement.** The following theorems each have a dedicated `proof` environment (section given in parentheses):
 
-- Trust Boundedness (Thm. 4.2), \cref{thm:trust-bound-restated} (\cref{sec:thm42-proof})
-- Belief Injection Resistance (Thm. 5.7), \cref{thm:belief-injection-restated} (\cref{sec:thm57-proof})
-- No Trust Amplification (Thm. 4.7), \cref{thm:trust-amp-restated} (\cref{sec:thm47-proof})
-- Goal Alignment Invariant (Thm. 5.8), \cref{thm:goal-alignment-restated} (\cref{sec:thm58-proof})
-- Firewall Liveness (Thm. 5.9), \cref{thm:firewall-liveness-restated} (\cref{sec:thm59-proof})
-- Byzantine Consensus Termination (Thm. 5.10), \cref{thm:byzantine-restated} (\cref{sec:thm510-proof})
-- Bounded Overhead (Thm. 5.11), \cref{thm:overhead-restated} (\cref{sec:thm511-proof})
+- Trust Boundedness (main text: \cref{thm:trust-bounded}), \cref{thm:trust-bound-restated} (\cref{sec:thm42-proof})
+- Belief Injection Resistance (main text: \cref{thm:belief-injection}), \cref{thm:belief-injection-restated} (\cref{sec:thm57-proof})
+- No Trust Amplification (main text: \cref{thm:no-trust-amp}), \cref{thm:trust-amp-restated} (\cref{sec:thm47-proof})
+- Goal Alignment Invariant (main text: \cref{thm:goal-alignment}), \cref{thm:goal-alignment-restated} (\cref{sec:thm58-proof})
+- Firewall Liveness (main text: \cref{thm:firewall-liveness}), \cref{thm:firewall-liveness-restated} (\cref{sec:thm59-proof})
+- Byzantine Consensus Termination (main text: \cref{thm:byzantine-termination}), \cref{thm:byzantine-restated} (\cref{sec:thm510-proof})
+- Bounded Overhead (main text: \cref{thm:latency-overhead}), \cref{thm:overhead-restated} (\cref{sec:thm511-proof})
 - Defense Composition Algebra, \cref{thm:composition-semiring-restated} (\cref{sec:thm-composition-semiring})
 - Fisher-Rao Stealth-Impact Tight Bound, \cref{thm:fr-bound-restated} (\cref{sec:thm-geometric-bound})
 - Agent Compromise Blast Radius, \cref{thm:blast-radius-restated} (\cref{sec:thm-blast-radius})
@@ -108,7 +108,7 @@ A delegation chain of depth $d$ is a sequence of agents $(a_0, a_1, \ldots, a_d)
 
 ---
 
-## Theorem 4.2: Trust Boundedness {#sec:thm42-proof}
+## Trust Boundedness {#sec:thm42-proof}
 
 \begin{theorem}[Trust Boundedness --- Restated]
 \label{thm:trust-bound-restated}
@@ -226,7 +226,7 @@ d_{max} = \lfloor \log_{0.8} 0.1 \rfloor = 10
 
 ---
 
-## Theorem 5.7: Belief Injection Resistance {#sec:thm57-proof}
+## Belief Injection Resistance {#sec:thm57-proof}
 
 \begin{theorem}[Belief Injection Resistance --- Restated]
 \label{thm:belief-injection-restated}
@@ -324,7 +324,7 @@ Direct extension of \cref{thm:belief-injection-restated} by independence.
 
 ---
 
-## Theorem 4.7: No Trust Amplification {#sec:thm47-proof}
+## No Trust Amplification {#sec:thm47-proof}
 
 \begin{theorem}[No Trust Amplification --- Restated]
 \label{thm:trust-amp-restated}
@@ -428,7 +428,7 @@ Multiple colluding agents cannot create trust exceeding any individual's trust w
 
 ---
 
-## Theorem 5.8: Goal Alignment Invariant {#sec:thm58-proof}
+## Goal Alignment Invariant {#sec:thm58-proof}
 
 \begin{theorem}[Goal Alignment Invariant --- Restated]
 \label{thm:goal-alignment-restated}
@@ -528,7 +528,7 @@ Goal hijacking requires violating the delegation protocol:
 
 ---
 
-## Theorem 5.9: Firewall Liveness {#sec:thm59-proof}
+## Firewall Liveness {#sec:thm59-proof}
 
 \begin{theorem}[Firewall Liveness --- Restated]
 \label{thm:firewall-liveness-restated}
@@ -611,7 +611,7 @@ Messages in QUARANTINE can still reach verified belief state through sandbox pro
 
 ---
 
-## Theorem 5.10: Byzantine Consensus Termination {#sec:thm510-proof}
+## Byzantine Consensus Termination {#sec:thm510-proof}
 
 \begin{theorem}[Byzantine Consensus Termination --- Restated]
 \label{thm:byzantine-restated}
@@ -709,7 +709,7 @@ By honest majority and the $2/3$ threshold requirement.
 
 ---
 
-## Theorem 5.11: Bounded Overhead {#sec:thm511-proof}
+## Bounded Overhead {#sec:thm511-proof}
 
 \begin{theorem}[Bounded Overhead --- Restated]
 \label{thm:overhead-restated}
@@ -790,7 +790,7 @@ With baseline $L_{baseline} = 11.8\text{ms}$:
 \text{Overhead} = \frac{14.5 - 11.8}{11.8} \times 100\% \approx 22.9\%
 \end{equation}
 
-This matches the empirical observation of approximately 23\% overhead.
+The 22.9\% is a property of the illustrative constants above, not an observation: this series measures no end-to-end CIF latency overhead, and the constants used here are not derived from Part 2's measured per-sample firewall latency.
 
 \begin{corollary}[Overhead Bound]
 \label{cor:overhead-bound}
@@ -908,13 +908,13 @@ variance $\frac{\eta}{2-\eta}\sigma^2$ is the price of that adaptivity.
 \toprule
 Theorem & Primary Technique & Complexity \\
 \midrule
-4.2 (Trust Boundedness) & Strong induction & $O(d)$ \\
-5.7 (Belief Injection Resistance) & Probability independence & $O(1)$ \\
-4.7 (No Trust Amplification) & Strong induction & $O(k)$ \\
-5.8 (Goal Alignment Invariant) & Induction on time & $O(t)$ \\
-5.9 (Firewall Liveness) & Complement probability & $O(1)$ \\
-5.10 (Byzantine Consensus) & Classical BFT & $O(f)$ \\
-5.11 (Bounded Overhead) & Expected value & $O(1)$ \\
+Trust Boundedness & Strong induction & $O(d)$ \\
+Belief Injection Resistance & Probability independence & $O(1)$ \\
+No Trust Amplification & Strong induction & $O(k)$ \\
+Goal Alignment Invariant & Induction on time & $O(t)$ \\
+Firewall Liveness & Complement probability & $O(1)$ \\
+Byzantine Consensus & Classical BFT & $O(f)$ \\
+Bounded Overhead & Expected value & $O(1)$ \\
 \bottomrule
 \end{tabular}
 \end{table}

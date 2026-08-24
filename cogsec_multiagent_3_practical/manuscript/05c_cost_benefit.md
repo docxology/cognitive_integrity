@@ -41,7 +41,7 @@ The benefit side of the equation is the cost avoided by preventing attacks. This
 \toprule
 Attack Type & Typical Cost Range & Basis \\
 \midrule
-$\Omega_1$ Prompt Injection (data exfiltration) & \$10K --- \$1M & Data breach cost (IBM 2024: \$4.88M average; CIF scope is targeted subset) \\
+$\Omega_1$ Prompt Injection (data exfiltration) & \$10K --- \$1M & Data breach cost \cite{ibm2024breachcost} (IBM 2024: \$4.88M average; CIF scope is targeted subset) \\
 $\Omega_2$ Tool Compromise (incorrect automated action) & \$50K --- \$500K & Depends on action reversibility and scope \\
 $\Omega_3$ Agent Compromise (full agent reconstruction) & \$50K --- \$500K & Forensics, audit, credential rotation, reputation \\
 $\Omega_4$ Coordination (enterprise decision corruption) & \$1M --- \$100M+ & Scale-dependent; financial or healthcare decisions \\

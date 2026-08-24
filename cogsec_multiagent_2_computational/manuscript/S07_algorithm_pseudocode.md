@@ -21,7 +21,7 @@ Table: CIF defense algorithm quick reference — formal basis, complexity, and i
 | 5. Byzantine Consensus | Part 1's Byzantine Agreement Requirement theorem | $O(n^2)$ messages/round | $O(n)$ per agent | `src/core/consensus.py` |
 | 6. Drift Detection | Part 1's Drift Score definition | $O(\|\text{domain}(\mathcal{B})\|)$ | $O(w \cdot \|\text{domain}\|)$ | `src/core/detection.py` |
 
-Where: $d$ = embedding dimension, $\|\mathcal{P}\|$ = pattern count, $\kappa$ = corroboration threshold, $n$ = agent count, $w$ = sliding window size, $N_{max}$ = sandbox capacity limit.
+Where: $d$ = embedding dimension in Algorithm 1's rows and delegation-chain depth in Algorithm 3's transitive term (no row uses both senses; see \cref{sec:alg-trust}), $\|\mathcal{P}\|$ = pattern count, $\kappa$ = corroboration threshold, $n$ = agent count, $w$ = sliding window size, $N_{max}$ = sandbox capacity limit.
 
 ## Algorithm 1: Cognitive Firewall Classification {#sec:alg-firewall}
 

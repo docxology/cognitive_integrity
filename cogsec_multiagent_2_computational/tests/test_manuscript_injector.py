@@ -167,7 +167,10 @@ def _write_manuscript_files(manuscript_dir: Path) -> None:
         "| Detection module | 0.000 | $-0.000$ | text |\n"
         "| Firewall | 0.000 | "
         + r"$\approx -0.000$" + " | text |\n"
-        "| Trust Calculus | 0.000 | $-0.000$ | text |\n"
+        # Three qualifier spellings across the four rows — bare, "=", and
+        # "\approx" — so a substitution that normalised one into another
+        # would be caught rather than merely written.
+        "| Trust Calculus | 0.000 | $= -0.000$ | text |\n"
         "| Tripwires | 0.000 | "
         + r"$\approx -0.000$" + " | text |\n"
         "Detection module $>$ Old. multi-seed analysis shows $\\sim$0.0\\%\n"
@@ -178,7 +181,7 @@ def _write_manuscript_files(manuscript_dir: Path) -> None:
         "strongest synergy ($+0.000$\n"
     )
     (manuscript_dir / "04_experimental_setup.md").write_text(
-        "validation ($N=5$ | Claude Code | Hub-spoke | 0.0\\% "
+        "LLM-backed multiagent validation ($N=5$ | Claude Code | Hub-spoke | 0.0\\% "
         "| CrewAI | Chain | 0.0\\% mean DR $\\sim$0\\%\n"
         "(Detection module: $\\Delta\\text{TPR} \\approx -0.000$ when removed)\n"
         f"{_TRUST_CALCULUS_CLAIM}\n"
@@ -1033,20 +1036,36 @@ def test_a_positive_delta_is_written_with_a_plus_sign(project: tuple[Path, Path]
 def test_the_latex_qualifier_is_preserved_rather_than_normalised(
     project: tuple[Path, Path],
 ) -> None:
-    """``\\approx`` stays ``\\approx`` and ``=`` stays ``=``.
+    """``\\approx`` stays ``\\approx``, ``=`` stays ``=``, bare stays bare.
 
     The injector maintains values, not wording; silently promoting an
     approximate claim to an exact one would be an unearned strengthening.
+    Every claim asserted here is one the injector actually maintains, so the
+    property is checked on live substitutions rather than on prose no
+    substitution reaches.
     """
     data_dir, manuscript_dir = project
 
     inject_all(data_dir, manuscript_dir)
 
-    approx = (manuscript_dir / "05_results.md").read_text()
-    exact = (manuscript_dir / "00_abstract.md").read_text()
-    assert "$\\Delta\\text{TPR} \\approx -0.052$" in approx
-    assert "$\\Delta\\text{TPR} = -0.052$" in exact
-    assert "\\approx" not in exact.split("achieving")[0].split("CI:")[-1]
+    setup = (manuscript_dir / "04_experimental_setup.md").read_text()
+    ablation = (manuscript_dir / "05d_ablation_and_scalability.md").read_text()
+    statistical = (manuscript_dir / "05b_statistical_significance.md").read_text()
+
+    # \approx survives as \approx, in prose (detection_delta) and in a table
+    # cell (ablation_row:firewall).
+    assert "(Detection module: $\\Delta\\text{TPR} \\approx -0.052$" in setup
+    assert "| Firewall | 0.101 | $\\approx -0.019$" in ablation
+    # "=" is not promoted to \approx ...
+    assert "| Trust Calculus | 0.105 | $= -0.015$" in ablation
+    # ... and a value written bare is not decorated with a qualifier.
+    assert "| Detection module | 0.068 | $-0.052$" in ablation
+    assert "| Detection module | 0.068 | $\\approx" not in ablation
+    assert "| Detection module | 0.068 | $=" not in ablation
+    # The same value in two places, two spellings, both maintained: the 05b
+    # table row keeps its \approx and so does the paragraph restating it.
+    assert "None (full pipeline) | $\\approx 0.120$" in statistical
+    assert "full pipeline $\\approx 0.120" in statistical
 
 
 def test_injected_latex_carries_no_control_characters(

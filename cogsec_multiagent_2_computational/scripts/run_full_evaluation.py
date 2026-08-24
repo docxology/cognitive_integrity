@@ -35,6 +35,7 @@ from architectures.claude_code import ClaudeCodeAdapter
 from architectures.crewai import CrewAIAdapter
 from architectures.langgraph import LangGraphAdapter
 from attacks.corpus import AttackCorpus
+from data.generate import SIDECAR_HASH_KEY
 from evaluation.runner import ExperimentRunner
 from utils.random_seed import set_global_seed
 from utils.types import ExperimentConfig

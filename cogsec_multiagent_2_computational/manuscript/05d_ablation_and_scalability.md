@@ -18,7 +18,7 @@ The corollary is uncomfortable and should not be smoothed over: the components t
 
 The ablation analysis quantifies each defense component's marginal contribution on the prototype pipeline evaluated against a stratified 98-attack corpus (\cref{tab:component-removal}).
 
-> **Methodology**: Results from `scripts/run_ablation.py` → `output/data/ablation_results.json`. The full pipeline achieves $\sim$95.9\% TPR on this corpus. That figure has to be read with its corpus in mind: the attack corpus is generated from templates, and a detector keyed on demand structure is being asked to recognise generated demands, so 95.9\% is an upper bound relative to adversarial text written by a human trying to evade it. The false-positive side is measured against `BenignCorpus`, half of which is a deliberately hard stratum of legitimate messages carrying attack-adjacent vocabulary; that is the number to watch, and it is reported alongside every rate here.
+> **Methodology**: Results from `scripts/run_ablation.py` → `output/data/ablation_results.json`. The full pipeline achieves $\sim$95.9\% TPR on this corpus. That figure has to be read with its corpus in mind: the attack corpus is generated from templates, and a detector keyed on demand structure is being asked to recognise generated demands, so 95.9\% is an upper bound relative to adversarial text written by a human trying to evade it. The false-positive side of this particular run is *not* measured against `BenignCorpus`: `src/ablation/runner.py` scores the 50 plainly benign strings in `BENIGN_MESSAGES`, so the 0.000 FPR in \cref{tab:component-removal} is a floor and not an operating point. The number to watch is the rate against `BenignCorpus`, half of which is a deliberately hard stratum of legitimate messages carrying attack-adjacent vocabulary: on the full 1,475-attack corpus the shipped maximum rule scores TPR 0.849 at FPR 0.150 with $\tau = 0.5$, and TPR 0.752 at FPR 0.000 with $\tau = 0.565$ (`output/data/taxonomy_evaluation_extended.json`).
 
 Table: Component removal impact analysis (prototype pipeline, real corpus, 98-attack stratified sample). {#tab:component-removal}
 
@@ -33,7 +33,7 @@ Table: Component removal impact analysis (prototype pipeline, real corpus, 98-at
 | Provenance | 0.959 | $\approx +0.000$ | No measurable independent contribution on this corpus |
 | Sandbox | 0.959 | $\approx +0.000$ | No measurable independent contribution on this corpus |
 
-> **Note**: A $\Delta\text{TPR}$ of 0.000 under leave-one-out is not evidence that a component does nothing, and this corpus now demonstrates the point twice over. First, removal deltas are *marginal*: a component whose detections are all also caught by the Invariants module shows zero here while detecting a great deal on its own, which is what happened to the Detection module. Second, a component can be invisible to this measurement because the combination rule cannot see it. The pipeline compares a maximum across eight scores to one threshold, and those scores do not share a scale; measured in units of their own benign distributions, Consensus, Provenance, Sandbox and Invariants are the four that separate the classes best, which is the reverse of what this table showed before the Invariants rewrite. That analysis is in \texttt{scripts/run\_combination\_rule\_study.py}, and it means leave-one-out ablation understates any component the maximum rule is already discarding.
+> **Note**: A $\Delta\text{TPR}$ of 0.000 under leave-one-out is not evidence that a component does nothing, and this corpus now demonstrates the point twice over. First, removal deltas are *marginal*: a component whose detections are all also caught by the Invariants module shows zero here while detecting a great deal on its own, which is what happened to the Detection module. Second, a component can be invisible to this measurement because the combination rule cannot see it. The pipeline compares a maximum across eight scores to one threshold, and those scores do not share a scale; measured in units of their own benign distributions, the subset that separates the classes best on held-out data is Tripwire, Provenance and Invariants ($J = 0.894$) against the shipped maximum rule's $J = 0.845$. That analysis is in \texttt{scripts/run\_combination\_rule\_study.py}, and it means leave-one-out ablation still understates any component the maximum rule is discarding --- though the margin is now 0.049, not the chasm it was when every module was weak. The earlier reading of that study, that the maximum rule scored below the always-reject baseline, was conditional on that weakness and no longer holds.
 
 ## Minimal Viable Configurations {#sec:minimal-config}
 
@@ -100,8 +100,9 @@ Table: Detection time regression coefficients. {#tab:detection-regression}
 $R^2 = 0.99997$ over $n = 10$ agent counts (median latency per count). Both the linear and
 quadratic terms are significant; the intercept is not, consistent with a cost that is entirely
 per-agent rather than fixed. The linear term dominates at small $n$, but the quadratic term is
-real and takes over as $n$ grows: at 100 agents the $\beta_2 n^2$ contribution (4.6 ms) already
-exceeds the $\beta_1 n$ contribution (5.6 ms) by nearly half, which is the $O(n^2)$ trust-matrix
+real and growing: at 100 agents the $\beta_2 n^2$ contribution (4.6 ms) is already 82\% of the
+$\beta_1 n$ contribution (5.5 ms), and the two terms cross at $n = \beta_1/\beta_2 \approx 122$
+agents, which is the $O(n^2)$ trust-matrix
 construction becoming visible, with the quadratic contribution ($\beta_2 = 0.00046$ ms per agent-pair) already material at this range.
 
 **Memory model**: $M = \gamma_0 + \gamma_1 \cdot n + \gamma_2 \cdot n^2$

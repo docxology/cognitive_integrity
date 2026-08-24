@@ -239,6 +239,7 @@ def _body(ceiling: str = "96") -> str:
     low = int(ceiling) - mean
     high = 100 - abl["full_pipeline"]["tpr"] * 100
     tests_p2 = _ARTIFACTS["test_inventory.json"]["per_part"]["cogsec_multiagent_2_computational"]
+    scal_track = [int(r["n_agents"]) for r in _ARTIFACTS["scalability_results.json"]["framework_track"]]
     di = [r["detection_rate"] for r in rows if r["attack_category"] == "direct_injection"]
     di_low, di_high = min(di) * 100, max(di) * 100
     full_tpr = abl["full_pipeline"]["tpr"] * 100
@@ -254,9 +255,17 @@ def _body(ceiling: str = "96") -> str:
     at_base = at["baseline_dr"] * 100
     at_hardened = at["final_hardened_dr"] * 100
     at_delta = at["total_delta_dr"] * 100
+    at_rounds = at["n_rounds"]
+    syn = _ARTIFACTS["ablation_results.json"]["top_synergies"]
+    top_synergy = max(x["synergy"] for x in syn)
+    colony_dr = colony["detection_rate_mean"] * 100
+    colony_fpr = colony["false_positive_rate_mean"] * 100
+    redteam_m = _ARTIFACTS["redteam_evaluation_results.json"]["n_attacks_generated"]
 
     return (
         "# Body\n\n"
+        f"The mutation-operator sweep runs against $M={redteam_m}$ generated attacks.\n\n"
+        f"Its mutation-operator table is re-derived from that same $M={redteam_m}$ run.\n\n"
         f"The parametric simulation establishes a design-level ceiling of "
         f"{ceiling}--100\\% across the sweep.\n\n"
         f"Treat {ceiling}\\% as the achievable ceiling with mature adapters.\n\n"
@@ -272,6 +281,8 @@ def _body(ceiling: str = "96") -> str:
         f"There is a {low:.0f}--{high:.0f} percentage-point gap to close.\n\n"
         "The study spans ten domains; those ten domains are analysed in turn.\n\n"
         f"The evidence includes {tests_p2:,} tests.\n\n"
+        f"The scalability sweep covers the measured range "
+        f"({min(scal_track)}--{max(scal_track)} agents).\n\n"
         f"The firewall's operational default $\\tau_1 = {FIXTURE_TAU1}$ rejects outright, "
         f"and its operational default $\\tau_2 = {FIXTURE_TAU2}$ quarantines.\\n\\n"
         f"Deployment ships that operational default: tau_1: {FIXTURE_TAU1} in the config.\\n\\n"
@@ -279,6 +290,9 @@ def _body(ceiling: str = "96") -> str:
         f"The Round-5 hardened configuration reaches {at_hardened:.1f}\\% detection.\\n\\n"
         f"AT-Round-5 gives a cumulative improvement of +{at_delta:.1f} pp over the\\n"
         f"pre-AT baseline ({at_base:.1f}\\%).\\n\\n"
+        f"The strongest pair shows a synergy of +{top_synergy:.4f} beyond additive.\\n\\n"
+        f"Adversarial training ran for {at_rounds} rounds.\\n\\n"
+        f"Emergent misalignment: {colony_dr:.1f}\\% detection at {colony_fpr:.1f}\\% FPR.\\n\\n"
         f"The composition rule predicts {series_prediction:.1f}\\% against a measured "
         f"{full_tpr:.1f}\\%.\\n\\n"
         "Data from `output/data/multi_seed_results.json`.\n"

@@ -11,22 +11,16 @@ from typing import Any
 import matplotlib.pyplot as plt
 from matplotlib.patches import FancyBboxPatch, Rectangle
 
+from attacks.corpus import AttackCorpus
+
 from ..style import FONTSIZE, SEMANTIC_COLORS, add_source_annotation, apply_style, save_figure
 
-try:
-    from attacks.corpus import AttackCorpus
-    _corpus = AttackCorpus.generate(seed=42)
-    _CORPUS_COUNTS = {
-        "injection": sum(1 for a in _corpus.attacks if a.category == "injection"),  # type: ignore[attr-defined, misc]
-        "trust_exploitation": sum(1 for a in _corpus.attacks if a.category == "trust_exploitation"),  # type: ignore[attr-defined, misc]  # noqa: E501
-        "belief_manipulation": sum(1 for a in _corpus.attacks if a.category == "belief_manipulation"),  # type: ignore[attr-defined, misc]  # noqa: E501
-        "coordination": sum(1 for a in _corpus.attacks if a.category == "coordination"),  # type: ignore[attr-defined, misc]
-    }
-except (ImportError, ModuleNotFoundError, Exception):
-    _CORPUS_COUNTS = {
-        "injection": 500, "trust_exploitation": 200,
-        "belief_manipulation": 150, "coordination": 100
-    }
+# Derived, never hardcoded.  The previous form read a ``_corpus.attacks``
+# attribute that ``AttackCorpus`` does not expose, from inside an
+# ``except (ImportError, ModuleNotFoundError, Exception)`` block: the
+# derivation always raised and a hardcoded table always won, so the caption's
+# corpus size could not track the corpus it names.
+_CORPUS_COUNTS: dict[str, int] = dict(AttackCorpus.generate(seed=42).distribution())
 
 
 def plot_comprehensive_taxonomy(output_dir: str | Path = "output/figures") -> plt.Figure:

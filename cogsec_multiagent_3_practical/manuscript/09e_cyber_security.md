@@ -70,6 +70,6 @@ CIF implements **Permission Boundaries** \cite{friedman2026cogsec1} ensuring ort
 | Attack Vector | Log injection with malicious prompts in system logs |
 | Adversary Class | $\Omega_2$ (Peripheral) |
 | OODA Target Phase | Orient |
-| Attack Pattern | Constraint Relaxation (Security constraint relaxed for Availability) |
+| Attack Pattern | Context Boundary Violation (Log-channel content parsed as an operational directive) |
 | Primary CIF Defense | Permission Boundaries + Quorum Verification |
 | Novel Contribution | None |

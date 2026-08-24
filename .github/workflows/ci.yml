@@ -7,7 +7,8 @@ name: CI
 # Gating: pinned ruff lint, tests with a coverage floor, an import sweep over
 # the *tracked* tree, and manuscript verification for part 2.
 # Advisory (continue-on-error, with the concrete blocker named in each step):
-# `ruff format --check`, mypy, and the Python 3.10 compatibility matrix.
+# `ruff format --check`, mypy, the Python 3.10 compatibility matrix, and the
+# cross-paper pointer lint.
 
 on:
   push:
@@ -63,8 +64,11 @@ jobs:
         run: uv run --with "ruff==${RUFF_VERSION}" ruff check .
 
       - name: Format check (advisory)
-        # Advisory only: the tree is not `ruff format`-clean yet
-        # (part 1: 5 files, part 2: 189 files, part 3: 6 files as of 2026-07-27).
+        # Advisory only: the tree is not `ruff format`-clean yet. The number of
+        # unformatted files is deliberately not typed here: it was measured once
+        # and then drifted in both directions, which is the hand-typed-number
+        # drift this series gates against elsewhere. Run this step to see the
+        # current tally per part.
         # Promote to gating once a formatting pass has landed.
         continue-on-error: true
         run: uv run --with "ruff==${RUFF_VERSION}" ruff format --check .
@@ -77,14 +81,14 @@ jobs:
           uv run pytest tests/ -q
           --cov=src --cov-report=term-missing --cov-fail-under=90
 
-      - name: Type check (mypy, advisory)
-        # Part 2 is the only part with a [tool.mypy] section.  Advisory because
-        # the Python 3.10 compatibility matrix / formatter can differ.  At HEAD
-        # mypy is clean (it was previously blocked by a no-redef in
-        # src/redteam/__init__.py; that was fixed).  Promote to gating once
-        # it is consistently clean across the matrix.
+      - name: Type check (mypy, gating)
+        # Part 2 is the only part with a [tool.mypy] section, so this step runs
+        # on exactly one matrix cell: part 2 on Python 3.12.  It was advisory
+        # pending being clean "across the matrix", which the `if` below makes
+        # unreachable -- there is no other cell for it to be clean on.  mypy is
+        # pinned at 2.3.0 by part 2's uv.lock and reports no issues on that
+        # cell, so the step gates.
         if: matrix.part == 'cogsec_multiagent_2_computational' && matrix.python-version == '3.12'
-        continue-on-error: true
         run: uv run mypy src
 
   tracked-tree-import:

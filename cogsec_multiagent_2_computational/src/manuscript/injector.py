@@ -860,7 +860,8 @@ def inject_ablation(
     # optional here and the sentence carries whichever form is true.
     text = _apply(
         text,
-        r"((?:both\s*)?\$\s*\\approx\s*)\+[\d.]+(\$)",
+        r"((?:The top synergy tier|The strongest pair) \([^()]*?"
+        r"(?:both\s*)?\$\s*\\approx\s*)\+[\d.]+(\$)",
         r"\g<1>" + f"+{gt['top_synergy']['synergy']:.3f}" + r"\g<2>",
         document=document,
         label="top_synergy_value",
@@ -914,9 +915,20 @@ def inject_ablation(
             report.record_match(document, f"ablation_row:{c['removed']}", count)
         text = new_text
 
+    # The anchor is the component this hierarchy *starts* with, read from the
+    # data, not the module that happened to lead when the sentence was written.
+    # With "Detection module" hardcoded here the pattern stopped matching the
+    # head of the sentence and started matching its tail, so each run spliced a
+    # fresh copy of the hierarchy into the middle of the old one instead of
+    # replacing it — the module's idempotency contract, broken silently.
+    # ``components[0]`` is what ``_component_hierarchy`` writes first, so
+    # anchoring on the same element is what makes the substitution a no-op the
+    # second time round.
+    hierarchy_head = _component_display_name(components[0]["removed"])
+    head_anchor = re.escape(hierarchy_head) + ("" if hierarchy_head.endswith("s") else "s?")
     text = _apply(
         text,
-        r"Detection module\s*\$(?:[>=]|\\approx|\\gg)\$[^.]+\.",
+        head_anchor + r"\s*\$(?:[>=]|\\approx|\\gg)\$[^.]+\.",
         f"{_component_hierarchy(components)}.",
         document=document,
         label="component_hierarchy",
@@ -1018,8 +1030,8 @@ def inject_experimental_setup(
     if is_available(gt, "llm"):
         text = _apply(
             text,
-            r"validation \(\$N=\d+\$",
-            f"validation ($N={gt['llm_total_n']}$",
+            r"(LLM-backed(?: multiagent)? validation) \(\$N=\d+\$",
+            r"\g<1> " + f"($N={gt['llm_total_n']}$",
             document=document,
             label="llm_total_n",
             report=report,
@@ -1061,6 +1073,14 @@ def inject_experimental_setup(
         report.record_unbacked(
             document, "multi_seed_mean_dr", unavailable_reason(gt, "multi_seed")
         )
+
+    # This is the one document that still states a numeric detection delta
+    # ("Detection module: $\Delta\text{TPR} \approx +0.000$ when removed"), so
+    # it is the only place the shared helper stays wired in. That claim survived
+    # the Invariants rewrite; dropping this call along with the five genuinely
+    # dead ones left a live number unmaintained, and no miss can ever report
+    # that, because a deleted substitution never runs.
+    text = _apply_detection_delta(text, gt, document=document, report=report)
 
     changed = _finish(path, text, original, dry_run, document)
     if owns:
@@ -1161,9 +1181,19 @@ def inject_statistical(
         label="full_pipeline_tpr",
         report=report,
     )
-    # The same figure is restated inline two paragraphs down. Leaving it
-    # unmaintained put a table row and its own interpretation paragraph in
-    # direct contradiction (0.122 vs 0.124).
+    # The same figure is restated inline two paragraphs down ("vs.\ full
+    # pipeline $\approx 0.959$"). Leaving it unmaintained put a table row and
+    # its own interpretation paragraph in direct contradiction (0.122 vs
+    # 0.124), so the restatement is driven from the same value rather than
+    # trusted to be re-typed by hand.
+    text = _apply(
+        text,
+        r"(full pipeline \$\s*" + _QUALIFIER + r")[\d.]+",
+        r"\g<1>" + f"{gt['full_pipeline_tpr']:.3f}",
+        document=document,
+        label="full_pipeline_tpr_prose",
+        report=report,
+    )
 
     changed = _finish(path, text, original, dry_run, document)
     if owns:

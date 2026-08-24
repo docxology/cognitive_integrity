@@ -597,7 +597,19 @@ LEDGER: tuple[LedgerVariable, ...] = (
         artifact="full_evaluation_results.json",
         deriver=corpus_size,
         unit="count",
-        pattern=re.compile(rf"(\d{{3}})\s*{DASH}?\s*attack\b(?=[- ]?(?:corpus|set)\b)"),
+        # Three digits only could not express a four-digit corpus: once the
+        # integrated corpus reached 1,475 items this captured "475" and
+        # reported the prose as contradicting an artifact it actually matched.
+        # Three corpora share this phrasing and are different quantities: the
+        # 98-item ablation subsample, the 950-item published corpus this
+        # variable governs, and the 1,475-item integrated corpus. The bare
+        # three-digit form excluded 98 only by accident of digit count, and
+        # broadening it to reach four digits promptly captured "475" out of
+        # the middle of "1,475". Hence the explicit boundary: three or four
+        # digits, not preceded by a digit or a thousands separator.
+        pattern=re.compile(
+            rf"(?<![\d,])(\d{{3,4}})\s*{DASH}?\s*attack\b(?=[- ]?(?:corpus|set)\b)"
+        ),
         require=("corpus", "set"),
         exclude=("ablation",),
         min_occurrences=2,
@@ -715,9 +727,19 @@ LEDGER: tuple[LedgerVariable, ...] = (
         artifact="ablation_results.json",
         deriver=top_synergy,
         unit="fraction",
-        pattern=re.compile(r"(0\.03\d{1,3})"),
+        # Was (0\.03\d{1,3}), which hardcoded the leading digits of the value it
+        # checks: the moment the top pair moved off 0.03 the guard would die
+        # silently rather than report drift. Scoped by the "synergy" keyword
+        # instead of by the digits it expects to find.
+        # Synergies are positive by construction, so requiring the sign is what
+        # keeps this off the negative removal deltas that share a line with the
+        # word "synergy". The bare form matched "-0.010" in "three components
+        # tied at $-0.010$; two pairs tie for the strongest synergy".
+        pattern=re.compile(r"\+\s*(0\.0\d{1,3})"),
         require=("synergy",),
-        exclude=("table", "tab:"),
+        # "table"/"tab:" keep this off table rows. The tier language keeps it
+        # off the second-tier synergy, a different quantity sharing the phrasing.
+        exclude=("table", "tab:", "second tier", "tier below", "tied a tier"),
         parts=("1", "2", "3"),
         tolerance=0.001,
     ),
@@ -760,8 +782,10 @@ LEDGER: tuple[LedgerVariable, ...] = (
         artifact="cross_validation_results.json",
         deriver=crossval_folds,
         unit="count",
-        # No manuscript writes "N-fold", so a gated pattern here could only ever
-        # match nothing. Derived and reported, not gated.
+        # One manuscript site exists -- Part 2's 05_results.md baseline table row
+        # "Bag-of-words LR (trained, 5-fold CV)" -- but there the fold count is a
+        # method label on a row of measured rates, not a quantity the paper
+        # reports in its own right. Derived and reported, not gated.
         pattern=None,
     ),
     LedgerVariable(
@@ -778,7 +802,14 @@ LEDGER: tuple[LedgerVariable, ...] = (
         artifact="scalability_results.json",
         deriver=scalability_max_agents,
         unit="count",
-        pattern=None,
+        # The sweep is written as its whole range -- "2 to 100", "(2--100
+        # agents)" -- so the low end is what separates it from the colony
+        # benchmarks' "20--100 agents", a different quantity of the same shape
+        # sitting in the same prose. The leading word boundary also keeps the
+        # evaluation-mode range "12--100\%" out, whose tail would otherwise
+        # match.
+        pattern=re.compile(rf"\b2\s*(?:{DASH}|\s+to\s+)\s*(\d{{2,4}})\b"),
+        require=("scalab", "measured range"),
     ),
     LedgerVariable(
         id="redteam_attacks_generated",
@@ -786,7 +817,16 @@ LEDGER: tuple[LedgerVariable, ...] = (
         artifact="redteam_evaluation_results.json",
         deriver=redteam_attacks_generated,
         unit="count",
-        pattern=None,
+        # Part 2 spells this ``$M=950$`` twice in the red-team section. The same
+        # spelling carries two neighbouring quantities of identical shape -- the
+        # per-round adversarial-training batch (``$M = 100$``, 05g) and the
+        # per-Omega-level generator batch (``$M=190$``, 05h:103) -- and
+        # "mutation" is the one word present on the two total-corpus lines and
+        # absent from every other ``$M=`` site in the series.
+        pattern=re.compile(r"\$M\s*=\s*(\d{3,4})\$"),
+        require=("mutation",),
+        parts=("2",),
+        min_occurrences=2,
     ),
     LedgerVariable(
         id="at_baseline_dr",
@@ -829,7 +869,6 @@ LEDGER: tuple[LedgerVariable, ...] = (
         unit="count",
         pattern=re.compile(r"(five|5)\s+rounds?", re.IGNORECASE),
         require=("rounds",),
-        parts=("2",),
         tolerance=0.001,
     ),
     LedgerVariable(
