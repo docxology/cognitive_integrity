@@ -105,7 +105,8 @@ def plot_ablation_study(output_dir: str | Path = "output/figures") -> Figure:
     ax.barh(y_pos, detection, color=colors, edgecolor="black", linewidth=1)
 
     for i, (det, d) in enumerate(zip(detection, delta)):
-        ax.text(det + max(detection) * 0.02, i, f"{det:.3f}", va="center", fontsize=10, fontweight="bold")
+        ax.text(det + max(detection) * 0.02, i, f"{det:.3f}",
+                va="center", fontsize=10, fontweight="bold")
         if d != 0:
                 # Trailing each bar's own value label rather than sharing a fixed
             # column: a fixed column collides with the legend, and the literal

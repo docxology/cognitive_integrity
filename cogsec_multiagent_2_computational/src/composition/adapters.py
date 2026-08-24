@@ -16,11 +16,12 @@ import math
 import re
 import time
 from collections import Counter
-from .calibration import DEFAULT_THRESHOLD
 from typing import Any, Dict, List, Optional
 
 from composition.pipeline import DefenseModule
 from utils.types import DefenseResult
+
+from .calibration import DEFAULT_THRESHOLD
 
 __all__ = [
     "FirewallAdapter",

@@ -14,13 +14,12 @@ lightweight arms-race simulation and a minimax-regret solver.
 
 from __future__ import annotations
 
+import json
 from dataclasses import dataclass
+from pathlib import Path
 from typing import List, Tuple
 
-import json
-
 import numpy as np
-from pathlib import Path
 from scipy.optimize import linprog
 
 # ---------------------------------------------------------------------------

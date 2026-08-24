@@ -53,13 +53,7 @@ def plot_detection_performance(output_dir: str | Path = "output/figures") -> plt
         output_dir.mkdir(parents=True, exist_ok=True)
     fig, axes = plt.subplots(1, 2, figsize=(14, 6))
 
-    colors = {
-        "baseline": SEMANTIC_COLORS["baseline"],
-        "firewall": SEMANTIC_COLORS["firewall"],
-        "sandbox": SEMANTIC_COLORS["sandbox"],
-        "tripwire": SEMANTIC_COLORS["tripwire"],
-        "full_cif": SEMANTIC_COLORS["full_cif"],
-    }
+    # colors dict kept for documentation but unused in current impl
 
     # Panel A: single-mechanism vs. full-pipeline detection, from the ablation run.
     #
@@ -84,7 +78,8 @@ def plot_detection_performance(output_dir: str | Path = "output/figures") -> plt
             solo[pair[side]] = (float(pair[f"tpr_{side}"]), float(pair.get(f"fpr_{side}", 0.0)))
 
     mechanisms = sorted(solo, key=lambda name: solo[name][0])
-    defenses = ["Baseline"] + [m.replace("_", "\n").title() + "\nOnly" for m in mechanisms] + ["Full CIF"]
+    defenses = ["Baseline"] + [m.replace("_", "\n").title() + "\nOnly"
+                for m in mechanisms] + ["Full CIF"]
 
     full = ablation["full_pipeline"]
     tpr = [0.0] + [solo[m][0] for m in mechanisms] + [float(full["tpr"])]
