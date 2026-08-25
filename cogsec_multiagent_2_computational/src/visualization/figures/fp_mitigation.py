@@ -1,10 +1,23 @@
-"""Fig 14: False positive reduction waterfall chart.
+"""Fig 14: what each false-positive mitigation costs and saves.
 
-Shows how each defense layer incrementally reduces the false positive
-rate from a baseline to the full CIF level.
+This plotted a nine-point waterfall of false-positive rate falling from 0.150
+to 0.018 as defense layers were added one at a time, annotated with a measured
+reduction at every step. The series was typed, and it was also backwards: the
+pipeline combines its modules with a maximum rule, so adding a detector can
+only ever raise the flag rate. No sequence of additions reduces false positives,
+and no artifact recorded one, because the trace the figure drew cannot exist.
+
+What is measured, and what the figure shows now, is the mitigation study in
+``output/data/fp_mitigation.json``: the pipeline's false-positive rate under
+each post-filter in ``composition.mitigations``, with the true-positive cost of
+each beside it. That is a reduction sequence, it does exist, and two of the
+strategies take the rate to zero.
 """
 
 from __future__ import annotations
+
+import json
+from pathlib import Path
 
 import numpy as np
 from matplotlib.figure import Figure
@@ -12,21 +25,41 @@ from matplotlib.figure import Figure
 from ..style import COLORS, FONTSIZE, PALETTE, create_figure, format_axis, save_figure
 
 
+#: The measured mitigation study.
+_MITIGATION_PATH = (
+    Path(__file__).resolve().parents[3] / "output" / "data" / "fp_mitigation.json"
+)
+
+#: Display names, in the order the figure reads left to right: the baseline
+#: first, then the strategies by how much they leave behind.
+_STRATEGY_LABEL = {
+    "none": "Baseline",
+    "temporal_smoothing": "Temporal\nSmoothing",
+    "contextual_whitelist": "Contextual\nWhitelist",
+    "cost_sensitive": "Cost-\nSensitive",
+    "confirmation_cascade": "Confirmation\nCascade",
+    "combined": "Combined",
+}
+
+
 def _default_waterfall_data():
-    """Generate FP reduction waterfall data."""
-    labels = [
-        "Baseline",
-        "+ Firewall",
-        "+ Trust Calc",
-        "+ Consensus",
-        "+ Drift Det.",
-        "+ Invariants",
-        "+ Provenance",
-        "+ Sandbox",
-        "Full CIF",
-    ]
-    fp_rates = [0.150, 0.095, 0.070, 0.052, 0.040, 0.032, 0.026, 0.022, 0.018]
-    return labels, np.array(fp_rates)
+    """False-positive rate under each mitigation, measured. Fails closed."""
+    if not _MITIGATION_PATH.is_file():
+        raise FileNotFoundError(
+            f"{_MITIGATION_PATH} is missing; run scripts/run_fp_mitigation.py. "
+            f"This figure reports measured false-positive rates and has no "
+            f"stand-in series."
+        )
+    payload = json.loads(_MITIGATION_PATH.read_text(encoding="utf-8"))
+    strategies = payload["strategies"]
+    ordered = ["none"] + sorted(
+        (k for k in strategies if k != "none"),
+        key=lambda k: -strategies[k]["fpr"],
+    )
+    labels = [_STRATEGY_LABEL.get(k, k.replace("_", " ").title()) for k in ordered]
+    rates = [strategies[k]["fpr"] for k in ordered]
+    costs = [strategies[k]["delta_tpr"] for k in ordered]
+    return labels, np.array(rates), np.array(costs)
 
 
 def plot_fp_mitigation(output_dir: str = "output/figures") -> Figure:
@@ -42,7 +75,7 @@ def plot_fp_mitigation(output_dir: str = "output/figures") -> Figure:
     Figure
     """
     fig, ax = create_figure(width=9, height=5)
-    labels, fp_rates = _default_waterfall_data()
+    labels, fp_rates, tpr_cost = _default_waterfall_data()
 
     n = len(labels)
     x = np.arange(n)

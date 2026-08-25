@@ -154,13 +154,23 @@ Table: Hybrid configuration trade-off analysis. {#tab:hybrid-tradeoffs}
 
 Table: False positive root causes and mitigation strategies. {#tab:fp-root-causes}
 
-| Cause  | Frequency  | Impact | Mitigation |
-| --- | --- | --- | --- |
-| Benign novelty | 35\% | High | Incremental learning |
-| Threshold drift | 25\% | Medium | Adaptive thresholds |
-| Feature noise | 20\% | Low | Smoothing |
-| Label errors | 10\% | High | Label audit |
-| Distribution shift | 10\% | High | Domain adaptation |
+| Cause  | Count  | Share of the 22 false positives |
+| --- | --- | --- |
+| Attack-adjacent vocabulary, one module | 17 | 77.3% |
+| No trigger term present | 5 | 22.7% |
+
+*Measured by `scripts/run_fp_mitigation.py`: every false positive the pipeline produces on the
+120-message benign corpus, attributed by whether the message carried a term from the detector
+vocabulary the corpus records for it. Three modules account for all of them --- the firewall (12),
+the text-feature detector (6) and the trust detector (4) --- and the benign categories they fire on
+are tool results (9) and status reports (6) above all others.*
+
+> **On the replaced table.** This carried five causes with frequencies of 35, 25, 20, 10 and 10
+> percent. Nothing had labelled a false positive: the five causes were plausible names and the
+> frequencies summed to 100 because they were chosen to. "Label errors" in particular cannot occur
+> here --- every label is emitted by a generator --- and "incremental learning", offered as the
+> mitigation for the largest cause, does not exist in this framework and is the one strategy in
+> \cref{tab:fp-mitigation-results} that could not be implemented.
 
 ## Baseline Update Algorithm
 
@@ -188,13 +198,38 @@ Table: False positive mitigation strategy effectiveness. {#tab:fp-mitigation-res
 
 | Strategy  | FPR Reduction  | TPR Impact | Complexity |
 | --- | --- | --- | --- |
-| Baseline | -- | -- | -- |
-| Confirmation Cascade | $-60\%$ | $-5\%$ | Medium |
-| Temporal Smoothing | $-40\%$ | $-3\%$ | Low |
-| Contextual Whitelist | $-50\%$ | $-2\%$ | Medium |
-| Incremental Learning | $-45\%$ | $+2\%$ | High |
-| Cost-Sensitive | $-30\%$ | Variable | Low |
-| **Combined** | $\mathbf{-75\%}$ | $\mathbf{-8\%}$ | High |
+| Strategy  | FPR  | $\Delta$FPR | TPR | $\Delta$TPR | Youden's J |
+| --- | --- | --- | --- | --- | --- |
+| Baseline (no mitigation) | 0.183 | +0.000 | 0.873 | +0.000 | +0.689 |
+| Contextual Whitelist | 0.000 | -0.183 | 0.856 | -0.017 | +0.856 |
+| Cost-Sensitive | 0.000 | -0.183 | 0.856 | -0.017 | +0.856 |
+| Temporal Smoothing | 0.133 | -0.050 | 0.860 | -0.013 | +0.726 |
+| Confirmation Cascade | 0.000 | -0.183 | 0.225 | -0.647 | +0.225 |
+| **Combined** | 0.000 | -0.183 | 0.225 | -0.647 | +0.225 |
+
+*Each strategy is a post-filter over the modules' results, implemented in
+`composition/mitigations.py` and measured by `scripts/run_fp_mitigation.py` against the same two
+corpora. The deltas are what can be recovered without retraining anything.*
+
+*The result is better than the table it replaces claimed and differently shaped. Two strategies ---
+raising the score bar, and requiring either a strong score or corroboration --- take the
+false-positive rate from 0.183 to **zero** for 1.7 points of true positives, lifting Youden's J from
++0.689 to +0.856. Confirmation Cascade, the strategy the original table rated most effective after
+Combined, is the worst here: requiring two modules to agree costs 65 points of detection, because
+one module carries almost all of it. Combined inherits that.*
+
+> **On the replaced table.** It reported six strategies with paired $\Delta$FPR and $\Delta$TPR
+> figures under a caption describing measured effectiveness. None of the six existed. Five are
+> implemented now; **Incremental Learning is not**, and its row is gone rather than estimated: it
+> requires a model that updates on labelled feedback and every module here is a fixed scorer, so
+> there is nothing to update. Implementing something adjacent under that name would put the same
+> defect back with working code behind it.
+>
+> One measurement note that the original table's shape concealed. `SeriesPipeline` short-circuits
+> on the first module that flags, so a confirmation cascade evaluated against its output sees
+> exactly one flagging module every time and reports $-100\%$ detection. The verdicts here are
+> built by running all eight modules and applying the pipeline's own maximum rule --- the same
+> decision, with the evidence a cascade needs in order to be evaluated at all.
 
 ## Sliding Window Monitoring Algorithm
 
