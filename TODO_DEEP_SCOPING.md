@@ -141,6 +141,137 @@ accepted an empty sidecar and missed bare-filename citations.
   check is now gating rather than advisory and passes at zero.
 
 
+## Round 12 scope (2026-08-24) — three workstreams, scoped not yet executed
+
+This section scopes the three items left open after the invariants rewrite. Nothing
+here is executed yet; each workstream states its blast radius, its method, the
+decision it needs, and the condition under which it is finished.
+
+### W1 — Corpus migration: make the integrated 1,475-item corpus the only corpus
+
+**The finding that makes this urgent.** `src/attacks/corpus.py:242` reads
+`def generate(cls, seed: int = 42, *, extended: bool = False)`, and its own docstring
+three lines below reads *"``extended=True`` is the integrated corpus and the default"*
+and *"every number this series reports is now measured against one that can [reach all
+eight modules]"*. Both sentences are false at HEAD. The signature default is `False`,
+and of the twelve call sites outside the tests, exactly **two** pass `extended=True`.
+Every published number in the series is measured on the 950-item corpus that reaches
+five of the eight defense modules — the corpus whose coverage gap is the reason three
+adapters carry a Shapley value of exactly zero. A source docstring asserting a
+measurement property the code does not have is the same defect class as a manuscript
+asserting one, and it is currently the only place in the repository where a false
+claim about provenance is stated in the first person.
+
+**Call sites, exhaustively.** Ten production sites take the 950 corpus:
+
+| Site | Feeds | Downstream |
+|------|-------|------------|
+| `src/ablation/runner.py:222` | `ablation_results.json` | the 0.959 TPR, the Shapley table, S08 |
+| `src/evaluation/baselines.py:225` | `baseline_comparison.json` | the 98-item subsample, §05 |
+| `src/statistics/stability.py:396` | `multi_seed_results.json` | the 44.8% [43.2, 46.4] mean, cited in Part 1 |
+| `src/redteam/__init__.py:305` | `redteam_evaluation_results.json` | §05g, the Ω ladder |
+| `src/visualization/figures/comprehensive_taxonomy.py:23` | taxonomy figure | 12-category roll-up |
+| `src/visualization/tables/corpus_tables.py:61` | corpus tables | the published category counts |
+| `src/__main__.py:43` | CLI demo | none |
+| `scripts/run_full_evaluation.py:88` | `full_evaluation_results.json` | §05 headline rates |
+| `scripts/run_cross_validation.py:48` | `cross_validation_results.json` | the fold table |
+| `scripts/run_redteam.py:118` | red-team artifact | §05g |
+
+Two sites already migrated: `scripts/run_taxonomy_evaluation.py:328` (behind `--extended`)
+and `scripts/run_combination_rule_study.py:87` (hardcoded `extended=True`).
+
+**Blast radius.** 26 manuscript files mention 950; 2 lines mention 1,475. Migrating
+re-derives essentially every measured number in Part 2 and every number Parts 1 and 3
+cite from it. The ledger and `inject_series_values.py` handle the propagation, but the
+*prose around* the numbers — "twelve categories", "950 published items", the
+corpus-construction narrative in `03_attack_corpus.md` — is not injected and must be
+rewritten by hand. The three category names added by the extension
+(`provenance_laundering`, `sandbox_escape`, `byzantine_manipulation`) need a
+construction account in the manuscript, not just a count.
+
+**Method.** Flip the signature default to `extended: bool = True`, delete the keyword
+from the two sites that pass it, and let the test suite enumerate what breaks — the
+category-count and corpus-size assertions are the specification, so their failures are
+the migration checklist rather than noise. Regenerate all ten artifacts, run the ledger
+write path, then hand-rewrite `03_attack_corpus.md` and the two supplements that narrate
+corpus construction. Keep `extended=False` reachable and tested, because the published
+950-item results must stay reproducible for the comparison.
+
+**Decision needed.** Whether the papers report the 1,475 corpus as *the* corpus with the
+950 results retained as a prior-version comparison, or report both side by side as a
+coverage study. The first is cleaner and is what the docstring already claims; the
+second is more informative about what corpus coverage does to a Shapley table, and the
+taxonomy harness can already produce both.
+
+**Done when** no production call site passes `extended`, the docstring's claim is true,
+every artifact carries a corpus digest of the 1,475-item corpus, and no manuscript
+sentence describes a twelve-category corpus.
+
+### W2 — Backlog re-verification: the list has drifted from the repository
+
+**The finding.** The sweep backlog below lists 145 open rows (66 HIGH, 60 MED, 19 LOW)
+as measured on 2026-08-23. Triaging each row's site against `git diff 0fa0a09..HEAD`:
+**122 of the 145 sit on files that have changed since the sweep**, and only 23 sit on
+files untouched — 20 of those 23 being author decisions rather than agent work. Four MED
+rows spot-checked at HEAD were all already fixed: `02b-lambda-default-wrong` (02b now
+publishes $\lambda = 0.5$, matching `detection.py`), `tripwire-severity-thresholds-wrong`
+(02b now publishes 0.50/0.30/0.20, matching `tripwire.py:13-15`),
+`s05-pattern-counts-wrong` (S05 now says 13 and 7, matching `len(PatternDetector.*)`),
+and `s05-sandbox-module-descriptions` (S05 now describes `BeliefPartition` as the
+two-member tag it is).
+
+So the backlog is not a work list, it is a stale snapshot, and reading a count off it
+overstates the debt by an unknown margin. That is the same failure the series gate
+exists to prevent, one level up: a record of the repository that the repository has
+moved past.
+
+**Method.** Re-verify all 145 rows against HEAD before doing any of the work they
+describe, because a fix applied to an already-fixed row is how prose gets corrupted.
+Each row carries a file, a line and a concrete assertion, so each is checkable in one or
+two commands. Partition the outcome three ways: closed (strike the row and say which
+commit closed it), still open (keep, with a re-measured line number), or superseded (the
+claim no longer parses against the current text — the most dangerous class, because it
+looks like "still open" from the outside).
+
+**Cost.** 145 checks, of which roughly 60 are single-grep. The 122 changed-site rows are
+the ones that need reading; the 23 untouched-site rows can be carried forward as-is.
+
+**Done when** every row is marked closed, open-with-current-line, or superseded, and the
+HIGH/MED/LOW counts in the section header are derived from the table rather than typed.
+
+### W3 — Bibliography: 153 defined-and-never-cited entries
+
+**Current measurement** from the series gate's advisory: Part 1 39, Part 2 44, Part 3 70,
+down from 169 at Round 11 without anyone pruning — the drop is citations added, not
+entries removed. Pandoc emits only cited works and there is no `nocite`, so no reader
+ever sees these. They are invisible, which is precisely why both fabricated
+`supplychain2025` entries survived there for nine rounds.
+
+**Three options, and they are genuinely different.** (a) Prune to the cited set and set
+the gate to fail on any uncited entry, which makes the bibliography a closed
+1:1 artifact and makes a future fabrication impossible to hide. (b) Keep them as a
+curated reading list and add `nocite` so they render, which turns 153 invisible entries
+into a visible bibliography section a reader can use — but then every one of them needs
+the same verification the cited entries got. (c) Keep the status quo, an advisory count
+that nobody acts on.
+
+**Recommendation: (a).** The entries were never verified to the standard the cited ones
+were, and the argument for keeping an unverified entry that no reader can see is only
+that deleting it might lose something — which git already handles.
+
+**Done when** the per-part uncited count is zero and the bibliography check's advisory
+is promoted to a gating failure, or (b) is chosen and every newly-rendered entry has been
+verified against its primary record.
+
+### Standing author decisions, unchanged
+
+`S08` six-way tables (regenerate from `run_taxonomy_evaluation.py` or retire to the
+artifact's four categories); `N9`/`N10` symbol overloading across the three papers;
+`P2AI-06..08` (15 injected labels no registry claim inspects, and 05e's Bayesian numbers
+with no artifact to pin against); `H1--H3`, `H5`, the author-math backlog.
+
+---
+
 ## Sweep backlog (2026-08-23)
 
 A 12-agent sweep with adversarial verification of every finding returned 153
