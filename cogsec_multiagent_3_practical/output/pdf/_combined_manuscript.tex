@@ -705,9 +705,9 @@ attacks were detected only 74\%'' --- and it was typed. Impact is the
 one dimension deliberately left off \texttt{AttackSample} when adversary
 class and target were added: unlike those two it varies within a
 category by design, so assigning it per category would manufacture the
-axis rather than expose it, and a real label needs a per-sample
-judgement this corpus has never had. The prediction is worth testing and
-is tracked as such; it has not been tested.
+axis rather than expose it, and a real label requires a per-sample
+judgement the corpus does not carry. The prediction is worth testing and
+is tracked as such; it remains untested.
 
 \subsection{Defense Composition}\label{sec:composition-review}
 
@@ -3263,9 +3263,7 @@ lever: measured, it is flat across the band an operator would tune it
 in, so the configurability is nominal. The arms race dynamic is visible
 here: the metadata injection attack was novel, and the initial 72\%
 detection rate reflects the gap between parametric ceiling (96--100\%)
-and real deployment. Targeted threshold tuning closes part of this gap
-without full retraining --- a pragmatic first response that buys time
-for a proper model update.
+and real deployment.
 
 \newpage
 
@@ -3474,8 +3472,7 @@ composed algebraically. We proved that stealth and impact are inversely
 related. These are not just academic curiosities; they are foundational
 constraints for secure cognitive systems.
 
-The theoretical foundations have deepened since the first drafts of this
-guide. Three new formal results from Part 2 strengthen the case:
+Three formal results from Part 2 strengthen the case:
 
 \textbf{Categorical guarantee}: Theorems CT.1--CT.3 show defense
 composition in CIF is constrained by the DefenseCategory structure: a

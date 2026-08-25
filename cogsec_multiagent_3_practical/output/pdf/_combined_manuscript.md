@@ -168,7 +168,7 @@ Part 1 provides a theoretical bound on attack performance, formalized as the Ste
 
 > **Stealth-Impact Tradeoff**: *For a given defense sensitivity $\epsilon$, the probability of detection $P(d)$ approaches 1 as the divergence of the attack behavior from the baseline increases.*
 
-This formalism suggests that catastrophic attacks are inherently easier to detect than subtle attacks. Part 2 does not test that: its corpus carries no impact label, so no impact-stratified detection rate has ever been computed. The sentence that stood here reported one --- "High-impact attacks were detected 98\% of the time, while low-impact attacks were detected only 74\%" --- and it was typed. Impact is the one dimension deliberately left off `AttackSample` when adversary class and target were added: unlike those two it varies within a category by design, so assigning it per category would manufacture the axis rather than expose it, and a real label needs a per-sample judgement this corpus has never had. The prediction is worth testing and is tracked as such; it has not been tested.
+This formalism suggests that catastrophic attacks are inherently easier to detect than subtle attacks. Part 2 does not test that: its corpus carries no impact label, so no impact-stratified detection rate has ever been computed. The sentence that stood here reported one --- "High-impact attacks were detected 98\% of the time, while low-impact attacks were detected only 74\%" --- and it was typed. Impact is the one dimension deliberately left off `AttackSample` when adversary class and target were added: unlike those two it varies within a category by design, so assigning it per category would manufacture the axis rather than expose it, and a real label requires a per-sample judgement the corpus does not carry. The prediction is worth testing and is tracked as such; it remains untested.
 
 ## Defense Composition {#sec:composition-review}
 
@@ -1312,7 +1312,7 @@ $\tau_2$ is **flat from 0.25 to 0.75**: eleven consecutive threshold values, inc
 
 The curve it does trace is negative throughout. Measured alone against the hard benign corpus, the firewall flags more legitimate messages than attacks at every threshold below 0.80, so Youden's J never rises above zero and the best available operating point is the one where the component is switched off. That is consistent with what the ablation and the capability matrix independently report for this module, and it means per-deployment $\tau_2$ tuning is not a lever this framework currently offers. Making it one is a change to the firewall's scoring, not a change to its configuration.
 
-**Key lesson**: At scale (20 agents, 10K interactions/day), FPR management is a first-class concern. CIF exposes $\tau_2$ as configuration, but exposing a threshold is not the same as offering a lever: measured, it is flat across the band an operator would tune it in, so the configurability is nominal. The arms race dynamic is visible here: the metadata injection attack was novel, and the initial 72% detection rate reflects the gap between parametric ceiling (96--100%) and real deployment. Targeted threshold tuning closes part of this gap without full retraining — a pragmatic first response that buys time for a proper model update.
+**Key lesson**: At scale (20 agents, 10K interactions/day), FPR management is a first-class concern. CIF exposes $\tau_2$ as configuration, but exposing a threshold is not the same as offering a lever: measured, it is flat across the band an operator would tune it in, so the configurability is nominal. The arms race dynamic is visible here: the metadata injection attack was novel, and the initial 72% detection rate reflects the gap between parametric ceiling (96--100%) and real deployment.
 
 
 
@@ -1411,7 +1411,7 @@ This series began with a theory (Part 1) and moved to an experiment (Part 2). It
 
 We proved that trust can be bounded. We proved that defenses can be composed algebraically. We proved that stealth and impact are inversely related. These are not just academic curiosities; they are foundational constraints for secure cognitive systems.
 
-The theoretical foundations have deepened since the first drafts of this guide. Three new formal results from Part 2 strengthen the case:
+Three formal results from Part 2 strengthen the case:
 
 **Categorical guarantee**: Theorems CT.1--CT.3 show defense composition in CIF is constrained by the DefenseCategory structure: a detection-preserving chain cannot yield a non-detecting composite under the stated assumptions. That is a property of the composition law, not a separate empirical fit.
 
