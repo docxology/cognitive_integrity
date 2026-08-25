@@ -19234,15 +19234,15 @@
     "belief_drift": "belief_manipulation",
     "belief_fabrication": "belief_manipulation",
     "belief_injection": "belief_manipulation",
-    "byzantine_manipulation": "byzantine_manipulation",
+    "byzantine_manipulation": "provenance_and_isolation",
     "consensus_poisoning": "coordination",
     "delegation_abuse": "trust_exploitation",
     "direct_injection": "direct_injection",
     "impersonation": "trust_exploitation",
     "indirect_injection": "indirect_injection",
     "nested_injection": "nested_injection",
-    "provenance_laundering": "provenance_laundering",
-    "sandbox_escape": "sandbox_escape",
+    "provenance_laundering": "provenance_and_isolation",
+    "sandbox_escape": "provenance_and_isolation",
     "sybil_attack": "coordination",
     "timing_attack": "coordination",
     "trust_inflation": "trust_exploitation"
@@ -20699,5 +20699,19 @@
       "tpr": 0.8421052631578947,
       "youden_j": 0.8421052631578947
     }
+  },
+  "top_category_of": {
+    "belief_drift": "belief_manipulation",
+    "belief_fabrication": "belief_manipulation",
+    "belief_injection": "belief_manipulation",
+    "consensus_poisoning": "coordination",
+    "delegation_abuse": "trust_exploitation",
+    "direct_injection": "injection",
+    "impersonation": "trust_exploitation",
+    "indirect_injection": "injection",
+    "nested_injection": "injection",
+    "sybil_attack": "coordination",
+    "timing_attack": "coordination",
+    "trust_inflation": "trust_exploitation"
   }
 }

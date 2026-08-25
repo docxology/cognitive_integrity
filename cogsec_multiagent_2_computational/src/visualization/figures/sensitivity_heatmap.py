@@ -94,8 +94,18 @@ def plot_sensitivity_heatmap(output_dir: str = "output/figures") -> Figure:
             data = json.load(f)
         opt_inj = data["grid_best"]["injection"]
         opt_drift = data["grid_best"]["drift"]
-    except (KeyError, FileNotFoundError):
-        opt_inj, opt_drift = 0.65, 0.30
+    except (KeyError, FileNotFoundError) as exc:
+        # No fallback. This used to substitute (0.65, 0.30) and draw it as a
+        # white star annotated "Optimal (0.65, 0.30)" -- indistinguishable, on
+        # the rendered figure, from a measured optimum. _load_data() twenty
+        # lines above opens the same file unguarded, so the only thing this
+        # except clause protected was the caller's ability to get a figure
+        # with an invented operating point on it.
+        raise RuntimeError(
+            f"{p} does not carry grid_best; run "
+            f"scripts/run_sensitivity_analysis.py. The optimal operating point "
+            f"is measured and this figure has no stand-in for it."
+        ) from exc
 
     ax.plot(opt_inj, opt_drift, "w*", markersize=15, markeredgecolor="black", markeredgewidth=1.2, zorder=5)  # noqa: E501
     ax.annotate(

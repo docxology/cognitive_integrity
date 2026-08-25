@@ -99,12 +99,26 @@ FAMILY_OF: dict[str, str] = {
     "sybil_attack": "coordination",
     "consensus_poisoning": "coordination",
     "timing_attack": "coordination",
-    # Added with the corpus extension: the three families that exercise the
-    # modules the original 950 items never reached.
-    "provenance_laundering": "provenance_laundering",
-    "sandbox_escape": "sandbox_escape",
-    "byzantine_manipulation": "byzantine_manipulation",
+    # Added with the corpus extension: the three categories that exercise the
+    # modules the original 950 items never reached. They were first written as
+    # mapping to themselves, which silently turned the documented six-way
+    # roll-up into a nine-way one and gave every consumer three "families" of
+    # exactly one category each. They belong to one family, which is also the
+    # corpus's own top category for them.
+    "provenance_laundering": "provenance_and_isolation",
+    "sandbox_escape": "provenance_and_isolation",
+    "byzantine_manipulation": "provenance_and_isolation",
 }
+
+#: Why the three injection categories are *not* collapsed the way the others
+#: are: the roll-up is deliberately finer than the corpus's own top category
+#: there, because injection is 500 of the published 950 items and reporting it
+#: as one family would hide the differences between direct, indirect and
+#: nested attacks that the whole taxonomy exists to separate. Everything else
+#: rolls up to the corpus's own family.
+_DELIBERATELY_SPLIT = frozenset(
+    {"direct_injection", "indirect_injection", "nested_injection"}
+)
 
 
 class TaxonomyMismatch(RuntimeError):
@@ -377,6 +391,14 @@ def build(seed: int, mode: str, *, extended: bool = True) -> dict[str, object]:
         "seed": seed,
         "mode": mode,
         "corpus_variant": "extended" if extended else "published",
+        # The corpus's own family for each category, read off the samples
+        # rather than typed. Consumers that want the taxonomy as the generator
+        # defines it -- the tree figure, for one -- must not have to reproduce
+        # FAMILY_OF's deliberate injection split to get it.
+        "top_category_of": {
+            getattr(s.category, "value", str(s.category)): s.category.top_category
+            for s in corpus
+        },
         "components": list(COMPONENTS),
         "corpus_size": len(corpus),
         "corpus_digest": _corpus_digest(corpus),

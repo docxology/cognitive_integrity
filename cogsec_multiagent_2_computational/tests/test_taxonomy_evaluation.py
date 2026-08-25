@@ -189,3 +189,59 @@ def test_the_sweep_is_monotone(payload) -> None:
     for earlier, later in zip(grid, grid[1:]):
         assert later["tpr"] <= earlier["tpr"] + 1e-12
         assert later["fpr"] <= earlier["fpr"] + 1e-12
+
+
+def test_no_category_is_its_own_family_by_accident(payload) -> None:
+    """A category mapping to itself must be a deliberate split, not an oversight.
+
+    ``FAMILY_OF`` splits injection three ways on purpose: it is 500 of the
+    published 950 items, and rolling it into one family would hide exactly the
+    distinctions the taxonomy exists to draw. Those three are the only
+    self-maps that are allowed to exist.
+
+    The three categories added with the corpus extension were first written as
+    self-maps too, and nothing noticed. That silently turned a documented
+    six-way roll-up into a nine-way one and gave every consumer three
+    "families" of exactly one category each -- including the taxonomy tree
+    figure, whose top row became nine nodes wide and crashed on a colour list
+    holding four.
+    """
+    module = _module()
+    self_mapped = {c for c, f in module.FAMILY_OF.items() if c == f}
+    assert self_mapped == module._DELIBERATELY_SPLIT, (
+        f"{sorted(self_mapped - module._DELIBERATELY_SPLIT)} map to themselves "
+        f"without being in the deliberate-split set; either add them to it with "
+        f"the reason, or give them their family"
+    )
+
+
+def test_the_corpus_grouping_is_read_from_the_corpus(payload) -> None:
+    """``top_category_of`` must match what the samples actually say.
+
+    Consumers that want the taxonomy as the generator defines it read this
+    rather than reproducing FAMILY_OF's injection split. It has to be derived,
+    not typed, or it becomes the next hand-built map to drift.
+    """
+    module = _module()
+    corpus = module.AttackCorpus.generate(seed=payload["seed"], extended=True)
+    expected = {
+        getattr(s.category, "value", str(s.category)): s.category.top_category
+        for s in corpus
+    }
+    assert payload["top_category_of"] == expected
+    assert set(payload["top_category_of"]) == set(payload["category_counts"])
+
+
+def test_every_family_in_the_rollup_has_at_least_one_category(payload) -> None:
+    """A family of one is a category wearing a family's name."""
+    from collections import Counter
+
+    module = _module()
+    sizes = Counter(module.FAMILY_OF[c] for c in payload["category_counts"])
+    singletons = {
+        f for f, n in sizes.items() if n == 1 and f not in module._DELIBERATELY_SPLIT
+    }
+    assert not singletons, (
+        f"{sorted(singletons)} are families containing exactly one category, "
+        f"which makes the roll-up finer than it claims to be"
+    )
