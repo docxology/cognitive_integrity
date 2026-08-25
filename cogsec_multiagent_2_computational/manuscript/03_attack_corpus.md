@@ -39,13 +39,26 @@ Table: Attack corpus composition by category. {#tab:corpus-categories}
 
 Table: Prompt injection subcategory statistics. {#tab:injection-subcats}
 
-| Subcategory  | Count  | Undefended Success Rate$^*$ | CIF Success |
+| Subcategory  | Count  | Detected by the full pipeline | Evades the full pipeline |
 | --- | --- | --- | --- |
-| Direct injection | 200 | 78\% | 3\% |
-| Indirect injection | 200 | 65\% | 5\% |
-| Nested injection | 100 | 82\% | 7\% |
+| Direct injection | 200 | 86.0\% | 14.0\% |
+| Indirect injection | 200 | 100.0\% | 0.0\% |
+| Nested injection | 100 | 100.0\% | 0.0\% |
 
-$^*$\textit{Undefended success rates represent attack effectiveness measured without any CIF defense mechanisms active.}
+\textit{Detection measured by scoring each subcategory of \texttt{AttackCorpus.generate(seed=42)}
+through \texttt{composition.factory.create\_full\_pipeline()}.}
+
+> **On the removed column.** This table carried an "Undefended Success Rate"
+> of 78\%, 65\% and 82\%, footnoted as "attack effectiveness measured without
+> any CIF defense mechanisms active". No such measurement exists, and the
+> footnote describes an experiment this project has never had an arm for:
+> without a defense there is no detector to evade, and the corpus contains no
+> target agent whose compliance could be scored instead. The column is removed
+> rather than recomputed, and what replaces it is the quantity that *is*
+> measured --- what the pipeline catches, per subcategory, and what gets past
+> it. \Cref{tab:parametric-claude-code-perf} reports the one defended-versus-undefended
+> comparison this project can make, which is the cost of running the pipeline
+> rather than the benefit of having run it.
 
 **Direct Injection**: Attacks embedded directly in user input attempting to override system instructions.
 

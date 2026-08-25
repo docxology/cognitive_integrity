@@ -31,23 +31,33 @@ Table: Claude Code parametric detection results by attack type. {#tab:parametric
 | Belief manipulation | 0.00 | 0.67 | 0.79 | 0.85 | 0.94 |
 | Coordination | 0.00 | 0.52 | 0.61 | 0.76 | 0.88 |
 
-Table: Claude Code parametric performance metrics. {#tab:parametric-claude-code-perf}
+Table: Measured pipeline overhead against a control that does not run it. {#tab:parametric-claude-code-perf}
 
 | Metric  | Baseline  | Full CIF | Delta |
 | --- | --- | --- | --- |
-| Latency (p50) | 45ms | 52ms | +16\% |
-| Latency (p95) | 112ms | 138ms | +23\% |
-| Latency (p99) | 287ms | 361ms | +26\% |
-| Throughput | 850 req/s | 712 req/s | $-16\%$ |
-| Memory | 256MB | 312MB | +22\% |
+| Latency (p50) | 0.0002 ms | 0.6102 ms | $+0.6100$ ms |
+| Latency (p95) | 0.0002 ms | 0.9041 ms | $+0.9039$ ms |
+| Latency (p99) | 0.0004 ms | 1.2429 ms | $+1.2425$ ms |
+| Throughput | 3,201,474 msg/s | 1,784 msg/s | single-threaded, one process |
+| Peak traced memory | 51 KiB | 84 KiB | $+32$ KiB |
+
+*Measured by `scripts/run_overhead_control.py` over 1,595 messages (1,475 attacks and 120 benign), two passes in one process after a 50-message warmup. The control does the loop and no evaluation, so the Delta column is the cost of the defense and nothing else.*
+
+*No percentage overhead is reported here, and the reason is the point. This table previously read 45\,ms $\to$ 52\,ms at p50 and $+23\%$ at p95 against a "Baseline" column, but the control is the loop rather than a unit of agent work, so a ratio against it has no referent. There is a denominator that does exist: measured against the mean agent turn each architecture took in \cref{sec:llm-validation-results}, the pipeline's added median latency is Claude Code 0.0076%, CrewAI 0.0061%.*
 
 Table: Claude Code parametric integrity preservation. {#tab:parametric-claude-code-integrity}
 
-| Scenario  | Baseline  | With CIF | Improvement |
-| --- | --- | --- | --- |
-| Single attack | 0.72 | 0.99 | +38\% |
-| Sustained attack (1h) | 0.31 | 0.96 | +210\% |
-| Multi-vector attack | 0.18 | 0.94 | +422\% |
+> **Retracted.** This table reported "integrity preservation" for three
+> scenarios --- single attack $0.72 \to 0.99$, sustained attack over an hour
+> $0.31 \to 0.96$, multi-vector $0.18 \to 0.94$ --- as a baseline-versus-CIF
+> improvement of $+38\%$, $+210\%$ and $+422\%$. None of it was measured and
+> none of it could have been. There is no definition of "integrity
+> preservation" anywhere in `src/` to compute against, no sustained or
+> multi-vector scenario in the evaluation suite, and no undefended arm to form
+> a ratio with. The nearest real quantity is the colony benchmark's integrity
+> timeline (`colony_results.json`), which is run only under attack, so it
+> yields no baseline either. The table is removed rather than relabelled: a
+> $+422\%$ improvement is not a design intention that a caption can rescue.
 
 ### AutoGPT (Autonomous Architecture) {#sec:parametric-autogpt}
 
@@ -66,11 +76,13 @@ Table: AutoGPT parametric performance metrics. {#tab:parametric-autogpt-perf}
 
 | Metric  | Baseline  | Full CIF | Delta |
 | --- | --- | --- | --- |
-| Latency (p50) | 89ms | 108ms | +21\% |
-| Latency (p95) | 234ms | 295ms | +26\% |
-| Latency (p99) | 512ms | 658ms | +29\% |
-| Throughput | 420 req/s | 338 req/s | $-20\%$ |
-| Memory | 384MB | 467MB | +22\% |
+> **Retracted.** This table gave AutoGPT its own baseline-versus-CIF latency,
+> throughput and memory figures, a per-architecture twin of the Claude Code
+> table above. The pipeline is architecture-agnostic --- `create_full_pipeline()`
+> takes no architecture argument and the adapters do not vary by it --- so
+> there is one overhead measurement in this project and it is the one reported
+> above. Four architectures were given four different overhead profiles that
+> nothing distinguishes and nothing measured.
 
 ### CrewAI (Role-Based Architecture) {#sec:parametric-crewai}
 
@@ -299,9 +311,9 @@ Table: Parametric simulation overall performance summary. {#tab:parametric-overa
 | False Positive Rate | 0.05 | [0.03, 0.08] |
 | Precision | 0.94 | [0.92, 0.96] |
 | F1 Score | 0.94 | [0.92, 0.96] |
-| Latency Overhead | 23\% | [20\%, 26\%] |
-| Throughput Ratio | 0.81 | [0.78, 0.84] |
-| Memory Overhead | 67MB | [58, 76] |
+| Latency overhead | $+0.61$ ms per message | measured; see \cref{tab:parametric-claude-code-perf} |
+| Throughput | 1{,}784 msg/s | measured, single-threaded |
+| Memory overhead | $+32$ KiB peak | measured |
 
 ### Summary {#sec:parametric-findings-summary}
 

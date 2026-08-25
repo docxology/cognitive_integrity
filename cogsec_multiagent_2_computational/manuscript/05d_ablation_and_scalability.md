@@ -131,15 +131,20 @@ visible in the measurement rather than merely anticipated. The intercept ($\gamm
 
 Table: Performance scaling with message volume. {#tab:volume-scaling}
 
-| Messages/sec | Detection Rate | Latency | CPU Usage |
-| --- | --- | --- | --- |
-| 500 | 0.94 | 52ms | 34\% |
-| 1000 | 0.94 | 68ms | 56\% |
-| 2000 | 0.93 | 112ms | 78\% |
-| 5000 | 0.92 | 234ms | 94\% |
-| 10000 | 0.89 | 567ms | 99\% |
-
-**Saturation point**: $\sim$5000 messages/sec with current configuration.
+> **Retracted.** This table reported detection rate, latency and CPU usage at
+> five controlled message rates, and derived a saturation point of
+> $\sim$5000 messages/sec from them. Nothing drove the pipeline at a
+> controlled arrival rate: there is no rate limiter, no CPU sampler and no
+> throughput driver anywhere in the evaluation suite, so all fifteen cells and
+> the conclusion drawn from them were typed.
+>
+> What is measured is sustained single-threaded throughput, reported in
+> \cref{tab:parametric-claude-code-perf}: **1{,}784 messages/sec** over the
+> full corpus in one process, against a control that runs the same loop without
+> evaluating. That is a throughput, not a saturation point --- establishing
+> where detection degrades under load needs the rate-controlled driver this
+> table presupposed, and building it is tracked as W2 in
+> `TODO_DEEP_SCOPING.md`.
 
 ## Summary {#sec:ablation-summary}
 
