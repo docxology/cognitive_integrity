@@ -19,17 +19,19 @@ findings survived verification, 44 at HIGH
 
 ---
 
-## Executive Summary - measured 2026-08-16 (Round 9)
+## Executive Summary - measured 2026-08-25 (Round 12)
 
 | Paper | Tests | Manuscript verifier | Notes |
 |-------|-------|---------------------|-------|
-| 1 | 437 passed / 0 skipped | PASS (7/7) | |
-| 2 | 3369 passed / 3 skipped | claim registry 163/163 MATCH | |
-| 3 | 935 passed / 0 skipped | PASS (8/8) | |
-| series | 33 passed (`tests/test_series_integrity.py`) | gate PASS | new in Round 10 |
+| 1 | 442 passed / 0 skipped | PASS | |
+| 2 | 3422 passed / 3 skipped | claim registry 171/171, zero unreconciled | |
+| 3 | 935 passed / 0 skipped | PASS | |
+| series | 69 passed (`tests/test_series_integrity.py`) | gate PASS (6/6) | |
 
-Measured 2026-08-22. The series row is the new program-level gate; it had no predecessor,
-which is the finding that organises this round.
+Every number in all three papers is now measured on the integrated 1,475-item attack
+corpus. The claim registry has a write path (`scripts/sync_claims.py`), so its
+`KNOWN_UNRECONCILED` set is empty rather than 28 entries deep, and the bibliography check
+gates rather than counts.
 
 ---
 
@@ -104,9 +106,9 @@ accepted an empty sidecar and missed bare-filename citations.
 | ID | What is left |
 |----|--------------|
 | S08 six-way tables | Resolved by disclosure, not measurement. Regenerating them needs a real six-way run; retiring them means dropping to the artifact's four categories. Author call. |
-| P2AI-06..08 | The injector writes 15 labels no registry claim inspects, and 05e's Bayesian numbers have no artifact to pin against. |
+| P2AI-06..08 | PARTIAL. The registry now has a write path and zero unreconciled claims, but the injector still writes 15 labels no registry claim inspects, and 05e's Bayesian numbers still have no artifact to pin against. |
 | N9, N10 | Symbol overloading across the three papers. |
-| BIB-11 | 169 bibliography entries are defined and never cited (Part 1 47, Part 2 49, Part 3 73). Not a defect a reader can see --- pandoc emits only cited works, and there is no `nocite` --- but it is where both fabricated `supplychain2025` entries hid, so the bibliography check now reports the count as an advisory. Pruning is an author call. |
+| ~~BIB-11~~ | CLOSED in Round 12. Pruned to the cited set (349 entries to 207, uncited 153 to 4, the survivors named in a README or an audit note), and the advisory is now a gating check. |
 | H1--H3, H5 | The author-math backlog, carried forward. |
 
 ### Closed since
@@ -141,13 +143,33 @@ accepted an empty sidecar and missed bare-filename citations.
   check is now gating rather than advisory and passes at zero.
 
 
-## Round 12 scope (2026-08-24) — three workstreams, scoped not yet executed
+## Round 12 (2026-08-24) — three workstreams, all closed
 
-This section scopes the three items left open after the invariants rewrite. Nothing
-here is executed yet; each workstream states its blast radius, its method, the
-decision it needs, and the condition under which it is finished.
+All three shipped. The scope below is kept as written, because the gap between what
+each workstream was expected to do and what it actually found is the most useful thing
+in this file. W1 was scoped as a migration and turned into a diagnosis: the corpus was
+never the reason three modules measured zero. W2 was scoped as 145 fixes and turned out
+to be 62 fixes already applied. W3 was the only one that went as planned.
 
-### W1 — Corpus migration: make the integrated 1,475-item corpus the only corpus
+**Outcome, per workstream:**
+
+| | Scoped as | What it actually was |
+|---|---|---|
+| **W1** | flip a default, regenerate artifacts, rewrite prose | the docstring's causal claim was false too: extending the corpus by 525 payloads written for the three zero-Shapley modules moved none of them. Separating contribution from capability (`run_module_capability_matrix.py`) showed two were masked and one detected nothing anywhere; rewriting it took consensus from 0.0% to 81.1% at zero FPR. No module has a Shapley value of zero now. |
+| **W2** | re-verify, then fix 145 rows | 62 were already closed and none superseded, so the list overstated the debt by 43%. Nine more fixed; 74 struck. |
+| **W3** | prune, or add `nocite`, or leave it | pruned: 349 entries to 207, uncited 153 to 4, and the advisory promoted to a gating check that is mutation-tested. |
+
+**Three defects the migration surfaced that nothing had been looking for:** the
+multi-seed arm took `corpus[:100]` from a corpus that emits its injections first, so a
+direct-injection rate had been published as an overall one and widening the corpus moved
+it by zero digits; `run_full_evaluation.py` wrote its provenance hash under a key the
+reader does not read, so a parametric artifact classified as unverifiable for as long as
+its sidecar existed; and `inject_series_values` rewrote by first-occurrence rather than by
+matched span, turning "Assumption 4" into "Assumption 10" while making the gap phrase it
+was maintaining correct. All three are fixed, and each now has a test that fails without
+the fix.
+
+### DONE — W1 — Corpus migration: make the integrated 1,475-item corpus the only corpus
 
 **The finding that makes this urgent.** `src/attacks/corpus.py:242` reads
 `def generate(cls, seed: int = 42, *, extended: bool = False)`, and its own docstring
@@ -207,7 +229,7 @@ taxonomy harness can already produce both.
 every artifact carries a corpus digest of the 1,475-item corpus, and no manuscript
 sentence describes a twelve-category corpus.
 
-### W2 — Backlog re-verification: the list has drifted from the repository
+### DONE — W2 — Backlog re-verification: the list has drifted from the repository
 
 **The finding.** The sweep backlog below lists 145 open rows (66 HIGH, 60 MED, 19 LOW)
 as measured on 2026-08-23. Triaging each row's site against `git diff 0fa0a09..HEAD`:
@@ -239,7 +261,7 @@ the ones that need reading; the 23 untouched-site rows can be carried forward as
 **Done when** every row is marked closed, open-with-current-line, or superseded, and the
 HIGH/MED/LOW counts in the section header are derived from the table rather than typed.
 
-### W3 — Bibliography: 153 defined-and-never-cited entries
+### DONE — W3 — Bibliography: 153 defined-and-never-cited entries
 
 **Current measurement** from the series gate's advisory: Part 1 39, Part 2 44, Part 3 70,
 down from 169 at Round 11 without anyone pruning — the drop is citations added, not
@@ -269,6 +291,159 @@ verified against its primary record.
 artifact's four categories); `N9`/`N10` symbol overloading across the three papers;
 `P2AI-06..08` (15 injected labels no registry claim inspects, and 05e's Bayesian numbers
 with no artifact to pin against); `H1--H3`, `H5`, the author-math backlog.
+
+---
+
+## Round 13 scope (2026-08-25) — what is left, and why most of it is not an author decision
+
+75 rows remain open: 31 HIGH, 41 MED, 2 LOW as the tables below count them. **Sixty-nine
+are labelled `author`.** Read at face value that says the mechanical work is finished and
+the rest is judgement. It is not what it says.
+
+Every one of those labels was assigned by a reviewer answering a narrower question: *can
+an agent fix this from the row alone?* A row saying "this table's numbers have no
+artifact" is unfixable from the row, because the fix is either a measurement that does
+not exist yet or a retraction, and neither is in the row. But that is a statement about
+missing instrumentation, not about the nature of the defect. Round 12 is the proof: W2's
+four hand-checked `author` rows were all already fixed, and the invariants and consensus
+rewrites — the two largest changes in the project's history — were both `author` rows
+until something measured the thing they were arguing about.
+
+So the organising question for this round is not "which of these do I fix" but **"which
+of these can be made checkable, so the gate names the sentence and the author only
+decides what it should say"**. Grouped that way, the 75 rows are eight problems, not
+seventy-five.
+
+### G1 — Numbers presented as measured, with no artifact behind them (20 rows)
+
+The largest group and the most serious, because it is the exact defect class the entire
+apparatus exists to catch, surviving inside the papers the apparatus guards.
+`defense_composition.py:147` hardcodes sixteen of twenty cells and computes the Full CIF
+row from the four hardcoded inputs. `06_discussion.md:41` carries an architecture-insights
+table whose topology dimension appears in no shipped artifact at all. `06_discussion.md:58`
+presents 0.89 and 0.72 as measured firewall performance; both are cells of a *parametric*
+table, and the 0.72 is the sandbox's cell, not the firewall's. The 98/74 impact-stratified
+split is cited in three places across two papers and Part 2 reports no impact-stratified
+results of any kind.
+
+**What makes this tractable:** the claim registry already binds 171 numbers to the
+computation that produces them, and `sync_claims.py` now writes them back. What it cannot
+do is notice a number that is bound to *nothing*. The gate to build is the complement of
+the one that exists: sweep every numeric literal in the prose, subtract the ones a claim
+or ledger variable owns, and require the remainder to be either inside an explicitly
+non-empirical context or listed with a reason. Round 11 built exactly this shape for
+citations — `_cited_keys` minus the bibliography — and Round 12 turned that count into a
+gate. This is the same move applied to numbers, and it is the highest-value item left in
+the project.
+
+Roughly a third of these will resolve to "measure it" (the harness usually exists), a
+third to "relabel it parametric", and a third to "retract it". The gate does not decide
+which; it makes the choice unavoidable and enumerable.
+
+### G2 — The documented API is not the shipped API (16 rows)
+
+S07's Algorithm 1 describes an embedding stage and an anomaly stage that
+`CognitiveFirewall.classify()` does not have; `ProvenanceTracker` appears in no source
+file; S09 documents `src.core.base`, which does not import. A reader following these
+supplements gets `ModuleNotFoundError`, which is the least forgivable failure mode a
+methods paper has.
+
+**Already measured, this round:** of the 18 import statements appearing in manuscript
+prose across the three parts, **6 do not resolve** — `src.core.base` (twice),
+`cogsec.benchmarks`, `cogsec.testing`, a bare `path`, and `src.utils.config.CIFConfig`,
+which imports but has no such attribute. That check took four lines and is worth having
+permanently.
+
+**The gate:** extend `test_manuscript_code_examples.py`, which already executes S06's
+integration example, to every import path, every documented type and every documented
+call signature in the supplements. Signatures are checkable with `inspect.signature`
+against the named class, which is what would have caught
+`add_provisional(belief, ttl_seconds=None)` being documented with a trust argument it
+has never had. Once it runs, each remaining row names a specific symbol and the decision
+is binary: implement it or delete the paragraph.
+
+### G3 — One symbol, several meanings (5 rows)
+
+`ρ` carries five meanings in Part 2 and has zero rows in its notation table. `η` has two
+undocumented senses in Part 1, `d` is both a defense index and a distance. This is N9/N10,
+carried since Round 11, and one of the five remaining `agent` rows is a request for the
+gate that would close it.
+
+**The gate:** for each part, extract every distinct `$\symbol$` from the prose, compare
+against the notation supplement's table, and fail on a symbol used but not documented —
+plus the harder direction, a symbol documented once but used in two definitions, which
+Round 12 fixed for `\mathcal{M}` by hand and which nothing prevents recurring. Cheap to
+build, mechanically decidable, and it closes a family that has survived three rounds of
+being noticed.
+
+### G4 — Part 3 restates Part 1 and Part 2, and the restatement drifts (13 rows)
+
+CT.3 is renamed and restated; the stealth-impact theorem becomes a different claim; a BFT
+result is restated as an iff that the original does not assert; an associativity claim is
+inverted; a τ₂ mechanism runs backwards. The cross-paper pointer gate built in Round 10
+checks that a pointer *resolves*. Nothing checks that what the pointer says the source
+says is what the source says.
+
+**This is the group with the least mechanical leverage and it should be honest about
+that.** A faithfulness check between a theorem statement and its restatement is not a
+regex. What *is* tractable: require every restatement to quote the source's own sentence
+rather than paraphrase it, and gate on the quoted text matching the source verbatim.
+That converts a semantic problem into a string comparison at the cost of some prose
+elegance, and it is the only version of this that a gate can hold.
+
+### G5 — Figures and tables that disagree with their own captions (7 rows)
+
+A taxonomy caption describing a different figure, a pitfall figure plotting a different
+eight items than its section lists, generated LaTeX tables never `\input` anywhere, and
+orphan generated figures nothing references. The figure registry already exists;
+extending it to assert that every generated artifact is referenced exactly once, and that
+caption-stated counts match the figure's own data, covers most of this. Round 12's
+domain-coverage row was closed exactly this way.
+
+### G6 — Bibliography facts the gate cannot see (4 rows)
+
+A misattributed Copilot RCE disclosure, a placeholder DOI, dead source URLs, uncited MCP
+benchmarks. The Round 12 prune closed the *structural* half of the bibliography problem —
+nothing is defined-and-unreachable now — but a correctly-formatted entry with the wrong
+authors is invisible to any local check. These need network verification against the
+primary record, one entry at a time, and that is the honest cost.
+
+### G7 — Coverage claimed as complete that is not (5 rows)
+
+"Complete OWASP coverage" in two abstracts, an ASI mapping that contradicts itself, a
+section enumerating three of four. Small, self-contained, and each resolvable by counting
+what is actually mapped and writing that number instead of the word "complete". Worth
+doing early because it is cheap and it is the kind of claim a hostile reader checks first.
+
+### G8 — Instrumentation gaps (6 rows, and the five remaining `agent` rows live here)
+
+Ablation deltas that no gate covers; the injector writing 15 labels no registry claim
+inspects; two provenance schemas where there should be one; a Python 3.10 blocker in CI
+that no longer exists; ledger variables with genuinely no prose site, which means a
+committed artifact nothing reads. These are the rows that make the other groups
+checkable, which is the argument for doing them first.
+
+### Recommended order
+
+**G8 then G2 then G1** is the sequence with the most leverage, and the reason is that
+each one makes the next one cheaper. G8 is the instrumentation. G2 is the smallest gate
+with a defect already measured behind it — six broken imports, findable in four lines of
+Python — so it is the cheapest proof that the approach converts `author` rows into
+enumerable ones. G1 is the largest and the most important, and it is worth entering with
+a working example of the pattern rather than inventing it there.
+
+**G7 and G5 are cheap and can go in parallel with any of it.** G3 is a clean, bounded
+gate whenever there is an appetite for it. **G4 and G6 are the genuine author decisions
+in this list** — a faithfulness judgement and a set of facts that need the primary record
+— and they are the only two groups where "author" means what it says.
+
+### What Round 12 changed about how this file should be read
+
+Do not act on a row without re-verifying it. Of 145 rows carried into Round 12, 62 were
+already fixed, and editing prose that is already correct is how both write-path
+corruptions repaired in that round were introduced. The re-verification is cheap — each
+row carries a file, a line and a checkable assertion — and it is the difference between
+a work list and a snapshot of a repository that has moved on.
 
 ---
 
