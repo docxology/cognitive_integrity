@@ -42,11 +42,11 @@ Table: Current adapter maturity assessment per module. Evidence: $\Delta\mathrm{
 
 | Module | Level | Evidence | Primary Failure Mode |
 | --- | --- | --- | --- |
-| Detection | 3 | $\Delta\mathrm{TPR} = -0.051$; statistical features | B (threshold) |
-| Trust Calculus | 3 | $\Delta\mathrm{TPR} = -0.020$; authority-claim detection | B (threshold) |
-| Firewall | 2 | $\Delta\mathrm{TPR} = -0.010$; pattern matching | A (feature) |
-| Tripwires | 2 | $\Delta\mathrm{TPR} = -0.010$; canary monitoring | A (feature) |
-| Invariants | 2 | $\Delta\mathrm{TPR} = -0.010$; rule-based | C (unexercised) |
+| Detection | 3 | $\Delta\mathrm{TPR} = 0.000$; statistical features | B (threshold) |
+| Trust Calculus | 3 | $\Delta\mathrm{TPR} = 0.000$; authority-claim detection | B (threshold) |
+| Firewall | 2 | $\Delta\mathrm{TPR} = 0.000$; pattern matching | A (feature) |
+| Tripwires | 2 | $\Delta\mathrm{TPR} = -0.020$; canary monitoring | A (feature) |
+| Invariants | 2 | $\Delta\mathrm{TPR} = -0.650$; rule-based | C (unexercised) |
 | Consensus | 1 | $\Delta\mathrm{TPR} = 0.000$; uncalibrated mock votes | D (adapter hook) |
 | Provenance | 1 | $\Delta\mathrm{TPR} = 0.000$; stub on current corpus | D (adapter hook) |
 | Sandbox | 1 | $\Delta\mathrm{TPR} = 0.000$; limited contribution | C (unexercised) |

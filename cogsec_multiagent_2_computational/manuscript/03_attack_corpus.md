@@ -104,7 +104,7 @@ seed 42.
 
 ### Difficulty Distribution {#sec:difficulty-dist}
 
-Table: Attack corpus difficulty distribution (actual generator output, seed 42). {#tab:difficulty-dist}
+Table: Attack corpus difficulty distribution (generator output at seed 42 with \texttt{extended=False} --- the 950-item corpus this chapter describes, not the 1475-item integrated corpus that \texttt{AttackCorpus.generate()} now returns by default). {#tab:difficulty-dist}
 
 | Difficulty | Count | Percentage |
 | --- | --- | --- |

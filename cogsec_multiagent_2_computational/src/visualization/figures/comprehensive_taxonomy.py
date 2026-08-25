@@ -5,6 +5,7 @@ Implements functionality for the Cognitive Integrity Framework.
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 from typing import Any
 
@@ -21,6 +22,52 @@ from ..style import FONTSIZE, SEMANTIC_COLORS, add_source_annotation, apply_styl
 # derivation always raised and a hardcoded table always won, so the caption's
 # corpus size could not track the corpus it names.
 _CORPUS_COUNTS: dict[str, int] = dict(AttackCorpus.generate(seed=42).distribution())
+
+
+
+#: Per-adversary-class detection, measured rather than typed.
+#:
+#: Five rates were written into the ``classes`` list below -- 0.85, 0.78, 0.71,
+#: 0.65, 0.45 -- and drawn as filled progress bars labelled "Detection: 85%"
+#: and so on, under a caption that draws a conclusion from the trend. Nothing
+#: measured them. ``adversarial_training_results.json`` carries
+#: ``omega_level_dr`` keyed ``omega_1_passive`` through ``omega_5_coordinated``,
+#: one-for-one with this figure's five columns, and it is used here.
+#:
+#: That artifact's ``data_origin`` is ``parametric_simulation``, so the panel
+#: says so. Replacing a typed number with a simulated one and calling it
+#: measured would be the same defect in better clothes.
+_OMEGA_DR_PATH = (
+    Path(__file__).resolve().parents[3] / "output" / "data" / "adversarial_training_results.json"
+)
+
+#: The artifact's keys, in this figure's column order.
+_OMEGA_KEYS = (
+    "omega_1_passive",
+    "omega_2_injection",
+    "omega_3_impersonation",
+    "omega_4_belief_manip",
+    "omega_5_coordinated",
+)
+
+
+def _omega_detection_rates() -> list[float]:
+    """Detection per adversary class, in column order. Fails closed."""
+    if not _OMEGA_DR_PATH.is_file():
+        raise FileNotFoundError(
+            f"{_OMEGA_DR_PATH} is missing; run "
+            f"scripts/run_adversarial_training.py. This panel reports a rate "
+            f"per adversary class and has no stand-in values."
+        )
+    payload = json.loads(_OMEGA_DR_PATH.read_text(encoding="utf-8"))
+    rates = payload.get("omega_level_dr") or {}
+    missing = [k for k in _OMEGA_KEYS if k not in rates]
+    if missing:
+        raise KeyError(
+            f"{_OMEGA_DR_PATH.name} has no omega_level_dr entry for {missing}; "
+            f"the ladder and the figure have diverged"
+        )
+    return [float(rates[k]) for k in _OMEGA_KEYS]
 
 
 def plot_comprehensive_taxonomy(output_dir: str | Path = "output/figures") -> plt.Figure:
@@ -80,7 +127,9 @@ def plot_comprehensive_taxonomy(output_dir: str | Path = "output/figures") -> pl
     col_gap = 0.3
     start_x = 0.8
 
-    # Data for each adversary class
+    # Data for each adversary class. The detection rate is attached below from
+    # the artifact rather than written into the literal.
+    detection_rates = _omega_detection_rates()
     classes: list[Any] = [
         {
             "symbol": "Ω₁",
@@ -93,7 +142,6 @@ def plot_comprehensive_taxonomy(output_dir: str | Path = "output/figures") -> pl
                 "Malicious\nUser Input",
             ],
             "complexity": "Low",
-            "detection": 0.85,
             "impact": "Entry Point",
         },
         {
@@ -107,7 +155,6 @@ def plot_comprehensive_taxonomy(output_dir: str | Path = "output/figures") -> pl
                 "API Data\nCorruption",
             ],
             "complexity": "Medium",
-            "detection": 0.78,
             "impact": "Data Injection",
         },
         {
@@ -121,7 +168,6 @@ def plot_comprehensive_taxonomy(output_dir: str | Path = "output/figures") -> pl
                 "Goal\nManipulation",
             ],
             "complexity": "High",
-            "detection": 0.71,
             "impact": "State Corruption",
         },
         {
@@ -135,7 +181,6 @@ def plot_comprehensive_taxonomy(output_dir: str | Path = "output/figures") -> pl
                 "Consensus\nManipulation",
             ],
             "complexity": "High",
-            "detection": 0.65,
             "impact": "Trust Exploitation",
         },
         {
@@ -149,10 +194,12 @@ def plot_comprehensive_taxonomy(output_dir: str | Path = "output/figures") -> pl
                 "Cascading\nFailure",
             ],
             "complexity": "Critical",
-            "detection": 0.45,
             "impact": "Total Compromise",
         },
     ]
+
+    for _column, _rate in zip(classes, detection_rates):
+        _column["detection"] = _rate
 
     # Draw each class column
     for i, cls in enumerate(classes):
@@ -280,7 +327,7 @@ def plot_comprehensive_taxonomy(output_dir: str | Path = "output/figures") -> pl
         ax.text(
             x + col_width / 2,
             1.75,
-            f"Detection: {cls['detection']:.0%}",
+            f"Detection: {cls['detection']:.0%}\u2020",
             ha="center",
             va="center",
             fontsize=FONTSIZE["small"],
@@ -354,6 +401,17 @@ def plot_comprehensive_taxonomy(output_dir: str | Path = "output/figures") -> pl
             fontsize=FONTSIZE["small"],
             color=colors["text"],
         )
+    # The dagger on each Detection label. The artifact these come from records
+    # data_origin "parametric_simulation", and a bar chart with no qualifier
+    # reads as a measurement whatever its source.
+    ax.text(
+        0.5, 0.015,
+        "\u2020 Detection rates from adversarial_training_results.json "
+        "(parametric simulation, not a deployed measurement).",
+        transform=fig.transFigure, ha="center", va="bottom",
+        fontsize=7, color="#5A6472", style="italic",
+    )
+
 
     plt.tight_layout()
     add_source_annotation(fig, "src/visualization/figures/comprehensive_taxonomy.py")

@@ -161,7 +161,7 @@ The zero-sum solver \texttt{solve\_zero\_sum\_game()} in \texttt{src/analysis/ga
 
 \begin{itemize}
 \item Without defender retraining, the effective detection rate decays at $\approx 2\%$ per attacker adaptation cycle.
-\item Periodic defender retraining (every 5 cycles, $+3\%$ recovery per retraining event) stabilizes the long-run equilibrium at $\sim 0.52$---a 4-percentage-point degradation from the static Nash value.
+\item Periodic defender retraining (every 5 cycles, $+3\%$ recovery per retraining event) does not stabilize the detection rate. A $+3\%$ retrain offsets less than a third of the $10$ percentage points the attacker takes over the same five cycles, so \texttt{arms\_race\_simulation(0.61)} at its defaults (seed 42) falls to $0.0$ after 43 update steps and returns no equilibrium value; this cadence slows the collapse rather than arresting it. An earlier revision reported stabilization at $\sim 0.52$, a 4-percentage-point degradation from the then-current Nash value of $0.56$; the simulation returns no such value, and the claim is withdrawn.
 \item Without any maintenance, the detection rate asymptotes toward zero over $\sim 30$ cycles. This has no counterpart in Part 1: its trust calculus and detection bounds are stated against a fixed adversary, and it proves nothing about an adapting one. The adaptive case is simulated here precisely because the formal treatment leaves it open.
 \end{itemize}
 

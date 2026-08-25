@@ -73,10 +73,24 @@ $(1 - \alpha L)$ when $\alpha \leq 1/L$. The contraction mapping theorem then
 gives the stated geometric convergence rate.
 \end{proof}
 
-**Corollary S11.1.** For the empirical AT results in §\ref{sec:at-convergence},
-the observed geometric decay ratio of $\approx 0.65$ implies $1 - \alpha L \approx 0.65$,
-so $\alpha L \approx 0.35$. With $\alpha = 0.05$, this gives $L \approx 7$, an
-empirically reasonable Lipschitz constant for the detection rate surface.
+**Corollary S11.1 (withdrawn).** An earlier revision recovered a Lipschitz
+constant here, reading an observed geometric decay ratio of $\approx 0.65$ as
+$1 - \alpha L$ and combining it with $\alpha = 0.05$ to obtain $L \approx 7$.
+Neither input survives inspection. The step size is real: `ATConfig.learning_rate`
+is $0.05$ and `AdversarialTrainer.run_round` applies `learning_rate * gradient`
+to every threshold. But in the default `model` measurement mode --- the mode that
+produced the AT results of §\ref{sec:at-convergence} --- the reported round
+detection rates come from the `ROUND_GAP_ATTRIBUTION` constants via
+`_simulate_hardened_dr` and never read the updated thresholds: re-running the
+five rounds at $\alpha = 0$, $0.5$ and $5.0$ reproduces the identical gain
+sequence $(7.27, 5.60, 5.04, 2.91, 2.41)$ pp. Nor is $0.65$ an observation; it is
+the constant `geometric_convergence_projection` returns when the gain list is
+empty or its first entry is non-positive. On the measured per-round increments
+the median ratio is $0.80$, and on the cumulative gain series it is $1.28$ ---
+divergent, with an infinite projection --- which is why
+§\ref{sec:at-convergence} describes the sequence as approximately linear rather
+than geometrically decaying. No Lipschitz constant for the detection-rate
+surface is recoverable from these runs.
 
 ## Information-Geometric View of Adversarial Training {#sec:at-infogeo}
 

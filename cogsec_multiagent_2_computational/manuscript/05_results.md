@@ -55,7 +55,7 @@ Table: Gap between parametric ceiling and empirical detection, with primary attr
 
 | Architecture | Parametric DR | Empirical DR | Total Gap | Primary Cause |
 | :--- | :---: | :---: | :---: | :--- |
-| Claude Code (multi-seed pipeline) | 100\% | 86.3\% | $\sim$55 pp | Adapter maturity ($G_{\text{adapter}}$) |
+| Claude Code (multi-seed pipeline) | 100\% | 86.3\% | 13.7 pp | Adapter maturity ($G_{\text{adapter}}$) |
 | Claude Code (LLM validation) | 100\% | 80\% | $\sim$20 pp (N=5) | Insufficient power |
 | CrewAI (LLM validation) | 100\% | 100\% | 0 pp | --- |
 

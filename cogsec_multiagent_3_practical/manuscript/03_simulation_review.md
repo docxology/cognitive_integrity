@@ -101,11 +101,20 @@ We proved the *architecture* works. The implementation fidelity is the variable 
 
 ### Tripwire Configuration Data
 
-The simulations utilized the following tripwire densities to achieve the reported results:
+The tripwire densities below are what Part 2's pipeline installs, not a target
+density. One `TripwireAdapter` is constructed per pipeline rather than per agent,
+and its constructor
+(`cogsec_multiagent_2_computational/src/composition/adapters.py`) adds exactly
+three canaries; `get_canary_count()` on the resulting adapter returns
+`{'identity': 1, 'boundary': 1, 'principal': 1, 'temporal': 0, 'general': 0}`.
+`add_temporal_canary` is defined in `src/core/tripwire.py` but never called, so
+no temporal canary is installed anywhere. An earlier revision of this table
+reported 3+ identity, 5+ boundary, 2+ principal and 1 temporal canary per agent;
+those densities were never run.
 
 | Category | Count Used in Sim | Placement Strategy |
 |----------|-------------------|-------------------|
-| Identity canaries | 3+ per agent | Core identity beliefs |
-| Boundary canaries | 5+ per agent | Permission boundaries |
-| Principal canaries | 2+ per agent | Trust relationships |
-| Temporal canaries | 1 per agent | Session continuity |
+| Identity canaries | 1 per pipeline | Core identity beliefs |
+| Boundary canaries | 1 per pipeline | Permission boundaries |
+| Principal canaries | 1 per pipeline | Trust relationships |
+| Temporal canaries | 0 (never installed) | Session continuity (unused) |
