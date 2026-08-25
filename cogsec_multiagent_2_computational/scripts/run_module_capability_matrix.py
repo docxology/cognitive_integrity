@@ -70,10 +70,29 @@ def build(seed: int = 42) -> dict[str, object]:
         by_category[key].append(sample.payload)
 
     matrix: dict[str, dict[str, float]] = {}
+    latency: dict[str, dict[str, float]] = {}
     for name, module in modules.items():
         matrix[name] = {
             category: sum(1 for p in payloads if module.evaluate(p).detected) / len(payloads)
             for category, payloads in sorted(by_category.items())
+        }
+        # Per-call latency, measured on the same pass. The modules differ by
+        # more than an order of magnitude and every published per-module
+        # latency in this project had been a typed round number, so the
+        # distribution is recorded rather than the mean alone: these are
+        # wall-clock timings and the mean is what one scheduling hiccup moves.
+        samples = sorted(module.evaluate(s.payload).latency_ms for s in corpus)
+        middle = len(samples) // 2
+        latency[name] = {
+            "mean_ms": sum(samples) / len(samples),
+            "median_ms": (
+                samples[middle]
+                if len(samples) % 2
+                else (samples[middle - 1] + samples[middle]) / 2
+            ),
+            "p95_ms": samples[min(len(samples) - 1, int(0.95 * len(samples)))],
+            "max_ms": samples[-1],
+            "n": len(samples),
         }
         matrix[name]["_overall"] = sum(
             1 for s in corpus if module.evaluate(s.payload).detected
@@ -98,6 +117,7 @@ def build(seed: int = 42) -> dict[str, object]:
         "benign_size": len(benign),
         "category_counts": {k: len(v) for k, v in sorted(by_category.items())},
         "detection_rate": matrix,
+        "latency_ms": latency,
         "silent_modules": silent,
         "low_rate_modules": live_but_maskable,
         "note": (

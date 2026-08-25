@@ -2,8 +2,6 @@
   "schema_version": "1.0.0",
   "modules": {
     "Firewall": {
-      "detection_rate": 0.91,
-      "latency_ms": 12.0,
       "omega_class": "Injection",
       "morphism_type": "CognitiveState → DefenseResult",
       "description": "Pattern-matching firewall for prompt-injection attacks.",
@@ -12,11 +10,18 @@
         "direct_injection",
         "indirect_injection",
         "nested_injection"
-      ]
+      ],
+      "detection_rate": 0.05355932203389831,
+      "benign_fpr": 0.1,
+      "latency_ms": 0.0400420103687793,
+      "latency_p95_ms": 0.054625008488073945,
+      "measured_on": {
+        "corpus_size": 1475,
+        "benign_size": 120,
+        "source_script": "scripts/run_module_capability_matrix.py"
+      }
     },
     "Detection": {
-      "detection_rate": 0.88,
-      "latency_ms": 18.0,
       "omega_class": "Steganographic",
       "morphism_type": "CognitiveState → DefenseResult",
       "description": "Statistical anomaly detection for steganographic payloads.",
@@ -24,11 +29,18 @@
       "handles_attack_types": [
         "indirect_injection",
         "belief_injection"
-      ]
+      ],
+      "detection_rate": 0.033220338983050844,
+      "benign_fpr": 0.05,
+      "latency_ms": 0.0057919969549402595,
+      "latency_p95_ms": 0.009709008736535907,
+      "measured_on": {
+        "corpus_size": 1475,
+        "benign_size": 120,
+        "source_script": "scripts/run_module_capability_matrix.py"
+      }
     },
     "Tripwire": {
-      "detection_rate": 0.85,
-      "latency_ms": 8.0,
       "omega_class": "Sleeper",
       "morphism_type": "CognitiveState → DefenseResult",
       "description": "Canary-based detection for sleeper/timing attacks.",
@@ -36,11 +48,18 @@
       "handles_attack_types": [
         "timing_attack",
         "belief_drift"
-      ]
+      ],
+      "detection_rate": 0.02169491525423729,
+      "benign_fpr": 0.0,
+      "latency_ms": 0.0024999899324029684,
+      "latency_p95_ms": 0.004542001988738775,
+      "measured_on": {
+        "corpus_size": 1475,
+        "benign_size": 120,
+        "source_script": "scripts/run_module_capability_matrix.py"
+      }
     },
     "TrustCalc": {
-      "detection_rate": 0.82,
-      "latency_ms": 22.0,
       "omega_class": "Social",
       "morphism_type": "CognitiveState → DefenseResult",
       "description": "Trust-score calculator for social-engineering and impersonation.",
@@ -49,11 +68,18 @@
         "impersonation",
         "trust_inflation",
         "delegation_abuse"
-      ]
+      ],
+      "detection_rate": 0.016271186440677966,
+      "benign_fpr": 0.03333333333333333,
+      "latency_ms": 0.006249989382922649,
+      "latency_p95_ms": 0.0117499876068905,
+      "measured_on": {
+        "corpus_size": 1475,
+        "benign_size": 120,
+        "source_script": "scripts/run_module_capability_matrix.py"
+      }
     },
     "Consensus": {
-      "detection_rate": 0.79,
-      "latency_ms": 35.0,
       "omega_class": "Byzantine",
       "morphism_type": "CognitiveState → DefenseResult",
       "description": "Byzantine-fault-tolerant consensus checker.",
@@ -61,11 +87,18 @@
       "handles_attack_types": [
         "sybil_attack",
         "consensus_poisoning"
-      ]
+      ],
+      "detection_rate": 0.09627118644067796,
+      "benign_fpr": 0.0,
+      "latency_ms": 0.02041699190158397,
+      "latency_p95_ms": 0.038875004975125194,
+      "measured_on": {
+        "corpus_size": 1475,
+        "benign_size": 120,
+        "source_script": "scripts/run_module_capability_matrix.py"
+      }
     },
     "Provenance": {
-      "detection_rate": 0.76,
-      "latency_ms": 28.0,
       "omega_class": "Provenance",
       "morphism_type": "CognitiveState → DefenseResult",
       "description": "Cryptographic provenance chain verifier.",
@@ -73,11 +106,18 @@
       "handles_attack_types": [
         "belief_fabrication",
         "delegation_abuse"
-      ]
+      ],
+      "detection_rate": 0.023728813559322035,
+      "benign_fpr": 0.0,
+      "latency_ms": 0.003749999450519681,
+      "latency_p95_ms": 0.007166003342717886,
+      "measured_on": {
+        "corpus_size": 1475,
+        "benign_size": 120,
+        "source_script": "scripts/run_module_capability_matrix.py"
+      }
     },
     "Sandbox": {
-      "detection_rate": 0.73,
-      "latency_ms": 55.0,
       "omega_class": "Resource",
       "morphism_type": "CognitiveState → DefenseResult",
       "description": "Execution sandbox for resource-abuse detection.",
@@ -85,11 +125,18 @@
       "handles_attack_types": [
         "timing_attack",
         "sybil_attack"
-      ]
+      ],
+      "detection_rate": 0.03389830508474576,
+      "benign_fpr": 0.0,
+      "latency_ms": 0.004250003257766366,
+      "latency_p95_ms": 0.00925001222640276,
+      "measured_on": {
+        "corpus_size": 1475,
+        "benign_size": 120,
+        "source_script": "scripts/run_module_capability_matrix.py"
+      }
     },
     "Invariants": {
-      "detection_rate": 0.7,
-      "latency_ms": 15.0,
       "omega_class": "Logic",
       "morphism_type": "CognitiveState → DefenseResult",
       "description": "Formal invariant checker for belief-state consistency.",
@@ -98,7 +145,16 @@
         "belief_drift",
         "belief_fabrication",
         "belief_injection"
-      ]
+      ],
+      "detection_rate": 0.8332203389830508,
+      "benign_fpr": 0.0,
+      "latency_ms": 0.22762500157114118,
+      "latency_p95_ms": 0.4367499932413921,
+      "measured_on": {
+        "corpus_size": 1475,
+        "benign_size": 120,
+        "source_script": "scripts/run_module_capability_matrix.py"
+      }
     }
   },
   "algebra": {
@@ -147,8 +203,8 @@
       "deep_modules": null,
       "strategy": "series",
       "description": "All 8 modules in series — maximum detection, highest latency.",
-      "detection_rate": 1.0,
-      "latency_ms": 193.0
+      "detection_rate": 0.8748,
+      "latency_ms": 0.3106
     },
     "minimal_viable": {
       "label": "Minimal Viable (MVP)",
@@ -160,8 +216,8 @@
       "deep_modules": null,
       "strategy": "series",
       "description": "Minimal 3-module series covering injection, anomaly, and Byzantine.",
-      "detection_rate": 0.9977,
-      "latency_ms": 65.0
+      "detection_rate": 0.1731,
+      "latency_ms": 0.0663
     },
     "fast_path": {
       "label": "Fast Path (Parallel)",
@@ -173,8 +229,8 @@
       "deep_modules": null,
       "strategy": "parallel",
       "description": "Top-3 fast modules in parallel — lowest latency screening.",
-      "detection_rate": 0.9984,
-      "latency_ms": 18.0
+      "detection_rate": 0.1049,
+      "latency_ms": 0.04
     },
     "hybrid": {
       "label": "Hybrid (Fast → Deep)",
@@ -189,8 +245,8 @@
       ],
       "strategy": "hybrid",
       "description": "Fast parallel stage (Firewall + Detection) feeds into deep series stage (Consensus + Provenance + Invariants). Balances speed and accuracy.",
-      "detection_rate": 0.9998,
-      "latency_ms": 96.0
+      "detection_rate": 0.8654,
+      "latency_ms": 0.2918
     }
   },
   "category_theory": {

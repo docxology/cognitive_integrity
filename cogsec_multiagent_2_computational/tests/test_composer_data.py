@@ -51,24 +51,35 @@ class TestModuleRegistry:
         assert set(MODULE_REGISTRY.keys()) == expected
 
     def test_each_module_has_required_fields(self):
+        """The measured fields live on the hydrated registry, not the literal.
+
+        ``MODULE_REGISTRY`` used to carry a ``detection_rate`` and a
+        ``latency_ms`` per module. They were typed: the rates descended in
+        exact steps of 0.03 and the latencies ran 8 to 55 ms against measured
+        medians between 0.0025 and 0.23 ms -- three orders of magnitude out,
+        and in the wrong order. Both come from
+        ``module_capability_matrix.json`` now, so this checks the registry the
+        UI actually receives.
+        """
         required = {"detection_rate", "latency_ms", "omega_class",
                     "morphism_type", "description", "color", "handles_attack_types"}
-        for name, meta in MODULE_REGISTRY.items():
+        for name, meta in get_module_registry().items():
             missing = required - set(meta.keys())
             assert not missing, f"Module {name} missing fields: {missing}"
 
     def test_detection_rates_in_unit_interval(self):
-        for name, meta in MODULE_REGISTRY.items():
+        """Measured rates, so the lower bound is zero-exclusive by measurement."""
+        for name, meta in get_module_registry().items():
             dr = meta["detection_rate"]
             assert 0.0 < dr <= 1.0, f"{name} detection_rate={dr} out of range"
 
     def test_latencies_positive(self):
-        for name, meta in MODULE_REGISTRY.items():
+        for name, meta in get_module_registry().items():
             lat = meta["latency_ms"]
             assert lat > 0.0, f"{name} latency={lat} not positive"
 
     def test_handles_attack_types_is_list(self):
-        for name, meta in MODULE_REGISTRY.items():
+        for name, meta in get_module_registry().items():
             assert isinstance(meta["handles_attack_types"], list)
             assert len(meta["handles_attack_types"]) >= 1
 
@@ -116,9 +127,16 @@ class TestPresetPipelines:
             assert 0.0 < preset["detection_rate"] <= 1.0
 
     def test_each_preset_has_latency(self):
+        """Every preset reports a positive total latency.
+
+        The measured per-module medians are sub-millisecond, where the typed
+        ones were 8 to 55 ms, so a preset's total is now a small number rather
+        than a large one; it still cannot be zero, because every module takes
+        time to run.
+        """
         for key, preset in PRESET_PIPELINES.items():
-            assert "latency_ms" in preset
-            assert preset["latency_ms"] > 0.0
+            assert "latency_ms" in preset, key
+            assert preset["latency_ms"] > 0.0, key
 
     def test_full_stack_has_all_modules(self):
         assert len(PRESET_PIPELINES["full_stack"]["modules"]) == 8
@@ -289,12 +307,30 @@ class TestComputeCustomPipelineStats:
 
     def test_single_module(self):
         result = compute_custom_pipeline_stats(["Firewall"])
-        assert result["detection_rate"] == pytest.approx(MODULE_REGISTRY["Firewall"]["detection_rate"])  # noqa: E501
+        measured = get_module_registry()["Firewall"]["detection_rate"]
+        # The stats round to four decimals; the registry does not.
+        assert result["detection_rate"] == pytest.approx(measured, abs=5e-5)
 
     def test_all_modules_series(self):
-        all_modules = list(MODULE_REGISTRY.keys())
+        """The series rule over eight measured modules, checked against itself.
+
+        This asserted ``> 0.99``, which was true only because the eight rates
+        it composed were an invented ladder from 0.91 down to 0.70: eight
+        independent detectors that good compose to 0.9999 whatever else is
+        true. Measured, the same rule gives 0.875, and the assertion is now
+        that the composition equals what the rule says of its own inputs --
+        which is the only thing this function can be wrong about.
+        """
+        measured = get_module_registry()
+        all_modules = list(measured)
         result = compute_custom_pipeline_stats(all_modules, strategy="series")
-        assert result["detection_rate"] > 0.99  # very high with 8 modules
+        expected = _series_detection_rate(
+            [measured[m]["detection_rate"] for m in all_modules]
+        )
+        assert result["detection_rate"] == pytest.approx(expected, abs=1e-4)
+        assert result["detection_rate"] > max(
+            measured[m]["detection_rate"] for m in all_modules
+        ), "composing eight detectors must beat the best of them"
 
 
 class TestGetComposerData:

@@ -49,7 +49,7 @@ Peer-to-peer architectures present the opposite profile. Without a central autho
 
 Role-based systems introduce impersonation as the primary risk. When agents assume specialized roles (researcher, writer, reviewer), an attacker who can assume a trusted role gains the permissions associated with that role. In our evaluation, attestation-based verification at role transitions detected 94\% of impersonation attempts (\cref{tab:architecture-insights}). Unexpected role transitions served as reliable early indicators of compromise.
 
-## Limitations and Threats to Validity
+## Limitations and Threats to Validity {#sec:limitations}
 
 ### Residual Attack-Type Vulnerabilities
 

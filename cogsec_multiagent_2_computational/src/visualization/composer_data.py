@@ -18,18 +18,27 @@ Or via the CLI script ``scripts/generate_composer_data.py``.
 
 from __future__ import annotations
 
+import json
+from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 # ---------------------------------------------------------------------------
 # Module registry — mirrors MODULE_META in composable.py but adds extra fields
 # ---------------------------------------------------------------------------
 
-#: Complete registry of all 8 CIF defense modules with their detection rates,
-#: latencies (in ms), Ω-class labels, morphism type signatures, and hex colors.
+#: Static description of the 8 CIF defense modules: what each is for, which
+#: attack families it is meant to handle, and how it is drawn.
+#:
+#: It used to carry a ``detection_rate`` and a ``latency_ms`` for each module
+#: as well. Those were typed: the rates descended 0.91, 0.88, 0.85, 0.82, 0.79,
+#: 0.76, 0.73, 0.70 in exact steps of 0.03, which is what an invented ladder
+#: looks like, and the latencies ran 8 to 55 ms against measured medians
+#: between 0.0025 ms and 0.23 ms -- three orders of magnitude out, and in the
+#: wrong order. Both are measured now and injected by
+#: :func:`_hydrate_measurements` from
+#: ``output/data/module_capability_matrix.json``.
 MODULE_REGISTRY: Dict[str, Dict[str, Any]] = {
     "Firewall": {
-        "detection_rate": 0.91,
-        "latency_ms": 12.0,
         "omega_class": "Injection",
         "morphism_type": "CognitiveState → DefenseResult",
         "description": "Pattern-matching firewall for prompt-injection attacks.",
@@ -41,8 +50,6 @@ MODULE_REGISTRY: Dict[str, Dict[str, Any]] = {
         ],
     },
     "Detection": {
-        "detection_rate": 0.88,
-        "latency_ms": 18.0,
         "omega_class": "Steganographic",
         "morphism_type": "CognitiveState → DefenseResult",
         "description": "Statistical anomaly detection for steganographic payloads.",
@@ -53,8 +60,6 @@ MODULE_REGISTRY: Dict[str, Dict[str, Any]] = {
         ],
     },
     "Tripwire": {
-        "detection_rate": 0.85,
-        "latency_ms": 8.0,
         "omega_class": "Sleeper",
         "morphism_type": "CognitiveState → DefenseResult",
         "description": "Canary-based detection for sleeper/timing attacks.",
@@ -65,8 +70,6 @@ MODULE_REGISTRY: Dict[str, Dict[str, Any]] = {
         ],
     },
     "TrustCalc": {
-        "detection_rate": 0.82,
-        "latency_ms": 22.0,
         "omega_class": "Social",
         "morphism_type": "CognitiveState → DefenseResult",
         "description": "Trust-score calculator for social-engineering and impersonation.",
@@ -78,8 +81,6 @@ MODULE_REGISTRY: Dict[str, Dict[str, Any]] = {
         ],
     },
     "Consensus": {
-        "detection_rate": 0.79,
-        "latency_ms": 35.0,
         "omega_class": "Byzantine",
         "morphism_type": "CognitiveState → DefenseResult",
         "description": "Byzantine-fault-tolerant consensus checker.",
@@ -90,8 +91,6 @@ MODULE_REGISTRY: Dict[str, Dict[str, Any]] = {
         ],
     },
     "Provenance": {
-        "detection_rate": 0.76,
-        "latency_ms": 28.0,
         "omega_class": "Provenance",
         "morphism_type": "CognitiveState → DefenseResult",
         "description": "Cryptographic provenance chain verifier.",
@@ -102,8 +101,6 @@ MODULE_REGISTRY: Dict[str, Dict[str, Any]] = {
         ],
     },
     "Sandbox": {
-        "detection_rate": 0.73,
-        "latency_ms": 55.0,
         "omega_class": "Resource",
         "morphism_type": "CognitiveState → DefenseResult",
         "description": "Execution sandbox for resource-abuse detection.",
@@ -114,8 +111,6 @@ MODULE_REGISTRY: Dict[str, Dict[str, Any]] = {
         ],
     },
     "Invariants": {
-        "detection_rate": 0.70,
-        "latency_ms": 15.0,
         "omega_class": "Logic",
         "morphism_type": "CognitiveState → DefenseResult",
         "description": "Formal invariant checker for belief-state consistency.",
@@ -127,6 +122,64 @@ MODULE_REGISTRY: Dict[str, Dict[str, Any]] = {
         ],
     },
 }
+
+#: Where the measured per-module numbers come from.
+_CAPABILITY_PATH = (
+    Path(__file__).resolve().parents[2] / "output" / "data" / "module_capability_matrix.json"
+)
+
+#: How this module's display names map onto the measured registry's keys.
+_MEASURED_KEY = {
+    "Firewall": "firewall",
+    "Detection": "detection",
+    "Tripwire": "tripwire",
+    "TrustCalc": "trust",
+    "Consensus": "consensus",
+    "Provenance": "provenance",
+    "Sandbox": "sandbox",
+    "Invariants": "invariants",
+}
+
+
+def _hydrate_measurements() -> Dict[str, Dict[str, Any]]:
+    """The module registry with measured detection rate and latency filled in.
+
+    Fails closed rather than falling back to the ladder it replaced: a UI
+    showing plausible invented rates is the defect, and a UI that refuses to
+    start until the measurement exists is the fix.
+    """
+    if not _CAPABILITY_PATH.is_file():
+        raise FileNotFoundError(
+            f"{_CAPABILITY_PATH} is missing; run "
+            f"scripts/run_module_capability_matrix.py. The composer reports "
+            f"measured per-module rates and has no stand-in values."
+        )
+    measured = json.loads(_CAPABILITY_PATH.read_text(encoding="utf-8"))
+    rates = measured["detection_rate"]
+    latency = measured["latency_ms"]
+
+    hydrated: Dict[str, Dict[str, Any]] = {}
+    for display, meta in MODULE_REGISTRY.items():
+        key = _MEASURED_KEY.get(display)
+        if key is None or key not in rates:
+            raise KeyError(
+                f"{display} has no measured counterpart in "
+                f"{_CAPABILITY_PATH.name}; the registries have diverged"
+            )
+        hydrated[display] = {
+            **meta,
+            "detection_rate": rates[key]["_overall"],
+            "benign_fpr": rates[key]["_benign_fpr"],
+            "latency_ms": latency[key]["median_ms"],
+            "latency_p95_ms": latency[key]["p95_ms"],
+            "measured_on": {
+                "corpus_size": measured["corpus_size"],
+                "benign_size": measured["benign_size"],
+                "source_script": measured["source_script"],
+            },
+        }
+    return hydrated
+
 
 
 # ---------------------------------------------------------------------------
@@ -233,8 +286,9 @@ def _build_preset_stats(
     deep_modules: Optional[List[str]] = None,
 ) -> Dict[str, Any]:
     """Compute detection rate and latency for a preset pipeline."""
-    rates = [MODULE_REGISTRY[m]["detection_rate"] for m in modules]
-    latencies = [MODULE_REGISTRY[m]["latency_ms"] for m in modules]
+    measured = _hydrate_measurements()
+    rates = [measured[m]["detection_rate"] for m in modules]
+    latencies = [measured[m]["latency_ms"] for m in modules]
 
     if strategy == "series":
         detection_rate = _series_detection_rate(rates)
@@ -243,8 +297,8 @@ def _build_preset_stats(
         detection_rate = _parallel_detection_rate(rates)
         latency_ms = _parallel_latency(latencies)
     elif strategy == "hybrid" and deep_modules:
-        deep_rates = [MODULE_REGISTRY[m]["detection_rate"] for m in deep_modules]
-        deep_lats = [MODULE_REGISTRY[m]["latency_ms"] for m in deep_modules]
+        deep_rates = [measured[m]["detection_rate"] for m in deep_modules]
+        deep_lats = [measured[m]["latency_ms"] for m in deep_modules]
         detection_rate = _hybrid_detection_rate(rates, deep_rates)
         latency_ms = _hybrid_latency(latencies, deep_lats)
     else:
@@ -253,7 +307,11 @@ def _build_preset_stats(
 
     return {
         "detection_rate": round(detection_rate, 4),
-        "latency_ms": round(latency_ms, 1),
+        # Four decimals, not one. One was chosen when these latencies were
+        # typed as 8 to 55 ms; the measured medians are between 0.0025 ms and
+        # 0.23 ms, and rounding those to a tenth of a millisecond reports the
+        # fast_path preset as taking exactly zero time.
+        "latency_ms": round(latency_ms, 4),
     }
 
 
@@ -307,13 +365,20 @@ PRESET_PIPELINES: Dict[str, Dict[str, Any]] = {
 def get_module_registry() -> Dict[str, Dict[str, Any]]:
     """Return the full module registry as a JSON-serialisable dict.
 
+    ``detection_rate``, ``benign_fpr``, ``latency_ms`` and ``latency_p95_ms``
+    are measured, not declared: they come from
+    ``output/data/module_capability_matrix.json`` and each entry carries a
+    ``measured_on`` block naming the corpus sizes and the producing script, so
+    a consumer can tell what the number is a rate *of*.
+
     Returns:
         Mapping from module name to its metadata dict containing
-        ``detection_rate``, ``latency_ms``, ``omega_class``,
+        ``detection_rate``, ``benign_fpr``, ``latency_ms``,
+        ``latency_p95_ms``, ``measured_on``, ``omega_class``,
         ``morphism_type``, ``description``, ``color``, and
         ``handles_attack_types``.
     """
-    return {name: dict(meta) for name, meta in MODULE_REGISTRY.items()}
+    return {name: dict(meta) for name, meta in _hydrate_measurements().items()}
 
 
 def get_algebra_formulas() -> Dict[str, Dict[str, Any]]:
@@ -363,8 +428,9 @@ def compute_custom_pipeline_stats(
         if unknown_deep:
             raise ValueError(f"Unknown deep module(s): {unknown_deep}")
 
-    rates = [MODULE_REGISTRY[m]["detection_rate"] for m in modules]
-    latencies = [MODULE_REGISTRY[m]["latency_ms"] for m in modules]
+    measured = _hydrate_measurements()
+    rates = [measured[m]["detection_rate"] for m in modules]
+    latencies = [measured[m]["latency_ms"] for m in modules]
 
     stats = _build_preset_stats(modules, strategy, deep_modules=deep_modules)
     return {
@@ -375,6 +441,8 @@ def compute_custom_pipeline_stats(
         "strategy": strategy,
         "deep_modules": deep_modules,
     }
+
+
 
 
 def get_composer_data(include_category_theory: bool = True) -> Dict[str, Any]:
