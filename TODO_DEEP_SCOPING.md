@@ -366,6 +366,37 @@ off a stale 0.122 row and had become false in the other direction. A self-critic
 built on stale numbers is not humility; it is a different error with a more sympathetic
 surface.
 
+### Round 15 progress (2026-08-25) — the fourteen are built
+
+All five workstreams shipped. Every quantity in the papers that needed an
+experiment now has one, or has been retracted with the reason stated.
+
+| | Built | What it measured |
+|---|---|---|
+| **W1** | `scripts/run_overhead_control.py` | The undefended arm four tables reported without. The defense costs $+0.610$ ms at p50 and $+32$ KiB peak, which is 0.0075% of a measured agent turn. No percentage against the control, because the control is a loop and not a unit of work. |
+| **W2** | `src/evaluation/load_driver.py` | Saturation at 2,000 msg/s, falling behind at 4,000. Detection flat at 0.930 across every rate, where the retracted table had it degrading under load. |
+| **W3** | `omega_level`, `target` on `AttackSample` | Belief-state attacks detected 60.9% against 100% for trust-relationship attacks; $\Omega_5$ miss rate 2.5%, not 44%. |
+| **W4** | `src/composition/mitigations.py` | Two strategies take FPR from 0.183 to zero for 1.7 points of TPR, lifting J from $+0.689$ to $+0.856$. Confirmation Cascade, rated second-best in the original table, is the worst. |
+| **W5** | `src/evaluation/threshold_sweep.py` | $\tau_2$ is flat from 0.25 to 0.75 --- the knob does nothing in the band the case study tunes it in. |
+
+**Three retractions stand rather than being replaced**, because no experiment
+in this project could produce them: S08's integrity-preservation ratios (no
+definition of "integrity preservation" exists in `src/`), S08's per-architecture
+overhead twin (the pipeline is architecture-agnostic), and the impact-stratified
+detection claim (impact varies within a category, so a per-category label would
+manufacture the axis rather than expose it).
+
+**One strategy is deliberately unimplemented.** Incremental Learning needs a
+model that updates on labelled feedback and every module here is a fixed
+scorer; its row is deleted rather than estimated, and a test asserts its
+absence.
+
+The two design tables from the `not_empirical` group are relabelled, so what
+remains of the original 51 is the ordinary backlog in the sweep section below,
+not the hardcoded-value class.
+
+---
+
 ### Round 15 scope (2026-08-25) — the 29 that are left
 
 Two reclassifications first, because the sweep's own verdicts were not final.

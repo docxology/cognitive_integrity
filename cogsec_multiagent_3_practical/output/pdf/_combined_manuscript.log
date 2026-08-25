@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.3.22)  25 AUG 2026 11:04
+This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.3.22)  25 AUG 2026 12:31
 entering extended mode
  %&-line parsing enabled.
 **_combined_manuscript.tex
@@ -2100,12 +2100,12 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `subscript' on input line 3185.
 
 [45] [46] [47] [48] [49] [50] [51] [52] [53] [54] [55]
-Underfull \hbox (badness 10000) in paragraph at lines 3954--3954
+Underfull \hbox (badness 10000) in paragraph at lines 3973--3973
 []|\TU/lmr/m/n/9 Trust Calculus, $[][][][][][]$ decay theorem, no-
  []
 
 
-Underfull \hbox (badness 2035) in paragraph at lines 3964--3964
+Underfull \hbox (badness 2035) in paragraph at lines 3983--3983
 []|\TU/lmr/m/n/9 Category-theoretic formalization + free-energy /
  []
 
