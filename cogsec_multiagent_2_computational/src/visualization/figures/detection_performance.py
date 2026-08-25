@@ -19,15 +19,66 @@ from ..style import FONTSIZE, SEMANTIC_COLORS, add_source_annotation, apply_styl
 logger = logging.getLogger(__name__)
 
 
-def _load_detection_data(output_dir: Path) -> dict:
-    """Load generated detection data from the pipeline output."""
-    data_path = output_dir.parent / "data" / "detection_data.json"
-    if not data_path.exists():
-        data_path = Path(__file__).resolve().parent.parent.parent.parent / "output" / "data" / "detection_data.json"  # noqa: E501
-    with open(data_path) as f:
-        data = json.load(f)
-    logger.info("Loaded detection data from %s", data_path)
-    return data
+#: The per-architecture-by-category artifact, written by
+#: scripts/run_full_evaluation.py and provenanced as parametric_simulation.
+_PARAMETRIC_PATH = (
+    Path(__file__).resolve().parents[3] / "output" / "data" / "full_evaluation_results.json"
+)
+
+#: How the artifact's category keys are spelled in the figure.
+_CATEGORY_LABEL = {
+    "injection": "Injection",
+    "trust_exploitation": "Trust Exploitation",
+    "belief_manipulation": "Belief Manipulation",
+    "coordination": "Coordination",
+}
+
+
+def _load_parametric_detection() -> tuple[list[str], list[str], list[list[float]], list[list[float]]]:
+    """Detection rates and Wilson half-widths, per architecture and category.
+
+    Fails closed. The defect being repaired is a panel that drew a matrix
+    nothing computed, so a fallback to plausible values would put it straight
+    back in a form that is harder to see than the original.
+    """
+    from visualization.tables.binomial_ci import wilson_half_width
+
+    if not _PARAMETRIC_PATH.is_file():
+        raise FileNotFoundError(
+            f"{_PARAMETRIC_PATH} is missing; run scripts/run_full_evaluation.py. "
+            f"This panel has no stand-in values."
+        )
+    rows = json.loads(_PARAMETRIC_PATH.read_text(encoding="utf-8"))
+    if not isinstance(rows, list) or not rows:
+        raise ValueError(f"{_PARAMETRIC_PATH} records no rows")
+
+    architectures: list[str] = []
+    categories: list[str] = []
+    for row in rows:
+        if row["architecture"] not in architectures:
+            architectures.append(row["architecture"])
+        if row["category"] not in categories:
+            categories.append(row["category"])
+
+    index = {(r["architecture"], r["category"]): r for r in rows}
+    missing = [
+        (a, c) for a in architectures for c in categories if (a, c) not in index
+    ]
+    if missing:
+        raise ValueError(f"{_PARAMETRIC_PATH} has no row for {missing}")
+
+    means = [[index[(a, c)]["detection_rate"] for c in categories] for a in architectures]
+    intervals = [
+        [
+            wilson_half_width(
+                int(index[(a, c)]["true_positives"]), int(index[(a, c)]["n_attacks"])
+            )
+            for c in categories
+        ]
+        for a in architectures
+    ]
+    labels = [_CATEGORY_LABEL.get(c, c.replace("_", " ").title()) for c in categories]
+    return architectures, labels, means, intervals
 
 
 def _load_ablation_data(output_dir: Path) -> dict:
@@ -42,8 +93,9 @@ def _load_ablation_data(output_dir: Path) -> dict:
 def plot_detection_performance(output_dir: str | Path = "output/figures") -> plt.Figure:
     """Generate detection performance comparison figure.
 
-    Uses real data from full_evaluation_results.json (Panel A) and
-    detection_data.json (Panel B).
+    Both panels read full_evaluation_results.json and ablation_results.json.
+    Panel B used to read detection_data.json, a DataGenerator placeholder with
+    no provenance and invented confidence intervals; that file is gone.
     """
     if isinstance(output_dir, str):
         output_dir = Path(output_dir)
@@ -141,29 +193,34 @@ def plot_detection_performance(output_dir: str | Path = "output/figures") -> plt
     # multiplied by 0.80, so the "significant gap" the caption drew attention
     # to was exactly 20% by construction, in every category, for every run.
     #
-    # What this panel is NOT: measured. An earlier repair here replaced one
-    # fabrication with another, plotting detection_data.json as "measured" with
-    # "the bootstrap intervals the artifact ships".  Neither half is true.
-    # src/data/generate.py::generate_detection_data hardcodes a 4x4 base_means
-    # matrix and adds N(0, 0.005); its `cis` are i.i.d. Uniform(0.008, 0.025)
-    # draws with no resampling behind them and no relation to sample size.  The
-    # only per-architecture-by-category artifact in the repo is a calibrated
-    # model, so the panel says so and the fake intervals are not drawn at all --
-    # an error bar asserts a sampling distribution, and there is none here.
-    generated = _load_detection_data(output_dir)
+    # It used to read detection_data.json, which nothing produces: no
+    # data_origin, no source_script, a 4x4 base_means matrix hardcoded in
+    # src/data/generate.py with N(0, 0.005) noise added, and `cis` drawn
+    # i.i.d. from Uniform(0.008, 0.025) with no resampling behind them and no
+    # relation to any sample size. An earlier repair here stopped calling it
+    # measured and stopped drawing the invented intervals, which was right as
+    # far as it went; it still plotted a matrix nothing had computed.
+    #
+    # The panel now reads full_evaluation_results.json, which is the same
+    # 4 x 4 shape, is produced by scripts/run_full_evaluation.py, and carries
+    # per-cell counts. So the intervals can be real: Wilson on
+    # true_positives out of n_attacks. They are narrow, because the parametric
+    # arm evaluates 500 attacks per cell, and a narrow interval honestly
+    # derived is worth more than a wide one invented.
+    #
+    # It is still not a measurement of a deployed system -- the artifact's
+    # sidecar records parametric_simulation and the title says so.
+    architectures, categories, means, intervals = _load_parametric_detection()
 
     ax2 = axes[1]
-    categories = generated["categories"]
-    means = generated["means"]  # [arch][category]
-    architectures = generated["architectures"]
-
     attack_types = [c.replace(" ", "\n") for c in categories]
     n_arch = len(means)
     logger.info(
-        "Panel B: %d architectures x %d categories from the calibrated model "
-        "(detection_data.json is generated, not measured)",
+        "Panel B: %d architectures x %d categories from %s "
+        "(parametric simulation, Wilson intervals on the per-cell counts)",
         n_arch,
         len(categories),
+        _PARAMETRIC_PATH.name,
     )
 
     x = np.arange(len(attack_types))
@@ -180,6 +237,9 @@ def plot_detection_performance(output_dir: str | Path = "output/figures") -> plt
             x + offset,
             means[a],
             width,
+            yerr=intervals[a],
+            capsize=2,
+            error_kw={"elinewidth": 0.8, "ecolor": "#2C3E50"},
             label=architecture,
             color=palette[a % len(palette)],
             edgecolor="black",
@@ -187,7 +247,8 @@ def plot_detection_performance(output_dir: str | Path = "output/figures") -> plt
 
     ax2.set_ylabel("Detection Rate", fontsize=12)
     ax2.set_title(
-        "B. Calibrated Model: Detection Rate by Attack Type (not measured)",
+        "B. Parametric Simulation: Detection Rate by Attack Type "
+        "(95% Wilson CI; not a deployed measurement)",
         fontsize=12,
         fontweight="bold",
     )

@@ -64,12 +64,13 @@
       "theorem_id": "4",
       "name": "Stealth-Impact Tradeoff",
       "status": "passed",
-      "evidence": "All 500 successful attacks satisfy I*S <= 1.00 (max product: 0.9593). 0 attacks detected due to bound violation.",
+      "evidence": "Schematic consistency check (fail-closed detection by construction; not an empirical measurement): all 500 successful attacks satisfy I*S <= 1.00 (max product: 0.9593). 0 attacks detected due to bound violation.",
       "details": {
         "c_channel": 1.0,
         "n_trials": 500,
         "n_detected": 0,
-        "max_product": 0.9593309404613264
+        "max_product": 0.9593309404613264,
+        "detection_model": "fail-closed by construction (schematic)"
       }
     },
     {
@@ -92,13 +93,15 @@
       "theorem_id": "6",
       "name": "CIF Latency Overhead Bound",
       "status": "passed",
-      "evidence": "Mean overhead 10.3% <= 23% target (p95: 19.0%, max: 22.9%)",
+      "evidence": "Schematic simulation (not measured): mean overhead 10.3% <= 23% target; p95 19.0%, max 22.9%, 0% of trials above target.",
       "details": {
         "mean_overhead": 0.10263252852759315,
         "p95_overhead": 0.18968927227196672,
         "max_overhead": 0.22920090556755796,
+        "pct_over_target": 0.0,
         "target": 0.23,
-        "n_trials": 100
+        "n_trials": 100,
+        "model": "schematic/uniform (not measured)"
       }
     },
     {
@@ -160,5 +163,7 @@
         "composite_precision": 1.0
       }
     }
-  ]
+  ],
+  "data_origin": "real_pipeline",
+  "source_script": "scripts/run_formal_validation.py"
 }

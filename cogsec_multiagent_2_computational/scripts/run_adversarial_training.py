@@ -86,6 +86,14 @@ def main() -> None:
     if args.measurement_mode == "real":
         summary["data_origin"] = "real_pipeline"
         summary["detector"] = "core.firewall.CognitiveFirewall + attacks.corpus"
+    else:
+        # Omitting data_origin here left the artifact classifying as
+        # `unknown`, which the provenance layer defines as "cannot be proven,
+        # do not clobber" -- not as "simulated". A closed-form simulation has
+        # its own honest label and this is it; declining to use it did not
+        # avoid mislabelling a simulation as a measurement, it just made the
+        # artifact indistinguishable from one whose origin nobody recorded.
+        summary["data_origin"] = "parametric_simulation"
 
     print(f"\nBaseline DR:        {summary['baseline_dr']:.3f}")
     print(f"Final hardened DR:  {summary['final_hardened_dr']:.3f}")

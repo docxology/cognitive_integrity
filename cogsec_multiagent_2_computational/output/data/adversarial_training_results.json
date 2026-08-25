@@ -50,5 +50,6 @@
     "omega_5_coordinated": 0.6929246532543933
   },
   "source_script": "scripts/run_adversarial_training.py",
-  "seed": 42
+  "seed": 42,
+  "data_origin": "parametric_simulation"
 }

@@ -149,6 +149,12 @@ def main(argv: List[str] | None = None) -> int:
             for r in results
         ],
     }
+    # A model-checking run is a real run: the specifications were executed by
+    # a checker and the statuses below are its verdicts. Without these keys the
+    # artifact classified as `unknown`, which reads as unproven provenance.
+    data["data_origin"] = "real_pipeline"
+    data["source_script"] = "scripts/run_formal_validation.py"
+
     with open(out_path, "w") as f:
         json.dump(data, f, indent=2, default=str)
     print(f"\nResults saved to {out_path}")

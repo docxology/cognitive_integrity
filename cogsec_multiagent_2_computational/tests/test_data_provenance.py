@@ -572,3 +572,94 @@ class TestSidecarWritersUseTheKeyTheReaderReads:
             assert classify_provenance(artifact) != "unknown", (
                 f"{artifact.name} classifies as unknown despite having a sidecar"
             )
+
+
+class TestEveryShippedArtifactDeclaresItsOrigin:
+    """No file in output/data may classify as ``unknown``.
+
+    ``unknown`` is defined by :func:`classify_provenance` as "cannot be
+    positively proven -- do not clobber". It was doing double duty as "nobody
+    recorded this", and eight of the twenty-seven shipped artifacts were in
+    that state, four of them DataGenerator placeholders sitting in the real
+    output directory where every consumer treats a filename as a fact.
+
+    Two of those four were being read by published figures. The scalability
+    figure and table plotted ``scalability_data.json`` -- a closed-form model
+    with noise -- while ``scalability_results.json``, fifteen timed rounds per
+    agent count with the processor and interpreter recorded, sat beside it
+    unread. Panel B of the detection figure plotted a hardcoded 4x4 matrix
+    whose confidence intervals were i.i.d. uniform draws.
+
+    Nothing could have caught either, because provenance was checked only for
+    the seven artifacts on an explicit list, and neither placeholder was on it.
+    This checks all of them.
+    """
+
+    #: Files that legitimately carry no measurement origin, each with the
+    #: reason. Every entry here is a claim that the file contains no empirical
+    #: number, and adding one is a decision rather than a convenience.
+    _EXEMPT = {
+        "figure_registry.json": (
+            "derived metadata: figure and table labels with their numbers, "
+            "generated from the manuscript by scripts/generate_figure_registry.py. "
+            "It records where things are, not what was measured."
+        ),
+        "composer_data.json": (
+            "presentation data for the CIF Composer UI, generated from the "
+            "shipped artifacts by scripts/generate_composer_data.py. It carries "
+            "no measurement of its own."
+        ),
+    }
+
+    def test_no_artifact_classifies_as_unknown(self):
+        from data.generate import classify_provenance
+
+        artifacts = [
+            p
+            for p in sorted(_DATA_DIR.glob("*.json"))
+            if not p.name.endswith(".provenance.json")
+        ]
+        assert len(artifacts) >= 15, (
+            f"only {len(artifacts)} artifacts found; the glob is probably wrong, "
+            f"which would make this test pass without checking anything"
+        )
+        unknown = [
+            p.name
+            for p in artifacts
+            if p.name not in self._EXEMPT and classify_provenance(p) == "unknown"
+        ]
+        assert not unknown, (
+            f"{unknown} declare no data_origin. 'unknown' means provenance "
+            f"cannot be proven, which is how four DataGenerator placeholders "
+            f"lived in output/data indistinguishable from measurements. Stamp "
+            f"the origin in the producing script, or add the file to _EXEMPT "
+            f"with the reason it carries no measurement."
+        )
+
+    def test_the_exemptions_still_exist(self):
+        """A stale exemption is a hole nobody can see."""
+        for name in self._EXEMPT:
+            assert (_DATA_DIR / name).is_file(), (
+                f"{name} is exempted from the provenance check but no longer "
+                f"exists; remove the exemption"
+            )
+
+    def test_no_placeholder_generator_output_is_shipped(self):
+        """The four placeholders are gone and must not come back.
+
+        ``make synthetic-data`` writes to its own directory precisely so it
+        cannot overwrite measured evidence. These four had ended up in
+        output/data anyway.
+        """
+        retired = [
+            "detection_data.json",
+            "scalability_data.json",
+            "ablation_data.json",
+            "colony_data.json",
+        ]
+        present = [name for name in retired if (_DATA_DIR / name).is_file()]
+        assert not present, (
+            f"{present} are DataGenerator placeholders and were removed from "
+            f"output/data; a figure reading one of these is plotting a model, "
+            f"not a measurement"
+        )
