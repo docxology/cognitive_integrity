@@ -207,8 +207,10 @@ def main(argv: Sequence[str] | None = None) -> int:
     OUTPUT.write_text(json.dumps(fresh, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     r = fresh["results"]
     print(f"wrote {OUTPUT.relative_to(REPO)}")
-    print(f"  shipped max rule, held out    J = {r['shipped_max_rule']['held_out']['youden_j']:+.4f}")
-    print(f"  standardised, all 8 modules   J = {r['standardised_all_modules']['held_out']['youden_j']:+.4f}")
+    shipped_j = r["shipped_max_rule"]["held_out"]["youden_j"]
+    print(f"  shipped max rule, held out    J = {shipped_j:+.4f}")
+    all_j = r["standardised_all_modules"]["held_out"]["youden_j"]
+    print(f"  standardised, all 8 modules   J = {all_j:+.4f}")
     best = r["standardised_best_subset"]
     print(
         f"  standardised, best subset     J = {best['held_out']['youden_j']:+.4f}"

@@ -1319,7 +1319,8 @@ _RESULTS: tuple[Claim, ...] = (
         # for a dead pattern and the reason it is repointed rather than deleted.
         "results.summary_invariants_delta",
         "05_results.md",
-        r"Invariants module far ahead of every other component \(\$\\Delta\\text\{TPR\} \\approx -([\d.]+)\$",
+        r"Invariants module far ahead of every other component "
+        r"\(\$\\Delta\\text\{TPR\} \\approx -([\d.]+)\$",
         lambda gt: gt.component_delta_magnitude("invariants"),
         F3,
         "fraction",

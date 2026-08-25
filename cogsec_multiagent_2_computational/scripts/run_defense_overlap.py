@@ -46,11 +46,11 @@ REPO = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO / "src"))
 
 from attacks.corpus import AttackCorpus  # noqa: E402
-from composition.factory import MODULE_REGISTRY  # noqa: E402
 from composition.algebra import (  # noqa: E402
     compute_parallel_detection_rate,
     compute_series_detection_rate,
 )
+from composition.factory import MODULE_REGISTRY  # noqa: E402
 from evaluation.benign_corpus import BenignCorpus  # noqa: E402
 
 OUTPUT = REPO / "output" / "data" / "defense_overlap.json"

@@ -45,19 +45,7 @@ Table: Measured pipeline overhead against a control that does not run it. {#tab:
 
 *No percentage overhead is reported here, and the reason is the point. This table previously read 45\,ms $\to$ 52\,ms at p50 and $+23\%$ at p95 against a "Baseline" column, but the control is the loop rather than a unit of agent work, so a ratio against it has no referent. There is a denominator that does exist: measured against the mean agent turn each architecture took in \cref{sec:llm-validation-results}, the pipeline's added median latency is Claude Code 0.0076%, CrewAI 0.0061%.*
 
-Table: Claude Code parametric integrity preservation. {#tab:parametric-claude-code-integrity}
-
-> **Retracted.** This table reported "integrity preservation" for three
-> scenarios --- single attack $0.72 \to 0.99$, sustained attack over an hour
-> $0.31 \to 0.96$, multi-vector $0.18 \to 0.94$ --- as a baseline-versus-CIF
-> improvement of $+38\%$, $+210\%$ and $+422\%$. None of it was measured and
-> none of it could have been. There is no definition of "integrity
-> preservation" anywhere in `src/` to compute against, no sustained or
-> multi-vector scenario in the evaluation suite, and no undefended arm to form
-> a ratio with. The nearest real quantity is the colony benchmark's integrity
-> timeline (`colony_results.json`), which is run only under attack, so it
-> yields no baseline either. The table is removed rather than relabelled: a
-> $+422\%$ improvement is not a design intention that a caption can rescue.
+**Integrity preservation is not reported.** The framework offers no definition of belief or system integrity that anything in `src/` computes, no sustained or multi-vector attack scenario in the evaluation suite, and no undefended arm against which an integrity ratio could be formed. The nearest available signal is the colony benchmark's per-step integrity timeline in `colony_results.json`, which runs only under attack and so supplies no baseline. Reporting an integrity improvement would require all three, and building them is scoped in `TODO_DEEP_SCOPING.md`.
 
 ### AutoGPT (Autonomous Architecture) {#sec:parametric-autogpt}
 
@@ -72,17 +60,7 @@ Table: AutoGPT parametric detection results by attack type. {#tab:parametric-aut
 | Belief manipulation | 0.00 | 0.69 | 0.76 | 0.88 | 0.95 |
 | Coordination | 0.00 | 0.48 | 0.55 | 0.71 | 0.85 |
 
-Table: AutoGPT parametric performance metrics. {#tab:parametric-autogpt-perf}
-
-| Metric  | Baseline  | Full CIF | Delta |
-| --- | --- | --- | --- |
-> **Retracted.** This table gave AutoGPT its own baseline-versus-CIF latency,
-> throughput and memory figures, a per-architecture twin of the Claude Code
-> table above. The pipeline is architecture-agnostic --- `create_full_pipeline()`
-> takes no architecture argument and the adapters do not vary by it --- so
-> there is one overhead measurement in this project and it is the one reported
-> above. Four architectures were given four different overhead profiles that
-> nothing distinguishes and nothing measured.
+**Overhead is not reported per architecture.** `create_full_pipeline()` takes no architecture argument and the adapters do not vary by one, so the pipeline's cost is a property of the pipeline rather than of the system it defends. The single overhead measurement in \cref{tab:parametric-claude-code-perf} applies to all four architectures.
 
 ### CrewAI (Role-Based Architecture) {#sec:parametric-crewai}
 

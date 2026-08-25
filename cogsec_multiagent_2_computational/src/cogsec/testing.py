@@ -82,9 +82,13 @@ class CIFTestSuite:
         candidate = self.project_dir / ".venv" / "bin" / "python"
         return str(candidate) if candidate.is_file() else sys.executable
 
-    def run_agent_tests(self, *extra_args: str, timeout: Optional[float] = None) -> AgentTestOutcome:
+    def run_agent_tests(
+        self, *extra_args: str, timeout: Optional[float] = None
+    ) -> AgentTestOutcome:
         """Run the project's pytest suite and record the verdict."""
-        command = [self._python(), "-m", "pytest", "tests/", "-q", "--no-header", *extra_args]
+        command = [
+            self._python(), "-m", "pytest", "tests/", "-q", "--no-header", *extra_args
+        ]
         proc = subprocess.run(
             command,
             cwd=self.project_dir,

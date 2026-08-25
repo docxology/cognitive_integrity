@@ -14,7 +14,6 @@ from matplotlib.patches import FancyBboxPatch
 
 from ..style import SEMANTIC_COLORS, add_source_annotation, apply_style, save_figure
 
-
 #: Where the headline numbers come from. Each is the artifact whose producing
 #: script is named in its own provenance block; none of them is typed here.
 _DATA_DIR = Path(__file__).resolve().parents[3] / "output" / "data"

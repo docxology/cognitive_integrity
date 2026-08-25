@@ -161,7 +161,8 @@ def _write_manuscript_files(manuscript_dir: Path) -> None:
     )
     (manuscript_dir / "05d_ablation_and_scalability.md").write_text(
         "The Detection module contributes $\\Delta\\text{TPR} \\approx -0.000$), "
-        "followed by Old ($-0.000$); Provenance, Sandbox, and Consensus show no measurable independent contribution.\n"
+        "followed by Old ($-0.000$); Provenance, Sandbox, and Consensus show "
+        "no measurable independent contribution.\n"
         "The top synergy tier (old-pair, both "
         + r"$\approx +0.000$" + ") confirms synergy.\n"
         "| Detection module | 0.000 | $-0.000$ | text |\n"

@@ -351,8 +351,9 @@ def _stratified_draw(samples: list, n: int, seed: int) -> list:
     least one from each, so extending the corpus changes the measurement --
     which is the entire point of extending it.
     """
-    import numpy as np
     from collections import defaultdict
+
+    import numpy as np
 
     by_category: dict[str, list] = defaultdict(list)
     for sample in samples:

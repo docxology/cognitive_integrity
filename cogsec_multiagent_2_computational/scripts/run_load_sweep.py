@@ -111,7 +111,11 @@ def main(argv: list[str] | None = None) -> int:
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT.write_text(json.dumps(fresh, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     print(f"wrote {OUTPUT.relative_to(REPO)}")
-    print(f"  {'target':>8s} {'achieved':>10s} {'DR':>6s} {'p50':>8s} {'p99':>8s} {'CPU':>6s}  keeping up")
+    header = (
+        f"  {'target':>8s} {'achieved':>10s} {'DR':>6s} "
+        f"{'p50':>8s} {'p99':>8s} {'CPU':>6s}  keeping up"
+    )
+    print(header)
     for row in fresh["points"]:
         print(
             f"  {row['target_msg_per_s']:8.0f} {row['achieved_msg_per_s']:10.0f} "

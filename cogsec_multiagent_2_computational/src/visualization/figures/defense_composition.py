@@ -13,11 +13,6 @@ import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
 from matplotlib.patches import Circle
 
-from composition.algebra import (
-    compute_parallel_detection_rate,
-    compute_series_detection_rate,
-)
-
 from ..style import FONTSIZE, SEMANTIC_COLORS, add_source_annotation, apply_style, save_figure
 
 logger = logging.getLogger(__name__)

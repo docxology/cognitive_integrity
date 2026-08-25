@@ -34,7 +34,9 @@ _CATEGORY_LABEL = {
 }
 
 
-def _load_parametric_detection() -> tuple[list[str], list[str], list[list[float]], list[list[float]]]:
+def _load_parametric_detection() -> tuple[
+    list[str], list[str], list[list[float]], list[list[float]]
+]:
     """Detection rates and Wilson half-widths, per architecture and category.
 
     Fails closed. The defect being repaired is a panel that drew a matrix

@@ -10,10 +10,10 @@ Covers the specific missing lines in:
 from __future__ import annotations
 
 import json
-import pytest
 
 import matplotlib
 import matplotlib.pyplot as plt
+import pytest
 from matplotlib.figure import Figure
 
 matplotlib.use("Agg")

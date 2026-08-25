@@ -21,8 +21,8 @@ from pathlib import Path
 import numpy as np
 import pytest
 
-from attacks.corpus import AttackCorpus
 from ablation.runner import BENIGN_MESSAGES, evaluate_component_subset, make_default_components
+from attacks.corpus import AttackCorpus
 from evaluation.baselines import (
     DEFAULT_KEYWORD_PATTERNS,
     BagOfWordsDetector,

@@ -176,7 +176,10 @@ def test_the_one_measured_payoff_cell_comes_from_the_artifact() -> None:
 
     matrix, attacks, defenses = compute_cif_payoff_matrix()
     artifact = json.loads(
-        (Path(__file__).resolve().parents[1] / "output" / "data" / "colony_results.json").read_text()
+        (
+            Path(__file__).resolve().parents[1]
+            / "output" / "data" / "colony_results.json"
+        ).read_text()
     )
     measured = next(
         s["detection_rate_mean"]

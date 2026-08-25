@@ -6,11 +6,11 @@ Draws a tree diagram showing the attack taxonomy root branching into
 
 from __future__ import annotations
 
-import matplotlib.patches as mpatches
 import json
 import re
 from pathlib import Path
 
+import matplotlib.patches as mpatches
 from matplotlib.figure import Figure
 
 from ..style import FONTSIZE, PALETTE, create_figure, save_figure

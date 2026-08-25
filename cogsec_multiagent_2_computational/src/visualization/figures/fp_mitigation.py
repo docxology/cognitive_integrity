@@ -24,7 +24,6 @@ from matplotlib.figure import Figure
 
 from ..style import COLORS, FONTSIZE, PALETTE, create_figure, format_axis, save_figure
 
-
 #: The measured mitigation study.
 _MITIGATION_PATH = (
     Path(__file__).resolve().parents[3] / "output" / "data" / "fp_mitigation.json"

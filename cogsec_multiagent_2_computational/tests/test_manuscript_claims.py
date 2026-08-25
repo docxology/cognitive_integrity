@@ -832,7 +832,8 @@ def test_the_baseline_table_is_the_artifact() -> None:
 
     text = (root / "manuscript" / "05_results.md").read_text(encoding="utf-8")
     rows = re.findall(
-        r"^\| ([A-Z][^|]*?) \| (-?[\d.]+) \| (-?[\d.]+) \| (-?[\d.]+) \| (-?[\d.]+) \| ([\d.]+) \|$",
+        r"^\| ([A-Z][^|]*?) \| (-?[\d.]+) \| (-?[\d.]+) \| "
+        r"(-?[\d.]+) \| (-?[\d.]+) \| ([\d.]+) \|$",
         text,
         re.M,
     )

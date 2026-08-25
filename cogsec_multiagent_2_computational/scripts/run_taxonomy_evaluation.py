@@ -48,11 +48,11 @@ import itertools
 import json
 import math
 import sys
-
-import numpy as np
 from collections import defaultdict
 from pathlib import Path
 from typing import Iterable, Sequence
+
+import numpy as np
 
 REPO = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO / "src"))
@@ -277,7 +277,11 @@ def per_module_calibration(samples: Sequence[object], seed: int) -> dict[str, ob
 
         chosen = max(grid, key=lambda t: (lambda r: r[0] - r[1])(rates(cal_attack, cal_benign, t)))
         clean = [t for t in grid if rates(cal_attack, cal_benign, t)[1] == 0.0]
-        chosen_clean = max(clean, key=lambda t: rates(cal_attack, cal_benign, t)[0]) if clean else chosen
+        chosen_clean = (
+            max(clean, key=lambda t: rates(cal_attack, cal_benign, t)[0])
+            if clean
+            else chosen
+        )
 
         j_tpr, j_fpr = rates(hold_attack, hold_benign, chosen)
         c_tpr, c_fpr = rates(hold_attack, hold_benign, chosen_clean)

@@ -77,7 +77,10 @@ def test_every_python_block_at_least_parses() -> None:
 
 @pytest.mark.parametrize(
     "name,line,body",
-    [pytest.param(n, l, b, id=f"{n}:{l}") for n, l, b in _runnable_blocks()],
+    [
+        pytest.param(name, line, block, id=f"{name}:{line}")
+        for name, line, block in _runnable_blocks()
+    ],
 )
 def test_runnable_example_executes(name: str, line: int, body: str) -> None:
     """Execute the block against the real modules, in a fresh namespace."""
@@ -95,7 +98,11 @@ def test_runnable_example_executes(name: str, line: int, body: str) -> None:
 
 def test_the_runner_would_catch_a_broken_example(tmp_path: Path) -> None:
     """A guard that cannot fire proves nothing; prove this one fires."""
-    broken = f"{RUNNABLE_MARKER}\nfrom core.firewall import FirewallConfig\nFirewallConfig(tau_1=0.7)\n"
+    broken = (
+        f"{RUNNABLE_MARKER}\n"
+        "from core.firewall import FirewallConfig\n"
+        "FirewallConfig(tau_1=0.7)\n"
+    )
     if str(SRC) not in sys.path:
         sys.path.insert(0, str(SRC))
     with pytest.raises(TypeError):
