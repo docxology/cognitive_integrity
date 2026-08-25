@@ -131,20 +131,27 @@ visible in the measurement rather than merely anticipated. The intercept ($\gamm
 
 Table: Performance scaling with message volume. {#tab:volume-scaling}
 
-> **Retracted.** This table reported detection rate, latency and CPU usage at
-> five controlled message rates, and derived a saturation point of
-> $\sim$5000 messages/sec from them. Nothing drove the pipeline at a
-> controlled arrival rate: there is no rate limiter, no CPU sampler and no
-> throughput driver anywhere in the evaluation suite, so all fifteen cells and
-> the conclusion drawn from them were typed.
->
-> What is measured is sustained single-threaded throughput, reported in
-> \cref{tab:parametric-claude-code-perf}: **1{,}784 messages/sec** over the
-> full corpus in one process, against a control that runs the same loop without
-> evaluating. That is a throughput, not a saturation point --- establishing
-> where detection degrades under load needs the rate-controlled driver this
-> table presupposed, and building it is tracked as W2 in
-> `TODO_DEEP_SCOPING.md`.
+| Target msg/s | Achieved msg/s | Detection rate | Latency p50 (ms) | Latency p99 (ms) | CPU s/wall s | Keeping up |
+| --- | --- | --- | --- | --- | --- | --- |
+| 100 | 100 | 0.930 | 1.399 | 5.609 | 0.12 | yes |
+| 250 | 250 | 0.930 | 1.489 | 5.949 | 0.30 | yes |
+| 500 | 501 | 0.930 | 0.613 | 3.042 | 0.38 | yes |
+| 1,000 | 998 | 0.930 | 0.408 | 1.254 | 0.38 | yes |
+| 2,000 | 2,000 | 0.930 | 0.382 | 0.935 | 0.73 | yes |
+| 4,000 | 3,131 | 0.930 | 0.349 | 0.554 | 0.94 | **no** |
+
+*Measured by `scripts/run_load_sweep.py`: 400 messages released on a schedule at each target rate, single process, single thread, on arm. Saturation is where the achieved rate stops tracking the target, which the system decides rather than the author: the pipeline keeps up to **2,000 messages/sec** and falls behind at 4{,}000, achieving 3,131 with CPU utilisation at 0.94.*
+
+*Detection is flat at 0.930 across every rate, which is what a stateless pipeline should do and is worth stating because the retracted table claimed the opposite --- detection falling from 0.94 to 0.89 as load rose. Nothing in this pipeline carries state between messages, so there is no mechanism by which arrival rate could change a verdict.*
+
+*CPU is process CPU-seconds per wall-second rather than a percentage: a percentage needs a sampling interval and a core count recorded beside it to mean anything.*
+
+> **On the replaced table.** This reported detection rate, latency and CPU usage at
+> five message rates and derived a saturation point of $\sim$5000 messages/sec.
+> Nothing had driven the pipeline at a controlled arrival rate: there was no
+> pacer, no CPU sampler and no notion of arrival at all, so all fifteen cells
+> and the conclusion drawn from them were typed. `src/evaluation/load_driver.py`
+> is the missing piece and the numbers above come from it.
 
 ## Summary {#sec:ablation-summary}
 
