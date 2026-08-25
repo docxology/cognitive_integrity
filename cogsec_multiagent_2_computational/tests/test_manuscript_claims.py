@@ -797,3 +797,91 @@ def test_the_stability_verdict_agrees_with_its_own_threshold() -> None:
         f"table says {verdict.group(1)!r}"
     )
     assert ("is below the 0.05 stability threshold" in text) == stable
+
+
+def test_the_baseline_table_is_the_artifact() -> None:
+    """Every cell of tab:baseline-comparison must come from the artifact.
+
+    This table carries the paper's central self-criticism, and it had drifted
+    on every axis: CIF's Youden J printed as 0.122 against a measured 0.890,
+    the length baseline's J as 0.541 against 0.350, the random null's TPR as
+    0.082 against 0.590. The caption's argument -- 'outperforms CIF by a factor
+    of 7.7', 'detects three times as many attacks as CIF' -- was computed off
+    the stale row and had become false in the other direction: CIF at 0.890
+    detects three times as many attacks as the keyword regex, not the reverse.
+
+    A self-criticism built on stale numbers is not humility, it is a different
+    error with a more sympathetic surface.
+    """
+    import json
+    import re
+    from pathlib import Path
+
+    root = Path(__file__).resolve().parents[1]
+    payload = json.loads(
+        (root / "output" / "data" / "baseline_comparison.json").read_text(encoding="utf-8")
+    )
+    measured = {d["name"]: d for d in payload["detectors"]}
+    label_to_key = {
+        "Bag-of-words LR": "bag_of_words_lr",
+        "Length-only": "length_only",
+        "Keyword regex": "keyword_regex",
+        "CIF full pipeline": "cif_full_pipeline",
+        "Random null": "random_null",
+    }
+
+    text = (root / "manuscript" / "05_results.md").read_text(encoding="utf-8")
+    rows = re.findall(
+        r"^\| ([A-Z][^|]*?) \| (-?[\d.]+) \| (-?[\d.]+) \| (-?[\d.]+) \| (-?[\d.]+) \| ([\d.]+) \|$",
+        text,
+        re.M,
+    )
+    seen = set()
+    for label, tpr, fpr, j, auc, p_value in rows:
+        key = next((v for k, v in label_to_key.items() if label.startswith(k)), None)
+        if key is None:
+            continue
+        seen.add(key)
+        d = measured[key]
+        assert float(tpr) == pytest.approx(d["metrics"]["tpr"], abs=5e-4), label
+        assert float(fpr) == pytest.approx(d["metrics"]["fpr"], abs=5e-4), label
+        assert float(j) == pytest.approx(d["metrics"]["youden_j"], abs=5e-4), label
+        assert float(auc) == pytest.approx(d["curves"]["auc"], abs=5e-4), label
+        assert float(p_value) == pytest.approx(
+            d["permutation_null"]["p_value"], abs=5e-5
+        ), label
+    assert seen == set(measured), f"table is missing {sorted(set(measured) - seen)}"
+
+
+def test_the_baseline_caption_does_not_contradict_its_own_table() -> None:
+    """The retired comparisons must not survive as prose.
+
+    Both claims below were true of the 0.122 CIF row and are false of the
+    measured one. They are pinned as forbidden strings because a caption that
+    disagrees with the table above it is invisible to every numeric check in
+    this repository: nothing was wrong with the digits in those sentences,
+    only with the comparison they drew.
+    """
+    import json
+    from pathlib import Path
+
+    root = Path(__file__).resolve().parents[1]
+    payload = json.loads(
+        (root / "output" / "data" / "baseline_comparison.json").read_text(encoding="utf-8")
+    )
+    measured = {d["name"]: d["metrics"] for d in payload["detectors"]}
+    text = (root / "manuscript" / "05_results.md").read_text(encoding="utf-8")
+
+    assert measured["cif_full_pipeline"]["tpr"] > measured["keyword_regex"]["tpr"], (
+        "the keyword regex now out-detects CIF; the caption needs rewriting, "
+        "not this assertion relaxing"
+    )
+    for retired in (
+        "outperforms CIF by a\nfactor of 7.7",
+        "detects three times as many attacks as CIF",
+        "outperforms CIF by a factor of 4.4",
+    ):
+        assert retired not in text, (
+            f"the caption still claims {retired!r}, which the measured table "
+            f"contradicts"
+        )

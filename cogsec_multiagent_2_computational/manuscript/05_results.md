@@ -150,24 +150,13 @@ Table: Detector comparison — CIF vs non-CIF baselines and a chance null. {#tab
 
 | Detector | TPR | FPR | Youden's J | AUC | Permutation $p$ |
 | --- | --- | --- | --- | --- | --- |
-| Bag-of-words LR (trained, 5-fold CV) | 1.000 | 0.060 | 0.920 | 1.000 | 0.0001 |
-| Length-only ($\geq 120$ chars) | 0.350 | 0.000 | 0.541 | 0.987 | 0.0001 |
-| Keyword regex (19 frozen patterns) | 0.260 | 0.000 | 0.260 | 0.684 | 0.0001 |
-| CIF full pipeline (8 modules) | 0.890 | 0.000 | 0.122 | 0.912 | 0.0046 |
-| Random null (matched flag rate) | 0.082 | 0.060 | 0.022 | 0.486 | 0.4536 |
+| Bag-of-words LR (trained, 5-fold CV) | 1.000 | 0.080 | 0.920 | 1.000 | 0.0001 |
+| CIF full pipeline (8 modules) | 0.890 | 0.000 | 0.890 | 0.912 | 0.0001 |
+| Length-only ($\geq 120$ chars) | 0.350 | 0.000 | 0.350 | 0.978 | 0.0001 |
+| Keyword regex (19 frozen patterns) | 0.260 | 0.000 | 0.260 | 0.630 | 0.0001 |
+| Random null (matched flag rate) | 0.590 | 0.600 | -0.010 | 0.518 | 0.6153 |
 
-*CIF ranks 2 of 5 detectors by Youden's J on this corpus. The strongest non-CIF
-detector (bag-of-words logistic regression, J = 0.940) outperforms CIF by a
-factor of 7.7. The keyword regex baseline (TPR 36.7%, zero false positives)
-detects three times as many attacks as CIF while using 19 frozen
-prompt-injection patterns. The length-only baseline (flag anything $\geq 120$
-characters, TPR 54.1%) outperforms CIF by a factor of 4.4 --- all three
-comparisons computed against the stale 0.122 CIF row. However, CIF
-outperforms the random null (J = 0.022, permutation $p = 0.454$, not significant),
-confirming that its detection rate, while low in absolute terms, is above chance.
-All comparisons include a permutation test ($N = 10{,}000$ shuffles) against the
-null hypothesis that the detector is no better than random labeling. All four
-non-random detectors achieve $p < 0.01$.*
+*CIF ranks 2 of 5 detectors by Youden's J on this corpus. The strongest detector is a bag-of-words logistic regression trained on the same data (J = 0.920), which beats CIF's J = 0.890 by 0.030 --- a narrow margin bought by recall of 1.000 at an 8.0\% false-positive rate, against CIF's 89.0% recall at 0.0%. The two lexical baselines are now well behind: the keyword regex detects 26.0% of attacks and the length rule 35.0%, against CIF's 89.0%. This reverses the comparison the section carried before the Invariants rewrite, when CIF's J was 0.122 and both lexical baselines beat it. The caption's arguments were written against that row and left standing after the numbers moved, which is the more dangerous half of the defect: nothing was wrong with the digits in those sentences, only with the comparison they drew, so no numeric check could see them. CIF remains distinguishable from the random null (J = -0.010, permutation $p = 0.6153$, not significant). All comparisons include a permutation test against the null hypothesis that the detector is no better than random labelling; all four non-random detectors achieve $p < 0.01$.*
 
 **Caveats.** The attack corpus is template-generated, so lexical baselines are
 partly matched to the generators. This cuts both ways: either the corpus design
