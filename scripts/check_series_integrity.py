@@ -359,6 +359,7 @@ def check_bibliography() -> CheckResult:
     by_title: dict[str, list[tuple[str, Path, BibEntry]]] = {}
     total = 0
     uncited: dict[str, int] = {}
+    uncited_keys: dict[str, set[str]] = {}
 
     for part in PARTS:
         path = manuscript_dir(part) / "references.bib"
@@ -369,7 +370,8 @@ def check_bibliography() -> CheckResult:
             continue
         entries = parse_bib(path)
         total += len(entries)
-        uncited[part] = len({e.key for e in entries} - _cited_keys(part))
+        uncited_keys[part] = {e.key for e in entries} - _cited_keys(part)
+        uncited[part] = len(uncited_keys[part])
         if not entries:
             result.problems.append(
                 Problem(result.name, rel(path), 0, "parsed zero entries")
@@ -484,18 +486,80 @@ def check_bibliography() -> CheckResult:
             )
         )
 
-    if uncited:
-        # Advisory, deliberately not a failure: pandoc emits only cited works, so
-        # an uncited entry never reaches a reader and is not a defect in the
-        # paper. It is worth counting anyway. Both fabricated sources this series
-        # has shipped -- the two supplychain2025 entries, whose titles matched no
-        # real publication -- were uncited, which is exactly why nothing caught
-        # them: no reader saw them and no check looked at them. A visible count
-        # means the pile cannot quietly grow.
-        result.note = "uncited entries (not rendered; never reach a reader): " + ", ".join(
-            f"Part {part} {count}" for part, count in sorted(uncited.items())
+    # This was an advisory count for as long as the pile stood at 169 entries,
+    # on the reasoning that pandoc emits only cited works so an uncited entry
+    # never reaches a reader. That reasoning is exactly backwards about why it
+    # matters. Both fabricated sources this series has shipped -- the two
+    # supplychain2025 entries, whose titles matched no real publication -- were
+    # uncited, and survived nine review rounds precisely because no reader saw
+    # them and no check looked at them. An entry nobody can read is an entry
+    # nobody can verify.
+    #
+    # The pile is closed now (scripts/prune_bibliography.py), so the count is
+    # gating. An entry whose key appears nowhere in its part -- not in the
+    # prose, not in a README, script or test -- is a failure. An entry that is
+    # uncited but named elsewhere in the tree is load-bearing somewhere and is
+    # reported rather than failed.
+    referenced_elsewhere: dict[str, int] = {}
+    for part, keys in sorted(uncited_keys.items()):
+        if not keys:
+            continue
+        elsewhere = _keys_named_outside_the_prose(part, keys)
+        referenced_elsewhere[part] = len(elsewhere)
+        for key in sorted(keys - elsewhere):
+            result.problems.append(
+                Problem(
+                    result.name,
+                    rel(manuscript_dir(part) / "references.bib"),
+                    0,
+                    f"{key} is defined, cited by nothing, and named nowhere else "
+                    f"in Part {part}; no reader can see it and no check can "
+                    f"verify it (remove it with scripts/prune_bibliography.py)",
+                )
+            )
+    if any(referenced_elsewhere.values()):
+        result.note = (
+            "uncited but named outside the prose (kept deliberately): "
+            + ", ".join(
+                f"Part {part} {count}"
+                for part, count in sorted(referenced_elsewhere.items())
+                if count
+            )
         )
     return result
+
+
+def _keys_named_outside_the_prose(part: str, keys: set[str]) -> set[str]:
+    """Which of *keys* appear anywhere in the part outside its manuscript prose.
+
+    A bibkey named in a README table, asserted in a test, or written into a
+    script is used even though no sentence cites it, and deleting it would
+    break that use silently. Mirrors the conservatism of
+    ``scripts/prune_bibliography.py`` so the gate and the write path cannot
+    disagree about what is safe to remove.
+    """
+    skip = {".venv", ".git", "output", "__pycache__", ".pytest_cache", ".mypy_cache"}
+    root = REPO_ROOT / PARTS[part]
+    prose = manuscript_dir(part)
+    patterns = {key: re.compile(rf"(?<![\w-]){re.escape(key)}(?![\w-])") for key in keys}
+    found: set[str] = set()
+    for path in root.rglob("*"):
+        if not path.is_file() or path.suffix == ".bib":
+            continue
+        if any(segment in skip for segment in path.relative_to(root).parts):
+            continue
+        if path.parent == prose and path.suffix == ".md":
+            continue
+        try:
+            text = path.read_text(encoding="utf-8", errors="replace")
+        except OSError:
+            continue
+        for key in keys - found:
+            if patterns[key].search(text):
+                found.add(key)
+        if found == keys:
+            break
+    return found
 
 
 # ---------------------------------------------------------------------------

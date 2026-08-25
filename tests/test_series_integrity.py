@@ -96,8 +96,25 @@ def _build_tree(root: Path, *, part_text: dict[str, str], bibs: dict[str, str]) 
     for part, package in gate.PARTS.items():
         manuscript = root / package / "manuscript"
         manuscript.mkdir(parents=True, exist_ok=True)
-        (manuscript / "01_body.md").write_text(
-            part_text.get(part, "# Body\n\nNothing to see.\n"), encoding="utf-8"
+        # Every body cites every key its part's bibliography defines. It did
+        # not, and once the bibliography check began failing on an entry
+        # nothing cites, "a clean tree" stopped being clean -- through the
+        # fixture rather than through the gate. A fixture that models a
+        # healthy tree has to model a closed bibliography too, and the
+        # citations have to be appended to whatever body a test supplies
+        # rather than only to the default one.
+        body = part_text.get(part, "# Body\n\nNothing to see.\n")
+        # Prepended, never appended: several tests plant a severed final clause
+        # and the truncation check reads the end of the file, so a citation
+        # added after the defect hides it.
+        citations = "".join(
+            f"See [@{key}].\n"
+            for key in re.findall(r"@\w+\{([^,]+),", bibs.get(part, _CLEAN_BIB))
+            if f"@{key}" not in body
+        )
+        if citations:
+            body = citations + "\n" + body
+        (manuscript / "01_body.md").write_text(body, encoding="utf-8"
         )
         (manuscript / "references.bib").write_text(
             bibs.get(part, _CLEAN_BIB), encoding="utf-8"
@@ -1018,3 +1035,48 @@ def test_normalise_title_ignores_case_braces_and_spacing(gate):
     assert gate.normalise_title("{OWASP}  Top-10 for LLMs") == gate.normalise_title(
         "owasp top 10 for llms"
     )
+
+
+class TestTheBibliographyGateIsClosed:
+    """An uncited, unreferenced entry must fail, not be counted.
+
+    This check reported a number for nine rounds. The number reached 169 and
+    nobody acted on it, which is what an advisory over a growing pile is for.
+    Both fabricated sources this series has shipped were in that pile, and the
+    argument for tolerating them -- pandoc emits only cited works, so no reader
+    sees an uncited entry -- is the same sentence as the reason nobody caught
+    them.
+    """
+
+    def test_an_uncited_entry_fails_the_gate(self, tmp_path, monkeypatch):
+        """Test of the test: the gate must be able to fail."""
+        gate = _load_module()
+        part = "1"
+        bib = gate.manuscript_dir(part) / "references.bib"
+        original = bib.read_text(encoding="utf-8")
+        try:
+            bib.write_text(
+                original
+                + "\n@misc{nobodycitesthisatall2026,\n"
+                '  title = {A Source Nobody Cites},\n'
+                "  year = {2026},\n}\n",
+                encoding="utf-8",
+            )
+            result = gate.check_bibliography()
+            hits = [p for p in result.problems if "nobodycitesthisatall2026" in p.message]
+            assert hits, "the gate did not notice an entry nothing cites"
+        finally:
+            bib.write_text(original, encoding="utf-8")
+
+    def test_the_shipped_bibliographies_are_closed(self):
+        """And the negative control: the tree as shipped must pass."""
+        gate = _load_module()
+        result = gate.check_bibliography()
+        assert not result.problems, [p.message for p in result.problems]
+
+    def test_a_key_named_outside_the_prose_is_kept(self, tmp_path):
+        """Conservatism: a bibkey a README or test names is in use."""
+        gate = _load_module()
+        part = "2"
+        keys = {"friedman2026cogsec2"}
+        assert gate._keys_named_outside_the_prose(part, keys) == keys
