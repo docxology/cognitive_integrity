@@ -168,7 +168,7 @@ Part 1 provides a theoretical bound on attack performance, formalized as the Ste
 
 > **Stealth-Impact Tradeoff**: *For a given defense sensitivity $\epsilon$, the probability of detection $P(d)$ approaches 1 as the divergence of the attack behavior from the baseline increases.*
 
-This formalism suggests that catastrophic attacks are inherently easier to detect than subtle attacks. Part 2's data consistently validated this: High-impact attacks were detected 98% of the time, while low-impact attacks were detected only 74% of the time.
+This formalism suggests that catastrophic attacks are inherently easier to detect than subtle attacks. Part 2 does not test that: its corpus carries no impact label, so no impact-stratified detection rate has ever been computed. The sentence that stood here reported one --- "High-impact attacks were detected 98\% of the time, while low-impact attacks were detected only 74\%" --- and it was typed. Impact is the one dimension deliberately left off `AttackSample` when adversary class and target were added: unlike those two it varies within a category by design, so assigning it per category would manufacture the axis rather than expose it, and a real label needs a per-sample judgement this corpus has never had. The prediction is worth testing and is tracked as such; it has not been tested.
 
 ## Defense Composition {#sec:composition-review}
 
@@ -208,7 +208,7 @@ This connection is not just theoretical. It means:
 
 1. **Emergent misalignment is the hardest problem** because it minimizes $\Delta F$ per agent: each individual belief shift is sub-threshold, but the collective drift accumulates. This is precisely why colony-scale monitoring is necessary—the FEP signal is distributed across agents.
 2. **Trust calibration is precision calibration**: operators who carefully calibrate trust scores are effectively setting the precision weighting of their agent network. Well-calibrated trust → robust cognition.
-3. **The $\Omega_5$ miss rate (44%) reflects FEP's fundamental challenge**: systematic manipulation by a compromised orchestrator can shift the agent's generative model $P$ itself (not just $Q$), making the baseline a moving target. This requires out-of-band verification (human review, Byzantine quorum) rather than in-context detection.
+3. **The $\Omega_5$ miss rate (2.5\%) reflects FEP's fundamental challenge**: systematic manipulation by a compromised orchestrator can shift the agent's generative model $P$ itself (not just $Q$), making the baseline a moving target. This requires out-of-band verification (human review, Byzantine quorum) rather than in-context detection.
 
 For the full mathematical treatment, see Part~2's theoretical-connections and information-geometry sections.
 
@@ -337,14 +337,23 @@ We proved the *architecture* works. The implementation fidelity is the variable 
 
 ### Tripwire Configuration Data
 
-The simulations utilized the following tripwire densities to achieve the reported results:
+The tripwire densities below are what Part 2's pipeline installs, not a target
+density. One `TripwireAdapter` is constructed per pipeline rather than per agent,
+and its constructor
+(`cogsec_multiagent_2_computational/src/composition/adapters.py`) adds exactly
+three canaries; `get_canary_count()` on the resulting adapter returns
+`{'identity': 1, 'boundary': 1, 'principal': 1, 'temporal': 0, 'general': 0}`.
+`add_temporal_canary` is defined in `src/core/tripwire.py` but never called, so
+no temporal canary is installed anywhere. An earlier revision of this table
+reported 3+ identity, 5+ boundary, 2+ principal and 1 temporal canary per agent;
+those densities were never run.
 
 | Category | Count Used in Sim | Placement Strategy |
 |----------|-------------------|-------------------|
-| Identity canaries | 3+ per agent | Core identity beliefs |
-| Boundary canaries | 5+ per agent | Permission boundaries |
-| Principal canaries | 2+ per agent | Trust relationships |
-| Temporal canaries | 1 per agent | Session continuity |
+| Identity canaries | 1 per pipeline | Core identity beliefs |
+| Boundary canaries | 1 per pipeline | Permission boundaries |
+| Principal canaries | 1 per pipeline | Trust relationships |
+| Temporal canaries | 0 (never installed) | Session continuity (unused) |
 
 
 

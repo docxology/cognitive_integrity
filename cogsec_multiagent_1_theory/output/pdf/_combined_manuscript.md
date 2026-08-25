@@ -1779,7 +1779,7 @@ The coupling matrix $\mathbf{M}_{\text{AD}} \in \mathbb{R}^{5 \times 5}$ quantif
 
 \begin{table}[htbp]
 \centering
-\caption{CIF-AD coupling matrix: coverage of each defense mechanism across AD cycle phases.}
+\caption{CIF-AD coupling matrix: coverage of each defense mechanism across AD cycle phases. \textit{Note: the twenty-five coverage values are worked-example values chosen to exercise the coverage bound, not measurements; no part of this series measures per-phase coverage. The full-coverage theorem proved by inspection of this table is a property of these illustrative values, not an observation.}}
 \label{tab:cif-ad-matrix}
 \begin{tabular}{@{}llllll@{}}
 \toprule
@@ -3213,17 +3213,17 @@ By Pinsker's inequality \cite{cover2006elements}: $\| P_{\text{attack}} - P_{\te
 
 \begin{table}[htbp]
 \centering
-\caption{Information-theoretic detectability by attack class.}
+\caption{Information-theoretic detectability by attack class. The AUC lower bound is \cref{thm:kl-auc-coupling} applied to the $D_{\mathrm{KL}}$ column; it falls below the chance level $0.5$ once $D_{\mathrm{KL}} < 2\ln 2 \approx 1.39$, so for $\Omega_3$--$\Omega_5$ the bound is vacuous and places no constraint on the Practical AUC column.}
 \label{tab:it-detectability}
 \begin{tabular}{@{}lllll@{}}
 \toprule
 Attack Class & $D_{\mathrm{KL}}$ (typical) & AUC lower bound & Required observations & Practical AUC \\
 \midrule
-$\Omega_1$ (External) & 2.5 & 0.91 & 3 & 0.95 \\
-$\Omega_2$ (Peripheral) & 1.8 & 0.87 & 5 & 0.88 \\
-$\Omega_3$ (Agent) & 1.2 & 0.83 & 8 & 0.85 \\
-$\Omega_4$ (Coordination) & 0.7 & 0.77 & 14 & 0.80 \\
-$\Omega_5$ (Systemic) & 0.2 & 0.61 & 46 & 0.65 \\
+$\Omega_1$ (External) & 2.5 & 0.71 & 3 & 0.95 \\
+$\Omega_2$ (Peripheral) & 1.8 & 0.59 & 5 & 0.88 \\
+$\Omega_3$ (Agent) & 1.2 & 0.45 & 8 & 0.85 \\
+$\Omega_4$ (Coordination) & 0.7 & 0.30 & 14 & 0.80 \\
+$\Omega_5$ (Systemic) & 0.2 & 0.10 & 46 & 0.65 \\
 \bottomrule
 \end{tabular}
 \end{table}

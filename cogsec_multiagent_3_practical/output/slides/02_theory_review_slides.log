@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.3.22)  25 AUG 2026 09:30
+This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.3.22)  25 AUG 2026 11:04
 entering extended mode
  %&-line parsing enabled.
 **/Users/4d/Documents/GitHub/projects/working/cognitive_integrity/cogsec_multia
@@ -1794,22 +1794,33 @@ ern Roman (RS)
 
 ] [14
 
-] [15
+]
+\openout4 = `02_theory_review_slides.vrb'.
 
-] [16
+
+(/Users/4d/Documents/GitHub/projects/working/cognitive_integrity/cogsec_multiag
+ent_3_practical/output/slides/02_theory_review_slides.vrb) [15
+
+]
+\openout4 = `02_theory_review_slides.vrb'.
+
+
+(/Users/4d/Documents/GitHub/projects/working/cognitive_integrity/cogsec_multiag
+ent_3_practical/output/slides/02_theory_review_slides.vrb) [16
 
 ] [17
 
 ] [18
 
 ]
-
-LaTeX Warning: Citation `friston2010free' on page 19 undefined on input line 41
-3.
-
 [19
 
-] [20
+]
+
+LaTeX Warning: Citation `friston2010free' on page 20 undefined on input line 42
+4.
+
+[20
 
 ] [21
 
@@ -1827,12 +1838,7 @@ LaTeX Warning: Citation `friston2010free' on page 19 undefined on input line 41
 
 ] [28
 
-]
-\openout4 = `02_theory_review_slides.vrb'.
-
-
-(/Users/4d/Documents/GitHub/projects/working/cognitive_integrity/cogsec_multiag
-ent_3_practical/output/slides/02_theory_review_slides.vrb) [29
+] [29
 
 ]
 \openout4 = `02_theory_review_slides.vrb'.
@@ -1854,6 +1860,13 @@ ent_3_practical/output/slides/02_theory_review_slides.vrb) [31
 
 (/Users/4d/Documents/GitHub/projects/working/cognitive_integrity/cogsec_multiag
 ent_3_practical/output/slides/02_theory_review_slides.vrb) [32
+
+]
+\openout4 = `02_theory_review_slides.vrb'.
+
+
+(/Users/4d/Documents/GitHub/projects/working/cognitive_integrity/cogsec_multiag
+ent_3_practical/output/slides/02_theory_review_slides.vrb) [33
 
 ]
 \tf@nav=\write5
@@ -1883,14 +1896,14 @@ LaTeX Warning: There were undefined references.
 
  )
 Here is how much of TeX's memory you used:
- 33874 strings out of 468168
- 676689 string characters out of 5432815
- 1214427 words of memory out of 5000000
- 61956 multiletter control sequences out of 15000+600000
+ 33880 strings out of 468168
+ 677245 string characters out of 5432815
+ 1214483 words of memory out of 5000000
+ 61958 multiletter control sequences out of 15000+600000
  636192 words of font info for 115 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  128i,11n,123p,1128b,785s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
 Output written on /Users/4d/Documents/GitHub/projects/working/cognitive_integri
-ty/cogsec_multiagent_3_practical/output/slides/02_theory_review_slides.pdf (32
+ty/cogsec_multiagent_3_practical/output/slides/02_theory_review_slides.pdf (33
 pages).

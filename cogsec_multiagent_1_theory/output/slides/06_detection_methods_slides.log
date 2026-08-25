@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.3.22)  25 AUG 2026 09:19
+This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.3.22)  25 AUG 2026 10:58
 entering extended mode
  %&-line parsing enabled.
 **/Users/4d/Documents/GitHub/projects/working/cognitive_integrity/cogsec_multia
@@ -1952,11 +1952,11 @@ LaTeX Warning: There were undefined references.
 
  )
 Here is how much of TeX's memory you used:
- 34128 strings out of 468168
- 680136 string characters out of 5432815
- 1232590 words of memory out of 5000000
- 62214 multiletter control sequences out of 15000+600000
- 633360 words of font info for 105 fonts, out of 8000000 for 9000
+ 34132 strings out of 468168
+ 680207 string characters out of 5432815
+ 1232834 words of memory out of 5000000
+ 62216 multiletter control sequences out of 15000+600000
+ 633368 words of font info for 106 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  128i,15n,123p,1129b,819s stack positions out of 10000i,1000n,20000p,200000b,200000s
 

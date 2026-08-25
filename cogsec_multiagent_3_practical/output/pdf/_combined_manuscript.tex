@@ -697,9 +697,17 @@ divergence of the attack behavior from the baseline increases.}
 \end{quote}
 
 This formalism suggests that catastrophic attacks are inherently easier
-to detect than subtle attacks. Part 2's data consistently validated
-this: High-impact attacks were detected 98\% of the time, while
-low-impact attacks were detected only 74\% of the time.
+to detect than subtle attacks. Part 2 does not test that: its corpus
+carries no impact label, so no impact-stratified detection rate has ever
+been computed. The sentence that stood here reported one ---
+``High-impact attacks were detected 98\% of the time, while low-impact
+attacks were detected only 74\%'' --- and it was typed. Impact is the
+one dimension deliberately left off \texttt{AttackSample} when adversary
+class and target were added: unlike those two it varies within a
+category by design, so assigning it per category would manufacture the
+axis rather than expose it, and a real label needs a per-sample
+judgement this corpus has never had. The prediction is worth testing and
+is tracked as such; it has not been tested.
 
 \subsection{Defense Composition}\label{sec:composition-review}
 
@@ -803,7 +811,7 @@ This connection is not just theoretical. It means:
   weighting of their agent network. Well-calibrated trust \texorpdfstring{\ensuremath{\to}}{->} robust
   cognition.
 \item
-  \textbf{The \(\Omega_5\) miss rate (44\%) reflects FEP's fundamental
+  \textbf{The \(\Omega_5\) miss rate (2.5\%) reflects FEP's fundamental
   challenge}: systematic manipulation by a compromised orchestrator can
   shift the agent's generative model \(P\) itself (not just \(Q\)),
   making the baseline a moving target. This requires out-of-band
@@ -1141,21 +1149,40 @@ threat modeling.
 \subsubsection{Tripwire Configuration
 Data}\label{tripwire-configuration-data}
 
-The simulations utilized the following tripwire densities to achieve the
-reported results:
+The tripwire densities below are what Part 2's pipeline installs, not a
+target density. One \texttt{TripwireAdapter} is constructed per pipeline
+rather than per agent, and its constructor
+(\breaktt{cogsec\_multiagent\_2\_computational/src/composition/adapters.py})
+adds exactly three canaries; \breaktt{get\_canary\_count()} on the
+resulting adapter returns
+\texttt{\{\textquotesingle{}identity\textquotesingle{}:\ 1,\ \textquotesingle{}boundary\textquotesingle{}:\ 1,\ \textquotesingle{}principal\textquotesingle{}:\ 1,\ \textquotesingle{}temporal\textquotesingle{}:\ 0,\ \textquotesingle{}general\textquotesingle{}:\ 0\}}.
+\breaktt{add\_temporal\_canary} is defined in
+\breaktt{src/core/tripwire.py} but never called, so no temporal canary is
+installed anywhere. An earlier revision of this table reported 3+
+identity, 5+ boundary, 2+ principal and 1 temporal canary per agent;
+those densities were never run.
 
 {\def\LTcaptype{none} % do not increment counter
-\begin{longtable}[]{@{}lll@{}}
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.2083}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3958}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3958}}@{}}
 \toprule\noalign{}
-Category & Count Used in Sim & Placement Strategy \\
+\begin{minipage}[b]{\linewidth}\raggedright
+Category
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Count Used in Sim
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Placement Strategy
+\end{minipage} \\
 \midrule\noalign{}
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-Identity canaries & 3+ per agent & Core identity beliefs \\
-Boundary canaries & 5+ per agent & Permission boundaries \\
-Principal canaries & 2+ per agent & Trust relationships \\
-Temporal canaries & 1 per agent & Session continuity \\
+Identity canaries & 1 per pipeline & Core identity beliefs \\
+Boundary canaries & 1 per pipeline & Permission boundaries \\
+Principal canaries & 1 per pipeline & Trust relationships \\
+Temporal canaries & 0 (never installed) & Session continuity (unused) \\
 \end{longtable}
 }
 

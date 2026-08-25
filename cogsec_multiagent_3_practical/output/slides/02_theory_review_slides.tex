@@ -363,7 +363,7 @@ primary defense against \(\Omega_1\) (External) attacks.
 \subsection{The Stealth-Impact
 Tradeoff}\label{sec:stealth-impact-review}
 
-\begin{frame}[allowframebreaks]{The Stealth-Impact Tradeoff}
+\begin{frame}[fragile,allowframebreaks]{The Stealth-Impact Tradeoff}
 Part 1 provides a theoretical bound on attack performance, formalized as
 the Stealth-Impact Tradeoff.
 
@@ -374,9 +374,20 @@ divergence of the attack behavior from the baseline increases.}
 \end{quote}
 
 This formalism suggests that catastrophic attacks are inherently easier
-to detect than subtle attacks. Part 2's data consistently validated
-this: High-impact attacks were detected 98\% of the time, while
-low-impact attacks were detected only 74\% of the time.
+to detect than subtle attacks. Part 2 does not test that: its corpus
+carries no impact label, so no impact-stratified detection rate has ever
+been computed. The sentence that stood here reported one ---
+``High-impact attacks were detected 98\% of the time, while low-impact
+attacks were detected only 74\%'' --- and it was typed. Impact is the
+one dimension deliberately left off \texttt{AttackSample} when adversary
+class and target were added: unlike those two it varies within a
+category by design, so assigning it per category would manufacture the
+\end{frame}
+
+\begin{frame}[fragile,allowframebreaks]{The Stealth-Impact Tradeoff}
+axis rather than expose it, and a real label needs a per-sample
+judgement this corpus has never had. The prediction is worth testing and
+is tracked as such; it has not been tested.
 \end{frame}
 
 \subsection{Defense Composition}\label{sec:composition-review}
@@ -492,7 +503,7 @@ This connection is not just theoretical. It means:
   weighting of their agent network. Well-calibrated trust → robust
   cognition.
 \item
-  \textbf{The \(\Omega_5\) miss rate (44\%) reflects FEP's fundamental
+  \textbf{The \(\Omega_5\) miss rate (2.5\%) reflects FEP's fundamental
   challenge}: systematic manipulation by a compromised orchestrator can
   shift the agent's generative model \(P\) itself (not just \(Q\)),
   making the baseline a moving target. This requires out-of-band
