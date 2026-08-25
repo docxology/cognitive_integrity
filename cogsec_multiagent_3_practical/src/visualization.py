@@ -106,7 +106,10 @@ def get_five_pillars_data(
 
     return FigureData(
         figure_type=FigureType.RADAR,
-        title="Five Pillars Security Posture Assessment",
+        # "Assessment" implied an assessed system. The scores this renders are
+        # whatever the caller passes to the questionnaire; the figure shipped
+        # in the deployment guide passes a worked example.
+        title="Five Pillars Security Posture (worked example)",
         data={
             "pillars": pillars,
             "values": values,
@@ -700,7 +703,7 @@ def get_pitfalls_data() -> FigureData:
 
     return FigureData(
         figure_type=FigureType.BAR,
-        title="Common Deployment Pitfalls by Severity",
+        title="Common Deployment Pitfalls by Severity (assigned severities)",
         data={
             "pitfalls": pitfalls,
             "severity_labels": {

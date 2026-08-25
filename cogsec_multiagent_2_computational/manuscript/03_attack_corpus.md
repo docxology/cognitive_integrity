@@ -25,13 +25,15 @@ The cognitive attack taxonomy (\cref{fig:comprehensive-taxonomy}) organizes our 
 
 Table: Attack corpus composition by category. {#tab:corpus-categories}
 
-| Category  | Total  | Train | Test | Validation |
-| --- | --- | --- | --- | --- |
-| Prompt Injection | 500 | 350 | 100 | 50 |
-| Trust Exploitation | 200 | 140 | 40 | 20 |
-| Belief Manipulation | 150 | 105 | 30 | 15 |
-| Coordination Attacks | 100 | 70 | 20 | 10 |
-| **Total** | **950** | **665** | **190** | **95** |
+| Category | Total |
+| --- | --- |
+| Prompt Injection | 500 |
+| Trust Exploitation | 200 |
+| Belief Manipulation | 150 |
+| Coordination Attacks | 100 |
+| **Total** | **950** |
+
+> **On the removed split.** This table carried Train / Test / Validation columns summing to 665 / 190 / 95. No experiment in this series uses a split: every evaluation scores the whole corpus, and the cross-validation arm folds it at run time rather than reading a stored partition. The columns described a partition that does not exist and were removed rather than implemented, because implementing them would change every reported rate to serve a table.
 
 ### Prompt Injection Subcategories {#sec:injection-subcats}
 

@@ -12,12 +12,43 @@ import os
 
 os.environ["MPLBACKEND"] = "Agg"
 
+import json
 from pathlib import Path
 
 import matplotlib.pyplot as plt
 from matplotlib.patches import FancyBboxPatch
 
 from .utils import save_figure, setup_plotting
+
+
+#: Part 2's ablation artifact. Part 1 states the framework's structure and
+#: Part 2 measures it, so a number appearing on a Part 1 figure has to come
+#: across the series boundary rather than be typed on this side of it.
+_ABLATION_PATH = (
+    Path(__file__).resolve().parents[3]
+    / "cogsec_multiagent_2_computational"
+    / "output"
+    / "data"
+    / "ablation_results.json"
+)
+
+
+def _top_synergy() -> float:
+    """The strongest measured pairwise synergy, from Part 2's ablation.
+
+    Fails closed: an architecture diagram annotated with an invented synergy is
+    the defect, and this is the policy the ledger's ``top_synergy`` variable
+    already applies to the same quantity in the prose.
+    """
+    if not _ABLATION_PATH.is_file():
+        raise FileNotFoundError(
+            f"{_ABLATION_PATH} is missing; run Part 2's scripts/run_ablation.py. "
+            f"This annotation reports a measured synergy and has no stand-in."
+        )
+    rows = json.loads(_ABLATION_PATH.read_text(encoding="utf-8")).get("top_synergies")
+    if not rows:
+        raise ValueError(f"{_ABLATION_PATH} records no top_synergies")
+    return max(float(r["synergy"]) for r in rows)
 
 
 def create_cif_architecture_figure(output_dir: Path) -> Path:
@@ -203,14 +234,25 @@ def create_cif_architecture_figure(output_dir: Path) -> Path:
     # Agent -> Coordination
     ax.annotate("", xy=(7, 2.6), xytext=(7, 2.8), arrowprops=arrow_props)
 
-    # Add defense synergy annotation (from ablation study: Firewall + Tripwires = +9%)
+    # Defense synergy, read from Part 2's ablation rather than typed.
+    #
+    # The annotation said "+9%" and the comment above it attributed the number
+    # to a real experiment: "from ablation study: Firewall + Tripwires = +9%".
+    # No ablation ever reported that pair at +0.09. The strongest measured
+    # synergy is +0.050, and it is not that pair -- three pairs tie there, none
+    # involving the firewall. An attribution to an experiment is what makes a
+    # wrong number hard to find, because it reads as having a source.
+    synergy = _top_synergy()
     ax.annotate(
         "",
         xy=(11.5, 7.5),
         xytext=(11.5, 5.5),
         arrowprops=dict(arrowstyle="<->", color="#888", linestyle="--", lw=1.5),
     )
-    ax.text(12.2, 6.5, "Defense synergy\n+9%", fontsize=8, color="#666", ha="left", va="center")
+    ax.text(
+        12.2, 6.5, f"Defense synergy\n+{synergy:.0%}",
+        fontsize=8, color="#666", ha="left", va="center",
+    )
 
     # Add data flow annotation
     ax.text(

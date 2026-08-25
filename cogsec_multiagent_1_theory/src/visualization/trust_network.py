@@ -53,7 +53,7 @@ def generate_trust_network_figure(output_dir: Path) -> list[Path]:
 
     # --- Panel A: Normal Trust Network ---
     ax1 = axes[0]
-    ax1.set_title("A. Normal Trust Network", fontsize=13, fontweight="bold", pad=10)
+    ax1.set_title("A. Normal Trust Network (illustrative)", fontsize=13, fontweight="bold", pad=10)
 
     # Agent positions (arranged in a pattern)
     agents_normal = {
@@ -69,6 +69,14 @@ def generate_trust_network_figure(output_dir: Path) -> list[Path]:
     }
 
     # Trust connections: (src, dst, trust_score, category)
+    #
+    # Illustrative topology, not a simulation output. Thirty-two two-decimal
+    # trust scores are typed below across the normal and attacked panels, and
+    # the figure draws a numeric label on every edge above 0.5, which is how a
+    # worked example comes to read as a measured before-and-after. No
+    # simulation in this series produces per-edge trust for a named nine-agent
+    # topology; what is measured is the decay law itself, in Part 2's trust
+    # calculus tests. The panel titles carry the qualifier.
     trust_normal = [
         ("O", "A1", 0.95, "base"),
         ("O", "A2", 0.92, "base"),
@@ -92,7 +100,7 @@ def generate_trust_network_figure(output_dir: Path) -> list[Path]:
 
     # --- Panel B: Trust Network Under Attack ---
     ax2 = axes[1]
-    ax2.set_title("B. Trust Network Under Attack", fontsize=13, fontweight="bold", pad=10)
+    ax2.set_title("B. Trust Network Under Attack (illustrative)", fontsize=13, fontweight="bold", pad=10)
 
     # Modified trust levels (A3 is compromised)
     trust_attack = [

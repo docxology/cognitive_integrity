@@ -52,6 +52,17 @@ PHASE_DEFENSES = {
     "Act": ("Permission Boundaries", "#e76f51"),
 }
 
+#: Design-level coverage assigned to each OODA phase by the mapping above --
+#: which CIF mechanisms are *intended* to act at that phase, scored by how
+#: completely they cover it. Not measured, and no experiment in this series
+#: produces a per-phase detection rate: the corpus carries no OODA label.
+#:
+#: Panel B plotted these as a "CIF Coverage Score (assigned, not measured)" bar chart with two-decimal
+#: labels against a threshold line, which is how a design assignment comes to
+#: look like a result. The values are unchanged; what changed is that the
+#: figure now says what they are.
+PHASE_COVERAGE_IS_MEASURED = False
+
 PHASE_COVERAGE = {
     "Observe": 0.90,
     "Orient": 0.85,
@@ -195,7 +206,7 @@ def generate_ooda_phase_diagram() -> dict:
         label="Min. coverage threshold (0.50)",
     )
     ax2.set_xlim(0, 1.05)
-    ax2.set_xlabel("CIF Coverage Score", fontsize=12)
+    ax2.set_xlabel("CIF Coverage Score (assigned, not measured)", fontsize=12)
     ax2.set_title("CIF Defense Coverage\nby OODA Phase", fontsize=13, fontweight="bold")
 
     for bar, val in zip(bars, coverage):

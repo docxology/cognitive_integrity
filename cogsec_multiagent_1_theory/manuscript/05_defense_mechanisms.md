@@ -516,7 +516,7 @@ B_{\text{total}}(\mathcal{D}) = P_{\text{attack}} \cdot P_{\text{detect}}(\mathc
 \label{tab:cost-benefit}
 \begin{tabular}{@{}llllll@{}}
 \toprule
-Defense & Compute & Latency & FP Cost & Benefit & ROI \\
+Defense & Compute & Latency & FP Cost & Benefit & Illustrative ROI \\
 \midrule
 Firewall & $10^3$ & 10ms & Medium & High & \textbf{4.2x} \\
 Sandbox & $10^2$ & 5ms & Low & Medium & 3.1x \\
@@ -527,6 +527,9 @@ Byzantine & $10^5$ & 100ms & Medium & Very High & 1.8x \\
 Spotcheck & $10^4$ & Variable & Low & Medium & 2.9x \\
 \bottomrule
 \end{tabular}
+
+\vspace{0.5em}
+\footnotesize\textit{The ROI column is illustrative. Computing it requires an attack probability, a prevented-loss figure, a review cost and a message rate --- deployment incident-frequency and monetary-loss data that no part of this three-paper series collects or could collect. The multipliers order the defenses by the argument in the surrounding text; they are not a return measured on anything.}
 \end{table}
 
 ### Optimal Defense Portfolio
@@ -546,7 +549,7 @@ subject to: $C_{\text{compute}}(\mathcal{D}) \leq B_{\text{compute}}$, $\max_d L
 \label{tab:risk-profiles}
 \begin{tabular}{@{}llll@{}}
 \toprule
-Risk Profile & Recommended Stack & Cost & Detection \\
+Risk Profile & Recommended Stack & Cost & Design-level detection target \\
 \midrule
 Low (internal) & Firewall + Tripwires & Low & 88\% \\
 Medium (business) & + Sandbox + Invariants & Medium & 94\% \\
@@ -554,6 +557,9 @@ High (financial) & + Drift + Spotcheck & High & 97\% \\
 Critical (infra) & Full + Byzantine & Very High & 99.5\% \\
 \bottomrule
 \end{tabular}
+
+\vspace{0.5em}
+\footnotesize\textit{Detection targets in this table are design-level expectations for each recommended stack, not measured rates. They were presented as achieved detection and no artifact produces them; the measured detection for the shipped pipeline is Part 2's, and it is lower.}
 \end{table}
 
 ![Defense Composition Architecture: Four-way Venn diagram showing overlapping detection capabilities of CIF defense mechanisms (Cognitive Firewall, Belief Sandbox, Tripwire Monitor, Anomaly Detection). Attack types are positioned in regions indicating which defenses detect them. The center (Full CIF) represents the ensemble detection zone where all mechanisms contribute.](figures/defense_composition.pdf){#fig:defense-composition}
