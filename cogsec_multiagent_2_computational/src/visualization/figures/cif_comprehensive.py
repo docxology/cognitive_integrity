@@ -5,6 +5,7 @@ Implements functionality for the Cognitive Integrity Framework.
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 from typing import Any
 
@@ -12,6 +13,56 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import FancyBboxPatch
 
 from ..style import SEMANTIC_COLORS, add_source_annotation, apply_style, save_figure
+
+
+#: Where the headline numbers come from. Each is the artifact whose producing
+#: script is named in its own provenance block; none of them is typed here.
+_DATA_DIR = Path(__file__).resolve().parents[3] / "output" / "data"
+
+
+def _load_headline_metrics() -> dict:
+    """The four numbers on the cover, each from the artifact that measures it.
+
+    Detection and FPR come from the same measurement over the same two
+    corpora, which is the property the replaced literals did not have: a
+    detection rate quoted against one benign set and a false-positive rate
+    against another is not an operating point, and the pair it replaces
+    (94/6) summed to 100.
+
+    Fails closed. This is the cover image; drawing plausible defaults on it is
+    the exact defect being repaired.
+    """
+    def _read(name: str) -> dict:
+        path = _DATA_DIR / name
+        if not path.is_file():
+            raise FileNotFoundError(
+                f"{path} is missing; the cover figure reports measured numbers "
+                f"and has no stand-in values. Run the script named in the "
+                f"artifact's provenance block."
+            )
+        return json.loads(path.read_text(encoding="utf-8"))
+
+    overlap = _read("defense_overlap.json")
+    scalability = _read("scalability_results.json")
+    colony = _read("colony_results.json")
+
+    track = sorted(scalability["framework_track"], key=lambda r: r["n_agents"])
+    reference = max(track, key=lambda r: r["n_agents"])
+
+    scenarios = colony["scenarios"]
+    colony_dr = sum(s["detection_rate_mean"] for s in scenarios) / len(scenarios)
+
+    return {
+        "tpr": overlap["union"]["tpr"],
+        "fpr": overlap["union"]["fpr"],
+        "latency_ms": reference["latency_ms_median"],
+        "latency_agents": f"{reference['n_agents']} agents",
+        "colony_dr": colony_dr,
+        "corpus_note": (
+            f"{overlap['corpus_size']} attacks / {overlap['benign_size']} benign; "
+            f"colony mean over {len(scenarios)} scenarios"
+        ),
+    }
 
 
 def plot_cif_comprehensive(output_dir: str | Path = "output/figures") -> plt.Figure:
@@ -270,16 +321,37 @@ def plot_cif_comprehensive(output_dir: str | Path = "output/figures") -> plt.Fig
         facecolor="#F8F9FA", edgecolor=colors["header"], linewidth=1.5,
     )
     ax.add_patch(metrics_box)
-    ax.text(1.9, 3.9, "KEY METRICS", ha="center", va="center",
+    # Measured, and labelled with what they were measured on.
+    #
+    # These four lines used to read "Detection: 94%", "FPR: 6%",
+    # "Latency: +23%" and "Integrity: +127%", as literal strings in the
+    # framework's cover image and Figure 1. None of them was measured. 94 and 6
+    # sum to 100, which is what a pair invented together looks like; the
+    # measured full-pipeline TPR is 0.873 and its false-positive rate on the
+    # same benign corpus is 0.183. A sibling module in this package,
+    # trust_decay.py, had already diagnosed 0.94 in its own comment as "a stale
+    # headline the series has since corrected" and labelled its panel
+    # schematic. The same headline survived here, on the cover, unlabelled.
+    #
+    # The two claims that were not measurable at all are gone rather than
+    # rephrased. "Latency: +23%" is an overhead ratio, and nothing in this
+    # project measures the pipeline against a no-pipeline baseline; what is
+    # measured is absolute per-round latency, so that is what the panel says.
+    # "Integrity: +127%" has no referent anywhere in the repository, so it is
+    # replaced by the colony detection rate, which does.
+    metrics = _load_headline_metrics()
+    ax.text(1.9, 3.9, "MEASURED", ha="center", va="center",
             fontsize=12, fontweight="bold", color=colors["header"])
-    ax.text(1.9, 3.3, "Detection: 94%", ha="center", va="center",
+    ax.text(1.9, 3.3, f"Detection: {metrics['tpr']:.1%}", ha="center", va="center",
             fontsize=12, color=SEMANTIC_COLORS["firewall"], fontweight="bold")
-    ax.text(1.9, 2.8, "FPR: 6%", ha="center", va="center",
+    ax.text(1.9, 2.8, f"FPR: {metrics['fpr']:.1%}", ha="center", va="center",
             fontsize=12, color=colors["defense"])
-    ax.text(1.9, 2.3, "Latency: +23%", ha="center", va="center",
-            fontsize=12, color=colors["detection"])
-    ax.text(1.9, 1.8, "Integrity: +127%", ha="center", va="center",
-            fontsize=12, color=colors["coordination"])
+    ax.text(1.9, 2.3, f"Latency: {metrics['latency_ms']:.1f} ms @ {metrics['latency_agents']}",
+            ha="center", va="center", fontsize=11, color=colors["detection"])
+    ax.text(1.9, 1.8, f"Colony DR: {metrics['colony_dr']:.1%}", ha="center", va="center",
+            fontsize=11, color=colors["coordination"])
+    ax.text(1.9, 1.42, metrics["corpus_note"], ha="center", va="center",
+            fontsize=7, color="#5A6472", style="italic")
 
     # --- Properties (left sidebar, between input and metrics) ---
     props_box = FancyBboxPatch(

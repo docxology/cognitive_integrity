@@ -294,6 +294,127 @@ with no artifact to pin against); `H1--H3`, `H5`, the author-math backlog.
 
 ---
 
+## Round 14 scope (2026-08-25) — the hardcoded sweep
+
+An 80-agent sweep with adversarial verification of every candidate looked for
+values a reader would take as measured: data literals in figure and table
+generators, prose tables no artifact produces, and artifacts under
+`output/data` whose contents were typed rather than measured. Layout,
+documented configuration defaults, and anything the claim registry or the
+ledger already binds were excluded by construction, and every finding had to
+survive a refutation pass that defaulted to refusing it.
+
+**51 of 74 candidates confirmed**, classified by what it would take to make
+each one real:
+
+| Class | Count | Meaning |
+|---|---|---|
+| `measurable_now` | 27 | an existing corpus and existing modules can compute it |
+| `needs_new_harness` | 16 | a real experiment is required that does not exist yet |
+| `not_empirical` | 7 | a design constant or an illustration; only the label is wrong |
+| `unmeasurable` | 1 | no experiment in this project could produce it |
+
+The sharpest single finding is on the cover. `cif_comprehensive.py` draws a
+box headed **KEY METRICS** in Figure 1, which is also the cover image, reading
+`Detection: 94%`, `FPR: 6%`, `Latency: +23%`, `Integrity: +127%`. All four were
+string literals. 94 and 6 sum to 100, which is what a pair invented together
+looks like, and a sibling module in the same package had already diagnosed 0.94
+in its own comment as "a stale headline the series has since corrected" and
+labelled its own panel schematic. The same headline survived on the cover,
+unlabelled, for the life of the project.
+
+### Closed in this round
+
+- The cover panel now reads `defense_overlap.json`, `scalability_results.json`
+  and `colony_results.json`. Detection and FPR come from the same measurement
+  over the same two corpora, which is the property 94/6 never had. The two
+  claims that were not measurable at all are gone rather than rephrased:
+  nothing here measures the pipeline against a no-pipeline baseline, so the
+  panel reports absolute latency instead of an overhead ratio, and
+  `Integrity: +127%` had no referent anywhere in the repository.
+- The defense-composition table's sixteen literal cells, replaced by
+  `scripts/run_defense_overlap.py`.
+- The scalability figure and table, which read a generator placeholder while
+  the real timings sat beside them unread.
+- Panel B of the detection figure, and the four `*_data.json` placeholders.
+
+### measurable_now — the existing harness can produce these (27)
+
+| Site | Claim |
+|---|---|
+| `cif_architecture.py:213` | The published CIF architecture figure annotates a dashed span with "Defense synergy +9%", and the code comment at line 206 attributes it to a real exp |
+| `cif_comprehensive.py:254` | A boxed "KEY METRICS" panel in the published CIF architecture figure (fig:cif-comprehensive, cited at manuscript/04_formal_framework.md:699) reports f **done** |
+| `01c_theoretical_connections.md:164` | "Periodic defender retraining (every 5 cycles, +3% recovery per retraining event) stabilizes the long-run equilibrium at ~0.52---a 4-percentage-point  |
+| `03_attack_corpus.md:96` | tab:difficulty-dist, captioned "actual generator output, seed 42", reports Hard 535 / 56.3%, Medium 335 / 35.3%, Easy 80 / 8.4%. |
+| `04_experimental_setup.md:42` | "The EnhancedCognitiveFirewall module detects the majority of attacks on first evaluation (short-circuiting the series chain), with mean latency of 0. |
+| `04_experimental_setup.md:55` | "…the multi-seed pipeline analysis (30 seeds, mean DR ~86%) and real ablation studies (full pipeline TPR ~12%) establish empirical baselines"; 06_disc |
+| `05_results.md:27` | tab:per-seed-rates prints all 30 per-seed detection rates for the Claude Code full pipeline (0.38, 0.45, 0.48, 0.43, 0.49 … 0.45), and the caption rea |
+| `05_results.md:58` | tab: architecture-gap table's Total Gap column reads "~55 pp" on a row whose own Parametric DR is 100% and Empirical DR is 86.3%. |
+| `05_results.md:94` | tab:llm-validation reports "Avg Latency" of 15.2s for Claude Code and 15.9s for CrewAI (duplicated verbatim at 04_experimental_setup.md:50). |
+| `05_results.md:153` | tab:baseline-comparison reports TPR, FPR, Youden's J, AUC and permutation p for five detectors; the caption draws the paper's central self-criticism f |
+| `05b_statistical_significance.md:18` | The multi-seed summary table's "Median DR" row reads 0.45, sitting between "Mean DR 0.863", "Min 0.82" and "Max 0.90" in the same table. |
+| `05b_statistical_significance.md:101` | tab: power table reports, per comparison, an effect-size label, a Required n, an Available n and an achieved statistical Power — multi-seed vs 0: 5/30 |
+| `05d_ablation_and_scalability.md:84` | Footnote to the scalability table: "95% CIs computed via bootstrap resampling (B = 1,000 iterations) over 10 independent runs per agent count. Detecti |
+| `05e_bayesian_uncertainty.md:33` | tab:bayesian-posteriors restates "each major detection claim" as a Beta posterior with explicit k, n and 95% HDI: multi-seed pipeline k=45/n=100 → Bet |
+| `05e_bayesian_uncertainty.md:71` | tab:power-analysis gives each evaluation mode's "Est. True Rate" and the sample size n* required for a ±5 pp HDI: multi-seed pipeline 0.45 → n*=380, A |
+| `05f_architecture_gap_analysis.md:5` | The section opens on "the real pipeline's 44.8% multi-seed mean" and closes (line 81) "bringing the real-pipeline detection rate from 44.8% to approxi |
+| `05f_architecture_gap_analysis.md:45` | tab:module-maturity's Evidence column gives a measured per-module marginal contribution for all eight modules — Detection −0.051, Trust Calculus −0.02 |
+| `S02_detection_algorithms.md:55` | tab:auc-ci, captioned "Empirical AUC with 95% confidence intervals", reports Drift Score 0.87 [0.84, 0.90] and Ensemble 0.94 [0.92, 0.96]. |
+| `S11_adversarial_training_theory.md:77` | Corollary S11.1: "For the empirical AT results in §sec:at-convergence, the observed geometric decay ratio of ≈0.65 implies 1 − αL ≈ 0.65, so αL ≈ 0.35 |
+| `composer_data.json:5` | An eight-row per-module capability table giving each CIF defense module a detection rate (Firewall 0.91, Detection 0.88, Tripwire 0.85, TrustCalc 0.82 |
+| `cif_comprehensive.py:275` | The "KEY METRICS" sidebar of the CIF architecture figure (Fig. 1, the manuscript's opening figure) states the framework's headline detection rate as " **done** |
+| `cif_comprehensive.py:277` | The same sidebar states the framework's false-positive rate as "FPR: 6%". **done** |
+| `fp_mitigation.py:28` | _default_waterfall_data returns a nine-point false-positive-rate series — 0.150, 0.095, 0.070, 0.052, 0.040, 0.032, 0.026, 0.022, 0.018 — plotted as a |
+| `sensitivity_heatmap.py:98` | On the except path, the optimal operating point falls back to (0.65, 0.30) and is drawn as a white star annotated "Optimal\n(0.65, 0.30)" on the param |
+| `threat_taxonomy.py:14` | The _TAXONOMY dict gives a per-subcategory attack count for all twelve subcategories — Direct Injection (200), Indirect Injection (180), Nested Inject |
+| `scalability_tables.py:20` | The whole scalability table — ten rows of "Latency (ms)" and "Memory (MB)" from 2 to 100 agents, plus "Quadratic fit: L = 0.0198n^2 + 1.54n + 4.5, R^2 **done** |
+| `03_simulation_review.md:106` | A table headed "Tripwire Configuration Data", introduced by "The simulations utilized the following tripwire densities to achieve the reported results |
+
+### needs_new_harness — a real experiment has to be built (16)
+
+These are the ones that make "remove all hardcoded values" a research task
+rather than a refactor. Each names a quantity the papers report and no
+experiment in this repository measures.
+
+| Site | Claim |
+|---|---|
+| `04_formal_framework.md:762` | Table tab:cif-ad-matrix, "CIF-AD coupling matrix: coverage of each defense mechanism across AD cycle phases", is twenty-five two-decimal coverage valu |
+| `05_defense_mechanisms.md:458` | Table tab:defense-stack, captioned "Recommended defense stack with latency and detection rates", assigns each of six layers a latency (10ms, 5ms, 1ms, |
+| `06_detection_methods.md:511` | Table tab:it-detectability, captioned "Information-theoretic detectability by attack class", presents four numeric columns for each of the five Omega  |
+| `comprehensive_taxonomy.py:87` | Five per-adversary-class detection rates are typed into the `classes` list (0.85, 0.78, 0.71, 0.65, 0.45 at lines 87, 101, 115, 129, 143) and rendered |
+| `03_attack_corpus.md:42` | tab:injection-subcats gives a per-subcategory "Undefended Success Rate" (78%, 65%, 82%) and "CIF Success" (3%, 5%, 7%), with the footnote "Undefended  |
+| `03_attack_corpus.md:113` | tab:target-dist reports the corpus's distribution over attack targets — Belief state 280, Action execution 250, Trust relationships 220, Temporal stat |
+| `05d_ablation_and_scalability.md:136` | tab:volume-scaling reports detection rate, latency and CPU usage at five message rates (500→0.94/52ms/34%, 1000→0.94/68ms/56%, 2000→0.93/112ms/78%, 50 |
+| `S02_detection_algorithms.md:159` | tab:fp-root-causes attributes false positives to five root causes with frequencies that sum to 100% — benign novelty 35%, threshold drift 25%, feature |
+| `S02_detection_algorithms.md:192` | tab:fp-mitigation-results reports the measured effectiveness of six FP-mitigation strategies — Confirmation Cascade −60% FPR / −5% TPR, Temporal Smoot |
+| `S08_parametric_analysis.md:38` | tab:parametric-claude-code-perf and its AutoGPT twin (line 69) report baseline-vs-CIF latency at p50/p95/p99 (45ms→52ms, 112→138, 287→361; 89→108, 234 |
+| `S08_parametric_analysis.md:48` | tab:parametric-claude-code-integrity reports "integrity preservation" for three scenarios — single attack 0.72→0.99 (+38%), sustained attack 1h 0.31→0 |
+| `cif_comprehensive.py:281` | The same sidebar states "Integrity: +127%", reading as a measured 2.27x improvement in belief/system integrity attributable to the framework. |
+| `comprehensive_taxonomy.py:96` | Fig. 2, the shipped attack-taxonomy figure, draws a filled progress bar and a "Detection: 85%" / "78%" / "71%" / "65%" / "45%" label under each of the |
+| `02_theory_review.md:47` | "Part 2's data consistently validated this: High-impact attacks were detected 98% of the time, while low-impact attacks were detected only 74% of the  |
+| `02_theory_review.md:87` | "The $\Omega_5$ miss rate (44%) reflects FEP's fundamental challenge" — a specific per-adversary-class miss rate presented as a measured property of C |
+| `06b_case_studies.md:73` | "Tuning $\tau_2$ ... from $0.5 \to 0.55$ ... Post-tuning: FPR drops to 3% (300 false positives/day); TPR for this attack type drops from 72% to 68%" — |
+
+### not_empirical — the number is fine, the label is not (7)
+
+| Site | Claim |
+|---|---|
+| `05_defense_mechanisms.md:521` | Table tab:cost-benefit, "Cost-benefit analysis by defense mechanism", assigns each of seven defenses a return-on-investment multiplier to one decimal  |
+| `05_defense_mechanisms.md:551` | Table tab:risk-profiles, "Deployment recommendations by risk profile", gives each of four deployment tiers a specific Detection figure: 88%, 94%, 97%, |
+| `20_ooda_phase_figure.py:55` | PHASE_COVERAGE = {Observe: 0.90, Orient: 0.85, Decide: 0.90, Act: 0.90} is typed into the generator, plotted in Panel B as a "CIF Coverage Score" bar  |
+| `trust_network.py:73` | Sixteen trust scores are typed into `trust_normal` (lines 72-89) and sixteen more into `trust_attack` (lines 98-115), and every edge with trust >= 0.5 |
+| `03_attack_corpus.md:30` | tab:corpus-categories splits the 950-attack corpus into Train / Test / Validation columns (350/100/50, 140/40/20, 105/30/15, 70/20/10; totals 665/190/ |
+| `01_posture_radar_figure.py:26` | Five per-pillar scores (firewall 0.85, sandbox 0.70, tripwire 0.60, invariant 0.90, provenance 0.55) are typed into the figure script and rendered as  |
+| `visualization.py:639` | get_pitfalls_data() returns eight Pitfall records with typed severity integers (5, 5, 4, 4, 4, 3, 3, 2) across three categories. Rendered by scripts/0 |
+
+### unmeasurable (1)
+
+| Site | Claim |
+|---|---|
+| `04_experimental_setup.md:57` | "Ground truth labels were assigned by two independent annotators (Cohen's κ = 0.84, indicating 'almost perfect' agreement per [landis1977measurement]) |
+
+---
+
 ## Round 13 scope (2026-08-25) — what is left, and why most of it is not an author decision
 
 75 rows remain open: 31 HIGH, 41 MED, 2 LOW as the tables below count them. **Sixty-nine
