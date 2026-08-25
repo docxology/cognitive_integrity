@@ -163,14 +163,13 @@ Table: False positive root causes and mitigation strategies. {#tab:fp-root-cause
 120-message benign corpus, attributed by whether the message carried a term from the detector
 vocabulary the corpus records for it. Three modules account for all of them --- the firewall (12),
 the text-feature detector (6) and the trust detector (4) --- and the benign categories they fire on
-are tool results (9) and status reports (6) above all others.*
+are tool results (9) and status reports (6) above all others. Every label in the corpus is emitted
+by a generator, so no false positive here is attributable to a mislabelled message.*
 
-> **On the replaced table.** This carried five causes with frequencies of 35, 25, 20, 10 and 10
-> percent. Nothing had labelled a false positive: the five causes were plausible names and the
-> frequencies summed to 100 because they were chosen to. "Label errors" in particular cannot occur
-> here --- every label is emitted by a generator --- and "incremental learning", offered as the
-> mitigation for the largest cause, does not exist in this framework and is the one strategy in
-> \cref{tab:fp-mitigation-results} that could not be implemented.
+Two candidate causes are absent by construction. Label errors cannot occur here: every label is
+emitted by a generator, so there is no annotation to be wrong. And incremental learning, the
+natural mitigation for novelty, does not exist in this framework --- see
+\cref{tab:fp-mitigation-results}.
 
 ## Baseline Update Algorithm
 
@@ -196,8 +195,6 @@ are tool results (9) and status reports (6) above all others.*
 
 Table: False positive mitigation strategy effectiveness. {#tab:fp-mitigation-results}
 
-| Strategy  | FPR Reduction  | TPR Impact | Complexity |
-| --- | --- | --- | --- |
 | Strategy  | FPR  | $\Delta$FPR | TPR | $\Delta$TPR | Youden's J |
 | --- | --- | --- | --- | --- | --- |
 | Baseline (no mitigation) | 0.183 | +0.000 | 0.873 | +0.000 | +0.689 |
@@ -211,25 +208,19 @@ Table: False positive mitigation strategy effectiveness. {#tab:fp-mitigation-res
 `composition/mitigations.py` and measured by `scripts/run_fp_mitigation.py` against the same two
 corpora. The deltas are what can be recovered without retraining anything.*
 
-*The result is better than the table it replaces claimed and differently shaped. Two strategies ---
-raising the score bar, and requiring either a strong score or corroboration --- take the
-false-positive rate from 0.183 to **zero** for 1.7 points of true positives, lifting Youden's J from
-+0.689 to +0.856. Confirmation Cascade, the strategy the original table rated most effective after
-Combined, is the worst here: requiring two modules to agree costs 65 points of detection, because
-one module carries almost all of it. Combined inherits that.*
+*Two strategies --- raising the score bar, and requiring either a strong score or corroboration ---
+take the false-positive rate from 0.183 to **zero** for 1.7 points of true positives, lifting
+Youden's J from +0.689 to +0.856. Confirmation Cascade is the weakest strategy here: requiring two
+modules to agree costs 65 points of detection, because one module carries almost all of it.
+Combined inherits that.*
 
-> **On the replaced table.** It reported six strategies with paired $\Delta$FPR and $\Delta$TPR
-> figures under a caption describing measured effectiveness. None of the six existed. Five are
-> implemented now; **Incremental Learning is not**, and its row is gone rather than estimated: it
-> requires a model that updates on labelled feedback and every module here is a fixed scorer, so
-> there is nothing to update. Implementing something adjacent under that name would put the same
-> defect back with working code behind it.
->
-> One measurement note that the original table's shape concealed. `SeriesPipeline` short-circuits
-> on the first module that flags, so a confirmation cascade evaluated against its output sees
-> exactly one flagging module every time and reports $-100\%$ detection. The verdicts here are
-> built by running all eight modules and applying the pipeline's own maximum rule --- the same
-> decision, with the evidence a cascade needs in order to be evaluated at all.
+**Incremental Learning is not among them.** It requires a model that updates on labelled
+feedback, and every module in this framework is a fixed scorer, so there is nothing to update.
+
+One measurement note. `SeriesPipeline` short-circuits on the first module that flags, so a
+confirmation cascade evaluated against its output would see exactly one flagging module every
+time. The verdicts here are built by running all eight modules and applying the pipeline's own
+maximum rule: the same decision, with the evidence a cascade needs in order to be evaluated.
 
 ## Sliding Window Monitoring Algorithm
 
@@ -334,8 +325,8 @@ Table: Information-geometric vs.\ KL-based detection comparison. {#tab:ig-vs-kl}
 
 *Note: Geodesic sensitivity measures detector response to attacks that travel along shortest-path trajectories on the belief manifold—these minimize detection risk while maximizing impact, and are precisely the attacks that KL-based detectors miss most often.*
 
-## Summary (Updated)
+## Summary
 
-These algorithms implement the detection methodology defined in Part 1, providing: (1) ROC curve construction with Youden's J threshold optimization, (2) multi-detector fusion via weighted averaging, majority voting, or learned MLP/attention, (3) online and batch detection architectures with configurable latency/accuracy trade-offs, (4) false positive mitigation achieving 75\% FPR reduction with 8\% TPR cost, (5) adaptive baseline update for non-stationary environments, and (6) information-geometric detection (Algorithms IG.1--IG.2) using the Fisher-Rao geodesic distance and natural gradient anomaly score for enhanced detection of boundary-trajectory attacks. The hybrid online+batch architecture (\cref{tab:hybrid-tradeoffs}) achieves the best detection-latency profile for production deployments; pairing it with the Fisher-Rao geodesic detector (\cref{tab:ig-vs-kl}) improves AUC from 0.94 to an estimated 0.95--0.96 on geodesic attack variants.
+These algorithms implement the detection methodology defined in Part 1, providing: (1) ROC curve construction with Youden's J threshold optimization, (2) multi-detector fusion via weighted averaging, majority voting, or learned MLP/attention, (3) online and batch detection architectures with configurable latency/accuracy trade-offs, (4) false positive mitigation by post-filtering module results (\cref{tab:fp-mitigation-results}), (5) adaptive baseline update for non-stationary environments, and (6) information-geometric detection (Algorithms IG.1--IG.2) using the Fisher-Rao geodesic distance and natural gradient anomaly score for enhanced detection of boundary-trajectory attacks. The hybrid online+batch architecture (\cref{tab:hybrid-tradeoffs}) achieves the best detection-latency profile for production deployments; pairing it with the Fisher-Rao geodesic detector (\cref{tab:ig-vs-kl}) improves AUC from 0.94 to an estimated 0.95--0.96 on geodesic attack variants.
 
 For formal definitions and theoretical foundations, see Part 1's Detection Methods section and Part 2, \cref{sec:information-geometry}.

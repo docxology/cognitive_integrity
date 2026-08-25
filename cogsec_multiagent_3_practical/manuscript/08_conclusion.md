@@ -8,7 +8,7 @@ This series began with a theory (Part 1) and moved to an experiment (Part 2). It
 
 We proved that trust can be bounded. We proved that defenses can be composed algebraically. We proved that stealth and impact are inversely related. These are not just academic curiosities; they are foundational constraints for secure cognitive systems.
 
-The theoretical foundations have deepened since the first drafts of this guide. Three new formal results from Part 2 strengthen the case:
+Three formal results from Part 2 strengthen the case:
 
 **Categorical guarantee**: Theorems CT.1--CT.3 show defense composition in CIF is constrained by the DefenseCategory structure: a detection-preserving chain cannot yield a non-detecting composite under the stated assumptions. That is a property of the composition law, not a separate empirical fit.
 

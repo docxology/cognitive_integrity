@@ -117,14 +117,14 @@ moderate ablation row.*
 
 ## Multiple Comparison Correction {#sec:real-bonferroni}
 
-For the ablation analysis comparing 8 component removals against the full pipeline, we apply Bonferroni correction: $\alpha_{\text{corrected}} = 0.05 / 8 = 0.00625$. Components with the largest harmful $\Delta$TPR values (Detection, then Tripwires and Invariants, then Firewall) dominate the marginal-loss profile; Sandbox and Consensus show near-zero or positive $\Delta$TPR on this corpus (\cref{tab:real-component-effects}). Formal $p$-values require bootstrap resampling of the detection pipeline, deferred to future work with larger sample sizes.
+For the ablation analysis comparing 8 component removals against the full pipeline, we apply Bonferroni correction: $\alpha_{\text{corrected}} = 0.05 / 8 = 0.00625$. Invariants and Tripwires are the only removals with a measurable harmful $\Delta$TPR on this corpus; the remaining six components show no measurable marginal loss (\cref{tab:real-component-effects}). Formal $p$-values require bootstrap resampling of the detection pipeline, deferred to future work with larger sample sizes.
 
 ## Summary {#sec:real-stats-summary}
 
 \begin{enumerate}
 \item **Pipeline detection**: Mean 86.3\% [95\% CI: 85.5\%, 87.1\%] across 30 seeds (Claude Code), with CV = 0.024 indicating moderate seed sensitivity.
 \item **Component hierarchy**: Invariants ($\Delta\text{TPR} \approx -0.650$) $\gg$ Tripwire ($\approx -0.020$) $>$ every remaining component (each $\approx 0.000$).
-\item **Synergy**: Firewall + Detection is the strongest pair ($\approx +0.050$), ahead of a three-way tie at $\approx +0.020$---confirming complementary detection patterns on the ablation corpus.
+\item **Synergy**: Three pairs tie for the strongest synergy at $\approx +0.050$ (consensus+sandbox, tripwire+consensus, tripwire+sandbox)---complementary detection patterns among modules with no standalone marginal contribution on the ablation corpus.
 \item **LLM validation underpowered**: $N=5$ per architecture yields very wide CIs (e.g., [0.28, 0.99] for Claude Code), necessitating expansion for reliable architecture-level conclusions.
 \item **Parametric reference**: Design-level parametric analysis (\cref{sec:parametric-analysis}) achieves 96--100\% detection, establishing the coverage ceiling for fully-realized adapter implementations.
 \end{enumerate}

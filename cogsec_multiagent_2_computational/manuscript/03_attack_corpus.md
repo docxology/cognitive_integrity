@@ -33,7 +33,8 @@ Table: Attack corpus composition by category. {#tab:corpus-categories}
 | Coordination Attacks | 100 |
 | **Total** | **950** |
 
-> **On the removed split.** This table carried Train / Test / Validation columns summing to 665 / 190 / 95. No experiment in this series uses a split: every evaluation scores the whole corpus, and the cross-validation arm folds it at run time rather than reading a stored partition. The columns described a partition that does not exist and were removed rather than implemented, because implementing them would change every reported rate to serve a table.
+The corpus is scored whole. No evaluation in this series uses a stored train/test/validation
+partition: every arm scores the full corpus, and the cross-validation study folds it at run time.
 
 ### Prompt Injection Subcategories {#sec:injection-subcats}
 
@@ -47,18 +48,10 @@ Table: Prompt injection subcategory statistics. {#tab:injection-subcats}
 
 \textit{Detection measured by scoring each subcategory of \texttt{AttackCorpus.generate(seed=42)}
 through \texttt{composition.factory.create\_full\_pipeline()}.}
-
-> **On the removed column.** This table carried an "Undefended Success Rate"
-> of 78\%, 65\% and 82\%, footnoted as "attack effectiveness measured without
-> any CIF defense mechanisms active". No such measurement exists, and the
-> footnote describes an experiment this project has never had an arm for:
-> without a defense there is no detector to evade, and the corpus contains no
-> target agent whose compliance could be scored instead. The column is removed
-> rather than recomputed, and what replaces it is the quantity that *is*
-> measured --- what the pipeline catches, per subcategory, and what gets past
-> it. \Cref{tab:parametric-claude-code-perf} reports the one defended-versus-undefended
-> comparison this project can make, which is the cost of running the pipeline
-> rather than the benefit of having run it.
+Attack effectiveness against an undefended target is not reported. Without a defense there is no
+detector to evade, and the corpus carries no target agent whose compliance could be scored instead,
+so no undefended success rate is measurable here. \Cref{tab:parametric-claude-code-perf} reports the
+one defended-versus-undefended comparison this project can make: the cost of running the pipeline.
 
 **Direct Injection**: Attacks embedded directly in user input attempting to override system instructions.
 
@@ -132,12 +125,10 @@ Table: Attack target distribution. {#tab:target-dist}
 | Temporal state | 30 | Persistence | 1.000 |
 
 *Counts and detection rates are measured by `scripts/run_stratified_detection.py` over
-`AttackCorpus.generate(seed=42)`. The counts previously read 280 / 250 / 220 / 100 / 100 and were
-typed: `AttackSample` carried category, subcategory and difficulty and nothing else, so "the third
-view of the same samples" had no third dimension to view them along. `target` is a field on the
-sample now, assigned per category in `attacks.corpus._CATEGORY_PROFILE` --- which makes this a
-re-grouping of the category breakdown rather than an independent axis, and is worth saying here
-rather than leaving a reader to infer a second experiment.*
+`AttackCorpus.generate(seed=42)`. `target` is a field on the sample, assigned per category in
+`attacks.corpus._CATEGORY_PROFILE`, which makes this table a re-grouping of the category
+breakdown rather than an independent axis --- worth stating here rather than leaving a reader
+to infer a second experiment.*
 
 ![Attack Surface Map. Visualization of cognitive attack entry points in multiagent systems showing the five primary attack surfaces aligned to CIF defense layers: User Input (direct injection, countered by Cognitive Firewall), Tool Outputs (indirect injection, countered by Belief Sandbox + Firewall), Agent Communication (trust exploitation via delegation chains, countered by Trust Calculus with $\delta^d$ decay), Persistent Memory (belief poisoning and progressive drift, countered by Tripwires + Drift Detection), and External Triggers (timing and coordination attacks, countered by Byzantine Consensus). Line thickness indicates attack frequency in our 950-attack corpus; node color indicates CIF detection efficacy at each surface (green $>$90\%, yellow 80-90\%, red $<$80\%). The diagram highlights that Agent Communication is both the highest-frequency and highest-risk surface in multiagent deployments---a gap that single-agent defenses do not address.](figures/attack_surface.pdf){#fig:attack-surface width=90%}
 
