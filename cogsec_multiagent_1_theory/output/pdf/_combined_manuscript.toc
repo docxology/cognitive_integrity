@@ -97,11 +97,11 @@
 \contentsline {subsubsection}{\numberline {5.6.1}Optimal Defense Portfolio}{55}{subsubsection.5.6.1}%
 \contentsline {subsection}{\numberline {5.7}Formal Defense Composition Guarantees}{57}{subsection.5.7}%
 \contentsline {subsubsection}{\numberline {5.7.1}Canonical Defense 1: Cognitive Firewall --- Formal Specification}{57}{subsubsection.5.7.1}%
-\contentsline {subsubsection}{\numberline {5.7.2}Canonical Defense 2: Belief Sandboxing --- Formal Specification}{57}{subsubsection.5.7.2}%
+\contentsline {subsubsection}{\numberline {5.7.2}Canonical Defense 2: Belief Sandboxing --- Formal Specification}{58}{subsubsection.5.7.2}%
 \contentsline {subsubsection}{\numberline {5.7.3}Canonical Defense 3: Behavioral Invariants --- Formal Specification}{58}{subsubsection.5.7.3}%
 \contentsline {subsubsection}{\numberline {5.7.4}Canonical Defense 4: Drift Detection --- Formal Specification}{58}{subsubsection.5.7.4}%
 \contentsline {subsubsection}{\numberline {5.7.5}Canonical Defense 5: Byzantine Consensus --- Formal Specification}{59}{subsubsection.5.7.5}%
-\contentsline {subsubsection}{\numberline {5.7.6}Defense Composition Algebra: Complete Specification}{59}{subsubsection.5.7.6}%
+\contentsline {subsubsection}{\numberline {5.7.6}Defense Composition Algebra: Complete Specification}{60}{subsubsection.5.7.6}%
 \contentsline {section}{\numberline {6}Detection Methods: Anomaly Detection, ROC Analysis, and Provenance Tracking}{61}{section.6}%
 \contentsline {subsection}{\numberline {6.1}Anomaly Detection}{61}{subsection.6.1}%
 \contentsline {subsubsection}{\numberline {6.1.1}Cognitive Drift Scoring}{61}{subsubsection.6.1.1}%

@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.3.22)  24 AUG 2026 21:41
+This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.3.22)  25 AUG 2026 09:19
 entering extended mode
  %&-line parsing enabled.
 **_combined_manuscript.tex
@@ -2099,27 +2099,27 @@ File: ../figures/defense_composition.pdf Graphic file (type pdf)
  [55] [56]
 
 LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 3392.
+(Font)              using `TU/lmr/m/scsl' instead on input line 3398.
 
 
 LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 3392.
+(Font)              using `TU/lmr/m/scsl' instead on input line 3398.
 
 
 LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 3392.
+(Font)              using `TU/lmr/m/scsl' instead on input line 3398.
 
 [57] [58] [59] [60]
 File: ../figures/roc_curves.pdf Graphic file (type pdf)
 <use ../figures/roc_curves.pdf>
 
-Underfull \hbox (badness 7814) in paragraph at lines 3709--3709
+Underfull \hbox (badness 7814) in paragraph at lines 3715--3715
 []\TU/lmr/m/n/10 Figure 15: |Receiver Operating Characteristic (ROC) curves for
  CIF detection across at-
  []
 
 
-Underfull \hbox (badness 1270) in paragraph at lines 3709--3709
+Underfull \hbox (badness 1270) in paragraph at lines 3715--3715
 \TU/lmr/m/n/10 tack categories (illustrative/schematic operating points under t
 he Neyman-Pearson framework; the
  []
@@ -2130,127 +2130,127 @@ File: ../figures/fp_mitigation.pdf Graphic file (type pdf)
  [64] [65]
 
 LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 4047.
+(Font)              using `TU/lmr/m/scsl' instead on input line 4053.
 
 
 LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 4048.
+(Font)              using `TU/lmr/m/scsl' instead on input line 4054.
 
 
 LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 4049.
+(Font)              using `TU/lmr/m/scsl' instead on input line 4055.
 
 [66] [67]
 File: ../figures/detection_performance.pdf Graphic file (type pdf)
 <use ../figures/detection_performance.pdf>
  [68]
-Underfull \hbox (badness 10000) in paragraph at lines 4263--4264
+Underfull \hbox (badness 10000) in paragraph at lines 4269--4270
 []|\TU/lmr/m/n/10 Escalation condi-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 4265--4266
+Underfull \hbox (badness 10000) in paragraph at lines 4271--4272
 []|\TU/lmr/m/n/10 Pattern score
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 4266--4267
+Underfull \hbox (badness 10000) in paragraph at lines 4272--4273
 []|\TU/lmr/m/n/10 Embedding dis-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 4267--4268
+Underfull \hbox (badness 10000) in paragraph at lines 4273--4274
 []|\TU/lmr/m/n/10 Consistency viola-
  []
 
 [69] [70] [71] [72] [73] [74] [75] [76] [77] [78]
-Underfull \hbox (badness 2495) in paragraph at lines 4986--4990
+Underfull \hbox (badness 2495) in paragraph at lines 4992--4996
 []\TU/lmr/m/n/10 These results confirm that the abstract properties proven here
 —boundedness, composition, and
  []
 
 [79]
-Underfull \hbox (badness 2376) in paragraph at lines 5122--5123
+Underfull \hbox (badness 2376) in paragraph at lines 5128--5129
 []|$[][]$ \TU/lmr/m/n/10 attacks succeed; systemic
  []
 
 [80] [81]
-Underfull \hbox (badness 1701) in paragraph at lines 5241--5242
+Underfull \hbox (badness 1701) in paragraph at lines 5247--5248
 []|\TU/lmr/m/n/10 No inter-agent trust re-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 5242--5243
+Underfull \hbox (badness 10000) in paragraph at lines 5248--5249
 []|\TU/lmr/m/n/10 Limited multiagent-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 5243--5244
+Underfull \hbox (badness 10000) in paragraph at lines 5249--5250
 []|\TU/lmr/m/n/10 Process-focused, not
  []
 
 [82] [83] [84] [85] [86] [87] [88] [89]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 5691.
+(hyperref)                removing `subscript' on input line 5697.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 5691.
+(hyperref)                removing `subscript' on input line 5697.
 
 [90]
-Underfull \hbox (badness 10000) in paragraph at lines 5823--5824
+Underfull \hbox (badness 10000) in paragraph at lines 5829--5830
 []|\TU/lmr/m/n/10 Hardware security modules,
  []
 
 [91] [92] [93] [94] [95] [96] [97] [98] [99] [100] [101] [102] [103] [104]
 
 LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 7001.
+(Font)              using `TU/lmr/m/scsl' instead on input line 7007.
 
 
 LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 7001.
+(Font)              using `TU/lmr/m/scsl' instead on input line 7007.
 
 
 LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 7001.
+(Font)              using `TU/lmr/m/scsl' instead on input line 7007.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 7001--7002
+Underfull \hbox (badness 10000) in paragraph at lines 7007--7008
 []\TU/lmr/bx/n/10 Lemma 11.39 \TU/lmr/m/n/10 (Type Closure under Composition)\T
 U/lmr/bx/n/10 . []\TU/lmr/m/it/10 For any $[][][] [][] [] [][] []
  []
 
 
 LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 7004.
+(Font)              using `TU/lmr/m/scsl' instead on input line 7010.
 
 
 LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 7004.
+(Font)              using `TU/lmr/m/scsl' instead on input line 7010.
 
 
 LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 7004.
+(Font)              using `TU/lmr/m/scsl' instead on input line 7010.
 
 
 LaTeX Font Warning: Font shape `TU/lmr/m/scit' undefined
-(Font)              using `TU/lmr/m/scsl' instead on input line 7027.
+(Font)              using `TU/lmr/m/scsl' instead on input line 7033.
 
 [105] [106] [107] [108] [109] [110] [111] [112] [113] [114] [115] [116]
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 12.0pt on input line 8017.
+(Font)              scaled to size 12.0pt on input line 8023.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 8.0pt on input line 8017.
+(Font)              scaled to size 8.0pt on input line 8023.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 12.0011pt on input line 8017.
+(Font)              scaled to size 12.0011pt on input line 8023.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 8.00073pt on input line 8017.
+(Font)              scaled to size 8.00073pt on input line 8023.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 11.99872pt on input line 8017.
+(Font)              scaled to size 11.99872pt on input line 8023.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 7.99915pt on input line 8017.
+(Font)              scaled to size 7.99915pt on input line 8023.
 
 [117] [118] [119]
 ignored: Infinite glue shrinkage found in box being split [120]
@@ -2260,13 +2260,13 @@ ignored: Infinite glue shrinkage found in
 box being split [122] [123]
 ignored: Infinite glue shrinkage found in box being split [12
 4] [125]
-Underfull \hbox (badness 3769) in paragraph at lines 8734--8736
+Underfull \hbox (badness 3769) in paragraph at lines 8740--8742
 []\TU/lmr/m/n/10 Liu, Y., et al. (2023). Prompt Injection Attack Against LLM-In
 tegrated Applications.
  []
 
 
-Underfull \hbox (badness 1533) in paragraph at lines 8747--8749
+Underfull \hbox (badness 1533) in paragraph at lines 8753--8755
 []\TU/lmr/m/n/10 Askell, A., et al. (2021). A General Language Assistant as a L
 aboratory for Alignment.
  []
@@ -2279,11 +2279,11 @@ L3 programming layer <2026-01-19>
  ***********
  )
 Here is how much of TeX's memory you used:
- 50810 strings out of 468168
- 1168129 string characters out of 5432815
+ 50814 strings out of 468168
+ 1168234 string characters out of 5432815
  1911033 words of memory out of 5000000
- 78758 multiletter control sequences out of 15000+600000
- 634197 words of font info for 113 fonts, out of 8000000 for 9000
+ 78760 multiletter control sequences out of 15000+600000
+ 634205 words of font info for 114 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  90i,15n,114p,1017b,646s stack positions out of 10000i,1000n,20000p,200000b,200000s
 

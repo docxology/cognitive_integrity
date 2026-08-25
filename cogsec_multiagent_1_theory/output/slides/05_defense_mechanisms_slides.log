@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.3.22)  24 AUG 2026 21:41
+This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.3.22)  25 AUG 2026 09:19
 entering extended mode
  %&-line parsing enabled.
 **/Users/4d/Documents/GitHub/projects/working/cognitive_integrity/cogsec_multia
@@ -1914,7 +1914,10 @@ Underfull \vbox (badness 1168) detected at line 835
 
 ] [52
 
-] [53
+]
+LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <9> not available
+(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 941.
+ [53
 
 ] [54
 
@@ -1924,11 +1927,11 @@ File: ../figures/defense_composition.pdf Graphic file (type pdf)
  [55
 
 ]
-Underfull \vbox (badness 1168) detected at line 981
+Underfull \vbox (badness 1168) detected at line 987
  []
 
 
-Overfull \vbox (42.20074pt too high) detected at line 981
+Overfull \vbox (42.20074pt too high) detected at line 987
  []
 
 [56
@@ -1943,19 +1946,19 @@ Overfull \vbox (42.20074pt too high) detected at line 981
 ]
 
 LaTeX Font Warning: Font shape `TU/lmss/m/sc' in size <10.95> not available
-(Font)              Font shape `TU/lmr/m/sc' tried instead on input line 1021.
+(Font)              Font shape `TU/lmr/m/sc' tried instead on input line 1027.
 
 
 LaTeX Font Warning: Font shape `TU/lmss/m/scit' undefined
-(Font)              using `TU/lmss/m/sc' instead on input line 1021.
+(Font)              using `TU/lmss/m/sc' instead on input line 1027.
 
 
 LaTeX Font Warning: Font shape `TU/lmss/m/scit' undefined
-(Font)              using `TU/lmss/m/sc' instead on input line 1021.
+(Font)              using `TU/lmss/m/sc' instead on input line 1027.
 
 
 LaTeX Font Warning: Font shape `TU/lmss/m/scit' undefined
-(Font)              using `TU/lmss/m/sc' instead on input line 1021.
+(Font)              using `TU/lmss/m/sc' instead on input line 1027.
 
 [60
 
@@ -1974,7 +1977,7 @@ LaTeX Font Warning: Font shape `TU/lmss/m/scit' undefined
 ]
 
 LaTeX Warning: Citation `page1954continuous' on page 67 undefined on input line
- 1149.
+ 1155.
 
 [67
 
@@ -1984,11 +1987,8 @@ LaTeX Warning: Citation `page1954continuous' on page 67 undefined on input line
 
 
 ]
-LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <9> not available
-(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 1189.
-
 LaTeX Font Info:    Font shape `TU/lmss/bx/it' in size <9> not available
-(Font)              Font shape `TU/lmss/bx/sl' tried instead on input line 1189
+(Font)              Font shape `TU/lmss/bx/sl' tried instead on input line 1195
 .
  [70
 
