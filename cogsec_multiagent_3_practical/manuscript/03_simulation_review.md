@@ -86,8 +86,8 @@ The current Claude Code adapter is at Level 3 (Statistical), explaining the 44.8
 
 The detection rates in Part 2 are derived from a calibrated parametric simulation, modeled on the architecture's topology. They represent the *structural* security of the design.
 
-* **94% Overall Detection** means: "Across all architectures and attack categories, 94% of attack vectors are detected by the full CIF defense stack" (with architecture-specific rates ranging from 94--98%).
-* It does **not** mean: "We have a magic Python script that catches 94% of all evil AI thoughts."
+* **99.4% Overall Detection** means: "Across all architectures and attack categories, 99.4% of attack vectors are detected by the full CIF defense stack" (with architecture-specific rates ranging from 96--100%).
+* It does **not** mean: "We have a magic Python script that catches 99.4% of all evil AI thoughts."
 
 We proved the *architecture* works. The implementation fidelity is the variable for the builder.
 

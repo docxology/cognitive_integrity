@@ -47,7 +47,7 @@ This paper uses notation from the Cognitive Integrity Framework (CIF) formal spe
 | Symbol | Meaning | Part 1 Reference |
 |--------|---------|------------------|
 | $q$ | Quorum threshold | Definition 7 |
-| $f$ | Maximum Byzantine agents | Theorem 1 |
+| $f$ | Maximum Byzantine agents | Byzantine Agreement Requirement theorem |
 | $n$ | Total agent count | Throughout |
 
 ### Threat Model (used in this paper's experimental design)

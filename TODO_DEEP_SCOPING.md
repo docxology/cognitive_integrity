@@ -272,54 +272,36 @@ with no artifact to pin against); `H1--H3`, `H5`, the author-math backlog.
 
 ---
 
-## Sweep backlog (2026-08-23)
+## Sweep backlog (2026-08-23, re-verified 2026-08-24)
 
 A 12-agent sweep with adversarial verification of every finding returned 153
-confirmed defects across the three papers: 72 HIGH, 62 MED, 19 LOW. 73 are
-mechanically fixable; the rest need an author judgement about what the paper
-should claim. Closed items are struck from this list as they land.
+confirmed defects across the three papers: 72 HIGH, 62 MED, 19 LOW. Closed items
+are struck from this list as they land.
 
-### HIGH (66 open)
+**Re-verified 2026-08-24 before any of it was worked on.** Every one of the 145
+then-open rows was checked against HEAD by a 16-agent read-only pass, each row
+required to return the command output that decided it, with a second
+adjudication pass over any row a verifier could not evaluate. The result: **62
+already closed, 83 still open, none superseded.** Nine more were fixed in the
+same round, so 74 rows are struck here.
+
+That ratio is the finding. The list had drifted far enough that reading a count
+off it overstated the debt by 43%, and four MED rows spot-checked by hand before
+the sweep began were all already fixed. A backlog nobody re-verifies is a
+snapshot of a repository that has moved, and acting on one of its stale rows
+means editing prose that is already correct --- which is how the two write-path
+corruptions repaired this round were introduced in the first place. Re-verify
+before fixing; a fix applied to a fixed row is worse than no fix.
+
+### HIGH (31 open)
 
 | ID | Site | Defect | Who |
 |----|------|--------|-----|
-| p1-conclusion-theorem-6-2 | `09_conclusion.md:72` | `_combined_manuscript.aux` from the committed build resolves thm:stealth-impact to **4.15**. Theorem **6.2** is `thm:cascade-fpr` (Cascade FPR Reduction), an unrelated result. The open quest | agent |
-| part1-proof-status-index-numbers-wrong | `S01_proofs.md:13` | Seven of the ten parenthetical numbers disagree with the numbers the renderer actually assigns. From cogsec_multiagent_1_theory/output/pdf/_combined_manuscript.aux: thm:trust-bounded = 4.3 ( | agent |
-| p1-s01-theorem-numbers-wrong | `S01_proofs.md:13` | Every hand-typed number in the Proof Status index (and the matching section headings at S01:111, 229, 327, 431, 531, 614, 712) disagrees with the numbers the renderer actually assigns. Read  | agent |
-| p1-theta-absent-from-notation-supplement | `S03_notation.md:82` | $\theta$ does not appear anywhere in S03_notation.md's 189 lines, yet Part 1 uses it 15 times in four unrelated senses: (1) $\theta_{\text{drift}}$, the KL drift threshold --- 04_formal_fram | agent |
-| 02a-evaluate-not-on-core-classes | `02a_defense_algorithms.md:19` | None of the six core classes has an `evaluate` method. I checked with `hasattr`: `CognitiveFirewall` False, `SandboxManager` False, `TrustCalculus` False, `CognitiveTripwire` False, `Byzanti | agent |
-| tripwire-severity-thresholds-wrong | `02b_configuration_parameters.md:67` | `src/core/tripwire.py:13-15` sets `_DRIFT_CRITICAL = 0.5`, `_DRIFT_HIGH = 0.3`, `_DRIFT_MEDIUM = 0.2` — all three published values are wrong. I confirmed behaviourally by constructing `Tripw | agent |
-| p2-roc-caption-stale-vs-rewritten-generator | `04_experimental_setup.md:118` | Every particular is false against the current generator and artifact. I read src/visualization/figures/roc_curves.py: it now draws TWO panels (left = detector comparison across cif_full_pipe | agent |
-| p2-multiseed-corpus-and-architecture | `05_results.md:11` | Contradicted by the shipped artifact and by two other passages in the same paper. `output/data/multi_seed_results.json` records `seed_metrics[i].n_attacks = 100` for all 30 seeds, a single c | agent |
-| p2-gap-table-parametric-claude-code | `05_results.md:59` | This row gives Claude Code a parametric DR of 80%. The row directly above it in the same table gives Claude Code a parametric DR of 100%, and tab:parametric-vs-llm forty lines later (05_resu | agent |
-| scalability-beta2-does-not-exceed-beta1 | `05d_ablation_and_scalability.md:100` | 4.6 is smaller than 5.6; the sentence asserts the opposite of its own two numbers. Confirmed against the artifact: output/data/scalability_results.json -> latency_regression_median coefficie | agent |
-| p2-05e-posterior-median-not-derivable | `05e_bayesian_uncertainty.md:41` | The stated HDI pins the posterior to Beta(46,56) exactly. I recomputed with the module the section names as its source (`.venv/bin/python`, `sys.path.insert(0,'src')`, `from statistics.bayes | agent |
-| p2-05e-code-listing-raises-typeerror | `05e_bayesian_uncertainty.md:53` | I ran the listing verbatim with the project venv from the project root: `TypeError: bayes_factor_two_proportions() got an unexpected keyword argument 'prior'`. The real signature at src/stat | agent |
-| p2-ablation-share-82-vs-70 | `06_discussion.md:96` | Two other passages state the same quantity as 70%, and the artifact agrees with them, not with 82%. From `output/data/ablation_results.json` the component_removal deltas are 0.05102, 0.02040 | agent |
-| p2-top3-59-percent | `06_discussion.md:19` | 59% is not derivable from `output/data/ablation_results.json` under any reading. Top-3 removal deltas (0.05102 + 0.020408 + 0.010204 = 0.081633) are 80.0% of the summed harmful delta (0.1020 | agent |
-| p2-s07-legend-contradicts-own-table | `S07_algorithm_pseudocode.md:24` | Read the whole file. This legend covers the complexity table at lines 15-23. Row 19 of that table is `\| 3. Trust Update \| Part 1's Trust Boundedness theorem \| $O(1)$ direct; $O(d)$ transi | agent |
-| sidecar-hash-key-mismatch | `run_full_evaluation.py:183` | `src/data/generate.py:82` defines `SIDECAR_HASH_KEY = "artifact_sha256"` and `_sidecar_provenance()` (generate.py:152-176) reads `payload.get(SIDECAR_HASH_KEY)`. Because the writer emits `sh | agent |
-| injector-n10-stamps-pipeline-arm | `injector.py:1006` | Ran inject_all(dry_run=True, strict=False) with an InjectionReport: it reports `04_experimental_setup.md llm_total_n 3` -- the pattern fires on THREE sites, not one. Two are LLM sites (04:44 | agent |
-| p2-taxonomy-corpus-derivation-is-dead-code | `comprehensive_taxonomy.py:25` | The try block always raises and the hardcoded fallback always wins. I ran it in the part-2 venv: `AttackCorpus.generate(seed=42)` returns an object whose public API is by_category/by_difficu | agent |
-| payoff-bullets-attributed-to-wrong-artifact | `03_simulation_review.md:52` | None of these three numbers appears in the payoff matrix. I ran `cogsec_multiagent_2_computational/.venv/bin/python -c "from src.analysis.game_theory import compute_cif_payoff_matrix; ..."`; | agent |
-| emergent-misalignment-not-highest-fpr | `03_simulation_review.md:50` | Read cogsec_multiagent_2_computational/output/data/colony_results.json and printed every scenario's 30-seed means: recruitment_poisoning det 0.8071 / fpr 0.0672; sybil_infiltration 1.0000 /  | agent |
-| p3-hdi-two-values | `03_simulation_review.md:95` | Part 3's own conclusion gives a different 95% HDI for the identical quantity: 08_conclusion.md:25 -- "a mean detection rate of 44.8\% [95\% HDI: 35.5\%, 54.7\%]". The conclusion's interval i | agent |
-| parametric-ceiling-87 | `06b_case_studies.md:75` | The parametric ceiling is a gated ledger quantity: series_ledger.py derives parametric_ceiling_low=96.0 and parametric_ceiling_high=100.0 from full_evaluation_results.json, and Part 3 states | agent |
-| cyber-attack-pattern-table | `09e_cyber_security.md:73` | The same file's body (line 25) says "This constitutes a **Context Boundary Violation** attack pattern ... The diagonal elements themselves are untouched, which is what distinguishes this fro | agent |
-| drone-casualties-misattribution | `09f_drone_wars.md:20` | The 70--80% figure in the public record (IISS, Western-official estimates, UN HRMMU) is for **drones** generally — overwhelmingly manually piloted FPV — not AI-directed systems. The paper's  | agent |
-| fig-caption-pattern-totals | `10_cross_domain_discussion.md:5` | The §10.1 table 14 lines below reads **Total \| 5 \| 1 \| 4**, and src/applications/domain_coverage.py's ATTACK_PATTERNS column sums are [5,1,4] — pinned by tests/test_applications.py::test_ | agent |
 | p3-domain-coverage-figure-stale-and-caption-disagrees-with-table | `10_cross_domain_discussion.md:5` | Three artifacts disagree. (1) Source: I ran the part-3 venv against src/applications/domain_coverage.py — ATTACK_PATTERNS column sums are FR Polarity Inversion 5, Constraint Relaxation 1, Co | agent |
-| novel-patterns-three-vs-four | `10b_applications_conclusion.md:13` | 09_applications_intro.md:67 states "**C4:** Four novel defense pattern extensions: verification channel separation (biowarfare), active perturbation probing (trade wars), physics-informed in | agent |
-| placeholder-doi-king | `references.bib:1284` | All-zeros placeholder DOI; `https://doi.org/10.1080/01402390.2024.0000000` returns "Error: DOI Not Found". It is the only citation for the verifiable world-claim at 09f_drone_wars.md:20 ("Th | agent |
-| stale-domain-coverage-figure | `domain_coverage.png:1` | Re-rendering with `.venv/bin/python -c "from src.applications.domain_coverage import render_domain_coverage_figures; render_domain_coverage_figures(Path('/tmp/claude/regen'))"` produces "Con | agent |
 | ungated-ablation-deltas | `series_ledger.py:675` | check_series_integrity.py:176 does `if quantity.pattern is None: continue`, so these three are skipped outright. All three ARE stated in prose, and one of the sites is in Part 1, which claim | agent |
-| ungated-top-synergy | `series_ledger.py:699` | The value +0.031 is restated in seven prose sites across two papers, one of them outside claim_registry's reach: cogsec_multiagent_1_theory/manuscript/10_limitations.md:172 "two pairs tied f | agent |
-| ungated-colony-emergent-fpr | `series_ledger.py:729` | Derives 25.4839 (-> 25.5%). Four prose sites state it, and the ledger checks none. Part 3: cogsec_multiagent_3_practical/manuscript/03_simulation_review.md:50 "**emergent misalignment achiev | agent |
-| ungated-at-final-hardened-dr | `series_ledger.py:779` | Part 1 quotes it twice and nothing checks Part 1: cogsec_multiagent_1_theory/manuscript/06_detection_methods.md:615 "raising hardened detection from 52.0\% at Round 1 to 67.9\% at Round 5 in | agent |
 | owasp-complete-coverage | `01_abstract.md:3` | "Complete coverage" of a ten-item standard is a 10/10 quantified claim with no supporting artifact anywhere in the series. I grepped all of Part 1 for OWASP/ASI: `grep -rn "OWASP" cogsec_mul | **author** |
 | p1-abstract-owasp-complete-coverage | `01_abstract.md:3` | `grep -rn -i owasp cogsec_multiagent_1_theory/manuscript/*.md` returns only this abstract sentence, three passing mentions in 02_introduction.md (61, 191, 195), and two bibliography lines. P | **author** |
 | p1-associativity-claim-inverted | `02_introduction.md:244` | 04_formal_framework.md:342-358 states and proves the opposite: `\begin{theorem}[Delegation Associativity]` ... "this operation is not associative in general", with equation `T_1 \otimes (T_2 | **author** |
-| omega-detection-matrix | `06_detection_methods.md:421` | No such matrix exists, and the same file says so 414 lines earlier. Line 7 of this very file states: "Part 2 reports no measured per-$\Omega$-class detection rates: the corpus carries a desi | **author** |
 | fp-mitigation-80pct | `06_detection_methods.md:423` | Part 2's only false-positive-mitigation table is cogsec_multiagent_2_computational/manuscript/S02_detection_algorithms.md:187-199 (tab:fp-mitigation-results). It gives the three named strate | **author** |
 | p1-provably-undetectable-vs-deferred | `08_discussion.md:60` | S01_proofs.md:31 lists `thm:stealth-impact` under "**Asserted without proof (deferred).** ... they are assertions whose proofs are deferred to future work." 04_formal_framework.md:627 says s | **author** |
 | p1-fr-bound-proof-redefines-stealth | `S01_proofs.md:1052` | The proof of thm:fr-bound-restated contradicts its own theorem statement and its own lemma. (a) The theorem at S01:993 defines `\mathcal{S}_{\mathrm{FR}} = 1/d_{\mathrm{FR}}`, which the firs | **author** |
@@ -339,8 +321,6 @@ should claim. Closed items are struck from this list as they land.
 | omega5-miss-rate-44 | `02_theory_review.md:87` | The only 44.6% in the series is the $\Omega_5$ row of Part 2's red-team generator summary (output/data/redteam_evaluation_results.json: OMEGA_5_COORDINATED.mean_heuristic_evasion_score = 0.4 | **author** |
 | impact-stratified-98-74 | `02_theory_review.md:47` | Part 2 reports no impact-stratified detection results. `grep -rni "high-impact\|low-impact\|impact level"` over cogsec_multiagent_2_computational/manuscript returns only prose about the theo | **author** |
 | part3-98-74-impact-detection-not-in-part2 | `02_theory_review.md:47` | Part 2 reports no impact-stratified detection rates. `grep -rniE "high[- ]impact\|low[- ]impact" cogsec_multiagent_2_computational/manuscript/*.md` returns exactly one hit (04_experimental_s | **author** |
-| nash-optimal-headline-rests-on-a-value-the-same-paragraph-retracts | `03_simulation_review.md:50` | The paragraph disowns 56.1\% and then leans on a Nash result that is computed from exactly that number. output/data/colony_results_single_seed.json gives emergent_misalignment detection_rate | **author** |
-| overall-detection-94-percent | `03_simulation_review.md:87` | Computed directly from the committed artifact cogsec_multiagent_2_computational/output/data/full_evaluation_results.json (16 rows, n_attacks-weighted): overall = 0.995; per architecture Clau | **author** |
 | p3-94-percent-headline | `03_simulation_review.md:87` | Eight lines below, the same file's "A Note on Three Numbers" box enumerates the three detection rates a reader should encounter -- 96--100%, 44.8%, ~12.2% -- and 94% is not among them. The s | **author** |
 | part3-cif-composer-html-does-not-exist | `05_deployment_guide.md:136` | `ls cogsec_multiagent_2_computational/output/web/ \| grep -v '^manuscript__'` returns only `favicon.ico` — the directory holds nothing but the rendered manuscript HTML and a favicon. `find . | **author** |
 | p3-pitfall-figure-plots-a-different-eight-than-the-section | `06_common_pitfalls.md:5` | The figure plots a different set of pitfalls from the section it illustrates, and names a category that does not exist. I read src/visualization.py:639-712 (`get_pitfalls_data`), whose own d | **author** |
@@ -348,33 +328,14 @@ should claim. Closed items are struck from this list as they land.
 | sec105-enumerates-three-of-four | `10_cross_domain_discussion.md:91` | §10.5 announces four and then enumerates only Verification Channel Separation (Biowarfare), Active Perturbation Probing (Trade Wars) and Physics-Informed Invariants (Infrastructure). The fou | **author** |
 | asb-19-7-defense-success | `10_cross_domain_discussion.md:62` | Fetched the cited source (arXiv:2410.02644, Agent Security Bench, both /abs and /html/v3). The number 19.7 does not appear anywhere in the paper, and the paper never uses the metric "defense | **author** |
 | placeholder-doi-vespignani | `references.bib:1238` | The DOI is an all-zeros placeholder and does not resolve: `curl -H 'Accept: application/vnd.citationstyles.csl+json' https://doi.org/10.1038/s41467-024-00000-0` returns "Error: DOI Not Found | **author** |
-| wrong-doi-agrisecurity | `references.bib:1332` | The DOI resolves, but to a completely different paper. Crossref content negotiation on 10.1016/j.compag.2024.109200 returns title "Using singular spectrum analysis and empirical mode decompo | **author** |
 
-### MED (60 open)
+### MED (41 open)
 
 | ID | Site | Defect | Who |
 |----|------|--------|-----|
-| mypy-advisory-blocker-gone | `ci.yml:87` | The named blocker no longer exists and its stated rationale is incoherent. Ran the exact CI command from cogsec_multiagent_2_computational: `.venv/bin/mypy src` -> `Success: no issues found  | agent |
 | compat-py310-blocker-gone | `ci.yml:271` | I re-verified the full 3.10 matrix and it is green in all three parts, so the stated precondition for promotion is now met. Built three isolated 3.10 envs with the CI install command (`uv sy | agent |
-| latency-empirical-observation | `S01_proofs.md:793` | There is no empirical observation. The inputs it corroborates are labelled as non-measurements twelve lines above, at S01_proofs.md:781-782: "With the same illustrative parameters used in th | agent |
-| 02b-lambda-default-wrong | `02b_configuration_parameters.md:82` | $\lambda$ is the `lambda_weight` argument of `DriftDetector.is_anomalous` (`src/core/detection.py:184`), whose default is **0.5**, not 0.3: `def is_anomalous(self, current, window: int = 10, | agent |
-| p2-bayes-denominators | `05_results.md:62` | Neither count matches the computation the paper actually reports. 05e_bayesian_uncertainty.md:50 shows the code: `bayes_factor_two_proportions(n1=100, k1=45, n2=100, k2=92)` -- the empirical | agent |
-| s05-pattern-counts-wrong | `S05_framework_api.md:46` | I counted them from the shipped class: `len(PatternDetector.INJECTION_PATTERNS)` is **13** and `len(PatternDetector.SUSPICIOUS_PATTERNS)` is **7** (`src/core/firewall.py:54-78`). The "15" ap | agent |
-| s05-sandbox-module-descriptions | `S05_framework_api.md:110` | `src/core/sandbox.py:17` defines `class BeliefPartition(Enum)` with exactly two members, `VERIFIED = "verified"` and `PROVISIONAL = "provisional"`. It is a tag, not a container, holds no bel | agent |
-| p2-trust-decay-caption-omits-schematic-panel-b | `S08_parametric_analysis.md:215` | The caption describes only Panel A of a two-panel figure; Panel B is fabricated data and the caption never says so. src/visualization/figures/trust_decay.py:33 creates `plt.subplots(1, 2, .. | agent |
-| s09-detectionevent-field-names | `S09_functional_api.md:25` | `src/core/monad.py:53-66` defines `DetectionEvent` with exactly three fields: `module_name: str`, `score: float`, `details: Dict[str, Any]`. There is no `context` and no `timestamp`, so `eve | agent |
 | injector-labels-no-claim-inspects | `injector.py:843` | I dumped every (document,label,count) from a dry-run InjectionReport and every claim_registry claim grouped by file, then diffed. These labels are written into the manuscript but no claim re | agent |
-| p2-f5b-test-bayesian-src-prefix-double-loads-package | `test_bayesian.py:27` | This is the leftover half of the reverted refactor. It is the ONLY statistics import in the repo that uses the `src.` prefix; the other 33 occurrences (8 test files, 4 scripts/run_*.py, 3 sr | agent |
-| shipped-provenance-gate-covers-2-of-7 | `test_data_provenance.py:55` | This is the gate that should have caught the finding above, and it cannot: `AUTHORITATIVE_RESULT_NAMES` (src/data/generate.py:88-96) holds seven names, `_REGRESSION_NAMES` holds two. The onl | agent |
-| profile-b-tau1-mismatch | `05_deployment_guide.md:32` | Part 2's named table gives $\tau_1$ (reject) = 0.7 and $\tau_2$ (quarantine) = 0.5 (S08_parametric_analysis.md:275-276, restated at :311 "Optimal parameters: $\tau_1 = 0.7$ (reject), $\tau_2 | agent |
-| ibm-breach-cost-uncited | `05c_cost_benefit.md:44` | This is a world-claim about an external figure with no `\cite{}` anywhere in the file (`grep -n 'IBM' 05c_cost_benefit.md` returns only this line; references.bib has no IBM Cost of a Data Br | agent |
-| p3-pitfall4-hardest-attack | `06_common_pitfalls.md:70` | Part 3's own Finding 6, at 03_simulation_review.md:50, says the opposite: "emergent misalignment achieves the lowest detection rate (74.3\%) at the highest false positive rate (25.5\%) **of  | agent |
-| asb-84-3-is-highest-not-average | `09_applications_intro.md:22` | The ASB abstract (arXiv:2410.02644v3, fetched) reads verbatim: "...with the **highest** average attack success rate of 84.30%, but limited effectiveness shown in current defenses". 84.30% is | agent |
-| wittmann-wrong-doi | `references.bib:1303` | `https://doi.org/10.1126/science.adq7592` returns "Error: DOI Not Found". The real paper (which the 09h_biowarfare.md:38 prose describes accurately) is Wittmann, Alexanian et al., "Strengthe | agent |
 | no-notation-gate-in-series-integrity | `check_series_integrity.py:656` | Ran `grep -rn notation --include=*.py` across all three parts and scripts/ --- the only hits are an unrelated comment in cogsec_multiagent_1_theory/tests/test_proof_status.py:31 and a filena | agent |
-| ungated-at-rounds | `series_ledger.py:795` | Stated in four prose sites and covered by no claim (the four 05g claims are baseline_dr, final_hardened_dr, round1_hardened, total_delta -- none is a round count). Part 2: 05g_adversarial_tr | agent |
-| ungated-at-total-delta | `series_ledger.py:787` | cogsec_multiagent_1_theory/manuscript/08_discussion.md:16 hand-types it: "$+23.2$ pp over the pre-AT baseline" -- Part 1, so claim_registry cannot see it. In Part 2, 05g.total_delta covers o | agent |
-| ungated-scalability-max-agents | `series_ledger.py:755` | It has prose sites and no claim covers any of them (the 05d claim set is 05d.corpus_size, 05d.full_pipeline_tpr, 05d.ms_mean, 05d.intro_detection_delta and the tpr/delta/synergy table rows - | agent |
 | abstract-five-defenses-membership | `01_abstract.md:5` | The count is right and the membership is wrong. The body's five are enumerated as headings in cogsec_multiagent_1_theory/manuscript/05_defense_mechanisms.md: "Canonical Defense 1: Cognitive  | **author** |
 | rag-53-percent-owasp | `02_introduction.md:195` | An adoption statistic sourced to a vulnerability taxonomy. The cited entry (references.bib:377-383) is "OWASP Top 10 for LLM Applications 2025", a security standard listing risk categories;  | **author** |
 | tau-f-undefined-value | `04_formal_framework.md:704` | $\tau_f$ occurs exactly once in the whole Part 1 manuscript (`grep -rn "tau_f" manuscript/*.md` returns this line only) and is absent from the notation table, which lists only $\tau_1$ (reje | **author** |
@@ -383,7 +344,6 @@ should claim. Closed items are struck from this list as they land.
 | pipeline-stage-tpr-column | `06_detection_methods.md:571` | Same class as tab:risk-profiles and in the same undisclaimed state, but worse because these numbers are load-bearing: thm:pipeline-tpr (line 592) composes them and \cref{thm:pipeline-tpr} is | **author** |
 | pipeline-cost-15pct | `06_detection_methods.md:584` | The figure does not follow from the theorem's own equation with the paper's own pipeline. eq:pipeline-cost is $\mathbb{E}[\text{cost}] = \sum_i c_i \prod_{j<i} \rho_j$, and tab:pipeline-stag | **author** |
 | p1-rho-table-entry-never-used | `S03_notation.md:62` | Grepped `\rho` across every Part 1 manuscript file. Every occurrence is one of four meanings, and none is a penalty factor: (a) precision weight of an agent's channel --- 04_formal_framework | **author** |
-| p1-mathcal-M-two-rows-no-disambiguation | `S03_notation.md:44` | Line 154 of the same file reads `\| $\mathcal{M}$ \| Set of marker types \| \cref{def:stigmergic-operator} \|`. The identical unsubscripted symbol gets two rows in two tables of one referenc | **author** |
 | p1-eta-two-undocumented-senses | `S03_notation.md:60` | With line 61 ($\eta$ = learning rate) these are the only two $\eta$ rows. Two further senses are used and undocumented, and one of them directly conflicts with this row's subscript conventio | **author** |
 | p1-d-defense-index-and-distance | `S03_notation.md:57` | The same $d$ overload the backlog reports for Part 2 also exists in Part 1, with only the delegation-depth sense documented. Two others are in use: (a) DEFENSE INDEX --- 04_formal_framework. | **author** |
 | p2-abstract-validated-vs-baseline-comparison | `00_abstract.md:23` | The paper's own baseline comparison (05_results.md, tab:baseline-comparison) reports that the full 8-module CIF pipeline ranks **4 of 5** detectors by Youden's J on the identical corpus: bag | **author** |
@@ -415,28 +375,11 @@ should claim. Closed items are struck from this list as they land.
 | part3-config-reference-contradicts-series | `config_reference.py:76` | The manuscript says no such thing. `grep -rn "Reputation weight\|Base weight\|Context weight\|Decay factor\|Accept threshold\|Reject threshold" cogsec_multiagent_3_practical/manuscript/` ret | **author** |
 | two-provenance-schemas | `check_series_integrity.py:730` | The series gate and Part 2 enforce two different, silently divergent provenance schemas, and that divergence is the structural reason the sidecar-hash-key defect stayed green. Part 2's `src/ | **author** |
 
-### LOW (19 open)
+### LOW (2 open)
 
 | ID | Site | Defect | Who |
 |----|------|--------|-----|
-| ruff-format-blocker-counts-stale | `ci.yml:67` | The blocker is real — this step cannot be promoted — but all three hand-typed counts have drifted, in both directions, which is the exact hand-typed-number-drift class this series' doctrine  | agent |
-| header-omits-fourth-advisory | `ci.yml:9` | The header enumerates three advisory items, but the file has four `continue-on-error: true` occurrences — `grep -n continue-on-error .github/workflows/ci.yml` returns lines 69 (ruff format), | agent |
-| p1-mathcal-K-undocumented | `03_threat_model.md:46` | $\mathcal{K}$ is a component of the adversary-class tuples at 03_threat_model.md:44 ($\mathcal{K}_{\text{public}}$), :54 ($\mathcal{K}_{\text{system}}$), :69/71 ($\mathcal{K}_{\text{domain}} | agent |
-| p1-cusum-symbols-undocumented | `05_defense_mechanisms.md:674` | The CUSUM change-detection subsection (05_defense_mechanisms.md:672-696) introduces three symbols --- $g_t$ (cumulative statistic, line 672), $\nu$ (allowance / reference value, lines 672, 6 | agent |
-| p1-capital-lambda-undocumented | `06_detection_methods.md:439` | $\Lambda$ is used here and at 06_detection_methods.md:444 and has no row in S03_notation.md. It is visually close to the two documented lowercase $\lambda$ entries (S03 lines 95 and 159), wh | agent |
-| p1-sigma-table-entry-conflicts-with-ooda-use | `S03_notation.md:152` | This is the only row for $\Sigma$, but 04_formal_framework.md:798 defines the OODA automaton as `\text{OODA}_i = (Q, q_0, \Sigma, \delta_{\text{OODA}})` and line 800 states '$\Sigma = \mathc | agent |
-| p1-mathcal-E-edge-set-undocumented | `S03_notation.md:151` | Only row for $\mathcal{E}$. But 03_threat_model.md:139 defines adversary class $\Omega_4 = \langle \mathcal{E}_{\text{ctrl}}, f_{\text{man}}, \mathcal{K}_{\text{protocol}}, \mathcal{C}_{\tex | agent |
-| p1-lambda-third-meaning-undocumented | `S03_notation.md:95` | S03 already carries two $\lambda$ rows --- line 95 here and line 159 ('Temporal decay constant (colonial trust)'), matching 06_detection_methods.md:18/31 and S02_eusocial_cogsec.md:94/96/474 | agent |
-| 02a-parameter-count-wrong | `02a_defense_algorithms.md:145` | Counting the rows of the eight tables in 02b_configuration_parameters.md gives 29, not 27: core 5 (lines 15-19), trust 6 (27-32), firewall 5 (42-46), sandbox 2 (58-59), tripwire 5 (67-71), d | agent |
-| redteamevaluator-wrong-class-name | `05g_adversarial_training.md:157` | There is no `RedTeamEvaluator` class anywhere in the repository. `grep -n "^class " src/redteam/__init__.py` lists `ATConfig`, `ATRoundResult`, `AdversarialTrainer`, `NashEquilibriumEstimato | agent |
-| p2-f5b-analysis-runner-absolute-self-import | `analysis_runner.py:253` | analysis_runner.py is a submodule of the statistics package but imports its own siblings by absolute top-level name. Every other module in the package uses relative form (src/statistics/__in | agent |
-| ledger-crossval-comment-is-false | `series_ledger.py:742` | A manuscript does write it: `grep -rn --include='*.md' -E "[0-9]+-fold"` returns cogsec_multiagent_2_computational/manuscript/05_results.md:153 "\| Bag-of-words LR (trained, 5-fold CV) \| 1. | agent |
-| ungated-at-baseline-dr | `series_ledger.py:771` | It has prose sites, so it is gateable now. 05g_adversarial_training.md:92 "\| 0 (baseline) \| Original 950 \| 44.7% \|" and 05g:102 "pre-AT baseline (44.7%)." and the Status block at 05g:26  | agent |
-| ungated-redteam-attacks-generated | `series_ledger.py:763` | It has prose sites: 05h_redteam_evaluation.md:15 "`scripts/run_redteam.py --seed 42` -> `output/data/redteam_evaluation_results.json`\n($M=950$)" and 05h:59 "Table: Mutation operator evaluat | agent |
 | p1-orphan-generated-figures | `03_detection_results_figure.py:1` | Nothing in Part 1's manuscript uses either. I enumerated every image inclusion in cogsec_multiagent_1_theory/manuscript/*.md (twelve `![...](figures/*.pdf)` plus five `\includegraphics{figur | **author** |
-| 02b-invariant-interval-outside-own-range | `02b_configuration_parameters.md:100` | The only invariant check-interval setting in the code is `FrameworkConfig.invariant_check_interval` (`src/utils/config.py:55`), whose default is **1.0** second — not 60s, and outside the pub | **author** |
-| part2-s01-theorem-1-nonexistent | `S01_notation_reference.md:50` | There is no "Theorem 1" in either paper's numbering. Part 1 numbers theorems per section (`\newtheorem{theorem}{Theorem}[section]` in preamble.md), so every Part 1 theorem is of the form N.M | **author** |
-| firewall-only-60-70 | `03_simulation_review.md:22` | Computed the firewall-only column means from Part 2's S08 per-architecture tables: Claude Code 0.707, AutoGPT 0.700, CrewAI 0.728, LangGraph 0.763 — i.e. 70--76%, not 60--70%. Individual cel | **author** |
 | ledger-vars-with-genuinely-no-prose-site | `series_ledger.py:747` | These three genuinely have no prose site, so pattern=None is correct for them today -- but that is worth recording, because it means cross_validation_results.json is a committed artifact who | **author** |
 
 ## Open backlog (by severity)

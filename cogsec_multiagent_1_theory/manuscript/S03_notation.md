@@ -17,6 +17,7 @@ This supplement provides a comprehensive reference for the mathematical notation
 | $R_{Co}$ | Coordination resources (multi-party synchronization) | \cref{tab:resource-types} |
 | $D_{\text{score}}$ | Detectability score of an attack | \cref{def:detectability} |
 | $\mathcal{C}_{\text{adv}}$ | Adversarial capability set | \cref{def:capability-set} |
+| $\mathcal{K}_\bullet$ | Adversary knowledge component of the class tuple; the subscript names its scope ($\mathcal{K}_{\text{public}}$, $\mathcal{K}_{\text{domain}}$, $\mathcal{K}_{\text{protocol}}$, $\mathcal{K}_{\text{internal}}$) | \cref{sec:threat-model} |
 | $\mathcal{E}$ | Communication edge set $\{(a_i, a_j) : \mathcal{C}(a_i, a_j) = 1\}$; the adversary-controlled subset is $\mathcal{E}_{\text{ctrl}} \subseteq \mathcal{E}$ (distinct from the stigmergic $\mathcal{E}$ below) | \cref{def:omega4} |
 | $\mathcal{A}_{\text{BIM}}$ | Belief injection/manipulation attack class | \cref{sec:attack-taxonomy} |
 | $\mathcal{A}_{\text{BI}}$ | Belief injection attack | \cref{thm:belief-injection} |
@@ -42,7 +43,7 @@ This supplement provides a comprehensive reference for the mathematical notation
 | $\sigma_i^t$ | Cognitive state of agent $i$ at time $t$ | \cref{def:cognitive-state} |
 | $\Phi$ | Set of propositions | \cref{sec:notation} |
 | $\phi, \psi$ | Individual propositions | \cref{sec:notation} |
-| $\mathcal{M}$ | Message space | \cref{def:firewall} |
+| $\mathcal{M}$ | Message space (distinct from the set of marker types $\mathcal{M}$ of \cref{def:stigmergic-operator}) | \cref{def:firewall} |
 | $m$ | Individual message | \cref{def:firewall} |
 | $\Sigma$ | OODA input alphabet $\mathcal{M} \cup \text{Events}$ (distinct from the stigmergic update function $\Sigma$ of \cref{def:stigmergic-operator}) | \cref{def:ooda-state} |
 
@@ -158,7 +159,7 @@ This supplement provides a comprehensive reference for the mathematical notation
 | $\mathcal{E}$ | Environmental state (markers/signals) | \cref{def:stigmergic-operator} |
 | $\Sigma$ | Stigmergic update function (distinct from the OODA input alphabet $\Sigma$ of \cref{def:ooda-state}) | \cref{def:stigmergic-operator} |
 | $\mathcal{L}$ | Set of locations | \cref{def:stigmergic-operator} |
-| $\mathcal{M}$ | Set of marker types | \cref{def:stigmergic-operator} |
+| $\mathcal{M}$ | Set of marker types (distinct from the message space $\mathcal{M}$ of \cref{def:firewall}) | \cref{def:stigmergic-operator} |
 | $\mathcal{N}$ | Cyberphysical niche | \cref{def:cyberphysical-niche} |
 | $\mathcal{F}_c$ | Emergent collective function | \cref{def:emergent-function} |
 | $\mathcal{T}_c$ | Colonial trust function (environment-mediated) | \cref{def:colonial-trust} |

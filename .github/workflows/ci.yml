@@ -8,7 +8,8 @@ name: CI
 # the *tracked* tree, and manuscript verification for part 2.
 # Advisory (continue-on-error, with the concrete blocker named in each step):
 # `ruff format --check`, mypy, the Python 3.10 compatibility matrix, and the
-# cross-paper pointer lint.
+# cross-paper pointer lint --- four steps, which is what `grep -c
+# continue-on-error` reports; the sentence above used to name three.
 
 on:
   push:

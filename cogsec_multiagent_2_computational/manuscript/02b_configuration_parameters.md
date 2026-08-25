@@ -97,7 +97,7 @@ Table: Invariant enforcement configuration parameters. {#tab:invariant-params}
 
 | Parameter | Symbol | Default | Range | Description |
 | --- | --- | --- | --- | --- |
-| Check interval | $\tau_{inv}$ | 60s | $[10, 600]$ | Invariant check frequency |
+| Check interval | $\tau_{inv}$ | 1s | $[1, 600]$ | Invariant check frequency |
 
 ## Deployment Profiles {#sec:tuning-profiles}
 
