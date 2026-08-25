@@ -340,7 +340,8 @@ unlabelled, for the life of the project.
 
 ### Round 14 progress (2026-08-25)
 
-**21 of 51 confirmed findings closed, 30 still open.** All 7 `not_empirical`
+**21 of 51 confirmed findings closed, 30 still open — 29 after the two
+reclassifications recorded in Round 15 below.** All 7 `not_empirical`
 relabels, the 1 `unmeasurable` retraction, and 13 of the 27 `measurable_now`.
 The counts are matched by file and line against the sweep's own records rather
 than tallied by hand, because 7 + 1 + 13 is exactly the arithmetic this round
@@ -365,52 +366,153 @@ off a stale 0.122 row and had become false in the other direction. A self-critic
 built on stale numbers is not humility; it is a different error with a more sympathetic
 surface.
 
-### Still open (30)
+### Round 15 scope (2026-08-25) — the 29 that are left
 
-| Class | Count |
-|---|---|
-| `measurable_now` | 14 |
-| `needs_new_harness` | 16 |
+Two reclassifications first, because the sweep's own verdicts were not final.
+`scalability_tables.py:20` is already closed: it was fixed earlier in Round 14 and the
+sweep had read the tree before that. `comprehensive_taxonomy.py:96` was filed
+`needs_new_harness` by one verifier and `measurable_now` by another, looking at the same
+figure; the second is right, because
+`adversarial_training_results.json::omega_level_dr` exists and is keyed
+`omega_1..omega_5`, one-for-one with the figure's five columns. So **29 remain: 15
+computable from what already exists, 14 needing an experiment that does not.**
 
-#### measurable_now
+The 14 are the honest core of what is left in this project. Each names a quantity the
+papers report and nothing measures, and none of them is a formatting problem.
 
-| Site | Claim |
-|---|---|
-| `01c_theoretical_connections.md:164` | "Periodic defender retraining (every 5 cycles, +3% recovery per retraining event) stabilizes the long-run equilibrium at ~0.52---a 4-percentage-point  |
-| `03_attack_corpus.md:96` | tab:difficulty-dist, captioned "actual generator output, seed 42", reports Hard 535 / 56.3%, Medium 335 / 35.3%, Easy 80 / 8.4%. |
-| `04_experimental_setup.md:42` | "The EnhancedCognitiveFirewall module detects the majority of attacks on first evaluation (short-circuiting the series chain), with mean latency of 0. |
-| `04_experimental_setup.md:55` | "…the multi-seed pipeline analysis (30 seeds, mean DR ~86%) and real ablation studies (full pipeline TPR ~12%) establish empirical baselines"; 06_disc |
-| `05_results.md:58` | tab: architecture-gap table's Total Gap column reads "~55 pp" on a row whose own Parametric DR is 100% and Empirical DR is 86.3%. |
-| `05b_statistical_significance.md:101` | tab: power table reports, per comparison, an effect-size label, a Required n, an Available n and an achieved statistical Power — multi-seed vs 0: 5/30 |
-| `05d_ablation_and_scalability.md:84` | Footnote to the scalability table: "95% CIs computed via bootstrap resampling (B = 1,000 iterations) over 10 independent runs per agent count. Detecti |
-| `05e_bayesian_uncertainty.md:33` | tab:bayesian-posteriors restates "each major detection claim" as a Beta posterior with explicit k, n and 95% HDI: multi-seed pipeline k=45/n=100 → Bet |
-| `05e_bayesian_uncertainty.md:71` | tab:power-analysis gives each evaluation mode's "Est. True Rate" and the sample size n* required for a ±5 pp HDI: multi-seed pipeline 0.45 → n*=380, A |
-| `05f_architecture_gap_analysis.md:45` | tab:module-maturity's Evidence column gives a measured per-module marginal contribution for all eight modules — Detection −0.051, Trust Calculus −0.02 |
-| `S02_detection_algorithms.md:55` | tab:auc-ci, captioned "Empirical AUC with 95% confidence intervals", reports Drift Score 0.87 [0.84, 0.90] and Ensemble 0.94 [0.92, 0.96]. |
-| `S11_adversarial_training_theory.md:77` | Corollary S11.1: "For the empirical AT results in §sec:at-convergence, the observed geometric decay ratio of ≈0.65 implies 1 − αL ≈ 0.65, so αL ≈ 0.35 |
-| `fp_mitigation.py:28` | _default_waterfall_data returns a nine-point false-positive-rate series — 0.150, 0.095, 0.070, 0.052, 0.040, 0.032, 0.026, 0.022, 0.018 — plotted as a |
-| `03_simulation_review.md:106` | A table headed "Tripwire Configuration Data", introduced by "The simulations utilized the following tripwire densities to achieve the reported results |
+---
 
-#### needs_new_harness
+#### W1 — The control arm that was never run (4 findings)
 
-| Site | Claim |
-|---|---|
-| `04_formal_framework.md:762` | Table tab:cif-ad-matrix, "CIF-AD coupling matrix: coverage of each defense mechanism across AD cycle phases", is twenty-five two-decimal coverage valu |
-| `05_defense_mechanisms.md:458` | Table tab:defense-stack, captioned "Recommended defense stack with latency and detection rates", assigns each of six layers a latency (10ms, 5ms, 1ms, |
-| `06_detection_methods.md:511` | Table tab:it-detectability, captioned "Information-theoretic detectability by attack class", presents four numeric columns for each of the five Omega  |
-| `comprehensive_taxonomy.py:87` | Five per-adversary-class detection rates are typed into the `classes` list (0.85, 0.78, 0.71, 0.65, 0.45 at lines 87, 101, 115, 129, 143) and rendered |
-| `03_attack_corpus.md:42` | tab:injection-subcats gives a per-subcategory "Undefended Success Rate" (78%, 65%, 82%) and "CIF Success" (3%, 5%, 7%), with the footnote "Undefended  |
-| `03_attack_corpus.md:113` | tab:target-dist reports the corpus's distribution over attack targets — Belief state 280, Action execution 250, Trust relationships 220, Temporal stat |
-| `05d_ablation_and_scalability.md:136` | tab:volume-scaling reports detection rate, latency and CPU usage at five message rates (500→0.94/52ms/34%, 1000→0.94/68ms/56%, 2000→0.93/112ms/78%, 50 |
-| `S02_detection_algorithms.md:159` | tab:fp-root-causes attributes false positives to five root causes with frequencies that sum to 100% — benign novelty 35%, threshold drift 25%, feature |
-| `S02_detection_algorithms.md:192` | tab:fp-mitigation-results reports the measured effectiveness of six FP-mitigation strategies — Confirmation Cascade −60% FPR / −5% TPR, Temporal Smoot |
-| `S08_parametric_analysis.md:38` | tab:parametric-claude-code-perf and its AutoGPT twin (line 69) report baseline-vs-CIF latency at p50/p95/p99 (45ms→52ms, 112→138, 287→361; 89→108, 234 |
-| `S08_parametric_analysis.md:48` | tab:parametric-claude-code-integrity reports "integrity preservation" for three scenarios — single attack 0.72→0.99 (+38%), sustained attack 1h 0.31→0 |
-| `cif_comprehensive.py:281` | The same sidebar states "Integrity: +127%", reading as a measured 2.27x improvement in belief/system integrity attributable to the framework. |
-| `comprehensive_taxonomy.py:96` | Fig. 2, the shipped attack-taxonomy figure, draws a filled progress bar and a "Detection: 85%" / "78%" / "71%" / "65%" / "45%" label under each of the |
-| `02_theory_review.md:47` | "Part 2's data consistently validated this: High-impact attacks were detected 98% of the time, while low-impact attacks were detected only 74% of the  |
-| `02_theory_review.md:87` | "The $\Omega_5$ miss rate (44%) reflects FEP's fundamental challenge" — a specific per-adversary-class miss rate presented as a measured property of C |
-| `06b_case_studies.md:73` | "Tuning $\tau_2$ ... from $0.5 \to 0.55$ ... Post-tuning: FPR drops to 3% (300 false positives/day); TPR for this attack type drops from 72% to 68%" — |
+`03_attack_corpus.md:42` publishes an "Undefended Success Rate" column (78/65/82%) under
+a footnote reading *"measured without any CIF defense mechanisms active"*.
+`S08_parametric_analysis.md:38` publishes baseline-versus-CIF latency at p50/p95/p99,
+throughput and RSS. `S08:48` publishes "integrity preservation" going 0.72→0.99,
+0.31→0.96, 0.18→0.94. `cif_comprehensive.py:281` published `Integrity: +127%` on the
+cover until Round 14 removed it.
+
+All four are the same missing thing: **there is no undefended arm anywhere in this
+project.** Every measurement runs the pipeline; nothing runs the same corpus through the
+same agent with `create_full_pipeline()` disabled. Four separate tables report a
+defended-versus-undefended comparison and not one of them could have been computed.
+
+*What it takes:* a paired runner that scores the corpus twice, defended and not, and
+emits `undefended_control.json`. `src/evaluation/` already owns the scoring; the missing
+piece is a null pipeline and the discipline of running both arms on the same seeds.
+Cheap for detection rate, more work for latency and RSS, which want the load driver in
+W2. **This is the single highest-value item in the file**: it makes four published
+tables real and it is the comparison the whole framework rests on.
+
+#### W2 — Load and throughput (2 findings)
+
+`05d:136` reports detection rate, latency and CPU at five message rates and derives a
+"throughput limit ~5000 msg/sec". `S08:38` needs the same rig for its p50/p95/p99.
+`scripts/run_scalability.py` measures a single round at a time and knows nothing about
+arrival rate or CPU.
+
+*What it takes:* a driver that feeds payloads at controlled rates while sampling
+`resource.getrusage` and end-to-end latency, emitting an artifact keyed by messages per
+second. `run_scalability.py` is the natural host: it already owns the timing loop, the
+regression fit and the platform block.
+
+#### W3 — Labels the corpus does not carry (4 findings)
+
+`comprehensive_taxonomy.py:87`, `02_theory_review.md:47` (high-impact 98% versus
+low-impact 74%), `02_theory_review.md:87` (the Ω₅ 44% miss rate) and
+`03_attack_corpus.md:113` (a distribution over attack *targets*) each stratify results by
+a dimension `AttackSample` does not have. The corpus carries category, subcategory and
+difficulty. It does not carry impact, adversary class at runtime, or target.
+
+*What it takes:* one field per dimension on `AttackSample`, populated by every generator
+in `src/attacks/generators/`, plus a stratified scoring pass. The work is in the
+generators, not the evaluation, and it is the same shape three times. Part 2 already
+concedes the gap in prose at `06_detection_methods.md:7` and `05g:157`, which is the
+right instinct and not a substitute for the field.
+
+#### W4 — False positives, root-caused and mitigated (3 findings)
+
+`S02:159` attributes false positives to five root causes with frequencies summing to
+100%. `S02:192` reports six mitigation strategies with paired ΔFPR/ΔTPR.
+`fp_mitigation.py:28` plots a nine-point waterfall of incremental FPR reduction.
+
+*What it takes:* two different things, and they should not be conflated. The root-cause
+table needs the pipeline's actual false positives labelled — and
+`multi_seed_results.json::benign_fpr_by_category_mean` already records which benign
+categories trip it (tool_result 0.46, status_report 0.30), which is a real, measured
+answer to a nearby question and could replace the invented one today. The mitigation
+table needs six post-filters implemented over `composition/pipeline.py` and re-scored;
+until they exist it is a design menu and should say so, with the numbers removed. The
+waterfall needs a forward-addition FPR trace that `minimal_forward` does not provide: it
+records the greedy order but only a terminal FPR.
+
+#### W5 — Threshold tuning (1 finding)
+
+`06b_case_studies.md:73` reports a before/after τ₂ tuning outcome as an observed
+deployment result. Part 2 ships a threshold sweep and the ledger already derives
+`firewall_tau2` from the source. *What it takes:* re-run the sweep at τ₂ ∈ {0.50, 0.55}
+against `BenignCorpus` and the injection corpus and bind the four numbers. Small, and
+the only one of the fourteen that is nearly free.
+
+---
+
+### The 15 that need no new experiment
+
+Roughly in order of how much they cost.
+
+**Immediate, artifact already exists (5).** `comprehensive_taxonomy.py:87` and `:96` read
+`omega_level_dr`. `05f:45`'s module-maturity Evidence column reads
+`component_removal[*].delta_tpr`, the same source two other tables already use.
+`05_results.md:58`'s "~55 pp" gap cell is `parametric − empirical` and should be computed
+in the injector, the pattern `_gap_endpoints()` already implements. `03_attack_corpus.md:96`'s
+difficulty distribution is a `Counter` over the corpus.
+
+**One small measurement each (4).** `04_experimental_setup.md:42`'s 0.08 ms firewall
+latency (time the adapter alone; and delete the "detects the majority of attacks on
+first evaluation" clause, which the ablation contradicts). `S02:55`'s AUC intervals
+(`evaluation/roc.py` and `composition/fusion.py` exist; bootstrap them, and until then
+the caption must not say "Empirical"). `05e:33`'s Beta posteriors and `05e:71`'s power
+table (recompute with `BetaPosterior` and `power_analysis_beta_binomial`, the modules
+their own captions name).
+
+**Arithmetic that was never done (3).** `06_detection_methods.md:511`'s AUC lower bound
+is the paper's own equation applied to the column beside it, giving 0.71/0.59/0.45/0.30/0.10
+against a published 0.91/0.87/0.83/0.77/0.61. `05b:101`'s power table should be restated
+as the Bayesian n\* the codebase computes, dropping a frequentist Power column nothing
+produces. `05d:84`'s footnote describes a bootstrap over 10 runs; the artifact records 15
+repeats and 3 warmups and the interval is a t-interval.
+
+**Statements to retract or restate (3).** `01c:164`'s arms-race equilibrium (run the
+simulation and report what it returns — a decay to zero, which is a *stronger* version of
+the paper's own maintenance argument). `S11:77`'s Corollary S11.1 recovers a Lipschitz
+constant from a step size α that no code in `src/` has, because the AT loop takes no
+gradient step. `03_simulation_review.md:106`'s tripwire densities (3+ identity, 5+
+boundary, 2+ principal, 1 temporal per agent) against an adapter that installs one, one,
+one and none.
+
+**Design tables that only need their label fixed (2).** `04_formal_framework.md:762`'s
+25-cell CIF-AD coupling matrix, from which a theorem is "proved by inspection", and
+`05_defense_mechanisms.md:458`'s defense-stack latencies and per-layer detection
+probabilities. Both are design assignments; §7.5 of Part 1 already models the right
+wording for exactly this.
+
+---
+
+### Recommended order
+
+**W1 first, and by a wide margin.** It is the missing control arm, it makes four
+published tables computable rather than removable, and every "+X% versus undefended"
+claim in the series depends on it. **Then the five immediate ones**, which cost an
+afternoon and close a fifth of what is open. **Then W3**, because three separate
+stratified claims across two papers all wait on the same three fields, and adding them
+once retires all of them.
+
+W4's mitigation table and W2's load driver are real engineering and should be scheduled,
+not squeezed in. The two label fixes can go at any time and should not wait for anything.
+
+**What must not happen** is the pattern Round 14 kept finding: a number left standing
+because its digits are not obviously wrong. Where an experiment is not going to be built,
+the honest move is to delete the column and say why, not to leave a plausible figure in
+place with a hedge in the caption.
 
 
 ---
