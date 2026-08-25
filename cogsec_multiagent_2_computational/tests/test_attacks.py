@@ -1647,3 +1647,71 @@ class TestIntegratedCorpusComposition:
         added = len(corpus) - len(published_corpus)
         assert added == 525
         assert added / len(corpus) > 0.3
+
+
+class TestTheStratificationDimensions:
+    """``omega_level`` and ``target`` must be complete, and honest about what they are.
+
+    Four claims across two papers stratified results by a dimension the corpus
+    did not carry: a distribution over attack targets, an impact-stratified
+    detection rate, a per-adversary-class miss rate, and a per-class bar chart.
+    ``AttackSample`` had category, subcategory and difficulty and nothing else,
+    so every one of those numbers was typed.
+    """
+
+    def test_every_sample_carries_both_dimensions(self, corpus: AttackCorpus):
+        for sample in corpus:
+            assert sample.omega_level in {1, 2, 3, 4, 5}, sample.id
+            assert sample.target, sample.id
+
+    def test_targets_come_from_the_declared_set(self, corpus: AttackCorpus):
+        from attacks.corpus import ATTACK_TARGETS
+
+        assert {s.target for s in corpus} <= set(ATTACK_TARGETS)
+
+    def test_a_new_category_must_declare_its_profile(self, monkeypatch):
+        """Fail closed: an unmapped category would drop out of every stratum.
+
+        Silently dropping is the failure mode here, not raising. A category
+        with no adversary class and no target vanishes from both breakdowns
+        while still counting toward the totals above them.
+        """
+        from attacks import corpus as corpus_module
+
+        trimmed = dict(corpus_module._CATEGORY_PROFILE)
+        trimmed.pop("timing_attack")
+        monkeypatch.setattr(corpus_module, "_CATEGORY_PROFILE", trimmed)
+        with pytest.raises(KeyError, match="_CATEGORY_PROFILE"):
+            corpus_module.AttackCorpus.generate(seed=42)
+
+    def test_the_dimensions_are_category_determined_and_say_so(self, corpus: AttackCorpus):
+        """Pinning the limit, not just the field.
+
+        Both dimensions are assigned per category, which makes a stratum a
+        re-grouping of the category breakdown rather than an independent axis.
+        If a sample ever carried a class or target its category does not imply,
+        that would be a genuine second dimension and the manuscripts' hedge
+        would need removing -- so the constraint is asserted rather than left
+        as a comment.
+        """
+        from attacks.corpus import _CATEGORY_PROFILE
+
+        for sample in corpus:
+            key = getattr(sample.category, "value", str(sample.category))
+            expected_omega, expected_target = _CATEGORY_PROFILE[key]
+            assert sample.omega_level == expected_omega, sample.id
+            assert sample.target == expected_target, sample.id
+
+    def test_impact_is_deliberately_absent(self):
+        """The one dimension that must not be manufactured.
+
+        Impact varies within a category by design, so a per-category
+        assignment would produce an axis rather than expose one. The
+        impact-stratified claim it would have supported is retracted in Part 3
+        instead. If an ``impact`` field is ever added it must come from a
+        per-sample labelling pass, and this test should be replaced by one
+        checking that pass exists.
+        """
+        from attacks.corpus import AttackSample
+
+        assert not hasattr(AttackSample("x", "p", None, "s", "easy", True), "impact")

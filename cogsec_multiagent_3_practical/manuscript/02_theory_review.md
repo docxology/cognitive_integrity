@@ -44,7 +44,7 @@ Part 1 provides a theoretical bound on attack performance, formalized as the Ste
 
 > **Stealth-Impact Tradeoff**: *For a given defense sensitivity $\epsilon$, the probability of detection $P(d)$ approaches 1 as the divergence of the attack behavior from the baseline increases.*
 
-This formalism suggests that catastrophic attacks are inherently easier to detect than subtle attacks. Part 2's data consistently validated this: High-impact attacks were detected 98% of the time, while low-impact attacks were detected only 74% of the time.
+This formalism suggests that catastrophic attacks are inherently easier to detect than subtle attacks. Part 2 does not test that: its corpus carries no impact label, so no impact-stratified detection rate has ever been computed. The sentence that stood here reported one --- "High-impact attacks were detected 98\% of the time, while low-impact attacks were detected only 74\%" --- and it was typed. Impact is the one dimension deliberately left off `AttackSample` when adversary class and target were added: unlike those two it varies within a category by design, so assigning it per category would manufacture the axis rather than expose it, and a real label needs a per-sample judgement this corpus has never had. The prediction is worth testing and is tracked as such; it has not been tested.
 
 ## Defense Composition {#sec:composition-review}
 
@@ -84,7 +84,7 @@ This connection is not just theoretical. It means:
 
 1. **Emergent misalignment is the hardest problem** because it minimizes $\Delta F$ per agent: each individual belief shift is sub-threshold, but the collective drift accumulates. This is precisely why colony-scale monitoring is necessary—the FEP signal is distributed across agents.
 2. **Trust calibration is precision calibration**: operators who carefully calibrate trust scores are effectively setting the precision weighting of their agent network. Well-calibrated trust → robust cognition.
-3. **The $\Omega_5$ miss rate (44%) reflects FEP's fundamental challenge**: systematic manipulation by a compromised orchestrator can shift the agent's generative model $P$ itself (not just $Q$), making the baseline a moving target. This requires out-of-band verification (human review, Byzantine quorum) rather than in-context detection.
+3. **The $\Omega_5$ miss rate (2.5\%) reflects FEP's fundamental challenge**: systematic manipulation by a compromised orchestrator can shift the agent's generative model $P$ itself (not just $Q$), making the baseline a moving target. This requires out-of-band verification (human review, Byzantine quorum) rather than in-context detection.
 
 For the full mathematical treatment, see Part~2's theoretical-connections and information-geometry sections.
 

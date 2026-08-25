@@ -53,6 +53,15 @@ class AttackSample:
     subcategory: str
     difficulty: str
     expected_detection: bool
+    #: Adversary capability class the technique requires, 1-5, following the
+    #: ladder in ``redteam.generator.OmegaLevel``. Derived from the category,
+    #: because the class is a property of what the technique does rather than
+    #: of the particular payload: a Sybil attack needs coordinated identities
+    #: whichever wording it uses.
+    omega_level: int = 0
+    #: What the attack aims at. One of the five values in :data:`ATTACK_TARGETS`.
+    #: Also category-determined, and for the same reason.
+    target: str = ""
     metadata: Dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -118,6 +127,51 @@ _TOP_CATEGORY_MAP = {
 # ---------------------------------------------------------------------------
 # Attack corpus
 # ---------------------------------------------------------------------------
+
+
+#: What an attack aims at. Three separate tables in this series report a
+#: distribution over these, and none could be computed: ``AttackSample`` carried
+#: category, subcategory and difficulty and nothing else, so a "third view of
+#: the same 950 samples" had no third dimension to view them along.
+ATTACK_TARGETS = (
+    "belief_state",
+    "action_execution",
+    "trust_relationships",
+    "temporal_state",
+    "goal_alignment",
+)
+
+#: Category to (adversary class, target).
+#:
+#: Both are assigned per category rather than per sample, and that is a real
+#: limit worth stating where the map lives: it means stratifying results by
+#: adversary class or by target is a re-grouping of the category breakdown, not
+#: an independent axis. It is still worth having -- the groupings are the ones
+#: Part 1's threat model uses and the categories do not map onto them one to
+#: one -- but a per-sample judgement would need a labelling pass this corpus
+#: has never had.
+#:
+#: A third dimension the papers report, *impact*, is deliberately absent. Unlike
+#: class and target it does vary within a category by design, so assigning it
+#: per category would manufacture an axis rather than expose one.
+_CATEGORY_PROFILE: Dict[str, tuple] = {
+    "direct_injection": (2, "action_execution"),
+    "indirect_injection": (2, "action_execution"),
+    "nested_injection": (2, "action_execution"),
+    "impersonation": (3, "trust_relationships"),
+    "trust_inflation": (3, "trust_relationships"),
+    "delegation_abuse": (3, "goal_alignment"),
+    "belief_drift": (4, "belief_state"),
+    "belief_fabrication": (4, "belief_state"),
+    "belief_injection": (4, "belief_state"),
+    "sybil_attack": (5, "trust_relationships"),
+    "consensus_poisoning": (5, "goal_alignment"),
+    "timing_attack": (5, "temporal_state"),
+    "provenance_laundering": (4, "belief_state"),
+    "sandbox_escape": (2, "action_execution"),
+    "byzantine_manipulation": (5, "goal_alignment"),
+}
+
 
 class AttackCorpus:
     """A collection of :class:`AttackSample` objects with indexing and persistence.
@@ -293,6 +347,15 @@ class AttackCorpus:
             counters[prefix] += 1
             sample_id = f"{prefix}-{counters[prefix]:04d}"
 
+            key = getattr(cat, "value", str(cat))
+            if key not in _CATEGORY_PROFILE:
+                raise KeyError(
+                    f"category {key!r} has no entry in _CATEGORY_PROFILE; a new "
+                    f"category must declare its adversary class and target, or "
+                    f"every stratified result silently drops it"
+                )
+            omega_level, target = _CATEGORY_PROFILE[key]
+
             samples.append(AttackSample(
                 id=sample_id,
                 payload=raw["payload"],
@@ -300,6 +363,8 @@ class AttackCorpus:
                 subcategory=raw["subcategory"],
                 difficulty=raw["difficulty"],
                 expected_detection=True,  # All corpus entries are attacks
+                omega_level=omega_level,
+                target=target,
                 metadata=raw.get("metadata", {}),
             ))
 

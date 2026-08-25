@@ -123,13 +123,21 @@ target distribution that follows is the third view of the same 950 samples.
 
 Table: Attack target distribution. {#tab:target-dist}
 
-| Target  | Count  | Category |
-| --- | --- | --- |
-| Belief state | 280 | Epistemic |
-| Action execution | 250 | Behavioral |
-| Trust relationships | 220 | Social |
-| Temporal state | 100 | Persistence |
-| Goal alignment | 100 | Behavioral |
+| Target  | Count  | Class | Detected by the full pipeline |
+| --- | --- | --- | --- |
+| Action execution | 675 | Behavioral | 0.920 |
+| Belief state | 325 | Epistemic | 0.609 |
+| Goal alignment | 265 | Behavioral | 0.974 |
+| Trust relationships | 180 | Social | 1.000 |
+| Temporal state | 30 | Persistence | 1.000 |
+
+*Counts and detection rates are measured by `scripts/run_stratified_detection.py` over
+`AttackCorpus.generate(seed=42)`. The counts previously read 280 / 250 / 220 / 100 / 100 and were
+typed: `AttackSample` carried category, subcategory and difficulty and nothing else, so "the third
+view of the same samples" had no third dimension to view them along. `target` is a field on the
+sample now, assigned per category in `attacks.corpus._CATEGORY_PROFILE` --- which makes this a
+re-grouping of the category breakdown rather than an independent axis, and is worth saying here
+rather than leaving a reader to infer a second experiment.*
 
 ![Attack Surface Map. Visualization of cognitive attack entry points in multiagent systems showing the five primary attack surfaces aligned to CIF defense layers: User Input (direct injection, countered by Cognitive Firewall), Tool Outputs (indirect injection, countered by Belief Sandbox + Firewall), Agent Communication (trust exploitation via delegation chains, countered by Trust Calculus with $\delta^d$ decay), Persistent Memory (belief poisoning and progressive drift, countered by Tripwires + Drift Detection), and External Triggers (timing and coordination attacks, countered by Byzantine Consensus). Line thickness indicates attack frequency in our 950-attack corpus; node color indicates CIF detection efficacy at each surface (green $>$90\%, yellow 80-90\%, red $<$80\%). The diagram highlights that Agent Communication is both the highest-frequency and highest-risk surface in multiagent deployments---a gap that single-agent defenses do not address.](figures/attack_surface.pdf){#fig:attack-surface width=90%}
 
