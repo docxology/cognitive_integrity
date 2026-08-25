@@ -39,6 +39,8 @@ Table: Component removal impact analysis (prototype pipeline, integrated corpus,
 
 Minimal viable configuration analysis---identifying component sets achieving specific TPR thresholds with minimal latency overhead---was conducted using the parametric simulation model. These results are consolidated in \cref{sec:parametric-minimal} (Supplementary S08). The parametric analysis identifies Minimal-C (Firewall + Tripwires + Drift Detection) as achieving 90\% detection at 12\% latency overhead in the parametric model. Empirical validation of these configurations with the real pipeline is planned for future work.
 
+![What each defense catches, and what it adds. **Panel A** is each module's detection rate measured alone over the attack corpus; **Panel B** is its Shapley value over all 256 coalitions of the defense lattice. Both panels share one horizontal scale, so bar lengths are directly comparable. A module tall in A and flat in B is not broken: it is redundant with something stronger on this corpus, and it becomes load-bearing whenever that something is absent, which is what a marginal-contribution column alone cannot show. Values from `output/data/module_capability_matrix.json` and `output/data/taxonomy_evaluation_results.json`.](figures/module_capability.pdf){#fig:module-capability width=95%}
+
 ## Component Synergy Analysis {#sec:synergy}
 
 Synergy score = Actual combined effect $-$ Sum of individual effects (\cref{tab:synergy}). Only the top 5 synergy pairs from the real ablation data are reported; pairs not listed showed no measurable synergy on the 100-attack ablation corpus.
@@ -128,6 +130,8 @@ visible in the measurement rather than merely anticipated. The intercept ($\gamm
 ## Message Volume Scaling {#sec:volume-scaling}
 
 \cref{tab:volume-scaling} shows detection rate and latency under increasing message volume, with saturation at $\sim$5000 msg/sec.
+
+![Throughput has a ceiling; detection does not move. **Panel A** plots achieved against target arrival rate with the identity line marked: while the curve tracks the line the pipeline is keeping up, and where it leaves the line it is not. **Panel B** shows CPU consumed and detection rate over the same sweep. Detection is flat because nothing in the pipeline carries state between messages, so arrival rate cannot change a verdict. Single process, single thread; values from `output/data/load_sweep.json`.](figures/load_saturation.pdf){#fig:load-saturation width=95%}
 
 Table: Performance scaling with message volume. {#tab:volume-scaling}
 

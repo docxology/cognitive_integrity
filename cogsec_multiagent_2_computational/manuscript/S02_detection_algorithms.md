@@ -193,6 +193,8 @@ natural mitigation for novelty, does not exist in this framework --- see
 \end{algorithm}
 \label{alg:baseline-update}
 
+![Each mitigation as the trade it is. Strategies are plotted in false-positive by true-positive space, with the unmitigated pipeline marked as a square and iso-Youden contours drawn behind. Two strategies sit directly above the baseline --- the same detection at none of the false-positive cost --- while the confirmation cascade buys a zero false-positive rate by discarding two thirds of the detections. Values from `output/data/fp_mitigation.json`.](figures/mitigation_tradeoff.pdf){#fig:mitigation-tradeoff width=85%}
+
 Table: False positive mitigation strategy effectiveness. {#tab:fp-mitigation-results}
 
 | Strategy  | FPR  | $\Delta$FPR | TPR | $\Delta$TPR | Youden's J |

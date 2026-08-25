@@ -46,7 +46,13 @@ SVG_HASHSALT = "cogsec-multiagent-figures"
 
 
 def default_figures() -> list[tuple[str, Callable[..., object]]]:
-    """Return the 8 manuscript-referenced figure generators."""
+    """Every manuscript-referenced figure generator.
+
+    The five at the end read the measurements added with the control arm, the
+    stratification, the threshold sweep, the load driver and the mitigation
+    study. Each fails closed if its artifact is absent, so a figure here is
+    either drawn from a measurement or not drawn at all.
+    """
     from visualization.figures import (
         ablation_study,
         attack_surface,
@@ -54,7 +60,12 @@ def default_figures() -> list[tuple[str, Callable[..., object]]]:
         comprehensive_taxonomy,
         defense_composition,
         detection_performance,
+        load_saturation,
+        mitigation_tradeoff,
+        module_capability,
+        operating_curve,
         roc_curves,
+        stratified_detection,
         trust_decay,
     )
 
@@ -67,6 +78,11 @@ def default_figures() -> list[tuple[str, Callable[..., object]]]:
         ("detection_performance", detection_performance.plot_detection_performance),
         ("comprehensive_taxonomy", comprehensive_taxonomy.plot_comprehensive_taxonomy),
         ("cif_comprehensive", cif_comprehensive.plot_cif_comprehensive),
+        ("module_capability", module_capability.plot_module_capability),
+        ("stratified_detection", stratified_detection.plot_stratified_detection),
+        ("operating_curve", operating_curve.plot_operating_curve),
+        ("load_saturation", load_saturation.plot_load_saturation),
+        ("mitigation_tradeoff", mitigation_tradeoff.plot_mitigation_tradeoff),
     ]
 
 

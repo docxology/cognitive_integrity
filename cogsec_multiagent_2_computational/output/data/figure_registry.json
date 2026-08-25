@@ -7,57 +7,97 @@
     "label": "fig:cif-comprehensive",
     "type": "figure"
   },
-  "fig:comprehensive-taxonomy": {
+  "fig:operating-curve": {
     "number": 2,
     "display": "Fig. 2",
+    "caption": "The firewall's quarantine threshold, swept.",
+    "section": "02b_configuration_parameters",
+    "label": "fig:operating-curve",
+    "type": "figure"
+  },
+  "fig:comprehensive-taxonomy": {
+    "number": 3,
+    "display": "Fig. 3",
     "caption": "Cognitive Attack Taxonomy.",
     "section": "03_attack_corpus",
     "label": "fig:comprehensive-taxonomy",
     "type": "figure"
   },
+  "fig:stratified-detection": {
+    "number": 4,
+    "display": "Fig. 4",
+    "caption": "Detection is not uniform.",
+    "section": "03_attack_corpus",
+    "label": "fig:stratified-detection",
+    "type": "figure"
+  },
   "fig:attack-surface": {
-    "number": 3,
-    "display": "Fig. 3",
+    "number": 5,
+    "display": "Fig. 5",
     "caption": "Attack Surface Map.",
     "section": "03_attack_corpus",
     "label": "fig:attack-surface",
     "type": "figure"
   },
   "fig:detection-performance": {
-    "number": 4,
-    "display": "Fig. 4",
+    "number": 6,
+    "display": "Fig. 6",
     "caption": "Detection performance.",
     "section": "04_experimental_setup",
     "label": "fig:detection-performance",
     "type": "figure"
   },
   "fig:roc-curves": {
-    "number": 5,
-    "display": "Fig. 5",
+    "number": 7,
+    "display": "Fig. 7",
     "caption": "ROC curves from measured detector scores.",
     "section": "04_experimental_setup",
     "label": "fig:roc-curves",
     "type": "figure"
   },
   "fig:ablation-study": {
-    "number": 6,
-    "display": "Fig. 6",
+    "number": 8,
+    "display": "Fig. 8",
     "caption": "Ablation Study: Defense Component Contribution.",
     "section": "05d_ablation_and_scalability",
     "label": "fig:ablation-study",
     "type": "figure"
   },
+  "fig:module-capability": {
+    "number": 9,
+    "display": "Fig. 9",
+    "caption": "What each defense catches, and what it adds.",
+    "section": "05d_ablation_and_scalability",
+    "label": "fig:module-capability",
+    "type": "figure"
+  },
+  "fig:load-saturation": {
+    "number": 10,
+    "display": "Fig. 10",
+    "caption": "Throughput has a ceiling; detection does not move.",
+    "section": "05d_ablation_and_scalability",
+    "label": "fig:load-saturation",
+    "type": "figure"
+  },
   "fig:defense-composition": {
-    "number": 7,
-    "display": "Fig. 7",
+    "number": 11,
+    "display": "Fig. 11",
     "caption": "Defense Composition Architecture.",
     "section": "06_discussion",
     "label": "fig:defense-composition",
     "type": "figure"
   },
+  "fig:mitigation-tradeoff": {
+    "number": 12,
+    "display": "Fig. 12",
+    "caption": "Each mitigation as the trade it is.",
+    "section": "S02_detection_algorithms",
+    "label": "fig:mitigation-tradeoff",
+    "type": "figure"
+  },
   "fig:trust-decay-sensitivity": {
-    "number": 8,
-    "display": "Fig. 8",
+    "number": 13,
+    "display": "Fig. 13",
     "caption": "Trust decay sensitivity, two panels.",
     "section": "S08_parametric_analysis",
     "label": "fig:trust-decay-sensitivity",
@@ -783,193 +823,177 @@
     "label": "tab:parametric-claude-code-perf",
     "type": "table"
   },
-  "tab:parametric-claude-code-integrity": {
+  "tab:parametric-autogpt-detection": {
     "number": 91,
     "display": "Table 91",
-    "caption": "Tab:Parametric Claude Code Integrity",
-    "section": "S08_parametric_analysis",
-    "label": "tab:parametric-claude-code-integrity",
-    "type": "table"
-  },
-  "tab:parametric-autogpt-detection": {
-    "number": 92,
-    "display": "Table 92",
     "caption": "Tab:Parametric Autogpt Detection",
     "section": "S08_parametric_analysis",
     "label": "tab:parametric-autogpt-detection",
     "type": "table"
   },
-  "tab:parametric-autogpt-perf": {
-    "number": 93,
-    "display": "Table 93",
-    "caption": "Tab:Parametric Autogpt Perf",
-    "section": "S08_parametric_analysis",
-    "label": "tab:parametric-autogpt-perf",
-    "type": "table"
-  },
   "tab:parametric-crewai-detection": {
-    "number": 94,
-    "display": "Table 94",
+    "number": 92,
+    "display": "Table 92",
     "caption": "Tab:Parametric Crewai Detection",
     "section": "S08_parametric_analysis",
     "label": "tab:parametric-crewai-detection",
     "type": "table"
   },
   "tab:parametric-langgraph-detection": {
-    "number": 95,
-    "display": "Table 95",
+    "number": 93,
+    "display": "Table 93",
     "caption": "Tab:Parametric Langgraph Detection",
     "section": "S08_parametric_analysis",
     "label": "tab:parametric-langgraph-detection",
     "type": "table"
   },
   "tab:parametric-cross-arch-summary": {
-    "number": 96,
-    "display": "Table 96",
+    "number": 94,
+    "display": "Table 94",
     "caption": "Tab:Parametric Cross Arch Summary",
     "section": "S08_parametric_analysis",
     "label": "tab:parametric-cross-arch-summary",
     "type": "table"
   },
   "tab:parametric-effect-sizes": {
-    "number": 97,
-    "display": "Table 97",
+    "number": 95,
+    "display": "Table 95",
     "caption": "Tab:Parametric Effect Sizes",
     "section": "S08_parametric_analysis",
     "label": "tab:parametric-effect-sizes",
     "type": "table"
   },
   "tab:parametric-odds-ratios": {
-    "number": 98,
-    "display": "Table 98",
+    "number": 96,
+    "display": "Table 96",
     "caption": "Tab:Parametric Odds Ratios",
     "section": "S08_parametric_analysis",
     "label": "tab:parametric-odds-ratios",
     "type": "table"
   },
   "tab:parametric-nnt": {
-    "number": 99,
-    "display": "Table 99",
+    "number": 97,
+    "display": "Table 97",
     "caption": "Tab:Parametric Nnt",
     "section": "S08_parametric_analysis",
     "label": "tab:parametric-nnt",
     "type": "table"
   },
   "tab:parametric-arch-ci": {
-    "number": 100,
-    "display": "Table 100",
+    "number": 98,
+    "display": "Table 98",
     "caption": "Tab:Parametric Arch Ci",
     "section": "S08_parametric_analysis",
     "label": "tab:parametric-arch-ci",
     "type": "table"
   },
   "tab:parametric-attack-ci": {
-    "number": 101,
-    "display": "Table 101",
+    "number": 99,
+    "display": "Table 99",
     "caption": "Tab:Parametric Attack Ci",
     "section": "S08_parametric_analysis",
     "label": "tab:parametric-attack-ci",
     "type": "table"
   },
   "tab:parametric-firewall-tau1-sensitivity": {
-    "number": 102,
-    "display": "Table 102",
+    "number": 100,
+    "display": "Table 100",
     "caption": "Tab:Parametric Firewall Tau1 Sensitivity",
     "section": "S08_parametric_analysis",
     "label": "tab:parametric-firewall-tau1-sensitivity",
     "type": "table"
   },
   "tab:parametric-firewall-tau2-sensitivity": {
-    "number": 103,
-    "display": "Table 103",
+    "number": 101,
+    "display": "Table 101",
     "caption": "Tab:Parametric Firewall Tau2 Sensitivity",
     "section": "S08_parametric_analysis",
     "label": "tab:parametric-firewall-tau2-sensitivity",
     "type": "table"
   },
   "tab:parametric-decay-sensitivity": {
-    "number": 104,
-    "display": "Table 104",
+    "number": 102,
+    "display": "Table 102",
     "caption": "Tab:Parametric Decay Sensitivity",
     "section": "S08_parametric_analysis",
     "label": "tab:parametric-decay-sensitivity",
     "type": "table"
   },
   "tab:parametric-corroboration": {
-    "number": 105,
-    "display": "Table 105",
+    "number": 103,
+    "display": "Table 103",
     "caption": "Tab:Parametric Corroboration",
     "section": "S08_parametric_analysis",
     "label": "tab:parametric-corroboration",
     "type": "table"
   },
   "tab:parametric-window": {
-    "number": 106,
-    "display": "Table 106",
+    "number": 104,
+    "display": "Table 104",
     "caption": "Tab:Parametric Window",
     "section": "S08_parametric_analysis",
     "label": "tab:parametric-window",
     "type": "table"
   },
   "tab:parametric-interactions": {
-    "number": 107,
-    "display": "Table 107",
+    "number": 105,
+    "display": "Table 105",
     "caption": "Tab:Parametric Interactions",
     "section": "S08_parametric_analysis",
     "label": "tab:parametric-interactions",
     "type": "table"
   },
   "tab:parametric-generalization": {
-    "number": 108,
-    "display": "Table 108",
+    "number": 106,
+    "display": "Table 106",
     "caption": "Tab:Parametric Generalization",
     "section": "S08_parametric_analysis",
     "label": "tab:parametric-generalization",
     "type": "table"
   },
   "tab:parametric-recommended-config": {
-    "number": 109,
-    "display": "Table 109",
+    "number": 107,
+    "display": "Table 107",
     "caption": "Tab:Parametric Recommended Config",
     "section": "S08_parametric_analysis",
     "label": "tab:parametric-recommended-config",
     "type": "table"
   },
   "tab:parametric-minimal-configs": {
-    "number": 110,
-    "display": "Table 110",
+    "number": 108,
+    "display": "Table 108",
     "caption": "Tab:Parametric Minimal Configs",
     "section": "S08_parametric_analysis",
     "label": "tab:parametric-minimal-configs",
     "type": "table"
   },
   "tab:parametric-overall-summary": {
-    "number": 111,
-    "display": "Table 111",
+    "number": 109,
+    "display": "Table 109",
     "caption": "Tab:Parametric Overall Summary",
     "section": "S08_parametric_analysis",
     "label": "tab:parametric-overall-summary",
     "type": "table"
   },
   "tab:s09-types": {
-    "number": 112,
-    "display": "Table 112",
+    "number": 110,
+    "display": "Table 110",
     "caption": "Tab:S09 Types",
     "section": "S09_functional_api",
     "label": "tab:s09-types",
     "type": "table"
   },
   "tab:s09-pipeline-comparison": {
-    "number": 113,
-    "display": "Table 113",
+    "number": 111,
+    "display": "Table 111",
     "caption": "Tab:S09 Pipeline Comparison",
     "section": "S09_functional_api",
     "label": "tab:s09-pipeline-comparison",
     "type": "table"
   },
   "tab:viz-components": {
-    "number": 114,
-    "display": "Table 114",
+    "number": 112,
+    "display": "Table 112",
     "caption": "Tab:Viz Components",
     "section": "S12_composable_visualization",
     "label": "tab:viz-components",

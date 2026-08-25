@@ -114,6 +114,8 @@ target distribution that follows is the third view of the same 950 samples.
 
 ### Target Distribution {#sec:target-dist}
 
+![Detection is not uniform. **Panel A** groups the corpus by what each attack targets, **Panel B** by the adversary class the technique requires; the dashed line is the whole-corpus rate. Nearly all of the shortfall is belief-state attacks, which appear in the second panel as the $\Omega_4$ stratum. Both groupings are assigned per attack category, so the panels are two cuts of one breakdown rather than independent measurements. Values from `output/data/stratified_detection.json`.](figures/stratified_detection.pdf){#fig:stratified-detection width=95%}
+
 Table: Attack target distribution. {#tab:target-dist}
 
 | Target  | Count  | Class | Detected by the full pipeline |

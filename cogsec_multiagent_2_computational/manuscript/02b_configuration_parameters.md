@@ -58,6 +58,8 @@ Table: Belief sandbox configuration parameters. {#tab:sandbox-params}
 | Check interval | $\tau_{check}$ | 60s | $[10, 600]$ | Verification frequency |
 | Max provisional | $N_{max}$ | 1000 | $[100, 10000]$ | Memory limit |
 
+![The firewall's quarantine threshold, swept. **Panel A** plots both arms across the full range of $\tau_2$ with the flat band shaded: every value from 0.25 to 0.75 produces the same true-positive rate and the same false-positive rate, so the band an operator would tune in contains no distinguishable operating points. Above 0.80 the firewall stops flagging. **Panel B** is the same sweep in ROC space with the chance diagonal marked; the curve sits below it, so measured alone against the hard benign corpus this component flags more legitimate messages than attacks at every threshold where it flags anything. Values from `output/data/threshold_sweep.json`.](figures/operating_curve.pdf){#fig:operating-curve width=95%}
+
 ## Tripwire Parameters {#sec:tripwire-params}
 
 Table: Cognitive tripwire configuration parameters. {#tab:tripwire-params}
