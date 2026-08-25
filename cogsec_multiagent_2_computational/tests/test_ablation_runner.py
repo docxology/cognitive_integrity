@@ -187,8 +187,15 @@ class TestRunFullAblation:
             "source_script",
             "seed",
             "generator",
+            # The realised size of the stratified attack draw. Every delta in
+            # this artifact has a resolution of 1/n, and n is not a constant --
+            # it is 98 on the published corpus and 100 on the integrated one --
+            # so consumers that reconstructed it from the smallest observed
+            # delta reconstructed it wrong as soon as two components tied.
+            "n_attacks",
         }
         assert set(result.keys()) == expected_keys
+        assert result["n_attacks"] > 0
 
     def test_full_pipeline_operating_point_is_reported(self):
         """The unablated operating point is serialized, not reconstructed."""

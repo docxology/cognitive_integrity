@@ -155,12 +155,43 @@ class GroundTruth:
             raise ClaimDataUnavailable("ablation_results.json has no 'full_pipeline.tpr'")
         return float(full["tpr"])
 
-    def detection_share_of_pipeline(self) -> float:
-        """Fraction of full-pipeline TPR attributable to the detection module."""
+    def component_share_of_pipeline(self, name: str) -> float:
+        """Fraction of full-pipeline TPR attributable to *name*.
+
+        This used to exist only as ``detection_share_of_pipeline``, because
+        the detection module was the one the prose called dominant. When the
+        invariants rewrite moved dominance to a different module, six claims
+        bound to the detection-specific accessor went dead at once -- their
+        patterns matched nothing, because the sentences they anchored on had
+        been rewritten to name a different module. A share is a property of a
+        component, not of one particular component.
+        """
         baseline = self.full_pipeline_tpr()
         if baseline <= 0:
             raise ClaimDataUnavailable("full_pipeline.tpr is not positive")
-        return self.component_delta_magnitude("detection") / baseline
+        return self.component_delta_magnitude(name) / baseline
+
+    def detection_share_of_pipeline(self) -> float:
+        """Fraction of full-pipeline TPR attributable to the detection module."""
+        return self.component_share_of_pipeline("detection")
+
+    def dominant_component(self) -> str:
+        """The component whose removal costs the most, by name."""
+        rows = self._component_rows()
+        if not rows:
+            raise ClaimDataUnavailable("ablation_results.json has no component rows")
+        return str(min(rows, key=lambda r: float(r["delta_tpr"]))["removed"])
+
+    def dominant_share_of_pipeline(self) -> float:
+        """Share of full-pipeline TPR carried by whichever component dominates."""
+        return self.component_share_of_pipeline(self.dominant_component())
+
+    def top_synergy_value(self) -> float:
+        """The strongest measured pairwise synergy, whichever pair holds it."""
+        rows = self.ablation().get("top_synergies")
+        if not isinstance(rows, list) or not rows:
+            raise ClaimDataUnavailable("ablation_results.json has no 'top_synergies' rows")
+        return max(float(r["synergy"]) for r in rows)
 
     def top_n_harmful_share(self, n: int = 3) -> float:
         """Share of the summed *negative* delta magnitude held by the top ``n``."""
@@ -942,22 +973,69 @@ def _component_claims(
     return tuple(claims)
 
 
+#: Where the artifacts live, for the handful of registry decisions that must be
+#: made at import time rather than at check time.
+_DEFAULT_DATA_DIR = Path(__file__).resolve().parents[2] / "output" / "data"
+
+
+#: How a component key is spelled in a synergy table row.
+_SYNERGY_LABEL: dict[str, str] = {
+    "firewall": "Firewall",
+    "detection": "Detection",
+    "tripwire": "Tripwire",
+    "trust_calculus": "Trust Calculus",
+    "consensus": "Consensus",
+    "provenance": "Provenance",
+    "sandbox": "Sandbox",
+    "invariants": "Invariants",
+}
+
+
+def _recorded_synergy_pairs() -> tuple[tuple[str, str], tuple[str, str]] | tuple:
+    """The pairs the ablation artifact currently reports, in its own order.
+
+    These used to be hardcoded as ``Tripwire + Detection`` and
+    ``Firewall + Detection``, which were the top two rows at the time. When the
+    consensus adapter started detecting, the top five rows became five
+    different pairs and all four of these claims went ``NOT_FOUND`` -- their
+    patterns matched no row, and their derivers asked the artifact for a pair
+    it no longer records. A claim that names the row it checks cannot survive
+    the row changing, so the pairs are read from the artifact that writes the
+    table.
+
+    Falls back to an empty tuple if the artifact is missing or malformed:
+    generating zero claims is visible in the registry count, whereas
+    generating claims against invented pairs would report NOT_FOUND for a
+    reason unrelated to the manuscript.
+    """
+    path = _DEFAULT_DATA_DIR / "ablation_results.json"
+    try:
+        rows = json.loads(path.read_text(encoding="utf-8")).get("top_synergies")
+    except (OSError, ValueError):
+        return ()
+    if not isinstance(rows, list):
+        return ()
+    pairs = []
+    for row in rows[:2]:
+        first, second = row.get("a"), row.get("b")
+        if first in _SYNERGY_LABEL and second in _SYNERGY_LABEL:
+            pairs.append((first, second))
+    return tuple(pairs)
+
+
 def _synergy_claims(file: str, *, prefix: str) -> tuple[Claim, ...]:
-    """Claims for one component-synergy table."""
-    pairs = (
-        ("tripwire_detection", "Tripwire + Detection", "tripwire", "detection"),
-        ("firewall_detection", "Firewall + Detection", "firewall", "detection"),
-    )
+    """Claims for the top rows of one component-synergy table."""
     return tuple(
         _c(
-            f"{prefix}.synergy.{slug}",
+            f"{prefix}.synergy.{first}_{second}",
             file,
-            rf"\| {re.escape(label)} \| \$\\+approx \+([\d.]+)\$",
+            rf"\| {re.escape(_SYNERGY_LABEL[first])} \+ {re.escape(_SYNERGY_LABEL[second])} "
+            rf"\| \$\\approx \+([\d.]+)\$",
             (lambda x, y: lambda gt: gt.synergy(x, y))(first, second),
             F3,
             "fraction",
         )
-        for slug, label, first, second in pairs
+        for first, second in _recorded_synergy_pairs()
     )
 
 
@@ -1235,10 +1313,14 @@ _RESULTS: tuple[Claim, ...] = (
         "fraction",
     ),
     _c(
-        "results.summary_detection_delta",
+        # Re-anchored from "largest marginal loss" on the detection module to
+        # the sentence that replaced it. The pattern died the moment the prose
+        # stopped naming detection as dominant, which is the correct behaviour
+        # for a dead pattern and the reason it is repointed rather than deleted.
+        "results.summary_invariants_delta",
         "05_results.md",
-        r"largest marginal loss \(\$\\Delta\\text\{TPR\} \\approx -([\d.]+)\$",
-        lambda gt: gt.component_delta_magnitude("detection"),
+        r"Invariants module far ahead of every other component \(\$\\Delta\\text\{TPR\} \\approx -([\d.]+)\$",
+        lambda gt: gt.component_delta_magnitude("invariants"),
         F3,
         "fraction",
     ),
@@ -1334,20 +1416,25 @@ _STATISTICAL: tuple[Claim, ...] = (
         "fraction",
     ),
     _c(
-        "05b.detection_share",
+        "05b.dominant_share",
         "05b_statistical_significance.md",
-        r"(\d+)\\+% of baseline TPR",
-        lambda gt: gt.detection_share_of_pipeline(),
+        r"about (\d+)\\% of the pipeline's detection",
+        lambda gt: gt.dominant_share_of_pipeline(),
         PCT0,
         "percent",
     ),
     _c(
-        "05b.top3_share_summary",
+        # Was "rising to about N% with both of them", a sentence about the
+        # top-three harmful share that no longer exists: two components now
+        # account for the entire harmful magnitude, so a top-three share is
+        # 100% by construction and says nothing. Repointed to the strongest
+        # synergy, which is what that paragraph now reports.
+        "05b.top_synergy",
         "05b_statistical_significance.md",
-        r"rising to about (\d+)\\% with both of them",
-        lambda gt: gt.top_n_harmful_share(3),
-        PCT0,
-        "percent",
+        r"tie for the strongest synergy \([^)]*all \$\\approx \+([\d.]+)\$\)",
+        lambda gt: gt.top_synergy_value(),
+        F3,
+        "fraction",
     ),
     _c(
         "05b.llm_claude_dr",
@@ -1398,14 +1485,14 @@ _STATISTICAL: tuple[Claim, ...] = (
         "fraction",
     ),
     _c(
-        "05b.summary_detection_delta",
+        "05b.summary_dominant_delta",
         "05b_statistical_significance.md",
         # The tail moved: the firewall's removal delta rose from -0.010 to
         # -0.020 when the detector stopped scoring benign text, so it now ties
         # Trust Calculus instead of sitting a tier below it. Re-anchored on the
         # phrase that survives the reordering rather than on the old neighbour.
-        r"Detection module \(\$\\Delta\\text\{TPR\} \\approx -([\d.]+)\$\) \$\\gg\$ a tie",
-        lambda gt: gt.component_delta_magnitude("detection"),
+        r"Invariants \(\$\\Delta\\text\{TPR\} \\approx -([\d.]+)\$\) \$\\gg\$",
+        lambda gt: gt.component_delta_magnitude("invariants"),
         F3,
         "fraction",
     ),
@@ -1416,8 +1503,8 @@ _STATISTICAL: tuple[Claim, ...] = (
         # Tripwire+Detection. With the corrected detectors the tie breaks:
         # Firewall+Detection stands alone at the top, so the claim now pins
         # that pair rather than the tie that no longer exists.
-        r"Firewall \+ Detection is the strongest pair \(\$\\approx \+([\d.]+)\$\)",
-        lambda gt: gt.synergy("firewall", "detection"),
+        r"tie for the strongest synergy \([^)]*all \$\\approx \+([\d.]+)\$\)",
+        lambda gt: gt.top_synergy_value(),
         F3,
         "fraction",
     ),
@@ -1457,17 +1544,26 @@ _STATISTICAL: tuple[Claim, ...] = (
 
 _ABLATION: tuple[Claim, ...] = (
     _c(
-        "05d.intro_detection_delta",
+        "05d.intro_invariants_delta",
         "05d_ablation_and_scalability.md",
-        r"largest marginal drop \(\$\\Delta\\text\{TPR\} \\approx -([\d.]+)\$\)",
-        lambda gt: gt.component_delta_magnitude("detection"),
+        r"removing the Invariants module costs \$\\Delta\\text\{TPR\} \\approx -([\d.]+)\$",
+        lambda gt: gt.component_delta_magnitude("invariants"),
         F3,
         "fraction",
     ),
     _c(
         "05d.corpus_size",
         "05d_ablation_and_scalability.md",
-        r"stratified (\d+)-attack corpus",
+        # The prose spells the ablation corpus three ways -- "stratified
+        # N-attack corpus", "N-attack stratified sample" and "N-attack
+        # ablation corpus" -- and pinning one spelling meant the claim went
+        # NOT_FOUND when a caption was reworded rather than when a number
+        # drifted, which is the opposite of what a dead pattern should mean.
+        # The left boundary is load-bearing: without it this captured "475"
+        # out of "1,475-attack corpus", which is the whole integrated corpus
+        # and a different quantity entirely.
+        r"(?:stratified )?(?<![\d,])(\d+)[- ]attack "
+        r"(?:corpus|stratified sample|ablation corpus|evaluation corpus)",
         lambda gt: gt.ablation_corpus_size(),
         EXACT,
         "count",
@@ -1538,10 +1634,10 @@ _DISCUSSION: tuple[Claim, ...] = (
         "percent",
     ),
     _c(
-        "06.evidence_detection_share",
+        "06.evidence_dominant_share",
         "06_discussion.md",
-        r"Detection module \$=\$ (\d+)\\% of detection",
-        lambda gt: gt.detection_share_of_pipeline(),
+        r"about (\d+)\\% of the pipeline's detection",
+        lambda gt: gt.dominant_share_of_pipeline(),
         PCT0,
         "percent",
     ),

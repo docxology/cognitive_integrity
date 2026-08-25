@@ -3,872 +3,996 @@
   "source_script": "scripts/run_multi_seed.py",
   "n_seeds": 30,
   "first_seed": 1,
-  "overall_cv": 0.09668039208798085,
+  "overall_cv": 0.024333719582850542,
   "cv_threshold": 0.05,
   "stable": false,
   "per_architecture_cv": {},
   "architecture_scope": "not_applicable: one architecture-agnostic CIF pipeline",
   "per_category_cv": {
-    "injection": 0.09668039208798085
+    "belief_manipulation": 0.09409939368562235,
+    "coordination": 0.0,
+    "injection": 0.03632891365245029,
+    "provenance_and_isolation": 0.08482194112362668,
+    "trust_exploitation": 0.0
   },
   "benign_arm_present": true,
   "benign_per_stratum": 10,
-  "tpr_mean": 0.44800000000000006,
-  "fpr_mean": 0.25750000000000006,
-  "fpr_cv": 0.02265372168284789,
-  "precision_mean": 0.5905275073530686,
-  "f1_mean": 0.5090611112065079,
-  "youden_j_mean": 0.19049999999999997,
+  "tpr_mean": 0.863,
+  "fpr_mean": 0.1852777777777778,
+  "fpr_cv": 0.03613784345785297,
+  "precision_mean": 0.7951035863876132,
+  "f1_mean": 0.8275805857754777,
+  "youden_j_mean": 0.6777222222222222,
   "benign_fpr_by_difficulty_mean": {
     "easy": 0.08166666666666669,
-    "hard": 0.4333333333333334
+    "hard": 0.2888888888888889
   },
   "benign_fpr_by_category_mean": {
-    "clarifying_question": 0.10000000000000003,
-    "retrieved_document": 0.25,
+    "clarifying_question": 0.0,
+    "retrieved_document": 0.15000000000000002,
     "status_report": 0.30000000000000004,
-    "task_delegation": 0.15000000000000002,
-    "tool_result": 0.6449999999999999,
+    "task_delegation": 0.10000000000000003,
+    "tool_result": 0.46166666666666667,
     "user_request": 0.10000000000000003
   },
   "seed_metrics": [
     {
       "seed": 1,
-      "overall": 0.38,
+      "overall": 0.88,
       "per_architecture": {},
       "per_category": {
-        "injection": 0.38
+        "belief_manipulation": 0.8888888888888888,
+        "coordination": 1.0,
+        "injection": 0.9428571428571428,
+        "provenance_and_isolation": 0.75,
+        "trust_exploitation": 1.0
       },
-      "false_positive_rate": 0.25833333333333336,
+      "false_positive_rate": 0.18333333333333332,
       "n_attacks": 100,
-      "n_detected_attacks": 38,
+      "n_detected_attacks": 88,
       "n_benign": 120,
-      "n_false_positives": 31,
-      "youden_j": 0.12166666666666665,
-      "precision": 0.5507246376811594,
-      "f1": 0.44970414201183434,
+      "n_false_positives": 22,
+      "youden_j": 0.6966666666666667,
+      "precision": 0.8,
+      "f1": 0.8380952380952381,
       "benign_fpr_by_difficulty": {
         "easy": 0.08333333333333333,
-        "hard": 0.43333333333333335
+        "hard": 0.2833333333333333
       },
       "benign_fpr_by_category": {
-        "clarifying_question": 0.1,
-        "retrieved_document": 0.25,
+        "clarifying_question": 0.0,
+        "retrieved_document": 0.15,
         "status_report": 0.3,
-        "task_delegation": 0.15,
-        "tool_result": 0.65,
+        "task_delegation": 0.1,
+        "tool_result": 0.45,
         "user_request": 0.1
       }
     },
     {
       "seed": 2,
-      "overall": 0.45,
+      "overall": 0.84,
       "per_architecture": {},
       "per_category": {
-        "injection": 0.45
+        "belief_manipulation": 0.6666666666666666,
+        "coordination": 1.0,
+        "injection": 1.0,
+        "provenance_and_isolation": 0.6388888888888888,
+        "trust_exploitation": 1.0
       },
-      "false_positive_rate": 0.25833333333333336,
+      "false_positive_rate": 0.18333333333333332,
       "n_attacks": 100,
-      "n_detected_attacks": 45,
+      "n_detected_attacks": 84,
       "n_benign": 120,
-      "n_false_positives": 31,
-      "youden_j": 0.19166666666666665,
-      "precision": 0.5921052631578947,
-      "f1": 0.5113636363636364,
+      "n_false_positives": 22,
+      "youden_j": 0.6566666666666666,
+      "precision": 0.7924528301886793,
+      "f1": 0.8155339805825242,
       "benign_fpr_by_difficulty": {
         "easy": 0.08333333333333333,
-        "hard": 0.43333333333333335
+        "hard": 0.2833333333333333
       },
       "benign_fpr_by_category": {
-        "clarifying_question": 0.1,
-        "retrieved_document": 0.25,
+        "clarifying_question": 0.0,
+        "retrieved_document": 0.15,
         "status_report": 0.3,
-        "task_delegation": 0.15,
-        "tool_result": 0.65,
+        "task_delegation": 0.1,
+        "tool_result": 0.45,
         "user_request": 0.1
       }
     },
     {
       "seed": 3,
-      "overall": 0.48,
+      "overall": 0.88,
       "per_architecture": {},
       "per_category": {
-        "injection": 0.48
+        "belief_manipulation": 0.8888888888888888,
+        "coordination": 1.0,
+        "injection": 0.9714285714285714,
+        "provenance_and_isolation": 0.7222222222222222,
+        "trust_exploitation": 1.0
       },
-      "false_positive_rate": 0.25833333333333336,
+      "false_positive_rate": 0.18333333333333332,
       "n_attacks": 100,
-      "n_detected_attacks": 48,
+      "n_detected_attacks": 88,
       "n_benign": 120,
-      "n_false_positives": 31,
-      "youden_j": 0.22166666666666662,
-      "precision": 0.6075949367088608,
-      "f1": 0.5363128491620112,
+      "n_false_positives": 22,
+      "youden_j": 0.6966666666666667,
+      "precision": 0.8,
+      "f1": 0.8380952380952381,
       "benign_fpr_by_difficulty": {
         "easy": 0.08333333333333333,
-        "hard": 0.43333333333333335
+        "hard": 0.2833333333333333
       },
       "benign_fpr_by_category": {
-        "clarifying_question": 0.1,
-        "retrieved_document": 0.25,
+        "clarifying_question": 0.0,
+        "retrieved_document": 0.15,
         "status_report": 0.3,
-        "task_delegation": 0.15,
-        "tool_result": 0.65,
+        "task_delegation": 0.1,
+        "tool_result": 0.45,
         "user_request": 0.1
       }
     },
     {
       "seed": 4,
-      "overall": 0.43,
+      "overall": 0.89,
       "per_architecture": {},
       "per_category": {
-        "injection": 0.43
+        "belief_manipulation": 0.8888888888888888,
+        "coordination": 1.0,
+        "injection": 0.9714285714285714,
+        "provenance_and_isolation": 0.75,
+        "trust_exploitation": 1.0
       },
-      "false_positive_rate": 0.26666666666666666,
+      "false_positive_rate": 0.19166666666666668,
       "n_attacks": 100,
-      "n_detected_attacks": 43,
+      "n_detected_attacks": 89,
       "n_benign": 120,
-      "n_false_positives": 32,
-      "youden_j": 0.16333333333333333,
-      "precision": 0.5733333333333334,
-      "f1": 0.49142857142857144,
+      "n_false_positives": 23,
+      "youden_j": 0.6983333333333334,
+      "precision": 0.7946428571428571,
+      "f1": 0.839622641509434,
       "benign_fpr_by_difficulty": {
         "easy": 0.1,
-        "hard": 0.43333333333333335
+        "hard": 0.2833333333333333
       },
       "benign_fpr_by_category": {
-        "clarifying_question": 0.1,
-        "retrieved_document": 0.25,
+        "clarifying_question": 0.0,
+        "retrieved_document": 0.15,
         "status_report": 0.3,
-        "task_delegation": 0.15,
-        "tool_result": 0.7,
+        "task_delegation": 0.1,
+        "tool_result": 0.5,
         "user_request": 0.1
       }
     },
     {
       "seed": 5,
-      "overall": 0.49,
+      "overall": 0.9,
       "per_architecture": {},
       "per_category": {
-        "injection": 0.49
+        "belief_manipulation": 0.7777777777777778,
+        "coordination": 1.0,
+        "injection": 0.9714285714285714,
+        "provenance_and_isolation": 0.8055555555555556,
+        "trust_exploitation": 1.0
       },
-      "false_positive_rate": 0.25833333333333336,
+      "false_positive_rate": 0.18333333333333332,
       "n_attacks": 100,
-      "n_detected_attacks": 49,
+      "n_detected_attacks": 90,
       "n_benign": 120,
-      "n_false_positives": 31,
-      "youden_j": 0.23166666666666663,
-      "precision": 0.6125,
-      "f1": 0.5444444444444445,
+      "n_false_positives": 22,
+      "youden_j": 0.7166666666666667,
+      "precision": 0.8035714285714286,
+      "f1": 0.8490566037735849,
       "benign_fpr_by_difficulty": {
         "easy": 0.08333333333333333,
-        "hard": 0.43333333333333335
+        "hard": 0.2833333333333333
       },
       "benign_fpr_by_category": {
-        "clarifying_question": 0.1,
-        "retrieved_document": 0.25,
+        "clarifying_question": 0.0,
+        "retrieved_document": 0.15,
         "status_report": 0.3,
-        "task_delegation": 0.15,
-        "tool_result": 0.65,
+        "task_delegation": 0.1,
+        "tool_result": 0.45,
         "user_request": 0.1
       }
     },
     {
       "seed": 6,
-      "overall": 0.37,
+      "overall": 0.89,
       "per_architecture": {},
       "per_category": {
-        "injection": 0.37
+        "belief_manipulation": 1.0,
+        "coordination": 1.0,
+        "injection": 1.0,
+        "provenance_and_isolation": 0.6944444444444444,
+        "trust_exploitation": 1.0
       },
-      "false_positive_rate": 0.26666666666666666,
+      "false_positive_rate": 0.2,
       "n_attacks": 100,
-      "n_detected_attacks": 37,
+      "n_detected_attacks": 89,
       "n_benign": 120,
-      "n_false_positives": 32,
-      "youden_j": 0.10333333333333333,
-      "precision": 0.5362318840579711,
-      "f1": 0.4378698224852071,
+      "n_false_positives": 24,
+      "youden_j": 0.69,
+      "precision": 0.7876106194690266,
+      "f1": 0.8356807511737089,
       "benign_fpr_by_difficulty": {
         "easy": 0.1,
-        "hard": 0.43333333333333335
+        "hard": 0.3
       },
       "benign_fpr_by_category": {
-        "clarifying_question": 0.1,
-        "retrieved_document": 0.25,
+        "clarifying_question": 0.0,
+        "retrieved_document": 0.15,
         "status_report": 0.3,
-        "task_delegation": 0.15,
-        "tool_result": 0.7,
+        "task_delegation": 0.1,
+        "tool_result": 0.55,
         "user_request": 0.1
       }
     },
     {
       "seed": 7,
-      "overall": 0.5,
+      "overall": 0.84,
       "per_architecture": {},
       "per_category": {
-        "injection": 0.5
+        "belief_manipulation": 1.0,
+        "coordination": 1.0,
+        "injection": 0.9142857142857143,
+        "provenance_and_isolation": 0.6388888888888888,
+        "trust_exploitation": 1.0
       },
-      "false_positive_rate": 0.25833333333333336,
+      "false_positive_rate": 0.19166666666666668,
       "n_attacks": 100,
-      "n_detected_attacks": 50,
+      "n_detected_attacks": 84,
       "n_benign": 120,
-      "n_false_positives": 31,
-      "youden_j": 0.24166666666666664,
-      "precision": 0.6172839506172839,
-      "f1": 0.5524861878453038,
+      "n_false_positives": 23,
+      "youden_j": 0.6483333333333333,
+      "precision": 0.7850467289719626,
+      "f1": 0.8115942028985507,
       "benign_fpr_by_difficulty": {
         "easy": 0.08333333333333333,
-        "hard": 0.43333333333333335
+        "hard": 0.3
       },
       "benign_fpr_by_category": {
-        "clarifying_question": 0.1,
-        "retrieved_document": 0.25,
+        "clarifying_question": 0.0,
+        "retrieved_document": 0.15,
         "status_report": 0.3,
-        "task_delegation": 0.15,
-        "tool_result": 0.65,
+        "task_delegation": 0.1,
+        "tool_result": 0.5,
         "user_request": 0.1
       }
     },
     {
       "seed": 8,
-      "overall": 0.48,
+      "overall": 0.86,
       "per_architecture": {},
       "per_category": {
-        "injection": 0.48
+        "belief_manipulation": 0.8888888888888888,
+        "coordination": 1.0,
+        "injection": 0.9142857142857143,
+        "provenance_and_isolation": 0.7222222222222222,
+        "trust_exploitation": 1.0
       },
-      "false_positive_rate": 0.25,
+      "false_positive_rate": 0.18333333333333332,
       "n_attacks": 100,
-      "n_detected_attacks": 48,
+      "n_detected_attacks": 86,
       "n_benign": 120,
-      "n_false_positives": 30,
-      "youden_j": 0.22999999999999998,
-      "precision": 0.6153846153846154,
-      "f1": 0.5393258426966293,
+      "n_false_positives": 22,
+      "youden_j": 0.6766666666666666,
+      "precision": 0.7962962962962963,
+      "f1": 0.826923076923077,
       "benign_fpr_by_difficulty": {
         "easy": 0.06666666666666667,
-        "hard": 0.43333333333333335
+        "hard": 0.3
       },
       "benign_fpr_by_category": {
-        "clarifying_question": 0.1,
-        "retrieved_document": 0.25,
+        "clarifying_question": 0.0,
+        "retrieved_document": 0.15,
         "status_report": 0.3,
-        "task_delegation": 0.15,
-        "tool_result": 0.6,
+        "task_delegation": 0.1,
+        "tool_result": 0.45,
         "user_request": 0.1
       }
     },
     {
       "seed": 9,
-      "overall": 0.44,
+      "overall": 0.88,
       "per_architecture": {},
       "per_category": {
-        "injection": 0.44
+        "belief_manipulation": 0.8888888888888888,
+        "coordination": 1.0,
+        "injection": 1.0,
+        "provenance_and_isolation": 0.6944444444444444,
+        "trust_exploitation": 1.0
       },
-      "false_positive_rate": 0.26666666666666666,
+      "false_positive_rate": 0.19166666666666668,
       "n_attacks": 100,
-      "n_detected_attacks": 44,
+      "n_detected_attacks": 88,
       "n_benign": 120,
-      "n_false_positives": 32,
-      "youden_j": 0.17333333333333334,
-      "precision": 0.5789473684210527,
-      "f1": 0.5,
+      "n_false_positives": 23,
+      "youden_j": 0.6883333333333334,
+      "precision": 0.7927927927927928,
+      "f1": 0.8341232227488151,
       "benign_fpr_by_difficulty": {
         "easy": 0.1,
-        "hard": 0.43333333333333335
+        "hard": 0.2833333333333333
       },
       "benign_fpr_by_category": {
-        "clarifying_question": 0.1,
-        "retrieved_document": 0.25,
+        "clarifying_question": 0.0,
+        "retrieved_document": 0.15,
         "status_report": 0.3,
-        "task_delegation": 0.15,
-        "tool_result": 0.7,
+        "task_delegation": 0.1,
+        "tool_result": 0.5,
         "user_request": 0.1
       }
     },
     {
       "seed": 10,
-      "overall": 0.47,
+      "overall": 0.84,
       "per_architecture": {},
       "per_category": {
-        "injection": 0.47
+        "belief_manipulation": 1.0,
+        "coordination": 1.0,
+        "injection": 0.9714285714285714,
+        "provenance_and_isolation": 0.5833333333333334,
+        "trust_exploitation": 1.0
       },
-      "false_positive_rate": 0.25833333333333336,
+      "false_positive_rate": 0.18333333333333332,
       "n_attacks": 100,
-      "n_detected_attacks": 47,
+      "n_detected_attacks": 84,
       "n_benign": 120,
-      "n_false_positives": 31,
-      "youden_j": 0.21166666666666661,
-      "precision": 0.6025641025641025,
-      "f1": 0.5280898876404494,
+      "n_false_positives": 22,
+      "youden_j": 0.6566666666666666,
+      "precision": 0.7924528301886793,
+      "f1": 0.8155339805825242,
       "benign_fpr_by_difficulty": {
         "easy": 0.08333333333333333,
-        "hard": 0.43333333333333335
+        "hard": 0.2833333333333333
       },
       "benign_fpr_by_category": {
-        "clarifying_question": 0.1,
-        "retrieved_document": 0.25,
+        "clarifying_question": 0.0,
+        "retrieved_document": 0.15,
         "status_report": 0.3,
-        "task_delegation": 0.15,
-        "tool_result": 0.65,
+        "task_delegation": 0.1,
+        "tool_result": 0.45,
         "user_request": 0.1
       }
     },
     {
       "seed": 11,
-      "overall": 0.46,
+      "overall": 0.83,
       "per_architecture": {},
       "per_category": {
-        "injection": 0.46
+        "belief_manipulation": 0.8888888888888888,
+        "coordination": 1.0,
+        "injection": 0.9428571428571428,
+        "provenance_and_isolation": 0.6111111111111112,
+        "trust_exploitation": 1.0
       },
-      "false_positive_rate": 0.26666666666666666,
+      "false_positive_rate": 0.19166666666666668,
       "n_attacks": 100,
-      "n_detected_attacks": 46,
+      "n_detected_attacks": 83,
       "n_benign": 120,
-      "n_false_positives": 32,
-      "youden_j": 0.19333333333333336,
-      "precision": 0.5897435897435898,
-      "f1": 0.5168539325842696,
+      "n_false_positives": 23,
+      "youden_j": 0.6383333333333333,
+      "precision": 0.7830188679245284,
+      "f1": 0.8058252427184467,
       "benign_fpr_by_difficulty": {
         "easy": 0.1,
-        "hard": 0.43333333333333335
+        "hard": 0.2833333333333333
       },
       "benign_fpr_by_category": {
-        "clarifying_question": 0.1,
-        "retrieved_document": 0.25,
+        "clarifying_question": 0.0,
+        "retrieved_document": 0.15,
         "status_report": 0.3,
-        "task_delegation": 0.15,
-        "tool_result": 0.7,
+        "task_delegation": 0.1,
+        "tool_result": 0.5,
         "user_request": 0.1
       }
     },
     {
       "seed": 12,
-      "overall": 0.51,
+      "overall": 0.87,
       "per_architecture": {},
       "per_category": {
-        "injection": 0.51
+        "belief_manipulation": 1.0,
+        "coordination": 1.0,
+        "injection": 0.9142857142857143,
+        "provenance_and_isolation": 0.7222222222222222,
+        "trust_exploitation": 1.0
       },
-      "false_positive_rate": 0.25833333333333336,
+      "false_positive_rate": 0.19166666666666668,
       "n_attacks": 100,
-      "n_detected_attacks": 51,
+      "n_detected_attacks": 87,
       "n_benign": 120,
-      "n_false_positives": 31,
-      "youden_j": 0.25166666666666665,
-      "precision": 0.6219512195121951,
-      "f1": 0.5604395604395604,
+      "n_false_positives": 23,
+      "youden_j": 0.6783333333333333,
+      "precision": 0.7909090909090909,
+      "f1": 0.8285714285714286,
       "benign_fpr_by_difficulty": {
         "easy": 0.08333333333333333,
-        "hard": 0.43333333333333335
+        "hard": 0.3
       },
       "benign_fpr_by_category": {
-        "clarifying_question": 0.1,
-        "retrieved_document": 0.25,
+        "clarifying_question": 0.0,
+        "retrieved_document": 0.15,
         "status_report": 0.3,
-        "task_delegation": 0.15,
-        "tool_result": 0.65,
+        "task_delegation": 0.1,
+        "tool_result": 0.5,
         "user_request": 0.1
       }
     },
     {
       "seed": 13,
-      "overall": 0.41,
+      "overall": 0.88,
       "per_architecture": {},
       "per_category": {
-        "injection": 0.41
+        "belief_manipulation": 1.0,
+        "coordination": 1.0,
+        "injection": 0.9714285714285714,
+        "provenance_and_isolation": 0.6944444444444444,
+        "trust_exploitation": 1.0
       },
-      "false_positive_rate": 0.25,
+      "false_positive_rate": 0.175,
       "n_attacks": 100,
-      "n_detected_attacks": 41,
+      "n_detected_attacks": 88,
       "n_benign": 120,
-      "n_false_positives": 30,
-      "youden_j": 0.15999999999999998,
-      "precision": 0.5774647887323944,
-      "f1": 0.47953216374269003,
+      "n_false_positives": 21,
+      "youden_j": 0.7050000000000001,
+      "precision": 0.8073394495412844,
+      "f1": 0.8421052631578948,
       "benign_fpr_by_difficulty": {
         "easy": 0.06666666666666667,
-        "hard": 0.43333333333333335
+        "hard": 0.2833333333333333
       },
       "benign_fpr_by_category": {
-        "clarifying_question": 0.1,
-        "retrieved_document": 0.25,
+        "clarifying_question": 0.0,
+        "retrieved_document": 0.15,
         "status_report": 0.3,
-        "task_delegation": 0.15,
-        "tool_result": 0.6,
+        "task_delegation": 0.1,
+        "tool_result": 0.4,
         "user_request": 0.1
       }
     },
     {
       "seed": 14,
-      "overall": 0.56,
+      "overall": 0.89,
       "per_architecture": {},
       "per_category": {
-        "injection": 0.56
+        "belief_manipulation": 1.0,
+        "coordination": 1.0,
+        "injection": 0.9428571428571428,
+        "provenance_and_isolation": 0.75,
+        "trust_exploitation": 1.0
       },
-      "false_positive_rate": 0.25,
+      "false_positive_rate": 0.175,
       "n_attacks": 100,
-      "n_detected_attacks": 56,
+      "n_detected_attacks": 89,
       "n_benign": 120,
-      "n_false_positives": 30,
-      "youden_j": 0.31000000000000005,
-      "precision": 0.6511627906976745,
-      "f1": 0.6021505376344087,
+      "n_false_positives": 21,
+      "youden_j": 0.7150000000000001,
+      "precision": 0.8090909090909091,
+      "f1": 0.8476190476190476,
       "benign_fpr_by_difficulty": {
         "easy": 0.06666666666666667,
-        "hard": 0.43333333333333335
+        "hard": 0.2833333333333333
       },
       "benign_fpr_by_category": {
-        "clarifying_question": 0.1,
-        "retrieved_document": 0.25,
+        "clarifying_question": 0.0,
+        "retrieved_document": 0.15,
         "status_report": 0.3,
-        "task_delegation": 0.15,
-        "tool_result": 0.6,
+        "task_delegation": 0.1,
+        "tool_result": 0.4,
         "user_request": 0.1
       }
     },
     {
       "seed": 15,
-      "overall": 0.42,
+      "overall": 0.86,
       "per_architecture": {},
       "per_category": {
-        "injection": 0.42
+        "belief_manipulation": 1.0,
+        "coordination": 1.0,
+        "injection": 0.9142857142857143,
+        "provenance_and_isolation": 0.6944444444444444,
+        "trust_exploitation": 1.0
       },
-      "false_positive_rate": 0.25,
+      "false_positive_rate": 0.175,
       "n_attacks": 100,
-      "n_detected_attacks": 42,
+      "n_detected_attacks": 86,
       "n_benign": 120,
-      "n_false_positives": 30,
-      "youden_j": 0.16999999999999998,
-      "precision": 0.5833333333333334,
-      "f1": 0.4883720930232558,
+      "n_false_positives": 21,
+      "youden_j": 0.685,
+      "precision": 0.8037383177570093,
+      "f1": 0.8309178743961353,
       "benign_fpr_by_difficulty": {
         "easy": 0.06666666666666667,
-        "hard": 0.43333333333333335
+        "hard": 0.2833333333333333
       },
       "benign_fpr_by_category": {
-        "clarifying_question": 0.1,
-        "retrieved_document": 0.25,
+        "clarifying_question": 0.0,
+        "retrieved_document": 0.15,
         "status_report": 0.3,
-        "task_delegation": 0.15,
-        "tool_result": 0.6,
+        "task_delegation": 0.1,
+        "tool_result": 0.4,
         "user_request": 0.1
       }
     },
     {
       "seed": 16,
-      "overall": 0.45,
+      "overall": 0.84,
       "per_architecture": {},
       "per_category": {
-        "injection": 0.45
+        "belief_manipulation": 0.7777777777777778,
+        "coordination": 1.0,
+        "injection": 0.9142857142857143,
+        "provenance_and_isolation": 0.6944444444444444,
+        "trust_exploitation": 1.0
       },
-      "false_positive_rate": 0.25833333333333336,
+      "false_positive_rate": 0.19166666666666668,
       "n_attacks": 100,
-      "n_detected_attacks": 45,
+      "n_detected_attacks": 84,
       "n_benign": 120,
-      "n_false_positives": 31,
-      "youden_j": 0.19166666666666665,
-      "precision": 0.5921052631578947,
-      "f1": 0.5113636363636364,
+      "n_false_positives": 23,
+      "youden_j": 0.6483333333333333,
+      "precision": 0.7850467289719626,
+      "f1": 0.8115942028985507,
       "benign_fpr_by_difficulty": {
         "easy": 0.08333333333333333,
-        "hard": 0.43333333333333335
+        "hard": 0.3
       },
       "benign_fpr_by_category": {
-        "clarifying_question": 0.1,
-        "retrieved_document": 0.25,
+        "clarifying_question": 0.0,
+        "retrieved_document": 0.15,
         "status_report": 0.3,
-        "task_delegation": 0.15,
-        "tool_result": 0.65,
+        "task_delegation": 0.1,
+        "tool_result": 0.5,
         "user_request": 0.1
       }
     },
     {
       "seed": 17,
-      "overall": 0.47,
+      "overall": 0.85,
       "per_architecture": {},
       "per_category": {
-        "injection": 0.47
+        "belief_manipulation": 0.8888888888888888,
+        "coordination": 1.0,
+        "injection": 0.9428571428571428,
+        "provenance_and_isolation": 0.6666666666666666,
+        "trust_exploitation": 1.0
       },
-      "false_positive_rate": 0.25833333333333336,
+      "false_positive_rate": 0.19166666666666668,
       "n_attacks": 100,
-      "n_detected_attacks": 47,
+      "n_detected_attacks": 85,
       "n_benign": 120,
-      "n_false_positives": 31,
-      "youden_j": 0.21166666666666661,
-      "precision": 0.6025641025641025,
-      "f1": 0.5280898876404494,
+      "n_false_positives": 23,
+      "youden_j": 0.6583333333333333,
+      "precision": 0.7870370370370371,
+      "f1": 0.8173076923076923,
       "benign_fpr_by_difficulty": {
         "easy": 0.08333333333333333,
-        "hard": 0.43333333333333335
+        "hard": 0.3
       },
       "benign_fpr_by_category": {
-        "clarifying_question": 0.1,
-        "retrieved_document": 0.25,
+        "clarifying_question": 0.0,
+        "retrieved_document": 0.15,
         "status_report": 0.3,
-        "task_delegation": 0.15,
-        "tool_result": 0.65,
+        "task_delegation": 0.1,
+        "tool_result": 0.5,
         "user_request": 0.1
       }
     },
     {
       "seed": 18,
-      "overall": 0.39,
+      "overall": 0.86,
       "per_architecture": {},
       "per_category": {
-        "injection": 0.39
+        "belief_manipulation": 1.0,
+        "coordination": 1.0,
+        "injection": 0.9428571428571428,
+        "provenance_and_isolation": 0.6666666666666666,
+        "trust_exploitation": 1.0
       },
-      "false_positive_rate": 0.25833333333333336,
+      "false_positive_rate": 0.18333333333333332,
       "n_attacks": 100,
-      "n_detected_attacks": 39,
+      "n_detected_attacks": 86,
       "n_benign": 120,
-      "n_false_positives": 31,
-      "youden_j": 0.13166666666666665,
-      "precision": 0.5571428571428572,
-      "f1": 0.45882352941176474,
+      "n_false_positives": 22,
+      "youden_j": 0.6766666666666666,
+      "precision": 0.7962962962962963,
+      "f1": 0.826923076923077,
       "benign_fpr_by_difficulty": {
         "easy": 0.08333333333333333,
-        "hard": 0.43333333333333335
+        "hard": 0.2833333333333333
       },
       "benign_fpr_by_category": {
-        "clarifying_question": 0.1,
-        "retrieved_document": 0.25,
+        "clarifying_question": 0.0,
+        "retrieved_document": 0.15,
         "status_report": 0.3,
-        "task_delegation": 0.15,
-        "tool_result": 0.65,
+        "task_delegation": 0.1,
+        "tool_result": 0.45,
         "user_request": 0.1
       }
     },
     {
       "seed": 19,
-      "overall": 0.48,
+      "overall": 0.89,
       "per_architecture": {},
       "per_category": {
-        "injection": 0.48
+        "belief_manipulation": 1.0,
+        "coordination": 1.0,
+        "injection": 0.9428571428571428,
+        "provenance_and_isolation": 0.75,
+        "trust_exploitation": 1.0
       },
-      "false_positive_rate": 0.25833333333333336,
+      "false_positive_rate": 0.18333333333333332,
       "n_attacks": 100,
-      "n_detected_attacks": 48,
+      "n_detected_attacks": 89,
       "n_benign": 120,
-      "n_false_positives": 31,
-      "youden_j": 0.22166666666666662,
-      "precision": 0.6075949367088608,
-      "f1": 0.5363128491620112,
+      "n_false_positives": 22,
+      "youden_j": 0.7066666666666667,
+      "precision": 0.8018018018018018,
+      "f1": 0.8436018957345972,
       "benign_fpr_by_difficulty": {
         "easy": 0.08333333333333333,
-        "hard": 0.43333333333333335
+        "hard": 0.2833333333333333
       },
       "benign_fpr_by_category": {
-        "clarifying_question": 0.1,
-        "retrieved_document": 0.25,
+        "clarifying_question": 0.0,
+        "retrieved_document": 0.15,
         "status_report": 0.3,
-        "task_delegation": 0.15,
-        "tool_result": 0.65,
+        "task_delegation": 0.1,
+        "tool_result": 0.45,
         "user_request": 0.1
       }
     },
     {
       "seed": 20,
-      "overall": 0.43,
+      "overall": 0.86,
       "per_architecture": {},
       "per_category": {
-        "injection": 0.43
+        "belief_manipulation": 0.7777777777777778,
+        "coordination": 1.0,
+        "injection": 0.9428571428571428,
+        "provenance_and_isolation": 0.7222222222222222,
+        "trust_exploitation": 1.0
       },
-      "false_positive_rate": 0.25,
+      "false_positive_rate": 0.175,
       "n_attacks": 100,
-      "n_detected_attacks": 43,
+      "n_detected_attacks": 86,
       "n_benign": 120,
-      "n_false_positives": 30,
-      "youden_j": 0.18,
-      "precision": 0.589041095890411,
-      "f1": 0.49710982658959535,
+      "n_false_positives": 21,
+      "youden_j": 0.685,
+      "precision": 0.8037383177570093,
+      "f1": 0.8309178743961353,
       "benign_fpr_by_difficulty": {
         "easy": 0.06666666666666667,
-        "hard": 0.43333333333333335
+        "hard": 0.2833333333333333
       },
       "benign_fpr_by_category": {
-        "clarifying_question": 0.1,
-        "retrieved_document": 0.25,
+        "clarifying_question": 0.0,
+        "retrieved_document": 0.15,
         "status_report": 0.3,
-        "task_delegation": 0.15,
-        "tool_result": 0.6,
+        "task_delegation": 0.1,
+        "tool_result": 0.4,
         "user_request": 0.1
       }
     },
     {
       "seed": 21,
-      "overall": 0.49,
+      "overall": 0.84,
       "per_architecture": {},
       "per_category": {
-        "injection": 0.49
+        "belief_manipulation": 1.0,
+        "coordination": 1.0,
+        "injection": 0.8571428571428571,
+        "provenance_and_isolation": 0.6944444444444444,
+        "trust_exploitation": 1.0
       },
-      "false_positive_rate": 0.25833333333333336,
+      "false_positive_rate": 0.18333333333333332,
       "n_attacks": 100,
-      "n_detected_attacks": 49,
+      "n_detected_attacks": 84,
       "n_benign": 120,
-      "n_false_positives": 31,
-      "youden_j": 0.23166666666666663,
-      "precision": 0.6125,
-      "f1": 0.5444444444444445,
+      "n_false_positives": 22,
+      "youden_j": 0.6566666666666666,
+      "precision": 0.7924528301886793,
+      "f1": 0.8155339805825242,
       "benign_fpr_by_difficulty": {
         "easy": 0.08333333333333333,
-        "hard": 0.43333333333333335
+        "hard": 0.2833333333333333
       },
       "benign_fpr_by_category": {
-        "clarifying_question": 0.1,
-        "retrieved_document": 0.25,
+        "clarifying_question": 0.0,
+        "retrieved_document": 0.15,
         "status_report": 0.3,
-        "task_delegation": 0.15,
-        "tool_result": 0.65,
+        "task_delegation": 0.1,
+        "tool_result": 0.45,
         "user_request": 0.1
       }
     },
     {
       "seed": 22,
-      "overall": 0.38,
+      "overall": 0.85,
       "per_architecture": {},
       "per_category": {
-        "injection": 0.38
+        "belief_manipulation": 1.0,
+        "coordination": 1.0,
+        "injection": 1.0,
+        "provenance_and_isolation": 0.5833333333333334,
+        "trust_exploitation": 1.0
       },
-      "false_positive_rate": 0.25833333333333336,
+      "false_positive_rate": 0.18333333333333332,
       "n_attacks": 100,
-      "n_detected_attacks": 38,
+      "n_detected_attacks": 85,
       "n_benign": 120,
-      "n_false_positives": 31,
-      "youden_j": 0.12166666666666665,
-      "precision": 0.5507246376811594,
-      "f1": 0.44970414201183434,
+      "n_false_positives": 22,
+      "youden_j": 0.6666666666666666,
+      "precision": 0.794392523364486,
+      "f1": 0.8212560386473431,
       "benign_fpr_by_difficulty": {
         "easy": 0.08333333333333333,
-        "hard": 0.43333333333333335
+        "hard": 0.2833333333333333
       },
       "benign_fpr_by_category": {
-        "clarifying_question": 0.1,
-        "retrieved_document": 0.25,
+        "clarifying_question": 0.0,
+        "retrieved_document": 0.15,
         "status_report": 0.3,
-        "task_delegation": 0.15,
-        "tool_result": 0.65,
+        "task_delegation": 0.1,
+        "tool_result": 0.45,
         "user_request": 0.1
       }
     },
     {
       "seed": 23,
-      "overall": 0.44,
+      "overall": 0.86,
       "per_architecture": {},
       "per_category": {
-        "injection": 0.44
+        "belief_manipulation": 0.8888888888888888,
+        "coordination": 1.0,
+        "injection": 0.9428571428571428,
+        "provenance_and_isolation": 0.6944444444444444,
+        "trust_exploitation": 1.0
       },
-      "false_positive_rate": 0.25,
+      "false_positive_rate": 0.18333333333333332,
       "n_attacks": 100,
-      "n_detected_attacks": 44,
+      "n_detected_attacks": 86,
       "n_benign": 120,
-      "n_false_positives": 30,
-      "youden_j": 0.19,
-      "precision": 0.5945945945945946,
-      "f1": 0.5057471264367815,
+      "n_false_positives": 22,
+      "youden_j": 0.6766666666666666,
+      "precision": 0.7962962962962963,
+      "f1": 0.826923076923077,
       "benign_fpr_by_difficulty": {
         "easy": 0.06666666666666667,
-        "hard": 0.43333333333333335
+        "hard": 0.3
       },
       "benign_fpr_by_category": {
-        "clarifying_question": 0.1,
-        "retrieved_document": 0.25,
+        "clarifying_question": 0.0,
+        "retrieved_document": 0.15,
         "status_report": 0.3,
-        "task_delegation": 0.15,
-        "tool_result": 0.6,
+        "task_delegation": 0.1,
+        "tool_result": 0.45,
         "user_request": 0.1
       }
     },
     {
       "seed": 24,
-      "overall": 0.41,
+      "overall": 0.87,
       "per_architecture": {},
       "per_category": {
-        "injection": 0.41
+        "belief_manipulation": 1.0,
+        "coordination": 1.0,
+        "injection": 0.9428571428571428,
+        "provenance_and_isolation": 0.6944444444444444,
+        "trust_exploitation": 1.0
       },
-      "false_positive_rate": 0.25,
+      "false_positive_rate": 0.18333333333333332,
       "n_attacks": 100,
-      "n_detected_attacks": 41,
+      "n_detected_attacks": 87,
       "n_benign": 120,
-      "n_false_positives": 30,
-      "youden_j": 0.15999999999999998,
-      "precision": 0.5774647887323944,
-      "f1": 0.47953216374269003,
+      "n_false_positives": 22,
+      "youden_j": 0.6866666666666666,
+      "precision": 0.7981651376146789,
+      "f1": 0.8325358851674641,
       "benign_fpr_by_difficulty": {
         "easy": 0.06666666666666667,
-        "hard": 0.43333333333333335
+        "hard": 0.3
       },
       "benign_fpr_by_category": {
-        "clarifying_question": 0.1,
-        "retrieved_document": 0.25,
+        "clarifying_question": 0.0,
+        "retrieved_document": 0.15,
         "status_report": 0.3,
-        "task_delegation": 0.15,
-        "tool_result": 0.6,
+        "task_delegation": 0.1,
+        "tool_result": 0.45,
         "user_request": 0.1
       }
     },
     {
       "seed": 25,
-      "overall": 0.41,
+      "overall": 0.85,
       "per_architecture": {},
       "per_category": {
-        "injection": 0.41
+        "belief_manipulation": 1.0,
+        "coordination": 1.0,
+        "injection": 1.0,
+        "provenance_and_isolation": 0.5833333333333334,
+        "trust_exploitation": 1.0
       },
-      "false_positive_rate": 0.25,
+      "false_positive_rate": 0.175,
       "n_attacks": 100,
-      "n_detected_attacks": 41,
+      "n_detected_attacks": 85,
       "n_benign": 120,
-      "n_false_positives": 30,
-      "youden_j": 0.15999999999999998,
-      "precision": 0.5774647887323944,
-      "f1": 0.47953216374269003,
+      "n_false_positives": 21,
+      "youden_j": 0.675,
+      "precision": 0.8018867924528302,
+      "f1": 0.8252427184466019,
       "benign_fpr_by_difficulty": {
         "easy": 0.06666666666666667,
-        "hard": 0.43333333333333335
+        "hard": 0.2833333333333333
       },
       "benign_fpr_by_category": {
-        "clarifying_question": 0.1,
-        "retrieved_document": 0.25,
+        "clarifying_question": 0.0,
+        "retrieved_document": 0.15,
         "status_report": 0.3,
-        "task_delegation": 0.15,
-        "tool_result": 0.6,
+        "task_delegation": 0.1,
+        "tool_result": 0.4,
         "user_request": 0.1
       }
     },
     {
       "seed": 26,
-      "overall": 0.47,
+      "overall": 0.86,
       "per_architecture": {},
       "per_category": {
-        "injection": 0.47
+        "belief_manipulation": 0.8888888888888888,
+        "coordination": 1.0,
+        "injection": 0.9142857142857143,
+        "provenance_and_isolation": 0.7222222222222222,
+        "trust_exploitation": 1.0
       },
-      "false_positive_rate": 0.25833333333333336,
+      "false_positive_rate": 0.18333333333333332,
       "n_attacks": 100,
-      "n_detected_attacks": 47,
+      "n_detected_attacks": 86,
       "n_benign": 120,
-      "n_false_positives": 31,
-      "youden_j": 0.21166666666666661,
-      "precision": 0.6025641025641025,
-      "f1": 0.5280898876404494,
+      "n_false_positives": 22,
+      "youden_j": 0.6766666666666666,
+      "precision": 0.7962962962962963,
+      "f1": 0.826923076923077,
       "benign_fpr_by_difficulty": {
         "easy": 0.08333333333333333,
-        "hard": 0.43333333333333335
+        "hard": 0.2833333333333333
       },
       "benign_fpr_by_category": {
-        "clarifying_question": 0.1,
-        "retrieved_document": 0.25,
+        "clarifying_question": 0.0,
+        "retrieved_document": 0.15,
         "status_report": 0.3,
-        "task_delegation": 0.15,
-        "tool_result": 0.65,
+        "task_delegation": 0.1,
+        "tool_result": 0.45,
         "user_request": 0.1
       }
     },
     {
       "seed": 27,
-      "overall": 0.48,
+      "overall": 0.82,
       "per_architecture": {},
       "per_category": {
-        "injection": 0.48
+        "belief_manipulation": 0.8888888888888888,
+        "coordination": 1.0,
+        "injection": 0.9428571428571428,
+        "provenance_and_isolation": 0.5833333333333334,
+        "trust_exploitation": 1.0
       },
-      "false_positive_rate": 0.26666666666666666,
+      "false_positive_rate": 0.19166666666666668,
       "n_attacks": 100,
-      "n_detected_attacks": 48,
+      "n_detected_attacks": 82,
       "n_benign": 120,
-      "n_false_positives": 32,
-      "youden_j": 0.21333333333333332,
-      "precision": 0.6,
-      "f1": 0.5333333333333332,
+      "n_false_positives": 23,
+      "youden_j": 0.6283333333333333,
+      "precision": 0.780952380952381,
+      "f1": 0.8,
       "benign_fpr_by_difficulty": {
         "easy": 0.1,
-        "hard": 0.43333333333333335
+        "hard": 0.2833333333333333
       },
       "benign_fpr_by_category": {
-        "clarifying_question": 0.1,
-        "retrieved_document": 0.25,
+        "clarifying_question": 0.0,
+        "retrieved_document": 0.15,
         "status_report": 0.3,
-        "task_delegation": 0.15,
-        "tool_result": 0.7,
+        "task_delegation": 0.1,
+        "tool_result": 0.5,
         "user_request": 0.1
       }
     },
     {
       "seed": 28,
-      "overall": 0.39,
+      "overall": 0.85,
       "per_architecture": {},
       "per_category": {
-        "injection": 0.39
+        "belief_manipulation": 0.8888888888888888,
+        "coordination": 1.0,
+        "injection": 0.9428571428571428,
+        "provenance_and_isolation": 0.6666666666666666,
+        "trust_exploitation": 1.0
       },
-      "false_positive_rate": 0.25,
+      "false_positive_rate": 0.18333333333333332,
       "n_attacks": 100,
-      "n_detected_attacks": 39,
+      "n_detected_attacks": 85,
       "n_benign": 120,
-      "n_false_positives": 30,
-      "youden_j": 0.14,
-      "precision": 0.5652173913043478,
-      "f1": 0.46153846153846156,
+      "n_false_positives": 22,
+      "youden_j": 0.6666666666666666,
+      "precision": 0.794392523364486,
+      "f1": 0.8212560386473431,
       "benign_fpr_by_difficulty": {
         "easy": 0.06666666666666667,
-        "hard": 0.43333333333333335
+        "hard": 0.3
       },
       "benign_fpr_by_category": {
-        "clarifying_question": 0.1,
-        "retrieved_document": 0.25,
+        "clarifying_question": 0.0,
+        "retrieved_document": 0.15,
         "status_report": 0.3,
-        "task_delegation": 0.15,
-        "tool_result": 0.6,
+        "task_delegation": 0.1,
+        "tool_result": 0.45,
         "user_request": 0.1
       }
     },
     {
       "seed": 29,
-      "overall": 0.45,
+      "overall": 0.9,
       "per_architecture": {},
       "per_category": {
-        "injection": 0.45
+        "belief_manipulation": 1.0,
+        "coordination": 1.0,
+        "injection": 0.9428571428571428,
+        "provenance_and_isolation": 0.7777777777777778,
+        "trust_exploitation": 1.0
       },
-      "false_positive_rate": 0.25833333333333336,
+      "false_positive_rate": 0.18333333333333332,
       "n_attacks": 100,
-      "n_detected_attacks": 45,
+      "n_detected_attacks": 90,
       "n_benign": 120,
-      "n_false_positives": 31,
-      "youden_j": 0.19166666666666665,
-      "precision": 0.5921052631578947,
-      "f1": 0.5113636363636364,
+      "n_false_positives": 22,
+      "youden_j": 0.7166666666666667,
+      "precision": 0.8035714285714286,
+      "f1": 0.8490566037735849,
       "benign_fpr_by_difficulty": {
         "easy": 0.08333333333333333,
-        "hard": 0.43333333333333335
+        "hard": 0.2833333333333333
       },
       "benign_fpr_by_category": {
-        "clarifying_question": 0.1,
-        "retrieved_document": 0.25,
+        "clarifying_question": 0.0,
+        "retrieved_document": 0.15,
         "status_report": 0.3,
-        "task_delegation": 0.15,
-        "tool_result": 0.65,
+        "task_delegation": 0.1,
+        "tool_result": 0.45,
         "user_request": 0.1
       }
     },
     {
       "seed": 30,
-      "overall": 0.45,
+      "overall": 0.86,
       "per_architecture": {},
       "per_category": {
-        "injection": 0.45
+        "belief_manipulation": 0.8888888888888888,
+        "coordination": 1.0,
+        "injection": 0.8857142857142857,
+        "provenance_and_isolation": 0.75,
+        "trust_exploitation": 1.0
       },
-      "false_positive_rate": 0.26666666666666666,
+      "false_positive_rate": 0.2,
       "n_attacks": 100,
-      "n_detected_attacks": 45,
+      "n_detected_attacks": 86,
       "n_benign": 120,
-      "n_false_positives": 32,
-      "youden_j": 0.18333333333333335,
-      "precision": 0.5844155844155844,
-      "f1": 0.5084745762711864,
+      "n_false_positives": 24,
+      "youden_j": 0.6599999999999999,
+      "precision": 0.7818181818181819,
+      "f1": 0.819047619047619,
       "benign_fpr_by_difficulty": {
         "easy": 0.1,
-        "hard": 0.43333333333333335
+        "hard": 0.3
       },
       "benign_fpr_by_category": {
-        "clarifying_question": 0.1,
-        "retrieved_document": 0.25,
+        "clarifying_question": 0.0,
+        "retrieved_document": 0.15,
         "status_report": 0.3,
-        "task_delegation": 0.15,
-        "tool_result": 0.7,
+        "task_delegation": 0.1,
+        "tool_result": 0.55,
         "user_request": 0.1
       }
     }

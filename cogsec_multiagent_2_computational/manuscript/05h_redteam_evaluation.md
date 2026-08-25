@@ -60,23 +60,23 @@ Table: Mutation operator evaluation (real pipeline, seed 42, $M=950$). {#tab:mut
 
 | Mutation Operator | Attempts | Successful Evasions | Evasion Rate | 95\% CI |
 | :--- | ---: | ---: | :---: | :---: |
-| Semantic paraphrase | 66 | 0 | 0.0\% | [0.0, 5.5\%] |
-| Nested wrapping | 66 | 0 | 0.0\% | [0.0, 5.5\%] |
-| Indirect routing | 66 | 0 | 0.0\% | [0.0, 5.5\%] |
-| Authority prefix | 66 | 0 | 0.0\% | [0.0, 5.5\%] |
-| Gradual insertion | 66 | 4 | 6.1\% | [2.4, 14.6\%] |
-| Chain delegation | 66 | 0 | 0.0\% | [0.0, 5.5\%] |
-| Belief anchoring | 66 | 0 | 0.0\% | [0.0, 5.5\%] |
-| Multi-hop routing | 66 | 0 | 0.0\% | [0.0, 5.5\%] |
-| Canary avoidance | 66 | 0 | 0.0\% | [0.0, 5.5\%] |
-| Confidence spoofing | 66 | 0 | 0.0\% | [0.0, 5.5\%] |
-| Byzantine mimicry | 66 | 0 | 0.0\% | [0.0, 5.5\%] |
-| Quorum flooding | 66 | 0 | 0.0\% | [0.0, 5.5\%] |
+| Semantic paraphrase | 76 | 0 | 0.0\% | [0.0, 4.8\%] |
+| Nested wrapping | 76 | 0 | 0.0\% | [0.0, 4.8\%] |
+| Indirect routing | 76 | 0 | 0.0\% | [0.0, 4.8\%] |
+| Authority prefix | 76 | 0 | 0.0\% | [0.0, 4.8\%] |
+| Gradual insertion | 76 | 8 | 10.5\% | [5.4, 19.4\%] |
+| Chain delegation | 76 | 0 | 0.0\% | [0.0, 4.8\%] |
+| Belief anchoring | 76 | 0 | 0.0\% | [0.0, 4.8\%] |
+| Multi-hop routing | 76 | 0 | 0.0\% | [0.0, 4.8\%] |
+| Canary avoidance | 76 | 0 | 0.0\% | [0.0, 4.8\%] |
+| Confidence spoofing | 76 | 0 | 0.0\% | [0.0, 4.8\%] |
+| Byzantine mimicry | 76 | 0 | 0.0\% | [0.0, 4.8\%] |
+| Quorum flooding | 76 | 0 | 0.0\% | [0.0, 4.8\%] |
 
 ### Detection Boundary Analysis
 
-The mutation results reveal that on the 66 distinct payloads the firewall flags
-in the 950-sample corpus (871 distinct payloads, seed 42), 11 of the 12 mutation
+The mutation results reveal that on the 76 distinct payloads the firewall flags
+in the 1475-sample corpus (961 distinct payloads, seed 42), 11 of the 12 mutation
 operators produce zero evasions against the real CIF pipeline. The exception is
 **gradual insertion**, which evaded detection in 3 of 66 cases (4.5\%; 95\%
 Wilson CI $[1.6\%, 12.5\%]$) by splitting the `ignore previous instructions`
@@ -91,7 +91,7 @@ evasion rate is below 5.5\% with 95\% confidence.
 
 The current red-team evaluation has important scope limitations:
 
-1. **Corpus size**: The evasion denominator is 66 distinct flagged payloads drawn from the 950-sample corpus (871 distinct payloads), limiting statistical power (e.g., the gradual-insertion 4.5\% rate has a 95\% CI spanning 1.6–12.5\%).
+1. **Corpus size**: The evasion denominator is 66 distinct flagged payloads drawn from the 950-sample corpus (961 distinct payloads), limiting statistical power (e.g., the gradual-insertion 4.5\% rate has a 95\% CI spanning 1.6–12.5\%).
 2. **Deterministic evaluation**: All evaluations use seed 42; results may differ with other seeds.
 3. **Template-generated attacks**: The attack corpus is 100\% synthetic template expansion; mutation effectiveness may differ on real-world attacks.
 4. **Lexical preservation check**: The semantic-equivalence check in the mutator is lexical, not semantic; some "preserved" mutations may have altered meaning, and some "broken" mutations may have preserved it.

@@ -21,6 +21,7 @@ from pathlib import Path
 import numpy as np
 import pytest
 
+from attacks.corpus import AttackCorpus
 from ablation.runner import BENIGN_MESSAGES, evaluate_component_subset, make_default_components
 from evaluation.baselines import (
     DEFAULT_KEYWORD_PATTERNS,
@@ -111,14 +112,32 @@ def _toy_corpus(n_pos: int = 30, n_neg: int = 30) -> LabelledCorpus:
 # ---------------------------------------------------------------------------
 
 
+def _stratified_attack_count() -> int:
+    """How many attacks the comparison's stratified draw actually yields.
+
+    ``run_baseline_comparison`` targets 100 and lands wherever per-category
+    rounding puts it -- 98 on the 950-item corpus, 100 on the integrated one.
+    Deriving it is what keeps three separate assertions from going stale
+    together the next time the corpus changes.
+    """
+    return build_evaluation_corpus(seed=42).n_positive
+
 class TestEvaluationCorpus:
     """The comparison must use exactly the corpus the paper reports on."""
 
     def test_shape_matches_published_sample(self, corpus: LabelledCorpus):
-        """98 attacks (not the nominal 100) plus the 50 benign controls."""
-        assert len(corpus) == 148
-        assert corpus.n_positive == 98
-        assert corpus.n_negative == 50
+        """The stratified attack draw plus the 50 benign controls.
+
+        The counts are derived rather than typed. They were ``98`` and ``148``
+        for as long as the evaluation ran on the 950-item corpus; the
+        integrated 1,475-item corpus rounds its strata to 100. A hand-typed
+        count here is a number that has to be found and changed every time the
+        corpus does, which is how three of these pins went stale at once.
+        """
+        expected_attacks = _stratified_attack_count()
+        assert corpus.n_positive == expected_attacks
+        assert corpus.n_negative == len(BENIGN_MESSAGES)
+        assert len(corpus) == expected_attacks + corpus.n_negative
         assert list(corpus.payloads[-50:]) == list(BENIGN_MESSAGES)
 
     def test_cif_tpr_equals_published_ablation_tpr(self, corpus: LabelledCorpus):
@@ -361,7 +380,19 @@ class TestPermutationNull:
         result = permutation_null_from_output(
             cif_output, corpus, n_permutations=2000, seed=7
         )
-        assert result.observed_j == pytest.approx(1.0, abs=0.05)
+        # Bound to the shipped ablation rather than to a literal. This read
+        # ``approx(1.0, abs=0.05)`` while the comparison ran on the 950-item
+        # corpus and the full pipeline scored 0.959 against the easy benign
+        # set; on the integrated corpus it is 0.890, and the assertion was
+        # pinning a number that was never the claim. The claim is that the
+        # permutation null rejects for the real pipeline, and that the J it
+        # rejects on is the same J the ablation publishes.
+        artifact = json.loads(
+            (ROOT / "output" / "data" / "ablation_results.json").read_text(encoding="utf-8")
+        )
+        assert result.observed_j == pytest.approx(
+            artifact["full_pipeline"]["youden_j"], abs=1e-9
+        )
         assert result.p_value < 0.05
 
     def test_p_value_is_never_exactly_zero(self):
@@ -622,8 +653,8 @@ class TestCurveSummary:
         )
         assert summary.n_bootstrap_requested == 137
         assert summary.n_bootstrap_used == 137
-        assert summary.n_positive == 98
-        assert summary.n_negative == 50
+        assert summary.n_positive == _stratified_attack_count()
+        assert summary.n_negative == len(BENIGN_MESSAGES)
 
     def test_perfect_separation_is_detected(self):
         """Positive control: AUC 1.0 with a degenerate interval."""
@@ -839,7 +870,7 @@ class TestReportArtifact:
 
     def test_every_detector_carries_aligned_scores(self, small_report):
         n_total = small_report["corpus"]["n_total"]
-        assert n_total == 148
+        assert n_total == _stratified_attack_count() + len(BENIGN_MESSAGES)
         for detector in small_report["detectors"]:
             assert len(detector["scores"]) == n_total
             assert len(detector["detections"]) == n_total
@@ -852,12 +883,29 @@ class TestReportArtifact:
         assert "cif_full_pipeline" in names
         assert len([n for n in names if n != "cif_full_pipeline"]) >= 3
 
-    def test_headline_reports_that_cif_now_ranks_first(self, small_report):
+    def test_headline_reports_the_ranking_honestly(self, small_report):
+        """Whatever the ranking is, the headline must agree with the scores.
+
+        This assertion has now been true in both directions. It read
+        ``cif_rank == 1`` while the comparison ran on the 950-item corpus, and
+        it is false on the integrated 1,475-item one: a bag-of-words logistic
+        regression trained on the same data reaches a Youden's J of 0.920
+        against the layered pipeline's 0.890, so CIF ranks second of five.
+
+        Pinning the rank itself would mean rewriting this test every time the
+        corpus moves, and the number it pinned was never the claim. The claim
+        is that the headline cannot disagree with the ranking it summarises --
+        that ``cif_beats_best_baseline`` is exactly the comparison it says it
+        is, in whichever direction the measurement falls. A headline that
+        announced a win the scores do not support is the defect this guards.
+        """
         head = small_report["headline"]
-        # CIF now ranks first across all baseline detectors.
-        assert head["cif_beats_best_baseline"] is True
-        assert head["cif_rank"] == 1
-        assert head["cif_youden_j"] >= head["best_non_cif_youden_j"]
+        ranking = small_report["ranking_by_youden_j"]
+        assert head["cif_rank"] == ranking.index("cif_full_pipeline") + 1
+        assert head["cif_beats_best_baseline"] == (
+            head["cif_youden_j"] >= head["best_non_cif_youden_j"]
+        )
+        assert head["cif_beats_best_baseline"] == (head["cif_rank"] == 1)
 
     def test_caveats_are_carried_with_the_numbers(self, small_report):
         text = " ".join(small_report["caveats"]).lower()
@@ -865,14 +913,17 @@ class TestReportArtifact:
         assert "template-generated" in text
         assert "longer than the benign" in text
 
-    def test_per_family_curves_cover_all_four_attack_families(self, small_report):
+    def test_per_family_curves_cover_every_attack_family(self, small_report):
+        """Every family the corpus contains must have its own curve.
+
+        The set used to be spelled out as the four published families. The
+        integrated corpus adds ``provenance_and_isolation``, and a hardcoded
+        set would have silently dropped 525 payloads out of the per-family
+        breakdown while every other number moved.
+        """
         families = small_report["cif_by_attack_category"]
-        assert set(families) == {
-            "injection",
-            "trust_exploitation",
-            "belief_manipulation",
-            "coordination",
-        }
+        corpus = AttackCorpus.generate(seed=42)
+        assert set(families) == {s.category.top_category for s in corpus}
         for curves in families.values():
             assert curves["n_positive"] > 0
             assert curves["n_negative"] == 50
@@ -1024,7 +1075,9 @@ class TestFiguresBindToMeasurements:
         ]
         assert chance_lines
         level = float(chance_lines[0].get_ydata()[0])
-        assert level == pytest.approx(98 / 148, abs=1e-3)
+        n_attacks = _stratified_attack_count()
+        prevalence = n_attacks / (n_attacks + len(BENIGN_MESSAGES))
+        assert level == pytest.approx(prevalence, abs=1e-3)
         plt.close(fig)
 
     def test_pr_refuses_an_artifact_with_no_curves(self, tmp_path):

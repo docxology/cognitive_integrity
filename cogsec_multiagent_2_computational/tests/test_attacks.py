@@ -67,8 +67,28 @@ def rng() -> np.random.Generator:
 
 @pytest.fixture
 def corpus() -> AttackCorpus:
-    """Full 950-sample corpus generated with the canonical seed."""
+    """The integrated 1,475-sample corpus, which is the default.
+
+    ``AttackCorpus.generate`` used to default to the 950-item published
+    corpus, and this fixture inherited that default silently. The published
+    corpus reaches five of the eight defense modules; the classes below that
+    assert its exact 950-item, twelve-category composition override this
+    fixture with :func:`published_corpus` and say so, because that composition
+    is a fact about a specific historical corpus rather than about the corpus
+    under test.
+    """
     return AttackCorpus.generate(seed=42)
+
+
+@pytest.fixture
+def published_corpus() -> AttackCorpus:
+    """The 950-sample corpus the first version of this series published.
+
+    Retained so the previously reported figures stay reproducible. It is a
+    comparison, not an alternative: it contains no instance of what the
+    provenance, sandbox and consensus adapters detect.
+    """
+    return AttackCorpus.generate(seed=42, extended=False)
 
 
 # ===========================================================================
@@ -204,6 +224,11 @@ class TestAttackSample:
 class TestAttackCorpusGeneration:
     """Tests for corpus generation and basic container operations."""
 
+    @pytest.fixture
+    def corpus(self, published_corpus: AttackCorpus) -> AttackCorpus:
+        """These assertions describe the published corpus's size and repr."""
+        return published_corpus
+
     def test_generate_produces_950_samples(self, corpus: AttackCorpus):
         """The canonical corpus contains exactly 950 samples."""
         assert len(corpus) == 950
@@ -276,6 +301,11 @@ class TestAttackCorpusGeneration:
 
 class TestAttackCorpusDistribution:
     """Tests for distribution counting and filtering methods."""
+
+    @pytest.fixture
+    def corpus(self, published_corpus: AttackCorpus) -> AttackCorpus:
+        """This class pins the published corpus's exact composition."""
+        return published_corpus
 
     def test_top_level_distribution_matches_expected(self, corpus: AttackCorpus):
         """Top-level distribution matches the 500/200/150/100 spec."""
@@ -403,6 +433,11 @@ class TestAttackCorpusDistribution:
 class TestAttackCorpusUniqueness:
     """Tests for ID uniqueness and payload diversity."""
 
+    @pytest.fixture
+    def corpus(self, published_corpus: AttackCorpus) -> AttackCorpus:
+        """This class pins the published corpus's exact composition."""
+        return published_corpus
+
     def test_all_ids_are_unique(self, corpus: AttackCorpus):
         """Every sample ID in the corpus is unique."""
         ids = [s.id for s in corpus]
@@ -474,6 +509,11 @@ class TestAttackCorpusUniqueness:
 
 class TestAttackCorpusStratifiedSplit:
     """Tests for stratified_split method."""
+
+    @pytest.fixture
+    def corpus(self, published_corpus: AttackCorpus) -> AttackCorpus:
+        """This class pins the published corpus's exact composition."""
+        return published_corpus
 
     def test_split_preserves_total_count(self, corpus: AttackCorpus):
         """Train + test sizes sum to the original corpus size."""
@@ -548,6 +588,11 @@ class TestAttackCorpusStratifiedSplit:
 
 class TestAttackCorpusPersistence:
     """Tests for save and load methods."""
+
+    @pytest.fixture
+    def corpus(self, published_corpus: AttackCorpus) -> AttackCorpus:
+        """This class pins the published corpus's exact composition."""
+        return published_corpus
 
     def test_save_creates_json_file(self, corpus: AttackCorpus, tmp_path: Path):
         """save writes a valid JSON file."""
@@ -768,6 +813,11 @@ class TestAttackTemplates:
 
 class TestValidation:
     """Tests for the validation module."""
+
+    @pytest.fixture
+    def corpus(self, published_corpus: AttackCorpus) -> AttackCorpus:
+        """This class pins the published corpus's exact composition."""
+        return published_corpus
 
     def test_validate_canonical_corpus_passes(self, corpus: AttackCorpus):
         """The canonical 950-sample corpus passes validation."""
@@ -1425,6 +1475,11 @@ class TestCoordinationGenerators:
 class TestCorpusComposition:
     """Integration tests verifying the exact 950-attack composition."""
 
+    @pytest.fixture
+    def corpus(self, published_corpus: AttackCorpus) -> AttackCorpus:
+        """This class pins the published corpus's exact composition."""
+        return published_corpus
+
     def test_total_is_950(self, corpus: AttackCorpus):
         """The corpus has exactly 950 samples."""
         assert len(corpus) == 950
@@ -1494,14 +1549,20 @@ class TestCorpusComposition:
         assert len(corpus.by_category(AttackCategory.TIMING_ATTACK)) == 30
 
     def test_sum_of_subcategories_equals_total(self, corpus: AttackCorpus):
-        """Sum of all subcategory counts equals 950."""
+        """Every sample is counted exactly once by the subcategory breakdown.
+
+        The literal used to be ``950``, which made this an assertion about the
+        corpus's size rather than about the breakdown adding up. Deriving the
+        total from the corpus is what the test was always for: a sample missing
+        from the distribution is the defect, at any corpus size.
+        """
         sub_dist = corpus.subcategory_distribution()
-        assert sum(sub_dist.values()) == 950
+        assert sum(sub_dist.values()) == len(corpus)
 
     def test_sum_of_top_categories_equals_total(self, corpus: AttackCorpus):
-        """Sum of all top-level category counts equals 950."""
+        """Every sample rolls up into exactly one top-level family."""
         dist = corpus.distribution()
-        assert sum(dist.values()) == 950
+        assert sum(dist.values()) == len(corpus)
 
     def test_corpus_validates_successfully(self, corpus: AttackCorpus):
         """The full corpus passes the validation pipeline."""
@@ -1526,3 +1587,63 @@ class TestCorpusComposition:
         assert max(lengths) < 5000
         # Average length should be meaningful (more than trivial strings)
         assert sum(lengths) / len(lengths) > 30
+
+
+class TestIntegratedCorpusComposition:
+    """The composition of the corpus that is now the default.
+
+    The published corpus has had a class pinning its exact shape since the
+    first round of this project. The integrated one had none, which is how it
+    could sit in the codebase for a full round as a keyword argument two call
+    sites out of twelve passed, while ``AttackCorpus.generate``'s own docstring
+    said it was the default and that every number in the series was measured
+    against it. Neither sentence was true, and no test could have caught either.
+    """
+
+    def test_the_default_is_the_integrated_corpus(self, corpus: AttackCorpus):
+        """The default must be the corpus that reaches all eight modules."""
+        assert len(corpus) == 1475
+        assert len(corpus.distribution()) == 5
+
+    def test_it_extends_the_published_corpus_rather_than_replacing_it(
+        self, corpus: AttackCorpus, published_corpus: AttackCorpus
+    ):
+        """Every published sample must survive unchanged into the integrated one.
+
+        The 950-item results stay reproducible only if the extension is
+        additive. A generator change that perturbed an existing family would
+        make the two corpora incomparable while both still validated.
+        """
+        published_ids = {s.id for s in published_corpus}
+        integrated_ids = {s.id for s in corpus}
+        assert published_ids <= integrated_ids
+        by_id = {s.id: s.payload for s in corpus}
+        for sample in published_corpus:
+            assert by_id[sample.id] == sample.payload
+
+    def test_the_extension_is_the_three_families_that_were_never_probed(
+        self, corpus: AttackCorpus, published_corpus: AttackCorpus
+    ):
+        """Named, so a silent change to what the extension covers fails here."""
+        added = {
+            getattr(s.category, "value", str(s.category)) for s in corpus
+        } - {getattr(s.category, "value", str(s.category)) for s in published_corpus}
+        assert added == {
+            "provenance_laundering",
+            "sandbox_escape",
+            "byzantine_manipulation",
+        }
+
+    def test_the_extension_is_large_enough_to_move_a_rate(
+        self, corpus: AttackCorpus, published_corpus: AttackCorpus
+    ):
+        """A family too small to change an aggregate cannot test a module.
+
+        525 of 1,475 is 35.6% of the corpus. This is pinned because the whole
+        argument for extending it was that the previous corpus could not
+        exercise three of eight defenses, and an extension of a dozen samples
+        would have reproduced that failure in a form that looked fixed.
+        """
+        added = len(corpus) - len(published_corpus)
+        assert added == 525
+        assert added / len(corpus) > 0.3

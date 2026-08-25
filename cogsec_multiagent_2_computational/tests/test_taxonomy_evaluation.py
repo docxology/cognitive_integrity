@@ -99,20 +99,41 @@ def test_an_unmapped_category_is_a_failure_not_a_silent_drop(monkeypatch) -> Non
         module.build(42, "axes")
 
 
-def test_modules_the_corpus_never_exercises_are_visible(payload) -> None:
-    """Zero contribution must be distinguishable from zero capability.
+def test_no_component_is_invisible_to_the_corpus(payload) -> None:
+    """Every component must carry a measurable share of the lattice.
 
-    Three adapters -- consensus, provenance, sandbox -- fire on none of the 950
-    payloads, so their Shapley value is exactly zero in every coalition. That is
-    a statement about corpus coverage, not about the mechanisms: the corpus
-    contains no instance of what they are built to catch. The distinction is
-    the difference between "this defense does not work" and "this evaluation
-    does not test it", and the artifact has to keep it legible.
+    This assertion used to read the other way. Three adapters -- consensus,
+    provenance and sandbox -- had a Shapley value of exactly zero in every one
+    of the 256 coalitions, and the test asserted that the zeros were present
+    and pinned them as a corpus-coverage gap rather than a verdict on the
+    mechanisms.
+
+    Both halves of that reading have since been tested and only one survived.
+    The corpus was extended by 525 payloads across ``provenance_laundering``,
+    ``sandbox_escape`` and ``byzantine_manipulation``, written for exactly
+    those three adapters, and all three Shapley values stayed at zero.
+    Measuring each module alone (``scripts/run_module_capability_matrix.py``)
+    showed why: provenance and sandbox detected 20.0% and 28.6% of their own
+    families and were masked by an invariants module that caught the same
+    payloads and more, while consensus detected nothing anywhere because its
+    entire heuristic was a substring test for two English words.
+
+    With the corpus that reaches all eight and a consensus module rewritten
+    around named consensus invariants, no component is invisible. A zero
+    returning here means either a module has stopped working or the corpus has
+    stopped reaching it, and the capability matrix is what distinguishes the
+    two.
     """
-    silent = [c for c, v in payload["shapley_overall_tpr"].items() if v == 0.0]
-    assert silent, "expected the corpus-coverage gap to be visible in the artifact"
-    for component in silent:
-        assert payload["cells"][component]["per_family"]["overall"] == 0.0
+    zeros = [c for c, v in payload["shapley_overall_tpr"].items() if v == 0.0]
+    assert not zeros, (
+        f"{zeros} contribute exactly nothing across all 256 coalitions; run "
+        f"scripts/run_module_capability_matrix.py to tell a masked module "
+        f"from a dead one"
+    )
+    for component in payload["components"]:
+        assert payload["cells"][component]["per_family"]["overall"] > 0.0, (
+            f"{component} alone detects nothing in the corpus"
+        )
 
 
 def test_the_benign_ceiling_reaches_the_top_of_the_scale(payload) -> None:

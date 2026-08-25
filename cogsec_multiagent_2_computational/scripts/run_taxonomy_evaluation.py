@@ -72,8 +72,12 @@ from evaluation.benign_corpus import BenignCorpus  # noqa: E402
 #: negative below tau = 0.56.
 BENIGN_MESSAGES: list[str] = [item.text for item in BenignCorpus.generate()]
 
+#: The default artifact is measured on the integrated 1,475-item corpus, which
+#: is the only corpus that reaches all eight defense components. The published
+#: 950-item corpus is retained under --published so the previously reported
+#: figures stay reproducible; it is a comparison, not an alternative.
 OUTPUT = REPO / "output" / "data" / "taxonomy_evaluation_results.json"
-OUTPUT_EXTENDED = REPO / "output" / "data" / "taxonomy_evaluation_extended.json"
+OUTPUT_PUBLISHED = REPO / "output" / "data" / "taxonomy_evaluation_published.json"
 
 #: The eight defense components, in the order the ablation registry lists them.
 COMPONENTS: tuple[str, ...] = tuple(COMPONENT_TO_MODULE)
@@ -324,7 +328,7 @@ def _shapley(cells: dict[str, dict], family_tpr: dict[str, dict[str, float]]) ->
     return values
 
 
-def build(seed: int, mode: str, *, extended: bool = False) -> dict[str, object]:
+def build(seed: int, mode: str, *, extended: bool = True) -> dict[str, object]:
     corpus = list(AttackCorpus.generate(seed=seed, extended=extended))
     if not corpus:
         raise TaxonomyMismatch("the corpus generated zero samples")
@@ -399,21 +403,22 @@ def main(argv: Sequence[str] | None = None) -> int:
         help="evaluate only the 18 reported configurations instead of all 256",
     )
     parser.add_argument(
-        "--extended",
+        "--published",
         action="store_true",
-        help="use the 1475-item corpus that probes provenance, sandbox and consensus",
+        help="use the legacy 950-item corpus that never reaches provenance, "
+             "sandbox or consensus; for reproducing previously published figures",
     )
     parser.add_argument("--check", action="store_true", help="fail if the artifact is stale")
     args = parser.parse_args(list(argv) if argv is not None else None)
 
     mode = "axes" if args.axes else "lattice"
     try:
-        fresh = build(args.seed, mode, extended=args.extended)
+        fresh = build(args.seed, mode, extended=not args.published)
     except TaxonomyMismatch as exc:
         print(f"taxonomy evaluation: FAILED -- {exc}", file=sys.stderr)
         return 2
 
-    target = OUTPUT_EXTENDED if args.extended else OUTPUT
+    target = OUTPUT_PUBLISHED if args.published else OUTPUT
     if args.check:
         if not target.is_file():
             print(f"missing {target.relative_to(REPO)}; run without --check", file=sys.stderr)

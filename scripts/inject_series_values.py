@@ -65,10 +65,21 @@ class Change:
     variable: str
     before: str
     after: str
+    #: Character offsets of the matched literal within its line. The rewrite
+    #: is applied to this span and nowhere else.
+    start: int = -1
+    end: int = -1
 
     def render(self) -> str:
-        rel = self.path.relative_to(REPO_ROOT)
-        return f"  {rel}:{self.line}: {self.variable}: {self.before!r} -> {self.after!r}"
+        # A path outside the repository is unusual but must not raise here:
+        # this method is called from the refusal branch, and a crash while
+        # reporting that a rewrite was declined would turn a safe refusal into
+        # a failed run.
+        try:
+            location: Path | str = self.path.relative_to(REPO_ROOT)
+        except ValueError:
+            location = self.path
+        return f"  {location}:{self.line}: {self.variable}: {self.before!r} -> {self.after!r}"
 
 
 def format_like(stated: str, value: float) -> str:
@@ -112,7 +123,15 @@ def substitutions_for(var: LedgerVariable, value: float) -> Iterable[Change]:
                         continue
                     if abs(current - value) <= var.tolerance:
                         continue
-                    yield Change(path, number, var.id, stated, format_like(stated, value))
+                    yield Change(
+                        path,
+                        number,
+                        var.id,
+                        stated,
+                        format_like(stated, value),
+                        match.start(1),
+                        match.end(1),
+                    )
 
 
 def apply_changes(changes: Sequence[Change]) -> int:
@@ -124,14 +143,35 @@ def apply_changes(changes: Sequence[Change]) -> int:
     written = 0
     for path, items in by_path.items():
         lines = path.read_text(encoding="utf-8").splitlines(keepends=True)
-        for change in items:
+        # Apply right-to-left so an earlier edit cannot shift a later offset,
+        # and highest line first for the same reason across a line boundary.
+        for change in sorted(items, key=lambda c: (c.line, c.start), reverse=True):
             index = change.line - 1
-            # Replace only the first occurrence of the stated literal on that
-            # line: a blanket replace would also rewrite an unrelated number
-            # that happens to share the digits.
-            if change.before in lines[index]:
-                lines[index] = lines[index].replace(change.before, change.after, 1)
-                written += 1
+            line = lines[index]
+            if change.start < 0:
+                # No recorded span: refuse rather than guess. This used to fall
+                # back to ``line.replace(before, after, 1)``, which rewrote the
+                # first occurrence of the literal anywhere on the line rather
+                # than the one the pattern matched. With a one-character
+                # literal that is almost always the wrong number: writing the
+                # narrow end of a gap turned "Assumption 4" into
+                # "Assumption 10" in Part 1, and "$\sim$44\% mean detection
+                # rate" into "$\sim$104\%" in Part 2's S08 -- both on lines
+                # whose gap phrase was several clauses away, and both silently.
+                print(
+                    f"  refused (no span recorded): {change.render().strip()}",
+                    file=sys.stderr,
+                )
+                continue
+            if line[change.start : change.end] != change.before:
+                print(
+                    f"  refused (line moved under the match): "
+                    f"{change.render().strip()}",
+                    file=sys.stderr,
+                )
+                continue
+            lines[index] = line[: change.start] + change.after + line[change.end :]
+            written += 1
         path.write_text("".join(lines), encoding="utf-8")
     return written
 

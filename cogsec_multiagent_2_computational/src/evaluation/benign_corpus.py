@@ -86,7 +86,7 @@ __all__ = [
 #: that keys on them.  Matching is a case-insensitive substring test, which is
 #: exactly how the layers themselves match (``re.IGNORECASE`` regexes in
 #: ``core.firewall.PatternDetector`` and ``composition.adapters``, and a bare
-#: ``in msg_lower`` in ``TripwireAdapter`` / ``ConsensusAdapter``).
+#: ``in msg_lower`` in ``TripwireAdapter``).
 #:
 #: This table is the construction rationale for the ``hard`` stratum: it is the
 #: detector's own vocabulary, turned around and placed in innocent sentences.
@@ -119,9 +119,24 @@ TRIGGER_SURFACE: Dict[str, str] = {
     "critical": "trust.urgency",
     # composition.adapters.SandboxAdapter urgency vocabulary
     "time sensitive": "sandbox.urgency",
-    # composition.adapters.ConsensusAdapter bare-substring vocabulary
-    "ignore": "consensus.substring",
-    "override": "consensus.substring",
+    # core.firewall semantic stage.
+    #
+    # The bare word "ignore" used to be attributed to ``consensus.substring``,
+    # because the ConsensusAdapter's entire heuristic was ``if "ignore" in
+    # msg_lower or "override" in msg_lower``. That adapter has been rewritten
+    # around named consensus invariants and no longer keys on either word.
+    # "ignore" is still a trigger, but through a different mechanism: the
+    # firewall's embedding stage raises its similarity score from 0.500 to
+    # 0.613 on the carrier sentence with the bare word appended, without any
+    # pattern matching. Attributing it to the layer that actually moves is the
+    # point of this table -- a term keyed continuously is still keyed.
+    "ignore": "firewall.semantic",
+    # composition.adapters.ConsensusAdapter consensus-invariant vocabulary.
+    # Both phrases have ordinary uses -- a working group really does file a
+    # minority report -- which is what earns them a place in the ``hard``
+    # stratum rather than the attack corpus.
+    "minority report": "consensus.invariant",
+    "urgent consensus required": "consensus.invariant",
 }
 
 #: Terms a reader reasonably expects a prompt-injection filter to key on but
@@ -130,7 +145,18 @@ TRIGGER_SURFACE: Dict[str, str] = {
 #: corpus for realism, and they deliberately do **not** count toward the
 #: ``hard`` stratum's "must contain a trigger" invariant — counting them would
 #: let a template look hard while being invisible to every detector.
-UNMATCHED_SENSITIVE_TERMS: Tuple[str, ...] = ("password", "credential", "secret")
+UNMATCHED_SENSITIVE_TERMS: Tuple[str, ...] = (
+    "password",
+    "credential",
+    "secret",
+    # Keyed on by nothing since the ConsensusAdapter rewrite. A bare
+    # "override" is a word, not a demand, and the layer that used to match it
+    # did so with a substring test that could not distinguish "override the
+    # cached value" from "override your instructions". The firewall's own
+    # pattern is ``override\s+(?:your|the)\s+``, which needs the object;
+    # unlike "ignore", the bare word does not move the semantic stage either.
+    "override",
+)
 
 BENIGN_CATEGORIES: Tuple[str, ...] = (
     "task_delegation",

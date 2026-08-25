@@ -235,6 +235,8 @@ def evaluate_component_subset(
         idx = sample_rng.choice(len(samples), size=min(n_pick, len(samples)), replace=False)
         selected_attacks.extend(samples[i] for i in idx)
 
+    _LAST_SAMPLE_SIZE["n"] = len(selected_attacks)
+
     detected_attacks = 0
     false_positives = 0
 
@@ -254,6 +256,17 @@ def evaluate_component_subset(
     fpr = false_positives / n_benign if n_benign > 0 else 0.0
 
     return (float(np.clip(tpr, 0.0, 1.0)), float(np.clip(fpr, 0.0, 1.0)))
+
+
+#: How many attacks the last stratified draw actually produced.
+#:
+#: The measurement resolution of every delta in this study is 1/N, and N is not
+#: a constant: the draw targets 100 and lands wherever per-category rounding
+#: puts it -- 98 on the 950-item corpus, 100 on the integrated one. A test that
+#: inferred N from the smallest observed delta inferred it wrong the moment two
+#: components stopped contributing, so the number is recorded rather than
+#: reconstructed.
+_LAST_SAMPLE_SIZE: dict[str, int] = {"n": 0}
 
 
 def run_full_ablation(
@@ -327,6 +340,7 @@ def run_full_ablation(
         }
 
     results = {
+        "n_attacks": _LAST_SAMPLE_SIZE["n"],
         "data_origin": "real_pipeline",
         "source_script": "scripts/run_ablation.py",
         "seed": seed,

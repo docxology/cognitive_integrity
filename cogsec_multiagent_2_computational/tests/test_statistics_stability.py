@@ -35,6 +35,8 @@ from statistics.stability import (
 import numpy as np
 import pytest
 
+from attacks.corpus import AttackCorpus
+
 # ---------------------------------------------------------------------------
 # SeedMetrics
 # ---------------------------------------------------------------------------
@@ -420,7 +422,13 @@ class TestPipelineEvalFnBenignArm:
     def test_eval_fn_evaluates_both_arms(self):
         fn = make_pipeline_eval_fn(n_samples=10, benign_per_stratum=1)
         m = fn(42)
-        assert m.n_attacks == 10
+        # The stratified draw takes at least one sample from each category, so
+        # a request for ten from a fifteen-category corpus returns fifteen.
+        # Coverage beats an exact count: honouring the ten would mean dropping
+        # five families, which is the defect stratification exists to remove.
+        corpus = AttackCorpus.generate(seed=42)
+        n_categories = len({s.category for s in corpus})
+        assert m.n_attacks == max(10, n_categories)
         assert m.n_benign == 12  # 6 categories x 2 difficulties x 1
         assert m.has_benign_arm is True
         assert 0.0 <= m.false_positive_rate <= 1.0
@@ -439,19 +447,28 @@ class TestPipelineEvalFnBenignArm:
         assert a.overall_detection_rate == b.overall_detection_rate
         assert a.false_positive_rate == b.false_positive_rate
 
-    def test_per_category_is_populated_and_reconstructs_the_overall_rate(self):
-        """Per-category detection rates must be real, not an empty dict.
+    def test_per_category_is_populated_and_covers_every_family(self):
+        """Per-category detection rates must be real, and must span the corpus.
 
-        NOTE (unstratified slice): the attack arm takes ``corpus[:n_samples]``
-        and ``AttackCorpus.generate`` emits all 500 injection samples first, so
-        the first 100 entries are *all* injection.  This assertion pins that
-        fact rather than hiding it: the headline multi-seed rate is a
-        direct-injection detection rate, not a whole-corpus one.  If the slice
-        is ever stratified this test fails and the manuscript wording has to be
-        revisited with it.
+        This assertion used to read ``set(m.per_category) == {"injection"}``,
+        pinning the fact that the attack arm took ``corpus[:n_samples]`` from a
+        corpus that emits its 500 injection samples first: the headline
+        multi-seed rate was a direct-injection rate wearing the label of a
+        whole-corpus one, and it stayed identical to sixteen decimal places
+        when the corpus grew from 950 items to 1,475, because a prefix of an
+        ordered corpus does not move when you append to it.
+
+        The draw is stratified now, so every family the corpus contains has to
+        appear here.  A future family that this set does not contain means the
+        stratification has stopped reaching it, which is the same defect in a
+        new place.
         """
         fn = make_pipeline_eval_fn(n_samples=100, benign_per_stratum=1)
         m = fn(1)
         assert m.per_category, "per_category must not be empty"
-        assert set(m.per_category) == {"injection"}
-        assert m.per_category["injection"] == pytest.approx(m.overall_detection_rate)
+        corpus = AttackCorpus.generate(seed=1)
+        families = {s.category.top_category for s in corpus}
+        assert set(m.per_category) == families, (
+            "the stratified draw no longer reaches every attack family"
+        )
+        assert len(families) > 1, "a single-family corpus cannot test stratification"

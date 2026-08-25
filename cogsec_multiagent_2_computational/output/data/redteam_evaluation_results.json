@@ -39,119 +39,119 @@
   },
   "evasion_denominator": {
     "source": "attacks.corpus.AttackCorpus.generate(seed)",
-    "corpus_size": 950,
-    "corpus_distinct_payloads": 871,
-    "distinct_flagged_payloads": 66,
+    "corpus_size": 1475,
+    "corpus_distinct_payloads": 961,
+    "distinct_flagged_payloads": 76,
     "min_denominator": 50,
     "unit": "distinct payload (duplicates collapsed)"
   },
   "mutation_summary": {
     "semantic_paraphrase": {
       "operator": "semantic_paraphrase",
-      "attempts": 66,
+      "attempts": 76,
       "successful": 0,
       "evasion_rate": 0.0,
       "ci_low": 0.0,
-      "ci_high": 0.05500255701354129,
+      "ci_high": 0.048113585065137326,
       "confidence": 0.95
     },
     "nested_wrapping": {
       "operator": "nested_wrapping",
-      "attempts": 66,
+      "attempts": 76,
       "successful": 0,
       "evasion_rate": 0.0,
       "ci_low": 0.0,
-      "ci_high": 0.05500255701354129,
+      "ci_high": 0.048113585065137326,
       "confidence": 0.95
     },
     "indirect_routing": {
       "operator": "indirect_routing",
-      "attempts": 66,
+      "attempts": 76,
       "successful": 0,
       "evasion_rate": 0.0,
       "ci_low": 0.0,
-      "ci_high": 0.05500255701354129,
+      "ci_high": 0.048113585065137326,
       "confidence": 0.95
     },
     "authority_prefix": {
       "operator": "authority_prefix",
-      "attempts": 66,
+      "attempts": 76,
       "successful": 0,
       "evasion_rate": 0.0,
       "ci_low": 0.0,
-      "ci_high": 0.05500255701354129,
+      "ci_high": 0.048113585065137326,
       "confidence": 0.95
     },
     "gradual_insertion": {
       "operator": "gradual_insertion",
-      "attempts": 66,
-      "successful": 4,
-      "evasion_rate": 0.06060606060606061,
-      "ci_low": 0.023818614832318338,
-      "ci_high": 0.14572908678564217,
+      "attempts": 76,
+      "successful": 8,
+      "evasion_rate": 0.10526315789473684,
+      "ci_low": 0.05431126182821911,
+      "ci_high": 0.19419946322320508,
       "confidence": 0.95
     },
     "chain_delegation": {
       "operator": "chain_delegation",
-      "attempts": 66,
+      "attempts": 76,
       "successful": 0,
       "evasion_rate": 0.0,
       "ci_low": 0.0,
-      "ci_high": 0.05500255701354129,
+      "ci_high": 0.048113585065137326,
       "confidence": 0.95
     },
     "belief_anchoring": {
       "operator": "belief_anchoring",
-      "attempts": 66,
+      "attempts": 76,
       "successful": 0,
       "evasion_rate": 0.0,
       "ci_low": 0.0,
-      "ci_high": 0.05500255701354129,
+      "ci_high": 0.048113585065137326,
       "confidence": 0.95
     },
     "multi_hop_routing": {
       "operator": "multi_hop_routing",
-      "attempts": 66,
+      "attempts": 76,
       "successful": 0,
       "evasion_rate": 0.0,
       "ci_low": 0.0,
-      "ci_high": 0.05500255701354129,
+      "ci_high": 0.048113585065137326,
       "confidence": 0.95
     },
     "canary_avoidance": {
       "operator": "canary_avoidance",
-      "attempts": 66,
+      "attempts": 76,
       "successful": 0,
       "evasion_rate": 0.0,
       "ci_low": 0.0,
-      "ci_high": 0.05500255701354129,
+      "ci_high": 0.048113585065137326,
       "confidence": 0.95
     },
     "confidence_spoofing": {
       "operator": "confidence_spoofing",
-      "attempts": 66,
+      "attempts": 76,
       "successful": 0,
       "evasion_rate": 0.0,
       "ci_low": 0.0,
-      "ci_high": 0.05500255701354129,
+      "ci_high": 0.048113585065137326,
       "confidence": 0.95
     },
     "byzantine_mimicry": {
       "operator": "byzantine_mimicry",
-      "attempts": 66,
+      "attempts": 76,
       "successful": 0,
       "evasion_rate": 0.0,
       "ci_low": 0.0,
-      "ci_high": 0.05500255701354129,
+      "ci_high": 0.048113585065137326,
       "confidence": 0.95
     },
     "quorum_flooding": {
       "operator": "quorum_flooding",
-      "attempts": 66,
+      "attempts": 76,
       "successful": 0,
       "evasion_rate": 0.0,
       "ci_low": 0.0,
-      "ci_high": 0.05500255701354129,
+      "ci_high": 0.048113585065137326,
       "confidence": 0.95
     }
   }

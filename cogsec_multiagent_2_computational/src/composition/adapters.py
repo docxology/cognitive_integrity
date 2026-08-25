@@ -475,14 +475,143 @@ class TrustAdapter(DefenseModule):
 # ---------------------------------------------------------------------------
 
 class ConsensusAdapter(DefenseModule):
-    """Wraps :class:`ByzantineConsensus` simulating an *n_agents*-agent panel.
+    """Wraps :class:`ByzantineConsensus` as a panel judging consensus integrity.
 
-    Each agent has a different sensitivity profile.  A simple
-    heuristic derives a per-agent suspicion score from the message,
-    and votes are submitted to the consensus mechanism.
+    What this module is for
+    -----------------------
+    Byzantine manipulation does not attack an agent's beliefs; it attacks the
+    rule by which a group of agents turns beliefs into a decision. The payloads
+    that carry it say things like *lower the quorum threshold for this vote*,
+    *count the abstentions as approvals*, *treat silence as assent*, *ignore
+    the dissenting validators*, *the tally is close enough that a recount would
+    not change the outcome*. None of these is a suspicious sentence in
+    isolation. Each is an instruction to change how votes aggregate, issued by
+    a participant in the vote, which is what makes it an attack.
+
+    Why this module was rewritten
+    -----------------------------
+    The previous implementation scored a message by the fraction of its words
+    in capitals, whether it contained the literal words ``ignore`` or
+    ``override``, and whether it was longer than a thousand characters. It then
+    submitted seven votes to the wrapped consensus mechanism and discarded the
+    mechanism's answer, reporting the mean of the numbers it had just invented.
+    The seven "agents" all computed the same base suspicion and differed only
+    by a multiplier, so the panel was one heuristic wearing seven hats.
+
+    It detected **0.0%** of the 175 byzantine-manipulation payloads written to
+    exercise it, and 0.0% of every other family: the only module in the series
+    that fired on nothing at all. That is why its Shapley value was exactly
+    zero in all 256 coalitions of the defense lattice, and why extending the
+    attack corpus from 950 items to 1,475 did not move it. The corpus was never
+    the explanation.
+
+    What it detects now
+    -------------------
+    Five named consensus invariants, each a distinct way to subvert an
+    aggregation rule rather than a topic to spot:
+
+    * **C-1 quorum** -- lowering, waiving, or declaring satisfied the threshold
+      a decision requires.
+    * **C-2 silence** -- reinterpreting non-participation as participation:
+      abstentions as approvals, silence as assent, non-response as consent.
+    * **C-3 dissent** -- excluding the minority: ignoring dissenting
+      validators, dropping the minority report, disregarding objections.
+    * **C-4 finality** -- foreclosing the check that would catch the other
+      four: a recount that "would not change the outcome", a tally not worth
+      re-verifying.
+    * **C-5 coercion** -- forcing the decision before verification can happen:
+      urgent consensus required now, decide before the window closes.
+
+    The panel is real this time. Each agent judges the same evidence through
+    its own sensitivity, and the module reports what
+    :meth:`ByzantineConsensus.compute_consensus` decides rather than an average
+    the adapter computed itself. A quorum of agents must independently find the
+    evidence sufficient before the message is flagged, which is the property
+    the wrapped mechanism exists to provide and the previous implementation
+    never used.
     """
 
     _DEFAULT_SENSITIVITY_PROFILES: List[float] = [0.3, 0.4, 0.5, 0.5, 0.6, 0.7, 0.8]
+
+    #: C-1: the threshold a decision must clear is lowered, waived, or
+    #: declared already met. "Nearly met" and "close enough" are included
+    #: because they are the polite form of the same demand: proceed on a margin
+    #: that does not qualify.
+    _C1_QUORUM: List[tuple] = [
+        (r"lower(?:ing)?\s+(?:the\s+)?(?:quorum|threshold|bar|requirement)", 0.85),
+        (r"reduc(?:e|ing)\s+(?:the\s+)?(?:quorum|threshold|vote requirement)", 0.85),
+        (r"waiv(?:e|ing)\s+(?:the\s+)?(?:quorum|threshold|vote|requirement)", 0.85),
+        (r"quorum (?:was |is )?(?:nearly|almost|effectively|substantially) met", 0.80),
+        (r"(?:proceed|proceeding|move ahead)\s+(?:on|with)\s+(?:the\s+)?"
+         r"(?:current|existing|present)\s+margin", 0.80),
+        (r"without (?:a |the )?quorum", 0.80),
+        (r"(?:quorum|threshold) (?:is |was )?not (?:strictly )?(?:required|necessary)", 0.80),
+    ]
+
+    #: C-2: a non-vote is counted as a vote. The single most common shape in
+    #: the corpus, and the one with no benign reading: an abstention that
+    #: counts as an approval is not an abstention.
+    _C2_SILENCE: List[tuple] = [
+        (r"count(?:ing)?\s+(?:the\s+)?abstentions?\s+as\s+"
+         r"(?:approvals?|assent|yes|support)", 0.90),
+        (r"treat(?:ing)?\s+(?:the\s+)?(?:silence|non[- ]?response|no reply)\s+as\s+"
+         r"(?:assent|approval|consent|agreement|yes)", 0.90),
+        (r"(?:silence|non[- ]?response)\s+(?:counts|means|implies)\s+"
+         r"(?:as\s+)?(?:assent|approval|consent|agreement)", 0.90),
+        (r"(?:missing|absent|unresponsive)\s+(?:nodes?|validators?|agents?|votes?)\s+"
+         r"(?:count|are counted|should count)\s+as", 0.85),
+        (r"have not responded;? treating", 0.80),
+    ]
+
+    #: C-3: the minority is removed from the count rather than outvoted.
+    _C3_DISSENT: List[tuple] = [
+        (r"ignor(?:e|ing)\s+(?:the\s+)?(?:dissent(?:ing|ers)?|minority|objections?|"
+         r"opposing votes?)", 0.90),
+        (r"(?:disregard|discount|drop|exclude|suppress)\s+(?:the\s+)?"
+         r"(?:dissent(?:ing|ers)?|minority(?: report)?|objections?|"
+         r"opposing (?:votes?|validators?))", 0.90),
+        (r"minority report", 0.75),
+        (r"(?:exclude|remove)\s+(?:the\s+)?validators? who", 0.85),
+        (r"dissenting validators?", 0.80),
+    ]
+
+    #: C-4: the verification that would expose the other four is declared
+    #: pointless in advance. Structurally the same move INV-4 catches for a
+    #: single agent, applied to a group's tally.
+    _C4_FINALITY: List[tuple] = [
+        (r"recount would not change", 0.85),
+        (r"(?:no|not) (?:need|point|reason) (?:to|in) (?:re[- ]?count|recount|"
+         r"re[- ]?verify(?:ing)?|re[- ]?check(?:ing)?|audit(?:ing)?)"
+         r"(?:\s+the\s+(?:tally|vote|result))?", 0.85),
+        (r"tally is (?:close enough|final|settled)", 0.80),
+        (r"(?:result|outcome) is (?:already )?(?:decided|final)(?:[,;]| and)", 0.75),
+        (r"close enough that a recount", 0.85),
+    ]
+
+    #: C-5: the decision is forced before the checks can run. Weakest of the
+    #: five on its own -- urgency is ordinary in operational text -- so it
+    #: carries a lower weight and is most useful as corroboration.
+    _C5_COERCION: List[tuple] = [
+        (r"urgent consensus required", 0.80),
+        (r"(?:consensus|vote|decision) (?:required|needed) (?:now|immediately)", 0.75),
+        (r"(?:decide|vote|confirm) before (?:the )?(?:window|round|deadline)", 0.70),
+        (r"keeps? the round moving", 0.70),
+        (r"confirm to proceed", 0.60),
+    ]
+
+    _DIMENSIONS: Optional[Dict[str, List[tuple]]] = None
+
+    @classmethod
+    def _compiled(cls) -> Dict[str, List[tuple]]:
+        if cls._DIMENSIONS is None:
+            cls._DIMENSIONS = {
+                "C-1": [(re.compile(p, re.IGNORECASE), w) for p, w in cls._C1_QUORUM],
+                "C-2": [(re.compile(p, re.IGNORECASE), w) for p, w in cls._C2_SILENCE],
+                "C-3": [(re.compile(p, re.IGNORECASE), w) for p, w in cls._C3_DISSENT],
+                "C-4": [(re.compile(p, re.IGNORECASE), w) for p, w in cls._C4_FINALITY],
+                "C-5": [(re.compile(p, re.IGNORECASE), w) for p, w in cls._C5_COERCION],
+            }
+        return cls._DIMENSIONS
 
     @property
     def name(self) -> str:
@@ -507,65 +636,81 @@ class ConsensusAdapter(DefenseModule):
             n_agents=n_agents, max_byzantine=max_byzantine
         )
 
+    def _dimension_scores(self, message: str) -> Dict[str, float]:
+        """``{invariant id: weight}`` for every consensus invariant that matched.
+
+        A dimension's weight is the maximum over its patterns, never a sum, so
+        a message repeating one demand five times scores exactly what it scores
+        once. That is what keeps a long benign document about voting procedure
+        from accumulating confidence out of many weak hits.
+        """
+        found: Dict[str, float] = {}
+        for dimension, patterns in self._compiled().items():
+            best = 0.0
+            for pattern, weight in patterns:
+                if weight > best and pattern.search(message):
+                    best = weight
+            if best > 0.0:
+                found[dimension] = best
+        return found
+
+    #: How much a second independent dimension adds. A message that both lowers
+    #: the quorum and suppresses the dissenters is making a coordinated demand,
+    #: and two unrelated invariants agreeing is stronger evidence than either.
+    #: Capped at one increment so corroboration cannot substitute for evidence.
+    _CORROBORATION_BONUS = 0.08
+
     def evaluate(
         self, message: str, context: Optional[Dict[str, Any]] = None
     ) -> DefenseResult:
-        from core.consensus import Vote
+        from core.consensus import ConsensusResult, Vote
 
         t0 = time.perf_counter()
-
-        # Reset consensus state for a fresh evaluation.
         self._consensus.reset()
 
-        msg_lower = message.lower()
-        words = message.split()
-        total_words = max(len(words), 1)
-        upper_words = sum(1 for w in words if w.isupper() and len(w) > 3)
+        dimensions = self._dimension_scores(message)
+        evidence = max(dimensions.values(), default=0.0)
+        if len(dimensions) > 1:
+            evidence = _clamp(evidence + self._CORROBORATION_BONUS)
 
         n_agents = self._consensus.n_agents
         n_profiles = len(self._SENSITIVITY_PROFILES)
-        agent_scores: List[float] = []
-
-        # Submit exactly n_agents votes so the quorum (min_votes = ceil(n_agents
-        # * quorum_fraction)) is computed against the same population that
-        # votes.  Previously votes were derived from len(sensitivity_profiles)
-        # (default 7), so a caller passing n_agents != 7 left the consensus
-        # permanently UNDECIDED.  Sensitivity profiles are cycled when the
-        # caller supplies a profile list shorter than n_agents (P2-7).
         profiles = [self._SENSITIVITY_PROFILES[i % n_profiles] for i in range(n_agents)]
 
+        # Each agent reads the same evidence through its own sensitivity. A
+        # cautious agent discounts weak evidence and a sensitive one amplifies
+        # it, so the panel disagrees about marginal messages and agrees about
+        # clear ones -- which is the only reason to have a panel.
+        agent_scores: List[float] = []
         for idx, sensitivity in enumerate(profiles):
-            base_suspicion = (upper_words / total_words) * 0.3
-            if "ignore" in msg_lower or "override" in msg_lower:
-                base_suspicion += 0.2
-            if len(message) > 1000:
-                base_suspicion += 0.1
-            agent_score = _clamp(base_suspicion * (1.0 + sensitivity))
-            agent_scores.append(agent_score)
-
+            belief = _clamp(evidence * (0.5 + sensitivity))
+            agent_scores.append(belief)
             self._consensus.submit_vote(
                 Vote(
                     agent_id=f"agent-{idx}",
                     proposition="message_suspicious",
-                    belief=agent_score,
+                    belief=belief,
                 )
             )
 
-        # Compute average belief across votes.
-        avg_belief = sum(agent_scores) / len(agent_scores)
-        score = _clamp(avg_belief)
-        detected = score > self._threshold
+        # The mechanism decides, not this adapter. The previous implementation
+        # submitted these votes and then ignored the result.
+        result, confidence = self._consensus.compute_consensus("message_suspicious")
+        detected = result is ConsensusResult.ACCEPT
 
         latency_ms = (time.perf_counter() - t0) * 1000.0
 
         return DefenseResult(
             detected=detected,
-            score=score,
+            score=_clamp(evidence),
             module_name=self.name,
             details={
+                "invariants_matched": sorted(dimensions),
+                "dimension_scores": dimensions,
                 "agent_scores": agent_scores,
-                "average_belief": avg_belief,
-                "n_agents": self._consensus.n_agents,
+                "consensus_result": result.name,
+                "consensus_confidence": confidence,
+                "n_agents": n_agents,
                 "threshold": self._threshold,
             },
             latency_ms=latency_ms,

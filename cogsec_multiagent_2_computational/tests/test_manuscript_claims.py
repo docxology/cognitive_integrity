@@ -40,19 +40,45 @@ def stats() -> dict:
 # ---------------------------------------------------------------------------
 
 
-def test_full_pipeline_tpr_is_around_12_percent(ablation: dict) -> None:
-    """Full pipeline achieves ~12% TPR on prototype corpus (not 94%).
+def _stated_delta(row_label: str) -> float:
+    """The ΔTPR the ablation table states for *row_label*.
 
-    Manuscript claims: 'full pipeline achieves ~12% TPR on this corpus'.
+    Every per-component assertion in this file used to carry its own literal,
+    so a detector change meant editing the same number in the artifact, the
+    manuscript and here -- and the third copy was the one that got missed.
     """
-    # Compute full pipeline TPR as mean across forward/backward minimal runs.
-    tpr_fwd = ablation["minimal_forward"]["tpr"]
-    tpr_bwd = ablation["minimal_backward"]["tpr"]
-    mean_tpr = (tpr_fwd + tpr_bwd) / 2.0
-    # Should be in the ~93% range (within ±2%)
-    assert 0.91 <= mean_tpr <= 0.95, (
-        f"Expected full pipeline TPR ~0.93, got {mean_tpr:.4f}"
+    import re
+    from pathlib import Path
+
+    table = (
+        Path(__file__).resolve().parents[1]
+        / "manuscript"
+        / "05d_ablation_and_scalability.md"
+    ).read_text(encoding="utf-8")
+    match = re.search(
+        rf"\| {re.escape(row_label)} \| [\d.]+ \| \$\\approx ([-+]?[\d.]+)\$", table
     )
+    assert match, f"the {row_label} row is no longer in the ablation table"
+    return float(match.group(1))
+
+
+def test_the_minimal_configurations_reach_the_full_pipeline(ablation: dict) -> None:
+    """Both greedy searches must land on the full pipeline's own TPR.
+
+    This test has carried three different literals: ~12%, then ~93%, now
+    something else again, each one pinned by hand after a detector changed.
+    The literal was never the claim. What the minimal-configuration search
+    asserts is that a subset of components reaches the same detection the whole
+    stack does -- if forward and backward search disagreed with the full
+    pipeline, the search would be reporting a configuration that does not
+    exist.
+    """
+    full = ablation["full_pipeline"]["tpr"]
+    for direction in ("minimal_forward", "minimal_backward"):
+        assert ablation[direction]["tpr"] == pytest.approx(full, abs=1e-9), (
+            f"{direction} reaches {ablation[direction]['tpr']:.4f} against a "
+            f"full-pipeline TPR of {full:.4f}"
+        )
 
 
 def test_detection_removal_is_most_critical(ablation: dict) -> None:
@@ -69,14 +95,18 @@ def test_detection_removal_is_most_critical(ablation: dict) -> None:
     ), f"Invariants should be most critical, but removal deltas: {removal}"
 
 
-def test_detection_removal_delta_tpr(ablation: dict) -> None:
-    """Invariants removal ΔTPR ≈ -0.847 (within ±0.005).
+def test_invariants_removal_delta_matches_the_manuscript(ablation: dict) -> None:
+    """The Invariants row in the prose must be the Invariants row in the data.
 
-    Manuscript table: Invariants now dominates ablation deltas.
+    The literal here has been -0.847 and before that -0.009, each retyped after
+    a measurement moved. Reading the manuscript instead tests the claim rather
+    than a copy of the number.
     """
+    stated = _stated_delta("Invariants")
     removal = {r["removed"]: r["delta_tpr"] for r in ablation["component_removal"]}
-    assert abs(removal["invariants"] - (-0.847)) < 0.005, (
-        f"Invariants ΔTPR expected ~-0.847, got {removal['invariants']:.4f}"
+    assert abs(removal["invariants"] - stated) < 0.005, (
+        f"manuscript states {stated}, ablation_results.json gives "
+        f"{removal['invariants']:.6f}"
     )
 
 
@@ -98,7 +128,7 @@ def test_firewall_removal_delta_tpr(ablation: dict) -> None:
     table = (
         Path(__file__).resolve().parents[1] / "manuscript" / "05d_ablation_and_scalability.md"
     ).read_text(encoding="utf-8")
-    match = re.search(r"\| Firewall \| [\d.]+ \| \$\\approx (-?[\d.]+)\$", table)
+    match = re.search(r"\| Firewall \| [\d.]+ \| \$\\approx ([-+]?[\d.]+)\$", table)
     assert match, "the firewall row is no longer in the ablation table"
     stated = float(match.group(1))
     assert abs(removal["firewall"] - stated) < 0.005, (
@@ -107,14 +137,13 @@ def test_firewall_removal_delta_tpr(ablation: dict) -> None:
     )
 
 
-def test_tripwire_removal_delta_tpr(ablation: dict) -> None:
-    """Tripwire removal ΔTPR ≈ -0.011 (within ±0.005).
-
-    Manuscript table: Tripwires | ΔTPR = -0.011
-    """
+def test_tripwire_removal_delta_matches_the_manuscript(ablation: dict) -> None:
+    """The Tripwires row in the prose must be the tripwire row in the data."""
+    stated = _stated_delta("Tripwires")
     removal = {r["removed"]: r["delta_tpr"] for r in ablation["component_removal"]}
-    assert abs(removal["tripwire"] - (-0.011)) < 0.005, (
-        f"Tripwire ΔTPR expected ~-0.011, got {removal['tripwire']:.4f}"
+    assert abs(removal["tripwire"] - stated) < 0.005, (
+        f"manuscript states {stated}, ablation_results.json gives "
+        f"{removal['tripwire']:.6f}"
     )
 
 
@@ -300,9 +329,12 @@ def test_ablation_deltas_are_exact_multiples_of_the_sample_resolution(
     # The smallest delta is 1/N where N is the stratified sample size.
     # Previous formula (round(1.0/tpr*12)) assumed low TPR (~0.12); with
     # high TPR (~0.96) it gives a wrong resolution, so derive from deltas.
-    deltas = [abs(r["delta_tpr"]) for r in ablation["component_removal"]
-              if abs(r["delta_tpr"]) > 0]
-    n_samples = int(round(1.0 / min(deltas))) if deltas else 98
+    # Read N from the artifact. Inferring it from the smallest observed delta
+    # -- which is what this did -- is only correct while some component happens
+    # to move TPR by exactly one sample. When the smallest non-zero delta became
+    # two samples rather than one, the inferred N halved and every other delta
+    # stopped looking like a multiple of it.
+    n_samples = ablation["n_attacks"]
     resolution = 1.0 / n_samples
     for row in ablation["component_removal"]:
         quanta = row["delta_tpr"] / resolution
@@ -459,20 +491,34 @@ def test_h2_all_8_components_significant(stats: dict) -> None:
         )
 
 
-def test_h3_all_4_architectures_significant(stats: dict) -> None:
-    """All 4 H3 architecture tests are significant (p < 0.001).
+def test_h3_reports_significance_only_where_the_test_is_meaningful(stats: dict) -> None:
+    """A degenerate operating point must not be reported as evidence.
 
-    Manuscript: 'Architecture generalization significant across all four'
+    This test used to assert that all four architectures were significant at
+    p < 0.001, and it passed for as long as no architecture saturated. Three of
+    them now detect every attack in the LLM arm, so their series have zero
+    variance and the paired t-test on them is meaningless -- it still returns
+    p = 8.7e-07, which is precisely the trap. ``per_architecture_tests``
+    already refuses to mark those rows significant
+    (``hypothesis.py``: ``significant=False if degenerate else ...``), and this
+    is the assertion that the refusal is real rather than incidental.
+
+    A row with a tiny p-value and ``significant: False`` is the guard working.
+    A row with a tiny p-value and ``significant: True`` on a constant series
+    would be the defect.
     """
     h3 = stats["h3"]
     assert len(h3) == 4, f"Expected 4 H3 tests, got {len(h3)}"
+    degenerate = [t for t in h3 if not t["significant"]]
+    assert degenerate, (
+        "no architecture is flagged degenerate; if every series now carries "
+        "variance again, this test should go back to asserting significance"
+    )
     for test in h3:
-        assert test["significant"] is True, (
-            f"H3 test {test['name']} not significant"
-        )
-        assert test["p_value"] < 0.001, (
-            f"H3 {test['name']}: p_value={test['p_value']:.2e} should be < 0.001"
-        )
+        if test["significant"]:
+            assert test["p_value"] < 0.001, (
+                f"H3 {test['name']}: p_value={test['p_value']:.2e} should be < 0.001"
+            )
 
 
 def test_cohens_d_exceeds_10(stats: dict) -> None:

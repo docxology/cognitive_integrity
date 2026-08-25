@@ -340,6 +340,36 @@ def run_multi_seed_stability(
     )
 
 
+def _stratified_draw(samples: list, n: int, seed: int) -> list:
+    """Draw ``n`` samples proportionally across categories, deterministically.
+
+    A slice of an ordered corpus is not a sample of it.  ``AttackCorpus``
+    emits its families in a fixed order, so ``corpus[:100]`` is one hundred
+    direct-injection payloads however large the corpus grows, and a detection
+    rate computed over it describes one family while being reported as the
+    whole.  This draws from every category in proportion to its size, with at
+    least one from each, so extending the corpus changes the measurement --
+    which is the entire point of extending it.
+    """
+    import numpy as np
+    from collections import defaultdict
+
+    by_category: dict[str, list] = defaultdict(list)
+    for sample in samples:
+        key = getattr(sample.category, "value", str(sample.category))
+        by_category[key].append(sample)
+
+    total = len(samples)
+    rng = np.random.default_rng(seed)
+    drawn: list = []
+    for _key, group in sorted(by_category.items()):
+        take = max(1, round(len(group) / total * n))
+        take = min(take, len(group))
+        idx = rng.choice(len(group), size=take, replace=False)
+        drawn.extend(group[i] for i in idx)
+    return drawn
+
+
 def make_pipeline_eval_fn(
     n_samples: int = 100,
     benign_per_stratum: int = 10,
@@ -349,10 +379,17 @@ def make_pipeline_eval_fn(
     The returned function evaluates both arms for a given seed against the
     same freshly-built full pipeline:
 
-    * attack arm — the first ``n_samples`` entries of
-      ``AttackCorpus.generate(seed=seed)``.  This loop is unchanged from the
-      attack-only version of this function, so the TPR it produces stays
-      directly comparable to previously published multi-seed numbers.
+    * attack arm — a stratified draw of ``n_samples`` entries from
+      ``AttackCorpus.generate(seed=seed)``, proportional to each category's
+      share of the corpus.  It used to be ``corpus[:n_samples]``, and the
+      corpus emits its 500 injection samples first, so the published
+      multi-seed rate was a direct-injection rate wearing the label of a
+      whole-corpus one: the first hundred entries never once reached the
+      trust, belief, coordination or provenance families.  Widening the corpus
+      to 1,475 items did not change that number by so much as a digit, which
+      is what a prefix does to an ordered corpus.  Numbers measured before the
+      draw was stratified are therefore not comparable to numbers measured
+      after it, and the earlier ones are the narrower claim.
     * benign arm — ``BenignCorpus.generate(seed=seed,
       n_per_stratum=benign_per_stratum)``, i.e. ``12 * benign_per_stratum``
       messages (120 at the default).  It is regenerated per seed so the FPR
@@ -398,7 +435,7 @@ def make_pipeline_eval_fn(
         total = 0
         cat_detected: Dict[str, int] = {}
         cat_total: Dict[str, int] = {}
-        for sample in list(corpus)[:n_samples]:
+        for sample in _stratified_draw(list(corpus), n_samples, seed):
             result = pipeline.evaluate(sample.payload)
             top = sample.category.top_category
             cat_total[top] = cat_total.get(top, 0) + 1

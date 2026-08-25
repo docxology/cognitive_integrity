@@ -181,7 +181,16 @@ def main() -> int:
                     else "Pipeline-mode rows over the attack corpus."
                 ),
                 "rows": len(results_data),
-                "sha256": data_hash,
+                # The reader binds a sidecar to its artifact through
+                # ``SIDECAR_HASH_KEY``, and this line wrote the hash under the
+                # literal "sha256" instead -- while importing the constant it
+                # was supposed to use. The binding was therefore absent, the
+                # reader fell through to its unbound branch, and because that
+                # branch trusts only a "real_pipeline" claim, this parametric
+                # artifact classified as `unknown` for as long as the sidecar
+                # existed. The hash was correct the whole time; nothing could
+                # find it.
+                SIDECAR_HASH_KEY: data_hash,
             }
             (output_dir / f"full_evaluation_results{suffix}.provenance.json").write_text(
                 json.dumps(prov, indent=2)

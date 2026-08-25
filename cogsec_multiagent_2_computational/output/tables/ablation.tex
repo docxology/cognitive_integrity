@@ -1,21 +1,21 @@
 \begin{table}[htbp]
 \centering
-\caption{Ablation Study: Detection Rate Impact of Component Removal.}
+\caption{Ablation Study: Detection Rate Impact of Component Removal. CI is the Wilson 95\% score-interval half-width.}
 \label{tab:ablation}
-\begin{tabular}{lcr}
+\begin{tabular}{lccr}
 \toprule
-Configuration & Detection Rate & $\Delta$ Rate \\
+Configuration & Detection Rate & 95\% CI & $\Delta$ Rate \\
 \midrule
-Full CIF & 0.959 & --- \\
+Full CIF & 0.890 & $\pm 0.062$ & --- \\
 \midrule
-- Invariants & 0.112 & -0.847 \\
-- Firewall & 0.949 & -0.010 \\
-- Tripwire & 0.949 & -0.010 \\
-- Consensus & 0.959 & 0.000 \\
-- Detection & 0.959 & 0.000 \\
-- Provenance & 0.959 & 0.000 \\
-- Sandbox & 0.959 & 0.000 \\
-- Trust Calculus & 0.959 & 0.000 \\
+- Invariants & 0.240 & $\pm 0.083$ & -0.650 \\
+- Tripwire & 0.870 & $\pm 0.066$ & -0.020 \\
+- Consensus & 0.890 & $\pm 0.062$ & 0.000 \\
+- Detection & 0.890 & $\pm 0.062$ & 0.000 \\
+- Firewall & 0.890 & $\pm 0.062$ & 0.000 \\
+- Provenance & 0.890 & $\pm 0.062$ & 0.000 \\
+- Sandbox & 0.890 & $\pm 0.062$ & 0.000 \\
+- Trust Calculus & 0.890 & $\pm 0.062$ & 0.000 \\
 \bottomrule
 \end{tabular}
 \end{table}

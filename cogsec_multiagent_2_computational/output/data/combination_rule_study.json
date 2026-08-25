@@ -21,9 +21,9 @@
   "results": {
     "per_module_benign_scale": {
       "consensus": {
-        "attack_mean": 0.06705582854553313,
-        "benign_max": 0.33749999999999997,
-        "benign_mean": 0.048744387146851184
+        "attack_mean": 0.09502372881355933,
+        "benign_max": 0.0,
+        "benign_mean": 0.0
       },
       "detection": {
         "attack_mean": 0.34863823517565556,
@@ -64,33 +64,34 @@
     "shipped_max_rule": {
       "at_default_0_5": {
         "fpr": 0.15,
-        "tpr": 0.8676171079429735,
-        "youden_j": 0.7176171079429735
+        "tpr": 0.8778004073319755,
+        "youden_j": 0.7278004073319755
       },
       "held_out": {
         "fpr": 0.0,
-        "tpr": 0.845213849287169,
-        "youden_j": 0.845213849287169
+        "tpr": 0.8553971486761711,
+        "youden_j": 0.8553971486761711
       },
       "threshold": 0.5613817989662057
     },
     "standardised_all_modules": {
       "held_out": {
         "fpr": 0.0,
-        "tpr": 0.8818737270875764,
-        "youden_j": 0.8818737270875764
+        "tpr": 0.8920570264765784,
+        "youden_j": 0.8920570264765784
       },
       "threshold": 150000000.0
     },
     "standardised_best_subset": {
       "held_out": {
         "fpr": 0.0,
-        "tpr": 0.8940936863543788,
-        "youden_j": 0.8940936863543788
+        "tpr": 0.9042769857433809,
+        "youden_j": 0.9042769857433809
       },
-      "selection_half_j": 0.9004065040650406,
+      "selection_half_j": 0.9024390243902439,
       "subset": [
         "tripwire",
+        "consensus",
         "provenance",
         "invariants"
       ],

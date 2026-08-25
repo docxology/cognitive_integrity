@@ -181,3 +181,78 @@ def test_the_injector_and_the_gate_share_one_definition_of_where_numbers_live():
     assert "re.compile" not in source, (
         "the injector defines a pattern of its own; it must use the ledger's"
     )
+
+
+class TestTheRewriteTouchesOnlyTheMatchedSpan:
+    """A short literal must be replaced where the pattern found it, nowhere else.
+
+    ``apply_changes`` used to rewrite by ``line.replace(before, after, 1)``,
+    which finds the first occurrence of the literal anywhere on the line rather
+    than the occurrence the pattern matched. For a two-digit percentage that is
+    usually harmless. For the narrow end of a gap -- a one- or two-character
+    literal like ``4`` -- it is almost always the wrong number, and it does its
+    damage in prose far from the phrase that was being maintained.
+
+    It happened twice in one run. Part 1's limitations paragraph had
+    "Assumption 4 (stationary distributions)" rewritten to "Assumption 10",
+    and Part 2's S08 had "$\\sim$44\\% mean detection rate" rewritten to
+    "$\\sim$104\\%", each because the gap phrase they were being edited for
+    sat several clauses later on the same line. Both passed every gate: the
+    gap became correct, and nothing else on the line was checked by anything.
+    """
+
+    def test_the_first_matching_digits_on_the_line_are_not_the_target(self, tmp_path):
+        from inject_series_values import Change, apply_changes
+
+        path = tmp_path / "prose.md"
+        path.write_text(
+            "Assumption 4 (stationary) holds, yielding a 4--51 percentage-point gap.\n",
+            encoding="utf-8",
+        )
+        line = path.read_text(encoding="utf-8")
+        start = line.index("4--51")
+        change = Change(path, 1, "gap_low", "4", "10", start, start + 1)
+
+        assert apply_changes([change]) == 1
+        after = path.read_text(encoding="utf-8")
+        assert "Assumption 4 (stationary)" in after, (
+            "the rewrite moved to an unrelated number earlier on the line"
+        )
+        assert "10--51 percentage-point gap" in after
+
+    def test_two_edits_on_one_line_do_not_shift_each_other(self, tmp_path):
+        """Right-to-left application, or the second offset lands in the wrong place."""
+        from inject_series_values import Change, apply_changes
+
+        path = tmp_path / "prose.md"
+        path.write_text("a 4--51 percentage-point gap.\n", encoding="utf-8")
+        line = path.read_text(encoding="utf-8")
+        low = line.index("4--51")
+        high = low + len("4--")
+        changes = [
+            Change(path, 1, "gap_low", "4", "10", low, low + 1),
+            Change(path, 1, "gap_high", "51", "11", high, high + 2),
+        ]
+        assert apply_changes(changes) == 2
+        assert "10--11 percentage-point gap" in path.read_text(encoding="utf-8")
+
+    def test_a_change_with_no_recorded_span_is_refused(self, tmp_path):
+        """Fail closed: guessing where to write is what caused the corruption."""
+        from inject_series_values import Change, apply_changes
+
+        path = tmp_path / "prose.md"
+        original = "Assumption 4 holds; a 4--51 percentage-point gap.\n"
+        path.write_text(original, encoding="utf-8")
+        assert apply_changes([Change(path, 1, "gap_low", "4", "10")]) == 0
+        assert path.read_text(encoding="utf-8") == original
+
+    def test_a_span_that_no_longer_matches_is_refused(self, tmp_path):
+        """The line moved under the match; writing anyway would corrupt it."""
+        from inject_series_values import Change, apply_changes
+
+        path = tmp_path / "prose.md"
+        original = "a 4--51 percentage-point gap.\n"
+        path.write_text(original, encoding="utf-8")
+        stale = Change(path, 1, "gap_low", "4", "10", 0, 1)
+        assert apply_changes([stale]) == 0
+        assert path.read_text(encoding="utf-8") == original

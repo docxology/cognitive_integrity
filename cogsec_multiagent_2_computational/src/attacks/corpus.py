@@ -239,7 +239,7 @@ class AttackCorpus:
     # -- generation --
 
     @classmethod
-    def generate(cls, seed: int = 42, *, extended: bool = False) -> "AttackCorpus":
+    def generate(cls, seed: int = 42, *, extended: bool = True) -> "AttackCorpus":
         """Generate the attack corpus: 950 published samples, or 1475 extended.
 
         ``extended=True`` is the integrated corpus and the default: 1475 items

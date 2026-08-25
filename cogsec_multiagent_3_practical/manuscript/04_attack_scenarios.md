@@ -34,7 +34,7 @@ The Manager Agent trusts the Security Agent and deploys the vulnerable code.
 * **Defense Composition**: The system requires **Redundancy**. "Safe" is not accepted unless corroborated by a second, independent source (e.g., a static analysis tool).
 * **Invariants**: "Critical Security Clearance requires 2 independent verifications."
 
-**Real-World Parallel**: ToolHijacker (2025) and supply chain attacks.
+**Real-World Parallel**: ToolHijacker (2025) and supply chain attacks [@toolhijacker2025].
 
 ---
 
@@ -84,7 +84,7 @@ The worker agents are fine, but they are following orders from a corrupt leader.
 * When the Boss orders exfiltration, the Worker's tripwire fires.
 * **Stigmergic Defense**: The monitoring system watches the *pattern* of alerts. "Why did the alert rate drop to zero?"
 
-**Real-World Parallel**: Sleeper Agents (Hubinger et al., 2024) and insider threats.
+**Real-World Parallel**: Sleeper Agents (Hubinger et al., 2024) and insider threats [@sleeperagents2025].
 
 ---
 

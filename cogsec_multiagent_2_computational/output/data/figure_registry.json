@@ -26,7 +26,7 @@
   "fig:detection-performance": {
     "number": 4,
     "display": "Fig. 4",
-    "caption": "Detection Performance Comparison.",
+    "caption": "Detection performance.",
     "section": "04_experimental_setup",
     "label": "fig:detection-performance",
     "type": "figure"
@@ -34,7 +34,7 @@
   "fig:roc-curves": {
     "number": 5,
     "display": "Fig. 5",
-    "caption": "ROC Curves by Attack Category.",
+    "caption": "ROC curves from measured detector scores.",
     "section": "04_experimental_setup",
     "label": "fig:roc-curves",
     "type": "figure"
@@ -55,10 +55,18 @@
     "label": "fig:defense-composition",
     "type": "figure"
   },
+  "fig:trust-decay-sensitivity": {
+    "number": 8,
+    "display": "Fig. 8",
+    "caption": "Trust decay sensitivity, two panels.",
+    "section": "S08_parametric_analysis",
+    "label": "fig:trust-decay-sensitivity",
+    "type": "figure"
+  },
   "tab:part2-navigation": {
     "number": 1,
     "display": "Table 1",
-    "caption": "Table: Cross-paper navigation from Part 2 topics to sibling developments.",
+    "caption": "Tab:Part2 Navigation",
     "section": "01_introduction",
     "label": "tab:part2-navigation",
     "type": "table"
@@ -66,7 +74,7 @@
   "tab:related-work-comparison": {
     "number": 2,
     "display": "Table 2",
-    "caption": "Table: Comparison of CIF with related defense frameworks.",
+    "caption": "Tab:Related Work Comparison",
     "section": "01b_related_work",
     "label": "tab:related-work-comparison",
     "type": "table"
@@ -82,7 +90,7 @@
   "tab:pipeline-architecture": {
     "number": 4,
     "display": "Table 4",
-    "caption": "Table: CIF processing pipeline — module order, inputs, outputs, and attack targets.",
+    "caption": "Tab:Pipeline Architecture",
     "section": "02_methodology",
     "label": "tab:pipeline-architecture",
     "type": "table"
@@ -90,7 +98,7 @@
   "tab:core-params": {
     "number": 5,
     "display": "Table 5",
-    "caption": "Table: Core framework configuration parameters.",
+    "caption": "Tab:Core Params",
     "section": "02b_configuration_parameters",
     "label": "tab:core-params",
     "type": "table"
@@ -98,7 +106,7 @@
   "tab:trust-params": {
     "number": 6,
     "display": "Table 6",
-    "caption": "Table: Trust calculus configuration parameters.",
+    "caption": "Tab:Trust Params",
     "section": "02b_configuration_parameters",
     "label": "tab:trust-params",
     "type": "table"
@@ -106,7 +114,7 @@
   "tab:firewall-params": {
     "number": 7,
     "display": "Table 7",
-    "caption": "Table: Cognitive firewall configuration parameters.",
+    "caption": "Tab:Firewall Params",
     "section": "02b_configuration_parameters",
     "label": "tab:firewall-params",
     "type": "table"
@@ -114,7 +122,7 @@
   "tab:sandbox-params": {
     "number": 8,
     "display": "Table 8",
-    "caption": "Table: Belief sandbox configuration parameters.",
+    "caption": "Tab:Sandbox Params",
     "section": "02b_configuration_parameters",
     "label": "tab:sandbox-params",
     "type": "table"
@@ -122,7 +130,7 @@
   "tab:tripwire-params": {
     "number": 9,
     "display": "Table 9",
-    "caption": "Table: Cognitive tripwire configuration parameters.",
+    "caption": "Tab:Tripwire Params",
     "section": "02b_configuration_parameters",
     "label": "tab:tripwire-params",
     "type": "table"
@@ -130,7 +138,7 @@
   "tab:drift-params": {
     "number": 10,
     "display": "Table 10",
-    "caption": "Table: Drift detection configuration parameters.",
+    "caption": "Tab:Drift Params",
     "section": "02b_configuration_parameters",
     "label": "tab:drift-params",
     "type": "table"
@@ -138,7 +146,7 @@
   "tab:consensus-params": {
     "number": 11,
     "display": "Table 11",
-    "caption": "Table: Byzantine consensus configuration parameters.",
+    "caption": "Tab:Consensus Params",
     "section": "02b_configuration_parameters",
     "label": "tab:consensus-params",
     "type": "table"
@@ -146,7 +154,7 @@
   "tab:invariant-params": {
     "number": 12,
     "display": "Table 12",
-    "caption": "Table: Invariant enforcement configuration parameters.",
+    "caption": "Tab:Invariant Params",
     "section": "02b_configuration_parameters",
     "label": "tab:invariant-params",
     "type": "table"
@@ -154,7 +162,7 @@
   "tab:tuning-profiles": {
     "number": 13,
     "display": "Table 13",
-    "caption": "Table: Recommended configuration profiles by deployment scenario.",
+    "caption": "Tab:Tuning Profiles",
     "section": "02b_configuration_parameters",
     "label": "tab:tuning-profiles",
     "type": "table"
@@ -162,7 +170,7 @@
   "tab:pipeline-comparison": {
     "number": 14,
     "display": "Table 14",
-    "caption": "Table: Comparison of pipeline interfaces. Detection outcomes are identical; the monadic interface adds formal guarantees",
+    "caption": "Tab:Pipeline Comparison",
     "section": "02c_composability_algebra",
     "label": "tab:pipeline-comparison",
     "type": "table"
@@ -170,7 +178,7 @@
   "tab:corpus-categories": {
     "number": 15,
     "display": "Table 15",
-    "caption": "Table: Attack corpus composition by category.",
+    "caption": "Tab:Corpus Categories",
     "section": "03_attack_corpus",
     "label": "tab:corpus-categories",
     "type": "table"
@@ -178,7 +186,7 @@
   "tab:injection-subcats": {
     "number": 16,
     "display": "Table 16",
-    "caption": "Table: Prompt injection subcategory statistics.",
+    "caption": "Tab:Injection Subcats",
     "section": "03_attack_corpus",
     "label": "tab:injection-subcats",
     "type": "table"
@@ -186,7 +194,7 @@
   "tab:trust-subcats": {
     "number": 17,
     "display": "Table 17",
-    "caption": "Table: Trust exploitation subcategory statistics.",
+    "caption": "Tab:Trust Subcats",
     "section": "03_attack_corpus",
     "label": "tab:trust-subcats",
     "type": "table"
@@ -194,7 +202,7 @@
   "tab:belief-subcats": {
     "number": 18,
     "display": "Table 18",
-    "caption": "Table: Belief manipulation subcategory statistics.",
+    "caption": "Tab:Belief Subcats",
     "section": "03_attack_corpus",
     "label": "tab:belief-subcats",
     "type": "table"
@@ -202,55 +210,55 @@
   "tab:coord-subcats": {
     "number": 19,
     "display": "Table 19",
-    "caption": "Table: Coordination attack subcategory statistics.",
+    "caption": "Tab:Coord Subcats",
     "section": "03_attack_corpus",
     "label": "tab:coord-subcats",
     "type": "table"
   },
-  "tab:attack-sources": {
+  "tab:difficulty-dist": {
     "number": 20,
     "display": "Table 20",
-    "caption": "Table: Attack source distribution.",
+    "caption": "Tab:Difficulty Dist",
     "section": "03_attack_corpus",
-    "label": "tab:attack-sources",
-    "type": "table"
-  },
-  "tab:dataset-sources": {
-    "number": 21,
-    "display": "Table 21",
-    "caption": "Table: Published dataset sources.",
-    "section": "03_attack_corpus",
-    "label": "tab:dataset-sources",
-    "type": "table"
-  },
-  "tab:complexity-dist": {
-    "number": 22,
-    "display": "Table 22",
-    "caption": "Table: Attack complexity distribution.",
-    "section": "03_attack_corpus",
-    "label": "tab:complexity-dist",
+    "label": "tab:difficulty-dist",
     "type": "table"
   },
   "tab:target-dist": {
-    "number": 23,
-    "display": "Table 23",
-    "caption": "Table: Attack target distribution.",
+    "number": 21,
+    "display": "Table 21",
+    "caption": "Tab:Target Dist",
     "section": "03_attack_corpus",
     "label": "tab:target-dist",
     "type": "table"
   },
-  "tab:omega-distribution": {
+  "tab:corpus-composition-actual": {
+    "number": 22,
+    "display": "Table 22",
+    "caption": "Tab:Corpus Composition Actual",
+    "section": "03_attack_corpus",
+    "label": "tab:corpus-composition-actual",
+    "type": "table"
+  },
+  "tab:omega-level-mapping": {
+    "number": 23,
+    "display": "Table 23",
+    "caption": "Tab:Omega Level Mapping",
+    "section": "03_attack_corpus",
+    "label": "tab:omega-level-mapping",
+    "type": "table"
+  },
+  "tab:omega-subcategory-detail": {
     "number": 24,
     "display": "Table 24",
-    "caption": "Table: Attack corpus distribution by adversary capability level (Ω_1–Ω_5).",
+    "caption": "Tab:Omega Subcategory Detail",
     "section": "03_attack_corpus",
-    "label": "tab:omega-distribution",
+    "label": "tab:omega-subcategory-detail",
     "type": "table"
   },
   "tab:arch-vulnerabilities": {
     "number": 25,
     "display": "Table 25",
-    "caption": "Table: Architecture-specific vulnerability patterns and observed defense responses.",
+    "caption": "Tab:Arch Vulnerabilities",
     "section": "03b_attack_examples",
     "label": "tab:arch-vulnerabilities",
     "type": "table"
@@ -258,7 +266,7 @@
   "tab:generation-stats": {
     "number": 26,
     "display": "Table 26",
-    "caption": "Table: Generation method statistics.",
+    "caption": "Tab:Generation Stats",
     "section": "03c_attack_ethics",
     "label": "tab:generation-stats",
     "type": "table"
@@ -266,7 +274,7 @@
   "tab:validation-criteria": {
     "number": 27,
     "display": "Table 27",
-    "caption": "Table: Attack validation criteria.",
+    "caption": "Tab:Validation Criteria",
     "section": "03c_attack_ethics",
     "label": "tab:validation-criteria",
     "type": "table"
@@ -274,7 +282,7 @@
   "tab:success-by-defense": {
     "number": 28,
     "display": "Table 28",
-    "caption": "Table: Attack success rate by defense configuration.",
+    "caption": "Tab:Success By Defense",
     "section": "03c_attack_ethics",
     "label": "tab:success-by-defense",
     "type": "table"
@@ -282,7 +290,7 @@
   "tab:attack-age": {
     "number": 29,
     "display": "Table 29",
-    "caption": "Table: Detection rate by attack age.",
+    "caption": "Tab:Attack Age",
     "section": "03c_attack_ethics",
     "label": "tab:attack-age",
     "type": "table"
@@ -290,7 +298,7 @@
   "tab:disclosure-timeline": {
     "number": 30,
     "display": "Table 30",
-    "caption": "Table: Disclosure timeline.",
+    "caption": "Tab:Disclosure Timeline",
     "section": "03c_attack_ethics",
     "label": "tab:disclosure-timeline",
     "type": "table"
@@ -298,7 +306,7 @@
   "tab:access-hierarchy": {
     "number": 31,
     "display": "Table 31",
-    "caption": "Table: Access control hierarchy.",
+    "caption": "Tab:Access Hierarchy",
     "section": "03c_attack_ethics",
     "label": "tab:access-hierarchy",
     "type": "table"
@@ -306,7 +314,7 @@
   "tab:target-architectures": {
     "number": 32,
     "display": "Table 32",
-    "caption": "Table: Multiagent system architectures evaluated.",
+    "caption": "Tab:Target Architectures",
     "section": "04_experimental_setup",
     "label": "tab:target-architectures",
     "type": "table"
@@ -314,7 +322,7 @@
   "tab:llm-validation": {
     "number": 33,
     "display": "Table 33",
-    "caption": "Table: LLM-backed multiagent detection results ($N=10$, Gemma 3 4B, 5 representative attacks per architecture).",
+    "caption": "Tab:Llm Validation",
     "section": "04_experimental_setup",
     "label": "tab:llm-validation",
     "type": "table"
@@ -322,7 +330,7 @@
   "tab:power-analysis-preregistration": {
     "number": 34,
     "display": "Table 34",
-    "caption": "Table: Statistical power analysis for each evaluation mode.",
+    "caption": "Tab:Power Analysis Preregistration",
     "section": "04_experimental_setup",
     "label": "tab:power-analysis-preregistration",
     "type": "table"
@@ -330,7 +338,7 @@
   "tab:detection-performance": {
     "number": 35,
     "display": "Table 35",
-    "caption": "Table: Detection performance summary — empirical results across evaluation modes.",
+    "caption": "Tab:Detection Performance",
     "section": "04_experimental_setup",
     "label": "tab:detection-performance",
     "type": "table"
@@ -338,7 +346,7 @@
   "tab:cross-arch-summary": {
     "number": 36,
     "display": "Table 36",
-    "caption": "Table: Cross-architecture detection summary (real LLM validation, $N=10$).",
+    "caption": "Tab:Cross Arch Summary",
     "section": "04_experimental_setup",
     "label": "tab:cross-arch-summary",
     "type": "table"
@@ -346,7 +354,7 @@
   "tab:multi-seed-summary": {
     "number": 37,
     "display": "Table 37",
-    "caption": "Table: Multi-seed pipeline detection rate summary (Claude Code, $N=30$ seeds).",
+    "caption": "Tab:Multi Seed Summary",
     "section": "05_results",
     "label": "tab:multi-seed-summary",
     "type": "table"
@@ -354,7 +362,7 @@
   "tab:per-seed-rates": {
     "number": 38,
     "display": "Table 38",
-    "caption": "Table: Per-seed detection rates (Claude Code, full pipeline).",
+    "caption": "Tab:Per Seed Rates",
     "section": "05_results",
     "label": "tab:per-seed-rates",
     "type": "table"
@@ -362,7 +370,7 @@
   "tab:power-summary": {
     "number": 39,
     "display": "Table 39",
-    "caption": "Table: Power summary: sample size required for $\\pm 5$ pp HDI at the estimated true rate.",
+    "caption": "Tab:Power Summary",
     "section": "05_results",
     "label": "tab:power-summary",
     "type": "table"
@@ -370,7 +378,7 @@
   "tab:gap-quantification": {
     "number": 40,
     "display": "Table 40",
-    "caption": "Table: Gap between parametric ceiling and empirical detection, with primary attribution.",
+    "caption": "Tab:Gap Quantification",
     "section": "05_results",
     "label": "tab:gap-quantification",
     "type": "table"
@@ -378,7 +386,7 @@
   "tab:llm-baseline": {
     "number": 41,
     "display": "Table 41",
-    "caption": "Table: Single-agent LLM baseline results (Gemma 3 4B).",
+    "caption": "Tab:Llm Baseline",
     "section": "05_results",
     "label": "tab:llm-baseline",
     "type": "table"
@@ -386,7 +394,7 @@
   "tab:llm-multiagent": {
     "number": 42,
     "display": "Table 42",
-    "caption": "Table: LLM-backed multiagent detection results ($N=10$, Gemma 3 4B, 5 attacks per architecture).",
+    "caption": "Tab:Llm Multiagent",
     "section": "05_results",
     "label": "tab:llm-multiagent",
     "type": "table"
@@ -394,7 +402,7 @@
   "tab:parametric-vs-llm": {
     "number": 43,
     "display": "Table 43",
-    "caption": "Table: Detection rate comparison: parametric simulation vs LLM pipeline.",
+    "caption": "Tab:Parametric Vs Llm",
     "section": "05_results",
     "label": "tab:parametric-vs-llm",
     "type": "table"
@@ -402,558 +410,566 @@
   "tab:colony-benchmarks": {
     "number": 44,
     "display": "Table 44",
-    "caption": "Table: Colony benchmark results (real execution).",
+    "caption": "Tab:Colony Benchmarks",
     "section": "05_results",
     "label": "tab:colony-benchmarks",
     "type": "table"
   },
-  "tab:pipeline-distribution": {
+  "tab:baseline-comparison": {
     "number": 45,
     "display": "Table 45",
-    "caption": "Table: Pipeline detection rate distribution (Claude Code, 30 seeds).",
+    "caption": "Tab:Baseline Comparison",
+    "section": "05_results",
+    "label": "tab:baseline-comparison",
+    "type": "table"
+  },
+  "tab:pipeline-distribution": {
+    "number": 46,
+    "display": "Table 46",
+    "caption": "Tab:Pipeline Distribution",
     "section": "05b_statistical_significance",
     "label": "tab:pipeline-distribution",
     "type": "table"
   },
   "tab:real-component-effects": {
-    "number": 46,
-    "display": "Table 46",
-    "caption": "Table: Component removal impact with effect sizes (real pipeline).",
+    "number": 47,
+    "display": "Table 47",
+    "caption": "Tab:Real Component Effects",
     "section": "05b_statistical_significance",
     "label": "tab:real-component-effects",
     "type": "table"
   },
   "tab:real-synergy": {
-    "number": 47,
-    "display": "Table 47",
-    "caption": "Table: Component pair synergy scores (real pipeline, ablation data).",
+    "number": 48,
+    "display": "Table 48",
+    "caption": "Tab:Real Synergy",
     "section": "05b_statistical_significance",
     "label": "tab:real-synergy",
     "type": "table"
   },
   "tab:llm-ci": {
-    "number": 48,
-    "display": "Table 48",
-    "caption": "Table: LLM validation detection rates with exact binomial 95\\% CI.",
+    "number": 49,
+    "display": "Table 49",
+    "caption": "Tab:Llm Ci",
     "section": "05b_statistical_significance",
     "label": "tab:llm-ci",
     "type": "table"
   },
   "tab:multi-seed-ci": {
-    "number": 49,
-    "display": "Table 49",
-    "caption": "Table: Multi-seed pipeline summary with 95\\% CI (30 seeds, Claude Code).",
+    "number": 50,
+    "display": "Table 50",
+    "caption": "Tab:Multi Seed Ci",
     "section": "05b_statistical_significance",
     "label": "tab:multi-seed-ci",
     "type": "table"
   },
   "tab:real-power": {
-    "number": 50,
-    "display": "Table 50",
-    "caption": "Table: Power analysis for primary empirical comparisons.",
+    "number": 51,
+    "display": "Table 51",
+    "caption": "Tab:Real Power",
     "section": "05b_statistical_significance",
     "label": "tab:real-power",
     "type": "table"
   },
   "tab:default-config": {
-    "number": 51,
-    "display": "Table 51",
-    "caption": "Table: Default parameter configuration (from parametric optimization).",
+    "number": 52,
+    "display": "Table 52",
+    "caption": "Tab:Default Config",
     "section": "05c_sensitivity_analysis",
     "label": "tab:default-config",
     "type": "table"
   },
   "tab:component-removal": {
-    "number": 52,
-    "display": "Table 52",
-    "caption": "Table: Component removal impact analysis (prototype pipeline, real corpus).",
+    "number": 53,
+    "display": "Table 53",
+    "caption": "Tab:Component Removal",
     "section": "05d_ablation_and_scalability",
     "label": "tab:component-removal",
     "type": "table"
   },
   "tab:synergy": {
-    "number": 53,
-    "display": "Table 53",
-    "caption": "Table: Component synergy analysis.",
+    "number": 54,
+    "display": "Table 54",
+    "caption": "Tab:Synergy",
     "section": "05d_ablation_and_scalability",
     "label": "tab:synergy",
     "type": "table"
   },
   "tab:agent-scaling": {
-    "number": 54,
-    "display": "Table 54",
-    "caption": "Table: Performance scaling with agent count.",
+    "number": 55,
+    "display": "Table 55",
+    "caption": "Tab:Agent Scaling",
     "section": "05d_ablation_and_scalability",
     "label": "tab:agent-scaling",
     "type": "table"
   },
   "tab:detection-regression": {
-    "number": 55,
-    "display": "Table 55",
-    "caption": "Table: Detection time regression coefficients.",
+    "number": 56,
+    "display": "Table 56",
+    "caption": "Tab:Detection Regression",
     "section": "05d_ablation_and_scalability",
     "label": "tab:detection-regression",
     "type": "table"
   },
   "tab:memory-regression": {
-    "number": 56,
-    "display": "Table 56",
-    "caption": "Table: Memory usage regression coefficients.",
+    "number": 57,
+    "display": "Table 57",
+    "caption": "Tab:Memory Regression",
     "section": "05d_ablation_and_scalability",
     "label": "tab:memory-regression",
     "type": "table"
   },
   "tab:volume-scaling": {
-    "number": 57,
-    "display": "Table 57",
-    "caption": "Table: Performance scaling with message volume.",
+    "number": 58,
+    "display": "Table 58",
+    "caption": "Tab:Volume Scaling",
     "section": "05d_ablation_and_scalability",
     "label": "tab:volume-scaling",
     "type": "table"
   },
   "tab:bayesian-posteriors": {
-    "number": 58,
-    "display": "Table 58",
-    "caption": "Table: Beta-Binomial posteriors for major detection claims. Prior: $\\mathrm{Beta",
+    "number": 59,
+    "display": "Table 59",
+    "caption": "Tab:Bayesian Posteriors",
     "section": "05e_bayesian_uncertainty",
     "label": "tab:bayesian-posteriors",
     "type": "table"
   },
   "tab:power-analysis": {
-    "number": 59,
-    "display": "Table 59",
+    "number": 60,
+    "display": "Table 60",
     "caption": "Tab:Power Analysis",
     "section": "05e_bayesian_uncertainty",
     "label": "tab:power-analysis",
     "type": "table"
   },
   "tab:maturity-rubric": {
-    "number": 60,
-    "display": "Table 60",
-    "caption": "Table: Adapter maturity rubric and typical marginal TPR contribution.",
+    "number": 61,
+    "display": "Table 61",
+    "caption": "Tab:Maturity Rubric",
     "section": "05f_architecture_gap_analysis",
     "label": "tab:maturity-rubric",
     "type": "table"
   },
   "tab:module-maturity": {
-    "number": 61,
-    "display": "Table 61",
-    "caption": "Table: Current adapter maturity assessment per module. Evidence: $\\Delta\\mathrm{TPR",
+    "number": 62,
+    "display": "Table 62",
+    "caption": "Tab:Module Maturity",
     "section": "05f_architecture_gap_analysis",
     "label": "tab:module-maturity",
     "type": "table"
   },
   "tab:at-rounds": {
-    "number": 62,
-    "display": "Table 62",
-    "caption": "Table: Adversarial training round-by-round detection rates (Claude Code).",
+    "number": 63,
+    "display": "Table 63",
+    "caption": "Tab:At Rounds",
     "section": "05g_adversarial_training",
     "label": "tab:at-rounds",
     "type": "table"
   },
   "tab:mutation-operators": {
-    "number": 63,
-    "display": "Table 63",
-    "caption": "Table: Mutation operator effectiveness (successful evasion rate).",
+    "number": 64,
+    "display": "Table 64",
+    "caption": "Tab:Mutation Operators",
     "section": "05h_redteam_evaluation",
     "label": "tab:mutation-operators",
     "type": "table"
   },
-  "tab:campaigns": {
-    "number": 64,
-    "display": "Table 64",
-    "caption": "Table: Multi-stage campaign detection results.",
+  "tab:redteam-omega": {
+    "number": 65,
+    "display": "Table 65",
+    "caption": "Tab:Redteam Omega",
     "section": "05h_redteam_evaluation",
-    "label": "tab:campaigns",
+    "label": "tab:redteam-omega",
     "type": "table"
   },
   "tab:architecture-insights": {
-    "number": 65,
-    "display": "Table 65",
-    "caption": "Table: Architecture vulnerability patterns and observed CIF defense response.",
+    "number": 66,
+    "display": "Table 66",
+    "caption": "Tab:Architecture Insights",
     "section": "06_discussion",
     "label": "tab:architecture-insights",
     "type": "table"
   },
   "tab:detector-roc": {
-    "number": 66,
-    "display": "Table 66",
-    "caption": "Table: Detector performance comparison via ROC metrics.",
+    "number": 67,
+    "display": "Table 67",
+    "caption": "Tab:Detector Roc",
     "section": "S02_detection_algorithms",
     "label": "tab:detector-roc",
     "type": "table"
   },
   "tab:auc-ci": {
-    "number": 67,
-    "display": "Table 67",
-    "caption": "Table: Empirical AUC with 95\\% confidence intervals.",
+    "number": 68,
+    "display": "Table 68",
+    "caption": "Tab:Auc Ci",
     "section": "S02_detection_algorithms",
     "label": "tab:auc-ci",
     "type": "table"
   },
   "tab:fusion-performance": {
-    "number": 68,
-    "display": "Table 68",
-    "caption": "Table: Fusion strategy performance comparison.",
+    "number": 69,
+    "display": "Table 69",
+    "caption": "Tab:Fusion Performance",
     "section": "S02_detection_algorithms",
     "label": "tab:fusion-performance",
     "type": "table"
   },
   "tab:hybrid-tradeoffs": {
-    "number": 69,
-    "display": "Table 69",
-    "caption": "Table: Hybrid configuration trade-off analysis.",
+    "number": 70,
+    "display": "Table 70",
+    "caption": "Tab:Hybrid Tradeoffs",
     "section": "S02_detection_algorithms",
     "label": "tab:hybrid-tradeoffs",
     "type": "table"
   },
   "tab:fp-root-causes": {
-    "number": 70,
-    "display": "Table 70",
-    "caption": "Table: False positive root causes and mitigation strategies.",
+    "number": 71,
+    "display": "Table 71",
+    "caption": "Tab:Fp Root Causes",
     "section": "S02_detection_algorithms",
     "label": "tab:fp-root-causes",
     "type": "table"
   },
   "tab:fp-mitigation-results": {
-    "number": 71,
-    "display": "Table 71",
-    "caption": "Table: False positive mitigation strategy effectiveness.",
+    "number": 72,
+    "display": "Table 72",
+    "caption": "Tab:Fp Mitigation Results",
     "section": "S02_detection_algorithms",
     "label": "tab:fp-mitigation-results",
     "type": "table"
   },
   "tab:detection-complexity": {
-    "number": 72,
-    "display": "Table 72",
-    "caption": "Table: Detection algorithm computational complexity.",
+    "number": 73,
+    "display": "Table 73",
+    "caption": "Tab:Detection Complexity",
     "section": "S02_detection_algorithms",
     "label": "tab:detection-complexity",
     "type": "table"
   },
   "tab:ig-vs-kl": {
-    "number": 73,
-    "display": "Table 73",
-    "caption": "Table: Information-geometric vs.\\ KL-based detection comparison.",
+    "number": 74,
+    "display": "Table 74",
+    "caption": "Tab:Ig Vs Kl",
     "section": "S02_detection_algorithms",
     "label": "tab:ig-vs-kl",
     "type": "table"
   },
   "tab:benchmark-configs": {
-    "number": 74,
-    "display": "Table 74",
-    "caption": "Table: Recommended colony CogSec benchmark configurations.",
+    "number": 75,
+    "display": "Table 75",
+    "caption": "Tab:Benchmark Configs",
     "section": "S03_benchmark_implementation",
     "label": "tab:benchmark-configs",
     "type": "table"
   },
   "tab:tool-selection": {
-    "number": 75,
-    "display": "Table 75",
-    "caption": "Table: Model checking tool selection by verification objective.",
+    "number": 76,
+    "display": "Table 76",
+    "caption": "Tab:Tool Selection",
     "section": "S04_model_checking",
     "label": "tab:tool-selection",
     "type": "table"
   },
   "tab:verification-config": {
-    "number": 76,
-    "display": "Table 76",
-    "caption": "Table: Model checking configuration parameters.",
+    "number": 77,
+    "display": "Table 77",
+    "caption": "Tab:Verification Config",
     "section": "S04_model_checking",
     "label": "tab:verification-config",
     "type": "table"
   },
   "tab:trust-api": {
-    "number": 77,
-    "display": "Table 77",
-    "caption": "Table: Trust module API: Core classes for trust computation and management.",
+    "number": 78,
+    "display": "Table 78",
+    "caption": "Tab:Trust Api",
     "section": "S05_framework_api",
     "label": "tab:trust-api",
     "type": "table"
   },
   "tab:firewall-api": {
-    "number": 78,
-    "display": "Table 78",
-    "caption": "Table: Firewall module API: Classes for message classification and threat detection.",
+    "number": 79,
+    "display": "Table 79",
+    "caption": "Tab:Firewall Api",
     "section": "S05_framework_api",
     "label": "tab:firewall-api",
     "type": "table"
   },
   "tab:consensus-api": {
-    "number": 79,
-    "display": "Table 79",
-    "caption": "Table: Consensus module API: Classes for Byzantine-tolerant multiagent decisions.",
+    "number": 80,
+    "display": "Table 80",
+    "caption": "Tab:Consensus Api",
     "section": "S05_framework_api",
     "label": "tab:consensus-api",
     "type": "table"
   },
   "tab:detection-api": {
-    "number": 80,
-    "display": "Table 80",
-    "caption": "Table: Detection module API: Classes for belief drift and anomaly detection.",
+    "number": 81,
+    "display": "Table 81",
+    "caption": "Tab:Detection Api",
     "section": "S05_framework_api",
     "label": "tab:detection-api",
     "type": "table"
   },
   "tab:provenance-api": {
-    "number": 81,
-    "display": "Table 81",
-    "caption": "Table: Provenance module API: Classes for belief origin tracking and taint propagation.",
+    "number": 82,
+    "display": "Table 82",
+    "caption": "Tab:Provenance Api",
     "section": "S05_framework_api",
     "label": "tab:provenance-api",
     "type": "table"
   },
   "tab:sandbox-api": {
-    "number": 82,
-    "display": "Table 82",
-    "caption": "Table: Sandbox module API: Classes for belief sandboxing and promotion.",
+    "number": 83,
+    "display": "Table 83",
+    "caption": "Tab:Sandbox Api",
     "section": "S05_framework_api",
     "label": "tab:sandbox-api",
     "type": "table"
   },
   "tab:tripwire-api": {
-    "number": 83,
-    "display": "Table 83",
-    "caption": "Table: Tripwire module API: Classes for canary belief monitoring.",
+    "number": 84,
+    "display": "Table 84",
+    "caption": "Tab:Tripwire Api",
     "section": "S05_framework_api",
     "label": "tab:tripwire-api",
     "type": "table"
   },
   "tab:invariants-api": {
-    "number": 84,
-    "display": "Table 84",
-    "caption": "Table: Invariants module API: Classes for behavioral invariant enforcement.",
+    "number": 85,
+    "display": "Table 85",
+    "caption": "Tab:Invariants Api",
     "section": "S05_framework_api",
     "label": "tab:invariants-api",
     "type": "table"
   },
   "tab:deploy-checklist": {
-    "number": 85,
-    "display": "Table 85",
-    "caption": "Table: Production deployment checklist.",
+    "number": 86,
+    "display": "Table 86",
+    "caption": "Tab:Deploy Checklist",
     "section": "S06_deployment_guide",
     "label": "tab:deploy-checklist",
     "type": "table"
   },
   "tab:operational-metrics": {
-    "number": 86,
-    "display": "Table 86",
-    "caption": "Table: Key operational metrics for CIF monitoring.",
+    "number": 87,
+    "display": "Table 87",
+    "caption": "Tab:Operational Metrics",
     "section": "S06_deployment_guide",
     "label": "tab:operational-metrics",
     "type": "table"
   },
   "tab:alg-quickref": {
-    "number": 87,
-    "display": "Table 87",
-    "caption": "Table: CIF defense algorithm quick reference — formal basis, complexity, and implementation.",
+    "number": 88,
+    "display": "Table 88",
+    "caption": "Tab:Alg Quickref",
     "section": "S07_algorithm_pseudocode",
     "label": "tab:alg-quickref",
     "type": "table"
   },
   "tab:parametric-claude-code-detection": {
-    "number": 88,
-    "display": "Table 88",
-    "caption": "Table: Claude Code parametric detection results by attack type.",
+    "number": 89,
+    "display": "Table 89",
+    "caption": "Tab:Parametric Claude Code Detection",
     "section": "S08_parametric_analysis",
     "label": "tab:parametric-claude-code-detection",
     "type": "table"
   },
   "tab:parametric-claude-code-perf": {
-    "number": 89,
-    "display": "Table 89",
-    "caption": "Table: Claude Code parametric performance metrics.",
+    "number": 90,
+    "display": "Table 90",
+    "caption": "Tab:Parametric Claude Code Perf",
     "section": "S08_parametric_analysis",
     "label": "tab:parametric-claude-code-perf",
     "type": "table"
   },
   "tab:parametric-claude-code-integrity": {
-    "number": 90,
-    "display": "Table 90",
-    "caption": "Table: Claude Code parametric integrity preservation.",
+    "number": 91,
+    "display": "Table 91",
+    "caption": "Tab:Parametric Claude Code Integrity",
     "section": "S08_parametric_analysis",
     "label": "tab:parametric-claude-code-integrity",
     "type": "table"
   },
   "tab:parametric-autogpt-detection": {
-    "number": 91,
-    "display": "Table 91",
-    "caption": "Table: AutoGPT parametric detection results by attack type.",
+    "number": 92,
+    "display": "Table 92",
+    "caption": "Tab:Parametric Autogpt Detection",
     "section": "S08_parametric_analysis",
     "label": "tab:parametric-autogpt-detection",
     "type": "table"
   },
   "tab:parametric-autogpt-perf": {
-    "number": 92,
-    "display": "Table 92",
-    "caption": "Table: AutoGPT parametric performance metrics.",
+    "number": 93,
+    "display": "Table 93",
+    "caption": "Tab:Parametric Autogpt Perf",
     "section": "S08_parametric_analysis",
     "label": "tab:parametric-autogpt-perf",
     "type": "table"
   },
   "tab:parametric-crewai-detection": {
-    "number": 93,
-    "display": "Table 93",
-    "caption": "Table: CrewAI parametric detection results by attack type.",
+    "number": 94,
+    "display": "Table 94",
+    "caption": "Tab:Parametric Crewai Detection",
     "section": "S08_parametric_analysis",
     "label": "tab:parametric-crewai-detection",
     "type": "table"
   },
   "tab:parametric-langgraph-detection": {
-    "number": 94,
-    "display": "Table 94",
-    "caption": "Table: LangGraph parametric detection results by attack type.",
+    "number": 95,
+    "display": "Table 95",
+    "caption": "Tab:Parametric Langgraph Detection",
     "section": "S08_parametric_analysis",
     "label": "tab:parametric-langgraph-detection",
     "type": "table"
   },
   "tab:parametric-cross-arch-summary": {
-    "number": 95,
-    "display": "Table 95",
-    "caption": "Table: Cross-architecture parametric detection summary (Full CIF).",
+    "number": 96,
+    "display": "Table 96",
+    "caption": "Tab:Parametric Cross Arch Summary",
     "section": "S08_parametric_analysis",
     "label": "tab:parametric-cross-arch-summary",
     "type": "table"
   },
   "tab:parametric-effect-sizes": {
-    "number": 96,
-    "display": "Table 96",
-    "caption": "Table: Effect sizes (Cohen's $d$) for primary comparisons (parametric simulation).",
+    "number": 97,
+    "display": "Table 97",
+    "caption": "Tab:Parametric Effect Sizes",
     "section": "S08_parametric_analysis",
     "label": "tab:parametric-effect-sizes",
     "type": "table"
   },
   "tab:parametric-odds-ratios": {
-    "number": 97,
-    "display": "Table 97",
-    "caption": "Table: Odds ratios for detection comparisons (parametric simulation).",
+    "number": 98,
+    "display": "Table 98",
+    "caption": "Tab:Parametric Odds Ratios",
     "section": "S08_parametric_analysis",
     "label": "tab:parametric-odds-ratios",
     "type": "table"
   },
   "tab:parametric-nnt": {
-    "number": 98,
-    "display": "Table 98",
-    "caption": "Table: Number needed to treat by attack type (parametric simulation).",
+    "number": 99,
+    "display": "Table 99",
+    "caption": "Tab:Parametric Nnt",
     "section": "S08_parametric_analysis",
     "label": "tab:parametric-nnt",
     "type": "table"
   },
   "tab:parametric-arch-ci": {
-    "number": 99,
-    "display": "Table 99",
-    "caption": "Table: Per-architecture TPR and FPR with 95\\% confidence intervals (parametric simulation).",
+    "number": 100,
+    "display": "Table 100",
+    "caption": "Tab:Parametric Arch Ci",
     "section": "S08_parametric_analysis",
     "label": "tab:parametric-arch-ci",
     "type": "table"
   },
   "tab:parametric-attack-ci": {
-    "number": 100,
-    "display": "Table 100",
-    "caption": "Table: Detection rate confidence intervals by attack subcategory (parametric simulation).",
+    "number": 101,
+    "display": "Table 101",
+    "caption": "Tab:Parametric Attack Ci",
     "section": "S08_parametric_analysis",
     "label": "tab:parametric-attack-ci",
     "type": "table"
   },
   "tab:parametric-firewall-tau1-sensitivity": {
-    "number": 101,
-    "display": "Table 101",
-    "caption": "Table: Reject threshold ($\\tau_1$) sensitivity — quarantine threshold held fixed at $\\tau_2 = 0.5$ (parametric simulatio",
+    "number": 102,
+    "display": "Table 102",
+    "caption": "Tab:Parametric Firewall Tau1 Sensitivity",
     "section": "S08_parametric_analysis",
     "label": "tab:parametric-firewall-tau1-sensitivity",
     "type": "table"
   },
   "tab:parametric-firewall-tau2-sensitivity": {
-    "number": 102,
-    "display": "Table 102",
-    "caption": "Table: Quarantine threshold ($\\tau_2$) sensitivity — reject threshold held fixed at $\\tau_1 = 0.7$ (parametric simulatio",
+    "number": 103,
+    "display": "Table 103",
+    "caption": "Tab:Parametric Firewall Tau2 Sensitivity",
     "section": "S08_parametric_analysis",
     "label": "tab:parametric-firewall-tau2-sensitivity",
     "type": "table"
   },
   "tab:parametric-decay-sensitivity": {
-    "number": 103,
-    "display": "Table 103",
-    "caption": "Table: Trust decay factor sensitivity analysis (parametric simulation).",
+    "number": 104,
+    "display": "Table 104",
+    "caption": "Tab:Parametric Decay Sensitivity",
     "section": "S08_parametric_analysis",
     "label": "tab:parametric-decay-sensitivity",
     "type": "table"
   },
   "tab:parametric-corroboration": {
-    "number": 104,
-    "display": "Table 104",
-    "caption": "Table: Corroboration count sensitivity analysis (parametric simulation).",
+    "number": 105,
+    "display": "Table 105",
+    "caption": "Tab:Parametric Corroboration",
     "section": "S08_parametric_analysis",
     "label": "tab:parametric-corroboration",
     "type": "table"
   },
   "tab:parametric-window": {
-    "number": 105,
-    "display": "Table 105",
-    "caption": "Table: Sliding window size sensitivity analysis (parametric simulation).",
+    "number": 106,
+    "display": "Table 106",
+    "caption": "Tab:Parametric Window",
     "section": "S08_parametric_analysis",
     "label": "tab:parametric-window",
     "type": "table"
   },
   "tab:parametric-interactions": {
-    "number": 106,
-    "display": "Table 106",
-    "caption": "Table: Two-way ANOVA interaction effects (parametric simulation).",
+    "number": 107,
+    "display": "Table 107",
+    "caption": "Tab:Parametric Interactions",
     "section": "S08_parametric_analysis",
     "label": "tab:parametric-interactions",
     "type": "table"
   },
   "tab:parametric-generalization": {
-    "number": 107,
-    "display": "Table 107",
-    "caption": "Table: Cross-validation with held-out attack types (parametric simulation).",
+    "number": 108,
+    "display": "Table 108",
+    "caption": "Tab:Parametric Generalization",
     "section": "S08_parametric_analysis",
     "label": "tab:parametric-generalization",
     "type": "table"
   },
   "tab:parametric-recommended-config": {
-    "number": 108,
-    "display": "Table 108",
-    "caption": "Table: F1-maximizing parameter configuration (parametric simulation).",
+    "number": 109,
+    "display": "Table 109",
+    "caption": "Tab:Parametric Recommended Config",
     "section": "S08_parametric_analysis",
     "label": "tab:parametric-recommended-config",
     "type": "table"
   },
   "tab:parametric-minimal-configs": {
-    "number": 109,
-    "display": "Table 109",
-    "caption": "Table: Minimal viable configurations (parametric simulation).",
+    "number": 110,
+    "display": "Table 110",
+    "caption": "Tab:Parametric Minimal Configs",
     "section": "S08_parametric_analysis",
     "label": "tab:parametric-minimal-configs",
     "type": "table"
   },
   "tab:parametric-overall-summary": {
-    "number": 110,
-    "display": "Table 110",
-    "caption": "Table: Parametric simulation overall performance summary.",
+    "number": 111,
+    "display": "Table 111",
+    "caption": "Tab:Parametric Overall Summary",
     "section": "S08_parametric_analysis",
     "label": "tab:parametric-overall-summary",
     "type": "table"
   },
   "tab:s09-types": {
-    "number": 111,
-    "display": "Table 111",
-    "caption": "Table: CIF monadic API types.",
+    "number": 112,
+    "display": "Table 112",
+    "caption": "Tab:S09 Types",
     "section": "S09_functional_api",
     "label": "tab:s09-types",
     "type": "table"
   },
   "tab:s09-pipeline-comparison": {
-    "number": 112,
-    "display": "Table 112",
-    "caption": "Table: Side-by-side comparison of the two pipeline interfaces.",
+    "number": 113,
+    "display": "Table 113",
+    "caption": "Tab:S09 Pipeline Comparison",
     "section": "S09_functional_api",
     "label": "tab:s09-pipeline-comparison",
     "type": "table"
   },
   "tab:viz-components": {
-    "number": 113,
-    "display": "Table 113",
+    "number": 114,
+    "display": "Table 114",
     "caption": "Tab:Viz Components",
     "section": "S12_composable_visualization",
     "label": "tab:viz-components",

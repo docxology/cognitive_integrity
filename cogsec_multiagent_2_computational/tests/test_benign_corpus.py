@@ -223,7 +223,8 @@ _LAYER_MODULES = {
     "firewall.pattern": FirewallAdapter,
     "trust.urgency": TrustAdapter,
     "sandbox.urgency": SandboxAdapter,
-    "consensus.substring": ConsensusAdapter,
+    "consensus.invariant": ConsensusAdapter,
+    "firewall.semantic": FirewallAdapter,
 }
 
 

@@ -223,13 +223,28 @@ def ablation_full_tpr() -> float:
 
 
 def ablation_corpus_size() -> float:
-    """Recover the denominator from the measurement resolution.
+    """The number of attacks the ablation actually scored.
 
-    The artifact records rates, not counts.  With an n-sample corpus every
-    delta is an integer multiple of 1/n, so the smallest non-zero delta *is*
-    1/n.  (Deriving it from the full-pipeline TPR alone would give 49, because
-    12/98 reduces to 6/49; the deltas pin the true resolution.)
+    Read from ``n_attacks`` when the runner records it, which it now does.
+    The fallback recovers it from the measurement resolution: the artifact
+    records rates, and with an n-sample corpus every delta is an integer
+    multiple of 1/n, so the smallest non-zero delta *is* 1/n.
+
+    That reconstruction is only sound while some component moves TPR by
+    exactly one sample, and it is not a hypothetical failure. On the current
+    artifact the smallest non-zero delta is 0.020 -- two samples, because six
+    of the eight components now contribute nothing and the one that does moves
+    two -- so the inference returns 50 for a corpus of 100, and every claim
+    downstream inherits a denominator that is half the truth. Recording the
+    count removed the guess; the reconstruction is kept only for artifacts
+    written before it did.
     """
+    recorded = _ablation().get("n_attacks")
+    if recorded is None:
+        recorded = _ablation().get("full_pipeline", {}).get("n_attacks")
+    if isinstance(recorded, (int, float)) and recorded > 0:
+        return float(recorded)
+
     deltas = [abs(v) for v in _removal().values() if abs(v) > 1e-12]
     if not deltas:
         raise MissingArtifact("no non-zero component-removal deltas to resolve against")
@@ -608,7 +623,7 @@ LEDGER: tuple[LedgerVariable, ...] = (
         # the middle of "1,475". Hence the explicit boundary: three or four
         # digits, not preceded by a digit or a thousands separator.
         pattern=re.compile(
-            rf"(?<![\d,])(\d{{3,4}})\s*{DASH}?\s*attack\b(?=[- ]?(?:corpus|set)\b)"
+            rf"(?<![\d,])(\d{{3,4}})\s*{DASH}?\s*attack\b(?=[- ]?(?:corpus|set)\b)(?![- ]?(?:corpus|set)\s+ablation)"
         ),
         require=("corpus", "set"),
         exclude=("ablation",),

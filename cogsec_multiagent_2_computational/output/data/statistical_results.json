@@ -10,43 +10,43 @@
   },
   "h2": [
     {
-      "name": "H2_detection",
-      "p_value": 1.527162682340757e-27,
-      "significant": true
-    },
-    {
-      "name": "H2_trust_calculus",
-      "p_value": 8.13122237568153e-28,
-      "significant": true
-    },
-    {
-      "name": "H2_firewall",
-      "p_value": 4.248526293627685e-27,
-      "significant": true
-    },
-    {
       "name": "H2_invariants",
-      "p_value": 2.2251784552583837e-28,
+      "p_value": 3.196774045149832e-26,
       "significant": true
     },
     {
       "name": "H2_tripwire",
-      "p_value": 4.181048056890533e-26,
+      "p_value": 6.638145635173426e-15,
       "significant": true
     },
     {
       "name": "H2_consensus",
-      "p_value": 1.5970729431240382e-24,
+      "p_value": 2.5763480316705023e-13,
+      "significant": true
+    },
+    {
+      "name": "H2_detection",
+      "p_value": 1.5735878356172783e-14,
+      "significant": true
+    },
+    {
+      "name": "H2_firewall",
+      "p_value": 1.491777725646729e-12,
       "significant": true
     },
     {
       "name": "H2_provenance",
-      "p_value": 1.6203958810237152e-25,
+      "p_value": 4.198373597299428e-11,
       "significant": true
     },
     {
       "name": "H2_sandbox",
-      "p_value": 1.547632535513304e-24,
+      "p_value": 1.075900695076169e-11,
+      "significant": true
+    },
+    {
+      "name": "H2_trust_calculus",
+      "p_value": 5.75893416510998e-11,
       "significant": true
     }
   ],
@@ -54,7 +54,7 @@
     {
       "name": "H3_claude_code",
       "p_value": 8.737794688926782e-07,
-      "significant": true
+      "significant": false
     },
     {
       "name": "H3_autogpt",
@@ -64,12 +64,12 @@
     {
       "name": "H3_crewai",
       "p_value": 8.737794688926782e-07,
-      "significant": true
+      "significant": false
     },
     {
       "name": "H3_langgraph",
       "p_value": 8.737794688926782e-07,
-      "significant": true
+      "significant": false
     }
   ],
   "kruskal_wallis": {

@@ -1,4 +1,5 @@
 {
+  "n_attacks": 100,
   "data_origin": "real_pipeline",
   "source_script": "scripts/run_ablation.py",
   "seed": 42,
@@ -8,164 +9,178 @@
     "deterministic": true
   },
   "full_pipeline": {
-    "tpr": 0.9591836734693877,
+    "tpr": 0.89,
     "fpr": 0.0,
-    "youden_j": 0.9591836734693877
+    "youden_j": 0.89
   },
   "component_removal": [
     {
       "removed": "invariants",
-      "tpr": 0.11224489795918367,
-      "delta_tpr": -0.846938775510204,
+      "tpr": 0.24,
+      "delta_tpr": -0.65,
       "fpr": 0.0,
       "delta_fpr": 0.0,
-      "youden_j": 0.11224489795918367,
-      "delta_youden_j": -0.846938775510204
-    },
-    {
-      "removed": "firewall",
-      "tpr": 0.9489795918367347,
-      "delta_tpr": -0.010204081632652962,
-      "fpr": 0.0,
-      "delta_fpr": 0.0,
-      "youden_j": 0.9489795918367347,
-      "delta_youden_j": -0.010204081632652962
+      "youden_j": 0.24,
+      "delta_youden_j": -0.65
     },
     {
       "removed": "tripwire",
-      "tpr": 0.9489795918367347,
-      "delta_tpr": -0.010204081632652962,
+      "tpr": 0.87,
+      "delta_tpr": -0.020000000000000018,
       "fpr": 0.0,
       "delta_fpr": 0.0,
-      "youden_j": 0.9489795918367347,
-      "delta_youden_j": -0.010204081632652962
+      "youden_j": 0.87,
+      "delta_youden_j": -0.020000000000000018
     },
     {
       "removed": "consensus",
-      "tpr": 0.9591836734693877,
+      "tpr": 0.89,
       "delta_tpr": 0.0,
       "fpr": 0.0,
       "delta_fpr": 0.0,
-      "youden_j": 0.9591836734693877,
+      "youden_j": 0.89,
       "delta_youden_j": 0.0
     },
     {
       "removed": "detection",
-      "tpr": 0.9591836734693877,
+      "tpr": 0.89,
       "delta_tpr": 0.0,
       "fpr": 0.0,
       "delta_fpr": 0.0,
-      "youden_j": 0.9591836734693877,
+      "youden_j": 0.89,
+      "delta_youden_j": 0.0
+    },
+    {
+      "removed": "firewall",
+      "tpr": 0.89,
+      "delta_tpr": 0.0,
+      "fpr": 0.0,
+      "delta_fpr": 0.0,
+      "youden_j": 0.89,
       "delta_youden_j": 0.0
     },
     {
       "removed": "provenance",
-      "tpr": 0.9591836734693877,
+      "tpr": 0.89,
       "delta_tpr": 0.0,
       "fpr": 0.0,
       "delta_fpr": 0.0,
-      "youden_j": 0.9591836734693877,
+      "youden_j": 0.89,
       "delta_youden_j": 0.0
     },
     {
       "removed": "sandbox",
-      "tpr": 0.9591836734693877,
+      "tpr": 0.89,
       "delta_tpr": 0.0,
       "fpr": 0.0,
       "delta_fpr": 0.0,
-      "youden_j": 0.9591836734693877,
+      "youden_j": 0.89,
       "delta_youden_j": 0.0
     },
     {
       "removed": "trust_calculus",
-      "tpr": 0.9591836734693877,
+      "tpr": 0.89,
       "delta_tpr": 0.0,
       "fpr": 0.0,
       "delta_fpr": 0.0,
-      "youden_j": 0.9591836734693877,
+      "youden_j": 0.89,
       "delta_youden_j": 0.0
     }
   ],
   "minimal_forward": {
     "components": [
-      "invariants"
+      "invariants",
+      "tripwire",
+      "firewall",
+      "trust_calculus",
+      "detection",
+      "consensus",
+      "provenance",
+      "sandbox"
     ],
-    "n_components": 1,
-    "meets_threshold": true,
-    "tpr": 0.9285714285714286,
+    "n_components": 8,
+    "meets_threshold": false,
+    "tpr": 0.89,
     "fpr": 0.0,
-    "youden_j": 0.9285714285714286
+    "youden_j": 0.89
   },
   "minimal_backward": {
     "components": [
+      "firewall",
+      "trust_calculus",
+      "tripwire",
+      "detection",
+      "consensus",
+      "provenance",
+      "sandbox",
       "invariants"
     ],
-    "n_components": 1,
-    "meets_threshold": true,
-    "tpr": 0.9285714285714286,
+    "n_components": 8,
+    "meets_threshold": false,
+    "tpr": 0.89,
     "fpr": 0.0,
-    "youden_j": 0.9285714285714286
+    "youden_j": 0.89
   },
   "top_synergies": [
     {
-      "a": "firewall",
-      "b": "detection",
-      "synergy": 0.030612244897959176,
-      "tpr_a": 0.030612244897959183,
-      "tpr_b": 0.05102040816326531,
-      "combined_tpr": 0.08163265306122448,
+      "a": "consensus",
+      "b": "sandbox",
+      "synergy": 0.05,
+      "tpr_a": 0.06,
+      "tpr_b": 0.05,
+      "combined_tpr": 0.11,
       "fpr_a": 0.0,
       "fpr_b": 0.0,
       "combined_fpr": 0.0,
-      "youden_synergy": 0.030612244897959176
+      "youden_synergy": 0.05
     },
     {
-      "a": "firewall",
-      "b": "invariants",
-      "synergy": 0.020408163265306145,
-      "tpr_a": 0.030612244897959183,
-      "tpr_b": 0.9285714285714286,
-      "combined_tpr": 0.9489795918367347,
+      "a": "tripwire",
+      "b": "consensus",
+      "synergy": 0.05,
+      "tpr_a": 0.05,
+      "tpr_b": 0.06,
+      "combined_tpr": 0.11,
       "fpr_a": 0.0,
       "fpr_b": 0.0,
       "combined_fpr": 0.0,
-      "youden_synergy": 0.020408163265306145
+      "youden_synergy": 0.05
+    },
+    {
+      "a": "tripwire",
+      "b": "sandbox",
+      "synergy": 0.05,
+      "tpr_a": 0.05,
+      "tpr_b": 0.05,
+      "combined_tpr": 0.1,
+      "fpr_a": 0.0,
+      "fpr_b": 0.0,
+      "combined_fpr": 0.0,
+      "youden_synergy": 0.05
     },
     {
       "a": "tripwire",
       "b": "invariants",
-      "synergy": 0.020408163265306145,
-      "tpr_a": 0.02040816326530612,
-      "tpr_b": 0.9285714285714286,
-      "combined_tpr": 0.9489795918367347,
+      "synergy": 0.040000000000000036,
+      "tpr_a": 0.05,
+      "tpr_b": 0.85,
+      "combined_tpr": 0.89,
       "fpr_a": 0.0,
       "fpr_b": 0.0,
       "combined_fpr": 0.0,
-      "youden_synergy": 0.020408163265306145
+      "youden_synergy": 0.040000000000000036
     },
     {
-      "a": "firewall",
-      "b": "trust_calculus",
-      "synergy": 0.020408163265306124,
-      "tpr_a": 0.030612244897959183,
-      "tpr_b": 0.02040816326530612,
-      "combined_tpr": 0.05102040816326531,
+      "a": "detection",
+      "b": "consensus",
+      "synergy": 0.04000000000000001,
+      "tpr_a": 0.04,
+      "tpr_b": 0.06,
+      "combined_tpr": 0.1,
       "fpr_a": 0.0,
       "fpr_b": 0.0,
       "combined_fpr": 0.0,
-      "youden_synergy": 0.020408163265306124
-    },
-    {
-      "a": "trust_calculus",
-      "b": "tripwire",
-      "synergy": 0.02040816326530612,
-      "tpr_a": 0.02040816326530612,
-      "tpr_b": 0.02040816326530612,
-      "combined_tpr": 0.04081632653061224,
-      "fpr_a": 0.0,
-      "fpr_b": 0.0,
-      "combined_fpr": 0.0,
-      "youden_synergy": 0.02040816326530612
+      "youden_synergy": 0.04000000000000001
     }
   ]
 }

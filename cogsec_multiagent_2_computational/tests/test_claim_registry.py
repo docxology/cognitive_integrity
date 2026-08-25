@@ -59,39 +59,21 @@ REAL_DATA = PROJECT_ROOT / "output" / "data"
 # measurements and all 163 shipped claims reconcile (0 MISMATCH, 0 NOT_FOUND,
 # 0 UNBACKED). Keep this set for pinning any future known-unreconciled claims;
 # the anti-drift tests above fail the moment a new unsupported number appears.
-KNOWN_UNRECONCILED = frozenset({
-    # Stated TPR values from manuscript prose that no longer match the ablation
-    # artifact (full-pipeline TPR shifted from 0.122 to 0.959).  These are
-    # narrative-prose claims that need a manuscript rewrite, not registry bugs.
-    "04.summary_ablation_tpr",
-    "04.trust_calculus_delta",
-    "05b.delta.detection",
-    "05b.delta.firewall",
-    "05b.delta.invariants",
-    "05b.delta.trust_calculus",
-    "05b.detection_share",
-    "05b.summary_detection_delta",
-    "05b.synergy.tripwire_detection",
-    "05b.top3_share_summary",
-    "05b.tpr.consensus",
-    "05b.tpr.detection",
-    "05b.tpr.firewall",
-    "05b.tpr.provenance",
-    "05b.tpr.sandbox",
-    "05b.tpr.tripwire",
-    "05b.tpr.trust_calculus",
-    "05d.full_pipeline_tpr",
-    "05d.intro_detection_delta",
-    "05d.synergy.tripwire_detection",
-    "06.evidence_ablation_tpr",
-    "06.evidence_detection_share",
-    "07.full_pipeline_tpr",
-    "07.gap_ablation_tpr",
-    "abstract.detection_delta",
-    "abstract.detection_share",
-    "results.summary_detection_delta",
-    "results.summary_full_tpr",
-})
+KNOWN_UNRECONCILED: frozenset[str] = frozenset()
+"""Claims the registry reports as failing that are accepted for now.
+
+It is empty, and that is the point. This set held 28 ids while the manuscript
+carried the numbers of a detector that had been rewritten underneath it -- each
+entry a promise to fix prose later, and collectively a way for the gate to stay
+green over a manuscript that disagreed with its own artifacts in 28 places.
+
+The write path that made emptying it practical is
+``scripts/sync_claims.py``: the registry could previously only report a
+mismatch, so reconciling one meant a human retyping a number, and a set like
+this is what accumulates when the cheap option is to add an id instead. Adding
+an entry here should now be rare and each one should say why the number cannot
+simply be derived and written.
+"""
 
 
 # ── synthetic fixtures ──────────────────────────────────────────────────
@@ -907,12 +889,32 @@ class TestShippedRegistry:
             "results.ms_cv_row",
             "results.ms_min_row",
             "results.ms_max_row",
-            "05d.synergy.tripwire_detection",
-            "05d.synergy.firewall_detection",
+            # The synergy rows are no longer named here. They were
+            # tripwire+detection and firewall+detection for four rounds, and
+            # naming them in this list meant the list itself went stale when
+            # the measured top pairs changed. What has to be watched is that
+            # the synergy table has claims at all, which is asserted below
+            # against the artifact's own rows.
             "colony.dr.sybil_infiltration",
             "abstract.ablation_corpus_size",
         ):
             assert required in ids
+        # The synergy claims are generated from the artifact's recorded pairs,
+        # so the requirement is that each table has one claim per reported
+        # pair, whichever pairs those turn out to be.
+        from manuscript.claim_registry import _recorded_synergy_pairs
+
+        for prefix in ("05b", "05d"):
+            for first, second in _recorded_synergy_pairs():
+                assert f"{prefix}.synergy.{first}_{second}" in ids, (
+                    f"the {first}+{second} row of the {prefix} synergy table "
+                    f"has no registered claim"
+                )
+        assert _recorded_synergy_pairs(), (
+            "no synergy pairs were read from ablation_results.json, so the "
+            "synergy tables are unwatched"
+        )
+
         # every component-removal delta from the ablation artifact
         for component in (
             "detection",
@@ -983,16 +985,21 @@ class TestShippedRegistryPositiveControls:
         manuscript = self._copy(tmp_path)
         abstract = manuscript / "00_abstract.md"
         text = abstract.read_text(encoding="utf-8")
-        perturbed = text.replace(
-            "mean detection rate of 44.8\\%", "mean detection rate of 99.9\\%"
-        )
-        assert perturbed != text, "control precondition: the target string must exist"
+        # The target used to be spelled out as "mean detection rate of 44.8\\%".
+        # That literal is the measurement, and a control that names it stops
+        # being a control the moment the measurement moves -- which it did,
+        # from 44.8 to 86.3, taking both of these controls red with it while
+        # nothing about the checker had changed. Locate the number instead.
+        stated_pct = f"{baseline.stated * 100:.1f}"
+        target = f"mean detection rate of {stated_pct}\\%"
+        perturbed = text.replace(target, "mean detection rate of 99.9\\%")
+        assert perturbed != text, f"control precondition: {target!r} must exist"
         abstract.write_text(perturbed, encoding="utf-8")
 
         after = self._result(verify_claims(CLAIMS, manuscript, gt), "abstract.ms_mean")
         assert after.verdict == "MISMATCH"
         assert after.stated == pytest.approx(0.999)
-        assert after.derived == pytest.approx(0.448)
+        assert after.derived == pytest.approx(baseline.derived)
 
     def test_reworded_prose_is_reported_not_found(self, tmp_path):
         """POSITIVE CONTROL 2: break the pattern, the checker must say NOT_FOUND.
@@ -1004,8 +1011,11 @@ class TestShippedRegistryPositiveControls:
         manuscript = self._copy(tmp_path)
         abstract = manuscript / "00_abstract.md"
         text = abstract.read_text(encoding="utf-8")
+        baseline = self._result(verify_claims(CLAIMS, REAL_MANUSCRIPT, gt), "abstract.ms_mean")
+        stated_pct = f"{baseline.stated * 100:.1f}"
         reworded = text.replace(
-            "mean detection rate of 44.8\\%", "an average detection rate of 44.8 percent"
+            f"mean detection rate of {stated_pct}\\%",
+            f"an average detection rate of {stated_pct} percent",
         )
         assert reworded != text
         abstract.write_text(reworded, encoding="utf-8")
@@ -1057,21 +1067,22 @@ class TestVerifyClaimsCli:
     def test_exits_zero_on_the_reconciled_tree(self, tmp_path):
         """Run from an unrelated cwd: defaults must resolve to the project."""
         proc = self._run(tmp_path)
-        # With known ablation-data drift (27 claims) the gate reports FAILED,
-        # but the script must still run to completion and produce the header.
-        assert proc.returncode == 1
-        assert "claim(s) are not supported by the data" in proc.stdout
-        assert "VERDICT" in proc.stdout
+        # This asserted ``returncode == 1`` and the FAILED header, because 27
+        # claims were known to disagree with the ablation artifact and the
+        # expectation had been quietly moved to match. The tree reconciles now,
+        # so the gate is expected to pass -- and a test that demands failure
+        # from a healthy tree is a test that will be edited back to green the
+        # next time it breaks, in whichever direction is convenient.
+        assert proc.returncode == 0, proc.stdout
+        assert "every manuscript claim matches the data" in proc.stdout
 
     def test_writes_a_parseable_json_report(self, tmp_path):
         out = tmp_path / "nested" / "report.json"
         proc = self._run(tmp_path, "--json", str(out))
-        # Exit 1 is expected when known drift exists; the JSON report is
-        # still written with all claims enumerated.
-        assert proc.returncode == 1
+        assert proc.returncode == 0, proc.stdout
         payload = json.loads(out.read_text(encoding="utf-8"))
         assert payload["counts"]["total"] == len(CLAIMS)
-        assert payload["ok"] is False
+        assert payload["ok"] is True
 
     def test_missing_data_dir_still_fails_closed(self, tmp_path):
         """No data must never be reported as 'everything checks out'."""

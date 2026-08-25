@@ -4,7 +4,7 @@
 
 ## The Multiagent Operator Paradigm {#sec:paradigm}
 
-Modern AI deployment has shifted from single-model inference to **multiagent operators**---systems where a primary agent delegates subtasks to specialized subagents, tools, and external services.
+Modern AI deployment has shifted from single-model inference to **multiagent operators**---systems where a primary agent delegates subtasks to specialized subagents, tools, and external services [@crewai2024; @langgraph2023; @hong2023metagpt].
 
 \begin{table}[htbp]
 \centering

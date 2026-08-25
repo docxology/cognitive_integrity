@@ -535,3 +535,40 @@ class TestShippedArtifacts:
         assert _strip(shipped) != _strip(synthetic), (
             f"{name}.json is byte-identical to DataGenerator output"
         )
+
+
+class TestSidecarWritersUseTheKeyTheReaderReads:
+    """Every sidecar on disk must actually bind to its artifact.
+
+    ``scripts/run_full_evaluation.py`` imported ``SIDECAR_HASH_KEY`` and then
+    wrote the hash under the literal string ``"sha256"``. The hash it computed
+    was correct; the reader looked for it under a different name, found no
+    binding, and fell through to a branch that trusts only a
+    ``real_pipeline`` claim -- so a ``parametric_simulation`` artifact
+    classified as ``unknown``, which is the verdict that means "do not
+    clobber, provenance unproven".
+
+    Nothing caught it because every test of the binding wrote its own sidecar
+    with the constant. This checks the sidecars the shipped scripts actually
+    produce.
+    """
+
+    def test_every_shipped_sidecar_binds_to_its_artifact(self):
+        from data.generate import SIDECAR_HASH_KEY, classify_provenance
+
+        sidecars = sorted(_DATA_DIR.glob("*.provenance.json"))
+        assert sidecars, "no sidecars found; this test would be vacuous"
+        for sidecar in sidecars:
+            payload = json.loads(sidecar.read_text(encoding="utf-8"))
+            artifact = sidecar.with_name(
+                sidecar.name.replace(".provenance.json", ".json")
+            )
+            assert artifact.is_file(), f"{sidecar.name} describes a missing artifact"
+            assert SIDECAR_HASH_KEY in payload, (
+                f"{sidecar.name} records no {SIDECAR_HASH_KEY}; a sidecar with "
+                f"no binding cannot label its artifact anything but unknown "
+                f"(keys present: {sorted(payload)})"
+            )
+            assert classify_provenance(artifact) != "unknown", (
+                f"{artifact.name} classifies as unknown despite having a sidecar"
+            )

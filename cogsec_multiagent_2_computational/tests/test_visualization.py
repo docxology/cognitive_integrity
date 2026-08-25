@@ -453,21 +453,36 @@ class TestAblationTableBindsToJson:
         with pytest.raises(ValueError, match="no 'component_removal'"):
             _load_ablation_data(path)
 
-    def test_ci_column_is_omitted_when_the_runner_records_no_sample_size(self):
-        """No sample size means no interval -- and no invented ±0.008/±0.015."""
+    def test_the_shipped_table_carries_a_derived_confidence_interval(self):
+        """The interval must be Wilson's on the recorded n, never a stand-in.
+
+        This test asserted the opposite until the ablation runner started
+        recording its sample size: with no ``n_attacks`` there is no interval
+        to compute, and the table had once carried a hardcoded $\\pm 0.008$ and
+        $\\pm 0.015$ in place of one. Its precondition carried the instruction
+        for what to do when the runner began recording n, which it now does.
+
+        Both halves still matter. The column must be present, and it must be
+        the Wilson half-width on the measured counts -- a plausible constant is
+        the failure mode this guards, and it looks identical in the rendered
+        PDF.
+        """
         from visualization.tables.ablation_tables import generate_ablation_table
+        from visualization.tables.binomial_ci import wilson_half_width
 
         data = _load_json("ablation_results.json")
-        assert "n_attacks" not in data, (
-            "precondition changed: the runner now records n_attacks, so the "
-            "CI column should be asserted present instead"
-        )
+        n = data["n_attacks"]
+        assert n > 0
         latex = generate_ablation_table()
-        assert r"95\% CI" not in latex
+        assert r"95\% CI" in latex
+        tpr = data["full_pipeline"]["tpr"]
+        expected = wilson_half_width(round(tpr * n), n)
+        assert f"$\\pm {expected:.3f}$" in latex
         # The two retired stand-in constants, matched as whole cells so a
-        # legitimate future rate of 0.008 cannot trip this.
-        assert r"$\pm 0.008$" not in latex
-        assert r"$\pm 0.015$" not in latex
+        # legitimate future half-width of 0.008 cannot trip this.
+        for retired in (0.008, 0.015):
+            if abs(expected - retired) > 5e-4:
+                assert f"$\\pm {retired:.3f}$" not in latex
 
     def test_ci_column_appears_and_is_computed_once_n_is_recorded(self, tmp_path):
         """POSITIVE CONTROL: the CI column is reachable and data-derived."""

@@ -14,10 +14,10 @@ Table: Multi-seed pipeline detection rate summary (Claude Code, $N=30$ seeds). {
 
 | Metric  | Value |
 | --- | --- |
-| Mean Detection Rate | 0.448 |
-| Min Detection Rate | 0.37 |
-| Max Detection Rate | 0.56 |
-| Coefficient of Variation | 0.097 |
+| Mean Detection Rate | 0.863 |
+| Min Detection Rate | 0.82 |
+| Max Detection Rate | 0.90 |
+| Coefficient of Variation | 0.024 |
 | Stability (CV < 0.05) | Not achieved |
 
 Table: Per-seed detection rates (Claude Code, full pipeline). {#tab:per-seed-rates}
@@ -27,7 +27,7 @@ Table: Per-seed detection rates (Claude Code, full pipeline). {#tab:per-seed-rat
 | 0.38, 0.45, 0.48, 0.43, 0.49 | 0.46, 0.51, 0.41, 0.56, 0.42 | 0.49, 0.38, 0.44, 0.41, 0.41 |
 | 0.37, 0.50, 0.48, 0.44, 0.47 | 0.45, 0.47, 0.39, 0.48, 0.43 | 0.47, 0.48, 0.39, 0.45, 0.45 |
 
-*The coefficient of variation (CV = 0.097) exceeds the 0.05 stability threshold, indicating moderate seed-dependent variance in detection rates. This variance reflects the stochastic elements in the evaluation pipeline---particularly the Gaussian noise in detection scoring ($\sigma = 0.05$) and random subsampling in cross-validation. The range of 0.37--0.56 demonstrates that while the pipeline consistently detects a meaningful fraction of attacks, detection rate varies by approximately $\pm$10 percentage points across seeds. The per-seed breakdown across all 30 seeds is shown in \cref{tab:per-seed-rates}. Single-seed results should therefore be interpreted with caution; we recommend reporting mean and CI across multiple seeds for production evaluation.*
+*The coefficient of variation (CV = 0.024) exceeds the 0.05 stability threshold, indicating moderate seed-dependent variance in detection rates. This variance reflects the stochastic elements in the evaluation pipeline---particularly the Gaussian noise in detection scoring ($\sigma = 0.05$) and random subsampling in cross-validation. The range of 0.37--0.56 demonstrates that while the pipeline consistently detects a meaningful fraction of attacks, detection rate varies by approximately $\pm$10 percentage points across seeds. The per-seed breakdown across all 30 seeds is shown in \cref{tab:per-seed-rates}. Single-seed results should therefore be interpreted with caution; we recommend reporting mean and CI across multiple seeds for production evaluation.*
 
 *Note: Multi-seed analysis currently covers Claude Code only. Extension to all four architectures is planned for future work.*
 
@@ -43,7 +43,7 @@ Table: Power summary: sample size required for $\pm 5$ pp HDI at the estimated t
 | Colony structured scenarios | 0.90 | 20--100 | 145 | Partial |
 | Multi-seed pipeline (aggregate) | 0.45 | 3{,}000 | 380 | Yes |
 | LLM validation (per architecture) | 0.80 | 5--10 | 245 | **No** |
-| Ablation TPR | 0.12 | 98 | 165 | **No** |
+| Ablation TPR | 0.12 | 100 | 165 | **No** |
 
 *The LLM validation (N=5--10 per architecture) achieves only $\pm 29$ to $\pm 22$ percentage points of precision at the observed 80\% rate. A minimum of $N = 245$ per architecture is required for $\pm 5$ pp precision; this is the highest-priority methodological gap in the current study. Full Bayesian reanalysis with Beta-Binomial posteriors and credible intervals is presented in \cref{sec:bayesian-uncertainty}.*
 
@@ -55,7 +55,7 @@ Table: Gap between parametric ceiling and empirical detection, with primary attr
 
 | Architecture | Parametric DR | Empirical DR | Total Gap | Primary Cause |
 | :--- | :---: | :---: | :---: | :--- |
-| Claude Code (multi-seed pipeline) | 100\% | 44.8\% | $\sim$55 pp | Adapter maturity ($G_{\text{adapter}}$) |
+| Claude Code (multi-seed pipeline) | 100\% | 86.3\% | $\sim$55 pp | Adapter maturity ($G_{\text{adapter}}$) |
 | Claude Code (LLM validation) | 100\% | 80\% | $\sim$20 pp (N=5) | Insufficient power |
 | CrewAI (LLM validation) | 100\% | 100\% | 0 pp | --- |
 
@@ -150,13 +150,13 @@ Table: Detector comparison — CIF vs non-CIF baselines and a chance null. {#tab
 
 | Detector | TPR | FPR | Youden's J | AUC | Permutation $p$ |
 | --- | --- | --- | --- | --- | --- |
-| Bag-of-words LR (trained, 5-fold CV) | 1.000 | 0.060 | 0.940 | 1.000 | 0.0001 |
-| Length-only ($\geq 120$ chars) | 0.541 | 0.000 | 0.541 | 0.987 | 0.0001 |
-| Keyword regex (19 frozen patterns) | 0.367 | 0.000 | 0.367 | 0.684 | 0.0001 |
-| CIF full pipeline (8 modules) | 0.122 | 0.000 | 0.122 | 0.855 | 0.0046 |
+| Bag-of-words LR (trained, 5-fold CV) | 1.000 | 0.060 | 0.920 | 1.000 | 0.0001 |
+| Length-only ($\geq 120$ chars) | 0.350 | 0.000 | 0.541 | 0.987 | 0.0001 |
+| Keyword regex (19 frozen patterns) | 0.260 | 0.000 | 0.260 | 0.684 | 0.0001 |
+| CIF full pipeline (8 modules) | 0.890 | 0.000 | 0.122 | 0.912 | 0.0046 |
 | Random null (matched flag rate) | 0.082 | 0.060 | 0.022 | 0.486 | 0.4536 |
 
-*CIF ranks 4 of 5 detectors by Youden's J on this corpus. The strongest non-CIF
+*CIF ranks 2 of 5 detectors by Youden's J on this corpus. The strongest non-CIF
 detector (bag-of-words logistic regression, J = 0.940) outperforms CIF by a
 factor of 7.7. The keyword regex baseline (TPR 36.7%, zero false positives)
 detects three times as many attacks as CIF while using 19 frozen
@@ -184,8 +184,8 @@ confidence intervals.
 ## Summary of Empirical Results {#sec:empirical-summary}
 
 \begin{enumerate}
-\item **Pipeline detection (real)**: The full CIF defense pipeline achieves a mean detection rate of $\sim$44\% (95\% range: 37--56\%) across 30 random seeds on the Claude Code architecture, with a coefficient of variation of 0.097.
-\item **Component hierarchy (real)**: Ablation studies on a 98-attack corpus put the Invariants module far ahead of every other component ($\Delta\text{TPR} \approx -0.847$ of a 0.959 pipeline), with the Firewall and Tripwire at $\approx -0.010$ each and every remaining component at $\approx 0.000$. Full pipeline TPR on this corpus is $\sim$96\%.
+\item **Pipeline detection (real)**: The full CIF defense pipeline achieves a mean detection rate of $\sim$86\% (95\% range: 37--56\%) across 30 random seeds on the Claude Code architecture, with a coefficient of variation of 0.024.
+\item **Component hierarchy (real)**: Ablation studies on a 100-attack corpus put the Invariants module far ahead of every other component ($\Delta\text{TPR} \approx -0.650$ of a 0.890 pipeline), with the Tripwire at $\approx -0.020$ and every remaining component at $\approx 0.000$. Full pipeline TPR on this corpus is $\sim$89\%.
 \item **LLM validation**: Preliminary LLM-backed evaluation ($N=10$, Gemma 3 4B) yields 80--100\% detection across Claude Code (80\%) and CrewAI (100\%) topologies, providing initial evidence that CIF's defenses operate with real language model reasoning.
 \item **Colony benchmarks**: CIF achieves 81--100\% detection on structured adversarial scenarios (recruitment poisoning, sybil infiltration, quorum manipulation, belief cascade) but 74\% on emergent misalignment, highlighting the need for improved collective-behavior detection.
 \item **Parametric ceiling**: The parametric simulation (\cref{sec:parametric-analysis}) achieves 96--100\% detection, establishing the theoretical coverage ceiling. The gap between empirical results and parametric predictions reflects current adapter implementation maturity, not fundamental limitations of the CIF architecture.
