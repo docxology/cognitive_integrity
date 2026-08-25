@@ -1,4 +1,4 @@
-\begin{thebibliography}{62}
+\begin{thebibliography}{65}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -142,6 +142,12 @@ Thomas~M. Cover and Joy~A. Thomas.
   $\|P-Q\|_{\mathrm{TV}} \leq \sqrt{D_{\mathrm{KL}}(P\|Q)/2}$ (Lemma 11.6.1) is
   used in the KL-AUC coupling proof.
 
+\bibitem[{CrewAI}(2024)]{crewai2024}
+{CrewAI}.
+\newblock Framework for orchestrating role-playing, autonomous {AI} agents.
+\newblock GitHub Repository, 2024.
+\newblock URL \url{https://github.com/joaomdmoura/crewAI}.
+
 \bibitem[Currie et~al.(2006)Currie, Poulsen, Mendenhall, Boomsma, and
   Billen]{currie2006coevolved}
 Cameron~R. Currie, Michael Poulsen, John Mendenhall, Jacobus~J. Boomsma, and
@@ -242,6 +248,13 @@ Bert H{\"o}lldobler and Edward~O. Wilson.
 \newblock Pulitzer-winning comprehensive treatment of ant biology; the
   reference work for colony organisation, communication and caste.
 
+\bibitem[Hong et~al.(2023)Hong, Zhuge, Chen, Zheng, Cheng, Zhang, Wang, Wang,
+  Yau, Lin, et~al.]{hong2023metagpt}
+Sirui Hong, Mingchen Zhuge, Jonathan Chen, Xiawu Zheng, Yuheng Cheng, Ceyao
+  Zhang, Jinlin Wang, Zili Wang, Steven Ka~Shing Yau, Zijuan Lin, et~al.
+\newblock {MetaGPT}: Meta programming for multi-agent collaborative framework.
+\newblock \emph{arXiv preprint arXiv:2308.00352}, 2023.
+
 \bibitem[Hubinger et~al.(2024)]{sleeperagents2024}
 Evan Hubinger et~al.
 \newblock Sleeper agents: Training deceptive {LLM}s that persist through safety
@@ -274,6 +287,12 @@ Matthias Konrad, Meghan~L. Vyleta, Fabian~J. Theis, Miriam Stock, Sandra
   ant colonies.
 \newblock \emph{PLoS Biology}, 10\penalty0 (4):\penalty0 e1001300, 2012.
 \newblock \doi{10.1371/journal.pbio.1001300}.
+
+\bibitem[{LangChain}(2023)]{langgraph2023}
+{LangChain}.
+\newblock {LangGraph}: Build stateful multi-actor applications.
+\newblock Documentation, 2023.
+\newblock URL \url{https://langchain-ai.github.io/langgraph/}.
 
 \bibitem[Lenoir et~al.(2001)Lenoir, D'Ettorre, Errard, and
   Hefetz]{lenoir2001chemical}

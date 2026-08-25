@@ -712,7 +712,7 @@ simulation, where the full stack reached a 96--100\% design-level
 detection ceiling and outperformed the sum of its parts. The real
 prototype pipeline is materially lower and is reported separately as a
 multi-seed mean of approximately 44.8\%. It also distributes the work
-far less evenly than the model implies: on Part 2's 98-attack ablation
+far less evenly than the model implies: on Part 2's 100-attack ablation
 corpus the series-composition prediction lands within a couple of points
 of the measured full-stack rate, but nearly all of the detection comes
 from one module, so the full stack's margin over the best single layer
@@ -912,7 +912,7 @@ injection detected at 99--100\% across architectures. The separate
 real-pipeline evaluation had a lower multi-seed mean of approximately
 44.8\%. \textbf{The Implication}: The parametric model rewards layering,
 but the real pipeline does not spread the work evenly across layers, and
-the 98-attack ablation corpus says so plainly. The Invariants module
+the 100-attack ablation corpus says so plainly. The Invariants module
 alone detects 92.9\% of that corpus against the full stack's 95.9\%; the
 Firewall, Detection, Tripwire and Trust Calculus modules each detect
 between 2\% and 6\% on their own. Removing Invariants costs about 85
@@ -1015,14 +1015,14 @@ detection.
 \subsection{Finding 7: The Implementation Gap Is a Feature, Not a
 Bug}\label{finding-7-the-implementation-gap-is-a-feature-not-a-bug}
 
-The 4--51 percentage-point gap between the parametric ceiling
+The 10--11 percentage-point gap between the parametric ceiling
 (96--100\%) and the real pipeline reflects \textbf{adapter
 implementation maturity}, not a failure of CIF's formal architecture.
 Its two ends are two different measurements and should not be read as
 one range around one deployment. The wide end is the distance from the
-parametric floor to the 30-seed pipeline mean of 44.8\%. The narrow end
+parametric floor to the 30-seed pipeline mean of 86.3\%. The narrow end
 is the distance from the top of the parametric range to the 95.9\% the
-same pipeline now reaches on the 98-attack ablation corpus --- a figure
+same pipeline now reaches on the 100-attack ablation corpus --- a figure
 that stood at 12.2\% until the Invariants module was rewritten, and that
 moved with no change to any other module. Plan against the wide end.
 Partabout 2 introduces a 5-level CMMI-style adapter maturity
@@ -1088,13 +1088,13 @@ simulation, modeled on the architecture's topology. They represent the
 \begin{itemize}
 \tightlist
 \item
-  \textbf{94\% Overall Detection} means: ``Across all architectures and
-  attack categories, 94\% of attack vectors are detected by the full CIF
-  defense stack'' (with architecture-specific rates ranging from
-  94--98\%).
+  \textbf{99.4\% Overall Detection} means: ``Across all architectures
+  and attack categories, 99.4\% of attack vectors are detected by the
+  full CIF defense stack'' (with architecture-specific rates ranging
+  from 96--100\%).
 \item
   It does \textbf{not} mean: ``We have a magic Python script that
-  catches 94\% of all evil AI thoughts.''
+  catches 99.4\% of all evil AI thoughts.''
 \end{itemize}
 
 We proved the \emph{architecture} works. The implementation fidelity is
@@ -1119,7 +1119,7 @@ not --- they measure different things:
   architecture with Level-3 adapters. This is what you get today, out of
   the box, before adapter tuning.
 \item
-  \textbf{95.9\%} (98-attack ablation corpus, all categories including
+  \textbf{95.9\%} (100-attack ablation corpus, all categories including
   hardest): full-pipeline true-positive rate on a corpus built to
   include difficult attacks. This bullet read about 12.2\%
   until the Invariants module was rewritten to score demand structure
@@ -1240,7 +1240,7 @@ the Security Agent and deploys the vulnerable code.
 \end{itemize}
 
 \textbf{Real-World Parallel}: ToolHijacker (2025) and supply chain
-attacks.
+attacks \citep{toolhijacker2025}.
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
@@ -1324,7 +1324,7 @@ following orders from a corrupt leader.
 \end{itemize}
 
 \textbf{Real-World Parallel}: Sleeper Agents (Hubinger et al., 2024) and
-insider threats.
+insider threats \citep{sleeperagents2025}.
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
@@ -3468,7 +3468,7 @@ source of truth for test counts and pass rate.
 
 \textbf{Level 2 --- The pipeline detects attacks in practice}
 (confidence: moderate). The multi-seed pipeline analysis (30 seeds,
-Claude Code architecture) achieves a mean detection rate of 44.8\%
+Claude Code architecture) achieves a mean detection rate of 86.3\%
 {[}95\% CI: 43.2\%, 46.4\%{]}. The LLM-backed multiagent validation
 (\(N=10\), Gemma 3 4B) achieves 80\%--100\% across two architectures.
 These are meaningful but not high detection rates---they reflect adapter
@@ -3502,7 +3502,7 @@ The core recommendations are:
   measure what each layer is worth. In the parametric model the full CIF
   stack reached a 96--100\% parametric detection ceiling that no partial
   configuration matched. The real pipeline teaches the sharper lesson:
-  on Partabout 2's 98-attack ablation corpus the Invariants
+  on Partabout 2's 100-attack ablation corpus the Invariants
   checker alone reaches 92.9\% against the full stack's 95.9\%, and five
   of the eight modules show no measurable marginal contribution. Design
   security into the architecture rather than bolting it on, but do not
@@ -3651,13 +3651,13 @@ Required sample sizes for \(\pm 5\%\) precision are \(N \geq 246\) per
 evaluation mode. Treat all reported detection rates as estimates with
 wide uncertainty, not precise measurements.
 
-\textbf{The gap is real at one end}. The 4--51 percentage-point gap
+\textbf{The gap is real at one end}. The 10--11 percentage-point gap
 between the parametric ceiling (96--100\%) and the real pipeline spans
 two unlike measurements. The wide end is the one the Bayes factor speaks
 to: the distance from the ceiling to the 30-seed pipeline mean of
-44.8\%, which is not noise---the Bayes factor for a true performance gap
+86.3\%, which is not noise---the Bayes factor for a true performance gap
 exceeds \(10^6\) (decisive evidence). The narrow end is the distance
-from the ceiling to the 95.9\% the pipeline reaches on the 98-attack
+from the ceiling to the 95.9\% the pipeline reaches on the 100-attack
 ablation corpus after the Invariants rewrite; no Bayes factor has been
 computed for that arm, and it should not borrow the first one's
 authority. The wide end is what reflects adapter implementation

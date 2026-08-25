@@ -174,7 +174,7 @@ This formalism suggests that catastrophic attacks are inherently easier to detec
 
 Finally, Part 1 defines the **Composition Algebra**, determining how output probabilities of distinct modules interact. The key result is that orthogonal defenses compose multiplicatively.
 
-This "Swiss Cheese Model" was supported by Part 2's parametric simulation, where the full stack reached a 96--100% design-level detection ceiling and outperformed the sum of its parts. The real prototype pipeline is materially lower and is reported separately as a multi-seed mean of approximately 44.8%. It also distributes the work far less evenly than the model implies: on Part 2's 98-attack ablation corpus the series-composition prediction lands within a couple of points of the measured full-stack rate, but nearly all of the detection comes from one module, so the full stack's margin over the best single layer is about three percentage points. Compose layers for coverage, not on the assumption that each contributes an independent slice.
+This "Swiss Cheese Model" was supported by Part 2's parametric simulation, where the full stack reached a 96--100% design-level detection ceiling and outperformed the sum of its parts. The real prototype pipeline is materially lower and is reported separately as a multi-seed mean of approximately 44.8%. It also distributes the work far less evenly than the model implies: on Part 2's 100-attack ablation corpus the series-composition prediction lands within a couple of points of the measured full-stack rate, but nearly all of the detection comes from one module, so the full stack's margin over the best single layer is about three percentage points. Compose layers for coverage, not on the assumption that each contributes an independent slice.
 
 ## The Science Behind Belief Updates: Free Energy {#sec:fep-connection}
 
@@ -256,7 +256,7 @@ The test corpus included direct prompt injection, poisoned RAG contexts, deep tr
 ## Finding 1: Defense Layering vs. Individual Efficacy
 
 **The Data**: In the parametric evaluation the full CIF stack achieved a **96--100% parametric detection ceiling**, with direct injection detected at 99--100% across architectures. The separate real-pipeline evaluation had a lower multi-seed mean of approximately 44.8%.
-**The Implication**: The parametric model rewards layering, but the real pipeline does not spread the work evenly across layers, and the 98-attack ablation corpus says so plainly. The Invariants module alone detects 92.9% of that corpus against the full stack's 95.9%; the Firewall, Detection, Tripwire and Trust Calculus modules each detect between 2% and 6% on their own. Removing Invariants costs about 85 percentage points of true-positive rate, removing the Firewall or the Tripwire costs about one point each, and removing Consensus, Detection, Provenance, Sandbox or Trust Calculus costs nothing this corpus can measure. That is a statement about *marginal* contribution, not about capability: a module whose detections are all also caught by Invariants scores zero here while detecting plenty on its own. Layering still buys coverage against attacks this corpus does not contain, but the older claim that removing any single layer opens a measurable gap is not what the ablation shows.
+**The Implication**: The parametric model rewards layering, but the real pipeline does not spread the work evenly across layers, and the 100-attack ablation corpus says so plainly. The Invariants module alone detects 92.9% of that corpus against the full stack's 95.9%; the Firewall, Detection, Tripwire and Trust Calculus modules each detect between 2% and 6% on their own. Removing Invariants costs about 85 percentage points of true-positive rate, removing the Firewall or the Tripwire costs about one point each, and removing Consensus, Detection, Provenance, Sandbox or Trust Calculus costs nothing this corpus can measure. That is a statement about *marginal* contribution, not about capability: a module whose detections are all also caught by Invariants scores zero here while detecting plenty on its own. Layering still buys coverage against attacks this corpus does not contain, but the older claim that removing any single layer opens a measurable gap is not what the ablation shows.
 
 ## Finding 2: State Machine Determinism
 
@@ -298,7 +298,7 @@ This is not a failure of CIF—it is a consequence of its success. When explicit
 
 ## Finding 7: The Implementation Gap Is a Feature, Not a Bug
 
-The 4--51 percentage-point gap between the parametric ceiling (96--100\%) and the real pipeline reflects **adapter implementation maturity**, not a failure of CIF's formal architecture. Its two ends are two different measurements and should not be read as one range around one deployment. The wide end is the distance from the parametric floor to the 30-seed pipeline mean of 44.8\%. The narrow end is the distance from the top of the parametric range to the 95.9\% the same pipeline now reaches on the 98-attack ablation corpus --- a figure that stood at 12.2\% until the Invariants module was rewritten, and that moved with no change to any other module. Plan against the wide end. Part~2 introduces a 5-level CMMI-style adapter maturity scale:
+The 10--11 percentage-point gap between the parametric ceiling (96--100\%) and the real pipeline reflects **adapter implementation maturity**, not a failure of CIF's formal architecture. Its two ends are two different measurements and should not be read as one range around one deployment. The wide end is the distance from the parametric floor to the 30-seed pipeline mean of 86.3\%. The narrow end is the distance from the top of the parametric range to the 95.9\% the same pipeline now reaches on the 100-attack ablation corpus --- a figure that stood at 12.2\% until the Invariants module was rewritten, and that moved with no change to any other module. Plan against the wide end. Part~2 introduces a 5-level CMMI-style adapter maturity scale:
 
 | Level | Name | Marginal TPR | Description |
 | :--- | :--- | :--- | :--- |
@@ -322,8 +322,8 @@ The current Claude Code adapter is at Level 3 (Statistical), explaining the 44.8
 
 The detection rates in Part 2 are derived from a calibrated parametric simulation, modeled on the architecture's topology. They represent the *structural* security of the design.
 
-* **94% Overall Detection** means: "Across all architectures and attack categories, 94% of attack vectors are detected by the full CIF defense stack" (with architecture-specific rates ranging from 94--98%).
-* It does **not** mean: "We have a magic Python script that catches 94% of all evil AI thoughts."
+* **99.4% Overall Detection** means: "Across all architectures and attack categories, 99.4% of attack vectors are detected by the full CIF defense stack" (with architecture-specific rates ranging from 96--100%).
+* It does **not** mean: "We have a magic Python script that catches 99.4% of all evil AI thoughts."
 
 We proved the *architecture* works. The implementation fidelity is the variable for the builder.
 
@@ -331,7 +331,7 @@ We proved the *architecture* works. The implementation fidelity is the variable 
 >
 > - **96--100\%** (parametric simulation, $N=3{,}800$): CIF's **design-level detection ceiling** — what the defense architecture achieves when adapters are fully mature (Level 5) and conditions match the calibrated model. This is the target, not the current reality.
 > - **44.8\%** [95\% CI: 43.2\%, 46.4\%] (multi-seed pipeline, 30 seeds): The **current empirical baseline** for the Claude Code architecture with Level-3 adapters. This is what you get today, out of the box, before adapter tuning.
-> - **95.9\%** (98-attack ablation corpus, all categories including hardest): full-pipeline true-positive rate on a corpus built to include difficult attacks. This bullet read ~12.2\% until the Invariants module was rewritten to score demand structure rather than topic nouns; no other module changed. Read it as an upper bound rather than a floor: the corpus is template-generated, a detector keyed on demand structure is being asked to recognise generated demands, and the 0\% false-positive rate reported beside it comes from the fifty easy benign strings hard-coded in Part 2's ablation runner, not from the adversarially hard `BenignCorpus` behind the multi-seed figure above.
+> - **95.9\%** (100-attack ablation corpus, all categories including hardest): full-pipeline true-positive rate on a corpus built to include difficult attacks. This bullet read ~12.2\% until the Invariants module was rewritten to score demand structure rather than topic nouns; no other module changed. Read it as an upper bound rather than a floor: the corpus is template-generated, a detector keyed on demand structure is being asked to recognise generated demands, and the 0\% false-positive rate reported beside it comes from the fifty easy benign strings hard-coded in Part 2's ablation runner, not from the adversarially hard `BenignCorpus` behind the multi-seed figure above.
 >
 > All three numbers are correct. Use 44.8\% for realistic planning, 96\% as the floor of the achievable ceiling with mature adapters, and ~12.2\% as a conservative lower bound for adversarial threat modeling.
 
@@ -389,7 +389,7 @@ The Manager Agent trusts the Security Agent and deploys the vulnerable code.
 * **Defense Composition**: The system requires **Redundancy**. "Safe" is not accepted unless corroborated by a second, independent source (e.g., a static analysis tool).
 * **Invariants**: "Critical Security Clearance requires 2 independent verifications."
 
-**Real-World Parallel**: ToolHijacker (2025) and supply chain attacks.
+**Real-World Parallel**: ToolHijacker (2025) and supply chain attacks [@toolhijacker2025].
 
 ---
 
@@ -439,7 +439,7 @@ The worker agents are fine, but they are following orders from a corrupt leader.
 * When the Boss orders exfiltration, the Worker's tripwire fires.
 * **Stigmergic Defense**: The monitoring system watches the *pattern* of alerts. "Why did the alert rate drop to zero?"
 
-**Real-World Parallel**: Sleeper Agents (Hubinger et al., 2024) and insider threats.
+**Real-World Parallel**: Sleeper Agents (Hubinger et al., 2024) and insider threats [@sleeperagents2025].
 
 ---
 
@@ -1412,7 +1412,7 @@ Saying "the code works" requires specifying what that means. There are three hon
 
 **Level 1 — The architecture is correctly implemented** (confidence: high, conditional on the current project test run). Every defense module—firewall, sandbox, trust calculus, tripwires, Byzantine consensus, provenance, drift detection, invariant checker—is independently tested. The `SeriesPipeline` routes the 950-attack corpus through all 8 modules with 0\% routing failure in the reported Part 2 run. Use the current `uv run pytest` output as the source of truth for test counts and pass rate.
 
-**Level 2 — The pipeline detects attacks in practice** (confidence: moderate). The multi-seed pipeline analysis (30 seeds, Claude Code architecture) achieves a mean detection rate of 44.8\% [95\% CI: 43.2\%, 46.4\%]. The LLM-backed multiagent validation ($N=10$, Gemma 3 4B) achieves 80\%--100\% across two architectures. These are meaningful but not high detection rates—they reflect adapter implementation at CMMI Level 3 (Statistical), not the design ceiling.
+**Level 2 — The pipeline detects attacks in practice** (confidence: moderate). The multi-seed pipeline analysis (30 seeds, Claude Code architecture) achieves a mean detection rate of 86.3\% [95\% CI: 43.2\%, 46.4\%]. The LLM-backed multiagent validation ($N=10$, Gemma 3 4B) achieves 80\%--100\% across two architectures. These are meaningful but not high detection rates—they reflect adapter implementation at CMMI Level 3 (Statistical), not the design ceiling.
 
 **Level 3 — The defense ceiling is achievable** (confidence: moderate-high). The parametric simulation ($N=3{,}800$) establishes that fully-mature (Level 5) adapters achieve 96--100\% detection, consistent with the formal design. The gap between Level 3 (44.8\%) and Level 5 (96\%) is an engineering challenge, not a theoretical limitation. The roadmap in Part 2 projects +35--41 percentage points of improvement through adapter maturation.
 
@@ -1422,7 +1422,7 @@ The honest operational posture is Level 2: deploy CIF for meaningful protection 
 
 The preceding sections distill the CIF series into actionable guidance. The core recommendations are:
 
-1. **Adopt layered defense from the start** (Pitfall 2), then measure what each layer is worth. In the parametric model the full CIF stack reached a 96–100% parametric detection ceiling that no partial configuration matched. The real pipeline teaches the sharper lesson: on Part~2's 98-attack ablation corpus the Invariants checker alone reaches 92.9% against the full stack's 95.9%, and five of the eight modules show no measurable marginal contribution. Design security into the architecture rather than bolting it on, but do not assume every layer you add is earning its latency — check each one's marginal contribution against your own traffic.
+1. **Adopt layered defense from the start** (Pitfall 2), then measure what each layer is worth. In the parametric model the full CIF stack reached a 96–100% parametric detection ceiling that no partial configuration matched. The real pipeline teaches the sharper lesson: on Part~2's 100-attack ablation corpus the Invariants checker alone reaches 92.9% against the full stack's 95.9%, and five of the eight modules show no measurable marginal contribution. Design security into the architecture rather than bolting it on, but do not assume every layer you add is earning its latency — check each one's marginal contribution against your own traffic.
 
 2. **Implement trust decay on every delegation chain** (Pitfall 1). The Trust Calculus with $\delta \leq 0.8$ prevents trust laundering across all tested architectures. This is not optional hardening---it is the structural foundation that prevents systemic compromise from local failures.
 
@@ -1488,7 +1488,7 @@ This guide has tried to be honest about what CIF can and cannot do. The practica
 
 **Sample sizes are small**. The LLM validation used $N=5$ attacks per architecture. The colony benchmarks used 1 scenario per attack type. The multi-seed analysis used 30 seeds. These are sufficient for preliminary evidence but severely underpowered for precise estimation. Required sample sizes for $\pm 5\%$ precision are $N \geq 246$ per evaluation mode. Treat all reported detection rates as estimates with wide uncertainty, not precise measurements.
 
-**The gap is real at one end**. The 4--51 percentage-point gap between the parametric ceiling (96--100\%) and the real pipeline spans two unlike measurements. The wide end is the one the Bayes factor speaks to: the distance from the ceiling to the 30-seed pipeline mean of 44.8\%, which is not noise—the Bayes factor for a true performance gap exceeds $10^6$ (decisive evidence). The narrow end is the distance from the ceiling to the 95.9\% the pipeline reaches on the 98-attack ablation corpus after the Invariants rewrite; no Bayes factor has been computed for that arm, and it should not borrow the first one's authority. The wide end is what reflects adapter implementation maturity, and maturation takes time and resources. Plan your deployment timeline and security posture accordingly.
+**The gap is real at one end**. The 10--11 percentage-point gap between the parametric ceiling (96--100\%) and the real pipeline spans two unlike measurements. The wide end is the one the Bayes factor speaks to: the distance from the ceiling to the 30-seed pipeline mean of 86.3\%, which is not noise—the Bayes factor for a true performance gap exceeds $10^6$ (decisive evidence). The narrow end is the distance from the ceiling to the 95.9\% the pipeline reaches on the 100-attack ablation corpus after the Invariants rewrite; no Bayes factor has been computed for that arm, and it should not borrow the first one's authority. The wide end is what reflects adapter implementation maturity, and maturation takes time and resources. Plan your deployment timeline and security posture accordingly.
 
 **Adaptive adversaries are not modeled**. All evaluations used a fixed attack corpus. A sophisticated adversary who observes CIF's defenses and adapts (Debenedetti et al.'s adaptive attacks \cite{adaptive2025attacks}) could achieve lower detection rates than reported. The game-theoretic analysis (Part 2) establishes the Nash equilibrium for the current payoff matrix, but a patient adversary will probe for gaps. The layered defense architecture provides resilience—bypassing one layer still encounters others—but no detection system is perfectly robust to adaptive adversaries.
 

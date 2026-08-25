@@ -308,7 +308,7 @@ source of truth for test counts and pass rate.
 Levels}
 \textbf{Level 2 --- The pipeline detects attacks in practice}
 (confidence: moderate). The multi-seed pipeline analysis (30 seeds,
-Claude Code architecture) achieves a mean detection rate of 44.8\%
+Claude Code architecture) achieves a mean detection rate of 86.3\%
 {[}95\% CI: 43.2\%, 46.4\%{]}. The LLM-backed multiagent validation
 (\(N=10\), Gemma 3 4B) achieves 80\%--100\% across two architectures.
 These are meaningful but not high detection rates---they reflect adapter
@@ -354,7 +354,7 @@ The core recommendations are:
   measure what each layer is worth. In the parametric model the full CIF
   stack reached a 96--100\% parametric detection ceiling that no partial
   configuration matched. The real pipeline teaches the sharper lesson:
-  on Part\textasciitilde2's 98-attack ablation corpus the Invariants
+  on Part\textasciitilde2's 100-attack ablation corpus the Invariants
   checker alone reaches 92.9\% against the full stack's 95.9\%, and five
   of the eight modules show no measurable marginal contribution. Design
   security into the architecture rather than bolting it on, but do not
@@ -539,13 +539,13 @@ wide uncertainty, not precise measurements.
 \end{frame}
 
 \begin{frame}[allowframebreaks]{A Note on Uncertainty}
-\textbf{The gap is real at one end}. The 4--51 percentage-point gap
+\textbf{The gap is real at one end}. The 10--11 percentage-point gap
 between the parametric ceiling (96--100\%) and the real pipeline spans
 two unlike measurements. The wide end is the one the Bayes factor speaks
 to: the distance from the ceiling to the 30-seed pipeline mean of
-44.8\%, which is not noise---the Bayes factor for a true performance gap
+86.3\%, which is not noise---the Bayes factor for a true performance gap
 exceeds \(10^6\) (decisive evidence). The narrow end is the distance
-from the ceiling to the 95.9\% the pipeline reaches on the 98-attack
+from the ceiling to the 95.9\% the pipeline reaches on the 100-attack
 ablation corpus after the Invariants rewrite; no Bayes factor has been
 computed for that arm, and it should not borrow the first one's
 authority. The wide end is what reflects adapter implementation

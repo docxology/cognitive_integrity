@@ -318,7 +318,7 @@ injection detected at 99--100\% across architectures. The separate
 real-pipeline evaluation had a lower multi-seed mean of approximately
 44.8\%. \textbf{The Implication}: The parametric model rewards layering,
 but the real pipeline does not spread the work evenly across layers, and
-the 98-attack ablation corpus says so plainly. The Invariants module
+the 100-attack ablation corpus says so plainly. The Invariants module
 alone detects 92.9\% of that corpus against the full stack's 95.9\%; the
 Firewall, Detection, Tripwire and Trust Calculus modules each detect
 between 2\% and 6\% on their own. Removing Invariants costs about 85
@@ -448,14 +448,14 @@ Bug}\label{finding-7-the-implementation-gap-is-a-feature-not-a-bug}
 
 \begin{frame}[allowframebreaks]{Finding 7: The Implementation Gap Is a
 Feature, Not a Bug}
-The 4--51 percentage-point gap between the parametric ceiling
+The 10--11 percentage-point gap between the parametric ceiling
 (96--100\%) and the real pipeline reflects \textbf{adapter
 implementation maturity}, not a failure of CIF's formal architecture.
 Its two ends are two different measurements and should not be read as
 one range around one deployment. The wide end is the distance from the
-parametric floor to the 30-seed pipeline mean of 44.8\%. The narrow end
+parametric floor to the 30-seed pipeline mean of 86.3\%. The narrow end
 is the distance from the top of the parametric range to the 95.9\% the
-same pipeline now reaches on the 98-attack ablation corpus --- a figure
+same pipeline now reaches on the 100-attack ablation corpus --- a figure
 that stood at 12.2\% until the Invariants module was rewritten, and that
 moved with no change to any other module. Plan against the wide end.
 Part\textasciitilde2 introduces a 5-level CMMI-style adapter maturity
@@ -538,13 +538,13 @@ simulation, modeled on the architecture's topology. They represent the
 \begin{itemize}
 \tightlist
 \item
-  \textbf{94\% Overall Detection} means: ``Across all architectures and
-  attack categories, 94\% of attack vectors are detected by the full CIF
-  defense stack'' (with architecture-specific rates ranging from
-  94--98\%).
+  \textbf{99.4\% Overall Detection} means: ``Across all architectures
+  and attack categories, 99.4\% of attack vectors are detected by the
+  full CIF defense stack'' (with architecture-specific rates ranging
+  from 96--100\%).
 \item
   It does \textbf{not} mean: ``We have a magic Python script that
-  catches 94\% of all evil AI thoughts.''
+  catches 99.4\% of all evil AI thoughts.''
 \end{itemize}
 
 \end{frame}
@@ -572,7 +572,7 @@ not --- they measure different things:
   architecture with Level-3 adapters. This is what you get today, out of
   the box, before adapter tuning.
 \item
-  \textbf{95.9\%} (98-attack ablation corpus, all categories including
+  \textbf{95.9\%} (100-attack ablation corpus, all categories including
   hardest): full-pipeline true-positive rate on a corpus built to
   include difficult attacks. This bullet read \textasciitilde12.2\%
   until the Invariants module was rewritten to score demand structure

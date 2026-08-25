@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.3.22)  24 AUG 2026 16:28
+This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.3.22)  24 AUG 2026 21:41
 entering extended mode
  %&-line parsing enabled.
 **/Users/4d/Documents/GitHub/projects/working/cognitive_integrity/cogsec_multia
@@ -1736,22 +1736,22 @@ File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 
 ]
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 6.18091pt on input line 281.
+(Font)              scaled to size 6.18091pt on input line 282.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 5.15076pt on input line 281.
+(Font)              scaled to size 5.15076pt on input line 282.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 6.18155pt on input line 281.
+(Font)              scaled to size 6.18155pt on input line 282.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 5.15129pt on input line 281.
+(Font)              scaled to size 5.15129pt on input line 282.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 6.18036pt on input line 281.
+(Font)              scaled to size 6.18036pt on input line 282.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 5.1503pt on input line 281.
+(Font)              scaled to size 5.1503pt on input line 282.
  [5
 
 ]
 LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <10.95> not available
-(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 289.
+(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 290.
  [6
 
 ] [7
@@ -1764,37 +1764,37 @@ LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <10.95> not available
 
 ]
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 9.27136pt on input line 331.
+(Font)              scaled to size 9.27136pt on input line 332.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 9.27232pt on input line 331.
+(Font)              scaled to size 9.27232pt on input line 332.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 9.27054pt on input line 331.
+(Font)              scaled to size 9.27054pt on input line 332.
  [11
 
 ]
 
-LaTeX Warning: Citation `openclaw2026' on page 12 undefined on input line 347.
+LaTeX Warning: Citation `openclaw2026' on page 12 undefined on input line 348.
 
 
 LaTeX Warning: Citation `openclaw2026security' on page 12 undefined on input li
-ne 347.
+ne 348.
 
 [12
 
 ]
 
 LaTeX Warning: Citation `openclaw2026security' on page 13 undefined on input li
-ne 362.
+ne 363.
 
 
-LaTeX Warning: Citation `echoleak2025' on page 13 undefined on input line 362.
+LaTeX Warning: Citation `echoleak2025' on page 13 undefined on input line 363.
 
 [13
 
 ]
 
 LaTeX Warning: Citation `owasp2025agentic' on page 14 undefined on input line 3
-70.
+71.
 
 [14
 
@@ -1807,17 +1807,17 @@ LaTeX Warning: Citation `owasp2025agentic' on page 14 undefined on input line 3
 ]
 
 LaTeX Warning: Citation `shayegani2023survey' on page 18 undefined on input lin
-e 419.
+e 420.
 
 
-LaTeX Warning: Citation `qi2024visual' on page 18 undefined on input line 419.
+LaTeX Warning: Citation `qi2024visual' on page 18 undefined on input line 420.
 
 [18
 
 ]
 
 LaTeX Warning: Citation `toolhijacker2025' on page 19 undefined on input line 4
-34.
+35.
 
 [19
 
@@ -1862,14 +1862,14 @@ LaTeX Warning: Citation `toolhijacker2025' on page 19 undefined on input line 4
 
 ]
 
-LaTeX Warning: Citation `david2021aic' on page 39 undefined on input line 647.
+LaTeX Warning: Citation `david2021aic' on page 39 undefined on input line 648.
 
 
-LaTeX Warning: Citation `owasp2025llm' on page 39 undefined on input line 647.
+LaTeX Warning: Citation `owasp2025llm' on page 39 undefined on input line 648.
 
 
 LaTeX Warning: Citation `owasp2025agentic' on page 39 undefined on input line 6
-47.
+48.
 
 [39
 
@@ -1877,7 +1877,7 @@ LaTeX Warning: Citation `owasp2025agentic' on page 39 undefined on input line 6
 
 ]
 
-LaTeX Warning: Citation `owasp2025llm' on page 41 undefined on input line 664.
+LaTeX Warning: Citation `owasp2025llm' on page 41 undefined on input line 665.
 
 [41
 
@@ -1886,13 +1886,13 @@ LaTeX Warning: Citation `owasp2025llm' on page 41 undefined on input line 664.
 ]
 
 LaTeX Warning: Citation `trustdynamics2025' on page 43 undefined on input line
-678.
+679.
 
 
-LaTeX Warning: Citation `cpwbft2025' on page 43 undefined on input line 678.
+LaTeX Warning: Citation `cpwbft2025' on page 43 undefined on input line 679.
 
 
-LaTeX Warning: Citation `cdr2025' on page 43 undefined on input line 678.
+LaTeX Warning: Citation `cdr2025' on page 43 undefined on input line 679.
 
 [43
 
@@ -1901,11 +1901,11 @@ LaTeX Warning: Citation `cdr2025' on page 43 undefined on input line 678.
 ]
 
 LaTeX Warning: Citation `adaptive2025attacks' on page 45 undefined on input lin
-e 692.
+e 693.
 
 
 LaTeX Warning: Citation `jo2025byzantine' on page 45 undefined on input line 69
-2.
+3.
 
 [45
 
@@ -1943,7 +1943,7 @@ LaTeX Warning: Citation `jo2025byzantine' on page 45 undefined on input line 69
 ]
 
 LaTeX Warning: Citation `friedman2026cogsec3' on page 61 undefined on input lin
-e 826.
+e 827.
 
 [61
 
@@ -1951,7 +1951,7 @@ e 826.
 
 ]
 LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <10.95> not available
-(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 843.
+(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 844.
  [63
 
 ] [64
@@ -2001,7 +2001,7 @@ LaTeX Warning: There were undefined references.
 Here is how much of TeX's memory you used:
  33862 strings out of 468168
  672058 string characters out of 5432815
- 1226749 words of memory out of 5000000
+ 1227749 words of memory out of 5000000
  61988 multiletter control sequences out of 15000+600000
  634177 words of font info for 93 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191

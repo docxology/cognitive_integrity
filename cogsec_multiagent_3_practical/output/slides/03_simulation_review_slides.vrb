@@ -21,7 +21,7 @@ not --- they measure different things:
   architecture with Level-3 adapters. This is what you get today, out of
   the box, before adapter tuning.
 \item
-  \textbf{95.9\%} (98-attack ablation corpus, all categories including
+  \textbf{95.9\%} (100-attack ablation corpus, all categories including
   hardest): full-pipeline true-positive rate on a corpus built to
   include difficult attacks. This bullet read \textasciitilde12.2\%
   until the Invariants module was rewritten to score demand structure

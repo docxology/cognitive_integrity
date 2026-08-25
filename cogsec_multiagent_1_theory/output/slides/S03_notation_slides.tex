@@ -296,6 +296,10 @@ Defined In
 \cref{def:detectability} \\
 \(\mathcal{C}_{\text{adv}}\) & Adversarial capability set &
 \cref{def:capability-set} \\
+\(\mathcal{K}_\bullet\) & Adversary knowledge component of the class
+tuple; the subscript names its scope (\(\mathcal{K}_{\text{public}}\),
+\(\mathcal{K}_{\text{domain}}\), \(\mathcal{K}_{\text{protocol}}\),
+\(\mathcal{K}_{\text{internal}}\)) & \cref{sec:threat-model} \\
 \(\mathcal{E}\) & Communication edge set
 \(\{(a_i, a_j) : \mathcal{C}(a_i, a_j) = 1\}\); the adversary-controlled
 subset is \(\mathcal{E}_{\text{ctrl}} \subseteq \mathcal{E}\) (distinct
@@ -358,7 +362,9 @@ Defined In
 \cref{def:cognitive-state} \\
 \(\Phi\) & Set of propositions & \cref{sec:notation} \\
 \(\phi, \psi\) & Individual propositions & \cref{sec:notation} \\
-\(\mathcal{M}\) & Message space & \cref{def:firewall} \\
+\(\mathcal{M}\) & Message space (distinct from the set of marker types
+\(\mathcal{M}\) of \cref{def:stigmergic-operator}) &
+\cref{def:firewall} \\
 \(m\) & Individual message & \cref{def:firewall} \\
 \(\Sigma\) & OODA input alphabet \(\mathcal{M} \cup \text{Events}\)
 (distinct from the stigmergic update function \(\Sigma\) of
@@ -673,7 +679,8 @@ Defined In
 alphabet \(\Sigma\) of \cref{def:ooda-state}) &
 \cref{def:stigmergic-operator} \\
 \(\mathcal{L}\) & Set of locations & \cref{def:stigmergic-operator} \\
-\(\mathcal{M}\) & Set of marker types &
+\(\mathcal{M}\) & Set of marker types (distinct from the message space
+\(\mathcal{M}\) of \cref{def:firewall}) &
 \cref{def:stigmergic-operator} \\
 \(\mathcal{N}\) & Cyberphysical niche &
 \cref{def:cyberphysical-niche} \\

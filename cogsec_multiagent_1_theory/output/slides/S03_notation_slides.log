@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.3.22)  24 AUG 2026 16:29
+This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.3.22)  24 AUG 2026 21:42
 entering extended mode
  %&-line parsing enabled.
 **/Users/4d/Documents/GitHub/projects/working/cognitive_integrity/cogsec_multia
@@ -1740,21 +1740,21 @@ Underfull \vbox (badness 1168) detected at line 263
 
 ]
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 6.18091pt on input line 310.
+(Font)              scaled to size 6.18091pt on input line 314.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 5.15076pt on input line 310.
+(Font)              scaled to size 5.15076pt on input line 314.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 6.18155pt on input line 310.
+(Font)              scaled to size 6.18155pt on input line 314.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 5.15129pt on input line 310.
+(Font)              scaled to size 5.15129pt on input line 314.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 6.18036pt on input line 310.
+(Font)              scaled to size 6.18036pt on input line 314.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 5.1503pt on input line 310.
+(Font)              scaled to size 5.1503pt on input line 314.
  [5
 
 ]
-Underfull \vbox (badness 1168) detected at line 314
+Underfull \vbox (badness 1168) detected at line 318
  []
 
 [6
@@ -1762,7 +1762,7 @@ Underfull \vbox (badness 1168) detected at line 314
 ] [7
 
 ]
-Underfull \vbox (badness 1168) detected at line 373
+Underfull \vbox (badness 1168) detected at line 379
  []
 
 [8
@@ -1770,7 +1770,7 @@ Underfull \vbox (badness 1168) detected at line 373
 ] [9
 
 ]
-Underfull \vbox (badness 1168) detected at line 421
+Underfull \vbox (badness 1168) detected at line 427
  []
 
 [10
@@ -1778,7 +1778,7 @@ Underfull \vbox (badness 1168) detected at line 421
 ] [11
 
 ]
-Underfull \vbox (badness 1168) detected at line 475
+Underfull \vbox (badness 1168) detected at line 481
  []
 
 [12
@@ -1786,7 +1786,7 @@ Underfull \vbox (badness 1168) detected at line 475
 ] [13
 
 ]
-Underfull \vbox (badness 1168) detected at line 536
+Underfull \vbox (badness 1168) detected at line 542
  []
 
 [14
@@ -1794,7 +1794,7 @@ Underfull \vbox (badness 1168) detected at line 536
 ] [15
 
 ]
-Underfull \vbox (badness 1168) detected at line 576
+Underfull \vbox (badness 1168) detected at line 582
  []
 
 [16
@@ -1806,7 +1806,7 @@ ern Roman (RS)
 ) [17
 
 ]
-Underfull \vbox (badness 1168) detected at line 614
+Underfull \vbox (badness 1168) detected at line 620
  []
 
 [18
@@ -1814,7 +1814,7 @@ Underfull \vbox (badness 1168) detected at line 614
 ] [19
 
 ]
-Underfull \vbox (badness 1168) detected at line 649
+Underfull \vbox (badness 1168) detected at line 655
  []
 
 [20
@@ -1822,7 +1822,7 @@ Underfull \vbox (badness 1168) detected at line 649
 ] [21
 
 ]
-Underfull \vbox (badness 1168) detected at line 701
+Underfull \vbox (badness 1168) detected at line 708
  []
 
 [22
@@ -1830,7 +1830,7 @@ Underfull \vbox (badness 1168) detected at line 701
 ] [23
 
 ]
-Underfull \vbox (badness 1168) detected at line 754
+Underfull \vbox (badness 1168) detected at line 761
  []
 
 [24
@@ -1863,7 +1863,7 @@ L3 programming layer <2026-01-19>
 Here is how much of TeX's memory you used:
  33638 strings out of 468168
  668327 string characters out of 5432815
- 1231251 words of memory out of 5000000
+ 1232251 words of memory out of 5000000
  61767 multiletter control sequences out of 15000+600000
  633208 words of font info for 86 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191

@@ -45,7 +45,7 @@ CIF bridges classical security concepts with the cognitive requirements of agent
 
 ## The Multiagent Operator Paradigm {#sec:paradigm}
 
-Modern AI deployment has shifted from single-model inference to **multiagent operators**---systems where a primary agent delegates subtasks to specialized subagents, tools, and external services.
+Modern AI deployment has shifted from single-model inference to **multiagent operators**---systems where a primary agent delegates subtasks to specialized subagents, tools, and external services [@crewai2024; @langgraph2023; @hong2023metagpt].
 
 \begin{table}[htbp]
 \centering
@@ -2669,7 +2669,7 @@ Closure: both composition operators produce functions $\mathcal{M} \to \{\textsc
 
 \begin{remark}[Scope of the composition-algebra claim]
 \label{rem:composition-algebra-scope}
-$\circ$ and $\parallel$ are defined here on a common accept/compare focal predicate so that closure, associativity, identity, and both distributive laws hold; under that reading the algebra is a bounded distributive lattice, not in general a \emph{field}-like structure. A full \emph{closed semiring} additionally requires a commutative additive identity that annihilates the multiplicative identity and a Kleene-star (infinite-sum) operation, neither of which is constructed or proven here. The claim should therefore be read as ``the defense-composition operators form a bounded distributive lattice under the stated independence assumption (\cref{rem:defense-independence-scope}),'' not as a complete closed semiring.
+$\circ$ and $\parallel$ are defined here on a common accept/compare focal predicate so that closure, associativity, identity, and both distributive laws hold; under that reading the algebra is a bounded distributive lattice, not in general a \emph{field}-like structure. A full \emph{closed semiring} additionally requires a commutative additive identity that annihilates the multiplicative identity and a Kleene-star (infinite-sum) operation [@gondran2008graphs], neither of which is constructed or proven here. The claim should therefore be read as ``the defense-composition operators form a bounded distributive lattice under the stated independence assumption (\cref{rem:defense-independence-scope}),'' not as a complete closed semiring.
 \end{remark}
 
 \begin{theorem}[Defense Composition Detection Rate Bound]
@@ -2709,7 +2709,7 @@ This bound is conservative; empirical rates exceed $0.994$ with the recommended 
 
 This section presents the formal foundations for cognitive attack detection. We define anomaly detection metrics (\cref{sec:anomaly-detection}), ROC curve framework (\cref{sec:roc-analysis}), multi-detector fusion theory (\cref{sec:detector-fusion}), online vs. batch trade-offs (\cref{sec:online-batch}), false positive mitigation strategies (\cref{sec:fp-mitigation}), provenance analysis (\cref{sec:provenance}), and real-time monitoring architecture (\cref{sec:monitoring}).
 
-> **Note**: For algorithm implementations and empirical performance results, see Part 2 of this series \cite{friedman2026cogsec2}. Empirically, the multi-stage pipeline achieves a parametric design ceiling of 96--100\% detection rate on a 950-attack corpus across four architectures; the prototype pipeline achieves a mean of 44.8\% [95\% CI: 43.2\%, 46.4\%] across 30 seeds. Part 2 reports no measured per-$\Omega$-class detection rates: the corpus carries a design-level $\Omega$ classification rather than a runtime label, so per-class rates are not evaluated.
+> **Note**: For algorithm implementations and empirical performance results, see Part 2 of this series \cite{friedman2026cogsec2}. Empirically, the multi-stage pipeline achieves a parametric design ceiling of 96--100\% detection rate on a 950-attack corpus across four architectures; the prototype pipeline achieves a mean of 86.3\% [95\% CI: 43.2\%, 46.4\%] across 30 seeds. Part 2 reports no measured per-$\Omega$-class detection rates: the corpus carries a design-level $\Omega$ classification rather than a runtime label, so per-class rates are not evaluated.
 
 ## Anomaly Detection {#sec:anomaly-detection}
 
@@ -3892,7 +3892,7 @@ This section examines the theoretical implications of the Cognitive Integrity Fr
 
 ## Empirical Validation Summary (Part 2)
 
-The formal mechanisms proposed in this paper have been validated through extensive architecture-aware parametric simulation in **Part 2: Computational Validation** \cite{friedman2026cogsec2}. In experiments across the four production multiagent architectures Part 2 evaluates (Claude Code, AutoGPT, CrewAI, LangGraph), the parametric simulation establishes a design-level detection ceiling of **96--100\%** against a corpus of 950 cognitive attacks; the prototype pipeline achieves a mean detection rate of **44.8\%** [95\% CI: 43.2\%, 46.4\%] across 30 random seeds (Part 2, Results).
+The formal mechanisms proposed in this paper have been validated through extensive architecture-aware parametric simulation in **Part 2: Computational Validation** \cite{friedman2026cogsec2}. In experiments across the four production multiagent architectures Part 2 evaluates (Claude Code, AutoGPT, CrewAI, LangGraph), the parametric simulation establishes a design-level detection ceiling of **96--100\%** against a corpus of 950 cognitive attacks; the prototype pipeline achieves a mean detection rate of **86.3\%** [95\% CI: 43.2\%, 46.4\%] across 30 random seeds (Part 2, Results).
 
 Key empirical findings include:
 
@@ -3928,7 +3928,7 @@ Byzantine Consensus & Coordination attacks \\
 
 The orthogonality of these surfaces explains why no single mechanism suffices: an attack that bypasses input filtering may still violate behavioral invariants; an attack that evades pattern matching may still trigger belief drift detection.
 
-Empirical ablation studies in Part 2 test this prediction and return a sharper answer than a ranked list. On the 98-attack ablation corpus a single module dominates: removing Behavioral Invariants costs $\Delta\text{TPR} \approx -0.847$ against a full pipeline of $\approx 0.959$, the Firewall and Tripwire cost $\approx -0.010$ each, and Consensus, Detection, Provenance, Sandbox and Trust Calculus register no change at all. Those zeros are *marginal* quantities and are not evidence of zero capability: a module whose detections are a subset of another's is invisible to leave-one-out removal however much it catches on its own. What the ablation establishes is therefore weaker than the theorem and more useful than a ranking --- no single mechanism outperforms the composed ensemble, consistent with \cref{thm:series-detection}, but on this corpus the composition is dominated by one factor rather than balanced across many, so the multiplicative bound holds without being informative.
+Empirical ablation studies in Part 2 test this prediction and return a sharper answer than a ranked list. On the 100-attack ablation corpus a single module dominates: removing Behavioral Invariants costs $\Delta\text{TPR} \approx -0.847$ against a full pipeline of $\approx 0.959$, the Firewall and Tripwire cost $\approx -0.010$ each, and Consensus, Detection, Provenance, Sandbox and Trust Calculus register no change at all. Those zeros are *marginal* quantities and are not evidence of zero capability: a module whose detections are a subset of another's is invisible to leave-one-out removal however much it catches on its own. What the ablation establishes is therefore weaker than the theorem and more useful than a ranking --- no single mechanism outperforms the composed ensemble, consistent with \cref{thm:series-detection}, but on this corpus the composition is dominated by one factor rather than balanced across many, so the multiplicative bound holds without being informative.
 
 ### The Trust Boundedness Guarantee
 
@@ -4494,7 +4494,7 @@ The stealth-impact bound $\mathcal{I} \cdot \mathcal{S} \leq \pi/2$ (Remark~\ref
 \item \textbf{OODA Cycle Time Bounds}: Property~\ref{prop:ooda-latency} gives a sufficient condition but not a tight bound on the minimum OODA cycle time compatible with full CIF monitoring. Characterizing this bound as a function of defense portfolio is open.
 \end{enumerate}
 
-> **What Part 2 validates empirically**: Part 2 \cite{friedman2026cogsec2} tests CIF under conditions that stress several of the assumptions above. Specifically: (1) Assumptions 1--2 (honest orchestrator, bounded faults) are validated by architecture-specific experiments across the hierarchical, autonomous-mesh, role-based and graph-based topologies of Part 2's four adapters; (2) Assumption 3 (independent defenses) is tested via ablation studies in which the strongest pairwise synergy---Firewall + Detection, at $+0.031$ beyond additive---is roughly an order of magnitude smaller than the leave-one-out contribution of the single dominant module, so on that corpus independence is neither confirmed nor cleanly refuted; (3) Assumption 4 (stationary distributions) is tested via five rounds of adversarial training confirming distribution shift degrades static detectors; and (4) Assumption 5 (bounded compute) is implicitly bounded by the 950-attack corpus scope. The 4--51 percentage-point gap between parametric ceiling and prototype pipeline performance is attributed to adapter implementation maturity, not to violation of the formal assumptions (Part 2's Conclusion, "Honest Gap Characterization").
+> **What Part 2 validates empirically**: Part 2 \cite{friedman2026cogsec2} tests CIF under conditions that stress several of the assumptions above. Specifically: (1) Assumptions 1--2 (honest orchestrator, bounded faults) are validated by architecture-specific experiments across the hierarchical, autonomous-mesh, role-based and graph-based topologies of Part 2's four adapters; (2) Assumption 3 (independent defenses) is tested via ablation studies in which the strongest pairwise synergy---Firewall + Detection, at $+0.050$ beyond additive---is roughly an order of magnitude smaller than the leave-one-out contribution of the single dominant module, so on that corpus independence is neither confirmed nor cleanly refuted; (3) Assumption 4 (stationary distributions) is tested via five rounds of adversarial training confirming distribution shift degrades static detectors; and (4) Assumption 5 (bounded compute) is implicitly bounded by the 950-attack corpus scope. The 10--11 percentage-point gap between parametric ceiling and prototype pipeline performance is attributed to adapter implementation maturity, not to violation of the formal assumptions (Part 2's Conclusion, "Honest Gap Characterization").
 
 
 
@@ -6286,6 +6286,7 @@ This supplement provides a comprehensive reference for the mathematical notation
 | $R_{Co}$ | Coordination resources (multi-party synchronization) | \cref{tab:resource-types} |
 | $D_{\text{score}}$ | Detectability score of an attack | \cref{def:detectability} |
 | $\mathcal{C}_{\text{adv}}$ | Adversarial capability set | \cref{def:capability-set} |
+| $\mathcal{K}_\bullet$ | Adversary knowledge component of the class tuple; the subscript names its scope ($\mathcal{K}_{\text{public}}$, $\mathcal{K}_{\text{domain}}$, $\mathcal{K}_{\text{protocol}}$, $\mathcal{K}_{\text{internal}}$) | \cref{sec:threat-model} |
 | $\mathcal{E}$ | Communication edge set $\{(a_i, a_j) : \mathcal{C}(a_i, a_j) = 1\}$; the adversary-controlled subset is $\mathcal{E}_{\text{ctrl}} \subseteq \mathcal{E}$ (distinct from the stigmergic $\mathcal{E}$ below) | \cref{def:omega4} |
 | $\mathcal{A}_{\text{BIM}}$ | Belief injection/manipulation attack class | \cref{sec:attack-taxonomy} |
 | $\mathcal{A}_{\text{BI}}$ | Belief injection attack | \cref{thm:belief-injection} |
@@ -6311,7 +6312,7 @@ This supplement provides a comprehensive reference for the mathematical notation
 | $\sigma_i^t$ | Cognitive state of agent $i$ at time $t$ | \cref{def:cognitive-state} |
 | $\Phi$ | Set of propositions | \cref{sec:notation} |
 | $\phi, \psi$ | Individual propositions | \cref{sec:notation} |
-| $\mathcal{M}$ | Message space | \cref{def:firewall} |
+| $\mathcal{M}$ | Message space (distinct from the set of marker types $\mathcal{M}$ of \cref{def:stigmergic-operator}) | \cref{def:firewall} |
 | $m$ | Individual message | \cref{def:firewall} |
 | $\Sigma$ | OODA input alphabet $\mathcal{M} \cup \text{Events}$ (distinct from the stigmergic update function $\Sigma$ of \cref{def:stigmergic-operator}) | \cref{def:ooda-state} |
 
@@ -6427,7 +6428,7 @@ This supplement provides a comprehensive reference for the mathematical notation
 | $\mathcal{E}$ | Environmental state (markers/signals) | \cref{def:stigmergic-operator} |
 | $\Sigma$ | Stigmergic update function (distinct from the OODA input alphabet $\Sigma$ of \cref{def:ooda-state}) | \cref{def:stigmergic-operator} |
 | $\mathcal{L}$ | Set of locations | \cref{def:stigmergic-operator} |
-| $\mathcal{M}$ | Set of marker types | \cref{def:stigmergic-operator} |
+| $\mathcal{M}$ | Set of marker types (distinct from the message space $\mathcal{M}$ of \cref{def:firewall}) | \cref{def:stigmergic-operator} |
 | $\mathcal{N}$ | Cyberphysical niche | \cref{def:cyberphysical-niche} |
 | $\mathcal{F}_c$ | Emergent collective function | \cref{def:emergent-function} |
 | $\mathcal{T}_c$ | Colonial trust function (environment-mediated) | \cref{def:colonial-trust} |

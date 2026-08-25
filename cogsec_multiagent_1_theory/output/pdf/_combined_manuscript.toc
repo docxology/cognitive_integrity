@@ -5,10 +5,10 @@
 \contentsline {subsubsection}{\numberline {2.2.1}From Chatbots to Cognitive Operators}{10}{subsubsection.2.2.1}%
 \contentsline {subsubsection}{\numberline {2.2.2}Cyberphysical Cognitive Systems}{10}{subsubsection.2.2.2}%
 \contentsline {subsubsection}{\numberline {2.2.3}The Trust Recursion Problem}{11}{subsubsection.2.2.3}%
-\contentsline {subsubsection}{\numberline {2.2.4}Cross-Modality Attack Surfaces}{11}{subsubsection.2.2.4}%
+\contentsline {subsubsection}{\numberline {2.2.4}Cross-Modality Attack Surfaces}{12}{subsubsection.2.2.4}%
 \contentsline {subsubsection}{\numberline {2.2.5}The Scale of Cognitive Exposure}{12}{subsubsection.2.2.5}%
 \contentsline {subsubsection}{\numberline {2.2.6}Why Traditional Cyberphysical Security Is Incomplete}{12}{subsubsection.2.2.6}%
-\contentsline {subsection}{\numberline {2.3}Motivating Incidents}{12}{subsection.2.3}%
+\contentsline {subsection}{\numberline {2.3}Motivating Incidents}{13}{subsection.2.3}%
 \contentsline {subsubsection}{\numberline {2.3.1}Incident: Nested Instruction Injection (External)}{13}{subsubsection.2.3.1}%
 \contentsline {subsubsection}{\numberline {2.3.2}Incident: The Poisoned Code Review (Peripheral)}{13}{subsubsection.2.3.2}%
 \contentsline {subsubsection}{\numberline {2.3.3}Incident: The Identity Confusion Attack (Agent-Level)}{13}{subsubsection.2.3.3}%
@@ -17,268 +17,268 @@
 \contentsline {subsection}{\numberline {2.4}Motivation from Recent Deployments}{14}{subsection.2.4}%
 \contentsline {subsection}{\numberline {2.5}Problem Statement}{15}{subsection.2.5}%
 \contentsline {subsection}{\numberline {2.6}Research Questions}{15}{subsection.2.6}%
-\contentsline {subsection}{\numberline {2.7}Contributions}{15}{subsection.2.7}%
+\contentsline {subsection}{\numberline {2.7}Contributions}{16}{subsection.2.7}%
 \contentsline {subsection}{\numberline {2.8}Paper Organization}{16}{subsection.2.8}%
 \contentsline {subsection}{\numberline {2.9}Reading Companion: Where to Find Specific Topics}{17}{subsection.2.9}%
 \contentsline {subsection}{\numberline {2.10}Scope and Limitations}{17}{subsection.2.10}%
-\contentsline {section}{\numberline {3}Threat Model: Adversary Classes, Attack Complexity, and Taxonomy}{18}{section.3}%
-\contentsline {subsection}{\numberline {3.1}Adversary Classes}{18}{subsection.3.1}%
-\contentsline {subsection}{\numberline {3.2}Formal Characterization of the Adversary Classes}{18}{subsection.3.2}%
-\contentsline {subsubsection}{\numberline {3.2.1}Adversary Class \(\mitOmega _1\): External Attacker}{18}{subsubsection.3.2.1}%
-\contentsline {subsubsection}{\numberline {3.2.2}Adversary Class \(\mitOmega _2\): Peripheral Attacker}{19}{subsubsection.3.2.2}%
-\contentsline {subsubsection}{\numberline {3.2.3}Adversary Class \(\mitOmega _3\): Agent-Level Attacker}{19}{subsubsection.3.2.3}%
-\contentsline {subsubsection}{\numberline {3.2.4}Adversary Class \(\mitOmega _4\): Coordination-Level Attacker}{19}{subsubsection.3.2.4}%
-\contentsline {subsubsection}{\numberline {3.2.5}Adversary Class \(\mitOmega _5\): Systemic Attacker}{20}{subsubsection.3.2.5}%
-\contentsline {subsubsection}{\numberline {3.2.6}Cross-Class Attack Distinguishability}{20}{subsubsection.3.2.6}%
-\contentsline {subsection}{\numberline {3.3}Attack Complexity Analysis}{20}{subsection.3.3}%
-\contentsline {subsection}{\numberline {3.4}Detectability Analysis}{21}{subsection.3.4}%
-\contentsline {subsection}{\numberline {3.5}Adversarial Capabilities}{21}{subsection.3.5}%
-\contentsline {subsection}{\numberline {3.6}Attack Taxonomy}{22}{subsection.3.6}%
-\contentsline {subsubsection}{\numberline {3.6.1}Epistemic Attacks}{22}{subsubsection.3.6.1}%
-\contentsline {subsubsection}{\numberline {3.6.2}Behavioral Attacks}{25}{subsubsection.3.6.2}%
-\contentsline {subsubsection}{\numberline {3.6.3}Social Attacks}{25}{subsubsection.3.6.3}%
-\contentsline {subsubsection}{\numberline {3.6.4}Temporal Attacks}{25}{subsubsection.3.6.4}%
-\contentsline {subsection}{\numberline {3.7}Attack Scenarios by Class}{25}{subsection.3.7}%
-\contentsline {subsubsection}{\numberline {3.7.1}Scenario \(\mitOmega _1\): Nested Instruction Attack}{25}{subsubsection.3.7.1}%
-\contentsline {subsubsection}{\numberline {3.7.2}Scenario \(\mitOmega _2\): Poisoned Search Result}{27}{subsubsection.3.7.2}%
-\contentsline {subsubsection}{\numberline {3.7.3}Scenario \(\mitOmega _2'\): Browser-Fetched Adversarial Content (OpenClaw)}{27}{subsubsection.3.7.3}%
-\contentsline {subsubsection}{\numberline {3.7.4}Scenario \(\mitOmega _3\): Compromised Specialist}{27}{subsubsection.3.7.4}%
-\contentsline {subsubsection}{\numberline {3.7.5}Scenario \(\mitOmega _4\): Trust Inflation Attack}{28}{subsubsection.3.7.5}%
-\contentsline {subsection}{\numberline {3.8}Attack-Defense Quick Reference}{28}{subsection.3.8}%
-\contentsline {subsection}{\numberline {3.9}Attack Composition}{28}{subsection.3.9}%
-\contentsline {subsection}{\numberline {3.10}Threat Model Assumptions}{29}{subsection.3.10}%
-\contentsline {section}{\numberline {4}Cognitive Integrity Framework: Trust Calculus and Detection Bounds}{31}{section.4}%
-\contentsline {subsection}{\numberline {4.1}System Model}{31}{subsection.4.1}%
-\contentsline {subsection}{\numberline {4.2}Cognitive State}{31}{subsection.4.2}%
-\contentsline {subsubsection}{\numberline {4.2.1}State Transition Semantics}{32}{subsubsection.4.2.1}%
-\contentsline {subsection}{\numberline {4.3}Integrity Properties}{33}{subsection.4.3}%
-\contentsline {subsection}{\numberline {4.4}Trust Calculus}{33}{subsection.4.4}%
-\contentsline {subsubsection}{\numberline {4.4.1}Motivation: Why Bounded Trust Matters}{33}{subsubsection.4.4.1}%
-\contentsline {subsubsection}{\numberline {4.4.2}Formal Trust Model}{34}{subsubsection.4.4.2}%
-\contentsline {subsubsection}{\numberline {4.4.3}Trust Computation}{35}{subsubsection.4.4.3}%
-\contentsline {subsubsection}{\numberline {4.4.4}Trust Algebra}{35}{subsubsection.4.4.4}%
-\contentsline {subsubsection}{\numberline {4.4.5}Cross-Modality Trust}{38}{subsubsection.4.4.5}%
-\contentsline {subsubsection}{\numberline {4.4.6}Federated Trust}{38}{subsubsection.4.4.6}%
-\contentsline {subsubsection}{\numberline {4.4.7}Belief Update Semantics}{39}{subsubsection.4.4.7}%
-\contentsline {subsubsection}{\numberline {4.4.8}Sandboxed Belief Model}{39}{subsubsection.4.4.8}%
-\contentsline {subsection}{\numberline {4.5}Information-Theoretic Detection Bounds}{40}{subsection.4.5}%
-\contentsline {subsection}{\numberline {4.6}CIF-AD Integration: Action-Delegation Coupling}{41}{subsection.4.6}%
-\contentsline {subsubsection}{\numberline {4.6.1}The Action-Delegation Cycle}{44}{subsubsection.4.6.1}%
-\contentsline {subsubsection}{\numberline {4.6.2}CIF-AD Coupling Matrix}{44}{subsubsection.4.6.2}%
-\contentsline {subsection}{\numberline {4.7}CIF-OODA Integration: Temporal Security Across Decision Cycles}{44}{subsection.4.7}%
-\contentsline {subsubsection}{\numberline {4.7.1}OODA Loop Formalization}{45}{subsubsection.4.7.1}%
-\contentsline {subsubsection}{\numberline {4.7.2}Phase-Specific Attack Taxonomy}{45}{subsubsection.4.7.2}%
-\contentsline {subsubsection}{\numberline {4.7.3}OODA Temporal Coupling}{45}{subsubsection.4.7.3}%
-\contentsline {subsubsection}{\numberline {4.7.4}Integrative Security Guarantee}{46}{subsubsection.4.7.4}%
-\contentsline {section}{\numberline {5}Defense Mechanisms: Architectural, Runtime, and Coordination Layers}{47}{section.5}%
-\contentsline {subsection}{\numberline {5.1}Cognitive Security Operator Posture}{47}{subsection.5.1}%
-\contentsline {subsubsection}{\numberline {5.1.1}Definition and Principles}{47}{subsubsection.5.1.1}%
-\contentsline {subsubsection}{\numberline {5.1.2}The Observer Effect Challenge}{47}{subsubsection.5.1.2}%
-\contentsline {subsubsection}{\numberline {5.1.3}Operational Security for Cognitive Systems}{47}{subsubsection.5.1.3}%
-\contentsline {subsubsection}{\numberline {5.1.4}Incident Response for Cognitive Attacks}{48}{subsubsection.5.1.4}%
-\contentsline {subsubsection}{\numberline {5.1.5}Posture Configuration by Environment}{48}{subsubsection.5.1.5}%
-\contentsline {subsubsection}{\numberline {5.1.6}Operator Posture Checklist}{49}{subsubsection.5.1.6}%
-\contentsline {subsection}{\numberline {5.2}Architectural Defenses}{49}{subsection.5.2}%
-\contentsline {subsubsection}{\numberline {5.2.1}Cognitive Firewall}{49}{subsubsection.5.2.1}%
-\contentsline {subsubsection}{\numberline {5.2.2}Belief Sandboxing}{50}{subsubsection.5.2.2}%
-\contentsline {subsubsection}{\numberline {5.2.3}Permission Boundaries}{50}{subsubsection.5.2.3}%
-\contentsline {subsection}{\numberline {5.3}Runtime Defenses}{50}{subsection.5.3}%
-\contentsline {subsubsection}{\numberline {5.3.1}Cognitive Tripwires}{50}{subsubsection.5.3.1}%
-\contentsline {subsubsection}{\numberline {5.3.2}Behavioral Invariants}{52}{subsubsection.5.3.2}%
-\contentsline {subsubsection}{\numberline {5.3.3}Drift Detection}{52}{subsubsection.5.3.3}%
-\contentsline {subsection}{\numberline {5.4}Coordination Defenses}{52}{subsection.5.4}%
-\contentsline {subsubsection}{\numberline {5.4.1}Byzantine-Tolerant Consensus}{52}{subsubsection.5.4.1}%
-\contentsline {subsubsection}{\numberline {5.4.2}Quorum Verification}{52}{subsubsection.5.4.2}%
-\contentsline {subsubsection}{\numberline {5.4.3}Spotcheck Pattern}{52}{subsubsection.5.4.3}%
-\contentsline {subsection}{\numberline {5.5}Defense Composition}{53}{subsection.5.5}%
-\contentsline {subsubsection}{\numberline {5.5.1}Composition Algebra}{53}{subsubsection.5.5.1}%
-\contentsline {subsubsection}{\numberline {5.5.2}Composition Rules}{54}{subsubsection.5.5.2}%
-\contentsline {subsection}{\numberline {5.6}Cost-Benefit Analysis}{54}{subsection.5.6}%
-\contentsline {subsubsection}{\numberline {5.6.1}Optimal Defense Portfolio}{54}{subsubsection.5.6.1}%
-\contentsline {subsection}{\numberline {5.7}Formal Defense Composition Guarantees}{56}{subsection.5.7}%
-\contentsline {subsubsection}{\numberline {5.7.1}Canonical Defense 1: Cognitive Firewall --- Formal Specification}{56}{subsubsection.5.7.1}%
-\contentsline {subsubsection}{\numberline {5.7.2}Canonical Defense 2: Belief Sandboxing --- Formal Specification}{56}{subsubsection.5.7.2}%
-\contentsline {subsubsection}{\numberline {5.7.3}Canonical Defense 3: Behavioral Invariants --- Formal Specification}{57}{subsubsection.5.7.3}%
-\contentsline {subsubsection}{\numberline {5.7.4}Canonical Defense 4: Drift Detection --- Formal Specification}{57}{subsubsection.5.7.4}%
-\contentsline {subsubsection}{\numberline {5.7.5}Canonical Defense 5: Byzantine Consensus --- Formal Specification}{58}{subsubsection.5.7.5}%
-\contentsline {subsubsection}{\numberline {5.7.6}Defense Composition Algebra: Complete Specification}{58}{subsubsection.5.7.6}%
-\contentsline {section}{\numberline {6}Detection Methods: Anomaly Detection, ROC Analysis, and Provenance Tracking}{60}{section.6}%
-\contentsline {subsection}{\numberline {6.1}Anomaly Detection}{60}{subsection.6.1}%
-\contentsline {subsubsection}{\numberline {6.1.1}Cognitive Drift Scoring}{60}{subsubsection.6.1.1}%
-\contentsline {subsubsection}{\numberline {6.1.2}Behavioral Deviation Scoring}{60}{subsubsection.6.1.2}%
-\contentsline {subsubsection}{\numberline {6.1.3}Ensemble Detection}{60}{subsubsection.6.1.3}%
-\contentsline {subsection}{\numberline {6.2}ROC Curve Analysis}{60}{subsection.6.2}%
-\contentsline {subsubsection}{\numberline {6.2.1}Receiver Operating Characteristic Framework}{60}{subsubsection.6.2.1}%
-\contentsline {subsubsection}{\numberline {6.2.2}Confidence Intervals for AUC}{62}{subsubsection.6.2.2}%
-\contentsline {subsection}{\numberline {6.3}Multi-Detector Fusion}{62}{subsection.6.3}%
-\contentsline {subsubsection}{\numberline {6.3.1}Fusion Strategies}{62}{subsubsection.6.3.1}%
-\contentsline {subsubsection}{\numberline {6.3.2}Diversity-Aware Fusion}{62}{subsubsection.6.3.2}%
-\contentsline {subsection}{\numberline {6.4}Online vs.~Batch Detection}{63}{subsection.6.4}%
-\contentsline {subsubsection}{\numberline {6.4.1}Comparison Framework}{63}{subsubsection.6.4.1}%
-\contentsline {subsubsection}{\numberline {6.4.2}Streaming Detector Model}{63}{subsubsection.6.4.2}%
-\contentsline {subsubsection}{\numberline {6.4.3}Hybrid Detection Architecture}{63}{subsubsection.6.4.3}%
-\contentsline {subsection}{\numberline {6.5}False Positive Mitigation}{63}{subsection.6.5}%
-\contentsline {subsubsection}{\numberline {6.5.1}Strategy 1: Confirmation Cascade}{63}{subsubsection.6.5.1}%
-\contentsline {subsubsection}{\numberline {6.5.2}Strategy 2: Temporal Smoothing}{64}{subsubsection.6.5.2}%
-\contentsline {subsubsection}{\numberline {6.5.3}Strategy 3: Contextual Whitelisting}{64}{subsubsection.6.5.3}%
-\contentsline {subsubsection}{\numberline {6.5.4}Strategy 4: Cost-Sensitive Thresholding}{64}{subsubsection.6.5.4}%
-\contentsline {subsection}{\numberline {6.6}Provenance Analysis}{64}{subsection.6.6}%
-\contentsline {subsubsection}{\numberline {6.6.1}Information Flow Tracking}{64}{subsubsection.6.6.1}%
-\contentsline {subsubsection}{\numberline {6.6.2}Causal Attribution}{65}{subsubsection.6.6.2}%
-\contentsline {subsubsection}{\numberline {6.6.3}Provenance Graph Analysis}{65}{subsubsection.6.6.3}%
-\contentsline {subsection}{\numberline {6.7}Real-Time Monitoring}{65}{subsection.6.7}%
-\contentsline {subsubsection}{\numberline {6.7.1}Alert Aggregation}{65}{subsubsection.6.7.1}%
-\contentsline {subsubsection}{\numberline {6.7.2}Response Escalation}{65}{subsubsection.6.7.2}%
-\contentsline {subsubsection}{\numberline {6.7.3}Empirical Validation Cross-Reference}{65}{subsubsection.6.7.3}%
-\contentsline {subsection}{\numberline {6.8}Information-Theoretic Detection Limits}{66}{subsection.6.8}%
-\contentsline {subsubsection}{\numberline {6.8.1}Neyman-Pearson Detection Framework}{66}{subsubsection.6.8.1}%
-\contentsline {subsubsection}{\numberline {6.8.2}Chernoff Information and Error Exponents}{66}{subsubsection.6.8.2}%
-\contentsline {subsubsection}{\numberline {6.8.3}KL Divergence and Detection Rate Coupling}{67}{subsubsection.6.8.3}%
-\contentsline {subsubsection}{\numberline {6.8.4}Fundamental Undetectability Regime}{67}{subsubsection.6.8.4}%
-\contentsline {subsection}{\numberline {6.9}Multi-Stage Detection Pipeline}{67}{subsection.6.9}%
-\contentsline {subsubsection}{\numberline {6.9.1}Pipeline Architecture}{68}{subsubsection.6.9.1}%
-\contentsline {subsubsection}{\numberline {6.9.2}Adaptive Threshold Selection}{69}{subsubsection.6.9.2}%
-\contentsline {section}{\numberline {7}Formal Verification: Safety Properties and Model Checking}{70}{section.7}%
-\contentsline {subsection}{\numberline {7.1}Safety Properties}{70}{subsection.7.1}%
-\contentsline {subsubsection}{\numberline {7.1.1}Belief Integrity}{70}{subsubsection.7.1.1}%
-\contentsline {subsubsection}{\numberline {7.1.2}No Trust Amplification (Model-Checking Target)}{71}{subsubsection.7.1.2}%
-\contentsline {subsubsection}{\numberline {7.1.3}Goal Alignment Preservation}{71}{subsubsection.7.1.3}%
-\contentsline {subsection}{\numberline {7.2}Invariant Preservation Lemmas}{71}{subsection.7.2}%
-\contentsline {subsection}{\numberline {7.3}Liveness Properties}{73}{subsection.7.3}%
-\contentsline {subsubsection}{\numberline {7.3.1}Non-Blocking}{73}{subsubsection.7.3.1}%
-\contentsline {subsubsection}{\numberline {7.3.2}Progress Guarantee}{73}{subsubsection.7.3.2}%
-\contentsline {subsection}{\numberline {7.4}Complexity Bounds}{73}{subsection.7.4}%
-\contentsline {subsubsection}{\numberline {7.4.1}Space Complexity}{73}{subsubsection.7.4.1}%
-\contentsline {subsubsection}{\numberline {7.4.2}Time Complexity}{74}{subsubsection.7.4.2}%
-\contentsline {subsubsection}{\numberline {7.4.3}Latency Overhead}{75}{subsubsection.7.4.3}%
-\contentsline {subsection}{\numberline {7.5}Formal Model Checking}{75}{subsection.7.5}%
-\contentsline {subsubsection}{\numberline {7.5.1}State Space Definition}{75}{subsubsection.7.5.1}%
-\contentsline {subsubsection}{\numberline {7.5.2}Temporal Properties}{75}{subsubsection.7.5.2}%
-\contentsline {subsubsection}{\numberline {7.5.3}Model Checking Results}{76}{subsubsection.7.5.3}%
-\contentsline {subsubsection}{\numberline {7.5.4}Verification Results Summary}{76}{subsubsection.7.5.4}%
-\contentsline {subsubsection}{\numberline {7.5.5}Counterexample Analysis}{76}{subsubsection.7.5.5}%
-\contentsline {section}{\numberline {8}Discussion: Theoretical Implications, Limitations, and Future Directions}{78}{section.8}%
-\contentsline {subsection}{\numberline {8.1}Empirical Validation Summary (Part 2)}{78}{subsection.8.1}%
-\contentsline {subsection}{\numberline {8.2}Theoretical Implications}{78}{subsection.8.2}%
-\contentsline {subsubsection}{\numberline {8.2.1}Why Composable Defenses Are Necessary}{78}{subsubsection.8.2.1}%
-\contentsline {subsubsection}{\numberline {8.2.2}The Trust Boundedness Guarantee}{79}{subsubsection.8.2.2}%
-\contentsline {subsubsection}{\numberline {8.2.3}Information-Theoretic Detection Limits}{79}{subsubsection.8.2.3}%
-\contentsline {subsubsection}{\numberline {8.2.4}Architecture-Specific Vulnerability Patterns}{79}{subsubsection.8.2.4}%
-\contentsline {subsection}{\numberline {8.3}Formal Limitations}{80}{subsection.8.3}%
-\contentsline {subsubsection}{\numberline {8.3.1}Assumption Dependencies}{80}{subsubsection.8.3.1}%
-\contentsline {subsubsection}{\numberline {8.3.2}Scalability Constraints}{80}{subsubsection.8.3.2}%
-\contentsline {subsubsection}{\numberline {8.3.3}Inherent Detection Gaps}{80}{subsubsection.8.3.3}%
-\contentsline {subsection}{\numberline {8.4}Relationship to Prior Work}{80}{subsection.8.4}%
-\contentsline {subsection}{\numberline {8.5}Governance and Policy Implications}{81}{subsection.8.5}%
-\contentsline {subsubsection}{\numberline {8.5.1}The Regulatory Gap}{81}{subsubsection.8.5.1}%
-\contentsline {subsubsection}{\numberline {8.5.2}Recommendations for Policy}{81}{subsubsection.8.5.2}%
-\contentsline {subsection}{\numberline {8.6}Future Theoretical Directions}{82}{subsection.8.6}%
-\contentsline {subsubsection}{\numberline {8.6.1}Adaptive Defense Theory}{82}{subsubsection.8.6.1}%
-\contentsline {subsubsection}{\numberline {8.6.2}Cross-System Trust Federation}{82}{subsubsection.8.6.2}%
-\contentsline {subsubsection}{\numberline {8.6.3}Emergent Behavior Security}{82}{subsubsection.8.6.3}%
-\contentsline {subsubsection}{\numberline {8.6.4}Long-Horizon Agent Security}{82}{subsubsection.8.6.4}%
-\contentsline {subsubsection}{\numberline {8.6.5}The Cognitive Security Research Agenda}{82}{subsubsection.8.6.5}%
-\contentsline {section}{\numberline {9}Conclusion: Summary and Actionable Recommendations}{84}{section.9}%
-\contentsline {subsection}{\numberline {9.1}Summary}{84}{subsection.9.1}%
-\contentsline {subsubsection}{\numberline {9.1.1}Formal Contributions}{84}{subsubsection.9.1.1}%
-\contentsline {subsubsection}{\numberline {9.1.2}Conceptual Contributions}{84}{subsubsection.9.1.2}%
-\contentsline {subsubsection}{\numberline {9.1.3}Core Insights}{84}{subsubsection.9.1.3}%
-\contentsline {subsection}{\numberline {9.2}Actionable Recommendations}{85}{subsection.9.2}%
-\contentsline {subsubsection}{\numberline {9.2.1}For Practitioners}{85}{subsubsection.9.2.1}%
-\contentsline {subsubsection}{\numberline {9.2.2}For Researchers}{85}{subsubsection.9.2.2}%
-\contentsline {subsubsection}{\numberline {9.2.3}For Policymakers}{87}{subsubsection.9.2.3}%
-\contentsline {subsection}{\numberline {9.3}Closing Statement}{87}{subsection.9.3}%
-\contentsline {section}{\numberline {10}Limitations and Boundary Conditions}{89}{section.10}%
-\contentsline {subsection}{\numberline {10.1}Formal Assumptions and Where They Break}{89}{subsection.10.1}%
-\contentsline {subsubsection}{\numberline {10.1.1}Assumption 1: Honest Orchestrator for \(\mitOmega _1\)--\(\mitOmega _4\)}{89}{subsubsection.10.1.1}%
-\contentsline {subsubsection}{\numberline {10.1.2}Assumption 2: Bounded Faulty Agents (\(f < n/3\))}{89}{subsubsection.10.1.2}%
-\contentsline {subsubsection}{\numberline {10.1.3}Assumption 3: Independent Defense Mechanisms}{89}{subsubsection.10.1.3}%
-\contentsline {subsubsection}{\numberline {10.1.4}Assumption 4: Stationary Attack Distributions}{90}{subsubsection.10.1.4}%
-\contentsline {subsubsection}{\numberline {10.1.5}Assumption 5: Bounded Computational Complexity}{90}{subsubsection.10.1.5}%
-\contentsline {subsection}{\numberline {10.2}Scope Limitations}{90}{subsection.10.2}%
-\contentsline {subsubsection}{\numberline {10.2.1}What CIF Does Not Cover}{90}{subsubsection.10.2.1}%
-\contentsline {subsubsection}{\numberline {10.2.2}Model-Level vs.~System-Level Security}{90}{subsubsection.10.2.2}%
-\contentsline {subsection}{\numberline {10.3}Tightness of Formal Bounds}{91}{subsection.10.3}%
-\contentsline {subsubsection}{\numberline {10.3.1}Trust Decay Bound}{91}{subsubsection.10.3.1}%
-\contentsline {subsubsection}{\numberline {10.3.2}Detection Rate Composition}{91}{subsubsection.10.3.2}%
-\contentsline {subsubsection}{\numberline {10.3.3}Information-Geometric Stealth-Impact Bound}{91}{subsubsection.10.3.3}%
-\contentsline {subsection}{\numberline {10.4}Open Problems}{91}{subsection.10.4}%
-\contentsline {section}{\numberline {11}Supplementary: Mathematical Proofs}{93}{section.11}%
-\contentsline {subsection}{\numberline {11.1}Proof Status}{93}{subsection.11.1}%
-\contentsline {subsection}{\numberline {11.2}Preliminary Definitions and Notation}{94}{subsection.11.2}%
-\contentsline {subsubsection}{\numberline {11.2.1}Notation Summary}{94}{subsubsection.11.2.1}%
-\contentsline {subsection}{\numberline {11.3}Trust Boundedness}{95}{subsection.11.3}%
-\contentsline {subsection}{\numberline {11.4}Belief Injection Resistance}{96}{subsection.11.4}%
-\contentsline {subsection}{\numberline {11.5}No Trust Amplification}{97}{subsection.11.5}%
-\contentsline {subsection}{\numberline {11.6}Goal Alignment Invariant}{98}{subsection.11.6}%
-\contentsline {subsection}{\numberline {11.7}Firewall Liveness}{99}{subsection.11.7}%
-\contentsline {subsection}{\numberline {11.8}Byzantine Consensus Termination}{100}{subsection.11.8}%
-\contentsline {subsection}{\numberline {11.9}Bounded Overhead}{101}{subsection.11.9}%
-\contentsline {subsubsection}{\numberline {11.9.1}Numerical Instantiation}{102}{subsubsection.11.9.1}%
-\contentsline {subsection}{\numberline {11.10}Additional Lemmas}{102}{subsection.11.10}%
-\contentsline {subsection}{\numberline {11.11}Summary of Proof Techniques}{103}{subsection.11.11}%
-\contentsline {subsection}{\numberline {11.12}Second-Edition Proofs: Defense Composition Algebra and Information-Geometric Bounds}{104}{subsection.11.12}%
-\contentsline {subsection}{\numberline {11.13}The Defense Composition Algebra}{104}{subsection.11.13}%
-\contentsline {subsection}{\numberline {11.14}The Tight Information-Geometric Stealth-Impact Bound}{105}{subsection.11.14}%
-\contentsline {subsection}{\numberline {11.15}The Agent Compromise Blast Radius Bound}{106}{subsection.11.15}%
-\contentsline {subsection}{\numberline {11.16}Updated Summary of Proof Techniques}{106}{subsection.11.16}%
-\contentsline {section}{\numberline {12}Supplementary: Eusocial Insect Intelligence and Colony Cognitive Security}{107}{section.12}%
-\contentsline {subsection}{\numberline {12.1}Overview}{107}{subsection.12.1}%
-\contentsline {subsubsection}{\numberline {12.1.1}The Paradigm Gap}{107}{subsubsection.12.1.1}%
-\contentsline {subsection}{\numberline {12.2}Theoretical Foundations}{108}{subsection.12.2}%
-\contentsline {subsubsection}{\numberline {12.2.1}Stigmergy: Environment-Mediated Coordination}{108}{subsubsection.12.2.1}%
-\contentsline {subsubsection}{\numberline {12.2.2}Emergent Collective Function}{108}{subsubsection.12.2.2}%
-\contentsline {subsubsection}{\numberline {12.2.3}Trust and Information Flow in Colonies}{109}{subsubsection.12.2.3}%
-\contentsline {subsubsection}{\numberline {12.2.4}Biological Defense Mechanisms: Lessons from Social Insects}{109}{subsubsection.12.2.4}%
-\contentsline {paragraph}{\numberline {12.2.4.1}Ant Defense Mechanisms}{109}{paragraph.12.2.4.1}%
-\contentsline {paragraph}{\numberline {12.2.4.2}Bee Defense Mechanisms}{109}{paragraph.12.2.4.2}%
-\contentsline {subsection}{\numberline {12.3}Colony CogSec: Distinct Security Properties}{110}{subsection.12.3}%
-\contentsline {subsubsection}{\numberline {12.3.1}Property 1: Distributed Robustness}{110}{subsubsection.12.3.1}%
-\contentsline {subsubsection}{\numberline {12.3.2}Property 2: Quorum Sensing and Threshold Dynamics}{111}{subsubsection.12.3.2}%
-\contentsline {subsubsection}{\numberline {12.3.3}Property 3: Environmental Memory and Provenance Erosion}{111}{subsubsection.12.3.3}%
-\contentsline {subsubsection}{\numberline {12.3.4}Property 4: Emergent Attack Vectors}{111}{subsubsection.12.3.4}%
-\contentsline {subsection}{\numberline {12.4}The Benchmark Gap}{112}{subsection.12.4}%
-\contentsline {subsubsection}{\numberline {12.4.1}Current State of Multiagent Security Evaluation}{112}{subsubsection.12.4.1}%
-\contentsline {subsubsection}{\numberline {12.4.2}Why This Gap Matters}{112}{subsubsection.12.4.2}%
-\contentsline {subsection}{\numberline {12.5}Proposed Colony CogSec Benchmarks}{112}{subsection.12.5}%
-\contentsline {subsubsection}{\numberline {12.5.1}Benchmark 1: Recruitment Signal Poisoning}{112}{subsubsection.12.5.1}%
-\contentsline {subsubsection}{\numberline {12.5.2}Benchmark 2: Sybil Colony Infiltration}{113}{subsubsection.12.5.2}%
-\contentsline {subsubsection}{\numberline {12.5.3}Benchmark 3: Quorum Manipulation}{113}{subsubsection.12.5.3}%
-\contentsline {subsubsection}{\numberline {12.5.4}Benchmark 4: Cascade Belief Propagation}{114}{subsubsection.12.5.4}%
-\contentsline {subsubsection}{\numberline {12.5.5}Benchmark 5: Emergent Misalignment}{114}{subsubsection.12.5.5}%
-\contentsline {subsection}{\numberline {12.6}Colony CogSec Metrics}{115}{subsection.12.6}%
-\contentsline {subsection}{\numberline {12.7}Design Principles}{115}{subsection.12.7}%
-\contentsline {subsubsection}{\numberline {12.7.1}Integration with CIF Defenses}{115}{subsubsection.12.7.1}%
-\contentsline {subsection}{\numberline {12.8}Relationship to Main Framework}{116}{subsection.12.8}%
-\contentsline {subsubsection}{\numberline {12.8.1}Theorem Extensions}{116}{subsubsection.12.8.1}%
-\contentsline {subsection}{\numberline {12.9}This scaling effect explains why large colonies can exhibit resilience---the collective detection capacity grows with \(n\)---but also why large-scale emergent attacks can evade individual detection}{116}{subsection.12.9}%
-\contentsline {subsection}{\numberline {12.10}Open Questions}{116}{subsection.12.10}%
-\contentsline {subsubsection}{\numberline {12.10.1}Foundational Questions}{116}{subsubsection.12.10.1}%
-\contentsline {subsubsection}{\numberline {12.10.2}Biologically-Inspired Research Directions}{117}{subsubsection.12.10.2}%
-\contentsline {subsection}{\numberline {12.11}References}{117}{subsection.12.11}%
-\contentsline {subsection}{\numberline {12.12}Proofs}{118}{subsection.12.12}%
-\contentsline {subsubsection}{\numberline {12.12.1}Proof of the Redundancy-Resilience Theorem}{118}{subsubsection.12.12.1}%
-\contentsline {section}{\numberline {13}Supplementary: Notation Reference}{119}{section.13}%
-\contentsline {subsection}{\numberline {13.1}Adversary Model Notation}{119}{subsection.13.1}%
-\contentsline {subsection}{\numberline {13.2}System Model Notation}{119}{subsection.13.2}%
-\contentsline {subsection}{\numberline {13.3}Trust Calculus Notation}{120}{subsection.13.3}%
-\contentsline {subsection}{\numberline {13.4}Defense Mechanism Notation}{120}{subsection.13.4}%
-\contentsline {subsection}{\numberline {13.5}Detection \& Analysis Notation}{121}{subsection.13.5}%
-\contentsline {subsection}{\numberline {13.6}Consensus \& Coordination Notation}{121}{subsection.13.6}%
-\contentsline {subsection}{\numberline {13.7}Cost \& Performance Notation}{122}{subsection.13.7}%
-\contentsline {subsection}{\numberline {13.8}Information \& Complexity Notation}{122}{subsection.13.8}%
-\contentsline {subsection}{\numberline {13.9}Stigmergic \& Colony Notation (Supplementary)}{122}{subsection.13.9}%
-\contentsline {subsection}{\numberline {13.10}General Mathematical Notation}{123}{subsection.13.10}%
-\contentsline {subsection}{\numberline {13.11}CTL Temporal Logic Notation (Formal Verification)}{123}{subsection.13.11}%
-\contentsline {section}{\numberline {14}References}{125}{section.14}%
-\contentsline {subsection}{\numberline {14.1}Foundational Works}{125}{subsection.14.1}%
-\contentsline {subsection}{\numberline {14.2}Prompt Injection and LLM Security}{125}{subsection.14.2}%
-\contentsline {subsection}{\numberline {14.3}Constitutional AI and Alignment}{125}{subsection.14.3}%
-\contentsline {subsection}{\numberline {14.4}Multiagent Systems}{125}{subsection.14.4}%
-\contentsline {subsection}{\numberline {14.5}Trust in Distributed Systems}{125}{subsection.14.5}%
-\contentsline {subsection}{\numberline {14.6}Adversarial ML}{126}{subsection.14.6}%
-\contentsline {subsection}{\numberline {14.7}Formal Verification}{126}{subsection.14.7}%
-\contentsline {subsection}{\numberline {14.8}Cognitive Security}{126}{subsection.14.8}%
-\contentsline {subsection}{\numberline {14.9}Agent Frameworks}{126}{subsection.14.9}%
-\contentsline {subsection}{\numberline {14.10}2025 Agentic AI Security}{126}{subsection.14.10}%
-\contentsline {subsection}{\numberline {14.11}Eusocial Intelligence and Swarm Systems}{126}{subsection.14.11}%
+\contentsline {section}{\numberline {3}Threat Model: Adversary Classes, Attack Complexity, and Taxonomy}{19}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Adversary Classes}{19}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Formal Characterization of the Adversary Classes}{19}{subsection.3.2}%
+\contentsline {subsubsection}{\numberline {3.2.1}Adversary Class \(\mitOmega _1\): External Attacker}{19}{subsubsection.3.2.1}%
+\contentsline {subsubsection}{\numberline {3.2.2}Adversary Class \(\mitOmega _2\): Peripheral Attacker}{20}{subsubsection.3.2.2}%
+\contentsline {subsubsection}{\numberline {3.2.3}Adversary Class \(\mitOmega _3\): Agent-Level Attacker}{20}{subsubsection.3.2.3}%
+\contentsline {subsubsection}{\numberline {3.2.4}Adversary Class \(\mitOmega _4\): Coordination-Level Attacker}{20}{subsubsection.3.2.4}%
+\contentsline {subsubsection}{\numberline {3.2.5}Adversary Class \(\mitOmega _5\): Systemic Attacker}{21}{subsubsection.3.2.5}%
+\contentsline {subsubsection}{\numberline {3.2.6}Cross-Class Attack Distinguishability}{21}{subsubsection.3.2.6}%
+\contentsline {subsection}{\numberline {3.3}Attack Complexity Analysis}{21}{subsection.3.3}%
+\contentsline {subsection}{\numberline {3.4}Detectability Analysis}{22}{subsection.3.4}%
+\contentsline {subsection}{\numberline {3.5}Adversarial Capabilities}{22}{subsection.3.5}%
+\contentsline {subsection}{\numberline {3.6}Attack Taxonomy}{23}{subsection.3.6}%
+\contentsline {subsubsection}{\numberline {3.6.1}Epistemic Attacks}{23}{subsubsection.3.6.1}%
+\contentsline {subsubsection}{\numberline {3.6.2}Behavioral Attacks}{26}{subsubsection.3.6.2}%
+\contentsline {subsubsection}{\numberline {3.6.3}Social Attacks}{26}{subsubsection.3.6.3}%
+\contentsline {subsubsection}{\numberline {3.6.4}Temporal Attacks}{26}{subsubsection.3.6.4}%
+\contentsline {subsection}{\numberline {3.7}Attack Scenarios by Class}{26}{subsection.3.7}%
+\contentsline {subsubsection}{\numberline {3.7.1}Scenario \(\mitOmega _1\): Nested Instruction Attack}{26}{subsubsection.3.7.1}%
+\contentsline {subsubsection}{\numberline {3.7.2}Scenario \(\mitOmega _2\): Poisoned Search Result}{28}{subsubsection.3.7.2}%
+\contentsline {subsubsection}{\numberline {3.7.3}Scenario \(\mitOmega _2'\): Browser-Fetched Adversarial Content (OpenClaw)}{28}{subsubsection.3.7.3}%
+\contentsline {subsubsection}{\numberline {3.7.4}Scenario \(\mitOmega _3\): Compromised Specialist}{28}{subsubsection.3.7.4}%
+\contentsline {subsubsection}{\numberline {3.7.5}Scenario \(\mitOmega _4\): Trust Inflation Attack}{29}{subsubsection.3.7.5}%
+\contentsline {subsection}{\numberline {3.8}Attack-Defense Quick Reference}{29}{subsection.3.8}%
+\contentsline {subsection}{\numberline {3.9}Attack Composition}{29}{subsection.3.9}%
+\contentsline {subsection}{\numberline {3.10}Threat Model Assumptions}{30}{subsection.3.10}%
+\contentsline {section}{\numberline {4}Cognitive Integrity Framework: Trust Calculus and Detection Bounds}{32}{section.4}%
+\contentsline {subsection}{\numberline {4.1}System Model}{32}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Cognitive State}{32}{subsection.4.2}%
+\contentsline {subsubsection}{\numberline {4.2.1}State Transition Semantics}{33}{subsubsection.4.2.1}%
+\contentsline {subsection}{\numberline {4.3}Integrity Properties}{34}{subsection.4.3}%
+\contentsline {subsection}{\numberline {4.4}Trust Calculus}{34}{subsection.4.4}%
+\contentsline {subsubsection}{\numberline {4.4.1}Motivation: Why Bounded Trust Matters}{34}{subsubsection.4.4.1}%
+\contentsline {subsubsection}{\numberline {4.4.2}Formal Trust Model}{35}{subsubsection.4.4.2}%
+\contentsline {subsubsection}{\numberline {4.4.3}Trust Computation}{36}{subsubsection.4.4.3}%
+\contentsline {subsubsection}{\numberline {4.4.4}Trust Algebra}{36}{subsubsection.4.4.4}%
+\contentsline {subsubsection}{\numberline {4.4.5}Cross-Modality Trust}{39}{subsubsection.4.4.5}%
+\contentsline {subsubsection}{\numberline {4.4.6}Federated Trust}{39}{subsubsection.4.4.6}%
+\contentsline {subsubsection}{\numberline {4.4.7}Belief Update Semantics}{40}{subsubsection.4.4.7}%
+\contentsline {subsubsection}{\numberline {4.4.8}Sandboxed Belief Model}{40}{subsubsection.4.4.8}%
+\contentsline {subsection}{\numberline {4.5}Information-Theoretic Detection Bounds}{41}{subsection.4.5}%
+\contentsline {subsection}{\numberline {4.6}CIF-AD Integration: Action-Delegation Coupling}{42}{subsection.4.6}%
+\contentsline {subsubsection}{\numberline {4.6.1}The Action-Delegation Cycle}{45}{subsubsection.4.6.1}%
+\contentsline {subsubsection}{\numberline {4.6.2}CIF-AD Coupling Matrix}{45}{subsubsection.4.6.2}%
+\contentsline {subsection}{\numberline {4.7}CIF-OODA Integration: Temporal Security Across Decision Cycles}{45}{subsection.4.7}%
+\contentsline {subsubsection}{\numberline {4.7.1}OODA Loop Formalization}{46}{subsubsection.4.7.1}%
+\contentsline {subsubsection}{\numberline {4.7.2}Phase-Specific Attack Taxonomy}{46}{subsubsection.4.7.2}%
+\contentsline {subsubsection}{\numberline {4.7.3}OODA Temporal Coupling}{46}{subsubsection.4.7.3}%
+\contentsline {subsubsection}{\numberline {4.7.4}Integrative Security Guarantee}{47}{subsubsection.4.7.4}%
+\contentsline {section}{\numberline {5}Defense Mechanisms: Architectural, Runtime, and Coordination Layers}{48}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Cognitive Security Operator Posture}{48}{subsection.5.1}%
+\contentsline {subsubsection}{\numberline {5.1.1}Definition and Principles}{48}{subsubsection.5.1.1}%
+\contentsline {subsubsection}{\numberline {5.1.2}The Observer Effect Challenge}{48}{subsubsection.5.1.2}%
+\contentsline {subsubsection}{\numberline {5.1.3}Operational Security for Cognitive Systems}{48}{subsubsection.5.1.3}%
+\contentsline {subsubsection}{\numberline {5.1.4}Incident Response for Cognitive Attacks}{49}{subsubsection.5.1.4}%
+\contentsline {subsubsection}{\numberline {5.1.5}Posture Configuration by Environment}{49}{subsubsection.5.1.5}%
+\contentsline {subsubsection}{\numberline {5.1.6}Operator Posture Checklist}{50}{subsubsection.5.1.6}%
+\contentsline {subsection}{\numberline {5.2}Architectural Defenses}{50}{subsection.5.2}%
+\contentsline {subsubsection}{\numberline {5.2.1}Cognitive Firewall}{50}{subsubsection.5.2.1}%
+\contentsline {subsubsection}{\numberline {5.2.2}Belief Sandboxing}{51}{subsubsection.5.2.2}%
+\contentsline {subsubsection}{\numberline {5.2.3}Permission Boundaries}{51}{subsubsection.5.2.3}%
+\contentsline {subsection}{\numberline {5.3}Runtime Defenses}{51}{subsection.5.3}%
+\contentsline {subsubsection}{\numberline {5.3.1}Cognitive Tripwires}{51}{subsubsection.5.3.1}%
+\contentsline {subsubsection}{\numberline {5.3.2}Behavioral Invariants}{53}{subsubsection.5.3.2}%
+\contentsline {subsubsection}{\numberline {5.3.3}Drift Detection}{53}{subsubsection.5.3.3}%
+\contentsline {subsection}{\numberline {5.4}Coordination Defenses}{53}{subsection.5.4}%
+\contentsline {subsubsection}{\numberline {5.4.1}Byzantine-Tolerant Consensus}{53}{subsubsection.5.4.1}%
+\contentsline {subsubsection}{\numberline {5.4.2}Quorum Verification}{53}{subsubsection.5.4.2}%
+\contentsline {subsubsection}{\numberline {5.4.3}Spotcheck Pattern}{53}{subsubsection.5.4.3}%
+\contentsline {subsection}{\numberline {5.5}Defense Composition}{54}{subsection.5.5}%
+\contentsline {subsubsection}{\numberline {5.5.1}Composition Algebra}{54}{subsubsection.5.5.1}%
+\contentsline {subsubsection}{\numberline {5.5.2}Composition Rules}{55}{subsubsection.5.5.2}%
+\contentsline {subsection}{\numberline {5.6}Cost-Benefit Analysis}{55}{subsection.5.6}%
+\contentsline {subsubsection}{\numberline {5.6.1}Optimal Defense Portfolio}{55}{subsubsection.5.6.1}%
+\contentsline {subsection}{\numberline {5.7}Formal Defense Composition Guarantees}{57}{subsection.5.7}%
+\contentsline {subsubsection}{\numberline {5.7.1}Canonical Defense 1: Cognitive Firewall --- Formal Specification}{57}{subsubsection.5.7.1}%
+\contentsline {subsubsection}{\numberline {5.7.2}Canonical Defense 2: Belief Sandboxing --- Formal Specification}{57}{subsubsection.5.7.2}%
+\contentsline {subsubsection}{\numberline {5.7.3}Canonical Defense 3: Behavioral Invariants --- Formal Specification}{58}{subsubsection.5.7.3}%
+\contentsline {subsubsection}{\numberline {5.7.4}Canonical Defense 4: Drift Detection --- Formal Specification}{58}{subsubsection.5.7.4}%
+\contentsline {subsubsection}{\numberline {5.7.5}Canonical Defense 5: Byzantine Consensus --- Formal Specification}{59}{subsubsection.5.7.5}%
+\contentsline {subsubsection}{\numberline {5.7.6}Defense Composition Algebra: Complete Specification}{59}{subsubsection.5.7.6}%
+\contentsline {section}{\numberline {6}Detection Methods: Anomaly Detection, ROC Analysis, and Provenance Tracking}{61}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Anomaly Detection}{61}{subsection.6.1}%
+\contentsline {subsubsection}{\numberline {6.1.1}Cognitive Drift Scoring}{61}{subsubsection.6.1.1}%
+\contentsline {subsubsection}{\numberline {6.1.2}Behavioral Deviation Scoring}{61}{subsubsection.6.1.2}%
+\contentsline {subsubsection}{\numberline {6.1.3}Ensemble Detection}{61}{subsubsection.6.1.3}%
+\contentsline {subsection}{\numberline {6.2}ROC Curve Analysis}{61}{subsection.6.2}%
+\contentsline {subsubsection}{\numberline {6.2.1}Receiver Operating Characteristic Framework}{61}{subsubsection.6.2.1}%
+\contentsline {subsubsection}{\numberline {6.2.2}Confidence Intervals for AUC}{63}{subsubsection.6.2.2}%
+\contentsline {subsection}{\numberline {6.3}Multi-Detector Fusion}{63}{subsection.6.3}%
+\contentsline {subsubsection}{\numberline {6.3.1}Fusion Strategies}{63}{subsubsection.6.3.1}%
+\contentsline {subsubsection}{\numberline {6.3.2}Diversity-Aware Fusion}{63}{subsubsection.6.3.2}%
+\contentsline {subsection}{\numberline {6.4}Online vs.~Batch Detection}{64}{subsection.6.4}%
+\contentsline {subsubsection}{\numberline {6.4.1}Comparison Framework}{64}{subsubsection.6.4.1}%
+\contentsline {subsubsection}{\numberline {6.4.2}Streaming Detector Model}{64}{subsubsection.6.4.2}%
+\contentsline {subsubsection}{\numberline {6.4.3}Hybrid Detection Architecture}{64}{subsubsection.6.4.3}%
+\contentsline {subsection}{\numberline {6.5}False Positive Mitigation}{64}{subsection.6.5}%
+\contentsline {subsubsection}{\numberline {6.5.1}Strategy 1: Confirmation Cascade}{64}{subsubsection.6.5.1}%
+\contentsline {subsubsection}{\numberline {6.5.2}Strategy 2: Temporal Smoothing}{65}{subsubsection.6.5.2}%
+\contentsline {subsubsection}{\numberline {6.5.3}Strategy 3: Contextual Whitelisting}{65}{subsubsection.6.5.3}%
+\contentsline {subsubsection}{\numberline {6.5.4}Strategy 4: Cost-Sensitive Thresholding}{65}{subsubsection.6.5.4}%
+\contentsline {subsection}{\numberline {6.6}Provenance Analysis}{65}{subsection.6.6}%
+\contentsline {subsubsection}{\numberline {6.6.1}Information Flow Tracking}{65}{subsubsection.6.6.1}%
+\contentsline {subsubsection}{\numberline {6.6.2}Causal Attribution}{66}{subsubsection.6.6.2}%
+\contentsline {subsubsection}{\numberline {6.6.3}Provenance Graph Analysis}{66}{subsubsection.6.6.3}%
+\contentsline {subsection}{\numberline {6.7}Real-Time Monitoring}{66}{subsection.6.7}%
+\contentsline {subsubsection}{\numberline {6.7.1}Alert Aggregation}{66}{subsubsection.6.7.1}%
+\contentsline {subsubsection}{\numberline {6.7.2}Response Escalation}{66}{subsubsection.6.7.2}%
+\contentsline {subsubsection}{\numberline {6.7.3}Empirical Validation Cross-Reference}{66}{subsubsection.6.7.3}%
+\contentsline {subsection}{\numberline {6.8}Information-Theoretic Detection Limits}{67}{subsection.6.8}%
+\contentsline {subsubsection}{\numberline {6.8.1}Neyman-Pearson Detection Framework}{67}{subsubsection.6.8.1}%
+\contentsline {subsubsection}{\numberline {6.8.2}Chernoff Information and Error Exponents}{67}{subsubsection.6.8.2}%
+\contentsline {subsubsection}{\numberline {6.8.3}KL Divergence and Detection Rate Coupling}{68}{subsubsection.6.8.3}%
+\contentsline {subsubsection}{\numberline {6.8.4}Fundamental Undetectability Regime}{68}{subsubsection.6.8.4}%
+\contentsline {subsection}{\numberline {6.9}Multi-Stage Detection Pipeline}{68}{subsection.6.9}%
+\contentsline {subsubsection}{\numberline {6.9.1}Pipeline Architecture}{69}{subsubsection.6.9.1}%
+\contentsline {subsubsection}{\numberline {6.9.2}Adaptive Threshold Selection}{70}{subsubsection.6.9.2}%
+\contentsline {section}{\numberline {7}Formal Verification: Safety Properties and Model Checking}{71}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Safety Properties}{71}{subsection.7.1}%
+\contentsline {subsubsection}{\numberline {7.1.1}Belief Integrity}{71}{subsubsection.7.1.1}%
+\contentsline {subsubsection}{\numberline {7.1.2}No Trust Amplification (Model-Checking Target)}{72}{subsubsection.7.1.2}%
+\contentsline {subsubsection}{\numberline {7.1.3}Goal Alignment Preservation}{72}{subsubsection.7.1.3}%
+\contentsline {subsection}{\numberline {7.2}Invariant Preservation Lemmas}{72}{subsection.7.2}%
+\contentsline {subsection}{\numberline {7.3}Liveness Properties}{74}{subsection.7.3}%
+\contentsline {subsubsection}{\numberline {7.3.1}Non-Blocking}{74}{subsubsection.7.3.1}%
+\contentsline {subsubsection}{\numberline {7.3.2}Progress Guarantee}{74}{subsubsection.7.3.2}%
+\contentsline {subsection}{\numberline {7.4}Complexity Bounds}{74}{subsection.7.4}%
+\contentsline {subsubsection}{\numberline {7.4.1}Space Complexity}{74}{subsubsection.7.4.1}%
+\contentsline {subsubsection}{\numberline {7.4.2}Time Complexity}{75}{subsubsection.7.4.2}%
+\contentsline {subsubsection}{\numberline {7.4.3}Latency Overhead}{76}{subsubsection.7.4.3}%
+\contentsline {subsection}{\numberline {7.5}Formal Model Checking}{76}{subsection.7.5}%
+\contentsline {subsubsection}{\numberline {7.5.1}State Space Definition}{76}{subsubsection.7.5.1}%
+\contentsline {subsubsection}{\numberline {7.5.2}Temporal Properties}{76}{subsubsection.7.5.2}%
+\contentsline {subsubsection}{\numberline {7.5.3}Model Checking Results}{77}{subsubsection.7.5.3}%
+\contentsline {subsubsection}{\numberline {7.5.4}Verification Results Summary}{77}{subsubsection.7.5.4}%
+\contentsline {subsubsection}{\numberline {7.5.5}Counterexample Analysis}{77}{subsubsection.7.5.5}%
+\contentsline {section}{\numberline {8}Discussion: Theoretical Implications, Limitations, and Future Directions}{79}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Empirical Validation Summary (Part 2)}{79}{subsection.8.1}%
+\contentsline {subsection}{\numberline {8.2}Theoretical Implications}{79}{subsection.8.2}%
+\contentsline {subsubsection}{\numberline {8.2.1}Why Composable Defenses Are Necessary}{79}{subsubsection.8.2.1}%
+\contentsline {subsubsection}{\numberline {8.2.2}The Trust Boundedness Guarantee}{80}{subsubsection.8.2.2}%
+\contentsline {subsubsection}{\numberline {8.2.3}Information-Theoretic Detection Limits}{80}{subsubsection.8.2.3}%
+\contentsline {subsubsection}{\numberline {8.2.4}Architecture-Specific Vulnerability Patterns}{80}{subsubsection.8.2.4}%
+\contentsline {subsection}{\numberline {8.3}Formal Limitations}{81}{subsection.8.3}%
+\contentsline {subsubsection}{\numberline {8.3.1}Assumption Dependencies}{81}{subsubsection.8.3.1}%
+\contentsline {subsubsection}{\numberline {8.3.2}Scalability Constraints}{81}{subsubsection.8.3.2}%
+\contentsline {subsubsection}{\numberline {8.3.3}Inherent Detection Gaps}{81}{subsubsection.8.3.3}%
+\contentsline {subsection}{\numberline {8.4}Relationship to Prior Work}{81}{subsection.8.4}%
+\contentsline {subsection}{\numberline {8.5}Governance and Policy Implications}{82}{subsection.8.5}%
+\contentsline {subsubsection}{\numberline {8.5.1}The Regulatory Gap}{82}{subsubsection.8.5.1}%
+\contentsline {subsubsection}{\numberline {8.5.2}Recommendations for Policy}{82}{subsubsection.8.5.2}%
+\contentsline {subsection}{\numberline {8.6}Future Theoretical Directions}{83}{subsection.8.6}%
+\contentsline {subsubsection}{\numberline {8.6.1}Adaptive Defense Theory}{83}{subsubsection.8.6.1}%
+\contentsline {subsubsection}{\numberline {8.6.2}Cross-System Trust Federation}{83}{subsubsection.8.6.2}%
+\contentsline {subsubsection}{\numberline {8.6.3}Emergent Behavior Security}{83}{subsubsection.8.6.3}%
+\contentsline {subsubsection}{\numberline {8.6.4}Long-Horizon Agent Security}{83}{subsubsection.8.6.4}%
+\contentsline {subsubsection}{\numberline {8.6.5}The Cognitive Security Research Agenda}{83}{subsubsection.8.6.5}%
+\contentsline {section}{\numberline {9}Conclusion: Summary and Actionable Recommendations}{85}{section.9}%
+\contentsline {subsection}{\numberline {9.1}Summary}{85}{subsection.9.1}%
+\contentsline {subsubsection}{\numberline {9.1.1}Formal Contributions}{85}{subsubsection.9.1.1}%
+\contentsline {subsubsection}{\numberline {9.1.2}Conceptual Contributions}{85}{subsubsection.9.1.2}%
+\contentsline {subsubsection}{\numberline {9.1.3}Core Insights}{85}{subsubsection.9.1.3}%
+\contentsline {subsection}{\numberline {9.2}Actionable Recommendations}{86}{subsection.9.2}%
+\contentsline {subsubsection}{\numberline {9.2.1}For Practitioners}{86}{subsubsection.9.2.1}%
+\contentsline {subsubsection}{\numberline {9.2.2}For Researchers}{86}{subsubsection.9.2.2}%
+\contentsline {subsubsection}{\numberline {9.2.3}For Policymakers}{88}{subsubsection.9.2.3}%
+\contentsline {subsection}{\numberline {9.3}Closing Statement}{88}{subsection.9.3}%
+\contentsline {section}{\numberline {10}Limitations and Boundary Conditions}{90}{section.10}%
+\contentsline {subsection}{\numberline {10.1}Formal Assumptions and Where They Break}{90}{subsection.10.1}%
+\contentsline {subsubsection}{\numberline {10.1.1}Assumption 1: Honest Orchestrator for \(\mitOmega _1\)--\(\mitOmega _4\)}{90}{subsubsection.10.1.1}%
+\contentsline {subsubsection}{\numberline {10.1.2}Assumption 2: Bounded Faulty Agents (\(f < n/3\))}{90}{subsubsection.10.1.2}%
+\contentsline {subsubsection}{\numberline {10.1.3}Assumption 3: Independent Defense Mechanisms}{90}{subsubsection.10.1.3}%
+\contentsline {subsubsection}{\numberline {10.1.4}Assumption 4: Stationary Attack Distributions}{91}{subsubsection.10.1.4}%
+\contentsline {subsubsection}{\numberline {10.1.5}Assumption 5: Bounded Computational Complexity}{91}{subsubsection.10.1.5}%
+\contentsline {subsection}{\numberline {10.2}Scope Limitations}{91}{subsection.10.2}%
+\contentsline {subsubsection}{\numberline {10.2.1}What CIF Does Not Cover}{91}{subsubsection.10.2.1}%
+\contentsline {subsubsection}{\numberline {10.2.2}Model-Level vs.~System-Level Security}{91}{subsubsection.10.2.2}%
+\contentsline {subsection}{\numberline {10.3}Tightness of Formal Bounds}{92}{subsection.10.3}%
+\contentsline {subsubsection}{\numberline {10.3.1}Trust Decay Bound}{92}{subsubsection.10.3.1}%
+\contentsline {subsubsection}{\numberline {10.3.2}Detection Rate Composition}{92}{subsubsection.10.3.2}%
+\contentsline {subsubsection}{\numberline {10.3.3}Information-Geometric Stealth-Impact Bound}{92}{subsubsection.10.3.3}%
+\contentsline {subsection}{\numberline {10.4}Open Problems}{92}{subsection.10.4}%
+\contentsline {section}{\numberline {11}Supplementary: Mathematical Proofs}{94}{section.11}%
+\contentsline {subsection}{\numberline {11.1}Proof Status}{94}{subsection.11.1}%
+\contentsline {subsection}{\numberline {11.2}Preliminary Definitions and Notation}{95}{subsection.11.2}%
+\contentsline {subsubsection}{\numberline {11.2.1}Notation Summary}{95}{subsubsection.11.2.1}%
+\contentsline {subsection}{\numberline {11.3}Trust Boundedness}{96}{subsection.11.3}%
+\contentsline {subsection}{\numberline {11.4}Belief Injection Resistance}{97}{subsection.11.4}%
+\contentsline {subsection}{\numberline {11.5}No Trust Amplification}{98}{subsection.11.5}%
+\contentsline {subsection}{\numberline {11.6}Goal Alignment Invariant}{99}{subsection.11.6}%
+\contentsline {subsection}{\numberline {11.7}Firewall Liveness}{100}{subsection.11.7}%
+\contentsline {subsection}{\numberline {11.8}Byzantine Consensus Termination}{101}{subsection.11.8}%
+\contentsline {subsection}{\numberline {11.9}Bounded Overhead}{102}{subsection.11.9}%
+\contentsline {subsubsection}{\numberline {11.9.1}Numerical Instantiation}{103}{subsubsection.11.9.1}%
+\contentsline {subsection}{\numberline {11.10}Additional Lemmas}{103}{subsection.11.10}%
+\contentsline {subsection}{\numberline {11.11}Summary of Proof Techniques}{104}{subsection.11.11}%
+\contentsline {subsection}{\numberline {11.12}Second-Edition Proofs: Defense Composition Algebra and Information-Geometric Bounds}{105}{subsection.11.12}%
+\contentsline {subsection}{\numberline {11.13}The Defense Composition Algebra}{105}{subsection.11.13}%
+\contentsline {subsection}{\numberline {11.14}The Tight Information-Geometric Stealth-Impact Bound}{106}{subsection.11.14}%
+\contentsline {subsection}{\numberline {11.15}The Agent Compromise Blast Radius Bound}{107}{subsection.11.15}%
+\contentsline {subsection}{\numberline {11.16}Updated Summary of Proof Techniques}{107}{subsection.11.16}%
+\contentsline {section}{\numberline {12}Supplementary: Eusocial Insect Intelligence and Colony Cognitive Security}{108}{section.12}%
+\contentsline {subsection}{\numberline {12.1}Overview}{108}{subsection.12.1}%
+\contentsline {subsubsection}{\numberline {12.1.1}The Paradigm Gap}{108}{subsubsection.12.1.1}%
+\contentsline {subsection}{\numberline {12.2}Theoretical Foundations}{109}{subsection.12.2}%
+\contentsline {subsubsection}{\numberline {12.2.1}Stigmergy: Environment-Mediated Coordination}{109}{subsubsection.12.2.1}%
+\contentsline {subsubsection}{\numberline {12.2.2}Emergent Collective Function}{109}{subsubsection.12.2.2}%
+\contentsline {subsubsection}{\numberline {12.2.3}Trust and Information Flow in Colonies}{110}{subsubsection.12.2.3}%
+\contentsline {subsubsection}{\numberline {12.2.4}Biological Defense Mechanisms: Lessons from Social Insects}{110}{subsubsection.12.2.4}%
+\contentsline {paragraph}{\numberline {12.2.4.1}Ant Defense Mechanisms}{110}{paragraph.12.2.4.1}%
+\contentsline {paragraph}{\numberline {12.2.4.2}Bee Defense Mechanisms}{110}{paragraph.12.2.4.2}%
+\contentsline {subsection}{\numberline {12.3}Colony CogSec: Distinct Security Properties}{111}{subsection.12.3}%
+\contentsline {subsubsection}{\numberline {12.3.1}Property 1: Distributed Robustness}{111}{subsubsection.12.3.1}%
+\contentsline {subsubsection}{\numberline {12.3.2}Property 2: Quorum Sensing and Threshold Dynamics}{112}{subsubsection.12.3.2}%
+\contentsline {subsubsection}{\numberline {12.3.3}Property 3: Environmental Memory and Provenance Erosion}{112}{subsubsection.12.3.3}%
+\contentsline {subsubsection}{\numberline {12.3.4}Property 4: Emergent Attack Vectors}{112}{subsubsection.12.3.4}%
+\contentsline {subsection}{\numberline {12.4}The Benchmark Gap}{113}{subsection.12.4}%
+\contentsline {subsubsection}{\numberline {12.4.1}Current State of Multiagent Security Evaluation}{113}{subsubsection.12.4.1}%
+\contentsline {subsubsection}{\numberline {12.4.2}Why This Gap Matters}{113}{subsubsection.12.4.2}%
+\contentsline {subsection}{\numberline {12.5}Proposed Colony CogSec Benchmarks}{113}{subsection.12.5}%
+\contentsline {subsubsection}{\numberline {12.5.1}Benchmark 1: Recruitment Signal Poisoning}{113}{subsubsection.12.5.1}%
+\contentsline {subsubsection}{\numberline {12.5.2}Benchmark 2: Sybil Colony Infiltration}{114}{subsubsection.12.5.2}%
+\contentsline {subsubsection}{\numberline {12.5.3}Benchmark 3: Quorum Manipulation}{114}{subsubsection.12.5.3}%
+\contentsline {subsubsection}{\numberline {12.5.4}Benchmark 4: Cascade Belief Propagation}{115}{subsubsection.12.5.4}%
+\contentsline {subsubsection}{\numberline {12.5.5}Benchmark 5: Emergent Misalignment}{115}{subsubsection.12.5.5}%
+\contentsline {subsection}{\numberline {12.6}Colony CogSec Metrics}{116}{subsection.12.6}%
+\contentsline {subsection}{\numberline {12.7}Design Principles}{116}{subsection.12.7}%
+\contentsline {subsubsection}{\numberline {12.7.1}Integration with CIF Defenses}{116}{subsubsection.12.7.1}%
+\contentsline {subsection}{\numberline {12.8}Relationship to Main Framework}{117}{subsection.12.8}%
+\contentsline {subsubsection}{\numberline {12.8.1}Theorem Extensions}{117}{subsubsection.12.8.1}%
+\contentsline {subsection}{\numberline {12.9}This scaling effect explains why large colonies can exhibit resilience---the collective detection capacity grows with \(n\)---but also why large-scale emergent attacks can evade individual detection}{117}{subsection.12.9}%
+\contentsline {subsection}{\numberline {12.10}Open Questions}{117}{subsection.12.10}%
+\contentsline {subsubsection}{\numberline {12.10.1}Foundational Questions}{117}{subsubsection.12.10.1}%
+\contentsline {subsubsection}{\numberline {12.10.2}Biologically-Inspired Research Directions}{118}{subsubsection.12.10.2}%
+\contentsline {subsection}{\numberline {12.11}References}{118}{subsection.12.11}%
+\contentsline {subsection}{\numberline {12.12}Proofs}{119}{subsection.12.12}%
+\contentsline {subsubsection}{\numberline {12.12.1}Proof of the Redundancy-Resilience Theorem}{119}{subsubsection.12.12.1}%
+\contentsline {section}{\numberline {13}Supplementary: Notation Reference}{120}{section.13}%
+\contentsline {subsection}{\numberline {13.1}Adversary Model Notation}{120}{subsection.13.1}%
+\contentsline {subsection}{\numberline {13.2}System Model Notation}{120}{subsection.13.2}%
+\contentsline {subsection}{\numberline {13.3}Trust Calculus Notation}{121}{subsection.13.3}%
+\contentsline {subsection}{\numberline {13.4}Defense Mechanism Notation}{121}{subsection.13.4}%
+\contentsline {subsection}{\numberline {13.5}Detection \& Analysis Notation}{122}{subsection.13.5}%
+\contentsline {subsection}{\numberline {13.6}Consensus \& Coordination Notation}{123}{subsection.13.6}%
+\contentsline {subsection}{\numberline {13.7}Cost \& Performance Notation}{123}{subsection.13.7}%
+\contentsline {subsection}{\numberline {13.8}Information \& Complexity Notation}{123}{subsection.13.8}%
+\contentsline {subsection}{\numberline {13.9}Stigmergic \& Colony Notation (Supplementary)}{123}{subsection.13.9}%
+\contentsline {subsection}{\numberline {13.10}General Mathematical Notation}{124}{subsection.13.10}%
+\contentsline {subsection}{\numberline {13.11}CTL Temporal Logic Notation (Formal Verification)}{125}{subsection.13.11}%
+\contentsline {section}{\numberline {14}References}{126}{section.14}%
+\contentsline {subsection}{\numberline {14.1}Foundational Works}{126}{subsection.14.1}%
+\contentsline {subsection}{\numberline {14.2}Prompt Injection and LLM Security}{126}{subsection.14.2}%
+\contentsline {subsection}{\numberline {14.3}Constitutional AI and Alignment}{126}{subsection.14.3}%
+\contentsline {subsection}{\numberline {14.4}Multiagent Systems}{126}{subsection.14.4}%
+\contentsline {subsection}{\numberline {14.5}Trust in Distributed Systems}{126}{subsection.14.5}%
+\contentsline {subsection}{\numberline {14.6}Adversarial ML}{127}{subsection.14.6}%
+\contentsline {subsection}{\numberline {14.7}Formal Verification}{127}{subsection.14.7}%
+\contentsline {subsection}{\numberline {14.8}Cognitive Security}{127}{subsection.14.8}%
+\contentsline {subsection}{\numberline {14.9}Agent Frameworks}{127}{subsection.14.9}%
+\contentsline {subsection}{\numberline {14.10}2025 Agentic AI Security}{127}{subsection.14.10}%
+\contentsline {subsection}{\numberline {14.11}Eusocial Intelligence and Swarm Systems}{127}{subsection.14.11}%

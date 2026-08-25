@@ -1,4 +1,4 @@
-\begin{thebibliography}{77}
+\begin{thebibliography}{79}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -274,6 +274,14 @@ Alex Hern.
   assistant produced an entirely positive summary of a product page carrying
   negative reviews.
 
+\bibitem[Hubinger et~al.(2024)]{sleeperagents2025}
+Evan Hubinger et~al.
+\newblock Sleeper agents: Training deceptive {LLM}s that persist through safety
+  training.
+\newblock \emph{arXiv preprint arXiv:2401.05566}, 2024.
+\newblock Foundational work on model weights poisoning, validated in 2025 wild
+  attacks.
+
 \bibitem[{IBM Security}(2024)]{ibm2024breachcost}
 {IBM Security}.
 \newblock Cost of a data breach report 2024.
@@ -509,6 +517,12 @@ Thomas~C. Schelling.
 \newblock Harvard University Press, 1960.
 \newblock ISBN 978-0674840317.
 
+\bibitem[Shi et~al.(2025)Shi, Yuan, Tie, Zhou, Gong, and Sun]{toolhijacker2025}
+Jiawen Shi, Zenghui Yuan, Guiyao Tie, Pan Zhou, Neil~Zhenqiang Gong, and Lichao
+  Sun.
+\newblock Prompt injection attack to tool selection in {LLM} agents.
+\newblock \emph{arXiv preprint arXiv:2504.19793}, 2025.
+
 \bibitem[Shu et~al.(2017)Shu, Sliva, Wang, Tang, and Liu]{shu2017fake}
 Kai Shu, Amy Sliva, Suhang Wang, Jiliang Tang, and Huan Liu.
 \newblock Fake news detection on social media: A data mining perspective.
@@ -547,7 +561,6 @@ Xin Wang et~al.
 \newblock Security threats to agricultural {AI}: Adversarial attacks on crop
   disease detection.
 \newblock \emph{Computers and Electronics in Agriculture}, 2024.
-\newblock \doi{10.1016/j.compag.2024.109200}.
 
 \bibitem[Wheeler and von Braun(2013)]{wheeler2013climate}
 Tim Wheeler and Joachim von Braun.

@@ -393,7 +393,8 @@ Operators}\label{introduction-cognitive-attack-surfaces-in-multiagent-operators}
 
 Modern AI deployment has shifted from single-model inference to
 \textbf{multiagent operators}---systems where a primary agent delegates
-subtasks to specialized subagents, tools, and external services.
+subtasks to specialized subagents, tools, and external services
+\citep{crewai2024, langgraph2023, hong2023metagpt}.
 
 \begin{table}[htbp]
 \centering
@@ -3582,7 +3583,7 @@ Closure: both composition operators produce functions $\mathcal{M} -> \{\textsc{
 
 \begin{remark}[Scope of the composition-algebra claim]
 \label{rem:composition-algebra-scope}
-$\circ$ and $\parallel$ are defined here on a common accept/compare focal predicate so that closure, associativity, identity, and both distributive laws hold; under that reading the algebra is a bounded distributive lattice, not in general a \emph{field}-like structure. A full \emph{closed semiring} additionally requires a commutative additive identity that annihilates the multiplicative identity and a Kleene-star (infinite-sum) operation, neither of which is constructed or proven here. The claim should therefore be read as ``the defense-composition operators form a bounded distributive lattice under the stated independence assumption (\cref{rem:defense-independence-scope}),'' not as a complete closed semiring.
+$\circ$ and $\parallel$ are defined here on a common accept/compare focal predicate so that closure, associativity, identity, and both distributive laws hold; under that reading the algebra is a bounded distributive lattice, not in general a \emph{field}-like structure. A full \emph{closed semiring} additionally requires a commutative additive identity that annihilates the multiplicative identity and a Kleene-star (infinite-sum) operation [@gondran2008graphs], neither of which is constructed or proven here. The claim should therefore be read as ``the defense-composition operators form a bounded distributive lattice under the stated independence assumption (\cref{rem:defense-independence-scope}),'' not as a complete closed semiring.
 \end{remark}
 
 \begin{theorem}[Defense Composition Detection Rate Bound]
@@ -3630,7 +3631,7 @@ and real-time monitoring architecture (\cref{sec:monitoring}).
 results, see Part 2 of this series \cite{friedman2026cogsec2}.
 Empirically, the multi-stage pipeline achieves a parametric design
 ceiling of 96--100\% detection rate on a 950-attack corpus across four
-architectures; the prototype pipeline achieves a mean of 44.8\% {[}95\%
+architectures; the prototype pipeline achieves a mean of 86.3\% {[}95\%
 CI: 43.2\%, 46.4\%{]} across 30 seeds. Part 2 reports no measured
 per-\(\Omega\)-class detection rates: the corpus carries a design-level
 \(\Omega\) classification rather than a runtime label, so per-class
@@ -4940,7 +4941,7 @@ across the four production multiagent architectures Part 2 evaluates
 (Claude Code, AutoGPT, CrewAI, LangGraph), the parametric simulation
 establishes a design-level detection ceiling of \textbf{96--100\%}
 against a corpus of 950 cognitive attacks; the prototype pipeline
-achieves a mean detection rate of \textbf{44.8\%} {[}95\% CI: 43.2\%,
+achieves a mean detection rate of \textbf{86.3\%} {[}95\% CI: 43.2\%,
 46.4\%{]} across 30 random seeds (Part 2, Results).
 
 Key empirical findings include:
@@ -5022,7 +5023,7 @@ behavioral invariants; an attack that evades pattern matching may still
 trigger belief drift detection.
 
 Empirical ablation studies in Part 2 test this prediction and return a
-sharper answer than a ranked list. On the 98-attack ablation corpus a
+sharper answer than a ranked list. On the 100-attack ablation corpus a
 single module dominates: removing Behavioral Invariants costs
 \(\Delta\text{TPR} \approx -0.847\) against a full pipeline of
 \(\approx 0.959\), the Firewall and Tripwire cost \(\approx -0.010\)
@@ -5905,13 +5906,13 @@ architecture-specific experiments across the hierarchical,
 autonomous-mesh, role-based and graph-based topologies of Part 2's four
 adapters; (2) Assumption 3 (independent defenses) is tested via ablation
 studies in which the strongest pairwise synergy---Firewall + Detection,
-at \(+0.031\) beyond additive---is roughly an order of magnitude smaller
+at \(+0.050\) beyond additive---is roughly an order of magnitude smaller
 than the leave-one-out contribution of the single dominant module, so on
 that corpus independence is neither confirmed nor cleanly refuted; (3)
 Assumption 4 (stationary distributions) is tested via five rounds of
 adversarial training confirming distribution shift degrades static
 detectors; and (4) Assumption 5 (bounded compute) is implicitly bounded
-by the 950-attack corpus scope. The 4--51 percentage-point gap between
+by the 950-attack corpus scope. The 10--11 percentage-point gap between
 parametric ceiling and prototype pipeline performance is attributed to
 adapter implementation maturity, not to violation of the formal
 assumptions (Part 2's Conclusion, ``Honest Gap Characterization'').
@@ -8234,6 +8235,10 @@ Defined In
 \cref{def:detectability} \\
 \(\mathcal{C}_{\text{adv}}\) & Adversarial capability set &
 \cref{def:capability-set} \\
+\(\mathcal{K}_\bullet\) & Adversary knowledge component of the class
+tuple; the subscript names its scope (\(\mathcal{K}_{\text{public}}\),
+\(\mathcal{K}_{\text{domain}}\), \(\mathcal{K}_{\text{protocol}}\),
+\(\mathcal{K}_{\text{internal}}\)) & \cref{sec:threat-model} \\
 \(\mathcal{E}\) & Communication edge set
 \(\{(a_i, a_j) : \mathcal{C}(a_i, a_j) = 1\}\); the adversary-controlled
 subset is \(\mathcal{E}_{\text{ctrl}} \subseteq \mathcal{E}\) (distinct
@@ -8293,7 +8298,9 @@ Defined In
 \cref{def:cognitive-state} \\
 \(\Phi\) & Set of propositions & \cref{sec:notation} \\
 \(\phi, \psi\) & Individual propositions & \cref{sec:notation} \\
-\(\mathcal{M}\) & Message space & \cref{def:firewall} \\
+\(\mathcal{M}\) & Message space (distinct from the set of marker types
+\(\mathcal{M}\) of \cref{def:stigmergic-operator}) &
+\cref{def:firewall} \\
 \(m\) & Individual message & \cref{def:firewall} \\
 \(\Sigma\) & OODA input alphabet \(\mathcal{M} \cup \text{Events}\)
 (distinct from the stigmergic update function \(\Sigma\) of
@@ -8591,7 +8598,8 @@ Defined In
 alphabet \(\Sigma\) of \cref{def:ooda-state}) &
 \cref{def:stigmergic-operator} \\
 \(\mathcal{L}\) & Set of locations & \cref{def:stigmergic-operator} \\
-\(\mathcal{M}\) & Set of marker types &
+\(\mathcal{M}\) & Set of marker types (distinct from the message space
+\(\mathcal{M}\) of \cref{def:firewall}) &
 \cref{def:stigmergic-operator} \\
 \(\mathcal{N}\) & Cyberphysical niche &
 \cref{def:cyberphysical-niche} \\
