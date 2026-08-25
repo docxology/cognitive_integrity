@@ -340,8 +340,11 @@ unlabelled, for the life of the project.
 
 ### Round 14 progress (2026-08-25)
 
-**21 of 51 confirmed findings closed.** All 7 `not_empirical`
-relabels, the 1 `unmeasurable` retraction, and 14 of the 27 `measurable_now`.
+**21 of 51 confirmed findings closed, 30 still open.** All 7 `not_empirical`
+relabels, the 1 `unmeasurable` retraction, and 13 of the 27 `measurable_now`.
+The counts are matched by file and line against the sweep's own records rather
+than tallied by hand, because 7 + 1 + 13 is exactly the arithmetic this round
+keeps finding people get wrong.
 
 The `unmeasurable` one was the worst thing in the series. Part 2 stated that ground
 truth labels "were assigned by two independent annotators (Cohen's $\kappa = 0.84$)
