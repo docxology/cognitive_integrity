@@ -15,7 +15,7 @@ Table: Pipeline detection rate distribution (Claude Code, 30 seeds). {#tab:pipel
 | Statistic | Value |
 | --- | --- |
 | Mean DR | 0.863 |
-| Median DR | 0.45 |
+| Median DR | 0.86 |
 | Std Dev | 0.0441 |
 | Min | 0.82 |
 | Max | 0.90 |
@@ -108,7 +108,7 @@ estimating the pipeline's mean detection rate (95\% CI [43.2, 46.4]); the ablati
 moderate power for detecting component contributions.
 
 *Note on the first row (L2): 'mean vs 0' is a degenerate/reference power row, not the research 
-question --- a detection rate of 44.8\% is trivially distinguishable from 0. The substantive null 
+question --- a detection rate of 86.3\% is trivially distinguishable from 0. The substantive null 
 for the multi-seed pipeline is whether its mean differs from the design-level parametric ceiling, 
 and that comparison is settled decisively by the Bayes-factor gap analysis in 
 \cref{sec:real-power-analysis}'s companion section (Bayes factor $>10^6$ for the structural gap), not 

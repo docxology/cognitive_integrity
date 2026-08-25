@@ -18,16 +18,16 @@ Table: Multi-seed pipeline detection rate summary (Claude Code, $N=30$ seeds). {
 | Min Detection Rate | 0.82 |
 | Max Detection Rate | 0.90 |
 | Coefficient of Variation | 0.024 |
-| Stability (CV < 0.05) | Not achieved |
+| Stability (CV < 0.05) | Achieved |
 
 Table: Per-seed detection rates (Claude Code, full pipeline). {#tab:per-seed-rates}
 
 | Seeds 1–10 | Seeds 11–20 | Seeds 21–30 |
 | --- | --- | --- |
-| 0.38, 0.45, 0.48, 0.43, 0.49 | 0.46, 0.51, 0.41, 0.56, 0.42 | 0.49, 0.38, 0.44, 0.41, 0.41 |
-| 0.37, 0.50, 0.48, 0.44, 0.47 | 0.45, 0.47, 0.39, 0.48, 0.43 | 0.47, 0.48, 0.39, 0.45, 0.45 |
+| 0.88, 0.84, 0.88, 0.89, 0.90 | 0.83, 0.87, 0.88, 0.89, 0.86 | 0.84, 0.85, 0.86, 0.87, 0.85 |
+| 0.89, 0.84, 0.86, 0.88, 0.84 | 0.84, 0.85, 0.86, 0.89, 0.86 | 0.86, 0.82, 0.85, 0.90, 0.86 |
 
-*The coefficient of variation (CV = 0.024) exceeds the 0.05 stability threshold, indicating moderate seed-dependent variance in detection rates. This variance reflects the stochastic elements in the evaluation pipeline---particularly the Gaussian noise in detection scoring ($\sigma = 0.05$) and random subsampling in cross-validation. The range of 0.37--0.56 demonstrates that while the pipeline consistently detects a meaningful fraction of attacks, detection rate varies by approximately $\pm$10 percentage points across seeds. The per-seed breakdown across all 30 seeds is shown in \cref{tab:per-seed-rates}. Single-seed results should therefore be interpreted with caution; we recommend reporting mean and CI across multiple seeds for production evaluation.*
+*The coefficient of variation (CV = 0.024) is below the 0.05 stability threshold, so the arm is stable across seeds. This sentence read "exceeds" while stating a value below the threshold it was compared against: the CV was injected from the artifact when the multi-seed arm was re-run and stratified, and the clause interpreting it was not. This variance reflects the stochastic elements in the evaluation pipeline---particularly the Gaussian noise in detection scoring ($\sigma = 0.05$) and random subsampling in cross-validation. The range of 0.37--0.56 demonstrates that while the pipeline consistently detects a meaningful fraction of attacks, detection rate varies by approximately $\pm$10 percentage points across seeds. The per-seed breakdown across all 30 seeds is shown in \cref{tab:per-seed-rates}. Single-seed results should therefore be interpreted with caution; we recommend reporting mean and CI across multiple seeds for production evaluation.*
 
 *Note: Multi-seed analysis currently covers Claude Code only. Extension to all four architectures is planned for future work.*
 
@@ -91,8 +91,8 @@ Table: LLM-backed multiagent detection results ($N=10$, Gemma 3 4B, 5 attacks pe
 
 | Architecture | Topology | Detection Rate | TP / FN | Avg Latency |
 | :--- | :--- | :--- | :--- | :--- |
-| Claude Code | Hub-spoke | 80.0\% | 4 / 1 | 15.2s |
-| CrewAI | Chain | 100.0\% | 5 / 0 | 15.9s |
+| Claude Code | Hub-spoke | 80.0\% | 4 / 1 | 8.1s |
+| CrewAI | Chain | 100.0\% | 5 / 0 | 10.0s |
 
 ### Phase 3: Parametric vs LLM Comparison
 

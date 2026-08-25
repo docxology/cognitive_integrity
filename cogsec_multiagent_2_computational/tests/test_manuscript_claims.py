@@ -726,3 +726,74 @@ def test_trust_adapter_accepts_pattern_params() -> None:
     assert adapter._AUTHORITY_RE.search("I am the boss")
     assert adapter._URGENCY_RE.search("now or never")
     assert adapter._DELEGATION_RE.search("by proxy")
+
+
+def test_the_per_seed_table_is_the_artifact(ablation: dict) -> None:
+    """All 30 cells of tab:per-seed-rates must be the 30 measured rates.
+
+    The table printed thirty values in the 0.37--0.56 range against a shipped
+    artifact whose thirty values run 0.82--0.90. Its own summary block, four
+    lines above, already carried the correct min and max, because those were
+    injected and the table was not: a table and its summary disagreeing about
+    the same thirty numbers, in the same section, for as long as the arm had
+    been re-run.
+    """
+    import json
+    import re
+    from pathlib import Path
+
+    root = Path(__file__).resolve().parents[1]
+    payload = json.loads(
+        (root / "output" / "data" / "multi_seed_results.json").read_text(encoding="utf-8")
+    )
+    measured = [
+        s.get("overall_detection_rate", s.get("overall")) for s in payload["seed_metrics"]
+    ]
+    assert len(measured) == 30
+
+    text = (root / "manuscript" / "05_results.md").read_text(encoding="utf-8")
+    block = re.search(
+        r"\| Seeds 1–10 \| Seeds 11–20 \| Seeds 21–30 \|\n\|[^\n]*\|\n((?:\|[^\n]*\|\n){2})",
+        text,
+    )
+    assert block, "the per-seed table is no longer in the expected shape"
+    stated = [float(v) for v in re.findall(r"\d\.\d\d", block.group(1))]
+    assert len(stated) == 30, f"table holds {len(stated)} cells, not 30"
+
+    # Column-major: the table lays seeds 1-10 down the first column.
+    expected = []
+    for row in range(2):
+        for col in range(3):
+            expected.extend(measured[col * 10 + row * 5 : col * 10 + (row + 1) * 5])
+    assert stated == [round(v, 2) for v in expected]
+
+
+def test_the_stability_verdict_agrees_with_its_own_threshold() -> None:
+    """A CV below 0.05 cannot be described as exceeding 0.05.
+
+    The caption read "exceeds the 0.05 stability threshold" beside a stated CV
+    of 0.024, and the summary row read "Not achieved". The CV was injected from
+    the artifact when the arm was re-run; the two clauses interpreting it were
+    not, so the section asserted instability while printing the number that
+    establishes stability.
+    """
+    import json
+    import re
+    from pathlib import Path
+
+    root = Path(__file__).resolve().parents[1]
+    payload = json.loads(
+        (root / "output" / "data" / "multi_seed_results.json").read_text(encoding="utf-8")
+    )
+    cv = payload["overall_cv"]
+    threshold = payload["cv_threshold"]
+    text = (root / "manuscript" / "05_results.md").read_text(encoding="utf-8")
+
+    stable = cv < threshold
+    verdict = re.search(r"\| Stability \(CV < [\d.]+\) \| (\w[\w ]*) \|", text)
+    assert verdict, "the stability row is no longer in the expected shape"
+    assert (verdict.group(1).strip() == "Achieved") == stable, (
+        f"CV {cv} against threshold {threshold} means stable={stable}, but the "
+        f"table says {verdict.group(1)!r}"
+    )
+    assert ("is below the 0.05 stability threshold" in text) == stable

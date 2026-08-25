@@ -47,8 +47,8 @@ Table: LLM-backed multiagent detection results ($N=10$, Gemma 3 4B, 5 representa
 
 | Architecture | Topology | Detection Rate | TP / FN | Avg Latency |
 | :--- | :--- | :--- | :--- | :--- |
-| Claude Code | Hub-spoke | 80.0\% | 4 / 1 | 15.2s |
-| CrewAI | Chain | 100.0\% | 5 / 0 | 15.9s |
+| Claude Code | Hub-spoke | 80.0\% | 4 / 1 | 8.1s |
+| CrewAI | Chain | 100.0\% | 5 / 0 | 10.0s |
 
 The LLM-backed results provide preliminary evidence that CIF's defense pipeline detects the majority of attack types---direct injection, authority impersonation, belief drift---when processed through genuine multiagent interactions. Claude Code's single miss (1 false negative on $N=5$) yields an 80\% detection rate; CrewAI achieves 100\% detection on its 5-attack sample. These preliminary results ($N=10$) complement the parametric analysis (\cref{sec:parametric-analysis}): the parametric model establishes architecture-differentiated design-level properties, while the LLM validation confirms that the implemented defenses operate with real language model behavior. The small sample size ($N=5$ per architecture) precludes reliable confidence interval estimation; expansion to all four architectures with larger attack samples is planned for future work.
 

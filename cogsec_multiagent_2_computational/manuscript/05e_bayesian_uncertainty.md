@@ -42,7 +42,7 @@ The multi-seed posterior under the uniform prior has a posterior median detectio
 
 ## Bayes Factors for the Parametric-Empirical Gap {#sec:bayes-factors}
 
-The single most consequential quantitative claim in this paper is that the parametric design model's 92\% detection rate on direct injection (full CIF, $n = 100$; this is the response-surface figure of \cref{sec:parametric-per-arch}, not the shipped artifact, whose direct-injection cells run 99--100\%) differs from the real pipeline's 44.8\% multi-seed aggregate not by sampling variation but by a structural implementation gap. This claim is testable as a Bayes factor for the model $H_1: \theta_{\text{empirical}} \neq \theta_{\text{parametric}}$ against $H_0: \theta_{\text{empirical}} = \theta_{\text{parametric}}$:
+The single most consequential quantitative claim in this paper is that the parametric design model's 92\% detection rate on direct injection (full CIF, $n = 100$; this is the response-surface figure of \cref{sec:parametric-per-arch}, not the shipped artifact, whose direct-injection cells run 99--100\%) differs from the real pipeline's 86.3\% multi-seed aggregate not by sampling variation but by a structural implementation gap. This claim is testable as a Bayes factor for the model $H_1: \theta_{\text{empirical}} \neq \theta_{\text{parametric}}$ against $H_0: \theta_{\text{empirical}} = \theta_{\text{parametric}}$:
 
 \begin{lstlisting}[language=Python]
 from src.statistics.bayesian import bayes_factor_two_proportions
