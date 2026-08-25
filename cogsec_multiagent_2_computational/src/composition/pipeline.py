@@ -48,6 +48,25 @@ class DefenseModule(ABC):
         """
         ...
 
+    def judge(self, state: Any) -> DefenseResult:
+        """Evaluate a :class:`~core.base.CognitiveState` or a bare message.
+
+        The composition algebra in the supplements is stated over a morphism
+        from a cognitive state to a defense result, and this is that morphism.
+        Every module gets it for free by subclassing, so the documented type
+        is a type the framework actually uses rather than a name on a figure.
+
+        A bare ``str`` is accepted and behaves exactly as
+        :meth:`evaluate` does with no context, so nothing that already calls
+        ``evaluate`` needs to change.
+        """
+        # Imported here rather than at module scope: core.base re-exports this
+        # class, so a top-level import would close a cycle.
+        from core.base import coerce_message
+
+        message, context = coerce_message(state)
+        return self.evaluate(message, context)
+
 
 # ---------------------------------------------------------------------------
 # Pipeline result

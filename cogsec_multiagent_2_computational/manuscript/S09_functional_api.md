@@ -64,9 +64,9 @@ with the following behavioral guarantees:
 from src.core.monad import MonadicPipeline, Ok, Err, DetectionEvent
 from src.core.firewall import CognitiveFirewall
 from src.core.sandbox import SandboxManager
-from src.utils.config import CIFConfig
+from src.utils.config import FrameworkConfig
 
-config = CIFConfig.default()
+config = FrameworkConfig()
 pipeline = MonadicPipeline([
     CognitiveFirewall(config),
     SandboxManager(config),

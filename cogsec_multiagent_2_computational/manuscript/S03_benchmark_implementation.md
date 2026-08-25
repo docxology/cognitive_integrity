@@ -61,7 +61,7 @@ source cogsec-bench/bin/activate
 uv pip install numpy scipy networkx redis kafka-python
 
 # Run benchmark suite
-uv run python -m cogsec.benchmarks.colony --config colony_configs.yaml
+PYTHONPATH=src uv run python -m cogsec.benchmarks.colony --config colony_configs.yaml
 ```
 
 ### Benchmark Runner
@@ -88,7 +88,7 @@ ccs = benchmark.compute_ccs(
 print(f"Colony CogSec Score: {ccs:.3f}")
 ```
 
-> **Note**: The import path `cogsec.benchmarks` shown above reflects the proposed public API. The current internal import path is `from src.colony.benchmark import ColonyBenchmark` (see `scripts/run_colony_benchmarks.py`).
+> **Note**: `cogsec.benchmarks` is the shipped public API: a facade over the internal modules under `src/`, exercised by `tests/test_public_api.py`. It is a facade rather than the internals themselves because the internal layout is organised for the framework's development and this one is organised for reproducing the paper. `src/` must be on `PYTHONPATH`, which is why the quickstart sets it; the project deliberately does not publish every directory under `src/` as a top-level package.
 
 ### Stigmergic Substrate Configuration
 
