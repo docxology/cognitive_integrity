@@ -1,0 +1,74 @@
+{
+  "benign_fpr": 0.18333333333333332,
+  "benign_size": 120,
+  "by_omega_level": {
+    "2": {
+      "detected": 621,
+      "miss_rate": 0.08,
+      "n": 675,
+      "tpr": 0.92
+    },
+    "3": {
+      "detected": 200,
+      "miss_rate": 0.0,
+      "n": 200,
+      "tpr": 1.0
+    },
+    "4": {
+      "detected": 198,
+      "miss_rate": 0.39076923076923076,
+      "n": 325,
+      "tpr": 0.6092307692307692
+    },
+    "5": {
+      "detected": 268,
+      "miss_rate": 0.025454545454545455,
+      "n": 275,
+      "tpr": 0.9745454545454545
+    }
+  },
+  "by_target": {
+    "action_execution": {
+      "detected": 621,
+      "miss_rate": 0.08,
+      "n": 675,
+      "tpr": 0.92
+    },
+    "belief_state": {
+      "detected": 198,
+      "miss_rate": 0.39076923076923076,
+      "n": 325,
+      "tpr": 0.6092307692307692
+    },
+    "goal_alignment": {
+      "detected": 258,
+      "miss_rate": 0.026415094339622643,
+      "n": 265,
+      "tpr": 0.9735849056603774
+    },
+    "temporal_state": {
+      "detected": 30,
+      "miss_rate": 0.0,
+      "n": 30,
+      "tpr": 1.0
+    },
+    "trust_relationships": {
+      "detected": 180,
+      "miss_rate": 0.0,
+      "n": 180,
+      "tpr": 1.0
+    }
+  },
+  "corpus_size": 1475,
+  "data_origin": "real_pipeline",
+  "note": "omega_level and target are assigned per category, so a stratum is a re-grouping of the category breakdown rather than an independent axis. The false-positive rate is a property of the pipeline and the benign corpus, not of any stratum, so it is reported once.",
+  "seed": 42,
+  "source_script": "scripts/run_stratified_detection.py",
+  "targets": [
+    "belief_state",
+    "action_execution",
+    "trust_relationships",
+    "temporal_state",
+    "goal_alignment"
+  ]
+}

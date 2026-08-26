@@ -1,0 +1,83 @@
+{
+  "benign_size": 120,
+  "composition": {
+    "measured_union": 0.8725423728813559,
+    "parallel_max_prediction": 0.8748170626628162,
+    "series_error": 0.0022746897814602818,
+    "series_prediction": 0.8748170626628162
+  },
+  "corpus_size": 1475,
+  "data_origin": "real_pipeline",
+  "fully_redundant_modules": [
+    "detection",
+    "sandbox",
+    "trust"
+  ],
+  "modules": [
+    "consensus",
+    "detection",
+    "firewall",
+    "invariants",
+    "provenance",
+    "sandbox",
+    "tripwire",
+    "trust"
+  ],
+  "note": "unique = detected by this module and no other; shared = total - unique. series_prediction assumes the modules are independent and is reported beside the measured union rather than in place of it: the gap between them is how far that assumption is from true on this corpus.",
+  "per_module": {
+    "consensus": {
+      "benign_fpr": 0.0,
+      "shared": 0.0888135593220339,
+      "total": 0.09627118644067796,
+      "unique": 0.007457627118644068
+    },
+    "detection": {
+      "benign_fpr": 0.05,
+      "shared": 0.033220338983050844,
+      "total": 0.033220338983050844,
+      "unique": 0.0
+    },
+    "firewall": {
+      "benign_fpr": 0.1,
+      "shared": 0.04542372881355932,
+      "total": 0.05355932203389831,
+      "unique": 0.008135593220338983
+    },
+    "invariants": {
+      "benign_fpr": 0.0,
+      "shared": 0.21491525423728813,
+      "total": 0.8332203389830508,
+      "unique": 0.6183050847457627
+    },
+    "provenance": {
+      "benign_fpr": 0.0,
+      "shared": 0.014915254237288136,
+      "total": 0.023728813559322035,
+      "unique": 0.008813559322033898
+    },
+    "sandbox": {
+      "benign_fpr": 0.0,
+      "shared": 0.03389830508474576,
+      "total": 0.03389830508474576,
+      "unique": 0.0
+    },
+    "tripwire": {
+      "benign_fpr": 0.0,
+      "shared": 0.01694915254237288,
+      "total": 0.02169491525423729,
+      "unique": 0.0047457627118644066
+    },
+    "trust": {
+      "benign_fpr": 0.03333333333333333,
+      "shared": 0.016271186440677966,
+      "total": 0.016271186440677966,
+      "unique": 0.0
+    }
+  },
+  "seed": 42,
+  "source_script": "scripts/run_defense_overlap.py",
+  "union": {
+    "fpr": 0.18333333333333332,
+    "tpr": 0.8725423728813559
+  }
+}

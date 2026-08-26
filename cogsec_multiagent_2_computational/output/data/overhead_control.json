@@ -1,0 +1,51 @@
+{
+  "added": {
+    "median_latency_ms": 0.6100000027799979,
+    "peak_traced_bytes": 33131,
+    "throughput_ratio": 0.000557128725789785
+  },
+  "arms": {
+    "control": {
+      "arm": "control",
+      "latency_ms": {
+        "max": 0.0030420051189139485,
+        "mean": 0.00019112492759703283,
+        "min": 8.298957254737616e-05,
+        "n": 1595,
+        "p50": 0.000166997779160738,
+        "p95": 0.0002090091584250331,
+        "p99": 0.0004159956006333232
+      },
+      "peak_traced_bytes": 52584,
+      "throughput_msg_per_s": 3201474.0892564864,
+      "wall_clock_s": 0.000498207999044098
+    },
+    "full_pipeline": {
+      "arm": "full_pipeline",
+      "latency_ms": {
+        "max": 1.364583004033193,
+        "mean": 0.5603835722402345,
+        "min": 0.10308400669600815,
+        "n": 1595,
+        "p50": 0.6101670005591586,
+        "p95": 0.9041250013979152,
+        "p99": 1.2428750051185489
+      },
+      "peak_traced_bytes": 85715,
+      "throughput_msg_per_s": 1783.6331799964787,
+      "wall_clock_s": 0.8942421669926262
+    }
+  },
+  "as_fraction_of_measured_agent_turn": {
+    "Claude Code": 7.561908120746055e-05,
+    "CrewAI": 6.129161490251319e-05
+  },
+  "data_origin": "real_pipeline",
+  "n_attacks": 1475,
+  "n_benign": 120,
+  "n_messages": 1595,
+  "note": "No percentage overhead is reported against the control. The control is the loop, not a unit of agent work, so a ratio against it is a number without a referent -- which is what the retired '+23%' and '45ms -> 52ms' rows were. as_fraction_of_measured_agent_turn divides the added median latency by the measured mean turn time from llm_demo_results.json, which is a denominator that exists.",
+  "seed": 42,
+  "source_script": "scripts/run_overhead_control.py",
+  "warmup": 50
+}

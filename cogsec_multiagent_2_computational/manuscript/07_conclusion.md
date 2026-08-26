@@ -18,7 +18,7 @@ This paper provided computational validation of the Cognitive Integrity Framewor
 
 **Information-Geometric Attack Formalization**: We characterized adversarial belief manipulation as geodesic movement on the Fisher-Rao statistical manifold (Theorem CG.1), providing a Riemannian metric on cognitive attacks and establishing that each sandbox threshold $\kappa$ corresponds to a bounded geodesic radius $\rho = 2\arccos(\sqrt{1-\kappa\varepsilon})$.
 
-**Bayesian Uncertainty Quantification**: We supplemented point estimates with Beta-Binomial posteriors and established that: (a) the parametric--empirical gap has Bayes factor $\text{BF}_{10} \gg 10^6$ under the explicitly simulated-control model; (b) the LLM validation ($N=5$--$10$ per architecture) is severely underpowered (required $N \geq 245$ for $\pm 5\%$ precision); and (c) the representative multi-seed estimate (mean 86.3\%, 95\% HDI [35.5\%, 54.7\%]) is reported with uncertainty.
+**Bayesian Uncertainty Quantification**: We supplemented point estimates with Beta-Binomial posteriors and established that: (a) the parametric--empirical gap has Bayes factor $\text{BF}_{10} \gg 10^6$ under the explicitly simulated-control model; (b) the LLM validation ($N=5$--$10$ per architecture) is severely underpowered (required $N \geq 245$ for $\pm 5\%$ precision); and (c) the representative multi-seed estimate (mean 86.3\%, 95\% HDI [78.4\%, 91.8\%]) is reported with uncertainty.
 
 **Honest Gap Characterization**: We documented the 10--11 percentage-point gap between parametric design ceiling and current empirical performance (parametric ceiling 96--100\% vs.\ pipeline mean 86.3\% and ablation 89.0\% respectively), attributing it to adapter implementation maturity rather than fundamental architectural limitations.
 
@@ -32,7 +32,7 @@ The multi-tier evaluation yields four principal findings:
 
 3. **Architecture topology matters**: Preliminary LLM validation ($N=10$) shows topology-dependent detection: CrewAI (chain topology) achieves 100\% detection while Claude Code (hub-spoke) achieves 80\%. Colony benchmarks further demonstrate that structured adversarial scenarios are more detectable than emergent misalignment.
 
-4. **Emergent misalignment is the hardest problem**: The 30-seed colony benchmark reveals that agents collectively drifting without explicit adversaries (emergent misalignment) average 74.3\% detection; its bootstrap uncertainty and false-positive rate are reported with the scenario artifact, defining an important frontier for future defense research. The single-seed 56.1\% result is not used as the headline estimate.
+4. **Emergent misalignment is the hardest problem**: The 30-seed colony benchmark reveals that agents collectively drifting without explicit adversaries (emergent misalignment) average 74.3\% detection; its bootstrap uncertainty and false-positive rate are reported with the scenario artifact, defining an important frontier for future defense research. Single-seed results are not used as headline estimates anywhere in this series: a point estimate from one draw of a stochastic simulation carries no uncertainty information.
 
 5. **Composability under modeled semantics**: Theorem CT.3 (monadic composition law) shows that detection-preservation holds by construction for composed morphisms when the pipeline matches the short-circuit category laws. Attacks that circumvent that guarantee must operate outside the modeled composition semantics (e.g., by breaking module contracts or the trust/identity assumptions), not merely evade a single threshold.
 

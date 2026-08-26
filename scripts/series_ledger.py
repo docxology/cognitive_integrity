@@ -202,6 +202,76 @@ def multiseed_mean() -> float:
     return float(_multiseed()["tpr_mean"]) * 100.0
 
 
+
+def multiseed_hdi_low() -> float:
+    """Low end of the 95% Beta HDI on the multi-seed mean.
+
+    Each seed scores 100 attacks, so the posterior is Beta(1+k, 1+n-k) with
+    n = 100 and k the mean rate scaled to that denominator. Derived rather than
+    typed because the conclusions state the interval and an interval computed
+    against a retired rate is the hardest kind of stale number to notice: both
+    endpoints look plausible on their own.
+    """
+    return _multiseed_hdi()[0]
+
+
+def multiseed_hdi_high() -> float:
+    """High end of the same interval."""
+    return _multiseed_hdi()[1]
+
+
+def _multiseed_hdi() -> tuple[float, float]:
+    """The Beta HDI, loaded by file path rather than by import path.
+
+    Part 2 ships a package named ``statistics``, so putting its ``src`` on
+    ``sys.path`` shadows the standard library module of that name for every
+    later import in the same process. A deriver that runs inside a test session
+    would then break unrelated tests through an import side effect, which is a
+    worse failure than the stale number this variable exists to catch.
+    """
+    import importlib.util
+    import sys
+
+    module_path = REPO_ROOT / PARTS["2"] / "src" / "statistics" / "bayesian.py"
+    if not module_path.is_file():
+        # A synthetic tree under test has no Part 2 source. Raising the
+        # ledger's own exception lets the gate report an underivable quantity
+        # instead of dying with a FileNotFoundError from three frames down.
+        raise MissingArtifact(f"{module_path} is missing")
+    # Named by path, and removed again afterwards. A fixed module name would
+    # be cached across calls, so the first tree to load it -- a synthetic one
+    # under test, say -- would serve every later call from a different tree.
+    name = f"_cif_bayesian_{abs(hash(str(module_path)))}"
+    spec = importlib.util.spec_from_file_location(name, module_path)
+    if spec is None or spec.loader is None:
+        raise MissingArtifact(f"cannot load {module_path}")
+    bayesian = importlib.util.module_from_spec(spec)
+    # Registered before execution: the module defines dataclasses, and
+    # @dataclass resolves sys.modules[cls.__module__] while building the class.
+    # Skipping this raises AttributeError on None deep inside dataclasses.
+    sys.modules[name] = bayesian
+    try:
+        spec.loader.exec_module(bayesian)
+    finally:
+        sys.modules.pop(name, None)
+
+    n = 100
+    k = round(n * float(_multiseed()["tpr_mean"]))
+    low, high = bayesian.BetaPosterior(1 + k, 1 + n - k).hdi(0.95)
+    return low * 100.0, high * 100.0
+
+
+def invariants_solo_detection() -> float:
+    """What the invariants module detects on its own, as a percentage.
+
+    The conclusions contrast it with the full stack to make the point that one
+    module carries most of the detection, so the two numbers have to move
+    together or the contrast misstates itself.
+    """
+    payload = _obj("module_capability_matrix.json")
+    return float(payload["detection_rate"]["invariants"]["_overall"]) * 100.0
+
+
 def multiseed_fpr() -> float:
     return float(_multiseed()["fpr_mean"]) * 100.0
 
@@ -980,6 +1050,42 @@ LEDGER: tuple[LedgerVariable, ...] = (
         pattern=re.compile(r"\b(ten|nine|eleven|\d{2})\s+(?:critical\s+|operational\s+|high-stakes\s+)*domains"),
         require=("domain",),
         min_occurrences=2,
+    ),
+    LedgerVariable(
+        id="multiseed_hdi_low",
+        description="Low end of the 95% Beta HDI on the multi-seed mean.",
+        artifact="multi_seed_results.json",
+        deriver=multiseed_hdi_low,
+        unit="percent",
+        pattern=re.compile(r"HDI \[(\d{2}\.\d)\s*\\?%"),
+        require=("hdi",),
+        parts=("2",),
+        tolerance=0.06,
+        min_occurrences=1,
+    ),
+    LedgerVariable(
+        id="multiseed_hdi_high",
+        description="High end of the 95% Beta HDI on the multi-seed mean.",
+        artifact="multi_seed_results.json",
+        deriver=multiseed_hdi_high,
+        unit="percent",
+        pattern=re.compile(r"HDI \[\d{2}\.\d\s*\\?%,\s*(\d{2}\.\d)\s*\\?%"),
+        require=("hdi",),
+        parts=("2",),
+        tolerance=0.06,
+        min_occurrences=1,
+    ),
+    LedgerVariable(
+        id="invariants_solo_detection",
+        description="What the invariants module detects alone, as a percentage.",
+        artifact="module_capability_matrix.json",
+        deriver=invariants_solo_detection,
+        unit="percent",
+        pattern=re.compile(r"checker alone reaches (\d{2}\.\d)\s*\\?%"),
+        require=("invariants",),
+        parts=("3",),
+        tolerance=0.06,
+        min_occurrences=1,
     ),
 )
 

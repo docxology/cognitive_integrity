@@ -107,6 +107,24 @@ def _build_tree(root: Path, *, part_text: dict[str, str], bibs: dict[str, str]) 
         # Prepended, never appended: several tests plant a severed final clause
         # and the truncation check reads the end of the file, so a citation
         # added after the defect hides it.
+        # Sentences the new ledger variables gate. A synthetic tree with no
+        # HDI and no solo-detection line is not a clean tree, it is a tree
+        # missing two gated quantities, and the guard is right to say so.
+        gated = (
+            "\nThe representative multi-seed estimate (mean 44.8\\%, 95\\% HDI "
+            "[35.5\\%, 54.7\\%]) is reported with uncertainty.\n"
+            "\nThe Invariants checker alone reaches 83.3\\% against the full stack.\n"
+        )
+        # Prepended, never appended: several tests plant a severed final clause
+        # and the truncation check reads the end of the file.
+        if part == "2" and "HDI" not in body:
+            body = gated.split("\nThe Invariants")[0] + "\n" + body
+        if part == "3" and "checker alone reaches" not in body:
+            body = (
+                "The Invariants checker alone reaches 83.3\\% against the full stack.\n\n"
+                + body
+            )
+
         citations = "".join(
             f"See [@{key}].\n"
             for key in re.findall(r"@\w+\{([^,]+),", bibs.get(part, _CLEAN_BIB))
@@ -150,6 +168,20 @@ def _build_tree(root: Path, *, part_text: dict[str, str], bibs: dict[str, str]) 
         encoding="utf-8",
     )
 
+    # multiseed_hdi_low/high load Part 2's BetaPosterior by file path rather
+    # than by import, so the synthetic tree needs the file to exist. The real
+    # module is copied rather than stubbed: a stub would let the fixture agree
+    # with a posterior the shipped code does not compute.
+    stats_dir = root / gate.PARTS["2"] / "src" / "statistics"
+    stats_dir.mkdir(parents=True, exist_ok=True)
+    real_bayesian = (
+        Path(gate.REPO_ROOT) / gate.PARTS["2"] / "src" / "statistics" / "bayesian.py"
+    )
+    if real_bayesian.is_file():
+        (stats_dir / "bayesian.py").write_text(
+            real_bayesian.read_text(encoding="utf-8"), encoding="utf-8"
+        )
+
     data = root / gate.PARTS["2"] / "output" / "data"
     data.mkdir(parents=True, exist_ok=True)
     for name, payload in _ARTIFACTS.items():
@@ -162,6 +194,14 @@ def _build_tree(root: Path, *, part_text: dict[str, str], bibs: dict[str, str]) 
 #: is internally consistent (ceiling 96--100, mean 44.8, corpus 950, 4 arches).
 _ARTIFACTS: dict[str, object] = {
     "full_evaluation_results.json": _PARAMETRIC_ROWS,
+    # Read by invariants_solo_detection. Only the one path the ledger walks is
+    # populated: a fixture that mirrored the whole real artifact would drift
+    # from it, and this one exists to be internally consistent, not complete.
+    "module_capability_matrix.json": {
+        "data_origin": "real_pipeline",
+        "source_script": "scripts/run_module_capability_matrix.py",
+        "detection_rate": {"invariants": {"_overall": 0.833}},
+    },
     "multi_seed_results.json": {
         "data_origin": "real_pipeline",
         "tpr_mean": 0.448,

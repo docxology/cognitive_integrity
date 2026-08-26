@@ -1,0 +1,82 @@
+{
+  "baseline": {
+    "fpr": 0.18333333333333332,
+    "tpr": 0.8725423728813559
+  },
+  "data_origin": "real_pipeline",
+  "false_positives": 22,
+  "false_positives_by_benign_category": {
+    "retrieved_document": 3,
+    "status_report": 6,
+    "task_delegation": 2,
+    "tool_result": 9,
+    "user_request": 2
+  },
+  "false_positives_by_module": {
+    "CognitiveFirewall": 12,
+    "TextFeatureDetection": 6,
+    "TrustExploitationDetector": 4
+  },
+  "n_attacks": 1475,
+  "n_benign": 120,
+  "not_implemented": {
+    "incremental_learning": "requires a model that updates on labelled feedback; every module in this framework is a fixed scorer, so there is nothing to update"
+  },
+  "note": "Root causes are attributed from the benign corpus's own recorded trigger terms, so they partition the false positives rather than summing to a round number. temporal_smoothing depends on the order messages arrive in, which is a property of the strategy and not of this measurement.",
+  "root_causes": {
+    "attack_adjacent_vocabulary": 17,
+    "no_trigger_term_present": 5
+  },
+  "seed": 42,
+  "source_script": "scripts/run_fp_mitigation.py",
+  "strategies": {
+    "combined": {
+      "delta_fpr": -0.18333333333333332,
+      "delta_tpr": -0.6474576271186441,
+      "fpr": 0.0,
+      "relative_fpr_reduction": 1.0,
+      "tpr": 0.22508474576271187,
+      "youden_j": 0.22508474576271187
+    },
+    "confirmation_cascade": {
+      "delta_fpr": -0.18333333333333332,
+      "delta_tpr": -0.6474576271186441,
+      "fpr": 0.0,
+      "relative_fpr_reduction": 1.0,
+      "tpr": 0.22508474576271187,
+      "youden_j": 0.22508474576271187
+    },
+    "contextual_whitelist": {
+      "delta_fpr": -0.18333333333333332,
+      "delta_tpr": -0.016949152542372947,
+      "fpr": 0.0,
+      "relative_fpr_reduction": 1.0,
+      "tpr": 0.855593220338983,
+      "youden_j": 0.855593220338983
+    },
+    "cost_sensitive": {
+      "delta_fpr": -0.18333333333333332,
+      "delta_tpr": -0.016949152542372947,
+      "fpr": 0.0,
+      "relative_fpr_reduction": 1.0,
+      "tpr": 0.855593220338983,
+      "youden_j": 0.855593220338983
+    },
+    "none": {
+      "delta_fpr": 0.0,
+      "delta_tpr": 0.0,
+      "fpr": 0.18333333333333332,
+      "relative_fpr_reduction": 0.0,
+      "tpr": 0.8725423728813559,
+      "youden_j": 0.6892090395480226
+    },
+    "temporal_smoothing": {
+      "delta_fpr": -0.04999999999999999,
+      "delta_tpr": -0.012881355932203409,
+      "fpr": 0.13333333333333333,
+      "relative_fpr_reduction": 0.2727272727272727,
+      "tpr": 0.8596610169491525,
+      "youden_j": 0.7263276836158192
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "ci": 0.95,
+  "data_origin": "real_pipeline",
+  "detectors": {
+    "drift_detection": {
+      "auc": 0.37359887005649717,
+      "ci_high": 0.41880225410764854,
+      "ci_low": 0.33753948712590837
+    },
+    "ensemble_weighted_average": {
+      "auc": 0.9145536723163842,
+      "ci_high": 0.9263970399805257,
+      "ci_low": 0.8693319428233428
+    },
+    "firewall": {
+      "auc": 0.38348587570621473,
+      "ci_high": 0.4295079255234428,
+      "ci_low": 0.3337040421627948
+    },
+    "invariants": {
+      "auc": 0.9149152542372881,
+      "ci_high": 0.9260723590614814,
+      "ci_low": 0.9075763334651616
+    }
+  },
+  "fusion": "WeightedAverageFusion, equal weights over all eight modules",
+  "n_attacks": 1475,
+  "n_benign": 120,
+  "n_bootstrap": 1000,
+  "note": "Scored over the integrated attack corpus and the 120-item hard benign corpus. The interval is a percentile bootstrap over 1000 resamples of the labelled set, not an assumed sampling distribution.",
+  "seed": 42,
+  "source_script": "scripts/run_detector_auc.py"
+}

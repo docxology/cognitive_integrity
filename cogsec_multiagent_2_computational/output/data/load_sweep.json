@@ -1,0 +1,86 @@
+{
+  "concurrency": "single process, single thread",
+  "data_origin": "real_pipeline",
+  "n_messages_per_run": 400,
+  "note": "saturation_msg_per_s is null when the sweep kept up with every rate tried, which means it did not reach saturation rather than that there is none. CPU is reported as process CPU-seconds per wall-second rather than a percentage, because a percentage needs a sampling interval and a core count recorded beside it.",
+  "platform": "macOS-26.6.2-arm64-arm-64bit",
+  "points": [
+    {
+      "achieved_msg_per_s": 100.13707827237572,
+      "cpu_seconds": 0.49681,
+      "cpu_utilisation": 0.12437275464124745,
+      "detection_rate": 0.93,
+      "keeping_up": true,
+      "latency_ms_p50": 1.399478998791892,
+      "latency_ms_p95": 3.8603339926339686,
+      "latency_ms_p99": 5.609125000773929,
+      "target_msg_per_s": 100.0,
+      "wall_seconds": 3.994524374997127
+    },
+    {
+      "achieved_msg_per_s": 250.2035053680294,
+      "cpu_seconds": 0.48731100000000005,
+      "cpu_utilisation": 0.30481730101099946,
+      "detection_rate": 0.93,
+      "keeping_up": true,
+      "latency_ms_p50": 1.4892289982526563,
+      "latency_ms_p95": 3.4673750051297247,
+      "latency_ms_p99": 5.949375001364388,
+      "target_msg_per_s": 250.0,
+      "wall_seconds": 1.5986986249918118
+    },
+    {
+      "achieved_msg_per_s": 500.7700378427984,
+      "cpu_seconds": 0.3055399999999999,
+      "cpu_utilisation": 0.3825131934062215,
+      "detection_rate": 0.93,
+      "keeping_up": true,
+      "latency_ms_p50": 0.6133119968581013,
+      "latency_ms_p95": 2.0998330001020804,
+      "latency_ms_p99": 3.042165990336798,
+      "target_msg_per_s": 500.0,
+      "wall_seconds": 0.798769834000268
+    },
+    {
+      "achieved_msg_per_s": 998.167010992406,
+      "cpu_seconds": 0.15190499999999993,
+      "cpu_utilisation": 0.3790663995120034,
+      "detection_rate": 0.93,
+      "keeping_up": true,
+      "latency_ms_p50": 0.40772899956209585,
+      "latency_ms_p95": 0.640292011667043,
+      "latency_ms_p99": 1.253957991139032,
+      "target_msg_per_s": 1000.0,
+      "wall_seconds": 0.40073454201046843
+    },
+    {
+      "achieved_msg_per_s": 2000.177935868456,
+      "cpu_seconds": 0.14530700000000002,
+      "cpu_utilisation": 0.7265996383180944,
+      "detection_rate": 0.93,
+      "keeping_up": true,
+      "latency_ms_p50": 0.3823334918706678,
+      "latency_ms_p95": 0.7104170072125271,
+      "latency_ms_p99": 0.9349589963676408,
+      "target_msg_per_s": 2000.0,
+      "wall_seconds": 0.19998220799607225
+    },
+    {
+      "achieved_msg_per_s": 3131.3258653843845,
+      "cpu_seconds": 0.12042500000000017,
+      "cpu_utilisation": 0.9427247933472875,
+      "detection_rate": 0.93,
+      "keeping_up": false,
+      "latency_ms_p50": 0.34893750125775114,
+      "latency_ms_p95": 0.4992500034859404,
+      "latency_ms_p99": 0.5535410018637776,
+      "target_msg_per_s": 4000.0,
+      "wall_seconds": 0.12774141599948052
+    }
+  ],
+  "processor": "arm",
+  "python": "3.12.13",
+  "saturation_msg_per_s": 2000.0,
+  "seed": 42,
+  "source_script": "scripts/run_load_sweep.py"
+}

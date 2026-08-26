@@ -1,0 +1,365 @@
+{
+  "best_quarantine_point": {
+    "fpr": 0.0,
+    "tau": 0.8,
+    "tpr": 0.0,
+    "youden_j": 0.0
+  },
+  "data_origin": "real_pipeline",
+  "n_attacks": 1475,
+  "n_benign": 120,
+  "note": "Scored on the firewall alone, not the pipeline: the claim under test is about the firewall's own threshold. An input counts as flagged when the firewall does anything but accept it, because a quarantined message costs an operator a review exactly as a rejected one does.",
+  "quarantine_plateau": {
+    "fpr": 0.19166666666666668,
+    "n_points": 11,
+    "tau_high": 0.75,
+    "tau_low": 0.25,
+    "tpr": 0.08135593220338982
+  },
+  "quarantine_sweep": [
+    {
+      "fpr": 0.3333333333333333,
+      "quarantine_rate": 0.08542372881355932,
+      "reject_rate": 0.0,
+      "tau": 0.0,
+      "tpr": 0.08542372881355932,
+      "youden_j": -0.247909604519774
+    },
+    {
+      "fpr": 0.30833333333333335,
+      "quarantine_rate": 0.08542372881355932,
+      "reject_rate": 0.0,
+      "tau": 0.05,
+      "tpr": 0.08542372881355932,
+      "youden_j": -0.22290960451977404
+    },
+    {
+      "fpr": 0.30833333333333335,
+      "quarantine_rate": 0.08542372881355932,
+      "reject_rate": 0.0,
+      "tau": 0.1,
+      "tpr": 0.08542372881355932,
+      "youden_j": -0.22290960451977404
+    },
+    {
+      "fpr": 0.275,
+      "quarantine_rate": 0.08542372881355932,
+      "reject_rate": 0.0,
+      "tau": 0.15,
+      "tpr": 0.08542372881355932,
+      "youden_j": -0.18957627118644071
+    },
+    {
+      "fpr": 0.2,
+      "quarantine_rate": 0.08135593220338982,
+      "reject_rate": 0.0,
+      "tau": 0.2,
+      "tpr": 0.08135593220338982,
+      "youden_j": -0.11864406779661019
+    },
+    {
+      "fpr": 0.19166666666666668,
+      "quarantine_rate": 0.08135593220338982,
+      "reject_rate": 0.0,
+      "tau": 0.25,
+      "tpr": 0.08135593220338982,
+      "youden_j": -0.11031073446327685
+    },
+    {
+      "fpr": 0.19166666666666668,
+      "quarantine_rate": 0.08135593220338982,
+      "reject_rate": 0.0,
+      "tau": 0.3,
+      "tpr": 0.08135593220338982,
+      "youden_j": -0.11031073446327685
+    },
+    {
+      "fpr": 0.19166666666666668,
+      "quarantine_rate": 0.08135593220338982,
+      "reject_rate": 0.0,
+      "tau": 0.35,
+      "tpr": 0.08135593220338982,
+      "youden_j": -0.11031073446327685
+    },
+    {
+      "fpr": 0.19166666666666668,
+      "quarantine_rate": 0.08135593220338982,
+      "reject_rate": 0.0,
+      "tau": 0.4,
+      "tpr": 0.08135593220338982,
+      "youden_j": -0.11031073446327685
+    },
+    {
+      "fpr": 0.19166666666666668,
+      "quarantine_rate": 0.08135593220338982,
+      "reject_rate": 0.0,
+      "tau": 0.45,
+      "tpr": 0.08135593220338982,
+      "youden_j": -0.11031073446327685
+    },
+    {
+      "fpr": 0.19166666666666668,
+      "quarantine_rate": 0.08135593220338982,
+      "reject_rate": 0.0,
+      "tau": 0.5,
+      "tpr": 0.08135593220338982,
+      "youden_j": -0.11031073446327685
+    },
+    {
+      "fpr": 0.19166666666666668,
+      "quarantine_rate": 0.08135593220338982,
+      "reject_rate": 0.0,
+      "tau": 0.55,
+      "tpr": 0.08135593220338982,
+      "youden_j": -0.11031073446327685
+    },
+    {
+      "fpr": 0.19166666666666668,
+      "quarantine_rate": 0.08135593220338982,
+      "reject_rate": 0.0,
+      "tau": 0.6,
+      "tpr": 0.08135593220338982,
+      "youden_j": -0.11031073446327685
+    },
+    {
+      "fpr": 0.19166666666666668,
+      "quarantine_rate": 0.08135593220338982,
+      "reject_rate": 0.0,
+      "tau": 0.65,
+      "tpr": 0.08135593220338982,
+      "youden_j": -0.11031073446327685
+    },
+    {
+      "fpr": 0.19166666666666668,
+      "quarantine_rate": 0.08135593220338982,
+      "reject_rate": 0.0,
+      "tau": 0.7,
+      "tpr": 0.08135593220338982,
+      "youden_j": -0.11031073446327685
+    },
+    {
+      "fpr": 0.19166666666666668,
+      "quarantine_rate": 0.08135593220338982,
+      "reject_rate": 0.0,
+      "tau": 0.75,
+      "tpr": 0.08135593220338982,
+      "youden_j": -0.11031073446327685
+    },
+    {
+      "fpr": 0.0,
+      "quarantine_rate": 0.0,
+      "reject_rate": 0.0,
+      "tau": 0.8,
+      "tpr": 0.0,
+      "youden_j": 0.0
+    },
+    {
+      "fpr": 0.0,
+      "quarantine_rate": 0.0,
+      "reject_rate": 0.0,
+      "tau": 0.85,
+      "tpr": 0.0,
+      "youden_j": 0.0
+    },
+    {
+      "fpr": 0.0,
+      "quarantine_rate": 0.0,
+      "reject_rate": 0.0,
+      "tau": 0.9,
+      "tpr": 0.0,
+      "youden_j": 0.0
+    },
+    {
+      "fpr": 0.0,
+      "quarantine_rate": 0.0,
+      "reject_rate": 0.0,
+      "tau": 0.95,
+      "tpr": 0.0,
+      "youden_j": 0.0
+    },
+    {
+      "fpr": 0.0,
+      "quarantine_rate": 0.0,
+      "reject_rate": 0.0,
+      "tau": 1.0,
+      "tpr": 0.0,
+      "youden_j": 0.0
+    }
+  ],
+  "reject_sweep": [
+    {
+      "fpr": 0.3333333333333333,
+      "quarantine_rate": 0.0,
+      "reject_rate": 0.08542372881355932,
+      "tau": 0.0,
+      "tpr": 0.08542372881355932,
+      "youden_j": -0.247909604519774
+    },
+    {
+      "fpr": 0.3,
+      "quarantine_rate": 0.0,
+      "reject_rate": 0.08542372881355932,
+      "tau": 0.05,
+      "tpr": 0.08542372881355932,
+      "youden_j": -0.21457627118644068
+    },
+    {
+      "fpr": 0.3,
+      "quarantine_rate": 0.0,
+      "reject_rate": 0.08542372881355932,
+      "tau": 0.1,
+      "tpr": 0.08542372881355932,
+      "youden_j": -0.21457627118644068
+    },
+    {
+      "fpr": 0.21666666666666667,
+      "quarantine_rate": 0.0,
+      "reject_rate": 0.08135593220338982,
+      "tau": 0.15,
+      "tpr": 0.08135593220338982,
+      "youden_j": -0.13531073446327685
+    },
+    {
+      "fpr": 0.2,
+      "quarantine_rate": 0.0,
+      "reject_rate": 0.08135593220338982,
+      "tau": 0.2,
+      "tpr": 0.08135593220338982,
+      "youden_j": -0.11864406779661019
+    },
+    {
+      "fpr": 0.19166666666666668,
+      "quarantine_rate": 0.0,
+      "reject_rate": 0.08135593220338982,
+      "tau": 0.25,
+      "tpr": 0.08135593220338982,
+      "youden_j": -0.11031073446327685
+    },
+    {
+      "fpr": 0.19166666666666668,
+      "quarantine_rate": 0.0,
+      "reject_rate": 0.08135593220338982,
+      "tau": 0.3,
+      "tpr": 0.08135593220338982,
+      "youden_j": -0.11031073446327685
+    },
+    {
+      "fpr": 0.19166666666666668,
+      "quarantine_rate": 0.0,
+      "reject_rate": 0.08135593220338982,
+      "tau": 0.35,
+      "tpr": 0.08135593220338982,
+      "youden_j": -0.11031073446327685
+    },
+    {
+      "fpr": 0.19166666666666668,
+      "quarantine_rate": 0.0,
+      "reject_rate": 0.08135593220338982,
+      "tau": 0.4,
+      "tpr": 0.08135593220338982,
+      "youden_j": -0.11031073446327685
+    },
+    {
+      "fpr": 0.19166666666666668,
+      "quarantine_rate": 0.0,
+      "reject_rate": 0.08135593220338982,
+      "tau": 0.45,
+      "tpr": 0.08135593220338982,
+      "youden_j": -0.11031073446327685
+    },
+    {
+      "fpr": 0.19166666666666668,
+      "quarantine_rate": 0.0,
+      "reject_rate": 0.08135593220338982,
+      "tau": 0.5,
+      "tpr": 0.08135593220338982,
+      "youden_j": -0.11031073446327685
+    },
+    {
+      "fpr": 0.19166666666666668,
+      "quarantine_rate": 0.0,
+      "reject_rate": 0.08135593220338982,
+      "tau": 0.55,
+      "tpr": 0.08135593220338982,
+      "youden_j": -0.11031073446327685
+    },
+    {
+      "fpr": 0.19166666666666668,
+      "quarantine_rate": 0.0,
+      "reject_rate": 0.08135593220338982,
+      "tau": 0.6,
+      "tpr": 0.08135593220338982,
+      "youden_j": -0.11031073446327685
+    },
+    {
+      "fpr": 0.19166666666666668,
+      "quarantine_rate": 0.0,
+      "reject_rate": 0.08135593220338982,
+      "tau": 0.65,
+      "tpr": 0.08135593220338982,
+      "youden_j": -0.11031073446327685
+    },
+    {
+      "fpr": 0.19166666666666668,
+      "quarantine_rate": 0.0,
+      "reject_rate": 0.08135593220338982,
+      "tau": 0.7,
+      "tpr": 0.08135593220338982,
+      "youden_j": -0.11031073446327685
+    },
+    {
+      "fpr": 0.19166666666666668,
+      "quarantine_rate": 0.0,
+      "reject_rate": 0.08135593220338982,
+      "tau": 0.75,
+      "tpr": 0.08135593220338982,
+      "youden_j": -0.11031073446327685
+    },
+    {
+      "fpr": 0.19166666666666668,
+      "quarantine_rate": 0.08135593220338982,
+      "reject_rate": 0.0,
+      "tau": 0.8,
+      "tpr": 0.08135593220338982,
+      "youden_j": -0.11031073446327685
+    },
+    {
+      "fpr": 0.19166666666666668,
+      "quarantine_rate": 0.08135593220338982,
+      "reject_rate": 0.0,
+      "tau": 0.85,
+      "tpr": 0.08135593220338982,
+      "youden_j": -0.11031073446327685
+    },
+    {
+      "fpr": 0.19166666666666668,
+      "quarantine_rate": 0.08135593220338982,
+      "reject_rate": 0.0,
+      "tau": 0.9,
+      "tpr": 0.08135593220338982,
+      "youden_j": -0.11031073446327685
+    },
+    {
+      "fpr": 0.19166666666666668,
+      "quarantine_rate": 0.08135593220338982,
+      "reject_rate": 0.0,
+      "tau": 0.95,
+      "tpr": 0.08135593220338982,
+      "youden_j": -0.11031073446327685
+    },
+    {
+      "fpr": 0.19166666666666668,
+      "quarantine_rate": 0.08135593220338982,
+      "reject_rate": 0.0,
+      "tau": 1.0,
+      "tpr": 0.08135593220338982,
+      "youden_j": -0.11031073446327685
+    }
+  ],
+  "seed": 42,
+  "shipped": {
+    "injection_threshold": 0.8,
+    "suspicious_threshold": 0.5
+  },
+  "source_script": "scripts/run_threshold_sweep.py"
+}
