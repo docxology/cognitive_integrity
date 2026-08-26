@@ -157,11 +157,40 @@ def test_identity_coherence():
 # ---------------------------------------------------------------------------
 
 
-def test_config_yaml_version():
-    """config.yaml must be at version 1.0 for this release."""
-    config_path = PROJECT_ROOT / "manuscript" / "config.yaml"
-    content = config_path.read_text()
-    assert 'version: "1.0"' in content, "config.yaml must be at version 1.0"
+def test_config_yaml_version_matches_the_series():
+    """All three papers must declare the same version.
+
+    This pinned the literal ``version: "1.0"``, which made every release bump a
+    test edit and, worse, made the test pass whenever this paper's version was
+    right regardless of what the other two said. The three are versioned
+    together because they share one measurement layer -- Part 2 produces the
+    artifacts and Parts 1 and 3 cite them -- so the failure worth catching is
+    one paper being bumped and the others not.
+
+    The CHANGELOG's newest entry is the authority; the papers follow it.
+    """
+    import re
+
+    series_root = PROJECT_ROOT.parent
+    changelog = (series_root / "CHANGELOG.md").read_text(encoding="utf-8")
+    released = re.search(r"^## \[(\d+\.\d+\.\d+)\]", changelog, re.M)
+    assert released, "CHANGELOG.md has no released version to check against"
+    major_minor = ".".join(released.group(1).split(".")[:2])
+
+    declared = {}
+    for part in sorted(series_root.glob("cogsec_multiagent_*")):
+        config = part / "manuscript" / "config.yaml"
+        if not config.is_file():
+            continue
+        match = re.search(r"^\s*version:\s*['\"]([^'\"]+)['\"]", config.read_text(), re.M)
+        assert match, f"{part.name} declares no version"
+        declared[part.name] = match.group(1)
+
+    assert len(declared) == 3, f"expected three papers, found {sorted(declared)}"
+    assert set(declared.values()) == {major_minor}, (
+        f"the papers disagree about the version: {declared}, against "
+        f"{major_minor} in CHANGELOG.md"
+    )
 
 
 def test_config_yaml_merged_title():
