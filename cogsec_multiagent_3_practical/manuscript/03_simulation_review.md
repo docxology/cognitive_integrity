@@ -108,9 +108,7 @@ and its constructor
 three canaries; `get_canary_count()` on the resulting adapter returns
 `{'identity': 1, 'boundary': 1, 'principal': 1, 'temporal': 0, 'general': 0}`.
 `add_temporal_canary` is defined in `src/core/tripwire.py` but never called, so
-no temporal canary is installed anywhere. An earlier revision of this table
-reported 3+ identity, 5+ boundary, 2+ principal and 1 temporal canary per agent;
-those densities were never run.
+no temporal canary is installed anywhere.
 
 | Category | Count Used in Sim | Placement Strategy |
 |----------|-------------------|-------------------|

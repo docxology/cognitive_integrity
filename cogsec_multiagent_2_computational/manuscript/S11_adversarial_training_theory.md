@@ -73,10 +73,10 @@ $(1 - \alpha L)$ when $\alpha \leq 1/L$. The contraction mapping theorem then
 gives the stated geometric convergence rate.
 \end{proof}
 
-**Corollary S11.1 (withdrawn).** An earlier revision recovered a Lipschitz
-constant here, reading an observed geometric decay ratio of $\approx 0.65$ as
-$1 - \alpha L$ and combining it with $\alpha = 0.05$ to obtain $L \approx 7$.
-Neither input survives inspection. The step size is real: `ATConfig.learning_rate`
+**No Lipschitz constant is recoverable from the AT results.** The contraction
+bound above invites reading an observed geometric decay ratio as $1 - \alpha L$
+and solving for $L$ given the step size. Neither input supports it. The step
+size is real: `ATConfig.learning_rate`
 is $0.05$ and `AdversarialTrainer.run_round` applies `learning_rate * gradient`
 to every threshold. But in the default `model` measurement mode --- the mode that
 produced the AT results of §\ref{sec:at-convergence} --- the reported round

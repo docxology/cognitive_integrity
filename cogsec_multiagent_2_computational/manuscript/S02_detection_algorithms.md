@@ -46,14 +46,27 @@ Table: Detector performance comparison via ROC metrics. {#tab:detector-roc}
 | Tripwire | 0.79 | 0.45 | 0.48 | 0.65 |
 | Ensemble | **0.94** | 0.35 | **0.82** | **0.91** |
 
-*Note: These are design-level detector AUC values from parametric evaluation on the calibrated attack corpus. Empirical ensemble performance with current adapter implementations shows lower realized detection rates (see \cref{sec:extended-results}).*
-
-Table: Empirical AUC with 95\% confidence intervals. {#tab:auc-ci}
+Table: Detector AUC over the attack and hard benign corpora, with percentile bootstrap intervals. {#tab:auc-ci}
 
 | Detector  | AUC  | 95\% CI |
 | --- | --- | --- |
-| Drift Score | 0.87 | [0.84, 0.90] |
-| Ensemble | 0.94 | [0.92, 0.96] |
+| Invariants | 0.915 | [0.908, 0.926] |
+| Ensemble (all eight, equal weight) | 0.915 | [0.869, 0.926] |
+| Firewall pattern matcher | 0.383 | [0.334, 0.430] |
+| Drift score | 0.374 | [0.338, 0.419] |
+
+*Measured by `scripts/run_detector_auc.py` over 1,475 attacks and 120 benign
+messages, with each interval a percentile bootstrap over 1,000 resamples of the
+labelled set. The ensemble is WeightedAverageFusion, equal weights over all eight modules.*
+
+*Two of the four sit below 0.5, which is the substantive result here. As ranked scorers over this
+corpus the drift score and the firewall pattern matcher order a random attack above a random benign
+message less often than chance would, and their intervals exclude 0.5 from below. That is consistent
+with what the ablation and the threshold sweep report for the same two components independently, and
+it means their contribution to the pipeline comes from the specific inputs they flag rather than
+from any general ability to rank. The ensemble's AUC is the invariants module's to three decimals,
+with a wider interval: averaging seven weak scorers into one strong one costs precision and buys
+nothing.*
 
 ## Multi-Detector Fusion Algorithm
 

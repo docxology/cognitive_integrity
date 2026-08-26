@@ -156,8 +156,8 @@ Per-$\Omega$ detection rates are deliberately **not** reported here. The only
 per-level numbers the codebase can produce come from
 `AdversarialTrainer.omega_level_dr()`, which scales one hardened detection rate by a
 fixed per-level constant; they are a property of those constants, not a measurement
-of per-class performance. An earlier revision tabulated them, and this section
-retains its label only so that cross-references from the rest of the series resolve.
+of per-class performance. They are therefore not tabulated here, and this section retains its label so
+that cross-references from the rest of the series resolve.
 Establishing measured per-$\Omega$ rates requires a runtime `omega_level`
 annotation on `AttackSample`, which the corpus generator does not currently emit
 (\cref{sec:omega-mapping}); that is the prerequisite for this analysis, and it is
