@@ -2,12 +2,12 @@ paper:
   title: 'Cognitive Integrity Framework: Practical Applications and Deployment Guide'
   subtitle: 'Part 3: Practitioner Guidance and Cross-Domain CIF-AD-OODA Applications'
   short_title: CIF Practical & Applications
-  version: "1.0"
+  version: "2.0"
   type: review
   series: Cognitive Security for Multiagent Operators
   part: 3+4
   doi: 10.5281/zenodo.18364130
-  date: '2026-08-21'
+  date: '2026-08-26'
   cover:
     image: ../output/figures/domain_coverage.png
     title: CIF-AD-OODA Cross-Domain Threat and Defense Synthesis

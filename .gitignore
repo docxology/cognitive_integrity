@@ -38,3 +38,12 @@ htmlcov/
 
 # Generated project outputs
 **/output/
+
+# Build logs. They record absolute paths of whoever rendered, which is
+# machine-specific noise in a public repository and a B7 blocker in the
+# publication gate.
+output/**/*.log
+**/output/**/*.log
+manuscript_verification.log
+output/reports/output_statistics.txt
+**/output/reports/output_statistics.txt

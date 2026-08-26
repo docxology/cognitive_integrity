@@ -2,13 +2,13 @@ paper:
   title: "Cognitive Integrity Framework: Formal Foundations"
   subtitle: "Part 1 of 3: Theoretical Foundations"
   short_title: "CIF Theory"
-  version: "1.1"
+  version: "2.0"
   edition: "first"
   type: "research"
   series: "Cognitive Security for Multiagent Operators"
   part: 1
   doi: "10.5281/zenodo.18364119"
-  date: "2026-08-21"
+  date: "2026-08-26"
   previous_version_doi: ""  # v1.1 is the initial public deposition
   changelog: |
     v1.1 (2026-08-21): Manuscript polish pass:

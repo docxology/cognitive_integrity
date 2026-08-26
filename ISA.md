@@ -36,7 +36,7 @@ A reader who re-runs `scripts/run_ablation.py` (or any other data-generating scr
 ## Constraints
 
 - No Mocks policy (repo-wide `CLAUDE.md`): all tests must stay real-first; no `MagicMock`/`mocker.patch`/`unittest.mock`.
-- `cognitive_integrity` is a **separate git repository** at `/Users/4d/Documents/GitHub/projects/working/cognitive_integrity`, only symlinked into the public template repo — all commits/checkpoints for this work target that sidecar repo, never the outer template repo's history.
+- `cognitive_integrity` is a **separate git repository** at ``, only symlinked into the public template repo — all commits/checkpoints for this work target that sidecar repo, never the outer template repo's history.
 - Coverage floor for Paper 2 is 90% (`pyproject.toml` `fail_under = 90`); currently 94.65% — must not regress below 90%.
 - `ablation_results.json` (and any other `output/data/*.json` treated as ground truth by `tests/test_manuscript_claims.py`) must be produced by actually running its generator script this session before being cited as fact — hand-editing the JSON to match desired numbers is forbidden.
 - 232 pre-existing uncommitted files represent real prior work (not created this session) — must not be discarded, reset, or blown away; only added to / built upon, and committed in reviewable slices tied to what actually changed.

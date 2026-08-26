@@ -2,12 +2,12 @@ paper:
   title: 'Cognitive Integrity Framework: Computational Validation and Empirical Analysis'
   subtitle: 'Part 2 of 3: Implementation, Empirical Analysis, and Adversarial Evaluation'
   short_title: CIF Validation
-  version: '1.0'
+  version: '2.0'
   type: research
   series: Cognitive Security for Multiagent Operators
   part: 2
   doi: 10.5281/zenodo.18364128
-  date: '2026-08-21'
+  date: '2026-08-26'
   cover:
     image: ../output/figures/cif_comprehensive.png
     title: End-to-End Computational Validation Flow and Adversary Defense Lattice
