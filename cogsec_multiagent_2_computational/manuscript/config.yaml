@@ -11,7 +11,7 @@ paper:
   cover:
     image: ../output/figures/cif_comprehensive.png
     title: End-to-End Computational Validation Flow and Adversary Defense Lattice
-    alt: "End-to-end CIF data-flow diagram: input sources pass through defense, detection, agent, and coordination layers before reaching external services; side panels list safety properties and key metrics including a 94 percent design-level detection rate."
+    alt: "End-to-end CIF data-flow diagram: input sources pass through defense, detection, agent, and coordination layers before reaching external services; side panels list safety properties and the measured headline metrics, which the figure reads from the evaluation artifacts rather than carrying as text."
 authors:
 - name: Daniel Ari Friedman
   email: daniel@activeinference.institute

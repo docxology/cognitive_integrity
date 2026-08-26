@@ -14,11 +14,12 @@ keywords:
   - trust calculus
   - cognitive integrity framework
 abstract: "A three-part research series (Cognitive Security for Multiagent Operators) establishing the theoretical foundations, computational validation, and practical guidance for the Cognitive Integrity Framework (CIF): trust calculus, defense composition algebra, and defense-in-depth security for multiagent AI systems."
+version: "2.0.0"
 date-released: "2026-08-26"
 preferred-citation:
   type: article
   title: "Cognitive Integrity Framework: Formal Foundations (Part 1, Second Edition)"
-  version: "1.1"
+  version: "2.0"
   doi: "10.5281/zenodo.18364119"
   year: 2026
   authors:
@@ -27,7 +28,7 @@ preferred-citation:
 references:
   - type: article
     title: "Cognitive Integrity Framework: Formal Foundations (Part 1, Second Edition)"
-    version: "1.1"
+    version: "2.0"
     doi: "10.5281/zenodo.18364119"
     year: 2026
     authors:
@@ -35,7 +36,7 @@ references:
         given-names: Daniel Ari
   - type: article
     title: "Cognitive Integrity Framework: Computational Validation and Empirical Analysis (Part 2, Second Edition)"
-    version: "1.0"
+    version: "2.0"
     doi: "10.5281/zenodo.18364128"
     year: 2026
     authors:
@@ -43,7 +44,7 @@ references:
         given-names: Daniel Ari
   - type: article
     title: "CIF Practical Applications and Deployment Guide (Parts 3 + 4, Unified)"
-    version: "1.0"
+    version: "2.0"
     doi: "10.5281/zenodo.18364130"
     year: 2026
     authors:

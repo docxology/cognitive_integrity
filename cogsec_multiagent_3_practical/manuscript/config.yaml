@@ -11,7 +11,7 @@ paper:
   cover:
     image: ../output/figures/domain_coverage.png
     title: CIF-AD-OODA Cross-Domain Threat and Defense Synthesis
-    alt: "Bar chart of goal-hijacking attack patterns across ten critical domains, color-coded by pattern: FR polarity inversion (5 domains), context boundary violation (3), and constraint relaxation (2)."
+    alt: "Categorical chart of goal-hijacking attack patterns across ten critical domains. Each domain is a labelled marker in the row of its single dominant pattern: FR polarity inversion (5 of 10 domains), constraint relaxation (1), and context boundary violation (4)."
 authors:
 - name: Daniel Ari Friedman
   email: daniel@activeinference.institute

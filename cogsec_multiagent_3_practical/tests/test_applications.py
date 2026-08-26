@@ -9,6 +9,8 @@ row cannot silently drift from the paper.
 from __future__ import annotations
 
 import re
+
+import pytest
 from pathlib import Path
 
 import numpy as np
@@ -74,6 +76,17 @@ class TestRendering:
         assert len(paths) == 2
         for p in paths:
             assert p.exists() and p.stat().st_size > 0, p
+
+    def test_plot_attack_patterns_rejects_a_non_one_hot_matrix(self, tmp_path, monkeypatch):
+        """The figure reads argmax as *the* pattern; a row with two marks would
+        be silently drawn as one, so the guard must refuse rather than draw."""
+        import src.applications.domain_coverage as dc
+
+        broken = dc.ATTACK_PATTERNS.copy()
+        broken[0, 1] = 1.0  # row 0 now carries two patterns
+        monkeypatch.setattr(dc, "ATTACK_PATTERNS", broken)
+        with pytest.raises(ValueError, match="one-hot"):
+            dc.plot_attack_patterns(tmp_path)
 
     def test_plot_cif_mechanism_coverage_writes_png_and_pdf(self, tmp_path):
         paths = plot_cif_mechanism_coverage(tmp_path)

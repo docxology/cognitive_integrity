@@ -308,7 +308,7 @@ Levels}
 \textbf{Level 2 --- The pipeline detects attacks in practice}
 (confidence: moderate). The multi-seed pipeline analysis (30 seeds,
 Claude Code architecture) achieves a mean detection rate of 86.3\%
-{[}95\% CI: 43.2\%, 46.4\%{]}. The LLM-backed multiagent validation
+{[}95\% CI: 85.5\%, 87.1\%{]}. The LLM-backed multiagent validation
 (\(N=10\), Gemma 3 4B) achieves 80\%--100\% across two architectures.
 These are meaningful but not high detection rates---they reflect adapter
 implementation at CMMI Level 3 (Statistical), not the design ceiling.
@@ -320,10 +320,10 @@ Levels}
 \textbf{Level 3 --- The defense ceiling is achievable} (confidence:
 moderate-high). The parametric simulation (\(N=3{,}800\)) establishes
 that fully-mature (Level 5) adapters achieve 96--100\% detection,
-consistent with the formal design. The gap between Level 3 (44.8\%) and
-Level 5 (96\%) is an engineering challenge, not a theoretical
-limitation. The roadmap in Part 2 projects +35--41 percentage points of
-improvement through adapter maturation.
+consistent with the formal design. The gap between the measured pipeline
+(86.3\%) and Level 5 (96\%) is an engineering challenge, not a
+theoretical limitation. The roadmap in Part 2 projects +35--41
+percentage points of improvement through adapter maturation.
 
 \end{frame}
 
@@ -354,7 +354,7 @@ The core recommendations are:
   stack reached a 96--100\% parametric detection ceiling that no partial
   configuration matched. The real pipeline teaches the sharper lesson:
   on Part\textasciitilde2's 100-attack ablation corpus the Invariants
-  checker alone reaches 92.9\% against the full stack's 95.9\%, and five
+  checker alone reaches 83.3\% against the full stack's 89.0\%, and six
   of the eight modules show no measurable marginal contribution. Design
   security into the architecture rather than bolting it on, but do not
   assume every layer you add is earning its latency --- check each one's
@@ -544,12 +544,12 @@ two unlike measurements. The wide end is the one the Bayes factor speaks
 to: the distance from the ceiling to the 30-seed pipeline mean of
 86.3\%, which is not noise---the Bayes factor for a true performance gap
 exceeds \(10^6\) (decisive evidence). The narrow end is the distance
-from the ceiling to the 95.9\% the pipeline reaches on the 100-attack
-ablation corpus after the Invariants rewrite; no Bayes factor has been
-computed for that arm, and it should not borrow the first one's
-authority. The wide end is what reflects adapter implementation
-maturity, and maturation takes time and resources. Plan your deployment
-timeline and security posture accordingly.
+from the ceiling to the 89.0\% the pipeline reaches on the 100-attack
+ablation corpus; no Bayes factor has been computed for that arm, and it
+should not borrow the first one's authority. The wide end is what
+reflects adapter implementation maturity, and maturation takes time and
+resources. Plan your deployment timeline and security posture
+accordingly.
 
 \end{frame}
 

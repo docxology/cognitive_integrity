@@ -603,12 +603,7 @@ resulting adapter returns
 \texttt{\{\textquotesingle{}identity\textquotesingle{}:\ 1,\ \textquotesingle{}boundary\textquotesingle{}:\ 1,\ \textquotesingle{}principal\textquotesingle{}:\ 1,\ \textquotesingle{}temporal\textquotesingle{}:\ 0,\ \textquotesingle{}general\textquotesingle{}:\ 0\}}.
 \breaktt{add\_temporal\_canary} is defined in
 \breaktt{src/core/tripwire.py} but never called, so no temporal canary is
-installed anywhere. An earlier revision of this table reported 3+
-identity, 5+ boundary, 2+ principal and 1 temporal canary per agent;
-\end{frame}
-
-\begin{frame}[fragile,allowframebreaks]{Tripwire Configuration Data}
-those densities were never run.
+installed anywhere.
 
 \end{frame}
 

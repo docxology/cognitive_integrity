@@ -94,73 +94,95 @@ def domain_coverage_payload() -> dict[str, object]:
 
 
 def plot_attack_patterns(output_dir: Path) -> list[Path]:
-    """Figure 1: attack pattern distribution across ten domains."""
+    """Figure 1: which goal-hijacking pattern each of the ten domains exhibits.
+
+    ATTACK_PATTERNS is one-hot by row: every domain is assigned exactly one of
+    three patterns. Drawing that as stacked bars gave every domain a bar of
+    height exactly 1, so the quantitative axis carried no information and the
+    y-label ("Attack Pattern Present") read as a measurement that had come out
+    identical everywhere. It is a categorical assignment, and it is drawn as
+    one: a row per pattern, a marked cell per domain, and the row totals beside
+    the row they describe rather than in a right-hand margin the legend
+    overlapped.
+    """
     output_dir.mkdir(parents=True, exist_ok=True)
-    fig, ax = plt.subplots(figsize=(16, 7))
+    fig, ax = plt.subplots(figsize=(15, 5.2))
 
-    x = np.arange(len(DOMAINS_SHORT))
-    width = 0.6
-    bottom = np.zeros(len(DOMAINS_SHORT))
-    for i, (pattern, color) in enumerate(zip(PATTERN_LABELS, PATTERN_COLORS)):
-        values = ATTACK_PATTERNS[:, i]
-        ax.bar(
-            x,
-            values,
-            width,
-            bottom=bottom,
-            label=pattern,
-            color=color,
-            edgecolor="white",
-            linewidth=0.5,
+    n_domains = len(DOMAINS_SHORT)
+    n_patterns = len(PATTERN_LABELS)
+    assignment = ATTACK_PATTERNS.argmax(axis=1)
+    # One-hot is the precondition for reading argmax as "the" pattern; a row
+    # with zero or two marks would be silently drawn as one.
+    if not np.array_equal(ATTACK_PATTERNS.sum(axis=1), np.ones(n_domains)):
+        raise ValueError(
+            "ATTACK_PATTERNS is no longer one-hot by row; this figure assigns "
+            "exactly one pattern per domain and cannot represent the matrix"
         )
-        bottom += values
 
+    for row in range(n_patterns):
+        ax.axhspan(row - 0.5, row + 0.5, color=PATTERN_COLORS[row], alpha=0.06, zorder=0)
+
+    for domain, row in enumerate(assignment):
+        ax.scatter(
+            domain,
+            row,
+            s=520,
+            color=PATTERN_COLORS[row],
+            edgecolor="white",
+            linewidth=1.6,
+            zorder=3,
+        )
+        ax.text(
+            domain,
+            row,
+            DOMAINS_SHORT[domain],
+            ha="center",
+            va="center",
+            fontsize=8.5,
+            color="white",
+            fontweight="bold",
+            zorder=4,
+        )
+
+    totals = ATTACK_PATTERNS.sum(axis=0)
+    ax.set_xlim(-0.7, n_domains + 1.4)
+    ax.set_ylim(n_patterns - 0.5, -0.9)
+    ax.set_yticks(range(n_patterns))
+    ax.set_yticklabels(PATTERN_LABELS, fontsize=11)
+    for row, colour in enumerate(PATTERN_COLORS):
+        ax.get_yticklabels()[row].set_color(colour)
+        ax.text(
+            n_domains + 0.2,
+            row,
+            f"{int(totals[row])}/{n_domains}",
+            ha="left",
+            va="center",
+            fontsize=11,
+            color=colour,
+            fontweight="bold",
+        )
+
+    ax.set_xticks(range(n_domains))
+    ax.set_xticklabels(
+        [DOMAINS[i].split(". ")[1] for i in range(n_domains)],
+        fontsize=9,
+        rotation=25,
+        ha="right",
+    )
     ax.set_xlabel("Domain", fontsize=12)
-    ax.set_ylabel("Attack Pattern Present", fontsize=12)
     ax.set_title(
         "Goal Hijacking Attack Pattern Distribution Across Ten Critical Domains\n"
-        "(CIF-AD-OODA Cross-Domain Analysis, §10)",
+        "(CIF-AD-OODA Cross-Domain Analysis, \u00a710; each domain exhibits exactly one pattern)",
         fontsize=13,
         fontweight="bold",
         pad=12,
     )
-    ax.set_xticks(x)
-    ax.set_xticklabels(DOMAINS_SHORT, fontsize=10)
-    ax.set_yticks([0, 1])
-    ax.set_ylim(0, 1.4)
-    ax.legend(loc="upper right", fontsize=10, framealpha=0.9)
+    for spine in ("top", "right", "left"):
+        ax.spines[spine].set_visible(False)
+    ax.tick_params(axis="y", length=0)
+    ax.grid(axis="x", alpha=0.25, linestyle=":", zorder=1)
 
-    for i, name in enumerate(DOMAINS_SHORT):
-        ax.text(
-            i,
-            -0.18,
-            DOMAINS[i].split(". ")[1],
-            ha="center",
-            va="top",
-            fontsize=8,
-            rotation=30,
-            transform=ax.get_xaxis_transform(),
-        )
-
-    totals = ATTACK_PATTERNS.sum(axis=0)
-    # Place the per-pattern totals in *data* coordinates in a right-hand margin
-    # (previously they used transAxes with x ~ len(DOMAINS)+0.1, which is outside
-    # the [0,1] axes fraction and rendered the callouts off-canvas/invisible).
-    ax.set_xlim(-0.6, len(DOMAINS_SHORT) + 2.5)
-    for i, (label, total) in enumerate(zip(PATTERN_LABELS, totals)):
-        ax.text(
-            len(DOMAINS_SHORT) + 0.2,
-            1.3 - i * 0.1,
-            f"{label}: {int(total)}/10",
-            transform=ax.transData,
-            ha="left",
-            va="top",
-            fontsize=9,
-            color=PATTERN_COLORS[i],
-            fontweight="bold",
-        )
-
-    fig.tight_layout(rect=(0, 0.12, 1, 1))
+    fig.tight_layout()
     paths: list[Path] = []
     for ext in ("png", "pdf"):
         path = output_dir / f"domain_coverage.{ext}"

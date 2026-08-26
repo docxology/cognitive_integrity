@@ -206,9 +206,10 @@ def plot_detection_performance(output_dir: str | Path = "output/figures") -> plt
     # The panel now reads full_evaluation_results.json, which is the same
     # 4 x 4 shape, is produced by scripts/run_full_evaluation.py, and carries
     # per-cell counts. So the intervals can be real: Wilson on
-    # true_positives out of n_attacks. They are narrow, because the parametric
-    # arm evaluates 500 attacks per cell, and a narrow interval honestly
-    # derived is worth more than a wide one invented.
+    # true_positives out of n_attacks, which ranges from 100 to 500 across
+    # cells rather than being uniform. They are narrow because those counts are
+    # large, and a narrow interval honestly derived is worth more than a wide
+    # one invented.
     #
     # It is still not a measurement of a deployed system -- the artifact's
     # sidecar records parametric_simulation and the title says so.

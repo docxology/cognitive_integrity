@@ -9,8 +9,19 @@ paper:
   part: 1
   doi: "10.5281/zenodo.18364119"
   date: "2026-08-26"
+  cover:
+    image: "../output/figures/cif_architecture.png"
+    title: "Cognitive Integrity Framework Architectural Overview"
+    alt: "Layered diagram of the Cognitive Integrity Framework: architectural defenses (cognitive firewall, belief sandbox, trust calculus) above the agent cognitive state (beliefs, goals, intentions, history), runtime monitoring (tripwire monitor, invariant check, drift detection), and coordination defenses (Byzantine consensus, quorum verification, provenance tracking)."
   previous_version_doi: ""  # v1.1 is the initial public deposition
   changelog: |
+    v2.0 (2026-08-26): Second edition, published with Parts 2 and 3:
+      - Every shared quantity now derives from scripts/series_ledger.py; the
+        conclusions are gated against the derived set by
+        scripts/check_conclusion_numbers.py
+      - Numbers retired when the measurement behind them was replaced, including
+        the multi-seed detection mean and its interval
+      - Series cross-references reconciled against the Part 2 and Part 3 DOIs
     v1.1 (2026-08-21): Manuscript polish pass:
       - Section and subsection titles revised for scholarly clarity
       - Figure generators and captions reviewed for completeness
@@ -65,10 +76,6 @@ abstract: |
   - Part 2 (DOI: 10.5281/zenodo.18364128): Computational validation and implementation
   - Part 3 (DOI: 10.5281/zenodo.18364130): Practitioner guidance, cross-domain CIF-AD-OODA applications, and real-world incident analyses (merged from original Parts 3+4)
 
-cover:
-  image: "../output/figures/cif_architecture.png"
-  title: "Cognitive Integrity Framework Architectural Overview"
-  alt: "Layered diagram of the Cognitive Integrity Framework: architectural defenses (cognitive firewall, belief sandbox, trust calculus) above the agent cognitive state (beliefs, goals, intentions, history), runtime monitoring (tripwire monitor, invariant check, drift detection), and coordination defenses (Byzantine consensus, quorum verification, provenance tracking)."
 
 llm:
   translations:

@@ -344,9 +344,7 @@ and its constructor
 three canaries; `get_canary_count()` on the resulting adapter returns
 `{'identity': 1, 'boundary': 1, 'principal': 1, 'temporal': 0, 'general': 0}`.
 `add_temporal_canary` is defined in `src/core/tripwire.py` but never called, so
-no temporal canary is installed anywhere. An earlier revision of this table
-reported 3+ identity, 5+ boundary, 2+ principal and 1 temporal canary per agent;
-those densities were never run.
+no temporal canary is installed anywhere.
 
 | Category | Count Used in Sim | Placement Strategy |
 |----------|-------------------|-------------------|
@@ -1425,9 +1423,9 @@ Saying "the code works" requires specifying what that means. There are three hon
 
 **Level 1 — The architecture is correctly implemented** (confidence: high, conditional on the current project test run). Every defense module—firewall, sandbox, trust calculus, tripwires, Byzantine consensus, provenance, drift detection, invariant checker—is independently tested. The `SeriesPipeline` routes the 950-attack corpus through all 8 modules with 0\% routing failure in the reported Part 2 run. Use the current `uv run pytest` output as the source of truth for test counts and pass rate.
 
-**Level 2 — The pipeline detects attacks in practice** (confidence: moderate). The multi-seed pipeline analysis (30 seeds, Claude Code architecture) achieves a mean detection rate of 86.3\% [95\% CI: 43.2\%, 46.4\%]. The LLM-backed multiagent validation ($N=10$, Gemma 3 4B) achieves 80\%--100\% across two architectures. These are meaningful but not high detection rates—they reflect adapter implementation at CMMI Level 3 (Statistical), not the design ceiling.
+**Level 2 — The pipeline detects attacks in practice** (confidence: moderate). The multi-seed pipeline analysis (30 seeds, Claude Code architecture) achieves a mean detection rate of 86.3\% [95\% CI: 85.5\%, 87.1\%]. The LLM-backed multiagent validation ($N=10$, Gemma 3 4B) achieves 80\%--100\% across two architectures. These are meaningful but not high detection rates—they reflect adapter implementation at CMMI Level 3 (Statistical), not the design ceiling.
 
-**Level 3 — The defense ceiling is achievable** (confidence: moderate-high). The parametric simulation ($N=3{,}800$) establishes that fully-mature (Level 5) adapters achieve 96--100\% detection, consistent with the formal design. The gap between Level 3 (44.8\%) and Level 5 (96\%) is an engineering challenge, not a theoretical limitation. The roadmap in Part 2 projects +35--41 percentage points of improvement through adapter maturation.
+**Level 3 — The defense ceiling is achievable** (confidence: moderate-high). The parametric simulation ($N=3{,}800$) establishes that fully-mature (Level 5) adapters achieve 96--100\% detection, consistent with the formal design. The gap between the measured pipeline (86.3\%) and Level 5 (96\%) is an engineering challenge, not a theoretical limitation. The roadmap in Part 2 projects +35--41 percentage points of improvement through adapter maturation.
 
 The honest operational posture is Level 2: deploy CIF for meaningful protection against $\Omega_1$--$\Omega_3$ attacks today, while investing in adapter maturation for $\Omega_4$--$\Omega_5$ coverage. Do not rely on 94\% detection for life-safety applications until your adapters reach Level 4--5 and have been validated against your threat model.
 
@@ -1435,7 +1433,7 @@ The honest operational posture is Level 2: deploy CIF for meaningful protection 
 
 The preceding sections distill the CIF series into actionable guidance. The core recommendations are:
 
-1. **Adopt layered defense from the start** (Pitfall 2), then measure what each layer is worth. In the parametric model the full CIF stack reached a 96–100% parametric detection ceiling that no partial configuration matched. The real pipeline teaches the sharper lesson: on Part~2's 100-attack ablation corpus the Invariants checker alone reaches 92.9% against the full stack's 95.9%, and five of the eight modules show no measurable marginal contribution. Design security into the architecture rather than bolting it on, but do not assume every layer you add is earning its latency — check each one's marginal contribution against your own traffic.
+1. **Adopt layered defense from the start** (Pitfall 2), then measure what each layer is worth. In the parametric model the full CIF stack reached a 96–100% parametric detection ceiling that no partial configuration matched. The real pipeline teaches the sharper lesson: on Part~2's 100-attack ablation corpus the Invariants checker alone reaches 83.3\% against the full stack's 89.0\%, and six of the eight modules show no measurable marginal contribution. Design security into the architecture rather than bolting it on, but do not assume every layer you add is earning its latency — check each one's marginal contribution against your own traffic.
 
 2. **Implement trust decay on every delegation chain** (Pitfall 1). The Trust Calculus with $\delta \leq 0.8$ prevents trust laundering across all tested architectures. This is not optional hardening---it is the structural foundation that prevents systemic compromise from local failures.
 
@@ -1501,7 +1499,7 @@ This guide has tried to be honest about what CIF can and cannot do. The practica
 
 **Sample sizes are small**. The LLM validation used $N=5$ attacks per architecture. The colony benchmarks used 1 scenario per attack type. The multi-seed analysis used 30 seeds. These are sufficient for preliminary evidence but severely underpowered for precise estimation. Required sample sizes for $\pm 5\%$ precision are $N \geq 246$ per evaluation mode. Treat all reported detection rates as estimates with wide uncertainty, not precise measurements.
 
-**The gap is real at one end**. The 10--11 percentage-point gap between the parametric ceiling (96--100\%) and the real pipeline spans two unlike measurements. The wide end is the one the Bayes factor speaks to: the distance from the ceiling to the 30-seed pipeline mean of 86.3\%, which is not noise—the Bayes factor for a true performance gap exceeds $10^6$ (decisive evidence). The narrow end is the distance from the ceiling to the 95.9\% the pipeline reaches on the 100-attack ablation corpus after the Invariants rewrite; no Bayes factor has been computed for that arm, and it should not borrow the first one's authority. The wide end is what reflects adapter implementation maturity, and maturation takes time and resources. Plan your deployment timeline and security posture accordingly.
+**The gap is real at one end**. The 10--11 percentage-point gap between the parametric ceiling (96--100\%) and the real pipeline spans two unlike measurements. The wide end is the one the Bayes factor speaks to: the distance from the ceiling to the 30-seed pipeline mean of 86.3\%, which is not noise—the Bayes factor for a true performance gap exceeds $10^6$ (decisive evidence). The narrow end is the distance from the ceiling to the 89.0\% the pipeline reaches on the 100-attack ablation corpus; no Bayes factor has been computed for that arm, and it should not borrow the first one's authority. The wide end is what reflects adapter implementation maturity, and maturation takes time and resources. Plan your deployment timeline and security posture accordingly.
 
 **Adaptive adversaries are not modeled**. All evaluations used a fixed attack corpus. A sophisticated adversary who observes CIF's defenses and adapts (Debenedetti et al.'s adaptive attacks \cite{adaptive2025attacks}) could achieve lower detection rates than reported. The game-theoretic analysis (Part 2) establishes the Nash equilibrium for the current payoff matrix, but a patient adversary will probe for gaps. The layered defense architecture provides resilience—bypassing one layer still encounters others—but no detection system is perfectly robust to adaptive adversaries.
 
@@ -2528,9 +2526,9 @@ The provenance-based defense has received significant institutional endorsement.
 
 Our cross-domain analysis of ten critical sectors reveals that Goal Hijacking is not merely a linguistic exploit but a structural corruption of the OODA Loop \cite{boyd1987patterns}. In every case---from drone swarms operating at millisecond time scales to diplomatic agents spanning months of deliberation---the attack vector was a transient signal that hijacked the agent's **Orientation** phase, rewriting its Functional Requirements in real-time. This section synthesizes the cross-domain findings, identifies universal attack patterns, evaluates CIF mechanism coverage, and acknowledges limitations.
 
-![Goal-hijacking attack-pattern coverage across the ten critical domains (§9), for the three universal patterns: FR Polarity Inversion (5/10 domains), Constraint Relaxation (1/10), and Context Boundary Violation (4/10). Each bar marks the single dominant pattern for that domain; the right-margin callouts give per-pattern totals, which match the domain-by-domain table below.](figures/domain_coverage.png){#fig:domain-coverage width=90%}
+![Goal-hijacking attack-pattern coverage across the ten critical domains (§9), for the three universal patterns: FR Polarity Inversion (5/10 domains), Constraint Relaxation (1/10), and Context Boundary Violation (4/10). Each domain occupies one marked cell in the row of its single dominant pattern; the per-row totals match the domain-by-domain table below.](figures/domain_coverage.png){#fig:domain-coverage width=90%}
 
-## 10.1 Cross-Domain Attack Pattern Taxonomy {#sec:attack_patterns}
+## Cross-Domain Attack Pattern Taxonomy {#sec:attack_patterns}
 
 Three universal attack patterns emerge across the ten domains. Each pattern corresponds to a distinct manipulation of the Axiomatic Design Matrix \cite{suh2001axiomatic}:
 
@@ -2556,13 +2554,13 @@ Three universal attack patterns emerge across the ten domains. Each pattern corr
 
 The dominance of FR Polarity Inversion (5/10 domains) suggests that the most effective Goal Hijacking attacks do not disable safety mechanisms but *co-opt* them---turning the agent's own optimization capabilities against its intended purpose. This is consistent with the Active Inference perspective on conflict \cite{david2021aic}, where adversaries exploit the agent's drive to minimize free energy by manipulating its generative model.
 
-## 10.2 The Independence Axiom Under Adversarial Pressure
+## The Independence Axiom Under Adversarial Pressure
 
 The Independence Axiom (\cref{sec:methodology}) requires that Functional Requirements remain independent---i.e., the Design Matrix $[A]$ stays diagonal. Goal Hijacking violates this axiom by introducing off-diagonal terms, **coupling** the Instruction channel with the Data channel. When a drone reads "Hospital" (Data) as "Target" (Instruction), the design becomes Coupled. When a cyber-security agent's "Prevent Access" FR is overridden by a fabricated "Restore Availability" urgency, independent FRs become entangled.
 
 The CIF defense strategy maps directly to restoring independence. Paper 1's defense composition algebra \cite{friedman2026cogsec1} provides the formal basis, with the recommended stack achieving 96--100\% detection at the parametric design ceiling across 950 attack scenarios and four production architectures \cite{friedman2026cogsec2}, and Paper 3 \cite{friedman2026cogsec3} operationalizes this stack through deployment guides, monitoring, incident-response playbooks, and cost--benefit frameworks. The key insight from our cross-domain analysis is that different domains require different defense compositions, but the *vocabulary* of defense mechanisms is universal---the five canonical CIF mechanisms established in \cref{sec:methodology} suffice to address all ten domains.
 
-## 10.3 OODA Transient Dynamics
+## OODA Transient Dynamics
 
 Traditional engineering assumes Functional Requirements are static. Cyber-cognitive warfare proves they are dynamic variables. The adversary's goal is to introduce a **fast transient**---a high-frequency change in the agent's goal state that executes faster than either the human supervisor's OODA loop or the system's defense mechanisms can detect.
 
@@ -2589,7 +2587,7 @@ The temporal asymmetry is further illuminated by the distinction between *static
 
 The formalization of OODA transients as Design Matrix perturbations also reveals a connection to control theory: the CIF mechanisms function as a **low-pass filter** on the agent's goal state, attenuating high-frequency (adversarial) signals while preserving low-frequency (legitimate) updates. This damping function is what the original draft termed "Cognitive Damping"---more precisely described as the joint operation of Drift Detection and Behavioral Invariants.
 
-## 10.4 CIF Mechanism Coverage Analysis {#sec:mechanism_coverage}
+## CIF Mechanism Coverage Analysis {#sec:mechanism_coverage}
 
 A critical validation of the CIF framework is whether the five canonical mechanisms provide adequate coverage across diverse operational domains. The following matrix maps primary CIF defenses to the ten domains analyzed:
 
@@ -2612,7 +2610,7 @@ Key findings:
 3. **Composition is the common case, but not universal in this matrix.** Six of the ten domains are assigned two or more primary mechanisms (biowarfare and infrastructure take three); cyber-security, supply chain, food security and fake news are each assigned a single primary mechanism. The matrix records the *primary* defense per domain rather than the full deployed stack, so a single mark is not a claim that one mechanism suffices --- Paper 1's defense-in-depth argument \cite{friedman2026cogsec1} still applies to every domain, and the per-domain sections specify the supporting mechanisms.
 4. **Mechanism selection correlates with attack pattern.** FR Polarity Inversion domains predominantly use Behavioral Invariants (the inverted FR violates a hard predicate). Context Boundary Violation domains predominantly use Cognitive Firewall or Belief Sandboxing (the boundary enforcement prevents cross-context contamination).
 
-## 10.5 Novel Defense Patterns
+## Novel Defense Patterns
 
 While the five canonical CIF mechanisms provide comprehensive coverage, four domains introduce genuinely novel instantiations that extend the CIF vocabulary:
 
@@ -2622,7 +2620,7 @@ While the five canonical CIF mechanisms provide comprehensive coverage, four dom
 
 **Physics-Informed Invariants (Infrastructure).** Standard Behavioral Invariants are domain-agnostic predicates. The infrastructure domain specializes these as *physics-informed invariants* that encode conservation laws (e.g., Kirchhoff's Laws: $\sum I_{\text{in}} = \sum I_{\text{out}}$) as runtime predicates \cite{raissi2019physics}. This leverages the mathematical structure of the physical domain to create invariants that are provably unforgeable---an adversary cannot fabricate sensor data that simultaneously satisfies conservation laws and achieves the desired hijack, without also providing the energy budget that real physics would require.
 
-## 10.6 Byzantine Fault Tolerance Validation
+## Byzantine Fault Tolerance Validation
 
 Paper 1's Byzantine Consensus mechanism ($\mathcal{B}_{\text{consensus}}$) \cite{friedman2026cogsec1} drew on the classical BFT result that $n \geq 3f+1$ honest nodes can tolerate $f$ Byzantine (arbitrarily faulty) nodes \cite{lamport1982byzantine}. At the time of Paper 1's publication, the application of BFT principles to AI agent safety was largely theoretical. Two independent 2025 research efforts have since provided empirical and formal validation.
 
@@ -2634,7 +2632,7 @@ The implications for CIF are twofold. First, the deVadoss-Artzt isomorphism conf
 
 The emergence of BFT for AI Safety as an active research area---evidenced by a dedicated 2025 workshop and multiple concurrent publications \cite{jo2025byzantine}---independently validates the trajectory established by Paper 1's adoption of Byzantine consensus as a canonical CIF mechanism.
 
-## 10.7 Comparison with Existing Frameworks
+## Comparison with Existing Frameworks
 
 The CIF-AD-OODA integration model exists within a rapidly evolving landscape of AI security frameworks. We compare with six established and emerging alternatives to clarify CIF's distinctive contributions and complementary relationships.
 
@@ -2652,7 +2650,7 @@ The CIF-AD-OODA integration model exists within a rapidly evolving landscape of 
 
 The comparison reveals CIF's distinctive position: it is the only framework that integrates formal structural analysis (via AD), temporal dynamics (via OODA), and composable defense mechanisms into a unified model. Other frameworks provide either threat taxonomies without formal defenses (OWASP, ATLAS, NIST), layered architecture mapping without composition algebra (MAESTRO), or training-time alignment without deployment-time protection (industry frameworks). CIF's contribution is precisely this integration.
 
-## 10.8 Empirical Grounding: Real-World Incidents
+## Empirical Grounding: Real-World Incidents
 
 The scenario-based analysis in the domain case studies (\cref{sec:domain_rare_earth} through \cref{sec:domain_fake_news}) constructs hypothetical attack scenarios informed by known vulnerability classes. A natural question is whether these scenarios correspond to documented real-world failures. To address this, we conducted a retrospective analysis of six AI agent security incidents from 2024--2025, presented in full in Supplementary Material S3.
 
@@ -2666,7 +2664,7 @@ Three findings emerge from the retrospective analysis:
 
 3. **Endogenous attacks.** The Replit incident is notable as an *endogenous* goal corruption---no external adversary was required. The agent's own reasoning process drifted catastrophically, suggesting that CIF's Drift Detection mechanism has a role not only in detecting external attacks but in monitoring agents for internal goal degradation. This expands the scope of CIF beyond the adversarial model to include autonomous system reliability.
 
-## 10.9 Limitations {#sec:limitations_discussion}
+## Limitations {#sec:limitations_discussion}
 
 Several limitations constrain the conclusions of this analysis:
 

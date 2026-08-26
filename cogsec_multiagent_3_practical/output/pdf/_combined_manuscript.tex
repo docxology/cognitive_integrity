@@ -126,7 +126,7 @@ Deployment Guide}
 \protected\def\breaktt#1{\begingroup\ttfamily\seqsplit{#1}\endgroup}
 \title{Cognitive Integrity Framework: Practical Applications and Deployment Guide}
 \author{Daniel Ari Friedman}
-\date{2026-08-21}
+\date{2026-08-26}
 
 % Core mathematical packages
 \usepackage{amsmath,amssymb,amsthm}
@@ -287,7 +287,7 @@ Deployment Guide}
 {\@date\par}
 \makeatother
 \vfill
-\includegraphics[width=0.98\textwidth,height=0.35\textheight,keepaspectratio,alt={Bar chart of goal-hijacking attack patterns across ten critical domains, color-coded by pattern: FR polarity inversion (5 domains), context boundary violation (3), and constraint relaxation (2).}]{\detokenize{../figures/domain_coverage.png}}
+\includegraphics[width=0.98\textwidth,height=0.35\textheight,keepaspectratio,alt={Categorical chart of goal-hijacking attack patterns across ten critical domains. Each domain is a labelled marker in the row of its single dominant pattern: FR polarity inversion (5 of 10 domains), constraint relaxation (1), and context boundary violation (4).}]{\detokenize{../figures/domain_coverage.png}}
 \vfill
 \end{titlepage}
 \thispagestyle{empty}
@@ -1158,9 +1158,7 @@ resulting adapter returns
 \texttt{\{\textquotesingle{}identity\textquotesingle{}:\ 1,\ \textquotesingle{}boundary\textquotesingle{}:\ 1,\ \textquotesingle{}principal\textquotesingle{}:\ 1,\ \textquotesingle{}temporal\textquotesingle{}:\ 0,\ \textquotesingle{}general\textquotesingle{}:\ 0\}}.
 \breaktt{add\_temporal\_canary} is defined in
 \breaktt{src/core/tripwire.py} but never called, so no temporal canary is
-installed anywhere. An earlier revision of this table reported 3+
-identity, 5+ boundary, 2+ principal and 1 temporal canary per agent;
-those densities were never run.
+installed anywhere.
 
 {\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}
@@ -3512,7 +3510,7 @@ source of truth for test counts and pass rate.
 \textbf{Level 2 --- The pipeline detects attacks in practice}
 (confidence: moderate). The multi-seed pipeline analysis (30 seeds,
 Claude Code architecture) achieves a mean detection rate of 86.3\%
-{[}95\% CI: 43.2\%, 46.4\%{]}. The LLM-backed multiagent validation
+{[}95\% CI: 85.5\%, 87.1\%{]}. The LLM-backed multiagent validation
 (\(N=10\), Gemma 3 4B) achieves 80\%--100\% across two architectures.
 These are meaningful but not high detection rates---they reflect adapter
 implementation at CMMI Level 3 (Statistical), not the design ceiling.
@@ -3520,10 +3518,10 @@ implementation at CMMI Level 3 (Statistical), not the design ceiling.
 \textbf{Level 3 --- The defense ceiling is achievable} (confidence:
 moderate-high). The parametric simulation (\(N=3{,}800\)) establishes
 that fully-mature (Level 5) adapters achieve 96--100\% detection,
-consistent with the formal design. The gap between Level 3 (44.8\%) and
-Level 5 (96\%) is an engineering challenge, not a theoretical
-limitation. The roadmap in Part 2 projects +35--41 percentage points of
-improvement through adapter maturation.
+consistent with the formal design. The gap between the measured pipeline
+(86.3\%) and Level 5 (96\%) is an engineering challenge, not a
+theoretical limitation. The roadmap in Part 2 projects +35--41
+percentage points of improvement through adapter maturation.
 
 The honest operational posture is Level 2: deploy CIF for meaningful
 protection against \(\Omega_1\)--\(\Omega_3\) attacks today, while
@@ -3546,7 +3544,7 @@ The core recommendations are:
   stack reached a 96--100\% parametric detection ceiling that no partial
   configuration matched. The real pipeline teaches the sharper lesson:
   on Partabout 2's 100-attack ablation corpus the Invariants
-  checker alone reaches 92.9\% against the full stack's 95.9\%, and five
+  checker alone reaches 83.3\% against the full stack's 89.0\%, and six
   of the eight modules show no measurable marginal contribution. Design
   security into the architecture rather than bolting it on, but do not
   assume every layer you add is earning its latency --- check each one's
@@ -3700,12 +3698,12 @@ two unlike measurements. The wide end is the one the Bayes factor speaks
 to: the distance from the ceiling to the 30-seed pipeline mean of
 86.3\%, which is not noise---the Bayes factor for a true performance gap
 exceeds \(10^6\) (decisive evidence). The narrow end is the distance
-from the ceiling to the 95.9\% the pipeline reaches on the 100-attack
-ablation corpus after the Invariants rewrite; no Bayes factor has been
-computed for that arm, and it should not borrow the first one's
-authority. The wide end is what reflects adapter implementation
-maturity, and maturation takes time and resources. Plan your deployment
-timeline and security posture accordingly.
+from the ceiling to the 89.0\% the pipeline reaches on the 100-attack
+ablation corpus; no Bayes factor has been computed for that arm, and it
+should not borrow the first one's authority. The wide end is what
+reflects adapter implementation maturity, and maturation takes time and
+resources. Plan your deployment timeline and security posture
+accordingly.
 
 \textbf{Adaptive adversaries are not modeled}. All evaluations used a
 fixed attack corpus. A sophisticated adversary who observes CIF's
@@ -6079,16 +6077,16 @@ CIF mechanism coverage, and acknowledges limitations.
 
 \begin{figure}
 \centering
-\includegraphics[width=0.9\linewidth,height=0.5\textheight,keepaspectratio,alt={Goal-hijacking attack-pattern coverage across the ten critical domains (§9), for the three universal patterns: FR Polarity Inversion (5/10 domains), Constraint Relaxation (1/10), and Context Boundary Violation (4/10). Each bar marks the single dominant pattern for that domain; the right-margin callouts give per-pattern totals, which match the domain-by-domain table below.}]{../figures/domain_coverage.png}
+\includegraphics[width=0.9\linewidth,height=0.5\textheight,keepaspectratio,alt={Goal-hijacking attack-pattern coverage across the ten critical domains (§9), for the three universal patterns: FR Polarity Inversion (5/10 domains), Constraint Relaxation (1/10), and Context Boundary Violation (4/10). Each domain occupies one marked cell in the row of its single dominant pattern; the per-row totals match the domain-by-domain table below.}]{../figures/domain_coverage.png}
 \caption{Goal-hijacking attack-pattern coverage across the ten critical
 domains (§9), for the three universal patterns: FR Polarity Inversion
 (5/10 domains), Constraint Relaxation (1/10), and Context Boundary
-Violation (4/10). Each bar marks the single dominant pattern for that
-domain; the right-margin callouts give per-pattern totals, which match
-the domain-by-domain table below.}\label{fig:domain-coverage}
+Violation (4/10). Each domain occupies one marked cell in the row of its
+single dominant pattern; the per-row totals match the domain-by-domain
+table below.}\label{fig:domain-coverage}
 \end{figure}
 
-\subsection{10.1 Cross-Domain Attack Pattern
+\subsection{Cross-Domain Attack Pattern
 Taxonomy}\label{sec:attack_patterns}
 
 Three universal attack patterns emerge across the ten domains. Each
@@ -6153,7 +6151,7 @@ Active Inference perspective on conflict \cite{david2021aic}, where
 adversaries exploit the agent's drive to minimize free energy by
 manipulating its generative model.
 
-\subsection{10.2 The Independence Axiom Under Adversarial
+\subsection{The Independence Axiom Under Adversarial
 Pressure}\label{the-independence-axiom-under-adversarial-pressure}
 
 The Independence Axiom (\cref{sec:methodology}) requires that Functional
@@ -6178,7 +6176,7 @@ different domains require different defense compositions, but the
 canonical CIF mechanisms established in \cref{sec:methodology} suffice
 to address all ten domains.
 
-\subsection{10.3 OODA Transient Dynamics}\label{ooda-transient-dynamics}
+\subsection{OODA Transient Dynamics}\label{ooda-transient-dynamics}
 
 Traditional engineering assumes Functional Requirements are static.
 Cyber-cognitive warfare proves they are dynamic variables. The
@@ -6255,7 +6253,7 @@ high-frequency (adversarial) signals while preserving low-frequency
 termed ``Cognitive Damping''---more precisely described as the joint
 operation of Drift Detection and Behavioral Invariants.
 
-\subsection{10.4 CIF Mechanism Coverage
+\subsection{CIF Mechanism Coverage
 Analysis}\label{sec:mechanism_coverage}
 
 A critical validation of the CIF framework is whether the five canonical
@@ -6367,7 +6365,7 @@ Key findings:
   contamination).
 \end{enumerate}
 
-\subsection{10.5 Novel Defense Patterns}\label{novel-defense-patterns}
+\subsection{Novel Defense Patterns}\label{novel-defense-patterns}
 
 While the five canonical CIF mechanisms provide comprehensive coverage,
 four domains introduce genuinely novel instantiations that extend the
@@ -6408,7 +6406,7 @@ simultaneously satisfies conservation laws and achieves the desired
 hijack, without also providing the energy budget that real physics would
 require.
 
-\subsection{10.6 Byzantine Fault Tolerance
+\subsection{Byzantine Fault Tolerance
 Validation}\label{byzantine-fault-tolerance-validation}
 
 Paper 1's Byzantine Consensus mechanism
@@ -6461,7 +6459,7 @@ publications \cite{jo2025byzantine}---independently validates the
 trajectory established by Paper 1's adoption of Byzantine consensus as a
 canonical CIF mechanism.
 
-\subsection{10.7 Comparison with Existing
+\subsection{Comparison with Existing
 Frameworks}\label{comparison-with-existing-frameworks}
 
 The CIF-AD-OODA integration model exists within a rapidly evolving
@@ -6548,7 +6546,7 @@ composition algebra (MAESTRO), or training-time alignment without
 deployment-time protection (industry frameworks). CIF's contribution is
 precisely this integration.
 
-\subsection{10.8 Empirical Grounding: Real-World
+\subsection{Empirical Grounding: Real-World
 Incidents}\label{empirical-grounding-real-world-incidents}
 
 The scenario-based analysis in the domain case studies
@@ -6606,7 +6604,7 @@ Three findings emerge from the retrospective analysis:
   model to include autonomous system reliability.
 \end{enumerate}
 
-\subsection{10.9 Limitations}\label{sec:limitations_discussion}
+\subsection{Limitations}\label{sec:limitations_discussion}
 
 Several limitations constrain the conclusions of this analysis:
 

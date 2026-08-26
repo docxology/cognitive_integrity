@@ -37,6 +37,11 @@ Part 1 second edition; Parts 2 and 3 first publication.
   artifact and origin on the page.
 - **The public API the supplements document**: `src/core/base.py` and
   `src/cogsec/`, with a gate that executes every import written in any manuscript.
+- **A gate over the conclusions** (`scripts/check_conclusion_numbers.py`). The
+  ledger gates shared quantities and Part 2's registry binds its prose, but
+  neither reaches a conclusion that restates a measurement in its own words, so
+  six stale numbers survived every check. The gate reports an incomplete
+  reference set as its own failure rather than as unbacked numbers in the paper.
 
 ### Changed
 
@@ -48,6 +53,16 @@ Part 1 second edition; Parts 2 and 3 first publication.
 - The multi-seed arm draws a stratified sample across every attack family rather
   than a prefix of the corpus.
 - The bibliography is closed: every entry is cited, and the check gates on it.
+- Part 3's cover figure was a stacked bar chart of a one-hot matrix, so every
+  bar stood at exactly 1 and the quantitative axis carried nothing; the legend
+  covered the per-pattern totals. It is now the categorical assignment it always
+  was, and the generator refuses to draw a matrix that is not one-hot.
+- Part 1's cover image was declared outside the `paper:` block the renderer
+  reads, so the paper shipped with no cover figure at all.
+- Three descriptions that restated measurements in prose no gate reads: two
+  cover alt texts (one naming a retired 94% detection rate, one giving pattern
+  counts of 3 and 2 where the matrix holds 4 and 1) and the detection-performance
+  caption, which still described a placeholder artifact deleted two versions ago.
 
 ### Removed
 

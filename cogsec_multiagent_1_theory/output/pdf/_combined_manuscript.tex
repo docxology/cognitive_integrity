@@ -162,8 +162,8 @@
 \protected\def\breakseq#1{\seqsplit{#1}}
 \protected\def\breaktt#1{\begingroup\ttfamily\seqsplit{#1}\endgroup}
 \title{Cognitive Integrity Framework: Formal Foundations}
-\author{Daniel Ari Friedman\\\footnotesize{Active Inference Institute}\\\footnotesize{\texttt{daniel@activeinference.institute}}\\\footnotesize{\href{https://orcid.org/0000-0001-6232-9096}{ORCID: 0000-0001-6232-9096}} \\ \footnotesize{DOI: \href{https://doi.org/10.5281/zenodo.18364119}{10.5281/zenodo.18364119}}}
-\date{2026-08-21}
+\author{Daniel Ari Friedman}
+\date{2026-08-26}
 
 % Core mathematical packages
 \usepackage{amsmath,amssymb,amsthm}
@@ -297,16 +297,23 @@
 \begin{document}
 \begin{titlepage}
 \centering
-\vspace*{2cm}
-{\LARGE\bfseries Cognitive Integrity Framework: Formal Foundations\par}
+\vspace*{0.55cm}
+{\Huge\sffamily\bfseries Cognitive Integrity Framework: Formal Foundations\par}
+\vspace{0.4em}
+{\Large\sffamily Part 1 of 3: Theoretical Foundations\par}
 \vspace{0.75em}
-{\large Part 1 of 3: Theoretical Foundations\par}
-\vfill
+{\large\sffamily\bfseries Daniel Ari Friedman\par}
+{\small\sffamily Active Inference Institute\par}
+{\small\sffamily\texttt{daniel@activeinference.institute}\par}
+{\small\sffamily\href{https://orcid.org/0000-0001-6232-9096}{ORCID: 0000-0001-6232-9096}\par}
+\vspace{0.08em}
+{\small\sffamily DOI: \href{https://doi.org/10.5281/zenodo.18364119}{10.5281/zenodo.18364119}\par}
+\vspace{0.35em}
 \makeatletter
-{\@author\par}
-\vspace{1em}
 {\@date\par}
 \makeatother
+\vfill
+\includegraphics[width=0.98\textwidth,height=0.35\textheight,keepaspectratio,alt={Layered diagram of the Cognitive Integrity Framework: architectural defenses (cognitive firewall, belief sandbox, trust calculus) above the agent cognitive state (beliefs, goals, intentions, history), runtime monitoring (tripwire monitor, invariant check, drift detection), and coordination defenses (Byzantine consensus, quorum verification, provenance tracking).}]{\detokenize{../figures/cif_architecture.png}}
 \vfill
 \end{titlepage}
 \thispagestyle{empty}
@@ -5648,7 +5655,7 @@ to principled engineering.
 \textbf{Part 2} of this series provides empirical validation
 demonstrating that these formal mechanisms translate to practical
 protection across diverse production architectures (parametric detection
-ceiling: 96--100\%; pipeline mean: 44.8\%). \textbf{Part 3} offers a
+ceiling: 96--100\%; pipeline mean: 86.3\%). \textbf{Part 3} offers a
 combined qualitative review and practitioner's
 synthesis---accessible-language distillation of theoretical and
 empirical findings, deployment checklists, incident response playbooks,

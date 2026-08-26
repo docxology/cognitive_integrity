@@ -2,7 +2,7 @@
 
 Our cross-domain analysis of ten critical sectors reveals that Goal Hijacking is not merely a linguistic exploit but a structural corruption of the OODA Loop \cite{boyd1987patterns}. In every case---from drone swarms operating at millisecond time scales to diplomatic agents spanning months of deliberation---the attack vector was a transient signal that hijacked the agent's **Orientation** phase, rewriting its Functional Requirements in real-time. This section synthesizes the cross-domain findings, identifies universal attack patterns, evaluates CIF mechanism coverage, and acknowledges limitations.
 
-![Goal-hijacking attack-pattern coverage across the ten critical domains (§9), for the three universal patterns: FR Polarity Inversion (5/10 domains), Constraint Relaxation (1/10), and Context Boundary Violation (4/10). Each bar marks the single dominant pattern for that domain; the right-margin callouts give per-pattern totals, which match the domain-by-domain table below.](figures/domain_coverage.png){#fig:domain-coverage width=90%}
+![Goal-hijacking attack-pattern coverage across the ten critical domains (§9), for the three universal patterns: FR Polarity Inversion (5/10 domains), Constraint Relaxation (1/10), and Context Boundary Violation (4/10). Each domain occupies one marked cell in the row of its single dominant pattern; the per-row totals match the domain-by-domain table below.](figures/domain_coverage.png){#fig:domain-coverage width=90%}
 
 ## Cross-Domain Attack Pattern Taxonomy {#sec:attack_patterns}
 
