@@ -2,13 +2,22 @@
 
 A three-part manuscript series establishing the theoretical foundations, computational validation, and unified practical/applications guidance for cognitive security in multiagent AI systems. Parts 3 and 4 were merged into a single comprehensive paper.
 
-## Location in this repository
+## Running it
 
-This program lives in the **`cognitive_integrity`** git repo. In a template checkout it is usually symlinked at **`projects/working/cognitive_integrity/`** (private sidecar) or nested as **`projects/cognitive_integrity/`**. For `./run.sh` and `scripts/pipeline/stage_03_render.py` inside `docxology/template`, pass the **qualified project name**:
+Each paper is a self-contained Python project with its own pinned environment.
+From any paper's directory:
 
-`cognitive_integrity/cogsec_multiagent_<N>_<suffix>`
+```bash
+uv sync                       # install the pinned environment
+uv run pytest tests/ -q       # the paper's own test suite
+uv run python scripts/generate_all_figures.py   # regenerate every figure
+uv run python scripts/verify_manuscript.py      # the manuscript gate
+```
 
-The qualified name keeps each paper's outputs under `output/cognitive_integrity/<paper>/`.
+From the repository root, `python3 scripts/check_series_integrity.py` runs the
+six program-level checks that compare the three papers to each other. Every
+number the papers report is derived from an artifact under
+`<paper>/output/data/`; none is typed into the prose.
 
 ## Who should start where
 
@@ -22,12 +31,15 @@ The qualified name keeps each paper's outputs under `output/cognitive_integrity/
 
 | Part | Title | Status | DOI |
 |------|-------|--------|-----|
-| 1 | [Formal Foundations](cogsec_multiagent_1_theory/) (Second Edition) | v1.1 (improved release) | [10.5281/zenodo.18364119](https://doi.org/10.5281/zenodo.18364119) |
-| 2 | [Computational Validation](cogsec_multiagent_2_computational/) (Second Edition) | Preprint (v1.0) | [10.5281/zenodo.18364128](https://doi.org/10.5281/zenodo.18364128) |
-| 3+4 merged | [Practical Applications and Deployment Guide](cogsec_multiagent_3_practical/) (Parts 3+4 Unified) | Preprint (v1.0) | [10.5281/zenodo.18364130](https://doi.org/10.5281/zenodo.18364130) |
+| 1 | [Formal Foundations](cogsec_multiagent_1_theory/) (Second Edition) | v2.0 (Second Edition) | [10.5281/zenodo.18364119](https://doi.org/10.5281/zenodo.18364119) |
+| 2 | [Computational Validation](cogsec_multiagent_2_computational/) (Second Edition) | v2.0 (first release) | [10.5281/zenodo.18364128](https://doi.org/10.5281/zenodo.18364128) |
+| 3+4 merged | [Practical Applications and Deployment Guide](cogsec_multiagent_3_practical/) (Parts 3+4 Unified) | v2.0 (first release) | [10.5281/zenodo.18364130](https://doi.org/10.5281/zenodo.18364130) |
 
-Release plan: Part 1 ships as the improved **v1.1** (Second Edition); Parts 2 and
-3+4 ship as first releases (**v1.0** preprints) of their Second Edition manuscripts.
+All three papers are released together as **v2.0**, dated 2026-08-26. They share
+one measurement layer --- Part 2 produces the artifacts and Parts 1 and 3 cite
+them --- so a version applying to one paper alone would be a version of nothing.
+Part 1 is a second edition of an existing Zenodo record; Parts 2 and 3 are first
+publications. See [CHANGELOG.md](CHANGELOG.md).
 
 ### Reading order
 
