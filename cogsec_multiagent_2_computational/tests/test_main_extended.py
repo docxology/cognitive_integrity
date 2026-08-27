@@ -64,7 +64,9 @@ class TestMainCLI:
             cwd=str(PROJECT_ROOT),
             capture_output=True,
             text=True,
-            timeout=10,
+            # Cold-start of `python -m src` imports scipy.stats transitively,
+            # which can exceed 10 s on slow storage; give it headroom.
+            timeout=120,
         )
         # May exit 0 (no command) or 2 (argparse error)
         assert result.returncode in (1, 2)

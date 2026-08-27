@@ -53,7 +53,7 @@ make all
 Tests the entire attack corpus across all architectures:
 
 ```bash
-python scripts/run_full_evaluation.py
+uv run python scripts/run_full_evaluation.py
 ```
 
 **Output**: `output/data/full_evaluation_results.json`
@@ -63,7 +63,7 @@ python scripts/run_full_evaluation.py
 Tests the contribution of individual components (Firewall, Trust, Sandbox, etc.) by removing them one at a time:
 
 ```bash
-python scripts/run_ablation.py
+uv run python scripts/run_ablation.py
 ```
 
 **Output**: `output/data/ablation_results.json`
@@ -73,7 +73,7 @@ python scripts/run_ablation.py
 Measures detection rate stability across 30 random seeds, computing coefficient of variation (CV) for overall, per-architecture, and per-category metrics:
 
 ```bash
-python scripts/run_multi_seed.py
+uv run python scripts/run_multi_seed.py
 ```
 
 **Output**: `output/data/multi_seed_results.json`
@@ -83,17 +83,19 @@ python scripts/run_multi_seed.py
 K-fold cross-validation of detection rates for statistical rigor:
 
 ```bash
-python scripts/run_cross_validation.py
+uv run python scripts/run_cross_validation.py
 ```
 
 **Output**: `output/data/cross_validation_results.json`
 
 ### 6. Run Colony Benchmarks
 
-Scalability tests measuring framework performance across increasing agent counts:
+Scalability tests measuring framework performance across increasing agent counts.
+The tracked artifact used 30 seeds per scenario (default); `--n-repeats 1`
+reproduces the legacy single-seed draw:
 
 ```bash
-python scripts/run_colony_benchmarks.py
+uv run python scripts/run_colony_benchmarks.py --n-repeats 30
 ```
 
 **Output**: `output/data/colony_results.json`
@@ -103,7 +105,7 @@ python scripts/run_colony_benchmarks.py
 Once data is generated, produce the plots used in the manuscript:
 
 ```bash
-python scripts/generate_all_figures.py
+uv run python scripts/generate_all_figures.py
 ```
 
 **Output**: `output/figures/*.pdf`

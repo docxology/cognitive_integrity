@@ -114,7 +114,7 @@ deliberately, never as part of a routine build:
 | `output/data/full_evaluation_results.json` | `uv run python scripts/run_full_evaluation.py` | Parametric simulation (no external service needed) |
 | `output/data/multi_seed_results.json` | `uv run python scripts/run_multi_seed.py` | 30-seed stability sweep |
 | `output/data/cross_validation_results.json` | `uv run python scripts/run_cross_validation.py` | 5-fold stratified CV over the attack corpus |
-| `output/data/colony_results.json` | `uv run python scripts/run_colony_benchmarks.py` | `ColonyBenchmark.run_all(seed=42)` |
+| `output/data/colony_results.json` | `uv run python scripts/run_colony_benchmarks.py --n-repeats 30` | `ColonyBenchmark.run_all_repeated(seed=42, n_repeats=30)` |
 | `output/data/llm_demo_results.json` | `uv run python scripts/run_llm_demo.py` | Requires Ollama + `gemma3:4b` |
 
 The injector (`src/manuscript/injector.py`) reads these files when present.

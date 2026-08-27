@@ -126,3 +126,14 @@ Part 1 second edition; Parts 2 and 3 first publication.
   by nothing.
 
 [2.0.0]: https://github.com/docxology/cognitive_integrity/releases/tag/v2.0.0
+
+
+## Unreleased-integration
+
+- 2026-08-27 — Part 2 (cogsec_multiagent_2_computational): corrected the abstract's
+  ablation claims (ΔTPR −0.000/0% → −0.650/73%, now matching
+  `output/data/ablation_results.json` and Section 05d); the claim registry's two
+  corresponding abstract claims now derive from the dominant ablation component
+  instead of a hard-coded module name, so 171/171 claims still verify. Colony
+  benchmark docs now record the actual 30-seed regeneration command. No shared
+  quantity values changed; the series gates are unchanged in verdict.
