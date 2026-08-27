@@ -85,22 +85,14 @@ abstract: |
     and cross-domain applications
 
 metadata:
-  license: Apache-2.0
+  license: CC-BY-4.0
   language: en
   edition: 1
-  changelog: "v1.0 (2026-07-05): Initial public release \u2014 adversarial training,\
-    \ red-teaming,\nexpanded colony simulations (100-500 agents), Fisher information\
-    \ metric\nderivations in S10, property-based tests with Hypothesis, stress tests,\n\
-    extended formal verification (TLA+/Promela/SMV), \u03A9_1\u2013\u03A9_5 attack\
-    \ taxonomy,\nnew manuscript sections (05g_adversarial_training, 05h_redteam_evaluation),\n\
-    new supplement S11 (adversarial training theory), updated references.\nNew in\
-    \ this revision: \xA78 category-theoretic foundations (defense lattice,\nsymmetric\
-    \ monoidal category, operad, enriched category, pipeline monad, Kan\nextensions,\
-    \ lens/optic profunctor), figure/table auto-numbering registry\n(scripts/generate_figure_registry.py,\
-    \ src/manuscript/figure_registry.py),\nauto_number_figures.py script, S12 composable\
-    \ visualization supplement,\npreamble updated with tikz-cd/stmaryrd/tocloft +\
-    \ listoffigures/listoftables,\nconfig.yaml extended with category theory / visualization\
-    \ keywords.\n"
+  changelog: |
+    v2.0 (2026-08-26): First publication, released with Parts 1 and 3.
+      This paper has not been deposited or released before; no earlier version
+      of it exists anywhere, and it is deposited as a preprint rather than as a
+      peer-reviewed article.
 sections:
   main:
   - 00_abstract

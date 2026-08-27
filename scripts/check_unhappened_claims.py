@@ -82,6 +82,16 @@ PATTERNS: dict[str, re.Pattern[str]] = {
         re.I,
     ),
     "pre-registration": re.compile(r"\bpre-?registered\b|\bpre-?registration\b", re.I),
+    # Release history is a claim about the world too, and it hid in a place the
+    # manuscript scan never reached: Part 2's config.yaml carried "v1.0
+    # (2026-07-05): Initial public release" for a paper that had never been
+    # deposited anywhere, and that file becomes the Zenodo record metadata.
+    "release-history": re.compile(
+        r"\b(initial (?:public )?release|previously (?:published|released|deposited)"
+        r"|second edition|first edition|peer[- ]reviewed|accepted (?:at|for|to)"
+        r"|published (?:in|at) the\b)",
+        re.I,
+    ),
 }
 
 #: Registered occurrences. Key is ``(relative path, pattern name)``; the value
@@ -117,6 +127,14 @@ ALLOWED: dict[tuple[str, str], str] = {
         "annotation",
     ): "a footnote distinguishing the corroboration count from Cohen's kappa, which is not reported",
     (
+        "cogsec_multiagent_2_computational/manuscript/config.yaml",
+        "release-history",
+    ): "states that this paper has never been released before, which is the negative claim",
+    (
+        "cogsec_multiagent_1_theory/manuscript/config.yaml",
+        "release-history",
+    ): "records Part 1's real deposition history, which Zenodo record 18364119 confirms",
+    (
         "cogsec_multiagent_2_computational/manuscript/03c_attack_ethics.md",
         "field-study",
     ): "states that there was no user study and no production system, as the negative claim",
@@ -149,7 +167,13 @@ MIN_FILES = 40
 
 def _manuscript_files() -> list[Path]:
     out = subprocess.run(
-        ["git", "-C", str(REPO), "ls-files", "-z", *[f"{p}/manuscript/*.md" for p in PARTS]],
+        [
+            "git", "-C", str(REPO), "ls-files", "-z",
+            *[f"{p}/manuscript/*.md" for p in PARTS],
+            # config.yaml carries the abstract and changelog that become the
+            # deposit's public metadata, so it is prose a reader sees.
+            *[f"{p}/manuscript/config.yaml" for p in PARTS],
+        ],
         capture_output=True,
         text=True,
         check=True,

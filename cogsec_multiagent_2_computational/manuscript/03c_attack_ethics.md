@@ -16,7 +16,7 @@ The corpus is not collected, curated or hand-written. It is produced by a single
 - `generate_all_coordination` --- 100 samples: consensus poisoning, sybil and timing attacks
 - `generate_all_provenance_and_isolation` --- 525 samples: provenance laundering, sandbox escape, byzantine manipulation
 
-Passing `extended=False` reproduces the earlier 950-item corpus without the final module. That corpus is retained only for reproducing previously published figures: it contains no instance of what the provenance, sandbox and consensus adapters detect, so those three modules score a Shapley value of exactly zero in every one of the 256 coalitions of the defense lattice. A corpus that cannot reach three of eight mechanisms cannot measure the framework, and every number reported in this paper is measured against one that can.
+Passing `extended=False` reproduces the earlier 950-item corpus without the final module. That corpus is retained only so a reader can reproduce results computed against it: it contains no instance of what the provenance, sandbox and consensus adapters detect, so those three modules score a Shapley value of exactly zero in every one of the 256 coalitions of the defense lattice. A corpus that cannot reach three of eight mechanisms cannot measure the framework, and every number reported in this paper is measured against one that can.
 
 Because generation is a pure function of the seed, the corpus needs no distribution: it is a property of the published code, and any reader who clones the repository obtains exactly the corpus evaluated here.
 

@@ -40,6 +40,11 @@ SHIPPED_FABRICATIONS = [
     ),
     ("pre-registration", "pre-registered analysis protocols (all hypotheses stated before evaluation)"),
     ("field-study", "We interviewed twelve operators running CIF in production at scale."),
+    # From Part 2's config.yaml, which becomes the Zenodo record metadata, for a
+    # paper that had never been deposited anywhere.
+    ("release-history", "v1.0 (2026-07-05): Initial public release - adversarial training,"),
+    ("release-history", "Computational Validation and Empirical Analysis (Second Edition)"),
+    ("release-history", "This work was peer-reviewed and accepted at a workshop."),
 ]
 
 

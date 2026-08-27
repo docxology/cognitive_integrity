@@ -925,7 +925,7 @@ All proofs are constructive and provide explicit bounds useful for system implem
 
 ## Second-Edition Proofs: Defense Composition Algebra and Information-Geometric Bounds {#sec:v2-proofs}
 
-This section contains new proofs added in the Second Edition, corresponding to the defense composition algebra guarantees (§\ref{sec:defense-formal-guarantees}) and the information-geometric tightening of the stealth-impact bound (§\ref{sec:detection-bounds}).
+This section proves the defense composition algebra guarantees (§\ref{sec:defense-formal-guarantees}) and the information-geometric tightening of the stealth-impact bound (§\ref{sec:detection-bounds}).
 
 ---
 
