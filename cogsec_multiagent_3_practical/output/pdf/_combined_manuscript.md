@@ -25,12 +25,12 @@ This paper (Part 3+4, unified) is simultaneously a qualitative practitioner guid
 
 ## Paper Series
 
-**DOI**: 10.5281/zenodo.18364130
+**DOI**: 10.5281/zenodo.22134548
 
 This is Part 3+4 of the three-part *Cognitive Security for Multiagent Operators* series:
 
-- **Part 1** (DOI: 10.5281/zenodo.18364119): Formal foundations and theoretical analysis
-- **Part 2** (DOI: 10.5281/zenodo.18364128): Computational validation and implementation
+- **Part 1** (DOI: 10.5281/zenodo.22134544): Formal foundations and theoretical analysis
+- **Part 2** (DOI: 10.5281/zenodo.22134546): Computational validation and implementation
 - **Part 3+4** (this paper): Practitioner guidance (§1–§8) and cross-domain CIF-AD-OODA applications (§9–§10)
 
 All source code, tests, and analysis scripts are maintained at <https://github.com/docxology/cognitive_integrity>.
@@ -62,8 +62,8 @@ This is not a theoretical warning about future doom. It is an engineering proble
 
 The Cognitive Integrity Framework (CIF) was developed to secure these systems, and the companion papers in this series demonstrate its efficacy from formal, computational, and applied angles.
 
-* **Part 1: Formal Foundations** (DOI: 10.5281/zenodo.18364119) proved that trust can be mathematically bounded. We defined the "Trust Calculus" which guarantees that no matter how clever an adversary is, they cannot amplify their influence through delegation chains. It also introduces the Defense Composition Algebra, the five-tier adversary taxonomy ($\Omega_1$--$\Omega_5$), and information-theoretic stealth-impact bounds.
-* **Part 2: Computational Validation** (DOI: 10.5281/zenodo.18364128) implemented this theory in Python and tested it against a corpus of 950 attacks across four production architectures, reporting ablation studies, Bayesian uncertainty quantification, colony-scale benchmarks at 20--100 agents, and a category-theoretic formalization of defense composition (Defense Category $\calD$, Theorems CT.1--CT.3) with a composable visualization engine and a composer data bundle.
+* **Part 1: Formal Foundations** (DOI: 10.5281/zenodo.22134544) proved that trust can be mathematically bounded. We defined the "Trust Calculus" which guarantees that no matter how clever an adversary is, they cannot amplify their influence through delegation chains. It also introduces the Defense Composition Algebra, the five-tier adversary taxonomy ($\Omega_1$--$\Omega_5$), and information-theoretic stealth-impact bounds.
+* **Part 2: Computational Validation** (DOI: 10.5281/zenodo.22134546) implemented this theory in Python and tested it against a corpus of 950 attacks across four production architectures, reporting ablation studies, Bayesian uncertainty quantification, colony-scale benchmarks at 20--100 agents, and a category-theoretic formalization of defense composition (Defense Category $\calD$, Theorems CT.1--CT.3) with a composable visualization engine and a composer data bundle.
 * **Applications (§9--§10, this paper):** The integrated CIF-AD-OODA analytical model is applied across ten critical domains (rare-earth mining, nation-state alliances, cyber-security, drone warfare, supply chain, biowarfare, food security, trade wars, infrastructure, information ecosystems), identifying three universal attack patterns and four novel defense extensions.
 
 The combined evidence includes **3,535 tests** and a **96--100% parametric detection ceiling** across all attack categories and architectures (Part 2), alongside a lower real-pipeline multi-seed mean of 86.3% (30 seeds). Direct-injection detection reaches 99--100% in the fully defended parametric configuration; plus CIF coverage is analyzed across all ten operational domains in §9--§10 with retrospective analysis of six documented 2024--2025 AI-agent incidents.
@@ -94,11 +94,11 @@ This paper is designed to stand alone as the practitioner's reference of the ser
 
 | If you want… | …consult… |
 | ------------ | --------- |
-| Formal definitions, proofs, and theorems (Trust Calculus, Defense Composition Algebra, stealth–impact bound) | **Part 1** (DOI: 10.5281/zenodo.18364119), §§4–5, 7 |
+| Formal definitions, proofs, and theorems (Trust Calculus, Defense Composition Algebra, stealth–impact bound) | **Part 1** (DOI: 10.5281/zenodo.22134544), §§4–5, 7 |
 | Adversary taxonomy $\Omega_1$–$\Omega_5$ formal characterization | **Part 1**, its Threat Model section (Formal Characterization of the Adversary Classes) |
 | Model-checked safety invariants + NuSMV/TLA+ specifications | **Part 1**, "Formal Verification: Safety Properties and Model Checking", **Part 2** S04 |
 | Eusocial-colony analogy (biological existence proof for CIF-like architectures) | **Part 1** S02 |
-| 950-attack corpus generation, examples, ethics | **Part 2** (DOI: 10.5281/zenodo.18364128), §3 + S03 |
+| 950-attack corpus generation, examples, ethics | **Part 2** (DOI: 10.5281/zenodo.22134546), §3 + S03 |
 | Detailed detection rates per architecture (Claude Code, AutoGPT, CrewAI, LangGraph) | **Part 2**, "Extended Experimental Results" for measured Claude Code and CrewAI rates, and "Per-Architecture Parametric Detection Rates" plus "Cross-Architecture Parametric Summary" in S08 for all four architectures |
 | Ablation studies + Bayesian uncertainty | **Part 2**, "Ablation Studies and Scalability Benchmarks" and "Bayesian Uncertainty Quantification" |
 | Parametric design-level ceiling (96–100%) | **Part 2** S08 |
@@ -113,7 +113,7 @@ This paper is designed to stand alone as the practitioner's reference of the ser
 | Retrospective mapping of 2024–2025 AI-agent security incidents (Replit, Copilot RCE, Slack AI, \$3.2M procurement fraud, etc.) | **S3** (this paper) |
 | CIF-AD-OODA integration model for goal-hijacking | **§9** (this paper) |
 
-**Code and Repository**: The companion codebase, attack corpus documentation, and deployment tooling are maintained at <https://github.com/docxology/cognitive_integrity> (DOI: 10.5281/zenodo.18364130; companion parts: Part 1 DOI 10.5281/zenodo.18364119, Part 2 DOI 10.5281/zenodo.18364128).
+**Code and Repository**: The companion codebase, attack corpus documentation, and deployment tooling are maintained at <https://github.com/docxology/cognitive_integrity> (DOI: 10.5281/zenodo.22134548; companion parts: Part 1 DOI 10.5281/zenodo.22134544, Part 2 DOI 10.5281/zenodo.22134546).
 
 
 
@@ -256,7 +256,7 @@ The test corpus included direct prompt injection, poisoned RAG contexts, deep tr
 ## Finding 1: Defense Layering vs. Individual Efficacy
 
 **The Data**: In the parametric evaluation the full CIF stack achieved a **96--100% parametric detection ceiling**, with direct injection detected at 99--100% across architectures. The separate real-pipeline evaluation had a lower multi-seed mean of 86.3%.
-**The Implication**: The parametric model rewards layering, but the real pipeline does not spread the work evenly across layers, and the 100-attack ablation corpus says so plainly. The Invariants module alone detects 85% of that corpus against the full stack's 89.0%; the Detection, Sandbox, Tripwire and Consensus modules each detect between 4% and 6% on their own. Removing Invariants costs 65 percentage points of true-positive rate, removing the Tripwire costs two, and removing Consensus, Detection, Firewall, Provenance, Sandbox or Trust Calculus costs nothing this corpus can measure. That is a statement about *marginal* contribution, not about capability: a module whose detections are all also caught by Invariants scores zero here while detecting plenty on its own. Layering still buys coverage against attacks this corpus does not contain, but the older claim that removing any single layer opens a measurable gap is not what the ablation shows.
+**The Implication**: The parametric model rewards layering, but the real pipeline does not spread the work evenly across layers, and the 100-attack ablation corpus says so plainly. The Invariants module alone detects 83.3% of that corpus against the full stack's 89.0%; no other module detects more than 10% on its own (the next best, Consensus, reaches 9.6%). Removing Invariants costs 65 percentage points of true-positive rate, removing the Tripwire costs two, and removing Consensus, Detection, Firewall, Provenance, Sandbox or Trust Calculus costs nothing this corpus can measure. That is a statement about *marginal* contribution, not about capability: a module whose detections are all also caught by Invariants scores zero here while detecting plenty on its own. Layering still buys coverage against attacks this corpus does not contain, but the older claim that removing any single layer opens a measurable gap is not what the ablation shows.
 
 ## Finding 2: State Machine Determinism
 
@@ -322,8 +322,8 @@ The current Claude Code adapter is at Level 3 (Statistical), explaining the 86.3
 
 The detection rates in Part 2 are derived from a calibrated parametric simulation, modeled on the architecture's topology. They represent the *structural* security of the design.
 
-* **99.4% Overall Detection** means: "Across all architectures and attack categories, 99.4% of attack vectors are detected by the full CIF defense stack" (with architecture-specific rates ranging from 96--100%).
-* It does **not** mean: "We have a magic Python script that catches 99.4% of all evil AI thoughts."
+* **96--100% Parametric Ceiling** means: "In the calibrated parametric simulation ($N=3{,}800$ design-level instances), the full CIF defense stack detects 96--100% of attack vectors, with per-architecture rates ranging from 98--100%."
+* It does **not** mean: "We have a magic Python script that catches 96--100% of all evil AI thoughts."
 
 We proved the *architecture* works. The implementation fidelity is the variable for the builder.
 
@@ -1504,9 +1504,9 @@ This guide has tried to be honest about what CIF can and cannot do. The practica
 
 This section introduces the applications portion of this unified paper, covering the CIF-AD-OODA analysis, which progresses from theory to computation to practice and applied deployment:
 
-- **Paper 1: Formal Foundations** \cite{friedman2026cogsec1} (DOI: 10.5281/zenodo.18364119) establishes the Cognitive Integrity Framework (CIF): a formal model of agent cognitive states $\sigma_i = \langle \mathcal{B}_i, \mathcal{G}_i, \mathcal{I}_i, \mathcal{H}_i \rangle$, a trust calculus with delegation decay ($\delta^d$), the Defense Composition Algebra, the five-tier adversary taxonomy ($\Omega_1$--$\Omega_5$), information-theoretic stealth--impact bounds, and model-checked safety invariants. A supplementary chapter (S02) additionally develops the eusocial-colony analogy as an evolutionary existence proof for CIF-like defense architectures.
-- **Paper 2: Computational Validation** \cite{friedman2026cogsec2} (DOI: 10.5281/zenodo.18364128) validated these mechanisms computationally across a 950-attack corpus and four production multiagent architectures, reporting ablation studies, Bayesian uncertainty quantification, and colony-scale benchmarks; the recommended defense stack achieves 96--100\% detection in parametric simulation and 80--100\% under LLM-backed evaluation.
-- **Paper 3: A Qualitative Review for Practitioners** \cite{friedman2026cogsec3} (DOI: 10.5281/zenodo.18364130) translates the theoretical and empirical results into accessible engineering guidance: deployment guides, subagent-hardening patterns, incident-response playbooks, monitoring strategies, cost--benefit analysis, common pitfalls, case studies, and operator risk frameworks. It assumes no formal prerequisites.
+- **Paper 1: Formal Foundations** \cite{friedman2026cogsec1} (DOI: 10.5281/zenodo.22134544) establishes the Cognitive Integrity Framework (CIF): a formal model of agent cognitive states $\sigma_i = \langle \mathcal{B}_i, \mathcal{G}_i, \mathcal{I}_i, \mathcal{H}_i \rangle$, a trust calculus with delegation decay ($\delta^d$), the Defense Composition Algebra, the five-tier adversary taxonomy ($\Omega_1$--$\Omega_5$), information-theoretic stealth--impact bounds, and model-checked safety invariants. A supplementary chapter (S02) additionally develops the eusocial-colony analogy as an evolutionary existence proof for CIF-like defense architectures.
+- **Paper 2: Computational Validation** \cite{friedman2026cogsec2} (DOI: 10.5281/zenodo.22134546) validated these mechanisms computationally across a 950-attack corpus and four production multiagent architectures, reporting ablation studies, Bayesian uncertainty quantification, and colony-scale benchmarks; the recommended defense stack achieves 96--100\% detection in parametric simulation and 80--100\% under LLM-backed evaluation.
+- **Paper 3: A Qualitative Review for Practitioners** \cite{friedman2026cogsec3} (DOI: 10.5281/zenodo.22134548) translates the theoretical and empirical results into accessible engineering guidance: deployment guides, subagent-hardening patterns, incident-response playbooks, monitoring strategies, cost--benefit analysis, common pitfalls, case studies, and operator risk frameworks. It assumes no formal prerequisites.
 - **Applications Section (this paper, §9--§10):** CIF-AD-OODA integration applied across ten critical domains addresses the remaining question: **how can CIF be analyzed across diverse operational domains?** We apply the framework across ten critical sectors---from millisecond drone swarm decisions to year-scale diplomatic deliberations---through the integrated CIF-AD-OODA analytical model, identifying recurring attack and defense patterns at the cross-domain scale.
 
 Together, Papers 1 through 3+4 provide a complete stack: Paper 1 defines *what* CIF is; Paper 2 shows that it *works*; this paper (Part 3+4) shows *how to deploy it* and *where* it applies across ten operational domains.
@@ -1644,7 +1644,7 @@ Paper 1 \cite{friedman2026cogsec1} defines five canonical defense mechanisms. We
 
 These mechanisms compose in series and parallel to achieve layered defense. Paper 2 \cite{friedman2026cogsec2} demonstrates that the recommended defense stack achieves 96--100\% detection at the parametric design ceiling across 950 attack scenarios and four production multiagent architectures. §1--§8 of this unified paper translates these results into deployment guidance, monitoring playbooks, and cost--benefit frameworks; readers seeking engineering guidance on instantiating the mechanisms below in production should consult the Practitioner section (§1--§8) of this unified paper.
 
-**Composable Visualization Engine.** Part 2 (DOI: 10.5281/zenodo.18364128) provides a composable visualization engine — `DefenseGraph` (defense DAGs), `CategoryDiagram` (commutative diagrams of the Defense Category $\calD$), `LatticeViz` (Hasse diagrams of defense lattices), `OperadPlot` (operadic composition trees), `MonadFlow` (Kleisli category flow diagrams), and `LensDiagram` (bidirectional data flow) — all Python/Graphviz-based and generating publication-quality PDFs. The CIF-AD-OODA integration maps across each visualization type: the Design Matrix $[A]$ (uncoupled → coupled under attack) is rendered by `CategoryDiagram`; the OODA temporal dynamics appear in `MonadFlow`; the five defense mechanisms and their coverage are shown in `DefenseGraph`. Readers who wish to visualize the domain analyses in §9.01--§9.10 against the categorical structure may use Part 2's composable engine directly.
+**Composable Visualization Engine.** Part 2 (DOI: 10.5281/zenodo.22134546) provides a composable visualization engine — `DefenseGraph` (defense DAGs), `CategoryDiagram` (commutative diagrams of the Defense Category $\calD$), `LatticeViz` (Hasse diagrams of defense lattices), `OperadPlot` (operadic composition trees), `MonadFlow` (Kleisli category flow diagrams), and `LensDiagram` (bidirectional data flow) — all Python/Graphviz-based and generating publication-quality PDFs. The CIF-AD-OODA integration maps across each visualization type: the Design Matrix $[A]$ (uncoupled → coupled under attack) is rendered by `CategoryDiagram`; the OODA temporal dynamics appear in `MonadFlow`; the five defense mechanisms and their coverage are shown in `DefenseGraph`. Readers who wish to visualize the domain analyses in §9.01--§9.10 against the categorical structure may use Part 2's composable engine directly.
 
 ## Adversary Classification
 
@@ -2697,9 +2697,9 @@ This paper has applied the Cognitive Integrity Framework (CIF) \cite{friedman202
 
 The Applications section of this unified paper completes the three-part *Cognitive Security for Multiagent Operators* series:
 
-- **Paper 1: Formal Foundations** \cite{friedman2026cogsec1} (DOI: 10.5281/zenodo.18364119) established the formal foundations: cognitive state model $\sigma_i = \langle \mathcal{B}_i, \mathcal{G}_i, \mathcal{I}_i, \mathcal{H}_i \rangle$, trust calculus with $\delta^d$ bounded delegation, adversary taxonomy ($\Omega_1$--$\Omega_5$), information-theoretic stealth--impact bounds, and five canonical defense mechanisms with composition algebra. A supplementary chapter additionally develops the eusocial-colony analogy.
-- **Paper 2: Computational Validation** \cite{friedman2026cogsec2} (DOI: 10.5281/zenodo.18364128) provided computational validation: benchmark evaluation across 950 attack scenarios, ablation studies, Bayesian uncertainty quantification, and colony-scale benchmarks, with the recommended defense stack achieving 96--100\% detection in parametric simulation, plus a category-theoretic formalization of defense composition and composable visualization engine.
-- **Paper 3: Practitioner Guide and Applications** \cite{friedman2026cogsec3} (DOI: 10.5281/zenodo.18364130, this paper) translates the formal and empirical results into accessible engineering guidance (§1–§8) and demonstrates real-world applicability across ten high-stakes operational domains via the integrated CIF-AD-OODA model (§9–§10), yielding three universal attack patterns, four novel defense extensions, and retrospective validation against six documented 2024–2025 AI agent incidents.
+- **Paper 1: Formal Foundations** \cite{friedman2026cogsec1} (DOI: 10.5281/zenodo.22134544) established the formal foundations: cognitive state model $\sigma_i = \langle \mathcal{B}_i, \mathcal{G}_i, \mathcal{I}_i, \mathcal{H}_i \rangle$, trust calculus with $\delta^d$ bounded delegation, adversary taxonomy ($\Omega_1$--$\Omega_5$), information-theoretic stealth--impact bounds, and five canonical defense mechanisms with composition algebra. A supplementary chapter additionally develops the eusocial-colony analogy.
+- **Paper 2: Computational Validation** \cite{friedman2026cogsec2} (DOI: 10.5281/zenodo.22134546) provided computational validation: benchmark evaluation across 950 attack scenarios, ablation studies, Bayesian uncertainty quantification, and colony-scale benchmarks, with the recommended defense stack achieving 96--100\% detection in parametric simulation, plus a category-theoretic formalization of defense composition and composable visualization engine.
+- **Paper 3: Practitioner Guide and Applications** \cite{friedman2026cogsec3} (DOI: 10.5281/zenodo.22134548, this paper) translates the formal and empirical results into accessible engineering guidance (§1–§8) and demonstrates real-world applicability across ten high-stakes operational domains via the integrated CIF-AD-OODA model (§9–§10), yielding three universal attack patterns, four novel defense extensions, and retrospective validation against six documented 2024–2025 AI agent incidents.
 
 Together, the series establishes that cognitive integrity is not merely a theoretical concern but a *necessary engineering discipline* for deployed multiagent systems. Readers seeking derivations or proofs should consult Part 1; readers seeking empirical measurement should consult Part 2; readers deploying defenses operationally or evaluating CIF for a specific operational sector should consult this unified paper (Part 3+4).
 

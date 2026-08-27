@@ -2,7 +2,7 @@
 
 Part 1 of the **Cognitive Security for Multiagent Operators** series — **v1.1 Revised and Expanded**.
 
-**Status: Published (v1) / v1.1 in preparation** | **DOI:** [10.5281/zenodo.18364119](https://doi.org/10.5281/zenodo.18364119) | **v1 Published:** January 28, 2026 | **v1.1 Date:** July 5, 2026
+**Status: Published (v1) / v1.1 in preparation** | **DOI:** [10.5281/zenodo.22134544](https://doi.org/10.5281/zenodo.22134544) | **v1 Published:** January 28, 2026 | **v1.1 Date:** July 5, 2026
 
 ## Overview
 
@@ -40,9 +40,9 @@ This paper presents the **theoretical foundations** of the Cognitive Integrity F
 
 || Part | Title | Focus | Status | DOI |
 ||------|-------|-------|--------|-----|
-|| **1 (This)** | Formal Foundations (Second Edition) | Theory, proofs, formalisms, CIF-AD-OODA | **v1.1** | [10.5281/zenodo.18364119](https://doi.org/10.5281/zenodo.18364119) |
-|| 2 | Computational Validation | Empirical results, algorithms | Preprint | [10.5281/zenodo.18364128](https://doi.org/10.5281/zenodo.18364128) |
-|| 3+4 (merged) | Practical Guidance + Applications | Deployment checklists, guidelines, cross-domain CIF-AD-OODA | Preprint | [10.5281/zenodo.18364130](https://doi.org/10.5281/zenodo.18364130) |
+|| **1 (This)** | Formal Foundations (Second Edition) | Theory, proofs, formalisms, CIF-AD-OODA | **v1.1** | [10.5281/zenodo.22134544](https://doi.org/10.5281/zenodo.22134544) |
+|| 2 | Computational Validation | Empirical results, algorithms | Preprint | [10.5281/zenodo.22134546](https://doi.org/10.5281/zenodo.22134546) |
+|| 3+4 (merged) | Practical Guidance + Applications | Deployment checklists, guidelines, cross-domain CIF-AD-OODA | Preprint | [10.5281/zenodo.22134548](https://doi.org/10.5281/zenodo.22134548) |
 
 ## Documentation
 
@@ -102,7 +102,7 @@ Parts 2 and 3 point here for full symbol definitions (Part 3 also ships a short 
   author = {Friedman, Daniel Ari},
   title = {Cognitive Integrity Framework: Formal Foundations for Securing Multiagent AI Operators},
   year = {2026},
-  doi = {10.5281/zenodo.18364119},
+  doi = {10.5281/zenodo.22134544},
   publisher = {Zenodo},
   note = {Part 1 of Cognitive Security for Multiagent Operators series}
 }
@@ -113,7 +113,7 @@ Parts 2 and 3 point here for full symbol definitions (Part 3 also ships a short 
 The complete Cognitive Integrity Framework manuscript series is available at:
 
 - **GitHub**: [docxology/cognitive_integrity](https://github.com/docxology/cognitive_integrity)
-- **Zenodo**: [10.5281/zenodo.18364119](https://doi.org/10.5281/zenodo.18364119)
+- **Zenodo**: [10.5281/zenodo.22134544](https://doi.org/10.5281/zenodo.22134544)
 
 These manuscripts are designed to be built using the [docxology/template](https://github.com/docxology/template) research project infrastructure.
 

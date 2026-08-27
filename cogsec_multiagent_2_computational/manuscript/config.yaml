@@ -6,7 +6,7 @@ paper:
   type: research
   series: Cognitive Security for Multiagent Operators
   part: 2
-  doi: 10.5281/zenodo.18364128
+  doi: 10.5281/zenodo.22134546
   date: '2026-08-26'
   cover:
     image: ../output/figures/cif_comprehensive.png
@@ -45,7 +45,7 @@ keywords:
 abstract: |
   This paper presents the computational validation of the Cognitive Integrity
   Framework (CIF) whose formal foundations are established in Part 1
-  (DOI: 10.5281/zenodo.18364119). We implement the CIF defense suite --- cognitive
+  (DOI: 10.5281/zenodo.22134544). We implement the CIF defense suite --- cognitive
   firewalls, belief sandboxes, tripwires, drift and anomaly scoring, trust calculus
   with bounded delegation, provenance tracking, and Byzantine-tolerant consensus ---
   and evaluate it on an integrated 1,475-item attack corpus spanning fifteen
@@ -79,9 +79,9 @@ abstract: |
 
   This is Part 2 of the three-part Cognitive Security for Multiagent Operators
   series:
-  - Part 1 (DOI: 10.5281/zenodo.18364119): formal foundations and theoretical analysis
+  - Part 1 (DOI: 10.5281/zenodo.22134544): formal foundations and theoretical analysis
   - Part 2 (this paper): computational validation and implementation
-  - Part 3+4 merged (DOI: 10.5281/zenodo.18364130): unified practitioner guidance
+  - Part 3+4 merged (DOI: 10.5281/zenodo.22134548): unified practitioner guidance
     and cross-domain applications
 
 metadata:
@@ -152,4 +152,4 @@ llm:
 rendering:
   cover_height_fraction: 0.35
 publication:
-  doi: 10.5281/zenodo.18364128
+  doi: 10.5281/zenodo.22134546

@@ -7,7 +7,7 @@ paper:
   type: "research"
   series: "Cognitive Security for Multiagent Operators"
   part: 1
-  doi: "10.5281/zenodo.18364119"
+  doi: "10.5281/zenodo.22134544"
   date: "2026-08-26"
   cover:
     image: "../output/figures/cif_architecture.png"
@@ -73,8 +73,8 @@ abstract: |
 
   This is Part 1 of a three-part series:
   - Part 1 (this paper): Formal foundations and theoretical analysis
-  - Part 2 (DOI: 10.5281/zenodo.18364128): Computational validation and implementation
-  - Part 3 (DOI: 10.5281/zenodo.18364130): Practitioner guidance, cross-domain CIF-AD-OODA applications, and real-world incident analyses (merged from original Parts 3+4)
+  - Part 2 (DOI: 10.5281/zenodo.22134546): Computational validation and implementation
+  - Part 3 (DOI: 10.5281/zenodo.22134548): Practitioner guidance, cross-domain CIF-AD-OODA applications, and real-world incident analyses (merged from original Parts 3+4)
 
 
 llm:
@@ -88,4 +88,4 @@ rendering:
   cover_height_fraction: 0.35
 
 publication:
-  doi: "10.5281/zenodo.18364119"
+  doi: 10.5281/zenodo.22134544

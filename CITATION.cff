@@ -20,7 +20,7 @@ preferred-citation:
   type: article
   title: "Cognitive Integrity Framework: Formal Foundations (Part 1, Second Edition)"
   version: "2.0"
-  doi: "10.5281/zenodo.18364119"
+  doi: "10.5281/zenodo.22134544"
   year: 2026
   authors:
     - family-names: Friedman
@@ -29,7 +29,7 @@ references:
   - type: article
     title: "Cognitive Integrity Framework: Formal Foundations (Part 1, Second Edition)"
     version: "2.0"
-    doi: "10.5281/zenodo.18364119"
+    doi: "10.5281/zenodo.22134544"
     year: 2026
     authors:
       - family-names: Friedman
@@ -37,7 +37,7 @@ references:
   - type: article
     title: "Cognitive Integrity Framework: Computational Validation and Empirical Analysis (Part 2, Second Edition)"
     version: "2.0"
-    doi: "10.5281/zenodo.18364128"
+    doi: "10.5281/zenodo.22134546"
     year: 2026
     authors:
       - family-names: Friedman
@@ -45,7 +45,7 @@ references:
   - type: article
     title: "CIF Practical Applications and Deployment Guide (Parts 3 + 4, Unified)"
     version: "2.0"
-    doi: "10.5281/zenodo.18364130"
+    doi: "10.5281/zenodo.22134548"
     year: 2026
     authors:
       - family-names: Friedman

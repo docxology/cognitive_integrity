@@ -2,7 +2,7 @@
 """Deposit the three papers to Zenodo, in three separable and auditable steps.
 
 Two of the three cover-page DOIs in this series resolved to nothing for as long
-as the papers existed: 10.5281/zenodo.18364128 and .18364130 returned 404 from
+as the papers existed: 10.5281/zenodo.22134546 and .18364130 returned 404 from
 Zenodo's API and from doi.org, and a search of Zenodo for the series returned
 one record. Part 1 is deposited (record 18364119, concept 18364118); Parts 2 and
 3 never were. This script mints the identifiers that the papers already print.

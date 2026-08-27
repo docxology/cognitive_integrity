@@ -81,9 +81,25 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="report pending rewrites and exit 1 rather than performing them",
     )
+    parser.add_argument(
+        "--map",
+        action="append",
+        metavar="OLD=NEW",
+        default=[],
+        help="explicit old=new DOI replacement to carry across tracked files "
+        "(repeatable). Needed when reserve already wrote the new DOI into "
+        "both config keys, which makes the derived cover-vs-publication "
+        "comparison see no pending rewrite even though every literal "
+        "occurrence elsewhere is stale.",
+    )
     args = parser.parse_args(argv)
 
     pending = pending_rewrites()
+    for spec in args.map:
+        old_doi, sep, new_doi = spec.partition("=")
+        if not sep or not old_doi.startswith("10.") or not new_doi.startswith("10."):
+            raise SystemExit(f"--map expects OLD=NEW DOIs, got: {spec}")
+        pending[f"cli:{old_doi}"] = (old_doi, new_doi)
     if not pending:
         print("every part's cover DOI already matches its publication DOI")
         return 0

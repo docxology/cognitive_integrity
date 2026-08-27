@@ -12,9 +12,9 @@ Program directory containing the Cognitive Security for Multiagent Operators res
 
 | Project | Description | DOI |
 | ------- | ----------- | --- |
-| `cogsec_multiagent_1_theory/` | Part 1 v2: Theoretical foundations — trust calculus, defense composition algebra, adversary taxonomy, CIF-AD-OODA | 10.5281/zenodo.18364119 |
-| `cogsec_multiagent_2_computational/` | Part 2: Computational validation — 1,475-item attack corpus across fifteen categories, 120-item benign corpus, adversarial training, generated red-team sweeps, colony detection benchmarks at 20--100 agents plus stress runs at 100--500 | 10.5281/zenodo.18364128 |
-| `cogsec_multiagent_3_practical/` | Part 3+4 merged: Practical guidance + cross-domain CIF-AD-OODA applications | 10.5281/zenodo.18364130 |
+| `cogsec_multiagent_1_theory/` | Part 1 v2: Theoretical foundations — trust calculus, defense composition algebra, adversary taxonomy, CIF-AD-OODA | 10.5281/zenodo.22134544 |
+| `cogsec_multiagent_2_computational/` | Part 2: Computational validation — 1,475-item attack corpus across fifteen categories, 120-item benign corpus, adversarial training, generated red-team sweeps, colony detection benchmarks at 20--100 agents plus stress runs at 100--500 | 10.5281/zenodo.22134546 |
+| `cogsec_multiagent_3_practical/` | Part 3+4 merged: Practical guidance + cross-domain CIF-AD-OODA applications | 10.5281/zenodo.22134548 |
 
 ## Series overview
 
@@ -120,7 +120,7 @@ and requires it to be caught.
 ## Repository
 
 - GitHub: <https://github.com/docxology/cognitive_integrity>
-- DOIs: 10.5281/zenodo.18364119, .18364128, .18364130 (Parts 3+4 merged under .18364130)
+- DOIs: 10.5281/zenodo.22134544 (Part 1, v2.0), 10.5281/zenodo.22134546 (Part 2), 10.5281/zenodo.22134548 (Part 3+4 unified)
 
 ## Navigation
 

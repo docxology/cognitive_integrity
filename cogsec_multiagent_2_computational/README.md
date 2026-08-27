@@ -2,7 +2,7 @@
 
 Part 2 of the **Cognitive Security for Multiagent Operators** series — **Version 1.0 (2026-07-05)**.
 
-**Status: Preprint** | **DOI:** [10.5281/zenodo.18364128](https://doi.org/10.5281/zenodo.18364128)
+**Status: Preprint** | **DOI:** [10.5281/zenodo.22134546](https://doi.org/10.5281/zenodo.22134546)
 
 ## What's New in v1.0
 
@@ -39,9 +39,9 @@ This paper provides **computational validation** of the Cognitive Integrity Fram
 
 | Part | Title | Focus | Status | DOI |
 | ---- | ----- | ----- | ------ | --- |
-| 1 | Formal Foundations | Theory, proofs, formalisms | **Published** | [10.5281/zenodo.18364119](https://doi.org/10.5281/zenodo.18364119) |
-| **2 (This, v1.0)** | Computational Validation | Empirical results, adversarial training | Preprint | [10.5281/zenodo.18364128](https://doi.org/10.5281/zenodo.18364128) |
-| 3+4 (merged) | Practical Guidance + Applications | Deployment + domains | Preprint | [10.5281/zenodo.18364130](https://doi.org/10.5281/zenodo.18364130) |
+| 1 | Formal Foundations | Theory, proofs, formalisms | **Published** | [10.5281/zenodo.22134544](https://doi.org/10.5281/zenodo.22134544) |
+| **2 (This, v1.0)** | Computational Validation | Empirical results, adversarial training | Preprint | [10.5281/zenodo.22134546](https://doi.org/10.5281/zenodo.22134546) |
+| 3+4 (merged) | Practical Guidance + Applications | Deployment + domains | Preprint | [10.5281/zenodo.22134548](https://doi.org/10.5281/zenodo.22134548) |
 
 ## Project Structure
 
@@ -84,7 +84,7 @@ cogsec_multiagent_2_computational/
   author    = {Friedman, Daniel Ari},
   title     = {Cognitive Integrity Framework: Computational Validation and Empirical Analysis},
   year      = {2026},
-  doi       = {10.5281/zenodo.18364128},
+  doi       = {10.5281/zenodo.22134546},
   publisher = {Zenodo},
   note      = {Part 2, v1.0. Cognitive Security for Multiagent Operators series.
                New in v1.0: adversarial training (5 rounds), red-team framework,
@@ -180,7 +180,7 @@ Comprehensive technical documentation is available in [`docs/`](docs/):
 ## Repository
 
 - **GitHub**: [docxology/cognitive_integrity](https://github.com/docxology/cognitive_integrity)
-- **Zenodo**: [10.5281/zenodo.18364128](https://doi.org/10.5281/zenodo.18364128)
+- **Zenodo**: [10.5281/zenodo.22134546](https://doi.org/10.5281/zenodo.22134546)
 
 These manuscripts are built using the [docxology/template](https://github.com/docxology/template) research project infrastructure.
 

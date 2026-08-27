@@ -8,8 +8,8 @@ All scripts follow the **thin-orchestrator contract** — computation lives in `
 
 This is Part 2 of the three-part *Cognitive Security for Multiagent Operators* series. See the [project README](../README.md) for the full series map. The scripts here produce the data and figures cited by:
 
-- **Part 1** \cite{friedman2026cogsec1} — formal-foundations companion (DOI: 10.5281/zenodo.18364119)
-- **Part 3** \cite{friedman2026cogsec3} — practitioner's companion (DOI: 10.5281/zenodo.18364130)
+- **Part 1** \cite{friedman2026cogsec1} — formal-foundations companion (DOI: 10.5281/zenodo.22134544)
+- **Part 3** \cite{friedman2026cogsec3} — practitioner's companion (DOI: 10.5281/zenodo.22134548)
 - **Part 3+4** \cite{friedman2026cogsec3} — unified applications companion
 
 ## Quick Start

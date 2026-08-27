@@ -132,10 +132,10 @@
 \contentsline {subsubsection}{\numberline {6.7.3}Empirical Validation Cross-Reference}{66}{subsubsection.6.7.3}%
 \contentsline {subsection}{\numberline {6.8}Information-Theoretic Detection Limits}{67}{subsection.6.8}%
 \contentsline {subsubsection}{\numberline {6.8.1}Neyman-Pearson Detection Framework}{67}{subsubsection.6.8.1}%
-\contentsline {subsubsection}{\numberline {6.8.2}Chernoff Information and Error Exponents}{67}{subsubsection.6.8.2}%
+\contentsline {subsubsection}{\numberline {6.8.2}Chernoff Information and Error Exponents}{68}{subsubsection.6.8.2}%
 \contentsline {subsubsection}{\numberline {6.8.3}KL Divergence and Detection Rate Coupling}{68}{subsubsection.6.8.3}%
 \contentsline {subsubsection}{\numberline {6.8.4}Fundamental Undetectability Regime}{68}{subsubsection.6.8.4}%
-\contentsline {subsection}{\numberline {6.9}Multi-Stage Detection Pipeline}{68}{subsection.6.9}%
+\contentsline {subsection}{\numberline {6.9}Multi-Stage Detection Pipeline}{69}{subsection.6.9}%
 \contentsline {subsubsection}{\numberline {6.9.1}Pipeline Architecture}{69}{subsubsection.6.9.1}%
 \contentsline {subsubsection}{\numberline {6.9.2}Adaptive Threshold Selection}{70}{subsubsection.6.9.2}%
 \contentsline {section}{\numberline {7}Formal Verification: Safety Properties and Model Checking}{71}{section.7}%

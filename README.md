@@ -31,9 +31,9 @@ number the papers report is derived from an artifact under
 
 | Part | Title | Status | DOI |
 |------|-------|--------|-----|
-| 1 | [Formal Foundations](cogsec_multiagent_1_theory/) (Second Edition) | v2.0 (Second Edition) | [10.5281/zenodo.18364119](https://doi.org/10.5281/zenodo.18364119) |
-| 2 | [Computational Validation](cogsec_multiagent_2_computational/) (Second Edition) | v2.0 (first release) | [10.5281/zenodo.18364128](https://doi.org/10.5281/zenodo.18364128) |
-| 3+4 merged | [Practical Applications and Deployment Guide](cogsec_multiagent_3_practical/) (Parts 3+4 Unified) | v2.0 (first release) | [10.5281/zenodo.18364130](https://doi.org/10.5281/zenodo.18364130) |
+| 1 | [Formal Foundations](cogsec_multiagent_1_theory/) (Second Edition) | v2.0 (Second Edition) | [10.5281/zenodo.22134544](https://doi.org/10.5281/zenodo.22134544) |
+| 2 | [Computational Validation](cogsec_multiagent_2_computational/) (Second Edition) | v2.0 (first release) | [10.5281/zenodo.22134546](https://doi.org/10.5281/zenodo.22134546) |
+| 3+4 merged | [Practical Applications and Deployment Guide](cogsec_multiagent_3_practical/) (Parts 3+4 Unified) | v2.0 (first release) | [10.5281/zenodo.22134548](https://doi.org/10.5281/zenodo.22134548) |
 
 All three papers are released together as **v2.0**, dated 2026-08-26. They share
 one measurement layer --- Part 2 produces the artifacts and Parts 1 and 3 cite
@@ -86,7 +86,7 @@ Part 1 (example; see Zenodo for each part's record):
   author = {Friedman, Daniel Ari},
   title = {Cognitive Integrity Framework: Formal Foundations},
   year = {2026},
-  doi = {10.5281/zenodo.18364119},
+  doi = {10.5281/zenodo.22134544},
   publisher = {Zenodo},
   note = {Part 1 of three: Cognitive Security for Multiagent Operators}
 }

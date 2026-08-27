@@ -25,12 +25,12 @@ This paper (Part 3+4, unified) is simultaneously a qualitative practitioner guid
 
 ## Paper Series
 
-**DOI**: 10.5281/zenodo.18364130
+**DOI**: 10.5281/zenodo.22134548
 
 This is Part 3+4 of the three-part *Cognitive Security for Multiagent Operators* series:
 
-- **Part 1** (DOI: 10.5281/zenodo.18364119): Formal foundations and theoretical analysis
-- **Part 2** (DOI: 10.5281/zenodo.18364128): Computational validation and implementation
+- **Part 1** (DOI: 10.5281/zenodo.22134544): Formal foundations and theoretical analysis
+- **Part 2** (DOI: 10.5281/zenodo.22134546): Computational validation and implementation
 - **Part 3+4** (this paper): Practitioner guidance (§1–§8) and cross-domain CIF-AD-OODA applications (§9–§10)
 
 All source code, tests, and analysis scripts are maintained at <https://github.com/docxology/cognitive_integrity>.

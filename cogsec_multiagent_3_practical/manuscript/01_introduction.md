@@ -18,8 +18,8 @@ This is not a theoretical warning about future doom. It is an engineering proble
 
 The Cognitive Integrity Framework (CIF) was developed to secure these systems, and the companion papers in this series demonstrate its efficacy from formal, computational, and applied angles.
 
-* **Part 1: Formal Foundations** (DOI: 10.5281/zenodo.18364119) proved that trust can be mathematically bounded. We defined the "Trust Calculus" which guarantees that no matter how clever an adversary is, they cannot amplify their influence through delegation chains. It also introduces the Defense Composition Algebra, the five-tier adversary taxonomy ($\Omega_1$--$\Omega_5$), and information-theoretic stealth-impact bounds.
-* **Part 2: Computational Validation** (DOI: 10.5281/zenodo.18364128) implemented this theory in Python and tested it against a corpus of 950 attacks across four production architectures, reporting ablation studies, Bayesian uncertainty quantification, colony-scale benchmarks at 20--100 agents, and a category-theoretic formalization of defense composition (Defense Category $\calD$, Theorems CT.1--CT.3) with a composable visualization engine and a composer data bundle.
+* **Part 1: Formal Foundations** (DOI: 10.5281/zenodo.22134544) proved that trust can be mathematically bounded. We defined the "Trust Calculus" which guarantees that no matter how clever an adversary is, they cannot amplify their influence through delegation chains. It also introduces the Defense Composition Algebra, the five-tier adversary taxonomy ($\Omega_1$--$\Omega_5$), and information-theoretic stealth-impact bounds.
+* **Part 2: Computational Validation** (DOI: 10.5281/zenodo.22134546) implemented this theory in Python and tested it against a corpus of 950 attacks across four production architectures, reporting ablation studies, Bayesian uncertainty quantification, colony-scale benchmarks at 20--100 agents, and a category-theoretic formalization of defense composition (Defense Category $\calD$, Theorems CT.1--CT.3) with a composable visualization engine and a composer data bundle.
 * **Applications (§9--§10, this paper):** The integrated CIF-AD-OODA analytical model is applied across ten critical domains (rare-earth mining, nation-state alliances, cyber-security, drone warfare, supply chain, biowarfare, food security, trade wars, infrastructure, information ecosystems), identifying three universal attack patterns and four novel defense extensions.
 
 The combined evidence includes **3,535 tests** and a **96--100% parametric detection ceiling** across all attack categories and architectures (Part 2), alongside a lower real-pipeline multi-seed mean of 86.3% (30 seeds). Direct-injection detection reaches 99--100% in the fully defended parametric configuration; plus CIF coverage is analyzed across all ten operational domains in §9--§10 with retrospective analysis of six documented 2024--2025 AI-agent incidents.
@@ -50,11 +50,11 @@ This paper is designed to stand alone as the practitioner's reference of the ser
 
 | If you want… | …consult… |
 | ------------ | --------- |
-| Formal definitions, proofs, and theorems (Trust Calculus, Defense Composition Algebra, stealth–impact bound) | **Part 1** (DOI: 10.5281/zenodo.18364119), §§4–5, 7 |
+| Formal definitions, proofs, and theorems (Trust Calculus, Defense Composition Algebra, stealth–impact bound) | **Part 1** (DOI: 10.5281/zenodo.22134544), §§4–5, 7 |
 | Adversary taxonomy $\Omega_1$–$\Omega_5$ formal characterization | **Part 1**, its Threat Model section (Formal Characterization of the Adversary Classes) |
 | Model-checked safety invariants + NuSMV/TLA+ specifications | **Part 1**, "Formal Verification: Safety Properties and Model Checking", **Part 2** S04 |
 | Eusocial-colony analogy (biological existence proof for CIF-like architectures) | **Part 1** S02 |
-| 950-attack corpus generation, examples, ethics | **Part 2** (DOI: 10.5281/zenodo.18364128), §3 + S03 |
+| 950-attack corpus generation, examples, ethics | **Part 2** (DOI: 10.5281/zenodo.22134546), §3 + S03 |
 | Detailed detection rates per architecture (Claude Code, AutoGPT, CrewAI, LangGraph) | **Part 2**, "Extended Experimental Results" for measured Claude Code and CrewAI rates, and "Per-Architecture Parametric Detection Rates" plus "Cross-Architecture Parametric Summary" in S08 for all four architectures |
 | Ablation studies + Bayesian uncertainty | **Part 2**, "Ablation Studies and Scalability Benchmarks" and "Bayesian Uncertainty Quantification" |
 | Parametric design-level ceiling (96–100%) | **Part 2** S08 |
@@ -69,4 +69,4 @@ This paper is designed to stand alone as the practitioner's reference of the ser
 | Retrospective mapping of 2024–2025 AI-agent security incidents (Replit, Copilot RCE, Slack AI, \$3.2M procurement fraud, etc.) | **S3** (this paper) |
 | CIF-AD-OODA integration model for goal-hijacking | **§9** (this paper) |
 
-**Code and Repository**: The companion codebase, attack corpus documentation, and deployment tooling are maintained at <https://github.com/docxology/cognitive_integrity> (DOI: 10.5281/zenodo.18364130; companion parts: Part 1 DOI 10.5281/zenodo.18364119, Part 2 DOI 10.5281/zenodo.18364128).
+**Code and Repository**: The companion codebase, attack corpus documentation, and deployment tooling are maintained at <https://github.com/docxology/cognitive_integrity> (DOI: 10.5281/zenodo.22134548; companion parts: Part 1 DOI 10.5281/zenodo.22134544, Part 2 DOI 10.5281/zenodo.22134546).

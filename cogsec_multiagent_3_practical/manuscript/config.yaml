@@ -6,7 +6,7 @@ paper:
   type: review
   series: Cognitive Security for Multiagent Operators
   part: 3+4
-  doi: 10.5281/zenodo.18364130
+  doi: 10.5281/zenodo.22134548
   date: '2026-08-26'
   cover:
     image: ../output/figures/domain_coverage.png
@@ -50,23 +50,23 @@ abstract: "This unified paper (originally Parts 3 and 4 of the Cognitive Securit
   10).** The CIF-AD-OODA integration model is applied\nto analyze Goal Hijacking across\
   \ ten critical domains. Cross-domain synthesis reveals\nthree universal attack patterns\
   \ and four novel defense extensions.\n\nThis is Part 3+4 of a three-part series:\n\
-  - Part 1 (DOI: 10.5281/zenodo.18364119): Formal foundations and theoretical analysis\n\
-  - Part 2 (DOI: 10.5281/zenodo.18364128): Computational validation and implementation\n\
+  - Part 1 (DOI: 10.5281/zenodo.22134544): Formal foundations and theoretical analysis\n\
+  - Part 2 (DOI: 10.5281/zenodo.22134546): Computational validation and implementation\n\
   - Part 3+4 (this paper): Practitioner guidance and cross-domain CIF-AD-OODA applications\n"
 series:
   structure: 3-part
   parts:
   - number: 1
     title: Formal Foundations
-    doi: 10.5281/zenodo.18364119
+    doi: 10.5281/zenodo.22134544
     short: Part 1
   - number: 2
     title: Computational Validation
-    doi: 10.5281/zenodo.18364128
+    doi: 10.5281/zenodo.22134546
     short: Part 2
   - number: 3+4
     title: Practitioner Guide and Cross-Domain Applications (this paper)
-    doi: 10.5281/zenodo.18364130
+    doi: 10.5281/zenodo.22134548
     short: Part 3+4
 figures:
   posture_radar:
@@ -139,4 +139,4 @@ llm:
 rendering:
   cover_height_fraction: 0.35
 publication:
-  doi: 10.5281/zenodo.18364130
+  doi: 10.5281/zenodo.22134548

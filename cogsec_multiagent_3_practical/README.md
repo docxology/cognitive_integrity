@@ -2,7 +2,7 @@
 
 Unified Part 3+4 of the **Cognitive Security for Multiagent Operators** series.
 
-**Status: Preprint** | **DOI:** [10.5281/zenodo.18364130](https://doi.org/10.5281/zenodo.18364130) | **Version:** 1.0.0
+**Status: Preprint** | **DOI:** [10.5281/zenodo.22134548](https://doi.org/10.5281/zenodo.22134548) | **Version:** 1.0.0
 
 ## Overview
 
@@ -36,9 +36,9 @@ This paper unifies two previously separate works into a single comprehensive ref
 
 | Part | Title | Focus | Status | DOI |
 |------|-------|-------|--------|-----|
-| 1 | Formal Foundations | Theory, proofs, formalisms | **Published** | [10.5281/zenodo.18364119](https://doi.org/10.5281/zenodo.18364119) |
-| 2 | Computational Validation | Empirical results, algorithms | Preprint | [10.5281/zenodo.18364128](https://doi.org/10.5281/zenodo.18364128) |
-| **3+4 (This)** | Practical Guidance + Applications | Deployment checklists, guidelines, cross-domain CIF-AD-OODA | Preprint | [10.5281/zenodo.18364130](https://doi.org/10.5281/zenodo.18364130) |
+| 1 | Formal Foundations | Theory, proofs, formalisms | **Published** | [10.5281/zenodo.22134544](https://doi.org/10.5281/zenodo.22134544) |
+| 2 | Computational Validation | Empirical results, algorithms | Preprint | [10.5281/zenodo.22134546](https://doi.org/10.5281/zenodo.22134546) |
+| **3+4 (This)** | Practical Guidance + Applications | Deployment checklists, guidelines, cross-domain CIF-AD-OODA | Preprint | [10.5281/zenodo.22134548](https://doi.org/10.5281/zenodo.22134548) |
 
 ## Documentation
 
@@ -93,7 +93,7 @@ cogsec_multiagent_3_practical/
   author = {Friedman, Daniel Ari},
   title = {Cognitive Integrity Framework: Practical Applications and Deployment Guide},
   year = {2026},
-  doi = {10.5281/zenodo.18364130},
+  doi = {10.5281/zenodo.22134548},
   publisher = {Zenodo},
   note = {Parts 3+4 unified: Practitioner guidance and cross-domain CIF-AD-OODA applications}
 }
@@ -128,7 +128,7 @@ uv run python scripts/<NN>_*.py                                # generate an ind
 The complete Cognitive Integrity Framework manuscript series is available at:
 
 - **GitHub**: [docxology/cognitive_integrity](https://github.com/docxology/cognitive_integrity)
-- **Zenodo**: [10.5281/zenodo.18364130](https://doi.org/10.5281/zenodo.18364130)
+- **Zenodo**: [10.5281/zenodo.22134548](https://doi.org/10.5281/zenodo.22134548)
 
 These manuscripts are designed to be built using the [docxology/template](https://github.com/docxology/template) research project infrastructure.
 

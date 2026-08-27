@@ -281,7 +281,7 @@ Deployment Guide}
 {\small\sffamily\texttt{daniel@activeinference.institute}\par}
 {\small\sffamily\href{https://orcid.org/0000-0001-6232-9096}{ORCID: 0000-0001-6232-9096}\par}
 \vspace{0.08em}
-{\small\sffamily DOI: \href{https://doi.org/10.5281/zenodo.18364130}{10.5281/zenodo.18364130}\par}
+{\small\sffamily DOI: \href{https://doi.org/10.5281/zenodo.22134548}{10.5281/zenodo.22134548}\par}
 \vspace{0.35em}
 \makeatletter
 {\@date\par}
@@ -351,7 +351,7 @@ see Part 2.
 
 \subsection{Paper Series}\label{paper-series}
 
-\textbf{DOI}: 10.5281/zenodo.18364130
+\textbf{DOI}: 10.5281/zenodo.22134548
 
 This is Part 3+4 of the three-part \emph{Cognitive Security for
 Multiagent Operators} series:
@@ -359,10 +359,10 @@ Multiagent Operators} series:
 \begin{itemize}
 \tightlist
 \item
-  \textbf{Part 1} (DOI: 10.5281/zenodo.18364119): Formal foundations and
+  \textbf{Part 1} (DOI: 10.5281/zenodo.22134544): Formal foundations and
   theoretical analysis
 \item
-  \textbf{Part 2} (DOI: 10.5281/zenodo.18364128): Computational
+  \textbf{Part 2} (DOI: 10.5281/zenodo.22134546): Computational
   validation and implementation
 \item
   \textbf{Part 3+4} (this paper): Practitioner guidance (§1--§8) and
@@ -410,7 +410,7 @@ efficacy from formal, computational, and applied angles.
 \begin{itemize}
 \tightlist
 \item
-  \textbf{Part 1: Formal Foundations} (DOI: 10.5281/zenodo.18364119)
+  \textbf{Part 1: Formal Foundations} (DOI: 10.5281/zenodo.22134544)
   proved that trust can be mathematically bounded. We defined the
   ``Trust Calculus'' which guarantees that no matter how clever an
   adversary is, they cannot amplify their influence through delegation
@@ -419,7 +419,7 @@ efficacy from formal, computational, and applied angles.
   information-theoretic stealth-impact bounds.
 \item
   \textbf{Part 2: Computational Validation} (DOI:
-  10.5281/zenodo.18364128) implemented this theory in Python and tested
+  10.5281/zenodo.22134546) implemented this theory in Python and tested
   it against a corpus of 950 attacks across four production
   architectures, reporting ablation studies, Bayesian uncertainty
   quantification, colony-scale benchmarks at 20--100 agents, and a
@@ -527,7 +527,7 @@ If you want\ldots{}
 \endlastfoot
 Formal definitions, proofs, and theorems (Trust Calculus, Defense
 Composition Algebra, stealth--impact bound) & \textbf{Part 1} (DOI:
-10.5281/zenodo.18364119), §§4--5, 7 \\
+10.5281/zenodo.22134544), §§4--5, 7 \\
 Adversary taxonomy \(\Omega_1\)--\(\Omega_5\) formal characterization &
 \textbf{Part 1}, its Threat Model section (Formal Characterization of
 the Adversary Classes) \\
@@ -537,7 +537,7 @@ Checking'', \textbf{Part 2} S04 \\
 Eusocial-colony analogy (biological existence proof for CIF-like
 architectures) & \textbf{Part 1} S02 \\
 950-attack corpus generation, examples, ethics & \textbf{Part 2} (DOI:
-10.5281/zenodo.18364128), §3 + S03 \\
+10.5281/zenodo.22134546), §3 + S03 \\
 Detailed detection rates per architecture (Claude Code, AutoGPT, CrewAI,
 LangGraph) & \textbf{Part 2}, ``Extended Experimental Results'' for
 measured Claude Code and CrewAI rates, and ``Per-Architecture Parametric
@@ -582,8 +582,8 @@ paper) \\
 \textbf{Code and Repository}: The companion codebase, attack corpus
 documentation, and deployment tooling are maintained at
 \url{https://github.com/docxology/cognitive_integrity} (DOI:
-10.5281/zenodo.18364130; companion parts: Part 1 DOI
-10.5281/zenodo.18364119, Part 2 DOI 10.5281/zenodo.18364128).
+10.5281/zenodo.22134548; companion parts: Part 1 DOI
+10.5281/zenodo.22134544, Part 2 DOI 10.5281/zenodo.22134546).
 
 \newpage
 
@@ -919,10 +919,10 @@ real-pipeline evaluation had a lower multi-seed mean of 86.3\%.
 \textbf{The Implication}: The parametric model rewards layering, but the
 real pipeline does not spread the work evenly across layers, and the
 100-attack ablation corpus says so plainly. The Invariants module alone
-detects 85\% of that corpus against the full stack's 89.0\%; the
-Detection, Sandbox, Tripwire and Consensus modules each detect between
-4\% and 6\% on their own. Removing Invariants costs 65 percentage points
-of true-positive rate, removing the Tripwire costs two, and removing
+detects 83.3\% of that corpus against the full stack's 89.0\%; no other
+module detects more than 10\% on its own (the next best, Consensus,
+reaches 9.6\%). Removing Invariants costs 65 percentage points of
+true-positive rate, removing the Tripwire costs two, and removing
 Consensus, Detection, Firewall, Provenance, Sandbox or Trust Calculus
 costs nothing this corpus can measure. That is a statement about
 \emph{marginal} contribution, not about capability: a module whose
@@ -1093,13 +1093,13 @@ simulation, modeled on the architecture's topology. They represent the
 \begin{itemize}
 \tightlist
 \item
-  \textbf{99.4\% Overall Detection} means: ``Across all architectures
-  and attack categories, 99.4\% of attack vectors are detected by the
-  full CIF defense stack'' (with architecture-specific rates ranging
-  from 96--100\%).
+  \textbf{96--100\% Parametric Ceiling} means: ``In the calibrated
+  parametric simulation (\(N=3{,}800\) design-level instances), the full
+  CIF defense stack detects 96--100\% of attack vectors, with
+  per-architecture rates ranging from 98--100\%.''
 \item
   It does \textbf{not} mean: ``We have a magic Python script that
-  catches 99.4\% of all evil AI thoughts.''
+  catches 96--100\% of all evil AI thoughts.''
 \end{itemize}
 
 We proved the \emph{architecture} works. The implementation fidelity is
@@ -3706,7 +3706,7 @@ computation to practice and applied deployment:
 \tightlist
 \item
   \textbf{Paper 1: Formal Foundations} \cite{friedman2026cogsec1} (DOI:
-  10.5281/zenodo.18364119) establishes the Cognitive Integrity Framework
+  10.5281/zenodo.22134544) establishes the Cognitive Integrity Framework
   (CIF): a formal model of agent cognitive states
   \(\sigma_i = \langle \mathcal{B}_i, \mathcal{G}_i, \mathcal{I}_i, \mathcal{H}_i \rangle\),
   a trust calculus with delegation decay (\(\delta^d\)), the Defense
@@ -3717,7 +3717,7 @@ computation to practice and applied deployment:
   evolutionary existence proof for CIF-like defense architectures.
 \item
   \textbf{Paper 2: Computational Validation} \cite{friedman2026cogsec2}
-  (DOI: 10.5281/zenodo.18364128) validated these mechanisms
+  (DOI: 10.5281/zenodo.22134546) validated these mechanisms
   computationally across a 950-attack corpus and four production
   multiagent architectures, reporting ablation studies, Bayesian
   uncertainty quantification, and colony-scale benchmarks; the
@@ -3725,7 +3725,7 @@ computation to practice and applied deployment:
   simulation and 80--100\% under LLM-backed evaluation.
 \item
   \textbf{Paper 3: A Qualitative Review for Practitioners}
-  \cite{friedman2026cogsec3} (DOI: 10.5281/zenodo.18364130) translates
+  \cite{friedman2026cogsec3} (DOI: 10.5281/zenodo.22134548) translates
   the theoretical and empirical results into accessible engineering
   guidance: deployment guides, subagent-hardening patterns,
   incident-response playbooks, monitoring strategies, cost--benefit
@@ -4065,7 +4065,7 @@ instantiating the mechanisms below in production should consult the
 Practitioner section (§1--§8) of this unified paper.
 
 \textbf{Composable Visualization Engine.} Part 2 (DOI:
-10.5281/zenodo.18364128) provides a composable visualization engine ---
+10.5281/zenodo.22134546) provides a composable visualization engine ---
 \texttt{DefenseGraph} (defense DAGs), \texttt{CategoryDiagram}
 (commutative diagrams of the Defense Category \(\calD\)),
 \texttt{LatticeViz} (Hasse diagrams of defense lattices),
@@ -6703,7 +6703,7 @@ The Applications section of this unified paper completes the three-part
 \tightlist
 \item
   \textbf{Paper 1: Formal Foundations} \cite{friedman2026cogsec1} (DOI:
-  10.5281/zenodo.18364119) established the formal foundations: cognitive
+  10.5281/zenodo.22134544) established the formal foundations: cognitive
   state model
   \(\sigma_i = \langle \mathcal{B}_i, \mathcal{G}_i, \mathcal{I}_i, \mathcal{H}_i \rangle\),
   trust calculus with \(\delta^d\) bounded delegation, adversary
@@ -6713,7 +6713,7 @@ The Applications section of this unified paper completes the three-part
   eusocial-colony analogy.
 \item
   \textbf{Paper 2: Computational Validation} \cite{friedman2026cogsec2}
-  (DOI: 10.5281/zenodo.18364128) provided computational validation:
+  (DOI: 10.5281/zenodo.22134546) provided computational validation:
   benchmark evaluation across 950 attack scenarios, ablation studies,
   Bayesian uncertainty quantification, and colony-scale benchmarks, with
   the recommended defense stack achieving 96--100\% detection in
@@ -6721,7 +6721,7 @@ The Applications section of this unified paper completes the three-part
   defense composition and composable visualization engine.
 \item
   \textbf{Paper 3: Practitioner Guide and Applications}
-  \cite{friedman2026cogsec3} (DOI: 10.5281/zenodo.18364130, this paper)
+  \cite{friedman2026cogsec3} (DOI: 10.5281/zenodo.22134548, this paper)
   translates the formal and empirical results into accessible
   engineering guidance (§1--§8) and demonstrates real-world
   applicability across ten high-stakes operational domains via the

@@ -49,7 +49,7 @@ def generate_tla_spec_v2(
     return f'''---- MODULE CognitiveIntegrityFramework_v2 ----
 \\* CIF TLA+ Specification v2.0 - {n_agents} agents, max {max_byzantine} Byzantine
 \\* Extended with defense composition algebra and Omega_1-Omega_5 taxonomy
-\\* Part 2 DOI: 10.5281/zenodo.18364128
+\\* Part 2 DOI: 10.5281/zenodo.22134546
 
 EXTENDS Integers, Sequences, FiniteSets
 
@@ -204,7 +204,7 @@ def generate_promela_spec_v2(
     quorum = max(2 * max_byzantine + 1, (n_agents * 2) // 3 + 1)
     return f'''/* CIF Promela v2.0 - {n_agents} agents, max {max_byzantine} Byzantine */
 /* Extended: drift detection, sandbox, composition algebra, omega taxonomy */
-/* Part 2 DOI: 10.5281/zenodo.18364128 */
+/* Part 2 DOI: 10.5281/zenodo.22134546 */
 
 #define N_AGENTS    {n_agents}
 #define MAX_BYZ     {max_byzantine}
@@ -358,7 +358,7 @@ def generate_nusmv_spec_v2(
     quorum = max(2 * max_byzantine + 1, (n_agents * 2) // 3 + 1)
     return f'''-- CIF NuSMV v2.0 - {n_agents} agents, max {max_byzantine} Byzantine
 -- Extended: composition algebra, Omega taxonomy, drift, sandbox
--- Part 2 DOI: 10.5281/zenodo.18364128
+-- Part 2 DOI: 10.5281/zenodo.22134546
 
 MODULE main
 

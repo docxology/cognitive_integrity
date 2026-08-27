@@ -2,7 +2,7 @@
 
 **Location:** `projects/cognitive_integrity/cogsec_multiagent_2_computational/`. Active nested project under the program `cognitive_integrity/`; use qualified name `cognitive_integrity/cogsec_multiagent_2_computational` for pipeline and PDF scripts.
 
-**Version: 2.0 (2026-08-26)** | **DOI:** [10.5281/zenodo.18364128](https://doi.org/10.5281/zenodo.18364128)
+**Version: 2.0 (2026-08-26)** | **DOI:** [10.5281/zenodo.22134546](https://doi.org/10.5281/zenodo.22134546)
 
 ## Overview
 

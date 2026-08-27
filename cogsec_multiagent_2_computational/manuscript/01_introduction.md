@@ -80,7 +80,7 @@ This paper assumes familiarity with the formal framework developed in Part 1, pa
 - **Defense Composition Algebra** (Part 1's Defense Mechanisms section): Series and parallel composition theorems
 - **Integrity Properties** (Part 1's Formal Verification section): Belief consistency, goal preservation, trust boundedness
 
-All notation follows the canonical reference in Part 1 Appendix (\cref{sec:notation-reference}). For practical deployment guidance and domain-specific applications across critical operational sectors, see the unified Part 3+4 paper (DOI: 10.5281/zenodo.18364130).
+All notation follows the canonical reference in Part 1 Appendix (\cref{sec:notation-reference}). For practical deployment guidance and domain-specific applications across critical operational sectors, see the unified Part 3+4 paper (DOI: 10.5281/zenodo.22134548).
 
 ## Paper Organization
 
@@ -125,17 +125,17 @@ Table: Cross-paper navigation from Part 2 topics to sibling developments. {#tab:
 
 | If you want\ldots | \ldots consult\ldots |
 | --- | --- |
-| Trust Calculus definitions, $\delta^d$ decay theorems, no-amplification guarantee | Part 1 (DOI: 10.5281/zenodo.18364119), \S{4} (Trust Calculus) |
+| Trust Calculus definitions, $\delta^d$ decay theorems, no-amplification guarantee | Part 1 (DOI: 10.5281/zenodo.22134544), \S{4} (Trust Calculus) |
 | Defense Composition Algebra (series/parallel composition theorems) | Part 1, \S{5} |
 | Information-theoretic stealth--impact bounds | Part 1, \S{4.3}, Theorem "stealth--impact" |
 | Adversary taxonomy $\Omega_1$--$\Omega_5$ formal characterization | Part 1, \S{3} |
 | Model-checked safety invariants (specifications) | Part 1, \S{7} |
 | Eusocial-colony analogy (evolutionary existence proof for CIF-like architectures) | Part 1 S02 (Eusocial CogSec) |
-| Deployment guides, subagent hardening, incident response, monitoring, cost--benefit | Part 3 (DOI: 10.5281/zenodo.18364130), \S{5}--\S{6} |
+| Deployment guides, subagent hardening, incident response, monitoring, cost--benefit | Part 3 (DOI: 10.5281/zenodo.22134548), \S{5}--\S{6} |
 | Accessible-language explanations of these empirical results for non-specialists | Part 3, \S{3} (Evidence) |
 | Operator risk frameworks + common pitfalls | Part 3, \S{5c}, \S{6} |
 | Domain-specific application of these results in ten operational sectors | Part 3's applied domains and cross-domain analysis |
 | Three universal attack patterns (FR Polarity Inversion, Constraint Relaxation, Context Boundary Violation) across domains | Part 3's cross-domain analysis |
 | Retrospective analysis of documented 2024--2025 AI-agent security incidents | Part 3+4, Supplement S03 |
 
-**Code Availability**: All source modules, tests, and analysis scripts for this part are maintained at <https://github.com/docxology/cognitive_integrity> (DOI: 10.5281/zenodo.18364128).
+**Code Availability**: All source modules, tests, and analysis scripts for this part are maintained at <https://github.com/docxology/cognitive_integrity> (DOI: 10.5281/zenodo.22134546).

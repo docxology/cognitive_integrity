@@ -295,9 +295,9 @@ The remainder of this paper is structured as follows:
 
 \textbf{\Cref{sec:summary}: Conclusion} summarizes contributions and identifies directions for future research.
 
-\textbf{Part 2: Computational Validation} A separate, second, companion paper reports empirical results from architecture-aware parametric simulation across 950 attack vectors and four production architectures. Readers seeking detection rates, ablation studies, Bayesian uncertainty quantification, and architecture-specific defense configurations should consult Part 2 (DOI: 10.5281/zenodo.18364128).
+\textbf{Part 2: Computational Validation} A separate, second, companion paper reports empirical results from architecture-aware parametric simulation across 950 attack vectors and four production architectures. Readers seeking detection rates, ablation studies, Bayesian uncertainty quantification, and architecture-specific defense configurations should consult Part 2 (DOI: 10.5281/zenodo.22134546).
 
-\textbf{Part 3+4: Practitioner Guidance \& Applications} The merged third companion paper (\emph{Cognitive Integrity Framework: Practical Applications and Deployment Guide}) provides a qualitative review and practitioner's synthesis---accessible-language summaries of the theoretical and empirical findings, operational checklists, risk assessment frameworks, deployment guides, monitoring strategies, cost-benefit analyses---combined with CIF applications across ten high-stakes operational sectors through the integrated CIF-AD-OODA analytical model. Readers interested in domain-specific goal-hijacking defenses, universal attack patterns (FR polarity inversion, constraint relaxation, context boundary violation), or retrospective analysis of documented 2024--2025 AI agent security incidents should consult Part 3 (DOI: 10.5281/zenodo.18364130).
+\textbf{Part 3+4: Practitioner Guidance \& Applications} The merged third companion paper (\emph{Cognitive Integrity Framework: Practical Applications and Deployment Guide}) provides a qualitative review and practitioner's synthesis---accessible-language summaries of the theoretical and empirical findings, operational checklists, risk assessment frameworks, deployment guides, monitoring strategies, cost-benefit analyses---combined with CIF applications across ten high-stakes operational sectors through the integrated CIF-AD-OODA analytical model. Readers interested in domain-specific goal-hijacking defenses, universal attack patterns (FR polarity inversion, constraint relaxation, context boundary violation), or retrospective analysis of documented 2024--2025 AI agent security incidents should consult Part 3 (DOI: 10.5281/zenodo.22134548).
 
 ## Reading Companion: Where to Find Specific Topics {#sec:reading-companion}
 
@@ -312,15 +312,15 @@ This paper is designed to stand alone as the formal-foundations reference of the
 \toprule
 If you want\ldots & \ldots consult\ldots \\
 \midrule
-Empirical detection rates for the defense compositions proved here & Part 2 (DOI: 10.5281/zenodo.18364128), \S{5} (Results) and S08 (Parametric Analysis) \\
+Empirical detection rates for the defense compositions proved here & Part 2 (DOI: 10.5281/zenodo.22134546), \S{5} (Results) and S08 (Parametric Analysis) \\
 Ablation studies isolating the contribution of each defense mechanism & Part 2, \S{5d} (Ablation Studies and Scalability Benchmarks) and \S{14.2.1} (Ablation Effect Sizes) \\
 Bayesian uncertainty quantification on detection rates & Part 2, \S{5e} \\
 Game-theoretic analysis / Nash equilibrium of CIF vs.\ adaptive attackers & Part 2, \S{6} (Discussion) \\
 Model-checking execution (NuSMV, TLA+ traces) for the invariants defined here & Part 2 S04 (Model Checking) \\
-Deployment checklists and operator-posture guidance & Part 3 (DOI: 10.5281/zenodo.18364130), \S{5} (Deployment Guide), \S{5b} (Incident Response) \\
+Deployment checklists and operator-posture guidance & Part 3 (DOI: 10.5281/zenodo.22134548), \S{5} (Deployment Guide), \S{5b} (Incident Response) \\
 Monitoring, drift detection playbooks, cost--benefit analysis & Part 3, \S{5c}--\S{5d} \\
 Case studies showing CIF in complex realistic deployments & Part 3, \S{6b} \\
-Open problems / research directions for practitioners & Part 3 (DOI: 10.5281/zenodo.18364130), \S{7} (Future Work) \\
+Open problems / research directions for practitioners & Part 3 (DOI: 10.5281/zenodo.22134548), \S{7} (Future Work) \\
 Domain-specific goal-hijacking analyses across ten operational sectors & Part 3, \S{9c}--\S{9l} \\
 Three universal attack patterns (FR Polarity Inversion, Constraint Relaxation, Context Boundary Violation) & Part 3, \S{10} (Cross-Domain Discussion) \\
 Four novel defense extensions (verification channel separation, active perturbation probing, physics-informed invariants, semiotic decoupling) & Part 3, \S{9h} (Biowarfare), \S{9j} (Trade Wars), \S{9k} (Infrastructure), \S{9f} (Drone Wars) \\

@@ -4,11 +4,11 @@
 
 ## Overview
 
-This supplementary material documents the core framework modules that implement the theoretical constructs from Part 1 \cite{friedman2026cogsec1}. The complete source code is available at \url{https://github.com/docxology/cognitive_integrity} (DOI: 10.5281/zenodo.18364128).
+This supplementary material documents the core framework modules that implement the theoretical constructs from Part 1 \cite{friedman2026cogsec1}. The complete source code is available at \url{https://github.com/docxology/cognitive_integrity} (DOI: 10.5281/zenodo.22134546).
 
 > **Cross-paper reading guide.**
-> • For **formal definitions and theorems** of every construct referenced below, see Part 1 (DOI: 10.5281/zenodo.18364119) §3–§5.
-> • For **deployment guidance** on configuring these APIs in production (operator posture, monitoring, incident response), see Part 3 (DOI: 10.5281/zenodo.18364130) §5–§6.
+> • For **formal definitions and theorems** of every construct referenced below, see Part 1 (DOI: 10.5281/zenodo.22134544) §3–§5.
+> • For **deployment guidance** on configuring these APIs in production (operator posture, monitoring, incident response), see Part 3 (DOI: 10.5281/zenodo.22134548) §5–§6.
 > • For **domain-specific application** of these mechanisms across ten critical sectors (infrastructure, supply chain, cyber, biowarfare, information ecosystems, etc.), see Part 3's applied domains and cross-domain analysis.
 > • A parallel **functional-style API** (free-function form rather than class form) is documented in §S09 Functional API of this paper; choose whichever style fits your integration context.
 > • Concrete **pseudocode** for every algorithm in this API appears in §S07 Algorithm Pseudocode.

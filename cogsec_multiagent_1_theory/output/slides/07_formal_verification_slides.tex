@@ -744,7 +744,7 @@ Expected latency is sum of:
 \item Verification (conditional): $L_{verify} \cdot P(\text{belief promoted})$
 \end{enumerate}
 
-With illustrative parameters (these are worked-example values chosen to exercise the bound, not measurements; Part 2 reports a mean firewall latency of 0.08\,ms per sample on its prototype pipeline, and the deployment-scale constants below are not derived from it):
+With illustrative parameters (these are worked-example values chosen to exercise the bound, not measurements; Part 2 reports a mean firewall latency of 0.040\,ms per sample (p95 0.055\,ms) on its prototype pipeline, and the deployment-scale constants below are not derived from it):
 \begin{itemize}
 \item $L_{firewall} = 10\text{ms}$
 \item $L_{sandbox} = 5\text{ms}$, $P(\text{quarantine}) = 0.3$

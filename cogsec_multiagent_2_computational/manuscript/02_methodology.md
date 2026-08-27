@@ -6,7 +6,7 @@ This section describes how the formal CIF mechanisms from Part 1 are realized as
 
 > **Cross-Reference Note**: All algorithms implement formal definitions from Part 1. We cite specific theorems using "(Part 1, Theorem X.Y)" notation to enable traceability from implementation to theoretical foundations.
 
-The implementation comprises six core algorithms (\cref{sec:pseudocode}), 29 configuration parameters organized into eight parameter groups (\cref{sec:config-params}), and 13 packages comprising eight core defense modules. The code is tested under the project coverage gate; regenerate current counts from the test runner rather than hand-authoring them. The complete source is available at DOI: 10.5281/zenodo.18364128.
+The implementation comprises six core algorithms (\cref{sec:pseudocode}), 29 configuration parameters organized into eight parameter groups (\cref{sec:config-params}), and 13 packages comprising eight core defense modules. The code is tested under the project coverage gate; regenerate current counts from the test runner rather than hand-authoring them. The complete source is available at DOI: 10.5281/zenodo.22134546.
 
 ## Processing Pipeline Architecture {#sec:pipeline-architecture}
 

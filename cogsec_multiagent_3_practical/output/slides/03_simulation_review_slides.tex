@@ -319,10 +319,10 @@ real-pipeline evaluation had a lower multi-seed mean of 86.3\%.
 \textbf{The Implication}: The parametric model rewards layering, but the
 real pipeline does not spread the work evenly across layers, and the
 100-attack ablation corpus says so plainly. The Invariants module alone
-detects 85\% of that corpus against the full stack's 89.0\%; the
-Detection, Sandbox, Tripwire and Consensus modules each detect between
-4\% and 6\% on their own. Removing Invariants costs 65 percentage points
-of true-positive rate, removing the Tripwire costs two, and removing
+detects 83.3\% of that corpus against the full stack's 89.0\%; no other
+module detects more than 10\% on its own (the next best, Consensus,
+reaches 9.6\%). Removing Invariants costs 65 percentage points of
+true-positive rate, removing the Tripwire costs two, and removing
 Consensus, Detection, Firewall, Provenance, Sandbox or Trust Calculus
 costs nothing this corpus can measure. That is a statement about
 \emph{marginal} contribution, not about capability: a module whose
@@ -537,13 +537,13 @@ simulation, modeled on the architecture's topology. They represent the
 \begin{itemize}
 \tightlist
 \item
-  \textbf{99.4\% Overall Detection} means: ``Across all architectures
-  and attack categories, 99.4\% of attack vectors are detected by the
-  full CIF defense stack'' (with architecture-specific rates ranging
-  from 96--100\%).
+  \textbf{96--100\% Parametric Ceiling} means: ``In the calibrated
+  parametric simulation (\(N=3{,}800\) design-level instances), the full
+  CIF defense stack detects 96--100\% of attack vectors, with
+  per-architecture rates ranging from 98--100\%.''
 \item
   It does \textbf{not} mean: ``We have a magic Python script that
-  catches 99.4\% of all evil AI thoughts.''
+  catches 96--100\% of all evil AI thoughts.''
 \end{itemize}
 
 \end{frame}
