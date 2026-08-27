@@ -5,11 +5,11 @@ score intervals for each architecture across every attack category present
 in ``full_evaluation_results.json``.
 
 Both the row labels (architectures) and the column labels (attack
-categories) are derived from the data (audit REPRO-04).  They used to be
-two hardcoded parallel lists -- ``_ARCHITECTURES`` and ``_CATEGORIES`` --
-while the matrix columns came back in whatever order the loader produced,
-so the column headed "Injection" carried the ``belief_drift`` measurements
-and "Belief Manip." carried the n=500 ``indirect_injection`` measurements.
+categories) are derived from the data, never declared alongside it.  Two
+hardcoded parallel lists cannot stay aligned with a matrix whose columns
+come back in whatever order the loader produced: the mismatch is silent,
+and it puts one category's measurements under another category's heading
+with nothing in the output to show for it.
 
 The "Overall" column pools the raw TP/FN counts rather than averaging the
 per-category rates.  The categories have very unequal sample sizes

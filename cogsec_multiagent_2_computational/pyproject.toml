@@ -8,7 +8,7 @@ build-backend = "setuptools.build_meta"
 [project]
 
 name = "cogsec-multiagent-computational"
-version = "1.0.0"
+version = "2.0.0"
 description = "Cognitive Integrity Framework: Computational Validation and Empirical Analysis"
 authors = [
     {name = "Daniel Ari Friedman", email = "daniel@activeinference.institute"}

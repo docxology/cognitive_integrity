@@ -355,9 +355,9 @@ class TripwireAdapter(DefenseModule):
         }
         alerts = self._tripwire.check(beliefs)
 
-        # detected now respects the threshold. It used to be len(alerts) > 0,
-        # which made the threshold decorative: the module could not be tuned,
-        # and every caller that passed one was ignored.
+        # Detection respects the threshold. Gating on len(alerts) > 0 instead
+        # would make the threshold decorative: the module could not be tuned,
+        # and every caller that passed one would be ignored.
         detected = score > self._threshold
 
         latency_ms = (time.perf_counter() - t0) * 1000.0
@@ -901,10 +901,12 @@ class InvariantsAdapter(DefenseModule):
     a semantic one.
     """
 
-    # -- legacy surface, retained for the reported detail keys ---------------
-    # These are topic matches.  They no longer drive the score (a message that
-    # merely uses the word "password" is not a credential leak) but the counts
-    # remain in ``details`` because callers and tests read them.
+    # -- topic matches, reported but not scored ------------------------------
+    # These count topical mentions and are published in ``details`` for callers
+    # and tests. They deliberately do not drive the score: a message that
+    # merely uses the word "password" is not a credential leak, and scoring on
+    # topic is what makes a detector fire on discussion of an attack rather
+    # than on the attack.
     _CODE_EXEC_RE = re.compile(
         r"run this code|execute command|eval\(|exec\(|os\.system",
         re.IGNORECASE,

@@ -119,9 +119,9 @@ class CheckResult:
 # ---------------------------------------------------------------------------
 #
 # Every derived number lives in scripts/series_ledger.py, which recomputes it
-# from Part 2's shipped artifacts. This module used to carry its own copy of the
-# quantity table; two tables that must agree is the same defect class the gate
-# exists to catch, so there is now one.
+# from Part 2's shipped artifacts. This module keeps no copy of that table: two
+# tables that must agree is the same defect class this gate exists to catch,
+# and a gate that reproduces the defect cannot be trusted to find it.
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from series_ledger import (  # noqa: E402

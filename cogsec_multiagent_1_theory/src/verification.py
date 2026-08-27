@@ -269,9 +269,10 @@ class ManuscriptVerifier:
     def check_images_and_links(self) -> bool:
         """Verify local image paths and markdown links.
 
-        Rejects absolute / parent-escaping image refs (``root / abs`` would
-        otherwise probe outside the manuscript tree) and validates markdown
-        links that were previously matched but never checked.
+        Rejects absolute and parent-escaping image refs, which would
+        otherwise let ``root / abs`` probe outside the manuscript tree, and
+        validates every markdown link it matches: matching a link without
+        checking it reports a clean run over targets nobody resolved.
         """
         logger.info("Verifying images and links...")
         status = True

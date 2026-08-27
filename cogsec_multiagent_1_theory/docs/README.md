@@ -72,7 +72,6 @@ uv run ruff check src scripts tests
 
 | Entry | Role |
 | ----- | ---- |
-| [`AUDIT_TODO_2026-07-13.md`](AUDIT_TODO_2026-07-13.md) | Audit follow-up TODO |
 
 See [`../README.md`](../README.md) and the program
 [`docs/README.md`](../../docs/README.md) for the cross-paper reading guide and

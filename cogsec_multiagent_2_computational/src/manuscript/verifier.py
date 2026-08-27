@@ -60,9 +60,10 @@ class ManuscriptVerifier:
         self.md_files = sorted(list(self.root_dir.glob("**/*.md")))
 
         # Regex patterns.
-        # cite_pattern covers the natbib family (\citet, \citep, \citealp,
-        # \citeauthor, ...) and starred forms, not just the bare \cite: a
-        # \citet{nonexistent} used to be invisible to check_citations.
+        # cite_pattern covers the whole natbib family (\citet, \citep,
+        # \citealp, \citeauthor, ...) and their starred forms, not just the
+        # bare \cite. Matching only \cite leaves every other spelling
+        # invisible to check_citations, which then passes on a dangling key.
         self.cite_pattern = re.compile(r"\\cite[a-z]*\*?\{([^}]+)\}")
         self.bib_entry_pattern = re.compile(r"@\w+\{([^,]+),")
         self.label_pattern = re.compile(r"\\label\{([^}]+)\}")

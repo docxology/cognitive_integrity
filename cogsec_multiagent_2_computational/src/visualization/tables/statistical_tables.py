@@ -9,8 +9,8 @@ Two things this module deliberately does not do:
   already names them (``H2_detection``, ``H3_autogpt``, ...); printing a
   fresh ``H2..H9`` counter alongside those names produced rows reading
   "H4 & CIF > H2_firewall", which is two different IDs for one test.
-* It does not emit a column it has no data for.  The effect-size table
-  used to carry an "Odds Ratio" column whose every cell was ``--``.
+* It does not emit a column it has no data for.  A column of ``--`` claims
+  a measurement exists and was merely not filled in.
 """
 
 from __future__ import annotations

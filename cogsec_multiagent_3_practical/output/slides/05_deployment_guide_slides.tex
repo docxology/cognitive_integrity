@@ -475,12 +475,14 @@ the framework.
 
 \begin{frame}[allowframebreaks]{CrewAI (Role-Based)}
 \protect\phantomsection\label{crewai-role-based}
-\textbf{Observation}: CrewAI architectures performed best against
-``Trust Exploitation'' attacks (94\% detection) (Part 2,
-Architecture-Specific Results). \textbf{Mechanism}: The framework's role
-definitions acted as implicit \textbf{Identity Tripwires}. When an agent
-attempted to act outside its defined role, the behavior was flagged as a
-role violation.
+\textbf{Observation}: trust-exploitation attacks are the category the
+parametric simulation covers most completely: Claude Code, CrewAI and
+LangGraph all reach 100\% and AutoGPT 96\%, on 200 attacks each (Part 2,
+Architecture-Specific Results). No architecture is distinctively better
+here, and the figures are design-level rather than measured on a
+deployment. \textbf{Mechanism}: The framework's role definitions acted
+as implicit \textbf{Identity Tripwires}. When an agent attempted to act
+outside its defined role, the behavior was flagged as a role violation.
 \end{frame}
 
 \begin{frame}

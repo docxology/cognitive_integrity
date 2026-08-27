@@ -126,16 +126,13 @@ _ARCH_ORDER = [
     "LangGraph",
 ]
 
-# The attack-category strings that actually appear in
-# full_evaluation_results.json.  These are *subcategory* labels (one
-# representative subcategory per top-level family), not the top-level
-# family names.  They previously read
-# ``["injection", "trust_exploitation", "belief_manipulation", "coordination"]``
-# -- none of which occur in the data -- so the `any(...)` guard in
-# `evaluation_to_detection_matrix` always fell through to alphabetical
-# order while `detection_tables._CATEGORIES` printed the top-level names,
-# silently swapping the injection and belief-manipulation columns
-# (audit REPRO-04).
+# The attack-category strings that appear in full_evaluation_results.json.
+# These are *subcategory* labels -- one representative subcategory per
+# top-level family -- and not the top-level family names, which do not occur
+# in the artifact at all. The distinction is load-bearing: if a name here fails
+# to match the data, the `any(...)` guard in `evaluation_to_detection_matrix`
+# falls through to alphabetical order while `detection_tables._CATEGORIES`
+# prints the top-level names, and the columns silently swap.
 _CAT_ORDER = [
     "indirect_injection",
     "impersonation",

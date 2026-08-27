@@ -85,9 +85,6 @@ uv run python -c "from pathlib import Path; from src.manuscript.injector import 
 | ----- | ---- |
 | [`RED_TEAM_ASSESSMENT.md`](RED_TEAM_ASSESSMENT.md) | Deep adversarial (red-team) assessment of the program: theory soundness, empirical/model validity, code/security/reproducibility, and their resolutions (authoritative, kept current) |
 | [`audits/README.md`](audits/README.md) | Index of historical, point-in-time audit snapshots |
-| [`audits/AUDIT_2026-07-26.md`](audits/AUDIT_2026-07-26.md) | Full program audit (point-in-time, 2026-07-26) |
-| [`audits/AUDIT_TODO_2026-07-06.md`](audits/AUDIT_TODO_2026-07-06.md) | Audit follow-up TODO (point-in-time) |
-| [`audits/AUDIT_TODO_2026-07-13.md`](audits/AUDIT_TODO_2026-07-13.md) | Audit follow-up TODO (point-in-time) |
 
 See [`../README.md`](../README.md) and the program
 [`docs/README.md`](../../docs/README.md) for the cross-paper reading guide and

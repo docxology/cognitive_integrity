@@ -382,15 +382,14 @@ def make_pipeline_eval_fn(
 
     * attack arm — a stratified draw of ``n_samples`` entries from
       ``AttackCorpus.generate(seed=seed)``, proportional to each category's
-      share of the corpus.  It used to be ``corpus[:n_samples]``, and the
-      corpus emits its 500 injection samples first, so the published
-      multi-seed rate was a direct-injection rate wearing the label of a
-      whole-corpus one: the first hundred entries never once reached the
-      trust, belief, coordination or provenance families.  Widening the corpus
-      to 1,475 items did not change that number by so much as a digit, which
-      is what a prefix does to an ordered corpus.  Numbers measured before the
-      draw was stratified are therefore not comparable to numbers measured
-      after it, and the earlier ones are the narrower claim.
+      share of the corpus.  The draw must be stratified rather than a prefix:
+      the corpus emits its 500 injection samples first, so ``corpus[:n]``
+      yields a direct-injection rate wearing the label of a whole-corpus one,
+      never reaching the trust, belief, coordination or provenance families at
+      all.  A prefix is also insensitive to corpus growth -- widening the
+      corpus to 1,475 items leaves such a rate unchanged to the digit -- so it
+      cannot be compared against a stratified rate, and any figure obtained
+      that way is the narrower claim.
     * benign arm — ``BenignCorpus.generate(seed=seed,
       n_per_stratum=benign_per_stratum)``, i.e. ``12 * benign_per_stratum``
       messages (120 at the default).  It is regenerated per seed so the FPR

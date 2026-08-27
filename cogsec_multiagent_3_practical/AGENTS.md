@@ -9,8 +9,6 @@
 - **Practitioner guidance** for deploying CIF in multiagent AI systems (§1–§8): checklists, posture assessment, risk assessment, deployment configuration, incident response, pitfalls, and case studies.
 - **Cross-domain CIF-AD-OODA applications** (§9–§10): systematic analysis of Goal Hijacking across ten critical operational domains using the integrated Axiomatic Design + OODA Loop model, three universal attack patterns, four novel defense extensions, and retrospective validation against six documented 2024–2025 AI security incidents.
 
-This project supersedes the now-deleted `cogsec_multiagent_4_applications/` directory. All Part 4 content has been fully integrated here.
-
 ## Content focus
 
 ### Human-actionable guidance (§1–§8)
@@ -52,13 +50,6 @@ cogsec_multiagent_3_practical/
 ├── tests/                 test_practical.py + test_applications.py + test_identity.py + 7 more test files (10 total)
 └── output/
 ```
-
-## Merge provenance
-
-| Source | Content | Original version |
-|--------|---------|-----------------|
-| `cogsec_multiagent_3_practical` | §1–§8 practitioner guidance | v1.0.0 |
-| `cogsec_multiagent_4_applications` | §9–§10 CIF-AD-OODA applications | v1.0.0 |
 
 ## Target audience
 

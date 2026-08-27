@@ -16,23 +16,17 @@ series map, reading order, and build commands, and
 | Location | Contents |
 | -------- | -------- |
 | **`README.md` (this file)** | Program-wide documentation index |
-| `THERMO_NUCLEAR_AUDIT_2026-07-22.md` | Historical program audit (thermo-nuclear framing) |
-| [`deep_audit_improvements.md`](deep_audit_improvements.md) | Ledger of hostile red-team / deep-audit rounds by Part (2026-08-03 to 2026-08-08) |
-| [`TODO_DEEP_SCOPING.md`](../TODO_DEEP_SCOPING.md) | Per-paper TODO deep-scoping backlog (round-by-round open items; maintained by the program orchestrator) |
+
 | [Part 2 `docs/RED_TEAM_ASSESSMENT.md`](../cogsec_multiagent_2_computational/docs/RED_TEAM_ASSESSMENT.md) | Authoritative deep red-team (adversarial) assessment — theory soundness, empirical/model validity, code/security/reproducibility, and their resolutions |
 | [Part 1 `docs/`](../cogsec_multiagent_1_theory/docs/) | [Part 1 index](../cogsec_multiagent_1_theory/docs/README.md) — formal-foundations documentation (manuscript map, figures, tests) |
 | [Part 2 `docs/`](../cogsec_multiagent_2_computational/docs/) | [Part 2 index](../cogsec_multiagent_2_computational/docs/README.md) — claims traceability, framework validation, per-module usage guides, audit reports |
 | [Part 3 `docs/`](../cogsec_multiagent_3_practical/docs/) | [Part 3 index](../cogsec_multiagent_3_practical/docs/README.md) — Part 3+4 practical/applications documentation (claims → code map) |
-| [Part 1 `docs/audits/`](../cogsec_multiagent_1_theory/docs/audits/) | Historical audit TODO (`AUDIT_TODO_2026-07-13.md`) |
-| [Part 2 `docs/audits/`](../cogsec_multiagent_2_computational/docs/audits/) | Historical audit reports ([index](../cogsec_multiagent_2_computational/docs/audits/README.md), `AUDIT_2026-07-26.md`, TODO files) |
-| [Part 3 `docs/audits/`](../cogsec_multiagent_3_practical/docs/audits/) | Historical audit reports (empty directory) |
 
 ## Per-part documentation
 
 ### Part 1 — Formal Foundations (`cogsec_multiagent_1_theory/`)
 
 - [`docs/`](../cogsec_multiagent_1_theory/docs/) — theory-part documentation index;
-  [`docs/audits/`](../cogsec_multiagent_1_theory/docs/audits/) holds the historical audit TODO.
 - Manuscript: trust calculus, defense composition algebra, adversary taxonomy,
   CIF-AD-OODA.
 
@@ -49,14 +43,11 @@ This part carries the richest documentation spine:
 - [`docs/usage_guides/`](../cogsec_multiagent_2_computational/docs/usage_guides/)
   — per-component guides (firewall, sandbox, trust, consensus, tripwires, drift
   detection, provenance, invariants, red-team evaluation).
-- [`docs/audits/`](../cogsec_multiagent_2_computational/docs/audits/) — historical
-  audit reports ([index](../cogsec_multiagent_2_computational/docs/audits/README.md),
-  `AUDIT_2026-07-26.md`, TODO files).
 
 ### Part 3+4 — Practical Guide + Applications (`cogsec_multiagent_3_practical/`)
 
 - [`docs/`](../cogsec_multiagent_3_practical/docs/) — deployment/application
-  documentation index and claims → code map; `docs/audits/` is present but empty.
+  documentation index and claims → code map.
 - Manuscript: deployment guide, incident response, monitoring, cost–benefit,
   ten-domain CIF-AD-OODA analyses, universal attack patterns.
 

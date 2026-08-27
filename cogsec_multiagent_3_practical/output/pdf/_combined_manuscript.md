@@ -679,7 +679,7 @@ Beyond the parameter profiles, Part 2's architecture adapters revealed specific 
 
 ### CrewAI (Role-Based)
 
-**Observation**: CrewAI architectures performed best against "Trust Exploitation" attacks (94% detection) (Part 2, Architecture-Specific Results).
+**Observation**: trust-exploitation attacks are the category the parametric simulation covers most completely: Claude Code, CrewAI and LangGraph all reach 100% and AutoGPT 96%, on 200 attacks each (Part 2, Architecture-Specific Results). No architecture is distinctively better here, and the figures are design-level rather than measured on a deployment.
 **Mechanism**: The framework's role definitions acted as implicit **Identity Tripwires**. When an agent attempted to act outside its defined role, the behavior was flagged as a role violation.
 
 ---
@@ -1427,7 +1427,7 @@ Saying "the code works" requires specifying what that means. There are three hon
 
 **Level 3 — The defense ceiling is achievable** (confidence: moderate-high). The parametric simulation ($N=3{,}800$) establishes that fully-mature (Level 5) adapters achieve 96--100\% detection, consistent with the formal design. The gap between the measured pipeline (86.3\%) and Level 5 (96\%) is an engineering challenge, not a theoretical limitation. The roadmap in Part 2 projects +35--41 percentage points of improvement through adapter maturation.
 
-The honest operational posture is Level 2: deploy CIF for meaningful protection against $\Omega_1$--$\Omega_3$ attacks today, while investing in adapter maturation for $\Omega_4$--$\Omega_5$ coverage. Do not rely on 94\% detection for life-safety applications until your adapters reach Level 4--5 and have been validated against your threat model.
+The honest operational posture is Level 2: deploy CIF for meaningful protection against $\Omega_1$--$\Omega_3$ attacks today, while investing in adapter maturation for $\Omega_4$--$\Omega_5$ coverage. Do not carry the 96--100\% parametric ceiling into a life-safety deployment: it is a design-level figure, the measured pipeline sits at 86.3\% with an 18.5\% false-positive rate, and neither number is a substitute for validating your adapters at Level 4--5 against your own threat model.
 
 ## Summary of Practical Recommendations
 

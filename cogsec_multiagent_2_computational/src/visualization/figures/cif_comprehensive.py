@@ -320,24 +320,17 @@ def plot_cif_comprehensive(output_dir: str | Path = "output/figures") -> plt.Fig
         facecolor="#F8F9FA", edgecolor=colors["header"], linewidth=1.5,
     )
     ax.add_patch(metrics_box)
-    # Measured, and labelled with what they were measured on.
+    # Measured, and labelled with what they were measured on. This panel is
+    # the framework's cover image, so a literal here reaches more readers than
+    # any number in the body.
     #
-    # These four lines used to read "Detection: 94%", "FPR: 6%",
-    # "Latency: +23%" and "Integrity: +127%", as literal strings in the
-    # framework's cover image and Figure 1. None of them was measured. 94 and 6
-    # sum to 100, which is what a pair invented together looks like; the
-    # measured full-pipeline TPR is 0.873 and its false-positive rate on the
-    # same benign corpus is 0.183. A sibling module in this package,
-    # trust_decay.py, had already diagnosed 0.94 in its own comment as "a stale
-    # headline the series has since corrected" and labelled its panel
-    # schematic. The same headline survived here, on the cover, unlabelled.
-    #
-    # The two claims that were not measurable at all are gone rather than
-    # rephrased. "Latency: +23%" is an overhead ratio, and nothing in this
-    # project measures the pipeline against a no-pipeline baseline; what is
-    # measured is absolute per-round latency, so that is what the panel says.
-    # "Integrity: +127%" has no referent anywhere in the repository, so it is
-    # replaced by the colony detection rate, which does.
+    # Every line is loaded from an artifact. Detection and FPR come from the
+    # same run over the same corpora, so the pair cannot be quoted from
+    # different arms; latency is absolute per-round latency with its agent
+    # count attached, because a percentage overhead needs an undefended
+    # baseline and this figure is not the place that measures one; and the
+    # colony detection rate is quoted because an integrity ratio would need an
+    # integrity metric, which the framework does not define.
     metrics = _load_headline_metrics()
     ax.text(1.9, 3.9, "MEASURED", ha="center", va="center",
             fontsize=12, fontweight="bold", color=colors["header"])

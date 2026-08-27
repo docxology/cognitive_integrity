@@ -29,14 +29,11 @@ from typing import Any, Dict, List, Optional
 #: Static description of the 8 CIF defense modules: what each is for, which
 #: attack families it is meant to handle, and how it is drawn.
 #:
-#: It used to carry a ``detection_rate`` and a ``latency_ms`` for each module
-#: as well. Those were typed: the rates descended 0.91, 0.88, 0.85, 0.82, 0.79,
-#: 0.76, 0.73, 0.70 in exact steps of 0.03, which is what an invented ladder
-#: looks like, and the latencies ran 8 to 55 ms against measured medians
-#: between 0.0025 ms and 0.23 ms -- three orders of magnitude out, and in the
-#: wrong order. Both are measured now and injected by
-#: :func:`_hydrate_measurements` from
-#: ``output/data/module_capability_matrix.json``.
+#: It deliberately holds no ``detection_rate`` and no ``latency_ms``. Both are
+#: measured, and both are injected by :func:`_hydrate_measurements` from
+#: ``output/data/module_capability_matrix.json``, because a rate typed beside a
+#: module's description drifts from the module. Measured medians span
+#: 0.0025 ms to 0.23 ms, a range no hand-written table stays close to.
 MODULE_REGISTRY: Dict[str, Dict[str, Any]] = {
     "Firewall": {
         "omega_class": "Injection",

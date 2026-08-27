@@ -3,13 +3,11 @@
 Generates a table showing category, subcategory, count, and percentage
 for the attack corpus.
 
-Every count is measured from ``AttackCorpus.generate()`` at build time
-(audit MSC-11).  This module previously carried a hand-typed 12-row
-literal whose subcategory counts disagreed with the generator in 8 of 12
-rows -- indirect 180 vs 200, nested 120 vs 100, trust inflation 70 vs 60,
-delegation abuse 50 vs 60, belief drift 60 vs 50, belief injection 40 vs
-50, consensus poisoning 35 vs 30, timing 25 vs 30 -- while the top-level
-subtotals happened to agree, which is what let the discrepancy survive.
+Every count is measured from ``AttackCorpus.generate()`` at build time,
+including the subtotals.  Subtotals are the trap here: a hand-typed
+subcategory breakdown can disagree with the generator row by row while its
+top-level sums still add up, so a table checked only at the totals passes
+while most of its cells are wrong.
 """
 
 from __future__ import annotations

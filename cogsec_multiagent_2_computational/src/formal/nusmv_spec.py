@@ -225,10 +225,10 @@ def parse_nusmv_result(output: str) -> Dict[str, bool]:
     for line in lines:
         line = line.strip()
         lowered = line.lower()
-        # Two `elif line.startswith("-- specification") ...` arms used to sit
-        # below this branch; they were unreachable, because any line they could
-        # match already satisfies the `"-- specification" in line.lower()`
-        # guard.  They were removed rather than left as decoration.
+        # This single guard is exhaustive for the NuSMV output: any line a
+        # `line.startswith("-- specification")` arm could match already
+        # satisfies the substring test below, so a second arm would be
+        # unreachable decoration rather than a fallback.
         if "-- specification" in lowered or "-- ctlspec" in lowered:
             # NuSMV prints "is true" or "is false" after the property.
             results[line] = "is true" in lowered

@@ -95,9 +95,10 @@ def _load_ablation_data(output_dir: Path) -> dict:
 def plot_detection_performance(output_dir: str | Path = "output/figures") -> plt.Figure:
     """Generate detection performance comparison figure.
 
-    Both panels read full_evaluation_results.json and ablation_results.json.
-    Panel B used to read detection_data.json, a DataGenerator placeholder with
-    no provenance and invented confidence intervals; that file is gone.
+    Both panels read full_evaluation_results.json and ablation_results.json,
+    each of which carries a provenance record and per-cell counts. Neither
+    panel has a stand-in: a placeholder artifact with no provenance behind it
+    would put an invented interval on a published figure.
     """
     if isinstance(output_dir, str):
         output_dir = Path(output_dir)
@@ -189,21 +190,7 @@ def plot_detection_performance(output_dir: str | Path = "output/figures") -> plt
 
     # Panel B: measured detection rate per architecture, by attack category.
     #
-    # This panel previously drew three series -- "Baseline", "Firewall Only"
-    # and "Full CIF" -- of which only the third was measured.  "Baseline" was
-    # a hardcoded list of zeros, and "Firewall Only" was the Full CIF value
-    # multiplied by 0.80, so the "significant gap" the caption drew attention
-    # to was exactly 20% by construction, in every category, for every run.
-    #
-    # It used to read detection_data.json, which nothing produces: no
-    # data_origin, no source_script, a 4x4 base_means matrix hardcoded in
-    # src/data/generate.py with N(0, 0.005) noise added, and `cis` drawn
-    # i.i.d. from Uniform(0.008, 0.025) with no resampling behind them and no
-    # relation to any sample size. An earlier repair here stopped calling it
-    # measured and stopped drawing the invented intervals, which was right as
-    # far as it went; it still plotted a matrix nothing had computed.
-    #
-    # The panel now reads full_evaluation_results.json, which is the same
+    # The panel reads full_evaluation_results.json, which is the same
     # 4 x 4 shape, is produced by scripts/run_full_evaluation.py, and carries
     # per-cell counts. So the intervals can be real: Wilson on
     # true_positives out of n_attacks, which ranges from 100 to 500 across

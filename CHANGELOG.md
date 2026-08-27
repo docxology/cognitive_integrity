@@ -83,6 +83,27 @@ Part 1 second edition; Parts 2 and 3 first publication.
   across all 85 manuscript files, with every legitimate use registered against a
   reason and fifteen tests driving the shipped sentences back through it.
 
+- **Legacy narration, everywhere it had accumulated.** Part 1's framework figure
+  still drew the invented quartet -- `Detection: 94%`, `FPR: 6%`,
+  `Latency: +23%`, `Integrity: +127%` -- on a paper that measures nothing and
+  has no artifact for a gate to check them against; the panel is gone and the
+  figure says where the numbers live instead. Part 3 quoted 94% twice more, once
+  as CrewAI "performing best" on trust exploitation where three architectures
+  tie at 100%. Part 2's gap-closure roadmap projected marginal gains totalling
+  +41 points against a baseline that had moved, and now states measured
+  per-module capability with no projection at all. Sixteen code comments and
+  docstrings narrated past defects in the first person; each is restated as
+  present-tense rationale for the design it guards. Thirteen dated audit and
+  round-numbered process documents are removed, along with every link to them.
+  Three bibliography entries survived only because a deleted audit log named
+  them, and now carry real citations.
+
+- **A figure runner for Parts 1 and 3.** Neither had a
+  `scripts/generate_all_figures.py`, so a caller that invoked one failed with a
+  file-not-found and left every PNG stale. Both now have one that runs each
+  numbered script, reports every failure rather than the first, and exits
+  non-zero.
+
 - Claims no experiment in this project could produce: an inter-annotator
   agreement statistic for a generated corpus, integrity-preservation ratios with
   no integrity metric behind them, per-architecture overhead profiles for an

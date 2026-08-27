@@ -158,12 +158,12 @@ class GroundTruth:
     def component_share_of_pipeline(self, name: str) -> float:
         """Fraction of full-pipeline TPR attributable to *name*.
 
-        This used to exist only as ``detection_share_of_pipeline``, because
-        the detection module was the one the prose called dominant. When the
-        invariants rewrite moved dominance to a different module, six claims
-        bound to the detection-specific accessor went dead at once -- their
-        patterns matched nothing, because the sentences they anchored on had
-        been rewritten to name a different module. A share is a property of a
+        The accessor is parameterised by component rather than fixed to
+        whichever module the prose currently calls dominant. A
+        ``detection_share_of_pipeline`` would bind every claim that uses it to
+        one module's name, so the day dominance moves, every such claim goes
+        dead at once: its pattern matches nothing, because the sentence it
+        anchors on now names a different module. A share is a property of a
         component, not of one particular component.
         """
         baseline = self.full_pipeline_tpr()
@@ -994,12 +994,11 @@ _SYNERGY_LABEL: dict[str, str] = {
 def _recorded_synergy_pairs() -> tuple[tuple[str, str], tuple[str, str]] | tuple:
     """The pairs the ablation artifact currently reports, in its own order.
 
-    These used to be hardcoded as ``Tripwire + Detection`` and
-    ``Firewall + Detection``, which were the top two rows at the time. When the
-    consensus adapter started detecting, the top five rows became five
-    different pairs and all four of these claims went ``NOT_FOUND`` -- their
-    patterns matched no row, and their derivers asked the artifact for a pair
-    it no longer records. A claim that names the row it checks cannot survive
+    The pairs are read from the artifact rather than named here. Hardcoding
+    today's top two rows binds the claims to a ranking, and a ranking moves
+    whenever a module's detection changes: the derivers then ask the artifact
+    for a pair it no longer records and every such claim reports
+    ``NOT_FOUND``. A claim that names the row it checks cannot survive
     the row changing, so the pairs are read from the artifact that writes the
     table.
 

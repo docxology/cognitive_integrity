@@ -227,49 +227,24 @@ def create_cif_comprehensive_figure(output_dir: Path) -> Path:
                 weight="bold",
             )
 
-    # Key metrics box
-    metrics_box = FancyBboxPatch(
-        (0.7, 1),
-        2,
-        2.5,
-        boxstyle="round,pad=0.02",
-        facecolor="#F8F9FA",
-        edgecolor=colors["header"],
-        linewidth=1.5,
-    )
-    ax.add_patch(metrics_box)
+    # No metrics panel.
+    #
+    # This figure belongs to the theory paper, which measures nothing: it has
+    # no evaluation artifacts, no corpus and no pipeline run of its own. A
+    # "KEY METRICS" box here can only be transcribed from somewhere else or
+    # invented, and both go stale silently because there is no artifact in this
+    # project for a gate to compare them against. Detection rates, false
+    # positives and latency are reported in Part 2, beside the runs that
+    # produced them, and the caption points a reader there.
     ax.text(
         1.7,
-        3.2,
-        "KEY METRICS",
+        2.2,
+        "Detection rates, false-positive\nrates and latency are reported\nin Part 2, with the runs\nthat produced them.",
         ha="center",
         va="center",
-        fontsize=11,
-        fontweight="bold",
+        fontsize=9,
+        style="italic",
         color=colors["header"],
-    )
-    ax.text(
-        1.7,
-        2.7,
-        "Detection: 94%",
-        ha="center",
-        va="center",
-        fontsize=10,
-        color="#648FFF",
-        fontweight="bold",
-    )
-    ax.text(1.7, 2.3, "FPR: 6%", ha="center", va="center", fontsize=10, color=colors["defense"])
-    ax.text(
-        1.7, 1.9, "Latency: +23%", ha="center", va="center", fontsize=10, color=colors["detection"]
-    )
-    ax.text(
-        1.7,
-        1.5,
-        "Integrity: +127%",
-        ha="center",
-        va="center",
-        fontsize=10,
-        color=colors["coordination"],
     )
 
     plt.tight_layout()

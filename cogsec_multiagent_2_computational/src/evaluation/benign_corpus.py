@@ -121,15 +121,13 @@ TRIGGER_SURFACE: Dict[str, str] = {
     "time sensitive": "sandbox.urgency",
     # core.firewall semantic stage.
     #
-    # The bare word "ignore" used to be attributed to ``consensus.substring``,
-    # because the ConsensusAdapter's entire heuristic was ``if "ignore" in
-    # msg_lower or "override" in msg_lower``. That adapter has been rewritten
-    # around named consensus invariants and no longer keys on either word.
-    # "ignore" is still a trigger, but through a different mechanism: the
-    # firewall's embedding stage raises its similarity score from 0.500 to
-    # 0.613 on the carrier sentence with the bare word appended, without any
-    # pattern matching. Attributing it to the layer that actually moves is the
-    # point of this table -- a term keyed continuously is still keyed.
+    # The bare word "ignore" is attributed to the firewall's embedding stage,
+    # not to a pattern match: appending it to the carrier sentence raises the
+    # similarity score from 0.500 to 0.613 with no substring rule involved.
+    # Attributing each term to the layer whose score actually moves is the
+    # point of this table, because a term keyed continuously is still keyed,
+    # and a table that named the wrong layer would send tuning to the wrong
+    # module.
     "ignore": "firewall.semantic",
     # composition.adapters.ConsensusAdapter consensus-invariant vocabulary.
     # Both phrases have ordinary uses -- a working group really does file a

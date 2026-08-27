@@ -191,11 +191,10 @@ class CognitiveFirewall:
             return Classification.REJECT
 
         # Any detected injection pattern is at least QUARANTINEd, never
-        # silently ACCEPTed.  (P1-1: the injection regex previously scored
-        # the canonical phrase "Ignore all previous instructions" as 0.00,
-        # and even a scored single pattern at 0.3 fell below the 0.4
-        # suspicious threshold, so the firewall detected 0% of its own test
-        # corpus at default settings.)
+        # silently ACCEPTed. A single matched pattern scores 0.3, below the 0.4
+        # suspicious threshold, so gating quarantine on the threshold alone
+        # would accept the canonical "Ignore all previous instructions" and
+        # leave the firewall at zero detection on its own corpus at defaults.
         if injection_score > 0.0:
             return Classification.QUARANTINE
 

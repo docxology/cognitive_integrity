@@ -8,7 +8,7 @@ This section demonstrates the practical viability of CIF's formal mechanisms thr
 
 ### Target Architectures
 
-We evaluated CIF across four production multiagent systems representing diverse architectural patterns (\cref{tab:target-architectures}):
+We evaluated CIF against configurations modelled on four production multiagent systems representing diverse architectural patterns (\cref{tab:target-architectures}). The architectures are modelled from each system's public documentation \cite{anthropic2024claude}; no instance of any of these systems was probed, and the parametric arm's provenance records it as a simulation throughout:
 
 Table: Multiagent system architectures evaluated. {#tab:target-architectures}
 

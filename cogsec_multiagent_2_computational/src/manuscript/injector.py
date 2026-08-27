@@ -789,10 +789,11 @@ def inject_results(
         report.record_unbacked(document, "llm_claude_dr", reason)
         report.record_unbacked(document, "llm_crewai_dr", reason)
 
-    # NOTE: this document used to carry a "Detection Rate (simulation)" row and
-    # the injector maintained it here. The row now lives only in
-    # S08_parametric_analysis.md (see inject_parametric_supplement), so the
-    # substitution was removed rather than left as a permanently dead pattern.
+    # NOTE: the "Detection Rate (simulation)" row lives only in
+    # S08_parametric_analysis.md (see inject_parametric_supplement). No
+    # substitution for it belongs here: a pattern kept against a document that
+    # does not contain it is permanently dead, and a dead pattern is
+    # indistinguishable from a satisfied one.
     changed = _finish(path, text, original, dry_run, document)
     if owns:
         report.raise_if_failed()

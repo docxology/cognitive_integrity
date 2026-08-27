@@ -67,7 +67,7 @@ Beyond the parameter profiles, Part 2's architecture adapters revealed specific 
 
 ### CrewAI (Role-Based)
 
-**Observation**: CrewAI architectures performed best against "Trust Exploitation" attacks (94% detection) (Part 2, Architecture-Specific Results).
+**Observation**: trust-exploitation attacks are the category the parametric simulation covers most completely: Claude Code, CrewAI and LangGraph all reach 100% and AutoGPT 96%, on 200 attacks each (Part 2, Architecture-Specific Results). No architecture is distinctively better here, and the figures are design-level rather than measured on a deployment.
 **Mechanism**: The framework's role definitions acted as implicit **Identity Tripwires**. When an agent attempted to act outside its defined role, the behavior was flagged as a role violation.
 
 ---

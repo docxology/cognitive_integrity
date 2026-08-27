@@ -300,12 +300,12 @@ def compute_cif_payoff_matrix() -> Tuple[np.ndarray, List[str], List[str]]:
     * One cell -- ``(emergent_misalignment, full_cif)`` -- does have a measured
       counterpart, and it is read from ``colony_results.json`` rather than
       typed here.  That artifact is ``data_origin: real_pipeline``, 30 repeats,
-      and gives 0.7429.  The literal that used to sit in this cell was 0.56,
-      the single-seed figure the manuscripts explicitly retract as "not the
-      publication estimate" -- while the Nash result computed from it was
-      quoted as a finding.  Substituting the published value moves the game
-      value from 0.56 to 0.61 and moves the attacker's pure best response from
-      emergent misalignment to coordination.
+      and gives 0.7429.  It is read rather than typed because this cell is
+      the one the equilibrium is sensitive to: substituting a single-seed
+      figure of 0.56 for the published 0.7429 moves the game value from 0.61 to
+      0.56 and moves the attacker's pure best response from coordination to
+      emergent misalignment.  A payoff matrix that is mostly design-level can
+      still have its conclusion decided by its one measured entry.
 
     Returns:
         Tuple ``(M, attack_labels, defense_labels)`` where ``M`` has

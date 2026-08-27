@@ -8,15 +8,13 @@ ManuscriptVerifier from src/manuscript/verifier.py.
 
 Import is side-effect free
 --------------------------
-This module used to call ``logging.basicConfig(..., handlers=[...,
-logging.FileHandler("manuscript_verification.log")])`` at *import* time, in
-append mode, against a CWD-relative path.  Three consequences: importing the
-module from a read-only checkout raised ``PermissionError`` before any code
-ran (two tests failed for reasons unrelated to the code under test), every
-``make verify`` dirtied the working tree, and the git-tracked log grew without
-bound.  Logging is now configured inside :func:`main` and writes under
-``output/logs/`` (a generated, gitignored directory), overwriting rather than
-appending.
+Logging is configured inside :func:`main`, never at import time, and writes
+under ``output/logs/`` (generated and gitignored), overwriting rather than
+appending.  Calling ``logging.basicConfig`` with a ``FileHandler`` at import
+time against a CWD-relative path would make importing this module fail with
+``PermissionError`` in a read-only checkout, before any code under test runs;
+it would dirty the working tree on every ``make verify``; and it would grow a
+tracked log without bound.
 
 Usage:
     python scripts/verify_manuscript.py [--root manuscript] [--log PATH]

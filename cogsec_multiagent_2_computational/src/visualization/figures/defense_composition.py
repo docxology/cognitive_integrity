@@ -177,20 +177,16 @@ def plot_defense_composition(output_dir: str | Path = "output/figures") -> plt.F
         fontweight="bold",
     )
 
-    # Detection statistics table, measured.
+    # Detection statistics table. Every cell is read from
+    # output/data/defense_overlap.json; none is a literal.
     #
-    # Sixteen of these twenty cells used to be literal percentage strings, and
-    # the Full CIF row was computed by feeding the four literal totals through
-    # the series-composition rule -- so the one derived number could only ever
-    # agree with the numbers it was derived from, and the table read as a
-    # measurement of four mechanisms plus a confirmation of a theorem while
-    # measuring nothing at all.
-    #
-    # Every cell now comes from output/data/defense_overlap.json. The union row
-    # is the measured fraction of attacks at least one module detects, and the
-    # series prediction is annotated beside it rather than substituted for it:
-    # the rule assumes the modules are independent, and how far that is from
-    # true is a result, not a detail.
+    # The union row is the measured fraction of attacks at least one module
+    # detects. The series-composition prediction is annotated beside it rather
+    # than substituted for it: the rule assumes the modules are independent,
+    # and how far that is from true is a result, not a detail. Deriving the
+    # union row from the per-module figures instead would make it agree with
+    # them by construction, which is a table that cannot disagree with a
+    # theorem and therefore cannot test one.
     overlap = _load_overlap()
     per_module = overlap["per_module"]
     ranked = sorted(per_module, key=lambda n: per_module[n]["total"], reverse=True)
