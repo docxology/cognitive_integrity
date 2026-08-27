@@ -5,4 +5,4 @@
 \beamer@subsectionintoc {1}{4}{Architecture-Specific Observations}{21}{0}{1}
 \beamer@subsectionintoc {1}{5}{Minimal Viable Implementation}{26}{0}{1}
 \beamer@subsectionintoc {1}{6}{Alignment with Emerging Standards}{31}{0}{1}
-\beamer@subsectionintoc {1}{7}{CIF Composer: Interactive Deployment Planning Tool}{39}{0}{1}
+\beamer@subsectionintoc {1}{7}{Composer Data Bundle}{39}{0}{1}

@@ -322,7 +322,12 @@ def _apply_top_synergy_value(
     dead write path, and the injector's own audit treats that as a failure.
     """
     single = r"(" + lead_in + r"\s*\(\$\s*" + _QUALIFIER + r")\+[\d.]+"
-    tie = r"(both\s*\$\s*" + _QUALIFIER + r")\+[\d.]+"
+    # "both" when two pairs tie, "all at" when three or more do. The size of
+    # the tie is a property of the artifact, so the pattern must not fix the
+    # wording to one of them: when the tie widened from two pairs to three the
+    # sentence changed and this substitution stopped matching, which the
+    # injector's own audit reports as a dead write path.
+    tie = r"((?:both|all at)\s*\$\s*" + _QUALIFIER + r")\+[\d.]+"
     pattern = single if re.search(single, text) else tie
     return _apply(
         text,

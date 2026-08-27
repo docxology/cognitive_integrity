@@ -2775,7 +2775,7 @@ where $\sigma$ is the sigmoid function and weights $(w_d, b)$ are learned from l
 
 ## ROC Curve Analysis {#sec:roc-analysis}
 
-![Receiver Operating Characteristic (ROC) curves for CIF detection across attack categories (illustrative/schematic operating points under the Neyman-Pearson framework; the sandbox/tripwire/anomaly/full-CIF curves are labeled Theoretical, not empirical measurements, whereas the Cognitive Firewall curve is the Part-1 curve measured over the module's small test corpus — measured eval curves are reported in Part 2).](figures/roc_curves.pdf){#fig:roc-curves width=85%}
+![Receiver Operating Characteristic (ROC) curves for CIF detection across attack categories (illustrative/schematic operating points under the Neyman-Pearson framework; the sandbox/tripwire/anomaly/full-CIF curves are labeled Theoretical, not empirical measurements, whereas the Cognitive Firewall entry is measured over this part's small test corpus. That entry is a single operating point at zero false positives, drawn as the conventional vertical segment, so the area beside it equals its true-positive rate and must not be read as chance performance despite coinciding numerically with the random-classifier diagonal. Measured evaluation curves are reported in Part 2).](figures/roc_curves.pdf){#fig:roc-curves width=85%}
 
 ### Receiver Operating Characteristic Framework
 
@@ -3131,7 +3131,7 @@ The detection methods presented in this section have been empirically validated 
 
 \textbf{Detection Performance by Component}: Part 2 measures marginal contribution per defense component, not detection rate per adversary class --- its corpus carries a design-level $\Omega$ label rather than a runtime one, so the per-$\Omega$ coverage attributed to each mechanism in this section remains a design expectation rather than a measured result. What Part 2 does measure is that one component, Behavioral Invariants, accounts for almost all of the composed pipeline's detection, and that the remaining components add little beyond it. See Part 2's "Defense Component Contributions" section.
 
-\textbf{False Positive Mitigation}: The confirmation cascade, temporal smoothing, and contextual whitelisting strategies reduce false positive rates by $>80\%$ while maintaining $>90\%$ true positive rates. See Part 2, \S{5.4} for quantitative analysis of each mitigation strategy.
+\textbf{False Positive Mitigation}: Part 2 measures five mitigation strategies against a baseline of $0.873$ true positives at $0.183$ false positives. Contextual whitelisting and cost-sensitive thresholding take the false-positive rate to zero for $1.7$ percentage points of true positives, raising Youden's $J$ from $0.689$ to $0.856$; temporal smoothing moves the false-positive rate only to $0.133$; and the confirmation cascade reaches zero false positives by discarding two-thirds of the true positives. No strategy holds true positives above $90\%$. See Part 2 for the per-strategy analysis.
 
 ## Information-Theoretic Detection Limits {#sec:it-detection-limits}
 
@@ -3812,11 +3812,11 @@ AG(AF(\text{tripwire\_checked}))
 
 ### Model Checking Results {#sec:mc-results}
 
-The following table summarizes the expected state space exploration for each property based on formal analysis of the CIF specification. These values represent theoretical bounds derived from the state space definition (\cref{def:system-state-verification}) and complexity analysis (\cref{sec:complexity-bounds}). Actual model checking execution using NuSMV, SPIN, and TLA+ tooling is presented in Part 2 of this series, along with full implementation configurations.
+The following table summarizes the expected state space exploration for each property based on formal analysis of the CIF specification. These values represent theoretical bounds derived from the state space definition (\cref{def:system-state-verification}) and complexity analysis (\cref{sec:complexity-bounds}). Part 2 carries the executable NuSMV, SPIN and TLA+ specifications and the script that runs them, but records in `output/formal/verification_summary.json` that none of the three checkers was present in that environment, so no part of this series reports an executed model-checking verdict.
 
 \begin{table}[htbp]
 \centering
-\caption{Model checking verification results. ``Verified'' here denotes a theoretical state-space bound established in this part; executable NuSMV/SPIN/TLA+ runs are deferred to Part 2's ``Model Checking Tool Configurations'' appendix (S04). No model checker was executed in this part.}
+\caption{Model checking state-space bounds. ``Verified'' here denotes a theoretical bound established in this part, not a checker's verdict; Part 2's S04 carries the executable NuSMV/SPIN/TLA+ specifications, and records that no checker was available to run them. No model checker was executed anywhere in this series.}
 \label{tab:mc-results}
 \begin{tabular}{@{}lll@{}}
 \toprule
@@ -3934,7 +3934,7 @@ Byzantine Consensus & Coordination attacks \\
 
 The orthogonality of these surfaces explains why no single mechanism suffices: an attack that bypasses input filtering may still violate behavioral invariants; an attack that evades pattern matching may still trigger belief drift detection.
 
-Empirical ablation studies in Part 2 test this prediction and return a sharper answer than a ranked list. On the 100-attack ablation corpus a single module dominates: removing Behavioral Invariants costs $\Delta\text{TPR} \approx -0.847$ against a full pipeline of $\approx 0.959$, the Firewall and Tripwire cost $\approx -0.010$ each, and Consensus, Detection, Provenance, Sandbox and Trust Calculus register no change at all. Those zeros are *marginal* quantities and are not evidence of zero capability: a module whose detections are a subset of another's is invisible to leave-one-out removal however much it catches on its own. What the ablation establishes is therefore weaker than the theorem and more useful than a ranking --- no single mechanism outperforms the composed ensemble, consistent with \cref{thm:series-detection}, but on this corpus the composition is dominated by one factor rather than balanced across many, so the multiplicative bound holds without being informative.
+Empirical ablation studies in Part 2 test this prediction and return a sharper answer than a ranked list. On the 100-attack ablation corpus a single module dominates: removing Behavioral Invariants costs $\Delta\text{TPR} = -0.650$ against a full pipeline of $0.890$, the Tripwire costs $-0.020$, and the Firewall, Consensus, Detection, Provenance, Sandbox and Trust Calculus register no change at all. Those zeros are *marginal* quantities and are not evidence of zero capability: a module whose detections are a subset of another's is invisible to leave-one-out removal however much it catches on its own. What the ablation establishes is therefore weaker than the theorem and more useful than a ranking --- no single mechanism outperforms the composed ensemble, consistent with \cref{thm:series-detection}, but on this corpus the composition is dominated by one factor rather than balanced across many, so the multiplicative bound holds without being informative.
 
 ### The Trust Boundedness Guarantee
 
@@ -4500,7 +4500,7 @@ The stealth-impact bound $\mathcal{I} \cdot \mathcal{S} \leq \pi/2$ (Remark~\ref
 \item \textbf{OODA Cycle Time Bounds}: Property~\ref{prop:ooda-latency} gives a sufficient condition but not a tight bound on the minimum OODA cycle time compatible with full CIF monitoring. Characterizing this bound as a function of defense portfolio is open.
 \end{enumerate}
 
-> **What Part 2 validates empirically**: Part 2 \cite{friedman2026cogsec2} tests CIF under conditions that stress several of the assumptions above. Specifically: (1) Assumptions 1--2 (honest orchestrator, bounded faults) are validated by architecture-specific experiments across the hierarchical, autonomous-mesh, role-based and graph-based topologies of Part 2's four adapters; (2) Assumption 3 (independent defenses) is tested via ablation studies in which the strongest pairwise synergy---Firewall + Detection, at $+0.050$ beyond additive---is roughly an order of magnitude smaller than the leave-one-out contribution of the single dominant module, so on that corpus independence is neither confirmed nor cleanly refuted; (3) Assumption 4 (stationary distributions) is tested via five rounds of adversarial training confirming distribution shift degrades static detectors; and (4) Assumption 5 (bounded compute) is implicitly bounded by the 950-attack corpus scope. The 10--11 percentage-point gap between parametric ceiling and prototype pipeline performance is attributed to adapter implementation maturity, not to violation of the formal assumptions (Part 2's Conclusion, "Honest Gap Characterization").
+> **What Part 2 validates empirically**: Part 2 \cite{friedman2026cogsec2} tests CIF under conditions that stress several of the assumptions above. Specifically: (1) Assumptions 1--2 (honest orchestrator, bounded faults) are validated by architecture-specific experiments across the hierarchical, autonomous-mesh, role-based and graph-based topologies of Part 2's four adapters; (2) Assumption 3 (independent defenses) is tested via ablation studies in which the strongest pairwise synergy---three pairs tie at $+0.050$ beyond additive, none of them involving the Firewall---is more than an order of magnitude smaller than the leave-one-out contribution of the single dominant module, so on that corpus independence is neither confirmed nor cleanly refuted; (3) Assumption 4 (stationary distributions) is tested via five rounds of adversarial training confirming distribution shift degrades static detectors; and (4) Assumption 5 (bounded compute) is implicitly bounded by the 950-attack corpus scope. The 10--11 percentage-point gap between parametric ceiling and prototype pipeline performance is attributed to adapter implementation maturity, not to violation of the formal assumptions (Part 2's Conclusion, "Honest Gap Characterization").
 
 
 
@@ -5436,7 +5436,7 @@ All proofs are constructive and provide explicit bounds useful for system implem
 
 ## Second-Edition Proofs: Defense Composition Algebra and Information-Geometric Bounds {#sec:v2-proofs}
 
-This section contains new proofs added in the Second Edition, corresponding to the defense composition algebra guarantees (§\ref{sec:defense-formal-guarantees}) and the information-geometric tightening of the stealth-impact bound (§\ref{sec:detection-bounds}).
+This section proves the defense composition algebra guarantees (§\ref{sec:defense-formal-guarantees}) and the information-geometric tightening of the stealth-impact bound (§\ref{sec:detection-bounds}).
 
 ---
 

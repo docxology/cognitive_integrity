@@ -807,22 +807,24 @@ AG(AF(\text{tripwire\_checked}))
 \end{property}
 \end{frame}
 
-\begin{frame}[allowframebreaks]{Model Checking Results}
+\begin{frame}[fragile,allowframebreaks]{Model Checking Results}
 \protect\phantomsection\label{sec:mc-results}
 The following table summarizes the expected state space exploration for
 each property based on formal analysis of the CIF specification. These
 values represent theoretical bounds derived from the state space
 definition (\cref{def:system-state-verification}) and complexity
-analysis (\cref{sec:complexity-bounds}). Actual model checking execution
-using NuSMV, SPIN, and TLA+ tooling is presented in Part 2 of this
-series, along with full implementation configurations.
+analysis (\cref{sec:complexity-bounds}). Part 2 carries the executable
+NuSMV, SPIN and TLA+ specifications and the script that runs them, but
+records in \breaktt{output/formal/verification\_summary.json} that none
+of the three checkers was present in that environment, so no part of
+this series reports an executed model-checking verdict.
 
 \end{frame}
 
-\begin{frame}[allowframebreaks]{Model Checking Results}
+\begin{frame}[fragile,allowframebreaks]{Model Checking Results}
 \begin{table}[htbp]
 \centering
-\caption{Model checking verification results. ``Verified'' here denotes a theoretical state-space bound established in this part; executable NuSMV/SPIN/TLA+ runs are deferred to Part 2's ``Model Checking Tool Configurations'' appendix (S04). No model checker was executed in this part.}
+\caption{Model checking state-space bounds. ``Verified'' here denotes a theoretical bound established in this part, not a checker's verdict; Part 2's S04 carries the executable NuSMV/SPIN/TLA+ specifications, and records that no checker was available to run them. No model checker was executed anywhere in this series.}
 \label{tab:mc-results}
 \begin{tabular}{@{}lll@{}}
 \toprule

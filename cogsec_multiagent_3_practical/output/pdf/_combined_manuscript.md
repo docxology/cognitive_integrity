@@ -19,7 +19,7 @@ theory and practice. In practice, there is.''
 
 Multiagent AI systems—autonomous coding assistants, research pipelines, financial decision engines—have moved from prototype to production in under two years. With them comes a new class of security concern: attacks that target not data or infrastructure but the *reasoning processes* of AI agents. Prompt injections that propagate through delegation chains, trust relationships that launder adversarial influence, and coordination mechanisms vulnerable to strategic manipulation all represent cognitive attack surfaces absent from traditional security models.
 
-The **Cognitive Integrity Framework (CIF)** is developed across a three-part series: formal treatment (Part 1), running code and experiments (Part 2), and the present unified paper (Part 3+4) combining practitioner guidance with cross-domain application. **Part 1** establishes mathematical foundations—a trust calculus with provably bounded delegation, defense composition algebras with multiplicative detection guarantees, and information-theoretic limits on attack stealth. **Part 2** provides computational validation: eight implemented defense modules, 3,536 tests, a 950-attack corpus spanning four threat categories, parametric architecture-aware simulation across four production multiagent topologies, and a category-theoretic formalization of defense composition (Theorems CT.1–CT.3). The cross-domain applications section (§9–§10, originally "Part 4") applies the framework via the integrated CIF-AD-OODA model across ten critical operational domains.
+The **Cognitive Integrity Framework (CIF)** is developed across a three-part series: formal treatment (Part 1), running code and experiments (Part 2), and the present unified paper (Part 3+4) combining practitioner guidance with cross-domain application. **Part 1** establishes mathematical foundations—a trust calculus with provably bounded delegation, defense composition algebras with multiplicative detection guarantees, and information-theoretic limits on attack stealth. **Part 2** provides computational validation: eight implemented defense modules, 3,535 tests, a 950-attack corpus spanning four threat categories, parametric architecture-aware simulation across four production multiagent topologies, and a category-theoretic formalization of defense composition (Theorems CT.1–CT.3). The cross-domain applications section (§9–§10, originally "Part 4") applies the framework via the integrated CIF-AD-OODA model across ten critical operational domains.
 
 This paper (Part 3+4, unified) is simultaneously a qualitative practitioner guide and a cross-domain application study. The practitioner section (§1–§8) synthesizes Parts 1 and 2 into accessible language, situates the formal results against current deployment practice, and gives practical recommendations for teams that build and run multiagent AI systems. The applications section (§9–§10) applies the framework across ten critical domains. No formal prerequisites are assumed; for proofs and definitions see Part 1, for empirical results see Part 2.
 
@@ -63,10 +63,10 @@ This is not a theoretical warning about future doom. It is an engineering proble
 The Cognitive Integrity Framework (CIF) was developed to secure these systems, and the companion papers in this series demonstrate its efficacy from formal, computational, and applied angles.
 
 * **Part 1: Formal Foundations** (DOI: 10.5281/zenodo.18364119) proved that trust can be mathematically bounded. We defined the "Trust Calculus" which guarantees that no matter how clever an adversary is, they cannot amplify their influence through delegation chains. It also introduces the Defense Composition Algebra, the five-tier adversary taxonomy ($\Omega_1$--$\Omega_5$), and information-theoretic stealth-impact bounds.
-* **Part 2: Computational Validation** (DOI: 10.5281/zenodo.18364128) implemented this theory in Python and tested it against a corpus of 950 attacks across four production architectures, reporting ablation studies, Bayesian uncertainty quantification, colony-scale benchmarks at 20--100 agents, and a category-theoretic formalization of defense composition (Defense Category $\calD$, Theorems CT.1--CT.3) with a composable visualization engine and interactive CIF Composer web UI.
+* **Part 2: Computational Validation** (DOI: 10.5281/zenodo.18364128) implemented this theory in Python and tested it against a corpus of 950 attacks across four production architectures, reporting ablation studies, Bayesian uncertainty quantification, colony-scale benchmarks at 20--100 agents, and a category-theoretic formalization of defense composition (Defense Category $\calD$, Theorems CT.1--CT.3) with a composable visualization engine and a composer data bundle.
 * **Applications (§9--§10, this paper):** The integrated CIF-AD-OODA analytical model is applied across ten critical domains (rare-earth mining, nation-state alliances, cyber-security, drone warfare, supply chain, biowarfare, food security, trade wars, infrastructure, information ecosystems), identifying three universal attack patterns and four novel defense extensions.
 
-The combined evidence includes **3,536 tests** and a **96--100% parametric detection ceiling** across all attack categories and architectures (Part 2), alongside a lower real-pipeline multi-seed mean of 86.3% (30 seeds). Direct-injection detection reaches 99--100% in the fully defended parametric configuration; plus CIF coverage is analyzed across all ten operational domains in §9--§10 with retrospective analysis of six documented 2024--2025 AI-agent incidents.
+The combined evidence includes **3,535 tests** and a **96--100% parametric detection ceiling** across all attack categories and architectures (Part 2), alongside a lower real-pipeline multi-seed mean of 86.3% (30 seeds). Direct-injection detection reaches 99--100% in the fully defended parametric configuration; plus CIF coverage is analyzed across all ten operational domains in §9--§10 with retrospective analysis of six documented 2024--2025 AI-agent incidents.
 
 ## The Purpose of This Guide
 
@@ -104,7 +104,7 @@ This paper is designed to stand alone as the practitioner's reference of the ser
 | Parametric design-level ceiling (96–100%) | **Part 2** S08 |
 | Game-theoretic adversarial analysis / Nash equilibrium | **Part 2**, the "Game-Theoretic Analysis" subsection of "Theoretical Connections" for the payoff matrix and Theorem GT.1, and "Game-Theoretic Arms Race Dynamics" in the Discussion |
 | Category-theoretic formalization of defense composition (Defense Category $\calD$, Theorems CT.1–CT.3) | **Part 2**, "Defense Composition as Category Theory" in "Theoretical Connections" for CT.1 and CT.2, and "Composability Algebra: Monadic Defense Chains" for CT.3, with the extended treatment in "Category-Theoretic Foundations of Defense Composition" |
-| Composable visualization engine + CIF Composer interactive web UI | **Part 2** (output/web/cif_composer.html) |
+| Composable visualization engine + composer data bundle | **Part 2** (`output/data/composer_data.json`) |
 | Free-energy connections (FEP.1–FEP.2) | **Part 2** Theoretical Connections (Active Inference and the Free Energy Principle), Supplement S10 Information Geometry of Belief Manipulation |
 | Framework API reference + pseudocode | **Part 2** S05, S07 |
 | Application of CIF to specific operational sectors (10 domains analyzed) | **§9–§10** (this paper) |
@@ -225,7 +225,7 @@ Part 2's Theoretical Connections and Composability Algebra sections extend the c
 
 **Practical value for operators**: The categorical framing enables *type-checked composition* (incompatible modules are refused at composition time), *empirical law verification* (the `verify_category_laws()` function in Part 2's `src/formal/category_theory.py` validates the laws against randomly sampled morphism triples), and a unified framework for reasoning about series and parallel configurations. When designing a new CIF deployment, the Defense Category $\calD$ provides the structural language to specify *what it means* for two defense modules to compose correctly.
 
-Part 2 also provides a **composable visualization engine** (`DefenseGraph`, `CategoryDiagram`, `LatticeViz`, `OperadPlot`, `MonadFlow`, `LensDiagram`) and an **interactive CIF Composer web UI** (`output/web/cif_composer.html`) — a self-contained HTML/JS/D3 application with 8-module palette, live metric computation based on Theorems 3.1/3.2, category law verification, 4 deployment presets, and Python/JSON/SVG export. Operators can use the Composer to explore deployment configurations before committing to a production layout.
+Part 2 also provides a **composable visualization engine** (`DefenseGraph`, `CategoryDiagram`, `LatticeViz`, `OperadPlot`, `MonadFlow`, `LensDiagram`) and a **composer data bundle** (`scripts/generate_composer_data.py` → `output/data/composer_data.json`) carrying each module's description and its measured detection rate and latency. There is no interactive application; an operator reads the bundle.
 
 
 
@@ -312,7 +312,7 @@ The rubric column is each adapter's *marginal* contribution to true-positive rat
 not a whole-pipeline detection rate: a Level-5 adapter is one that adds 30 or more
 percentage points when introduced, not one that reaches 30\% detection on its own.
 
-The current Claude Code adapter is at Level 3 (Statistical), explaining the 86.3\% mean. The roadmap projects +35--41 percentage points of improvement by advancing adapters to Level 5 for the primary attack categories. The parametric ceiling (96--100\%) represents what Level-5 adapters achieve—it is a design target, not an overclaim.
+The current Claude Code adapter is at Level 3 (Statistical), explaining the 86.3\% mean. Part 2's roadmap describes what advancing each adapter toward Level 5 would require, without quoting a projected point gain for any of them. The parametric ceiling (96--100\%) represents what Level-5 adapters achieve—it is a design target, not an overclaim.
 
 **Operator implication**: When deploying CIF, assess the maturity level of each adapter against your threat model. Level-3 adapters (current) provide meaningful protection against unsophisticated $\Omega_1$--$\Omega_2$ attacks; Level-4--5 adapters (planned) are required for $\Omega_4$--$\Omega_5$ protection. The gap is closeable—it is an engineering challenge, not a theoretical limitation.
 
@@ -729,25 +729,11 @@ Profile A (Internal Tool) provides partial NIST alignment. Profile B (Customer F
 
 ---
 
-## CIF Composer: Interactive Deployment Planning Tool {#sec:cif-composer}
+## Composer Data Bundle {#sec:cif-composer}
 
-Part 2 ships an **interactive CIF Composer web UI** (`output/web/cif_composer.html`) that can assist deployment planning before committing to a production configuration. The Composer is a self-contained HTML/JS/D3 application requiring no server — open it directly in a browser from the Part 2 repository.
+Part 2 does not ship an interactive planning application. What it ships is the data such a tool would consume: `scripts/generate_composer_data.py` writes `output/data/composer_data.json`, which bundles the eight defense modules' descriptions, the attack families each is meant to handle, and the measured detection rate and latency for each, hydrated from `output/data/module_capability_matrix.json` (Part 2, \S{S12}).
 
-**Key capabilities**:
-
-| Feature | Description |
-| :--- | :--- |
-| 8-module palette | Drag-and-drop Cognitive Firewall, Belief Sandbox, Tripwires, Drift Detection, Trust Calculus, Provenance, Byzantine Consensus, Invariant Checker |
-| Canvas composition | Wire modules in series, parallel, or hybrid configurations visually |
-| Live metric computation | Detects and computes composite detection rate in real time using Theorems 3.1/3.2 from Part 1 |
-| Category law verification | Verifies the Defense Category $\calD$ laws (identity, associativity) for the current pipeline composition |
-| 4 deployment presets | Loads Profiles A, B, C, and the Minimal Viable Implementation (MVI) directly |
-| Export | Generates Python SDK configuration code, JSON pipeline spec, and SVG diagram of the composed architecture |
-| Category Explorer tab | 9 interactive D3 diagrams for commutative diagrams, Hasse lattices, operadic trees, Kleisli flows, and lens diagrams |
-
-**Workflow for operators**: (1) Open `output/web/cif_composer.html` from the Part 2 repository. (2) Load the profile preset closest to your deployment context (Profile A/B/C). (3) Customize by adding, removing, or reordering modules. (4) Observe the live detection rate estimate and verify category laws. (5) Export the Python configuration and paste into your deployment scaffold. This replaces manual parameter lookup in tables with an interactive, law-verified design session.
-
-> **Note**: The Composer's detection rate estimates are derived from the parametric simulation in Part 2. They reflect fully-mature (Level-5) adapter performance. For current Level-3 adapter baselines, apply the adapter-maturity discount discussed in §3.
+An operator planning a deployment can therefore read the per-module capability directly rather than compose it in a browser, and the numbers are the measured ones rather than the design-level ceiling: on the full 1,475-item corpus the invariants checker reaches 83.3\% alone and no other module exceeds 10\%. Any composition estimate built on top of that bundle should carry the caveat the ablation establishes --- the modules are not independent, and the series-composition rule over-predicts the union rate.
 
 
 
@@ -896,8 +882,8 @@ CIF deployment cost has two components: a one-time integration cost (engineering
 Cost Category & One-Time & Recurring & Source \\
 \midrule
 Integration engineering & 2--4 weeks FTE (\textasciitilde\$20K--\$40K) & --- & Middleware complexity estimate \\
-Latency overhead & --- & +23\% processing cost & Part 2, Supplement S08 (parametric overall summary) \\
-Memory overhead & --- & +22\% infrastructure cost at 100 agents & Part 2, Supplement S08 (per-architecture parametric performance tables) \\
+Latency overhead & --- & +0.61 ms median per message & Part 2, undefended control arm (\texttt{overhead\_control.json}) \\
+Memory overhead & --- & +32 KiB peak traced & Part 2, undefended control arm (\texttt{overhead\_control.json}) \\
 Monitoring operations & --- & \textasciitilde0.5 FTE/year (\$50K--\$80K) & Enterprise estimate \\
 Incident response capacity & --- & \textasciitilde0.25 FTE/year (\$25K--\$40K) & Enterprise estimate \\
 \midrule
@@ -1298,8 +1284,8 @@ The five attack vectors in \cref{sec:attack-scenarios} illustrated the Cognitive
 
 **CIF response**:
 
-* **Cognitive Firewall**: Detects 89% of direct injection attempts (syntax-matching). The metadata injection is "indirect", and reformulated attacks of this kind are where feature-based detection degrades: Part 2's discussion reports 89\% on direct injections against 72\% on semantically equivalent reformulations. With 200 injection attempts distributed across 20 agents, approximately 10 attempts per agent; at 28% miss rate, approximately 2.8 injections per agent reach the sandbox layer.
-* **Belief Sandboxing**: Of the 2.8 injections that reach each agent's sandbox, the sandbox catches those contradicting existing beliefs (the refund policy). An agent that has already processed 50 legitimate refund denials has strong prior beliefs about refund policy — the injected "approve all" directly contradicts. Approximately 80% sandbox catch rate for clear contradictions.
+* **Cognitive Firewall**: on Part 2's corpus the firewall alone detects 31.0\% of direct injections and 0\% of the indirect variant this attack uses, so essentially every one of the 200 metadata injections passes this layer. The walk-through below is an illustration of where each layer sits, not a measured cascade: the per-layer rates are the measured single-module figures from \texttt{module\_capability\_matrix.json}, and multiplying them assumes an independence the ablation does not support.
+* **Belief Sandboxing**: of the injections that reach each agent's sandbox, the sandbox catches those contradicting existing beliefs (the refund policy). Measured alone it detects 0\% of this injection family and 28.6\% of sandbox-escape attacks, so it is not the layer that stops this attack. An agent that has already processed 50 legitimate refund denials has strong prior beliefs about refund policy — the injected "approve all" directly contradicts. Approximately 80% sandbox catch rate for clear contradictions.
 * **Byzantine consensus**: With 20 agents and 2 compromised agents (worst case), $n=20 \geq 3(2)+1=7$ — well above the Byzantine threshold. Consensus latency: $O(n^2) = 400$ message pairs; at 20 agents, p95 latency $= 2.1$s, which exceeds the 2.0s warning threshold and therefore raises a monitoring alert (a warning, not a failure: the consensus still completes).
 
 **False positive management**: 6% FPR (the parametric false-positive rate at the default quarantine threshold $\tau_2 = 0.5$, from Part 2's firewall threshold sensitivity analysis in Supplement S08). With 20 agents $\times$ 500 legitimate customer interactions/day $= 10{,}000$ interactions/day, a 6% FPR produces 600 false positives/day. This is operationally unacceptable — it requires a human review queue that dwarfs the actual attack detection workload.
@@ -1425,7 +1411,7 @@ Saying "the code works" requires specifying what that means. There are three hon
 
 **Level 2 — The pipeline detects attacks in practice** (confidence: moderate). The multi-seed pipeline analysis (30 seeds, Claude Code architecture) achieves a mean detection rate of 86.3\% [95\% CI: 85.5\%, 87.1\%]. The LLM-backed multiagent validation ($N=10$, Gemma 3 4B) achieves 80\%--100\% across two architectures. These are meaningful but not high detection rates—they reflect adapter implementation at CMMI Level 3 (Statistical), not the design ceiling.
 
-**Level 3 — The defense ceiling is achievable** (confidence: moderate-high). The parametric simulation ($N=3{,}800$) establishes that fully-mature (Level 5) adapters achieve 96--100\% detection, consistent with the formal design. The gap between the measured pipeline (86.3\%) and Level 5 (96\%) is an engineering challenge, not a theoretical limitation. The roadmap in Part 2 projects +35--41 percentage points of improvement through adapter maturation.
+**Level 3 — The defense ceiling is achievable** (confidence: moderate-high). The parametric simulation ($N=3{,}800$) establishes that fully-mature (Level 5) adapters achieve 96--100\% detection, consistent with the formal design. The gap between the measured pipeline (86.3\%) and Level 5 (96\%) is an engineering challenge, not a theoretical limitation. Part 2's roadmap sets out what each module would need in order to close it, and deliberately quotes no projected point gain: a marginal-gain estimate needs a fixed baseline and a fixed corpus, and this series has neither.
 
 The honest operational posture is Level 2: deploy CIF for meaningful protection against $\Omega_1$--$\Omega_3$ attacks today, while investing in adapter maturation for $\Omega_4$--$\Omega_5$ coverage. Do not carry the 96--100\% parametric ceiling into a life-safety deployment: it is a design-level figure, the measured pipeline sits at 86.3\% with an 18.5\% false-positive rate, and neither number is a substitute for validating your adapters at Level 4--5 against your own threat model.
 

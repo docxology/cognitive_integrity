@@ -117,22 +117,8 @@ Profile A (Internal Tool) provides partial NIST alignment. Profile B (Customer F
 
 ---
 
-## CIF Composer: Interactive Deployment Planning Tool {#sec:cif-composer}
+## Composer Data Bundle {#sec:cif-composer}
 
-Part 2 ships an **interactive CIF Composer web UI** (`output/web/cif_composer.html`) that can assist deployment planning before committing to a production configuration. The Composer is a self-contained HTML/JS/D3 application requiring no server — open it directly in a browser from the Part 2 repository.
+Part 2 does not ship an interactive planning application. What it ships is the data such a tool would consume: `scripts/generate_composer_data.py` writes `output/data/composer_data.json`, which bundles the eight defense modules' descriptions, the attack families each is meant to handle, and the measured detection rate and latency for each, hydrated from `output/data/module_capability_matrix.json` (Part 2, \S{S12}).
 
-**Key capabilities**:
-
-| Feature | Description |
-| :--- | :--- |
-| 8-module palette | Drag-and-drop Cognitive Firewall, Belief Sandbox, Tripwires, Drift Detection, Trust Calculus, Provenance, Byzantine Consensus, Invariant Checker |
-| Canvas composition | Wire modules in series, parallel, or hybrid configurations visually |
-| Live metric computation | Detects and computes composite detection rate in real time using Theorems 3.1/3.2 from Part 1 |
-| Category law verification | Verifies the Defense Category $\calD$ laws (identity, associativity) for the current pipeline composition |
-| 4 deployment presets | Loads Profiles A, B, C, and the Minimal Viable Implementation (MVI) directly |
-| Export | Generates Python SDK configuration code, JSON pipeline spec, and SVG diagram of the composed architecture |
-| Category Explorer tab | 9 interactive D3 diagrams for commutative diagrams, Hasse lattices, operadic trees, Kleisli flows, and lens diagrams |
-
-**Workflow for operators**: (1) Open `output/web/cif_composer.html` from the Part 2 repository. (2) Load the profile preset closest to your deployment context (Profile A/B/C). (3) Customize by adding, removing, or reordering modules. (4) Observe the live detection rate estimate and verify category laws. (5) Export the Python configuration and paste into your deployment scaffold. This replaces manual parameter lookup in tables with an interactive, law-verified design session.
-
-> **Note**: The Composer's detection rate estimates are derived from the parametric simulation in Part 2. They reflect fully-mature (Level-5) adapter performance. For current Level-3 adapter baselines, apply the adapter-maturity discount discussed in §3.
+An operator planning a deployment can therefore read the per-module capability directly rather than compose it in a browser, and the numbers are the measured ones rather than the design-level ceiling: on the full 1,475-item corpus the invariants checker reaches 83.3\% alone and no other module exceeds 10\%. Any composition estimate built on top of that bundle should carry the caveat the ablation establishes --- the modules are not independent, and the series-composition rule over-predicts the union rate.

@@ -33,24 +33,23 @@ The cognitive firewall classifies incoming messages using a multi-stage detectio
 \Require message $m$, context $ctx$
 \Ensure decision $\in \{\text{ACCEPT}, \text{QUARANTINE}, \text{REJECT}\}$
 \Function{Classify}{$m$, $ctx$}
-  \State \Comment{Stage 1: Pattern-based injection detection}
+  \If{$m$ is empty} \State \Return ACCEPT \EndIf
+  \If{$|m| > \text{maxMessageLength}$} \State \Return QUARANTINE \EndIf
+  \State \Comment{Pattern-based injection detection}
   \State $S_{inj} \gets 0$
   \For{each pattern $p \in \mathcal{P}_{injection}$}
     \If{$\text{Match}(m, p)$}
       \State $S_{inj} \gets S_{inj} + p.weight$
     \EndIf
   \EndFor
-  \State \Comment{Stage 2: Semantic analysis}
-  \State $\mathbf{e} \gets \text{Embed}(m)$
-  \State $S_{sem} \gets \text{CosineSim}(\mathbf{e}, \mathbf{c}_{attack})$
-  \State \Comment{Stage 3: Anomaly detection}
-  \State $S_{anom} \gets \text{IsolationForest.Score}(\text{Features}(m, ctx))$
-  \State \Comment{Combine scores}
-  \State $S_{combined} \gets w_1 \cdot S_{inj} + w_2 \cdot S_{sem} + w_3 \cdot S_{anom}$
-  \State \Comment{Decision logic}
-  \If{$S_{combined} > \tau_1$}
+  \State \Comment{Injection alone can reject; it is not averaged away}
+  \If{$S_{inj} > \tau_1$}
     \State \Return REJECT
-  \ElsIf{$S_{combined} > \tau_2$}
+  \EndIf
+  \State \Comment{Otherwise the suspicious score joins it, combined by max}
+  \State $S_{sus} \gets \textsc{ScoreSuspicious}(m)$
+  \State $S_{combined} \gets \max(S_{inj}, S_{sus})$
+  \If{$S_{combined} > \tau_2$}
     \State \Return QUARANTINE
   \Else
     \State \Return ACCEPT
@@ -62,7 +61,7 @@ The cognitive firewall classifies incoming messages using a multi-stage detectio
 
 > **Implementation**: `src/core/firewall.py` — `CognitiveFirewall.classify()`, `PatternDetector.score_injection()`, `SemanticSimilarityDetector.score_semantic_similarity()`.
 
-> **Implementation Notes**: `Embed(m)` uses a 384-dimensional sentence embedding (all-MiniLM-L6-v2 via `sentence-transformers`; falls back to TF-IDF bag-of-words if the model is unavailable). `c_attack` is the centroid of known attack sample embeddings computed once at firewall initialization from the training corpus; it is updated via online mean when new confirmed attacks are added. `Features(m, ctx)` extracts 12 structural features: token count, punctuation density, imperative verb frequency, role-claim indicator count, context-window position (normalized 0–1), source trust score (from Trust Calculus), and 6 n-gram pattern hit counts for known injection patterns. See `src/core/firewall.py → FeatureExtractor.extract()` for the complete feature specification.
+> **Implementation Notes**: the shipped `classify()` is a two-detector rule, not a weighted three-stage one. `PatternDetector.score_injection()` matches a fixed pattern set and weights each hit by whether it reads as an instruction to this agent or merely as text containing the same words; a score above `injection_threshold` rejects outright. Otherwise `score_suspicious()` is taken and the two are combined by `max`, which quarantines above `suspicious_threshold`. `SemanticSimilarityDetector` embeds with `TFIDFEmbedder` by default and compares against registered malicious patterns by cosine similarity; there is no sentence-transformers model, no 384-dimensional embedding and no attack centroid updated online. The `FeatureExtractor` referenced elsewhere in this series lives in `src/core/detection.py` and is not part of the firewall's classification path.
 
 > **Complexity**: $O(|m| \cdot |\mathcal{P}| + d)$ for pattern matching and embedding lookup, where $d$ is the embedding dimension and $|\mathcal{P}|$ is the pattern count. Space: $O(d + |\mathcal{P}|)$ for the attack centroid and pattern set.
 

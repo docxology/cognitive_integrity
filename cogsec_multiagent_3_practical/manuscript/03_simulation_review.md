@@ -76,7 +76,7 @@ The rubric column is each adapter's *marginal* contribution to true-positive rat
 not a whole-pipeline detection rate: a Level-5 adapter is one that adds 30 or more
 percentage points when introduced, not one that reaches 30\% detection on its own.
 
-The current Claude Code adapter is at Level 3 (Statistical), explaining the 86.3\% mean. The roadmap projects +35--41 percentage points of improvement by advancing adapters to Level 5 for the primary attack categories. The parametric ceiling (96--100\%) represents what Level-5 adapters achieve—it is a design target, not an overclaim.
+The current Claude Code adapter is at Level 3 (Statistical), explaining the 86.3\% mean. Part 2's roadmap describes what advancing each adapter toward Level 5 would require, without quoting a projected point gain for any of them. The parametric ceiling (96--100\%) represents what Level-5 adapters achieve—it is a design target, not an overclaim.
 
 **Operator implication**: When deploying CIF, assess the maturity level of each adapter against your threat model. Level-3 adapters (current) provide meaningful protection against unsophisticated $\Omega_1$--$\Omega_2$ attacks; Level-4--5 adapters (planned) are required for $\Omega_4$--$\Omega_5$ protection. The gap is closeable—it is an engineering challenge, not a theoretical limitation.
 

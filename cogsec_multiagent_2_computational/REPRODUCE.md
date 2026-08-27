@@ -101,7 +101,7 @@ Measured values currently committed under `output/data/`, versus what
 
 | Quantity | Source file | Real (`data_origin: real_pipeline`) | Synthetic (`data_origin: synthetic_schema`) |
 |----------|-------------|-------------------------------------|---------------------------------------------|
-| Mean overall detection, 30 seeds | `multi_seed_results.json` | **0.448** (min 0.37, max 0.56; CV 0.0967, `stable: false`) | 0.9676 (CV 0.0065) |
+| Mean overall detection, 30 seeds | `multi_seed_results.json` | **0.863** (min 0.82, max 0.90; CV 0.0243, `stable: false`) | 0.9676 (CV 0.0065) |
 | 5-fold cross-validated TPR | `cross_validation_results.json` | **0.160** (std 0.0237; mean F1 0.275) | 0.9641 (std 0.0055; mean F1 0.9612) |
 
 To regenerate the measured results, run the real experiment scripts directly.

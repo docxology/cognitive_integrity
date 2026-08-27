@@ -262,7 +262,7 @@ MODULE VerifyCT3(f_d, f_s, g_d, g_s, h_d, h_s)
   LTLSPEC G (hgf.detected = hgf2.detected & hgf.score = hgf2.score)
 ```
 
-**Verification result**: the CT.1 category laws verified VALID for all reachable states (exhaustive state space: $2 \times 11 = 22$ states per morphism; composition space $22^2 = 484$ pairs; $484^2 = 234{,}256$ triples for associativity). No counterexamples found. The short-circuit composition rule is the key structural invariant: once a morphism detects ($f.\text{detected} = \text{TRUE}$), subsequent morphisms in the chain never override the detection, regardless of their own score.
+**Verification status**: no model checker was run. The specification enumerates an exhaustive state space of $2 \times 11 = 22$ states per morphism, $22^2 = 484$ composition pairs and $484^2 = 234{,}256$ triples for associativity, and is written to be checked; `scripts/verify_formal_specs.py` records in `output/formal/verification_summary.json` that NuSMV, SPIN and TLC were all absent from `PATH`, so `verified` is `false` and no verdict is claimed here. The short-circuit composition rule is the key structural invariant: once a morphism detects ($f.\text{detected} = \text{TRUE}$), subsequent morphisms in the chain never override the detection, regardless of their own score.
 
 ### TLA+ Specification of FEP.1
 
@@ -311,4 +311,4 @@ Spec == TypeInvariant /\ FEP1 /\ Safety /\ Liveness
 =============================================================================
 ```
 
-**Verification result**: `Safety` and `Liveness` verified for all values satisfying `TypeInvariant` and `FEP1`. The specification confirms that FEP.1 is a complete and consistent detection criterion: every attack above threshold is detected (liveness), and no sub-threshold activity triggers a false positive (safety). TLC model checking with $\text{KappaFEP} \in \{0.1, 0.5, 1.0\}$ and $F \in \{0.0, 0.5, 1.0, 1.5, 2.0\}$ confirms exhaustive verification.
+**Verification status**: no model checker was run, so `Safety` and `Liveness` are stated as the properties this specification is written to check, not as results. The intended sweep is $\text{KappaFEP} \in \{0.1, 0.5, 1.0\}$ and $F \in \{0.0, 0.5, 1.0, 1.5, 2.0\}$; running it requires TLC on `PATH`, and `output/formal/verification_summary.json` records that it was not present. A reader who installs the checkers can run `scripts/verify_formal_specs.py` and obtain the verdict this section deliberately does not assert.

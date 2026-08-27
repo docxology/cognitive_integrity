@@ -23,7 +23,7 @@ match result:
         ...
     case Err(event):
         # A detection event fired; pipeline short-circuited.
-        # event.module_name, event.score, event.context are populated.
+        # event.module_name, event.score, event.details are populated.
         log_detection(event)
 \end{lstlisting}
 

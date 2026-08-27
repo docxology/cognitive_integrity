@@ -22,7 +22,7 @@ dependencies = [
     "seaborn>=0.13.0",
 ]
 
-[project.optional-dependencies]
+[dependency-groups]
 dev = [
     "pytest>=7.4.0",
     "pytest-cov>=4.1.0",

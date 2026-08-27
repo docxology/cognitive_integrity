@@ -13,7 +13,7 @@ resolution-markers = [
 
 [[package]]
 name = "cogsec-multiagent-theory"
-version = "1.1.0"
+version = "2.0.0"
 source = { editable = "." }
 dependencies = [
     { name = "matplotlib" },
@@ -24,7 +24,7 @@ dependencies = [
     { name = "seaborn" },
 ]
 
-[package.optional-dependencies]
+[package.dev-dependencies]
 dev = [
     { name = "hypothesis" },
     { name = "pytest" },
@@ -33,15 +33,18 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "hypothesis", marker = "extra == 'dev'", specifier = ">=6.0.0" },
     { name = "matplotlib", specifier = ">=3.7.0" },
     { name = "numpy", specifier = ">=1.24.0" },
-    { name = "pytest", marker = "extra == 'dev'", specifier = ">=7.4.0" },
-    { name = "pytest-cov", marker = "extra == 'dev'", specifier = ">=4.1.0" },
     { name = "scipy", specifier = ">=1.10.0" },
     { name = "seaborn", specifier = ">=0.13.0" },
 ]
-provides-extras = ["dev"]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "hypothesis", specifier = ">=6.0.0" },
+    { name = "pytest", specifier = ">=7.4.0" },
+    { name = "pytest-cov", specifier = ">=4.1.0" },
+]
 
 [[package]]
 name = "colorama"

@@ -13,7 +13,7 @@ Part 2 of the **Cognitive Security for Multiagent Operators** series — **Versi
 - **Composable visualization engine**: DefenseGraph (DAG), CategoryDiagram (commutative diagrams), LatticeViz (Hasse), OperadPlot (trees), MonadFlow (Kleisli), LensDiagram — all Python/Graphviz-based
 - **Algebra extension**: Hybrid detection rate (Corollary 3.3), weighted parallel (Gaussian approx), optimal module ordering (descending rate sort), latency models (series sum, parallel max, hybrid fast_max+deep_sum)
 - **Composer data API** (`src/visualization/composer_data.py`): Full 8-module registry, algebra formulas, 4 preset pipelines, category theory verification results — exported as `output/data/composer_data.json` (0.03s generation)
-- **Drag-and-drop web UI v2** (`output/web/cif_composer_v2.html`): 2,455-line ground-up rewrite — black/gray/white theme with two user-selectable accent colors (localStorage-persisted), search-filtered palette with animated drag preview, D3 zoom/pan canvas with bezier edge routing, right-click edge context menu, 20-step undo (Ctrl+Z), parameter sliders, Ω-coverage pills, 6 category law indicators, 9 D3 Category Explorer diagrams, Python/JSON/SVG export, dark/light toggle
+- **Composer data bundle** (`output/data/composer_data.json`): the eight defense modules with their attack families, and each module's measured detection rate and latency hydrated from `output/data/module_capability_matrix.json`. There is no interactive application in this repository.
 - **Extended S10** (information geometry): Complete Fisher information matrix derivations; natural gradient in CIF threshold space; geometric interpretation of drift threshold
 - **New supplement S11** (adversarial training theory): AT game formulation; convergence guarantees; connection to information geometry
 - **Colony stress tests** (100–500 agents): 23 tests asserting no errors and bounded runtime (500-agent simulations complete in <60s); these report no validated detection rate
@@ -115,7 +115,7 @@ uv run python scripts/generate_composer_data.py --verbose
 uv run python -c "from src.visualization.composable import DefenseGraph, CategoryDiagram, LatticeViz, OperadPlot, MonadFlow, LensDiagram; [g.render(f'output/figures/{n}', format='pdf', cleanup=False) for n, g in [('defense_graph', DefenseGraph()), ('commutative_diagram', CategoryDiagram()), ('lattice_diagram', LatticeViz()), ('operad_trees', OperadPlot()), ('monad_flow', MonadFlow()), ('lens_diagram', LensDiagram())]]"
 
 # NEW: Open the drag-and-drop defense pipeline builder v2
-open output/web/cif_composer_v2.html
+cat output/data/composer_data.json
 
 # Run colony stress tests (100-500 agents)
 uv run pytest tests/test_colony_stress.py -v

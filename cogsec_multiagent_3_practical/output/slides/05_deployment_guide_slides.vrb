@@ -1,7 +1,9 @@
-\frametitle{CIF Composer: Interactive Deployment Planning Tool}
-\begin{quote}
-\textbf{Note}: The Composer's detection rate estimates are derived from
-the parametric simulation in Part 2. They reflect fully-mature (Level-5)
-adapter performance. For current Level-3 adapter baselines, apply the
-adapter-maturity discount discussed in §3.
-\end{quote}
+\frametitle{Composer Data Bundle}
+An operator planning a deployment can therefore read the per-module
+capability directly rather than compose it in a browser, and the numbers
+are the measured ones rather than the design-level ceiling: on the full
+1,475-item corpus the invariants checker reaches 83.3\% alone and no
+other module exceeds 10\%. Any composition estimate built on top of that
+bundle should carry the caveat the ablation establishes --- the modules
+are not independent, and the series-composition rule over-predicts the
+union rate.

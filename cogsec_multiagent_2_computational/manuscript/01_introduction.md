@@ -115,7 +115,7 @@ Eight supplementary sections accompany this paper:
 - **S09: Functional API** --- Functional-style API for CIF pipeline composition (\cref{sec:s09-functional-api})
 - **S10: Information Geometry** --- Fisher information metric derivations and natural gradient attack analysis (\cref{sec:information-geometry})
 - **S11: Adversarial Training Theory** --- Theoretical foundations for the AT protocol: convergence guarantees and information-geometric connections (\cref{sec:adversarial-training-theory})
-- **S12: Composable Visualization** --- Interactive diagram engine for categorical defense structures; CIF Composer web UI (\cref{sec:composable-visualization})
+- **S12: Composable Visualization** --- Diagram engine for categorical defense structures, and the composer data bundle it writes (\cref{sec:composable-visualization})
 
 ## Reading Companion: Where to Find Specific Topics {#sec:reading-companion}
 

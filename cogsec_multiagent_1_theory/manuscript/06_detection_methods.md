@@ -64,7 +64,7 @@ where $\sigma$ is the sigmoid function and weights $(w_d, b)$ are learned from l
 
 ## ROC Curve Analysis {#sec:roc-analysis}
 
-![Receiver Operating Characteristic (ROC) curves for CIF detection across attack categories (illustrative/schematic operating points under the Neyman-Pearson framework; the sandbox/tripwire/anomaly/full-CIF curves are labeled Theoretical, not empirical measurements, whereas the Cognitive Firewall curve is the Part-1 curve measured over the module's small test corpus — measured eval curves are reported in Part 2).](figures/roc_curves.pdf){#fig:roc-curves width=85%}
+![Receiver Operating Characteristic (ROC) curves for CIF detection across attack categories (illustrative/schematic operating points under the Neyman-Pearson framework; the sandbox/tripwire/anomaly/full-CIF curves are labeled Theoretical, not empirical measurements, whereas the Cognitive Firewall entry is measured over this part's small test corpus. That entry is a single operating point at zero false positives, drawn as the conventional vertical segment, so the area beside it equals its true-positive rate and must not be read as chance performance despite coinciding numerically with the random-classifier diagonal. Measured evaluation curves are reported in Part 2).](figures/roc_curves.pdf){#fig:roc-curves width=85%}
 
 ### Receiver Operating Characteristic Framework
 
@@ -420,7 +420,7 @@ The detection methods presented in this section have been empirically validated 
 
 \textbf{Detection Performance by Component}: Part 2 measures marginal contribution per defense component, not detection rate per adversary class --- its corpus carries a design-level $\Omega$ label rather than a runtime one, so the per-$\Omega$ coverage attributed to each mechanism in this section remains a design expectation rather than a measured result. What Part 2 does measure is that one component, Behavioral Invariants, accounts for almost all of the composed pipeline's detection, and that the remaining components add little beyond it. See Part 2's "Defense Component Contributions" section.
 
-\textbf{False Positive Mitigation}: The confirmation cascade, temporal smoothing, and contextual whitelisting strategies reduce false positive rates by $>80\%$ while maintaining $>90\%$ true positive rates. See Part 2, \S{5.4} for quantitative analysis of each mitigation strategy.
+\textbf{False Positive Mitigation}: Part 2 measures five mitigation strategies against a baseline of $0.873$ true positives at $0.183$ false positives. Contextual whitelisting and cost-sensitive thresholding take the false-positive rate to zero for $1.7$ percentage points of true positives, raising Youden's $J$ from $0.689$ to $0.856$; temporal smoothing moves the false-positive rate only to $0.133$; and the confirmation cascade reaches zero false positives by discarding two-thirds of the true positives. No strategy holds true positives above $90\%$. See Part 2 for the per-strategy analysis.
 
 ## Information-Theoretic Detection Limits {#sec:it-detection-limits}
 

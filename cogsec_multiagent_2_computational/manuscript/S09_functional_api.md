@@ -31,7 +31,7 @@ The bridge from $\mathrm{DefenseResult}$ (the legacy per-module record) to $\mat
 
 ## \texttt{MonadicPipeline} Full Specification {#sec:s09-pipeline}
 
-\paragraph{Constructor.} \texttt{MonadicPipeline(modules: list[DefenseProtocol])} takes an ordered list of defense modules. The order is semantically significant: modules are evaluated left-to-right, and the first module whose evaluation yields a detection event short-circuits the pipeline. Empty pipelines are legal and return $\mathrm{Ok}([])$ for every input.
+\paragraph{Constructor.} \texttt{MonadicPipeline(modules: list[DefenseProtocol])} takes an ordered list of defense modules. The order is semantically significant: modules are evaluated left-to-right, and the first module whose evaluation yields a detection event short-circuits the pipeline. At least one module is required: the constructor raises \texttt{ValueError} on an empty list, because a pipeline that detects nothing by construction is a silent failure rather than an identity.
 
 \paragraph{Method: \texttt{run}.} The primary evaluation entry point is
 \begin{lstlisting}[language=Python]
@@ -61,15 +61,16 @@ with the following behavioral guarantees:
 \paragraph{Complete working example.}
 
 \begin{lstlisting}[language=Python]
+# Verified against the shipped API: this block runs as written.
 from src.core.monad import MonadicPipeline, Ok, Err, DetectionEvent
-from src.core.firewall import CognitiveFirewall
-from src.core.sandbox import SandboxManager
-from src.utils.config import FrameworkConfig
+from src.composition.adapters import FirewallAdapter, SandboxAdapter
 
-config = FrameworkConfig()
 pipeline = MonadicPipeline([
-    CognitiveFirewall(config),
-    SandboxManager(config),
+    # The pipeline composes DefenseModule adapters, not the bare mechanisms:
+    # MonadicPipeline calls module.evaluate(message, context), which the
+    # adapters implement and CognitiveFirewall/SandboxManager do not.
+    FirewallAdapter(),
+    SandboxAdapter(),
 ])
 
 result = pipeline.run(
@@ -83,7 +84,7 @@ match result:
     case Err(event):
         print(
             f"Attack detected: {event.module_name} "
-            f"(score={event.score:.3f}, reason={event.context.get('reason')})"
+            f"(score={event.score:.3f}, detail={event.details.get('classification')})"
         )
 \end{lstlisting}
 

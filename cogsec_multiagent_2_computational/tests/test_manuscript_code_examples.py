@@ -35,12 +35,22 @@ RUNNABLE_MARKER = "# Verified against the shipped API: this block runs as writte
 
 _FENCE = re.compile(r"^```python\n(.*?)^```", re.MULTILINE | re.DOTALL)
 
+#: The same opt-in for LaTeX listings. S09's "Complete working example" -- the
+#: normative reference for composing defenses -- was written as an lstlisting
+#: rather than a fence, so it was invisible to this module while importing two
+#: mechanisms the pipeline cannot call and reading a DetectionEvent field that
+#: does not exist. A reader following it got an AttributeError on the first run.
+_LISTING = re.compile(
+    r"^\\begin\{lstlisting\}\[language=Python\]\n(.*?)^\\end\{lstlisting\}",
+    re.MULTILINE | re.DOTALL,
+)
+
 
 def _runnable_blocks() -> list[tuple[str, int, str]]:
     found: list[tuple[str, int, str]] = []
     for path in sorted(MANUSCRIPT.glob("*.md")):
         text = path.read_text(encoding="utf-8")
-        for match in _FENCE.finditer(text):
+        for match in (*_FENCE.finditer(text), *_LISTING.finditer(text)):
             body = match.group(1)
             if body.lstrip().startswith(RUNNABLE_MARKER):
                 line = text.count("\n", 0, match.start()) + 1

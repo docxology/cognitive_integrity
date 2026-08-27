@@ -24,13 +24,13 @@ Credible intervals are reported as 95\% Highest Density Intervals (HDI), compute
 
 ## Posterior Detection Rates for All Claimed Results {#sec:posterior-rates}
 
-\cref{tab:bayesian-posteriors} restates each major detection claim from \cref{sec:results} and \cref{sec:parametric-analysis} as a Beta posterior with an explicit 95\% HDI, computed via `BetaPosterior(1 + k, 1 + n - k).hdi(0.95)`. For the multi-seed pipeline, $n = 100$ is the per-seed evaluation size (30 seeds, 100 samples each, seed 42 as representative) and $k = 45$ is the corresponding integer detection count at the 0.448 mean rate.
+\cref{tab:bayesian-posteriors} restates each major detection claim from \cref{sec:results} and \cref{sec:parametric-analysis} as a Beta posterior with an explicit 95\% HDI, computed via `BetaPosterior(1 + k, 1 + n - k).hdi(0.95)`. For the multi-seed pipeline, $n = 100$ is the per-seed evaluation size (30 seeds, 100 samples each) and $k = 86$ is the integer detection count at the measured mean rate of $0.863$. The row is the posterior for a single seed's worth of evidence at that rate, not for the 30-seed aggregate, whose interval is correspondingly narrower.
 
 Table: Beta-Binomial posteriors for major detection claims. Prior: $\mathrm{Beta}(1, 1)$; posterior $\mathrm{Beta}(1 + k,\, 1 + n - k)$; 95\% HDI computed via \texttt{BetaPosterior.hdi()}. {#tab:bayesian-posteriors}
 
 | Result | $k$ | $n$ | Posterior | 95\% HDI |
 | --- | --- | --- | --- | --- |
-| Multi-seed pipeline (representative seed) | 45 | 100 | $\mathrm{Beta}(46, 56)$ | $[0.355, 0.547]$ |
+| Multi-seed pipeline (one seed's evidence at the mean rate) | 86 | 100 | $\mathrm{Beta}(87, 15)$ | $[0.784, 0.918]$ |
 | Ablation full pipeline TPR | 89 | 100 | $\mathrm{Beta}(90, 12)$ | $[0.819, 0.941]$ |
 | LLM validation (Claude Code) | 4 | 5 | $\mathrm{Beta}(5, 2)$ | $[0.409, 0.982]$ |
 | LLM validation (CrewAI) | 5 | 5 | $\mathrm{Beta}(6, 1)$ | $[0.607, 1.000]$ |

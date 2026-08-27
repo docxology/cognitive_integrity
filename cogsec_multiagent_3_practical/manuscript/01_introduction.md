@@ -19,10 +19,10 @@ This is not a theoretical warning about future doom. It is an engineering proble
 The Cognitive Integrity Framework (CIF) was developed to secure these systems, and the companion papers in this series demonstrate its efficacy from formal, computational, and applied angles.
 
 * **Part 1: Formal Foundations** (DOI: 10.5281/zenodo.18364119) proved that trust can be mathematically bounded. We defined the "Trust Calculus" which guarantees that no matter how clever an adversary is, they cannot amplify their influence through delegation chains. It also introduces the Defense Composition Algebra, the five-tier adversary taxonomy ($\Omega_1$--$\Omega_5$), and information-theoretic stealth-impact bounds.
-* **Part 2: Computational Validation** (DOI: 10.5281/zenodo.18364128) implemented this theory in Python and tested it against a corpus of 950 attacks across four production architectures, reporting ablation studies, Bayesian uncertainty quantification, colony-scale benchmarks at 20--100 agents, and a category-theoretic formalization of defense composition (Defense Category $\calD$, Theorems CT.1--CT.3) with a composable visualization engine and interactive CIF Composer web UI.
+* **Part 2: Computational Validation** (DOI: 10.5281/zenodo.18364128) implemented this theory in Python and tested it against a corpus of 950 attacks across four production architectures, reporting ablation studies, Bayesian uncertainty quantification, colony-scale benchmarks at 20--100 agents, and a category-theoretic formalization of defense composition (Defense Category $\calD$, Theorems CT.1--CT.3) with a composable visualization engine and a composer data bundle.
 * **Applications (§9--§10, this paper):** The integrated CIF-AD-OODA analytical model is applied across ten critical domains (rare-earth mining, nation-state alliances, cyber-security, drone warfare, supply chain, biowarfare, food security, trade wars, infrastructure, information ecosystems), identifying three universal attack patterns and four novel defense extensions.
 
-The combined evidence includes **3,536 tests** and a **96--100% parametric detection ceiling** across all attack categories and architectures (Part 2), alongside a lower real-pipeline multi-seed mean of 86.3% (30 seeds). Direct-injection detection reaches 99--100% in the fully defended parametric configuration; plus CIF coverage is analyzed across all ten operational domains in §9--§10 with retrospective analysis of six documented 2024--2025 AI-agent incidents.
+The combined evidence includes **3,535 tests** and a **96--100% parametric detection ceiling** across all attack categories and architectures (Part 2), alongside a lower real-pipeline multi-seed mean of 86.3% (30 seeds). Direct-injection detection reaches 99--100% in the fully defended parametric configuration; plus CIF coverage is analyzed across all ten operational domains in §9--§10 with retrospective analysis of six documented 2024--2025 AI-agent incidents.
 
 ## The Purpose of This Guide
 
@@ -60,7 +60,7 @@ This paper is designed to stand alone as the practitioner's reference of the ser
 | Parametric design-level ceiling (96–100%) | **Part 2** S08 |
 | Game-theoretic adversarial analysis / Nash equilibrium | **Part 2**, the "Game-Theoretic Analysis" subsection of "Theoretical Connections" for the payoff matrix and Theorem GT.1, and "Game-Theoretic Arms Race Dynamics" in the Discussion |
 | Category-theoretic formalization of defense composition (Defense Category $\calD$, Theorems CT.1–CT.3) | **Part 2**, "Defense Composition as Category Theory" in "Theoretical Connections" for CT.1 and CT.2, and "Composability Algebra: Monadic Defense Chains" for CT.3, with the extended treatment in "Category-Theoretic Foundations of Defense Composition" |
-| Composable visualization engine + CIF Composer interactive web UI | **Part 2** (output/web/cif_composer.html) |
+| Composable visualization engine + composer data bundle | **Part 2** (`output/data/composer_data.json`) |
 | Free-energy connections (FEP.1–FEP.2) | **Part 2** Theoretical Connections (Active Inference and the Free Energy Principle), Supplement S10 Information Geometry of Belief Manipulation |
 | Framework API reference + pseudocode | **Part 2** S05, S07 |
 | Application of CIF to specific operational sectors (10 domains analyzed) | **§9–§10** (this paper) |

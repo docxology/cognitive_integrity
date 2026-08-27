@@ -104,6 +104,21 @@ Part 1 second edition; Parts 2 and 3 first publication.
   numbered script, reports every failure rather than the first, and exits
   non-zero.
 
+- **What a six-lens adversarial audit found on the eve of deposition.** Twenty-four
+  confirmed defects, of which nine were blockers: a Bayesian supplement whose entire
+  table rested on a detection count of 45/100 that exists in no seed of the artifact
+  (the seeds run 82--90); a 72% semantic-reformulation rate from an experiment that
+  was never run, paired with an 89% firewall figure the capability matrix contradicts
+  at 31%; a +35--41 point adapter roadmap quoted in three places after the section
+  that produced it had withdrawn it; model-checking verdicts reported as verified
+  while `verification_summary.json` records all three checkers absent and
+  `verified: false`; a five-step operator workflow for an interactive web application
+  that does not exist in the repository; a normative "complete working example" that
+  crashes with `AttributeError` because it composes two mechanisms the pipeline
+  cannot call; and a firewall pseudocode documenting a three-stage weighted rule with
+  a 384-dimensional sentence embedding and an IsolationForest stage against an
+  implementation that is two detectors combined by `max`.
+
 - Claims no experiment in this project could produce: an inter-annotator
   agreement statistic for a generated corpus, integrity-preservation ratios with
   no integrity metric behind them, per-architecture overhead profiles for an

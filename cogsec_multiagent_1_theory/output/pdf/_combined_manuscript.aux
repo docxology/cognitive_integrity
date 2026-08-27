@@ -993,8 +993,8 @@
 \newlabel{def:roc-curve@cref}{{[definition][4][6]6.4}{[1][61][]61}{}{}{}}
 \newlabel{eq:roc-curve}{{126}{61}{ROC Curve}{equation.126}{}}
 \newlabel{eq:roc-curve@cref}{{[equation][126][]126}{[1][61][]61}{}{}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {15}{\ignorespaces Receiver Operating Characteristic (ROC) curves for CIF detection across attack categories (illustrative/schematic operating points under the Neyman-Pearson framework; the sandbox/tripwire/anomaly/full-CIF curves are labeled Theoretical, not empirical measurements, whereas the Cognitive Firewall curve is the Part-1 curve measured over the module's small test corpus --- measured eval curves are reported in Part 2).}}{62}{figure.caption.45}\protected@file@percent }
-\newlabel{fig:roc-curves}{{15}{62}{Receiver Operating Characteristic (ROC) curves for CIF detection across attack categories (illustrative/schematic operating points under the Neyman-Pearson framework; the sandbox/tripwire/anomaly/full-CIF curves are labeled Theoretical, not empirical measurements, whereas the Cognitive Firewall curve is the Part-1 curve measured over the module's small test corpus --- measured eval curves are reported in Part 2)}{figure.caption.45}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {15}{\ignorespaces Receiver Operating Characteristic (ROC) curves for CIF detection across attack categories (illustrative/schematic operating points under the Neyman-Pearson framework; the sandbox/tripwire/anomaly/full-CIF curves are labeled Theoretical, not empirical measurements, whereas the Cognitive Firewall entry is measured over this part's small test corpus. That entry is a single operating point at zero false positives, drawn as the conventional vertical segment, so the area beside it equals its true-positive rate and must not be read as chance performance despite coinciding numerically with the random-classifier diagonal. Measured evaluation curves are reported in Part 2).}}{62}{figure.caption.45}\protected@file@percent }
+\newlabel{fig:roc-curves}{{15}{62}{Receiver Operating Characteristic (ROC) curves for CIF detection across attack categories (illustrative/schematic operating points under the Neyman-Pearson framework; the sandbox/tripwire/anomaly/full-CIF curves are labeled Theoretical, not empirical measurements, whereas the Cognitive Firewall entry is measured over this part's small test corpus. That entry is a single operating point at zero false positives, drawn as the conventional vertical segment, so the area beside it equals its true-positive rate and must not be read as chance performance despite coinciding numerically with the random-classifier diagonal. Measured evaluation curves are reported in Part 2)}{figure.caption.45}{}}
 \newlabel{fig:roc-curves@cref}{{[figure][15][]15}{[1][61][]62}{}{}{}}
 \newlabel{eq:tpr}{{127}{63}{ROC Curve}{equation.127}{}}
 \newlabel{eq:tpr@cref}{{[equation][127][]127}{[1][61][]63}{}{}{}}
@@ -1165,7 +1165,6 @@
 \newlabel{empirical-validation-cross-reference}{{6.7.3}{66}{Empirical Validation Cross-Reference}{subsubsection.6.7.3}{}}
 \newlabel{empirical-validation-cross-reference@cref}{{[subsubsection][3][6,7]6.7.3}{[1][66][]66}{}{}{}}
 \citation{neyman1933ix}
-\citation{chernoff1952measure}
 \@writefile{lot}{\contentsline {table}{\numberline {33}{\ignorespaces Response escalation levels.}}{67}{table.caption.51}\protected@file@percent }
 \newlabel{tab:alert-escalation}{{33}{67}{Response escalation levels}{table.caption.51}{}}
 \newlabel{tab:alert-escalation@cref}{{[table][33][]33}{[1][66][]67}{}{}{}}
@@ -1192,11 +1191,12 @@
 \newlabel{def:chernoff@cref}{{[definition][24][6]6.24}{[1][67][]67}{}{}{}}
 \newlabel{eq:chernoff}{{155}{67}{Chernoff Information}{equation.155}{}}
 \newlabel{eq:chernoff@cref}{{[equation][155][]155}{[1][67][]67}{}{}{}}
+\citation{chernoff1952measure}
 \citation{cover2006elements}
 \newlabel{thm:error-exponent}{{6.5}{68}{Detection Error Exponent}{theorem.6.5}{}}
 \newlabel{thm:error-exponent@cref}{{[theorem][5][6]6.5}{[1][67][]68}{}{}{}}
 \newlabel{eq:error-exponent}{{156}{68}{Detection Error Exponent}{equation.156}{}}
-\newlabel{eq:error-exponent@cref}{{[equation][156][]156}{[1][67][]68}{}{}{}}
+\newlabel{eq:error-exponent@cref}{{[equation][156][]156}{[1][68][]68}{}{}{}}
 \newlabel{cor:sample-complexity}{{6.6}{68}{Sample Complexity for Target Accuracy}{theorem.6.6}{}}
 \newlabel{cor:sample-complexity@cref}{{[theorem][6][6]6.6}{[1][68][]68}{}{}{}}
 \newlabel{eq:sample-complexity}{{157}{68}{Sample Complexity for Target Accuracy}{equation.157}{}}
@@ -1416,9 +1416,9 @@
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {7.5.3}Model Checking Results}{77}{subsubsection.7.5.3}\protected@file@percent }
 \newlabel{sec:mc-results}{{7.5.3}{77}{Model Checking Results}{subsubsection.7.5.3}{}}
 \newlabel{sec:mc-results@cref}{{[subsubsection][3][7,5]7.5.3}{[1][76][]77}{}{}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {38}{\ignorespaces Model checking verification results. ``Verified'' here denotes a theoretical state-space bound established in this part; executable NuSMV/SPIN/TLA+ runs are deferred to Part 2's ``Model Checking Tool Configurations'' appendix (S04). No model checker was executed in this part.}}{77}{table.caption.57}\protected@file@percent }
-\newlabel{tab:mc-results}{{38}{77}{Model checking verification results. ``Verified'' here denotes a theoretical state-space bound established in this part; executable NuSMV/SPIN/TLA+ runs are deferred to Part 2's ``Model Checking Tool Configurations'' appendix (S04). No model checker was executed in this part}{table.caption.57}{}}
-\newlabel{tab:mc-results@cref}{{[table][38][]38}{[1][76][]77}{}{}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {38}{\ignorespaces Model checking state-space bounds. ``Verified'' here denotes a theoretical bound established in this part, not a checker's verdict; Part 2's S04 carries the executable NuSMV/SPIN/TLA+ specifications, and records that no checker was available to run them. No model checker was executed anywhere in this series.}}{77}{table.caption.57}\protected@file@percent }
+\newlabel{tab:mc-results}{{38}{77}{Model checking state-space bounds. ``Verified'' here denotes a theoretical bound established in this part, not a checker's verdict; Part 2's S04 carries the executable NuSMV/SPIN/TLA+ specifications, and records that no checker was available to run them. No model checker was executed anywhere in this series}{table.caption.57}{}}
+\newlabel{tab:mc-results@cref}{{[table][38][]38}{[1][77][]77}{}{}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {7.5.4}Verification Results Summary}{77}{subsubsection.7.5.4}\protected@file@percent }
 \newlabel{sec:verification-summary}{{7.5.4}{77}{Verification Results Summary}{subsubsection.7.5.4}{}}
 \newlabel{sec:verification-summary@cref}{{[subsubsection][4][7,5]7.5.4}{[1][77][]77}{}{}{}}
