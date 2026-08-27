@@ -295,9 +295,9 @@ The remainder of this paper is structured as follows:
 
 \textbf{\Cref{sec:summary}: Conclusion} summarizes contributions and identifies directions for future research.
 
-\textbf{Part 2: Experimental Validation} A separate, second, companion paper reports empirical results from architecture-aware parametric simulation across 950 attack vectors and four production architectures. Readers seeking detection rates, ablation studies, Bayesian uncertainty quantification, and architecture-specific defense configurations should consult Part 2 (DOI: 10.5281/zenodo.18364128).
+\textbf{Part 2: Computational Validation} A separate, second, companion paper reports empirical results from architecture-aware parametric simulation across 950 attack vectors and four production architectures. Readers seeking detection rates, ablation studies, Bayesian uncertainty quantification, and architecture-specific defense configurations should consult Part 2 (DOI: 10.5281/zenodo.18364128).
 
-\textbf{Part 3+4: Practitioner Guidance \& Applications} The merged third companion paper (\emph{Cognitive Integrity in Practice and Critical Domains}) provides a qualitative review and practitioner's synthesis---accessible-language summaries of the theoretical and empirical findings, operational checklists, risk assessment frameworks, deployment guides, monitoring strategies, cost-benefit analyses---combined with CIF applications across ten high-stakes operational sectors through the integrated CIF-AD-OODA analytical model. Readers interested in domain-specific goal-hijacking defenses, universal attack patterns (FR polarity inversion, constraint relaxation, context boundary violation), or retrospective analysis of documented 2024--2025 AI agent security incidents should consult Part 3 (DOI: 10.5281/zenodo.18364130).
+\textbf{Part 3+4: Practitioner Guidance \& Applications} The merged third companion paper (\emph{Cognitive Integrity Framework: Practical Applications and Deployment Guide}) provides a qualitative review and practitioner's synthesis---accessible-language summaries of the theoretical and empirical findings, operational checklists, risk assessment frameworks, deployment guides, monitoring strategies, cost-benefit analyses---combined with CIF applications across ten high-stakes operational sectors through the integrated CIF-AD-OODA analytical model. Readers interested in domain-specific goal-hijacking defenses, universal attack patterns (FR polarity inversion, constraint relaxation, context boundary violation), or retrospective analysis of documented 2024--2025 AI agent security incidents should consult Part 3 (DOI: 10.5281/zenodo.18364130).
 
 ## Reading Companion: Where to Find Specific Topics {#sec:reading-companion}
 
@@ -313,7 +313,7 @@ This paper is designed to stand alone as the formal-foundations reference of the
 If you want\ldots & \ldots consult\ldots \\
 \midrule
 Empirical detection rates for the defense compositions proved here & Part 2 (DOI: 10.5281/zenodo.18364128), \S{5} (Results) and S08 (Parametric Analysis) \\
-Ablation studies isolating the contribution of each defense mechanism & Part 2, \S{5.6} and \S{5d} \\
+Ablation studies isolating the contribution of each defense mechanism & Part 2, \S{5d} (Ablation Studies and Scalability Benchmarks) and \S{14.2.1} (Ablation Effect Sizes) \\
 Bayesian uncertainty quantification on detection rates & Part 2, \S{5e} \\
 Game-theoretic analysis / Nash equilibrium of CIF vs.\ adaptive attackers & Part 2, \S{6} (Discussion) \\
 Model-checking execution (NuSMV, TLA+ traces) for the invariants defined here & Part 2 S04 (Model Checking) \\
