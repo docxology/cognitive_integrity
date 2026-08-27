@@ -44,7 +44,7 @@ publications. See [CHANGELOG.md](CHANGELOG.md).
 ### Reading order
 
 - **Start with Part 1** if you want definitions, theorems, and the formal trust / defense / adversary apparatus.
-- **Start with Part 2** if you want empirical evidence — the 950-attack corpus, ablation studies, Bayesian uncertainty, parametric ceilings (exact architecture set and ceiling definition are in Part 2 methodology).
+- **Start with Part 2** if you want empirical evidence — the 1,475-item attack corpus, ablation studies, Bayesian uncertainty, parametric ceilings (exact architecture set and ceiling definition are in Part 2 methodology).
 - **Start with Part 3+4 (merged)** if you are deploying CIF and need engineering guidance without formal prerequisites or are evaluating CIF for a specific operational sector (infrastructure, supply chain, cyber, biowarfare, information ecosystems, etc.).
 
 Each paper stands alone but explicitly points readers to the most relevant sections of its siblings.
@@ -58,7 +58,7 @@ Active Inference Institute
 
 - **Trust Calculus** with bounded delegation and δ^d decay (Part 1)
 - **Defense Composition Algebra** for layered security reasoning (Part 1)
-- **Computational validation** over a 950-attack corpus (Part 2; architecture set and parametric ceiling definitions are in that manuscript's methodology)
+- **Computational validation** over a 1,475-item attack corpus and a 120-item benign corpus (Part 2; architecture set and parametric ceiling definitions are in that manuscript's methodology)
 - **Operator-facing synthesis** with checklists, risk framing, and deployment guidance (Part 3)
 - **CIF-AD-OODA integration** and ten-domain applied analysis of goal hijacking (Part 3+4)
 - **Three universal attack patterns** — FR Polarity Inversion, Constraint Relaxation, Context Boundary Violation (Part 3+4)

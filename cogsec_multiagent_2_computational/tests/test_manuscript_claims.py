@@ -886,3 +886,89 @@ def test_the_baseline_caption_does_not_contradict_its_own_table() -> None:
             f"the caption still claims {retired!r}, which the measured table "
             f"contradicts"
         )
+
+
+# ---------------------------------------------------------------------------
+# The corpus-composition table in the manuscript
+# ---------------------------------------------------------------------------
+#
+# The table in 03_attack_corpus.md is typed markdown, not an include of the
+# generated .tex, so nothing tied it to the corpus it describes. It stated 950
+# attacks across four categories long after every reported number had moved to
+# the 1,475-item corpus across five, and it named a difficulty split that had
+# also changed. These bind the typed cells to corpus_rows(), which measures the
+# corpus itself.
+
+import re as _re
+from collections import Counter as _Counter
+from pathlib import Path as _Path
+
+
+_CORPUS_SECTION = _Path(__file__).resolve().parents[1] / "manuscript" / "03_attack_corpus.md"
+
+
+def _manuscript_corpus_table() -> dict[str, int]:
+    """The typed ``category -> count`` cells of the composition table."""
+    text = _CORPUS_SECTION.read_text(encoding="utf-8")
+    block = _re.search(
+        r"\{#tab:corpus-composition-actual\}\n\n(\|.*?)\n\n", text, _re.S
+    )
+    assert block, "the corpus-composition table is no longer where the test looks"
+    rows: dict[str, int] = {}
+    for line in block.group(1).splitlines():
+        cells = [c.strip() for c in line.strip().strip("|").split("|")]
+        if len(cells) < 2 or cells[0].startswith(":") or cells[0] == "Primary Category":
+            continue
+        name = cells[0].strip("*")
+        count = cells[1].strip("*").replace(",", "")
+        if count.isdigit():
+            rows[name] = int(count)
+    assert len(rows) >= 5, f"parsed only {rows}; the table shape changed"
+    return rows
+
+
+def test_manuscript_corpus_table_matches_the_generated_corpus():
+    import sys
+
+    sys.path.insert(0, str(_Path(__file__).resolve().parents[1] / "src"))
+    from visualization.tables.corpus_tables import corpus_rows
+
+    measured = _Counter()
+    for row in corpus_rows():
+        measured[row.category.replace("_", " ").title()] += row.count
+
+    typed = _manuscript_corpus_table()
+    assert typed.pop("Total") == sum(measured.values())
+
+    # The manuscript spells one category "Prompt Injection" where the corpus
+    # calls it "Injection", and writes "and" in lower case where .title() does
+    # not; neither is a disagreement about the corpus.
+    alias = {"prompt injection": "injection"}
+    folded = {name.lower(): count for name, count in measured.items()}
+    for name, count in typed.items():
+        key = alias.get(name.lower(), name.lower())
+        assert key in folded, f"{name!r} is in the table but not in the corpus"
+        assert count == folded[key], f"{name}: table says {count}, corpus has {folded[key]}"
+    assert len(typed) == len(folded), (
+        f"table lists {sorted(typed)}, corpus has {sorted(measured)}"
+    )
+
+
+def test_manuscript_difficulty_split_matches_the_generated_corpus():
+    import sys
+
+    sys.path.insert(0, str(_Path(__file__).resolve().parents[1] / "src"))
+    from attacks.corpus import AttackCorpus
+
+    text = _CORPUS_SECTION.read_text(encoding="utf-8")
+    stated = _re.search(
+        r"difficulty distribution is easy (\d+), medium (\d+), hard (\d+)", text
+    )
+    assert stated, "the difficulty sentence is no longer where the test looks"
+
+    corpus = AttackCorpus.generate(seed=42)
+    measured = _Counter(sample.difficulty for sample in corpus)
+    for index, level in enumerate(("easy", "medium", "hard"), start=1):
+        assert int(stated.group(index)) == measured[level], (
+            f"{level}: manuscript says {stated.group(index)}, corpus has {measured[level]}"
+        )

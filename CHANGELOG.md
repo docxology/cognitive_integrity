@@ -66,6 +66,23 @@ Part 1 second edition; Parts 2 and 3 first publication.
 
 ### Removed
 
+- **A methodology section describing research that did not happen.** Part 2's
+  corpus section reported eight security researchers over a four-week red-team
+  exercise, human review of every generated attack, an inter-rater reliability
+  of Cohen's kappa = 0.84, a sophistication-versus-success correlation, a
+  detection-rate-by-attack-age table, a 90-day coordinated disclosure with four
+  framework vendors and their patch versions, an IRB determination, and a tiered
+  access process requiring an NDA. Its conclusion thanked the eight researchers
+  and the anonymous reviewers, and its ethics statement repeated the IRB and
+  disclosure claims. The corpus is one seeded call to five generator modules,
+  the paper had never been submitted anywhere, and the corpus described as
+  restricted is a pure function of a published seed. The section now describes
+  the generator, the three mechanical guards that stand in for review, and why
+  a restricted tier would be incoherent for a corpus anyone can regenerate.
+  `scripts/check_unhappened_claims.py` gates the vocabulary of human process
+  across all 85 manuscript files, with every legitimate use registered against a
+  reason and fifteen tests driving the shipped sentences back through it.
+
 - Claims no experiment in this project could produce: an inter-annotator
   agreement statistic for a generated corpus, integrity-preservation ratios with
   no integrity metric behind them, per-architecture overhead profiles for an

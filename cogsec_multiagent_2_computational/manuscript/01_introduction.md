@@ -64,7 +64,7 @@ Our analysis assumes a multiagent deliberation system where $n$ agents collabora
 
 \begin{enumerate}
 \item **Complete Implementation**: All eight defense mechanisms---cognitive firewall, belief sandbox, cognitive tripwires, belief drift detector, anomaly scorer, trust calculus, Byzantine consensus, and provenance attestation---implemented as tested Python modules
-\item **Attack Corpus**: 950 attacks across four categories, enabling reproducible security evaluation
+\item **Attack Corpus**: 1,475 attacks across five categories and fifteen subcategories, enabling reproducible security evaluation
 \item **Cross-Architecture Validation**: Systematic evaluation across four production multiagent systems
 \item **Statistical Analysis**: Significance testing, effect sizes, confidence intervals, and ablation studies
 \item **Scalability Characterization**: Performance overhead analysis across agent counts and attack loads

@@ -201,15 +201,14 @@ Daniel~Ari Friedman.
 \newblock Cognitive integrity framework: Computational validation and empirical
   analysis, 2026{\natexlab{b}}.
 \newblock URL \url{https://github.com/docxology/cognitive_integrity}.
-\newblock Part 2: Implementation and Empirical Analysis (Second Edition) ---
-  950-attack corpus, multi-tier evaluation, ablation studies, Bayesian
-  uncertainty, parametric architecture-aware simulation across four production
-  multiagent topologies, category-theoretic formalization of defense
-  composition (Defense Category $\calD$, Theorems CT.1--CT.3), composable
-  visualization engine (DefenseGraph, CategoryDiagram, LatticeViz, OperadPlot,
-  MonadFlow, LensDiagram), interactive CIF Composer web UI, Fisher information
-  metric derivations, adversarial training modules, and expanded colony
-  simulations.
+\newblock Part 2: Implementation and Empirical Analysis --- 1,475-item attack
+  corpus, multi-tier evaluation, ablation studies, Bayesian uncertainty,
+  parametric architecture-aware simulation across four production multiagent
+  topologies, category-theoretic formalization of defense composition (Defense
+  Category $\calD$, Theorems CT.1--CT.3), composable visualization engine
+  (DefenseGraph, CategoryDiagram, LatticeViz, OperadPlot, MonadFlow,
+  LensDiagram), interactive CIF Composer web UI, Fisher information metric
+  derivations, adversarial training modules, and expanded colony simulations.
 
 \bibitem[Friedman(2026{\natexlab{c}})]{friedman2026cogsec3}
 Daniel~Ari Friedman.

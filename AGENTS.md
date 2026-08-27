@@ -13,7 +13,7 @@ Program directory containing the Cognitive Security for Multiagent Operators res
 | Project | Description | DOI |
 | ------- | ----------- | --- |
 | `cogsec_multiagent_1_theory/` | Part 1 v2: Theoretical foundations — trust calculus, defense composition algebra, adversary taxonomy, CIF-AD-OODA | 10.5281/zenodo.18364119 |
-| `cogsec_multiagent_2_computational/` | Part 2 v2: Computational validation — 950-attack corpus, adversarial training, red-teaming, colony detection benchmarks at 20--100 agents plus no-error stress runs at 100--500 | 10.5281/zenodo.18364128 |
+| `cogsec_multiagent_2_computational/` | Part 2: Computational validation — 1,475-item attack corpus across fifteen categories, 120-item benign corpus, adversarial training, generated red-team sweeps, colony detection benchmarks at 20--100 agents plus stress runs at 100--500 | 10.5281/zenodo.18364128 |
 | `cogsec_multiagent_3_practical/` | Part 3+4 merged: Practical guidance + cross-domain CIF-AD-OODA applications | 10.5281/zenodo.18364130 |
 
 ## Series overview

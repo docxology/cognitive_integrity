@@ -310,8 +310,12 @@ jobs:
     # numbers in two papers that cite each other, and how a section could be
     # deleted from Part 2 while Part 1 kept citing its contents.
     #
-    # Gating, not advisory: it is stdlib-only, needs no install step, and every
-    # check refuses to pass on an empty input set.
+    # Gating, not advisory: every check refuses to pass on an empty input set.
+    # Almost stdlib-only. One ledger variable, the Bayesian interval on the
+    # multi-seed mean, is derived by loading Part 2's own BetaPosterior rather
+    # than by reimplementing it here, so this job installs numpy for that one
+    # import. A reimplementation would drift from the code the paper describes,
+    # which is the failure the ledger exists to prevent.
     name: series integrity (cross-paper)
     runs-on: ubuntu-latest
     steps:
@@ -322,11 +326,36 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Dependency for the Bayesian ledger variable
+        run: python3 -m pip install --quiet numpy
+
       - name: Cross-paper integrity (gating)
         run: >-
           python3 scripts/check_series_integrity.py
           --only shared-quantities --only bibliography --only truncation
           --only math-hygiene --only artifact-provenance
+
+      - name: Headline numbers resolve to derived quantities (gating)
+        # The ledger gates shared quantities and Part 2's registry binds its
+        # prose, but neither reaches an abstract or a conclusion that restates
+        # a measurement in its own words. Six stale numbers survived every
+        # other check that way, including a Bayesian interval computed against
+        # a rate that no longer existed.
+        run: python3 scripts/check_conclusion_numbers.py
+
+      - name: No unhappened process claims (gating)
+        # Part 2 shipped a methodology describing eight researchers, a
+        # four-week red-team exercise, an inter-rater statistic, a coordinated
+        # disclosure and an IRB determination. None of it happened, and nothing
+        # here had an opinion about a sentence that reports an event.
+        run: python3 scripts/check_unhappened_claims.py
+
+      - name: Publication identity (gating)
+        # Two of the three cover-page DOIs resolved to nothing for as long as
+        # the papers existed. --network is deliberately omitted here so a
+        # Zenodo outage cannot fail the build; the structural half still
+        # catches an unregistered identifier and a second repository URL.
+        run: python3 scripts/check_publication_identity.py
 
       - name: Cross-paper pointer lint (advisory)
         # Hardcoded "Part 1, Definition 5.4"-style pointers are unverifiable by
@@ -373,5 +402,5 @@ jobs:
         # A checker that cannot fail is worse than no checker; these tests drive
         # each check against a planted defect and require it to be caught.
         run: |
-          python3 -m pip install --quiet pytest
+          python3 -m pip install --quiet pytest numpy
           python3 -m pytest tests/ -q

@@ -19,7 +19,7 @@ theory and practice. In practice, there is.''
 
 Multiagent AI systems—autonomous coding assistants, research pipelines, financial decision engines—have moved from prototype to production in under two years. With them comes a new class of security concern: attacks that target not data or infrastructure but the *reasoning processes* of AI agents. Prompt injections that propagate through delegation chains, trust relationships that launder adversarial influence, and coordination mechanisms vulnerable to strategic manipulation all represent cognitive attack surfaces absent from traditional security models.
 
-The **Cognitive Integrity Framework (CIF)** is developed across a three-part series: formal treatment (Part 1), running code and experiments (Part 2), and the present unified paper (Part 3+4) combining practitioner guidance with cross-domain application. **Part 1** establishes mathematical foundations—a trust calculus with provably bounded delegation, defense composition algebras with multiplicative detection guarantees, and information-theoretic limits on attack stealth. **Part 2** provides computational validation: eight implemented defense modules, 3,390 tests, a 950-attack corpus spanning four threat categories, parametric architecture-aware simulation across four production multiagent topologies, and a category-theoretic formalization of defense composition (Theorems CT.1–CT.3). The cross-domain applications section (§9–§10, originally "Part 4") applies the framework via the integrated CIF-AD-OODA model across ten critical operational domains.
+The **Cognitive Integrity Framework (CIF)** is developed across a three-part series: formal treatment (Part 1), running code and experiments (Part 2), and the present unified paper (Part 3+4) combining practitioner guidance with cross-domain application. **Part 1** establishes mathematical foundations—a trust calculus with provably bounded delegation, defense composition algebras with multiplicative detection guarantees, and information-theoretic limits on attack stealth. **Part 2** provides computational validation: eight implemented defense modules, 3,536 tests, a 950-attack corpus spanning four threat categories, parametric architecture-aware simulation across four production multiagent topologies, and a category-theoretic formalization of defense composition (Theorems CT.1–CT.3). The cross-domain applications section (§9–§10, originally "Part 4") applies the framework via the integrated CIF-AD-OODA model across ten critical operational domains.
 
 This paper (Part 3+4, unified) is simultaneously a qualitative practitioner guide and a cross-domain application study. The practitioner section (§1–§8) synthesizes Parts 1 and 2 into accessible language, situates the formal results against current deployment practice, and gives practical recommendations for teams that build and run multiagent AI systems. The applications section (§9–§10) applies the framework across ten critical domains. No formal prerequisites are assumed; for proofs and definitions see Part 1, for empirical results see Part 2.
 
@@ -66,7 +66,7 @@ The Cognitive Integrity Framework (CIF) was developed to secure these systems, a
 * **Part 2: Computational Validation** (DOI: 10.5281/zenodo.18364128) implemented this theory in Python and tested it against a corpus of 950 attacks across four production architectures, reporting ablation studies, Bayesian uncertainty quantification, colony-scale benchmarks at 20--100 agents, and a category-theoretic formalization of defense composition (Defense Category $\calD$, Theorems CT.1--CT.3) with a composable visualization engine and interactive CIF Composer web UI.
 * **Applications (§9--§10, this paper):** The integrated CIF-AD-OODA analytical model is applied across ten critical domains (rare-earth mining, nation-state alliances, cyber-security, drone warfare, supply chain, biowarfare, food security, trade wars, infrastructure, information ecosystems), identifying three universal attack patterns and four novel defense extensions.
 
-The combined evidence includes **3,390 tests** and a **96--100% parametric detection ceiling** across all attack categories and architectures (Part 2), alongside a lower real-pipeline multi-seed mean of approximately 44.8% (30 seeds). Direct-injection detection reaches 99--100% in the fully defended parametric configuration; plus CIF coverage is analyzed across all ten operational domains in §9--§10 with retrospective analysis of six documented 2024--2025 AI-agent incidents.
+The combined evidence includes **3,536 tests** and a **96--100% parametric detection ceiling** across all attack categories and architectures (Part 2), alongside a lower real-pipeline multi-seed mean of 86.3% (30 seeds). Direct-injection detection reaches 99--100% in the fully defended parametric configuration; plus CIF coverage is analyzed across all ten operational domains in §9--§10 with retrospective analysis of six documented 2024--2025 AI-agent incidents.
 
 ## The Purpose of This Guide
 
@@ -174,7 +174,7 @@ This formalism suggests that catastrophic attacks are inherently easier to detec
 
 Finally, Part 1 defines the **Composition Algebra**, determining how output probabilities of distinct modules interact. The key result is that orthogonal defenses compose multiplicatively.
 
-This "Swiss Cheese Model" was supported by Part 2's parametric simulation, where the full stack reached a 96--100% design-level detection ceiling and outperformed the sum of its parts. The real prototype pipeline is materially lower and is reported separately as a multi-seed mean of approximately 44.8%. It also distributes the work far less evenly than the model implies: on Part 2's 100-attack ablation corpus the series-composition prediction lands within a couple of points of the measured full-stack rate, but nearly all of the detection comes from one module, so the full stack's margin over the best single layer is about three percentage points. Compose layers for coverage, not on the assumption that each contributes an independent slice.
+This "Swiss Cheese Model" was supported by Part 2's parametric simulation, where the full stack reached a 96--100% design-level detection ceiling and outperformed the sum of its parts. The real prototype pipeline is lower and is reported separately as a multi-seed mean of 86.3%. It also distributes the work far less evenly than the model implies: on Part 2's 100-attack ablation corpus the series-composition prediction lands within a couple of points of the measured full-stack rate, but nearly all of the detection comes from one module, so the full stack's margin over the best single layer is about three percentage points. Compose layers for coverage, not on the assumption that each contributes an independent slice.
 
 ## The Science Behind Belief Updates: Free Energy {#sec:fep-connection}
 
@@ -255,8 +255,8 @@ The test corpus included direct prompt injection, poisoned RAG contexts, deep tr
 
 ## Finding 1: Defense Layering vs. Individual Efficacy
 
-**The Data**: In the parametric evaluation the full CIF stack achieved a **96--100% parametric detection ceiling**, with direct injection detected at 99--100% across architectures. The separate real-pipeline evaluation had a lower multi-seed mean of approximately 44.8%.
-**The Implication**: The parametric model rewards layering, but the real pipeline does not spread the work evenly across layers, and the 100-attack ablation corpus says so plainly. The Invariants module alone detects 92.9% of that corpus against the full stack's 95.9%; the Firewall, Detection, Tripwire and Trust Calculus modules each detect between 2% and 6% on their own. Removing Invariants costs about 85 percentage points of true-positive rate, removing the Firewall or the Tripwire costs about one point each, and removing Consensus, Detection, Provenance, Sandbox or Trust Calculus costs nothing this corpus can measure. That is a statement about *marginal* contribution, not about capability: a module whose detections are all also caught by Invariants scores zero here while detecting plenty on its own. Layering still buys coverage against attacks this corpus does not contain, but the older claim that removing any single layer opens a measurable gap is not what the ablation shows.
+**The Data**: In the parametric evaluation the full CIF stack achieved a **96--100% parametric detection ceiling**, with direct injection detected at 99--100% across architectures. The separate real-pipeline evaluation had a lower multi-seed mean of 86.3%.
+**The Implication**: The parametric model rewards layering, but the real pipeline does not spread the work evenly across layers, and the 100-attack ablation corpus says so plainly. The Invariants module alone detects 85% of that corpus against the full stack's 89.0%; the Detection, Sandbox, Tripwire and Consensus modules each detect between 4% and 6% on their own. Removing Invariants costs 65 percentage points of true-positive rate, removing the Tripwire costs two, and removing Consensus, Detection, Firewall, Provenance, Sandbox or Trust Calculus costs nothing this corpus can measure. That is a statement about *marginal* contribution, not about capability: a module whose detections are all also caught by Invariants scores zero here while detecting plenty on its own. Layering still buys coverage against attacks this corpus does not contain, but the older claim that removing any single layer opens a measurable gap is not what the ablation shows.
 
 ## Finding 2: State Machine Determinism
 
@@ -298,7 +298,7 @@ This is not a failure of CIF—it is a consequence of its success. When explicit
 
 ## Finding 7: The Implementation Gap Is a Feature, Not a Bug
 
-The 10--11 percentage-point gap between the parametric ceiling (96--100\%) and the real pipeline reflects **adapter implementation maturity**, not a failure of CIF's formal architecture. Its two ends are two different measurements and should not be read as one range around one deployment. The wide end is the distance from the parametric floor to the 30-seed pipeline mean of 86.3\%. The narrow end is the distance from the top of the parametric range to the 95.9\% the same pipeline now reaches on the 100-attack ablation corpus --- a figure that stood at 12.2\% until the Invariants module was rewritten, and that moved with no change to any other module. Plan against the wide end. Part~2 introduces a 5-level CMMI-style adapter maturity scale:
+The 10--11 percentage-point gap between the parametric ceiling (96--100\%) and the real pipeline reflects **adapter implementation maturity**, not a failure of CIF's formal architecture. Its two ends are two different measurements and should not be read as one range around one deployment. The wide end is the distance from the parametric floor to the 30-seed pipeline mean of 86.3\%. The narrow end is the distance from the top of the parametric range to the 89.0\% the same pipeline reaches on the 100-attack ablation corpus, where almost all of the detection comes from the Invariants module and removing any other module except the Tripwire costs nothing the corpus can measure. Plan against the wide end. Part~2 introduces a 5-level CMMI-style adapter maturity scale:
 
 | Level | Name | Marginal TPR | Description |
 | :--- | :--- | :--- | :--- |
@@ -312,7 +312,7 @@ The rubric column is each adapter's *marginal* contribution to true-positive rat
 not a whole-pipeline detection rate: a Level-5 adapter is one that adds 30 or more
 percentage points when introduced, not one that reaches 30\% detection on its own.
 
-The current Claude Code adapter is at Level 3 (Statistical), explaining the 44.8\% mean. The roadmap projects +35--41 percentage points of improvement by advancing adapters to Level 5 for the primary attack categories. The parametric ceiling (96--100\%) represents what Level-5 adapters achieve—it is a design target, not an overclaim.
+The current Claude Code adapter is at Level 3 (Statistical), explaining the 86.3\% mean. The roadmap projects +35--41 percentage points of improvement by advancing adapters to Level 5 for the primary attack categories. The parametric ceiling (96--100\%) represents what Level-5 adapters achieve—it is a design target, not an overclaim.
 
 **Operator implication**: When deploying CIF, assess the maturity level of each adapter against your threat model. Level-3 adapters (current) provide meaningful protection against unsophisticated $\Omega_1$--$\Omega_2$ attacks; Level-4--5 adapters (planned) are required for $\Omega_4$--$\Omega_5$ protection. The gap is closeable—it is an engineering challenge, not a theoretical limitation.
 
@@ -330,10 +330,10 @@ We proved the *architecture* works. The implementation fidelity is the variable 
 > **A Note on Three Numbers**: Throughout this guide you will encounter three detection rates that may seem contradictory. They are not — they measure different things:
 >
 > - **96--100\%** (parametric simulation, $N=3{,}800$): CIF's **design-level detection ceiling** — what the defense architecture achieves when adapters are fully mature (Level 5) and conditions match the calibrated model. This is the target, not the current reality.
-> - **44.8\%** [95\% CI: 43.2\%, 46.4\%] (multi-seed pipeline, 30 seeds): The **current empirical baseline** for the Claude Code architecture with Level-3 adapters. This is what you get today, out of the box, before adapter tuning.
-> - **95.9\%** (100-attack ablation corpus, all categories including hardest): full-pipeline true-positive rate on a corpus built to include difficult attacks. This bullet read ~12.2\% until the Invariants module was rewritten to score demand structure rather than topic nouns; no other module changed. Read it as an upper bound rather than a floor: the corpus is template-generated, a detector keyed on demand structure is being asked to recognise generated demands, and the 0\% false-positive rate reported beside it comes from the fifty easy benign strings hard-coded in Part 2's ablation runner, not from the adversarially hard `BenignCorpus` behind the multi-seed figure above.
+> - **86.3\%** [95\% CI: 85.5\%, 87.1\%] (multi-seed pipeline, 30 seeds): The **current empirical baseline** for the Claude Code architecture with Level-3 adapters. This is what you get today, out of the box, before adapter tuning.
+> - **89.0\%** (100-attack ablation corpus, all categories including hardest): full-pipeline true-positive rate on a corpus built to include difficult attacks, almost all of it contributed by the Invariants module, which scores demand structure rather than topic nouns. Read it as an upper bound rather than a floor: the corpus is template-generated, a detector keyed on demand structure is being asked to recognise generated demands, and the 0\% false-positive rate reported beside it comes from the fifty easy benign strings hard-coded in Part 2's ablation runner, not from the adversarially hard `BenignCorpus` behind the multi-seed figure above.
 >
-> All three numbers are correct. Use 44.8\% for realistic planning, 96\% as the floor of the achievable ceiling with mature adapters, and ~12.2\% as a conservative lower bound for adversarial threat modeling.
+> All three numbers are correct, and they are not interchangeable. Use 86.3\% for realistic planning, since it is measured on the adversarially hard benign corpus and carries its 18.5\% false-positive rate with it; read 89.0\% as an upper bound, because its corpus is template-generated and the 0\% false-positive rate beside it comes from fifty easy benign strings; and treat 96\% as the floor of the achievable ceiling with mature adapters rather than as anything measured today.
 
 ### Tripwire Configuration Data
 
@@ -937,32 +937,32 @@ The break-even condition for CIF deployment is straightforward:
 
 $$\text{attacks\_prevented\_per\_year} = \frac{\text{annual CIF cost}}{\text{mean attack cost} \times \text{detection rate}}$$
 
-Using the CIF empirical detection rate of 44.8% (the 30-seed empirical result, which is the conservative figure — parametric ceiling is 96–100%):
+Using the CIF empirical detection rate of 86.3% (the 30-seed empirical result, measured against the adversarially hard benign corpus at an 18.5% false-positive rate; the parametric ceiling is 96–100%):
 
-* **Low-severity scenario**: Annual CIF cost \$100K, mean attack cost \$50K. Break-even at $100{,}000 / (50{,}000 \times 0.448) \approx 4.5$ attacks/year prevented.
-* **Moderate-severity scenario**: Annual CIF cost \$100K, mean attack cost \$500K. Break-even at $\approx 0.45$ attacks/year prevented — one prevented attack every two years covers the deployment.
+* **Low-severity scenario**: Annual CIF cost \$100K, mean attack cost \$50K. Break-even at $100{,}000 / (50{,}000 \times 0.863) \approx 2.3$ attacks/year prevented.
+* **Moderate-severity scenario**: Annual CIF cost \$100K, mean attack cost \$500K. Break-even at $\approx 0.23$ attacks/year prevented — one prevented attack every four years covers the deployment.
 
 ## Worked Examples
 
 **High-value target (financial AI, healthcare AI)**:
 
 * Traffic: 1,000 agent interactions/day at 0.1% attack rate = 1 attack/day = 365 attacks/year.
-* CIF prevention: $0.448 \times 365 \approx 163$ attacks/year.
-* Value prevented at \$50K mean attack cost: $163 \times \$50{,}000 = \$8.2M/\text{year}$.
+* CIF prevention: $0.863 \times 365 \approx 315$ attacks/year.
+* Value prevented at \$50K mean attack cost: $315 \times \$50{,}000 = \$15.7M/\text{year}$.
 * Deployment cost: \$100K/year.
-* **ROI = 82:1** — deployment is unambiguously justified.
+* **ROI = 157:1** — deployment is unambiguously justified.
 
 **Lower-risk deployment (internal tooling)**:
 
 * Traffic: 100 interactions/day at 0.01% attack rate = 3.65 attacks/year.
-* CIF prevention: $0.448 \times 3.65 \approx 1.6$ attacks/year.
-* Value prevented at \$10K mean attack cost: $1.6 \times \$10{,}000 = \$16{,}000/\text{year}$.
+* CIF prevention: $0.863 \times 3.65 \approx 3.15$ attacks/year.
+* Value prevented at \$10K mean attack cost: $3.15 \times \$10{,}000 = \$31{,}500/\text{year}$.
 * Deployment cost: \$100K/year.
-* **ROI = 0.16:1** — deployment is not justified on economic grounds alone.
+* **ROI = 0.32:1** — deployment is not justified on economic grounds alone.
 
 ## Conclusion
 
-CIF is most cost-effective for high-frequency, high-value-per-interaction deployments. At a \$100K annual CIF cost and the conservative 44.8\% detection rate, the break-even condition above gives approximately **4.5 attacks/year prevented** at a \$50K mean attack cost, **0.9** at \$250K, and **0.45** at \$500K. Equivalently, a single prevented attack per year pays for the deployment once the mean attack costs about \$225K.
+CIF is most cost-effective for high-frequency, high-value-per-interaction deployments. At a \$100K annual CIF cost and the measured 86.3\% detection rate, the break-even condition above gives approximately **2.3 attacks/year prevented** at a \$50K mean attack cost, **0.46** at \$250K, and **0.23** at \$500K. Equivalently, a single prevented attack per year pays for the deployment once the mean attack costs about \$116K.
 
 Operators below the break-even threshold should still consider CIF for reasons beyond direct ROI — regulatory compliance (OWASP Agentic Top 10, NIST Zero Trust), customer-trust signaling, and insurance/liability reduction may justify deployment even when attack frequency alone does not. Conversely, operators far above the break-even threshold (high-traffic, high-value) should view the deployment cost analysis as a floor, not a ceiling: the true cost of a single $\Omega_4$ attack at enterprise scale can exceed a decade of CIF operating cost in a single incident.
 

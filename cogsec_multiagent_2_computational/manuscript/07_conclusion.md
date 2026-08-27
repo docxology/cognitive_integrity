@@ -72,11 +72,11 @@ Together, these three papers provide a complete framework for understanding (Par
 
 ## Data and Code Availability
 
-The CIF implementation (defense mechanisms, evaluation framework, analysis scripts) is available at \url{https://github.com/docxology/cognitive_integrity} (DOI: 10.5281/zenodo.18364128). A sanitized subset of the attack corpus suitable for reproducibility is included; the full corpus is available to verified researchers upon request (see \cref{sec:access-request}). All figures, tables, and statistical analyses can be reproduced using the provided scripts with the fixed random seed (42).
+The CIF implementation --- defense mechanisms, evaluation framework, attack and benign corpus generators, and every analysis script --- is available at \url{https://github.com/docxology/cognitive_integrity} (DOI: 10.5281/zenodo.18364128). Nothing is held back and no access tier is operated: the corpus is a pure function of a published seed, so cloning the repository yields exactly the 1,475 attacks evaluated here (\cref{sec:dual-use}). All figures, tables, and statistical analyses regenerate from the provided scripts at seed 42, and every quantity the three papers share is derived from a single ledger that is checked in continuous integration.
 
 ## Acknowledgments
 
-The authors thank the eight security researchers who participated in the red team exercise, and the anonymous reviewers whose feedback strengthened this work. We acknowledge the open-source communities behind the multiagent frameworks evaluated in this study.
+We acknowledge the open-source communities behind the multiagent frameworks whose published architectures informed the configurations modelled in this study.
 
 ## Author Contributions
 
@@ -88,4 +88,4 @@ The authors declare no competing interests.
 
 ## Ethics Statement
 
-This research was reviewed and determined exempt from IRB oversight as it did not involve human subjects. All attacks were tested against synthetic agent configurations in sandboxed environments. Novel attack vectors were disclosed to affected framework maintainers following a 90-day responsible disclosure policy. Dual-use risks are mitigated through sanitization of published examples and restricted access to the full attack corpus (see \cref{sec:dual-use}).
+This research involved no human subjects, so no institutional review was sought and none was required. Every attack was run against synthetic agent configurations in sandboxed processes; no production system and no real user was involved. No previously unknown vulnerability in any third-party framework was found, so there was nothing to disclose and no coordinated disclosure took place. The corpus is a dual-use resource and it is fully public, because it is regenerated from published code by a published seed; \cref{sec:dual-use} sets out why that is the right trade here and what it does not mitigate.

@@ -252,6 +252,16 @@ def _multiseed_hdi() -> tuple[float, float]:
     sys.modules[name] = bayesian
     try:
         spec.loader.exec_module(bayesian)
+    except ImportError as exc:
+        # This is the one ledger variable that reaches into Part 2's code
+        # instead of reading an artifact, so it is the one that can fail for an
+        # environment reason rather than a data one. Say which: a bare
+        # traceback out of numpy reads as a broken ledger, and every other
+        # check here is stdlib-only.
+        raise MissingArtifact(
+            f"{module_path} needs a dependency this interpreter lacks ({exc}); "
+            f"install Part 2's requirements to derive the Bayesian interval"
+        ) from exc
     finally:
         sys.modules.pop(name, None)
 

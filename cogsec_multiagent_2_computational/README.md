@@ -8,7 +8,7 @@ Part 2 of the **Cognitive Security for Multiagent Operators** series — **Versi
 
 - **Adversarial training evaluation** (§05g): 5 rounds of iterative AT with threshold refinement; +3.4 pp over pre-AT baseline; convergence projection to Nash equilibrium DR ≈ 50.5%
 - **Red-team evaluation framework** (§05h): 12 mutation operators; 5 multi-stage campaign scenarios; coverage analysis across Ω_1–Ω_5
-- **Ω_1–Ω_5 attack taxonomy** (§03): Full mapping of 950-attack corpus to adversary capability levels; Ω_5 gossip-poisoning gap identified
+- **Ω_1–Ω_5 attack taxonomy** (§03): Full mapping of the attack corpus to adversary capability levels; Ω_5 gossip-poisoning gap identified
 - **Category-theoretic foundations** (v1.0+): Full typed categorical framework — defense lattice (7 axioms ✓), symmetric monoidal category (unitors, associator, symmetry ✓), operad structure (unit + associativity ✓), enriched category over [0,1] (✓), pipeline monad (3 monad laws ✓), Kan extensions between architectures (✓), lens/optic profunctor (3 lens laws ✓), F-algebra catamorphism — serialized as JSON via `scripts/generate_composer_data.py`
 - **Composable visualization engine**: DefenseGraph (DAG), CategoryDiagram (commutative diagrams), LatticeViz (Hasse), OperadPlot (trees), MonadFlow (Kleisli), LensDiagram — all Python/Graphviz-based
 - **Algebra extension**: Hybrid detection rate (Corollary 3.3), weighted parallel (Gaussian approx), optimal module ordering (descending rate sort), latency models (series sum, parallel max, hybrid fast_max+deep_sum)
@@ -31,7 +31,7 @@ This paper provides **computational validation** of the Cognitive Integrity Fram
 ## Primary Focus
 
 - **Implementation**: Defense mechanisms (firewall, sandbox, trust, consensus) + adversarial training + red-teaming
-- **Attack Corpus**: 950 attacks across 4 categories, fully mapped to Ω_1–Ω_5 adversary taxonomy
+- **Attack Corpus**: 1,475 attacks across 5 categories and fifteen subcategories, fully mapped to Ω_1–Ω_5 adversary taxonomy
 - **Validation**: Four target architectures (Claude Code, AutoGPT, CrewAI, LangGraph); colony benchmarks reporting detection results at 20–100 agents, plus non-functional stress tests (no-error/runtime only) at 100–500 agents
 - **Analysis**: Statistical significance, ablation studies, scalability benchmarks, adversarial training convergence
 

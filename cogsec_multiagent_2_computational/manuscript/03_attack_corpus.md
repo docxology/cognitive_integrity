@@ -7,7 +7,7 @@ This supplementary material provides corpus overview (\cref{sec:corpus-overview}
 
 ## Corpus Overview {#sec:corpus-overview}
 
-The attack corpus used for experimental validation comprises 950 unique attack instances across four primary categories (\cref{tab:corpus-categories}). This supplementary material provides detailed statistics, sanitized examples, generation methodology, and ethical considerations.
+The attack corpus used for experimental validation comprises 1,475 unique attack instances across five primary categories and fifteen subcategories (\cref{tab:corpus-categories}). This supplementary material provides detailed statistics, sanitized examples, generation methodology, and ethical considerations.
 
 The attack corpus is generated programmatically via deterministic random seeds (seed=42 for all reported results). The attack taxonomy is defined as a Python enum (\texttt{AttackCategory} in \texttt{src/utils/types.py}) with 4 top-level categories and 12 subcategories. The entire corpus is produced by template expansion in \texttt{src/attacks/templates.py} via \texttt{AttackCorpus.generate()}. No static data file or external dataset is shipped; the corpus is regenerated on each evaluation run to ensure reproducibility. Researchers can serialize the corpus to JSON via \texttt{AttackCorpus.save()} for inspection.
 
@@ -158,13 +158,14 @@ Table: Attack corpus composition — actual counts from AttackCorpus.generate(se
 
 | Primary Category | Count | % of Corpus | Key Subcategories |
 | :--- | ---: | :---: | :--- |
-| Prompt Injection | 500 | 52.6% | Direct (200), Indirect (200), Nested (100) |
-| Trust Exploitation | 200 | 21.1% | Impersonation (80), Trust Inflation (60), Delegation Abuse (60) |
-| Belief Manipulation | 150 | 15.8% | Drift (50), Fabrication (50), Injection (50) |
-| Coordination | 100 | 10.5% | Sybil (40), Consensus Poisoning (30), Timing (30) |
-| **Total** | **950** | **100%** | |
+| Prompt Injection | 500 | 33.9% | Direct (200), Indirect (200), Nested (100) |
+| Provenance and Isolation | 525 | 35.6% | Provenance Laundering (175), Sandbox Escape (175), Byzantine Manipulation (175) |
+| Trust Exploitation | 200 | 13.6% | Impersonation (80), Trust Inflation (60), Delegation Abuse (60) |
+| Belief Manipulation | 150 | 10.2% | Drift (50), Fabrication (50), Injection (50) |
+| Coordination | 100 | 6.8% | Sybil (40), Consensus Poisoning (30), Timing (30) |
+| **Total** | **1,475** | **100%** | |
 
-*All counts are deterministic given seed=42. The difficulty distribution is easy 80, medium 335, hard 535. Prompt injection dominates at 52.6% of the corpus, reflecting the prevalence of text-injection as the primary multiagent attack vector.*
+*All counts are deterministic given seed=42, and this table is checked against `corpus_rows()` by the test suite rather than maintained by hand. The difficulty distribution is easy 395, medium 440, hard 640. No single category dominates: provenance and isolation is the largest at 35.6%, and it is the addition that lets the corpus reach the provenance, sandbox and consensus adapters at all.*
 
 ### Ω-Level Mapping (Design-Level)
 

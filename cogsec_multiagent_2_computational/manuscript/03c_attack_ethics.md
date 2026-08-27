@@ -2,201 +2,80 @@
 
 # Attack Corpus: Methodology and Ethical Considerations {#sec:attack-methodology}
 
-This section documents the attack generation methodology, effectiveness analysis, ethical considerations, and data availability.
+This section documents how the attack corpus is generated, what can and cannot be concluded from it, and the ethical position of publishing it.
 
 ## Attack Generation Methodology {#sec:generation-methodology}
 
-### Synthetic Attack Generation {#sec:synthetic-generation}
+### Deterministic Generation {#sec:synthetic-generation}
 
-**Process**:
-\begin{enumerate}
-\item **Template Creation**: Define attack structure templates for each category
-\item **Parameter Variation**: Systematically vary attack parameters
-\item **Constraint Satisfaction**: Ensure attacks satisfy category definitions
-\item **Deduplication**: Remove semantically equivalent attacks
-\item **Validation**: Human review of generated attacks
-\end{enumerate}
+The corpus is not collected, curated or hand-written. It is produced by a single seeded call, `AttackCorpus.generate(seed=42)`, which draws one `numpy` generator and passes it to five category modules under `src/attacks/generators/`. Each module expands parameterised templates for its categories, and the call returns 1,475 samples across fifteen categories:
 
-Table: Generation method statistics. {#tab:generation-stats}
+- `generate_all_injection` --- 500 samples: direct, indirect and nested injection
+- `generate_all_trust_exploitation` --- 200 samples: trust inflation, delegation abuse, impersonation
+- `generate_all_belief_manipulation` --- 150 samples: belief injection, drift and fabrication
+- `generate_all_coordination` --- 100 samples: consensus poisoning, sybil and timing attacks
+- `generate_all_provenance_and_isolation` --- 525 samples: provenance laundering, sandbox escape, byzantine manipulation
 
-| Method | Count | QA Pass Rate$^*$ | Mean Sophistication |
-| --- | --- | --- | --- |
-| Template instantiation | 420 | 91\% | 0.4 |
-| Parameter variation | 250 | 88\% | 0.5 |
-| Red team manual crafting | 150 | 95\% | 0.8 |
-| LLM-assisted mutation | 80 | 75\% | 0.7 |
-| Adversarial optimization | 50 | 82\% | 0.9 |
+Passing `extended=False` reproduces the earlier 950-item corpus without the final module. That corpus is retained only for reproducing previously published figures: it contains no instance of what the provenance, sandbox and consensus adapters detect, so those three modules score a Shapley value of exactly zero in every one of the 256 coalitions of the defense lattice. A corpus that cannot reach three of eight mechanisms cannot measure the framework, and every number reported in this paper is measured against one that can.
 
-$^*$\textit{QA pass rate denotes the proportion of candidate attacks that passed quality assurance validation (measurability, reproducibility, category alignment), not attack efficacy against defended systems. Total candidates generated exceeded 1,200; 950 passed QA and were retained.}
+Because generation is a pure function of the seed, the corpus needs no distribution: it is a property of the published code, and any reader who clones the repository obtains exactly the corpus evaluated here.
 
-### Red Team Exercise Protocol {#sec:red-team}
+### What Stands in for Review {#sec:corpus-validation}
 
-**Participants**: 8 security researchers (2--10 years experience)
+There is no human annotation stage in this pipeline, and therefore no inter-annotator agreement to report. Three mechanical guards do the work that review would otherwise do, and each fails loudly rather than warning:
 
-**Duration**: 4 weeks
+1. **Category profile completeness.** Every category must declare an adversary class and a target in `_CATEGORY_PROFILE`; a category without an entry raises at generation time rather than being silently dropped from every stratified result.
+2. **Identifier uniqueness and category alignment.** Each sample is assigned a per-category sequential identifier, and the test suite asserts that counts, prefixes and category labels agree with the generator that produced them.
+3. **Corpus composition.** The composition table (\cref{tab:corpus-composition-actual}) is generated from the corpus object itself rather than typed, so the paper cannot state a distribution the corpus does not have.
 
-**Methodology**:
-\begin{enumerate}
-\item **Week 1**: Familiarization with target architectures
-\item **Week 2**: Independent attack development
-\item **Week 3**: Cross-team attack validation
-\item **Week 4**: Documentation and categorization
-\end{enumerate}
+The honest limitation is the one this design cannot escape: the attacks are template expansions, and a detector keyed on structural features is being asked to recognise generated structure. Detection rates measured on this corpus are upper bounds relative to adversarial text written by a person trying to evade the specific detector, and are read that way throughout.
 
-### Quality Assurance {#sec:qa}
+## Attack Effectiveness {#sec:effectiveness-analysis}
 
-Table: Attack validation criteria. {#tab:validation-criteria}
+Per-category and per-module effectiveness is reported where it is measured rather than restated here. The module capability matrix (`output/data/module_capability_matrix.json`) records, for each of the eight defense modules, its detection rate on each of the fifteen categories and on the corpus as a whole; the ablation study (\cref{sec:ablation-summary}) records what each module contributes to a pipeline that already contains the others. The two are different questions, and the matrix exists because they had been conflated.
 
-| Criterion | Description |
-| --- | --- |
-| Measurability | Success/failure unambiguously determinable |
-| Reproducibility | Attack produces consistent results |
-| Category alignment | Attack matches labeled category |
-| Non-trivial | Attack not detected by simple heuristics |
-
-**Validation Process**:
-\begin{enumerate}
-\item Two independent reviewers per attack
-\item Disagreements resolved by third reviewer
-\item Inter-rater reliability: Cohen's $\kappa = 0.84$
-\end{enumerate}
-
-## Attack Effectiveness Analysis {#sec:effectiveness-analysis}
-
-### Success Rate by Defense Configuration {#sec:success-by-defense}
-
-Table: Attack success rate by defense configuration. {#tab:success-by-defense}
-
-| Defense | Prompt Inj. | Trust Expl. | Belief Manip. | Coord. |
-| --- | --- | --- | --- | --- |
-| Firewall only | 15\% | 38\% | 29\% | 42\% |
-| Sandbox only | 35\% | 25\% | 31\% | 55\% |
-| Tripwires only | 22\% | 18\% | 8\% | 48\% |
-| Full CIF | 4\% | 9\% | 7\% | 11\% |
-
-### Attack Sophistication Correlation {#sec:sophistication-corr}
-
-\begin{equation}
-\label{eq:sophistication-correlation}
-\rho_{sophistication, success} = 0.67 \quad (p < 0.001, \; n = 950)
-\end{equation}
-
-We report Spearman's rank correlation ($\rho$) rather than Pearson's $r$ because sophistication levels (Low, Medium, High, Expert) are ordinal categories. More sophisticated attacks have higher baseline success but show similar detection rates under CIF, suggesting defense robustness.
-
-### Temporal Analysis {#sec:temporal-analysis}
-
-Table: Detection rate by attack age. {#tab:attack-age}
-
-| Attack Age | Detection Rate | $n$ |
-| --- | --- | --- |
-| $<$ 6 months | 91\% | 285 |
-| 6--12 months | 94\% | 380 |
-| $>$ 12 months | 96\% | 285 |
-
-Older attacks are detected at higher rates due to pattern database inclusion. The 5-point gap between newest and oldest cohorts quantifies the advantage that known-signature detection provides and underscores the importance of continuous corpus expansion to maintain efficacy against novel techniques.
+The summary finding is that capability is concentrated. Measured alone on the full corpus, the invariants checker detects 83.3\% and no other module exceeds 10\%; measured as ranked scorers, the drift score and the firewall pattern matcher fall below chance, with AUCs of 0.374 and 0.383 whose intervals exclude 0.5. Any claim that the layered architecture distributes work evenly across modules is not supported by this corpus, and the paper does not make it.
 
 ## Ethical Considerations {#sec:ethical-considerations}
 
-### Responsible Disclosure {#sec:responsible-disclosure}
-
-All novel attack vectors discovered during this research were:
-\begin{enumerate}
-\item **Reported**: Communicated to affected framework maintainers
-\item **Embargoed**: 90-day disclosure window before publication
-\item **Mitigated**: Defenses provided alongside vulnerability reports
-\end{enumerate}
-
-Table: Disclosure timeline. {#tab:disclosure-timeline}
-
-| Framework | Date Reported | Status | Resolution |
-| --- | --- | --- | --- |
-| Framework A | 2025-06-15 | Acknowledged | Patched (v2.1.3) |
-| Framework B | 2025-06-22 | Acknowledged | In progress |
-| Framework C | 2025-07-01 | No response | Public disclosure (90-day window elapsed) |
-| Framework D | 2025-07-10 | Acknowledged | Mitigated via configuration change |
-
-Framework names are anonymized per coordinated disclosure agreements. Specific vulnerability details are available to affected maintainers and will be published after all embargo periods expire.
-
 ### Dual-Use Considerations {#sec:dual-use}
 
-**Risk Assessment**: The attack corpus represents a dual-use resource that could enable both defensive research and malicious exploitation. We address this through:
-\begin{enumerate}
-\item **Sanitization**: All published examples are non-functional
-\item **Partial Disclosure**: Full corpus available only to verified researchers
-\item **Access Controls**: Request-based access with institutional verification
-\item **Usage Tracking**: Audit log of corpus access
-\end{enumerate}
+The corpus is a dual-use resource. It is also, unavoidably, public: it is regenerated from published code by a published seed, so there is no version of this work in which the attacks are available to defenders and withheld from anyone else. No access tier, request process or use agreement is operated for it, and describing one would misrepresent what publishing this repository does.
 
-Table: Access control hierarchy. {#tab:access-hierarchy}
+That is a deliberate position rather than a concession. The attacks are template expansions of patterns already documented in the public literature on prompt injection and agent manipulation, and their value lies in being a fixed, reproducible measuring stick rather than in being novel. A corpus that cannot be regenerated cannot be used to check a reported number, which is the whole purpose it serves here.
 
-| Access Level | Scope | Requirement |
-| --- | --- | --- |
-| Researcher | Template structures | Institutional affiliation |
-| Full access | Complete corpus | IRB approval + NDA |
+No previously unknown vulnerability in any named third-party framework was discovered in the course of this work, so no coordinated disclosure was required and none was undertaken. The architectures named in the parametric simulation are modelled configurations, not systems that were probed.
 
 ### Defense Framework Dual-Use Considerations {#sec:defense-dual-use}
 
-While the attack corpus dual-use considerations are addressed above, the defense framework itself presents distinct dual-use risks that warrant separate analysis.
+The defense framework presents its own dual-use risks, distinct from those of the corpus.
 
-**Detection Algorithm Inversion Risk.** The detection algorithms documented in \cref{sec:detection-algorithms} could potentially be analyzed to design evasive attacks that remain below detection thresholds. An adversary with access to the full algorithm specifications could craft attacks that exploit known blind spots or systematically probe the feature space to identify classification boundaries. This risk is inherent to any published detection methodology.
+**Detection algorithm inversion.** The detection algorithms documented in \cref{sec:detection-algorithms} can be analysed to design evasive attacks that stay below detection thresholds. An adversary holding the full specification can target known blind spots or probe the feature space for classification boundaries. This risk is inherent to any published detection methodology, and it is sharpened here by the concentration reported above: an attacker who defeats the invariants checker defeats most of the pipeline.
 
-**Trust Calculus Parameter Exposure.** The trust decay parameter ($\delta$), delegation depth limits, and threshold configurations disclosed in this paper could enable adversaries to game the trust system if they know the exact values deployed in a target system. Attackers could craft delegation chains that remain just above trust thresholds or time their attacks to coincide with trust recovery periods.
+**Trust calculus parameter exposure.** The trust decay parameter ($\delta$), delegation depth limits and threshold configurations published here would let an adversary who knew a target's exact values craft delegation chains that sit just above threshold, or time attacks to trust recovery.
 
-**Observed Mitigation Approaches.** Several approaches address these dual-use risks:
-\begin{enumerate}
-\item **API Abstraction**: Deploying CIF through an abstraction layer that hides internal parameters. Detection decisions exposed as binary outcomes (allowed/blocked) without revealing confidence scores or feature contributions.
-\item **Parameter Randomization**: Introducing slight randomization in threshold values and decay parameters across instances, reducing the exploitability of published defaults.
-\item **Adversarial Probing Detection**: Monitoring for patterns indicative of boundary probing (repeated near-threshold submissions, systematic parameter variation).
-\end{enumerate}
+**Mitigations available to a deployer.** These are approaches a deployment can take; none is claimed to have been evaluated in this paper.
+1. **API abstraction**: deploy CIF behind a layer that exposes binary allow/block outcomes without confidence scores or feature contributions.
+2. **Parameter randomisation**: vary threshold and decay values across instances so published defaults are not the deployed ones.
+3. **Adversarial probing detection**: monitor for repeated near-threshold submissions and systematic parameter variation.
 
-The defense composition algebra (established in Part 1) remains valid regardless of specific parameter choices, ensuring that the theoretical guarantees hold even when operational parameters differ from published defaults. Specific deployment configurations are detailed in Part 3.
+The defense composition algebra established in Part 1 holds regardless of specific parameter choices, so the theoretical guarantees survive operational parameters that differ from the published defaults. Deployment configurations are discussed in Part 3.
 
 ### Human Subjects {#sec:human-subjects}
 
-This research did not involve human subjects experimentation. All attacks were tested against:
-\begin{itemize}
-\item Synthetic agent configurations
-\item Sandboxed environments
-\item No production systems with real users
-\end{itemize}
-
-### Research Ethics Approval {#sec:ethics-approval}
-
-This research was reviewed and determined to be exempt from IRB oversight as it did not involve human subjects. The board determined that:
-\begin{enumerate}
-\item No human subjects were involved
-\item Dual-use risks were adequately mitigated
-\item Responsible disclosure practices were followed
-\end{enumerate}
+This research involved no human subjects, no participants and no user study. Every evaluation runs against synthetic agent configurations in sandboxed processes, and no production system or real user was involved at any point. No institutional review was sought, because none of the work falls within the scope of human-subjects review.
 
 ## Data Availability {#sec:data-availability}
 
-### Public Resources {#sec:public-resources}
+Everything this paper reports is public and reproducible from one repository, <https://github.com/docxology/cognitive_integrity>:
 
-\begin{itemize}
-\item Sanitized attack examples: This supplementary material
-\item Detection patterns: Available in paper repository
-\item Defense implementations: Available at DOI: 10.5281/zenodo.18364128
-\end{itemize}
+- the attack corpus, as the seeded generator that produces it;
+- the benign corpus, including the deliberately hard stratum used for false-positive rates;
+- every defense implementation, evaluation script and analysis script;
+- the result artifacts each figure and table is derived from, under `output/data/`, each carrying a provenance record naming the script that wrote it.
 
-### Restricted Resources {#sec:restricted-resources}
-
-\begin{itemize}
-\item Full attack corpus: Available upon request
-\item Red team exercise data: Institution members only
-\item Unpublished vulnerabilities: Covered by disclosure agreements
-\end{itemize}
-
-### Access Request Process {#sec:access-request}
-
-Researchers wishing to access the full attack corpus must:
-\begin{enumerate}
-\item Submit institutional affiliation verification
-\item Provide IRB approval or exemption letter
-\item Sign data use agreement
-\item Agree to responsible use terms
-\end{enumerate}
+There is no restricted tier and nothing is held back. Every quantity the three papers share is derived from a single ledger and checked in continuous integration, so a reader can regenerate any reported number rather than take it on trust.
 
 ## References {#sec:corpus-references}
 
-The attack corpus contains no items from JailbreakBench \cite{chao2024jailbreakbench}, PromptInject \cite{liu2023prompt}, or TensorTrust \cite{toyer2024tensortrust}; those benchmarks informed the \emph{design} of our attack templates, but every one of the 950 samples is generated by deterministic template expansion (\cref{sec:corpus-overview}).
+The attack corpus contains no items from JailbreakBench \cite{chao2024jailbreakbench}, PromptInject \cite{liu2023prompt}, or TensorTrust \cite{toyer2024tensortrust}; those benchmarks informed the \emph{design} of the attack templates, but every one of the 1,475 samples is generated by deterministic template expansion (\cref{sec:corpus-overview}).

@@ -14,7 +14,7 @@ Table: Core framework configuration parameters. {#tab:core-params}
 | --- | --- | --- | --- | --- |
 | Acceptance threshold | $\tau_{accept}$ | 0.7 | $(0, 1)$ | Minimum belief confidence |
 | Trusted source threshold | $\tau_{trusted}$ | 0.9 | $(0, 1)$ | Direct promotion threshold |
-| Corroboration count | $\kappa$\footnote{Throughout this paper, $\kappa$ denotes the corroboration threshold count in the CIF framework, distinct from Cohen's $\kappa$ (kappa) coefficient used as an inter-rater reliability measure in \cref{sec:exp-setup}.} | 2 | $[1, n-1]$ | Required confirmations |
+| Corroboration count | $\kappa$\footnote{Throughout this paper, $\kappa$ denotes the corroboration threshold count in the CIF framework. It is not Cohen's $\kappa$; no inter-rater statistic is reported anywhere in this series, because the corpus carries no human annotation (\cref{sec:corpus-validation}).} | 2 | $[1, n-1]$ | Required confirmations |
 | Consistency threshold | $\tau$ | 0.8 | $(0, 1)$ | Contradiction detection |
 | Random seed | $s$ | 42 | $\mathbb{Z}^+$ | Reproducibility seed |
 
