@@ -61,7 +61,7 @@ series:
     doi: 10.5281/zenodo.18364119
     short: Part 1
   - number: 2
-    title: Computational Validation (Second Edition)
+    title: Computational Validation
     doi: 10.5281/zenodo.18364128
     short: Part 2
   - number: 3+4

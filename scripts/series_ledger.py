@@ -272,6 +272,33 @@ def invariants_solo_detection() -> float:
     return float(payload["detection_rate"]["invariants"]["_overall"]) * 100.0
 
 
+def _multiseed_ci() -> tuple[float, float]:
+    """Normal 95% interval on the multi-seed mean, over the per-seed rates.
+
+    The papers stated "a mean of 86.3% [95% CI: 43.2%, 46.4%]" in three places:
+    the point estimate had been updated by injection because it matched a
+    pattern, and the interval had not, because it had no ledger variable. An
+    interval that does not contain its own point estimate is worse than either
+    number alone, so both endpoints are derived here.
+    """
+    import statistics
+
+    rates = [float(seed["overall"]) for seed in _multiseed()["seed_metrics"]]
+    if len(rates) < 2:
+        raise MissingArtifact("multi_seed_results.json records fewer than two seeds")
+    mean = statistics.mean(rates)
+    half = 1.96 * statistics.stdev(rates) / len(rates) ** 0.5
+    return (mean - half) * 100.0, (mean + half) * 100.0
+
+
+def multiseed_ci_low() -> float:
+    return _multiseed_ci()[0]
+
+
+def multiseed_ci_high() -> float:
+    return _multiseed_ci()[1]
+
+
 def multiseed_fpr() -> float:
     return float(_multiseed()["fpr_mean"]) * 100.0
 
@@ -729,6 +756,26 @@ LEDGER: tuple[LedgerVariable, ...] = (
         unit="percent",
         pattern=re.compile(r"mean(?:\s+detection\s+rate)?\s+of\s+\*{0,2}(\d{2}\.\d)\s*\\?%"),
         require=("seed",),
+        tolerance=0.06,
+    ),
+    LedgerVariable(
+        id="multiseed_ci_low",
+        description="Low end of the 95% interval on the multi-seed mean.",
+        artifact="multi_seed_results.json",
+        deriver=multiseed_ci_low,
+        unit="percent",
+        pattern=re.compile(r"95\\?%\s*CI:?\s*\[?(\d{2}\.\d)\s*\\?%?\s*,"),
+        require=("ci",),
+        tolerance=0.06,
+    ),
+    LedgerVariable(
+        id="multiseed_ci_high",
+        description="High end of the 95% interval on the multi-seed mean.",
+        artifact="multi_seed_results.json",
+        deriver=multiseed_ci_high,
+        unit="percent",
+        pattern=re.compile(r"95\\?%\s*CI:?\s*\[?\d{2}\.\d\s*\\?%?\s*,\s*(\d{2}\.\d)"),
+        require=("ci",),
         tolerance=0.06,
     ),
     LedgerVariable(

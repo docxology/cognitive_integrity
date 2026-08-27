@@ -1,4 +1,4 @@
-# Cognitive Integrity Framework: Computational Validation and Empirical Analysis (Second Edition)
+# Cognitive Integrity Framework: Computational Validation and Empirical Analysis
 
 Part 2 of the **Cognitive Security for Multiagent Operators** series — **Version 1.0 (2026-07-05)**.
 
@@ -82,7 +82,7 @@ cogsec_multiagent_2_computational/
 ```bibtex
 @article{friedman2026cogsec2,
   author    = {Friedman, Daniel Ari},
-  title     = {Cognitive Integrity Framework: Computational Validation and Empirical Analysis (Second Edition)},
+  title     = {Cognitive Integrity Framework: Computational Validation and Empirical Analysis},
   year      = {2026},
   doi       = {10.5281/zenodo.18364128},
   publisher = {Zenodo},

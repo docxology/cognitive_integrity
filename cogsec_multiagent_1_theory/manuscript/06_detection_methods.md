@@ -4,7 +4,7 @@
 
 This section presents the formal foundations for cognitive attack detection. We define anomaly detection metrics (\cref{sec:anomaly-detection}), ROC curve framework (\cref{sec:roc-analysis}), multi-detector fusion theory (\cref{sec:detector-fusion}), online vs. batch trade-offs (\cref{sec:online-batch}), false positive mitigation strategies (\cref{sec:fp-mitigation}), provenance analysis (\cref{sec:provenance}), and real-time monitoring architecture (\cref{sec:monitoring}).
 
-> **Note**: For algorithm implementations and empirical performance results, see Part 2 of this series \cite{friedman2026cogsec2}. Empirically, the multi-stage pipeline achieves a parametric design ceiling of 96--100\% detection rate on a 950-attack corpus across four architectures; the prototype pipeline achieves a mean of 86.3\% [95\% CI: 43.2\%, 46.4\%] across 30 seeds. Part 2 reports no measured per-$\Omega$-class detection rates: the corpus carries a design-level $\Omega$ classification rather than a runtime label, so per-class rates are not evaluated.
+> **Note**: For algorithm implementations and empirical performance results, see Part 2 of this series \cite{friedman2026cogsec2}. Empirically, the multi-stage pipeline achieves a parametric design ceiling of 96--100\% detection rate on a 950-attack corpus across four architectures; the prototype pipeline achieves a mean of 86.3\% [95\% CI: 85.5\%, 87.1\%] across 30 seeds. Part 2 reports no measured per-$\Omega$-class detection rates: the corpus carries a design-level $\Omega$ classification rather than a runtime label, so per-class rates are not evaluated.
 
 ## Anomaly Detection {#sec:anomaly-detection}
 

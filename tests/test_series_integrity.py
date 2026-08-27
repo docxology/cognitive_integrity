@@ -208,6 +208,14 @@ _ARTIFACTS: dict[str, object] = {
         "fpr_mean": 0.2575,
         "overall_cv": 0.0967,
         "n_seeds": 30,
+        # The interval endpoints are derived from the per-seed rates, so the
+        # synthetic tree needs them too: without seed_metrics the two CI
+        # variables cannot derive at all, and an underivable gated quantity is
+        # a failure rather than a skip.
+        "seed_metrics": [
+            {"seed": i, "overall": rate}
+            for i, rate in enumerate((0.43, 0.44, 0.448, 0.45, 0.46))
+        ],
     },
     "ablation_results.json": {
         "data_origin": "real_pipeline",
@@ -287,6 +295,11 @@ def _body(ceiling: str = "96") -> str:
 
     mean = ms["tpr_mean"] * 100
     fpr = ms["fpr_mean"] * 100
+    _rates = [s["overall"] for s in ms["seed_metrics"]]
+    _mu = sum(_rates) / len(_rates)
+    _sd = (sum((r - _mu) ** 2 for r in _rates) / (len(_rates) - 1)) ** 0.5
+    _half = 1.96 * _sd / len(_rates) ** 0.5
+    ci_low, ci_high = (_mu - _half) * 100, (_mu + _half) * 100
     seeds = ms["n_seeds"]
     instances = sum(int(r["n_attacks"]) for r in rows)
     per_arch = sum(int(r["n_attacks"]) for r in rows if r["architecture"] == "A")
@@ -321,6 +334,7 @@ def _body(ceiling: str = "96") -> str:
 
     return (
         "# Body\n\n"
+        f"That arm's 95\\% CI: {ci_low:.1f}\\%, {ci_high:.1f}\\% brackets the mean.\n\n"
         f"The mutation-operator sweep runs against $M={redteam_m}$ generated attacks.\n\n"
         f"Its mutation-operator table is re-derived from that same $M={redteam_m}$ run.\n\n"
         f"The parametric simulation establishes a design-level ceiling of "

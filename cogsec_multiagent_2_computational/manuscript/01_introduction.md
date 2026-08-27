@@ -102,7 +102,7 @@ The remainder of this paper is structured as follows:
 
 ### Supplementary Materials
 
-Eight supplementary sections accompany this paper, with S09–S12 added or expanded in this Second Edition:
+Eight supplementary sections accompany this paper:
 
 - **S01: Notation Reference** --- Symbol definitions, conventions, and cross-references to Part 1 definitions (\cref{sec:notation-reference})
 - **S02: Detection Algorithms** --- Complete pseudocode for all detection mechanisms including cognitive firewall classification, sandbox promotion criteria, and tripwire monitoring (\cref{sec:detection-algorithms})

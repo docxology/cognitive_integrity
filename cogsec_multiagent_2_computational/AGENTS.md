@@ -1,8 +1,8 @@
-# Cognitive Integrity Framework: Computational Validation and Empirical Analysis (Second Edition) - Agent Reference
+# Cognitive Integrity Framework: Computational Validation and Empirical Analysis - Agent Reference
 
 **Location:** `projects/cognitive_integrity/cogsec_multiagent_2_computational/`. Active nested project under the program `cognitive_integrity/`; use qualified name `cognitive_integrity/cogsec_multiagent_2_computational` for pipeline and PDF scripts.
 
-**Version: 1.0.0 (2026-07-05, Second Edition)** | **DOI:** [10.5281/zenodo.18364128](https://doi.org/10.5281/zenodo.18364128)
+**Version: 2.0 (2026-08-26)** | **DOI:** [10.5281/zenodo.18364128](https://doi.org/10.5281/zenodo.18364128)
 
 ## Overview
 

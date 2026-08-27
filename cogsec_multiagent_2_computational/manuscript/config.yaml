@@ -42,38 +42,52 @@ keywords:
 - profunctor optics
 - figure registry
 - composable visualization
-abstract: "This paper presents comprehensive computational validation of the Cognitive\
-  \ Integrity\nFramework (CIF) theoretical foundations established in Part 1 (DOI:\
-  \ 10.5281/zenodo.18364119).\nWe provide complete implementations of defense mechanisms\
-  \ including cognitive firewalls,\nbelief sandboxes, tripwires, drift and anomaly\
-  \ scoring, trust calculus with bounded\ndelegation, provenance tracking, and Byzantine-tolerant\
-  \ consensus, extended in this\nSecond Edition with adversarial training modules,\
-  \ red-teaming infrastructure, and\nexpanded colony simulations at 100+ agent scale.\n\
-  \nMulti-tier evaluation using a 950-attack corpus (expanded with \u03A9_1\u2013\u03A9\
-  _5 taxonomy):\nreal pipeline evaluation yields mean 44.8% detection across 30 seeds\
-  \ (Claude Code);\nLLM-backed validation (N=10, Gemma 3 4B) achieves 80-100% across\
-  \ two architectures;\ncolony benchmarks show 81-100% on structured adversarial scenarios\
-  \ at 20-100 agent\nscale (extended to 500 agents in stress tests). Parametric simulation\
-  \ establishes\n96-100% design ceiling. Ablation studies identify the Detection module\
-  \ as highest-\ncontribution component (42% of pipeline detection).\n\nNew in v1.0:\
-  \ (1) expanded attack taxonomy with full \u03A9_1\u2013\u03A9_5 adversary capability\n\
-  classification; (2) adversarial training evaluation with red-teaming pipelines;\n\
-  (3) Fisher information metric derivations in S10 with natural gradient attack analysis;\n\
-  (4) property-based test suite with Hypothesis library achieving 95%+ coverage;\n\
-  (5) stress tests for colony simulations at 100\u2013500 agent scale; (6) extended\
-  \ TLA+,\nPromela/SPIN, and SMV/NuSMV specifications for defense composition algebra;\n\
-  (7) category-theoretic foundations (\xA78): defense lattice with 7-axiom verification,\n\
-  symmetric monoidal category, operad, enriched category, pipeline monad, Kan extensions,\n\
-  and lens/optic profunctor; (8) figure/table auto-numbering registry with sequential\n\
-  LaTeX labels; (9) composable visualization engine and CIF Composer v2 web UI (S12).\n\
-  \nThis is Part 2 of a three-part series:\n- Part 1 (DOI: 10.5281/zenodo.18364119):\
-  \ Formal foundations and theoretical analysis\n- Part 2 (this paper): Computational\
-  \ validation and implementation (Second Edition)\n- Part 3+4 merged (DOI: 10.5281/zenodo.18364130):\
-  \ Unified practitioner guidance and cross-domain applications\n"
+abstract: |
+  This paper presents the computational validation of the Cognitive Integrity
+  Framework (CIF) whose formal foundations are established in Part 1
+  (DOI: 10.5281/zenodo.18364119). We implement the CIF defense suite --- cognitive
+  firewalls, belief sandboxes, tripwires, drift and anomaly scoring, trust calculus
+  with bounded delegation, provenance tracking, and Byzantine-tolerant consensus ---
+  and evaluate it on an integrated 1,475-item attack corpus spanning fifteen
+  categories, together with a 120-item benign corpus whose harder half carries
+  attack-adjacent vocabulary.
+
+  Multi-tier evaluation. Real pipeline evaluation across 30 seeds yields a mean
+  detection rate of 86.3% (95% CI 85.5%-87.1%) at an 18.5% false-positive rate on
+  the Claude Code architecture, measured on an injection-only 100-sample-per-seed
+  arm. LLM-backed validation (N=10, Gemma 3 4B) reaches 80-100% across two
+  topologies and is reported as preliminary and underpowered. Colony benchmarks at
+  20-100 agents reach 81-100% on structured adversarial scenarios, with emergent
+  misalignment the hardest case at 74.3% detection and a 25.5% false-positive rate.
+  Parametric simulation (N=3,800) characterises a 96-100% design-level ceiling
+  across four production architectures, and is labelled a simulation rather than a
+  measurement wherever it appears.
+
+  Ablation on a 100-attack corpus attributes almost all marginal detection to the
+  Invariants module: the full pipeline reaches 89.0% true-positive rate, removing
+  Invariants costs 65 percentage points, removing the Tripwire costs two, and
+  removing any other module costs nothing the corpus can measure. The layered
+  architecture is therefore only partly borne out, and the paper says so. An
+  undefended control arm places the defense's cost at +0.610 ms at the median and
+  +32 KiB peak. Measured as ranked scorers, the drift score and the firewall
+  pattern matcher fall below chance (AUC 0.374 and 0.383, intervals excluding 0.5).
+
+  Every quantity the three papers share is derived from a single ledger and gated
+  in continuous integration; no reported number is typed by hand. All experiments
+  are deterministically reproducible at seed 42, and the code, corpora and
+  artifacts are at https://github.com/docxology/cognitive_integrity.
+
+  This is Part 2 of the three-part Cognitive Security for Multiagent Operators
+  series:
+  - Part 1 (DOI: 10.5281/zenodo.18364119): formal foundations and theoretical analysis
+  - Part 2 (this paper): computational validation and implementation
+  - Part 3+4 merged (DOI: 10.5281/zenodo.18364130): unified practitioner guidance
+    and cross-domain applications
+
 metadata:
   license: Apache-2.0
   language: en
-  edition: 2
+  edition: 1
   changelog: "v1.0 (2026-07-05): Initial public release \u2014 adversarial training,\
     \ red-teaming,\nexpanded colony simulations (100-500 agents), Fisher information\
     \ metric\nderivations in S10, property-based tests with Hypothesis, stress tests,\n\

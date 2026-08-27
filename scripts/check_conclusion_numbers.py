@@ -34,13 +34,35 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
 
-#: The conclusion of each paper, which is where a reader looks for the headline
-#: and where a stale number does the most damage.
+#: Where a reader takes a headline from: the abstract, the conclusion, and the
+#: abstract in ``config.yaml``, which is a separate hand-maintained copy that
+#: becomes the Zenodo record description. That copy is the one nothing watched:
+#: it still carried a retired multi-seed mean of 44.8% and a "950-attack
+#: corpus" long after the manuscript abstract had moved to 86.3%, and it is the
+#: text most readers see first, because it is what a search result shows.
 CONCLUSIONS = (
+    "cogsec_multiagent_1_theory/manuscript/01_abstract.md",
     "cogsec_multiagent_1_theory/manuscript/09_conclusion.md",
+    "cogsec_multiagent_1_theory/manuscript/config.yaml",
+    "cogsec_multiagent_2_computational/manuscript/00_abstract.md",
     "cogsec_multiagent_2_computational/manuscript/07_conclusion.md",
+    "cogsec_multiagent_2_computational/manuscript/config.yaml",
+    "cogsec_multiagent_3_practical/manuscript/00_abstract.md",
     "cogsec_multiagent_3_practical/manuscript/08_conclusion.md",
+    "cogsec_multiagent_3_practical/manuscript/config.yaml",
 )
+
+#: In a config only the abstract is prose a reader reads; the rest is wiring
+#: whose numbers (versions, font sizes, widths) are not measurements.
+_CONFIG_ABSTRACT = re.compile(r"^\s*abstract:.*?(?=\n[a-z_]+:)", re.M | re.S)
+
+
+def _headline_prose(path: Path) -> str:
+    """The prose of one headline location, with config wiring left out."""
+    text = path.read_text(encoding="utf-8")
+    if path.name != "config.yaml":
+        return text
+    return "\n".join(m.group(0) for m in _CONFIG_ABSTRACT.finditer(text))
 
 #: Part 2 owns the artifacts the whole series cites.
 DATA_DIR = REPO / "cogsec_multiagent_2_computational" / "output" / "data"
@@ -139,7 +161,7 @@ def main() -> int:
         if not path.is_file():
             problems.append(f"{name}: missing")
             continue
-        text = path.read_text(encoding="utf-8")
+        text = _headline_prose(path)
         for value in sorted({float(v) for v in _PERCENT.findall(text)}):
             checked += 1
             if value in EXEMPT or value in known:
@@ -159,7 +181,7 @@ def main() -> int:
         return 2
 
     print(
-        f"conclusion numbers: {checked} checked across {len(CONCLUSIONS)} papers, "
+        f"headline numbers: {checked} checked across {len(CONCLUSIONS)} locations, "
         f"against {len(known)} derived headline values"
     )
     for problem in problems:

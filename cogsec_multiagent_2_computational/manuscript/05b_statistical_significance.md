@@ -104,7 +104,7 @@ Table: Power analysis for primary empirical comparisons. {#tab:real-power}
 
 **Key finding**: The LLM validation ($N=5$ per architecture) is substantially underpowered for 
 detecting architecture-specific differences. The multi-seed analysis is well-powered for 
-estimating the pipeline's mean detection rate (95\% CI [43.2, 46.4]); the ablation analysis has 
+estimating the pipeline's mean detection rate (95\% CI [85.5, 87.1]); the ablation analysis has 
 moderate power for detecting component contributions.
 
 *Note on the first row (L2): 'mean vs 0' is a degenerate/reference power row, not the research 

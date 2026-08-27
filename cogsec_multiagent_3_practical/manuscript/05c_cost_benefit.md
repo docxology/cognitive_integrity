@@ -58,31 +58,31 @@ The break-even condition for CIF deployment is straightforward:
 
 $$\text{attacks\_prevented\_per\_year} = \frac{\text{annual CIF cost}}{\text{mean attack cost} \times \text{detection rate}}$$
 
-Using the CIF empirical detection rate of 44.8% (the 30-seed empirical result, which is the conservative figure — parametric ceiling is 96–100%):
+Using the CIF empirical detection rate of 86.3% (the 30-seed empirical result, measured against the adversarially hard benign corpus at an 18.5% false-positive rate; the parametric ceiling is 96–100%):
 
-* **Low-severity scenario**: Annual CIF cost \$100K, mean attack cost \$50K. Break-even at $100{,}000 / (50{,}000 \times 0.448) \approx 4.5$ attacks/year prevented.
-* **Moderate-severity scenario**: Annual CIF cost \$100K, mean attack cost \$500K. Break-even at $\approx 0.45$ attacks/year prevented — one prevented attack every two years covers the deployment.
+* **Low-severity scenario**: Annual CIF cost \$100K, mean attack cost \$50K. Break-even at $100{,}000 / (50{,}000 \times 0.863) \approx 2.3$ attacks/year prevented.
+* **Moderate-severity scenario**: Annual CIF cost \$100K, mean attack cost \$500K. Break-even at $\approx 0.23$ attacks/year prevented — one prevented attack every four years covers the deployment.
 
 ## Worked Examples
 
 **High-value target (financial AI, healthcare AI)**:
 
 * Traffic: 1,000 agent interactions/day at 0.1% attack rate = 1 attack/day = 365 attacks/year.
-* CIF prevention: $0.448 \times 365 \approx 163$ attacks/year.
-* Value prevented at \$50K mean attack cost: $163 \times \$50{,}000 = \$8.2M/\text{year}$.
+* CIF prevention: $0.863 \times 365 \approx 315$ attacks/year.
+* Value prevented at \$50K mean attack cost: $315 \times \$50{,}000 = \$15.7M/\text{year}$.
 * Deployment cost: \$100K/year.
-* **ROI = 82:1** — deployment is unambiguously justified.
+* **ROI = 157:1** — deployment is unambiguously justified.
 
 **Lower-risk deployment (internal tooling)**:
 
 * Traffic: 100 interactions/day at 0.01% attack rate = 3.65 attacks/year.
-* CIF prevention: $0.448 \times 3.65 \approx 1.6$ attacks/year.
-* Value prevented at \$10K mean attack cost: $1.6 \times \$10{,}000 = \$16{,}000/\text{year}$.
+* CIF prevention: $0.863 \times 3.65 \approx 3.15$ attacks/year.
+* Value prevented at \$10K mean attack cost: $3.15 \times \$10{,}000 = \$31{,}500/\text{year}$.
 * Deployment cost: \$100K/year.
-* **ROI = 0.16:1** — deployment is not justified on economic grounds alone.
+* **ROI = 0.32:1** — deployment is not justified on economic grounds alone.
 
 ## Conclusion
 
-CIF is most cost-effective for high-frequency, high-value-per-interaction deployments. At a \$100K annual CIF cost and the conservative 44.8\% detection rate, the break-even condition above gives approximately **4.5 attacks/year prevented** at a \$50K mean attack cost, **0.9** at \$250K, and **0.45** at \$500K. Equivalently, a single prevented attack per year pays for the deployment once the mean attack costs about \$225K.
+CIF is most cost-effective for high-frequency, high-value-per-interaction deployments. At a \$100K annual CIF cost and the measured 86.3\% detection rate, the break-even condition above gives approximately **2.3 attacks/year prevented** at a \$50K mean attack cost, **0.46** at \$250K, and **0.23** at \$500K. Equivalently, a single prevented attack per year pays for the deployment once the mean attack costs about \$116K.
 
 Operators below the break-even threshold should still consider CIF for reasons beyond direct ROI — regulatory compliance (OWASP Agentic Top 10, NIST Zero Trust), customer-trust signaling, and insurance/liability reduction may justify deployment even when attack frequency alone does not. Conversely, operators far above the break-even threshold (high-traffic, high-value) should view the deployment cost analysis as a floor, not a ceiling: the true cost of a single $\Omega_4$ attack at enterprise scale can exceed a decade of CIF operating cost in a single incident.
