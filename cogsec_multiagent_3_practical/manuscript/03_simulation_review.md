@@ -20,7 +20,7 @@ The test corpus included direct prompt injection, poisoned RAG contexts, deep tr
 ## Finding 1: Defense Layering vs. Individual Efficacy
 
 **The Data**: In the parametric evaluation the full CIF stack achieved a **96--100% parametric detection ceiling**, with direct injection detected at 99--100% across architectures. The separate real-pipeline evaluation had a lower multi-seed mean of 86.3%.
-**The Implication**: The parametric model rewards layering, but the real pipeline does not spread the work evenly across layers, and the 100-attack ablation corpus says so plainly. The Invariants module alone detects 85% of that corpus against the full stack's 89.0%; the Detection, Sandbox, Tripwire and Consensus modules each detect between 4% and 6% on their own. Removing Invariants costs 65 percentage points of true-positive rate, removing the Tripwire costs two, and removing Consensus, Detection, Firewall, Provenance, Sandbox or Trust Calculus costs nothing this corpus can measure. That is a statement about *marginal* contribution, not about capability: a module whose detections are all also caught by Invariants scores zero here while detecting plenty on its own. Layering still buys coverage against attacks this corpus does not contain, but the older claim that removing any single layer opens a measurable gap is not what the ablation shows.
+**The Implication**: The parametric model rewards layering, but the real pipeline does not spread the work evenly across layers, and the 100-attack ablation corpus says so plainly. The Invariants module alone detects 83.3% of that corpus against the full stack's 89.0%; no other module detects more than 10% on its own (the next best, Consensus, reaches 9.6%). Removing Invariants costs 65 percentage points of true-positive rate, removing the Tripwire costs two, and removing Consensus, Detection, Firewall, Provenance, Sandbox or Trust Calculus costs nothing this corpus can measure. That is a statement about *marginal* contribution, not about capability: a module whose detections are all also caught by Invariants scores zero here while detecting plenty on its own. Layering still buys coverage against attacks this corpus does not contain, but the older claim that removing any single layer opens a measurable gap is not what the ablation shows.
 
 ## Finding 2: State Machine Determinism
 
@@ -86,8 +86,8 @@ The current Claude Code adapter is at Level 3 (Statistical), explaining the 86.3
 
 The detection rates in Part 2 are derived from a calibrated parametric simulation, modeled on the architecture's topology. They represent the *structural* security of the design.
 
-* **99.4% Overall Detection** means: "Across all architectures and attack categories, 99.4% of attack vectors are detected by the full CIF defense stack" (with architecture-specific rates ranging from 96--100%).
-* It does **not** mean: "We have a magic Python script that catches 99.4% of all evil AI thoughts."
+* **96--100% Parametric Ceiling** means: "In the calibrated parametric simulation ($N=3{,}800$ design-level instances), the full CIF defense stack detects 96--100% of attack vectors, with per-architecture rates ranging from 98--100%."
+* It does **not** mean: "We have a magic Python script that catches 96--100% of all evil AI thoughts."
 
 We proved the *architecture* works. The implementation fidelity is the variable for the builder.
 
