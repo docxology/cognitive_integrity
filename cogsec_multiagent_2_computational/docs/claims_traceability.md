@@ -7,7 +7,7 @@ This document maps the theoretical claims and definitions from the Cognitive Int
 > to the classes that implement them. It is not the map from reported *numbers*
 > to the artifacts that produce them: that is the reader-side claim registry in
 > `src/manuscript/claim_registry.py`, checked by `scripts/verify_claims.py`,
-> which binds 163 numeric claims across the results, statistics, ablation,
+> which binds 171 numeric claims across the results, statistics, ablation,
 > sensitivity, Bayesian, gap-analysis, red-team and parametric sections to
 > `output/data/`. A number that appears in the manuscript and in neither place
 > is unaudited; run `uv run python scripts/verify_claims.py` to check.

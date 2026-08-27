@@ -1135,18 +1135,20 @@ _ABSTRACT: tuple[Claim, ...] = (
         "count",
     ),
     _c(
-        "abstract.detection_delta",
+        "abstract.ablation_delta",
         "00_abstract.md",
         r"\$\\Delta\\text\{TPR\} = -([\d.]+)\$ when removed",
-        lambda gt: gt.component_delta_magnitude("detection"),
+        # The sentence names whichever component dominates the ablation;
+        # derive from the dominant row rather than a hard-coded module name.
+        lambda gt: gt.component_delta_magnitude(gt.dominant_component()),
         F3,
         "fraction",
     ),
     _c(
-        "abstract.detection_share",
+        "abstract.ablation_share",
         "00_abstract.md",
         r"accounting for (\d+)\\% of pipeline detection",
-        lambda gt: gt.detection_share_of_pipeline(),
+        lambda gt: gt.dominant_share_of_pipeline(),
         PCT0,
         "percent",
     ),

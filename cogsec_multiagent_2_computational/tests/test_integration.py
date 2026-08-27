@@ -464,11 +464,13 @@ class TestModuleExports:
 
     def test_cli_entry_point(self):
         """CLI entry point module is importable and shows usage."""
+        # Cold-start of `python -m src` imports scipy.stats transitively, which
+        # can exceed 10 s on slow storage; give it headroom.
         result = subprocess.run(
             [sys.executable, "-m", "src"],
             capture_output=True,
             text=True,
-            timeout=10,
+            timeout=120,
             cwd=str(ROOT),
         )
         # No subcommand provided should show help and exit 1
