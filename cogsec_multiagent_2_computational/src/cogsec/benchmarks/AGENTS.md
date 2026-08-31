@@ -1,0 +1,1 @@
+Colony benchmark package (`colony.py`) backing the colony detection benchmarks (20–100 agents, stress 100–500). Real corpora and real agent systems only.

@@ -1,0 +1,1 @@
+Per-figure generator modules for the Part 2 manuscript figures. See AGENTS.md; regenerate via scripts/generate_all_figures.py from the part root.

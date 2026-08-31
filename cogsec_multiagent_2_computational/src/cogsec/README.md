@@ -1,0 +1,1 @@
+Cogsec testing + benchmark entry package. See AGENTS.md; benchmarks in `benchmarks/` (colony).

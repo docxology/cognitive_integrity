@@ -1,0 +1,1 @@
+Advanced formal machinery (category theory: operads, monads, Kan extensions, lenses, lattices, enriched categories) supporting Part 2 formal verification. See AGENTS.md.

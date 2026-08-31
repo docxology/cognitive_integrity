@@ -1,0 +1,1 @@
+Deployment/operations/incident-response checklists rendered into the Part 3+4 manuscript. See AGENTS.md.

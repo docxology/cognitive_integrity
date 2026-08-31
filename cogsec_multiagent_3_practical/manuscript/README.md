@@ -1,0 +1,1 @@
+Part 3+4 manuscript source (*Practical Applications and Deployment Guide*, DOI 10.5281/zenodo.22134548). See AGENTS.md.

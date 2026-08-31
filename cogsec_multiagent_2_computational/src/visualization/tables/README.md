@@ -1,0 +1,1 @@
+Manuscript table generators (detection, ablation, corpus, stability, cross-validation statistics). See AGENTS.md.

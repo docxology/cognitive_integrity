@@ -1,0 +1,1 @@
+Cross-domain application support (domain coverage enumeration for the ten CIF-AD-OODA domains). See AGENTS.md.
