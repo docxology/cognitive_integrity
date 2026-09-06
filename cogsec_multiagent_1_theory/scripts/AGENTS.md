@@ -4,7 +4,7 @@ Analysis and figure generation scripts for the Cognitive Integrity Framework man
 
 ## Script Categories
 
-### Figure Generation (01-05, 07-18)
+### Figure Generation (01-05, 07-20)
 Generate publication-quality visualizations for manuscript inclusion.
 
 **Pattern:**
@@ -173,6 +173,7 @@ OODA phase diagram:
 - Observe-Orient-Decide-Act cycle
 - CIF defense integration at each phase
 - Attack vector mapping to OODA transitions
+- Self-contained: imports no `src/` module; draws from data already under `output/figures/data/`
 
 ### verify_manuscript.py
 Manuscript validation:
@@ -180,13 +181,32 @@ Manuscript validation:
 - Equation numbering
 - Citation completeness
 
+### generate_all_figures.py
+Single entry point for full regeneration: runs every `NN_*.py` in this
+directory in numeric order via the current interpreter and exits non-zero
+listing every script that failed (never stops at the first failure, never
+reports success with a missing figure). `--list` shows the discovered set.
+
+### generate_figure_registry.py
+Scans `docs/manuscript/*.md` for `{#fig:...}`/`{#tab:...}` labels (and LaTeX
+`\label{...}` variants) in document order and writes the auto-numbered
+`output/data/figure_registry.json`. Self-contained; `--root`/`--output` flags.
+
 ## Dependencies
 
-All scripts import from:
+All figure scripts import from:
 - `src/` modules for computation
 - `matplotlib` for visualization
 - `numpy` for numerical operations
 - `pathlib` for file operations
+
+Exception: `20_ooda_phase_figure.py` imports no `src/` module (self-contained;
+reads `output/figures/data/`), and `generate_all_figures.py` /
+`generate_figure_registry.py` operate on scripts and manuscript files rather
+than importing `src/`.
+
+Docs that list scripts (this file and [README.md](README.md)) must match the
+directory inventory; update both when adding or removing a script.
 
 ## Output Structure
 

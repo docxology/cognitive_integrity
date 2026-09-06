@@ -2,7 +2,7 @@
 """Front-matter lists and cross-reference verification
 ======================================================
 
-Two real transformations over ``manuscript/*.md``, driven by
+Two real transformations over ``docs/manuscript/*.md``, driven by
 ``output/data/figure_registry.json``:
 
 1. **\\listoffigures / \\listoftables** — injected into ``preamble.md`` inside

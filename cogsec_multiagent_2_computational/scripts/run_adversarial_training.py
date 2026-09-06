@@ -3,7 +3,7 @@
 
 Thin orchestrator — all logic lives in src/redteam/ (AdversarialTrainer,
 NashEquilibriumEstimator). Reproduces the headline v2.0 result cited in
-README.md and manuscript/05g_adversarial_training.md (per-round detection-rate
+README.md and docs/manuscript/05g_adversarial_training.md (per-round detection-rate
 improvement and projected Nash-equilibrium detection rate).
 
 Usage:

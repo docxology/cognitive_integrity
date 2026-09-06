@@ -2,7 +2,7 @@
 """Generate Figure Registry for Part 1 (Theory)
 ==================================================
 
-Scans all manuscript/*.md files for {#fig:...} and {#tab:...} labels
+Scans all docs/manuscript/*.md files for {#fig:...} and {#tab:...} labels
 (pandoc-crossref style) as well as \\label{fig:...} and \\label{tab:...}
 (LaTeX style) in document order and writes a JSON registry with
 auto-assigned sequential numbers.
@@ -217,7 +217,7 @@ def main() -> int:
         description="Generate figure/table registry for Part 1 manuscript"
     )
     parser.add_argument(
-        "--root", default=str(base_dir / "manuscript"), help="Path to manuscript/ directory"
+        "--root", default=str(base_dir / "manuscript"), help="Path to docs/manuscript/ directory"
     )
     parser.add_argument(
         "--output",
