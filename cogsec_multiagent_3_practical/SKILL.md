@@ -47,7 +47,7 @@ Invoke this skill when:
 ## Manuscript Structure
 
 ```
-manuscript/
+docs/manuscript/
 ├── 00_abstract.md
 ├── 01_introduction.md        # Recap Parts 1–2, introduce Part 3
 ├── 02_operator_posture.md    # Assessment framework

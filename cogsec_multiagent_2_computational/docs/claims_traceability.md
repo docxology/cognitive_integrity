@@ -62,7 +62,7 @@ This document maps the theoretical claims and definitions from the Cognitive Int
 | Composer web-UI backend | Aggregated category-theory + module data | `get_composer_data` | `src/visualization/composer_data.py` | `tests/test_composer_data.py` |
 
 Note: the mutation-operator evasion-rate figures in Sec 05h
-(`manuscript/05h_redteam_evaluation.md`) are produced by
+(`docs/manuscript/05h_redteam_evaluation.md`) are produced by
 `scripts/run_redteam.py --seed 42` over the real 950-sample `AttackCorpus`,
 de-duplicated and scored against the real `CognitiveFirewall`, and are pinned
 by `tests/test_redteam.py` (evasion-sweep and manuscript-consistency tests) so
@@ -86,4 +86,4 @@ modules remain unimplemented; the published table reports the implemented
 - All implementation classes are in `src/core/`.
 - All tests are in `tests/` (flat directory, no `core/` subdirectory).
 - Architectures (Claude Code, AutoGPT, CrewAI, LangGraph) are in `src/architectures/`.
-- Full API documentation is available in `manuscript/S05_framework_api.md`.
+- Full API documentation is available in `docs/manuscript/S05_framework_api.md`.

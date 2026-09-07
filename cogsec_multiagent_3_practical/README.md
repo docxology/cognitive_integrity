@@ -12,7 +12,7 @@ This paper unifies two previously separate works into a single comprehensive ref
 
 **Cross-Domain Applications (§9–§10, originally Part 4):** Applies the **CIF-AD-OODA integration model** — combining CIF's five canonical defense mechanisms with Axiomatic Design (AD) theory and Boyd's OODA Loop — to analyze Goal Hijacking across ten critical operational domains: rare-earth mining, nation-state alliances, cyber-security, drone warfare, supply chains, biowarfare, food security, trade wars, infrastructure, and information ecosystems.
 
-**Prerequisites:** None required. Optional: [Part 1](../cogsec_multiagent_1_theory/) for full formal notation; this paper's [`S01_notation_reference.md`](manuscript/S01_notation_reference.md) provides a short in-paper table. For benchmarks and code-level defenses, see [Part 2](../cogsec_multiagent_2_computational/).
+**Prerequisites:** None required. Optional: [Part 1](../cogsec_multiagent_1_theory/) for full formal notation; this paper's [`S01_notation_reference.md`](docs/manuscript/S01_notation_reference.md) provides a short in-paper table. For benchmarks and code-level defenses, see [Part 2](../cogsec_multiagent_2_computational/).
 
 ## Primary Focus
 
@@ -50,7 +50,7 @@ This paper unifies two previously separate works into a single comprehensive ref
 
 ```text
 cogsec_multiagent_3_practical/
-├── manuscript/
+├── docs/manuscript/
 │   ├── 00_abstract.md                 ← unified abstract
 │   ├── 01_introduction.md
 │   ├── 02_theory_review.md

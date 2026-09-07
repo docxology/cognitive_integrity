@@ -73,10 +73,10 @@ adjustable detector (e.g. the composed pipeline) — future work.
 
 ## Manuscript binding
 
-- §05h (`manuscript/05h_redteam_evaluation.md`) reports the firewall-measured
+- §05h (`docs/manuscript/05h_redteam_evaluation.md`) reports the firewall-measured
   mutation sweep. `tests/test_redteam.py` parses its table and compares it to the
   live sweep, so the manuscript cannot drift from the data.
-- §05g (`manuscript/05g_adversarial_training.md`) reports the design-model AT
+- §05g (`docs/manuscript/05g_adversarial_training.md`) reports the design-model AT
   trajectory; `tests/test_redteam.py` also binds its round table to the trainer.
 
 ## Notes
