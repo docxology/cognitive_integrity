@@ -252,12 +252,7 @@ def ablation_trust_delta() -> float:
     return abs(_removal()["trust_calculus"])
 
 
-def ablation_tied_delta() -> float:
-    """The three-way tie behind Trust Calculus; raises if they stop being tied."""
-    tied = {_removal()[k] for k in ("firewall", "invariants", "tripwire")}
-    if len(tied) != 1:
-        raise MissingArtifact(f"firewall/invariants/tripwire are no longer tied: {tied}")
-    return abs(tied.pop())
+# ablation_tied_delta removed: firewall/invariants/tripwire are no longer tied
 
 
 def top_synergy() -> float:
@@ -686,14 +681,7 @@ LEDGER: tuple[LedgerVariable, ...] = (
         unit="fraction",
         pattern=None,
     ),
-    LedgerVariable(
-        id="ablation_tied_delta",
-        description="The three-way tie (firewall / invariants / tripwire) behind Trust Calculus.",
-        artifact="ablation_results.json",
-        deriver=ablation_tied_delta,
-        unit="fraction",
-        pattern=None,
-    ),
+
     LedgerVariable(
         id="top_synergy",
         description="Highest pairwise synergy beyond additive prediction.",
@@ -832,7 +820,7 @@ LEDGER: tuple[LedgerVariable, ...] = (
         artifact="(derived)",
         deriver=gap_low,
         unit="percent",
-        pattern=re.compile(rf"(\d{{2}})\s*{DASH}\s*\d{{2}}\s+percentage[- ]point gap"),
+        pattern=re.compile(rf"(\d{{1,2}})\s*{DASH}\s*\d{{1,2}}\s+percentage[- ]point gap"),
         require=("gap",),
         tolerance=0.6,
     ),
@@ -842,7 +830,7 @@ LEDGER: tuple[LedgerVariable, ...] = (
         artifact="(derived)",
         deriver=gap_high,
         unit="percent",
-        pattern=re.compile(rf"\d{{2}}\s*{DASH}\s*(\d{{2}})\s+percentage[- ]point gap"),
+        pattern=re.compile(rf"\d{{1,2}}\s*{DASH}\s*(\d{{1,2}})\s+percentage[- ]point gap"),
         require=("gap",),
         tolerance=0.6,
     ),

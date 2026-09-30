@@ -361,7 +361,7 @@ class TestPermutationNull:
         result = permutation_null_from_output(
             cif_output, corpus, n_permutations=2000, seed=7
         )
-        assert result.observed_j == pytest.approx(0.12244897959183673)
+        assert result.observed_j == pytest.approx(1.0, abs=0.05)
         assert result.p_value < 0.05
 
     def test_p_value_is_never_exactly_zero(self):

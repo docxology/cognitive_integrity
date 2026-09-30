@@ -36,9 +36,9 @@
         "benign_mean": 0.24447587163434426
       },
       "invariants": {
-        "attack_mean": 0.037118644067796615,
-        "benign_max": 0.5,
-        "benign_mean": 0.043333333333333335
+        "attack_mean": 0.691879661016949,
+        "benign_max": 0.0,
+        "benign_mean": 0.0
       },
       "provenance": {
         "attack_mean": 0.024915254237288135,
@@ -64,38 +64,37 @@
     "shipped_max_rule": {
       "at_default_0_5": {
         "fpr": 0.15,
-        "tpr": 0.1710794297352342,
-        "youden_j": 0.021079429735234217
+        "tpr": 0.8676171079429735,
+        "youden_j": 0.7176171079429735
       },
       "held_out": {
-        "fpr": 0.525,
-        "tpr": 0.45621181262729127,
-        "youden_j": -0.06878818737270875
+        "fpr": 0.0,
+        "tpr": 0.845213849287169,
+        "youden_j": 0.845213849287169
       },
-      "threshold": 0.3821778107867564
+      "threshold": 0.5613817989662057
     },
     "standardised_all_modules": {
       "held_out": {
-        "fpr": 0.325,
-        "tpr": 0.37678207739307534,
-        "youden_j": 0.05178207739307533
+        "fpr": 0.0,
+        "tpr": 0.8818737270875764,
+        "youden_j": 0.8818737270875764
       },
-      "threshold": 2.2396330340453123
+      "threshold": 150000000.0
     },
     "standardised_best_subset": {
       "held_out": {
-        "fpr": 0.225,
-        "tpr": 0.4786150712830957,
-        "youden_j": 0.2536150712830957
+        "fpr": 0.0,
+        "tpr": 0.8940936863543788,
+        "youden_j": 0.8940936863543788
       },
-      "selection_half_j": 0.283739837398374,
+      "selection_half_j": 0.9004065040650406,
       "subset": [
-        "consensus",
+        "tripwire",
         "provenance",
-        "sandbox",
         "invariants"
       ],
-      "threshold": 0.0
+      "threshold": 10.111085132328352
     }
   },
   "seed": 7,
