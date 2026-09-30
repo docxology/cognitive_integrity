@@ -51,7 +51,7 @@ uv run python scripts/01_posture_radar_figure.py
 ```
 
 > **Figure wiring:** The 8 figures are embedded in the manuscript (each
-> `manuscript/*.md` references `figures/<name>.png` with an accurate caption and
+> `docs/manuscript/*.md` references `figures/<name>.png` with an accurate caption and
 > a matching label in the `config.yaml` `figures:` block). Running
 > `scripts/verify_manuscript.py` validates that every image reference resolves
 > against `output/figures/`. A PDF re-render through the template pipeline

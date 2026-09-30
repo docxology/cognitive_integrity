@@ -1,4 +1,4 @@
-# manuscript/ — Agent Notes
+# docs/manuscript/ — Agent Notes
 
 Part 1 manuscript source: 12 numbered section files (quote → references),
 preamble.md, config.yaml, references.bib, plus three appendices

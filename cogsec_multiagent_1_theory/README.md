@@ -54,7 +54,7 @@ This paper presents the **theoretical foundations** of the Cognitive Integrity F
 
 ```
 cogsec_multiagent_1_theory/
-├── manuscript/           # Paper content (theory-focused)
+├── docs/manuscript/           # Paper content (theory-focused)
 │   ├── 00_quote.md           # Blake epigraph
 │   ├── 01_abstract.md
 │   ├── 02_introduction.md
@@ -91,7 +91,7 @@ cogsec_multiagent_1_theory/
 
 The **canonical notation** for the entire paper series is defined in:
 
-- `manuscript/S03_notation.md`
+- `docs/manuscript/S03_notation.md`
 
 Parts 2 and 3 point here for full symbol definitions (Part 3 also ships a short `S01_notation_reference.md` for readers who stay in the operator paper).
 

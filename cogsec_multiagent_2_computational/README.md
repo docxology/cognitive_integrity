@@ -47,7 +47,7 @@ This paper provides **computational validation** of the Cognitive Integrity Fram
 
 ```text
 cogsec_multiagent_2_computational/
-├── manuscript/           # Paper content (37 files, v1.0)
+├── docs/manuscript/           # Paper content (37 files, v1.0)
 │   ├── 00_abstract.md–07_conclusion.md
 │   ├── 05g_adversarial_training.md      # NEW v1.0
 │   ├── 05h_redteam_evaluation.md        # NEW v1.0
@@ -64,7 +64,7 @@ cogsec_multiagent_2_computational/
 │   │   └── convergence.py # natural_gradient_at_step, geometric_convergence_projection
 │   ├── statistics/       # Statistical analysis (12 modules)
 │   ├── visualization/    # Figure generation + composable visualization engine
-├── manuscript/           # Paper content (37 files, v1.0)
+├── docs/manuscript/           # Paper content (37 files, v1.0)
 ├── tests/                # 68 test files (3+ new in v1.0+)
 │   ├── test_colony_stress.py    # NEW: 23 stress tests at 100-500 agents
 │   ├── test_property_based.py   # NEW: 19 Hypothesis property-based tests

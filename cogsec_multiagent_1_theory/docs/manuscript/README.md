@@ -1,4 +1,4 @@
-# manuscript/
+# docs/manuscript/
 
 Source markdown for *Cognitive Integrity Framework: Formal Foundations
 (Second Edition)* — Part 1 of the Cognitive Security for Multiagent Operators

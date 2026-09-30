@@ -2,7 +2,7 @@
 """Generate Figure Registry
 ============================
 
-Scans all manuscript/*.md files for {#fig:...} and {#tab:...} / {#tbl:...}
+Scans all docs/manuscript/*.md files for {#fig:...} and {#tab:...} / {#tbl:...}
 labels in document order (section file order) and writes a JSON registry with
 auto-assigned sequential numbers.
 

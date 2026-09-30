@@ -43,7 +43,7 @@ Invoke this skill when:
 - `src/invariants.py` — Runtime invariant checking
 - `src/detection.py` — Anomaly and drift detection
 - `src/visualization/` — 20 figure modules for manuscript
-- `manuscript/` — Part 1 paper (9 sections, 4 appendices)
+- `docs/manuscript/` — Part 1 paper (9 sections, 4 appendices)
 
 ## Commands
 

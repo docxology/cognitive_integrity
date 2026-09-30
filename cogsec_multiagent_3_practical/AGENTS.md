@@ -34,7 +34,7 @@
 
 ```text
 cogsec_multiagent_3_practical/
-├── manuscript/
+├── docs/manuscript/
 │   ├── 00_abstract.md … 08_conclusion.md    (Part 3 practitioner content)
 │   ├── 09_applications_intro.md             (Part 4 teleological attack surface)
 │   ├── 09b_cif_ad_ooda_methodology.md       (CIF-AD-OODA framework)

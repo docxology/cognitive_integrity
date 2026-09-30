@@ -83,7 +83,7 @@ uv run python scripts/run_redteam.py --seed 42
 | ------ | ------- |
 | `convert_latex_tables.py` | Converts LaTeX tables in manuscript `.md` files to Markdown pipe tables (for readability diffs) |
 | `z_inject_manuscript_values.py` | Auto-injects computed values from `output/data/` back into manuscript `.md` files (leading `z_` so it runs last) |
-| `generate_figure_registry.py` | Scans `manuscript/*.md` for `{#fig:...}`/`{#tab:...}` labels and writes an auto-numbered `output/data/figure_registry.json` |
+| `generate_figure_registry.py` | Scans `docs/manuscript/*.md` for `{#fig:...}`/`{#tab:...}` labels and writes an auto-numbered `output/data/figure_registry.json` |
 | `auto_number_figures.py` | Reads `figure_registry.json` and injects `\label{}`/`\listoffigures` commands into manuscript `.md` files |
 | `generate_composer_data.py` | Generates the CIF Composer backend data file (`output/data/composer_data.json`) for the web UI, aggregating category-theory verifications and module registry |
 

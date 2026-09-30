@@ -72,7 +72,7 @@ Part 1 of the CIF series: formal foundations plus reference implementations of c
 
 ```text
 cogsec_multiagent_1_theory/
-├── manuscript/           # Paper (abstract through conclusion, S01–S03, references, preamble, config)
+├── docs/manuscript/           # Paper (abstract through conclusion, S01–S03, references, preamble, config)
 ├── src/
 │   ├── __init__.py
 │   ├── trust.py, firewall.py, consensus.py, tripwire.py, provenance.py

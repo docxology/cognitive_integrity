@@ -91,7 +91,7 @@ cogsec_multiagent_2_computational/
 │   ├── agents/                 # Simulated agent framework
 │   ├── ablation/               # Ablation study module
 │   ├── visualization/          # Figure generation
-│   ├── manuscript/             # Manuscript verifier & LaTeX converter
+│   ├── docs/manuscript/             # Manuscript verifier & LaTeX converter
 │   ├── utils/                  # Shared types & helpers
 │   └── data/                   # Data loaders
 ├── scripts/                    # Entry-point scripts (26)
@@ -113,7 +113,7 @@ cogsec_multiagent_2_computational/
 │   ├── convert_latex_tables.py # LaTeX → Markdown table conversion
 │   └── z_inject_manuscript_values.py # Auto-inject values into manuscript
 ├── tests/                      # 68 test_*.py modules + conftest; 90%+ coverage (see glob in repo)
-├── manuscript/                 # Paper content (37 files)
+├── docs/manuscript/                 # Paper content (37 files)
 └── output/                     # Generated figures and data
     ├── figures/                # *.pdf figures
     └── data/                   # *.json results
