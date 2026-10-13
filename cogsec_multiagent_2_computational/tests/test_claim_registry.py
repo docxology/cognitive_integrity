@@ -17,6 +17,7 @@ import json
 import math
 import os
 import re
+import shlex
 import shutil
 import subprocess
 import sys
@@ -1075,6 +1076,35 @@ class TestVerifyClaimsCli:
         # next time it breaks, in whichever direction is convenient.
         assert proc.returncode == 0, proc.stdout
         assert "every manuscript claim matches the data" in proc.stdout
+
+        # Exercise the actual CI command too: an old inline counter rejected
+        # this healthy report, and swallowing CLI failure could hide bad data.
+        workflow = (PROJECT_ROOT.parent / ".github" / "workflows" / "ci.yml").read_text()
+        step = workflow.split(
+            "- name: Verify manuscript claims (numeric gate, fail-closed)", 1
+        )[1].split("\n  compat:", 1)[0]
+        command = re.search(r"\n\s+run: ([^\n]+)", step)
+        assert command, "the CI claim gate must expose its command"
+        argv = shlex.split(command.group(1))
+        # Keep reports in the fixture while preserving the CI gate behavior.
+        argv[argv.index("--json") + 1] = str(tmp_path / "ci_claim_report.json")
+        env = dict(os.environ, UV_PYTHON=sys.executable, PROJECT_DIR=str(PROJECT_ROOT))
+        healthy = subprocess.run(
+            argv, cwd=PROJECT_ROOT, env=env, capture_output=True, text=True, timeout=120
+        )
+        assert healthy.returncode == 0, healthy.stdout + healthy.stderr
+
+        broken = tmp_path / "broken_project"
+        shutil.copytree(REAL_MANUSCRIPT, broken / "docs" / "manuscript", symlinks=True)
+        (broken / "docs" / "manuscript" / "00_abstract.md").unlink()
+        (broken / "output").mkdir()
+        (broken / "output" / "data").symlink_to(REAL_DATA, target_is_directory=True)
+        env["PROJECT_DIR"] = str(broken)
+        unhealthy = subprocess.run(
+            argv, cwd=PROJECT_ROOT, env=env, capture_output=True, text=True, timeout=120
+        )
+        assert unhealthy.returncode != 0, unhealthy.stdout + unhealthy.stderr
+        assert "NOT_FOUND" in unhealthy.stdout
 
     def test_writes_a_parseable_json_report(self, tmp_path):
         out = tmp_path / "nested" / "report.json"
