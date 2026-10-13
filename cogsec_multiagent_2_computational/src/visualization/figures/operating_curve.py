@@ -20,6 +20,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import numpy as np
 from matplotlib.figure import Figure
 
 from ..artifact import annotate_provenance, load_artifact
@@ -43,6 +44,7 @@ def plot_operating_curve(output_dir: str | Path = "output/figures") -> Figure:
     ceiling = max(max(tprs), max(fprs)) * 1.35
 
     fig, axes = create_figure(width=11, height=4.4, n_rows=1, n_cols=2)
+    assert isinstance(axes, np.ndarray), "two-panel figure must return an axes array"
     rate_axis, roc_axis = axes
 
     if plateau:

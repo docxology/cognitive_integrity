@@ -48,6 +48,7 @@ def plot_module_capability(output_dir: str | Path = "output/figures") -> Figure:
     modules = sorted(solo, key=lambda m: -solo[m]["_overall"])
 
     fig, axes = create_figure(width=10, height=5, n_rows=1, n_cols=2)
+    assert isinstance(axes, np.ndarray), "two-panel figure must return an axes array"
     left, right = axes
     y = np.arange(len(modules))
     labels = [_LABEL.get(m, m.title()) for m in modules]
