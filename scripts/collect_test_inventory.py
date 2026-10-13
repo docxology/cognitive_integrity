@@ -71,6 +71,14 @@ def collect(part_dir: Path, tests_dir: Path, interpreter: Path | None = None) ->
         text=True,
         timeout=600,
     )
+    if proc.returncode != 0:
+        # Pytest may report a positive partial count alongside import errors.
+        # That count is not an inventory of the suite that failed to collect.
+        tail = (proc.stdout or proc.stderr).strip().splitlines()[-5:]
+        raise CollectionFailed(
+            f"{part_dir.name}: pytest collection exited {proc.returncode}; "
+            "refusing a partial inventory.\n  " + "\n  ".join(tail)
+        )
     match = _COLLECTED.search(proc.stdout)
     if not match:
         # A zero-collection run and a crashed run look the same from the exit
