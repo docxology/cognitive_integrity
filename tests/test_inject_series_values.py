@@ -65,7 +65,7 @@ def _tree(tmp_path: Path, part2_body: str) -> Path:
     root = tmp_path / "tree"
     ledger, _ = _load()
     for part, package in ledger.PARTS.items():
-        d = root / package / "manuscript"
+        d = root / package / "docs" / "manuscript"
         d.mkdir(parents=True, exist_ok=True)
         body = part2_body if part == "2" else "# Body\n\nNothing.\n"
         (d / "01_body.md").write_text(body, encoding="utf-8")
@@ -93,7 +93,7 @@ def test_a_drifted_ceiling_is_reported_but_not_written_without_the_flag(tmp_path
     assert code == 1, out
     assert "'94' -> '96'" in out
     # Reporting must not touch the file.
-    written = (root / "cogsec_multiagent_2_computational" / "manuscript" / "01_body.md").read_text()
+    written = (root / "cogsec_multiagent_2_computational" / "docs" / "manuscript" / "01_body.md").read_text()
     assert "94--100" in written
 
 
@@ -106,7 +106,7 @@ def test_write_rewrites_only_the_drifted_literal(tmp_path, capsys):
     root = _tree(tmp_path, body)
     code, _ = _run(root, ["--only", "parametric_ceiling_low", "--write"])
     assert code == 0, capsys.readouterr().out
-    written = (root / "cogsec_multiagent_2_computational" / "manuscript" / "01_body.md").read_text()
+    written = (root / "cogsec_multiagent_2_computational" / "docs" / "manuscript" / "01_body.md").read_text()
     assert "96--100" in written
     # The neighbouring 94s are not this quantity and must survive untouched.
     assert "94 people attended" in written
@@ -131,7 +131,7 @@ def test_out_of_context_numbers_are_never_rewritten(tmp_path, capsys):
     root = _tree(tmp_path, body)
     code, _ = _run(root, ["--only", "parametric_ceiling_low", "--write"])
     assert code == 0
-    written = (root / "cogsec_multiagent_2_computational" / "manuscript" / "01_body.md").read_text()
+    written = (root / "cogsec_multiagent_2_computational" / "docs" / "manuscript" / "01_body.md").read_text()
     assert "81--100" in written, "the colony arm was rewritten as if it were the ceiling"
 
 
@@ -146,7 +146,7 @@ def test_the_run_aborts_when_a_variable_cannot_derive(tmp_path, capsys):
     assert code == 1
     assert "refusing to run" in out
     # And crucially: it did not write a partial set.
-    written = (root / "cogsec_multiagent_2_computational" / "manuscript" / "01_body.md").read_text()
+    written = (root / "cogsec_multiagent_2_computational" / "docs" / "manuscript" / "01_body.md").read_text()
     assert "94--100" in written
 
 

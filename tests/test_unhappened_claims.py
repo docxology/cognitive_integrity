@@ -50,7 +50,7 @@ SHIPPED_FABRICATIONS = [
 
 @pytest.mark.parametrize("expected,sentence", SHIPPED_FABRICATIONS)
 def test_a_shipped_fabrication_is_caught(expected, sentence, tmp_path):
-    unregistered = tmp_path / "cogsec_multiagent_2_computational" / "manuscript"
+    unregistered = tmp_path / "cogsec_multiagent_2_computational" / "docs" / "manuscript"
     unregistered.mkdir(parents=True)
     path = unregistered / "not_registered.md"
     path.write_text(sentence + "\n", encoding="utf-8")
@@ -80,7 +80,7 @@ def test_every_registration_names_a_real_file_and_pattern():
 
 def test_a_registration_only_covers_its_own_pattern(tmp_path):
     """Registering a file for one pattern must not silence the others."""
-    rel = "cogsec_multiagent_2_computational/manuscript/03c_attack_ethics.md"
+    rel = "cogsec_multiagent_2_computational/docs/manuscript/03c_attack_ethics.md"
     assert (rel, "ethics-review") in gate.ALLOWED
     assert (rel, "acknowledgement-of-people") not in gate.ALLOWED
 

@@ -41,15 +41,15 @@ REPO = Path(__file__).resolve().parent.parent
 #: corpus" long after the manuscript abstract had moved to 86.3%, and it is the
 #: text most readers see first, because it is what a search result shows.
 CONCLUSIONS = (
-    "cogsec_multiagent_1_theory/manuscript/01_abstract.md",
-    "cogsec_multiagent_1_theory/manuscript/09_conclusion.md",
-    "cogsec_multiagent_1_theory/manuscript/config.yaml",
-    "cogsec_multiagent_2_computational/manuscript/00_abstract.md",
-    "cogsec_multiagent_2_computational/manuscript/07_conclusion.md",
-    "cogsec_multiagent_2_computational/manuscript/config.yaml",
-    "cogsec_multiagent_3_practical/manuscript/00_abstract.md",
-    "cogsec_multiagent_3_practical/manuscript/08_conclusion.md",
-    "cogsec_multiagent_3_practical/manuscript/config.yaml",
+    "cogsec_multiagent_1_theory/docs/manuscript/01_abstract.md",
+    "cogsec_multiagent_1_theory/docs/manuscript/09_conclusion.md",
+    "cogsec_multiagent_1_theory/docs/manuscript/config.yaml",
+    "cogsec_multiagent_2_computational/docs/manuscript/00_abstract.md",
+    "cogsec_multiagent_2_computational/docs/manuscript/07_conclusion.md",
+    "cogsec_multiagent_2_computational/docs/manuscript/config.yaml",
+    "cogsec_multiagent_3_practical/docs/manuscript/00_abstract.md",
+    "cogsec_multiagent_3_practical/docs/manuscript/08_conclusion.md",
+    "cogsec_multiagent_3_practical/docs/manuscript/config.yaml",
 )
 
 #: In a config only the abstract is prose a reader reads; the rest is wiring

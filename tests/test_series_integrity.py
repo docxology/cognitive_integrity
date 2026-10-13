@@ -94,7 +94,7 @@ FIXTURE_TAU1_REFERENCE = 0.66
 def _build_tree(root: Path, *, part_text: dict[str, str], bibs: dict[str, str]) -> Path:
     gate = _load_module()
     for part, package in gate.PARTS.items():
-        manuscript = root / package / "manuscript"
+        manuscript = root / package / "docs" / "manuscript"
         manuscript.mkdir(parents=True, exist_ok=True)
         # Every body cites every key its part's bibliography defines. It did
         # not, and once the bibliography check began failing on an entry
@@ -139,7 +139,7 @@ def _build_tree(root: Path, *, part_text: dict[str, str], bibs: dict[str, str]) 
         )
     # domain_count derives structurally, by counting Part 3's 09c..09l section
     # files rather than reading a typed number, so the fixture must have them.
-    p3 = root / gate.PARTS["3"] / "manuscript"
+    p3 = root / gate.PARTS["3"] / "docs" / "manuscript"
     for letter in "cdefghijkl":
         (p3 / f"09{letter}_domain.md").write_text(
             f"# Domain {letter}\n\nA domain section.\n", encoding="utf-8"
@@ -428,7 +428,7 @@ def test_shared_quantities_fails_when_a_pattern_matches_nothing(tmp_path):
     module = _load_module(tree)
     # Strip every ceiling sentence so the pattern matches zero lines.
     for part in module.PARTS.values():
-        (tree / part / "manuscript" / "01_body.md").write_text(
+        (tree / part / "docs" / "manuscript" / "01_body.md").write_text(
             "# Body\n\nNo numbers here.\n", encoding="utf-8"
         )
     result = module.CHECKS["shared-quantities"]()
@@ -700,6 +700,21 @@ def test_cross_paper_pointers_is_not_vacuous_when_the_glob_breaks(tmp_path):
     result = module.CHECKS["cross-paper-pointers"]()
     assert not result.ok
     assert any("glob is broken" in p.message for p in result.problems)
+
+    # The driver must also refuse a missing or empty *single* part, rather than
+    # letting the other papers make a broken discovery look non-vacuous.
+    module = _load_module(tree)
+    source = module.manuscript_dir("2")
+    assert source == tree / module.PARTS["2"] / "docs" / "manuscript"
+    for path in source.iterdir():
+        path.unlink()
+    for selection in (["truncation"], ["math-hygiene"], ["bibliography"]):
+        results = module.run(selection)
+        assert not all(item.ok for item in results)
+        assert any("missing or empty" in problem.message
+                   for item in results for problem in item.problems)
+    source.rmdir()
+    assert not all(item.ok for item in module.run(["shared-quantities"]))
 
 
 def test_cross_paper_pointers_ignores_self_references(tmp_path):

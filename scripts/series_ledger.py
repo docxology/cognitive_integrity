@@ -513,7 +513,7 @@ def ablation_series_prediction() -> float:
 
 def domain_count() -> float:
     """Counted from Part 3's files, not typed: 09c..09l are the domain sections."""
-    root = REPO_ROOT / PARTS["3"] / "manuscript"
+    root = REPO_ROOT / PARTS["3"] / "docs" / "manuscript"
     return float(len([p for p in root.glob("09[c-z]_*.md")]))
 
 
@@ -1166,7 +1166,7 @@ def to_number(literal: str) -> float:
 
 
 def manuscript_files(part: str) -> list[Path]:
-    root = REPO_ROOT / PARTS[part] / "manuscript"
+    root = REPO_ROOT / PARTS[part] / "docs" / "manuscript"
     if not root.is_dir():
         return []
     return sorted(p for p in root.glob("*.md") if p.name != "preamble.md")

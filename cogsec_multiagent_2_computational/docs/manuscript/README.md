@@ -1,1 +1,1 @@
-Part 2 manuscript source (*Computational Validation*, Second Edition, DOI 10.5281/zenodo.22134546) with embedded figures in `figures/`. See AGENTS.md.
+Part 2 manuscript source (*Computational Validation*, v2.0 (first publication), DOI 10.5281/zenodo.22134546) with embedded figures in `figures/`. See AGENTS.md.

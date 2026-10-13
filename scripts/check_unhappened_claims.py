@@ -99,63 +99,67 @@ PATTERNS: dict[str, re.Pattern[str]] = {
 #: allows every occurrence in it, so the reason must cover them all.
 ALLOWED: dict[tuple[str, str], str] = {
     (
-        "cogsec_multiagent_2_computational/manuscript/03c_attack_ethics.md",
+        "cogsec_multiagent_2_computational/docs/manuscript/03c_attack_ethics.md",
         "ethics-review",
     ): "states that no review was sought and none was required, which is the negative claim",
     (
-        "cogsec_multiagent_2_computational/manuscript/03c_attack_ethics.md",
+        "cogsec_multiagent_2_computational/docs/manuscript/03c_attack_ethics.md",
         "gated-access",
     ): "states that no access tier is operated and explains why one would be incoherent",
     (
-        "cogsec_multiagent_2_computational/manuscript/03c_attack_ethics.md",
+        "cogsec_multiagent_2_computational/docs/manuscript/03c_attack_ethics.md",
         "annotation",
     ): "states that there is no human annotation stage and therefore no agreement statistic",
     (
-        "cogsec_multiagent_2_computational/manuscript/03c_attack_ethics.md",
+        "cogsec_multiagent_2_computational/docs/manuscript/03c_attack_ethics.md",
         "disclosure",
     ): "states that no vulnerability was found and no coordinated disclosure was undertaken",
     (
-        "cogsec_multiagent_2_computational/manuscript/06_discussion.md",
+        "cogsec_multiagent_2_computational/docs/manuscript/06_discussion.md",
         "pre-registration",
     ): "states that there was no pre-registration, as a limitation",
     (
-        "cogsec_multiagent_2_computational/manuscript/06_discussion.md",
+        "cogsec_multiagent_2_computational/docs/manuscript/06_discussion.md",
         "annotation",
     ): "states that there was no external annotation, as a limitation",
     (
-        "cogsec_multiagent_2_computational/manuscript/02b_configuration_parameters.md",
+        "cogsec_multiagent_2_computational/docs/manuscript/02b_configuration_parameters.md",
         "annotation",
     ): "a footnote distinguishing the corroboration count from Cohen's kappa, which is not reported",
     (
-        "cogsec_multiagent_2_computational/manuscript/config.yaml",
+        "cogsec_multiagent_2_computational/docs/manuscript/config.yaml",
         "release-history",
     ): "states that this paper has never been released before, which is the negative claim",
     (
-        "cogsec_multiagent_1_theory/manuscript/config.yaml",
+        "cogsec_multiagent_1_theory/docs/manuscript/config.yaml",
         "release-history",
     ): "records Part 1's real deposition history, which Zenodo record 18364119 confirms",
     (
-        "cogsec_multiagent_2_computational/manuscript/03c_attack_ethics.md",
+        "cogsec_multiagent_1_theory/docs/manuscript/README.md",
+        "release-history",
+    ): "describes Part 1's second edition, consistent with its registered config deposition history",
+    (
+        "cogsec_multiagent_2_computational/docs/manuscript/03c_attack_ethics.md",
         "field-study",
     ): "states that there was no user study and no production system, as the negative claim",
     (
-        "cogsec_multiagent_2_computational/manuscript/07_conclusion.md",
+        "cogsec_multiagent_2_computational/docs/manuscript/07_conclusion.md",
         "ethics-review",
     ): "states that no institutional review was sought because none was required",
     (
-        "cogsec_multiagent_2_computational/manuscript/07_conclusion.md",
+        "cogsec_multiagent_2_computational/docs/manuscript/07_conclusion.md",
         "gated-access",
     ): "states that no access tier is operated and that nothing is held back",
     (
-        "cogsec_multiagent_2_computational/manuscript/07_conclusion.md",
+        "cogsec_multiagent_2_computational/docs/manuscript/07_conclusion.md",
         "disclosure",
     ): "states that nothing was found to disclose and no coordinated disclosure took place",
     (
-        "cogsec_multiagent_2_computational/manuscript/04_experimental_setup.md",
+        "cogsec_multiagent_2_computational/docs/manuscript/04_experimental_setup.md",
         "pre-registration",
     ): "names a preregistration file that is absent and says so, so the plan is not read as one",
     (
-        "cogsec_multiagent_2_computational/manuscript/04_experimental_setup.md",
+        "cogsec_multiagent_2_computational/docs/manuscript/04_experimental_setup.md",
         "annotation",
     ): "defines the labels as generator properties and denies any inter-annotator statistic",
 }
@@ -169,10 +173,10 @@ def _manuscript_files() -> list[Path]:
     out = subprocess.run(
         [
             "git", "-C", str(REPO), "ls-files", "-z",
-            *[f"{p}/manuscript/*.md" for p in PARTS],
+            *[f"{p}/docs/manuscript/*.md" for p in PARTS],
             # config.yaml carries the abstract and changelog that become the
             # deposit's public metadata, so it is prose a reader sees.
-            *[f"{p}/manuscript/config.yaml" for p in PARTS],
+            *[f"{p}/docs/manuscript/config.yaml" for p in PARTS],
         ],
         capture_output=True,
         text=True,
