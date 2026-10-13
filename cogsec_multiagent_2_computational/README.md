@@ -31,7 +31,7 @@ This paper provides **computational validation** of the Cognitive Integrity Fram
 ## Primary Focus
 
 - **Implementation**: Defense mechanisms (firewall, sandbox, trust, consensus) + adversarial training + red-teaming
-- **Attack Corpus**: 1,475 attacks across 5 categories and fifteen subcategories, fully mapped to Ω_1–Ω_5 adversary taxonomy
+- **Attack Corpus**: 1,475 attacks across 5 categories and fifteen subcategories, carrying a category-derived technique-level Ω mapping (distinct from Part 1's access-based taxonomy)
 - **Validation**: Four target architectures (Claude Code, AutoGPT, CrewAI, LangGraph); colony benchmarks reporting detection results at 20–100 agents, plus non-functional stress tests (no-error/runtime only) at 100–500 agents
 - **Analysis**: Statistical significance, ablation studies, scalability benchmarks, adversarial training convergence
 

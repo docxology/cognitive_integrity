@@ -47,6 +47,13 @@ publications. See [CHANGELOG.md](CHANGELOG.md).
 - **Start with Part 2** if you want empirical evidence — the 1,475-item attack corpus, ablation studies, Bayesian uncertainty, parametric ceilings (exact architecture set and ceiling definition are in Part 2 methodology).
 - **Start with Part 3+4 (merged)** if you are deploying CIF and need engineering guidance without formal prerequisites or are evaluating CIF for a specific operational sector (infrastructure, supply chain, cyber, biowarfare, information ecosystems, etc.).
 
+Part 2 distinguishes the default integrated corpus (1,475 samples, five primary
+families, fifteen subcategories) from the legacy `extended=False` corpus (950
+samples, four families, twelve subcategories). The retained parametric
+architecture artifact uses 950 × 4 = 3,800 simulated instances; integrated
+pipeline studies use either all 1,475 attacks or their stated stratified
+subsample. None of those denominators establishes field performance.
+
 Each paper stands alone but explicitly points readers to the most relevant sections of its siblings.
 
 ## Author

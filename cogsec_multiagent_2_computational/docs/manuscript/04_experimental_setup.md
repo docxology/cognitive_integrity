@@ -2,7 +2,7 @@
 
 # Experimental Validation {#sec:results}
 
-This section demonstrates the practical viability of CIF's formal mechanisms through empirical evaluation across production multiagent architectures. We present experimental setup (\cref{sec:exp-setup}) and key findings (\cref{sec:key-findings}). Detailed statistical analysis, ablation studies, and scalability metrics are provided in \cref{sec:extended-results}.
+This section demonstrates the practical viability of CIF's formal mechanisms through implemented-pipeline measurements and parametric simulations of multiagent architectures. We present experimental setup (\cref{sec:exp-setup}) and key findings (\cref{sec:key-findings}). Detailed statistical analysis, ablation studies, and scalability metrics are provided in \cref{sec:extended-results}.
 
 ## Experimental Setup {#sec:exp-setup}
 
@@ -21,15 +21,15 @@ Table: Multiagent system architectures evaluated. {#tab:target-architectures}
 
 ### Attack Corpus
 
-We assembled a corpus of 950 cognitive attacks across four categories: prompt
-injection (500), trust exploitation (200), belief manipulation (150), and
-coordination attacks (100). The corpus is 100% template-generated via
-`AttackCorpus.generate(seed=42)` — no external datasets are used. Evaluation
-uses the full corpus or a stratified subsample (target 100 attacks,
-proportional across subcategories) drawn deterministically at seed 42. No
-held-out validation split is performed: all reported detection rates are
-in-sample. Thresholds are hardcoded literals (`FirewallConfig.injection_threshold = 0.8`,
-etc.), not fitted on a training partition.
+The default `AttackCorpus.generate(seed=42)` returns 1,475 template-generated
+attacks in five primary families and fifteen subcategories; `extended=False`
+returns the legacy 950-item corpus in four families and twelve subcategories.
+No external datasets are used. The retained architecture simulation artifact
+uses the legacy corpus (950 attacks per architecture), while integrated-corpus
+analyses use all 1,475 or a deterministic stratified 100-attack sample, as stated
+for each experiment. No held-out validation split is performed: reported
+pipeline detection rates are in-sample. Thresholds are hardcoded literals
+(`FirewallConfig.injection_threshold = 0.8`, etc.), not fitted on a training partition.
 
 ### Evaluation Methodology {#sec:eval-methodology}
 
@@ -39,7 +39,17 @@ This parametric approach enables controlled comparison across architectures and 
 
 **Relationship to implemented modules.** The CIF defense modules---Cognitive Firewall, Belief Sandbox, Tripwire Monitor, Trust Calculus, Byzantine Consensus, Provenance, Drift Detection, and Invariant Checker---are implemented and independently tested under the project coverage gate. The evaluation framework's ``ExperimentRunner`` operates in two modes: (1) \textit{pipeline-driven}, where each attack sample's text content is routed through the real defense pipeline and the pipeline's own detection verdict is used directly; and (2) \textit{parametric simulation}, where detection is computed from calibrated base rates modulated by architecture multipliers. When a real pipeline is provided to the runner, Mode 1 is used; when no pipeline is provided, Mode 2 is used. This dual-mode design enables both empirical validation of the implemented defenses and controlled parametric analysis of architectural sensitivity.
 
-**Pipeline-driven validation ($N=10$).** Running the full 950-attack corpus through the assembled ``SeriesPipeline`` (all 8 defense modules in sequence) confirms 100\% attack coverage (all 950 attack payloads successfully routed through the defense pipeline --- this measures routing completeness, not detection efficacy: of the routed attacks, the pipeline classified $\sim$86.3\% as attacks on average across seeds in the multi-seed analysis) with 0\% routing failure rate across all four architectures and all four attack categories. The ``EnhancedCognitiveFirewall`` module runs first in the canonical module order, but evaluated alone it detects 5.4\% of attack payloads, so the series chain short-circuits at the firewall on 5.4\% of samples and every remaining payload is carried to later modules; its marginal contribution to the full pipeline is $\Delta\text{TPR} = 0.000$ (\cref{tab:component-removal}). Its measured cost is a mean of 0.04ms per sample (median 0.04ms, p95 0.05ms; \texttt{output/data/module\_capability\_matrix.json}, $n = 1{,}475$). The 100\% figure above is therefore a routing result rather than a detection one: every attack in the corpus reaches the pipeline regardless of architecture topology. The parametric simulation tables presented below characterize the \textit{architecture-differentiated} detection properties---how detection would vary if individual modules operated in isolation with architecture-specific exposure factors.
+**Pipeline-driven validation (30 seeds, 100 attacks per seed).** The tracked
+`multi_seed_results.json` measures one architecture-agnostic CIF pipeline on a
+stratified 100-attack sample of the integrated corpus per seed, with 120 benign
+messages per seed. Its mean attack detection rate is 86.3\%; this is not a
+full-corpus routing-completeness experiment. The separate module capability
+matrix (`module_capability_matrix.json`) evaluates each module on all 1,475
+attacks; the firewall alone detects 5.4\% at seed 42. The component-removal study
+uses a stratified 100-attack sample and records the firewall's marginal
+contribution as $\Delta\text{TPR} = 0.000$ (\cref{tab:component-removal}). These
+pipeline measurements are distinct from the historical architecture simulation
+and do not establish production deployment performance.
 
 **LLM-backed multiagent validation ($N=10$).** To confirm that the pipeline-driven and parametric results hold when attacks are processed by real language models operating within architecture-specific topologies, we additionally evaluate CIF using live LLM agents. Each architecture adapter spawns a multiagent system where every agent is backed by a real LLM (Gemma 3 4B \cite{team2025gemma} via Ollama), configured with role-specific system prompts (orchestrator, researcher, reviewer, etc.) and connected according to the architecture's communication graph and trust matrix. We evaluated 5 representative attacks (one per category) across 2 architectures ($5 \times 2 = 10$ trials). Attack payloads are injected into the system's entry-point agent(s) and propagated through the communication topology up to a bounded depth; the CIF defense pipeline then analyzes all inter-agent messages for detection. This three-phase evaluation---single-agent baseline ($N=5$), multi-agent propagation ($N=10$), and CIF defense analysis---demonstrates that the framework operates correctly with genuine LLM reasoning rather than simulated responses.
 
