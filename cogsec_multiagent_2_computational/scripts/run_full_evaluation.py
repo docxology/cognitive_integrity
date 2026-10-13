@@ -85,7 +85,7 @@ def main() -> int:
 
     # Generate attack corpus
     print("\n[1/3] Generating 950-attack corpus...")
-    corpus = AttackCorpus.generate(seed=args.seed)
+    corpus = AttackCorpus.generate(seed=args.seed, extended=False)
     print(f"  Corpus size: {len(corpus)}")
 
     adapters = get_all_adapters()

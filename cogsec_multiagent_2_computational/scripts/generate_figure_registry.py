@@ -9,7 +9,7 @@ auto-assigned sequential numbers.
 Output: output/data/figure_registry.json
 
 Usage:
-    python scripts/generate_figure_registry.py [--root manuscript]
+    python scripts/generate_figure_registry.py [--root docs/manuscript]
         [--output output/data/figure_registry.json]  # noqa: E501
 
 Registry format:
@@ -212,7 +212,7 @@ def main() -> int:
     base_dir = Path(__file__).resolve().parent.parent
     parser.add_argument(
         "--root",
-        default=str(base_dir / "manuscript"),
+        default=str(base_dir / "docs" / "manuscript"),
         help="Path to manuscript directory (default: <project>/manuscript)",
     )
     parser.add_argument(

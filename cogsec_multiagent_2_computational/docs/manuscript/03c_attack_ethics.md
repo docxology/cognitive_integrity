@@ -8,7 +8,7 @@ This section documents how the attack corpus is generated, what can and cannot b
 
 ### Deterministic Generation {#sec:synthetic-generation}
 
-The corpus is not collected, curated or hand-written. It is produced by a single seeded call, `AttackCorpus.generate(seed=42)`, which draws one `numpy` generator and passes it to five category modules under `src/attacks/generators/`. Each module expands parameterised templates for its categories, and the call returns 1,475 samples across fifteen categories:
+The corpus is not collected, curated or hand-written. It is produced by a single seeded call, `AttackCorpus.generate(seed=42)`, which draws one `numpy` generator and passes it to five category modules under `src/attacks/generators/`. Each module expands parameterised templates for its categories, and the call returns 1,475 samples across five primary families and fifteen subcategories:
 
 - `generate_all_injection` --- 500 samples: direct, indirect and nested injection
 - `generate_all_trust_exploitation` --- 200 samples: trust inflation, delegation abuse, impersonation
@@ -16,7 +16,7 @@ The corpus is not collected, curated or hand-written. It is produced by a single
 - `generate_all_coordination` --- 100 samples: consensus poisoning, sybil and timing attacks
 - `generate_all_provenance_and_isolation` --- 525 samples: provenance laundering, sandbox escape, byzantine manipulation
 
-Passing `extended=False` reproduces the earlier 950-item corpus without the final module. That corpus is retained only so a reader can reproduce results computed against it: it contains no instance of what the provenance, sandbox and consensus adapters detect, so those three modules score a Shapley value of exactly zero in every one of the 256 coalitions of the defense lattice. A corpus that cannot reach three of eight mechanisms cannot measure the framework, and every number reported in this paper is measured against one that can.
+Passing `extended=False` reproduces the earlier 950-item corpus without the final module. That corpus is retained only so a reader can reproduce results computed against it: it contains no instance of what the provenance, sandbox and consensus adapters detect, so those three modules score a Shapley value of exactly zero in every one of the 256 coalitions of the defense lattice. A corpus that cannot reach three of eight mechanisms cannot measure the framework, so integrated-corpus measurements must be distinguished from historical results. The tracked parametric artifact (`full_evaluation_results.json`) retains 950 attacks per architecture; the multi-seed and ablation studies use stratified 100-attack samples, while the capability matrix and taxonomy evaluation use all 1,475. These denominators are not interchangeable.
 
 Because generation is a pure function of the seed, the corpus needs no distribution: it is a property of the published code, and any reader who clones the repository obtains exactly the corpus evaluated here.
 
@@ -26,9 +26,9 @@ There is no human annotation stage in this pipeline, and therefore no inter-anno
 
 1. **Category profile completeness.** Every category must declare an adversary class and a target in `_CATEGORY_PROFILE`; a category without an entry raises at generation time rather than being silently dropped from every stratified result.
 2. **Identifier uniqueness and category alignment.** Each sample is assigned a per-category sequential identifier, and the test suite asserts that counts, prefixes and category labels agree with the generator that produced them.
-3. **Corpus composition.** The composition table (\cref{tab:corpus-composition-actual}) is generated from the corpus object itself rather than typed, so the paper cannot state a distribution the corpus does not have.
+3. **Corpus composition.** The composition table (\cref{tab:corpus-composition-actual}) is checked against the generated corpus object by regression tests, so the paper cannot state a distribution the corpus does not have.
 
-The honest limitation is the one this design cannot escape: the attacks are template expansions, and a detector keyed on structural features is being asked to recognise generated structure. Detection rates measured on this corpus are upper bounds relative to adversarial text written by a person trying to evade the specific detector, and are read that way throughout.
+The honest limitation is the one this design cannot escape: the attacks are template expansions, and a detector keyed on structural features is being asked to recognise generated structure. Detection rates measured on this corpus are in-sample instrument measurements. They establish neither an upper nor a lower bound on performance against independently authored adversarial text.
 
 ## Attack Effectiveness {#sec:effectiveness-analysis}
 

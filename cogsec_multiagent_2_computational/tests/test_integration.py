@@ -374,7 +374,7 @@ class TestManuscriptVerification:
 
     def test_verify_script_runs(self):
         """verify_manuscript.py runs on the manuscript directory."""
-        manuscript_dir = ROOT / "manuscript"
+        manuscript_dir = ROOT / "docs" / "manuscript"
         if not manuscript_dir.exists():
             pytest.skip("Manuscript directory not found")
 
@@ -403,7 +403,7 @@ class TestManuscriptVerification:
         sys.path.insert(0, str(ROOT / "scripts"))
         from verify_manuscript import ManuscriptVerifier
 
-        manuscript_dir = ROOT / "manuscript"
+        manuscript_dir = ROOT / "docs" / "manuscript"
         if not manuscript_dir.exists():
             pytest.skip("Manuscript directory not found")
 

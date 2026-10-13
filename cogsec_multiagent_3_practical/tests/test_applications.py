@@ -9,11 +9,10 @@ row cannot silently drift from the paper.
 from __future__ import annotations
 
 import re
-
-import pytest
 from pathlib import Path
 
 import numpy as np
+import pytest
 
 from src.applications.domain_coverage import (
     ATTACK_PATTERNS,
@@ -26,7 +25,7 @@ from src.applications.domain_coverage import (
 )
 
 PROJECT_ROOT = Path(__file__).parent.parent
-DISCOURSE = PROJECT_ROOT / "manuscript" / "10_cross_domain_discussion.md"
+DISCOURSE = PROJECT_ROOT / "docs" / "manuscript" / "10_cross_domain_discussion.md"
 
 
 # ---------------------------------------------------------------------------

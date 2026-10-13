@@ -307,7 +307,7 @@ class TestCrefVerification:
     def test_real_manuscript_resolves_every_cref(self):
         """Anti-vacuity: the project's own manuscript must supply real targets."""
         registry_path = _PROJECT_ROOT / "output" / "data" / "figure_registry.json"
-        manuscript_dir = _PROJECT_ROOT / "manuscript"
+        manuscript_dir = _PROJECT_ROOT / "docs" / "manuscript"
         if not registry_path.exists() or not manuscript_dir.exists():
             pytest.skip("figure registry or manuscript not present in this checkout")
         registry = json.loads(registry_path.read_text())
@@ -392,7 +392,7 @@ class TestVerifyManuscriptLogging:
         assert list(tmp_path.iterdir()) == []
 
     def test_main_returns_zero_on_the_projects_own_manuscript(self, tmp_path):
-        manuscript_dir = _PROJECT_ROOT / "manuscript"
+        manuscript_dir = _PROJECT_ROOT / "docs" / "manuscript"
         if not manuscript_dir.exists():
             pytest.skip("manuscript directory not present")
         code = verify_manuscript.main(

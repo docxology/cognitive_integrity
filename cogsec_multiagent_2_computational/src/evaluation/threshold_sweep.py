@@ -25,7 +25,7 @@ in the false-positive budget exactly as a rejection does. Counting only
 from __future__ import annotations
 
 from dataclasses import dataclass, replace
-from typing import Iterable, Sequence
+from typing import Any, Iterable, Sequence
 
 from core.firewall import Classification, CognitiveFirewall, FirewallConfig
 
@@ -115,7 +115,10 @@ def _sweep(
     for tau in taus:
         if not 0.0 <= tau <= 1.0:
             raise ValueError(f"threshold {tau} is outside [0, 1]")
-        firewall = CognitiveFirewall(replace(config, **{field: tau}))
+        # The dataclass supports fields with different types; these dynamic
+        # kwargs contain exactly the named floating-point threshold.
+        updates: dict[str, Any] = {field: tau}
+        firewall = CognitiveFirewall(replace(config, **updates))
         points.append(_measure(firewall, attacks, benign, tau, which))
     return points
 

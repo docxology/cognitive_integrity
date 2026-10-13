@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import json
 import re
+from collections import Counter
 from pathlib import Path
 
 import pytest
@@ -52,7 +53,7 @@ def _stated_delta(row_label: str) -> float:
 
     table = (
         Path(__file__).resolve().parents[1]
-        / "manuscript"
+        / "docs" / "manuscript"
         / "05d_ablation_and_scalability.md"
     ).read_text(encoding="utf-8")
     match = re.search(
@@ -126,7 +127,10 @@ def test_firewall_removal_delta_tpr(ablation: dict) -> None:
     # hardcoded -0.009, so it tested a copy of the number instead of the claim,
     # and went stale the moment the detector changed.
     table = (
-        Path(__file__).resolve().parents[1] / "manuscript" / "05d_ablation_and_scalability.md"
+        Path(__file__).resolve().parents[1]
+        / "docs"
+        / "manuscript"
+        / "05d_ablation_and_scalability.md"
     ).read_text(encoding="utf-8")
     match = re.search(r"\| Firewall \| [\d.]+ \| \$\\approx ([-+]?[\d.]+)\$", table)
     assert match, "the firewall row is no longer in the ablation table"
@@ -165,7 +169,10 @@ def test_component_hierarchy_ordering_matches_manuscript(ablation: dict) -> None
     )
 
     table = (
-        Path(__file__).resolve().parents[1] / "manuscript" / "05d_ablation_and_scalability.md"
+        Path(__file__).resolve().parents[1]
+        / "docs"
+        / "manuscript"
+        / "05d_ablation_and_scalability.md"
     ).read_text(encoding="utf-8")
     stated: dict[str, float] = {}
     for label, key in (
@@ -208,7 +215,7 @@ def test_no_manuscript_file_names_a_single_strongest_synergy_pair() -> None:
     string -- any sentence asserting a strongest synergy must either say it is
     a tie or name both pairs.  Naming one alone is the defect.
     """
-    manuscript = Path(__file__).parent.parent / "manuscript"
+    manuscript = Path(__file__).parent.parent / "docs" / "manuscript"
     offenders: list[str] = []
     for path in sorted(manuscript.glob("*.md")):
         for sentence in re.split(r"(?<=[.;])\s+", path.read_text(encoding="utf-8")):
@@ -258,7 +265,7 @@ _REFUTED_ORDERINGS = (
 @pytest.mark.parametrize("pattern", _REFUTED_ORDERINGS)
 def test_no_manuscript_file_states_a_refuted_component_ordering(pattern: str) -> None:
     """Sweep every manuscript section for orderings the artifact refutes."""
-    manuscript = Path(__file__).parent.parent / "manuscript"
+    manuscript = Path(__file__).parent.parent / "docs" / "manuscript"
     offenders = [
         path.name
         for path in sorted(manuscript.glob("*.md"))
@@ -298,7 +305,7 @@ def test_the_manuscript_agrees_with_the_artifact_about_whether_the_top_synergy_t
 
     prose = (
         Path(__file__).resolve().parents[1]
-        / "manuscript"
+        / "docs" / "manuscript"
         / "05b_statistical_significance.md"
     ).read_text(encoding="utf-8")
     claims_a_tie = "tie for the strongest synergy" in prose
@@ -751,7 +758,7 @@ def test_the_per_seed_table_is_the_artifact(ablation: dict) -> None:
     ]
     assert len(measured) == 30
 
-    text = (root / "manuscript" / "05_results.md").read_text(encoding="utf-8")
+    text = (root / "docs" / "manuscript" / "05_results.md").read_text(encoding="utf-8")
     block = re.search(
         r"\| Seeds 1–10 \| Seeds 11–20 \| Seeds 21–30 \|\n\|[^\n]*\|\n((?:\|[^\n]*\|\n){2})",
         text,
@@ -787,7 +794,7 @@ def test_the_stability_verdict_agrees_with_its_own_threshold() -> None:
     )
     cv = payload["overall_cv"]
     threshold = payload["cv_threshold"]
-    text = (root / "manuscript" / "05_results.md").read_text(encoding="utf-8")
+    text = (root / "docs" / "manuscript" / "05_results.md").read_text(encoding="utf-8")
 
     stable = cv < threshold
     verdict = re.search(r"\| Stability \(CV < [\d.]+\) \| (\w[\w ]*) \|", text)
@@ -830,7 +837,7 @@ def test_the_baseline_table_is_the_artifact() -> None:
         "Random null": "random_null",
     }
 
-    text = (root / "manuscript" / "05_results.md").read_text(encoding="utf-8")
+    text = (root / "docs" / "manuscript" / "05_results.md").read_text(encoding="utf-8")
     rows = re.findall(
         r"^\| ([A-Z][^|]*?) \| (-?[\d.]+) \| (-?[\d.]+) \| "
         r"(-?[\d.]+) \| (-?[\d.]+) \| ([\d.]+) \|$",
@@ -871,7 +878,7 @@ def test_the_baseline_caption_does_not_contradict_its_own_table() -> None:
         (root / "output" / "data" / "baseline_comparison.json").read_text(encoding="utf-8")
     )
     measured = {d["name"]: d["metrics"] for d in payload["detectors"]}
-    text = (root / "manuscript" / "05_results.md").read_text(encoding="utf-8")
+    text = (root / "docs" / "manuscript" / "05_results.md").read_text(encoding="utf-8")
 
     assert measured["cif_full_pipeline"]["tpr"] > measured["keyword_regex"]["tpr"], (
         "the keyword regex now out-detects CIF; the caption needs rewriting, "
@@ -899,19 +906,18 @@ def test_the_baseline_caption_does_not_contradict_its_own_table() -> None:
 # also changed. These bind the typed cells to corpus_rows(), which measures the
 # corpus itself.
 
-import re as _re
-from collections import Counter as _Counter
-from pathlib import Path as _Path
 
 
-_CORPUS_SECTION = _Path(__file__).resolve().parents[1] / "manuscript" / "03_attack_corpus.md"
+_CORPUS_SECTION = (
+    Path(__file__).resolve().parents[1] / "docs" / "manuscript" / "03_attack_corpus.md"
+)
 
 
 def _manuscript_corpus_table() -> dict[str, int]:
     """The typed ``category -> count`` cells of the composition table."""
     text = _CORPUS_SECTION.read_text(encoding="utf-8")
-    block = _re.search(
-        r"\{#tab:corpus-composition-actual\}\n\n(\|.*?)\n\n", text, _re.S
+    block = re.search(
+        r"\{#tab:corpus-composition-actual\}\n\n(\|.*?)\n\n", text, re.S
     )
     assert block, "the corpus-composition table is no longer where the test looks"
     rows: dict[str, int] = {}
@@ -927,15 +933,61 @@ def _manuscript_corpus_table() -> dict[str, int]:
     return rows
 
 
-def test_manuscript_corpus_table_matches_the_generated_corpus():
+def test_manuscript_corpus_table_matches_the_generated_corpus(tmp_path):
     import sys
 
-    sys.path.insert(0, str(_Path(__file__).resolve().parents[1] / "src"))
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
     from visualization.tables.corpus_tables import corpus_rows
 
-    measured = _Counter()
+    measured = Counter()
     for row in corpus_rows():
         measured[row.category.replace("_", " ").title()] += row.count
+
+    text = _CORPUS_SECTION.read_text(encoding="utf-8")
+    summary = re.search(r"\{#tab:corpus-categories\}\n\n(\|.*?)\n\n", text, re.S)
+    assert summary
+    for name, count in measured.items():
+        label = {"Injection": "Prompt Injection", "Coordination": "Coordination Attacks"}.get(
+            name, name.replace("And", "and")
+        )
+        assert f"| {label} | {count} |" in summary.group(1)
+    assert f"| **Total** | **{sum(measured.values()):,}** |" in summary.group(1)
+
+    from attacks.corpus import AttackCorpus
+
+    corpus = AttackCorpus.generate(seed=42)
+    omega = Counter(sample.omega_level for sample in corpus)
+    omega_block = re.search(r"\{#tab:omega-level-mapping\}\n\n(\|.*?)\n\n", text, re.S)
+    assert omega_block
+    for level, count in omega.items():
+        row = next(line for line in omega_block.group(1).splitlines()
+                   if line.startswith(f"| Ω{chr(0x2080 + level)} "))
+        cells = [cell.strip() for cell in row.strip("|").split("|")]
+        assert int(cells[2]) == count
+        assert float(cells[3].strip("%")) == round(100 * count / len(corpus), 1)
+
+    setup = (_CORPUS_SECTION.parent / "04_experimental_setup.md").read_text()
+    rows = json.loads((DATA_DIR / "full_evaluation_results.json").read_text())
+    stated_instances = re.search(r"Simulation-Based Analysis \(\$N=([\d{},]+)\$\)", setup)
+    assert stated_instances
+    assert int(re.sub(r"\D", "", stated_instances.group(1))) == sum(
+        row["n_attacks"] for row in rows
+    )
+    assert "`extended=False`" in setup
+
+    # Reproduction must retain the legacy protocol even though generate() now
+    # defaults to the integrated corpus. Exercise the actual CLI into a fresh
+    # directory so existing publication evidence cannot mask a changed run.
+    import subprocess
+
+    reproduced = subprocess.run(
+        [sys.executable, str(_CORPUS_SECTION.parents[2] / "scripts" / "run_full_evaluation.py"),
+         "--mode", "simulation", "--seed", "42", "--output", str(tmp_path)],
+        capture_output=True, text=True, check=True,
+    )
+    assert "950" in reproduced.stdout
+    fresh = json.loads((tmp_path / "full_evaluation_results.json").read_text())
+    assert sum(row["n_attacks"] for row in fresh) == sum(row["n_attacks"] for row in rows)
 
     typed = _manuscript_corpus_table()
     assert typed.pop("Total") == sum(measured.values())
@@ -957,17 +1009,23 @@ def test_manuscript_corpus_table_matches_the_generated_corpus():
 def test_manuscript_difficulty_split_matches_the_generated_corpus():
     import sys
 
-    sys.path.insert(0, str(_Path(__file__).resolve().parents[1] / "src"))
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
     from attacks.corpus import AttackCorpus
 
     text = _CORPUS_SECTION.read_text(encoding="utf-8")
-    stated = _re.search(
+    stated = re.search(
         r"difficulty distribution is easy (\d+), medium (\d+), hard (\d+)", text
     )
     assert stated, "the difficulty sentence is no longer where the test looks"
 
     corpus = AttackCorpus.generate(seed=42)
-    measured = _Counter(sample.difficulty for sample in corpus)
+    measured = Counter(sample.difficulty for sample in corpus)
+    difficulty_table = re.search(r"\{#tab:difficulty-dist\}\n\n(\|.*?)\n\n", text, re.S)
+    assert difficulty_table
+    for level, count in measured.items():
+        row = next(line for line in difficulty_table.group(1).splitlines()
+                   if line.startswith(f"| {level.title()} |"))
+        assert int(row.split("|")[2].strip()) == count
     for index, level in enumerate(("easy", "medium", "hard"), start=1):
         assert int(stated.group(index)) == measured[level], (
             f"{level}: manuscript says {stated.group(index)}, corpus has {measured[level]}"

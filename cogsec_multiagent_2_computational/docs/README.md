@@ -4,7 +4,7 @@ Documentation index for **Part 2** of *Cognitive Security for Multiagent
 Operators*. This part implements and empirically validates the CIF defense suite
 (cognitive firewall, belief sandbox, tripwires, drift/anomaly scoring, trust
 calculus, provenance tracking, Byzantine-tolerant consensus) built on the formal
-foundations of [Part 1](../cogsec_multiagent_1_theory/).
+foundations of [Part 1](../../cogsec_multiagent_1_theory/).
 
 ## Documentation map
 
@@ -16,7 +16,7 @@ foundations of [Part 1](../cogsec_multiagent_1_theory/).
 | [`../PAI.md`](../PAI.md) | Paper authoring instructions |
 | [`../SKILL.md`](../SKILL.md) | Agent skills for this exemplar |
 | **`README.md` (this file)** | Documentation index |
-| [`../manuscript/`](../manuscript/) | The paper content (markdown + `config.yaml` + `references.bib`) |
+| [`manuscript/`](manuscript/) | The paper content (markdown + `config.yaml` + `references.bib`) |
 | [`../src/`](../src/) | The authoritative CIF implementation (each subpackage ships its own `README.md`/`AGENTS.md`) |
 
 ## Core documents
@@ -89,3 +89,9 @@ uv run python -c "from pathlib import Path; from src.manuscript.injector import 
 See [`../README.md`](../README.md) and the program
 [`docs/README.md`](../../docs/README.md) for the cross-paper reading guide and
 how to render this paper as PDF from the template repo.
+
+## Figure reproducibility
+
+[Figure reproducibility boundaries](figure-reproducibility.md) describes the reviewed
+historical artifact identities, observed render inputs and exact same-environment
+determinism checks.

@@ -46,7 +46,7 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument(
         "--manuscript",
-        default=str(project_dir / "manuscript"),
+        default=str(project_dir / "docs" / "manuscript"),
         help="Directory containing the manuscript markdown files.",
     )
     parser.add_argument(

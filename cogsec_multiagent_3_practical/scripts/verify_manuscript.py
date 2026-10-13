@@ -7,7 +7,7 @@ Performs automated checks on manuscript files to ensure
 consistency, correctness, and adherence to style guidelines.
 
 Usage:
-    python verify_manuscript.py [--root manuscript]
+    python verify_manuscript.py [--root docs/manuscript]
 """
 
 import argparse
@@ -26,7 +26,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Verify manuscript integrity.")
     # Default to project's own manuscript directory (not CWD-relative)
     project_dir = os.environ.get("PROJECT_DIR", str(Path(__file__).resolve().parent.parent))
-    default_root = str(Path(project_dir) / "manuscript")
+    default_root = str(Path(project_dir) / "docs" / "manuscript")
     parser.add_argument("--root", default=default_root, help="Path to manuscript root directory.")
     args = parser.parse_args()
 

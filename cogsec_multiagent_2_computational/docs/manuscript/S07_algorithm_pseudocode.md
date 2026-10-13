@@ -6,7 +6,7 @@ This supplement provides detailed pseudocode for all six core CIF defense algori
 
 > **Cross-Reference Note**. All algorithms implement formal definitions from Part 1 \cite{friedman2026cogsec1} (DOI: 10.5281/zenodo.22134544). We cite specific theorems using "(Part 1, Theorem N)" notation to enable traceability from implementation to theoretical foundations. For deployment-facing pseudocode annotations and domain-calibrated instantiations across ten critical operational sectors, see unified Part 3+4 \cite{friedman2026cogsec3}, Sections 5--10.
 
-> **Reproducibility**. Algorithm implementations are in [`src/core/`](../src/core/). Run `uv run pytest tests/` to verify behavior (see \cref{sec:framework-api} for the complete API surface and the suite's coverage target: 90%+ project code, no mocks). Every pseudocode block below has a corresponding Python implementation; the "Implementation" column of \cref{tab:alg-quickref} names the exact module.
+> **Reproducibility**. Algorithm implementations are in [`src/core/`](../../src/core/). Run `uv run pytest tests/` to verify behavior (see \cref{sec:framework-api} for the complete API surface and the suite's coverage target: 90%+ project code, no mocks). Every pseudocode block below has a corresponding Python implementation; the "Implementation" column of \cref{tab:alg-quickref} names the exact module.
 
 ## Algorithm Quick Reference {#sec:alg-quickref}
 

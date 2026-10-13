@@ -61,7 +61,7 @@ uv run python scripts/01_posture_radar_figure.py
 
 ```bash
 # Manuscript integrity (citations, links, labels, structure)
-uv run python scripts/verify_manuscript.py --root manuscript
+uv run python scripts/verify_manuscript.py --root docs/manuscript
 
 # Tests
 uv run pytest tests/ -q

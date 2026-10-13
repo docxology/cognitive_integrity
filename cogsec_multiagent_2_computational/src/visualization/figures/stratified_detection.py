@@ -89,6 +89,7 @@ def plot_stratified_detection(output_dir: str | Path = "output/figures") -> Figu
     )
 
     fig, axes = create_figure(width=11, height=4.6, n_rows=1, n_cols=2)
+    assert isinstance(axes, np.ndarray), "two-panel figure must return an axes array"
     _panel(axes[0], by_target, _TARGET_LABEL, "A. By what the attack targets", overall)
     _panel(axes[1], payload["by_omega_level"], _OMEGA_LABEL, "B. By adversary class", overall)
 

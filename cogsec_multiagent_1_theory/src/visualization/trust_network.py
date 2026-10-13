@@ -100,7 +100,9 @@ def generate_trust_network_figure(output_dir: Path) -> list[Path]:
 
     # --- Panel B: Trust Network Under Attack ---
     ax2 = axes[1]
-    ax2.set_title("B. Trust Network Under Attack (illustrative)", fontsize=13, fontweight="bold", pad=10)
+    ax2.set_title(
+        "B. Trust Network Under Attack (illustrative)", fontsize=13, fontweight="bold", pad=10
+    )
 
     # Modified trust levels (A3 is compromised)
     trust_attack = [

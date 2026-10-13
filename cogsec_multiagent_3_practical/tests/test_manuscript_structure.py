@@ -63,7 +63,7 @@ EXPECTED_MANUSCRIPT_SECTIONS = [
 @pytest.mark.parametrize("section", EXPECTED_MANUSCRIPT_SECTIONS)
 def test_manuscript_section_exists(section):
     """Every expected manuscript section must be present after merge."""
-    path = PROJECT_ROOT / "manuscript" / section
+    path = PROJECT_ROOT / "docs" / "manuscript" / section
     assert path.exists(), f"Missing manuscript section: {section}"
     assert path.stat().st_size > 0, f"Empty manuscript section: {section}"
 
@@ -82,14 +82,14 @@ def test_ten_domain_sections_present():
         "09k_infrastructure.md",
         "09l_fake_news.md",
     ]
-    manuscript_dir = PROJECT_ROOT / "manuscript"
+    manuscript_dir = PROJECT_ROOT / "docs" / "manuscript"
     for d in domains:
         assert (manuscript_dir / d).exists(), f"Domain section missing: {d}"
 
 
 def test_s03_supplement_exists():
     """S03 (real-world incidents, formerly Part 4's S02) must be present."""
-    path = PROJECT_ROOT / "manuscript" / "S03_real_world_incidents.md"
+    path = PROJECT_ROOT / "docs" / "manuscript" / "S03_real_world_incidents.md"
     assert path.exists()
     content = path.read_text()
     # Should reference updated S3 numbering
@@ -179,7 +179,7 @@ def test_config_yaml_version_matches_the_series():
 
     declared = {}
     for part in sorted(series_root.glob("cogsec_multiagent_*")):
-        config = part / "manuscript" / "config.yaml"
+        config = part / "docs" / "manuscript" / "config.yaml"
         if not config.is_file():
             continue
         match = re.search(r"^\s*version:\s*['\"]([^'\"]+)['\"]", config.read_text(), re.M)
@@ -195,7 +195,7 @@ def test_config_yaml_version_matches_the_series():
 
 def test_config_yaml_merged_title():
     """config.yaml must have the merged title."""
-    config_path = PROJECT_ROOT / "manuscript" / "config.yaml"
+    config_path = PROJECT_ROOT / "docs" / "manuscript" / "config.yaml"
     content = config_path.read_text()
     assert "Practical Applications and Deployment Guide" in content, (
         "config.yaml title must reflect the merged scope"
@@ -204,7 +204,7 @@ def test_config_yaml_merged_title():
 
 def test_references_bib_contains_part4_entries():
     """references.bib must contain key Part 4 domain-specific references."""
-    bib_path = PROJECT_ROOT / "manuscript" / "references.bib"
+    bib_path = PROJECT_ROOT / "docs" / "manuscript" / "references.bib"
     content = bib_path.read_text()
     part4_keys = [
         "suh2001axiomatic",  # Axiomatic Design — central to CIF-AD-OODA

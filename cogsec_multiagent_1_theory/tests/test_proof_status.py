@@ -25,7 +25,7 @@ from pathlib import Path
 
 import pytest
 
-MANUSCRIPT = Path(__file__).parent.parent / "manuscript"
+MANUSCRIPT = Path(__file__).parent.parent / "docs" / "manuscript"
 
 #: Main-text sections carrying formal results.  S01 is the proof supplement
 #: itself and is read separately; S03 is notation.
@@ -174,7 +174,9 @@ def test_the_dangling_index_check_can_actually_fail(tmp_path: Path, monkeypatch)
     """The reverse direction must fire too: an index entry with no result."""
     manuscript = tmp_path / "manuscript"
     manuscript.mkdir()
-    (manuscript / "04_formal_framework.md").write_text("# Framework\n\nNothing.\n", encoding="utf-8")
+    (manuscript / "04_formal_framework.md").write_text(
+        "# Framework\n\nNothing.\n", encoding="utf-8"
+    )
     (manuscript / "S01_proofs.md").write_text(
         "# Proofs\n\n## Proof Status\n\n"
         "- Vanished Result, \\cref{thm:vanished}\n\n"

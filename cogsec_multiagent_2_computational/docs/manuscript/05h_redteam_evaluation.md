@@ -91,7 +91,7 @@ evasion rate is below 5.5\% with 95\% confidence.
 
 The current red-team evaluation has important scope limitations:
 
-1. **Corpus size**: The evasion denominator is 66 distinct flagged payloads drawn from the 950-sample corpus (961 distinct payloads), limiting statistical power (e.g., the gradual-insertion 4.5\% rate has a 95\% CI spanning 1.6–12.5\%).
+1. **Corpus size**: The evasion denominator is 66 distinct flagged payloads drawn from the 1,475-sample integrated corpus (961 distinct payloads), limiting statistical power (e.g., the gradual-insertion 4.5\% rate has a 95\% CI spanning 1.6–12.5\%).
 2. **Deterministic evaluation**: All evaluations use seed 42; results may differ with other seeds.
 3. **Template-generated attacks**: The attack corpus is 100\% synthetic template expansion; mutation effectiveness may differ on real-world attacks.
 4. **Lexical preservation check**: The semantic-equivalence check in the mutator is lexical, not semantic; some "preserved" mutations may have altered meaning, and some "broken" mutations may have preserved it.

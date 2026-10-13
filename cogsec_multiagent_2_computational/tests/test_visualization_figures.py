@@ -9,8 +9,10 @@ import ast
 import datetime
 import hashlib
 import inspect
+import json
 import os
 import re
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -630,15 +632,16 @@ sys.exit(g.main(argv=["--output", {out!r}],
 # ---------------------------------------------------------------------------
 
 
-class TestTrackedFiguresAreRegenerable:
+class TestReviewedFigureProvenance:
     """A committed figure that no longer regenerates is a stale illustration.
 
     The ablation figure diverged from its generator and nothing noticed: the
     committed PNG ordered the components differently from a fresh run and
     labelled Trust Calculus with the wrong delta, while the prose beside it
-    described a third arrangement. The generators are deterministic -- two runs
-    are byte-identical -- so a mismatch means the committed bytes are stale, not
-    that the comparison is flaky.
+    described a third arrangement. Exact byte determinism is checked within the
+    current environment. Historical PNG/PDF identities and the reviewed render
+    inputs are checked separately: platform PNG encoders differ, and three
+    cross-platform rasterizations differ locally by one channel level.
     """
 
     def test_generation_is_deterministic(self, tmp_path):
@@ -647,6 +650,32 @@ class TestTrackedFiguresAreRegenerable:
         import sys
 
         root = Path(__file__).parent.parent
+        from visualization.reproducibility import RenderTrace
+
+        probe = tmp_path / "trace_probe"
+        (probe / "scripts").mkdir(parents=True)
+        for relative in ("scripts/generate_all_figures.py", "uv.lock", "pyproject.toml"):
+            (probe / relative).write_text("fixture")
+        data = probe / "output" / "data" / "input.json"
+        data.parent.mkdir(parents=True)
+        data.write_text('{"measurement": 1}')
+        private = probe / "private.json"
+        private.write_text('{"private": true}')
+        trace = RenderTrace(probe)
+        data.read_text()
+        private.read_text()
+        (data.parent / "written.json").write_text("{}")
+        with os.fdopen(os.open(data, os.O_RDONLY)) as stream:
+            stream.read()
+        record = trace.finish(["probe"])
+        assert "output/data/input.json" in record["inputs"]
+        assert "private.json" not in record["inputs"]
+        assert "output/data/written.json" not in record["inputs"]
+        before = set(trace.reads)
+        (data.parent / "after.json").write_text("{}")
+        (data.parent / "after.json").read_text()
+        assert trace.reads == before
+
         outs = []
         for run in ("a", "b"):
             out = tmp_path / run
@@ -667,32 +696,90 @@ class TestTrackedFiguresAreRegenerable:
             f"regeneration check below cannot be trusted until it is"
         )
 
-    def test_every_committed_figure_matches_a_fresh_run(self, tmp_path):
-        import subprocess
-        import sys
+    def test_historical_figures_and_fresh_render_inputs_match_reviewed_snapshot(self, tmp_path):
+        from visualization.reproducibility import snapshot_findings
 
         root = Path(__file__).parent.parent
+        # Observed reports cannot clobber approved files through direct paths,
+        # symlinks, or hard links. Rejection occurs before any plot is rendered.
+        for index, relative in enumerate((
+            "output/data/figure_publication_snapshot.json",
+            "output/data/full_evaluation_results.json",
+            "output/figures/ablation_study.png",
+            "scripts/generate_all_figures.py",
+        )):
+            protected = root / relative
+            original = protected.read_bytes()
+            symlink = tmp_path / f"symlink-{index}"
+            symlink.symlink_to(protected)
+            hardlink = tmp_path / f"hardlink-{index}"
+            os.link(protected, hardlink)
+            for alias_index, destination in enumerate((protected, symlink, hardlink)):
+                rejected_out = tmp_path / f"rejected-{index}-{alias_index}"
+                rejected = subprocess.run(
+                    [sys.executable, str(root / "scripts/generate_all_figures.py"),
+                     "--output", str(rejected_out), "--provenance", str(destination)],
+                    cwd=str(root), capture_output=True, text=True, timeout=60,
+                )
+                assert rejected.returncode != 0
+                assert "must not overwrite" in rejected.stderr
+                assert not rejected_out.exists()
+                assert protected.read_bytes() == original
         out = tmp_path / "fresh"
+        provenance = tmp_path / "observed.json"
         proc = subprocess.run(
             [sys.executable, str(root / "scripts" / "generate_all_figures.py"),
-             "--output", str(out)],
+             "--output", str(out), "--provenance", str(provenance)],
             cwd=str(root), capture_output=True, text=True, timeout=600,
         )
         assert proc.returncode == 0, proc.stdout + proc.stderr
-
-        committed_dir = root / "output" / "figures"
-        fresh = sorted(out.glob("*.png"))
-        assert fresh, "no figures were produced"
-
-        stale = []
-        for produced in fresh:
-            committed = committed_dir / produced.name
-            if not committed.is_file():
-                stale.append(f"{produced.name} (not committed)")
-            elif committed.read_bytes() != produced.read_bytes():
-                stale.append(f"{produced.name} (committed bytes differ)")
-        assert not stale, (
-            "committed figures do not match their generators; run "
-            "`python scripts/generate_all_figures.py` and commit the result: "
-            f"{stale}"
+        observed = json.loads(provenance.read_text())
+        snapshot = json.loads(
+            (root / "output" / "data" / "figure_publication_snapshot.json").read_text()
         )
+        assert len(observed["figures"]) == len(list(out.glob("*.png")))
+        assert snapshot_findings(root, snapshot, observed) == []
+
+        # A copied, complete snapshot rejects scientific input drift,
+        # generator drift, and even one changed historical artifact byte.
+        shadow = tmp_path / "shadow"
+        for relative in set(snapshot["inputs"]) | set(snapshot["artifacts"]):
+            target = shadow / relative
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(root / relative, target)
+        assert snapshot_findings(shadow, snapshot, observed) == []
+        for relative in (
+            "scripts/generate_all_figures.py",
+            "output/data/full_evaluation_results.json",
+            "output/figures/ablation_study.png",
+        ):
+            path = shadow / relative
+            original = path.read_bytes()
+            if path.suffix == ".json":
+                payload = json.loads(original)
+                payload[0]["detection_rate"] = 0.5
+                path.write_text(json.dumps(payload))
+            elif path.suffix == ".png":
+                changed = bytearray(original)
+                changed[-1] ^= 1
+                path.write_bytes(changed)
+            else:
+                path.write_bytes(original + b"\n# unreviewed generator change\n")
+            assert any(relative in f for f in snapshot_findings(shadow, snapshot, observed))
+            path.write_bytes(original)
+            assert snapshot_findings(shadow, snapshot, observed) == []
+
+        assert snapshot_findings(shadow, dict(snapshot, kind="wrong"), observed)
+        assert snapshot_findings(shadow, snapshot, dict(observed, kind="wrong"))
+        assert snapshot_findings(shadow, snapshot, dict(observed, figures=[]))
+        for relative, digest in (("../outside.json", "0" * 64), ("src/bad.py", "invalid")):
+            malformed = dict(snapshot, inputs=dict(snapshot["inputs"]))
+            malformed["inputs"][relative] = digest
+            assert snapshot_findings(shadow, malformed, observed)
+        changed_observed = dict(observed, inputs=dict(observed["inputs"]))
+        changed_observed["inputs"]["output/data/unreviewed.json"] = "0" * 64
+        assert snapshot_findings(shadow, snapshot, changed_observed)
+        assert snapshot_findings(shadow, dict(snapshot, inputs={}), dict(observed, inputs={}))
+        missing = shadow / "output/figures/ablation_study.png"
+        missing.unlink()
+        assert any("missing file" in f for f in snapshot_findings(shadow, snapshot, observed))

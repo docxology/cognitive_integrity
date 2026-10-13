@@ -230,6 +230,25 @@ As shown in \cref{fig:test}.
 
             assert result is True
 
+        # Canonical relocated source must resolve project output, rather than
+        # accidentally trusting a same-named artifact under docs/output.
+        with tempfile.TemporaryDirectory() as tmpdir:
+            project = Path(tmpdir)
+            manuscript = project / "docs" / "manuscript"
+            manuscript.mkdir(parents=True)
+            (manuscript / "references.bib").write_text("")
+            (manuscript / "manuscript.md").write_text("![image](figures/test.png)")
+            actual = project / "output" / "figures" / "test.png"
+            actual.parent.mkdir(parents=True)
+            actual.write_bytes(b"fixture image")
+            assert ManuscriptVerifier(str(manuscript)).check_images_and_links() is True
+
+            actual.unlink()
+            decoy = project / "docs" / "output" / "figures" / "test.png"
+            decoy.parent.mkdir(parents=True)
+            decoy.write_bytes(b"decoy image")
+            assert ManuscriptVerifier(str(manuscript)).check_images_and_links() is False
+
     def test_check_style(self):
         """Test check_style detects hyperbole words."""
         from src.verification import ManuscriptVerifier

@@ -64,7 +64,7 @@ class TestMainModule:
     def test_main_dispatches_verify_end_to_end(self, monkeypatch):
         """main() with `verify` on argv runs through the real dispatch table."""
         import src.__main__ as m
-        monkeypatch.setattr(sys, "argv", ["src", "verify", "--root", "manuscript"])
+        monkeypatch.setattr(sys, "argv", ["src", "verify"])
 
         m.main()  # verify_manuscript.py should pass on the project's own manuscript
 

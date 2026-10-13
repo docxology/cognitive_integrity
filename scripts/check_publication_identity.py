@@ -79,7 +79,7 @@ def registered_dois() -> dict[str, dict[str, str]]:
     """Each part's own DOIs, read from the config the renderer reads."""
     registry: dict[str, dict[str, str]] = {}
     for part in PARTS:
-        config = REPO / part / "manuscript" / "config.yaml"
+        config = REPO / part / "docs" / "manuscript" / "config.yaml"
         if not config.is_file():
             raise SystemExit(f"{config} is missing; the registry cannot be built")
         text = config.read_text(encoding="utf-8")

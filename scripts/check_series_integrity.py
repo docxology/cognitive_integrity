@@ -138,7 +138,7 @@ SHARED_QUANTITIES = LEDGER
 
 
 def manuscript_dir(part: str) -> Path:
-    return REPO_ROOT / PARTS[part] / "manuscript"
+    return REPO_ROOT / PARTS[part] / "docs" / "manuscript"
 
 
 def manuscript_files(part: str) -> list[Path]:
@@ -1048,6 +1048,15 @@ CHECKS: dict[str, Callable[[], CheckResult]] = {
 
 
 def run(selected: Sequence[str]) -> list[CheckResult]:
+    # A surviving sibling must not hide a missing or empty manuscript tree.
+    # This preflight runs for every --only selection as well as the full gate.
+    missing = [
+        Problem("manuscript-layout", rel(manuscript_dir(part)), 0,
+                "missing or empty manuscript source directory")
+        for part in PARTS if not manuscript_files(part)
+    ]
+    if missing:
+        return [CheckResult(name="manuscript-layout", problems=missing)]
     return [CHECKS[name]() for name in selected]
 
 

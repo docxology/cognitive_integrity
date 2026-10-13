@@ -82,6 +82,37 @@ jobs:
           uv run pytest tests/ -q
           --cov=src --cov-report=term-missing --cov-fail-under=90
 
+      - name: Capture figure portability evidence on failure
+        if: failure() && matrix.part == 'cogsec_multiagent_2_computational'
+        run: |
+          uv run --python "${{ matrix.python-version }}" python scripts/generate_all_figures.py --output output/figure-portability
+          uv run --python "${{ matrix.python-version }}" python - <<'PY'
+          import hashlib, json, platform, zlib
+          from pathlib import Path
+          import matplotlib, numpy, PIL
+          from matplotlib import ft2font, font_manager
+          font = Path(font_manager.findfont("DejaVu Sans"))
+          metadata = {
+              "python": platform.python_version(), "platform": platform.system(),
+              "matplotlib": matplotlib.__version__, "numpy": numpy.__version__,
+              "pillow": PIL.__version__, "freetype": ft2font.__freetype_version__,
+              "zlib": zlib.ZLIB_RUNTIME_VERSION,
+              "font_sha256": hashlib.sha256(font.read_bytes()).hexdigest(),
+          }
+          Path("output/figure-portability/renderer.json").write_text(json.dumps(metadata, indent=2))
+          PY
+
+      - name: Upload controlled figure portability evidence
+        if: failure() && matrix.part == 'cogsec_multiagent_2_computational'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4.6.2
+        with:
+          name: figure-portability-py${{ matrix.python-version }}
+          path: |
+            ${{ matrix.part }}/output/figure-portability/*.png
+            ${{ matrix.part }}/output/figure-portability/renderer.json
+          retention-days: 1
+          if-no-files-found: error
+
       - name: Type check (mypy, gating)
         # Part 2 is the only part with a [tool.mypy] section, so this step runs
         # on exactly one matrix cell: part 2 on Python 3.12.  It was advisory
@@ -217,7 +248,7 @@ jobs:
         run: uv sync --all-extras --python "${PRIMARY_PYTHON}"
 
       - name: Verify manuscript
-        run: uv run python scripts/verify_manuscript.py --root manuscript
+        run: uv run python scripts/verify_manuscript.py --root docs/manuscript
 
   manuscript:
     # Part 2 is the only part whose published numbers are computed from tracked
@@ -246,26 +277,13 @@ jobs:
         run: make check-real-data
 
       - name: Verify manuscript
-        run: uv run python scripts/verify_manuscript.py --root manuscript
+        run: uv run python scripts/verify_manuscript.py --root docs/manuscript
 
       - name: Verify manuscript claims (numeric gate, fail-closed)
-        # P2-4: the MISS-01 claim gate was previously exercised by no CI job,
-        # so a new unreconciled number would not fail CI.  Here we run the
-        # verifier (writing the JSON report even on failure) and then hard-assert
-        # that there are NO mismatches or missing claims, and that the only
-        # UNBACKED claims are exactly the 4 env-gated LLM claims pinned in
-        # tests/test_claim_registry.py::KNOWN_UNRECONCILED.
-        run: |
-          uv run python scripts/verify_claims.py --json output/claim_report.json || true
-          uv run python - <<'EOF'
-          import json
-          r = json.load(open("output/claim_report.json"))
-          c = r["counts"]
-          assert c["mismatch"] == 0, f"mismatched claims: {c['mismatch']}"
-          assert c["not_found"] == 0, f"missing claims: {c['not_found']}"
-          assert c["unbacked"] == 4, f"UNBACKED != pinned 4: {c['unbacked']}"
-          print(f"claims gate OK: {c['total']} total, {c['match']} MATCH, {c['unbacked']} UNBACKED")
-          EOF
+        # The verifier writes its report before returning non-zero for any
+        # MISMATCH, NOT_FOUND or UNBACKED claim. Preserve that strict exit;
+        # duplicating historical exception counts here drifted from the data.
+        run: uv run python scripts/verify_claims.py --json output/claim_report.json
 
   compat:
     # Advisory: 3.10 is the declared requires-python floor. The part-3
@@ -311,27 +329,31 @@ jobs:
     # deleted from Part 2 while Part 1 kept citing its contents.
     #
     # Gating, not advisory: every check refuses to pass on an empty input set.
-    # Almost stdlib-only. One ledger variable, the Bayesian interval on the
-    # multi-seed mean, is derived by loading Part 2's own BetaPosterior rather
-    # than by reimplementing it here, so this job installs numpy for that one
-    # import. A reimplementation would drift from the code the paper describes,
-    # which is the failure the ledger exists to prevent.
+    # The Bayesian ledger loads Part 2's own BetaPosterior (NumPy and SciPy).
+    # Use the frozen Part 2 environment for every series check so its imports
+    # and numerical derivations match the declared experiment toolchain.
     name: series integrity (cross-paper)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Install uv
+        uses: astral-sh/setup-uv@2e657c127d5b1635d5a8e3fa40e0ac50a5bf6992  # v3.2.2
         with:
-          python-version: "3.12"
+          enable-cache: true
+          cache-dependency-glob: "cogsec_multiagent_2_computational/uv.lock"
 
-      - name: Dependency for the Bayesian ledger variable
-        run: python3 -m pip install --quiet numpy
+      - name: Set up Python
+        run: uv python install "${PRIMARY_PYTHON}"
+
+      - name: Install the frozen Bayesian ledger environment
+        run: >-
+          uv sync --project cogsec_multiagent_2_computational --frozen
+          --all-extras --python "${PRIMARY_PYTHON}"
 
       - name: Cross-paper integrity (gating)
         run: >-
-          python3 scripts/check_series_integrity.py
+          uv run --project cogsec_multiagent_2_computational --frozen --python "${PRIMARY_PYTHON}" python scripts/check_series_integrity.py
           --only shared-quantities --only bibliography --only truncation
           --only math-hygiene --only artifact-provenance
 
@@ -341,21 +363,21 @@ jobs:
         # a measurement in its own words. Six stale numbers survived every
         # other check that way, including a Bayesian interval computed against
         # a rate that no longer existed.
-        run: python3 scripts/check_conclusion_numbers.py
+        run: uv run --project cogsec_multiagent_2_computational --frozen --python "${PRIMARY_PYTHON}" python scripts/check_conclusion_numbers.py
 
       - name: No unhappened process claims (gating)
         # Part 2 shipped a methodology describing eight researchers, a
         # four-week red-team exercise, an inter-rater statistic, a coordinated
         # disclosure and an IRB determination. None of it happened, and nothing
         # here had an opinion about a sentence that reports an event.
-        run: python3 scripts/check_unhappened_claims.py
+        run: uv run --project cogsec_multiagent_2_computational --frozen --python "${PRIMARY_PYTHON}" python scripts/check_unhappened_claims.py
 
       - name: Publication identity (gating)
         # Two of the three cover-page DOIs resolved to nothing for as long as
         # the papers existed. --network is deliberately omitted here so a
         # Zenodo outage cannot fail the build; the structural half still
         # catches an unregistered identifier and a second repository URL.
-        run: python3 scripts/check_publication_identity.py
+        run: uv run --project cogsec_multiagent_2_computational --frozen --python "${PRIMARY_PYTHON}" python scripts/check_publication_identity.py
 
       - name: Cross-paper pointer lint (advisory)
         # Hardcoded "Part 1, Definition 5.4"-style pointers are unverifiable by
@@ -368,7 +390,7 @@ jobs:
         # pointers (chiefly 02a_defense_algorithms.md, S07_algorithm_pseudocode.md,
         # 01c_theoretical_connections.md) to named references.
         continue-on-error: true
-        run: python3 scripts/check_series_integrity.py --only cross-paper-pointers
+        run: uv run --project cogsec_multiagent_2_computational --frozen --python "${PRIMARY_PYTHON}" python scripts/check_series_integrity.py --only cross-paper-pointers
 
       - name: Test inventory is current
         # The series test count is quoted in Part 3's abstract. It was typed by
@@ -378,7 +400,7 @@ jobs:
         # Needs each part's venv, so it runs in the per-part job image below;
         # here we only assert the artifact exists and parses.
         run: |
-          python3 - <<'PY'
+          uv run --project cogsec_multiagent_2_computational --frozen --python "${PRIMARY_PYTHON}" python - <<'PY'
           import json, pathlib, sys
           p = pathlib.Path("cogsec_multiagent_2_computational/output/data/test_inventory.json")
           if not p.is_file():
@@ -396,11 +418,9 @@ jobs:
         # The injector must find nothing to change on a tree the gate calls
         # clean. If these two disagree, one of them is wrong about where a
         # number lives, and the manuscripts are the thing that suffers.
-        run: python3 scripts/inject_series_values.py
+        run: uv run --project cogsec_multiagent_2_computational --frozen --python "${PRIMARY_PYTHON}" python scripts/inject_series_values.py
 
       - name: Tests for the gate itself
         # A checker that cannot fail is worse than no checker; these tests drive
         # each check against a planted defect and require it to be caught.
-        run: |
-          python3 -m pip install --quiet pytest numpy
-          python3 -m pytest tests/ -q
+        run: uv run --project cogsec_multiagent_2_computational --frozen --python "${PRIMARY_PYTHON}" pytest tests/ -q

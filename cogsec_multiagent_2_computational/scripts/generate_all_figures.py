@@ -24,6 +24,7 @@ with::
 from __future__ import annotations
 
 import argparse
+import json
 import os
 import sys
 from pathlib import Path
@@ -119,7 +120,31 @@ def main(
     """Generate every figure; return 0 on full success, 1 if anything failed."""
     parser = argparse.ArgumentParser(description="Generate all figures")
     parser.add_argument("--output", type=str, default="output/figures")
+    parser.add_argument(
+        "--provenance", type=Path, help="write observed render inputs (not a baseline)"
+    )
     args = parser.parse_args(argv)
+
+    if args.provenance:
+        destination = args.provenance.resolve()
+        protected_dirs = [
+            ROOT / name for name in ("src", "scripts", "output/data", "output/figures")
+        ]
+        protected_files = [ROOT / "uv.lock", ROOT / "pyproject.toml"]
+        protected_files.extend(
+            path for directory in protected_dirs for path in directory.rglob("*")
+            if path.is_file()
+        )
+        if (
+            any(destination.is_relative_to(directory.resolve()) for directory in protected_dirs)
+            or destination in [path.resolve() for path in protected_files]
+            or (destination.exists() and any(
+                destination.samefile(path) for path in protected_files
+            ))
+        ):
+            parser.error(
+                "--provenance must not overwrite publication sources, inputs, or artifacts"
+            )
 
     # An absolute --output wins; a relative one is resolved against the project.
     output_dir = str(ROOT / args.output)
@@ -129,6 +154,9 @@ def main(
 
     matplotlib.rcParams["svg.hashsalt"] = SVG_HASHSALT
 
+    from visualization.reproducibility import RenderTrace
+
+    trace = RenderTrace(ROOT) if args.provenance else None
     items = list(figures) if figures is not None else default_figures()
 
     print("=" * 70)
@@ -138,7 +166,13 @@ def main(
 
     # Attempt every figure, then report *all* failures -- but never exit 0 with
     # a missing figure, which would make `make figures` a fail-open no-op.
-    failures = run_generators(items, output_dir)
+    try:
+        failures = run_generators(items, output_dir)
+    finally:
+        if trace is not None:
+            observed = trace.finish([name for name, _ in items])
+            args.provenance.parent.mkdir(parents=True, exist_ok=True)
+            args.provenance.write_text(json.dumps(observed, indent=2), encoding="utf-8")
 
     print("-" * 70)
     print(f"Figures saved to {output_dir}/")

@@ -10,6 +10,25 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and
 the project uses [semantic versioning](https://semver.org/spec/v2.0.0.html),
 where a major version marks a change to a published number.
 
+## Unreleased
+
+### Corrected
+
+- Reconciled Part 2's integrated and legacy attack-corpus descriptions against
+  the shipped generator and retained experiment artifacts. The current corpus
+  chapter reports five primary families, fifteen subcategories, 1,475 uniquely
+  identified samples and 961 distinct payloads at seed 42; the historical
+  architecture simulation retains its 950 × 4 denominator.
+- Corrected difficulty and technique-level Ω summaries, distinguished the
+  100-attack multi-seed samples from full-corpus measurements, and removed
+  unsupported bounds on field performance. Released PDFs and deposits remain
+  historical artifacts; these are corrections to current source.
+- Extended corpus-summary regression checks and repaired their relocated
+  manuscript paths.
+- Repaired the relocated manuscript figure link and code-anchor links, and
+  included the five missing PDF/PNG plots generated from existing measured
+  artifacts. Existing publication figure files and deposited PDFs are preserved.
+
 ## [2.0.0] — 2026-08-26
 
 Part 1 second edition; Parts 2 and 3 first publication.

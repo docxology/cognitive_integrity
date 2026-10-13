@@ -13,7 +13,7 @@ Program directory containing the Cognitive Security for Multiagent Operators res
 | Project | Description | DOI |
 | ------- | ----------- | --- |
 | `cogsec_multiagent_1_theory/` | Part 1 v2: Theoretical foundations — trust calculus, defense composition algebra, adversary taxonomy, CIF-AD-OODA | 10.5281/zenodo.22134544 |
-| `cogsec_multiagent_2_computational/` | Part 2: Computational validation — 1,475-item attack corpus across fifteen categories, 120-item benign corpus, adversarial training, generated red-team sweeps, colony detection benchmarks at 20--100 agents plus stress runs at 100--500 | 10.5281/zenodo.22134546 |
+| `cogsec_multiagent_2_computational/` | Part 2: Computational validation — 1,475-item attack corpus across five primary families and fifteen subcategories, 120-item benign corpus, adversarial training, generated red-team sweeps, colony detection benchmarks at 20--100 agents plus stress runs at 100--500 | 10.5281/zenodo.22134546 |
 | `cogsec_multiagent_3_practical/` | Part 3+4 merged: Practical guidance + cross-domain CIF-AD-OODA applications | 10.5281/zenodo.22134548 |
 
 ## Series overview
@@ -149,4 +149,4 @@ uv run pytest projects/cognitive_integrity/cogsec_multiagent_3_practical/tests/ 
 
 Run one part at a time if you need to isolate failures. Part 2 imports `scipy` (see that part’s `pyproject.toml`); if imports fail, `uv sync` from the **repository root** first, or sync that part’s environment as described in the program [README](README.md).
 
-**In a standalone checkout** (no `run.sh` at this root), there is no repo-root entry point — build/test each part from its own directory instead: `uv sync && uv run pytest tests/ -q && uv run ruff check .`, plus `make all` in `cogsec_multiagent_2_computational/` for the full data/figures/tables/verify pipeline, or `uv run python scripts/verify_manuscript.py --root manuscript` in Parts 1/3. See the program [README](README.md) § Building.
+**In a standalone checkout** (no `run.sh` at this root), there is no repo-root entry point — build/test each part from its own directory instead: `uv sync && uv run pytest tests/ -q && uv run ruff check .`, plus `make all` in `cogsec_multiagent_2_computational/` for the full data/figures/tables/verify pipeline, or `uv run python scripts/verify_manuscript.py --root docs/manuscript` in Parts 1/3. See the program [README](README.md) § Building.

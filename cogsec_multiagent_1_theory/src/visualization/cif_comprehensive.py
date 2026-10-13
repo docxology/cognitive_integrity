@@ -239,7 +239,8 @@ def create_cif_comprehensive_figure(output_dir: Path) -> Path:
     ax.text(
         1.7,
         2.2,
-        "Detection rates, false-positive\nrates and latency are reported\nin Part 2, with the runs\nthat produced them.",
+        "Detection rates, false-positive\nrates and latency are reported\n"
+        "in Part 2, with the runs\nthat produced them.",
         ha="center",
         va="center",
         fontsize=9,
