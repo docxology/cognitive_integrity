@@ -104,7 +104,7 @@ class TestProfileDeltasBindToManuscript:
 
         manuscript = (
             Path(__file__).parent.parent
-            / "manuscript"
+            / "docs" / "manuscript"
             / "05_deployment_guide.md"
         )
         text = manuscript.read_text()

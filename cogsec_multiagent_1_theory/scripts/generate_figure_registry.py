@@ -11,7 +11,7 @@ Output: output/data/figure_registry.json
 
 Usage:
     python scripts/generate_figure_registry.py \
-        [--root manuscript] [--output output/data/figure_registry.json]
+        [--root docs/manuscript] [--output output/data/figure_registry.json]
 
 Registry format:
     {
@@ -217,7 +217,8 @@ def main() -> int:
         description="Generate figure/table registry for Part 1 manuscript"
     )
     parser.add_argument(
-        "--root", default=str(base_dir / "manuscript"), help="Path to docs/manuscript/ directory"
+        "--root", default=str(base_dir / "docs" / "manuscript"),
+        help="Path to docs/manuscript/ directory"
     )
     parser.add_argument(
         "--output",

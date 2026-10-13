@@ -136,6 +136,6 @@ uv run pytest projects/cognitive_integrity/cogsec_multiagent_1_theory/tests/ -v
 uv sync
 uv run pytest tests/ -q                    # test suite
 uv run ruff check .                        # lint
-uv run python scripts/verify_manuscript.py --root manuscript   # manuscript integrity checks
+uv run python scripts/verify_manuscript.py --root docs/manuscript   # manuscript integrity checks
 uv run python scripts/<NN>_*.py            # generate an individual figure (see scripts/README.md)
 ```

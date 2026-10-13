@@ -65,7 +65,7 @@ def collect(part_dir: Path, tests_dir: Path, interpreter: Path | None = None) ->
     python = interpreter or _python_for(part_dir)
     proc = subprocess.run(
         [str(python), "-m", "pytest", str(tests_dir), "--collect-only", "-q",
-         "-p", "no:cacheprovider", "--no-header"],
+         "-o", "addopts=", "-p", "no:cacheprovider", "--no-header"],
         cwd=str(part_dir),
         capture_output=True,
         text=True,

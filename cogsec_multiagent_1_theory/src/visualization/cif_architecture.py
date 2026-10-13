@@ -20,7 +20,6 @@ from matplotlib.patches import FancyBboxPatch
 
 from .utils import save_figure, setup_plotting
 
-
 #: Part 2's ablation artifact. Part 1 states the framework's structure and
 #: Part 2 measures it, so a number appearing on a Part 1 figure has to come
 #: across the series boundary rather than be typed on this side of it.

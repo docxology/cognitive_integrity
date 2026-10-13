@@ -112,7 +112,7 @@ tables:
 
 # Verify manuscript integrity (structural: citations, labels, images, formatting)
 verify:
-	$(PYTHON) $(SCRIPTS)/verify_manuscript.py --root manuscript
+	$(PYTHON) $(SCRIPTS)/verify_manuscript.py --root docs/manuscript
 
 # Verify manuscript claims (numeric: every registered claim matches output/data)
 # This is the MISS-01 gate: re-derives every headline number from the JSON

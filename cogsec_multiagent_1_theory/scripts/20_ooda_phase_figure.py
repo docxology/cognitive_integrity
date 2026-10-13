@@ -57,7 +57,8 @@ PHASE_DEFENSES = {
 #: completely they cover it. Not measured, and no experiment in this series
 #: produces a per-phase detection rate: the corpus carries no OODA label.
 #:
-#: Panel B plotted these as a "CIF Coverage Score (assigned, not measured)" bar chart with two-decimal
+#: Panel B plotted these as a "CIF Coverage Score (assigned, not measured)"
+#: bar chart with two-decimal
 #: labels against a threshold line, which is how a design assignment comes to
 #: look like a result. The values are unchanged; what changed is that the
 #: figure now says what they are.
