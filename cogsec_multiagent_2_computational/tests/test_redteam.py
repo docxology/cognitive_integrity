@@ -668,7 +668,10 @@ class TestManuscriptMutationTableConsistency:
     test fails and forces a re-derivation from ``scripts/run_redteam.py --seed 42``.
     """
 
-    MANUSCRIPT = Path(__file__).resolve().parent.parent / "manuscript" / "05h_redteam_evaluation.md"
+    MANUSCRIPT = (
+        Path(__file__).resolve().parent.parent
+        / "docs" / "manuscript" / "05h_redteam_evaluation.md"
+    )
 
     #: Exact manuscript display names for each operator key (sentence-case, with
     #: ``multi_hop_routing`` hyphenated). Kept explicit rather than derived so a
@@ -759,7 +762,8 @@ class TestManuscriptATTableConsistency:
     """
 
     MANUSCRIPT = (
-        Path(__file__).resolve().parent.parent / "manuscript" / "05g_adversarial_training.md"
+        Path(__file__).resolve().parent.parent
+        / "docs" / "manuscript" / "05g_adversarial_training.md"
     )
 
     @staticmethod

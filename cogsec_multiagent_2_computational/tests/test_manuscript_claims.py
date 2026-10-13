@@ -933,7 +933,7 @@ def _manuscript_corpus_table() -> dict[str, int]:
     return rows
 
 
-def test_manuscript_corpus_table_matches_the_generated_corpus():
+def test_manuscript_corpus_table_matches_the_generated_corpus(tmp_path):
     import sys
 
     sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
@@ -974,6 +974,20 @@ def test_manuscript_corpus_table_matches_the_generated_corpus():
         row["n_attacks"] for row in rows
     )
     assert "`extended=False`" in setup
+
+    # Reproduction must retain the legacy protocol even though generate() now
+    # defaults to the integrated corpus. Exercise the actual CLI into a fresh
+    # directory so existing publication evidence cannot mask a changed run.
+    import subprocess
+
+    reproduced = subprocess.run(
+        [sys.executable, str(_CORPUS_SECTION.parents[2] / "scripts" / "run_full_evaluation.py"),
+         "--mode", "simulation", "--seed", "42", "--output", str(tmp_path)],
+        capture_output=True, text=True, check=True,
+    )
+    assert "950" in reproduced.stdout
+    fresh = json.loads((tmp_path / "full_evaluation_results.json").read_text())
+    assert sum(row["n_attacks"] for row in fresh) == sum(row["n_attacks"] for row in rows)
 
     typed = _manuscript_corpus_table()
     assert typed.pop("Total") == sum(measured.values())

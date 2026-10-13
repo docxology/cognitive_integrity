@@ -27,7 +27,7 @@ from pathlib import Path
 
 import pytest
 
-MANUSCRIPT = Path(__file__).parent.parent / "manuscript"
+MANUSCRIPT = Path(__file__).parent.parent / "docs" / "manuscript"
 SRC = Path(__file__).parent.parent / "src"
 
 #: A block carrying this first line is executed verbatim.

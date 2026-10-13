@@ -897,7 +897,7 @@ def test_inject_all_updates_manuscript_files_from_data(project: tuple[Path, Path
 
 _PROJECT_ROOT = Path(__file__).resolve().parent.parent
 _REAL_DATA_DIR = _PROJECT_ROOT / "output" / "data"
-_REAL_MANUSCRIPT_DIR = _PROJECT_ROOT / "manuscript"
+_REAL_MANUSCRIPT_DIR = _PROJECT_ROOT / "docs" / "manuscript"
 
 
 def _real_run(manuscript_dir: Path) -> InjectionReport:

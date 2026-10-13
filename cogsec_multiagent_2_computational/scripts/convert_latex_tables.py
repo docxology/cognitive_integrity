@@ -18,7 +18,7 @@ from manuscript.latex_converter import convert_file
 
 def main():
     """Convert all LaTeX tables in manuscript files."""
-    manuscript_dir = Path(__file__).parent.parent / "manuscript"
+    manuscript_dir = Path(__file__).parent.parent / "docs" / "manuscript"
 
     if not manuscript_dir.exists():
         print(f"Manuscript directory not found: {manuscript_dir}")

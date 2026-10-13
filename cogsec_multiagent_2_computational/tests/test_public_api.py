@@ -27,7 +27,7 @@ from pathlib import Path
 import pytest
 
 REPO = Path(__file__).resolve().parents[1]
-MANUSCRIPT = REPO / "manuscript"
+MANUSCRIPT = REPO / "docs" / "manuscript"
 
 #: Modules from outside this project. Their resolution says nothing about
 #: whether our documented API exists, and requiring them would make this test

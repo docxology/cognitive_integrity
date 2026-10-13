@@ -17,7 +17,7 @@ it would dirty the working tree on every ``make verify``; and it would grow a
 tracked log without bound.
 
 Usage:
-    python scripts/verify_manuscript.py [--root manuscript] [--log PATH]
+    python scripts/verify_manuscript.py [--root docs/manuscript] [--log PATH]
 """
 
 import argparse
@@ -58,7 +58,7 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Verify manuscript integrity.")
     # Default to project's own manuscript directory (not CWD-relative)
     project_dir = os.environ.get("PROJECT_DIR", str(ROOT))
-    default_root = str(Path(project_dir) / "manuscript")
+    default_root = str(Path(project_dir) / "docs" / "manuscript")
     parser.add_argument(
         "--root", default=default_root, help="Path to manuscript root directory."
     )

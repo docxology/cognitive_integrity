@@ -452,7 +452,7 @@ class TestShippedManuscript:
     """The real manuscript must still satisfy the hardened gate."""
 
     def test_run_all_passes_on_the_shipped_manuscript(self):
-        v = ManuscriptVerifier(str(PROJECT_ROOT / "manuscript"))
+        v = ManuscriptVerifier(str(PROJECT_ROOT / "docs" / "manuscript"))
         assert v.run_all() is True
 
 

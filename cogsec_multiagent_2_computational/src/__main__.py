@@ -138,7 +138,7 @@ def main() -> None:
 
     # verify
     p_ver = sub.add_parser("verify", help="Verify manuscript integrity")
-    p_ver.add_argument("--root", default="manuscript", help="Manuscript root")
+    p_ver.add_argument("--root", default="docs/manuscript", help="Manuscript root")
 
     args = parser.parse_args()
     if args.command is None:

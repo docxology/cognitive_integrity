@@ -27,7 +27,7 @@ Exit codes: ``0`` all targets resolved; ``1`` registry missing or the
 cross-reference check would have been vacuous; ``2`` unresolved targets found.
 
 Usage:
-    python scripts/auto_number_figures.py [--root manuscript]
+    python scripts/auto_number_figures.py [--root docs/manuscript]
         [--registry output/data/figure_registry.json] [--dry-run]
 """
 
@@ -129,7 +129,7 @@ def main(argv: list[str] | None = None) -> int:
         description="Inject LoF/LoT into the preamble and verify \\Cref targets."
     )
     base_dir = Path(__file__).resolve().parent.parent
-    parser.add_argument("--root", default=str(base_dir / "manuscript"))
+    parser.add_argument("--root", default=str(base_dir / "docs" / "manuscript"))
     parser.add_argument(
         "--registry", default=str(base_dir / "output" / "data" / "figure_registry.json")
     )

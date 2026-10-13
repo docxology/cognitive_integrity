@@ -32,7 +32,7 @@ def main() -> None:
     )
 
     data_dir = ROOT / "output" / "data"
-    manuscript_dir = ROOT / "manuscript"
+    manuscript_dir = ROOT / "docs" / "manuscript"
 
     logger.info("Loading ground truth from %s...", data_dir)
     inject_all(data_dir, manuscript_dir, dry_run=args.dry_run)

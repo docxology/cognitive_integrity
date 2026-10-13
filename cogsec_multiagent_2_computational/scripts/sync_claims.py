@@ -50,7 +50,7 @@ from manuscript.claim_registry import (  # noqa: E402
     verify_claims,
 )
 
-MANUSCRIPT = REPO / "manuscript"
+MANUSCRIPT = REPO / "docs" / "manuscript"
 DATA = REPO / "output" / "data"
 
 _SEP_RE = re.compile(r"\{,\}|,")

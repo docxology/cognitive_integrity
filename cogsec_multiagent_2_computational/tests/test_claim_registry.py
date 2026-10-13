@@ -40,7 +40,7 @@ from manuscript.claim_registry import (
 )
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
-REAL_MANUSCRIPT = PROJECT_ROOT / "manuscript"
+REAL_MANUSCRIPT = PROJECT_ROOT / "docs" / "manuscript"
 REAL_DATA = PROJECT_ROOT / "output" / "data"
 
 # Claims that do NOT currently match the shipped data.
@@ -1177,7 +1177,7 @@ def test_every_results_bearing_section_has_at_least_one_claim() -> None:
 
 def test_the_uncovered_list_names_only_real_files() -> None:
     """A debt list that names a file that no longer exists is not a debt."""
-    manuscript = Path(__file__).parent.parent / "manuscript"
+    manuscript = Path(__file__).parent.parent / "docs" / "manuscript"
     for name in UNCOVERED_WITH_REASON:
         assert (manuscript / name).is_file(), f"{name} is listed as uncovered but does not exist"
 

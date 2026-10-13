@@ -1834,7 +1834,7 @@ _SETUP: tuple[Claim, ...] = (
     _c(
         "04.attack_corpus_size",
         "04_experimental_setup.md",
-        r"full (\d+)-attack corpus through the assembled",
+        r"uses the legacy corpus \((\d+) attacks per architecture\)",
         lambda gt: gt.attack_corpus_size(),
         EXACT,
         "count",
@@ -1843,7 +1843,7 @@ _SETUP: tuple[Claim, ...] = (
     _c(
         "04.pipeline_classified",
         "04_experimental_setup.md",
-        r"classified \$\\sim\$(\d+\.\d+)\\% as attacks",
+        r"mean attack detection rate is (\d+\.\d+)\\%",
         lambda gt: gt.ms_mean(),
         PCT1,
         "percent",
