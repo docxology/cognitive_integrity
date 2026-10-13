@@ -82,6 +82,37 @@ jobs:
           uv run pytest tests/ -q
           --cov=src --cov-report=term-missing --cov-fail-under=90
 
+      - name: Capture figure portability evidence on failure
+        if: failure() && matrix.part == 'cogsec_multiagent_2_computational'
+        run: |
+          uv run --python "${{ matrix.python-version }}" python scripts/generate_all_figures.py --output output/figure-portability
+          uv run --python "${{ matrix.python-version }}" python - <<'PY'
+          import hashlib, json, platform, zlib
+          from pathlib import Path
+          import matplotlib, numpy, PIL
+          from matplotlib import ft2font, font_manager
+          font = Path(font_manager.findfont("DejaVu Sans"))
+          metadata = {
+              "python": platform.python_version(), "platform": platform.system(),
+              "matplotlib": matplotlib.__version__, "numpy": numpy.__version__,
+              "pillow": PIL.__version__, "freetype": ft2font.__freetype_version__,
+              "zlib": zlib.ZLIB_RUNTIME_VERSION,
+              "font_sha256": hashlib.sha256(font.read_bytes()).hexdigest(),
+          }
+          Path("output/figure-portability/renderer.json").write_text(json.dumps(metadata, indent=2))
+          PY
+
+      - name: Upload controlled figure portability evidence
+        if: failure() && matrix.part == 'cogsec_multiagent_2_computational'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4.6.2
+        with:
+          name: figure-portability-py${{ matrix.python-version }}
+          path: |
+            ${{ matrix.part }}/output/figure-portability/*.png
+            ${{ matrix.part }}/output/figure-portability/renderer.json
+          retention-days: 1
+          if-no-files-found: error
+
       - name: Type check (mypy, gating)
         # Part 2 is the only part with a [tool.mypy] section, so this step runs
         # on exactly one matrix cell: part 2 on Python 3.12.  It was advisory
