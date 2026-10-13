@@ -25,6 +25,9 @@ where a major version marks a change to a published number.
   historical artifacts; these are corrections to current source.
 - Extended corpus-summary regression checks and repaired their relocated
   manuscript paths.
+- Repaired the relocated manuscript figure link and code-anchor links, and
+  included the five missing PDF/PNG plots generated from existing measured
+  artifacts. Existing publication figure files and deposited PDFs are preserved.
 
 ## [2.0.0] — 2026-08-26
 

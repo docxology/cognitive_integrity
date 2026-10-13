@@ -8,7 +8,7 @@ This supplementary section presents detection algorithm implementations for the 
 > • **Formal detection bounds** (information-theoretic stealth–impact tradeoff, series/parallel composition) are in Part 1 \cite{friedman2026cogsec1}: the *Information-Theoretic Detection Bounds* subsection of its formal-framework section, and the *Defense Composition* subsection of its defense-mechanisms section.
 > • **Deployment-facing detector configuration** (thresholds, false-positive budgets, retraining cadence) appears in Part 3 \cite{friedman2026cogsec3}, in its *Deployment Profiles* and *Operational Monitoring Guide* sections.
 > • **Domain-calibrated detection** thresholds vary dramatically across operational sectors (millisecond drone swarms vs. year-scale diplomatic agents); see unified Part 3+4 \cite{friedman2026cogsec3}, Sections 9--10, for per-domain recalibration examples.
-> • **Code pointers**: online/batch detectors in [`src/core/online_detection.py`](../src/core/online_detection.py) and [`src/core/batch_detection.py`](../src/core/batch_detection.py); ROC analysis in [`src/evaluation/roc.py`](../src/evaluation/); multi-detector fusion in [`src/composition/fusion.py`](../src/composition/).
+> • **Code pointers**: online/batch detectors in [`src/core/online_detection.py`](../../src/core/online_detection.py) and [`src/core/batch_detection.py`](../../src/core/batch_detection.py); ROC analysis in [`src/evaluation/roc.py`](../../src/evaluation/); multi-detector fusion in [`src/composition/fusion.py`](../../src/composition/).
 
 ## ROC Analysis Algorithms
 

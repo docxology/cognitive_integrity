@@ -2,7 +2,7 @@
 
 # Colony Benchmark Design (Proposed) {#sec:benchmark-implementation}
 
-This supplementary section presents the *design specification* for colony cognitive security benchmarks extending the individual-focused CIF in Part 1 \cite{friedman2026cogsec1} (see Part 1 S02 for the eusocial-colony analogy that motivates this benchmark direction). These benchmarks are proposed for scaling CIF evaluation beyond the main text's 3–10 agent deployments toward colony-scale populations ($n > 10$); implementations of the design below live in [`src/colony/`](../src/colony/), and the current codebase already exercises 20–100 agent scenarios via `scripts/run_colony_benchmarks.py`.
+This supplementary section presents the *design specification* for colony cognitive security benchmarks extending the individual-focused CIF in Part 1 \cite{friedman2026cogsec1} (see Part 1 S02 for the eusocial-colony analogy that motivates this benchmark direction). These benchmarks are proposed for scaling CIF evaluation beyond the main text's 3–10 agent deployments toward colony-scale populations ($n > 10$); implementations of the design below live in [`src/colony/`](../../src/colony/), and the current codebase already exercises 20–100 agent scenarios via `scripts/run_colony_benchmarks.py`.
 
 > **Status.** The $n \geq 500$ benchmarks below are proposed extensions. The codebase currently validates at 20–100 agent scale (see §5 Results, colony tier); scaling to $n \in \{500, 1000\}$ is active future work (\cref{sec:discussion}).
 
