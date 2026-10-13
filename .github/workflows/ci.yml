@@ -217,7 +217,7 @@ jobs:
         run: uv sync --all-extras --python "${PRIMARY_PYTHON}"
 
       - name: Verify manuscript
-        run: uv run python scripts/verify_manuscript.py --root manuscript
+        run: uv run python scripts/verify_manuscript.py --root docs/manuscript
 
   manuscript:
     # Part 2 is the only part whose published numbers are computed from tracked
@@ -246,7 +246,7 @@ jobs:
         run: make check-real-data
 
       - name: Verify manuscript
-        run: uv run python scripts/verify_manuscript.py --root manuscript
+        run: uv run python scripts/verify_manuscript.py --root docs/manuscript
 
       - name: Verify manuscript claims (numeric gate, fail-closed)
         # P2-4: the MISS-01 claim gate was previously exercised by no CI job,

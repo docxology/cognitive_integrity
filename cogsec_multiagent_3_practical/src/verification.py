@@ -256,7 +256,10 @@ class ManuscriptVerifier:
         link_status = True
 
         # Output figures directory (figures are generated here)
-        output_figures_dir = self.root_dir.parent / "output" / "figures"
+        project_root = self.root_dir.parent
+        if self.root_dir.name == "manuscript" and project_root.name == "docs":
+            project_root = project_root.parent
+        output_figures_dir = project_root / "output" / "figures"
 
         for md_file in self.md_files:
             with open(md_file, "r", encoding="utf-8") as f:
