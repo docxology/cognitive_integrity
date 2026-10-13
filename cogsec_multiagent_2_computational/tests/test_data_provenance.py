@@ -597,8 +597,14 @@ class TestEveryShippedArtifactDeclaresItsOrigin:
 
     #: Files that legitimately carry no measurement origin, each with the
     #: reason. Every entry here is a claim that the file contains no empirical
-    #: number, and adding one is a decision rather than a convenience.
+    #: scientific measurement, and adding one requires an explicit rationale.
     _EXEMPT = {
+        "figure_publication_snapshot.json": (
+            "reviewed render metadata: source/input and historical artifact hashes, "
+            "renderer versions, and cross-platform image comparison diagnostics. "
+            "It contains no experimental or scientific measurement of its own; "
+            "test_visualization_figures verifies its fixed identities and mutation controls."
+        ),
         "figure_registry.json": (
             "derived metadata: figure and table labels with their numbers, "
             "generated from the manuscript by scripts/generate_figure_registry.py. "
@@ -623,6 +629,14 @@ class TestEveryShippedArtifactDeclaresItsOrigin:
             f"only {len(artifacts)} artifacts found; the glob is probably wrong, "
             f"which would make this test pass without checking anything"
         )
+        # This exemption is for the exact reviewed metadata schema, never an
+        # experimental result merely saved under its filename.
+        manifest = json.loads((_DATA_DIR / "figure_publication_snapshot.json").read_text())
+        assert manifest["schema_version"] == 1
+        assert manifest["kind"] == "reviewed_render_snapshot"
+        assert set(manifest) == {
+            "schema_version", "kind", "inputs", "artifacts", "renderer", "portability_evidence"
+        }
         unknown = [
             p.name
             for p in artifacts
