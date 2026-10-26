@@ -16,7 +16,8 @@ geometric framework of §\ref{sec:information-geometry}.
 >
 > **Reproducibility.** The AT convergence analysis is implemented in
 > `src/redteam/convergence.py`; theoretical bounds can be verified against
-> empirical AT results via `scripts/verify_at_convergence.py`.
+> empirical AT results via `scripts/run_redteam.py`, whose convergence
+> assertions are exercised by `tests/test_redteam_convergence.py`.
 
 ## The Adversarial Training Game {#sec:at-game}
 

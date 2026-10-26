@@ -7,9 +7,10 @@ name: CI
 # Gating: pinned ruff lint, tests with a coverage floor, an import sweep over
 # the *tracked* tree, and manuscript verification for part 2.
 # Advisory (continue-on-error, with the concrete blocker named in each step):
-# `ruff format --check`, mypy, the Python 3.10 compatibility matrix, and the
-# cross-paper pointer lint --- four steps, which is what `grep -c
-# continue-on-error` reports; the sentence above used to name three.
+# `ruff format --check`, the Python 3.10 compatibility matrix, and the
+# cross-paper pointer lint --- three steps, which is what `grep -c
+# continue-on-error` reports. mypy used to be a fourth; it now gates on the one
+# matrix cell that has a [tool.mypy] section.
 
 on:
   push:
@@ -47,10 +48,10 @@ jobs:
       run:
         working-directory: ${{ matrix.part }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
 
       - name: Install uv
-        uses: astral-sh/setup-uv@2e657c127d5b1635d5a8e3fa40e0ac50a5bf6992  # v3.2.2
+        uses: astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e  # v10.3.2
         with:
           enable-cache: true
           cache-dependency-glob: "${{ matrix.part }}/uv.lock"
@@ -104,7 +105,7 @@ jobs:
 
       - name: Upload controlled figure portability evidence
         if: failure() && matrix.part == 'cogsec_multiagent_2_computational'
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4.6.2
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9  # v7.0.2
         with:
           name: figure-portability-py${{ matrix.python-version }}
           path: |
@@ -142,10 +143,10 @@ jobs:
       run:
         working-directory: ${{ matrix.part }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
 
       - name: Install uv
-        uses: astral-sh/setup-uv@2e657c127d5b1635d5a8e3fa40e0ac50a5bf6992  # v3.2.2
+        uses: astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e  # v10.3.2
         with:
           enable-cache: true
           cache-dependency-glob: "${{ matrix.part }}/uv.lock"
@@ -233,10 +234,10 @@ jobs:
       run:
         working-directory: ${{ matrix.part }}
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
 
       - name: Install uv
-        uses: astral-sh/setup-uv@2e657c127d5b1635d5a8e3fa40e0ac50a5bf6992  # v3.2.2
+        uses: astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e  # v10.3.2
         with:
           enable-cache: true
           cache-dependency-glob: "${{ matrix.part }}/uv.lock"
@@ -259,10 +260,10 @@ jobs:
       run:
         working-directory: cogsec_multiagent_2_computational
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
 
       - name: Install uv
-        uses: astral-sh/setup-uv@2e657c127d5b1635d5a8e3fa40e0ac50a5bf6992  # v3.2.2
+        uses: astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e  # v10.3.2
         with:
           enable-cache: true
           cache-dependency-glob: "cogsec_multiagent_2_computational/uv.lock"
@@ -303,10 +304,10 @@ jobs:
       run:
         working-directory: ${{ matrix.part }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
 
       - name: Install uv
-        uses: astral-sh/setup-uv@2e657c127d5b1635d5a8e3fa40e0ac50a5bf6992  # v3.2.2
+        uses: astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e  # v10.3.2
         with:
           enable-cache: true
           cache-dependency-glob: "${{ matrix.part }}/uv.lock"
@@ -335,10 +336,10 @@ jobs:
     name: series integrity (cross-paper)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
 
       - name: Install uv
-        uses: astral-sh/setup-uv@2e657c127d5b1635d5a8e3fa40e0ac50a5bf6992  # v3.2.2
+        uses: astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e  # v10.3.2
         with:
           enable-cache: true
           cache-dependency-glob: "cogsec_multiagent_2_computational/uv.lock"
@@ -397,8 +398,9 @@ jobs:
         # hand three times and stale three times. It is now derived from this
         # inventory, so a commit that adds tests without refreshing it fails
         # here rather than leaving the paper quoting yesterday's number.
-        # Needs each part's venv, so it runs in the per-part job image below;
-        # here we only assert the artifact exists and parses.
+        # Recollecting needs each part's venv, which is what
+        # scripts/collect_test_inventory.py --check does. Here we assert the
+        # tracked artifact exists, parses, and is self-consistent.
         run: |
           uv run --project cogsec_multiagent_2_computational --frozen --python "${PRIMARY_PYTHON}" python - <<'PY'
           import json, pathlib, sys

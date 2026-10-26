@@ -14,8 +14,9 @@ uv run python scripts/generate_all_figures.py   # regenerate every figure
 uv run python scripts/verify_manuscript.py      # the manuscript gate
 ```
 
-From the repository root, `python3 scripts/check_series_integrity.py` runs the
-six program-level checks that compare the three papers to each other. Every
+From the repository root, `scripts/check_series_integrity.py` — run through Part
+2's environment, as the example below does — runs the six program-level checks
+that compare the three papers to each other. Every
 number the papers report is derived from an artifact under
 `<paper>/output/data/`; none is typed into the prose.
 
@@ -143,17 +144,24 @@ manuscript. Nothing compared the three papers to each other, which is how a shar
 came to be published as two different numbers in two papers that cite each other.
 
 ```bash
-# the gating set — this is what CI runs and what must exit 0
-python3 scripts/check_series_integrity.py \
+# the gating set — this is what CI runs and what must exit 0. Run it in Part 2's
+# environment: `shared-quantities` derives its Bayesian interval by loading Part
+# 2's src/statistics/bayesian.py, so NumPy and SciPy must be importable.
+uv run --project cogsec_multiagent_2_computational --frozen \
+  python scripts/check_series_integrity.py \
   --only shared-quantities --only bibliography --only truncation \
   --only math-hygiene --only artifact-provenance
 
-python3 scripts/check_series_integrity.py            # adds the advisory pointer lint,
-                                                     # so a bare run exits 1 by design
-python3 scripts/check_series_integrity.py --json     # machine-readable
+uv run --project cogsec_multiagent_2_computational --frozen \
+  python scripts/check_series_integrity.py            # adds the advisory pointer lint,
+                                                      # so a bare run exits 1 by design
+uv run --project cogsec_multiagent_2_computational --frozen \
+  python scripts/check_series_integrity.py --json     # machine-readable
 ```
 
-Stdlib-only, no build step. Four checks:
+No build step, and stdlib-only apart from the ledger's Bayesian derivers, which
+load Part 2's source and therefore need Part 2's environment (NumPy and SciPy).
+Six checks:
 
 | Check | What it refuses to let through |
 | ----- | ------------------------------ |

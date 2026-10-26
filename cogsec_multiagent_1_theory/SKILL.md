@@ -42,8 +42,8 @@ Invoke this skill when:
 - `src/consensus.py` — Byzantine-tolerant agreement
 - `src/invariants.py` — Runtime invariant checking
 - `src/detection.py` — Anomaly and drift detection
-- `src/visualization/` — 20 figure modules for manuscript
-- `docs/manuscript/` — Part 1 paper (9 sections, 4 appendices)
+- `src/visualization/` — figure modules for manuscript
+- `docs/manuscript/` — Part 1 paper (11 numbered sections, 3 appendices)
 
 ## Commands
 

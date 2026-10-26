@@ -34,8 +34,10 @@ All experiments are deterministic (seed=42). Run from the project root directory
 
 ### 1. Full Pipeline (Recommended)
 
-The package provides a `Makefile`; `make all` executes the complete pipeline
-(generating all data, figures, and tables under `output/`):
+The package provides a `Makefile`; `make all` runs `check-real-data`, `verify`,
+`tests`, `figures` and `tables` in that order. It does **not** generate data:
+that is deliberate, so the build cannot silently replace measured artifacts
+with fresh synthetic ones (see [`REPRODUCE.md`](../REPRODUCE.md)):
 
 ```bash
 make all
@@ -116,5 +118,5 @@ After generating results, compare key metrics (overall detection rate, per-archi
 
 ## Requirements
 
-- Python 3.12+
+- Python 3.10+ (the suite is verified green on 3.10, 3.12 and 3.13)
 - `numpy`, `scipy`, `matplotlib` (see `pyproject.toml`)

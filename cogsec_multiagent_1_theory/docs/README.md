@@ -14,7 +14,7 @@ CIF-AD-OODA integration).
 | [`../PAI.md`](../PAI.md) | Paper authoring instructions |
 | [`../SKILL.md`](../SKILL.md) | Agent skills for this exemplar |
 | **`README.md` (this file)** | Documentation index |
-| [`../manuscript/`](../manuscript/) | The paper content (markdown sections + preamble) |
+| [`../manuscript/`](manuscript/) | The paper content (markdown sections + preamble) |
 | [`../src/`](../src/) | Source modules (trust calculus, OODA monitor, CIF-AD coupling, etc.) |
 | [`../scripts/`](../scripts/) | Figure-generation scripts |
 
@@ -22,21 +22,21 @@ CIF-AD-OODA integration).
 
 | File | Section |
 | ---- | ------- |
-| [`../manuscript/00_quote.md`](../manuscript/00_quote.md) | Epigraph |
-| [`../manuscript/01_abstract.md`](../manuscript/01_abstract.md) | Abstract |
-| [`../manuscript/02_introduction.md`](../manuscript/02_introduction.md) | Introduction |
-| [`../manuscript/03_threat_model.md`](../manuscript/03_threat_model.md) | Adversary taxonomy & attack surface (§Ω1–Ω5) + threat-model figures |
-| [`../manuscript/04_formal_framework.md`](../manuscript/04_formal_framework.md) | Formal framework: trust calculus, belief updates |
-| [`../manuscript/05_defense_mechanisms.md`](../manuscript/05_defense_mechanisms.md) | Defense mechanisms (5 defenses, composition algebra) |
-| [`../manuscript/06_detection_methods.md`](../manuscript/06_detection_methods.md) | Detection methods (Neyman–Pearson, CUSUM, ensemble) |
-| [`../manuscript/07_formal_verification.md`](../manuscript/07_formal_verification.md) | Formal verification (safety properties) |
-| [`../manuscript/08_discussion.md`](../manuscript/08_discussion.md) | Discussion |
-| [`../manuscript/09_conclusion.md`](../manuscript/09_conclusion.md) | Conclusion |
-| [`../manuscript/10_limitations.md`](../manuscript/10_limitations.md) | Limitations and boundary conditions (v2.0) |
-| [`../manuscript/S01_proofs.md`](../manuscript/S01_proofs.md) | Proofs supplement |
-| [`../manuscript/S02_eusocial_cogsec.md`](../manuscript/S02_eusocial_cogsec.md) | Eusocial/cogsec supplement |
-| [`../manuscript/S03_notation.md`](../manuscript/S03_notation.md) | Notation index |
-| [`../manuscript/99_references.md`](../manuscript/99_references.md) | References |
+| [`../manuscript/00_quote.md`](manuscript/00_quote.md) | Epigraph |
+| [`../manuscript/01_abstract.md`](manuscript/01_abstract.md) | Abstract |
+| [`../manuscript/02_introduction.md`](manuscript/02_introduction.md) | Introduction |
+| [`../manuscript/03_threat_model.md`](manuscript/03_threat_model.md) | Adversary taxonomy & attack surface (§Ω1–Ω5) + threat-model figures |
+| [`../manuscript/04_formal_framework.md`](manuscript/04_formal_framework.md) | Formal framework: trust calculus, belief updates |
+| [`../manuscript/05_defense_mechanisms.md`](manuscript/05_defense_mechanisms.md) | Defense mechanisms (5 defenses, composition algebra) |
+| [`../manuscript/06_detection_methods.md`](manuscript/06_detection_methods.md) | Detection methods (Neyman–Pearson, CUSUM, ensemble) |
+| [`../manuscript/07_formal_verification.md`](manuscript/07_formal_verification.md) | Formal verification (safety properties) |
+| [`../manuscript/08_discussion.md`](manuscript/08_discussion.md) | Discussion |
+| [`../manuscript/09_conclusion.md`](manuscript/09_conclusion.md) | Conclusion |
+| [`../manuscript/10_limitations.md`](manuscript/10_limitations.md) | Limitations and boundary conditions (v2.0) |
+| [`../manuscript/S01_proofs.md`](manuscript/S01_proofs.md) | Proofs supplement |
+| [`../manuscript/S02_eusocial_cogsec.md`](manuscript/S02_eusocial_cogsec.md) | Eusocial/cogsec supplement |
+| [`../manuscript/S03_notation.md`](manuscript/S03_notation.md) | Notation index |
+| [`../manuscript/99_references.md`](manuscript/99_references.md) | References |
 
 ## Figures
 

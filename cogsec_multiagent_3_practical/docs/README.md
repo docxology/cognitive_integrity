@@ -14,7 +14,7 @@ computational evidence (Part 2).
 | **`README.md` (this file)** | Documentation index and claims-to-code map |
 | [`../PAI.md`](../PAI.md) | Paper authoring instructions |
 | [`../SKILL.md`](../SKILL.md) | Agent skills for this exemplar |
-| [`../manuscript/`](../manuscript/) | The paper content (34 files: 32 markdown + `config.yaml` + `references.bib`) |
+| [`manuscript/`](manuscript/) | The paper content (markdown chapters, `config.yaml`, `references.bib`) |
 | [`../src/`](../src/) | Source: checklists, applications, verification |
 
 ## What this part provides

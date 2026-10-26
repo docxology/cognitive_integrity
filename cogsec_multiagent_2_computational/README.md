@@ -1,6 +1,6 @@
 # Cognitive Integrity Framework: Computational Validation and Empirical Analysis
 
-Part 2 of the **Cognitive Security for Multiagent Operators** series — **Version 1.0 (2026-07-05)**.
+Part 2 of the **Cognitive Security for Multiagent Operators** series — **Version 2.0.0 (2026-08-26)**.
 
 **Status: Preprint** | **DOI:** [10.5281/zenodo.22134546](https://doi.org/10.5281/zenodo.22134546)
 
@@ -26,7 +26,7 @@ Part 2 of the **Cognitive Security for Multiagent Operators** series — **Versi
 
 This paper provides **computational validation** of the Cognitive Integrity Framework (CIF) through implementation, benchmarking, and statistical analysis across production multiagent architectures.
 
-**Prerequisites:** Part 1 for notation ([`S03_notation.md`](../cogsec_multiagent_1_theory/manuscript/S03_notation.md)); Python and `uv` for tests and scripts.
+**Prerequisites:** Part 1 for notation ([`S03_notation.md`](../cogsec_multiagent_1_theory/docs/manuscript/S03_notation.md)); Python and `uv` for tests and scripts.
 
 ## Primary Focus
 
@@ -40,7 +40,7 @@ This paper provides **computational validation** of the Cognitive Integrity Fram
 | Part | Title | Focus | Status | DOI |
 | ---- | ----- | ----- | ------ | --- |
 | 1 | Formal Foundations | Theory, proofs, formalisms | **Published** | [10.5281/zenodo.22134544](https://doi.org/10.5281/zenodo.22134544) |
-| **2 (This, v1.0)** | Computational Validation | Empirical results, adversarial training | Preprint | [10.5281/zenodo.22134546](https://doi.org/10.5281/zenodo.22134546) |
+| **2 (This, v2.0)** | Computational Validation | Empirical results, adversarial training | Preprint | [10.5281/zenodo.22134546](https://doi.org/10.5281/zenodo.22134546) |
 | 3+4 (merged) | Practical Guidance + Applications | Deployment + domains | Preprint | [10.5281/zenodo.22134548](https://doi.org/10.5281/zenodo.22134548) |
 
 ## Project Structure
@@ -53,10 +53,10 @@ cogsec_multiagent_2_computational/
 │   ├── 05h_redteam_evaluation.md        # NEW v1.0
 │   ├── S01–S10 supplementary sections
 │   ├── S11_adversarial_training_theory.md  # NEW v1.0
-│   └── references.bib  (103 entries, 11 new in v1.0)
+│   └── references.bib  (61 entries)
 ├── src/
 │   ├── core/             # Defense mechanism implementations
-│   ├── colony/           # Multi-agent colony simulations (6 modules)
+│   ├── colony/           # Multi-agent colony simulations (7 modules)
 │   ├── formal/           # Formal verification (15 modules: category_theory, category_theory_advanced, extended_specs, TLA+/Promela/SMV specs)
 │   ├── redteam/          # Adversarial training framework (NEW v1.0)
 │   │   ├── __init__.py   # AdversarialTrainer, ATConfig, NashEquilibriumEstimator
@@ -65,7 +65,7 @@ cogsec_multiagent_2_computational/
 │   ├── statistics/       # Statistical analysis (12 modules)
 │   ├── visualization/    # Figure generation + composable visualization engine
 ├── docs/manuscript/           # Paper content (37 files, v1.0)
-├── tests/                # 68 test files (3+ new in v1.0+)
+├── tests/                # 77 test files
 │   ├── test_colony_stress.py    # NEW: 23 stress tests at 100-500 agents
 │   ├── test_property_based.py   # NEW: 19 Hypothesis property-based tests
 │   └── test_redteam.py          # NEW: 35 adversarial training tests
@@ -186,4 +186,4 @@ These manuscripts are built using the [docxology/template](https://github.com/do
 
 ## Notation
 
-All notation follows the canonical definitions in Part 1: [`cogsec_multiagent_1_theory/manuscript/S03_notation.md`](../cogsec_multiagent_1_theory/manuscript/S03_notation.md).
+All notation follows the canonical definitions in Part 1: [`cogsec_multiagent_1_theory/manuscript/S03_notation.md`](../cogsec_multiagent_1_theory/docs/manuscript/S03_notation.md).

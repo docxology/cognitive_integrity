@@ -90,10 +90,10 @@ cogsec_multiagent_2_computational/
 │   ├── agents/                 # Simulated agent framework
 │   ├── ablation/               # Ablation study module
 │   ├── visualization/          # Figure generation
-│   ├── docs/manuscript/             # Manuscript verifier & LaTeX converter
+│   ├── manuscript/             # Manuscript verifier & LaTeX converter
 │   ├── utils/                  # Shared types & helpers
 │   └── data/                   # Data loaders
-├── scripts/                    # Entry-point scripts (26)
+├── scripts/                    # Entry-point scripts (37)
 │   ├── run_full_evaluation.py  # Full CIF pipeline (4 archs × 950 attacks)
 │   ├── run_statistical_analysis.py  # Hypothesis tests & effect sizes
 │   ├── run_ablation.py         # Component ablation study

@@ -43,11 +43,11 @@ cogsec_multiagent_3_practical/
 │   ├── 10b_applications_conclusion.md
 │   ├── 99_references.md, S01_notation_reference.md
 │   ├── S03_real_world_incidents.md          (6 documented incidents)
-│   └── config.yaml (v2.0), preamble.md, references.bib (merged, 148+ entries)
+│   └── config.yaml (v2.0), preamble.md, references.bib (merged)
 ├── src/                   posture, checklists, agent_guidelines, deployment,
 │                          risk_assessment, pitfalls, visualization, identity
 ├── scripts/               Figure generators + verify_manuscript.py
-├── tests/                 test_practical.py + test_applications.py + test_identity.py + 7 more test files (10 total)
+├── tests/                 test_practical.py + test_applications.py + test_identity.py + 11 more test files (14 total)
 └── output/
 ```
 
@@ -62,7 +62,7 @@ cogsec_multiagent_3_practical/
 ## Notation reference
 
 Minimal notation in §1–§8; formal notation in S01; full definitions:
-- `../cogsec_multiagent_1_theory/manuscript/S03_notation.md`
+- `../cogsec_multiagent_1_theory/docs/manuscript/S03_notation.md`
 
 ## Usage
 
