@@ -41,10 +41,14 @@ class TestSetupLogging:
         mod._CONFIGURED = False
 
         custom_fmt = "%(levelname)s:%(message)s"
-        setup_logging(fmt=custom_fmt)
         root = logging.getLogger("cogsec")
-        formatter = root.handlers[0].formatter
-        assert formatter._fmt == custom_fmt
+        # setup_logging() makes "cogsec" non-propagating, and pytest attaches its own capture
+        # handlers to every non-propagating logger, so position 0 is not necessarily ours.
+        before = list(root.handlers)
+        setup_logging(fmt=custom_fmt)
+        added = [h for h in root.handlers if h not in before]
+        assert len(added) == 1
+        assert added[0].formatter._fmt == custom_fmt
         # Clean up
         mod._CONFIGURED = False
         root.handlers.clear()

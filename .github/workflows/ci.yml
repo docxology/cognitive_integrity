@@ -7,8 +7,8 @@ name: CI
 # Gating: pinned ruff lint, tests with a coverage floor, an import sweep over
 # the *tracked* tree, and manuscript verification for part 2.
 # Advisory (continue-on-error, with the concrete blocker named in each step):
-# `ruff format --check`, the Python 3.10 compatibility matrix, and the
-# cross-paper pointer lint --- three steps, which is what `grep -c
+# `ruff format --check` and the cross-paper pointer lint --- two steps, which is what
+# `grep -c
 # continue-on-error` reports. mypy used to be a fourth; it now gates on the one
 # matrix cell that has a [tool.mypy] section.
 
@@ -28,8 +28,8 @@ env:
   # `uv run ruff` resolved to a *system* ruff locally and would simply not
   # exist on a runner; `uv run --with` makes the tool explicit for every part.
   RUFF_VERSION: "0.15.5"
-  # Versions the full suite is verified green on.  3.10 (the declared
-  # requires-python floor) is exercised by the advisory `compat` job below.
+  # Versions the full suite is verified green on. The declared floor is 3.11 (Pillow 13.0.0
+  # requires it, and 3.9/3.10 no longer receive security fixes), exercised by the matrix.
   PRIMARY_PYTHON: "3.12"
 
 jobs:
@@ -285,41 +285,6 @@ jobs:
         # MISMATCH, NOT_FOUND or UNBACKED claim. Preserve that strict exit;
         # duplicating historical exception counts here drifted from the data.
         run: uv run python scripts/verify_claims.py --json output/claim_report.json
-
-  compat:
-    # Advisory: 3.10 is the declared requires-python floor. The part-3
-    # float-equality pin in test_custom_scores now uses pytest.approx; keep
-    # this job advisory until the full 3.10 matrix is re-verified green.
-    name: py3.10 compat (${{ matrix.part }}, advisory)
-    runs-on: ubuntu-latest
-    continue-on-error: true
-    strategy:
-      fail-fast: false
-      matrix:
-        part:
-          - cogsec_multiagent_1_theory
-          - cogsec_multiagent_2_computational
-          - cogsec_multiagent_3_practical
-    defaults:
-      run:
-        working-directory: ${{ matrix.part }}
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
-
-      - name: Install uv
-        uses: astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e  # v10.3.2
-        with:
-          enable-cache: true
-          cache-dependency-glob: "${{ matrix.part }}/uv.lock"
-
-      - name: Set up Python 3.10
-        run: uv python install 3.10
-
-      - name: Install dependencies
-        run: uv sync --all-extras --python 3.10
-
-      - name: Test (pytest)
-        run: uv run pytest tests/ -q
 
   series-integrity:
     # Program-level gate. Every job above is scoped to ONE part: each part runs
