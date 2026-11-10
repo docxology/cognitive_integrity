@@ -32,6 +32,9 @@ env:
   # requires it, and 3.9/3.10 no longer receive security fixes), exercised by the matrix.
   PRIMARY_PYTHON: "3.12"
 
+permissions:
+  contents: read
+
 jobs:
   test:
     name: ${{ matrix.part }} (py${{ matrix.python-version }})
