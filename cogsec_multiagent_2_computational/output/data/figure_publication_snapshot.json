@@ -15,7 +15,7 @@
     "output/data/stratified_detection.json": "eb50571482dfdbf899b933ddcfca410eea5f829022221b187f5ff16d967bb3e4",
     "output/data/taxonomy_evaluation_results.json": "2f23e9035d5d96d755ba5373620e9f2e5a31fd9d14f12771683b0fd4780a6ebd",
     "output/data/threshold_sweep.json": "6e8aae91ec1e7599694a17782eeacb1c90f4e5dccc06b71e16430dd7ca087b8a",
-    "pyproject.toml": "6cfbfe58e0df51efcc7d73900284dd817dadbe135c38bf0fcf941802674ef29b",
+    "pyproject.toml": "088423c66b2c0cdc7a0acf771a4faa499cf134b187353d138863edd558e05434",
     "scripts/generate_all_figures.py": "4933d44f1cd9d4909498a79a7aa248149cfbc4e6fa93dc7bf9e79a52ce5761b5",
     "src/attacks/__init__.py": "d30b900fec0016d2c98af68d325e5b4e192977e3553693c7b846215c75f7d409",
     "src/attacks/corpus.py": "577cb269fbd2e23ae60c01bd7aa6abd7dd7f0b167cd4e208d22eede7e2df46c4",
@@ -70,7 +70,7 @@
     "src/utils/types.py": "5e699dab47fb1b9672b4d41aa2d349b70ea3fa7a82b51ac87ef6eca94fcc924c",
     "src/visualization/__init__.py": "f2190058565131dfd43828fd152cc9a20608347f12e95cea3012c18fb4ca2cb4",
     "src/visualization/artifact.py": "b8410335a33226bf6e77aac82ccd0f8df51bf0651835e1c6f9810d04f5fba399",
-    "src/visualization/composable.py": "fa75d8cd8794dd7645b534465ca41df64e907fafcc225604ba6da74316a4eec9",
+    "src/visualization/composable.py": "1f9728747fedc7198fc13e60c6d98f3beeaadd56f848179bdb713234cfcfc39e",
     "src/visualization/figures/__init__.py": "4efa58fbd584cb175ba5bbfebe1200ae12c5e52ffc2a6ddd44d590a61b8c103f",
     "src/visualization/figures/ablation_study.py": "10377193243ffd6d284bca99fa4d56c2014a2d963497aab3b263bbb5650c3ee6",
     "src/visualization/figures/attack_surface.py": "e2655da987f971d81fc8eddcedca7bfd6479028370343ebcaed66dbac94490fb",
@@ -86,10 +86,10 @@
     "src/visualization/figures/stratified_detection.py": "1d56d5b7ed808deeb89be6586f4f6eb960013269d0ee533c1430bc12e1034c42",
     "src/visualization/figures/trust_decay.py": "9a1a7d05725211b07e1a3fd9dbc9e00895a3c29815dba717722af1e524fd54c1",
     "src/visualization/reproducibility.py": "b3be0a833bf799b7d21f415b8b551e49e55ac3b42cb235424d838e6ab77ddab8",
-    "src/visualization/style.py": "e7de590570c280901bf48d7a3c0401bcfb845616da156643dd666cbf94ab5e78",
+    "src/visualization/style.py": "69f51f875312ee45bc016477c175078aad6073da15ca7a7c2975d18484684397",
     "src/visualization/tables/__init__.py": "ee0668f5047b12595c4cea22ab33929b71aa4fbc603d02fb063287a6e8435c76",
     "src/visualization/tables/binomial_ci.py": "7bb8909d73ece9f094109d64790884e569f75ae3d16e29bdbde604fc5afebb80",
-    "uv.lock": "8a7cb4c7d714edd906a089886e515bd625e927aec043f180139ae0c7e86b3e27"
+    "uv.lock": "b9da03b82bdbb5c7674e179859e862847a34f0b56a68136510417e0f0835376b"
   },
   "artifacts": {
     "output/figures/attack_surface.png": "199be8e9614474051afb315893c60a8f51629c7727026e6d087fd2dc1ed898f6",
