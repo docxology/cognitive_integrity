@@ -616,16 +616,22 @@ class LatticeViz:
         sorted_nodes = sorted(self.nodes, key=lambda n: n.rate)
         covers: List[Tuple[LatticeNode, LatticeNode]] = []
         for i, lower in enumerate(sorted_nodes):
-            for upper in sorted_nodes[i + 1:]:
-                # covering: no intermediate element
-                intermediate = any(
-                    lower.rate < mid.rate < upper.rate
-                    for mid in sorted_nodes
-                    if mid is not lower and mid is not upper
-                )
-                if not intermediate:
-                    covers.append((lower, upper))
-                    break  # only immediate cover
+            upper_index = i + 1
+            while (
+                upper_index < len(sorted_nodes)
+                and sorted_nodes[upper_index].rate <= lower.rate
+            ):
+                upper_index += 1
+            if upper_index == len(sorted_nodes):
+                continue
+
+            # Every node at the minimum strictly greater rate is an immediate
+            # successor. Equal-rate nodes are incomparable with each other.
+            next_rate = sorted_nodes[upper_index].rate
+            for upper in sorted_nodes[upper_index:]:
+                if upper.rate != next_rate:
+                    break
+                covers.append((lower, upper))
         return covers
 
     def to_ascii(self) -> str:

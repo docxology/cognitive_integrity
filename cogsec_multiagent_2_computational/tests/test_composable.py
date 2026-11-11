@@ -592,6 +592,20 @@ class TestLatticeViz:
         for lower, upper in viz.covering_relations():
             assert lower.rate < upper.rate
 
+    def test_covering_relations_include_all_tied_successors(self):
+        """Every node at the next-higher rate is covered, not only the first."""
+        viz = LatticeViz()
+        for name, rate in (("bottom", 0.0), ("a", 0.2), ("b", 0.2), ("top", 1.0)):
+            viz.add_node(name, rate)
+        assert {
+            (lower.name, upper.name) for lower, upper in viz.covering_relations()
+        } == {
+            ("bottom", "a"),
+            ("bottom", "b"),
+            ("a", "top"),
+            ("b", "top"),
+        }
+
     def test_covering_relations_empty_viz(self):
         viz = LatticeViz()
         covers = viz.covering_relations()
