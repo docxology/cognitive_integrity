@@ -233,7 +233,7 @@ class LLMAgent:
         """
         url = f"{self.config.base_url}/api/chat"
 
-        payload = {
+        payload: Dict[str, Any] = {
             "model": self.config.model,
             "messages": self._history,
             "stream": False,

@@ -86,7 +86,7 @@
     "src/visualization/figures/stratified_detection.py": "1d56d5b7ed808deeb89be6586f4f6eb960013269d0ee533c1430bc12e1034c42",
     "src/visualization/figures/trust_decay.py": "9a1a7d05725211b07e1a3fd9dbc9e00895a3c29815dba717722af1e524fd54c1",
     "src/visualization/reproducibility.py": "b3be0a833bf799b7d21f415b8b551e49e55ac3b42cb235424d838e6ab77ddab8",
-    "src/visualization/style.py": "e7de590570c280901bf48d7a3c0401bcfb845616da156643dd666cbf94ab5e78",
+    "src/visualization/style.py": "69f51f875312ee45bc016477c175078aad6073da15ca7a7c2975d18484684397",
     "src/visualization/tables/__init__.py": "ee0668f5047b12595c4cea22ab33929b71aa4fbc603d02fb063287a6e8435c76",
     "src/visualization/tables/binomial_ci.py": "7bb8909d73ece9f094109d64790884e569f75ae3d16e29bdbde604fc5afebb80",
     "uv.lock": "b9da03b82bdbb5c7674e179859e862847a34f0b56a68136510417e0f0835376b"

@@ -7,7 +7,7 @@ module in the visualization package.
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Dict, List, Literal, Optional, Sequence, Tuple, Union, overload
+from typing import Any, Dict, List, Literal, Optional, Sequence, Tuple, Union, overload
 
 import matplotlib
 import matplotlib.pyplot as plt
@@ -223,7 +223,7 @@ def format_axis(
         ax.set_title(title)
 
 
-def add_legend(ax: Axes, loc: str = "best", **kwargs) -> None:
+def add_legend(ax: Axes, loc: Any = "best", **kwargs) -> None:
     """Add a consistently-styled legend to *ax*."""
     ax.legend(
         loc=loc,
