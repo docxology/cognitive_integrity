@@ -2,6 +2,8 @@
 
 A three-part manuscript series establishing the theoretical foundations, computational validation, and unified practical/applications guidance for cognitive security in multiagent AI systems. Parts 3 and 4 were merged into a single comprehensive paper.
 
+![Cognitive Integrity Framework architecture: architectural, runtime, agent cognitive state and coordination layers](cogsec_multiagent_1_theory/output/figures/cif_architecture.png)
+
 ## Running it
 
 Each paper is a self-contained Python project with its own pinned environment.
