@@ -18,6 +18,11 @@ where a major version marks a change to a published number.
   fresh CI inventory, runtime-guide and TOML-parser source contracts (CI-001–CI-007).
   The CI matrix targets Python 3.11 and exact primary 3.15.2, with Ruff's floor
   aligned to Python 3.11 and mypy resolving the canonical `src.*` package.
+- Qualified all three frozen `--all-extras` environments on actual CPython 3.11.17
+  and exact 3.15.2, Darwin arm64, through the native offline executor. Each runtime
+  passed 555 / 3,662 / 933 part tests and 124 root tests, with five LLM tests
+  explicitly skipped. Pinned Ruff 0.15.5 passed for every part; primary Part 2
+  mypy passed. These local receipts do not claim hosted Linux matrix success.
 - Part 1 now requires an explicit encoder and provides pinned, strictly offline
   `sentence-transformers==6.3.0` with MiniLM revision
   `1110a243fdf4706b3f48f1d95db1a4f5529b4d41`. Actual trained-vector and consumer
