@@ -23,11 +23,11 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "src"))
+sys.path.insert(0, str(ROOT))
 
-from data.generate import DataGenerator
-from utils.random_seed import set_global_seed
-from utils.run_provenance import format_run_provenance
+from src.data.generate import DataGenerator
+from src.utils.random_seed import set_global_seed
+from src.utils.run_provenance import format_run_provenance
 
 
 def main() -> None:

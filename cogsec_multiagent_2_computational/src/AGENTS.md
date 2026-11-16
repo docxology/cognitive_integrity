@@ -29,7 +29,7 @@ from src.evaluation.runner import ExperimentRunner
 from src.composition import DefensePipeline
 ```
 
-`src/__init__.py` inserts the package directory into `sys.path` so that legacy absolute imports (e.g. `from utils.timing import stopwatch`) continue to resolve. Do not remove this shim without a repo-wide refactor.
+Always use canonical `src.*` imports within the package, scripts, and tests. The package does not modify `sys.path`; the repository root must be on the import path when running directly from a checkout.
 
 ## Design Principles (enforced)
 

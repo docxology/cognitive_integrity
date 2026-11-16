@@ -43,7 +43,7 @@ from typing import Any, Dict, Optional, Union
 
 import numpy as np
 
-from utils.run_provenance import run_provenance as capture_run_provenance
+from src.utils.run_provenance import run_provenance as capture_run_provenance
 
 from .schema import AblationData, ColonyData, DetectionData, ScalabilityData
 
@@ -64,6 +64,10 @@ DATA_ORIGIN_SYNTHETIC = "synthetic_schema"
 #: pipeline run.  Distinct from ``real_pipeline`` so machine readers never
 #: mistake design-model numbers for measurements (P2-1).
 DATA_ORIGIN_PARAMETRIC = "parametric_simulation"
+#: Artifact combines measured inputs with explicitly simulated controls or
+#: seeded property checks. This is not a real experiment or an external
+#: model-checking verdict.
+DATA_ORIGIN_SIMULATION_ANALYSIS = "simulation_analysis"
 #: Artifact carries no recognisable provenance.
 DATA_ORIGIN_UNKNOWN = "unknown"
 
@@ -82,7 +86,12 @@ PROVENANCE_KEYS = (
 SIDECAR_HASH_KEY = "artifact_sha256"
 
 _KNOWN_ORIGINS = frozenset(
-    {DATA_ORIGIN_REAL, DATA_ORIGIN_SYNTHETIC, DATA_ORIGIN_PARAMETRIC}
+    {
+        DATA_ORIGIN_REAL,
+        DATA_ORIGIN_SYNTHETIC,
+        DATA_ORIGIN_PARAMETRIC,
+        DATA_ORIGIN_SIMULATION_ANALYSIS,
+    }
 )
 
 #: Result artifacts that may hold real experimental output and must therefore
@@ -197,11 +206,13 @@ def read_provenance(path: Union[str, Path]) -> Dict[str, Any]:
         return {}
 
     inline = _extract_provenance(_load_json_or_none(p))
-    if inline.get("data_origin") in _KNOWN_ORIGINS:
+    inline_origin = inline.get("data_origin")
+    if isinstance(inline_origin, str) and inline_origin in _KNOWN_ORIGINS:
         return inline
 
     sidecar = _sidecar_provenance(p)
-    if sidecar.get("data_origin") in _KNOWN_ORIGINS:
+    sidecar_origin = sidecar.get("data_origin")
+    if isinstance(sidecar_origin, str) and sidecar_origin in _KNOWN_ORIGINS:
         return sidecar
 
     return inline or sidecar
@@ -230,7 +241,9 @@ def classify_provenance(path: Union[str, Path]) -> str:
         must treat that as "do not clobber".
     """
     origin = read_provenance(path).get("data_origin")
-    return origin if origin in _KNOWN_ORIGINS else DATA_ORIGIN_UNKNOWN
+    if isinstance(origin, str) and origin in _KNOWN_ORIGINS:
+        return origin
+    return DATA_ORIGIN_UNKNOWN
 
 
 def is_synthetic_artifact(path: Union[str, Path]) -> bool:

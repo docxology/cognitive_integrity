@@ -155,6 +155,10 @@ def compute_parallel_detection_rate(
         if not 0.0 <= r <= 1.0:
             raise ValueError(f"Rate {i} out of bounds: {r} (must be in [0, 1])")
 
+    if strategy not in {"max", "majority", "weighted"}:
+        raise ValueError(
+            f"Unknown strategy: {strategy!r} (expected 'max', 'majority', 'weighted')"
+        )
     if not rates:
         return 0.0
 
@@ -213,8 +217,9 @@ def _majority_normal_approx(rates: List[float]) -> float:
         return 1.0 if mu > n / 2.0 else 0.0
 
     sigma = math.sqrt(var)
-    # P(X > n/2) with continuity correction
-    z = (n / 2.0 + 0.5 - mu) / sigma
+    # Strict majority means X >= floor(n/2) + 1. Apply the continuity
+    # correction at the lower edge of that first accepted count.
+    z = (n // 2 + 0.5 - mu) / sigma
     return float(1.0 - norm.cdf(z))
 
 
@@ -327,7 +332,7 @@ def compute_weighted_parallel_detection_rate(
 
     Examples:
         >>> compute_weighted_parallel_detection_rate([0.9, 0.8], [0.6, 0.4])
-        0.96...
+        0.932...
     """
     if len(rates) != len(weights):
         raise ValueError(
@@ -482,10 +487,10 @@ def validate_composition_theorem(
         return {
             "series_empirical": 0.0,
             "series_theoretical": 0.0,
-            "series_valid": True,
+            "series_valid": False,
             "parallel_empirical": 0.0,
             "parallel_theoretical": 0.0,
-            "parallel_valid": True,
+            "parallel_valid": False,
             "individual_rates": [],
         }
 

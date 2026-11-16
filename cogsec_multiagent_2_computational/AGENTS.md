@@ -111,8 +111,8 @@ cogsec_multiagent_2_computational/
 │   ├── generate_all_data.py    # All experimental data → output/data/
 │   ├── convert_latex_tables.py # LaTeX → Markdown table conversion
 │   └── z_inject_manuscript_values.py # Auto-inject values into manuscript
-├── tests/                      # 68 test_*.py modules + conftest; 90%+ coverage (see glob in repo)
-├── docs/manuscript/                 # Paper content (37 files)
+├── tests/                      # Test suite; current collected counts in output/data/test_inventory.json
+├── docs/manuscript/            # Paper content
 └── output/                     # Generated figures and data
     ├── figures/                # *.pdf figures
     └── data/                   # *.json results
@@ -151,14 +151,14 @@ uv run python scripts/verify_manuscript.py
 uv run python scripts/convert_latex_tables.py
 
 # LLM demo (requires Ollama)
-uv run python scripts/run_llm_demo.py --provider ollama --model gemma3:4b
+uv run python scripts/run_llm_demo.py --model gemma3:4b
 ```
 
 ## Notation Reference
 
 All notation follows the canonical definitions in:
 
-- `../cogsec_multiagent_1_theory/manuscript/S03_notation.md`
+- `../cogsec_multiagent_1_theory/docs/manuscript/S03_notation.md`
 
 Key symbols used in this paper:
 

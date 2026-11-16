@@ -1,1 +1,1 @@
-Deployment/operations/incident-response checklists rendered into the Part 3+4 manuscript. See AGENTS.md.
+Deployment, operational, and incident-response checklists. Import them from `src.checklists`. Configuration defaults are illustrative validation starting points, not measured requirements or target canary densities.

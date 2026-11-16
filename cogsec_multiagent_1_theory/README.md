@@ -1,8 +1,8 @@
 # Cognitive Integrity Framework: Formal Foundations (Second Edition)
 
-Part 1 of the **Cognitive Security for Multiagent Operators** series — **v1.1 Revised and Expanded**.
+Part 1 of the **Cognitive Security for Multiagent Operators** series — **v2.0, Second Edition**.
 
-**Status: Published (v1) / v1.1 in preparation** | **DOI:** [10.5281/zenodo.22134544](https://doi.org/10.5281/zenodo.22134544) | **v1 Published:** January 28, 2026 | **v1.1 Date:** July 5, 2026
+**Status: Published (Second Edition)** | **DOI:** [10.5281/zenodo.22134544](https://doi.org/10.5281/zenodo.22134544) | **v2.0 Released:** 2026-08-26
 
 ## Overview
 
@@ -10,18 +10,18 @@ This paper presents the **theoretical foundations** of the Cognitive Integrity F
 
 **Prerequisites:** Comfort with formal notation and security definitions; for empirical and implementation detail, read [Part 2](../cogsec_multiagent_2_computational/) ([claims traceability](../cogsec_multiagent_2_computational/docs/claims_traceability.md)).
 
-## Primary Contributions (v1.1)
+## Primary Contributions (v2.0)
 
 1. **Trust Calculus**: Bounded delegation with δ^d decay preventing trust amplification; blast radius theorem for compromised agents
 2. **Defense Composition Algebra**: Formal semiring structure; complete proof of closure, associativity, identity, distributivity
 3. **Information-Theoretic Bounds**: Neyman-Pearson optimal detection; Chernoff information error exponents; fundamental undetectability regime
 4. **Formal Verification**: Safety properties (belief integrity, trust boundedness, goal alignment)
-5. **Formal Ω Adversary Taxonomy** *(v1.1)*: Mathematical characterization of all five adversary classes with KL-divergence distinguishability
-6. **CIF-AD-OODA Integration** *(v1.1)*: Action-Delegation coupling matrix (5×5); OODA phase-specific defenses and latency constraints
-7. **Information-Geometric Bounds** *(v1.1)*: Fisher-Rao tight bound I·S ≤ π/2; geometric justification of drift threshold θ = 0.3
-8. **Limitations and Boundary Conditions** *(v1.1)*: Honest characterization of 5 formal assumptions and where they break
+5. **Formal Ω Adversary Taxonomy** *(v2.0)*: Mathematical characterization of all five adversary classes with KL-divergence distinguishability
+6. **CIF-AD-OODA Integration** *(v2.0)*: Action-Delegation coupling matrix (5×5); OODA phase-specific defenses and latency constraints
+7. **Information-Geometric Bounds** *(v2.0)*: Fisher-Rao tight bound I·S ≤ π/2; geometric justification of drift threshold θ = 0.3
+8. **Limitations and Boundary Conditions** *(v2.0)*: Honest characterization of 5 formal assumptions and where they break
 
-## v1.1 Major Changes
+## v2.0 Major Changes
 
 | Component | v1 | v2 |
 |---|---|---|
@@ -30,19 +30,19 @@ This paper presents the **theoretical foundations** of the Cognitive Integrity F
 | Defense mechanisms | 5 defenses defined | + Formal semiring closure proofs + CUSUM ARL bounds |
 | Detection methods | ROC + ensemble | + Neyman-Pearson, Chernoff bounds, multi-stage pipeline |
 | New section | — | §10 Limitations and Boundary Conditions |
-| Proofs supplement | 7 theorems | +6 new v1.1 proofs (Fisher-Rao, semiring, blast radius) |
-| Source modules | 10 modules | +2: `ooda_monitor.py`, `cif_ad_coupling.py` |
-| Test coverage | 13 test files | +2 files: 104 tests (OODA, CIF-AD, Byzantine stress); 420 total |
-| Figures | 18 scripts | +2: CIF-AD coupling heatmap, OODA phase diagram |
+| Proofs supplement | 7 theorems | +6 new v2.0 proofs (Fisher-Rao, semiring, blast radius) |
+| Source modules | Earlier formal components | Added `ooda_monitor.py` and `cif_ad_coupling.py` |
+| Test coverage | Earlier suite | Expanded OODA, CIF-AD and Byzantine-stress coverage; see the current inventory below |
+| Figures | Earlier figure set | Added CIF-AD coupling heatmap and OODA phase diagram |
 | Citations | ~100 | +10 new: Fisher-Rao, Neyman-Pearson, CUSUM, FLP, etc. |
 
 ## Paper Series
 
 || Part | Title | Focus | Status | DOI |
 ||------|-------|-------|--------|-----|
-|| **1 (This)** | Formal Foundations (Second Edition) | Theory, proofs, formalisms, CIF-AD-OODA | **v1.1** | [10.5281/zenodo.22134544](https://doi.org/10.5281/zenodo.22134544) |
-|| 2 | Computational Validation | Empirical results, algorithms | Preprint | [10.5281/zenodo.22134546](https://doi.org/10.5281/zenodo.22134546) |
-|| 3+4 (merged) | Practical Guidance + Applications | Deployment checklists, guidelines, cross-domain CIF-AD-OODA | Preprint | [10.5281/zenodo.22134548](https://doi.org/10.5281/zenodo.22134548) |
+|| **1 (This)** | Formal Foundations (Second Edition) | Theory, proofs, formalisms, CIF-AD-OODA | **v2.0, Second Edition** | [10.5281/zenodo.22134544](https://doi.org/10.5281/zenodo.22134544) |
+|| 2 | Computational Validation | Empirical results, algorithms | v2.0, first publication | [10.5281/zenodo.22134546](https://doi.org/10.5281/zenodo.22134546) |
+|| 3+4 (merged) | Practical Guidance + Applications | Deployment checklists, guidelines, cross-domain CIF-AD-OODA | v2.0, first publication | [10.5281/zenodo.22134548](https://doi.org/10.5281/zenodo.22134548) |
 
 ## Documentation
 
@@ -79,13 +79,15 @@ cogsec_multiagent_1_theory/
 ├── scripts/              # Figure and data scripts
 │   ├── 19_cif_ad_coupling_figure.py  # NEW v2
 │   ├── 20_ooda_phase_figure.py       # NEW v2
-│   └── (01-18 existing scripts)
+│   └── (existing figure scripts)
 ├── tests/                # Module and visualization tests
-│   ├── test_ooda_monitor.py    # NEW v2: 56 tests (incl. Hypothesis property-based)
-│   ├── test_cif_ad_coupling.py # NEW v2: 48 tests (incl. Byzantine stress)
+│   ├── test_ooda_monitor.py    # Includes Hypothesis property-based tests
+│   ├── test_cif_ad_coupling.py # Includes Byzantine-stress tests
 │   └── (existing test files)
 └── output/               # Generated PDF, figures, reports
 ```
+
+For current collected-test totals, see the tracked [test inventory](../cogsec_multiagent_2_computational/output/data/test_inventory.json) rather than hard-coded counts.
 
 ## Notation Reference
 

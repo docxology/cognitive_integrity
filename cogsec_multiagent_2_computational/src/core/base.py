@@ -25,8 +25,8 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any, Dict, Mapping, Optional, Union
 
-from composition.pipeline import DefenseModule
-from utils.types import DefenseResult
+from src.composition.pipeline import DefenseModule
+from src.utils.types import DefenseResult
 
 __all__ = ["CognitiveState", "DefenseResult", "DefenseModule", "coerce_message"]
 
@@ -101,7 +101,7 @@ def coerce_message(value: Evaluatable) -> tuple[str, Optional[Dict[str, Any]]]:
         context: Dict[str, Any] = dict(value.context)
         if value.agent_id is not None:
             context.setdefault("agent_id", value.agent_id)
-        return value.message, context or None
+        return value.message, context
     if isinstance(value, str):
         return value, None
     raise TypeError(

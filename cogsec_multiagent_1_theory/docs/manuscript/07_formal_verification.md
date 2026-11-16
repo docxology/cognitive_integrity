@@ -488,25 +488,25 @@ The following table summarizes the expected state space exploration for each pro
 \toprule
 Property & Status & Reference \\
 \midrule
-Belief integrity & theoretical bound; executable run in Part 2 §S04 & \cref{thm:belief-injection} \\
-Trust bounded & theoretical bound; executable run in Part 2 §S04 & \cref{thm:trust-bound} \\
-No deadlock & theoretical bound; executable run in Part 2 §S04 & \cref{thm:firewall-liveness} \\
-Eventual detection & theoretical bound; executable run in Part 2 §S04 & \cref{thm:progressive-detection} \\
+Belief integrity & theoretical bound; specifications in Part 2 §S04, no run & \cref{thm:belief-injection} \\
+Trust bounded & theoretical bound; specifications in Part 2 §S04, no run & \cref{thm:trust-bound} \\
+No deadlock & theoretical bound; specifications in Part 2 §S04, no run & \cref{thm:firewall-liveness} \\
+Eventual detection & theoretical bound; specifications in Part 2 §S04, no run & \cref{thm:progressive-detection} \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-> **Note:** Model checking tool configurations (NuSMV, SPIN, TLA+) and verification parameters are provided in Part 2: Computational Validation, which presents the executable implementations and empirical verification results.
+> **Note:** Model checking tool configurations (NuSMV, SPIN, TLA+) and verification parameters are provided in Part 2: Computational Validation, which presents the executable specifications. No model checker was executed in this series.
 
 ### Verification Results Summary {#sec:verification-summary}
 
-The following table records which property each tool is configured to check and the status of the corresponding analytical result. It is a plan, not a set of outcomes: no model-checking run is executed in this paper. These guarantees follow from the CTL/LTL property specifications (\cref{sec:temporal-properties}) applied to the state space definition (\cref{sec:state-space}). Empirical execution of these verification configurations, including runtime measurements and counterexample analysis, is presented in Part 2.
+The following table records which property each tool is configured to check and the status of the corresponding analytical result. It is a plan, not a set of outcomes: no model-checking run is executed in this paper. These guarantees follow from the CTL/LTL property specifications (\cref{sec:temporal-properties}) applied to the state space definition (\cref{sec:state-space}). The executable specifications are presented in Part 2; no run is reported.
 
 \begin{table}[htbp]
 \centering
 \caption{Model-checking plan: the property each tool is configured to check, and
 the status of the corresponding analytical result. No run of these configurations
-is reported in this paper; execution is Part 2's.}
+is reported in this paper; the executable specifications are in Part 2's §S04.}
 \label{tab:verification-results}
 \begin{tabular}{@{}llll@{}}
 \toprule

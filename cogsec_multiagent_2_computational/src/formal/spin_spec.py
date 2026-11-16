@@ -39,6 +39,7 @@ def generate_categorical_promela_spec() -> str:
         "bool left_unitor_violated = false;",
         "bool right_unitor_violated = false;",
         "bool triangle_violated = false;",
+        "bool laws_complete = false;",
         "",
         "/* Compute series composition detection rate (integer %) */",
         "inline series_compose(a, b, result) {",
@@ -47,7 +48,10 @@ def generate_categorical_promela_spec() -> str:
         "",
         "/* Compute parallel composition detection rate (max) */",
         "inline parallel_compose(a, b, result) {",
-        "    result = (a > b) -> a : b;",
+        "    if",
+        "    :: a > b -> result = a;",
+        "    :: else -> result = b;",
+        "    fi;",
         "}",
         "",
         "proctype CheckCategoryLaws() {",
@@ -90,6 +94,7 @@ def generate_categorical_promela_spec() -> str:
         "    :: (hom_fg + hom_gh < hom_fh) -> triangle_violated = true;",
         "    :: else -> skip;",
         "    fi;",
+        "    laws_complete = true;",
         "}",
         "",
         "init {",
@@ -117,10 +122,9 @@ def generate_categorical_promela_spec() -> str:
         "ltl enriched_triangle { [] (!triangle_violated) }",
         "",
         "/* P_cat5: Eventually all laws are checked */",
-        "ltl laws_checked { <> (!assoc_violated && !left_unitor_violated && !right_unitor_violated) }",  # noqa: E501
+        "ltl laws_checked { <> laws_complete }",
         "",
-        "/* Semiring completeness: series-then-parallel >= pure series */",
-        "/* (modelled as a never-claim on the detection rate order) */",
+        "/* No semiring-completeness or monoidal-interchange claim is asserted. */",
     ]
     return "\n".join(lines) + "\n"
 
@@ -185,6 +189,14 @@ def generate_promela_spec(n_agents: int = 5, max_byzantine: int = 1) -> str:
         "  delegated_trust[id] = my_trust * 85 / 100;  /* decay = 0.85 */",
         "}",
         "",
+        "/* Adversary process: injection attempts are reachable. */",
+        "proctype Attacker() {",
+        "  do",
+        "  :: !injection -> injection = true;",
+        "  :: injection -> skip;",
+        "  od;",
+        "}",
+        "",
         "/* Firewall process */",
         "proctype Firewall() {",
         "  do",
@@ -208,6 +220,7 @@ def generate_promela_spec(n_agents: int = 5, max_byzantine: int = 1) -> str:
         "      run Agent(i, false);",
         "    fi;",
         "  };",
+        "  run Attacker();",
         "  run Firewall();",
         "}",
         "",
@@ -219,8 +232,8 @@ def generate_promela_spec(n_agents: int = 5, max_byzantine: int = 1) -> str:
         "/* P2: Delegated trust never exceeds direct trust */",
         "ltl trust_bound { [] (delegated_trust[0] <= direct_trust[0]) }",
         "",
-        "/* P3: Active firewall prevents injection */",
-        "ltl no_injection { [] (firewall_active -> !injection) }",
+        "/* P3: An active firewall eventually clears each injection attempt. */",
+        "ltl no_injection { [] ((injection && firewall_active) -> <> !injection) }",
     ]
 
     return "\n".join(lines) + "\n"
@@ -256,10 +269,10 @@ def parse_spin_result(output: str) -> Dict[str, bool]:
                     passed = False
             results[f"property_{len(results)}"] = passed
 
-        # Look for acceptance/rejection
-        if "acceptance cycle" in line.lower():
-            results[f"ltl_{len(results)}"] = False
-        elif "no acceptance cycle" in line.lower():
+        # Check the negative phrase first: it also contains "acceptance cycle".
+        if "no acceptance cycle" in line.lower():
             results[f"ltl_{len(results)}"] = True
+        elif "acceptance cycle" in line.lower():
+            results[f"ltl_{len(results)}"] = False
 
     return results

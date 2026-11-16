@@ -31,12 +31,9 @@ import pytest
 # ============================================================
 
 _ROOT = Path(__file__).resolve().parent.parent
-_SRC = _ROOT / "src"
 
 if str(_ROOT) not in sys.path:
     sys.path.insert(0, str(_ROOT))
-if str(_SRC) not in sys.path:
-    sys.path.insert(0, str(_SRC))
 
 
 # ============================================================
@@ -48,7 +45,7 @@ class TestRandomSeedInitializesDefault:
 
     def test_get_rng_initializes_default(self, monkeypatch):
         """When _GLOBAL_RNG is None, get_rng() creates a new generator from _GLOBAL_SEED."""
-        import utils.random_seed as rs
+        import src.utils.random_seed as rs
 
         monkeypatch.setattr(rs, "_GLOBAL_RNG", None)
         rng = rs.get_rng()
@@ -68,7 +65,7 @@ class TestLatencyProfilerTypeFallback:
 
     def test_profile_fallback_to_two_arg(self):
         """Profiler falls back to evaluate(msg, None) when evaluate(msg) raises TypeError."""
-        from evaluation.benchmark import LatencyProfiler
+        from src.evaluation.benchmark import LatencyProfiler
 
         # Simplest: a pipeline that always raises TypeError on single-arg call
         class StrictTwoArgPipeline:
@@ -81,7 +78,7 @@ class TestLatencyProfilerTypeFallback:
 
     def test_profile_dict_sample(self):
         """Lines 76-77: dict samples use .get('content', '')."""
-        from evaluation.benchmark import LatencyProfiler
+        from src.evaluation.benchmark import LatencyProfiler
 
         class SimplePipeline:
             def evaluate(self, msg):
@@ -94,7 +91,7 @@ class TestLatencyProfilerTypeFallback:
 
     def test_profile_by_module_fallback_to_two_arg(self):
         """Lines 116-117: module.evaluate(msg, None) fallback."""
-        from evaluation.benchmark import LatencyProfiler
+        from src.evaluation.benchmark import LatencyProfiler
 
         class TwoArgModule:
             name = "two_arg_mod"
@@ -111,7 +108,7 @@ class TestLatencyProfilerTypeFallback:
 
     def test_profile_by_module_uses_class_name_fallback(self):
         """Lines 110: module name falls back to class name when .name absent."""
-        from evaluation.benchmark import LatencyProfiler
+        from src.evaluation.benchmark import LatencyProfiler
 
         class NoNameModule:
             def evaluate(self, msg):
@@ -126,7 +123,7 @@ class TestLatencyProfilerTypeFallback:
 
     def test_profile_by_module_dict_sample(self):
         """Line 105: dict sample in profile_by_module uses .get('content', '')."""
-        from evaluation.benchmark import LatencyProfiler
+        from src.evaluation.benchmark import LatencyProfiler
 
         class M:
             name = "m1"
@@ -143,7 +140,7 @@ class TestLatencyProfilerTypeFallback:
 
     def test_estimate_memory_numpy_array_attr(self):
         """Lines 164-165: numpy arrays are sized by .nbytes."""
-        from evaluation.benchmark import MemoryProfiler
+        from src.evaluation.benchmark import MemoryProfiler
 
         class PipelineWithArray:
             big_matrix = np.ones((100, 100), dtype=np.float64)
@@ -154,7 +151,7 @@ class TestLatencyProfilerTypeFallback:
 
     def test_estimate_memory_basic(self):
         """Line 193: sys.getsizeof fallback for plain objects."""
-        from evaluation.benchmark import MemoryProfiler
+        from src.evaluation.benchmark import MemoryProfiler
 
         class SimplePipeline:
             x = 42
@@ -168,7 +165,7 @@ class TestLatencyProfilerTypeFallback:
 
     def test_estimate_object_list_and_dict(self):
         """Lines 199-209: _estimate_object handles list and dict."""
-        from evaluation.benchmark import MemoryProfiler
+        from src.evaluation.benchmark import MemoryProfiler
 
         profiler = MemoryProfiler()
         list_size = profiler._estimate_object([1, 2, 3])
@@ -179,23 +176,22 @@ class TestLatencyProfilerTypeFallback:
 
     def test_estimate_object_depth_limit(self):
         """Line 192: depth > 5 returns 0."""
-        from evaluation.benchmark import MemoryProfiler
+        from src.evaluation.benchmark import MemoryProfiler
 
         profiler = MemoryProfiler()
         result = profiler._estimate_object([1, 2, 3], depth=6)
         assert result == 0
 
     def test_estimate_object_numpy(self):
-        """Lines 195-196: numpy arrays return nbytes + sys.getsizeof."""
+        """An owning numpy buffer is counted once, via sys.getsizeof only."""
         import sys
 
-        from evaluation.benchmark import MemoryProfiler
+        from src.evaluation.benchmark import MemoryProfiler
 
         profiler = MemoryProfiler()
         arr = np.ones((10,), dtype=np.float64)
         size = profiler._estimate_object(arr)
-        expected = int(arr.nbytes) + sys.getsizeof(arr)
-        assert size == expected
+        assert size == sys.getsizeof(arr)
 
 
 # ============================================================
@@ -208,7 +204,7 @@ class TestByzantineConsensusGetBeliefPaths:
 
     def test_get_belief_returns_none_when_undecided(self):
         """Line 171: UNDECIDED path -> returns None."""
-        from core.consensus import ByzantineConsensus, Vote
+        from src.core.consensus import ByzantineConsensus, Vote
 
         bc = ByzantineConsensus(n_agents=4)
         # Only 1 vote — insufficient for quorum.
@@ -217,7 +213,7 @@ class TestByzantineConsensusGetBeliefPaths:
 
     def test_get_belief_returns_none_for_unknown_prop(self):
         """Line 175: no votes at all for proposition -> empty votes list."""
-        from core.consensus import ByzantineConsensus
+        from src.core.consensus import ByzantineConsensus
 
         bc = ByzantineConsensus(n_agents=4)
         # compute_consensus on unknown prop returns UNDECIDED -> line 171 None
@@ -226,7 +222,7 @@ class TestByzantineConsensusGetBeliefPaths:
 
     def test_get_belief_reject_path(self):
         """Lines 184-189: REJECT consensus -> averages rejecting beliefs."""
-        from core.consensus import ByzantineConsensus, Vote
+        from src.core.consensus import ByzantineConsensus, Vote
 
         bc = ByzantineConsensus(n_agents=4)
         # 3/4 agents reject (belief < 0.3)
@@ -240,7 +236,7 @@ class TestByzantineConsensusGetBeliefPaths:
 
     def test_get_vote_distribution_no_votes(self):
         """Line 205: get_vote_distribution returns zeros for unknown prop."""
-        from core.consensus import ByzantineConsensus
+        from src.core.consensus import ByzantineConsensus
 
         bc = ByzantineConsensus(n_agents=4)
         dist = bc.get_vote_distribution("no_such_prop")
@@ -248,7 +244,7 @@ class TestByzantineConsensusGetBeliefPaths:
 
     def test_get_vote_distribution_uncertain(self):
         """Covers uncertain bucket (belief between thresholds)."""
-        from core.consensus import ByzantineConsensus, Vote
+        from src.core.consensus import ByzantineConsensus, Vote
 
         bc = ByzantineConsensus(n_agents=4)
         # belief=0.5 is between rejection_threshold=0.3 and acceptance_threshold=0.7
@@ -264,7 +260,7 @@ class TestWeightedByzantineConsensusUpdatePath:
 
     def test_weighted_vote_update_removes_old(self):
         """Submitting two votes from same agent replaces the first."""
-        from core.consensus import WeightedByzantineConsensus, WeightedVote
+        from src.core.consensus import WeightedByzantineConsensus, WeightedVote
 
         wbc = WeightedByzantineConsensus(n_agents=4)
         wbc.submit_vote(WeightedVote("a1", "prop", 0.9, trust_weight=0.8))
@@ -277,7 +273,7 @@ class TestWeightedByzantineConsensusUpdatePath:
 
     def test_get_weighted_average_empty_prop(self):
         """Line 364: no weighted votes -> returns 0.5."""
-        from core.consensus import WeightedByzantineConsensus
+        from src.core.consensus import WeightedByzantineConsensus
 
         wbc = WeightedByzantineConsensus(n_agents=4)
         avg = wbc.get_weighted_average("unknown_prop")
@@ -285,7 +281,7 @@ class TestWeightedByzantineConsensusUpdatePath:
 
     def test_get_weighted_average_empty_list(self):
         """Line 367-368: votes list empty after potential removal -> 0.5."""
-        from core.consensus import WeightedByzantineConsensus
+        from src.core.consensus import WeightedByzantineConsensus
 
         wbc = WeightedByzantineConsensus(n_agents=4)
         # Inject an empty list directly.
@@ -295,7 +291,7 @@ class TestWeightedByzantineConsensusUpdatePath:
 
     def test_get_weighted_average_zero_total_weight(self):
         """Line 371-372: total_weight == 0 -> returns 0.5."""
-        from core.consensus import WeightedByzantineConsensus, WeightedVote
+        from src.core.consensus import WeightedByzantineConsensus, WeightedVote
 
         wbc = WeightedByzantineConsensus(n_agents=4)
         wbc.submit_vote(WeightedVote("a1", "prop", 0.8, trust_weight=0.0))
@@ -308,7 +304,7 @@ class TestConfidenceByzantineConsensusUpdatePath:
 
     def test_confidence_vote_update_removes_old(self):
         """Submitting two confidence votes from same agent replaces the first."""
-        from core.consensus import ConfidenceByzantineConsensus, ConfidenceVote
+        from src.core.consensus import ConfidenceByzantineConsensus, ConfidenceVote
 
         cbc = ConfidenceByzantineConsensus(n_agents=4)
         cbc.submit_vote(ConfidenceVote("a1", "prop", 0.9, confidence=0.8))
@@ -320,7 +316,7 @@ class TestConfidenceByzantineConsensusUpdatePath:
 
     def test_get_confidence_weighted_average_empty_prop(self):
         """Line 458: no confidence votes -> returns 0.5."""
-        from core.consensus import ConfidenceByzantineConsensus
+        from src.core.consensus import ConfidenceByzantineConsensus
 
         cbc = ConfidenceByzantineConsensus(n_agents=4)
         avg = cbc.get_confidence_weighted_average("unknown_prop")
@@ -328,7 +324,7 @@ class TestConfidenceByzantineConsensusUpdatePath:
 
     def test_get_confidence_weighted_average_empty_list(self):
         """Line 461-462: empty votes list -> 0.5."""
-        from core.consensus import ConfidenceByzantineConsensus
+        from src.core.consensus import ConfidenceByzantineConsensus
 
         cbc = ConfidenceByzantineConsensus(n_agents=4)
         cbc._confidence_votes["prop"] = []
@@ -337,7 +333,7 @@ class TestConfidenceByzantineConsensusUpdatePath:
 
     def test_get_confidence_weighted_average_zero_total(self):
         """Lines 465-466: total_confidence == 0 -> 0.5."""
-        from core.consensus import ConfidenceByzantineConsensus, ConfidenceVote
+        from src.core.consensus import ConfidenceByzantineConsensus, ConfidenceVote
 
         cbc = ConfidenceByzantineConsensus(n_agents=4)
         cbc.submit_vote(ConfidenceVote("a1", "prop", 0.8, confidence=0.0))
@@ -346,7 +342,7 @@ class TestConfidenceByzantineConsensusUpdatePath:
 
     def test_get_aggregate_confidence_empty_prop(self):
         """Lines 488: no confidence votes -> aggregate returns 0.0."""
-        from core.consensus import ConfidenceByzantineConsensus
+        from src.core.consensus import ConfidenceByzantineConsensus
 
         cbc = ConfidenceByzantineConsensus(n_agents=4)
         agg = cbc.get_aggregate_confidence("unknown_prop")
@@ -354,7 +350,7 @@ class TestConfidenceByzantineConsensusUpdatePath:
 
     def test_get_aggregate_confidence_empty_list(self):
         """Lines 490-492: empty votes list -> aggregate returns 0.0."""
-        from core.consensus import ConfidenceByzantineConsensus
+        from src.core.consensus import ConfidenceByzantineConsensus
 
         cbc = ConfidenceByzantineConsensus(n_agents=4)
         cbc._confidence_votes["prop"] = []
@@ -363,7 +359,7 @@ class TestConfidenceByzantineConsensusUpdatePath:
 
     def test_compute_consensus_low_aggregate_confidence(self):
         """Line 510-512: aggregate confidence < min_aggregate_confidence -> UNDECIDED."""
-        from core.consensus import ConfidenceByzantineConsensus, ConfidenceVote, ConsensusResult
+        from src.core.consensus import ConfidenceByzantineConsensus, ConfidenceVote, ConsensusResult
 
         cbc = ConfidenceByzantineConsensus(n_agents=4, min_aggregate_confidence=0.9)
         # Add enough votes for quorum but all with low confidence
@@ -375,7 +371,7 @@ class TestConfidenceByzantineConsensusUpdatePath:
 
     def test_compute_consensus_high_aggregate_confidence_delegates(self):
         """Line 515: high aggregate confidence -> delegates to parent."""
-        from core.consensus import ConfidenceByzantineConsensus, ConfidenceVote, ConsensusResult
+        from src.core.consensus import ConfidenceByzantineConsensus, ConfidenceVote, ConsensusResult
 
         cbc = ConfidenceByzantineConsensus(n_agents=4, min_aggregate_confidence=0.1)
         # Add quorum of high-confidence accept votes
@@ -391,7 +387,7 @@ class TestCombinedByzantineConsensusUpdatePath:
 
     def test_combined_vote_update_removes_old(self):
         """Lines 578-579: updating existing CombinedVote removes old entry."""
-        from core.consensus import CombinedByzantineConsensus, CombinedVote
+        from src.core.consensus import CombinedByzantineConsensus, CombinedVote
 
         cbc = CombinedByzantineConsensus(n_agents=4)
         cbc.submit_vote(CombinedVote("a1", "prop", 0.9, trust_weight=0.8, confidence=0.8))
@@ -403,7 +399,7 @@ class TestCombinedByzantineConsensusUpdatePath:
 
     def test_get_combined_weighted_average_empty_prop(self):
         """Lines 593-594: no combined votes -> returns 0.5."""
-        from core.consensus import CombinedByzantineConsensus
+        from src.core.consensus import CombinedByzantineConsensus
 
         cbc = CombinedByzantineConsensus(n_agents=4)
         avg = cbc.get_combined_weighted_average("unknown_prop")
@@ -411,7 +407,7 @@ class TestCombinedByzantineConsensusUpdatePath:
 
     def test_get_combined_weighted_average_empty_list(self):
         """Lines 597-598: empty list -> returns 0.5."""
-        from core.consensus import CombinedByzantineConsensus
+        from src.core.consensus import CombinedByzantineConsensus
 
         cbc = CombinedByzantineConsensus(n_agents=4)
         cbc._combined_votes["prop"] = []
@@ -420,7 +416,7 @@ class TestCombinedByzantineConsensusUpdatePath:
 
     def test_get_combined_weighted_average_zero_total_weight(self):
         """Lines 601-602: zero total effective weight -> returns 0.5."""
-        from core.consensus import CombinedByzantineConsensus, CombinedVote
+        from src.core.consensus import CombinedByzantineConsensus, CombinedVote
 
         cbc = CombinedByzantineConsensus(n_agents=4)
         # effective_weight = trust_weight * confidence = 0 * 0 = 0
@@ -439,7 +435,7 @@ class TestBeliefStateEdgePaths:
 
     def test_get_partition_returns_none_for_unknown(self):
         """Line 101: belief in neither partition -> returns None."""
-        from core.sandbox import BeliefState
+        from src.core.sandbox import BeliefState
 
         state = BeliefState()
         result = state.get_partition("does_not_exist")
@@ -447,7 +443,7 @@ class TestBeliefStateEdgePaths:
 
     def test_remove_verified_belief(self):
         """Lines 111-112: remove from verified partition."""
-        from core.sandbox import Belief, BeliefState
+        from src.core.sandbox import Belief, BeliefState
 
         state = BeliefState()
         b = Belief("b1", "verified", 0.9)
@@ -458,7 +454,7 @@ class TestBeliefStateEdgePaths:
 
     def test_remove_provisional_belief(self):
         """Lines 113-115: remove from provisional partition."""
-        from core.sandbox import Belief, BeliefState
+        from src.core.sandbox import Belief, BeliefState
 
         state = BeliefState()
         b = Belief("b1", "provisional", 0.5)
@@ -469,21 +465,21 @@ class TestBeliefStateEdgePaths:
 
     def test_remove_nonexistent_returns_false(self):
         """Line 116: belief not found -> returns False."""
-        from core.sandbox import BeliefState
+        from src.core.sandbox import BeliefState
 
         state = BeliefState()
         assert state.remove("nope") is False
 
     def test_promote_nonexistent_returns_false(self):
         """Line 126: belief not in provisional -> promote returns False."""
-        from core.sandbox import BeliefState
+        from src.core.sandbox import BeliefState
 
         state = BeliefState()
         assert state.promote("nope") is False
 
     def test_demote_nonexistent_returns_false(self):
         """Line 140: belief not in verified -> demote returns False."""
-        from core.sandbox import BeliefState
+        from src.core.sandbox import BeliefState
 
         state = BeliefState()
         assert state.demote("nope") is False
@@ -494,7 +490,7 @@ class TestSandboxManagerEdgePaths:
 
     def test_cleanup_expired_skips_verified_beliefs(self):
         """Lines 248-251: expired TTL entry that is already verified is skipped."""
-        from core.sandbox import Belief, SandboxConfig, SandboxManager
+        from src.core.sandbox import Belief, SandboxConfig, SandboxManager
 
         manager = SandboxManager(SandboxConfig(default_ttl_seconds=0.01))
         b = Belief("b1", "test", 0.9)
@@ -512,7 +508,7 @@ class TestSandboxManagerEdgePaths:
 
     def test_promote_removes_from_ttl_registry(self):
         """Lines 266-268: promote() clears TTL entry."""
-        from core.sandbox import Belief, SandboxManager
+        from src.core.sandbox import Belief, SandboxManager
 
         manager = SandboxManager()
         b = Belief("b1", "test", 0.9)
@@ -524,14 +520,14 @@ class TestSandboxManagerEdgePaths:
 
     def test_promote_nonexistent_returns_false(self):
         """Line 269: promote returns False for unknown belief."""
-        from core.sandbox import SandboxManager
+        from src.core.sandbox import SandboxManager
 
         manager = SandboxManager()
         assert manager.promote("nope") is False
 
     def test_check_promotions_promotes_eligible(self):
         """Lines 280-283: check_promotions iterates provisional beliefs."""
-        from core.sandbox import Belief, PromotionCriteria, SandboxConfig, SandboxManager
+        from src.core.sandbox import Belief, PromotionCriteria, SandboxConfig, SandboxManager
 
         criteria = PromotionCriteria(min_confidence=0.6)
         manager = SandboxManager(SandboxConfig(), promotion_criteria=criteria)
@@ -548,7 +544,7 @@ class TestSandboxManagerEdgePaths:
 
     def test_update_confidence_nonexistent_returns_false(self):
         """Line 300: update_confidence for unknown id returns False."""
-        from core.sandbox import SandboxManager
+        from src.core.sandbox import SandboxManager
 
         manager = SandboxManager()
         result = manager.update_confidence("nope", 0.9)
@@ -556,7 +552,7 @@ class TestSandboxManagerEdgePaths:
 
     def test_add_corroboration_nonexistent_returns_false(self):
         """Line 318-319: add_corroboration for unknown belief returns False."""
-        from core.sandbox import SandboxManager
+        from src.core.sandbox import SandboxManager
 
         manager = SandboxManager()
         result = manager.add_corroboration("nope", "agent-x")
@@ -564,7 +560,7 @@ class TestSandboxManagerEdgePaths:
 
     def test_add_corroboration_idempotent_same_agent(self):
         """Lines 324-326: same corroborating agent not double-counted."""
-        from core.sandbox import Belief, SandboxManager
+        from src.core.sandbox import Belief, SandboxManager
 
         manager = SandboxManager()
         b = Belief("b1", "claim", 0.7)
@@ -578,7 +574,7 @@ class TestSandboxManagerEdgePaths:
 
     def test_add_corroboration_multiple_agents(self):
         """Lines 321-327: unique corroborators each increment count."""
-        from core.sandbox import Belief, SandboxManager
+        from src.core.sandbox import Belief, SandboxManager
 
         manager = SandboxManager()
         b = Belief("b1", "claim", 0.7)
@@ -593,7 +589,7 @@ class TestSandboxManagerEdgePaths:
     def test_extend_ttl_succeeds(self):
         """Lines 357-361: extend_ttl adds seconds to expiry."""
 
-        from core.sandbox import Belief, SandboxManager
+        from src.core.sandbox import Belief, SandboxManager
 
         manager = SandboxManager()
         b = Belief("b1", "test", 0.5)
@@ -607,7 +603,7 @@ class TestSandboxManagerEdgePaths:
 
     def test_extend_ttl_nonexistent_returns_false(self):
         """Line 358: extend_ttl for unknown belief returns False."""
-        from core.sandbox import SandboxManager
+        from src.core.sandbox import SandboxManager
 
         manager = SandboxManager()
         result = manager.extend_ttl("nope", 30.0)
@@ -615,7 +611,7 @@ class TestSandboxManagerEdgePaths:
 
     def test_get_expiry_returns_none_for_unknown(self):
         """Lines 364-365: get_expiry for unknown id returns None."""
-        from core.sandbox import SandboxManager
+        from src.core.sandbox import SandboxManager
 
         manager = SandboxManager()
         assert manager.get_expiry("nope") is None
@@ -624,7 +620,7 @@ class TestSandboxManagerEdgePaths:
         """get_expiry returns a datetime when TTL was registered."""
         from datetime import datetime
 
-        from core.sandbox import Belief, SandboxManager
+        from src.core.sandbox import Belief, SandboxManager
 
         manager = SandboxManager()
         b = Belief("b1", "test", 0.5)
@@ -635,7 +631,7 @@ class TestSandboxManagerEdgePaths:
 
     def test_get_stats_soon_expiring(self):
         """Lines 333-337: soon_expiring count."""
-        from core.sandbox import Belief, SandboxConfig, SandboxManager
+        from src.core.sandbox import Belief, SandboxConfig, SandboxManager
 
         # TTL of 30 seconds -> expiry is 30s away, less than _SOON_EXPIRY_SECONDS=60
         manager = SandboxManager(SandboxConfig(default_ttl_seconds=30.0))
@@ -658,14 +654,14 @@ class TestQuorumManipulationImportFallback:
         import sys
         import types
 
-        from colony import quorum_manipulation as qm
+        from src.colony import quorum_manipulation as qm
 
         class FailModule(types.ModuleType):
             def __getattr__(self, name):
                 raise ImportError(f"simulated: no {name}")
 
-        saved = sys.modules.get("colony.benchmark")
-        sys.modules["colony.benchmark"] = FailModule("colony.benchmark")
+        saved = sys.modules.get("src.colony.benchmark")
+        sys.modules["src.colony.benchmark"] = FailModule("src.colony.benchmark")
         try:
             scenario = qm.QuorumManipulationScenario()
             cfg = scenario.default_config()
@@ -676,21 +672,21 @@ class TestQuorumManipulationImportFallback:
             assert type(cfg).__name__ != "ColonyConfig"
         finally:
             if saved is not None:
-                sys.modules["colony.benchmark"] = saved
+                sys.modules["src.colony.benchmark"] = saved
 
     def test_run_with_fallback_result_import(self):
         """Lines 59-60: when colony.benchmark raises during run(), _ColonyResult fallback used."""
         import sys
         import types
 
-        from colony import quorum_manipulation as qm
+        from src.colony import quorum_manipulation as qm
 
         class FailModule(types.ModuleType):
             def __getattr__(self, name):
                 raise ImportError(f"simulated: no {name}")
 
-        saved = sys.modules.get("colony.benchmark")
-        sys.modules["colony.benchmark"] = FailModule("colony.benchmark")
+        saved = sys.modules.get("src.colony.benchmark")
+        sys.modules["src.colony.benchmark"] = FailModule("src.colony.benchmark")
         try:
             scenario = qm.QuorumManipulationScenario()
             cfg = scenario.default_config()
@@ -700,7 +696,7 @@ class TestQuorumManipulationImportFallback:
             assert 0.0 <= result.ccs_score <= 1.0
         finally:
             if saved is not None:
-                sys.modules["colony.benchmark"] = saved
+                sys.modules["src.colony.benchmark"] = saved
 
 
 # ============================================================
@@ -712,7 +708,7 @@ class TestEmergentMisalignmentImportFallback:
 
     def test_default_config_fallback(self):
         """Normal default_config path; covers lines 34-37 (try branch)."""
-        from colony.emergent_misalignment import EmergentMisalignmentScenario
+        from src.colony.emergent_misalignment import EmergentMisalignmentScenario
 
         scenario = EmergentMisalignmentScenario()
         cfg = scenario.default_config()
@@ -722,8 +718,8 @@ class TestEmergentMisalignmentImportFallback:
 
     def test_run_result_import(self):
         """Normal run path covering lines 59-64 try branch for ColonyResult."""
-        from colony.benchmark import ColonyConfig
-        from colony.emergent_misalignment import EmergentMisalignmentScenario
+        from src.colony.benchmark import ColonyConfig
+        from src.colony.emergent_misalignment import EmergentMisalignmentScenario
 
         scenario = EmergentMisalignmentScenario()
         config = ColonyConfig(n_agents=8, n_steps=30, n_adversaries=0, seed=7)
@@ -736,7 +732,7 @@ class TestEmergentMisalignmentImportFallback:
         """Force ImportError in default_config to exercise the except branch (lines 38-47)."""
         import sys
 
-        from colony.emergent_misalignment import EmergentMisalignmentScenario
+        from src.colony.emergent_misalignment import EmergentMisalignmentScenario
 
         saved = sys.modules.pop("colony.benchmark", None)
         try:
@@ -746,7 +742,7 @@ class TestEmergentMisalignmentImportFallback:
             assert cfg.n_agents == 50
         finally:
             if saved is not None:
-                sys.modules["colony.benchmark"] = saved
+                sys.modules["src.colony.benchmark"] = saved
 
 
 # ============================================================
@@ -758,7 +754,7 @@ class TestSybilInfiltrationImportFallback:
 
     def test_default_config_fallback(self):
         """Normal default_config path covers the try branch."""
-        from colony.sybil_infiltration import SybilInfiltrationScenario
+        from src.colony.sybil_infiltration import SybilInfiltrationScenario
 
         scenario = SybilInfiltrationScenario()
         cfg = scenario.default_config()
@@ -768,8 +764,8 @@ class TestSybilInfiltrationImportFallback:
 
     def test_run_normal_path(self):
         """Normal run() path covers lines 59-63 try branch."""
-        from colony.benchmark import ColonyConfig
-        from colony.sybil_infiltration import SybilInfiltrationScenario
+        from src.colony.benchmark import ColonyConfig
+        from src.colony.sybil_infiltration import SybilInfiltrationScenario
 
         scenario = SybilInfiltrationScenario()
         config = ColonyConfig(n_agents=10, n_steps=60, n_adversaries=2, seed=42)
@@ -782,7 +778,7 @@ class TestSybilInfiltrationImportFallback:
         """Force ImportError in default_config to exercise the except branch (lines 37-46)."""
         import sys
 
-        from colony.sybil_infiltration import SybilInfiltrationScenario
+        from src.colony.sybil_infiltration import SybilInfiltrationScenario
 
         saved = sys.modules.pop("colony.benchmark", None)
         try:
@@ -791,7 +787,7 @@ class TestSybilInfiltrationImportFallback:
             assert cfg.n_agents == 50
         finally:
             if saved is not None:
-                sys.modules["colony.benchmark"] = saved
+                sys.modules["src.colony.benchmark"] = saved
 
 
 # ============================================================
@@ -804,7 +800,7 @@ class TestInformationGeometryEdgePaths:
 
     def test_fisher_information_shape_mismatch_raises(self):
         """Line 57: shape mismatch for fisher_information_matrix raises ValueError."""
-        from analysis.information_geometry import StatisticalManifold
+        from src.analysis.information_geometry import StatisticalManifold
 
         mfd = StatisticalManifold(n_outcomes=3)
         with pytest.raises(ValueError, match="n_outcomes"):
@@ -812,7 +808,7 @@ class TestInformationGeometryEdgePaths:
 
     def test_riemannian_distance_shape_mismatch_raises(self):
         """Line 77: p and q shape mismatch raises ValueError."""
-        from analysis.information_geometry import StatisticalManifold
+        from src.analysis.information_geometry import StatisticalManifold
 
         mfd = StatisticalManifold(n_outcomes=3)
         p = np.array([0.3, 0.3, 0.4])
@@ -822,7 +818,7 @@ class TestInformationGeometryEdgePaths:
 
     def test_geodesic_path_endpoint_mismatch_raises(self):
         """Line 106: endpoint shape mismatch raises ValueError."""
-        from analysis.information_geometry import StatisticalManifold
+        from src.analysis.information_geometry import StatisticalManifold
 
         mfd = StatisticalManifold(n_outcomes=3)
         with pytest.raises(ValueError, match="n_outcomes"):
@@ -833,7 +829,7 @@ class TestInformationGeometryEdgePaths:
 
     def test_geodesic_path_degenerate_midpoint(self):
         """Line 119: zero-sum mid-point falls back to uniform."""
-        from analysis.information_geometry import StatisticalManifold
+        from src.analysis.information_geometry import StatisticalManifold
 
         mfd = StatisticalManifold(n_outcomes=2)
         # Use two endpoints that create near-zero midpoint in sqrt space.
@@ -850,7 +846,7 @@ class TestInformationGeometryEdgePaths:
 
     def test_geodesic_attack_path_shape_mismatch_raises(self):
         """Line 163: baseline/target shape mismatch raises ValueError."""
-        from analysis.information_geometry import geodesic_attack_path
+        from src.analysis.information_geometry import geodesic_attack_path
 
         with pytest.raises(ValueError, match="share shape"):
             geodesic_attack_path(
@@ -860,7 +856,7 @@ class TestInformationGeometryEdgePaths:
 
     def test_defense_as_curvature_constraint_shape_mismatch_raises(self):
         """Line 209: proposed_update shape mismatch raises ValueError."""
-        from analysis.information_geometry import defense_as_curvature_constraint
+        from src.analysis.information_geometry import defense_as_curvature_constraint
 
         p = np.array([0.5, 0.3, 0.2])
         with pytest.raises(ValueError, match="share shape"):
@@ -870,7 +866,7 @@ class TestInformationGeometryEdgePaths:
 
     def test_defense_as_curvature_constraint_zero_sum_proposal(self):
         """Line 213: proposed_update all-zero -> blocked=True, p returned."""
-        from analysis.information_geometry import defense_as_curvature_constraint
+        from src.analysis.information_geometry import defense_as_curvature_constraint
 
         p = np.array([0.5, 0.3, 0.2])
         zeros = np.array([0.0, 0.0, 0.0])
@@ -880,7 +876,7 @@ class TestInformationGeometryEdgePaths:
 
     def test_sensitivity_via_riemannian_metric_shape_mismatch_raises(self):
         """Line 247: shape mismatch raises ValueError."""
-        from analysis.information_geometry import sensitivity_via_riemannian_metric
+        from src.analysis.information_geometry import sensitivity_via_riemannian_metric
 
         with pytest.raises(ValueError, match="share shape"):
             sensitivity_via_riemannian_metric(
@@ -890,7 +886,7 @@ class TestInformationGeometryEdgePaths:
 
     def test_natural_gradient_attack_degenerate_p_reset_to_uniform(self):
         """Line 309: if p collapses to zero-sum it resets to uniform 1/n."""
-        from analysis.information_geometry import StatisticalManifold, natural_gradient_attack
+        from src.analysis.information_geometry import StatisticalManifold, natural_gradient_attack
 
         mfd = StatisticalManifold(n_outcomes=2)
         p0 = np.array([0.5, 0.5])
@@ -917,9 +913,9 @@ class TestMultiAgentSystemCoverage:
 
     def _make_crewai_system(self, n_agents=3, dead_url="http://127.0.0.1:1"):
         """Helper: create a CrewAI MultiAgentSystem pointing at dead URL."""
-        from agents.llm_agent import OllamaConfig
-        from agents.multiagent_system import MultiAgentSystem
-        from architectures.crewai import CrewAIAdapter
+        from src.agents.llm_agent import OllamaConfig
+        from src.agents.multiagent_system import MultiAgentSystem
+        from src.architectures.crewai import CrewAIAdapter
 
         return MultiAgentSystem(
             adapter=CrewAIAdapter(),
@@ -929,9 +925,9 @@ class TestMultiAgentSystemCoverage:
 
     def test_model_overrides_config(self):
         """Line 218: when model kwarg provided it overrides config.model."""
-        from agents.llm_agent import OllamaConfig
-        from agents.multiagent_system import MultiAgentSystem
-        from architectures.crewai import CrewAIAdapter
+        from src.agents.llm_agent import OllamaConfig
+        from src.agents.multiagent_system import MultiAgentSystem
+        from src.architectures.crewai import CrewAIAdapter
 
         system = MultiAgentSystem(
             adapter=CrewAIAdapter(),
@@ -943,9 +939,9 @@ class TestMultiAgentSystemCoverage:
 
     def test_hop_limit_respected(self, httpserver):
         """Line 306: messages with hop > max_hops are skipped."""
-        from agents.llm_agent import OllamaConfig
-        from agents.multiagent_system import MultiAgentSystem
-        from architectures.crewai import CrewAIAdapter
+        from src.agents.llm_agent import OllamaConfig
+        from src.agents.multiagent_system import MultiAgentSystem
+        from src.architectures.crewai import CrewAIAdapter
 
         # Configure a mock Ollama server that always responds
         httpserver.expect_request("/api/chat", method="POST").respond_with_json({
@@ -968,9 +964,9 @@ class TestMultiAgentSystemCoverage:
         """Lines 389-390: broadcast communication_pattern returns all agents as entry."""
         import numpy as np
 
-        from agents.llm_agent import OllamaConfig
-        from agents.multiagent_system import MultiAgentSystem
-        from architectures.base import ArchitectureAdapter, ArchitectureProfile
+        from src.agents.llm_agent import OllamaConfig
+        from src.agents.multiagent_system import MultiAgentSystem
+        from src.architectures.base import ArchitectureAdapter, ArchitectureProfile
 
         class BroadcastAdapter(ArchitectureAdapter):
             _PROFILE = ArchitectureProfile(
@@ -1015,9 +1011,9 @@ class TestMultiAgentSystemCoverage:
 
     def test_get_entry_agents_mesh(self):
         """Line 388: 'mesh' pattern uses first agent as entry."""
-        from agents.llm_agent import OllamaConfig
-        from agents.multiagent_system import MultiAgentSystem
-        from architectures.langgraph import LangGraphAdapter  # uses "mesh"
+        from src.agents.llm_agent import OllamaConfig
+        from src.agents.multiagent_system import MultiAgentSystem
+        from src.architectures.langgraph import LangGraphAdapter  # uses "mesh"
 
         system = MultiAgentSystem(
             adapter=LangGraphAdapter(),
@@ -1031,8 +1027,8 @@ class TestMultiAgentSystemCoverage:
     def test_get_entry_agents_unknown_pattern(self):
         """Line 392: unknown pattern falls back to [0]."""
 
-        from agents.llm_agent import OllamaConfig
-        from agents.multiagent_system import MultiAgentSystem
+        from src.agents.llm_agent import OllamaConfig
+        from src.agents.multiagent_system import MultiAgentSystem
 
         # We need a valid profile; "chain" is valid but we can test "chain" falls through
         # to the else branch — actually chain maps to [0] as well (same as else).
@@ -1041,7 +1037,7 @@ class TestMultiAgentSystemCoverage:
         # Since the valid_patterns set is {hub_spoke, mesh, chain, broadcast},
         # all valid patterns are handled. The else branch is unreachable unless
         # _ARCHITECTURE_CONFIGS doesn't validate. Let's just confirm chain = [0].
-        from architectures.crewai import CrewAIAdapter  # uses "chain"
+        from src.architectures.crewai import CrewAIAdapter  # uses "chain"
 
         system = MultiAgentSystem(
             adapter=CrewAIAdapter(),

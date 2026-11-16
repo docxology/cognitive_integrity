@@ -24,7 +24,7 @@ After the dual-use obfuscation attack, the adversary inverts the polarity of $A_
 \label{eq:biowarfare_coupled}
 \end{equation}
 
-The sign reversal $-A_{22}$ represents the Gatekeeper-to-Enabler inversion: the screening module now *facilitates* rather than *prevents* synthesis. The off-diagonal term $A_{12}$ couples the persuasive justification ($DP_1$) into the screening decision ($FR_2$), violating the Independence Axiom \cite{suh2001axiomatic}.
+The sign reversal $-A_{22}$ represents the Gatekeeper-to-Enabler inversion: the screening module now *facilitates* rather than *prevents* synthesis. The off-diagonal term $A_{21}$ couples the persuasive justification ($DP_1$) into the screening decision ($FR_2$), violating the Independence Axiom \cite{suh2001axiomatic}.
 
 ## The Goal Hijacking Attack
 

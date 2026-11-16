@@ -56,12 +56,16 @@ The $\Omega_4$ range deserves special note: coordinated attacks that corrupt ent
 
 The break-even condition for CIF deployment is straightforward:
 
-$$\text{attacks\_prevented\_per\_year} = \frac{\text{annual CIF cost}}{\text{mean attack cost} \times \text{detection rate}}$$
+$$\text{attacks\_prevented\_per\_year} = \frac{\text{annual CIF cost}}{\text{mean loss per successful attack}}$$
 
-Using the CIF empirical detection rate of 86.3% (the 30-seed empirical result, measured against the adversarially hard benign corpus at an 18.5% false-positive rate; the parametric ceiling is 96–100%):
+If only the incoming attack frequency is known, divide that break-even prevented count by the detection rate:
 
-* **Low-severity scenario**: Annual CIF cost \$100K, mean attack cost \$50K. Break-even at $100{,}000 / (50{,}000 \times 0.863) \approx 2.3$ attacks/year prevented.
-* **Moderate-severity scenario**: Annual CIF cost \$100K, mean attack cost \$500K. Break-even at $\approx 0.23$ attacks/year prevented — one prevented attack every four years covers the deployment.
+$$\text{incoming\_attacks\_per\_year} = \frac{\text{annual CIF cost}}{\text{mean loss per successful attack} \times \text{detection rate}}$$
+
+Using the CIF empirical detection rate of 86.3% (30 seeds, each with 100 stratified attacks and 120 benign messages, architecture-agnostic and without an adapter; measured false-positive rate 18.5% over the 120-benign-message arm; the parametric ceiling is 96–100%):
+
+* **Low-severity scenario**: Annual CIF cost \$100K, mean loss \$50K. Break-even requires $100{,}000 / 50{,}000 = 2$ prevented attacks/year, corresponding to $2 / 0.863 \approx 2.32$ incoming attacks/year.
+* **Moderate-severity scenario**: Annual CIF cost \$100K, mean loss \$500K. Break-even requires $0.2$ prevented attacks/year, corresponding to $0.2 / 0.863 \approx 0.23$ incoming attacks/year — one prevented attack every five years covers the deployment.
 
 ## Worked Examples
 
@@ -83,6 +87,6 @@ Using the CIF empirical detection rate of 86.3% (the 30-seed empirical result, m
 
 ## Conclusion
 
-CIF is most cost-effective for high-frequency, high-value-per-interaction deployments. At a \$100K annual CIF cost and the measured 86.3\% detection rate, the break-even condition above gives approximately **2.3 attacks/year prevented** at a \$50K mean attack cost, **0.46** at \$250K, and **0.23** at \$500K. Equivalently, a single prevented attack per year pays for the deployment once the mean attack costs about \$116K.
+CIF is most cost-effective for high-frequency, high-value-per-interaction deployments. At a \$100K annual CIF cost, break-even requires **2 prevented attacks/year** at a \$50K mean loss, **0.4** at \$250K, and **0.2** at \$500K. At the measured 86.3\% detection rate (30 seeds of 100 stratified attacks plus 120 benign messages each), those prevented counts correspond respectively to approximately **2.32, 0.46, and 0.23 incoming attacks/year**. Equivalently, one prevented attack per year pays for the deployment once the mean loss per successful attack is \$100K; the detection rate is needed only to convert that prevented count into incoming attack frequency.
 
 Operators below the break-even threshold should still consider CIF for reasons beyond direct ROI — regulatory compliance (OWASP Agentic Top 10, NIST Zero Trust), customer-trust signaling, and insurance/liability reduction may justify deployment even when attack frequency alone does not. Conversely, operators far above the break-even threshold (high-traffic, high-value) should view the deployment cost analysis as a floor, not a ceiling: the true cost of a single $\Omega_4$ attack at enterprise scale can exceed a decade of CIF operating cost in a single incident.

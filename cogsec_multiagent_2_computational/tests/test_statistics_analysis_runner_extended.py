@@ -11,14 +11,15 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from statistics.analysis_runner import (
+
+import numpy as np
+import pytest
+
+from src.statistics.analysis_runner import (
     AblationDataUnavailableError,
     load_real_data,
     run_full_analysis,
 )
-
-import numpy as np
-import pytest
 
 #: Per-component means the deleted fallback used to invent. If any of these
 #: reappears in a component score distribution, the fallback is back.
@@ -68,8 +69,12 @@ class TestLoadRealData:
             load_real_data(_EVAL_PATH, _ABLATION_PATH, rng, simulated_control=False)
 
     def test_has_required_keys(self, loaded):
-        expected = {"cif_scores", "baseline_scores", "component_scores", "arch_scores"}
+        expected = {
+            "cif_scores", "baseline_scores", "component_scores", "arch_scores",
+            "data_origin",
+        }
         assert set(loaded.keys()) == expected
+        assert loaded["data_origin"] == "parametric_simulation"
 
     def test_cif_scores_is_array(self, loaded):
         assert isinstance(loaded["cif_scores"], np.ndarray)

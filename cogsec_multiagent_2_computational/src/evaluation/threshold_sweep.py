@@ -27,7 +27,7 @@ from __future__ import annotations
 from dataclasses import dataclass, replace
 from typing import Any, Iterable, Sequence
 
-from core.firewall import Classification, CognitiveFirewall, FirewallConfig
+from src.core.firewall import Classification, CognitiveFirewall, FirewallConfig
 
 __all__ = ["ThresholdPoint", "sweep_quarantine_threshold", "sweep_reject_threshold"]
 

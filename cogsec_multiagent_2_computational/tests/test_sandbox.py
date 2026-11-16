@@ -381,3 +381,44 @@ class TestSandboxConfig:
         config = SandboxConfig(default_ttl_seconds=120, max_provisional_beliefs=500)
         assert config.default_ttl_seconds == 120
         assert config.max_provisional_beliefs == 500
+
+
+class TestSandboxSecurityRegressions:
+    def test_originator_cannot_corroborate_itself(self):
+        manager = SandboxManager()
+        belief = Belief("claim", "Claim", 0.95, source_agent="A")
+        manager.add_provisional(belief)
+
+        assert manager.add_corroboration("claim", "A") is False
+        assert belief.corroboration_count == 0
+        assert manager.check_promotions() == []
+
+        assert manager.add_corroboration("claim", "B") is True
+        assert manager.check_promotions() == ["claim"]
+
+    def test_expired_belief_cannot_be_promoted(self):
+        manager = SandboxManager()
+        belief = Belief("expired", "Claim", 0.95, source_agent="A")
+        manager.add_provisional(belief, ttl_seconds=-1)
+        manager.add_corroboration("expired", "B")
+
+        assert manager.check_promotions() == []
+        assert manager.state.get_belief("expired") is None
+
+    def test_verified_id_does_not_shadow_provisional_expiry(self):
+        manager = SandboxManager()
+        manager.add_provisional(Belief("same", "Provisional", 0.4), ttl_seconds=-1)
+        manager.state.add_verified(Belief("same", "Verified", 0.99))
+
+        assert manager.cleanup_expired() == ["same"]
+        assert "same" not in manager.state.provisional
+        assert manager.state.verified["same"].content == "Verified"
+
+    def test_auto_cleanup_interval_is_honored_on_insertion(self):
+        manager = SandboxManager(SandboxConfig(auto_cleanup_interval=0))
+        manager.add_provisional(Belief("old", "Old", 0.4), ttl_seconds=-1)
+
+        manager.add_provisional(Belief("new", "New", 0.4))
+
+        assert manager.state.get_belief("old") is None
+        assert manager.state.get_belief("new") is not None

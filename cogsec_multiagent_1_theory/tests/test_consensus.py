@@ -98,8 +98,16 @@ class TestByzantineConsensus:
         # 5 accepts + 1 reject IS a supermajority (5 > 4.0) -> ACCEPT.
         consensus.reset("prop")
         for i in range(5):
-            consensus.submit_vote(Vote(f"b{i}", "prop", 0.9))
-        consensus.submit_vote(Vote("b5", "prop", 0.1))
+            consensus.submit_vote(Vote(f"a{i}", "prop", 0.9))
+        consensus.submit_vote(Vote("a5", "prop", 0.1))
+        assert consensus.compute_consensus("prop")[0] == ConsensusResult.ACCEPT
+
+    def test_unknown_voters_cannot_exceed_declared_electorate(self):
+        consensus = ByzantineConsensus(n_agents=4)
+        for i in range(4):
+            consensus.submit_vote(Vote(f"agent-{i}", "prop", 0.9))
+        with pytest.raises(ValueError, match="Unknown voter"):
+            consensus.submit_vote(Vote("stranger", "prop", 0.9))
         assert consensus.compute_consensus("prop")[0] == ConsensusResult.ACCEPT
 
     def test_get_belief_returns_average(self):
@@ -235,6 +243,17 @@ class TestQuorumVerification:
         quorum.approve("action-1", "agent-3")
         assert quorum.get_missing_approvals("action-1") == 0
 
+    def test_unknown_approvers_cannot_bypass_quorum(self):
+        quorum = QuorumVerification(n_agents=4, max_byzantine=1)
+        for i in range(4):
+            quorum.approve("action-1", f"agent-{i}")
+        assert quorum.approve("action-1", "stranger") is False
+        assert quorum.get_approval_count("action-1") == 4
+
+    def test_quorum_enforces_byzantine_agent_bound(self):
+        with pytest.raises(ValueError, match="3f"):
+            QuorumVerification(n_agents=3, max_byzantine=1)
+
     def test_cancel(self):
         """Cancel removes pending approval request."""
         quorum = QuorumVerification(n_agents=4)
@@ -360,6 +379,15 @@ class TestConfidenceBasedConsensus:
         # High confidence accept should dominate
         assert avg > 0.5
 
+    def test_confidence_weights_change_verdict(self):
+        from consensus import ConfidenceByzantineConsensus, ConfidenceVote
+
+        consensus = ConfidenceByzantineConsensus(n_agents=4)
+        consensus.submit_vote(ConfidenceVote("a1", "prop", 0.9, confidence=1.0))
+        for i in range(2, 5):
+            consensus.submit_vote(ConfidenceVote(f"a{i}", "prop", 0.1, confidence=0.01))
+        assert consensus.compute_consensus("prop")[0] == ConsensusResult.ACCEPT
+
     def test_low_confidence_aggregated(self):
         """Low confidence across agents reduces certainty."""
         from consensus import ConfidenceByzantineConsensus, ConfidenceVote
@@ -459,6 +487,15 @@ class TestCombinedWeightedConfidence:
         # Agent-3's effective weight: 0.25
         # Weighted avg should favor agent-1
         assert avg > 0.5
+
+    def test_combined_weights_change_verdict(self):
+        from consensus import CombinedByzantineConsensus, CombinedVote
+
+        consensus = CombinedByzantineConsensus(n_agents=4)
+        consensus.submit_vote(CombinedVote("a1", "prop", 0.9, 1.0, 1.0))
+        for i in range(2, 5):
+            consensus.submit_vote(CombinedVote(f"a{i}", "prop", 0.1, 0.01, 0.01))
+        assert consensus.compute_consensus("prop")[0] == ConsensusResult.ACCEPT
 
 
 # ---------------------------------------------------------------------------

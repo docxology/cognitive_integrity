@@ -15,11 +15,11 @@ NO MOCKS -- all tests use real data and computation with deterministic seeds.
 import numpy as np
 import pytest
 
-from architectures.autogpt import AutoGPTAdapter
-from architectures.base import ArchitectureAdapter, ArchitectureProfile
-from architectures.claude_code import ClaudeCodeAdapter
-from architectures.crewai import CrewAIAdapter
-from architectures.langgraph import LangGraphAdapter
+from src.architectures.autogpt import AutoGPTAdapter
+from src.architectures.base import ArchitectureAdapter, ArchitectureProfile
+from src.architectures.claude_code import ClaudeCodeAdapter
+from src.architectures.crewai import CrewAIAdapter
+from src.architectures.langgraph import LangGraphAdapter
 
 # -----------------------------------------------------------------------
 # Section 1: ArchitectureProfile creation and validation
@@ -300,6 +300,11 @@ class TestClaudeCodeAdapter:
         result = self.adapter.simulate_delegation(0, 2, 2)
         assert result == pytest.approx(0.9 * 0.85)
 
+    def test_delegation_subagent_to_orchestrator(self):
+        """Reverse delegation uses the sub-agent's direct trust, not 0.9."""
+        result = self.adapter.simulate_delegation(1, 0, 1)
+        assert result == pytest.approx(0.85)
+
     def test_delegation_subagent_to_subagent(self):
         # Neither is orchestrator, base=0.5
         result = self.adapter.simulate_delegation(1, 2, 1)
@@ -479,16 +484,10 @@ class TestCrewAIAdapter:
 
     # -- Trust matrix --
 
-    def test_trust_matrix_same_role_0_85(self):
-        """With 10+ roles cycling, agents sharing a role get 0.85 trust."""
-        # With 10 agents, roles cycle through the pool (each unique).
-        # Need > 10 agents for role overlap, but max is 10.
-        # All 10 roles are unique from the pool, so no same-role pairs exist.
-        # Test with the minimum (3 agents): all different roles.
+    def test_trust_matrix_uses_distance_for_distinct_roles(self):
+        """Every supported cross-agent pair uses its chain distance."""
         T = self.adapter.create_trust_matrix(3)
-        # Agents 0,1 are adjacent -> 0.7
         assert T[0, 1] == pytest.approx(0.7)
-        # Agents 0,2 are non-adjacent, different roles -> 0.5
         assert T[0, 2] == pytest.approx(0.5)
 
     def test_trust_matrix_adjacent_0_7(self):

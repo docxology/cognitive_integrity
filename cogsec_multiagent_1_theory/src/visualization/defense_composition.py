@@ -99,8 +99,6 @@ def create_defense_composition_figure(output_dir: Path) -> tuple[Path, Path]:
         (-1.1, 0, "Authority\nExploits"),  # Firewall + Tripwire
         (1.1, 0, "State\nCorruption"),  # Sandbox + Anomaly
         (0, -1.1, "Covert\nChannels"),  # Tripwire + Anomaly
-        (-0.3, 0.1, "Coordinated\nAttacks"),  # Firewall + Tripwire + Anomaly
-        (0.3, 0.1, "Gradual\nDrift"),  # Sandbox + Tripwire + Anomaly
     ]
 
     for x, y, label in overlap_attacks:
@@ -109,6 +107,24 @@ def create_defense_composition_figure(output_dir: Path) -> tuple[Path, Path]:
             y,
             label,
             ha="center",
+            va="center",
+            fontsize=8,
+            style="italic",
+            color="#2C3E50",
+        )
+
+    # Triple-overlap labels lie inside their three named circles and outside
+    # the fourth.  Opposite horizontal alignment keeps the two labels apart.
+    triple_attacks = [
+        (-0.12, -0.45, "right", "Coordinated\nAttacks"),  # Firewall + Tripwire + Anomaly
+        (0.12, -0.45, "left", "Gradual\nDrift"),  # Sandbox + Tripwire + Anomaly
+    ]
+    for x, y, alignment, label in triple_attacks:
+        ax.text(
+            x,
+            y,
+            label,
+            ha=alignment,
             va="center",
             fontsize=8,
             style="italic",

@@ -16,16 +16,16 @@ uv run python scripts/verify_manuscript.py      # the manuscript gate
 
 From the repository root, `scripts/check_series_integrity.py` — run through Part
 2's environment, as the example below does — runs the six program-level checks
-that compare the three papers to each other. Every
-number the papers report is derived from an artifact under
-`<paper>/output/data/`; none is typed into the prose.
+that compare the three papers to each other. Registered measurements are derived
+from artifacts under `<paper>/output/data/`; unregistered prose numbers are
+outside that guarantee.
 
 ## Who should start where
 
 | Reader | Start here |
 | ------ | ---------- |
 | Formal definitions, proofs, adversary taxonomy | [Part 1 (Second Edition): Formal Foundations](cogsec_multiagent_1_theory/) |
-| Empirical results, adversarial training, reproducibility | [Part 2 (Second Edition): Computational Validation](cogsec_multiagent_2_computational/) — evidence spine: [claims traceability](cogsec_multiagent_2_computational/docs/claims_traceability.md), [framework validation](cogsec_multiagent_2_computational/docs/framework_validation.md) |
+| Empirical results, adversarial training, reproducibility | [Part 2 (First Publication): Computational Validation](cogsec_multiagent_2_computational/) — evidence spine: [claims traceability](cogsec_multiagent_2_computational/docs/claims_traceability.md), [framework validation](cogsec_multiagent_2_computational/docs/framework_validation.md) |
 | Deployment, checklists, operator guidance, cross-domain applications (minimal math) | [Part 3+4: Practical Guide + Applications](cogsec_multiagent_3_practical/) |
 
 ## Paper Series
@@ -33,8 +33,8 @@ number the papers report is derived from an artifact under
 | Part | Title | Status | DOI |
 |------|-------|--------|-----|
 | 1 | [Formal Foundations](cogsec_multiagent_1_theory/) (Second Edition) | v2.0 (Second Edition) | [10.5281/zenodo.22134544](https://doi.org/10.5281/zenodo.22134544) |
-| 2 | [Computational Validation](cogsec_multiagent_2_computational/) (Second Edition) | v2.0 (first release) | [10.5281/zenodo.22134546](https://doi.org/10.5281/zenodo.22134546) |
-| 3+4 merged | [Practical Applications and Deployment Guide](cogsec_multiagent_3_practical/) (Parts 3+4 Unified) | v2.0 (first release) | [10.5281/zenodo.22134548](https://doi.org/10.5281/zenodo.22134548) |
+| 2 | [Computational Validation](cogsec_multiagent_2_computational/) (First Publication) | v2.0 (first publication) | [10.5281/zenodo.22134546](https://doi.org/10.5281/zenodo.22134546) |
+| 3+4 merged | [Practical Applications and Deployment Guide](cogsec_multiagent_3_practical/) (Parts 3+4 Unified) | v2.0 (first publication) | [10.5281/zenodo.22134548](https://doi.org/10.5281/zenodo.22134548) |
 
 All three papers are released together as **v2.0**, dated 2026-08-26. They share
 one measurement layer --- Part 2 produces the artifacts and Parts 1 and 3 cite
@@ -129,9 +129,9 @@ Part 2's tests import `scipy` (declared in that part's `pyproject.toml`). If col
 **In a standalone checkout of this repo** (no `run.sh`/`scripts/` at this root — the case if you cloned `docxology/cognitive_integrity` directly rather than as a nested project of `docxology/template`), there is no repo-root build entry point. Each part is independently buildable from its own directory:
 
 ```bash
-cd cogsec_multiagent_1_theory && uv sync && uv run pytest tests/ -q && uv run ruff check .
-cd cogsec_multiagent_2_computational && uv sync && uv run pytest tests/ -q && uv run ruff check . && make all   # data + figures + tables + verify
-cd cogsec_multiagent_3_practical && uv sync && uv run pytest tests/ -q && uv run ruff check .
+(cd cogsec_multiagent_1_theory && uv sync --frozen && uv run --frozen pytest tests/ -q && uv run --frozen ruff check .)
+(cd cogsec_multiagent_2_computational && uv sync --frozen && uv run --frozen pytest tests/ -q && uv run --frozen ruff check . && make all)  # tracked data + figures + tables + verify
+(cd cogsec_multiagent_3_practical && uv sync --frozen && uv run --frozen pytest tests/ -q && uv run --frozen ruff check .)
 ```
 
 Manuscript integrity checks (Parts 1 and 3) and figure regeneration are documented in each part's own `README.md` § Usage and `scripts/README.md`.
@@ -165,7 +165,7 @@ Six checks:
 
 | Check | What it refuses to let through |
 | ----- | ------------------------------ |
-| `shared-quantities` | A number that appears in more than one paper disagreeing with itself, or with the Part 2 artifact it is derived from |
+| `shared-quantities` | A registered shared quantity disagreeing across papers, or with the Part 2 artifact it is derived from |
 | `bibliography` | The same work entered twice under two bibkeys, or the same work disagreeing about its own metadata across the three bibliographies |
 | `truncation` | A manuscript file ending mid-sentence, or a heading whose section body never arrives |
 | `math-hygiene` | LaTeX that builds but renders wrong: a doubled backslash before a command name, or a `*` where a subscript `_` was meant. Parts 1 and 3 each check this in their own verifier; Part 2 had no such gate |
@@ -173,28 +173,28 @@ Six checks:
 | `cross-paper-pointers` | Hardcoded `Part 1, Theorem 3.2a`-style pointers, which the renderer numbers per part and which therefore cannot be verified from a sibling paper (advisory) |
 ### The series ledger
 
-`scripts/series_ledger.py` is the single source of truth for every number the papers share.
-Each variable binds a name to a *deriver* that recomputes the value from a shipped artifact
-under Part 2's `output/data/`; nothing in it stores a number.
+`scripts/series_ledger.py` is the source of truth for the registered quantities
+shared across papers. Each variable binds a name to a *deriver* that recomputes
+the value from a shipped artifact under Part 2's `output/data/`; quantities not
+registered in the ledger are outside this mechanism.
 
 ```bash
 python3 scripts/series_ledger.py             # every derived value
 python3 scripts/series_ledger.py --coverage  # how much of the prose is managed
 ```
 
-Part 2 already ran derive-then-verify on its own manuscript (`injector.py` writes measured
-values in, `claim_registry.py` reads them back and re-derives). Parts 1 and 3 had neither, so
-every number they quoted from Part 2 was typed by hand. The ledger closes that: the
-`shared-quantities` check gates every ledger variable across all three manuscripts, and a
-stated number that disagrees with its artifact fails the build.
+Part 2 runs derive-then-verify on its registered manuscript measurements
+(`injector.py` writes measured values in, `claim_registry.py` reads them back and
+re-derives). The series ledger extends that governance to registered shared
+quantities: `shared-quantities` checks every ledger variable across all three
+manuscripts, and a governed value that disagrees with its artifact fails the build.
 
-The series test count is derived too. It was typed by hand three times and stale three times
-(2,283, then 3,308, then 3,369), because it changes whenever anyone adds a test.
-`scripts/collect_test_inventory.py` records the real counts into
-`test_inventory.json`; `--check` recollects and fails if the recorded numbers have moved, so
-a commit that adds tests without refreshing the inventory is caught rather than left to rot
-in an abstract. It counts *collected* tests rather than passes, because collection is
-deterministic and side-effect free while a pass count depends on the environment a given run
+The series test count is derived too. `scripts/collect_test_inventory.py` records collected
+counts into [`test_inventory.json`](cogsec_multiagent_2_computational/output/data/test_inventory.json);
+`--check` recollects and fails if the recorded numbers have moved. Run that check after adding
+tests; CI provisions all three part environments and runs the same fresh collection check.
+The inventory counts *collected* tests rather than passes, because collection
+is deterministic and side-effect free while a pass count depends on the environment a given run
 happened to have.
 
 The matching write path is `scripts/inject_series_values.py`: it rewrites any governed site

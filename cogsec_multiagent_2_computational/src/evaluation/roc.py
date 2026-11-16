@@ -109,8 +109,10 @@ def compute_auc_from_points(fpr: np.ndarray, tpr: np.ndarray) -> float:
     Returns:
         AUC value in [0, 1].
     """
-    # Sort by FPR ascending
-    order = np.argsort(fpr)
+    # Stable sorting preserves the top-to-bottom order of vertical segments
+    # at tied FPR values.  An unstable sort can reorder those segments and
+    # change the trapezoidal area even though the ROC points are unchanged.
+    order = np.argsort(fpr, kind="stable")
     fpr_sorted = fpr[order]
     tpr_sorted = tpr[order]
 
@@ -127,6 +129,7 @@ def bootstrap_auc_ci(
     n_bootstrap: int = 1000,
     ci: float = 0.95,
     seed: int = 42,
+    n_thresholds: int = 200,
 ) -> Tuple[float, float, float]:
     """Bootstrap confidence interval for AUC.
 
@@ -139,6 +142,8 @@ def bootstrap_auc_ci(
         n_bootstrap: Number of bootstrap resamples.
         ci: Confidence level (default 0.95 for 95% CI).
         seed: Random seed for reproducibility.
+        n_thresholds: Threshold grid size for both the point estimate and
+            every bootstrap replicate.
 
     Returns:
         ``(auc_point_estimate, ci_lower, ci_upper)`` tuple.
@@ -152,8 +157,8 @@ def bootstrap_auc_ci(
 
     rng = np.random.default_rng(seed)
 
-    # Point estimate
-    roc = compute_roc(y_true_arr, scores_arr)
+    # Point estimate and replicates intentionally use the same estimator.
+    roc = compute_roc(y_true_arr, scores_arr, n_thresholds=n_thresholds)
     point_auc = roc.auc
 
     # Bootstrap
@@ -167,7 +172,9 @@ def bootstrap_auc_ci(
         if boot_true.sum() == 0 or boot_true.sum() == n:
             continue
 
-        boot_roc = compute_roc(boot_true, boot_scores, n_thresholds=100)
+        boot_roc = compute_roc(
+            boot_true, boot_scores, n_thresholds=n_thresholds
+        )
         aucs.append(boot_roc.auc)
 
     if not aucs:

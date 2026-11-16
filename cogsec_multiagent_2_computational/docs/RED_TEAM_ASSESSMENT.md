@@ -6,6 +6,39 @@
 
 Legend: ✅ RESOLVED · 🟡 PARTIAL (mitigated/qualified) · 🔴 OPEN (needs author/subject-matter review)
 
+## Current-status addendum — 2026-11-10
+
+The table and verification totals below are a historical 2026-08-01 record,
+not a statement that those gates are green now. Subsequent reproduced reviews
+reopened empirical and tooling concerns: the AT convergence estimators consumed
+cumulative gains rather than per-round increments; claim checks missed signs,
+synergy rows, citations, and restatements; generated synergy documentation used
+the wrong formula; and several figures used mismatched keys, symmetric Wilson
+errors, transposed confusion cells, misleading taxonomy labels, or invented
+composable rates. Those issues require the current source corrections and
+integration test run, not citation of the old pass counts below. Statistical
+analysis limitations described as OPEN remain substantive even where artifact
+provenance labels were corrected.
+
+The following current formal-claim scope supersedes the historical action
+wording without rewriting the original findings:
+
+- **Composition algebra (H2):** Part 1 now claims only a meet-semilattice with
+  identity on a common accept/compare focal predicate. The historical phrase
+  “bounded distributive lattice” is stale, and neither that broader lattice
+  claim nor a closed-semiring theorem is verified.
+- **Fisher–Rao geometry (H3):** Part 1 now withdraws the proposed bound and
+  states only the identities induced by its reciprocal/normalized definitions.
+  This is not a proof of the original stealth–impact or channel-capacity
+  tradeoff; that stronger claim remains unproved.
+- **Model checking (H6):** the historical “RESOLVED” label covers only the
+  relabeling of Part 1's table as theoretical bounds, not an executed
+  verification. The current `output/formal/verification_summary.json` records
+  NuSMV, SPIN, and TLC as `SKIP`, with `verified: false` and exit code 2.
+  Specification generation, parser tests, and fail-closed orchestration are
+  tooling corrections, not checker verdicts; claims of empirical model-checking
+  runs or checker-verified invariants remain outside the verified scope.
+
 ---
 
 ## Part 1 — Formal-theory soundness

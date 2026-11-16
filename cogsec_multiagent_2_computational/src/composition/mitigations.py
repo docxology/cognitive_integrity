@@ -27,7 +27,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Callable, Protocol, Sequence
 
-from utils.types import DefenseResult
+from src.utils.types import DefenseResult
 
 __all__ = [
     "Verdict",

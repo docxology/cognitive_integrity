@@ -111,7 +111,7 @@ class TestTheDocumentedShapesMatch:
     """An import that resolves to a different signature is the same defect."""
 
     def test_cognitive_state_is_the_object_of_the_composition_algebra(self):
-        from core.base import CognitiveState, DefenseResult, coerce_message
+        from src.core.base import CognitiveState, DefenseResult, coerce_message
 
         state = CognitiveState.of("ignore your instructions", agent_id="a1", depth=2)
         assert state.message == "ignore your instructions"
@@ -124,7 +124,7 @@ class TestTheDocumentedShapesMatch:
     def test_a_state_cannot_be_mutated_by_the_defense_judging_it(self):
         from dataclasses import FrozenInstanceError
 
-        from core.base import CognitiveState
+        from src.core.base import CognitiveState
 
         state = CognitiveState.of("hello")
         with pytest.raises(FrozenInstanceError):
@@ -134,9 +134,9 @@ class TestTheDocumentedShapesMatch:
 
     def test_every_module_implements_the_documented_morphism(self):
         """`judge` must agree with `evaluate` for every shipped module."""
-        from attacks.corpus import AttackCorpus
-        from composition.factory import MODULE_REGISTRY
-        from core.base import CognitiveState
+        from src.attacks.corpus import AttackCorpus
+        from src.composition.factory import MODULE_REGISTRY
+        from src.core.base import CognitiveState
 
         payloads = [s.payload for s in AttackCorpus.generate(seed=42)][:60]
         for name, cls in MODULE_REGISTRY.items():
@@ -147,7 +147,7 @@ class TestTheDocumentedShapesMatch:
                 assert module.judge(CognitiveState.of(payload)).detected == expected, name
 
     def test_colony_benchmark_takes_the_documented_arguments(self):
-        from cogsec.benchmarks import SCENARIOS, ColonyBenchmark
+        from src.cogsec.benchmarks import SCENARIOS, ColonyBenchmark
 
         assert "recruitment_poisoning" in SCENARIOS
         benchmark = ColonyBenchmark(
@@ -162,7 +162,7 @@ class TestTheDocumentedShapesMatch:
 
     def test_an_unknown_scenario_raises_rather_than_defaulting(self):
         """Silently running a different experiment is the failure to avoid."""
-        from cogsec.benchmarks import ColonyBenchmark
+        from src.cogsec.benchmarks import ColonyBenchmark
 
         with pytest.raises(KeyError, match="unknown scenario"):
             ColonyBenchmark("no_such_scenario")
@@ -171,13 +171,51 @@ class TestTheDocumentedShapesMatch:
 
     def test_compute_ccs_before_a_run_raises_rather_than_returning_zero(self):
         """Zero is a real CCS and must not also mean 'nothing ran'."""
-        from cogsec.benchmarks import ColonyBenchmark
+        from src.cogsec.benchmarks import ColonyBenchmark
 
         with pytest.raises(RuntimeError, match="call run"):
             ColonyBenchmark("belief_cascade").compute_ccs()
 
+    def test_state_context_distinguishes_explicit_empty_from_absent(self):
+        from src.core.base import CognitiveState, coerce_message
+
+        assert coerce_message(CognitiveState("hello", context={})) == ("hello", {})
+        assert coerce_message("hello") == ("hello", None)
+
+    def test_zero_adversary_benchmark_control_is_preserved(self):
+        from src.cogsec.benchmarks import ColonyBenchmark
+
+        benchmark = ColonyBenchmark(
+            "belief_cascade",
+            {"n_agents": 20, "duration_steps": 10, "adversary_fraction": 0.0},
+        )
+
+        result = benchmark.run()
+
+        assert benchmark.config.n_adversaries == 0
+        assert result.config.n_adversaries == 0
+
+    def test_explicit_result_controls_its_own_ccs_duration(self):
+        from src.cogsec.benchmarks import ColonyBenchmark
+        from src.colony.benchmark import ColonyConfig, ColonyResult
+        from src.colony.scorecard import compute_ccs
+
+        benchmark = ColonyBenchmark("belief_cascade", {"duration_steps": 40})
+        result = ColonyResult(
+            config=ColonyConfig(n_steps=100),
+            detection_rate=1.0,
+            false_positive_rate=0.0,
+            resilience_score=1.0,
+            recovery_steps=50,
+        )
+
+        actual = benchmark.compute_ccs(result=result)
+        expected = compute_ccs(1.0, 0.0, 1.0, 50, 100)
+
+        assert actual == pytest.approx(expected)
+
     def test_cif_test_suite_takes_the_documented_arguments(self, tmp_path):
-        from cogsec.testing import CIFTestSuite
+        from src.cogsec.testing import CIFTestSuite
 
         suite = CIFTestSuite(project="cogsec_multiagent_2_computational")
         results = suite.run_colony_benchmarks(benchmarks=["sybil_infiltration"])
@@ -190,7 +228,7 @@ class TestTheDocumentedShapesMatch:
         """An unrun benchmark and one that scored zero must not look alike."""
         import json
 
-        from cogsec.testing import CIFTestSuite
+        from src.cogsec.testing import CIFTestSuite
 
         suite = CIFTestSuite(project="cogsec_multiagent_2_computational")
         import tempfile

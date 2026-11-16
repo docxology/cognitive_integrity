@@ -184,7 +184,9 @@ Tests for belief sandboxing.
 ## Test Requirements
 
 ### No Mocks Policy
-All tests use real objects and computations:
+Core algorithm tests use real objects and computations. Semantic-backend
+boundary tests may inject explicitly named deterministic embedding doubles;
+these test caller/vector plumbing only and are not model-effectiveness evidence.
 ```python
 # GOOD
 calc = TrustCalculus()

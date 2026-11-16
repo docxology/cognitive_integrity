@@ -16,7 +16,7 @@ from __future__ import annotations
 
 import pytest
 
-from composition.algebra import (
+from src.composition.algebra import (
     compute_hybrid_detection_rate,
     compute_optimal_ordering,
     compute_parallel_detection_rate,
@@ -51,6 +51,10 @@ class TestParallelDetectionRateExtended:
         result = compute_parallel_detection_rate(rates, strategy="majority")
         assert 0.0 <= result <= 1.0
 
+    def test_odd_majority_at_one_half_is_symmetric(self):
+        result = compute_parallel_detection_rate([0.5] * 25, strategy="majority")
+        assert result == pytest.approx(0.5)
+
     def test_weighted_strategy(self):
         rates = [0.9, 0.8, 0.7]
         result = compute_parallel_detection_rate(rates, strategy="weighted")
@@ -59,6 +63,10 @@ class TestParallelDetectionRateExtended:
     def test_unknown_strategy_raises(self):
         with pytest.raises(ValueError, match="Unknown strategy"):
             compute_parallel_detection_rate([0.8, 0.7], strategy="unknown_xyz")
+
+    def test_unknown_strategy_with_empty_rates_raises(self):
+        with pytest.raises(ValueError, match="Unknown strategy"):
+            compute_parallel_detection_rate([], strategy="unknown_xyz")
 
     def test_majority_all_zero_rates(self):
         rates = [0.0, 0.0, 0.0]
@@ -137,6 +145,12 @@ class TestWeightedParallelDetectionRate:
     def test_single_module(self):
         result = compute_weighted_parallel_detection_rate([0.85], [1.0])
         assert 0.0 <= result <= 1.0
+
+    def test_deterministic_mean_at_threshold_does_not_exceed_it(self):
+        result = compute_weighted_parallel_detection_rate(
+            [1.0, 0.0], [0.5, 0.5], threshold=0.5
+        )
+        assert result == 0.0
 
     def test_custom_threshold(self):
         result = compute_weighted_parallel_detection_rate([0.8, 0.7], [0.5, 0.5], threshold=0.3)

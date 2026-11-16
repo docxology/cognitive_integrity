@@ -71,7 +71,7 @@ Six checks:
 
 | Check | What it refuses to let through |
 | ----- | ------------------------------ |
-| `shared-quantities` | A number that appears in more than one paper disagreeing with itself, or with the Part 2 artifact it is derived from |
+| `shared-quantities` | A registered shared quantity disagreeing across papers, or with the Part 2 artifact it is derived from |
 | `bibliography` | The same work entered twice under two bibkeys, or the same work disagreeing about its own metadata across the three bibliographies |
 | `truncation` | A manuscript file ending mid-sentence, or a heading whose section body never arrives |
 | `math-hygiene` | LaTeX that builds but renders wrong: a doubled backslash before a command name, or a `*` where a subscript `_` was meant. Parts 1 and 3 each check this in their own verifier; Part 2 had no such gate |
@@ -79,28 +79,28 @@ Six checks:
 | `cross-paper-pointers` | Hardcoded `Part 1, Theorem 3.2a`-style pointers, which the renderer numbers per part and which therefore cannot be verified from a sibling paper (advisory) |
 ### The series ledger
 
-`scripts/series_ledger.py` is the single source of truth for every number the papers share.
-Each variable binds a name to a *deriver* that recomputes the value from a shipped artifact
-under Part 2's `output/data/`; nothing in it stores a number.
+`scripts/series_ledger.py` is the source of truth for the registered quantities
+shared across papers. Each variable binds a name to a *deriver* that recomputes
+the value from a shipped artifact under Part 2's `output/data/`; quantities not
+registered in the ledger are outside this mechanism.
 
 ```bash
 python3 scripts/series_ledger.py             # every derived value
 python3 scripts/series_ledger.py --coverage  # how much of the prose is managed
 ```
 
-Part 2 already ran derive-then-verify on its own manuscript (`injector.py` writes measured
-values in, `claim_registry.py` reads them back and re-derives). Parts 1 and 3 had neither, so
-every number they quoted from Part 2 was typed by hand. The ledger closes that: the
-`shared-quantities` check gates every ledger variable across all three manuscripts, and a
-stated number that disagrees with its artifact fails the build.
+Part 2 runs derive-then-verify on its registered manuscript measurements
+(`injector.py` writes measured values in, `claim_registry.py` reads them back and
+re-derives). The series ledger extends that governance to registered shared
+quantities: `shared-quantities` checks every ledger variable across all three
+manuscripts, and a governed value that disagrees with its artifact fails the build.
 
-The series test count is derived too. It was typed by hand three times and stale three times
-(2,283, then 3,308, then 3,369), because it changes whenever anyone adds a test.
-`scripts/collect_test_inventory.py` records the real counts into
-`test_inventory.json`; `--check` recollects and fails if the recorded numbers have moved, so
-a commit that adds tests without refreshing the inventory is caught rather than left to rot
-in an abstract. It counts *collected* tests rather than passes, because collection is
-deterministic and side-effect free while a pass count depends on the environment a given run
+The series test count is derived too. `scripts/collect_test_inventory.py` records collected
+counts into `cogsec_multiagent_2_computational/output/data/test_inventory.json`; `--check`
+recollects and fails if the recorded numbers have moved. Run that check after adding tests;
+CI provisions all three part environments and runs the same fresh collection check.
+The inventory counts *collected* tests rather than passes, because collection
+is deterministic and side-effect free while a pass count depends on the environment a given run
 happened to have.
 
 The matching write path is `scripts/inject_series_values.py`: it rewrites any governed site

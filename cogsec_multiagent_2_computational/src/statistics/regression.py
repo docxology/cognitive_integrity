@@ -2,8 +2,7 @@
 
 Provides linear, quadratic, and log-linear curve fitting used to
 characterise how CIF latency and detection rate scale with agent count.
-
-Key target: quadratic fit R^2 = 0.994 for latency vs. agent count.
+Goodness of fit is computed from the supplied observations, not targeted.
 """
 
 from __future__ import annotations
@@ -124,8 +123,7 @@ def fit_linear(x: np.ndarray, y: np.ndarray) -> RegressionResult:
 def fit_quadratic(x: np.ndarray, y: np.ndarray) -> RegressionResult:
     """Quadratic regression: T = b0 + b1*n + b2*n^2.
 
-    Uses ``numpy.polyfit`` with degree 2.  Target R^2 for latency
-    scaling is 0.994.
+    Uses ``numpy.polyfit`` with degree 2 and reports the observed R^2.
 
     Args:
         x: Independent variable (e.g. agent count *n*).

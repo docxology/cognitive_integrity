@@ -28,14 +28,14 @@ import hashlib
 
 import pytest
 
-from composition.adapters import (
+from src.composition.adapters import (
     ConsensusAdapter,
     FirewallAdapter,
     SandboxAdapter,
     TrustAdapter,
 )
-from composition.factory import create_full_pipeline
-from evaluation.benign_corpus import (
+from src.composition.factory import create_full_pipeline
+from src.evaluation.benign_corpus import (
     BENIGN_CATEGORIES,
     DIFFICULTIES,
     TRIGGER_SURFACE,
@@ -332,7 +332,7 @@ class TestDiscrimination:
         This test states both numbers side by side so the difference is
         attributable to the corpus.
         """
-        from ablation.runner import BENIGN_MESSAGES
+        from src.ablation.runner import BENIGN_MESSAGES
 
         ablation_fpr = _fpr(pipeline, list(BENIGN_MESSAGES))
         ours = _fpr(pipeline, corpus.texts())

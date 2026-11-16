@@ -12,6 +12,8 @@ from typing import Any
 
 import numpy as np
 
+from src.evaluation.runner import ExperimentResult
+
 logger = logging.getLogger(__name__)
 
 # Representative attack samples — one per category, real text payloads
@@ -74,6 +76,20 @@ DEMO_ATTACKS: list[dict[str, Any]] = [
 ]
 
 
+class LLMEvaluationError(RuntimeError):
+    """An incomplete LLM matrix, with observed rows and every requested cell."""
+
+    def __init__(
+        self,
+        message: str,
+        results: list[ExperimentResult],
+        outcomes: list[dict[str, Any]],
+    ) -> None:
+        super().__init__(message)
+        self.results = results
+        self.outcomes = outcomes
+
+
 def run_llm_evaluation(
     adapters: list,
     corpus_dict: dict[str, list[dict]],
@@ -84,7 +100,7 @@ def run_llm_evaluation(
     sample_size: int = 5,
     seed: int = 42,
     save_callback=None,
-) -> list:
+) -> list[ExperimentResult]:
     """Run LLM-based multiagent evaluation.
 
     Parameters
@@ -102,13 +118,37 @@ def run_llm_evaluation(
     seed : int
         Random seed.
     save_callback : callable, optional
-        ``(results_list, final=bool) -> None`` for incremental saves.
+        ``(results_list, final=False) -> None`` after each completed cell.
+        These checkpoints are partial diagnostics, not publication evidence.
 
     Returns
     -------
     list
-        EvaluationResult objects.
+        ExperimentResult objects, only when every requested cell completed.
+
+    Raises
+    ------
+    LLMEvaluationError
+        If the matrix is empty, Ollama is unavailable, or any requested cell
+        fails. ``results`` retains observed rows (including fallback/partial
+        rows); ``outcomes`` accounts for all requested adapter/category cells.
     """
+    outcomes: list[dict[str, Any]] = [
+        {
+            "architecture": adapter.profile.name,
+            "category": category,
+            "expected_samples": min(len(samples), max(0, sample_size)),
+            "status": "not_run",
+        }
+        for adapter in adapters
+        for category, samples in corpus_dict.items()
+    ]
+    if not outcomes or sample_size <= 0:
+        raise LLMEvaluationError(
+            "LLM evaluation requires adapters, categories, and a positive sample_size",
+            [], outcomes,
+        )
+
     import requests
     try:
         resp = requests.get("http://localhost:11434/api/tags", timeout=3)
@@ -116,54 +156,110 @@ def run_llm_evaluation(
         models = [m["name"] for m in resp.json().get("models", [])]
         logger.info("Ollama available. Models: %s", ", ".join(models[:5]))
     except Exception as e:
-        raise RuntimeError(f"Cannot reach Ollama at localhost:11434: {e}") from e
+        message = f"Cannot reach Ollama at localhost:11434: {e}"
+        for outcome in outcomes:
+            outcome["error"] = message
+        raise LLMEvaluationError(message, [], outcomes) from e
 
-    from agents.llm_agent import OllamaConfig
-    from agents.multiagent_system import MultiAgentSystem
+    try:
+        from src.agents.llm_agent import OllamaConfig
+        from src.agents.multiagent_system import MultiAgentSystem
 
-    llm_config = OllamaConfig(model=model, seed=seed)
-    rng = np.random.default_rng(seed)
+        llm_config = OllamaConfig(model=model, seed=seed)
+        rng = np.random.default_rng(seed)
+    except Exception as e:
+        message = f"Could not configure LLM evaluation: {e}"
+        for outcome in outcomes:
+            outcome["error"] = message
+        raise LLMEvaluationError(message, [], outcomes) from e
 
-    total_attacks = sum(len(s) for s in corpus_dict.values())
-    logger.info("LLM Mode: %s | %d/%d samples/category", model, sample_size, total_attacks)
-
-    results = []
-    for adapter in adapters:
+    results: list[ExperimentResult] = []
+    observed_results: list[ExperimentResult] = []
+    n_categories = len(corpus_dict)
+    for adapter_index, adapter in enumerate(adapters):
         arch_name = adapter.profile.name
+        arch_outcomes = outcomes[
+            adapter_index * n_categories:(adapter_index + 1) * n_categories
+        ]
         logger.info("[%s] Creating multiagent system...", arch_name)
         try:
             llm_system = MultiAgentSystem(
                 adapter=adapter, config=llm_config, seed=seed,
             )
         except Exception as e:
-            logger.error("ERROR creating system for %s: %s", arch_name, e)
+            message = f"could not create LLM system for {arch_name}: {e}"
+            logger.error("%s", message)
+            for outcome in arch_outcomes:
+                outcome.update(status="failed", error=message)
             continue
 
-        for cat_key, samples in corpus_dict.items():
-            if len(samples) > sample_size:
-                indices = rng.choice(len(samples), size=sample_size, replace=False)
-                samples_subset = [samples[i] for i in sorted(indices)]
-            else:
-                samples_subset = samples
-
+        for outcome, (cat_key, samples) in zip(
+            arch_outcomes, corpus_dict.items(), strict=True,
+        ):
             t0 = time.time()
             try:
+                if len(samples) > sample_size:
+                    indices = rng.choice(len(samples), size=sample_size, replace=False)
+                    samples_subset = [samples[i] for i in sorted(indices)]
+                else:
+                    samples_subset = samples
+                if not samples_subset:
+                    raise RuntimeError("category contains no samples")
+
                 result = runner.run_single_llm(
                     adapter, samples_subset, pipeline, llm_system,
                 )
-                elapsed = time.time() - t0
+                if not isinstance(result, ExperimentResult):
+                    raise RuntimeError("runner did not return an ExperimentResult")
+                result.category = cat_key
+                observed_results.append(result)
+                observed_samples = (
+                    result.true_positives + result.false_negatives
+                    + result.false_positives + result.true_negatives
+                )
+                outcome["observed_samples"] = observed_samples
+                if result.llm_fallback_count:
+                    raise RuntimeError(
+                        f"{result.llm_fallback_count} sample(s) fell back from the LLM path"
+                    )
+                if result.measurement_mode != "llm":
+                    raise RuntimeError(
+                        f"measurement_mode={result.measurement_mode!r} is not LLM evidence"
+                    )
+                expected_attacks = sum(
+                    bool(sample.get("is_attack", True)) for sample in samples_subset
+                )
+                if (
+                    observed_samples != len(samples_subset)
+                    or result.n_attacks != expected_attacks
+                    or result.architecture != arch_name
+                ):
+                    raise RuntimeError(
+                        f"incomplete or mismatched result: expected "
+                        f"{len(samples_subset)} samples ({expected_attacks} attacks) "
+                        f"for {arch_name}, observed {observed_samples} samples "
+                        f"({result.n_attacks} attacks) for {result.architecture}"
+                    )
                 logger.info(
                     "  %s: DR=%.1f%% FPR=%.1f%% n=%d (%.1fs)",
                     cat_key, result.detection_rate * 100,
-                    result.false_positive_rate * 100, result.n_attacks, elapsed,
+                    result.false_positive_rate * 100, result.n_attacks,
+                    time.time() - t0,
                 )
                 results.append(result)
-
                 if save_callback:
                     save_callback(results, final=False)
-
+                outcome["status"] = "complete"
             except Exception as e:
-                logger.error("  ERROR running %s/%s: %s", arch_name, cat_key, e)
-                continue
+                message = f"LLM evaluation failed for {arch_name}/{cat_key}: {e}"
+                logger.error("%s", message)
+                outcome.update(status="failed", error=message)
 
+    failures = [outcome for outcome in outcomes if outcome["status"] != "complete"]
+    if failures:
+        raise LLMEvaluationError(
+            f"LLM evaluation failed: {len(outcomes) - len(failures)}/{len(outcomes)} "
+            "cells completed; " + "; ".join(outcome["error"] for outcome in failures),
+            observed_results, outcomes,
+        )
     return results

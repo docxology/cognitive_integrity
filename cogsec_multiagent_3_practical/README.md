@@ -2,7 +2,7 @@
 
 Unified Part 3+4 of the **Cognitive Security for Multiagent Operators** series.
 
-**Status: Preprint** | **DOI:** [10.5281/zenodo.22134548](https://doi.org/10.5281/zenodo.22134548) | **Version:** 2.0.0
+**Status: Published (first publication)** | **DOI:** [10.5281/zenodo.22134548](https://doi.org/10.5281/zenodo.22134548) | **Version:** 2.0.0 | **Released:** 2026-08-26
 
 ## Overview
 
@@ -36,9 +36,9 @@ This paper unifies two previously separate works into a single comprehensive ref
 
 | Part | Title | Focus | Status | DOI |
 |------|-------|-------|--------|-----|
-| 1 | Formal Foundations | Theory, proofs, formalisms | **Published** | [10.5281/zenodo.22134544](https://doi.org/10.5281/zenodo.22134544) |
-| 2 | Computational Validation | Empirical results, algorithms | Preprint | [10.5281/zenodo.22134546](https://doi.org/10.5281/zenodo.22134546) |
-| **3+4 (This)** | Practical Guidance + Applications | Deployment checklists, guidelines, cross-domain CIF-AD-OODA | Preprint | [10.5281/zenodo.22134548](https://doi.org/10.5281/zenodo.22134548) |
+| 1 | Formal Foundations | Theory, proofs, formalisms | **v2.0, Second Edition** | [10.5281/zenodo.22134544](https://doi.org/10.5281/zenodo.22134544) |
+| 2 | Computational Validation | Empirical results, algorithms | v2.0, first publication | [10.5281/zenodo.22134546](https://doi.org/10.5281/zenodo.22134546) |
+| **3+4 (This)** | Practical Guidance + Applications | Deployment checklists, guidelines, cross-domain CIF-AD-OODA | **v2.0, first publication** | [10.5281/zenodo.22134548](https://doi.org/10.5281/zenodo.22134548) |
 
 ## Documentation
 

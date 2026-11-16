@@ -168,7 +168,11 @@ class ProvenanceChain:
         ancestors = self.get_ancestry(belief_id)
         for ancestor_id in ancestors:
             ancestor = self._records.get(ancestor_id)
-            if ancestor and ancestor.source.trust_level < min_level:
+            if ancestor is None:
+                # A referenced source with no record has no evidence supporting
+                # a stronger label than any other unknown source.
+                return TaintLabel.UNVERIFIED
+            if ancestor.source.trust_level < min_level:
                 min_taint = ancestor.source
                 min_level = ancestor.source.trust_level
 
@@ -239,6 +243,9 @@ class ProvenanceGraph:
         Returns:
             Set of all dependent belief IDs
         """
+        # ProvenanceChain is mutable; rebuild so callers do not observe the
+        # dependency snapshot from graph construction time.
+        self._build_graph()
         dependents = set()
         queue = list(self._dependents.get(belief_id, set()))
 
@@ -305,7 +312,7 @@ class CausalAttribution:
         ancestors = self._chain.get_ancestry(belief_id)
         for ancestor_id in ancestors:
             ancestor = self._chain.get_record(ancestor_id)
-            if ancestor and not ancestor.source.is_trusted:
+            if ancestor is None or not ancestor.source.is_trusted:
                 untrusted.add(ancestor_id)
 
         return untrusted

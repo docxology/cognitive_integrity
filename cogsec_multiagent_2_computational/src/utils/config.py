@@ -66,10 +66,12 @@ class FrameworkConfig:
 
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "FrameworkConfig":
-        """Create a ``FrameworkConfig`` from a dictionary, ignoring unknown keys."""
+        """Create a configuration, rejecting misspelled or unsupported keys."""
         known = {f.name for f in cls.__dataclass_fields__.values()}
-        filtered = {k: v for k, v in data.items() if k in known}
-        return cls(**filtered)
+        unknown = sorted(set(data) - known)
+        if unknown:
+            raise ValueError(f"unknown configuration key(s): {', '.join(unknown)}")
+        return cls(**data)
 
 
 def load_config(path: Optional[str] = None) -> FrameworkConfig:
@@ -95,7 +97,7 @@ def load_config(path: Optional[str] = None) -> FrameworkConfig:
         import json
         data = json.loads(text)
     else:
-        return FrameworkConfig()
+        raise ValueError(f"unsupported config file extension: {p.suffix!r}")
 
     return FrameworkConfig.from_dict(data)
 

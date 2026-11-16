@@ -173,12 +173,10 @@ def create_trust_calculus_figure(output_dir: Path) -> Path:
     ax3.set_xlim(0, 14)
     ax3.set_ylim(0, 8)
     ax3.axis("off")
-    ax3.set_title(
-        "C. Bounded Delegation Chain (Theorem 3.1)", fontsize=14, fontweight="bold", pad=12
-    )
+    ax3.set_title("C. Bounded Delegation Chain", fontsize=14, fontweight="bold", pad=12)
 
     agents = ["A", "B", "C", "D", "E"]
-    trust_values = [1.0, 0.9, 0.81, 0.73, 0.66]
+    trust_values = [1.0, 1.0, 0.9, 0.81, 0.73]
     positions = [(1.5, 5), (4, 5), (6.5, 5), (9, 5), (11.5, 5)]
 
     for i, (agent, trust, (x, y)) in enumerate(zip(agents, trust_values, positions)):
@@ -216,7 +214,7 @@ def create_trust_calculus_figure(output_dir: Path) -> Path:
             ax3.text(
                 (x + positions[i + 1][0]) / 2,
                 y + 0.6,
-                "δ=0.9",
+                "T(A→B)=1.0" if i == 0 else "δ=0.9",
                 ha="center",
                 va="center",
                 fontsize=10,
@@ -227,7 +225,7 @@ def create_trust_calculus_figure(output_dir: Path) -> Path:
     ax3.text(
         7,
         3,
-        "T(A→E) ≤ δ⁴·T(A→B) = 0.9⁴ × 1.0 = 0.66",
+        "T(A→E) ≤ δ³·T(A→B) = 0.9³ × 1.0 = 0.73",
         ha="center",
         va="center",
         fontsize=13,

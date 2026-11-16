@@ -7,7 +7,7 @@ can call :func:`get_composer_data` once at startup to hydrate its state.
 
 Usage::
 
-    from visualization.composer_data import get_composer_data
+    from src.visualization.composer_data import get_composer_data
     import json
 
     data = get_composer_data()
@@ -23,7 +23,8 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 # ---------------------------------------------------------------------------
-# Module registry — mirrors MODULE_META in composable.py but adds extra fields
+# Static module descriptions shared with composable.py.
+# Measurements are hydrated below.
 # ---------------------------------------------------------------------------
 
 #: Static description of the 8 CIF defense modules: what each is for, which
@@ -472,14 +473,7 @@ def get_composer_data(include_category_theory: bool = True) -> Dict[str, Any]:
     if include_category_theory:
         try:
             # Import lazily so the module can be used without numpy installed
-            import os
-            import sys
-            # Ensure src/ is on path when called from outside the package
-            _src = os.path.join(os.path.dirname(__file__), "..", "..")
-            if _src not in sys.path:
-                sys.path.insert(0, _src)
-
-            from formal.category_theory_advanced import (  # type: ignore[import]
+            from src.formal.category_theory_advanced import (  # type: ignore[import]
                 get_lattice_data,
                 get_monoidal_data,
                 get_operad_data,

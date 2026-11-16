@@ -23,7 +23,7 @@ import pytest
 from matplotlib.axes import Axes
 from matplotlib.figure import Figure
 
-from visualization.style import (
+from src.visualization.style import (
     COLORS,
     FONTSIZE,
     PALETTE,
@@ -244,7 +244,7 @@ class TestBinomialCI:
         so checking that identity verifies the implementation against the
         interval's definition instead of against a remembered number.
         """
-        from visualization.tables.binomial_ci import Z_95, wilson_interval
+        from src.visualization.tables.binomial_ci import Z_95, wilson_interval
 
         p_hat = k / n
         for x in wilson_interval(k, n):
@@ -256,7 +256,7 @@ class TestBinomialCI:
         """POSITIVE CONTROL for the test above: a Wald interval fails it."""
         import math
 
-        from visualization.tables.binomial_ci import Z_95
+        from src.visualization.tables.binomial_ci import Z_95
 
         k, n = 96, 100
         p_hat = k / n
@@ -269,7 +269,7 @@ class TestBinomialCI:
 
     def test_wilson_interval_reference_values(self):
         """Regression pin for 96/100, produced by the verified implementation."""
-        from visualization.tables.binomial_ci import wilson_interval
+        from src.visualization.tables.binomial_ci import wilson_interval
 
         lo, hi = wilson_interval(96, 100)
         assert abs(lo - 0.9016292856411208) < 1e-12, lo
@@ -281,27 +281,27 @@ class TestBinomialCI:
         Every ``1.000`` cell in ``detection_rates.tex`` sits exactly here, so
         a degenerate interval would print ``± 0.000`` for every one of them.
         """
-        from visualization.tables.binomial_ci import wilson_half_width
+        from src.visualization.tables.binomial_ci import wilson_half_width
 
         assert wilson_half_width(500, 500) > 0.0
         assert wilson_half_width(100, 100) > wilson_half_width(500, 500)
 
     def test_wilson_rejects_zero_trials(self):
         """POSITIVE CONTROL: a degenerate n raises instead of printing ±0.000."""
-        from visualization.tables.binomial_ci import wilson_interval
+        from src.visualization.tables.binomial_ci import wilson_interval
 
         with pytest.raises(ValueError, match="n must be positive"):
             wilson_interval(0, 0)
 
     def test_wilson_rejects_successes_above_n(self):
         """POSITIVE CONTROL: impossible counts raise."""
-        from visualization.tables.binomial_ci import wilson_interval
+        from src.visualization.tables.binomial_ci import wilson_interval
 
         with pytest.raises(ValueError, match=r"successes must lie in \[0, 5\]"):
             wilson_interval(6, 5)
 
     def test_rate_to_successes_recovers_the_count(self):
-        from visualization.tables.binomial_ci import rate_to_successes
+        from src.visualization.tables.binomial_ci import rate_to_successes
 
         assert rate_to_successes(12 / 98, 98) == 12
         assert rate_to_successes(0.0, 98) == 0
@@ -309,14 +309,14 @@ class TestBinomialCI:
 
     def test_rate_to_successes_rejects_a_rate_that_is_not_a_multiple_of_1_over_n(self):
         """POSITIVE CONTROL: a rate/n mismatch raises rather than rounding away."""
-        from visualization.tables.binomial_ci import rate_to_successes
+        from src.visualization.tables.binomial_ci import rate_to_successes
 
         with pytest.raises(ValueError, match="not a multiple"):
             rate_to_successes(0.1234, 98)
 
     def test_rate_to_successes_rejects_zero_trials(self):
         """POSITIVE CONTROL: a zero denominator raises before the division."""
-        from visualization.tables.binomial_ci import rate_to_successes
+        from src.visualization.tables.binomial_ci import rate_to_successes
 
         with pytest.raises(ValueError, match="n must be positive"):
             rate_to_successes(0.5, 0)
@@ -348,7 +348,7 @@ class TestAblationTableBindsToJson:
     """
 
     def test_full_cif_cell_equals_json_full_pipeline_tpr(self):
-        from visualization.tables.ablation_tables import generate_ablation_table
+        from src.visualization.tables.ablation_tables import generate_ablation_table
 
         data = _load_json("ablation_results.json")
         cells = _ablation_cells(generate_ablation_table())
@@ -356,7 +356,7 @@ class TestAblationTableBindsToJson:
         assert cells["Full CIF"][0] == expected
 
     def test_every_removal_row_matches_its_json_entry(self):
-        from visualization.tables.ablation_tables import generate_ablation_table
+        from src.visualization.tables.ablation_tables import generate_ablation_table
 
         data = _load_json("ablation_results.json")
         cells = _ablation_cells(generate_ablation_table())
@@ -380,7 +380,7 @@ class TestAblationTableBindsToJson:
         This is the assertion the sign bug violated: it printed ``+0.052``
         through ``+0.106`` for the eight removals.
         """
-        from visualization.tables.ablation_tables import generate_ablation_table
+        from src.visualization.tables.ablation_tables import generate_ablation_table
 
         data = _load_json("ablation_results.json")
         assert all(e["delta_tpr"] <= 0 for e in data["component_removal"]), (
@@ -395,7 +395,7 @@ class TestAblationTableBindsToJson:
 
     def test_full_rate_is_the_maximum_rate_in_the_table(self):
         """Removing a component cannot beat the full pipeline in this data."""
-        from visualization.tables.ablation_tables import generate_ablation_table
+        from src.visualization.tables.ablation_tables import generate_ablation_table
 
         cells = _ablation_cells(generate_ablation_table())
         full = float(cells["Full CIF"][0])
@@ -409,7 +409,7 @@ class TestAblationTableBindsToJson:
         rate is ``0.6``; the reverted ``tpr + delta_tpr`` gives ``0.2``.  Run
         against the pre-fix module this assertion fails outright.
         """
-        from visualization.tables.ablation_tables import _load_ablation_data
+        from src.visualization.tables.ablation_tables import _load_ablation_data
 
         path = tmp_path / "ablation_results.json"
         path.write_text(json.dumps({
@@ -430,7 +430,7 @@ class TestAblationTableBindsToJson:
         This is the guard that keeps the sign error from coming back through
         the *runner* rather than through this module.
         """
-        from visualization.tables.ablation_tables import _load_ablation_data
+        from src.visualization.tables.ablation_tables import _load_ablation_data
 
         path = tmp_path / "ablation_results.json"
         path.write_text(json.dumps({
@@ -446,7 +446,7 @@ class TestAblationTableBindsToJson:
 
     def test_empty_component_removal_is_rejected(self, tmp_path):
         """POSITIVE CONTROL: no data must raise, not render a 0.965 placeholder."""
-        from visualization.tables.ablation_tables import _load_ablation_data
+        from src.visualization.tables.ablation_tables import _load_ablation_data
 
         path = tmp_path / "ablation_results.json"
         path.write_text(json.dumps({"component_removal": []}))
@@ -467,8 +467,8 @@ class TestAblationTableBindsToJson:
         the failure mode this guards, and it looks identical in the rendered
         PDF.
         """
-        from visualization.tables.ablation_tables import generate_ablation_table
-        from visualization.tables.binomial_ci import wilson_half_width
+        from src.visualization.tables.ablation_tables import generate_ablation_table
+        from src.visualization.tables.binomial_ci import wilson_half_width
 
         data = _load_json("ablation_results.json")
         n = data["n_attacks"]
@@ -486,11 +486,11 @@ class TestAblationTableBindsToJson:
 
     def test_ci_column_appears_and_is_computed_once_n_is_recorded(self, tmp_path):
         """POSITIVE CONTROL: the CI column is reachable and data-derived."""
-        from visualization.tables.ablation_tables import (
+        from src.visualization.tables.ablation_tables import (
             _load_ablation_data,
             generate_ablation_table,
         )
-        from visualization.tables.binomial_ci import wilson_half_width
+        from src.visualization.tables.binomial_ci import wilson_half_width
 
         path = tmp_path / "ablation_results.json"
         path.write_text(json.dumps({
@@ -513,7 +513,7 @@ class TestAblationTableBindsToJson:
 
     def test_sample_size_may_be_recorded_inside_full_pipeline(self, tmp_path):
         """Either placement for ``n_attacks`` is honoured."""
-        from visualization.tables.ablation_tables import _load_ablation_data
+        from src.visualization.tables.ablation_tables import _load_ablation_data
 
         path = tmp_path / "ablation_results.json"
         path.write_text(json.dumps({
@@ -526,7 +526,7 @@ class TestAblationTableBindsToJson:
 
     def test_non_positive_sample_size_is_rejected(self, tmp_path):
         """POSITIVE CONTROL: n <= 0 raises instead of producing a bogus CI."""
-        from visualization.tables.ablation_tables import _load_ablation_data
+        from src.visualization.tables.ablation_tables import _load_ablation_data
 
         path = tmp_path / "ablation_results.json"
         path.write_text(json.dumps({
@@ -541,7 +541,7 @@ class TestAblationTableBindsToJson:
 
     def test_full_rate_is_derived_when_full_pipeline_block_is_absent(self, tmp_path):
         """Older result files carry no ``full_pipeline`` block."""
-        from visualization.tables.ablation_tables import _load_ablation_data
+        from src.visualization.tables.ablation_tables import _load_ablation_data
 
         path = tmp_path / "ablation_results.json"
         path.write_text(json.dumps({
@@ -556,7 +556,7 @@ class TestAblationTableBindsToJson:
 
     def test_explicit_results_mapping_is_rendered(self):
         """The legacy ``{label: (rate, ci)}`` entry point still works."""
-        from visualization.tables.ablation_tables import generate_ablation_table
+        from src.visualization.tables.ablation_tables import generate_ablation_table
 
         latex = generate_ablation_table({
             "Full CIF": (0.90, None),
@@ -568,7 +568,7 @@ class TestAblationTableBindsToJson:
 
     def test_explicit_results_mapping_requires_a_full_cif_entry(self):
         """POSITIVE CONTROL: without a baseline there is nothing to delta against."""
-        from visualization.tables.ablation_tables import generate_ablation_table
+        from src.visualization.tables.ablation_tables import generate_ablation_table
 
         with pytest.raises(ValueError, match="must contain a 'Full CIF'"):
             generate_ablation_table({"- Firewall": (0.75, 0.01)})
@@ -578,7 +578,7 @@ class TestSynergyTableBindsToJson:
     """``synergy.tex`` may only report pairs the runner actually measured."""
 
     def test_one_row_per_recorded_pair_with_matching_values(self):
-        from visualization.tables.ablation_tables import generate_synergy_table
+        from src.visualization.tables.ablation_tables import generate_synergy_table
 
         pairs = _load_json("ablation_results.json")["top_synergies"]
         rows = [r for r in _body_rows(generate_synergy_table()) if len(r) == 6]
@@ -605,7 +605,7 @@ class TestSynergyTableBindsToJson:
         ``consensus`` appears in ``component_removal`` but in no synergy
         pair, so a table that mentions it is asserting an unmeasured zero.
         """
-        from visualization.tables.ablation_tables import generate_synergy_table
+        from src.visualization.tables.ablation_tables import generate_synergy_table
 
         data = _load_json("ablation_results.json")
         measured = {p["a"] for p in data["top_synergies"]} | {
@@ -633,7 +633,7 @@ class TestSynergyTableBindsToJson:
         """
         from collections import Counter
 
-        from visualization.tables.ablation_tables import generate_synergy_table
+        from src.visualization.tables.ablation_tables import generate_synergy_table
 
         pairs = _load_json("ablation_results.json")["top_synergies"]
         # Group at the table's display precision, not at full float precision.
@@ -679,8 +679,8 @@ class TestCorpusTableBindsToGenerator:
     """
 
     def test_every_subcategory_count_matches_the_generator(self):
-        from attacks.corpus import AttackCorpus
-        from visualization.tables.corpus_tables import generate_corpus_table
+        from src.attacks.corpus import AttackCorpus
+        from src.visualization.tables.corpus_tables import generate_corpus_table
 
         corpus = AttackCorpus.generate(seed=42)
         expected = {
@@ -690,8 +690,8 @@ class TestCorpusTableBindsToGenerator:
         assert _corpus_counts_from_table(generate_corpus_table()) == expected
 
     def test_subtotals_and_total_sum_to_the_corpus_length(self):
-        from attacks.corpus import AttackCorpus
-        from visualization.tables.corpus_tables import generate_corpus_table
+        from src.attacks.corpus import AttackCorpus
+        from src.visualization.tables.corpus_tables import generate_corpus_table
 
         corpus = AttackCorpus.generate(seed=42)
         latex = generate_corpus_table()
@@ -710,7 +710,7 @@ class TestCorpusTableBindsToGenerator:
         180/120/70/50/60/40/35/25 were the hand-typed values; the generator
         measures 200/100/60/60/50/50/30/30.
         """
-        from visualization.tables.corpus_tables import generate_corpus_table
+        from src.visualization.tables.corpus_tables import generate_corpus_table
 
         counts = set(_corpus_counts_from_table(generate_corpus_table()).values())
         for stale in (180, 120, 70, 35, 25):
@@ -722,9 +722,9 @@ class TestCorpusTableBindsToGenerator:
         A hardcoded literal cannot pass this: the emitted counts must be the
         ones this three-sample corpus actually contains.
         """
-        from attacks.corpus import AttackCorpus, AttackSample
-        from utils.types import AttackCategory
-        from visualization.tables.corpus_tables import generate_corpus_table
+        from src.attacks.corpus import AttackCorpus, AttackSample
+        from src.utils.types import AttackCategory
+        from src.visualization.tables.corpus_tables import generate_corpus_table
 
         samples = [
             AttackSample(
@@ -750,8 +750,8 @@ class TestCorpusTableBindsToGenerator:
 
     def test_empty_corpus_is_rejected(self):
         """POSITIVE CONTROL: a zero-row composition table raises."""
-        from attacks.corpus import AttackCorpus
-        from visualization.tables.corpus_tables import generate_corpus_table
+        from src.attacks.corpus import AttackCorpus
+        from src.visualization.tables.corpus_tables import generate_corpus_table
 
         with pytest.raises(ValueError, match="empty"):
             generate_corpus_table(AttackCorpus([]))
@@ -772,8 +772,8 @@ class TestDetectionTableBindsToJson:
     """
 
     def test_header_order_follows_the_data(self):
-        from data.result_loaders import evaluation_to_detection_matrix
-        from visualization.tables.detection_tables import (
+        from src.data.result_loaders import evaluation_to_detection_matrix
+        from src.visualization.tables.detection_tables import (
             _category_label,
             generate_detection_table,
         )
@@ -784,13 +784,13 @@ class TestDetectionTableBindsToJson:
         assert header[1:-1] == [_category_label(c) for c in cats]
 
     def test_every_cell_matches_its_json_row(self):
-        from visualization.tables.binomial_ci import wilson_half_width
-        from visualization.tables.detection_tables import generate_detection_table
+        from src.visualization.tables.binomial_ci import wilson_half_width
+        from src.visualization.tables.detection_tables import generate_detection_table
 
         raw = _load_json("full_evaluation_results.json")
         by_key = {(r["architecture"], r["attack_category"]): r for r in raw}
 
-        from data.result_loaders import evaluation_to_detection_matrix
+        from src.data.result_loaders import evaluation_to_detection_matrix
         archs, cats, _m = evaluation_to_detection_matrix(
             path=str(_DATA_DIR / "full_evaluation_results.json")
         )
@@ -816,7 +816,7 @@ class TestDetectionTableBindsToJson:
         categories have n = 500/200/150/100, so the mean is not the
         architecture's detection rate.
         """
-        from visualization.tables.detection_tables import generate_detection_table
+        from src.visualization.tables.detection_tables import generate_detection_table
 
         raw = [r for r in _load_json("full_evaluation_results.json")
                if r["architecture"] == "AutoGPT"]
@@ -833,7 +833,7 @@ class TestDetectionTableBindsToJson:
 
     def test_a_renamed_category_moves_the_header(self, tmp_path):
         """POSITIVE CONTROL: headers cannot be a hardcoded parallel list."""
-        from visualization.tables.detection_tables import (
+        from src.visualization.tables.detection_tables import (
             _load_results,
             generate_detection_table,
         )
@@ -869,7 +869,7 @@ class TestDetectionTableBindsToJson:
         The old all-or-nothing guard returned the whole preferred list as
         soon as one label matched, dropping every unrecognised category.
         """
-        from data.result_loaders import evaluation_to_detection_matrix
+        from src.data.result_loaders import evaluation_to_detection_matrix
 
         path = tmp_path / "full_evaluation_results.json"
         path.write_text(json.dumps([
@@ -896,7 +896,7 @@ class TestDetectionTableBindsToJson:
 
     def test_a_rate_contradicting_its_own_counts_is_rejected(self, tmp_path):
         """POSITIVE CONTROL: the cell cannot be published either way."""
-        from visualization.tables.detection_tables import _load_results
+        from src.visualization.tables.detection_tables import _load_results
 
         path = tmp_path / "full_evaluation_results.json"
         path.write_text(json.dumps([
@@ -914,7 +914,7 @@ class TestDetectionTableBindsToJson:
 
     def test_a_cell_with_no_attacks_prints_a_zero_interval_and_no_overall(self):
         """A row with no trials gets ``--`` for Overall, not a fabricated rate."""
-        from visualization.tables.detection_tables import generate_detection_table
+        from src.visualization.tables.detection_tables import generate_detection_table
 
         latex = generate_detection_table(results={
             "architectures": ["Empty Arch"],
@@ -928,7 +928,7 @@ class TestDetectionTableBindsToJson:
 
     def test_missing_counts_give_a_zero_ci_rather_than_raising(self, tmp_path):
         """A JSON row absent from the counts map yields ci = 0, not a crash."""
-        from visualization.tables.detection_tables import _load_results
+        from src.visualization.tables.detection_tables import _load_results
 
         # Two architectures, but only one has a row for the second category:
         # the (CrewAI, impersonation) cell has no counts entry at all.
@@ -957,7 +957,7 @@ class TestDetectionTableBindsToJson:
 
     def test_caption_reports_the_recorded_evaluation_mode(self):
         """Every shipped row is ``mode: simulation``; the caption must say so."""
-        from visualization.tables.detection_tables import generate_detection_table
+        from src.visualization.tables.detection_tables import generate_detection_table
 
         raw = _load_json("full_evaluation_results.json")
         modes = sorted({r["mode"] for r in raw})
@@ -1051,7 +1051,7 @@ class TestGeneratedTablesAreLatexSafe:
 
     def test_escaper_actually_escapes(self):
         """POSITIVE CONTROL: the detector fires on unescaped input."""
-        from visualization.tables.latex import escape_latex
+        from src.visualization.tables.latex import escape_latex
 
         assert self._unescaped_underscores("H2_detection") == ["_"]
         assert self._unescaped_underscores(escape_latex("H2_detection")) == []

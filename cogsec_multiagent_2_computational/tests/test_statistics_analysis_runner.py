@@ -10,10 +10,10 @@ All tests use real numpy computation. No mocks.
 
 from __future__ import annotations
 
-from statistics.analysis_runner import generate_sample_data, run_full_analysis
-
 import numpy as np
 import pytest
+
+from src.statistics.analysis_runner import generate_sample_data, run_full_analysis
 
 # ---------------------------------------------------------------------------
 # generate_sample_data

@@ -172,7 +172,7 @@ def test_the_one_measured_payoff_cell_comes_from_the_artifact() -> None:
     import json
     from pathlib import Path
 
-    from analysis.game_theory import compute_cif_payoff_matrix
+    from src.analysis.game_theory import compute_cif_payoff_matrix
 
     matrix, attacks, defenses = compute_cif_payoff_matrix()
     artifact = json.loads(
@@ -200,7 +200,7 @@ def test_the_equilibrium_follows_the_measured_cell() -> None:
     If someone re-hardcodes the cell, this fails alongside the one above rather
     than leaving the paper's headline quietly resting on a stale number.
     """
-    from analysis.game_theory import compute_cif_payoff_matrix, solve_zero_sum_game
+    from src.analysis.game_theory import compute_cif_payoff_matrix, solve_zero_sum_game
 
     matrix, attacks, defenses = compute_cif_payoff_matrix()
     result = solve_zero_sum_game(matrix)

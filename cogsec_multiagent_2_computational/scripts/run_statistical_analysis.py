@@ -15,11 +15,10 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "src"))
+sys.path.insert(0, str(ROOT))
 
-from statistics.analysis_runner import load_real_data, run_full_analysis
-
-from utils.random_seed import set_global_seed
+from src.statistics.analysis_runner import load_real_data, run_full_analysis
+from src.utils.random_seed import set_global_seed
 
 
 def main() -> None:
@@ -55,7 +54,7 @@ def main() -> None:
     # are compared against a *simulated* control (no observed control arm ran).
     out_path = output_dir / "statistical_results.json"
     payload = {
-        "data_origin": "real_pipeline",  # preservation marker for a shipped result
+        "data_origin": "simulation_analysis",  # measured inputs plus simulated independent control
         "source_script": "scripts/run_statistical_analysis.py",
         "generated_by": (
             f"scripts/run_statistical_analysis.py --seed {args.seed} --output {str(args.output)}"

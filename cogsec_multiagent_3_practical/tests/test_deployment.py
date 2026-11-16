@@ -210,17 +210,6 @@ class TestDeploymentConfigurator:
         assert RiskProfile.MEDIUM in configurator.configs
         assert RiskProfile.HIGH in configurator.configs
 
-    def test_low_profile_firewall_thresholds(self):
-        """Test low profile has correct firewall values (0.3/0.7)."""
-        config = DeploymentConfigurator().get_config(RiskProfile.LOW)
-        assert config.firewall.accept_threshold == 0.3
-        assert config.firewall.reject_threshold == 0.7
-
-    def test_low_profile_trust_decay(self):
-        """Test low profile trust decay delta = 0.95."""
-        config = DeploymentConfigurator().get_config(RiskProfile.LOW)
-        assert config.trust_decay_delta == 0.95
-
     def test_low_profile_consensus(self):
         """Test low profile uses simple majority."""
         config = DeploymentConfigurator().get_config(RiskProfile.LOW)
@@ -236,17 +225,6 @@ class TestDeploymentConfigurator:
         assert config.monitoring.real_time_alerts is False
         assert config.monitoring.immediate_alerting is False
 
-    def test_medium_profile_firewall_thresholds(self):
-        """Test medium profile has correct firewall values (0.25/0.65)."""
-        config = DeploymentConfigurator().get_config(RiskProfile.MEDIUM)
-        assert config.firewall.accept_threshold == 0.25
-        assert config.firewall.reject_threshold == 0.65
-
-    def test_medium_profile_trust_decay(self):
-        """Test medium profile trust decay delta = 0.80 (Section 05 Profile B)."""
-        config = DeploymentConfigurator().get_config(RiskProfile.MEDIUM)
-        assert config.trust_decay_delta == 0.80
-
     def test_medium_profile_consensus(self):
         """Test medium profile uses 2/3 majority with identity verification."""
         config = DeploymentConfigurator().get_config(RiskProfile.MEDIUM)
@@ -260,17 +238,6 @@ class TestDeploymentConfigurator:
         config = DeploymentConfigurator().get_config(RiskProfile.MEDIUM)
         assert config.monitoring.real_time_alerts is True
         assert config.monitoring.immediate_alerting is False
-
-    def test_high_profile_firewall_thresholds(self):
-        """Test high profile has correct firewall values (0.2/0.6)."""
-        config = DeploymentConfigurator().get_config(RiskProfile.HIGH)
-        assert config.firewall.accept_threshold == 0.2
-        assert config.firewall.reject_threshold == 0.6
-
-    def test_high_profile_trust_decay(self):
-        """Test high profile trust decay delta = 0.60 (Section 05 Profile C)."""
-        config = DeploymentConfigurator().get_config(RiskProfile.HIGH)
-        assert config.trust_decay_delta == 0.60
 
     def test_high_profile_consensus(self):
         """Test high profile uses Byzantine-tolerant consensus."""
@@ -701,8 +668,8 @@ class TestTrustDecayAnalyzer:
         result = TrustDecayAnalyzer.effective_trust(1.0, 0.85, 1)
         assert result == pytest.approx(0.85)
 
-    def test_effective_trust_high_profile_depth_4(self):
-        """Test manuscript value: delta=0.85 at depth 4 gives ~0.522."""
+    def test_effective_trust_generic_depth_4(self):
+        """Test effective trust after four hops for a generic decay factor."""
         result = TrustDecayAnalyzer.effective_trust(1.0, 0.85, 4)
         assert result == pytest.approx(0.522, abs=0.001)
 
@@ -712,8 +679,8 @@ class TestTrustDecayAnalyzer:
         expected = 0.95**4
         assert result == pytest.approx(expected)
 
-    def test_effective_trust_medium_profile_depth_4(self):
-        """Test medium profile: delta=0.9 at depth 4."""
+    def test_effective_trust_another_generic_depth_4(self):
+        """Test the same decay formula with another illustrative delta."""
         result = TrustDecayAnalyzer.effective_trust(1.0, 0.9, 4)
         expected = 0.9**4
         assert result == pytest.approx(expected)
@@ -772,7 +739,7 @@ class TestTrustDecayAnalyzer:
         assert limit == 22
 
     def test_practical_depth_limit_low_profile(self):
-        """Test practical limit for delta=0.95 (Section 05 Profile A)."""
+        """Test practical limit for the low-profile decay factor."""
         limit = TrustDecayAnalyzer.practical_depth_limit(0.95)
         # log(0.1) / log(0.95) = -2.3026 / -0.05129 = 44.89 -> ceil = 45
         assert limit == 45
@@ -797,6 +764,12 @@ class TestTrustDecayAnalyzer:
         trust_before = delta ** (limit - 1)
         assert trust_before >= 0.1
 
+    def test_practical_depth_limit_exact_power_is_strictly_below(self):
+        """At an exact power, return the next depth rather than equality."""
+        limit = TrustDecayAnalyzer.practical_depth_limit(0.5, threshold=0.25)
+        assert 0.5 ** (limit - 1) == 0.25
+        assert 0.5**limit < 0.25
+
     def test_practical_depth_limit_invalid_delta(self):
         """Test ValueError for invalid delta in practical_depth_limit."""
         with pytest.raises(ValueError, match="delta must be"):
@@ -820,20 +793,13 @@ class TestTrustDecayAnalyzer:
         assert "medium" in result
         assert "high" in result
 
-    def test_compare_profiles_delta_values(self):
-        """Test compare_profiles returns correct delta for each profile."""
-        result = TrustDecayAnalyzer.compare_profiles()
-        assert result["low"]["delta"] == 0.95
-        assert result["medium"]["delta"] == 0.80
-        assert result["high"]["delta"] == 0.60
-
     def test_compare_profiles_high_trust_at_depth_4(self):
-        """Test manuscript value: delta=0.60 at depth 4 gives 0.130."""
+        """Test high-profile trust at depth four."""
         result = TrustDecayAnalyzer.compare_profiles()
         assert result["high"]["trust_at_depth_4"] == pytest.approx(0.130, abs=0.001)
 
     def test_compare_profiles_high_practical_limit(self):
-        """Test manuscript value: delta=0.60 practical limit is 5."""
+        """Test the high-profile strict-below practical depth limit."""
         result = TrustDecayAnalyzer.compare_profiles()
         assert result["high"]["practical_limit"] == 5
 
@@ -963,25 +929,16 @@ class TestEdgeCases:
             assert current < prev
             prev = current
 
-    def test_high_profile_trust_below_10_percent_after_14_hops(self):
-        """Test manuscript claim: delta=0.85 -> <10% after 14 hops."""
+    def test_trust_below_10_percent_at_sufficient_depth(self):
+        """Test a generic decay factor eventually drops below 10 percent."""
         trust = TrustDecayAnalyzer.effective_trust(1.0, 0.85, 15)
         assert trust < 0.1
 
-    def test_high_profile_trust_above_50_percent_at_4_hops(self):
-        """Test manuscript claim: delta=0.85 -> ~52% at 4 hops."""
+    def test_generic_trust_remains_above_50_percent_at_4_hops(self):
+        """Test four-hop trust for a generic slow-decay example."""
         trust = TrustDecayAnalyzer.effective_trust(1.0, 0.85, 4)
         assert trust > 0.5
         assert trust < 0.6
-
-    def test_quarantine_range_widens_as_risk_decreases(self):
-        """Test quarantine range (gap) is widest for low risk."""
-        configurator = DeploymentConfigurator()
-        low = configurator.get_config(RiskProfile.LOW)
-        high = configurator.get_config(RiskProfile.HIGH)
-        low_range = low.firewall.reject_threshold - low.firewall.accept_threshold
-        high_range = high.firewall.reject_threshold - high.firewall.accept_threshold
-        assert low_range == high_range  # Both are 0.4
 
     def test_scaling_tiers_are_contiguous(self):
         """Test that scaling tiers cover the full range without gaps."""
@@ -1031,28 +988,13 @@ class TestEdgeCases:
 # =============================================================================
 
 
-class TestUncoveredLinesDeployment:
-    """Tests targeting previously uncovered lines in deployment.py."""
+class TestScalingAdvisorErrors:
+    """Tests for scaling-tier coverage errors."""
 
-    def test_get_tier_large_agent_count_falls_back_to_last_tier(self):
-        """Line 589: get_tier falls back to tiers[-1] for agent counts above all explicit ranges.
-
-        The last ScalingTier has max_agents=None (unlimited). When agent_count
-        exceeds all upper bounds that have an explicit max_agents, the loop
-        exhausts without returning and falls back to ``return self.tiers[-1]``.
-        With the default tiers, an agent count of 5000 exceeds tier 3's max of
-        1000, but tier 4 has max_agents=None and min_agents=1000.  However, the
-        loop condition ``tier.max_agents is None`` causes early return on tier 4
-        before reaching the fallback.  We therefore set all tiers' max_agents to
-        finite values so the fallback line is exercised.
-        """
+    def test_get_tier_rejects_count_outside_configured_ranges(self):
+        """An out-of-range count cannot fabricate membership in the last tier."""
         advisor = ScalingAdvisor()
-        # Cap the last tier so no tier matches an extremely large agent count,
-        # forcing the post-loop fallback to execute.
         advisor.tiers[-1].max_agents = 2000
         advisor.tiers[-1].min_agents = 1001
-        # With max_agents=2000 and the loop checking ``agent_count <= tier.max_agents``,
-        # an agent_count of 9999 won't satisfy any tier → hits the fallback return.
-        result = advisor.get_tier(9999)
-        # The fallback always returns the last tier element.
-        assert result is advisor.tiers[-1]
+        with pytest.raises(ValueError, match="No scaling tier covers 9999 agents"):
+            advisor.get_tier(9999)

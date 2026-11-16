@@ -45,6 +45,35 @@ uv run python scripts/run_adversarial_training.py --n-rounds 5 --seed 42
 uv run python scripts/run_redteam.py --seed 42
 ```
 
+The publication suite reads `experiment_config.toml` with Python 3.11+'s
+stdlib `tomllib`. A missing file uses iteration defaults; malformed TOML is
+an error, not a request to use defaults.
+
+LLM evaluation is opt-in (`--run-llm` or `COGSEC_RUN_LLM_ANALYSIS=1`).
+Without opt-in, the suite clearly reports the skipped phase and exits successfully
+after simulation. Once requested, a pipeline/runner setup error, an unavailable
+Ollama endpoint, a failed architecture/category cell, an empty or incomplete
+result, or any fallback from the LLM path makes the suite exit nonzero. Every
+requested cell is accounted for; setup failures mark all cells `not_run` with
+the setup error.
+Only a complete, entirely LLM-backed matrix publishes
+`full_evaluation_results_llm.json` and its provenance sidecar.
+
+In the selected LLM output directory, incremental checkpoints are
+`full_evaluation_results_llm_partial.json` (`status: partial`); a failed run
+also writes `full_evaluation_results_llm_failed.json` (`status: failed`),
+including all cell outcomes and any observed rows with their actual
+`measurement_mode` and fallback counts. Both diagnostics carry the same
+`attempt_id` for the current invocation. Before each new LLM attempt, any old
+partial/failed diagnostics move byte-for-byte into
+`llm_attempts/before-<new-attempt_id>/`, retaining their original names and
+contents (including legacy diagnostics without IDs). Thus current diagnostics
+never mix attempts, and a successful retry retains earlier failure evidence
+only in the archive. These diagnostics are not successful LLM evidence. A
+failed run does not publish a new final result, provenance sidecar, or
+`.real_data_marker`, and leaves all three prior completed artifacts
+byte-identical.
+
 ## Script Inventory (37 scripts)
 
 ### Orchestrators (3)
@@ -140,9 +169,9 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "src"))
+sys.path.insert(0, str(ROOT))
 
-from evaluation.runner import ExperimentRunner   # computation from src/
+from src.evaluation.runner import ExperimentRunner   # computation from src/
 
 def main():
     output_dir = Path("output/data")
@@ -158,7 +187,7 @@ if __name__ == "__main__":
     main()
 ```
 
-**Required** — all computation via `src/` imports; scripts handle only I/O, reporting, logging, and manifest bookkeeping; print output paths to stdout for pipeline manifest collection; deterministic RNG (seed=42). The bootstrap is `sys.path.insert(0, str(ROOT / "src"))` followed by top-level imports (`from evaluation.runner import ...`), matching every script in this directory.
+**Required** — all computation via `src/` imports; scripts handle only I/O, reporting, logging, and manifest bookkeeping; print output paths to stdout for pipeline manifest collection; deterministic RNG (seed=42). The bootstrap is `sys.path.insert(0, str(ROOT))` followed by canonical imports (`from src.evaluation.runner import ...`), matching every script in this directory.
 
 **Forbidden** — business logic in scripts; algorithm implementation in scripts; direct numerical computation outside `src/`; use of mocks (see `src/AGENTS.md` for the no-mocks policy).
 

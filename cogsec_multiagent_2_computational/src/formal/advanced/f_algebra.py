@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Callable, List, Optional, TypeVar
 
-from formal.category_theory import (
+from src.formal.category_theory import (
     CognitiveState,
     DefenseMorphism,
     DefenseResult,

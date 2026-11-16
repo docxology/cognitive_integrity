@@ -3,7 +3,8 @@
 import numpy as np
 import pytest
 
-from core.detection import (
+from src import AnomalyScorer, DetectionConfig, DriftDetector
+from src.core.detection import (
     AdaptiveBaseline,
     SlidingWindowMonitor,
     action_frequency_extractor,
@@ -11,7 +12,6 @@ from core.detection import (
     communication_volume_extractor,
     goal_stability_extractor,
 )
-from src import AnomalyScorer, DetectionConfig, DriftDetector
 
 
 class TestDriftDetector:
@@ -102,9 +102,8 @@ class TestAnomalyScorer:
 
         scorer.calibrate("agent-1")
 
-        # Baseline should be approximately mean of observations
-        extractor = scorer._extractors[0][0]
-        assert 10 <= extractor.baseline_mean <= 20
+        # A state near the observed mean remains benign after calibration.
+        assert scorer.score("agent-1", {"action_count": 14, "time_delta": 1.0}) < 1.0
 
     def test_score_normal_state(self):
         """Normal state has low anomaly score."""
@@ -381,12 +380,12 @@ class TestMultiAgentDetection:
         scorer_low.calibrate("agent-1")
         scorer_high.calibrate("agent-2")
 
-        low_mean = scorer_low._extractors[0][0].baseline_mean
-        high_mean = scorer_high._extractors[0][0].baseline_mean
-
-        assert low_mean < high_mean
-        assert np.isclose(low_mean, 5.0, atol=0.1)
-        assert np.isclose(high_mean, 500.0, atol=0.1)
+        assert scorer_low.score(
+            "agent-1", {"action_count": 5, "time_delta": 1.0}
+        ) < 1.0
+        assert scorer_high.score(
+            "agent-2", {"action_count": 500, "time_delta": 1.0}
+        ) < 1.0
 
     def test_cross_agent_no_contamination(self):
         """Scoring an uncalibrated agent uses default extractor baselines."""
@@ -398,12 +397,10 @@ class TestMultiAgentDetection:
             scorer.observe("agent-1", {"action_count": 10, "time_delta": 1.0})
         scorer.calibrate("agent-1")
 
-        # Score agent-2 (never observed) -- uses agent-1's calibrated baseline
-        # since extractors are shared
+        # Agent-2 has not inherited agent-1's baseline: its default mean is
+        # zero and unit standard deviation, so the same state is anomalous.
         score = scorer.score("agent-2", {"action_count": 10, "time_delta": 1.0})
-        assert isinstance(score, float)
-        # After calibrating agent-1, baseline_mean is ~10 so a value of 10 is normal
-        assert score < 1.0
+        assert score > 3.0
 
 
 # ---------------------------------------------------------------------------
@@ -681,7 +678,7 @@ class TestAdaptiveBaseline:
         ab = AdaptiveBaseline(n_features=2, learning_rate=0.5)
         target = np.array([5.0, 10.0])
         for _ in range(100):
-            ab.update(target, "TP")
+            ab.update(target, "FP")
         mean, std = ab.baseline
         np.testing.assert_array_almost_equal(mean, target, decimal=1)
 
@@ -975,3 +972,68 @@ class TestAnomalyScorerFailClosed:
         partial["action_count"] = "5000"
         verdict = scorer.evaluate("agent1", partial)
         assert verdict.score > 1000.0
+
+
+class TestCoreSecurityRegressions:
+    def test_drift_history_scores_the_historical_prefix(self):
+        detector = DriftDetector()
+        for _ in range(10):
+            detector.add_observation({"belief": 0.1})
+        for _ in range(10):
+            detector.add_observation({"belief": 0.9})
+
+        scores = detector.get_drift_history(n=19)
+
+        assert scores[:9] == pytest.approx([0.0] * 9)
+        assert scores[9] == pytest.approx(0.4)
+
+    @pytest.mark.parametrize(
+        "current",
+        [{"belief": 0.9, "added": 0.9}, {"renamed": 0.9}],
+    )
+    def test_key_changes_cannot_suppress_drift(self, current):
+        detector = DriftDetector()
+        for _ in range(10):
+            detector.add_observation({"belief": 0.1})
+
+        anomalous, score = detector.is_anomalous(current)
+
+        assert anomalous
+        assert score > detector.config.drift_threshold
+
+    def test_one_agent_recalibration_does_not_clobber_another(self):
+        scorer = AnomalyScorer(DetectionConfig(baseline_samples=5))
+        scorer.add_extractor("frequency", action_frequency_extractor)
+        for _ in range(10):
+            scorer.observe("A", {"action_count": 10, "time_delta": 1})
+            scorer.observe("B", {"action_count": 100, "time_delta": 1})
+        scorer.calibrate("A")
+        scorer.calibrate("B")
+
+        assert scorer.score("A", {"action_count": 10, "time_delta": 1}) == 0.0
+        assert scorer.score("B", {"action_count": 100, "time_delta": 1}) == 0.0
+        assert scorer.score("A", {"action_count": 100, "time_delta": 1}) > 3.0
+        assert scorer.score("B", {"action_count": 10, "time_delta": 1}) > 3.0
+
+    def test_confirmed_attacks_do_not_enter_normal_baseline(self):
+        baseline = AdaptiveBaseline(n_features=1)
+        initial_mean, initial_std = baseline.baseline
+
+        for _ in range(10):
+            baseline.update(np.array([100.0]), "TP")
+
+        mean, std = baseline.baseline
+        np.testing.assert_array_equal(mean, initial_mean)
+        np.testing.assert_array_equal(std, initial_std)
+
+    def test_default_monitor_flags_arrival_without_replaying_old_alerts(self):
+        monitor = SlidingWindowMonitor()
+        for _ in range(10):
+            assert monitor.run_monitoring_step({"value": 1.0}) == []
+
+        alerts = monitor.run_monitoring_step({"value": 10**12})
+        assert len(alerts) == 1
+        assert alerts[0]["score"] > monitor.threshold
+
+        for _ in range(20):
+            assert monitor.run_monitoring_step({"value": 10**12}) == []

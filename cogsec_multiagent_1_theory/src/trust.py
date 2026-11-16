@@ -41,7 +41,10 @@ class TrustConfig:
     decay: float = 0.9  # Delegation decay factor
 
     def __post_init__(self):
-        if not np.isclose(self.alpha + self.beta + self.gamma, 1.0):
+        weights = (self.alpha, self.beta, self.gamma)
+        if any(not np.isfinite(weight) or weight < 0 for weight in weights):
+            raise ValueError("Weights must be finite and non-negative")
+        if not np.isclose(sum(weights), 1.0):
             raise ValueError("Weights must sum to 1.0")
         if not 0 < self.decay < 1:
             raise ValueError("Decay must be in (0, 1)")
@@ -89,7 +92,9 @@ class TrustCalculus:
         Args:
             source_trust: Trust from delegator to intermediary
             target_trust: Trust from intermediary to target
-            depth: Delegation chain depth
+            depth: Decay depth, not the number of trust arguments. The default
+                of one applies δ once. For a two-edge path, pass depth=2 to
+                match compute_path_trust([source_trust, target_trust]).
 
         Returns:
             Bounded delegated trust
@@ -271,18 +276,22 @@ class ReputationTracker:
 
         interactions = self._interactions[key]
 
-        total_weight = 0.0
-        weighted_sum = 0.0
-
-        for record in interactions:
-            time_delta = current_time - record.timestamp
-            weight = np.exp(-self.decay_rate * time_delta)
-            weighted_sum += weight * record.outcome
-            total_weight += weight
-
+        # Normalize by the largest exponent before exponentiation. This is
+        # algebraically identical to the raw time-decayed average but prevents
+        # all weights from underflowing to zero on old interaction histories.
+        time_deltas = [current_time - record.timestamp for record in interactions]
+        reference_delta = min(time_deltas)
+        weights = [
+            np.exp(-self.decay_rate * (time_delta - reference_delta))
+            for time_delta in time_deltas
+        ]
+        total_weight = float(sum(weights))
         if total_weight == 0:
             return self.default_reputation
 
+        weighted_sum = sum(
+            weight * record.outcome for weight, record in zip(weights, interactions)
+        )
         return weighted_sum / total_weight
 
 

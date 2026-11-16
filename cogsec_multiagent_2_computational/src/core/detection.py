@@ -146,21 +146,22 @@ class DriftDetector:
         if len(history_slice) < window:
             return 0.0, 0.0
 
-        # Get historical average
+        # Compare propositions by name, not by array position. Missing
+        # propositions retain the existing neutral-belief convention (0.5),
+        # so additions, removals and renames cannot silently select a
+        # same-length subset and disable the monitor.
         recent = history_slice[-window:]
-        keys = sorted(current.keys())
+        historical = [dict(zip(obs_keys, values)) for obs_keys, values in recent]
+        keys = sorted(set(current).union(*(obs.keys() for obs in historical)))
         if not keys:
             return 0.0, 0.0
+
         current_arr = np.array([current.get(k, 0.5) for k in keys])
-
-        # Average of recent observations
-        hist_values = np.array([v for _, v in recent if len(v) == len(keys)])
-        if len(hist_values) == 0:
-            return 0.0, 0.0
-
+        hist_values = np.array(
+            [[obs.get(k, 0.5) for k in keys] for obs in historical]
+        )
         hist_mean = np.mean(hist_values, axis=0)
 
-        # Compute metrics
         kl_div = self._kl_divergence(current_arr, hist_mean)
         max_delta = float(np.max(np.abs(current_arr - hist_mean)))
 
@@ -222,8 +223,10 @@ class DriftDetector:
         for i in range(max(1, len(history_list) - n), len(history_list)):
             keys, values = history_list[i]
             current = dict(zip(keys, values))
-            _, score = self.is_anomalous(current, window=min(i, 10))
-            scores.append(score)
+            kl_div, max_delta = self._drift_from_slice(
+                history_list[:i], current, window=min(i, 10)
+            )
+            scores.append(kl_div + 0.5 * max_delta)
 
         return scores
 
@@ -286,6 +289,7 @@ class AnomalyScorer:
         self.config = config or DetectionConfig()
         self._extractors: List[Tuple[FeatureExtractor, float]] = []
         self._history: Dict[str, deque] = {}
+        self._baselines: Dict[str, Tuple[float, float]] = {}
         self._undeterminable_observations: Dict[str, int] = {}
 
     def add_extractor(
@@ -350,8 +354,10 @@ class AnomalyScorer:
                 and len(self._history[key]) >= self.config.baseline_samples
             ):
                 values = np.array(list(self._history[key]))
-                extractor.baseline_mean = float(np.mean(values))
-                extractor.baseline_std = float(np.std(values)) + 1e-6
+                self._baselines[key] = (
+                    float(np.mean(values)),
+                    float(np.std(values)) + 1e-6,
+                )
 
     def _weighted_score(
         self, agent_id: str, state: dict
@@ -370,11 +376,17 @@ class AnomalyScorer:
         for extractor, weight in self._extractors:
             try:
                 value = extractor.extract(state)
-                # Z-score from baseline.  The arithmetic is inside the guard
-                # because a non-numeric value returned by an otherwise
-                # successful extractor is equally undeterminable.
-                if extractor.baseline_std > 0:
-                    z = abs(value - extractor.baseline_mean) / extractor.baseline_std
+                baseline_mean, baseline_std = self._baselines.get(
+                    f"{agent_id}:{extractor.name}",
+                    (extractor.baseline_mean, extractor.baseline_std),
+                )
+                # Z-score from this agent's calibrated baseline, falling back
+                # to the extractor defaults for an uncalibrated agent. The
+                # arithmetic is inside the guard because a non-numeric value
+                # returned by an otherwise successful extractor is equally
+                # undeterminable.
+                if baseline_std > 0:
+                    z = abs(value - baseline_mean) / baseline_std
                 else:
                     z = 0.0
             except EXTRACTION_ERRORS as _exc:
@@ -549,14 +561,15 @@ class AdaptiveBaseline:
         features = np.asarray(features, dtype=float)
         self._count += 1
 
-        # EMA update for mean and variance
-        alpha = self.learning_rate
-        self._mean = (1 - alpha) * self._mean + alpha * features
-        diff = features - self._mean
-        self._var = (1 - alpha) * self._var + alpha * (diff ** 2)
-
-        # Threshold adjustment based on feedback
         if feedback == "FP":
+            # Only observations established to be benign may teach the normal
+            # baseline. Confirmed attacks still tune threshold feedback below,
+            # but absorbing them here would make subsequent attacks look normal.
+            alpha = self.learning_rate
+            self._mean = (1 - alpha) * self._mean + alpha * features
+            diff = features - self._mean
+            self._var = (1 - alpha) * self._var + alpha * (diff ** 2)
+
             self._consecutive_fp += 1
             self._consecutive_tp = 0
             if self._consecutive_fp >= self.fp_raise:
@@ -608,6 +621,7 @@ class SlidingWindowMonitor:
         self._snapshots: deque = deque(maxlen=window_size)
         self._ema_mean: Optional[np.ndarray] = None
         self._ema_var: Optional[np.ndarray] = None
+        self._latest_anomalies: List[Dict] = []
 
     def _state_to_features(self, state: dict) -> np.ndarray:
         """Convert state dict to numeric feature vector."""
@@ -627,51 +641,48 @@ class SlidingWindowMonitor:
         import time
 
         features = self._state_to_features(state)
-        self._snapshots.append((time.time(), features))
+        timestamp = time.time()
+        self._latest_anomalies = []
 
-        # Initialize or update EMA
-        if self._ema_mean is None:
-            self._ema_mean = features.copy()
-            self._ema_var = np.zeros_like(features)
-        else:
-            # Ensure dimension compatibility
-            if len(features) != len(self._ema_mean):
-                self._ema_mean = features.copy()
-                self._ema_var = np.zeros_like(features)
-            else:
-                diff = features - self._ema_mean
-                self._ema_mean = (1 - self.alpha) * self._ema_mean + self.alpha * features
-                assert self._ema_var is not None
-                self._ema_var = (
-                    (1 - self.alpha) * self._ema_var + self.alpha * (diff ** 2)
-                )
-
-    def check_anomalies(self) -> List[Dict]:
-        """Check recent snapshots for anomalies.
-
-        Returns:
-            List of anomaly dicts with keys: timestamp, score, features.
-        """
-        if self._ema_mean is None or len(self._snapshots) < 2:
-            return []
-
-        anomalies = []
-        assert self._ema_var is not None
-        std = np.sqrt(self._ema_var) + 1e-10
-
-        for timestamp, features in self._snapshots:
-            if len(features) != len(self._ema_mean):
-                continue
+        if self._ema_mean is not None and len(features) == len(self._ema_mean):
+            # Score against the pre-observation baseline. Updating first lets
+            # even an arbitrarily large spike lower its own z-score below the
+            # default threshold before it can be reported.
+            assert self._ema_var is not None
+            std = np.sqrt(self._ema_var) + 1e-10
             z = np.abs(features - self._ema_mean) / std
             score = float(np.max(z))
             if score > self.threshold:
-                anomalies.append({
+                self._latest_anomalies.append({
                     "timestamp": timestamp,
                     "score": score,
                     "features": features.tolist(),
                 })
 
-        return anomalies
+        self._snapshots.append((timestamp, features))
+
+        # Initialize or update EMA after scoring the arriving snapshot.
+        if self._ema_mean is None:
+            self._ema_mean = features.copy()
+            self._ema_var = np.zeros_like(features)
+        elif len(features) != len(self._ema_mean):
+            self._ema_mean = features.copy()
+            self._ema_var = np.zeros_like(features)
+        else:
+            diff = features - self._ema_mean
+            self._ema_mean = (1 - self.alpha) * self._ema_mean + self.alpha * features
+            assert self._ema_var is not None
+            self._ema_var = (
+                (1 - self.alpha) * self._ema_var + self.alpha * (diff ** 2)
+            )
+
+    def check_anomalies(self) -> List[Dict]:
+        """Return anomalies for the most recently collected snapshot only.
+
+        Returns:
+            List of anomaly dicts with keys: timestamp, score, features.
+        """
+        return [dict(anomaly) for anomaly in self._latest_anomalies]
 
     def prune(self, max_age: Optional[float] = None) -> int:
         """Remove old snapshots.

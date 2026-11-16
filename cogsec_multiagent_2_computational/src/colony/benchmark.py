@@ -10,10 +10,11 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
-from statistics.confidence import bootstrap_mean_ci
 from typing import Dict, List, Optional, Tuple
 
 import numpy as np
+
+from src.statistics.confidence import bootstrap_mean_ci
 
 # ---------------------------------------------------------------------------
 # Data classes

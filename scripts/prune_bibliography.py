@@ -76,7 +76,7 @@ def _mentioned_outside_prose(part: str, keys: set[str]) -> dict[str, str]:
     """
     found: dict[str, str] = {}
     root = REPO / PARTS[part]
-    manuscript = root / "manuscript"
+    manuscript = root / "docs" / "manuscript"
     patterns = {key: re.compile(rf"(?<![\w-]){re.escape(key)}(?![\w-])") for key in keys}
     for path in root.rglob("*"):
         if not path.is_file() or path.suffix == ".bib":
@@ -100,7 +100,7 @@ def _mentioned_outside_prose(part: str, keys: set[str]) -> dict[str, str]:
 def plan() -> dict[str, dict[str, object]]:
     report: dict[str, dict[str, object]] = {}
     for part in PARTS:
-        path = REPO / PARTS[part] / "manuscript" / "references.bib"
+        path = REPO / PARTS[part] / "docs" / "manuscript" / "references.bib"
         if not path.is_file():
             continue
         text = path.read_text(encoding="utf-8")
@@ -143,6 +143,21 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     report = plan()
+    missing = sorted(set(PARTS) - set(report))
+    empty = sorted(part for part, entry in report.items() if not entry["spans"])
+    if missing or empty:
+        if missing:
+            print(
+                f"no canonical docs/manuscript/references.bib for: {', '.join(missing)}",
+                file=sys.stderr,
+            )
+        if empty:
+            print(
+                f"no bibliography entries parsed for: {', '.join(empty)}",
+                file=sys.stderr,
+            )
+        print("refusing to prune an incomplete bibliography corpus", file=sys.stderr)
+        return 2
     dirty = 0
     for part, entry in sorted(report.items()):
         remove, kept = entry["remove"], entry["kept"]

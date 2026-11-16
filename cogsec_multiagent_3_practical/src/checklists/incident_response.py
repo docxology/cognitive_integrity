@@ -7,7 +7,7 @@ from .models import ChecklistPhase, EnhancedChecklistItem, IncidentSeverity
 class IncidentResponseChecklist:
     """Incident response checklist with 4 time-phased sections.
 
-    Implements the incident response section of manuscript Section 03.
+    Corresponds to ``docs/manuscript/05b_incident_response.md``.
     The checklist is activated when a cognitive security incident is
     suspected, then worked through in time-phased order.
 

@@ -4,7 +4,7 @@ This supplementary section provides executable configurations for formal verific
 
 > **Cross-paper reading guide.**
 > • **Theoretical foundations** — state-space definitions (Part 1's Agent Cognitive State and System State definitions), CTL/LTL temporal property specifications, and invariant-preservation lemmas are in Part 1's formal verification section.
-> • **Empirical verification runs** (trace logs, counterexamples, performance) — this supplement + [`src/formal/`](../../src/formal/) (NuSMV, SPIN, TLA+ spec generators).
+> • **Executable specifications** — this supplement + [`src/formal/`](../../src/formal/) (NuSMV, SPIN, TLA+ spec generators). No model checker was executed; there are no trace logs, counterexamples or performance results.
 > • **Deployment-facing implications** of the verified invariants (what operators can rely on) are summarized in Part 3 \cite{friedman2026cogsec3}, in its *The Formal Foundation: Concepts from Part 1* review section.
 > • **Domain-specific invariants** — physics-informed invariants introduced as a novel defense extension for infrastructure, verification-channel separation for biowarfare, and active-perturbation probing for trade-war agents are specified and analyzed in unified Part 3+4 \cite{friedman2026cogsec3}, Sections 9.08, 9.06, and 9.09.
 
@@ -179,7 +179,7 @@ Table: Model checking tool selection by verification objective. {#tab:tool-selec
 | Rapid prototyping | SPIN | Fastest compilation and verification cycle |
 | Production integration | NuSMV | Mature toolchain with counterexample visualization |
 
-All three tools verify the same four core properties (belief integrity, trust boundedness, no deadlock, eventual detection) but differ in expressiveness and verification efficiency. For deployments with $>$8 agents, symbolic model checking (NuSMV) is preferred over explicit state enumeration (SPIN) due to state space explosion \cite{clarke1999model}.
+All three specifications target the same four core properties (belief integrity, trust boundedness, no deadlock, eventual detection) but differ in expressiveness and expected verification efficiency. No tool was executed in this series. For deployments with $>$8 agents, symbolic model checking (NuSMV) is preferred over explicit state enumeration (SPIN) due to state space explosion \cite{clarke1999model}.
 
 ## Verification Parameters {#sec:verification-params}
 
@@ -262,11 +262,11 @@ MODULE VerifyCT3(f_d, f_s, g_d, g_s, h_d, h_s)
   LTLSPEC G (hgf.detected = hgf2.detected & hgf.score = hgf2.score)
 ```
 
-**Verification status**: no model checker was run. The specification enumerates an exhaustive state space of $2 \times 11 = 22$ states per morphism, $22^2 = 484$ composition pairs and $484^2 = 234{,}256$ triples for associativity, and is written to be checked; `scripts/verify_formal_specs.py` records in `output/formal/verification_summary.json` that NuSMV, SPIN and TLC were all absent from `PATH`, so `verified` is `false` and no verdict is claimed here. The short-circuit composition rule is the key structural invariant: once a morphism detects ($f.\text{detected} = \text{TRUE}$), subsequent morphisms in the chain never override the detection, regardless of their own score.
+**Verification status**: no model checker was run. The specification enumerates an exhaustive state space of $2 \times 11 = 22$ states per morphism, $22^2 = 484$ composition pairs and $22^3 = 10{,}648$ triples for associativity, and is written to be checked; `scripts/verify_formal_specs.py` records in `output/formal/verification_summary.json` that NuSMV, SPIN and TLC were all absent from `PATH`, so `verified` is `false` and no verdict is claimed here. The short-circuit composition rule is the key structural invariant: once a morphism detects ($f.\text{detected} = \text{TRUE}$), subsequent morphisms in the chain never override the detection, regardless of their own score.
 
 ### TLA+ Specification of FEP.1
 
-FEP.1 formalizes CIF's detection criterion under the Free Energy Principle: an attack $\omega$ is detected iff the induced free energy increase $\Delta F(\omega)$ exceeds the precision-weighted threshold $\kappa_\text{FEP}$.
+FEP.1 specifies a candidate detection criterion under the Free Energy Principle: an update is flagged if the induced free energy increase $\Delta F(\omega)$ exceeds the precision-weighted threshold $\kappa_\text{FEP}$. This is the helper's chosen diagnostic rule, not a proof that all and only attacks satisfy it.
 
 ```tla
 ------------------------------ MODULE FEP_Attack_Criterion ------------------------------

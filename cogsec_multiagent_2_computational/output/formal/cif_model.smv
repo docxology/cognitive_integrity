@@ -1,0 +1,49 @@
+-- CIF NuSMV Model: 5 agents, max 1 Byzantine
+MODULE main
+
+VAR
+  n_agents : 1..5;
+  byzantine_count : 0..1;
+  consensus_reached : boolean;
+  trust_score : 0..100;  -- scaled [0, 1] as integer
+  firewall_active : boolean;
+  injection_attempt : boolean;
+  injection_succeeds : boolean;
+  belief_integrity : 0..100;
+
+ASSIGN
+  init(consensus_reached) := FALSE;
+  init(trust_score) := 50;
+  init(firewall_active) := TRUE;
+  init(injection_succeeds) := FALSE;
+  init(belief_integrity) := 100;
+
+  next(consensus_reached) := case
+    byzantine_count <= 1 & n_agents >= 3 * byzantine_count + 1 : TRUE;
+    TRUE : {TRUE, FALSE};
+  esac;
+
+  next(injection_succeeds) := case
+    firewall_active & injection_attempt : FALSE;
+    !firewall_active & injection_attempt : {TRUE, FALSE};
+    TRUE : FALSE;
+  esac;
+
+  next(trust_score) := case
+    trust_score > 0 : trust_score;  -- bounded
+    TRUE : 0;
+  esac;
+
+-- CTL Properties
+
+-- P1: Byzantine tolerance ensures eventual consensus
+CTLSPEC AG (byzantine_count <= 1 -> AF consensus_reached)
+
+-- P2: Trust scores are always bounded [0, 1]
+CTLSPEC AG (trust_score >= 0 & trust_score <= 100)
+
+-- P3: Active firewall prevents injection success
+CTLSPEC AG (firewall_active -> !injection_succeeds)
+
+-- P4: Belief integrity never negative
+CTLSPEC AG (belief_integrity >= 0)

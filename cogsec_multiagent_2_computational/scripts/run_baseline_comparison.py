@@ -29,11 +29,11 @@ from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "src"))
+sys.path.insert(0, str(ROOT))
 
 import numpy as np
 
-from evaluation.baselines import (
+from src.evaluation.baselines import (
     DEFAULT_KEYWORD_PATTERNS,
     BagOfWordsDetector,
     CIFPipelineDetector,

@@ -12,7 +12,7 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
 
-from composition.algebra import compute_series_detection_rate
+from src.composition.algebra import compute_series_detection_rate
 
 from ..style import FONTSIZE, SEMANTIC_COLORS, add_source_annotation, apply_style, save_figure
 
@@ -35,15 +35,15 @@ _CATEGORY_LABEL = {
 
 
 def _load_parametric_detection() -> tuple[
-    list[str], list[str], list[list[float]], list[list[float]]
+    list[str], list[str], list[list[float]], list[list[tuple[float, float]]]
 ]:
-    """Detection rates and Wilson half-widths, per architecture and category.
+    """Detection rates and asymmetric Wilson intervals, by architecture/category.
 
     Fails closed. The defect being repaired is a panel that drew a matrix
     nothing computed, so a fallback to plausible values would put it straight
     back in a form that is harder to see than the original.
     """
-    from visualization.tables.binomial_ci import wilson_half_width
+    from src.visualization.tables.binomial_ci import wilson_interval
 
     if not _PARAMETRIC_PATH.is_file():
         raise FileNotFoundError(
@@ -72,7 +72,7 @@ def _load_parametric_detection() -> tuple[
     means = [[index[(a, c)]["detection_rate"] for c in categories] for a in architectures]
     intervals = [
         [
-            wilson_half_width(
+            wilson_interval(
                 int(index[(a, c)]["true_positives"]), int(index[(a, c)]["n_attacks"])
             )
             for c in categories
@@ -223,11 +223,17 @@ def plot_detection_performance(output_dir: str | Path = "output/figures") -> plt
     ]
     for a, architecture in enumerate(architectures):
         offset = (a - (n_arch - 1) / 2) * width
+        asymmetric_errors = np.array(
+            [
+                [rate - interval[0] for rate, interval in zip(means[a], intervals[a])],
+                [interval[1] - rate for rate, interval in zip(means[a], intervals[a])],
+            ]
+        )
         ax2.bar(
             x + offset,
             means[a],
             width,
-            yerr=intervals[a],
+            yerr=asymmetric_errors,
             capsize=2,
             error_kw={"elinewidth": 0.8, "ecolor": "#2C3E50"},
             label=architecture,

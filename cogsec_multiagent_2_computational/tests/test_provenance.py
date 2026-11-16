@@ -596,3 +596,35 @@ class TestProvenanceChainExtended:
 
         ancestry = chain.get_ancestry("root")
         assert len(ancestry) == 0
+
+
+class TestProvenanceSecurityRegressions:
+    def test_missing_ancestor_is_unverified_and_attributed(self):
+        chain = ProvenanceChain()
+        chain.add_belief(
+            "child",
+            "Derived",
+            TaintLabel.SYSTEM_VERIFIED,
+            "agent",
+            parent_ids=["ghost"],
+        )
+
+        assert chain.get_effective_taint("child") == TaintLabel.UNVERIFIED
+        assert CausalAttribution(chain).identify_untrusted_sources("child") == {
+            "ghost"
+        }
+
+    def test_dependents_include_records_added_after_graph_construction(self):
+        chain = ProvenanceChain()
+        chain.add_belief("root", "Root", TaintLabel.SYSTEM_VERIFIED, "sys")
+        graph = ProvenanceGraph(chain)
+        chain.add_belief(
+            "child",
+            "Child",
+            TaintLabel.AGENT_INTERNAL,
+            "agent",
+            parent_ids=["root"],
+        )
+
+        assert graph.depends_on("child", "root")
+        assert graph.get_dependents("root") == {"child"}

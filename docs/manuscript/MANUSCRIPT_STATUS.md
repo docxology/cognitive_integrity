@@ -3,15 +3,15 @@
 ## Repo type
 
 Publication-track research program composed of THREE self-contained sub-projects,
-each carrying its own complete `manuscript/` tree.
+each carrying its own complete `docs/manuscript/` tree.
 
 ## Evidence
 
 Files checked: root `README.md` ("three-part manuscript series"), `AGENTS.md`,
-`CHANGELOG.md`, `CITATION.cff`, `manuscript_verification.log`, and the sub-project
-directories `cogsec_multiagent_1_theory/manuscript/`,
-`cogsec_multiagent_2_computational/manuscript/`,
-`cogsec_multiagent_3_practical/manuscript/` — each exists with section files.
+`CHANGELOG.md`, `CITATION.cff`, the part-local `manuscript_verification.log` files, and the sub-project
+directories `cogsec_multiagent_1_theory/docs/manuscript/`,
+`cogsec_multiagent_2_computational/docs/manuscript/`,
+`cogsec_multiagent_3_practical/docs/manuscript/` — each exists with section files.
 
 ## Why no top-level `manuscript/` applies today
 

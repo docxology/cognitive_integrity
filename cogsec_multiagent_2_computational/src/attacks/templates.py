@@ -13,7 +13,7 @@ from typing import Any, Dict, List
 
 import numpy as np
 
-from utils.types import AttackCategory
+from src.utils.types import AttackCategory
 
 # ---------------------------------------------------------------------------
 # Template dataclass

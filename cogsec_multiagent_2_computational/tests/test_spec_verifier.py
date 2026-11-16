@@ -15,7 +15,7 @@ from __future__ import annotations
 
 import shutil
 
-from formal.spec_verifier import (
+from src.formal.spec_verifier import (
     VerificationResult,
     VerificationStatus,
     check_tool,
@@ -132,7 +132,9 @@ class TestVerifyToolsAbsent:
 
     def test_verify_tla_skip_when_absent(self, tmp_path, monkeypatch):
         monkeypatch.setattr(shutil, "which", lambda name: None)
-        result = verify_tla(tmp_path / "dummy.tla")
+        spec = tmp_path / "dummy.tla"
+        spec.with_suffix(".cfg").write_text("CONSTANTS\n  N = 4\n")
+        result = verify_tla(spec)
         assert result.status is VerificationStatus.SKIPPED
         assert result.passed is False
 

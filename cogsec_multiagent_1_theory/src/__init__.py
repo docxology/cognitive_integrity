@@ -49,7 +49,6 @@ from .detection import AnomalyScorer, DetectionConfig, DriftDetector
 from .firewall import (
     Classification,
     CognitiveFirewall,
-    EmbeddingStub,
     EnhancedCognitiveFirewall,
     FirewallConfig,
     MultiStageClassifier,
@@ -96,6 +95,9 @@ from .sandbox import (
     SandboxManager,
 )
 
+# Explicit offline semantic backend (heavy dependencies load only on construction)
+from .semantic_backend import PinnedSentenceTransformerEncoder
+
 # Tripwire module
 from .tripwire import Canary, CognitiveTripwire, TripwireAlert
 
@@ -122,10 +124,10 @@ __all__ = [
     "Classification",
     "FirewallConfig",
     "PatternDetector",
-    "EmbeddingStub",
     "SemanticSimilarityDetector",
     "MultiStageClassifier",
     "EnhancedCognitiveFirewall",
+    "PinnedSentenceTransformerEncoder",
     # Tripwire
     "CognitiveTripwire",
     "Canary",

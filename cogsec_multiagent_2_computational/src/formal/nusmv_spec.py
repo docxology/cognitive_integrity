@@ -10,13 +10,11 @@ from typing import Dict
 
 
 def generate_categorical_nusmv_spec() -> str:
-    """Generate NuSMV CTL spec for semiring completeness and categorical properties.
+    """Generate a finite NuSMV model of selected composition properties.
 
-    Encodes:
-    - Semiring completeness: detection algebra forms a (max,+) semiring
-    - Category law invariants as CTL AG properties
-    - Lattice closure under meet/join as CTL AG properties
-    - Monad law satisfaction as reachability (EF) properties
+    Encodes category-law invariants, max-based lattice operations and unit
+    checks.  It does not establish semiring completeness or monoidal
+    interchange under short-circuit sequencing.
 
     Returns:
         NuSMV specification string.
@@ -42,14 +40,13 @@ def generate_categorical_nusmv_spec() -> str:
         "",
         "  -- Lattice elements",
         "  meet_fg : 0..100;   -- min(f,g)",
-        "  join_fg : 0..100;   -- series(f,g) = least upper bound",
+        "  join_fg : 0..100;   -- max(f,g) = least upper bound",
         "",
         "  -- Law satisfaction flags",
         "  assoc_ok        : boolean;",
         "  left_unitor_ok  : boolean;",
         "  right_unitor_ok : boolean;",
         "  symmetry_ok     : boolean;",
-        "  semiring_ok     : boolean;",
         "  monad_unit_ok   : boolean;",
         "",
         "ASSIGN",
@@ -67,26 +64,24 @@ def generate_categorical_nusmv_spec() -> str:
         "",
         "  -- Lattice",
         "  init(meet_fg) := 50;   -- min(70,50) = 50",
-        "  init(join_fg) := 85;   -- series(70,50) = 85",
+        "  init(join_fg) := 70;   -- max(70,50) = 70",
         "",
         "  -- Associativity check: (f;g);h == f;(g;h)",
         "  init(assoc_ok) := (series_fgh = series_fgh2);",
         "",
         "  -- Left unitor: parallel(id, f) = f",
-        "  init(left_unitor_ok) := (parallel_fg >= rate_f);",
+        "  init(left_unitor_ok) := ((rate_id >= rate_f ? rate_id : rate_f) = rate_f);",
         "",
         "  -- Right unitor: parallel(f, id) = f",
-        "  init(right_unitor_ok) := (parallel_fg >= rate_f);",
+        "  init(right_unitor_ok) := ((rate_f >= rate_id ? rate_f : rate_id) = rate_f);",
         "",
         "  -- Symmetry: parallel(f,g) = parallel(g,f)",
-        "  init(symmetry_ok) := TRUE;  -- max is symmetric",
+        "  init(symmetry_ok) := ((rate_f >= rate_g ? rate_f : rate_g) =",
+        "                        (rate_g >= rate_f ? rate_g : rate_f));",
         "",
-        "  -- Semiring completeness: (max,+) semiring over detection rates",
-        "  -- Distributivity: max(f, series(g,h)) = series(max(f,g), max(f,h))",
-        "  init(semiring_ok) := (rate_f >= 0 & rate_f <= 100);",
-        "",
-        "  -- Monad unit: eta >=> f ≅ f  (eta is id with rate 0)",
-        "  init(monad_unit_ok) := (series_fg >= rate_f);",
+        "  -- Unit: series with identity preserves the rate on both sides",
+        "  init(monad_unit_ok) := ((100 - (100 - rate_id) * (100 - rate_f) / 100) = rate_f &",
+        "                          (100 - (100 - rate_f) * (100 - rate_id) / 100) = rate_f);",
         "",
         "  -- All states are fixed (single-state model)",
         "  next(rate_f) := rate_f;",
@@ -104,7 +99,6 @@ def generate_categorical_nusmv_spec() -> str:
         "  next(left_unitor_ok) := left_unitor_ok;",
         "  next(right_unitor_ok) := right_unitor_ok;",
         "  next(symmetry_ok) := symmetry_ok;",
-        "  next(semiring_ok) := semiring_ok;",
         "  next(monad_unit_ok) := monad_unit_ok;",
         "",
         "-- CTL Properties",
@@ -121,14 +115,15 @@ def generate_categorical_nusmv_spec() -> str:
         "-- Cat-P4: Symmetry (braiding) is always respected",
         "CTLSPEC AG (symmetry_ok)",
         "",
-        "-- Cat-P5: Semiring completeness -- rates always in [0,100]",
+        "-- Cat-P5: Detection rates remain in [0,100]",
         "CTLSPEC AG (rate_f >= 0 & rate_f <= 100 & rate_g >= 0 & rate_g <= 100)",
         "",
         "-- Cat-P6: Meet is bounded above by both operands",
         "CTLSPEC AG (meet_fg <= rate_f & meet_fg <= rate_g)",
         "",
-        "-- Cat-P7: Join is bounded below by both operands",
-        "CTLSPEC AG (join_fg >= rate_f & join_fg >= rate_g)",
+        "-- Cat-P7: Join is the least upper bound of both operands",
+        "CTLSPEC AG (join_fg >= rate_f & join_fg >= rate_g &",
+        "            ((rate_f <= rate_h & rate_g <= rate_h) -> join_fg <= rate_h))",
         "",
         "-- Cat-P8: Monad unit law -- series with identity preserves rate",
         "CTLSPEC AG (monad_unit_ok)",
@@ -167,6 +162,10 @@ def generate_nusmv_spec(n_agents: int = 5, max_byzantine: int = 1) -> str:
         "  belief_integrity : 0..100;",
         "",
         "ASSIGN",
+        f"  init(n_agents) := {n_agents};",
+        f"  init(byzantine_count) := {{{', '.join(str(i) for i in range(max_byzantine + 1))}}};",
+        "  next(n_agents) := n_agents;",
+        "  next(byzantine_count) := byzantine_count;",
         "  init(consensus_reached) := FALSE;",
         "  init(trust_score) := 50;",
         "  init(firewall_active) := TRUE;",

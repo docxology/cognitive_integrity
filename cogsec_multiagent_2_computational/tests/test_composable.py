@@ -15,7 +15,9 @@ No mocks — all tests use real computations.
 
 from __future__ import annotations
 
+import json
 import os
+from pathlib import Path
 
 import matplotlib
 import matplotlib.pyplot as plt
@@ -23,7 +25,7 @@ import pytest
 
 matplotlib.use("Agg")
 
-from visualization.composable import (
+from src.visualization.composable import (
     MODULE_META,
     PRESET_PIPELINES,
     CategoryDiagram,
@@ -64,6 +66,30 @@ class TestModuleConstants:
         for name, meta in MODULE_META.items():
             r = meta["detection_rate"]
             assert 0.0 <= r <= 1.0, f"{name}: rate={r} out of range"
+
+    def test_detection_rates_are_the_capability_measurements(self):
+        artifact = json.loads(
+            (
+                Path(__file__).resolve().parents[1]
+                / "output"
+                / "data"
+                / "module_capability_matrix.json"
+            ).read_text(encoding="utf-8")
+        )
+        measured_key = {
+            "Firewall": "firewall",
+            "Detection": "detection",
+            "Tripwire": "tripwire",
+            "TrustCalc": "trust",
+            "Consensus": "consensus",
+            "Provenance": "provenance",
+            "Sandbox": "sandbox",
+            "Invariants": "invariants",
+        }
+        for name, key in measured_key.items():
+            assert MODULE_META[name]["detection_rate"] == pytest.approx(
+                artifact["detection_rate"][key]["_overall"]
+            )
 
     def test_colors_are_hex(self):
         for name, meta in MODULE_META.items():
@@ -164,14 +190,17 @@ class TestDefenseGraph:
         node_id = dg.add_module("Firewall")
         assert node_id == "node_0"
         assert len(dg.nodes) == 1
-        assert dg.nodes[0].rate == 0.91
+        assert dg.nodes[0].rate == MODULE_META["Firewall"]["detection_rate"]
 
-    def test_add_module_unknown(self):
+    def test_add_module_unknown_requires_an_explicit_static_rate(self):
         dg = DefenseGraph()
-        node_id = dg.add_module("UnknownModule")
+        with pytest.raises(KeyError, match="no measured detection rate"):
+            dg.add_module("UnknownModule")
+        assert dg.nodes == []
+
+        node_id = dg.add_module("UnknownModule", rate=0.25)
         assert node_id == "node_0"
-        # Unknown module defaults to 0.5
-        assert dg.nodes[0].rate == 0.5
+        assert dg.nodes[0].rate == 0.25
 
     def test_add_module_explicit_rate(self):
         dg = DefenseGraph()
@@ -223,16 +252,18 @@ class TestDefenseGraph:
 
     def test_combined_rate_series(self):
         dg = DefenseGraph()
-        dg.build_series_pipeline(["Firewall", "Detection"])
+        modules = ["Firewall", "Detection"]
+        dg.build_series_pipeline(modules)
         rate = dg.combined_rate()
-        expected = series_rate([0.91, 0.88])
+        expected = series_rate([MODULE_META[m]["detection_rate"] for m in modules])
         assert abs(rate - expected) < 1e-10
 
     def test_combined_rate_parallel(self):
         dg = DefenseGraph()
-        dg.build_parallel_pipeline(["Firewall", "Detection"])
+        modules = ["Firewall", "Detection"]
+        dg.build_parallel_pipeline(modules)
         rate = dg.combined_rate()
-        expected = parallel_rate([0.91, 0.88])
+        expected = parallel_rate([MODULE_META[m]["detection_rate"] for m in modules])
         assert abs(rate - expected) < 1e-10
 
     def test_combined_rate_hybrid_conservative(self):
@@ -304,7 +335,7 @@ class TestDefenseGraph:
 
     def test_to_graphviz_none_when_unavailable(self, monkeypatch):
         """to_graphviz returns None when graphviz is unavailable."""
-        import visualization.composable as comp_mod
+        import src.visualization.composable as comp_mod
         original = comp_mod._GRAPHVIZ_AVAILABLE
         comp_mod._GRAPHVIZ_AVAILABLE = False
         try:
@@ -592,6 +623,20 @@ class TestLatticeViz:
         for lower, upper in viz.covering_relations():
             assert lower.rate < upper.rate
 
+    def test_covering_relations_include_all_tied_successors(self):
+        """Every node at the next-higher rate is covered, not only the first."""
+        viz = LatticeViz()
+        for name, rate in (("bottom", 0.0), ("a", 0.2), ("b", 0.2), ("top", 1.0)):
+            viz.add_node(name, rate)
+        assert {
+            (lower.name, upper.name) for lower, upper in viz.covering_relations()
+        } == {
+            ("bottom", "a"),
+            ("bottom", "b"),
+            ("a", "top"),
+            ("b", "top"),
+        }
+
     def test_covering_relations_empty_viz(self):
         viz = LatticeViz()
         covers = viz.covering_relations()
@@ -873,6 +918,11 @@ class TestLensDiagram:
         lens = LensDiagram(focus="authority")
         ascii_out = lens.to_ascii()
         assert "authority" in ascii_out
+
+    def test_numeric_lens_inputs_are_labelled_as_static(self):
+        lens = LensDiagram()
+        assert "illustrative inputs, not measurements" in lens.to_ascii()
+        assert "numeric inputs are illustrative, not measurements" in lens.to_svg_string()
 
     def test_to_ascii_contains_lens_laws(self):
         lens = LensDiagram()

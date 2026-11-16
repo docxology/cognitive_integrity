@@ -26,7 +26,7 @@ from typing import Callable, Optional
 
 import numpy as np
 
-from core.trust import TrustCalculus, TrustConfig
+from src.core.trust import TrustCalculus, TrustConfig
 
 from .theorem_registry import TheoremResult, TheoremStatus
 
@@ -128,6 +128,14 @@ def validate_trust_bound(
         "implementation": implementation,
     }
 
+    if total_samples == 0:
+        return TheoremResult(
+            theorem_id="3.1",
+            name="Trust delegation decay bound",
+            status=TheoremStatus.FAILED,
+            evidence="No trust-delegation samples were checked; the bound was not validated.",
+            details=details,
+        )
     if violations == 0:
         return TheoremResult(
             theorem_id="3.1",

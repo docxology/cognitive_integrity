@@ -8,10 +8,13 @@ NO MOCKS. All tests use real data, real computation, deterministic seeds.
 
 import math
 
+import numpy as np
+import pytest
+
 # ---------------------------------------------------------------------------
 # ANOVA imports
 # ---------------------------------------------------------------------------
-from statistics.anova import (
+from src.statistics.anova import (
     AnovaResult,
     eta_squared,
     partial_eta_squared,
@@ -21,7 +24,7 @@ from statistics.anova import (
 # ---------------------------------------------------------------------------
 # Assumptions imports
 # ---------------------------------------------------------------------------
-from statistics.assumptions import (
+from src.statistics.assumptions import (
     AssumptionCheckResult,
     check_parametric_assumptions,
     levene_homogeneity,
@@ -31,7 +34,7 @@ from statistics.assumptions import (
 # ---------------------------------------------------------------------------
 # Confidence imports
 # ---------------------------------------------------------------------------
-from statistics.confidence import (
+from src.statistics.confidence import (
     bootstrap_ci,
     bootstrap_diff_ci,
     bootstrap_mean_ci,
@@ -41,7 +44,7 @@ from statistics.confidence import (
 # ---------------------------------------------------------------------------
 # Cross-validation imports
 # ---------------------------------------------------------------------------
-from statistics.cross_validation import (
+from src.statistics.cross_validation import (
     CrossValidationResult,
     FoldResult,
     run_cross_validation,
@@ -51,7 +54,7 @@ from statistics.cross_validation import (
 # ---------------------------------------------------------------------------
 # Effect size imports
 # ---------------------------------------------------------------------------
-from statistics.effect_size import (
+from src.statistics.effect_size import (
     EffectSizeResult,
     cohens_d,
     cohens_d_ci,
@@ -64,25 +67,25 @@ from statistics.effect_size import (
 # Hypothesis imports
 # Alias the test_h* functions to avoid pytest collecting them as test cases
 # ---------------------------------------------------------------------------
-from statistics.hypothesis import (
+from src.statistics.hypothesis import (
     HypothesisResult,
     bonferroni_correct,
     paired_ttest,
 )
-from statistics.hypothesis import (
+from src.statistics.hypothesis import (
     test_h1_cif_vs_baseline as h1_cif_vs_baseline,
 )
-from statistics.hypothesis import (
+from src.statistics.hypothesis import (
     test_h2_cif_vs_components as h2_cif_vs_components,
 )
-from statistics.hypothesis import (
+from src.statistics.hypothesis import (
     test_h3_per_architecture as h3_per_architecture,
 )
 
 # ---------------------------------------------------------------------------
 # Nonparametric imports
 # ---------------------------------------------------------------------------
-from statistics.nonparametric import (
+from src.statistics.nonparametric import (
     dunn_posthoc,
     kruskal_wallis,
     mann_whitney_u,
@@ -92,7 +95,7 @@ from statistics.nonparametric import (
 # ---------------------------------------------------------------------------
 # Regression imports
 # ---------------------------------------------------------------------------
-from statistics.regression import (
+from src.statistics.regression import (
     RegressionResult,
     fit_linear,
     fit_log_linear,
@@ -104,7 +107,7 @@ from statistics.regression import (
 # ---------------------------------------------------------------------------
 # Sensitivity imports
 # ---------------------------------------------------------------------------
-from statistics.sensitivity import (
+from src.statistics.sensitivity import (
     SensitivityResult,
     compute_sensitivity_index,
     grid_search_2d,
@@ -116,15 +119,12 @@ from statistics.sensitivity import (
 # ---------------------------------------------------------------------------
 # Stability imports
 # ---------------------------------------------------------------------------
-from statistics.stability import (
+from src.statistics.stability import (
     SeedMetrics,
     StabilityReport,
     coefficient_of_variation,
     run_multi_seed_stability,
 )
-
-import numpy as np
-import pytest
 
 # ===========================================================================
 # 1. ANOVA TESTS
@@ -302,6 +302,14 @@ class TestTwoWayAnova:
 
         results = two_way_anova(data, factor1_levels=2, factor2_levels=2)
         assert results[3].ss == pytest.approx(0.0, abs=1e-12)
+        assert np.isinf(results[0].f_statistic)
+        assert results[0].p_value == 0.0
+
+    def test_two_way_anova_single_replicate_has_no_p_value(self):
+        results = two_way_anova(
+            np.array([[[1.0], [2.0]], [[3.0], [4.0]]]), 2, 2
+        )
+        assert all(np.isnan(row.p_value) for row in results[:3])
 
 
 # ===========================================================================
@@ -812,6 +820,12 @@ class TestCohensD:
         result = cohens_d(g1, g2)
         assert result.value == 0.0
 
+    def test_separated_constant_groups_are_not_negligible(self):
+        result = cohens_d(np.ones(3), np.zeros(3))
+        assert result.value == float("inf")
+        assert result.ci_lower == result.ci_upper == float("inf")
+        assert result.interpretation == "very large"
+
 
 class TestCohensDCI:
     """Tests for cohens_d_ci."""
@@ -995,7 +1009,7 @@ class TestH1CIFvsBaseline:
         assert result.name == "H1"
         assert result.significant is True
         assert result.p_value < 0.001
-        assert result.method == "paired t-test (one-sided, greater)"
+        assert result.method == "Welch t-test (one-sided, greater)"
 
     def test_cif_equal_to_baseline(self):
         """H1 is not supported when CIF and baseline are similar."""
@@ -1582,6 +1596,21 @@ class TestKFoldCrossValidation:
             k_fold_cross_validation(
                 np.array([[1], [2], [3]]), np.array([0, 1, 0]), k=5,
             )
+
+    def test_k_equal_n_has_no_empty_test_folds(self):
+        data = np.arange(5, dtype=float).reshape(-1, 1)
+        labels = np.array([0, 0, 0, 1, 1])
+        sizes = []
+
+        def evaluate(train_d, train_l, test_d, test_l):
+            sizes.append((len(train_d), len(test_d)))
+            return float(len(test_d))
+
+        metrics = k_fold_cross_validation(
+            data, labels, k=5, evaluate_fn=evaluate, seed=42
+        )
+        assert len(metrics) == 5
+        assert all(train == 4 and test == 1 for train, test in sizes)
 
     def test_deterministic(self):
         """Same seed produces identical fold metrics."""

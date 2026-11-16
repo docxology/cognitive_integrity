@@ -1,16 +1,17 @@
 # Claims Traceability Matrix
 
-This document maps the theoretical claims and definitions from the Cognitive Integrity Framework (CIF) manuscript (Part 1 & 2) to their concrete implementations in the `cogsec_multiagent_2_computational` codebase. Every theoretical construct is backed by tested, production-ready code.
+This document maps selected theoretical claims and definitions from the Cognitive Integrity Framework (CIF) manuscript (Parts 1 and 2) to their concrete implementations in the `cogsec_multiagent_2_computational` codebase.
 
 
-> **Scope.** This matrix maps *concepts* --- Part 1's definitions and theorems ---
-> to the classes that implement them. It is not the map from reported *numbers*
-> to the artifacts that produce them: that is the reader-side claim registry in
-> `src/manuscript/claim_registry.py`, checked by `scripts/verify_claims.py`,
-> which binds 171 numeric claims across the results, statistics, ablation,
-> sensitivity, Bayesian, gap-analysis, red-team and parametric sections to
-> `output/data/`. A number that appears in the manuscript and in neither place
-> is unaudited; run `uv run python scripts/verify_claims.py` to check.
+> **Scope.** This matrix maps the listed *concepts* --- Part 1's definitions and
+> theorems --- to the classes that implement them. It is not the map from
+> reported *numbers* to the artifacts that produce them: that is the reader-side
+> claim registry in `src/manuscript/claim_registry.py`, checked by
+> `scripts/verify_claims.py`, which binds registered numeric claims across the
+> results, statistics, ablation, sensitivity, Bayesian, gap-analysis, red-team
+> and parametric sections to `output/data/`. A number that appears in the
+> manuscript and in neither place is unaudited; run
+> `uv run python scripts/verify_claims.py` to check the registered claims.
 
 ## Core Defense Mechanisms
 
@@ -58,12 +59,12 @@ This document maps the theoretical claims and definitions from the Cognitive Int
 | Sec 05h | Mutation Testing (12 operators) | `AttackMutator` | `src/redteam/generator.py` | `tests/test_redteam.py` |
 | Sec 05g/05h | AT convergence estimators | `natural_gradient_at_step`, `geometric_convergence_projection`, `convergence_round_estimate` | `src/redteam/convergence.py` | `tests/test_redteam_convergence.py` |
 | Sec 05h | Mutation-operator evasion sweep | `flagged_payloads`, `run_evasion_sweep`, `OperatorEvasion` | `src/redteam/evasion.py` | `tests/test_redteam.py` |
-| "Defense composition algebra" (25 verification checks) | Lattice / Monoidal / F-Algebra / Operad / Enriched / Kan / Monad / Lens | `run_all_verifications`, `serialize_verification_results` | `src/formal/category_theory_advanced.py` | `tests/test_category_theory_advanced.py` |
-| Composer web-UI backend | Aggregated category-theory + module data | `get_composer_data` | `src/visualization/composer_data.py` | `tests/test_composer_data.py` |
+| "Defense composition algebra" | Lattice / Monoidal / F-Algebra / Operad / Enriched / Kan / Monad / Lens | `run_all_verifications`, `serialize_verification_results` | `src/formal/category_theory_advanced.py` | `tests/test_category_theory_advanced.py` |
+| Composer data API | Aggregated category-theory + module data | `get_composer_data` | `src/visualization/composer_data.py` | `tests/test_composer_data.py` |
 
 Note: the mutation-operator evasion-rate figures in Sec 05h
 (`docs/manuscript/05h_redteam_evaluation.md`) are produced by
-`scripts/run_redteam.py --seed 42` over the real 950-sample `AttackCorpus`,
+`scripts/run_redteam.py --seed 42` over the real 1,475-sample integrated `AttackCorpus`,
 de-duplicated and scored against the real `CognitiveFirewall`, and are pinned
 by `tests/test_redteam.py` (evasion-sweep and manuscript-consistency tests) so
 the manuscript cannot drift from the data. The section's original

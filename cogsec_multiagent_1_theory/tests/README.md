@@ -34,7 +34,8 @@ uv run pytest tests/ -v -s
 ## Coverage Target
 
 - **90%+ coverage required** for all src modules
-- No mocks allowed - use real data
+- No algorithm mocks; semantic-backend boundary tests use an explicitly named
+  controlled-vector double, not a production backend or semantic-quality proof
 - All edge cases covered
 
 ## Test Patterns
@@ -52,3 +53,12 @@ def test_feature(self):
     # Assert - verify with numerical comparison
     assert np.isclose(result, expected_value)
 ```
+
+For the result/semantic contracts, run
+`uv run pytest tests/test_visualization.py tests/test_firewall.py -q`.
+Result-figure fixtures are test-only inputs: missing configurations/files and
+malformed numeric evidence must raise without writing images. Complete inputs
+must produce both formats and preserve visible non-measured labels.
+Semantic tests cover explicit callable injection, paraphrase/benign score
+plumbing, unavailable backends and invalid vectors; actual model quality must
+be qualified with the application's pinned offline backend separately.

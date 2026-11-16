@@ -1,7 +1,7 @@
 """
 Deployment Configuration and Guidance for Cognitive Security.
 
-Implements Section 05 of the Practical Implementation Guide:
+Implements 05_deployment_guide.md of the Practical Implementation Guide:
 Risk profiles, architecture-specific guidance, scaling considerations,
 and trust decay analysis.
 """
@@ -118,19 +118,19 @@ class DeploymentConfig:
 
 
 class DeploymentConfigurator:
-    """Maps risk profiles to exact parameter values from manuscript.
+    """Provide illustrative low, medium, and high deployment configurations.
 
-    Provides deployment configurations for Low, Medium, and High
-    risk profiles as specified in Section 05.
+    The profiles are starting points, not measured deployment outcomes. Their
+    implementation is discussed in ``docs/manuscript/05_deployment_guide.md``.
     """
 
     def __init__(self) -> None:
-        """Initialize with manuscript configurations."""
+        """Initialize the illustrative configurations."""
         self.configs: dict[RiskProfile, DeploymentConfig] = {}
         self._load_defaults()
 
     def _load_defaults(self) -> None:
-        """Load configurations from manuscript Section 05."""
+        """Load illustrative deployment configurations."""
         self.configs = {
             RiskProfile.LOW: DeploymentConfig(
                 risk_profile=RiskProfile.LOW,
@@ -164,9 +164,6 @@ class DeploymentConfigurator:
                     accept_threshold=0.25,
                     reject_threshold=0.65,
                 ),
-                # Manuscript Section 05 Profile B ("Customer Facing", balanced):
-                # delta = 0.80, the empirically optimal configuration from Part 2
-                # (S08: delta=0.8 maximizes F1; 0.8^3 = 0.51 permits 3-hop delegation).
                 trust_decay_delta=0.80,
                 consensus=ConsensusConfig(
                     mechanism="2/3 majority with identity verification",
@@ -193,9 +190,6 @@ class DeploymentConfigurator:
                     accept_threshold=0.2,
                     reject_threshold=0.6,
                 ),
-                # Manuscript Section 05 Profile C ("Autonomous Operator", high
-                # assurance): delta = 0.60 (the "Byzantine-Heavy" configuration
-                # from Part 2). Aggressive decay enforces a flat command structure.
                 trust_decay_delta=0.60,
                 consensus=ConsensusConfig(
                     mechanism="Byzantine-tolerant (n >= 3f + 1)",
@@ -251,6 +245,10 @@ class DeploymentConfigurator:
             score >= 2  -> MEDIUM
             otherwise   -> LOW
 
+        Customer-facing deployments and deployments explicitly without human
+        oversight never map to LOW, whose profile is internal-only and
+        human-in-the-loop.
+
         Args:
             characteristics: Dict of characteristic flags (booleans):
                 - "autonomous": Has autonomous actions
@@ -276,10 +274,13 @@ class DeploymentConfigurator:
 
         if score >= 5:
             return RiskProfile.HIGH
-        elif score >= 2:
+        if score >= 2:
             return RiskProfile.MEDIUM
-        else:
-            return RiskProfile.LOW
+        if characteristics.get("customer_facing", False) or not characteristics.get(
+            "human_oversight", True
+        ):
+            return RiskProfile.MEDIUM
+        return RiskProfile.LOW
 
 
 # =============================================================================
@@ -324,7 +325,7 @@ class ArchitectureGuidance:
 class ArchitectureAdvisor:
     """Provides architecture-specific risks and mitigations.
 
-    Covers the 4 architecture types from Section 05:
+    Covers the 4 architecture types from 05_deployment_guide.md:
     Hierarchical, Peer-to-Peer, Role-Based, and State Machine.
     """
 
@@ -515,7 +516,7 @@ class LatencyBudget:
 class ScalingAdvisor:
     """Provides scaling guidance based on agent count.
 
-    Implements the scaling considerations table from Section 05.
+    Implements the scaling considerations table from 05_deployment_guide.md.
     """
 
     def __init__(self) -> None:
@@ -596,7 +597,7 @@ class ScalingAdvisor:
             Appropriate ScalingTier
 
         Raises:
-            ValueError: If agent_count < 2
+            ValueError: If agent_count < 2 or no configured tier contains it.
         """
         if agent_count < 2:
             raise ValueError("Agent count must be at least 2 for multiagent system")
@@ -606,8 +607,7 @@ class ScalingAdvisor:
                 if agent_count >= tier.min_agents:
                     return tier
 
-        # Fallback to largest tier
-        return self.tiers[-1]
+        raise ValueError(f"No scaling tier covers {agent_count} agents")
 
     def total_latency_budget(self) -> tuple[float, float]:
         """Calculate total CIF latency budget range.
@@ -628,7 +628,7 @@ class ScalingAdvisor:
 class TrustDecayAnalyzer:
     """Analyzes trust decay across delegation depths.
 
-    Implements the trust decay analysis from Section 05,
+    Implements the trust decay analysis from 05_deployment_guide.md,
     including practical limits and profile comparison.
 
     The core formula is T_effective = T_initial * delta^depth,
@@ -691,14 +691,15 @@ class TrustDecayAnalyzer:
 
         import math
 
-        return int(math.ceil(math.log(threshold) / math.log(delta)))
+        ratio = math.log(threshold) / math.log(delta)
+        return int(math.floor(ratio)) + 1
 
     @staticmethod
     def compare_profiles() -> dict[str, dict[str, Any]]:
         """Compare trust decay across the 3 risk profiles.
 
         Computes practical depth limit, half-trust depth, and trust
-        at depth 4 for each profile's delta value (Section 05 profiles:
+        at depth 4 for each profile's delta value (05_deployment_guide.md profiles:
         low=0.95, medium=0.80, high=0.60).
 
         Returns:
@@ -718,8 +719,8 @@ class TrustDecayAnalyzer:
 
         result: dict[str, dict[str, Any]] = {}
         for name, delta in profiles.items():
-            # DRY (m6): practical_depth_limit is the single source of truth for
-            # the trust-depth formula (int(ceil(log(threshold)/log(delta)))).
+            # Reuse practical_depth_limit so comparison and direct calls share
+            # the same strict-below threshold semantics.
             practical_limit = TrustDecayAnalyzer.practical_depth_limit(delta)
             half_trust_depth = math.log(0.5) / math.log(delta)
             trust_at_4 = delta**4

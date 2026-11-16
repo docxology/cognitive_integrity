@@ -114,7 +114,7 @@ Eusocial insects have evolved sophisticated security mechanisms over 100+ millio
 
 **Behavioral Immunity**: When *Lasius niger* ants detect a fungal pathogen (Metarhizium) on a nestmate, they don't simply isolate the infected individual. Instead, workers engage in "social immunization"---low-level exposure that spreads diluted pathogen across the colony, triggering collective immune upregulation without lethal infection [@konrad2012social]. *AI analog*: Controlled exposure to attack patterns (red-teaming) that builds collective detection capability without compromising the system.
 
-**Chemical Recognition Thresholds**: Ant nestmate recognition operates on *threshold-based* hydrocarbon profile matching, not exact matching [@lenoir2001chemical]. This creates a tradeoff: strict thresholds reject legitimate workers after foraging (false positives), while loose thresholds admit parasites (false negatives). *AI analog*: Agent attestation systems must calibrate acceptance thresholds, recognizing that error-free recognition is information-theoretic\-ally impossible (\cref{thm:stealth-impact}).
+**Chemical Recognition Thresholds**: Ant nestmate recognition operates on *threshold-based* hydrocarbon profile matching, not exact matching [@lenoir2001chemical]. This creates a tradeoff: strict thresholds reject legitimate workers after foraging (false positives), while loose thresholds admit parasites (false negatives). *AI analog*: Agent attestation systems must calibrate acceptance thresholds for the false-positive/false-negative tradeoff of their observation model; no universal error-free guarantee is asserted here.
 
 **Metapleural Gland Secretions**: Many ant species possess metapleural glands that continuously secrete antimicrobial compounds, creating a "security substrate" independent of individual vigilance [@fernandez2006evolution]. *AI analog*: Environmental-level defenses (encrypted shared memory, authenticated message queues) that provide baseline security regardless of individual agent security posture.
 
@@ -165,10 +165,10 @@ Biological colonies maintain function despite continuous individual mortality. A
 
 \begin{theorem}[Redundancy-Resilience Tradeoff]
 \label{thm:redundancy-resilience}
-For a stigmergic operator $\mathcal{O}_\Sigma$ with Byzantine adversary controlling fraction $f$ of agents, collective function $\mathcal{F}_c$ is preserved if and only if:
+For a stigmergic operator $\mathcal{O}_\Sigma$ with Byzantine adversary controlling fraction $f$ of agents, collective function $\mathcal{F}_c$ is preserved only if:
 \begin{equation}
 \label{eq:redundancy-condition}
-f < \frac{1}{3} \cdot \left(1 - \frac{H(\mathcal{F}_c)}{n \cdot H_{\max}}\right)
+f < \min\left(\frac{1}{3},\, 1 - \frac{H(\mathcal{F}_c)}{n \cdot H_{\max}}\right)
 \end{equation}
 where $H(\mathcal{F}_c)$ is the entropy of the collective function and $H_{\max}$ is the maximum per-agent entropy.
 \end{theorem}
@@ -511,19 +511,7 @@ For a stigmergic operator $\mathcal{O}_\Sigma$, trust in environmental markers i
 where $\delta_s$ is spatial decay, $\delta_t$ is temporal decay, $d_{\text{space}}$ is distance from marker origin, and $d_{\text{time}}$ is time since marker creation.
 \end{corollary}
 
-The stealth-impact tradeoff (\cref{thm:stealth-impact}) applies to emergent attacks:
-
-\begin{corollary}[Emergent Stealth-Impact Bound]
-\label{cor:emergent-stealth-impact}
-For an emergent attack $\mathcal{A}_e$ with collective impact $\mathcal{I}_c$ and collective stealth $\mathcal{S}_c$:
-\begin{equation}
-\label{eq:emergent-stealth-impact}
-\mathcal{I}_c \cdot \mathcal{S}_c \leq n \cdot C_{\text{channel}}
-\end{equation}
-Collective impact cannot be both high and collectively undetectable, but the bound scales with colony size.
-\end{corollary}
-
-This scaling effect explains why large colonies can exhibit resilience—the collective detection capacity grows with $n$—but also why large-scale emergent attacks can evade individual detection
+A colony-level analogue of the proposed stealth-impact tradeoff remains an open question: the unproved single-agent inequality in \cref{thm:stealth-impact} does not support an $n$-scaled bound on collective impact and stealth. No such corollary is asserted here.
 ---
 
 ## Open Questions {#sec:eusocial-open-questions}
@@ -603,11 +591,11 @@ Additionally, Byzantine consensus requires honest majority for any voting-based 
 
 Combining these constraints:
 \begin{equation}
-f < \min\left(\frac{1}{3}, 1 - \frac{H(\mathcal{F}_c)}{n \cdot H_{\max}}\right) = \frac{1}{3} \cdot \left(1 - \frac{H(\mathcal{F}_c)}{n \cdot H_{\max}}\right)
+f < \min\left(\frac{1}{3}, 1 - \frac{H(\mathcal{F}_c)}{n \cdot H_{\max}}\right)
 \label{eq:byzantine-info-combined}
 \end{equation}
 
-where the final equality holds when the information constraint is binding (typical for complex collective functions). \qed
+The binding constraint depends on the entropy of the collective function: when the information term $1 - H(\mathcal{F}_c)/(n H_{\max})$ is smaller than $1/3$, it governs the bound; otherwise the Byzantine $1/3$ bound governs. \qed
 \end{proof}
 
 ---

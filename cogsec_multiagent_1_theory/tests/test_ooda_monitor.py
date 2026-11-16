@@ -178,19 +178,23 @@ class TestOrientPhase:
 
     def test_cusum_catches_slow_drift(self, monitor):
         monitor.transition_phase(OODAPhase.ORIENT)
-        # Simulate gradual drift below per-step threshold
-        n = 5
-        base = uniform_beliefs(n)
-        current = base.copy()
-        for _i in range(50):
-            # Small drift each step
-            current = current * 0.97 + peaked_beliefs(n, peak_idx=0) * 0.03
-            current /= current.sum()
+        current = np.array([0.85, 0.15])
+        base = np.array([0.5, 0.5])
+        kl = monitor._kl_divergence(current, base)
+        assert monitor._cusum_allowance < kl < monitor.drift_threshold
+
+        max_steps = math.ceil(
+            monitor._cusum_threshold / (kl - monitor._cusum_allowance)
+        ) + 1
+        alert = None
+        for _ in range(max_steps):
             alert = monitor.orient(current, base)
-            if alert is not None and alert.attack_type == OODAPhaseAttack.SEMANTIC_DRIFT:
+            if alert is not None:
                 break
-        # Note: CUSUM should detect cumulative drift eventually
-        # (may not always trigger in 50 steps; this is an integration test)
+
+        assert alert is not None
+        assert alert.attack_type == OODAPhaseAttack.SEMANTIC_DRIFT
+        assert monitor._cusum_stat > monitor._cusum_threshold
 
     def test_orient_computes_drift_against_previous(self, monitor):
         """Orientation feeds the CUSUM drift monitor (was: dead _belief_history)."""
@@ -199,6 +203,19 @@ class TestOrientPhase:
         shifted = peaked_beliefs(4, peak_idx=0)
         monitor.orient(shifted, previous_beliefs=base)
         assert monitor._cusum_stat > 0.0
+
+    @pytest.mark.parametrize("dtype", [float, int])
+    def test_orient_does_not_mutate_caller_belief_arrays(self, monitor, dtype):
+        monitor.transition_phase(OODAPhase.ORIENT)
+        current = np.array([2, 3, 5], dtype=dtype)
+        previous = np.array([1, 2, 7], dtype=dtype)
+        current_before = current.copy()
+        previous_before = previous.copy()
+
+        monitor.orient(current, previous)
+
+        np.testing.assert_array_equal(current, current_before)
+        np.testing.assert_array_equal(previous, previous_before)
 
 
 # ── Decide Phase Tests ────────────────────────────────────────────────────────
@@ -298,6 +315,18 @@ class TestFisherRaoDistance:
         dist = OODAPhaseMonitor.fisher_rao_distance(p, q)
         assert abs(dist - math.pi) < 1e-6
 
+    def test_integer_inputs_do_not_crash_or_mutate(self):
+        p = np.array([1, 0])
+        q = np.array([0, 1])
+        p_before = p.copy()
+        q_before = q.copy()
+
+        dist = OODAPhaseMonitor.fisher_rao_distance(p, q)
+
+        assert abs(dist - math.pi) < 1e-6
+        np.testing.assert_array_equal(p, p_before)
+        np.testing.assert_array_equal(q, q_before)
+
     def test_distance_bounded_by_pi(self):
         rng = np.random.default_rng(42)
         for _ in range(100):
@@ -319,7 +348,7 @@ class TestFisherRaoDistance:
         )
 
     def test_stealth_impact_product_pi_over_2(self):
-        """The stealth-impact product is pi/2 (Theorem FR in S01_proofs.md).
+        """The visualization convention normalizes the product to pi/2.
 
         The function now returns the (impact, stealth, product) tuple so the
         components are verifiable rather than a definitionally-trivial
@@ -342,16 +371,17 @@ class TestFisherRaoDistance:
 
 class TestLatencyBudget:
     def test_long_ooda_cycle_fits_budget(self, monitor):
-        """1.5s OODA cycle: 141ms overhead = 9.4% < 10% threshold."""
-        assert monitor.check_latency_budget(ooda_cycle_duration=1.5)
+        """1.38s cycle fits the 136ms stack within the 10% threshold."""
+        assert monitor.check_latency_budget(ooda_cycle_duration=1.38)
+        assert monitor.cif_overhead_fraction(1.38) <= monitor.MAX_OVERHEAD_FRACTION
 
     def test_short_ooda_cycle_exceeds_budget(self, monitor):
-        """100ms OODA cycle: 141ms overhead > 10% threshold."""
+        """100ms OODA cycle: 136ms overhead > 10% threshold."""
         assert not monitor.check_latency_budget(ooda_cycle_duration=0.1)
 
     def test_overhead_fraction_computation(self, monitor):
-        frac = monitor.cif_overhead_fraction(1.41)
-        assert abs(frac - 0.10) < 0.01  # approximately 10%
+        frac = monitor.cif_overhead_fraction(1.36)
+        assert frac == pytest.approx(0.10)
 
     def test_zero_duration_returns_zero(self, monitor):
         assert monitor.cif_overhead_fraction(0.0) == 0.0
@@ -468,9 +498,12 @@ class TestCusumBoundary:
 
     def test_semantic_drift_alert_when_cusum_crosses_threshold(self, monitor):
         monitor.transition_phase(OODAPhase.ORIENT)
-        p, q, _ = self._kl_pair()
+        p, q, kl = self._kl_pair()
+        max_steps = math.ceil(
+            monitor._cusum_threshold / (kl - monitor._cusum_allowance)
+        ) + 1
         alert = None
-        for _ in range(80):
+        for _ in range(max_steps):
             alert = monitor.orient(p, q)
             if alert is not None:
                 break
@@ -529,6 +562,57 @@ class TestCycleStatsAndCallback:
         alert = monitor.decide(["g1", "bad_goal"], ["g1"], constraints=["c1"])
         assert alert is not None
         assert seen == [alert]
+
+
+class TestInvalidPhaseCalls:
+    @staticmethod
+    def assert_phase_error(monitor, alert, phase):
+        assert alert is not None
+        assert alert.attack_type == OODAPhaseAttack.PHASE_ORDER_VIOLATION
+        assert alert.phase == phase
+        assert monitor.get_current_phase() == phase
+        assert monitor.get_alert_history() == [alert]
+
+    def test_observe_stops_after_failed_transition(self):
+        mon = OODAPhaseMonitor(agent_id="invalid_observe")
+        mon.transition_phase(OODAPhase.ORIENT)
+        event = make_event(OODAPhase.OBSERVE, has_injection_marker=True)
+
+        alert = mon.observe(event)
+
+        self.assert_phase_error(mon, alert, OODAPhase.ORIENT)
+        assert mon._events_this_cycle[OODAPhase.OBSERVE] == []
+
+    def test_orient_stops_after_failed_transition(self):
+        mon = OODAPhaseMonitor(agent_id="invalid_orient")
+        for phase in [OODAPhase.ORIENT, OODAPhase.DECIDE]:
+            mon.transition_phase(phase)
+        event = make_event(OODAPhase.ORIENT)
+
+        alert = mon.orient(np.array([0.9, 0.1]), np.array([0.5, 0.5]), event=event)
+
+        self.assert_phase_error(mon, alert, OODAPhase.DECIDE)
+        assert mon._events_this_cycle[OODAPhase.ORIENT] == []
+        assert mon._cusum_stat == 0.0
+
+    def test_decide_stops_after_failed_transition(self):
+        mon = OODAPhaseMonitor(agent_id="invalid_decide")
+        event = make_event(OODAPhase.DECIDE)
+
+        alert = mon.decide(["unauthorized"], ["authorized"], ["c1"], event=event)
+
+        self.assert_phase_error(mon, alert, OODAPhase.OBSERVE)
+        assert mon._events_this_cycle[OODAPhase.DECIDE] == []
+
+    def test_act_stops_after_failed_transition(self):
+        mon = OODAPhaseMonitor(agent_id="invalid_act")
+        mon.transition_phase(OODAPhase.ORIENT)
+        event = make_event(OODAPhase.ACT)
+
+        alert = mon.act("unauthorized", ["authorized"], event=event)
+
+        self.assert_phase_error(mon, alert, OODAPhase.ORIENT)
+        assert mon._events_this_cycle[OODAPhase.ACT] == []
 
 
 class TestAutoTransitions:

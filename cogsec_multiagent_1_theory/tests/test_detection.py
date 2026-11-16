@@ -1,6 +1,7 @@
 """Tests for anomaly detection."""
 
 import numpy as np
+import pytest
 
 from detection import (
     AnomalyScorer,
@@ -52,8 +53,8 @@ class TestDriftDetector:
         kl = detector._kl_divergence(p, q)
         assert kl >= 0
 
-    def test_compute_drift_insufficient_history(self):
-        """Returns zero drift with insufficient history."""
+    def test_compute_drift_with_short_history(self):
+        """A short history still compares against all available prior observations."""
         detector = DriftDetector()
 
         # Only 2 observations
@@ -61,9 +62,8 @@ class TestDriftDetector:
         detector.add_observation({"a": 0.6})
 
         kl, delta = detector.compute_drift({"a": 0.9}, window=10)
-        # Should handle gracefully
-        assert isinstance(kl, float)
-        assert isinstance(delta, float)
+        assert kl > 0.0
+        assert delta == pytest.approx(0.35)
 
     def test_drift_history(self):
         """Drift history is tracked."""
@@ -76,6 +76,14 @@ class TestDriftDetector:
         history = detector.get_drift_history(n=10)
         assert len(history) <= 10
         assert all(isinstance(s, float) for s in history)
+
+    def test_drift_history_uses_only_prior_observations(self):
+        detector = DriftDetector()
+        for value in [0.5, 0.5, 0.9]:
+            detector.add_observation({"a": value})
+
+        history = detector.get_drift_history(n=2)
+        assert history[-1] > 0.0
 
 
 class TestAnomalyScorer:
@@ -99,9 +107,19 @@ class TestAnomalyScorer:
 
         scorer.calibrate("agent-1")
 
-        # Baseline should be approximately mean of observations
-        extractor = scorer._extractors[0][0]
-        assert 10 <= extractor.baseline_mean <= 20
+        assert scorer.score("agent-1", {"action_count": 14, "time_delta": 1.0}) < 1.0
+
+    def test_calibration_is_isolated_per_agent(self):
+        scorer = AnomalyScorer(DetectionConfig(baseline_samples=5))
+        scorer.add_extractor("action_freq", action_frequency_extractor)
+        for _ in range(10):
+            scorer.observe("agent-a", {"action_count": 10, "time_delta": 1.0})
+            scorer.observe("agent-b", {"action_count": 100, "time_delta": 1.0})
+        scorer.calibrate("agent-a")
+        scorer.calibrate("agent-b")
+
+        assert scorer.score("agent-a", {"action_count": 10, "time_delta": 1.0}) == 0.0
+        assert scorer.score("agent-b", {"action_count": 100, "time_delta": 1.0}) == 0.0
 
     def test_score_normal_state(self):
         """Normal state has low anomaly score."""

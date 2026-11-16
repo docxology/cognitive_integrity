@@ -161,7 +161,7 @@ class RecruitmentPoisoningScenario:
                     new_beliefs[h] = (1 - alpha) * beliefs[h] + alpha * peer_avg
 
             # -- Detection: flag belief changes with lowered threshold --
-            if step > trust_phase_end:
+            if step >= trust_phase_end:
                 for a in adv_indices:
                     detection_opportunities += 1
                     shift = abs(beliefs[a] - ground_truth)

@@ -726,6 +726,29 @@ class TestBeliefDriftMonitor:
         assert result["kl_divergence"] > 0.1
         assert result["flagged"] is True
 
+    def test_single_confidence_change_is_detected(self):
+        """A one-belief vector must not normalize every divergence to zero."""
+        monitor = BeliefDriftMonitor(threshold=0.5)
+        monitor.set_baseline([0.1])
+        result = monitor.check_drift([0.9])
+        assert result["kl_divergence"] == pytest.approx(1.7577797044)
+        assert result["flagged"] is True
+
+    def test_uniform_confidence_change_is_detected(self):
+        """Equal relative weights do not hide a change in every confidence."""
+        monitor = BeliefDriftMonitor(threshold=0.5)
+        monitor.set_baseline([0.5, 0.5])
+        result = monitor.check_drift([0.9, 0.9])
+        assert result["kl_divergence"] == pytest.approx(0.7361284144)
+        assert result["flagged"] is True
+
+    def test_boundary_confidences_remain_finite(self):
+        """Exact zero/one confidences produce finite, non-negative divergence."""
+        kl = BeliefDriftMonitor._kl_divergence([0.0, 1.0], [1.0, 0.0])
+        assert kl >= 0.0
+        assert kl < float("inf")
+        assert BeliefDriftMonitor._kl_divergence([0.0, 1.0], [0.0, 1.0]) == 0.0
+
     def test_drift_history_tracking(self):
         """Drift history accumulates across checks."""
         monitor = BeliefDriftMonitor(threshold=0.5)
@@ -758,21 +781,25 @@ class TestBeliefDriftMonitor:
 
     def test_kl_divergence_asymmetric(self):
         """KL-divergence is not symmetric: D_KL(P||Q) != D_KL(Q||P)."""
-        p = [0.9, 0.1]
-        q = [0.1, 0.9]
+        p = [0.9, 0.2]
+        q = [0.4, 0.8]
         kl_pq = BeliefDriftMonitor._kl_divergence(p, q)
         kl_qp = BeliefDriftMonitor._kl_divergence(q, p)
-        # Both should be positive, but they can differ
         assert kl_pq > 0
         assert kl_qp > 0
+        assert kl_pq != pytest.approx(kl_qp)
 
     def test_threshold_respected(self):
-        """Custom threshold determines flagging."""
-        monitor = BeliefDriftMonitor(threshold=0.01)
-        monitor.set_baseline([0.9, 0.1])
-        result = monitor.check_drift([0.85, 0.15])
-        # Small change should produce small KL > 0.01 threshold
-        assert result["threshold"] == 0.01
+        """The configured threshold controls the returned alert decision."""
+        monitor = BeliefDriftMonitor(threshold=0.5)
+        monitor.set_baseline([0.25])
+        result = monitor.check_drift([0.75])
+        assert result["kl_divergence"] == pytest.approx(0.5493061443)
+        assert result["flagged"] is True
+
+        at_boundary = BeliefDriftMonitor(threshold=result["kl_divergence"])
+        at_boundary.set_baseline([0.25])
+        assert at_boundary.check_drift([0.75])["flagged"] is False
 
     def test_result_contains_expected_keys(self):
         """Check drift result has all expected keys."""
@@ -962,6 +989,20 @@ class TestCoordinationIntegrityMonitor:
         assert result["suspicious"] is True
         assert result["simultaneous"] is True
         assert result["identical"] is True
+
+    def test_voting_missing_timestamps_are_not_simultaneous(self):
+        """Unknown times cannot be replaced by a fabricated epoch zero."""
+        monitor = CoordinationIntegrityMonitor()
+        votes = [
+            {"agent_id": "a1", "vote": "yes", "timestamp": 0.5},
+            {"agent_id": "a2", "vote": "yes"},
+        ]
+        result = monitor.check_voting_patterns(votes)
+        assert result["identical"] is True
+        assert result["simultaneous"] is False
+        assert result["suspicious"] is False
+        assert result["time_spread"] is None
+        assert result["timestamps_complete"] is False
 
     def test_voting_simultaneous_but_different(self):
         """Simultaneous but different votes are not suspicious."""

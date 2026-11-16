@@ -7,7 +7,7 @@ from .models import ChecklistPhase, EnhancedChecklistItem, OperationalFrequency
 class OperationalChecklist:
     """Daily and weekly operational checklist.
 
-    Implements the operational section of manuscript Section 03.
+    Corresponds to ``docs/manuscript/05d_monitoring_guide.md``.
     Supports daily and weekly reset cycles for ongoing cognitive
     security hygiene.
 

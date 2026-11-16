@@ -64,10 +64,14 @@ class ManuscriptVerifier:
         # \citealp, \citeauthor, ...) and their starred forms, not just the
         # bare \cite. Matching only \cite leaves every other spelling
         # invisible to check_citations, which then passes on a dangling key.
-        self.cite_pattern = re.compile(r"\\cite[a-z]*\*?\{([^}]+)\}")
+        self.cite_pattern = re.compile(
+            r"\\cite[a-z]*\*?(?:\s*\[[^\]]*\]){0,2}\s*\{([^}]+)\}"
+        )
         self.bib_entry_pattern = re.compile(r"@\w+\{([^,]+),")
         self.label_pattern = re.compile(r"\\label\{([^}]+)\}")
-        self.ref_pattern = re.compile(r"\\(cref|ref|autoref)\{([^}]+)\}")
+        self.ref_pattern = re.compile(
+            r"\\(cref|ref|autoref)\{([^}]+)\}", re.IGNORECASE
+        )
         self.img_pattern = re.compile(r"!\[.*?\]\((.*?)\)")
         # Markdown links that are NOT images (negative lookbehind on '!').
         self.link_pattern = re.compile(r"(?<!!)\[.*?\]\((.*?)\)")

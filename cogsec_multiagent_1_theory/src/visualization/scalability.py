@@ -17,13 +17,57 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
 
+from .utils import _load_json_data, _require_number
+
 
 def create_scalability_figure(output_dir: Path) -> tuple[Path, Path]:
     """
-    Create 3-panel scalability analysis figure.
+    Render complete analytic-model inputs as PNG and PDF, not measurements.
+
+    Missing/malformed input raises before any figure or output directory is
+    created. Each record requires a positive, increasing integer agent count
+    and finite, nonnegative detection/memory/consensus values.
     """
-    if not output_dir.exists():
-        output_dir.mkdir(parents=True, exist_ok=True)
+    data_path = output_dir / "data" / "scalability_results.json"
+    data = _load_json_data(data_path)
+    if not isinstance(data, list) or not data:
+        raise ValueError(f"{data_path}: expected a nonempty list of scalability records")
+    fields = ("agent_count", "detection_time_ms", "memory_mb", "consensus_latency_ms")
+    values = {field: [] for field in fields}
+    for index, record in enumerate(data):
+        if not isinstance(record, dict):
+            raise ValueError(f"{data_path}: record {index} must be an object")
+        for field in fields:
+            values[field].append(
+                _require_number(record.get(field), data_path, f"record {index}.{field}")
+            )
+        count = values["agent_count"][-1]
+        if count <= 0 or not count.is_integer() or (
+            index > 0 and count <= values["agent_count"][-2]
+        ):
+            raise ValueError(
+                f"{data_path}: record {index}.agent_count must be a positive integer "
+                "in strictly increasing order"
+            )
+    agent_counts = np.array(values["agent_count"])
+    detection_latency = np.array(values["detection_time_ms"])
+    memory_usage = np.array(values["memory_mb"])
+    consensus_latency = np.array(values["consensus_latency_ms"])
+    fit_vals = None
+    if len(agent_counts) > 2:
+        try:
+            coefficients = np.polyfit(agent_counts**2, consensus_latency, 1)
+            fit_vals = np.polyval(coefficients, agent_counts**2)
+        except (np.linalg.LinAlgError, ValueError) as exc:
+            raise ValueError(
+                f"{data_path}: cannot fit the supplied analytic consensus values"
+            ) from exc
+        if not np.isfinite(fit_vals).all():
+            raise ValueError(
+                f"{data_path}: supplied analytic consensus values produce a nonfinite fit"
+            )
+
+    output_dir.mkdir(parents=True, exist_ok=True)
     # Set up professional styling
     plt.rcParams.update(
         {
@@ -46,28 +90,10 @@ def create_scalability_figure(output_dir: Path) -> tuple[Path, Path]:
         "baseline": "#999999",
     }
 
-    np.random.seed(42)
-
-    # Load generated data
-    data_path = output_dir / "data" / "scalability_results.json"
-    if not data_path.exists():
-        print(f"Data file not found: {data_path}")
-        return output_dir / "error.png", output_dir / "error.pdf"
-
-    import json
-
-    with open(data_path, "r") as f:
-        data = json.load(f)
-
-    # Extract arrays
-    agent_counts = np.array([d["agent_count"] for d in data])
-    detection_latency = np.array([d["detection_time_ms"] for d in data])
-    memory_usage = np.array([d["memory_mb"] for d in data])
-    consensus_latency = np.array([d["consensus_latency_ms"] for d in data])
 
     # Panel A: Detection Latency (Firewall O(1))
     ax1 = axes[0]
-    # For visualization comparison, we plot the measured O(1) vs theoretical O(N) baseline
+    # Compare the supplied analytic model with an explicitly theoretical guide.
     ax1.plot(
         agent_counts,
         detection_latency,
@@ -83,7 +109,7 @@ def create_scalability_figure(output_dir: Path) -> tuple[Path, Path]:
         agent_counts * 0.5 + 5,
         "--",
         color=colors["tripwire"],
-        label="Theoretical O(N)",
+        label="Theoretical O(N) guide (not measured)",
         alpha=0.5,
     )
 
@@ -92,7 +118,7 @@ def create_scalability_figure(output_dir: Path) -> tuple[Path, Path]:
     ax1.set_title("A. Detection Latency", fontsize=13, fontweight="bold")
     ax1.set_xscale("log", base=2)
     ax1.set_xticks(agent_counts)
-    ax1.set_xticklabels([str(n) for n in agent_counts])
+    ax1.set_xticklabels([f"{n:g}" for n in agent_counts])
     ax1.legend(loc="upper left", fontsize=9)
     ax1.set_ylim(0, max(detection_latency) * 1.5 + 10)
 
@@ -113,7 +139,7 @@ def create_scalability_figure(output_dir: Path) -> tuple[Path, Path]:
     ax2.set_title("B. Memory Usage Scaling", fontsize=13, fontweight="bold")
     ax2.set_xscale("log", base=2)
     ax2.set_xticks(agent_counts)
-    ax2.set_xticklabels([str(n) for n in agent_counts])
+    ax2.set_xticklabels([f"{n:g}" for n in agent_counts])
     ax2.legend(loc="upper left", fontsize=9)
 
     # Panel C: Consensus Time
@@ -128,27 +154,23 @@ def create_scalability_figure(output_dir: Path) -> tuple[Path, Path]:
         label="Consensus (Analytic model)",
     )
 
-    # Theoretical O(N^2) fit for reference.
-    # (#22) This fit is applied to the SAME analytic formula that generated
-    # the data, so it is a self-consistent smoothing, not independent evidence.
-    if len(agent_counts) > 2:
-        try:
-            # Simple fit a*x^2
-            p = np.polyfit(agent_counts**2, consensus_latency, 1)
-            fit_vals = np.polyval(p, agent_counts**2)
-            ax3.plot(agent_counts, fit_vals, "k--", alpha=0.3, label=r"Fit O(N$^2$)")
-        except (np.linalg.LinAlgError, ValueError):
-            pass
+    # This fit smooths the supplied analytic model; it is not independent evidence.
+    if fit_vals is not None:
+        ax3.plot(agent_counts, fit_vals, "k--", alpha=0.3, label=r"Analytic fit O(N$^2$)")
 
     ax3.set_xlabel("Number of Agents", fontsize=12, fontweight="bold")
     ax3.set_ylabel("Consensus Time (ms)", fontsize=12, fontweight="bold")
     ax3.set_title("C. Consensus Time Scaling", fontsize=13, fontweight="bold")
     ax3.set_xscale("log", base=2)
     ax3.set_xticks(agent_counts)
-    ax3.set_xticklabels([str(n) for n in agent_counts])
+    ax3.set_xticklabels([f"{n:g}" for n in agent_counts])
     ax3.legend(loc="upper left", fontsize=9)
 
-    plt.tight_layout()
+    fig.text(
+        0.5, 0.02, "Analytic models and theoretical guides — not measured performance.",
+        ha="center", fontsize=10,
+    )
+    plt.tight_layout(rect=[0, 0.06, 1, 1])
 
     # Save as both PNG and PDF
     output_png = output_dir / "scalability_analysis.png"

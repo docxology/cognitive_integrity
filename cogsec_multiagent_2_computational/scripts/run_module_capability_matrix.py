@@ -50,11 +50,11 @@ from collections import defaultdict
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(REPO / "src"))
+sys.path.insert(0, str(REPO))
 
-from attacks.corpus import AttackCorpus  # noqa: E402
-from composition.factory import MODULE_REGISTRY  # noqa: E402
-from evaluation.benign_corpus import BenignCorpus  # noqa: E402
+from src.attacks.corpus import AttackCorpus  # noqa: E402
+from src.composition.factory import MODULE_REGISTRY  # noqa: E402
+from src.evaluation.benign_corpus import BenignCorpus  # noqa: E402
 
 OUTPUT = REPO / "output" / "data" / "module_capability_matrix.json"
 

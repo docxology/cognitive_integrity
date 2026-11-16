@@ -53,9 +53,9 @@ abstract: |
   attack-adjacent vocabulary.
 
   Multi-tier evaluation. Real pipeline evaluation across 30 seeds yields a mean
-  detection rate of 86.3% (95% CI 85.5%-87.1%) at an 18.5% false-positive rate on
-  the Claude Code architecture, measured on an injection-only 100-sample-per-seed
-  arm. LLM-backed validation (N=10, Gemma 3 4B) reaches 80-100% across two
+  detection rate of 86.3% (95% CI 85.5%-87.1%) at an 18.5% false-positive rate for
+  one architecture-agnostic pipeline, measured on a stratified 100-attack sample
+  across all five attack families plus 120 benign messages per seed. LLM-backed validation (N=10, Gemma 3 4B) reaches 80-100% across two
   topologies and is reported as preliminary and underpowered. Colony benchmarks at
   20-100 agents reach 81-100% on structured adversarial scenarios, with emergent
   misalignment the hardest case at 74.3% detection and a 25.5% false-positive rate.
@@ -65,17 +65,18 @@ abstract: |
 
   Ablation on a 100-attack corpus attributes almost all marginal detection to the
   Invariants module: the full pipeline reaches 89.0% true-positive rate, removing
-  Invariants costs 65 percentage points, removing the Tripwire costs two, and
+  Invariants costs 67 percentage points, removing the Tripwire costs one, and
   removing any other module costs nothing the corpus can measure. The layered
   architecture is therefore only partly borne out, and the paper says so. An
   undefended control arm places the defense's cost at +0.610 ms at the median and
   +32 KiB peak. Measured as ranked scorers, the drift score and the firewall
-  pattern matcher fall below chance (AUC 0.374 and 0.383, intervals excluding 0.5).
+  pattern matcher fall below chance (AUC 0.373 and 0.384, intervals excluding 0.5).
 
-  Every quantity the three papers share is derived from a single ledger and gated
-  in continuous integration; no reported number is typed by hand. All experiments
-  are deterministically reproducible at seed 42, and the code, corpora and
-  artifacts are at https://github.com/docxology/cognitive_integrity.
+  Quantities registered in the series ledger and claim registry are derived from
+  tracked artifacts and checked in continuous integration; this does not cover
+  every number in every prose paragraph. Experiments are reproducible at their
+  stated seeds (42 for most experiments, 1--30 for the multi-seed arm), and the
+  code, corpora and artifacts are at https://github.com/docxology/cognitive_integrity.
 
   This is Part 2 of the three-part Cognitive Security for Multiagent Operators
   series:

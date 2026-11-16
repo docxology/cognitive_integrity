@@ -14,7 +14,7 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
-from redteam.convergence import (
+from src.redteam.convergence import (
     convergence_round_estimate,
     empirical_lipschitz_constant,
     geometric_convergence_projection,
@@ -168,11 +168,9 @@ class TestConvergenceRoundEstimate:
         k = convergence_round_estimate(gains, tolerance=0.005)
         assert k >= 0
 
-    def test_divergent_series_reports_zero(self):
-        """A divergent gain series never converges: round estimate is 0
-        rather than a negative count (P2-12)."""
+    def test_divergent_series_reports_nonconvergence(self):
         gains = [0.077, 0.129, 0.177, 0.205, 0.232]
-        assert convergence_round_estimate(gains, tolerance=0.001) == 0
+        assert convergence_round_estimate(gains, tolerance=0.001) is None
 
 
 # ---------------------------------------------------------------------------
@@ -201,6 +199,22 @@ class TestEmpiricalLipschitzConstant:
         L = empirical_lipschitz_constant(config, LinearEvaluator(), epsilon=0.01)
         # Each dimension contributes rate 1.0 (change of 0.01 per 0.01 perturbation)
         assert L > 0.0
+
+    def test_count_scale_parameter_is_not_clamped_to_one(self):
+        class LinearEvaluator:
+            def evaluate(self, config):
+                return 0.001 * config["kappa"]
+
+        L = empirical_lipschitz_constant({"kappa": 3.0}, LinearEvaluator())
+        assert L == pytest.approx(0.001)
+
+    def test_probability_boundary_uses_actual_inward_step(self):
+        class LinearEvaluator:
+            def evaluate(self, config):
+                return 2.0 * config["threshold"]
+
+        L = empirical_lipschitz_constant({"threshold": 1.0}, LinearEvaluator())
+        assert L == pytest.approx(2.0)
 
     def test_missing_evaluate_raises(self):
         class NoEvaluate:

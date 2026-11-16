@@ -22,10 +22,10 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "src"))
+sys.path.insert(0, str(ROOT))
 
-from colony.benchmark import ColonyBenchmark, ColonyScenarioSummary
-from utils.random_seed import set_global_seed
+from src.colony.benchmark import ColonyBenchmark, ColonyScenarioSummary
+from src.utils.random_seed import set_global_seed
 
 
 def _summary_record(summary: ColonyScenarioSummary) -> dict:

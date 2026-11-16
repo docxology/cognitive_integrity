@@ -38,8 +38,18 @@ DATA_DIR.mkdir(parents=True, exist_ok=True)
 
 
 def generate_cif_ad_coupling_figure() -> dict:
-    """Generate CIF-AD coupling matrix heatmap."""
+    """Generate the heatmap only when its required portfolio is achievable."""
     detector = CIFADCouplingDetector()
+    try:
+        minimum_viable_portfolio = detector.minimum_viable_portfolio(
+            min_phase_coverage=0.80
+        )
+    except ValueError as exc:
+        raise ValueError(
+            "Refusing to generate CIF-AD figure artifacts: no defense portfolio "
+            "achieves the required 0.80 coverage for every AD phase."
+        ) from exc
+
     defense_names, phase_names, matrix = detector.coverage_heatmap_data()
 
     # Human-readable labels
@@ -166,9 +176,7 @@ def generate_cif_ad_coupling_figure() -> dict:
         "combined_coverage": {p.value: detector.get_combined_coverage(p) for p in ADPhase},
         "max_coverage": {p.value: detector.get_phase_coverage(p) for p in ADPhase},
         "full_coverage_theorem_holds": detector.verify_full_coverage_theorem(),
-        "minimum_viable_portfolio": [
-            d.value for d in detector.minimum_viable_portfolio(min_phase_coverage=0.80)
-        ],
+        "minimum_viable_portfolio": [d.value for d in minimum_viable_portfolio],
     }
     with open(DATA_DIR / "cif_ad_coupling.json", "w") as f:
         json.dump(data, f, indent=2)

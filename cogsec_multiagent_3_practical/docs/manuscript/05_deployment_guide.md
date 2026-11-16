@@ -13,8 +13,8 @@ This profile corresponds to the "High Usability" configuration tested in the sen
 **Configuration Parameters**:
 
 * **Trust Decay ($\delta$)**: `0.95`. Maintained >50% trust retention even after 13 delegation hops.
-* **Firewall Sensitivity**: Relaxed (reject threshold $\tau_1 =0.9$).
-* **Consensus**: Simple Majority.
+* **Firewall Sensitivity**: Relaxed (accept threshold `0.30`; reject threshold `0.70`; scores between them are quarantined), matching `RiskProfile.LOW` in `src/deployment.py`.
+* **Consensus**: Simple majority (`quorum_fraction = 0.5`), without required identity verification.
 
 **Modelled performance** (Part 2, parametric parameter-sensitivity analysis --- simulation output under calibrated conditions, not a measurement of a running deployment):
 
@@ -29,8 +29,8 @@ This profile corresponds to the parametrically optimal configuration identified 
 **Configuration Parameters**:
 
 * **Trust Decay ($\delta$)**: `0.80`. At this setting, trust degrades to <50% after 4 hops, strictly bounding the "radius of effective delegation."
-* **Firewall Sensitivity**: Balanced (reject threshold $\tau_1 = 0.7$; quarantine threshold $\tau_2 = 0.5$).
-* **Consensus**: Variable (Architecture Dependent).
+* **Firewall Sensitivity**: Balanced (accept threshold `0.25`; reject threshold `0.65`; scores between them are quarantined), matching `RiskProfile.MEDIUM` in `src/deployment.py`. These executable deployment defaults are distinct from Part 2's parametrically optimal $\tau_1=0.7$, $\tau_2=0.5$ design settings.
+* **Consensus**: Two-thirds majority with identity verification (`quorum_fraction = 0.667`), not architecture-dependent.
 
 **Modelled performance** (Part 2, parametric parameter-sensitivity analysis --- simulation output under calibrated conditions, not a measurement of a running deployment):
 
@@ -45,13 +45,13 @@ This profile corresponds to the "Byzantine-Heavy" configuration tested in Part 2
 **Configuration Parameters**:
 
 * **Trust Decay ($\delta$)**: `0.60`. Aggressive decay. Trust halves every ~1.36 hops, enforcing a strictly flat command structure.
-* **Firewall Sensitivity**: Strict (reject threshold $\tau_1 =0.4$).
-* **Consensus**: Byzantine Fault Tolerance ($n \ge 3f+1$).
+* **Firewall Sensitivity**: Strict (accept threshold `0.20`; reject threshold `0.60`; scores between them are quarantined), matching `RiskProfile.HIGH` in `src/deployment.py`.
+* **Consensus**: Byzantine Fault Tolerance ($n \ge 3f+1$) with identity verification and `quorum_fraction = 0.75`.
 
 **Modelled performance** (Part 2, parametric parameter-sensitivity analysis --- simulation output under calibrated conditions, not a measurement of a running deployment):
 
 * **Latency Overhead**: Significant (+35-48% depending on corroboration count).
-* **Detection Rate**: **95%** (general) to **98%** (LangGraph-specific).
+* **Detection Rate**: **95%** in Part 2's parametric trust-decay sensitivity row for $\delta=0.60$. This is not a Profile-C field measurement or a basis for claiming a LangGraph advantage.
 * **Resilience**: Specifically tunes parameters to resist coordination attacks ($\Omega_4$), accepting higher latency for a near-zero semantic drift rate.
 
 ---
@@ -62,7 +62,7 @@ Beyond the parameter profiles, Part 2's architecture adapters revealed specific 
 
 ### LangGraph (State Machines)
 
-**Observation**: LangGraph architectures achieved the highest overall detection rates (98%) in our tests (Part 2, Architecture-Specific Results).
+**Observation**: In Part 2's historical parametric full evaluation (950 simulated attacks per architecture), LangGraph detected 950/950 (100%), tied with Claude Code and CrewAI; AutoGPT detected 931/950 (98.0%). LangGraph was not uniquely best, and these simulation results are not deployed-system measurements.
 **Mechanism**: The explicit definition of state transitions allowed for rigorous **Invariant Checking**. Invalid state transitions were detected deterministically by the framework.
 
 ### CrewAI (Role-Based)

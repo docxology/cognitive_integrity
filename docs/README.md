@@ -35,7 +35,7 @@ series map, reading order, and build commands, and
 This part carries the richest documentation spine:
 
 - [`docs/claims_traceability.md`](../cogsec_multiagent_2_computational/docs/claims_traceability.md)
-  — manuscript-to-code mapping for every claim.
+  — listed concept-to-code mappings and the boundary of registered numeric-claim verification.
 - [`docs/RED_TEAM_ASSESSMENT.md`](../cogsec_multiagent_2_computational/docs/RED_TEAM_ASSESSMENT.md)
   — deep red-team (adversarial) assessment and the status of every finding.
 - [`docs/framework_validation.md`](../cogsec_multiagent_2_computational/docs/framework_validation.md)

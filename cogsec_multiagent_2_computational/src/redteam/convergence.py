@@ -44,7 +44,7 @@ def geometric_convergence_projection(
     """Project Nash equilibrium DR using geometric decay model.
 
     Args:
-        gains: Per-round DR improvement over baseline.
+        gains: Per-round incremental DR improvements, not cumulative deltas.
         baseline_dr: Pre-AT baseline detection rate.
 
     Returns:
@@ -80,25 +80,24 @@ def geometric_convergence_projection(
 def convergence_round_estimate(
     gains: list[float],
     tolerance: float = 0.001,
-) -> int:
+) -> int | None:
     """Estimate the round at which gains fall below tolerance.
 
     Args:
-        gains: Per-round DR improvement values.
+        gains: Per-round incremental DR improvement values.
         tolerance: Convergence threshold.
 
     Returns:
-        Estimated convergence round.
+        Estimated convergence round, or ``None`` when the gain series does
+        not converge.  Round zero is reserved for already-converged input.
     """
     if not gains or gains[0] <= tolerance:
         return 0
     _, ratio = geometric_convergence_projection(gains, 0.0)
     if ratio <= 0 or ratio >= 1:
-        # Non-convergent (flat or divergent) gain series never falls below
-        # tolerance (P2-12): report round 0 rather than a bogus negative count.
-        return 0
+        return None
     k = math.log(tolerance / gains[0]) / math.log(ratio)
-    return int(math.ceil(k))
+    return int(math.ceil(k)) if k >= 0 else None
 
 
 def empirical_lipschitz_constant(
@@ -121,16 +120,24 @@ def empirical_lipschitz_constant(
     """
     if not hasattr(dr_evaluator, "evaluate"):
         raise ValueError("dr_evaluator must have an evaluate(config) method")
+    if epsilon <= 0:
+        raise ValueError("epsilon must be positive")
 
     base_dr = dr_evaluator.evaluate(config)  # type: ignore[attr-defined]
     keys = list(config.keys())
     max_ratio = 0.0
 
     for key in keys:
+        value = config[key]
+        step = epsilon
+        # Probability-like parameters turn inward at the upper boundary.
+        # Count/scale parameters (for example kappa=3) are not clamped to 1.
+        if 0.0 <= value <= 1.0 and value + step > 1.0:
+            step = -epsilon
         perturbed = dict(config)
-        perturbed[key] = min(1.0, config[key] + epsilon)
+        perturbed[key] = value + step
         perturbed_dr = dr_evaluator.evaluate(perturbed)  # type: ignore[attr-defined]
-        ratio = abs(perturbed_dr - base_dr) / epsilon
+        ratio = abs(perturbed_dr - base_dr) / abs(step)
         max_ratio = max(max_ratio, ratio)
 
     return float(max_ratio)

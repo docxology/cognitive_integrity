@@ -78,4 +78,6 @@ def calibrate(scorer, benign: Iterable[str], *, margin: float = MARGIN) -> float
     error this module documents. Use the hardest legitimate traffic available.
     """
     scores = [scorer.evaluate(message).score for message in benign]
-    return round((max(scores) if scores else 0.0) + margin, 4)
+    if not scores:
+        raise ValueError("Cannot calibrate without benign examples")
+    return round(max(scores) + margin, 4)

@@ -5,7 +5,7 @@ from typing import Dict, List, TypeVar
 
 import numpy as np
 
-from formal.category_theory import (
+from src.formal.category_theory import (
     CognitiveState,
     DefenseMorphism,
     categorical_product,
@@ -42,16 +42,13 @@ class AgentArchitecture:
 
 @dataclass
 class KanExtension:
-    """Left and right Kan extensions along a functor F: C → D.
+    """Experimental aggregation along an architecture name mapping.
 
-    Given an architecture C (source) and D (target) connected by a
-    functor F (a name-mapping), the:
-
-    - Left Kan extension Lan_F(G) lifts G: C → DefenseCategory to
-      Lan_F(G): D → DefenseCategory by taking joins (series composition
-      of all morphisms that map to a given D-object).
-
-    - Right Kan extension Ran_F(G) dually takes meets (parallel composition).
+    ``left_kan`` series-composes sources and ``right_kan`` parallel-composes
+    them with max arbitration.  These concrete folds do not establish the
+    universal properties of Kan extensions or an adjunction.  In particular,
+    short-circuit sequencing need not dominate every source, and parallel
+    max-fusion is not a meet for the sequential order.
     """
 
     source: AgentArchitecture
@@ -104,7 +101,7 @@ class KanExtension:
         states: List[CognitiveState],
         tol: float = 1e-6,
     ) -> Dict[str, bool]:
-        """Check Lan ⊣ restriction and restriction ⊣ Ran for score ordering.
+        """Check concrete score-order diagnostics, not a Kan adjunction.
 
         For each source morphism mapped to a target via F:
 

@@ -17,10 +17,10 @@ from pytest_httpserver import HTTPServer
 from werkzeug.wrappers import Response as WerkzeugResponse
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "src"))
+sys.path.insert(0, str(ROOT))
 
-from agents.llm_agent import AgentMessage, AgentResponse, LLMAgent, OllamaConfig
-from agents.multiagent_system import MultiAgentSystem, SimulationResult
+from src.agents.llm_agent import AgentMessage, AgentResponse, LLMAgent, OllamaConfig
+from src.agents.multiagent_system import MultiAgentSystem, SimulationResult
 
 # ---------------------------------------------------------------------------
 # Test HTTP server helpers
@@ -119,7 +119,7 @@ class TestLLMAgent:
     def test_thinking_tags_stripped(self, httpserver: HTTPServer):
         """Agent strips <think> tags from model output."""
         base_url = _configure_ollama_server(
-            httpserver, "<think>Let me think...</think>\nresponseThe answer is 42."
+            httpserver, "<think>Let me think...</think>\nThe response is 42."
         )
 
         agent = LLMAgent(
@@ -131,7 +131,21 @@ class TestLLMAgent:
         response = agent.process_message(
             AgentMessage(sender="env", content="What is 6*7?")
         )
-        assert response.content == "The answer is 42."
+        assert response.content == "The response is 42."
+
+    def test_empty_response_raises(self, httpserver: HTTPServer):
+        """An empty model response is a failure, not generated content."""
+        base_url = _configure_ollama_server(httpserver, "")
+        agent = LLMAgent(
+            agent_id="empty_0",
+            role="worker",
+            system_prompt="System.",
+            config=OllamaConfig(model="test-model", base_url=base_url),
+        )
+
+        with pytest.raises(RuntimeError, match="Empty response"):
+            agent.process_message(AgentMessage(sender="env", content="test"))
+        assert agent.call_count == 0
 
     def test_connection_error(self):
         """Agent raises ConnectionError when Ollama is unreachable."""
@@ -199,7 +213,7 @@ class TestMultiAgentSystem:
 
     def test_create_system(self):
         """System creates correct number of agents for architecture."""
-        from architectures.crewai import CrewAIAdapter
+        from src.architectures.crewai import CrewAIAdapter
 
         system = MultiAgentSystem(
             adapter=CrewAIAdapter(),
@@ -213,13 +227,39 @@ class TestMultiAgentSystem:
         roles = [a.role for a in system.agents]
         assert roles == CrewAIAdapter().get_agent_roles(4)
 
+    def test_explicit_zero_agents_is_rejected(self):
+        """Zero is not a request for the architecture's default population."""
+        from src.architectures.crewai import CrewAIAdapter
+
+        with pytest.raises(ValueError, match="supports"):
+            MultiAgentSystem(
+                adapter=CrewAIAdapter(),
+                n_agents=0,
+                config=OllamaConfig(model="test-model", base_url=_DEAD_URL),
+            )
+
+    def test_zero_hops_reports_zero_depth(self, httpserver: HTTPServer):
+        """Unrouted output messages do not count as a propagation hop."""
+        base_url = _configure_ollama_server(httpserver, "Processed.")
+        from src.architectures.crewai import CrewAIAdapter
+
+        system = MultiAgentSystem(
+            adapter=CrewAIAdapter(),
+            n_agents=3,
+            config=OllamaConfig(model="test-model", base_url=base_url),
+        )
+        result = system.process_attack("Test payload", max_hops=0)
+
+        assert result.total_llm_calls == 1
+        assert result.propagation_depth == 0
+
     def test_process_attack(self, httpserver: HTTPServer):
         """System processes attack through agents and records messages."""
         base_url = _configure_ollama_server(
             httpserver, "Interesting analysis. Let me investigate further."
         )
 
-        from architectures.crewai import CrewAIAdapter
+        from src.architectures.crewai import CrewAIAdapter
 
         system = MultiAgentSystem(
             adapter=CrewAIAdapter(),
@@ -246,7 +286,7 @@ class TestMultiAgentSystem:
         """Hub-spoke architecture routes through orchestrator first."""
         base_url = _configure_ollama_server(httpserver, "Processed.")
 
-        from architectures.claude_code import ClaudeCodeAdapter
+        from src.architectures.claude_code import ClaudeCodeAdapter
 
         system = MultiAgentSystem(
             adapter=ClaudeCodeAdapter(),
@@ -266,7 +306,7 @@ class TestMultiAgentSystem:
         """reset_all clears all agent contexts."""
         base_url = _configure_ollama_server(httpserver, "OK")
 
-        from architectures.crewai import CrewAIAdapter
+        from src.architectures.crewai import CrewAIAdapter
 
         system = MultiAgentSystem(
             adapter=CrewAIAdapter(),
@@ -288,10 +328,10 @@ class TestMultiAgentSystem:
 
     def test_all_architectures(self):
         """All 4 architectures can create a MultiAgentSystem."""
-        from architectures.autogpt import AutoGPTAdapter
-        from architectures.claude_code import ClaudeCodeAdapter
-        from architectures.crewai import CrewAIAdapter
-        from architectures.langgraph import LangGraphAdapter
+        from src.architectures.autogpt import AutoGPTAdapter
+        from src.architectures.claude_code import ClaudeCodeAdapter
+        from src.architectures.crewai import CrewAIAdapter
+        from src.architectures.langgraph import LangGraphAdapter
 
         adapters = [
             ClaudeCodeAdapter(),
@@ -326,9 +366,9 @@ class TestMode3Runner:
             "I cannot comply with that request. It appears to be an injection attack.",
         )
 
-        from architectures.crewai import CrewAIAdapter
-        from evaluation.runner import ExperimentResult, ExperimentRunner
-        from utils.types import ExperimentConfig
+        from src.architectures.crewai import CrewAIAdapter
+        from src.evaluation.runner import ExperimentResult, ExperimentRunner
+        from src.utils.types import ExperimentConfig
 
         runner = ExperimentRunner(ExperimentConfig(seed=42))
         adapter = CrewAIAdapter()
@@ -347,15 +387,15 @@ class TestMode3Runner:
 
         assert isinstance(result, ExperimentResult)
         assert result.architecture == "CrewAI"
-        assert result.n_attacks == 2
+        assert result.n_attacks == 1  # Only the attack sample, not the benign control.
 
     def test_mode3_with_pipeline(self, httpserver: HTTPServer):
         """Mode 3 works with CIF pipeline for defense analysis."""
         base_url = _configure_ollama_server(httpserver, "Let me help with that.")
 
-        from architectures.crewai import CrewAIAdapter
-        from evaluation.runner import ExperimentRunner
-        from utils.types import ExperimentConfig
+        from src.architectures.crewai import CrewAIAdapter
+        from src.evaluation.runner import ExperimentRunner
+        from src.utils.types import ExperimentConfig
 
         runner = ExperimentRunner(ExperimentConfig(seed=42))
         adapter = CrewAIAdapter()
@@ -389,9 +429,9 @@ class TestMode3Runner:
 
     def test_mode3_fallback_on_error(self):
         """Mode 3 falls back to Mode 1/2 when LLM system errors."""
-        from architectures.crewai import CrewAIAdapter
-        from evaluation.runner import ExperimentResult, ExperimentRunner
-        from utils.types import ExperimentConfig
+        from src.architectures.crewai import CrewAIAdapter
+        from src.evaluation.runner import ExperimentResult, ExperimentRunner
+        from src.utils.types import ExperimentConfig
 
         runner = ExperimentRunner(ExperimentConfig(seed=42))
         adapter = CrewAIAdapter()
@@ -437,7 +477,7 @@ class TestLLMAgentIntegration:
 
     def test_real_multiagent_attack(self):
         """Full multiagent attack simulation with real LLM."""
-        from architectures.crewai import CrewAIAdapter
+        from src.architectures.crewai import CrewAIAdapter
 
         system = MultiAgentSystem(
             adapter=CrewAIAdapter(),

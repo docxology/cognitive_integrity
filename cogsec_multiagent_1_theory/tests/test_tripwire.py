@@ -129,6 +129,16 @@ class TestCognitiveTripwire:
 
         assert len(handler_called) == 1
 
+    def test_check_single_invokes_handlers(self):
+        tripwire = CognitiveTripwire()
+        tripwire.add_canary(Canary("test", 1.0, tolerance=0.1))
+        received = []
+        tripwire.register_handler(received.append)
+
+        alert = tripwire.check_single("test", 0.5)
+
+        assert received == [alert]
+
     def test_get_alerts_filtering(self):
         """Alerts can be filtered by category and severity."""
         tripwire = CognitiveTripwire()

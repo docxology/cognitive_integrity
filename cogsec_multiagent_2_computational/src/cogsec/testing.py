@@ -21,7 +21,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence
 
-from cogsec.benchmarks import SCENARIOS, ColonyBenchmark
+from src.cogsec.benchmarks import SCENARIOS, ColonyBenchmark
 
 __all__ = ["CIFTestSuite", "AgentTestOutcome"]
 

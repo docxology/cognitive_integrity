@@ -116,7 +116,7 @@ class TestInformationGeometryProperties:
     @given(prob_dist_st, prob_dist_st)
     def test_riemannian_distance_non_negative(self, p_vals, q_vals):
         """Riemannian distance is always ≥ 0."""
-        from analysis.information_geometry import StatisticalManifold
+        from src.analysis.information_geometry import StatisticalManifold
 
         n = min(len(p_vals), len(q_vals))
         p = np.array(p_vals[:n])
@@ -130,7 +130,7 @@ class TestInformationGeometryProperties:
     @given(prob_dist_st)
     def test_riemannian_self_distance_zero(self, p_vals):
         """Riemannian distance from a distribution to itself is ~0."""
-        from analysis.information_geometry import StatisticalManifold
+        from src.analysis.information_geometry import StatisticalManifold
 
         n = len(p_vals)
         p = np.array(p_vals)
@@ -143,7 +143,7 @@ class TestInformationGeometryProperties:
     @given(prob_dist_st, prob_dist_st)
     def test_riemannian_symmetry(self, p_vals, q_vals):
         """Riemannian distance is symmetric: d(p,q) == d(q,p)."""
-        from analysis.information_geometry import StatisticalManifold
+        from src.analysis.information_geometry import StatisticalManifold
 
         n = min(len(p_vals), len(q_vals))
         p = np.array(p_vals[:n])
@@ -158,7 +158,7 @@ class TestInformationGeometryProperties:
     @given(prob_dist_st)
     def test_fisher_info_matrix_positive_definite(self, p_vals):
         """Fisher information matrix is positive definite."""
-        from analysis.information_geometry import StatisticalManifold
+        from src.analysis.information_geometry import StatisticalManifold
 
         n = len(p_vals)
         p = np.array(p_vals)
@@ -173,7 +173,7 @@ class TestInformationGeometryProperties:
     @given(prob_dist_st)
     def test_geodesic_path_valid_distributions(self, p_vals):
         """Geodesic path from p to q produces valid probability distributions."""
-        from analysis.information_geometry import geodesic_attack_path
+        from src.analysis.information_geometry import geodesic_attack_path
 
         n = len(p_vals)
         p = np.array(p_vals)
@@ -233,7 +233,7 @@ class TestCCSProperties:
     )
     def test_ccs_always_in_unit_interval(self, dr, fpr, resilience, recovery):
         """CCS score is always in [0, 1]."""
-        from colony.scorecard import CCSWeights, compute_ccs
+        from src.colony.scorecard import CCSWeights, compute_ccs
 
         weights = CCSWeights()
         ccs = compute_ccs(
@@ -254,7 +254,7 @@ class TestCCSProperties:
     )
     def test_ccs_monotone_in_detection_rate(self, fpr, resilience, recovery_f, recovery_i):
         """Higher detection rate → higher or equal CCS."""
-        from colony.scorecard import CCSWeights, compute_ccs
+        from src.colony.scorecard import CCSWeights, compute_ccs
 
         weights = CCSWeights()
         ccs_low = compute_ccs(
@@ -287,7 +287,7 @@ class TestConsensusProperties:
     @given(n_agents_st)
     def test_consensus_quorum_size_valid(self, n_agents):
         """Quorum size is always ≤ n_agents and ≥ 1."""
-        from core.consensus import ByzantineConsensus, Vote
+        from src.core.consensus import ByzantineConsensus, Vote
 
         # Need n >= 3f + 1; use f = 1 and ensure n >= 4
         assume(n_agents >= 4)
@@ -304,7 +304,7 @@ class TestConsensusProperties:
     )
     def test_consensus_handles_mixed_votes(self, n_agents, n_byzantine):
         """Consensus handles honest votes without error."""
-        from core.consensus import ByzantineConsensus, Vote
+        from src.core.consensus import ByzantineConsensus, Vote
 
         # Enforce n >= 3f + 1 constraint
         n_byz = min(n_byzantine, (n_agents - 1) // 3)
@@ -339,7 +339,7 @@ class TestAdversarialTrainingProperties:
     )
     def test_projected_dr_non_decreasing(self, gains):
         """Projected equilibrium DR ≥ baseline DR."""
-        from redteam.convergence import geometric_convergence_projection
+        from src.redteam.convergence import geometric_convergence_projection
 
         baseline = 0.447
         proj_dr, ratio = geometric_convergence_projection(gains, baseline)
@@ -354,7 +354,7 @@ class TestAdversarialTrainingProperties:
     )
     def test_projected_dr_bounded_by_one(self, gains):
         """Projected equilibrium DR ≤ 1.0."""
-        from redteam.convergence import geometric_convergence_projection
+        from src.redteam.convergence import geometric_convergence_projection
 
         proj_dr, ratio = geometric_convergence_projection(gains, 0.447)
         if ratio >= 1.0:
@@ -370,7 +370,7 @@ class TestAdversarialTrainingProperties:
     )
     def test_natural_gradient_step_finite(self, theta_val, grad_val):
         """Natural gradient step produces finite output."""
-        from redteam.convergence import natural_gradient_at_step
+        from src.redteam.convergence import natural_gradient_at_step
 
         theta = np.array([theta_val])
         gradient = np.array([grad_val])
@@ -384,7 +384,7 @@ class TestAdversarialTrainingProperties:
     )
     def test_at_trainer_summary_valid(self, baseline_dr, n_rounds):
         """AdversarialTrainer summary is valid for any n_rounds >= 2."""
-        from redteam import AdversarialTrainer, ATConfig
+        from src.redteam import AdversarialTrainer, ATConfig
 
         config = ATConfig(n_rounds=n_rounds)
         trainer = AdversarialTrainer(config=config)

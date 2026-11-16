@@ -9,9 +9,10 @@ We model the space of defenses as a category ``DefenseCategory`` whose:
   to :class:`DefenseResult`.
 
 Categorical composition ``g ∘ f`` corresponds to sequential (series)
-defense composition with short-circuit on detection, and categorical
-product ``f × g`` corresponds to parallel composition with max-score
-arbitration.  The identity morphism is a no-op defender that never
+defense composition with short-circuit on detection.  The historically
+named ``categorical_product(f, g)`` is parallel max-score arbitration; its
+behavior does not prove a categorical universal property.  The identity
+morphism is a no-op defender that never
 flags.
 
 The module also exposes :class:`DefenseCategory` for registering named
@@ -27,7 +28,7 @@ from typing import Any, Callable, Dict, List
 
 import numpy as np
 
-from utils.types import DefenseResult
+from src.utils.types import DefenseResult
 
 # ---------------------------------------------------------------------------
 # Type aliases
@@ -148,7 +149,11 @@ def categorical_product(
     f: DefenseMorphism,
     g: DefenseMorphism,
 ) -> DefenseMorphism:
-    """Categorical product: run both morphisms and pick the higher-score one.
+    """Parallel score arbitration, historically named ``categorical_product``.
+
+    This operation returns one winning result and has no projection pair or
+    mediating-morphism check, so it does not establish a categorical
+    product's universal property.
 
     ``(f × g)(σ)`` returns ``f(σ)`` if ``f(σ).score >= g(σ).score``
     else ``g(σ)``.  The ``detected`` flag is the logical OR of the two
@@ -276,6 +281,7 @@ def verify_category_laws(
             _score_vec(lhs_left, test_states),
             _score_vec(f, test_states),
             atol=tolerance,
+            rtol=0.0,
         )
         and np.array_equal(
             _detected_vec(lhs_left, test_states),
@@ -290,6 +296,7 @@ def verify_category_laws(
             _score_vec(rhs_right, test_states),
             _score_vec(f, test_states),
             atol=tolerance,
+            rtol=0.0,
         )
         and np.array_equal(
             _detected_vec(rhs_right, test_states),
@@ -305,6 +312,7 @@ def verify_category_laws(
             _score_vec(lhs_assoc, test_states),
             _score_vec(rhs_assoc, test_states),
             atol=tolerance,
+            rtol=0.0,
         )
         and np.array_equal(
             _detected_vec(lhs_assoc, test_states),

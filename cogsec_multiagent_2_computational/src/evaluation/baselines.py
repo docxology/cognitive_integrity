@@ -49,15 +49,15 @@ import re
 from collections import defaultdict
 from dataclasses import dataclass, field
 from pathlib import Path
-from statistics.confidence import wilson_ci
 from typing import Any, Callable, Iterable, Mapping, Protocol, Sequence, runtime_checkable
 
 import numpy as np
 from scipy.optimize import minimize
 
-from attacks.corpus import AttackCorpus, AttackSample
-from evaluation.precision_recall import bootstrap_ap_ci, compute_pr_curve
-from evaluation.roc import ROCCurve, compute_roc, youdens_j
+from src.attacks.corpus import AttackCorpus, AttackSample
+from src.evaluation.precision_recall import bootstrap_ap_ci, compute_pr_curve
+from src.evaluation.roc import ROCCurve, compute_roc, youdens_j
+from src.statistics.confidence import wilson_ci
 
 #: Filename of the artifact produced by ``scripts/run_baseline_comparison.py``.
 COMPARISON_ARTIFACT_NAME = "baseline_comparison.json"
@@ -148,7 +148,7 @@ class TrainableDetector(Detector, Protocol):
 #: construction; a divergence here would silently make the comparison
 #: apples-to-oranges.
 def _benign_messages() -> list[str]:
-    from ablation.runner import BENIGN_MESSAGES
+    from src.ablation.runner import BENIGN_MESSAGES
 
     return list(BENIGN_MESSAGES)
 
@@ -949,7 +949,7 @@ class CIFPipelineDetector:
     """
 
     def __init__(self, mode: str = "series", name: str = "cif_full_pipeline") -> None:
-        from composition.factory import create_full_pipeline
+        from src.composition.factory import create_full_pipeline
 
         self.mode = mode
         self._pipeline = create_full_pipeline(mode)
@@ -1213,6 +1213,22 @@ def curve_summary(
     roc: ROCCurve = compute_roc(y, s, n_thresholds=n_thresholds)
     auc = auc_in_order(roc.fpr_points, roc.tpr_points)
     thr, j = youdens_j(roc)
+
+    # A uniform display grid can miss the deployed threshold between two grid
+    # points. Youden's optimum is a measured operating property, so also check
+    # every distinct observed score; evaluating only group ends handles ties.
+    order = np.argsort(-s, kind="stable")
+    sorted_scores = s[order]
+    sorted_labels = y[order]
+    tp = np.cumsum(sorted_labels) / n_pos
+    fp = np.cumsum(~sorted_labels) / n_neg
+    observed_j = tp - fp
+    group_ends = np.concatenate((sorted_scores[1:] != sorted_scores[:-1], [True]))
+    observed_j[~group_ends] = -np.inf
+    best = int(np.argmax(observed_j))
+    if observed_j[best] > j:
+        thr = float(sorted_scores[best])
+        j = float(observed_j[best])
 
     pr = compute_pr_curve(y.astype(int), s, n_thresholds=n_thresholds)
     ap, ap_lo, ap_hi = bootstrap_ap_ci(

@@ -23,9 +23,9 @@ foundations of [Part 1](../../cogsec_multiagent_1_theory/).
 
 | Entry | Role |
 | ----- | ---- |
-| [`claims_traceability.md`](claims_traceability.md) | Manuscript-to-code mapping for every claim; authority for what the paper asserts |
+| [`claims_traceability.md`](claims_traceability.md) | Listed manuscript concepts and the registered numeric-claim verification boundary |
 | [`framework_validation.md`](framework_validation.md) | Framework validation and reproducibility: how each experiment maps to data artifacts |
-| [`usage_guides/`](usage_guides/) | Per-component usage guides (9): how to instantiate and use each defense module |
+| [`usage_guides/`](usage_guides/) | Per-component usage guides: how to instantiate and use each defense module |
 
 ## Usage guides
 
@@ -43,12 +43,12 @@ foundations of [Part 1](../../cogsec_multiagent_1_theory/).
 
 ## Claims traceability
 
-Every manuscript claim is bound, via a claims registry
-(`src/manuscript/claim_registry.py`), to a reproducible data artifact under
+Registered numeric manuscript claims are bound, via the claims registry
+(`src/manuscript/claim_registry.py`), to reproducible data artifacts under
 `output/data/`. `scripts/verify_claims.py` checks the installed manuscript
 against the current data; a green run means every registry-backed number matches
-its source. See [`claims_traceability.md`](claims_traceability.md) for the
-claim-by-claim map and
+its source. Numbers outside that registry are not covered by this guarantee. See
+[`claims_traceability.md`](claims_traceability.md) for the concept map and
 [`framework_validation.md`](framework_validation.md) for how each experiment is
 reproduced.
 
@@ -70,7 +70,7 @@ reproduced.
 uv run python scripts/verify_claims.py
 
 # Injector (data-backed manuscript variable substitution) dry-run
-uv run python -c "from pathlib import Path; from src.manuscript.injector import inject_all; inject_all(Path('output/data'), Path('manuscript'), dry_run=True, strict=False)"
+uv run python -c "from pathlib import Path; from src.manuscript.injector import inject_all; inject_all(Path('output/data'), Path('docs/manuscript'), dry_run=True, strict=False)"
 
 # Tests (full Part 2 suite)
 .venv/bin/python -m pytest tests/ -q

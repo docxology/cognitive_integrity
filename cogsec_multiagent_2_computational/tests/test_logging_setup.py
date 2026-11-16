@@ -2,7 +2,7 @@
 
 import logging
 
-from utils.logging_setup import get_logger, setup_logging
+from src.utils.logging_setup import get_logger, setup_logging
 
 
 class TestSetupLogging:
@@ -11,7 +11,7 @@ class TestSetupLogging:
     def test_setup_logging_creates_handler(self):
         """setup_logging() adds a handler to the 'cogsec' logger."""
         # Reset the _CONFIGURED flag so we can test
-        import utils.logging_setup as mod
+        import src.utils.logging_setup as mod
         mod._CONFIGURED = False
 
         setup_logging()
@@ -23,7 +23,7 @@ class TestSetupLogging:
 
     def test_setup_logging_idempotent(self):
         """Calling setup_logging() twice does not double handlers."""
-        import utils.logging_setup as mod
+        import src.utils.logging_setup as mod
         mod._CONFIGURED = False
 
         setup_logging()
@@ -37,7 +37,7 @@ class TestSetupLogging:
 
     def test_setup_logging_custom_format(self):
         """Custom format string is applied."""
-        import utils.logging_setup as mod
+        import src.utils.logging_setup as mod
         mod._CONFIGURED = False
 
         custom_fmt = "%(levelname)s:%(message)s"
@@ -55,7 +55,7 @@ class TestSetupLogging:
 
     def test_setup_logging_sets_level(self):
         """Logger level defaults to INFO."""
-        import utils.logging_setup as mod
+        import src.utils.logging_setup as mod
         mod._CONFIGURED = False
 
         setup_logging(level=logging.DEBUG)

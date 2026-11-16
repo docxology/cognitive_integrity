@@ -22,7 +22,7 @@ The Cognitive Integrity Framework (CIF) was developed to secure these systems, a
 * **Part 2: Computational Validation** (DOI: 10.5281/zenodo.22134546) implemented this theory in Python and tested it against a corpus of 950 attacks across four production architectures, reporting ablation studies, Bayesian uncertainty quantification, colony-scale benchmarks at 20--100 agents, and a category-theoretic formalization of defense composition (Defense Category $\calD$, Theorems CT.1--CT.3) with a composable visualization engine and a composer data bundle.
 * **Applications (§9--§10, this paper):** The integrated CIF-AD-OODA analytical model is applied across ten critical domains (rare-earth mining, nation-state alliances, cyber-security, drone warfare, supply chain, biowarfare, food security, trade wars, infrastructure, information ecosystems), identifying three universal attack patterns and four novel defense extensions.
 
-The combined evidence includes **3,535 tests** and a **96--100% parametric detection ceiling** across all attack categories and architectures (Part 2), alongside a lower real-pipeline multi-seed mean of 86.3% (30 seeds). Direct-injection detection reaches 99--100% in the fully defended parametric configuration; plus CIF coverage is analyzed across all ten operational domains in §9--§10 with retrospective analysis of six documented 2024--2025 AI-agent incidents.
+The combined evidence includes **3,644 tests** and a **96--100% parametric detection ceiling** across all attack categories and architectures (Part 2), alongside a lower real-pipeline multi-seed mean of 86.3% (30 seeds). Direct-injection detection reaches 99--100% in the fully defended parametric configuration; plus CIF coverage is analyzed across all ten operational domains in §9--§10 with retrospective analysis of five publicly documented 2024--2025 AI-agent incidents.
 
 ## The Purpose of This Guide
 
@@ -66,7 +66,7 @@ This paper is designed to stand alone as the practitioner's reference of the ser
 | Application of CIF to specific operational sectors (10 domains analyzed) | **§9–§10** (this paper) |
 | Three universal attack patterns across domains (FR Polarity Inversion, Constraint Relaxation, Context Boundary Violation) | **§10** (this paper) |
 | Four novel defense extensions (verification channel separation, active perturbation probing, physics-informed invariants, semiotic decoupling) | **§9** (this paper) |
-| Retrospective mapping of 2024–2025 AI-agent security incidents (Replit, Copilot RCE, Slack AI, \$3.2M procurement fraud, etc.) | **S3** (this paper) |
+| Retrospective mapping of 2024–2025 AI-agent security incidents (Replit, Copilot RCE, Slack AI, Arup deepfake fraud, ChatGPT Search manipulation) | **S3** (this paper) |
 | CIF-AD-OODA integration model for goal-hijacking | **§9** (this paper) |
 
 **Code and Repository**: The companion codebase, attack corpus documentation, and deployment tooling are maintained at <https://github.com/docxology/cognitive_integrity> (DOI: 10.5281/zenodo.22134548; companion parts: Part 1 DOI 10.5281/zenodo.22134544, Part 2 DOI 10.5281/zenodo.22134546).

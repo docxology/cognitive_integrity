@@ -37,6 +37,21 @@ _LABEL = {
     "invariants": "Invariants",
 }
 
+#: Capability calls this module ``trust``; the coalition artifact calls the
+#: same module ``trust_calculus``.  Other names must agree exactly.
+_SHAPLEY_KEY = {"trust": "trust_calculus"}
+
+
+def _shapley_value(shapley: dict[str, float], module: str) -> float:
+    """Read a module's Shapley value without turning a missing key into zero."""
+    key = _SHAPLEY_KEY.get(module, module)
+    if key not in shapley:
+        raise KeyError(
+            f"taxonomy_evaluation_results.json has no Shapley value for {module!r} "
+            f"(expected key {key!r})"
+        )
+    return float(shapley[key])
+
 
 def plot_module_capability(output_dir: str | Path = "output/figures") -> Figure:
     """Solo detection beside marginal contribution, for all eight modules."""
@@ -54,6 +69,7 @@ def plot_module_capability(output_dir: str | Path = "output/figures") -> Figure:
     labels = [_LABEL.get(m, m.title()) for m in modules]
 
     solo_rates = [solo[m]["_overall"] for m in modules]
+    shapley_values = [_shapley_value(shapley, m) for m in modules]
     left.barh(y, solo_rates, color=SEMANTIC_COLORS["firewall"], edgecolor="black", height=0.65)
     left.set_yticks(y)
     left.set_yticklabels(labels, fontsize=FONTSIZE["base"])
@@ -63,21 +79,20 @@ def plot_module_capability(output_dir: str | Path = "output/figures") -> Figure:
     # Both panels share one scale. Two panels at different scales invite a
     # reader to compare bar lengths that are not comparable, which is the
     # confusion this figure exists to remove.
-    shared_limit = max(max(solo_rates), max(shapley.get(m, 0.0) for m in modules)) * 1.22
+    shared_limit = max(max(solo_rates), max(shapley_values)) * 1.22
     left.set_xlim(0, shared_limit)
     for i, rate in enumerate(solo_rates):
         left.text(rate + shared_limit * 0.015, i, f"{rate:.3f}",
                   va="center", fontsize=FONTSIZE["small"])
 
-    values = [shapley.get(m, 0.0) for m in modules]
-    right.barh(y, values, color=SEMANTIC_COLORS["sandbox"], edgecolor="black", height=0.65)
+    right.barh(y, shapley_values, color=SEMANTIC_COLORS["sandbox"], edgecolor="black", height=0.65)
     right.set_yticks(y)
     right.set_yticklabels([])
     right.invert_yaxis()
     right.set_xlabel("Shapley value over 256 coalitions", fontsize=FONTSIZE["base"])
     right.set_title("B. Marginal contribution", fontsize=FONTSIZE["base"] + 1, fontweight="bold")
     right.set_xlim(0, shared_limit)
-    for i, value in enumerate(values):
+    for i, value in enumerate(shapley_values):
         right.text(value + shared_limit * 0.015, i, f"{value:.3f}",
                    va="center", fontsize=FONTSIZE["small"])
 
@@ -89,11 +104,11 @@ def plot_module_capability(output_dir: str | Path = "output/figures") -> Figure:
     # a reader who takes panel B alone away from this page has the wrong idea.
     masked = [
         _LABEL.get(m, m.title())
-        for m in modules
+        for m, value in zip(modules, shapley_values)
         # Detects a real share on its own and still adds little. A module
         # barely detecting anything is not masked, it is weak, and naming it
         # here would blunt the point.
-        if solo[m]["_overall"] >= 0.03 and shapley.get(m, 0.0) < 0.02
+        if solo[m]["_overall"] >= 0.03 and value < 0.02
     ]
     if masked:
         fig.text(

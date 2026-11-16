@@ -16,7 +16,7 @@ from typing import List
 
 import numpy as np
 
-from utils.types import AttackCategory
+from src.utils.types import AttackCategory
 
 # ---------------------------------------------------------------------------
 # Direct injection (200 samples)

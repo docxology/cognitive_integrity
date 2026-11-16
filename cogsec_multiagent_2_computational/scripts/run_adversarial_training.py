@@ -18,9 +18,9 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "src"))
+sys.path.insert(0, str(ROOT))
 
-from redteam import AdversarialTrainer, ATConfig, NashEquilibriumEstimator  # noqa: E402
+from src.redteam import AdversarialTrainer, ATConfig, NashEquilibriumEstimator  # noqa: E402
 
 
 def main() -> None:
@@ -68,7 +68,11 @@ def main() -> None:
         )
 
     summary = trainer.summary()
-    estimator = NashEquilibriumEstimator([r.delta_dr for r in rounds])
+    cumulative = [r.delta_dr for r in rounds]
+    increments = [cumulative[0]] + [
+        cumulative[i] - cumulative[i - 1] for i in range(1, len(cumulative))
+    ]
+    estimator = NashEquilibriumEstimator(increments)
     summary["projected_nash_dr_independent_estimate"] = estimator.projected_equilibrium_dr(
         summary["baseline_dr"]
     )

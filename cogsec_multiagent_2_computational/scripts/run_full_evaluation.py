@@ -23,22 +23,24 @@ import logging
 import os
 import sys
 import tempfile
+import uuid
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "src"))
+sys.path.insert(0, str(ROOT))
 
 import numpy as np
 
-from architectures.autogpt import AutoGPTAdapter
-from architectures.claude_code import ClaudeCodeAdapter
-from architectures.crewai import CrewAIAdapter
-from architectures.langgraph import LangGraphAdapter
-from attacks.corpus import AttackCorpus
-from data.generate import SIDECAR_HASH_KEY
-from evaluation.runner import ExperimentRunner
-from utils.random_seed import set_global_seed
-from utils.types import ExperimentConfig
+from src.architectures.autogpt import AutoGPTAdapter
+from src.architectures.claude_code import ClaudeCodeAdapter
+from src.architectures.crewai import CrewAIAdapter
+from src.architectures.langgraph import LangGraphAdapter
+from src.attacks.corpus import AttackCorpus
+from src.data.generate import SIDECAR_HASH_KEY
+from src.evaluation.llm_evaluator import LLMEvaluationError, run_llm_evaluation
+from src.evaluation.runner import ExperimentRunner
+from src.utils.random_seed import set_global_seed
+from src.utils.types import ExperimentConfig
 
 logger = logging.getLogger(__name__)
 
@@ -52,7 +54,7 @@ def _create_pipeline(mode: str):
     """Create the CIF defense pipeline (or None for simulation mode)."""
     if mode == "simulation":
         return None
-    from composition.factory import create_full_pipeline
+    from src.composition.factory import create_full_pipeline
     return create_full_pipeline()
 
 
@@ -78,6 +80,22 @@ def main() -> int:
     set_global_seed(args.seed)
     output_dir = ROOT / args.output
     output_dir.mkdir(parents=True, exist_ok=True)
+
+    attempt_id = None
+    if args.mode == "llm":
+        attempt_id = uuid.uuid4().hex
+        previous_diagnostics = [
+            path
+            for kind in ("partial", "failed")
+            if (path := output_dir / f"full_evaluation_results_llm_{kind}.json").exists()
+        ]
+        if previous_diagnostics:
+            # Preserve even legacy diagnostics with missing or mismatched IDs.
+            # The directory names the fresh attempt that displaced this snapshot.
+            archive_dir = output_dir / "llm_attempts" / f"before-{attempt_id}"
+            archive_dir.mkdir(parents=True)
+            for diagnostic in previous_diagnostics:
+                diagnostic.rename(archive_dir / diagnostic.name)
 
     print("=" * 70)
     print(f"CIF Full Evaluation — Mode: {args.mode.upper()}")
@@ -106,8 +124,8 @@ def main() -> int:
     # null FPR on the 0/0 operating point, provenance sidecar, and a
     # content-hashed .real_data_marker so a stale or hand-edited results
     # file can be detected.
-    def save_results_to_file(results_list, final=False):
-        if not results_list:
+    def save_results_to_file(results_list, final=False, failure=None):
+        if not results_list and failure is None:
             return
         results_data = [
             {
@@ -126,18 +144,39 @@ def main() -> int:
                 ),
                 # Wall-clock timing is not part of the reproducible result
                 # artifact; retain it on ExperimentResult for runtime use.
-                "mode": args.mode,
+                "mode": r.measurement_mode,
                 # Honest provenance: what actually produced these numbers.
-                "measurement_mode": args.mode,
+                "measurement_mode": r.measurement_mode,
+                "llm_fallback_count": r.llm_fallback_count,
             }
             for r in results_list
         ]
         suffix = f"_{args.mode}" if args.mode != "simulation" else ""
-        if not final:
+        if failure is not None:
+            suffix += "_failed"
+        elif not final:
             suffix += "_partial"
         out_path = output_dir / f"full_evaluation_results{suffix}.json"
 
-        payload = json.dumps(results_data, indent=2)
+        payload_data: list[dict[str, object]] | dict[str, object] = results_data
+        if args.mode == "llm" and not final:
+            payload_data = {
+                "status": "failed" if failure is not None else "partial",
+                "attempt_id": attempt_id,
+                "mode": "llm",
+                "model": args.model,
+                "seed": args.seed,
+                "expected_cells": len(adapters) * len(corpus_dict),
+                "completed_cells": (
+                    sum(cell["status"] == "complete" for cell in failure.outcomes)
+                    if failure is not None else len(results_list)
+                ),
+                "results": results_data,
+            }
+            if failure is not None:
+                payload_data["reason"] = str(failure)
+                payload_data["outcomes"] = failure.outcomes
+        payload = json.dumps(payload_data, indent=2)
         # Atomic write: temp file in the same directory, then rename.
         fd, tmp = tempfile.mkstemp(dir=str(output_dir), suffix=".tmp")
         try:
@@ -152,6 +191,8 @@ def main() -> int:
             except OSError:
                 pass
             raise
+        if failure is not None:
+            logger.error("Failed LLM diagnostics saved to %s", out_path)
 
         if final:
             print(f"\nResults saved to {out_path}")
@@ -168,7 +209,9 @@ def main() -> int:
             )
             prov = {
                 "data_origin": (
-                    "parametric_simulation" if args.mode == "simulation" else args.mode
+                    "parametric_simulation"
+                    if args.mode == "simulation"
+                    else sorted({r.measurement_mode for r in results_list})
                 ),
                 "source_script": "scripts/run_full_evaluation.py",
                 "seed": args.seed,
@@ -178,7 +221,11 @@ def main() -> int:
                     "CIF behaviour with calibrated base rates; they are NOT "
                     "empirically measured pipeline evidence (P2-5)."
                     if args.mode == "simulation"
-                    else "Pipeline-mode rows over the attack corpus."
+                    else (
+                        "Complete LLM multiagent evaluation over the sampled attack corpus."
+                        if args.mode == "llm"
+                        else "Pipeline-mode rows over the attack corpus."
+                    )
                 ),
                 "rows": len(results_data),
                 # The reader binds a sidecar to its artifact through
@@ -196,25 +243,49 @@ def main() -> int:
                 json.dumps(prov, indent=2)
             )
 
-    config = ExperimentConfig(seed=args.seed)
-    runner = ExperimentRunner(config)
-    pipeline = _create_pipeline(args.mode)
-
-    results = []
     try:
-        if args.mode == "llm":
-            from evaluation.llm_evaluator import run_llm_evaluation
+        config = ExperimentConfig(seed=args.seed)
+        runner = ExperimentRunner(config)
+        pipeline = _create_pipeline(args.mode)
+    except Exception as e:
+        if args.mode != "llm":
+            raise
+        message = f"Could not set up LLM evaluation: {type(e).__name__}: {e}"
+        failure = LLMEvaluationError(
+            message, [],
+            [
+                {
+                    "architecture": adapter.profile.name,
+                    "category": category,
+                    "expected_samples": min(len(samples), max(0, args.sample_size)),
+                    "status": "not_run",
+                    "error": message,
+                }
+                for adapter in adapters
+                for category, samples in corpus_dict.items()
+            ],
+        )
+        save_results_to_file([], failure=failure)
+        logger.error("%s", failure)
+        return 1
+
+    if args.mode == "llm":
+        try:
             results = run_llm_evaluation(
                 adapters, corpus_dict, pipeline, runner,
                 model=args.model, sample_size=args.sample_size,
                 seed=args.seed, save_callback=save_results_to_file,
             )
-        else:
-            results = runner.run_full_matrix(adapters, corpus_dict, pipeline)
-    finally:
-        if results:
-            print(f"\nSaving {len(results)} results...")
-            save_results_to_file(results, final=True)
+        except LLMEvaluationError as e:
+            save_results_to_file(e.results, failure=e)
+            logger.error("%s", e)
+            return 1
+    else:
+        results = runner.run_full_matrix(adapters, corpus_dict, pipeline)
+
+    if results:
+        print(f"\nSaving {len(results)} results...")
+        save_results_to_file(results, final=True)
 
     # Display
     print(f"\n[3/3] Results ({len(results)} cells):")

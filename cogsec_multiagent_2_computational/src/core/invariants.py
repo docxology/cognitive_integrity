@@ -52,7 +52,14 @@ class Invariant:
         """
         try:
             return self.predicate(context)
-        except (TypeError, KeyError, ValueError):
+        except (
+            TypeError,
+            KeyError,
+            ValueError,
+            AttributeError,
+            IndexError,
+            ZeroDivisionError,
+        ):
             # Fail closed: a predicate that cannot be evaluated (e.g. a
             # KeyError from an unexpected context shape) must not be
             # treated as "invariant holds" -- this is a security-relevant
@@ -100,12 +107,14 @@ class AgentAction:
 
     def to_context(self) -> Dict:
         """Convert action to context dictionary for invariant checking."""
-        context = {
+        # Parameters may add predicate inputs, but they must not impersonate
+        # the envelope's authenticated action, agent or timestamp.
+        context = dict(self.parameters)
+        context.update({
             "agent_id": self.agent_id,
             "action": self.action_type,
             "timestamp": self.timestamp,
-        }
-        context.update(self.parameters)
+        })
         return context
 
 
@@ -240,7 +249,7 @@ class InvariantChecker:
         if action != "trust_evaluation":
             return True  # Not a trust evaluation
 
-        direct = ctx.get("direct_trust", 1.0)
+        direct = ctx.get("direct_trust", 0.0)
         delegated = ctx.get("delegated_trust", 0.0)
 
         return delegated <= direct

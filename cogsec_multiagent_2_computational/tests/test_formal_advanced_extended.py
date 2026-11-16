@@ -32,14 +32,14 @@ from typing import Set
 
 import pytest
 
-from formal.advanced.enriched import EnrichedHom
-from formal.category_theory import (
+from src.formal.advanced.enriched import EnrichedHom
+from src.formal.category_theory import (
     CognitiveState,
     DefenseMorphism,
     DefenseResult,
     identity_morphism,
 )
-from formal.category_theory_advanced import (
+from src.formal.category_theory_advanced import (
     BOTTOM,
     TOP,
     AgentArchitecture,
@@ -56,17 +56,18 @@ from formal.category_theory_advanced import (
     make_test_morphism,
     series_operad_op,
 )
-from formal.nusmv_spec import (
+from src.formal.extended_specs import generate_nusmv_spec_v2, generate_promela_spec_v2
+from src.formal.nusmv_spec import (
     generate_categorical_nusmv_spec,
     generate_nusmv_spec,
     parse_nusmv_result,
 )
-from formal.spin_spec import (
+from src.formal.spin_spec import (
     generate_categorical_promela_spec,
     generate_promela_spec,
     parse_spin_result,
 )
-from formal.tla_spec import (
+from src.formal.tla_spec import (
     generate_categorical_tla_spec,
     generate_tla_spec,
     parse_tla_result,
@@ -175,6 +176,11 @@ class TestCategoricalNuSMVSpec:
             names = set(re.findall(r"[A-Za-z_]\w*", ctlspec)) - {"AG", "AF", "EF", "TRUE", "FALSE"}
             assert names & declared, f"CTLSPEC mentions no model variable: {ctlspec}"
 
+    def test_law_flags_are_computed_not_hardcoded(self):
+        assert "init(symmetry_ok) := TRUE" not in self.spec
+        assert "init(join_fg) := 70;" in self.spec
+        assert "semiring_ok" not in self.spec
+
     def test_agent_and_categorical_specs_are_distinct_models(self):
         assert generate_nusmv_spec() != self.spec
 
@@ -240,6 +246,11 @@ class TestCategoricalPromelaSpec:
         for body in re.findall(r"^ltl \w+ \{(.+)\}$", self.spec, re.M):
             assert set(re.findall(r"[A-Za-z_]\w*", body)) & flags, body
 
+    def test_liveness_requires_completed_checks_and_max_is_valid_promela(self):
+        assert "result = (a > b) -> a : b" not in self.spec
+        assert "laws_complete = true" in self.spec
+        assert "ltl laws_checked { <> laws_complete }" in self.spec
+
     def test_agent_and_categorical_specs_are_distinct_models(self):
         assert generate_promela_spec() != self.spec
 
@@ -304,6 +315,12 @@ class TestCategoricalTLASpec:
         assert tuple_line is not None
         listed = {name.strip() for name in tuple_line.group(1).split(",")}
         assert declared == listed
+
+    def test_identity_and_join_use_explicit_operations(self):
+        assert "DetectionRate[f] = DetectionRate[f]" not in self.spec
+        assert "TensorValues(0, DetectionRate[f])" in self.spec
+        assert "join_rate == TensorValues" in self.spec
+        assert "join_rate <= DetectionRate[h]" in self.spec
 
     def test_agent_and_categorical_specs_are_distinct_models(self):
         assert generate_tla_spec() != self.spec
@@ -508,10 +525,12 @@ class TestDetectionBoundSurface:
         assert DetectionBound(0.0).rate == 0.0
         assert DetectionBound(1.0).rate == 1.0
 
-    def test_equality_is_tolerant_and_type_aware(self):
-        assert DetectionBound(0.3) == DetectionBound(0.3 + 1e-15)
+    def test_equality_is_exact_type_aware_and_hash_consistent(self):
+        assert DetectionBound(0.3) == DetectionBound(0.3)
+        assert DetectionBound(0.3) != DetectionBound(0.3 + 1e-15)
         assert DetectionBound(0.3) != DetectionBound(0.4)
         assert (DetectionBound(0.3) == 0.3) is False
+        assert hash(DetectionBound(0.3)) == hash(DetectionBound(0.3))
 
     def test_hash_agrees_with_equality(self):
         assert hash(DetectionBound(0.3)) == hash(DetectionBound(0.3))
@@ -645,3 +664,20 @@ class TestKanMissingTargets:
             source=self.source, target=self.target, functor_map={"fw": "security"}
         )
         assert kan.verify_kan_adjunction(self.states) == {"ran_dominated_by_fw": True}
+
+
+class TestExtendedSpecificationParameters:
+    @pytest.mark.parametrize("count,initial", [(0, "none"), (1, "agent0"), (2, "both_01")])
+    def test_nusmv_byzantine_initialization_honors_bound(self, count, initial):
+        spec = generate_nusmv_spec_v2(max_byzantine=count)
+        assert f"init(byzantine_set) := {initial};" in spec
+        assert "next(byzantine_set) := byzantine_set;" in spec
+
+    def test_promela_marks_all_requested_byzantine_agents(self):
+        spec = generate_promela_spec_v2(max_byzantine=2)
+        assert "i < N_AGENTS && i < MAX_BYZ" in spec
+        assert "agent_status[0] = byzantine" not in spec
+
+    def test_extended_models_start_omega_inside_its_bound(self):
+        assert "omega_level = 1;" in generate_promela_spec_v2()
+        assert "init(omega_level) := 1;" in generate_nusmv_spec_v2()

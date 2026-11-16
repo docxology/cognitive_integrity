@@ -233,7 +233,7 @@ class LLMAgent:
         """
         url = f"{self.config.base_url}/api/chat"
 
-        payload = {
+        payload: Dict[str, Any] = {
             "model": self.config.model,
             "messages": self._history,
             "stream": False,
@@ -244,7 +244,7 @@ class LLMAgent:
         }
 
         if self.config.seed is not None:
-            payload["options"]["seed"] = self.config.seed  # type: ignore[index]
+            payload["options"]["seed"] = self.config.seed
 
         try:
             response = requests.post(
@@ -264,14 +264,21 @@ class LLMAgent:
                 logger.warning(
                     "Empty response from Ollama for agent %s", self.agent_id,
                 )
-                return "(no response)"
+                raise RuntimeError(
+                    f"Empty response from Ollama for agent {self.agent_id}"
+                )
 
-            # Strip thinking tags (qwen-style)
+            # Strip complete qwen-style thinking blocks, without consuming any
+            # part of the assistant's actual response.
             import re
             content = re.sub(
-                r"<think[^>]*>[\s\S]*?[\n\s]+response", "", content,
+                r"<think\b[^>]*>.*?</think\s*>", "", content,
                 flags=re.IGNORECASE | re.DOTALL,
             ).strip()
+            if not content:
+                raise RuntimeError(
+                    f"Ollama returned no response content for agent {self.agent_id}"
+                )
 
             return content
 

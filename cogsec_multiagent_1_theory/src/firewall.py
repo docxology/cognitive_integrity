@@ -6,12 +6,11 @@ Classifies incoming messages as ACCEPT, QUARANTINE, or REJECT.
 
 from __future__ import annotations
 
-import hashlib
 import logging
 import re
 from dataclasses import dataclass
 from enum import Enum
-from typing import Callable, Dict, List, Optional, Tuple
+from typing import Callable, Dict, List, Optional, Sequence, Tuple
 
 import numpy as np
 
@@ -180,28 +179,17 @@ class CognitiveFirewall:
         Returns:
             Classification enum value
         """
-        # Length check
-        if len(message) > self.config.max_message_length:
-            return Classification.QUARANTINE
-
-        # Score for injection
+        # Score first so padding cannot downgrade a REJECT-grade injection to
+        # QUARANTINE through the length guard.
         injection_score = self.detector.score_injection(message)
-
         if injection_score > self.config.injection_threshold:
             return Classification.REJECT
 
-        # Any detected injection pattern is at least QUARANTINEd, never
-        # silently ACCEPTed. A single matched pattern scores 0.3, below the 0.4
-        # suspicious threshold, so gating quarantine on the threshold alone
-        # would accept the canonical "Ignore all previous instructions" and
-        # leave the firewall at zero detection on its own corpus at defaults.
-        if injection_score > 0.0:
+        if len(message) > self.config.max_message_length:
             return Classification.QUARANTINE
 
-        # Score for suspicious content
         suspicious_score = self.detector.score_suspicious(message)
         combined_score = max(injection_score, suspicious_score)
-
         if combined_score > self.config.suspicious_threshold:
             return Classification.QUARANTINE
 
@@ -248,56 +236,6 @@ class CognitiveFirewall:
         }
 
 
-class EmbeddingStub:
-    """
-    Stub for embedding generation.
-
-    Provides interface for real embedding models.
-    Uses hash-based pseudo-embeddings for testing.
-    """
-
-    def __init__(self, embedding_dim: int = 64):
-        """
-        Initialize embedding stub.
-
-        Args:
-            embedding_dim: Dimension of embedding vectors
-        """
-        self.embedding_dim = embedding_dim
-
-    def embed(self, text: str) -> List[float]:
-        """
-        Generate pseudo-embedding for text.
-
-        In production, replace with real embedding model.
-
-        Args:
-            text: Text to embed
-
-        Returns:
-            Embedding vector
-        """
-        # Create deterministic pseudo-embedding based on text hash
-        # This allows similar texts to have somewhat similar embeddings
-
-        text_lower = text.lower()
-        words = text_lower.split()
-
-        # Initialize with zeros
-        embedding = np.zeros(self.embedding_dim)
-
-        # Add contribution from each word
-        for i, word in enumerate(words):
-            word_hash = hashlib.md5(word.encode()).hexdigest()
-            for j in range(min(len(word_hash), self.embedding_dim)):
-                embedding[j % self.embedding_dim] += int(word_hash[j], 16) / 16.0
-
-        # Normalize
-        norm = np.linalg.norm(embedding)
-        if norm > 0:
-            embedding = embedding / norm
-
-        return embedding.tolist()
 
 
 class SemanticSimilarityDetector:
@@ -310,19 +248,58 @@ class SemanticSimilarityDetector:
 
     def __init__(
         self,
-        embedding_model: Optional[EmbeddingStub] = None,
+        embedding_fn: Optional[Callable[[str], Sequence[float] | np.ndarray]] = None,
         similarity_threshold: float = 0.7,
     ):
-        """
-        Initialize semantic detector.
+        """Require a caller-configured, trained embedding backend.
 
-        Args:
-            embedding_model: Model for generating embeddings
-            similarity_threshold: Threshold for flagging similarity
+        ``embedding_fn(text)`` must return a finite, nonzero, one-dimensional
+        numeric vector of consistent dimension. The caller owns the model,
+        pinned revision, preprocessing and offline availability. No model is
+        downloaded, selected or replaced with a heuristic by this module.
         """
-        self.embedder = embedding_model or EmbeddingStub()
+        if not callable(embedding_fn):
+            raise ValueError(
+                "Semantic detection requires an explicit embedding_fn callable backed "
+                "by a configured embedding model; no default backend is provided."
+            )
+        self.embedding_fn = embedding_fn
         self.similarity_threshold = similarity_threshold
-        self.malicious_patterns: List[Tuple[str, List[float]]] = []
+        self.malicious_patterns: List[Tuple[str, np.ndarray]] = []
+        self._embedding_dim: Optional[int] = None
+
+    def _embed(self, text: str) -> np.ndarray:
+        """Fail closed when a configured backend fails or returns invalid data."""
+        try:
+            values = self.embedding_fn(text)
+        except Exception as exc:
+            raise RuntimeError(
+                "Configured embedding_fn failed; no semantic score was produced."
+            ) from exc
+        try:
+            vector = np.asarray(values)
+        except (TypeError, ValueError) as exc:
+            raise ValueError("embedding_fn must return a one-dimensional numeric vector") from exc
+        if (
+            vector.ndim != 1
+            or not vector.size
+            or not np.issubdtype(vector.dtype, np.number)
+            or not np.isrealobj(vector)
+        ):
+            raise ValueError(
+                "embedding_fn must return a nonempty one-dimensional real numeric vector"
+            )
+        vector = vector.astype(float, copy=False)
+        norm = np.linalg.norm(vector)
+        if not np.isfinite(vector).all() or not np.isfinite(norm) or norm == 0:
+            raise ValueError("embedding_fn must return a finite, nonzero embedding vector")
+        if self._embedding_dim is not None and vector.size != self._embedding_dim:
+            raise ValueError(
+                f"embedding_fn changed vector dimension: expected {self._embedding_dim}, "
+                f"got {vector.size}"
+            )
+        self._embedding_dim = vector.size
+        return vector / norm
 
     def register_malicious_pattern(self, pattern: str) -> None:
         """
@@ -331,7 +308,7 @@ class SemanticSimilarityDetector:
         Args:
             pattern: Malicious text pattern
         """
-        embedding = self.embedder.embed(pattern)
+        embedding = self._embed(pattern)
         self.malicious_patterns.append((pattern, embedding))
 
     def cosine_similarity(self, vec1: List[float], vec2: List[float]) -> float:
@@ -370,12 +347,12 @@ class SemanticSimilarityDetector:
         if not self.malicious_patterns:
             return 0.0
 
-        msg_embedding = self.embedder.embed(message)
+        msg_embedding = self._embed(message)
         max_similarity = 0.0
 
         for _, pattern_embedding in self.malicious_patterns:
-            sim = self.cosine_similarity(msg_embedding, pattern_embedding)
-            max_similarity = max(max_similarity, (sim + 1) / 2)  # Normalize to [0, 1]
+            sim = float(np.dot(msg_embedding, pattern_embedding))
+            max_similarity = max(max_similarity, min(1.0, max(0.0, sim)))
 
         return max_similarity
 
@@ -408,6 +385,8 @@ class MultiStageClassifier:
         stage_weights: Optional[Dict[str, float]] = None,
         reject_threshold: float = 0.7,
         quarantine_threshold: float = 0.4,
+        *,
+        embedding_fn: Optional[Callable[[str], Sequence[float] | np.ndarray]] = None,
     ):
         """
         Initialize multi-stage classifier.
@@ -416,6 +395,7 @@ class MultiStageClassifier:
             stage_weights: Custom weights for stages
             reject_threshold: Score threshold for rejection
             quarantine_threshold: Score threshold for quarantine
+            embedding_fn: Required callable from an explicitly configured embedding model
         """
         self.weights = stage_weights or {
             "structural": 0.3,
@@ -427,7 +407,7 @@ class MultiStageClassifier:
 
         # Initialize components
         self.pattern_detector = PatternDetector()
-        self.semantic_detector = SemanticSimilarityDetector()
+        self.semantic_detector = SemanticSimilarityDetector(embedding_fn=embedding_fn)
 
         # Load default malicious patterns for semantic detection
         self._load_default_patterns()
@@ -566,19 +546,31 @@ class EnhancedCognitiveFirewall(CognitiveFirewall):
     including semantic similarity detection.
     """
 
-    def __init__(self, config: Optional[FirewallConfig] = None, use_semantic: bool = False):
+    def __init__(
+        self,
+        config: Optional[FirewallConfig] = None,
+        use_semantic: bool = False,
+        *,
+        embedding_fn: Optional[Callable[[str], Sequence[float] | np.ndarray]] = None,
+    ):
         """
         Initialize enhanced firewall.
 
         Args:
             config: Firewall configuration
-            use_semantic: Whether to use semantic detection
+            use_semantic: Whether to use semantic detection (requires embedding_fn)
+            embedding_fn: Callable from a caller-configured embedding model
         """
         super().__init__(config)
         self.use_semantic = use_semantic
-        self.multi_stage = MultiStageClassifier(
-            reject_threshold=self.config.injection_threshold,
-            quarantine_threshold=self.config.suspicious_threshold,
+        self.multi_stage = (
+            MultiStageClassifier(
+                reject_threshold=self.config.injection_threshold,
+                quarantine_threshold=self.config.suspicious_threshold,
+                embedding_fn=embedding_fn,
+            )
+            if use_semantic
+            else None
         )
 
     def classify(self, message: str) -> Classification:
@@ -592,6 +584,11 @@ class EnhancedCognitiveFirewall(CognitiveFirewall):
             Classification result
         """
         if self.use_semantic:
+            if self.multi_stage is None:
+                raise ValueError(
+                    "Semantic mode must be constructed with use_semantic=True "
+                    "and an explicit embedding_fn."
+                )
             result = self.multi_stage.classify(message)
             return result["classification"]
         else:
@@ -608,6 +605,11 @@ class EnhancedCognitiveFirewall(CognitiveFirewall):
             Dict with classification and scores
         """
         if self.use_semantic:
+            if self.multi_stage is None:
+                raise ValueError(
+                    "Semantic mode must be constructed with use_semantic=True "
+                    "and an explicit embedding_fn."
+                )
             result = self.multi_stage.classify(message)
             return {
                 "classification": result["classification"],

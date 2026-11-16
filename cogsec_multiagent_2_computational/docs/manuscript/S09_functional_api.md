@@ -48,14 +48,14 @@ with the following behavioral guarantees:
 \item \emph{Result accumulation}: if all modules return $\mathrm{Ok}$, the return value is $\mathrm{Ok}([r_1, \ldots, r_m])$, preserving the order of evaluation.
 \item \emph{Determinism}: for fixed modules and fixed $(message, context)$, repeated invocations of \texttt{run} return bit-identical results (subject to modules that themselves use seeded randomness).
 \item \emph{Detection preservation}: once an $\mathrm{Err}$ is produced, no subsequent call can erase or overwrite it (\cref{thm:monadic-laws}, Law 4).
-\item \emph{Empty-pipeline identity}: an empty pipeline returns $\mathrm{Ok}([])$, matching the monadic identity element.
+\item \emph{Non-empty construction}: an empty module list is rejected by the constructor with \texttt{ValueError}; no pipeline run occurs.
 \end{enumerate}
 
 \paragraph{Edge cases.} The three edge cases worth documenting are:
 \begin{itemize}
-\item \emph{Empty pipeline}: returns $\mathrm{Ok}([])$. Useful as a no-op placeholder in configurable deployments.
+\item \emph{Empty pipeline}: \texttt{MonadicPipeline([])} raises \texttt{ValueError}. \texttt{SeriesPipeline([])} likewise raises \texttt{ValueError}; neither API provides a no-op empty pipeline.
 \item \emph{All-pass}: returns $\mathrm{Ok}([r_1, \ldots, r_m])$ with one result per module. Caller code can inspect individual scores for diagnostic purposes.
-\item \emph{First-module detection}: returns $\mathrm{Err}$ with $r_2, \ldots, r_m$ never computed. The \texttt{DetectionEvent} contains only the first module's diagnostic data; callers that need per-module scores on detected inputs should use \texttt{SeriesPipeline} instead, which always runs all modules.
+\item \emph{First-module detection}: returns $\mathrm{Err}$ with $r_2, \ldots, r_m$ never computed. The \texttt{DetectionEvent} contains only the first module's diagnostic data. \texttt{SeriesPipeline} also short-circuits on its first detection, so it does not provide scores for later modules on that input.
 \end{itemize}
 
 \paragraph{Complete working example.}

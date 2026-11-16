@@ -4,7 +4,11 @@ This document details how the Cognitive Integrity Framework (CIF) was empiricall
 
 ## Target Architectures
 
-The framework was tested against four distinct multiagent architectural patterns to ensure generalizability. Adapters for these architectures are located in `src/architectures/`.
+Adapters for four multiagent architectural patterns are located in
+`src/architectures/`. The retained full-evaluation artifact uses these adapters
+in a historical parametric simulation; that simulation is not a measured
+architecture comparison. The multi-seed pipeline measurement is
+architecture-agnostic and has no per-architecture results.
 
 1. **Claude Code (Hierarchical)**: Orchestrator-Worker pattern modeled on Enterprise RAG systems.
     - *Implementation*: `src/architectures/claude_code.py`
@@ -19,18 +23,24 @@ All adapters inherit from the base adapter at `src/architectures/base.py`.
 
 ## Attack Corpus
 
-The evaluation used a comprehensive corpus of 950 cognitive attacks, generated to cover the theoretical threat model. Categories include:
+The default integrated corpus contains 1,475 attacks across five primary
+families and fifteen subcategories. The legacy `extended=False` corpus contains
+950 attacks across four families and twelve subcategories; the retained
+parametric architecture simulation uses that legacy corpus. The integrated
+families are:
 
 - **Prompt Injection**: Direct LLM input manipulation.
 - **Trust Exploitation**: Social engineering of agent trust scores.
 - **Belief Manipulation**: Planting false axioms or data.
 - **Coordination Subversion**: Disrupting consensus/voting.
+- **Provenance and Isolation**: Attacks on provenance boundaries and isolation guarantees.
 
-Corpus generation logic: `src/attacks/corpus.py` (`AttackCorpus` class)
+Corpus generation logic: `src/attacks/corpus.py` (`AttackCorpus` class). Each
+reported rate must identify which corpus or stratified subsample it used.
 
 ## Reproducing the Experiments
 
-All experiments are deterministic (seed=42). Run from the project root directory.
+The experiment scripts are deterministic under their recorded seeds. Most commands here default to seed 42; the tracked multi-seed sweep instead records seeds 1–30. Run from the project root directory.
 
 ### 1. Full Pipeline (Recommended)
 
@@ -52,7 +62,10 @@ make all
 
 ### 2. Run Full Evaluation
 
-Tests the entire attack corpus across all architectures:
+Runs the historical parametric simulation over the legacy 950-attack corpus for
+four modeled architectures: 950 × 4 = 3,800 simulated attack instances. This
+artifact has no benign arm, so it provides no measured FPR, precision, F1 or
+field-performance bound.
 
 ```bash
 uv run python scripts/run_full_evaluation.py
@@ -72,7 +85,9 @@ uv run python scripts/run_ablation.py
 
 ### 4. Run Multi-Seed Stability Analysis
 
-Measures detection rate stability across 30 random seeds, computing coefficient of variation (CV) for overall, per-architecture, and per-category metrics:
+Measures the architecture-agnostic pipeline across 30 seeds, with 100 stratified
+attacks and 120 benign messages per seed. It computes overall and per-category
+coefficients of variation (CV), not per-architecture measurements:
 
 ```bash
 uv run python scripts/run_multi_seed.py
@@ -114,9 +129,9 @@ uv run python scripts/generate_all_figures.py
 
 ## Validation Results Check
 
-After generating results, compare key metrics (overall detection rate, per-architecture TPR, per-category breakdown) against the values reported in the manuscript Tables 1–3 to confirm reproducibility.
+After generating results, compare registered metrics against the corresponding manuscript values and artifacts. For the multi-seed experiment these include overall TPR, benign-arm FPR and per-category breakdowns; its architecture-agnostic design has no per-architecture TPR. Keep the full-evaluation simulation's modeled architecture ceilings distinct from measured pipeline results.
 
 ## Requirements
 
-- Python 3.10+ (the suite is verified green on 3.10, 3.12 and 3.13)
+- Python 3.11+; CI targets the 3.11 floor and the exact primary runtime 3.15.2.
 - `numpy`, `scipy`, `matplotlib` (see `pyproject.toml`)

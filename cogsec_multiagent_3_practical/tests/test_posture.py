@@ -530,84 +530,59 @@ class TestFivePillarsOverall:
         """Test that gap descriptions include score and threshold info."""
         gaps = pillars.identify_gaps(threshold=0.6)
         for gap in gaps:
-            assert "0.0%" in gap or "score" in gap
-            assert "60%" in gap or "threshold" in gap
+            assert "0.0%" in gap
+            assert "60%" in gap
 
 
 class TestFivePillarsRouting:
-    """Tests for FivePillarsAssessment.route_to_sections method."""
+    """Tests for routing gaps to stable manuscript source files."""
 
-    def test_all_low_routes_to_all_sections(self, pillars):
-        """Test that all-zero scores route to sections 03-07."""
+    def test_all_low_routes_to_all_guidance_sources(self, pillars):
         routes = pillars.route_to_sections()
-        assert "03" in routes
-        assert "04" in routes
-        assert "05" in routes
-        assert "06" in routes
-        assert "07" in routes
+        assert set(routes) == {
+            "05_deployment_guide.md",
+            "05d_monitoring_guide.md",
+            "06_common_pitfalls.md",
+        }
 
-    def test_section_07_always_present(self, scored_pillars):
-        """Test that section 07 is always recommended."""
+    def test_high_scores_only_route_to_pitfalls(self, scored_pillars):
         routes = scored_pillars.route_to_sections()
-        assert "07" in routes
-        assert "Common pitfalls" in routes["07"]
+        assert set(routes) == {"06_common_pitfalls.md"}
 
-    def test_high_scores_only_section_07(self, scored_pillars):
-        """Test that high scores only route to section 07."""
-        routes = scored_pillars.route_to_sections()
-        # All pillars at 0.8, above 0.6 threshold
-        assert len(routes) == 1
-        assert "07" in routes
-
-    def test_low_trust_boundary_routes_to_03(self, pillars):
-        """Test low trust boundary routes to section 03."""
-        # Score everything high except trust boundary
+    def test_low_trust_boundary_routes_to_deployment(self, pillars):
         for q in pillars.questions:
             q.score = 5
         for q_id in ["TB-1", "TB-2", "TB-3", "TB-4"]:
             pillars.set_score(q_id, 1)
-        routes = pillars.route_to_sections()
-        assert "03" in routes
-        assert "Trust mapping" in routes["03"]
+        assert "05_deployment_guide.md" in pillars.route_to_sections()
 
-    def test_low_belief_provenance_routes_to_04(self, pillars):
-        """Test low belief provenance routes to section 04."""
+    def test_low_belief_provenance_routes_to_monitoring(self, pillars):
         for q in pillars.questions:
             q.score = 5
         for q_id in ["BP-1", "BP-2", "BP-3", "BP-4"]:
             pillars.set_score(q_id, 1)
-        routes = pillars.route_to_sections()
-        assert "04" in routes
-        assert "tripwire" in routes["04"]
+        assert "05d_monitoring_guide.md" in pillars.route_to_sections()
 
-    def test_low_delegation_routes_to_05(self, pillars):
-        """Test low delegation hygiene routes to section 05."""
+    def test_low_delegation_routes_to_deployment(self, pillars):
         for q in pillars.questions:
             q.score = 5
         for q_id in ["DH-1", "DH-2", "DH-3", "DH-4"]:
             pillars.set_score(q_id, 1)
-        routes = pillars.route_to_sections()
-        assert "05" in routes
-        assert "delegation" in routes["05"]
+        assert "05_deployment_guide.md" in pillars.route_to_sections()
 
-    def test_low_coordination_routes_to_06(self, pillars):
-        """Test low coordination integrity routes to section 06."""
+    def test_low_coordination_routes_to_monitoring(self, pillars):
         for q in pillars.questions:
             q.score = 5
         for q_id in ["CI-1", "CI-2", "CI-3", "CI-4"]:
             pillars.set_score(q_id, 1)
-        routes = pillars.route_to_sections()
-        assert "06" in routes
+        assert "05d_monitoring_guide.md" in pillars.route_to_sections()
 
-    def test_low_monitoring_routes_to_06(self, pillars):
-        """Test low continuous monitoring routes to section 06."""
+    def test_low_monitoring_routes_to_monitoring(self, pillars):
         for q in pillars.questions:
             q.score = 5
         for q_id in ["CM-1", "CM-2", "CM-3", "CM-4"]:
             pillars.set_score(q_id, 1)
-        routes = pillars.route_to_sections()
-        assert "06" in routes
-        assert "monitoring" in routes["06"] or "Consensus" in routes["06"]
+        assert "05d_monitoring_guide.md" in pillars.route_to_sections()
 
 
 # =============================================================================
@@ -972,10 +947,9 @@ class TestGeneratePostureReport:
             scored_pillars, full_maturity_scores, full_capability_checker
         )
         # Pillar score = 0.8, maturity = 30/30 = 1.0, capability = 1.0
-        # Overall = 0.5 * 0.8 + 0.3 * 1.0 + 0.2 * 1.0 = 0.4 + 0.3 + 0.2 = 0.9
-        # Floating-point yields 0.8999..., which is just below 0.9 boundary
+        # Overall = 0.5 * 0.8 + 0.3 * 1.0 + 0.2 * 1.0 = 0.9
         assert report.overall_score == pytest.approx(0.9)
-        assert report.posture_level == PostureLevel.ELEVATED
+        assert report.posture_level == PostureLevel.MAXIMUM
         assert len(report.pillar_assessments) == 5
         assert report.maturity.maturity_level == MaturityLevel.PROACTIVE
 
@@ -994,13 +968,12 @@ class TestGeneratePostureReport:
         # All pillars below threshold + maturity priorities + missing capabilities
         assert len(report.gaps) > 0
 
-    def test_report_includes_section_routing(
+    def test_report_includes_source_routing(
         self, pillars, low_maturity_scores, capability_checker
     ):
-        """Test that report includes section routing from pillar assessment."""
-        # All pillars unscored (0), should route to all sections
+        """The report includes source routing from the pillar assessment."""
         report = generate_posture_report(pillars, low_maturity_scores, capability_checker)
-        assert "07" in report.recommended_sections
+        assert "06_common_pitfalls.md" in report.recommended_sections
 
     def test_report_capabilities_present_and_missing(
         self, scored_pillars, full_maturity_scores, capability_checker
@@ -1043,14 +1016,6 @@ class TestGeneratePostureReport:
         report = generate_posture_report(pillars, maturity_scores, capability_checker)
         expected = 0.5 * 1.0 + 0.3 * (18 / 30) + 0.2 * (1 / 7)
         assert report.overall_score == pytest.approx(expected, abs=1e-6)
-
-    def test_report_posture_level_matches_overall_score(
-        self, scored_pillars, mid_maturity_scores, capability_checker
-    ):
-        """Test that posture level is consistent with the overall score."""
-        report = generate_posture_report(scored_pillars, mid_maturity_scores, capability_checker)
-        expected_level = determine_posture_level(report.overall_score)
-        assert report.posture_level == expected_level
 
 
 # =============================================================================

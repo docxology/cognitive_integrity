@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Tests for verification.py module."""
 
+import logging
 import tempfile
 from pathlib import Path
 
@@ -324,48 +325,68 @@ As shown in \cref{fig:test}.
             assert result is True
 
 
-class TestManuscriptVerifierPatterns:
-    """Tests for regex patterns in ManuscriptVerifier."""
+class TestManuscriptVerifierRealSyntax:
+    """Consumer-facing citation, label, and diagnostic behavior."""
 
-    def test_cite_pattern(self):
-        """Test citation pattern matching."""
+    def test_citations_accept_pandoc_and_latex_variants(self):
         from src.verification import ManuscriptVerifier
 
         with tempfile.TemporaryDirectory() as tmpdir:
-            verifier = ManuscriptVerifier(tmpdir)
+            tmppath = Path(tmpdir)
+            (tmppath / "references.bib").write_text(
+                "@article{smith2024,}\n@article{jones2023,}"
+            )
+            (tmppath / "manuscript.md").write_text(
+                "Native [@smith2024], suppressed [-@jones2023], and "
+                "in-text @smith2024 citations.\n"
+                r"\citep[see][p. 2]{smith2024,jones2023}; "
+                r"\parencite*{smith2024}; \Citet{jones2023}." "\n"
+                "Email contact@example.com is not a citation."
+            )
+            assert ManuscriptVerifier(tmpdir).check_citations() is True
 
-            text = r"\cite{key1} and \cite{key2,key3}"
-            matches = verifier.cite_pattern.findall(text)
+    def test_missing_pandoc_citation_is_reported(self, caplog):
+        from src.verification import ManuscriptVerifier, logger
 
-            assert "key1" in matches
-            assert "key2,key3" in matches
+        logger.addHandler(caplog.handler)
+        caplog.set_level(logging.WARNING, logger=logger.name)
+        try:
+            with tempfile.TemporaryDirectory() as tmpdir:
+                tmppath = Path(tmpdir)
+                (tmppath / "references.bib").write_text("@article{known,}")
+                (tmppath / "manuscript.md").write_text("Missing [@unknown_key].")
+                assert ManuscriptVerifier(tmpdir).check_citations() is False
+        finally:
+            logger.removeHandler(caplog.handler)
+        assert "Missing citation key: 'unknown_key'" in caplog.text
 
-    def test_label_pattern(self):
-        """Test label pattern matching."""
+    def test_labels_ignore_additional_pandoc_attributes(self):
         from src.verification import ManuscriptVerifier
 
         with tempfile.TemporaryDirectory() as tmpdir:
-            verifier = ManuscriptVerifier(tmpdir)
+            tmppath = Path(tmpdir)
+            (tmppath / "references.bib").write_text("")
+            (tmppath / "manuscript.md").write_text(
+                "# Introduction {#sec:intro .unnumbered}\n\n"
+                "![Result](figure.png){#fig:result width=80%}\n\n"
+                r"See \Cref{sec:intro} and \autoref*{fig:result}."
+            )
+            assert ManuscriptVerifier(tmpdir).check_labels_and_refs() is True
 
-            text = r"\label{fig:test} and \label{sec:intro}"
-            matches = verifier.label_pattern.findall(text)
+    def test_undefined_reference_variant_is_reported(self, caplog):
+        from src.verification import ManuscriptVerifier, logger
 
-            assert "fig:test" in matches
-            assert "sec:intro" in matches
-
-    def test_ref_pattern(self):
-        """Test reference pattern matching."""
-        from src.verification import ManuscriptVerifier
-
-        with tempfile.TemporaryDirectory() as tmpdir:
-            verifier = ManuscriptVerifier(tmpdir)
-
-            text = r"\ref{fig:1} and \cref{table:2} and \autoref{sec:3}"
-            matches = verifier.ref_pattern.findall(text)
-
-            assert ("ref", "fig:1") in matches
-            assert ("cref", "table:2") in matches
-            assert ("autoref", "sec:3") in matches
+        logger.addHandler(caplog.handler)
+        caplog.set_level(logging.WARNING, logger=logger.name)
+        try:
+            with tempfile.TemporaryDirectory() as tmpdir:
+                tmppath = Path(tmpdir)
+                (tmppath / "references.bib").write_text("")
+                (tmppath / "manuscript.md").write_text(r"See \Cref{sec:missing}.")
+                assert ManuscriptVerifier(tmpdir).check_labels_and_refs() is False
+        finally:
+            logger.removeHandler(caplog.handler)
+        assert r"Undefined reference: '\Cref{sec:missing}'" in caplog.text
 
 
 class TestManuscriptVerifierRunAll:
@@ -427,14 +448,31 @@ class TestVerificationCoveragePaths:
     """Round-7 additions: cover previously-unexercised branches (real checks, no mocks)."""
 
     def test_configure_logging_writes_log_file(self):
-        """_configure_verification_logging creates manuscript_verification.log in log_dir."""
-        from src.verification import _configure_verification_logging
+        """Owned handlers write records even if root logging is configured."""
+        from src.verification import _configure_verification_logging, logger
 
-        with tempfile.TemporaryDirectory() as tmpdir:
-            _configure_verification_logging(tmpdir)
-            log_path = Path(tmpdir) / "manuscript_verification.log"
-            assert log_path.exists()
-            assert log_path.stat().st_size >= 0
+        for handler in list(logger.handlers):
+            if getattr(handler, "_cif_verification_handler", False):
+                logger.removeHandler(handler)
+                handler.close()
+        root = logging.getLogger()
+        root_handler = logging.NullHandler()
+        root.addHandler(root_handler)
+        try:
+            with tempfile.TemporaryDirectory() as tmpdir:
+                _configure_verification_logging(tmpdir)
+                logger.info("verification-file-log-probe")
+                for handler in logger.handlers:
+                    if getattr(handler, "_cif_verification_handler", False):
+                        handler.flush()
+                log_text = (Path(tmpdir) / "manuscript_verification.log").read_text()
+                assert "verification-file-log-probe" in log_text
+        finally:
+            root.removeHandler(root_handler)
+            for handler in list(logger.handlers):
+                if getattr(handler, "_cif_verification_handler", False):
+                    logger.removeHandler(handler)
+                    handler.close()
 
     def test_escapes_root_detects_absolute_and_parent(self):
         """_escapes_root rejects absolute and parent-relative paths, accepts local."""
@@ -529,17 +567,31 @@ class TestVerificationCoveragePaths:
 
 
     def test_configure_logging_idempotent(self):
-        """_configure_verification_logging returns early when logging is already configured."""
-        import logging
-
+        """Repeated setup does not duplicate handlers; unrelated handlers do not block it."""
         from src.verification import _configure_verification_logging, logger
 
-        handler = logging.NullHandler()
-        logger.addHandler(handler)
+        for handler in list(logger.handlers):
+            if getattr(handler, "_cif_verification_handler", False):
+                logger.removeHandler(handler)
+                handler.close()
+        external_handler = logging.NullHandler()
+        logger.addHandler(external_handler)
         try:
-            _configure_verification_logging(None)
+            with tempfile.TemporaryDirectory() as tmpdir:
+                _configure_verification_logging(tmpdir)
+                _configure_verification_logging(tmpdir)
+                owned = [
+                    handler
+                    for handler in logger.handlers
+                    if getattr(handler, "_cif_verification_handler", False)
+                ]
+                assert len(owned) == 2
         finally:
-            logger.removeHandler(handler)
+            logger.removeHandler(external_handler)
+            for handler in list(logger.handlers):
+                if getattr(handler, "_cif_verification_handler", False):
+                    logger.removeHandler(handler)
+                    handler.close()
 
 
 class TestManuscriptVerifierRound8:

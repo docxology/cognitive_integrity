@@ -174,6 +174,8 @@ class CognitiveTripwire:
             drift = abs(actual_belief - canary.expected_belief)
             alert = TripwireAlert(canary=canary, actual_belief=actual_belief, drift=drift)
             self._alerts.append(alert)
+            for handler in self._alert_handlers:
+                handler(alert)
             return alert
 
         return None

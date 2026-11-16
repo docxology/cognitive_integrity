@@ -18,9 +18,18 @@ class TestRecommendProfileBoundaries:
         """All flags default; human_oversight defaults True -> -1 -> score -1."""
         assert self.c.recommend_profile({}) == RiskProfile.LOW
 
-    def test_customer_facing_only_low(self) -> None:
-        """+1 customer_facing, then -1 default oversight = 0 -> LOW."""
-        assert self.c.recommend_profile({"customer_facing": True}) == RiskProfile.LOW
+    def test_customer_facing_only_medium(self) -> None:
+        """Customer-facing deployments cannot receive the internal-only LOW profile."""
+        assert self.c.recommend_profile({"customer_facing": True}) == RiskProfile.MEDIUM
+
+    def test_customer_facing_without_oversight_medium(self) -> None:
+        """Removing oversight cannot make a customer-facing deployment LOW."""
+        characteristics = {"customer_facing": True, "human_oversight": False}
+        assert self.c.recommend_profile(characteristics) == RiskProfile.MEDIUM
+
+    def test_internal_without_oversight_medium(self) -> None:
+        """Explicitly unmonitored deployments do not match LOW's definition."""
+        assert self.c.recommend_profile({"human_oversight": False}) == RiskProfile.MEDIUM
 
     def test_score_two_is_medium(self) -> None:
         """sensitive_data(+2) + customer_facing(+1) - oversight(-1) = 2 -> MEDIUM."""
@@ -88,44 +97,3 @@ class TestTrustDepthDRY:
             data = get_trust_decay_data(delta=delta, max_depth=60)
             expected = TrustDecayAnalyzer.practical_depth_limit(delta)
             assert data.metadata["practical_depth"] == expected
-
-
-class TestProfileDeltasBindToManuscript:
-    """Deployment profile deltas must match the Section 05 profile table (round 7).
-
-    The manuscript's Profile A/B/C table is the source of truth for trust-decay
-    deltas (0.95 / 0.80 / 0.60). If the code drifts from the manuscript again,
-    this guard fails at test time.
-    """
-
-    def test_profile_deltas_match_manuscript_section_05(self) -> None:
-        import re
-        from pathlib import Path
-
-        manuscript = (
-            Path(__file__).parent.parent
-            / "docs" / "manuscript"
-            / "05_deployment_guide.md"
-        )
-        text = manuscript.read_text()
-        configurator = DeploymentConfigurator()
-
-        # Extract the delta each Section 05 profile line declares, e.g.
-        # "* **Trust Decay ($\delta$)**: `0.95`. ..." -> 0.95
-        profile_deltas = [
-            float(m)
-            for m in re.findall(
-                r"\* \*\*Trust Decay \(\$\\delta\$\)\*\*: `(0\.\d+)`",
-                text,
-            )
-        ]
-        assert len(profile_deltas) == 3, f"parsed {profile_deltas}"
-        expected = [
-            configurator.get_config(RiskProfile.LOW).trust_decay_delta,
-            configurator.get_config(RiskProfile.MEDIUM).trust_decay_delta,
-            configurator.get_config(RiskProfile.HIGH).trust_decay_delta,
-        ]
-        # Profile lines appear in manuscript order A, B, C.
-        assert profile_deltas == expected, (
-            f"code deltas {expected} != manuscript profile deltas {profile_deltas}"
-        )

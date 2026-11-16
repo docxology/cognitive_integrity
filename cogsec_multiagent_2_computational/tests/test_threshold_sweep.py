@@ -14,10 +14,10 @@ from pathlib import Path
 
 import pytest
 
-from attacks.corpus import AttackCorpus
-from core.firewall import FirewallConfig
-from evaluation.benign_corpus import BenignCorpus
-from evaluation.threshold_sweep import (
+from src.attacks.corpus import AttackCorpus
+from src.core.firewall import FirewallConfig
+from src.evaluation.benign_corpus import BenignCorpus
+from src.evaluation.threshold_sweep import (
     sweep_quarantine_threshold,
     sweep_reject_threshold,
 )

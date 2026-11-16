@@ -8,25 +8,25 @@ This section quantifies the contribution of individual defense components and ch
 
 ## Defense Component Contributions {#sec:component-removal}
 
-\cref{fig:ablation-study} visualizes the detection-rate impact of removing each CIF component from the full ensemble. One component dominates: removing the Invariants module costs $\Delta\text{TPR} \approx -0.650$ of the pipeline's 0.890, and the Tripwire contributes $\approx -0.020$. Every other component, Detection and the Firewall included, has no measurable independent contribution on this corpus.
+\cref{fig:ablation-study} visualizes the detection-rate impact of removing each CIF component from the full ensemble. One component dominates: removing the Invariants module costs $\Delta\text{TPR} \approx -0.670$ of the pipeline's 0.890, and the Tripwire contributes $\approx -0.010$. Every other component, Detection and the Firewall included, has no measurable independent contribution on this corpus.
 
 The reason one module dominates is worth stating rather than burying, because it is the design principle the whole pipeline turns on. The Invariants module scores **demand structure**: a verb acting on a sensitive object, across five named invariants. It does not score topic nouns. A detector keyed on the presence of "token" or "credential" fires on a benign document describing a rate limiter's token bucket and misses 1,345 of the 1,475 attacks, because attacks *demand* things where documents *mention* them, and the vocabulary is the same either way. That use-versus-mention distinction is what the module measures, and it is why the components that received the most pattern engineering --- Detection and the Firewall --- now measure at or near zero marginal contribution: everything they catch, this catches too.
 
 Detection and the Firewall, the components carrying the most pattern engineering, measure at or near zero marginal contribution, because everything they catch the Invariants module catches first.
 
-![Ablation Study: Defense Component Contribution. Horizontal bar chart of the detection-rate cost of removing each CIF component from the full ensemble (prototype pipeline, integrated corpus, 100-attack stratified sample). The Invariants module dominates, followed by Tripwire ($\approx -0.020$), Consensus ($\approx +0.000$), Detection ($\approx +0.000$), Firewall ($\approx +0.000$), Provenance ($\approx +0.000$), Sandbox ($\approx +0.000$), and Trust Calculus ($\approx +0.000$); Consensus, Detection, Firewall, Provenance, Sandbox, and Trust Calculus show no measurable independent contribution --- not because they detect nothing in isolation, but because everything they catch on this corpus the Invariants module catches too, which is what a leave-one-out delta cannot distinguish. Three pairs tie for strongest beyond additive prediction at $\approx +0.050$: Consensus + Sandbox, Tripwire + Consensus and Tripwire + Sandbox. All values from \texttt{output/data/ablation\_results.json}.](figures/ablation_study.pdf){#fig:ablation-study width=95%}
+![Ablation Study: Defense Component Contribution. Horizontal bar chart of the detection-rate cost of removing each CIF component from the full ensemble (prototype pipeline, integrated corpus, 100-attack stratified sample). The Invariants module dominates, followed by Tripwire ($\approx -0.010$), Consensus ($\approx +0.000$), Detection ($\approx +0.000$), Firewall ($\approx +0.000$), Provenance ($\approx +0.000$), Sandbox ($\approx +0.000$), and Trust Calculus ($\approx +0.000$); Consensus, Detection, Firewall, Provenance, Sandbox, and Trust Calculus show no measurable independent contribution --- not because they detect nothing in isolation, but because everything they catch on this corpus the Invariants module catches too, which is what a leave-one-out delta cannot distinguish. Three pairs tie for the largest improvement over the better singleton at $\approx +0.050$: Consensus + Sandbox, Tripwire + Consensus and Tripwire + Sandbox. All values from \texttt{output/data/ablation\_results.json}.](figures/ablation_study.pdf){#fig:ablation-study width=95%}
 
 The ablation analysis quantifies each defense component's marginal contribution on the prototype pipeline evaluated against a stratified 100-attack ablation corpus (\cref{tab:component-removal}).
 
-> **Methodology**: Results from `scripts/run_ablation.py` → `output/data/ablation_results.json`. The full pipeline achieves $\sim$89.0\% TPR on this corpus. That figure has to be read with its corpus in mind: the attack corpus is generated from templates, and a detector keyed on demand structure is being asked to recognise generated demands, so 89.0\% is an upper bound relative to adversarial text written by a human trying to evade it. The false-positive side of this particular run is *not* measured against `BenignCorpus`: `src/ablation/runner.py` scores the 50 plainly benign strings in `BENIGN_MESSAGES`, so the 0.000 FPR in \cref{tab:component-removal} is a floor and not an operating point. The number to watch is the rate against `BenignCorpus`, half of which is a deliberately hard stratum of legitimate messages carrying attack-adjacent vocabulary: on the full 1,475-attack corpus the shipped maximum rule scores TPR 0.849 at FPR 0.150 with $\tau = 0.5$, and TPR 0.752 at FPR 0.000 with $\tau = 0.565$ (`output/data/taxonomy_evaluation_results.json`).
+> **Methodology**: Results from `scripts/run_ablation.py` → `output/data/ablation_results.json`. The full pipeline achieves $\sim$89.0\% TPR on this corpus. That figure has to be read with its corpus in mind: the attack corpus is generated from templates, and a detector keyed on demand structure is being asked to recognise generated demands. The 89.0\% result is specific to this 100-attack ablation sample and does not establish performance on human-written adaptive attacks or in deployment. The false-positive side of this particular run is *not* measured against `BenignCorpus`: `src/ablation/runner.py` scores the 50 plainly benign strings in `BENIGN_MESSAGES`, so the 0.000 FPR in \cref{tab:component-removal} is a floor and not an operating point. The distinct full-corpus evaluation uses 1,475 attacks and 120 `BenignCorpus` messages, half deliberately hard examples carrying attack-adjacent vocabulary. In `output/data/taxonomy_evaluation_results.json`, the deployed full configuration's module verdicts yield TPR 0.873220 and FPR 0.166667. A separate score-threshold analysis of `PipelineResult.score` yields TPR 0.865085 at FPR 0.150 with $\tau = 0.5$, and TPR 0.768136 at FPR 0.000 with $\tau = 0.565$. Those sweep points are not interchangeable with deployed `PipelineResult.detected` verdicts: stage-level rejection can flag a message even when its aggregate score falls below the sweep threshold.
 
 Table: Component removal impact analysis (prototype pipeline, integrated corpus, 100-attack stratified sample). {#tab:component-removal}
 
 | Removed Component | TPR | $\Delta$ TPR | Interpretation |
 | --- | --- | --- | --- |
-| Invariants | 0.240 | $\approx -0.650$ | Dominant: demand structure across five named invariants |
+| Invariants | 0.220 | $\approx -0.670$ | Dominant: demand structure across five named invariants |
 | Firewall | 0.890 | $\approx +0.000$ | Pattern matching for known injection strings, context-weighted |
-| Tripwires | 0.870 | $\approx -0.020$ | Canary-belief shift detection |
+| Tripwires | 0.880 | $\approx -0.010$ | Canary-belief shift detection |
 | Detection module | 0.890 | $\approx +0.000$ | Subsumed: what it catches, Invariants catches first |
 | Trust Calculus | 0.890 | $\approx +0.000$ | No measurable independent contribution on this corpus |
 | Consensus | 0.890 | $\approx +0.000$ | No measurable independent contribution on this corpus |
@@ -43,7 +43,7 @@ Minimal viable configuration analysis---identifying component sets achieving spe
 
 ## Component Synergy Analysis {#sec:synergy}
 
-Synergy score = Actual combined effect $-$ Sum of individual effects (\cref{tab:synergy}). Only the top 5 synergy pairs from the real ablation data are reported; pairs not listed showed no measurable synergy on the 100-attack ablation corpus.
+Synergy score $= \text{combined TPR} - \max(\text{TPR}_a,\text{TPR}_b)$: the pair's improvement over its better singleton, not improvement beyond the sum of the singleton rates (\cref{tab:synergy}). Only the top 5 synergy pairs from the real ablation data on the 100-attack ablation corpus are reported; the table is not an exhaustive list of all evaluated pairs.
 
 Table: Component synergy analysis (real pipeline, 100-attack ablation corpus). {#tab:synergy}
 
@@ -55,7 +55,7 @@ Table: Component synergy analysis (real pipeline, 100-attack ablation corpus). {
 | Tripwire + Invariants | $\approx +0.040$ | Canary monitoring + invariant-violation detection |
 | Detection + Consensus | $\approx +0.040$ | Text-feature analysis + quorum-subversion detection |
 
-**Finding**: The top synergy tier (consensus+sandbox and tripwire+consensus and tripwire+sandbox, all $\approx +0.050$) is three pairs wide, and every one of them joins two modules whose individual marginal contribution is zero. That is what a synergy score is for: a pair can be worth more together than the sum of two numbers that are both nothing. The second tier ($\approx +0.040$) pairs tripwire with invariants and detection with consensus. No pair involving the firewall reaches the top five, the firewall+detection pair included. Synergies are measured over coalitions that mostly exclude the invariants module, which is why modules the marginal-removal column reports as contributing nothing are the ones that dominate here. See \cref{tab:real-synergy} for effect sizes and confidence intervals.
+**Finding**: The top synergy tier (consensus+sandbox and tripwire+consensus and tripwire+sandbox, tripwire+consensus, and tripwire+sandbox, all $\approx +0.050$) is three pairs wide. Each pair improves on its better singleton by 0.050 TPR: consensus+sandbox reaches 0.110 versus singleton rates 0.060 and 0.050; tripwire+consensus reaches 0.110 versus 0.050 and 0.060; and tripwire+sandbox reaches 0.100 versus 0.050 and 0.050. Their zero leave-one-out deltas in the full pipeline do not mean that their singleton detectors are unexercised. The second tier ($\approx +0.040$) pairs tripwire with invariants and detection with consensus. No pair involving the firewall reaches the top five, the firewall+detection pair included. Synergy over the better singleton is neither excess over the sum of singleton rates nor proof of independence. See \cref{tab:real-synergy} for effect sizes and confidence intervals.
 
 ## Agent Count Scaling {#sec:agent-scaling}
 
@@ -83,7 +83,7 @@ Table: Performance scaling with agent count. {#tab:agent-scaling}
 | 50 | 3.954 | [3.906, 4.002] | 0.08 | 3.872 | 4.181 |
 | 100 | 10.175 | [10.087, 10.264] | 0.31 | 9.948 | 10.644 |
 
-$^\ddagger$\textit{95\% CIs computed via bootstrap resampling ($B = 1{,}000$ iterations) over 10 independent runs per agent count. Detection time measured end-to-end including network simulation latency.}
+$^\ddagger$\textit{95\% CIs computed via bootstrap resampling ($B = 1{,}000$ iterations) over the 15 timed framework-workload rounds per agent count. Latency covers the trust-matrix construction and $n$ pipeline evaluations described above; it is not a network-consensus measurement.}
 
 ## Scaling Regression Models {#sec:regression}
 
@@ -123,13 +123,13 @@ Memory growth is **quadratic**, not linear, across the measured range: $\gamma_2
 ($p < 0.0001$, CI excluding zero) and dominates beyond roughly a dozen agents, while the negative
 linear term is a curve-fitting artifact of the small-$n$ end rather than a saving. This is the
 $O(n^2)$ trust-matrix storage behaving exactly as the complexity analysis predicts, and it is
-visible in the measurement rather than merely anticipated. The intercept ($\gamma_0 \approx 7.5$ KiB) is baseline framework overhead independent of agent count, and the quadratic term ($\gamma_2 \approx 0.033$ KiB per agent-pair) is the trust matrix itself. The practical consequence is the opposite of a linear reading: memory is negligible at deployment scales in the tens of agents (0.31 MB at $n = 100$) but grows as $n^2$, so a colony an order of magnitude larger pays a hundredfold, not tenfold.
+visible in the measurement rather than merely anticipated. The intercept ($\gamma_0 \approx 7.5$ KiB) is baseline framework overhead independent of agent count, and the quadratic term ($\gamma_2 \approx 0.033$ KiB per agent-pair) is the trust matrix itself. Within the measured range, the quadratic contribution therefore becomes increasingly important; these measurements do not establish memory behavior at larger agent counts or in deployment.
 
-\textit{Note: The measured peak traced allocation at $n=100$ is 0.31 MB, and the fitted model is quadratic. The $O(n^2)$ trust-matrix storage would become dominant only at larger scales ($n > 500$). Practitioners should reference the directly measured values in the table for deployment sizing.}
+\textit{Note: The measured peak traced allocation at $n=100$ is 0.31 MB. The fitted quadratic term already accounts for most of that allocation; the directly measured values and fitted model apply only to this 2--100-agent framework workload, not to deployment sizing beyond that range.}
 
 ## Message Volume Scaling {#sec:volume-scaling}
 
-\cref{tab:volume-scaling} shows detection rate and latency under increasing message volume, with saturation at $\sim$5000 msg/sec.
+\cref{tab:volume-scaling} shows detection rate and latency under increasing message volume. The sweep keeps up through the tested target of 2{,}000 messages/sec and falls behind at 4{,}000 messages/sec; detection remains 0.930 at every tested rate.
 
 ![Throughput has a ceiling; detection does not move. **Panel A** plots achieved against target arrival rate with the identity line marked: while the curve tracks the line the pipeline is keeping up, and where it leaves the line it is not. **Panel B** shows CPU consumed and detection rate over the same sweep. Detection is flat because nothing in the pipeline carries state between messages, so arrival rate cannot change a verdict. Single process, single thread; values from `output/data/load_sweep.json`.](figures/load_saturation.pdf){#fig:load-saturation width=95%}
 
@@ -153,8 +153,8 @@ Table: Performance scaling with message volume. {#tab:volume-scaling}
 ## Summary {#sec:ablation-summary}
 
 \begin{enumerate}
-\item **Component hierarchy (real prototype pipeline, 100-attack ablation corpus)**: Invariants $\gg$ Tripwire $>$ Consensus $\approx$ Detection module $\approx$ Firewall $\approx$ Provenance $\approx$ Sandbox $\approx$ Trust Calculus. This ordering reflects the current adapter implementations; the three bottom-ranked components may show contributions on larger or more diverse corpora.
-\item **Coverage gap**: Full prototype pipeline achieves $\sim$89.0\% TPR on the 100-attack ablation corpus; multi-seed analysis shows $\sim$86.3\% mean DR across 30 seeds (Claude Code). The parametric simulation achieves 96--100\% (\cref{sec:parametric-analysis}). The gap reflects adapter implementation maturity, not fundamental architectural limitations.
-\item **Scalability**: Approximately linear time and memory scaling up to 100 agents. The $O(n^2)$ trust-matrix storage becomes dominant only at larger scales ($n > 500$).
-\item **Throughput limit**: $\sim$5000 msg/sec before detection degradation.
+\item **Component hierarchy (real prototype pipeline, 100-attack ablation corpus)**: Invariants $\gg$ Tripwire $>$ Consensus $\approx$ Detection module $\approx$ Firewall $\approx$ Provenance $\approx$ Sandbox $\approx$ Trust Calculus. This ordering reflects the current adapter implementations; zero-marginal components may show contributions on larger or more diverse corpora.
+\item **Coverage results**: Full prototype pipeline achieves $\sim$89.0\% TPR on the 100-attack ablation corpus; the architecture-agnostic multi-seed analysis shows $\sim$86.3\% mean detection rate over 30 seeds, each with 100 stratified attacks and 120 benign messages. The parametric simulation reports 96--100\% under its separate design model (\cref{sec:parametric-analysis}). These distinct modes do not support causal attribution of their differences to adapter maturity or architecture.
+\item **Scalability**: Over the measured 2--100-agent framework workload, both latency and peak traced memory have statistically significant quadratic terms; neither is adequately summarized as linear scaling.
+\item **Throughput limit**: The single-process, single-thread sweep keeps up at 2{,}000 messages/sec but not at 4{,}000 messages/sec, and detection remains 0.930 at every tested rate rather than degrading with load.
 \end{enumerate}

@@ -13,14 +13,13 @@ NO MOCKS. All tests use analytical values or real computations.
 
 from __future__ import annotations
 
-# ``statistics`` here is this project's ``src/statistics`` package, which
-# pytest puts on sys.path via ``pythonpath = ["src"]``.  Importing it as
-# ``src.statistics`` instead loads a *second*, distinct copy of the same
-# module -- ``src.statistics.bayesian`` and ``statistics.bayesian`` end up as
-# separate objects with separate ``BetaPosterior`` classes, so an isinstance
-# check across the boundary silently fails.  Every other statistics import in
-# the repo uses the bare form; this one is kept in line with it.
-from statistics.bayesian import (
+import numpy as np
+import pytest
+from scipy import stats
+
+# Canonical ``src.statistics`` imports avoid shadowing the standard-library
+# ``statistics`` module and preserve a single package module identity.
+from src.statistics.bayesian import (
     BetaPosterior,
     CalibrationResult,
     bayes_factor_two_proportions,
@@ -28,10 +27,6 @@ from statistics.bayesian import (
     calibration_analysis,
     power_analysis_beta_binomial,
 )
-
-import numpy as np
-import pytest
-from scipy import stats
 
 
 def test_posterior_mean_matches_analytical():

@@ -52,24 +52,24 @@ from pathlib import Path
 from typing import Any, Callable, Dict, List
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "src"))
+sys.path.insert(0, str(ROOT))
 
 import numpy as np
 
-from architectures.autogpt import AutoGPTAdapter
-from architectures.base import ArchitectureAdapter
-from architectures.claude_code import ClaudeCodeAdapter
-from architectures.crewai import CrewAIAdapter
-from architectures.langgraph import LangGraphAdapter
-from composition.factory import create_full_pipeline
-from core.trust import TrustMatrix
-from evaluation.benchmark import MemoryProfiler
-from evaluation.scalability import (
+from src.architectures.autogpt import AutoGPTAdapter
+from src.architectures.base import ArchitectureAdapter
+from src.architectures.claude_code import ClaudeCodeAdapter
+from src.architectures.crewai import CrewAIAdapter
+from src.architectures.langgraph import LangGraphAdapter
+from src.composition.factory import create_full_pipeline
+from src.core.trust import TrustMatrix
+from src.evaluation.benchmark import MemoryProfiler
+from src.evaluation.scalability import (
     RegressionInference,
     ScalabilityBenchmark,
     fit_with_inference,
 )
-from utils.random_seed import set_global_seed
+from src.utils.random_seed import set_global_seed
 
 DEFAULT_AGENT_COUNTS = [2, 3, 5, 7, 10, 15, 20, 30, 50, 100]
 

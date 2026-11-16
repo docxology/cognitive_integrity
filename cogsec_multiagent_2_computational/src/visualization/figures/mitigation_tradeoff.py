@@ -5,11 +5,10 @@ across rows. The comparison is two-dimensional and belongs on two axes: false
 positives against true positives, with the unmitigated pipeline as the origin
 of the comparison and Youden's J as the contour a point sits on.
 
-Drawn this way one fact is immediate that the table makes you compute. Two
-strategies sit directly above the baseline --- the same detection at none of
-the cost --- and the strategy the original table rated second-best sits far to
-the lower left, having bought a zero false-positive rate by discarding
-two-thirds of the detections.
+The measured points include the true-positive cost as well as the
+false-positive reduction. In particular, a zero false-positive rate is not a
+free improvement: some strategies also lower true-positive detection, while
+the combined strategy discards roughly two-thirds of the baseline detections.
 """
 
 from __future__ import annotations
@@ -106,7 +105,7 @@ def plot_mitigation_tradeoff(output_dir: str | Path = "output/figures") -> Figur
     axis.grid(True, alpha=0.3)
     axis.set_axisbelow(True)
     axis.set_title(
-        "Two mitigations are free; one is not",
+        "False-positive mitigation trade-offs",
         fontsize=FONTSIZE["base"] + 2, fontweight="bold",
     )
 

@@ -92,20 +92,25 @@ class OperatorPostureAssessment:
         """
         if not self.checklist:
             return AssessmentResult(
-                passed=True,
-                score=1.0,
-                risk_level=RiskLevel.LOW,
+                passed=False,
+                score=0.0,
+                risk_level=RiskLevel.CRITICAL,
                 findings=["No checklist items defined"],
                 recommendations=["Add security checks to the checklist"],
             )
 
         required_items = [item for item in self.checklist if item.required]
-        completed_required = [item for item in required_items if item.completed]
+        if not required_items:
+            return AssessmentResult(
+                passed=False,
+                score=0.0,
+                risk_level=RiskLevel.CRITICAL,
+                findings=["No required checklist items defined"],
+                recommendations=["Add required security checks to the checklist"],
+            )
 
-        if required_items:
-            score = len(completed_required) / len(required_items)
-        else:
-            score = 1.0
+        completed_required = [item for item in required_items if item.completed]
+        score = len(completed_required) / len(required_items)
 
         # Determine risk level based on score
         if score >= 0.95:
@@ -127,8 +132,15 @@ class OperatorPostureAssessment:
         if score < 0.8:
             recommendations.append("Review security posture configuration")
 
+        target_scores = {
+            PostureLevel.MINIMAL: 0.0,
+            PostureLevel.STANDARD: 0.5,
+            PostureLevel.ELEVATED: 0.75,
+            PostureLevel.MAXIMUM: 0.9,
+        }
+
         return AssessmentResult(
-            passed=score >= 0.8,
+            passed=score >= target_scores[self.posture_level] and risk_level != RiskLevel.CRITICAL,
             score=score,
             risk_level=risk_level,
             findings=findings,
@@ -184,7 +196,11 @@ class RiskAssessmentTool:
         )
 
     def calculate_overall_risk(self) -> RiskLevel:
-        """Calculate overall risk level.
+        """Calculate mean likelihood-weighted exposure across all risk factors.
+
+        Every supplied factor contributes to the denominator, including
+        zero-likelihood factors. This is an aggregate exposure average, not a
+        worst-case scenario classifier.
 
         Returns:
             Overall risk level based on all factors.

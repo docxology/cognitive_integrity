@@ -28,9 +28,9 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "src"))
+sys.path.insert(0, str(ROOT))
 
-from manuscript.claim_registry import CLAIMS, GroundTruth, verify_claims
+from src.manuscript.claim_registry import CLAIMS, GroundTruth, verify_claims
 
 
 def build_parser() -> argparse.ArgumentParser:

@@ -19,31 +19,31 @@ Core implementations for the Cognitive Integrity Framework (CIF).
 
 ### Trust Evaluation
 ```python
-from src.trust import TrustCalculus
+from src.core.trust import TrustCalculus
 calc = TrustCalculus()
 trust = calc.compute_trust(base_trust=0.8, reputation=0.9, context_trust=0.7)
 ```
 
 ### Firewall Classification
 ```python
-from src.firewall import CognitiveFirewall, Classification
+from src.core.firewall import CognitiveFirewall, Classification
 fw = CognitiveFirewall()
 result = fw.classify("Hello world")  # Classification.ACCEPT
 ```
 
 ### Byzantine Consensus
 ```python
-from src.consensus import ByzantineConsensus, Vote
+from src.core.consensus import ByzantineConsensus, Vote
 consensus = ByzantineConsensus(n_agents=7)
 consensus.submit_vote(Vote("agent-0", "prop", 0.9))
 ```
 
 ### Tripwire Detection
 ```python
-from src.tripwire import CognitiveTripwire
+from src.core.tripwire import CognitiveTripwire
 tw = CognitiveTripwire()
-tw.add_identity_canary("agent-1")
-alerts = tw.check({"I am agent agent-1": 0.3})  # Returns alerts
+tw.add_identity_canary("1")
+alerts = tw.check({"I am agent 1": 0.3})  # One CRITICAL-severity alert
 ```
 
 ## Dependencies

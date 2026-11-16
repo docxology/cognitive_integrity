@@ -12,7 +12,7 @@ Provides:
 
 Typical use::
 
-    from manuscript.figure_registry import FigureRegistry, AutoNumberer
+    from src.manuscript.figure_registry import FigureRegistry, AutoNumberer
 
     registry = FigureRegistry()
     numberer = AutoNumberer(registry)

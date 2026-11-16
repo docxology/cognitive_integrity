@@ -100,7 +100,16 @@ class DriftDetector:
         p = np.clip(p, eps, 1 - eps)
         q = np.clip(q, eps, 1 - eps)
 
-        # Normalize to distributions
+        # A scalar confidence is a Bernoulli distribution, not a one-category
+        # categorical distribution (which would make every scalar KL zero).
+        if p.ndim == 0 or (p.ndim == 1 and p.size == 1):
+            p_val = float(p.ravel()[0])
+            q_val = float(q.ravel()[0])
+            return float(
+                p_val * np.log(p_val / q_val)
+                + (1.0 - p_val) * np.log((1.0 - p_val) / (1.0 - q_val))
+            )
+
         p = p / p.sum()
         q = q / q.sum()
 
@@ -196,8 +205,10 @@ class DriftDetector:
         for i in range(max(1, len(history_list) - n), len(history_list)):
             keys, values = history_list[i]
             current = dict(zip(keys, values))
-            _, score = self.is_anomalous(current, window=min(i, 10))
-            scores.append(score)
+            kl_div, max_delta = self._drift_from_slice(
+                history_list[:i], current, window=min(i, 10)
+            )
+            scores.append(kl_div + 0.5 * max_delta)
 
         return scores
 
@@ -223,6 +234,7 @@ class AnomalyScorer:
         self.config = config or DetectionConfig()
         self._extractors: List[Tuple[FeatureExtractor, float]] = []
         self._history: Dict[str, deque] = {}
+        self._baselines: Dict[Tuple[str, str], Tuple[float, float]] = {}
 
     def add_extractor(
         self, name: str, extract_fn: Callable[[dict], float], weight: float = 1.0
@@ -263,8 +275,10 @@ class AnomalyScorer:
             key = f"{agent_id}:{extractor.name}"
             if key in self._history and len(self._history[key]) >= self.config.baseline_samples:
                 values = np.array(list(self._history[key]))
-                extractor.baseline_mean = float(np.mean(values))
-                extractor.baseline_std = float(np.std(values)) + 1e-6
+                self._baselines[(agent_id, extractor.name)] = (
+                    float(np.mean(values)),
+                    float(np.std(values)) + 1e-6,
+                )
 
     def score(self, agent_id: str, state: dict) -> float:
         """
@@ -284,9 +298,12 @@ class AnomalyScorer:
             try:
                 value = extractor.extract(state)
 
-                # Z-score from baseline
-                if extractor.baseline_std > 0:
-                    z = abs(value - extractor.baseline_mean) / extractor.baseline_std
+                baseline_mean, baseline_std = self._baselines.get(
+                    (agent_id, extractor.name),
+                    (extractor.baseline_mean, extractor.baseline_std),
+                )
+                if baseline_std > 0:
+                    z = abs(value - baseline_mean) / baseline_std
                 else:
                     z = 0.0
 
@@ -311,7 +328,11 @@ class AnomalyScorer:
         for extractor, weight in self._extractors:
             try:
                 value = extractor.extract(state)
-                z = abs(value - extractor.baseline_mean) / extractor.baseline_std
+                baseline_mean, baseline_std = self._baselines.get(
+                    (agent_id, extractor.name),
+                    (extractor.baseline_mean, extractor.baseline_std),
+                )
+                z = abs(value - baseline_mean) / baseline_std
                 feature_scores[extractor.name] = z
                 total_score += weight * z
                 total_weight += weight

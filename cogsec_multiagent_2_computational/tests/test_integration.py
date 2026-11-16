@@ -33,7 +33,7 @@ class TestDataGeneration:
 
     def test_data_generator_creates_datasets(self):
         """DataGenerator produces all four dataset types."""
-        from data.generate import DataGenerator
+        from src.data.generate import DataGenerator
 
         with tempfile.TemporaryDirectory() as tmpdir:
             gen = DataGenerator(seed=42, output_dir=tmpdir)
@@ -46,7 +46,7 @@ class TestDataGeneration:
 
     def test_detection_data_has_required_fields(self):
         """Detection data contains architectures, categories, means, and CIs."""
-        from data.generate import DataGenerator
+        from src.data.generate import DataGenerator
 
         with tempfile.TemporaryDirectory() as tmpdir:
             gen = DataGenerator(seed=42, output_dir=tmpdir)
@@ -61,7 +61,7 @@ class TestDataGeneration:
 
     def test_detection_categories_valid(self):
         """Detection categories match expected taxonomy."""
-        from data.generate import DataGenerator
+        from src.data.generate import DataGenerator
 
         valid_categories = {
             "Injection", "Trust Exploitation",
@@ -77,7 +77,7 @@ class TestDataGeneration:
 
     def test_generated_data_persists_to_json(self):
         """Generated datasets are saved as valid JSON files."""
-        from data.generate import DataGenerator
+        from src.data.generate import DataGenerator
 
         with tempfile.TemporaryDirectory() as tmpdir:
             gen = DataGenerator(seed=42, output_dir=tmpdir)
@@ -98,7 +98,7 @@ class TestDataGeneration:
 
     def test_data_generation_is_reproducible(self):
         """Same seed produces identical datasets."""
-        from data.generate import DataGenerator
+        from src.data.generate import DataGenerator
 
         with tempfile.TemporaryDirectory() as tmpdir:
             gen1 = DataGenerator(seed=99, output_dir=os.path.join(tmpdir, "repro1"))
@@ -120,7 +120,7 @@ class TestDefensePipeline:
 
     def test_firewall_classifies_benign(self):
         """Firewall accepts benign messages."""
-        from core.firewall import Classification, CognitiveFirewall
+        from src.core.firewall import Classification, CognitiveFirewall
 
         fw = CognitiveFirewall()
         result = fw.classify("Please summarize this document for me.")
@@ -128,7 +128,7 @@ class TestDefensePipeline:
 
     def test_firewall_detects_injection(self):
         """Firewall detects obvious injection attempts."""
-        from core.firewall import Classification, CognitiveFirewall, FirewallConfig
+        from src.core.firewall import Classification, CognitiveFirewall, FirewallConfig
 
         fw = CognitiveFirewall(FirewallConfig(injection_threshold=0.5))
         result = fw.classify(
@@ -140,7 +140,7 @@ class TestDefensePipeline:
 
     def test_sandbox_add_and_promote(self):
         """Sandbox accepts provisional beliefs and supports promotion checks."""
-        from core.sandbox import Belief, SandboxConfig, SandboxManager
+        from src.core.sandbox import Belief, SandboxConfig, SandboxManager
 
         mgr = SandboxManager(SandboxConfig())
         belief = Belief(
@@ -154,7 +154,7 @@ class TestDefensePipeline:
 
     def test_tripwire_detects_drift(self):
         """Tripwire detects canary belief modifications."""
-        from core.tripwire import Canary, CognitiveTripwire
+        from src.core.tripwire import Canary, CognitiveTripwire
 
         tripwire = CognitiveTripwire()
         canary = Canary(
@@ -168,9 +168,9 @@ class TestDefensePipeline:
 
     def test_full_pipeline_flow(self):
         """Full pipeline: firewall -> sandbox -> tripwire processes a message."""
-        from core.firewall import Classification, CognitiveFirewall
-        from core.sandbox import Belief, SandboxConfig, SandboxManager
-        from core.tripwire import CognitiveTripwire
+        from src.core.firewall import Classification, CognitiveFirewall
+        from src.core.sandbox import Belief, SandboxConfig, SandboxManager
+        from src.core.tripwire import CognitiveTripwire
 
         fw = CognitiveFirewall()
         sandbox = SandboxManager(SandboxConfig())
@@ -207,7 +207,7 @@ class TestFigureGeneration:
         """A single figure module produces a matplotlib Figure."""
         os.environ.setdefault("MPLBACKEND", "Agg")
 
-        from visualization.figures import trust_decay
+        from src.visualization.figures import trust_decay
 
         with tempfile.TemporaryDirectory() as tmpdir:
             fig = trust_decay.plot_trust_decay(output_dir=tmpdir)
@@ -309,9 +309,9 @@ class TestStatisticalPipeline:
 
     def test_hypothesis_testing(self):
         """Paired t-test produces valid (t_stat, p_value) tuple."""
-        from statistics.hypothesis import paired_ttest
-
         import numpy as np
+
+        from src.statistics.hypothesis import paired_ttest
 
         np.random.seed(42)
         baseline = np.random.beta(2, 8, size=100)
@@ -324,9 +324,9 @@ class TestStatisticalPipeline:
 
     def test_effect_size(self):
         """Cohen's d computes correctly and returns EffectSizeResult."""
-        from statistics.effect_size import cohens_d
-
         import numpy as np
+
+        from src.statistics.effect_size import cohens_d
 
         np.random.seed(42)
         a = np.random.normal(0, 1, 100)
@@ -338,7 +338,7 @@ class TestStatisticalPipeline:
 
     def test_confidence_intervals(self):
         """Wilson CI produces valid (proportion, lower, upper) bounds."""
-        from statistics.confidence import wilson_ci
+        from src.statistics.confidence import wilson_ci
 
         proportion, lower, upper = wilson_ci(successes=94, total=100)
         assert 0 < lower < upper < 1
@@ -347,12 +347,12 @@ class TestStatisticalPipeline:
 
     def test_convenience_alias(self):
         """hypothesis_test alias works."""
-        from statistics import hypothesis_test, paired_ttest
+        from src.statistics import hypothesis_test, paired_ttest
         assert hypothesis_test is paired_ttest
 
     def test_bonferroni_correction(self):
         """Bonferroni correction returns significance booleans."""
-        from statistics.hypothesis import bonferroni_correct
+        from src.statistics.hypothesis import bonferroni_correct
 
         # alpha=0.05, 3 comparisons => corrected alpha = 0.05/3 ~ 0.0167
         p_values = [0.01, 0.04, 0.06]
@@ -442,7 +442,7 @@ class TestModuleExports:
 
     def test_statistics_exports(self):
         """Statistics module exports key functions."""
-        from statistics import (
+        from src.statistics import (
             cohens_d,
             hypothesis_test,
             paired_ttest,
@@ -455,7 +455,7 @@ class TestModuleExports:
 
     def test_data_exports(self):
         """Data module exports DataGenerator and schemas."""
-        from data import (
+        from src.data import (
             DataGenerator,
             DetectionData,
         )
@@ -487,11 +487,10 @@ class TestCrossSubsystemIntegration:
 
     def test_data_to_statistics_pipeline(self):
         """Generated data feeds correctly into statistical analysis."""
-        from statistics.hypothesis import paired_ttest
-
         import numpy as np
 
-        from data.generate import DataGenerator
+        from src.data.generate import DataGenerator
+        from src.statistics.hypothesis import paired_ttest
 
         with tempfile.TemporaryDirectory() as tmpdir:
             gen = DataGenerator(seed=42, output_dir=tmpdir)
@@ -507,9 +506,9 @@ class TestCrossSubsystemIntegration:
 
     def test_firewall_then_sandbox_then_tripwire(self):
         """Messages flow through all three defense layers in sequence."""
-        from core.firewall import Classification, CognitiveFirewall
-        from core.sandbox import Belief, SandboxConfig, SandboxManager
-        from core.tripwire import CognitiveTripwire
+        from src.core.firewall import Classification, CognitiveFirewall
+        from src.core.sandbox import Belief, SandboxConfig, SandboxManager
+        from src.core.tripwire import CognitiveTripwire
 
         fw = CognitiveFirewall()
         sandbox = SandboxManager(SandboxConfig())
@@ -547,7 +546,7 @@ class TestCrossSubsystemIntegration:
 
     def test_ablation_data_shape(self):
         """Ablation data has correct number of configurations."""
-        from data.generate import DataGenerator
+        from src.data.generate import DataGenerator
 
         with tempfile.TemporaryDirectory() as tmpdir:
             gen = DataGenerator(seed=42, output_dir=tmpdir)
@@ -559,7 +558,7 @@ class TestCrossSubsystemIntegration:
 
     def test_colony_data_scales(self):
         """Colony data covers expected colony sizes."""
-        from data.generate import DataGenerator
+        from src.data.generate import DataGenerator
 
         with tempfile.TemporaryDirectory() as tmpdir:
             gen = DataGenerator(seed=42, output_dir=tmpdir)

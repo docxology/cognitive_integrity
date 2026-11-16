@@ -2,12 +2,11 @@
 
 Models the CrewAI framework where agents are assigned distinct roles
 (researcher, writer, reviewer, etc.) and collaborate in a chain pattern.
-Same-role trust is high, cross-role trust is moderate, and role
-separation provides natural security boundaries.
+Cross-role trust is moderate, and role separation provides natural security
+boundaries.
 
 Trust characteristics:
 - Self-trust: 1.0
-- Same-role: 0.85
 - Adjacent role in chain: 0.7
 - Non-adjacent cross-role: 0.5
 """
@@ -52,23 +51,18 @@ class CrewAIAdapter(ArchitectureAdapter):
         return self._PROFILE
 
     def create_trust_matrix(self, n_agents: int) -> np.ndarray:
-        """Role-aware trust: high within role, moderate across adjacent roles.
+        """Role-separated trust based on positional distance in the chain.
 
-        Agents are assigned roles from ``_ROLE_POOL`` in order.  Trust
-        between agents i and j depends on whether they share a role
-        and their positional distance in the chain.
+        Supported crews assign each agent a distinct role. Trust between two
+        different agents therefore depends on their chain distance.
         """
         self._validate_n(n_agents)
-        roles = self.get_agent_roles(n_agents)
         T = np.zeros((n_agents, n_agents), dtype=np.float64)
 
         for i in range(n_agents):
             for j in range(n_agents):
                 if i == j:
                     T[i, j] = 1.0
-                elif roles[i] == roles[j]:
-                    # Same-role trust
-                    T[i, j] = 0.85
                 elif abs(i - j) == 1:
                     # Adjacent in chain
                     T[i, j] = 0.7

@@ -30,17 +30,17 @@ from pathlib import Path
 
 import pytest
 
-from ablation.component_removal import ComponentRemovalStudy
-from ablation.minimal_config import MinimalConfigSearch
-from ablation.runner import (
+from src.ablation.component_removal import ComponentRemovalStudy
+from src.ablation.minimal_config import MinimalConfigSearch
+from src.ablation.runner import (
     COMPONENT_TO_MODULE,
     check_component_registry_alignment,
     evaluate_component_subset,
     make_default_components,
     run_full_ablation,
 )
-from ablation.synergy import PairwiseSynergyAnalysis
-from composition.factory import CANONICAL_ORDER, MODULE_REGISTRY, create_pipeline_without
+from src.ablation.synergy import PairwiseSynergyAnalysis
+from src.composition.factory import CANONICAL_ORDER, MODULE_REGISTRY, create_pipeline_without
 
 ALL_COMPONENTS = list(make_default_components().keys())
 
@@ -92,7 +92,7 @@ class TestComponentNamesBindToRealModules:
         guard must reject it.  If this test cannot make the guard fail, the
         guard is decorative.
         """
-        import ablation.runner as runner_mod
+        import src.ablation.runner as runner_mod
 
         broken = dict(COMPONENT_TO_MODULE)
         broken["trust_calculus"] = "trust_calculus"  # the original defect
@@ -102,7 +102,7 @@ class TestComponentNamesBindToRealModules:
 
     def test_alignment_check_rejects_a_component_with_no_mapping(self, monkeypatch):
         """A component added to the study but not to the map must be caught."""
-        import ablation.runner as runner_mod
+        import src.ablation.runner as runner_mod
 
         monkeypatch.setattr(
             runner_mod,
@@ -114,7 +114,7 @@ class TestComponentNamesBindToRealModules:
 
     def test_alignment_check_rejects_a_stale_mapping_entry(self, monkeypatch):
         """A map entry for a component that no longer exists must be caught."""
-        import ablation.runner as runner_mod
+        import src.ablation.runner as runner_mod
 
         monkeypatch.setattr(
             runner_mod,
@@ -126,7 +126,7 @@ class TestComponentNamesBindToRealModules:
 
     def test_alignment_check_rejects_two_names_for_one_module(self, monkeypatch):
         """Two ablation names pointing at one module would double-count it."""
-        import ablation.runner as runner_mod
+        import src.ablation.runner as runner_mod
 
         # Keep the target set equal to MODULE_REGISTRY so the coverage check
         # passes and the *duplicate* check is the one that fires.
@@ -185,8 +185,8 @@ class TestComponentNamesBindToRealModules:
         # `<=` would assert almost nothing. So the binding is checked directly:
         # the constructed pipeline must genuinely lack the trust module, whether
         # or not its absence moves the number.
-        from ablation.runner import COMPONENT_TO_MODULE
-        from composition.factory import create_pipeline_without
+        from src.ablation.runner import COMPONENT_TO_MODULE
+        from src.composition.factory import create_pipeline_without
 
         target = COMPONENT_TO_MODULE["trust_calculus"]
         without = create_pipeline_without([target])

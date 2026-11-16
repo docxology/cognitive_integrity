@@ -252,7 +252,7 @@ class CIFADCouplingDetector:
             phase_coverage[phase.value] = combined_cov
             max_phase_coverage[phase.value] = max_cov
 
-            if max_cov < self.min_coverage:
+            if max_cov <= self.min_coverage:
                 coverage_gaps.append(phase.value)
                 # Find best defense not in portfolio
                 missing_defenses = [d for d in CIFDefense if d not in portfolio]
@@ -264,7 +264,7 @@ class CIFADCouplingDetector:
                 if best_missing:
                     gain = self.coupling_matrix.get(best_missing, {}).get(phase, 0.0)
                     recommendations.append(
-                        f"Phase '{phase.value}' coverage {max_cov:.2f} < {self.min_coverage}. "
+                        f"Phase '{phase.value}' coverage {max_cov:.2f} <= {self.min_coverage}. "
                         f"Add {best_missing.value} (coverage: {gain:.2f})"
                     )
 
@@ -291,7 +291,7 @@ class CIFADCouplingDetector:
         """
         for phase in ADPhase:
             max_cov = self.get_phase_coverage(phase)
-            if max_cov < self.min_coverage:
+            if max_cov <= self.min_coverage:
                 return False
         return True
 
@@ -336,15 +336,19 @@ class CIFADCouplingDetector:
 
         Returns:
             Minimum defense portfolio as list of CIFDefense.
+
+        Raises:
+            ValueError: If even the full stack cannot strictly exceed threshold
+                in every phase.
         """
-        threshold = min_phase_coverage or self.min_coverage
+        threshold = self.min_coverage if min_phase_coverage is None else min_phase_coverage
         portfolio: List[CIFDefense] = []
         remaining_defenses = list(CIFDefense)
 
         def _is_sufficient(port: List[CIFDefense]) -> bool:
             """Check if portfolio achieves threshold for all phases."""
             for phase in ADPhase:
-                if self.get_phase_coverage(phase, port) < threshold:
+                if self.get_phase_coverage(phase, port) <= threshold:
                     return False
             return True
 
@@ -372,6 +376,10 @@ class CIFADCouplingDetector:
             portfolio.append(best_defense)
             remaining_defenses.remove(best_defense)
 
+        if not _is_sufficient(portfolio):
+            raise ValueError(
+                f"Coverage threshold {threshold} is unachievable with the full defense stack"
+            )
         return portfolio
 
     def coverage_heatmap_data(self) -> Tuple[List[str], List[str], np.ndarray]:

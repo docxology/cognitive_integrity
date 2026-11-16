@@ -108,12 +108,14 @@ class AgentAction:
 
     def to_context(self) -> Dict:
         """Convert action to context dictionary for invariant checking."""
-        context = {
-            "agent_id": self.agent_id,
-            "action": self.action_type,
-            "timestamp": self.timestamp,
-        }
-        context.update(self.parameters)
+        context = dict(self.parameters)
+        context.update(
+            {
+                "agent_id": self.agent_id,
+                "action": self.action_type,
+                "timestamp": self.timestamp,
+            }
+        )
         return context
 
 
@@ -262,7 +264,9 @@ class InvariantChecker:
         if action != "trust_evaluation":
             return True  # Not a trust evaluation
 
-        direct = ctx.get("direct_trust", 1.0)
+        if "direct_trust" not in ctx:
+            return False
+        direct = ctx["direct_trust"]
         delegated = ctx.get("delegated_trust", 0.0)
 
         return delegated <= direct

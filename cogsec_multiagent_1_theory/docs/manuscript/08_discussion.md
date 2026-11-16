@@ -42,7 +42,7 @@ Byzantine Consensus & Coordination attacks \\
 
 The orthogonality of these surfaces explains why no single mechanism suffices: an attack that bypasses input filtering may still violate behavioral invariants; an attack that evades pattern matching may still trigger belief drift detection.
 
-Empirical ablation studies in Part 2 test this prediction and return a sharper answer than a ranked list. On the 100-attack ablation corpus a single module dominates: removing Behavioral Invariants costs $\Delta\text{TPR} = -0.650$ against a full pipeline of $0.890$, the Tripwire costs $-0.020$, and the Firewall, Consensus, Detection, Provenance, Sandbox and Trust Calculus register no change at all. Those zeros are *marginal* quantities and are not evidence of zero capability: a module whose detections are a subset of another's is invisible to leave-one-out removal however much it catches on its own. What the ablation establishes is therefore weaker than the theorem and more useful than a ranking --- no single mechanism outperforms the composed ensemble, consistent with \cref{thm:series-detection}, but on this corpus the composition is dominated by one factor rather than balanced across many, so the multiplicative bound holds without being informative.
+Empirical ablation studies in Part 2 test this prediction and return a sharper answer than a ranked list. On the 100-attack ablation corpus a single module dominates: removing Behavioral Invariants costs $\Delta\text{TPR} = -0.670$ against a full pipeline of $0.890$, the Tripwire costs $-0.010$, and the Firewall, Consensus, Detection, Provenance, Sandbox and Trust Calculus register no change at all. Those zeros are *marginal* quantities and are not evidence of zero capability: a module whose detections are a subset of another's is invisible to leave-one-out removal however much it catches on its own. What the ablation establishes is therefore weaker than the theorem and more useful than a ranking --- no single mechanism outperforms the composed ensemble, consistent with \cref{thm:series-detection}, but on this corpus the composition is dominated by one factor rather than balanced across many, so the multiplicative bound holds without being informative.
 
 ### The Trust Boundedness Guarantee
 
@@ -53,11 +53,11 @@ The decay factor $\delta \in [0, 1)$ creates a tradeoff:
 - Lower $\delta$: Stronger security, limited delegation utility
 - Higher $\delta$: More delegation flexibility, weaker bounds
 
-Organizations must calibrate this tradeoff based on their threat model (\cref{sec:operator-posture} in Part 3). Domain-calibrated $\delta$ choices --- from millisecond OODA cycles in drone swarms to year-scale diplomatic agents --- are analyzed in Part 3 \cite{friedman2026cogsec3} across ten critical operational domains.
+Organizations must calibrate this tradeoff based on their threat model (the operator-posture discussion in Part 3's deployment guide; see also \cref{sec:operator-posture} above). Domain-calibrated $\delta$ choices --- from millisecond OODA cycles in drone swarms to year-scale diplomatic agents --- are analyzed in Part 3 \cite{friedman2026cogsec3} across ten critical operational domains.
 
 ### Information-Theoretic Detection Limits
 
-The stealth-impact fundamental limit (\cref{thm:stealth-impact}) establishes that certain attacks are *provably* undetectable without unacceptable false positive rates. This is not a limitation of our specific mechanisms but a fundamental bound analogous to Shannon's channel capacity—some attacks simply cannot be detected without additional information.
+The proposed stealth-impact tradeoff (\cref{thm:stealth-impact}) is an open formalization, not an established fundamental limit. The detection limitations supported here come from the Chernoff, KL, and finite-sample analyses in \cref{sec:detection-bounds}; they do not imply a universal channel-capacity product or that every high-impact attack must be detectable.
 
 This has practical implications: security architectures should not promise detection of all possible attacks. Instead, they should characterize the detection boundary and provide containment for attacks that cross it.
 

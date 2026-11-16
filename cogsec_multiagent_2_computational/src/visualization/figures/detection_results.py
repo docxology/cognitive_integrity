@@ -29,13 +29,25 @@ _CATEGORIES = [
     "Coordination",
 ]
 
+#: Display labels for the actual subcategory keys in the artifact.  Unknown
+#: future keys remain visible via a readable transformation rather than being
+#: silently assigned another category's heading.
+_CATEGORY_LABEL = {
+    "direct_injection": "Direct Injection",
+    "indirect_injection": "Indirect Injection",
+    "impersonation": "Impersonation",
+    "belief_drift": "Belief Drift",
+    "sybil_attack": "Sybil Attack",
+}
 
-def _load_data() -> np.ndarray:
-    """Load real detection data from full_evaluation_results.json."""
-    from data.result_loaders import evaluation_to_detection_matrix
+
+def _load_data() -> tuple[list[str], list[str], np.ndarray]:
+    """Load matrix dimensions and values from full_evaluation_results.json."""
+    from src.data.result_loaders import evaluation_to_detection_matrix
+
     archs, cats, matrix = evaluation_to_detection_matrix()
     logger.info("Loaded detection matrix from full_evaluation_results.json: %s", matrix.shape)
-    return matrix
+    return archs, cats, matrix
 
 
 def plot_detection_heatmap(
@@ -56,7 +68,14 @@ def plot_detection_heatmap(
     Figure
     """
     if results is None:
-        results = _load_data()
+        architectures, category_keys, results = _load_data()
+        categories = [
+            _CATEGORY_LABEL.get(key, key.replace("_", " ").title())
+            for key in category_keys
+        ]
+    else:
+        architectures = _ARCHITECTURES
+        categories = _CATEGORIES
 
     fig, ax = create_figure(width=7, height=5)
 
@@ -74,10 +93,10 @@ def plot_detection_heatmap(
                 color=text_color,
             )
 
-    ax.set_xticks(range(len(_CATEGORIES)))
-    ax.set_xticklabels(_CATEGORIES, fontsize=10)
-    ax.set_yticks(range(len(_ARCHITECTURES)))
-    ax.set_yticklabels(_ARCHITECTURES, fontsize=10)
+    ax.set_xticks(range(len(categories)))
+    ax.set_xticklabels(categories, fontsize=10)
+    ax.set_yticks(range(len(architectures)))
+    ax.set_yticklabels(architectures, fontsize=10)
 
     cbar = fig.colorbar(im, ax=ax, fraction=0.046, pad=0.04)
     cbar.set_label("Detection Rate", fontsize=11)

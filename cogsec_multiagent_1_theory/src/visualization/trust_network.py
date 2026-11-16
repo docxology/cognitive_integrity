@@ -38,7 +38,7 @@ def generate_trust_network_figure(output_dir: Path) -> list[Path]:
         "context": "#DC267F",  # Context trust (pink)
         "high_trust": "#2ECC71",  # High trust node
         "medium_trust": "#F39C12",  # Medium trust node
-        "low_trust": "#E74C3C",  # Low/compromised node
+        "low_trust": "#E74C3C",  # Low trust node
         "orchestrator": "#2C3E50",  # Orchestrator
     }
 
@@ -51,9 +51,14 @@ def generate_trust_network_figure(output_dir: Path) -> list[Path]:
         ax.set_aspect("equal")
         ax.axis("off")
 
-    # --- Panel A: Normal Trust Network ---
+    # --- Panel A: Hierarchical Trust Network ---
     ax1 = axes[0]
-    ax1.set_title("A. Normal Trust Network (illustrative)", fontsize=13, fontweight="bold", pad=10)
+    ax1.set_title(
+        "A. Hierarchical Trust Network (illustrative)",
+        fontsize=13,
+        fontweight="bold",
+        pad=10,
+    )
 
     # Agent positions (arranged in a pattern)
     agents_normal = {
@@ -70,13 +75,10 @@ def generate_trust_network_figure(output_dir: Path) -> list[Path]:
 
     # Trust connections: (src, dst, trust_score, category)
     #
-    # Illustrative topology, not a simulation output. Thirty-two two-decimal
-    # trust scores are typed below across the normal and attacked panels, and
-    # the figure draws a numeric label on every edge above 0.5, which is how a
-    # worked example comes to read as a measured before-and-after. No
-    # simulation in this series produces per-edge trust for a named nine-agent
-    # topology; what is measured is the decay law itself, in Part 2's trust
-    # calculus tests. The panel titles carry the qualifier.
+    # Illustrative topology, not a simulation output. The two-decimal trust
+    # scores below form a worked example; no simulation in this series
+    # produces per-edge trust for this named nine-agent topology. What is
+    # measured is the decay law itself, in Part 2's trust calculus tests.
     trust_normal = [
         ("O", "A1", 0.95, "base"),
         ("O", "A2", 0.92, "base"),
@@ -98,51 +100,42 @@ def generate_trust_network_figure(output_dir: Path) -> list[Path]:
 
     _draw_network(ax1, agents_normal, trust_normal, colors)
 
-    # --- Panel B: Trust Network Under Attack ---
+    # --- Panel B: Peer-to-peer Trust Network ---
     ax2 = axes[1]
     ax2.set_title(
-        "B. Trust Network Under Attack (illustrative)", fontsize=13, fontweight="bold", pad=10
+        "B. Peer-to-peer Trust Network (illustrative)", fontsize=13, fontweight="bold", pad=10
     )
 
-    # Modified trust levels (A3 is compromised)
-    trust_attack = [
+    # A ring layout and predominantly neighbour links avoid the hub topology
+    # used in Panel A.  The same numeric values remain illustrative only.
+    agents_peer = {
+        "O": (0, 1.5),
+        "A1": (0.96, 1.15),
+        "A2": (1.48, 0.26),
+        "A3": (1.30, -0.75),
+        "A4": (0.51, -1.41),
+        "A5": (-0.51, -1.41),
+        "A6": (-1.30, -0.75),
+        "A7": (-1.48, 0.26),
+        "A8": (-0.96, 1.15),
+    }
+    trust_peer = [
         ("O", "A1", 0.95, "base"),
-        ("O", "A2", 0.92, "base"),
-        ("O", "A3", 0.25, "base"),  # Reduced trust to compromised
-        ("O", "A4", 0.90, "base"),
-        ("O", "A5", 0.85, "base"),
-        ("O", "A6", 0.82, "base"),
-        ("O", "A7", 0.87, "base"),
-        ("O", "A8", 0.55, "base"),  # Affected by proximity
         ("A1", "A2", 0.75, "reputation"),
+        ("A2", "A3", 0.78, "reputation"),
+        ("A3", "A4", 0.72, "reputation"),
+        ("A4", "A5", 0.70, "context"),
+        ("A5", "A6", 0.68, "context"),
+        ("A6", "A7", 0.65, "context"),
+        ("A7", "A8", 0.67, "context"),
+        ("A8", "O", 0.84, "base"),
         ("A1", "A5", 0.80, "reputation"),
         ("A2", "A5", 0.78, "reputation"),
-        ("A3", "A4", 0.20, "reputation"),  # A3 connections degraded
-        ("A3", "A8", 0.15, "context"),
-        ("A4", "A8", 0.45, "context"),  # Affected
-        ("A6", "A1", 0.65, "context"),
-        ("A7", "A2", 0.67, "context"),
+        ("A3", "A8", 0.70, "context"),
+        ("A4", "A8", 0.68, "context"),
     ]
 
-    # Special node colors for attack scenario
-    node_colors_attack = {
-        "A3": colors["low_trust"],  # Compromised
-        "A8": colors["medium_trust"],  # Affected
-    }
-
-    _draw_network(ax2, agents_normal, trust_attack, colors, node_colors_override=node_colors_attack)
-
-    # Add attack indicator
-    x3, y3 = agents_normal["A3"]
-    ax2.annotate(
-        "Compromised",
-        xy=(x3, y3),
-        xytext=(x3 - 0.8, y3 + 0.6),
-        fontsize=9,
-        color=colors["low_trust"],
-        fontweight="bold",
-        arrowprops=dict(arrowstyle="->", color=colors["low_trust"]),
-    )
+    _draw_network(ax2, agents_peer, trust_peer, colors)
 
     # Shared legend
     legend_elements = [
@@ -178,7 +171,7 @@ def generate_trust_network_figure(output_dir: Path) -> list[Path]:
             color="w",
             markerfacecolor=colors["low_trust"],
             markersize=10,
-            label="Low/Compromised",
+            label="Low Trust",
         ),
         plt.Line2D(
             [0],
@@ -217,9 +210,8 @@ def generate_trust_network_figure(output_dir: Path) -> list[Path]:
     return [save_figure(fig, output_dir, "trust_network")]
 
 
-def _draw_network(ax, positions, connections, colors, node_colors_override=None):
+def _draw_network(ax, positions, connections, colors):
     """Helper to draw the network components on an axis."""
-    node_colors_override = node_colors_override or {}
 
     # Draw edges
     for src, dst, trust, category in connections:
@@ -230,13 +222,18 @@ def _draw_network(ax, positions, connections, colors, node_colors_override=None)
         # Dim low trust lines more in visualization
         alpha = 0.3 if trust < 0.4 else 0.6
 
-        ax.plot(
-            [x1, x2],
-            [y1, y2],
-            "-",
-            color=colors[category],
-            linewidth=width,
-            alpha=alpha,
+        ax.annotate(
+            "",
+            xy=(x2, y2),
+            xytext=(x1, y1),
+            arrowprops=dict(
+                arrowstyle="<->",
+                color=colors[category],
+                linewidth=width,
+                alpha=alpha,
+                shrinkA=8,
+                shrinkB=8,
+            ),
             zorder=1,
         )
         # Add trust score label at edge midpoint for educational clarity
@@ -258,7 +255,7 @@ def _draw_network(ax, positions, connections, colors, node_colors_override=None)
         if agent == "O":
             color = colors["orchestrator"]
         else:
-            color = node_colors_override.get(agent, colors["high_trust"])
+            color = colors["high_trust"]
 
         circle = Circle((x, y), 0.12, facecolor=color, edgecolor="black", linewidth=2, zorder=5)
         ax.add_patch(circle)
