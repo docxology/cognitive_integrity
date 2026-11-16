@@ -14,6 +14,29 @@ where a major version marks a change to a published number.
 
 ### Corrected
 
+- Implemented the fail-closed figure, explicit semantic backend, complete LLM matrix,
+  fresh CI inventory, runtime-guide and TOML-parser source contracts (CI-001–CI-007).
+  The CI matrix targets Python 3.11 and exact primary 3.15.2, with Ruff's floor
+  aligned to Python 3.11 and mypy resolving the canonical `src.*` package.
+- Part 1 now requires an explicit encoder and provides pinned, strictly offline
+  `sentence-transformers==6.3.0` with MiniLM revision
+  `1110a243fdf4706b3f48f1d95db1a4f5529b4d41`. Actual trained-vector and consumer
+  regressions passed offline. This is not deployment-efficacy qualification:
+  both illustrative attack inputs still receive ACCEPT at unchanged defaults.
+  Model directories and acquisition manifests remain operator-trusted inputs.
+- LLM retries preserve prior diagnostic bytes in attempt archives; incomplete
+  matrices and setup failures cannot publish success or overwrite prior final
+  evidence. Result figures reject missing or malformed required inputs and
+  visibly distinguish illustrative/model panels from measured inputs.
+- Reconciled solo-firewall capability, score-sweep versus deployed-verdict
+  operating points, and the Detection module's Sybil exception against retained
+  artifacts. The fresh inventory records 5,279 collected tests across the series,
+  including 3,667 in Part 2; collection totals are not pass counts.
+- Independently requalified the two changed render-input fingerprints after a
+  native fresh render reproduced all 26 historical PNG/PDF files byte-for-byte.
+  Historical scientific inputs, artifact identities, renderer history and strict
+  validation remain unchanged; the original input snapshot is retained in history.
+
 - Reconciled Part 2's integrated and legacy attack-corpus descriptions against
   the shipped generator and retained experiment artifacts. The current corpus
   chapter reports five primary families, fifteen subcategories, 1,475 uniquely

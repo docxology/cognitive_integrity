@@ -15,7 +15,7 @@
     "output/data/stratified_detection.json": "eb50571482dfdbf899b933ddcfca410eea5f829022221b187f5ff16d967bb3e4",
     "output/data/taxonomy_evaluation_results.json": "773c3c20052a07966e7a78190abbc3fdc4f5de5283acf7f8b9bbc48d53e31f1f",
     "output/data/threshold_sweep.json": "6e8aae91ec1e7599694a17782eeacb1c90f4e5dccc06b71e16430dd7ca087b8a",
-    "pyproject.toml": "088423c66b2c0cdc7a0acf771a4faa499cf134b187353d138863edd558e05434",
+    "pyproject.toml": "ea4f68ccaa38e99a3f22328d942e9ba0c867f34b37f5ab2950a4445bdbe15370",
     "scripts/generate_all_figures.py": "bdc5669bc6c8a17c0988c6b4083bb60d6a92c667583804be3b9fe693ddfdb309",
     "src/__init__.py": "1c816a795fc3d58e61f8c2c3dddd3d17667228ea529a59335e24b5c5eb45b505",
     "src/attacks/__init__.py": "d30b900fec0016d2c98af68d325e5b4e192977e3553693c7b846215c75f7d409",
@@ -90,7 +90,7 @@
     "src/visualization/figures/stratified_detection.py": "1d56d5b7ed808deeb89be6586f4f6eb960013269d0ee533c1430bc12e1034c42",
     "src/visualization/figures/trust_decay.py": "1ec8fa4c4c54f54bdfe2f46fb97e4c3db8161d01c91c021035a98abe01196e41",
     "src/visualization/reproducibility.py": "b3be0a833bf799b7d21f415b8b551e49e55ac3b42cb235424d838e6ab77ddab8",
-    "src/visualization/style.py": "e7de590570c280901bf48d7a3c0401bcfb845616da156643dd666cbf94ab5e78",
+    "src/visualization/style.py": "69f51f875312ee45bc016477c175078aad6073da15ca7a7c2975d18484684397",
     "src/visualization/tables/__init__.py": "ee0668f5047b12595c4cea22ab33929b71aa4fbc603d02fb063287a6e8435c76",
     "src/visualization/tables/binomial_ci.py": "7bb8909d73ece9f094109d64790884e569f75ae3d16e29bdbde604fc5afebb80",
     "uv.lock": "b9da03b82bdbb5c7674e179859e862847a34f0b56a68136510417e0f0835376b"
