@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import numpy as np
 
-from utils.random_seed import get_rng
+from src.utils.random_seed import get_rng
 
 from .theorem_registry import TheoremResult, TheoremStatus
 
@@ -54,14 +54,14 @@ def validate_series_composition(
         if error > 0.05:
             violations += 1
 
-    passed = violations == 0
+    passed = n_trials > 0 and n_modules > 0 and violations == 0
 
     return TheoremResult(
-        theorem_id="3.1b",
+        theorem_id="3.2a",
         name="Series Composition Detection",
         status=TheoremStatus.PASSED if passed else TheoremStatus.FAILED,
         evidence=(
-            f"Series composition P_miss = prod(1-r_i) validated across "
+            f"Series composition P_miss = prod(1-r_i) check across "
             f"{n_trials} trials (max error: {max_error:.4f}, violations: {violations})"
         ),
         details={
@@ -99,14 +99,14 @@ def validate_parallel_composition(
         if combined < max_individual - 1e-10:
             violations += 1
 
-    passed = violations == 0
+    passed = n_trials > 0 and n_modules > 0 and violations == 0
 
     return TheoremResult(
-        theorem_id="3.2",
+        theorem_id="3.2b",
         name="Parallel Composition Detection",
         status=TheoremStatus.PASSED if passed else TheoremStatus.FAILED,
         evidence=(
-            f"Parallel composition rate >= max(r_i) validated across "
+            f"Parallel composition rate >= max(r_i) check across "
             f"{n_trials} trials (violations: {violations})"
         ),
         details={"n_trials": n_trials, "violations": violations},
@@ -145,14 +145,14 @@ def validate_associativity(
         error = abs(left - right)
         max_error = max(max_error, error)
 
-    passed = max_error < 1e-10
+    passed = n_trials > 0 and max_error < 1e-10
 
     return TheoremResult(
-        theorem_id="3.3",
+        theorem_id="3.2c",
         name="Composition Associativity",
         status=TheoremStatus.PASSED if passed else TheoremStatus.FAILED,
         evidence=(
-            f"Composition is associative: max error {max_error:.2e} across "
+            f"Composition associativity check: max error {max_error:.2e} across "
             f"{n_trials} trials"
         ),
         details={"n_trials": n_trials, "max_error": max_error},

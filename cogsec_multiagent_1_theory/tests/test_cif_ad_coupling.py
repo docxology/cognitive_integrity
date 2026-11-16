@@ -12,6 +12,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) 
 import numpy as np
 import pytest
 
+from consensus import ByzantineConsensus, ConsensusResult, QuorumVerification, Vote
 from src.cif_ad_coupling import (  # noqa: E402
     AD_FORMAL_GUARANTEES,
     CIF_AD_COUPLING_MATRIX,
@@ -79,7 +80,7 @@ class TestPhaseCoverage:
     def test_full_stack_exceeds_min_coverage(self, detector):
         for phase in ADPhase:
             cov = detector.get_phase_coverage(phase)
-            assert cov >= MIN_PHASE_COVERAGE, f"Phase {phase} coverage {cov} < {MIN_PHASE_COVERAGE}"
+            assert cov > MIN_PHASE_COVERAGE, f"Phase {phase} coverage {cov} <= {MIN_PHASE_COVERAGE}"
 
     def test_delegate_phase_dominated_by_trust_calculus(self, detector):
         """Trust Calculus should have highest coverage for DELEGATE phase."""
@@ -124,9 +125,8 @@ class TestPortfolioAnalysis:
 
     def test_minimal_portfolio_may_have_gaps(self, detector, minimal_portfolio):
         analysis = detector.analyze_portfolio(minimal_portfolio)
-        # Trust Calculus alone may not cover all phases above threshold
-        # At minimum, PLAN phase (0.30) is below MIN_PHASE_COVERAGE (0.50)
-        assert ADPhase.PLAN.value in analysis.coverage_gaps or analysis.full_coverage_achieved
+        assert ADPhase.PLAN.value in analysis.coverage_gaps
+        assert analysis.full_coverage_achieved is False
 
     def test_total_coverage_score_in_range(self, detector):
         analysis = detector.analyze_portfolio()
@@ -200,6 +200,17 @@ class TestAttackSurfaceMappings:
             assert len(attack_surface) > 0
             assert len(guarantee) > 0
 
+    def test_phase_guarantees_match_manuscript_table(self):
+        assert AD_FORMAL_GUARANTEES[ADPhase.EXECUTE] == (
+            "Result tampering", "Provenance tracking", "V(π(φ)) = 1"
+        )
+        assert AD_FORMAL_GUARANTEES[ADPhase.OBSERVE] == (
+            "Evidence fabrication", "Belief sandbox", "B_prov isolation"
+        )
+        assert AD_FORMAL_GUARANTEES[ADPhase.UPDATE] == (
+            "Drift induction", "KL drift detection", "D_KL < θ_drift"
+        )
+
     def test_coverage_scores_match_coupling_matrix(self, detector):
         mappings = detector.get_attack_surface_mappings()
         for mapping in mappings:
@@ -220,12 +231,10 @@ class TestMinimumViablePortfolio:
         mvp = detector.minimum_viable_portfolio()
         assert len(mvp) <= len(list(CIFDefense))
 
-    def test_mvp_non_empty(self, detector):
-        # MVP may be empty only if even an empty portfolio achieves full coverage
-        # (which shouldn't happen with the default coupling matrix)
-        # Use a strict threshold that forces the algorithm to add defenses
-        mvp = detector.minimum_viable_portfolio(min_phase_coverage=0.90)
-        assert len(mvp) > 0
+    def test_mvp_refuses_unachievable_threshold(self):
+        detector = CIFADCouplingDetector()
+        with pytest.raises(ValueError, match="unachievable"):
+            detector.minimum_viable_portfolio(min_phase_coverage=0.90)
 
     def test_mvp_non_empty_at_default_threshold(self):
         """minimum_viable_portfolio() is non-empty at the default threshold (P1-7).
@@ -258,7 +267,7 @@ class TestMinimumViablePortfolio:
 
     def test_mvp_with_stricter_threshold_uses_more_defenses(self, detector):
         mvp_normal = detector.minimum_viable_portfolio(min_phase_coverage=0.50)
-        mvp_strict = detector.minimum_viable_portfolio(min_phase_coverage=0.85)
+        mvp_strict = detector.minimum_viable_portfolio(min_phase_coverage=0.65)
         assert len(mvp_strict) >= len(mvp_normal)
 
 
@@ -315,68 +324,49 @@ class TestOverlapAnalysis:
 
 
 class TestByzantineConsensusStress:
-    """
-    Stress tests for Byzantine consensus scalability.
-    These tests verify the n >= 3f+1 requirement at various scales.
-    """
+    """Exercise production consensus at several declared electorate sizes."""
 
     def test_minimum_n_for_various_f(self):
-        """n >= 3f+1 for f = 1..10."""
         for f in range(1, 11):
-            min_n = 3 * f + 1
-            # Verify: with min_n agents, f faulty, consensus possible
-            assert min_n >= 3 * f + 1
+            n = 3 * f + 1
+            consensus = ByzantineConsensus(n_agents=n, max_byzantine=f)
+            for i in range(n):
+                consensus.submit_vote(Vote(f"agent-{i}", "prop", 0.9))
+            assert consensus.compute_consensus("prop")[0] == ConsensusResult.ACCEPT
 
     def test_quorum_size_formula(self):
-        """Quorum q = ceil((n + f + 1) / 2)."""
-        import math
-
-        test_cases = [
-            (4, 1, 3),  # n=4, f=1, q=3
-            (7, 2, 5),  # n=7, f=2, q=5
-            (10, 3, 7),  # n=10, f=3, q=7
-        ]
-        for n, f, expected_q in test_cases:
-            q = math.ceil((n + f + 1) / 2)
-            assert q == expected_q, f"n={n}, f={f}: expected q={expected_q}, got q={q}"
+        for n, f, expected_q in [(4, 1, 3), (7, 2, 5), (10, 3, 7)]:
+            quorum = QuorumVerification(n_agents=n, max_byzantine=f)
+            assert quorum.quorum == expected_q
 
     def test_consensus_supermajority_threshold(self):
-        """2n/3 threshold for cognitive Byzantine agreement."""
-        test_cases = [4, 7, 10, 25, 100]
-        for n in test_cases:
-            threshold = 2 * n / 3
-            max_faulty = (n - 1) // 3
-            # Non-faulty majority: n - max_faulty > threshold
-            non_faulty = n - max_faulty
-            assert non_faulty > threshold, (
-                f"n={n}: non-faulty {non_faulty} <= threshold {threshold}"
-            )
+        for n in [4, 7, 10, 25, 100]:
+            consensus = ByzantineConsensus(n_agents=n)
+            for i in range(n):
+                consensus.submit_vote(Vote(f"agent-{i}", "prop", 0.9))
+            result, confidence = consensus.compute_consensus("prop")
+            assert result == ConsensusResult.ACCEPT
+            assert confidence == 1.0
 
-    def test_blast_radius_scales_linearly_with_n(self):
-        """BlastRadius(a_v) <= n * delta * max_trust per Theorem 4.6."""
-        delta = 0.9
-        max_trust = 0.95
-        for n in [4, 10, 25, 100, 500]:
-            blast_radius_bound = n * delta * max_trust
-            # Simple sanity: bound is finite and scales with n
-            assert blast_radius_bound == pytest.approx(n * delta * max_trust)
-            assert blast_radius_bound > 0
+    def test_large_electorate_rejects_additional_voter(self):
+        consensus = ByzantineConsensus(n_agents=100)
+        for i in range(100):
+            consensus.submit_vote(Vote(f"agent-{i}", "prop", 0.9))
+        with pytest.raises(ValueError, match="Unknown voter"):
+            consensus.submit_vote(Vote("stranger", "prop", 0.9))
 
-    def test_blast_radius_decreases_with_smaller_delta(self):
-        """Lower delta reduces blast radius bound."""
-        n = 10
-        max_trust = 0.9
-        bound_high_delta = n * 0.9 * max_trust
-        bound_low_delta = n * 0.5 * max_trust
-        assert bound_high_delta > bound_low_delta
+    def test_large_quorum_rejects_additional_approver(self):
+        quorum = QuorumVerification(n_agents=100)
+        for i in range(100):
+            quorum.approve("action", f"agent-{i}")
+        assert quorum.approve("action", "stranger") is False
+        assert quorum.get_approval_count("action") == 100
 
-    def test_blast_radius_bound_for_many_agents(self):
-        """Blast radius bound computed for n=1000 (stress test)."""
-        n = 1000
-        delta = 0.8
-        max_trust = 1.0
-        bound = n * delta * max_trust
-        assert bound == pytest.approx(800.0)
+    def test_insufficient_n_is_rejected_for_each_f(self):
+        for f in range(1, 11):
+            with pytest.raises(ValueError, match="3f"):
+                ByzantineConsensus(n_agents=3 * f, max_byzantine=f)
+
 
 class TestCoverageEdgeCases:
     """Tests for previously-uncovered branches (empty/all-zero, theorem-false, to_dict)."""
@@ -392,6 +382,22 @@ class TestCoverageEdgeCases:
         """verify_full_coverage_theorem() False when some column max < min_coverage."""
         detector = CIFADCouplingDetector(min_coverage=0.96)  # > max column max (0.95)
         assert detector.verify_full_coverage_theorem() is False
+
+    def test_exact_threshold_is_not_full_coverage(self):
+        matrix = {
+            defense: {phase: 0.5 for phase in ADPhase}
+            for defense in CIFDefense
+        }
+        detector = CIFADCouplingDetector(coupling_matrix=matrix, min_coverage=0.5)
+        assert detector.verify_full_coverage_theorem() is False
+        assert detector.analyze_portfolio().full_coverage_achieved is False
+        with pytest.raises(ValueError, match="unachievable"):
+            detector.minimum_viable_portfolio()
+
+    def test_explicit_zero_threshold_is_honored(self):
+        detector = CIFADCouplingDetector(min_coverage=0.9)
+        portfolio = detector.minimum_viable_portfolio(min_phase_coverage=0.0)
+        assert len(portfolio) == 1
 
     def test_analysis_to_dict_round_trip(self):
         detector = CIFADCouplingDetector()

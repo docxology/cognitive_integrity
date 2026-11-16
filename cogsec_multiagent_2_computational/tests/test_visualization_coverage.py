@@ -28,7 +28,7 @@ class TestRocCurvesLoadPath:
 
     def test_load_roc_data_from_file(self, tmp_path):
         """_load_roc_data reads roc_results.json when it exists."""
-        from visualization.figures.roc_curves import _load_roc_data
+        from src.visualization.figures.roc_curves import _load_roc_data
 
         # Create the directory structure expected by _load_roc_data
         # output_dir.parent / "data" / "roc_results.json"
@@ -50,7 +50,7 @@ class TestRocCurvesLoadPath:
 
     def test_load_roc_data_fallback_when_no_file(self, tmp_path):
         """_load_roc_data falls back to load_full_evaluation when no file exists."""
-        from visualization.figures.roc_curves import _load_roc_data
+        from src.visualization.figures.roc_curves import _load_roc_data
 
         figures_dir = tmp_path / "figures"
         figures_dir.mkdir(parents=True)
@@ -65,7 +65,7 @@ class TestRocCurvesPlot:
 
     def test_plot_roc_curves_str_output_dir(self, tmp_path):
         """plot_roc_curves accepts a str output_dir and creates directories."""
-        from visualization.figures.roc_curves import plot_roc_curves
+        from src.visualization.figures.roc_curves import plot_roc_curves
 
         # Pass str output_dir (covers lines 68-69: isinstance check + Path conversion)
         out_str = str(tmp_path / "new_subdir" / "figures")
@@ -75,7 +75,7 @@ class TestRocCurvesPlot:
 
     def test_plot_roc_curves_creates_missing_output_dir(self, tmp_path):
         """plot_roc_curves creates output_dir if it doesn't exist (line 73)."""
-        from visualization.figures.roc_curves import plot_roc_curves
+        from src.visualization.figures.roc_curves import plot_roc_curves
 
         new_dir = tmp_path / "nonexistent_dir"
         assert not new_dir.exists()
@@ -86,7 +86,7 @@ class TestRocCurvesPlot:
 
     def test_plot_roc_curves_with_preloaded_roc_file(self, tmp_path):
         """plot_roc_curves plots from roc_results.json covering ablation fallback lines."""
-        from visualization.figures.roc_curves import plot_roc_curves
+        from src.visualization.figures.roc_curves import plot_roc_curves
 
         # Create roc data with only full_cif — the other keys fall to ablation branch
         figures_dir = tmp_path / "figures"
@@ -106,12 +106,12 @@ class TestRocCurvesPlot:
 
     def test_plot_roc_curves_ablation_component_match(self, tmp_path, monkeypatch):
         """Ablation data includes a matching 'configuration' key (lines 128-129)."""
-        from visualization.figures import roc_curves
+        from src.visualization.figures import roc_curves
 
         # Return empty roc_data so all components go to ablation path
         monkeypatch.setattr(roc_curves, "_load_roc_data", lambda _: {})
 
-        import data.result_loaders as rl_mod
+        import src.data.result_loaders as rl_mod
 
         # Provide ablation data with "configuration" fields that match the component keys
         ablation_data = {
@@ -131,7 +131,7 @@ class TestRocCurvesPlot:
 
     def test_plot_roc_curves_ablation_exception_path(self, tmp_path, monkeypatch):
         """Ablation load failure triggers warning logger path (lines 139-140)."""
-        from visualization.figures import roc_curves
+        from src.visualization.figures import roc_curves
 
         # Monkeypatch _load_roc_data to return empty dict so all keys go to ablation path
         # Then monkeypatch load_ablation_results to raise an exception
@@ -143,7 +143,7 @@ class TestRocCurvesPlot:
 
         # Patch inside the module scope — the function imports load_ablation_results lazily
 
-        import data.result_loaders as rl_mod
+        import src.data.result_loaders as rl_mod
         monkeypatch.setattr(rl_mod, "load_ablation_results", _fail_load)
 
         fig = roc_curves.plot_roc_curves(output_dir=str(tmp_path))
@@ -161,7 +161,7 @@ class TestScalabilityTablesWithResults:
 
     def test_with_results_dict(self):
         """generate_scalability_table with explicit results skips file load (lines 44-47)."""
-        from visualization.tables.scalability_tables import generate_scalability_table
+        from src.visualization.tables.scalability_tables import generate_scalability_table
 
         results = {
             "agents": [1, 5, 10, 20, 50],
@@ -176,7 +176,7 @@ class TestScalabilityTablesWithResults:
 
     def test_results_dict_regression_values(self):
         """Regression coefficients and R² appear in the table."""
-        from visualization.tables.scalability_tables import generate_scalability_table
+        from src.visualization.tables.scalability_tables import generate_scalability_table
 
         results = {
             "agents": [1, 2, 3, 4, 5],
@@ -190,7 +190,7 @@ class TestScalabilityTablesWithResults:
         """generate_scalability_table handles numpy arrays in results dict."""
         import numpy as np
 
-        from visualization.tables.scalability_tables import generate_scalability_table
+        from src.visualization.tables.scalability_tables import generate_scalability_table
 
         results = {
             "agents": np.array([2, 4, 8, 16]),
@@ -211,7 +211,7 @@ class TestStabilityTablesArchCategories:
 
     def test_stability_table_with_per_arch_cv(self, tmp_path, monkeypatch):
         """Covers the per_architecture_cv loop (lines 30-32) and per_category_cv (33-36)."""
-        import visualization.tables.stability_tables as st_mod
+        import src.visualization.tables.stability_tables as st_mod
 
         multi_seed_data = {
             "overall_cv": 0.03,
@@ -252,7 +252,7 @@ class TestStabilityTablesArchCategories:
         """All metrics below threshold — all checkmarks."""
         import builtins
 
-        import visualization.tables.stability_tables as st_mod
+        import src.visualization.tables.stability_tables as st_mod
 
         data = {
             "overall_cv": 0.01,
@@ -280,7 +280,7 @@ class TestStabilityTablesArchCategories:
         """Empty per_architecture_cv and per_category_cv — only overall row."""
         import builtins
 
-        import visualization.tables.stability_tables as st_mod
+        import src.visualization.tables.stability_tables as st_mod
 
         data = {
             "overall_cv": 0.04,
@@ -332,7 +332,7 @@ class TestStatisticalTablesEffectSizes:
 
     def test_effect_size_large(self, monkeypatch):
         """Cohen's d >= 0.8 → 'Large' interpretation."""
-        import visualization.tables.statistical_tables as st_mod
+        import src.visualization.tables.statistical_tables as st_mod
 
         monkeypatch.setattr(
             st_mod, "_load_statistical_results",
@@ -343,7 +343,7 @@ class TestStatisticalTablesEffectSizes:
 
     def test_effect_size_medium(self, monkeypatch):
         """Cohen's d in [0.5, 0.8) → 'Medium' interpretation (lines 93-94)."""
-        import visualization.tables.statistical_tables as st_mod
+        import src.visualization.tables.statistical_tables as st_mod
 
         monkeypatch.setattr(
             st_mod, "_load_statistical_results",
@@ -354,7 +354,7 @@ class TestStatisticalTablesEffectSizes:
 
     def test_effect_size_small(self, monkeypatch):
         """Cohen's d < 0.5 → 'Small' interpretation (lines 95-96)."""
-        import visualization.tables.statistical_tables as st_mod
+        import src.visualization.tables.statistical_tables as st_mod
 
         monkeypatch.setattr(
             st_mod, "_load_statistical_results",
@@ -365,7 +365,7 @@ class TestStatisticalTablesEffectSizes:
 
     def test_effect_size_negative_large(self, monkeypatch):
         """abs(d) >= 0.8 for negative d → 'Large'."""
-        import visualization.tables.statistical_tables as st_mod
+        import src.visualization.tables.statistical_tables as st_mod
 
         monkeypatch.setattr(
             st_mod, "_load_statistical_results",
@@ -381,7 +381,7 @@ class TestStatisticalTablesEffectSizes:
         own names in the adjacent column, giving each row two conflicting
         IDs; and it dropped the H3 family entirely.
         """
-        import visualization.tables.statistical_tables as st_mod
+        import src.visualization.tables.statistical_tables as st_mod
 
         data = self._mock_stats_data(0.9)
         monkeypatch.setattr(st_mod, "_load_statistical_results", lambda: data)
@@ -406,7 +406,7 @@ class TestStatisticalTablesEffectSizes:
 
     def test_hypothesis_table_omits_families_absent_from_the_data(self, monkeypatch):
         """POSITIVE CONTROL: rows appear only when the data carries them."""
-        import visualization.tables.statistical_tables as st_mod
+        import src.visualization.tables.statistical_tables as st_mod
 
         monkeypatch.setattr(
             st_mod, "_load_statistical_results",
@@ -422,7 +422,7 @@ class TestStatisticalTablesEffectSizes:
 
     def test_hypothesis_table_without_h1(self, monkeypatch):
         """An h1-less record set still renders the remaining families."""
-        import visualization.tables.statistical_tables as st_mod
+        import src.visualization.tables.statistical_tables as st_mod
 
         monkeypatch.setattr(
             st_mod, "_load_statistical_results",
@@ -437,7 +437,7 @@ class TestStatisticalTablesEffectSizes:
         self, monkeypatch,
     ):
         """An unfamiliar prefix must not be mislabelled as an H2 component test."""
-        import visualization.tables.statistical_tables as st_mod
+        import src.visualization.tables.statistical_tables as st_mod
 
         monkeypatch.setattr(
             st_mod, "_load_statistical_results",
@@ -452,7 +452,7 @@ class TestStatisticalTablesEffectSizes:
         self, monkeypatch,
     ):
         """The column used to be present with '--' in its only cell."""
-        import visualization.tables.statistical_tables as st_mod
+        import src.visualization.tables.statistical_tables as st_mod
 
         monkeypatch.setattr(
             st_mod, "_load_statistical_results",
@@ -462,7 +462,7 @@ class TestStatisticalTablesEffectSizes:
 
     def test_effect_size_table_shows_the_odds_ratio_when_recorded(self, monkeypatch):
         """POSITIVE CONTROL: the odds-ratio column is reachable and data-bound."""
-        import visualization.tables.statistical_tables as st_mod
+        import src.visualization.tables.statistical_tables as st_mod
 
         data = self._mock_stats_data(0.9)
         data["odds_ratio_cif_vs_baseline"] = 12.5
@@ -474,7 +474,7 @@ class TestStatisticalTablesEffectSizes:
 
     def test_effect_size_table_structure(self, monkeypatch):
         """generate_effect_size_table produces a well-formed LaTeX table."""
-        import visualization.tables.statistical_tables as st_mod
+        import src.visualization.tables.statistical_tables as st_mod
 
         monkeypatch.setattr(
             st_mod, "_load_statistical_results",

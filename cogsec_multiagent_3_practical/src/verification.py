@@ -36,21 +36,23 @@ def _configure_verification_logging(log_dir: str | None = None) -> None:
             should pass the project root so the artifact is reproducible
             regardless of where the command is invoked.
     """
-    if logger.handlers:
+    if any(getattr(handler, "_cif_verification_handler", False) for handler in logger.handlers):
         return
     log_path = (
         str(Path(log_dir) / "manuscript_verification.log")
         if log_dir
         else "manuscript_verification.log"
     )
-    logging.basicConfig(
-        level=logging.INFO,
-        format="%(asctime)s - %(levelname)s - %(message)s",
-        handlers=[
-            logging.StreamHandler(sys.stdout),
-            logging.FileHandler(log_path),
-        ],
-    )
+    formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+    handlers = [logging.StreamHandler(sys.stdout), logging.FileHandler(log_path)]
+    for handler in handlers:
+        handler.setFormatter(formatter)
+        handler._cif_verification_handler = True  # type: ignore[attr-defined]
+        logger.addHandler(handler)
+    logger.setLevel(logging.INFO)
+    # CLI output is emitted by the handlers above, including when an application
+    # has already configured the root logger. Do not also propagate duplicates.
+    logger.propagate = False
 
 
 class ManuscriptVerifier:
@@ -59,11 +61,20 @@ class ManuscriptVerifier:
         self.bib_file = self.root_dir / "references.bib"
         self.md_files = sorted(list(self.root_dir.glob("**/*.md")))
 
-        # Regex patterns
-        self.cite_pattern = re.compile(r"\\cite\{([^}]+)\}")
+        # LaTeX citation commands include optional/starred forms and variants
+        # such as \\citep, \\citet, \\parencite and \\autocite. Pandoc's native
+        # [@key], [-@key], and in-text @key forms are checked separately.
+        self.cite_pattern = re.compile(
+            r"\\[A-Za-z]*[Cc]ite[A-Za-z]*\*?(?:\s*\[[^\]]*\]){0,2}\s*\{([^}]+)\}"
+        )
+        self.pandoc_cite_pattern = re.compile(
+            r"(?<![\w@])-?@([A-Za-z0-9_][A-Za-z0-9_:.#$%&+?<>~/-]*)"
+        )
         self.bib_entry_pattern = re.compile(r"@\w+\{([^,]+),")
         self.label_pattern = re.compile(r"\\label\{([^}]+)\}")
-        self.ref_pattern = re.compile(r"\\(cref|ref|autoref)\{([^}]+)\}")
+        self.ref_pattern = re.compile(
+            r"\\([Cc]ref|ref|autoref|eqref|pageref|vref|Vref|Ref)\*?\{([^}]+)\}"
+        )
         self.img_pattern = re.compile(r"!\[.*?\]\((.*?)\)")
         self.link_pattern = re.compile(r"\[.*?\]\((.*?)\)")
 
@@ -179,8 +190,11 @@ class ManuscriptVerifier:
             with open(md_file, "r", encoding="utf-8") as f:
                 content = f.read()
                 citations = self.cite_pattern.findall(content)
+                pandoc_citations = [
+                    key.rstrip(".") for key in self.pandoc_cite_pattern.findall(content)
+                ]
 
-                for citation in citations:
+                for citation in [*citations, *pandoc_citations]:
                     # Handle multiple citations like \cite{key1,key2}
                     keys = [k.strip() for k in citation.split(",")]
                     for key in keys:
@@ -205,8 +219,12 @@ class ManuscriptVerifier:
                     defined_labels[label] = defined_labels.get(label, 0) + 1
 
                 # Pandoc identifiers start with a letter; "#1"-style LaTeX
-                # macro parameters must not be counted as labels.
-                pandoc_labels = re.findall(r"\{#([A-Za-z][^}]*)\}", content)
+                # macro parameters must not be counted as labels. Attributes
+                # after the identifier (for example width=80% or .unnumbered)
+                # belong to the element, not to the label key.
+                pandoc_labels = re.findall(
+                    r"\{#([A-Za-z][^\s}]*)(?:\s[^}]*)?\}", content
+                )
                 for label in pandoc_labels:
                     defined_labels[label] = defined_labels.get(label, 0) + 1
 

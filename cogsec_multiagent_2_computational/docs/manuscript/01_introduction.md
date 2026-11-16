@@ -52,7 +52,7 @@ Our analysis assumes a multiagent deliberation system where $n$ agents collabora
 
 **Trust Assumptions.** Honest agents follow the prescribed deliberation protocol faithfully and report observations truthfully. The communication channel is authenticated---agents cannot impersonate others---but message content is unrestricted. We assume no trusted third party; all integrity guarantees emerge from the collective behavior of honest agents and the structural properties of the CIF defense mechanisms.
 
-**Attack Surface.** The four attack categories in our corpus (\cref{sec:attack-corpus}) map to distinct points on the attack surface: prompt injection targets the input processing layer, trust exploitation operates on the delegation and authority layer, belief manipulation targets the belief update mechanism, and coordination attacks operate across the consensus layer. This decomposition is exhaustive with respect to the CIF architecture's processing pipeline, as validated by the attack taxonomy in Section \ref{sec:corpus-overview}.
+**Attack Surface.** The integrated corpus has five primary families: prompt injection targets the input processing layer, trust exploitation operates on delegation and authority, belief manipulation targets belief updates, coordination attacks operate across consensus, and provenance-and-isolation attacks target evidence flow and isolation boundaries. The historical four-family 950-attack corpus omits the fifth. This is a taxonomy of the corpus, not an exhaustive decomposition of every possible attack surface.
 
 **Out of Scope.** We exclude: (1) attacks on the underlying language model infrastructure (model poisoning, training data manipulation), (2) side-channel attacks on the deliberation platform, (3) denial-of-service attacks preventing agent participation, and (4) attacks exploiting model-specific vulnerabilities (jailbreaks that bypass safety training rather than exploiting inter-agent communication) [@wei2023jailbroken]. We also exclude Sybil attacks from the threat model proper, as agent identity is assumed to be authenticated; however, our attack corpus includes Sybil-style attacks as a subcategory of coordination attacks (\cref{sec:coord-subcats}) to evaluate detection under relaxed assumptions. This scoping focuses the evaluation on the novel attack surface CIF addresses---inter-agent cognitive manipulation---rather than single-agent vulnerabilities covered by existing defenses.
 
@@ -68,7 +68,7 @@ Our analysis assumes a multiagent deliberation system where $n$ agents collabora
 \item **Cross-Architecture Validation**: Systematic evaluation across four production multiagent systems
 \item **Statistical Analysis**: Significance testing, effect sizes, confidence intervals, and ablation studies
 \item **Scalability Characterization**: Performance overhead analysis across agent counts and attack loads
-\item **Category-Theoretic Foundations** (§\ref{sec:category-theoretic-foundations}): Defense lattice, symmetric monoidal category, operad, enriched category, pipeline monad, Kan extensions, and lens/optic formalization---with all structures verified in \texttt{src/formal/category\_theory\_advanced.py}
+\item **Category-Theoretic Explorations** (§\ref{sec:category-theoretic-foundations}): Defense lattice, monoidal, operad, enriched, monad, Kan and lens constructions, with executable checks for some properties and explicit caveats where a claimed universal property or law is not established
 \item **Figure Registry and Auto-Numbering**: Machine-readable \texttt{output/data/figure\_registry.json} with sequential \LaTeX{} labels for all figures and tables
 \end{enumerate}
 
@@ -90,7 +90,7 @@ The remainder of this paper is structured as follows:
 
 **\Cref{sec:methodology}**: Methodology: Implementation Details describes the architectural realization of CIF and presents pseudocode for the six primary defense algorithms (Supplement S7); the full eight-module pipeline (including anomaly scoring and provenance) appears in \cref{sec:pipeline-architecture}.
 
-**\Cref{sec:attack-corpus}**: Attack Corpus describes the 950-attack evaluation dataset with examples and generation methodology.
+**\Cref{sec:attack-corpus}**: Attack Corpus describes the 1,475-attack integrated evaluation dataset, its historical 950-attack subset, and generation methodology.
 
 **\Cref{sec:results}**: Experimental Validation details the experimental setup, four target architectures, evaluation protocol, and key findings.
 
@@ -102,7 +102,7 @@ The remainder of this paper is structured as follows:
 
 ### Supplementary Materials
 
-Eight supplementary sections accompany this paper:
+Twelve supplementary sections accompany this paper:
 
 - **S01: Notation Reference** --- Symbol definitions, conventions, and cross-references to Part 1 definitions (\cref{sec:notation-reference})
 - **S02: Detection Algorithms** --- Complete pseudocode for all detection mechanisms including cognitive firewall classification, sandbox promotion criteria, and tripwire monitoring (\cref{sec:detection-algorithms})
@@ -127,15 +127,15 @@ Table: Cross-paper navigation from Part 2 topics to sibling developments. {#tab:
 | --- | --- |
 | Trust Calculus definitions, $\delta^d$ decay theorems, no-amplification guarantee | Part 1 (DOI: 10.5281/zenodo.22134544), \S{4} (Trust Calculus) |
 | Defense Composition Algebra (series/parallel composition theorems) | Part 1, \S{5} |
-| Information-theoretic stealth--impact bounds | Part 1, \S{4.3}, Theorem "stealth--impact" |
+| Likelihood-ratio, Chernoff and KL detection bounds; the stealth--impact product is an open formalization | Part 1's Information-Theoretic Detection Bounds section |
 | Adversary taxonomy $\Omega_1$--$\Omega_5$ formal characterization | Part 1, \S{3} |
-| Model-checked safety invariants (specifications) | Part 1, \S{7} |
-| Eusocial-colony analogy (evolutionary existence proof for CIF-like architectures) | Part 1 S02 (Eusocial CogSec) |
+| Formally specified safety invariants with model-checking configurations (no executed verdict) | Part 1's Formal Verification section |
+| Eusocial-colony analogy (design inspiration, not a proof of CIF effectiveness) | Part 1 S02 (Eusocial CogSec) |
 | Deployment guides, subagent hardening, incident response, monitoring, cost--benefit | Part 3 (DOI: 10.5281/zenodo.22134548), \S{5}--\S{6} |
 | Accessible-language explanations of these empirical results for non-specialists | Part 3, \S{3} (Evidence) |
 | Operator risk frameworks + common pitfalls | Part 3, \S{5c}, \S{6} |
 | Domain-specific application of these results in ten operational sectors | Part 3's applied domains and cross-domain analysis |
 | Three universal attack patterns (FR Polarity Inversion, Constraint Relaxation, Context Boundary Violation) across domains | Part 3's cross-domain analysis |
-| Retrospective analysis of documented 2024--2025 AI-agent security incidents | Part 3+4, Supplement S03 |
+| Retrospective qualitative mappings of five publicly documented 2024--2025 AI-agent security incidents | Part 3+4, Supplement S03 |
 
 **Code Availability**: All source modules, tests, and analysis scripts for this part are maintained at <https://github.com/docxology/cognitive_integrity> (DOI: 10.5281/zenodo.22134546).

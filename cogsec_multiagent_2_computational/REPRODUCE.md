@@ -2,7 +2,7 @@
 
 ## System Requirements
 
-- Python 3.10+ (the suite is verified green on 3.10, 3.12 and 3.13)
+- Python 3.11+; CI targets the 3.11 floor and the exact primary runtime 3.15.2.
 - [uv](https://docs.astral.sh/uv/)
 
 ## Installation
@@ -29,16 +29,19 @@ make all
 
 This runs, in order:
 
-1. `check-real-data` — assert the git-tracked real-pipeline evidence in
+1. `check-real-data` — assert the git-tracked publication evidence in
    `output/data/` is present and is not synthetic placeholder data
 2. `verify` — manuscript integrity
 3. `tests` — the full test suite
-4. `figures` — the 8 manuscript figures, from the data already in `output/data/`
+4. `figures` — the manuscript figures, from the data already in `output/data/`
 5. `tables` — the LaTeX tables, from the same data
 
-`make all` **does not generate data.** It reads the measured results committed
+`make all` **does not generate data.** It reads the tracked results committed
 to the repository. If they are missing it stops with an error naming the
-missing files rather than silently substituting placeholders.
+missing files rather than silently substituting placeholders. The protected set
+includes both measured pipeline artifacts and the explicitly labelled
+`full_evaluation_results.json` parametric simulation; overwrite protection does
+not make that simulation a measurement.
 
 > **`make data` has been removed.** It used to run
 > `scripts/generate_all_data.py` with its default output directory, which
@@ -54,9 +57,9 @@ missing files rather than silently substituting placeholders.
 | Command | Description |
 |---------|-------------|
 | `make all` | check-real-data → verify → tests → figures → tables |
-| `make check-real-data` | Assert `output/data/` holds real-pipeline evidence, not placeholders |
+| `make check-real-data` | Assert `output/data/` holds tracked publication evidence, not placeholders |
 | `make synthetic-data` | Write **synthetic** placeholder data to `output/data_synthetic/` |
-| `make figures` | Generate all 8 manuscript figures into `output/figures/` |
+| `make figures` | Generate the manuscript figures into `output/figures/` |
 | `make tables` | Generate LaTeX tables into `output/tables/` |
 | `make verify` | Verify manuscript integrity |
 | `make tests` | Run the full test suite |
@@ -78,8 +81,8 @@ Useful overrides:
 
 ### `make clean` is tracked-file safe
 
-`output/` holds 43 git-tracked publication artifacts alongside hundreds of
-regenerable ones. `clean` asks git which is which and removes only the
+`output/` holds git-tracked publication artifacts alongside regenerable ones.
+`clean` asks git which is which and removes only the
 untracked files; it never deletes a tracked artifact, and it leaves
 `manuscript_verification.log` in place while that file is tracked. Preview
 with:
@@ -91,10 +94,10 @@ make clean DRY_RUN=1
 ## Synthetic vs. Real Data
 
 `make synthetic-data` produces schema-compliant **placeholder** data. It is
-fast and useful for exercising the rendering code, but its distributions are
-nothing like the measured ones — the synthetic detection rate is roughly
-*twice* the real one. It writes to `output/data_synthetic/` precisely so it can
-never be confused with, or overwrite, the measured evidence.
+fast and useful for exercising the rendering code, but its distributions differ
+from the measured ones and must not be interpreted as empirical results. It
+writes to `output/data_synthetic/` precisely so it cannot overwrite the tracked
+evidence.
 
 Measured values currently committed under `output/data/`, versus what
 `make synthetic-data` produces for the same schema:
@@ -104,9 +107,15 @@ Measured values currently committed under `output/data/`, versus what
 | Mean overall detection, 30 seeds | `multi_seed_results.json` | **0.863** (min 0.82, max 0.90; CV 0.0243, `stable: false`) | 0.9676 (CV 0.0065) |
 | 5-fold cross-validated TPR | `cross_validation_results.json` | **0.160** (std 0.0237; mean F1 0.275) | 0.9641 (std 0.0055; mean F1 0.9612) |
 
-To regenerate the measured results, run the real experiment scripts directly.
-Each writes into `output/data/`, replacing tracked evidence — do this
-deliberately, never as part of a routine build:
+For the multi-seed row, each of the 30 seeds evaluates 100 stratified attacks
+and 120 benign messages using one architecture-agnostic CIF pipeline. The mean
+benign-arm FPR is **0.1853** (18.53%); the overall TPR population SD is 0.021.
+The `stable: false` verdict comes from per-category CVs, not the overall CV.
+
+To regenerate tracked results, run their source scripts directly. The
+full-evaluation command regenerates a parametric simulation, not measured
+pipeline evidence. Each command writes into `output/data/`, replacing tracked
+evidence — do this deliberately, never as part of a routine build:
 
 | Data file | Real source | Notes |
 |-----------|-------------|-------|
@@ -124,9 +133,9 @@ them declares provenance at all (which would make the check vacuous).
 
 ## Expected Outputs
 
-- `output/figures/` — 8 PDF + PNG figure pairs
-- `output/tables/` — 10 LaTeX table files
-- `output/data/` — measured evaluation data (JSON), git-tracked
+- `output/figures/` — PDF + PNG figure pairs
+- `output/tables/` — LaTeX table files
+- `output/data/` — tracked evaluation data (JSON), with per-artifact provenance
 
 ## Runtime Notes
 
@@ -141,7 +150,7 @@ them declares provenance at all (which would make the check vacuous).
 ## Packaging Note
 
 The distribution publishes a single top-level package, `src`. It previously
-published 16 generic top-level names (`core`, `data`, `utils`, `evaluation`,
+published multiple generic top-level names (`core`, `data`, `utils`, `evaluation`,
 `statistics`, …); `statistics` in particular shadowed the standard-library
 module for anything that put `src/` on `sys.path`. In-repo consumers are
 unaffected: the test suite resolves modules through pytest's

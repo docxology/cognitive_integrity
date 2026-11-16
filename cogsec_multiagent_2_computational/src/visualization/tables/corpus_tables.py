@@ -18,7 +18,7 @@ from typing import TYPE_CHECKING, List, Optional
 from .latex import escape_latex
 
 if TYPE_CHECKING:  # pragma: no cover - typing only
-    from attacks.corpus import AttackCorpus
+    from src.attacks.corpus import AttackCorpus
 
 # Corpus generation is deterministic given the seed; 42 is the canonical
 # seed used by every other consumer of the corpus in this project.
@@ -54,7 +54,7 @@ def corpus_rows(corpus: Optional["AttackCorpus"] = None) -> List[CorpusRow]:
         hardcoded ordering list.
     """
     if corpus is None:
-        from attacks.corpus import AttackCorpus
+        from src.attacks.corpus import AttackCorpus
 
         corpus = AttackCorpus.generate(seed=CORPUS_SEED)
 

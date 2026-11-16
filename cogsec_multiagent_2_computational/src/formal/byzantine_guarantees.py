@@ -29,7 +29,7 @@ from typing import Callable, Optional
 
 import numpy as np
 
-from utils.random_seed import get_rng
+from src.utils.random_seed import get_rng
 
 from .theorem_registry import TheoremResult, TheoremStatus
 
@@ -153,10 +153,12 @@ def validate_byzantine_bound(
 
     valid_success_rate = valid_correct / valid_total if valid_total > 0 else 0.0
     invalid_failure_rate = (
-        invalid_failures / invalid_total if invalid_total > 0 else 1.0
+        invalid_failures / invalid_total if invalid_total > 0 else 0.0
     )
     passed = (
-        valid_success_rate >= ARM_AGREEMENT_THRESHOLD
+        valid_total > 0
+        and invalid_total > 0
+        and valid_success_rate >= ARM_AGREEMENT_THRESHOLD
         and invalid_failure_rate >= ARM_AGREEMENT_THRESHOLD
     )
 

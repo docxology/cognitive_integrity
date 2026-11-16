@@ -21,9 +21,9 @@ import logging
 import numpy as np
 import pytest
 
-from data.generate import DataGenerator
-from data.loaders import load_detection_data, load_json, load_scalability_data
-from data.result_loaders import (
+from src.data.generate import DataGenerator
+from src.data.loaders import load_detection_data, load_json, load_scalability_data
+from src.data.result_loaders import (
     EvaluationResultRow,
     evaluation_to_confusion_counts,
     evaluation_to_detection_matrix,
@@ -31,12 +31,12 @@ from data.result_loaders import (
     load_full_evaluation,
     load_sensitivity_results,
 )
-from data.schema import AblationData, ColonyData, DetectionData, ScalabilityData
-from utils.config import FrameworkConfig, _parse_simple_yaml, load_config
-from utils.logging_setup import get_logger
-from utils.random_seed import get_rng, set_global_seed
-from utils.timing import LatencyAccumulator, timed
-from utils.types import (
+from src.data.schema import AblationData, ColonyData, DetectionData, ScalabilityData
+from src.utils.config import FrameworkConfig, _parse_simple_yaml, load_config
+from src.utils.logging_setup import get_logger
+from src.utils.random_seed import get_rng, set_global_seed
+from src.utils.timing import LatencyAccumulator, timed
+from src.utils.types import (
     ArchitectureType,
     AttackCategory,
     AttackOutcome,
@@ -505,11 +505,33 @@ class TestResultLoaders:
         path = self._write_evaluation_rows(tmp_path)
         rows = load_full_evaluation(path)
         archs, cats, matrix = evaluation_to_detection_matrix(rows=rows)
-        # Check that known values appear in the matrix
+        observed = {("Claude Code", "injection"), ("AutoGPT", "trust_exploitation")}
         for i, arch in enumerate(archs):
             for j, cat in enumerate(cats):
                 val = matrix[i, j]
-                assert 0.0 <= val <= 1.0
+                if (arch, cat) in observed:
+                    assert 0.0 <= val <= 1.0
+                else:
+                    assert np.isnan(val)
+
+    def test_missing_latency_and_category_order(self, tmp_path):
+        payload = [{
+            "architecture": "Claude Code",
+            "attack_category": "direct_injection",
+            "n_attacks": 1,
+            "true_positives": 1,
+            "false_positives": 0,
+            "true_negatives": 0,
+            "false_negatives": 0,
+            "detection_rate": 1.0,
+            "false_positive_rate": 0.0,
+        }]
+        path = tmp_path / "eval.json"
+        path.write_text(json.dumps(payload))
+        rows = load_full_evaluation(str(path))
+        assert np.isnan(rows[0].avg_latency_ms)
+        _, categories, _ = evaluation_to_detection_matrix(rows=rows)
+        assert categories == ["direct_injection"]
 
 
 # ===========================================================================
@@ -551,10 +573,10 @@ class TestFrameworkConfig:
         assert config.seed == 100
         assert config.trust_decay == 0.90
 
-    def test_from_dict_ignores_unknown(self):
-        data = {"injection_threshold": 0.8, "unknown_key": "ignored"}
-        config = FrameworkConfig.from_dict(data)
-        assert config.injection_threshold == 0.8
+    def test_from_dict_rejects_unknown(self):
+        data = {"injection_threshold": 0.8, "drift_treshold": 0.9}
+        with pytest.raises(ValueError, match="drift_treshold"):
+            FrameworkConfig.from_dict(data)
 
     def test_roundtrip(self):
         original = FrameworkConfig(injection_threshold=0.99, seed=7)
@@ -604,11 +626,11 @@ trust_decay: 0.80
         config = load_config(str(path))
         assert config.seed == 55
 
-    def test_load_config_unknown_extension_returns_default(self, tmp_path):
+    def test_load_config_unknown_extension_raises(self, tmp_path):
         path = tmp_path / "config.txt"
         path.write_text("seed: 99")
-        config = load_config(str(path))
-        assert config.seed == 42  # Default, not parsed
+        with pytest.raises(ValueError, match="unsupported config file extension"):
+            load_config(str(path))
 
     def test_parse_simple_yaml_basic(self):
         text = "key1: value1\nkey2: 42\nkey3: 3.14\n"
@@ -816,11 +838,11 @@ class TestLatencyAccumulator:
     def test_empty_accumulator(self):
         acc = LatencyAccumulator(label="test")
         assert acc.count() == 0
-        assert acc.p50() == 0.0
-        assert acc.p95() == 0.0
-        assert acc.p99() == 0.0
-        assert acc.mean() == 0.0
-        assert acc.std() == 0.0
+        assert np.isnan(acc.p50())
+        assert np.isnan(acc.p95())
+        assert np.isnan(acc.p99())
+        assert np.isnan(acc.mean())
+        assert np.isnan(acc.std())
 
     def test_record_single_sample(self):
         acc = LatencyAccumulator(label="test")
@@ -875,7 +897,7 @@ class TestLatencyAccumulator:
         assert acc.count() == 2
         acc.reset()
         assert acc.count() == 0
-        assert acc.mean() == 0.0
+        assert np.isnan(acc.mean())
 
     def test_label(self):
         acc = LatencyAccumulator(label="my_metric")

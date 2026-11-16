@@ -23,6 +23,7 @@ This module provides:
 
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass
 from typing import Callable, Dict, Tuple
 
@@ -88,10 +89,11 @@ class StatisticalManifold:
     ) -> np.ndarray:
         """Parametrised geodesic from *p_start* to *p_end* on the simplex.
 
-        Uses the Hellinger embedding: ``γ(t) = normalise_sqmag(
-        sqrt(p_start) + t * (sqrt(p_end) - sqrt(p_start)))``.  The
-        result is a sequence of squared magnitudes renormalised to
-        valid probability vectors.
+        Uses the Hellinger embedding onto the unit positive sphere.  If
+        ``u = sqrt(p_start)``, ``v = sqrt(p_end)`` and ``Ω = arccos(u·v)``,
+        then ``γ(t) = (sin((1-t)Ω)u + sin(tΩ)v)^2 / sin(Ω)^2``.
+        Normalising a chord between ``u`` and ``v`` is generally not a
+        constant-speed great-circle geodesic.
 
         Args:
             p_start, p_end: Endpoint probability vectors.
@@ -107,29 +109,41 @@ class StatisticalManifold:
 
         s_start = np.sqrt(np.clip(p_start, 0.0, None))
         s_end = np.sqrt(np.clip(p_end, 0.0, None))
+        start_norm = float(np.linalg.norm(s_start))
+        end_norm = float(np.linalg.norm(s_end))
+        if start_norm == 0.0 or end_norm == 0.0:
+            raise ValueError("Geodesic endpoints must have positive probability mass")
+        s_start = s_start / start_norm
+        s_end = s_end / end_norm
 
+        dot = float(np.clip(np.dot(s_start, s_end), -1.0, 1.0))
+        omega = float(np.arccos(dot))
+        sin_omega = math.sin(omega)
         ts = np.linspace(0.0, 1.0, n_steps)
         path = np.zeros((n_steps, self.n_outcomes), dtype=float)
         for i, t in enumerate(ts):
-            mixed = s_start + t * (s_end - s_start)
-            squared = mixed ** 2
-            total = squared.sum()
-            if total <= 0.0:
-                # Degenerate mid-point: fall back to uniform.
-                path[i] = np.ones(self.n_outcomes) / self.n_outcomes
+            if sin_omega < 1e-12:
+                embedded = (1.0 - t) * s_start + t * s_end
             else:
-                path[i] = squared / total
+                embedded = (
+                    math.sin((1.0 - t) * omega) * s_start
+                    + math.sin(t * omega) * s_end
+                ) / sin_omega
+            squared = embedded ** 2
+            path[i] = squared / squared.sum()
         return path
 
     def curvature_at(self, p: np.ndarray) -> float:  # noqa: ARG002 (p unused)
-        """Scalar curvature of the simplex under Fisher-Rao.
+        """Scalar curvature of the unit Hellinger sphere.
 
-        After the Hellinger embedding the simplex becomes a portion of
-        a positive-radius sphere, so the scalar curvature is constant
-        and independent of ``p``: ``n * (n - 1) / 4``.
+        The simplex has dimension ``n_outcomes - 1``. On a unit sphere of
+        that dimension, every sectional curvature is 1 and the scalar
+        curvature is ``(n_outcomes - 1) * (n_outcomes - 2)``, independent
+        of the point ``p``. This is not the sectional curvature of the
+        scaled ``2 sqrt(p)`` embedding used in Part 1, which is 1/4.
         """
         n = self.n_outcomes
-        return float(n * (n - 1) / 4.0)
+        return float((n - 1) * (n - 2))
 
 
 # ---------------------------------------------------------------------------

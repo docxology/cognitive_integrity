@@ -54,6 +54,7 @@ class TheoremRegistry:
 
     def __init__(self) -> None:
         self._validators: Dict[str, tuple] = {}  # id -> (name, fn)
+        self._last_results: List[TheoremResult] | None = None
         self._register_defaults()
 
     def register(
@@ -110,21 +111,17 @@ class TheoremRegistry:
         results: List[TheoremResult] = []
         for tid in sorted(self._validators.keys()):
             results.append(self.validate(tid, **kwargs))
+        self._last_results = results
         return results
 
     def summary(self) -> Dict[str, int]:
-        """Count results by status from the last ``validate_all`` run.
+        """Count the last ``validate_all`` results without rerunning validators.
 
-        Must call ``validate_all`` first to populate results.
-
-        Returns:
-            Dict mapping status name to count.
+        Before the first run, every status count is zero.
         """
-        # Run all with defaults to get current state
-        results = self.validate_all()
         counts: Dict[str, int] = {s.value: 0 for s in TheoremStatus}
-        for r in results:
-            counts[r.status.value] += 1
+        for result in self._last_results or []:
+            counts[result.status.value] += 1
         return counts
 
     def _register_defaults(self) -> None:
@@ -188,8 +185,8 @@ class TheoremRegistry:
         )
         self.register(
             "CT.2",
-            "Categorical Product "
-            "(parallel composition is categorical product)",
+            "Parallel Max-Score Arbitration "
+            "(behavioral check, not a categorical-product universal-property proof)",
             _validate_ct2_categorical_product,
         )
         self.register(
@@ -200,13 +197,12 @@ class TheoremRegistry:
         )
         self.register(
             "FEP.1",
-            "Attack-FEP Equivalence (attack iff ΔF > κ_FEP)",
+            "Attack-FEP Threshold Heuristic (equivalence claim under test)",
             _validate_fep1_attack_fep_equivalence,
         )
         self.register(
             "FEP.2",
-            "Trust-Precision Duality "
-            "(trust score equals FEP precision weight)",
+            "Trust-Precision Weight Mapping (not a trust-score duality proof)",
             _validate_fep2_trust_precision_duality,
         )
 
@@ -217,7 +213,7 @@ class TheoremRegistry:
 
 def _validate_ct1_defense_category_laws(**_kwargs: Any) -> TheoremResult:
     """Check the three category laws on a simple trio of morphisms."""
-    from utils.types import DefenseResult
+    from src.utils.types import DefenseResult
 
     from .category_theory import (
         DefenseMorphism,
@@ -254,7 +250,7 @@ def _validate_ct1_defense_category_laws(**_kwargs: Any) -> TheoremResult:
 
 def _validate_ct2_categorical_product(**_kwargs: Any) -> TheoremResult:
     """Check that ``f × g`` reports the higher-score arm and OR'd detection."""
-    from utils.types import DefenseResult
+    from src.utils.types import DefenseResult
 
     from .category_theory import DefenseMorphism, categorical_product
 
@@ -272,17 +268,20 @@ def _validate_ct2_categorical_product(**_kwargs: Any) -> TheoremResult:
     status = TheoremStatus.PASSED if ok else TheoremStatus.FAILED
     return TheoremResult(
         theorem_id="CT.2",
-        name="Categorical Product",
+        name="Parallel Max-Score Arbitration",
         status=status,
-        evidence=f"detected={r.detected}, score={r.score:.3f}",
+        evidence=(
+            f"Behavioral arbitration check: detected={r.detected}, "
+            f"score={r.score:.3f}; no universal product property is asserted."
+        ),
         details={"detected": r.detected, "score": r.score},
     )
 
 
 def _validate_ct3_monadic_preservation(**_kwargs: Any) -> TheoremResult:
     """Check that ``Err(e).bind(f) == Err(e)`` and monad laws hold."""
-    from core.monad import DetectionEvent, Err, Ok, verify_monad_laws
-    from utils.types import DefenseResult
+    from src.core.monad import DetectionEvent, Err, Ok, verify_monad_laws
+    from src.utils.types import DefenseResult
 
     evt = DetectionEvent("firewall", 0.9)
     err = Err(evt)
@@ -311,12 +310,13 @@ def _validate_ct3_monadic_preservation(**_kwargs: Any) -> TheoremResult:
 
 
 def _validate_fep1_attack_fep_equivalence(**_kwargs: Any) -> TheoremResult:
-    """Check ``ΔF > 0.1`` on a mismatched-belief attack."""
+    """Test the claimed attack/sandbox equivalence against its own APIs."""
     import numpy as np
 
     from .free_energy import (
         BeliefState,
         GenerativeModel,
+        belief_sandbox_as_constrained_inference,
         free_energy_of_attack,
     )
 
@@ -327,39 +327,61 @@ def _validate_fep1_attack_fep_equivalence(**_kwargs: Any) -> TheoremResult:
     baseline = BeliefState(probs=np.array([0.5, 0.5]), labels=["A", "B"])
     attacked = BeliefState(probs=np.array([0.05, 0.95]), labels=["A", "B"])
     result = free_energy_of_attack(baseline, attacked, model, 0)
-
-    ok = bool(result["is_attack"]) and result["free_energy_increase"] > 0.1
-    status = TheoremStatus.PASSED if ok else TheoremStatus.FAILED
+    sandbox = belief_sandbox_as_constrained_inference(
+        baseline, np.array([-4.5, 4.5]), model, 0
+    )
+    same_delta_f = bool(
+        np.isclose(
+            result["free_energy_increase"], sandbox["delta_F"], rtol=0.0, atol=1e-12
+        )
+    )
+    counterexample = bool(result["is_attack"] and not sandbox["sandbox_blocks"])
+    details = {
+        **result,
+        "sandbox_delta_F": sandbox["delta_F"],
+        "sandbox_blocks": sandbox["sandbox_blocks"],
+        "same_delta_F": same_delta_f,
+        "equivalence_counterexample": counterexample,
+    }
+    if counterexample:
+        return TheoremResult(
+            theorem_id="FEP.1",
+            name="Attack-FEP Threshold Heuristic",
+            status=TheoremStatus.FAILED,
+            evidence=(
+                f"Counterexample to the claimed equivalence: ΔF="
+                f"{result['free_energy_increase']:.6f} flags an attack, but "
+                "the same posterior update is not blocked by the sandbox."
+            ),
+            details=details,
+        )
     return TheoremResult(
         theorem_id="FEP.1",
-        name="Attack-FEP Equivalence",
-        status=status,
+        name="Attack-FEP Threshold Heuristic",
+        status=TheoremStatus.SKIPPED,
         evidence=(
-            f"ΔF={result['free_energy_increase']:.3f}, "
-            f"is_attack={result['is_attack']}"
+            "No counterexample in this case; one example cannot prove the claimed equivalence."
         ),
-        details=result,
+        details=details,
     )
 
 
 def _validate_fep2_trust_precision_duality(**_kwargs: Any) -> TheoremResult:
-    """Check that the TrustConfig weights sum to the composite precision."""
-    from core.trust import TrustConfig
+    """Expose the weight mapping without claiming an unvalidated duality."""
+    from src.core.trust import TrustConfig
 
     from .free_energy import connect_to_trust_calculus
 
     cfg = TrustConfig()
     mapping = connect_to_trust_calculus(cfg)
-    expected = cfg.alpha + cfg.beta + cfg.gamma
-    ok = abs(mapping["composite_precision"] - expected) < 1e-10
-    status = TheoremStatus.PASSED if ok else TheoremStatus.FAILED
     return TheoremResult(
         theorem_id="FEP.2",
-        name="Trust-Precision Duality",
-        status=status,
+        name="Trust-Precision Weight Mapping",
+        status=TheoremStatus.SKIPPED,
         evidence=(
-            f"composite_precision={mapping['composite_precision']:.6f}, "
-            f"alpha+beta+gamma={expected:.6f}"
+            "Not a duality proof: the mapping copies alpha, beta and gamma "
+            "and sums them; no trust score or independent precision "
+            "measurement is compared."
         ),
         details=mapping,
     )

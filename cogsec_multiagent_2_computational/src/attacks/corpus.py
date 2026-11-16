@@ -24,7 +24,7 @@ from typing import Any, Dict, Iterator, List, Optional, Tuple
 
 import numpy as np
 
-from utils.types import AttackCategory
+from src.utils.types import AttackCategory
 
 # ---------------------------------------------------------------------------
 # Attack sample dataclass
@@ -121,6 +121,11 @@ _TOP_CATEGORY_MAP = {
         AttackCategory.CONSENSUS_POISONING,
         AttackCategory.TIMING_ATTACK,
     ],
+    "provenance_and_isolation": [
+        AttackCategory.PROVENANCE_LAUNDERING,
+        AttackCategory.SANDBOX_ESCAPE,
+        AttackCategory.BYZANTINE_MANIPULATION,
+    ],
 }
 
 
@@ -208,7 +213,8 @@ class AttackCorpus:
 
         Args:
             name: One of ``'injection'``, ``'trust_exploitation'``,
-                ``'belief_manipulation'``, ``'coordination'``.
+                ``'belief_manipulation'``, ``'coordination'``,
+                ``'provenance_and_isolation'``.
 
         Raises:
             KeyError: If *name* is not a valid top-level category.
@@ -251,7 +257,9 @@ class AttackCorpus:
         for subcat in sorted(groups.keys()):
             group = groups[subcat]
             indices = rng.permutation(len(group))
-            n_train = max(1, int(len(group) * train_frac))
+            n_train = (
+                0 if train_frac == 0 else max(1, int(len(group) * train_frac))
+            )
             for idx in indices[:n_train]:
                 train_samples.append(group[idx])
             for idx in indices[n_train:]:

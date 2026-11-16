@@ -11,9 +11,9 @@ This paper intentionally minimizes mathematical notation to maximize accessibili
 | δ | Trust decay factor | "Delegated trust decreases by this factor at each step" |
 | n | Agent count | "Number of agents in the system" |
 | f | Byzantine agents | "Maximum number of malicious agents tolerated" |
-| $[A]$ | Design Matrix | Maps Functional Requirements to Defense Provisions |
-| $\{FR\}$ | Functional Requirements | What the system must protect |
-| $\{DP\}$ | Defense Provisions | What CIF mechanisms provide |
+| $[A]$ | Design Matrix | Maps Design Parameters to Functional Requirements |
+| $\{FR\}$ | Functional Requirements | What the system must accomplish or protect |
+| $\{DP\}$ | Design Parameters | Operational or physical control parameters chosen to satisfy the FRs |
 | $\text{INV}_k$ | Individual invariant predicate | "A hard rule the system checks at runtime; Part 1 writes this $I_k$" |
 | $\Omega_k$ | Adversary class $k$ | Capability tier: 1=external (input control), 2=peripheral (tool/data channels), 3=agent-level (single compromised agent), 4=coordination (inter-agent channels), 5=systemic (orchestrator) |
 
@@ -21,8 +21,8 @@ This paper intentionally minimizes mathematical notation to maximize accessibili
 
 The cross-domain analysis (Sections 9c–9l) uses the CIF-AD-OODA methodology:
 
-- **Design Matrix** $[A]$: A matrix where rows represent Functional Requirements ($FR$) and columns represent Defense Provisions ($DP$). Each entry $A_{ij}$ indicates whether defense $j$ covers requirement $i$.
-- **Transient Coupling** $[A']$: The coupling matrix during an active attack, showing which defenses are bypassed.
+- **Design Matrix** $[A]$: A matrix where rows represent Functional Requirements ($FR$) and columns represent Design Parameters ($DP$). In $\{FR\}=[A]\{DP\}$, entry $A_{ij}$ represents the contribution of $DP_j$ to $FR_i$; off-diagonal entries indicate coupling, not binary defense coverage.
+- **Transient Coupling** $[A']$: The design matrix during an active attack, including attack-induced changes in diagonal or off-diagonal coupling.
 - **Adversary Classes** $\Omega_1$–$\Omega_5$: Five adversary classes from external input control ($\Omega_1$) through peripheral tool/data-channel compromise ($\Omega_2$), single compromised agents ($\Omega_3$), coordination-channel attacks ($\Omega_4$), and systemic orchestrator compromise ($\Omega_5$), as defined in Part 1's threat model.
 
 ### Three Universal Attack Patterns

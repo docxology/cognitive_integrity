@@ -57,6 +57,74 @@ class TestItCanFail:
         assert gate.main() == 1
         assert "77.7" in capsys.readouterr().out
 
+    def test_a_fabricated_integer_percentage_is_rejected(self, tmp_path, monkeypatch, capsys):
+        """The stale ablation TPR was written "12\\%", with no decimal point.
+
+        A decimal-only pattern matched nothing on that line, so the false
+        headline passed the gate. Integer percentages are the shape a rounded
+        hand-typed number takes, and they must be judged too.
+        """
+        body = "Full pipeline TPR on the ablation corpus is $\\sim$12\\%.\n" + "\n".join(
+            f"Filler {n}.{n}\\% is not asserted here." for n in range(1, 6)
+        )
+        monkeypatch.setattr(gate, "CONCLUSIONS", (str(_conclusion(tmp_path, body)),))
+        assert gate.main() == 1
+        assert "12.0" in capsys.readouterr().out
+
+    def test_a_confidence_level_is_not_a_measurement(self, tmp_path, monkeypatch):
+        """"95\\% CI" and "95\\% HDI" describe the estimator, not the data."""
+        # Filler uses derived values so only the confidence levels could fail.
+        body = "Mean 86.3\\% [95\\% CI: 85.5\\%, 87.1\\%], 95\\% HDI reported.\n" + "\n".join(
+            f"Derived filler {n}.0\\%." for n in (2, 3, 4, 5, 10)
+        )
+        monkeypatch.setattr(gate, "CONCLUSIONS", (str(_conclusion(tmp_path, body)),))
+        assert gate.main() == 0
+
+    def test_a_forward_looking_target_is_not_a_measurement(self, tmp_path, monkeypatch):
+        """Targets and expected outcomes are goals, not reported measurements."""
+        body = (
+            "- Expected outcome: 95--98% detection across all categories\n"
+            "*Target: 80--86\\% detection rate*\n"
+            + "\n".join(f"Derived filler {n}.0\\%." for n in (2, 3, 4, 5, 10))
+        )
+        monkeypatch.setattr(gate, "CONCLUSIONS", (str(_conclusion(tmp_path, body)),))
+        assert gate.main() == 0
+
+    def test_goal_hijacking_does_not_exempt_a_measured_pipeline_mean(
+        self, tmp_path, monkeypatch, capsys
+    ):
+        body = (
+            "Goal-hijacking remains the concern; pipeline mean: 77.7\\%.\n"
+            + "\n".join("Derived filler 86.3\\%." for _ in range(5))
+        )
+        monkeypatch.setattr(gate, "CONCLUSIONS", (str(_conclusion(tmp_path, body)),))
+        monkeypatch.setattr(gate, "_headline_values", lambda: ({86.3: "fixture"}, []))
+        assert gate.main() == 1
+        assert "77.7" in capsys.readouterr().out
+
+    def test_both_range_endpoints_are_checked(self, tmp_path, monkeypatch, capsys):
+        body = (
+            "The measured range was 77.7--86.3\\%.\n"
+            + "\n".join("Derived filler 86.3\\%." for _ in range(5))
+        )
+        monkeypatch.setattr(gate, "CONCLUSIONS", (str(_conclusion(tmp_path, body)),))
+        monkeypatch.setattr(gate, "_headline_values", lambda: ({86.3: "fixture"}, []))
+        assert gate.main() == 1
+        assert "77.7" in capsys.readouterr().out
+
+    @pytest.mark.parametrize("stated", ["186.3", "86.31"])
+    def test_a_numeric_suffix_cannot_impersonate_a_derived_value(
+        self, stated, tmp_path, monkeypatch, capsys
+    ):
+        body = (
+            f"The measured pipeline mean was {stated}\\%.\n"
+            + "\n".join("Derived filler 86.3\\%." for _ in range(5))
+        )
+        monkeypatch.setattr(gate, "CONCLUSIONS", (str(_conclusion(tmp_path, body)),))
+        monkeypatch.setattr(gate, "_headline_values", lambda: ({86.3: "fixture"}, []))
+        assert gate.main() == 1
+        assert stated in capsys.readouterr().out
+
     def test_a_missing_conclusion_is_reported(self, tmp_path, monkeypatch):
         monkeypatch.setattr(gate, "CONCLUSIONS", (str(tmp_path / "absent.md"),))
         # Too few percentages to judge, which is itself refused rather than passed.

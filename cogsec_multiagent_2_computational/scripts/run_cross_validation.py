@@ -16,16 +16,15 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "src"))
-
-from statistics.cross_validation import run_cross_validation
+sys.path.insert(0, str(ROOT))
 
 import numpy as np
 
-from ablation.runner import BENIGN_MESSAGES
-from attacks.corpus import AttackCorpus
-from composition.factory import create_full_pipeline
-from utils.random_seed import set_global_seed
+from src.ablation.runner import BENIGN_MESSAGES
+from src.attacks.corpus import AttackCorpus
+from src.composition.factory import create_full_pipeline
+from src.statistics.cross_validation import run_cross_validation
+from src.utils.random_seed import set_global_seed
 
 
 def main() -> None:

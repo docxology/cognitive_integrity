@@ -34,7 +34,7 @@ default `"model"`):
   measurement.
 - **`real`** measures round detection rates against a **real** detector — the
   injected `detector` callable, or the real `CognitiveFirewall` on the real
-  950-sample `AttackCorpus`. It uses the modular, pure building blocks above
+  1475-sample `AttackCorpus`. It uses the modular, pure building blocks above
   (`measure_detection_rate`, `refine_thresholds`, `evaluate_adaptive_attacks`),
   so every number is a measured fraction, not a constant. Run it via
   `scripts/run_adversarial_training.py --measurement-mode real`.
@@ -53,29 +53,33 @@ default `"model"`):
 
 ```python
 # 1. Generate attacks across the adversary capability spectrum
-from redteam.generator import AdversarialGenerator, OmegaLevel
+from src.redteam.generator import AdversarialGenerator, OmegaLevel
 gen = AdversarialGenerator(
     config_thresholds={"drift_threshold": 0.3, "anomaly_threshold": 0.5},
     omega_level=OmegaLevel.OMEGA_5_COORDINATED,
     seed=42,
 )
 attacks = gen.generate_batch(190)
-avg_evasion = sum(a.evasion_score for a in attacks) / len(attacks)  # design heuristic
+avg_evasion = sum(a.heuristic_evasion_score for a in attacks) / len(attacks)
 
 # 2. Run iterative adversarial training
-from redteam import AdversarialTrainer, ATConfig, NashEquilibriumEstimator
+from src.redteam import AdversarialTrainer, ATConfig, NashEquilibriumEstimator
 trainer = AdversarialTrainer(ATConfig(n_rounds=5, seed=42))
 trainer.run()
 summary = trainer.summary()                 # baseline → hardened DR, delta per round
-proj = NashEquilibriumEstimator(
-    [r.delta_dr for r in trainer.rounds]
-).projected_equilibrium_dr(trainer._baseline_dr)
+cumulative = [r.delta_dr for r in trainer.rounds]
+increments = [cumulative[0]] + [
+    cumulative[i] - cumulative[i - 1] for i in range(1, len(cumulative))
+]
+proj = NashEquilibriumEstimator(increments).projected_equilibrium_dr(
+    trainer._baseline_dr
+)
 
 # 3. Measure mutation-operator evasion against the real firewall
-from redteam.evasion import flagged_payloads, run_evasion_sweep
-from redteam.generator import AttackMutator
-from core.firewall import CognitiveFirewall, Classification
-from attacks.corpus import AttackCorpus
+from src.redteam.evasion import flagged_payloads, run_evasion_sweep
+from src.redteam.generator import AttackMutator
+from src.core.firewall import CognitiveFirewall, Classification
+from src.attacks.corpus import AttackCorpus
 
 firewall = CognitiveFirewall()
 corpus = AttackCorpus.generate(seed=42)
@@ -89,7 +93,7 @@ sweep = run_evasion_sweep(
     AttackMutator(seed=42).mutate_payload,
     lambda p: firewall.classify(p) != Classification.ACCEPT,
 )
-print(sweep["gradual_insertion"])  # 3/66, 4.5%, Wilson CI [1.6%, 12.5%]
+print(sweep["gradual_insertion"])  # 8/76, 10.5%, Wilson CI [5.4%, 19.4%]
 ```
 
 ## Manuscript Anchor
@@ -105,7 +109,7 @@ print(sweep["gradual_insertion"])  # 3/66, 4.5%, Wilson CI [1.6%, 12.5%]
 ## Dependencies
 
 - `numpy >= 1.22` (RNG, gradient/geometric arithmetic)
-- `attacks.corpus` (the real 950-sample `AttackCorpus` sweep denominator)
+- `attacks.corpus` (the real 1475-sample `AttackCorpus` sweep denominator)
 - `core.firewall` (`CognitiveFirewall` classification in the evasion sweep)
 
 ## Testing

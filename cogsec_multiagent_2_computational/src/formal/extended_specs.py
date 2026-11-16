@@ -7,12 +7,12 @@ Generates extended TLA+, Promela, and SMV specifications that include:
 - Corroboration-gated sandbox
 - Colony-level Byzantine fault tolerance
 
-GENERATION-ONLY DISCLOSURE (P2-34): these specs (including the SMV
-liveness properties) are **generated, not model-checked** - no NuSMV/
-SPIN/TLC binary is invoked anywhere in this repo; ``verify_formal_specs.py``
-verifies that generation succeeds, not that the properties hold. Treat
-them as intended-property encodings awaiting an external checker, not as
-verified results.
+GENERATION-ONLY DISCLOSURE (P2-34): this module only generates extended
+specs (including SMV liveness properties); it does not invoke NuSMV, SPIN or
+TLC.  Successful generation is not evidence that any property holds.  Treat
+these as intended-property encodings awaiting an external checker, not as
+verified results.  Optional checking of the separate base specs in
+``spec_verifier.py`` does not execute these extended models.
 """
 
 from __future__ import annotations
@@ -249,7 +249,13 @@ init {{
         omega_level = 1;
         composition_mode = sequential
     }};
-    agent_status[0] = byzantine;
+    i = 0;
+    do
+    :: i < N_AGENTS && i < MAX_BYZ ->
+        agent_status[i] = byzantine;
+        i = i + 1
+    :: else -> break
+    od;
     i = 0;
     do
     :: i < N_AGENTS -> run agent(i); i = i + 1
@@ -355,6 +361,9 @@ def generate_nusmv_spec_v2(
     Returns:
         Extended NuSMV specification string.
     """
+    if not 0 <= max_byzantine <= 2:
+        raise ValueError("The extended NuSMV model supports between 0 and 2 Byzantine agents")
+    initial_byzantine_set = {0: "none", 1: "agent0", 2: "both_01"}[max_byzantine]
     quorum = max(2 * max_byzantine + 1, (n_agents * 2) // 3 + 1)
     return f'''-- CIF NuSMV v2.0 - {n_agents} agents, max {max_byzantine} Byzantine
 -- Extended: composition algebra, Omega taxonomy, drift, sandbox
@@ -419,7 +428,8 @@ ASSIGN
   init(corr_1) := 0;
   init(consensus) := FALSE;
   init(firewall_active) := TRUE;
-  init(byzantine_set) := agent0;
+  init(byzantine_set) := {initial_byzantine_set};
+  next(byzantine_set) := byzantine_set;
   init(omega_level) := 1;
   init(composition_mode) := sequential;
 

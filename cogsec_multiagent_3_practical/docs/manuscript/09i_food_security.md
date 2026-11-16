@@ -22,11 +22,11 @@ The intersection of AI and agricultural systems introduces attack surfaces that 
 After the market signal injection attack, the adversary inverts the polarity of $A_{22}$:
 
 \begin{equation}
-\{FR\}' = [A']\{DP\} = \begin{bmatrix} A_{11} & 0 \\ A_{21} & -A_{22} \end{bmatrix} \begin{bmatrix} DP_1 \\ DP_2 \end{bmatrix}
+\{FR\}' = [A']\{DP\} = \begin{bmatrix} A_{11} & A_{12} \\ 0 & -A_{22} \end{bmatrix} \begin{bmatrix} DP_1 \\ DP_2 \end{bmatrix}
 \label{eq:food_security_coupled}
 \end{equation}
 
-The sign reversal $-A_{22}$ represents the equity inversion: the balancing module now *diverts* resources from the neediest region rather than directing them there. The off-diagonal term $A_{21}$ couples the corrupted equity signal into routing decisions ($FR_1$), causing the logistics engine to actively reroute shipments away from the famine zone. This violates the Independence Axiom \cite{suh2001axiomatic}.
+The sign reversal $-A_{22}$ represents the equity inversion: the balancing module now *diverts* resources from the neediest region rather than directing them there. The off-diagonal term $A_{12}$ couples the corrupted equity signal ($DP_2$) into routing decisions ($FR_1$), causing the logistics engine to actively reroute shipments away from the famine zone. This violates the Independence Axiom \cite{suh2001axiomatic}.
 
 ## The Goal Hijacking Attack
 

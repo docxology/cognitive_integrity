@@ -26,9 +26,9 @@ import numpy as np
 import pytest
 from matplotlib.figure import Figure
 
-from colony.benchmark import ColonyBenchmark, ColonyConfig, ColonyResult, ColonyScenario
-from visualization.figures import attack_timeline
-from visualization.figures.attack_timeline import (
+from src.colony.benchmark import ColonyBenchmark, ColonyConfig, ColonyResult, ColonyScenario
+from src.visualization.figures import attack_timeline
+from src.visualization.figures.attack_timeline import (
     SCENARIO_LABELS,
     TIMELINE_SEED,
     _load_timelines,
@@ -47,49 +47,49 @@ class TestFigureGenerators:
     # -- Individual figure modules --
 
     def test_attack_surface(self):
-        from visualization.figures.attack_surface import plot_attack_surface
+        from src.visualization.figures.attack_surface import plot_attack_surface
         fig = plot_attack_surface(output_dir=self.out)
         assert isinstance(fig, Figure)
         plt.close(fig)
 
     def test_trust_decay(self):
-        from visualization.figures.trust_decay import plot_trust_decay
+        from src.visualization.figures.trust_decay import plot_trust_decay
         fig = plot_trust_decay(output_dir=self.out)
         assert isinstance(fig, Figure)
         plt.close(fig)
 
     def test_defense_composition(self):
-        from visualization.figures.defense_composition import plot_defense_composition
+        from src.visualization.figures.defense_composition import plot_defense_composition
         fig = plot_defense_composition(output_dir=self.out)
         assert isinstance(fig, Figure)
         plt.close(fig)
 
     def test_ablation_study(self):
-        from visualization.figures.ablation_study import plot_ablation_study
+        from src.visualization.figures.ablation_study import plot_ablation_study
         fig = plot_ablation_study(output_dir=self.out)
         assert isinstance(fig, Figure)
         plt.close(fig)
 
     def test_detection_performance(self):
-        from visualization.figures.detection_performance import plot_detection_performance
+        from src.visualization.figures.detection_performance import plot_detection_performance
         fig = plot_detection_performance(output_dir=self.out)
         assert isinstance(fig, Figure)
         plt.close(fig)
 
     def test_comprehensive_taxonomy(self):
-        from visualization.figures.comprehensive_taxonomy import plot_comprehensive_taxonomy
+        from src.visualization.figures.comprehensive_taxonomy import plot_comprehensive_taxonomy
         fig = plot_comprehensive_taxonomy(output_dir=self.out)
         assert isinstance(fig, Figure)
         plt.close(fig)
 
     def test_cif_comprehensive(self):
-        from visualization.figures.cif_comprehensive import plot_cif_comprehensive
+        from src.visualization.figures.cif_comprehensive import plot_cif_comprehensive
         fig = plot_cif_comprehensive(output_dir=self.out)
         assert isinstance(fig, Figure)
         plt.close(fig)
 
     def test_roc_curves(self):
-        from visualization.figures.roc_curves import plot_roc_curves
+        from src.visualization.figures.roc_curves import plot_roc_curves
         result = plot_roc_curves(output_dir=self.out)
         # Returns tuple of paths or a Figure
         if isinstance(result, Figure):
@@ -98,87 +98,169 @@ class TestFigureGenerators:
             assert len(result) >= 1
 
     def test_scalability(self):
-        from visualization.figures.scalability import plot_scalability
+        from src.visualization.figures.scalability import plot_scalability
         fig = plot_scalability(output_dir=self.out)
         assert isinstance(fig, Figure)
         plt.close(fig)
 
     def test_trust_calculus(self):
-        from visualization.figures.trust_calculus import plot_trust_calculus
+        from src.visualization.figures.trust_calculus import plot_trust_calculus
         fig = plot_trust_calculus(output_dir=self.out)
         assert isinstance(fig, Figure)
         plt.close(fig)
 
     def test_belief_sandbox(self):
-        from visualization.figures.belief_sandbox import plot_belief_sandbox
+        from src.visualization.figures.belief_sandbox import plot_belief_sandbox
         fig = plot_belief_sandbox(output_dir=self.out)
         assert isinstance(fig, Figure)
         plt.close(fig)
 
     def test_fp_mitigation(self):
-        from visualization.figures.fp_mitigation import plot_fp_mitigation
+        from src.visualization.figures.fp_mitigation import plot_fp_mitigation
         fig = plot_fp_mitigation(output_dir=self.out)
         assert isinstance(fig, Figure)
         plt.close(fig)
 
     def test_confusion_matrices(self):
-        from visualization.figures.confusion_matrices import plot_confusion_matrices
+        from src.visualization.figures.confusion_matrices import plot_confusion_matrices
         fig = plot_confusion_matrices(output_dir=self.out)
         assert isinstance(fig, Figure)
         plt.close(fig)
 
     def test_detection_distributions(self):
-        from visualization.figures.detection_distributions import plot_detection_distributions
+        from src.visualization.figures.detection_distributions import plot_detection_distributions
         fig = plot_detection_distributions(output_dir=self.out)
         assert isinstance(fig, Figure)
         plt.close(fig)
 
     def test_cif_architecture(self):
-        from visualization.figures.cif_architecture import plot_cif_architecture
+        from src.visualization.figures.cif_architecture import plot_cif_architecture
         fig = plot_cif_architecture(output_dir=self.out)
         assert isinstance(fig, Figure)
         plt.close(fig)
 
     def test_trust_network(self):
-        from visualization.figures.trust_network import plot_trust_network
+        from src.visualization.figures.trust_network import plot_trust_network
         fig = plot_trust_network(output_dir=self.out)
         assert isinstance(fig, Figure)
         plt.close(fig)
 
     def test_threat_taxonomy(self):
-        from visualization.figures.threat_taxonomy import plot_threat_taxonomy
+        from src.visualization.figures.threat_taxonomy import plot_threat_taxonomy
         fig = plot_threat_taxonomy(output_dir=self.out)
         assert isinstance(fig, Figure)
         plt.close(fig)
 
     def test_attack_timeline(self):
-        from visualization.figures.attack_timeline import plot_attack_timeline
+        from src.visualization.figures.attack_timeline import plot_attack_timeline
         fig = plot_attack_timeline(output_dir=self.out)
         assert isinstance(fig, Figure)
         plt.close(fig)
 
     def test_component_interactions(self):
-        from visualization.figures.component_interactions import plot_component_interactions
+        from src.visualization.figures.component_interactions import plot_component_interactions
         fig = plot_component_interactions(output_dir=self.out)
         assert isinstance(fig, Figure)
         plt.close(fig)
 
     def test_detection_results(self):
-        from visualization.figures.detection_results import plot_detection_heatmap
+        from src.visualization.figures.detection_results import plot_detection_heatmap
         fig = plot_detection_heatmap(output_dir=self.out)
         assert isinstance(fig, Figure)
         plt.close(fig)
 
     def test_sensitivity_heatmap(self):
-        from visualization.figures.sensitivity_heatmap import plot_sensitivity_heatmap
+        from src.visualization.figures.sensitivity_heatmap import plot_sensitivity_heatmap
         fig = plot_sensitivity_heatmap(output_dir=self.out)
         assert isinstance(fig, Figure)
         plt.close(fig)
 
     def test_precision_recall_curves(self):
-        from visualization.figures.precision_recall_curves import plot_precision_recall_curves
+        from src.visualization.figures.precision_recall_curves import plot_precision_recall_curves
         fig = plot_precision_recall_curves(output_dir=self.out)
         assert isinstance(fig, Figure)
+        plt.close(fig)
+
+
+class TestFigureDataBindings:
+    """Consumer-visible data mappings that a smoke test cannot catch."""
+
+    def test_trust_capability_uses_trust_calculus_shapley_key(self):
+        from src.visualization.figures.module_capability import _shapley_value
+
+        shapley = {"trust_calculus": 0.25}
+        assert _shapley_value(shapley, "trust") == 0.25
+        with pytest.raises(KeyError, match="no Shapley value"):
+            _shapley_value({}, "trust")
+
+    def test_detection_performance_preserves_asymmetric_wilson_interval(self):
+        from src.visualization.figures.detection_performance import (
+            _PARAMETRIC_PATH,
+            _load_parametric_detection,
+        )
+        from src.visualization.tables.binomial_ci import wilson_interval
+
+        rows = json.loads(_PARAMETRIC_PATH.read_text(encoding="utf-8"))
+        architectures, _, means, intervals = _load_parametric_detection()
+        first = rows[0]
+        expected = wilson_interval(first["true_positives"], first["n_attacks"])
+        assert intervals[0][0] == pytest.approx(expected)
+        assert architectures[0] == first["architecture"]
+        lower_error = means[0][0] - expected[0]
+        upper_error = expected[1] - means[0][0]
+        assert lower_error != pytest.approx(upper_error)
+
+    def test_heatmap_uses_loaded_category_names(self, monkeypatch, tmp_path):
+        import src.data.result_loaders as loaders
+        from src.visualization.figures.detection_results import plot_detection_heatmap
+
+        monkeypatch.setattr(
+            loaders,
+            "evaluation_to_detection_matrix",
+            lambda: (
+                ["Architecture A"],
+                ["direct_injection", "impersonation"],
+                np.array([[0.9, 0.8]]),
+            ),
+        )
+        fig = plot_detection_heatmap(output_dir=str(tmp_path))
+        labels = [tick.get_text() for tick in fig.axes[0].get_xticklabels()]
+        assert labels == ["Direct Injection", "Impersonation"]
+        plt.close(fig)
+
+    def test_confusion_matrix_places_fn_and_fp_on_off_diagonal(self, monkeypatch):
+        import src.data.result_loaders as loaders
+        from src.visualization.figures.confusion_matrices import _load_data
+
+        monkeypatch.setattr(loaders, "load_full_evaluation", lambda: object())
+        monkeypatch.setattr(
+            loaders,
+            "evaluation_to_confusion_counts",
+            lambda rows: {"Architecture A": {"category": (1, 2, 3, 4)}},
+        )
+        matrix = _load_data()["Architecture A"]
+        assert matrix.tolist() == [[1, 4], [2, 3]]
+
+    def test_mitigation_title_does_not_call_lossy_strategies_free(self, tmp_path):
+        from src.visualization.figures.mitigation_tradeoff import plot_mitigation_tradeoff
+
+        fig = plot_mitigation_tradeoff(output_dir=tmp_path)
+        assert fig.axes[0].get_title() == "False-positive mitigation trade-offs"
+        plt.close(fig)
+
+    def test_taxonomy_distinguishes_technique_annotations_and_projections(self, tmp_path):
+        from matplotlib.text import Text
+
+        from src.visualization.figures.comprehensive_taxonomy import (
+            plot_comprehensive_taxonomy,
+        )
+
+        fig = plot_comprehensive_taxonomy(output_dir=tmp_path)
+        text = "\n".join(item.get_text() for item in fig.findobj(match=Text))
+        assert "PASSIVE\nn=0" in text
+        assert "not access-based adversary classes" in text
+        assert "Closed-form projections" in text
+        assert "EXTERNAL" not in text
         plt.close(fig)
 
 
@@ -188,52 +270,54 @@ class TestTableGenerators:
     """Smoke-test every generate_* function in visualization.tables."""
 
     def test_corpus_table(self):
-        from visualization.tables.corpus_tables import generate_corpus_table
+        from src.visualization.tables.corpus_tables import generate_corpus_table
         result = generate_corpus_table()
         assert isinstance(result, str) and len(result) > 0
 
     def test_cross_validation_table(self):
-        from visualization.tables.cross_validation_tables import generate_cross_validation_table
+        from src.visualization.tables.cross_validation_tables import generate_cross_validation_table
         result = generate_cross_validation_table()
         assert isinstance(result, str) and len(result) > 0
 
     def test_assumption_table(self):
-        from visualization.tables.assumption_tables import generate_assumption_table
+        from src.visualization.tables.assumption_tables import generate_assumption_table
         result = generate_assumption_table()
         assert isinstance(result, str) and len(result) > 0
 
     def test_ablation_table(self):
-        from visualization.tables.ablation_tables import generate_ablation_table
+        from src.visualization.tables.ablation_tables import generate_ablation_table
         result = generate_ablation_table()
         assert isinstance(result, str) and len(result) > 0
 
     def test_synergy_table(self):
-        from visualization.tables.ablation_tables import generate_synergy_table
+        from src.visualization.tables.ablation_tables import generate_synergy_table
         result = generate_synergy_table()
-        assert isinstance(result, str) and len(result) > 0
+        assert "maximum of the two" in result
+        assert "better singleton" in result
+        assert "minus the sum" not in result
 
     def test_hypothesis_table(self):
-        from visualization.tables.statistical_tables import generate_hypothesis_table
+        from src.visualization.tables.statistical_tables import generate_hypothesis_table
         result = generate_hypothesis_table()
         assert isinstance(result, str) and len(result) > 0
 
     def test_effect_size_table(self):
-        from visualization.tables.statistical_tables import generate_effect_size_table
+        from src.visualization.tables.statistical_tables import generate_effect_size_table
         result = generate_effect_size_table()
         assert isinstance(result, str) and len(result) > 0
 
     def test_detection_table(self):
-        from visualization.tables.detection_tables import generate_detection_table
+        from src.visualization.tables.detection_tables import generate_detection_table
         result = generate_detection_table()
         assert isinstance(result, str) and len(result) > 0
 
     def test_stability_table(self):
-        from visualization.tables.stability_tables import generate_stability_table
+        from src.visualization.tables.stability_tables import generate_stability_table
         result = generate_stability_table()
         assert isinstance(result, str) and len(result) > 0
 
     def test_scalability_table(self):
-        from visualization.tables.scalability_tables import generate_scalability_table
+        from src.visualization.tables.scalability_tables import generate_scalability_table
         result = generate_scalability_table()
         assert isinstance(result, str) and len(result) > 0
 
@@ -546,8 +630,8 @@ class TestFigureByteReproducibility:
 import sys
 sys.path.insert(0, {scripts!r})
 import generate_all_figures as g  # pins SOURCE_DATE_EPOCH on import
-sys.path.insert(0, {src!r})
-from visualization.figures import trust_decay
+sys.path.insert(0, {root!r})
+from src.visualization.figures import trust_decay
 sys.exit(g.main(argv=["--output", {out!r}],
                 figures=[("trust_decay", trust_decay.plot_trust_decay)]))
 """
@@ -558,9 +642,9 @@ sys.exit(g.main(argv=["--output", {out!r}],
         ``epoch`` is whatever the script itself reported it pinned, parsed out
         of stdout, so the expectation is never hard-coded in the test.
         """
-        src = str(Path(__file__).resolve().parent.parent / "src")
+        root = str(Path(__file__).resolve().parent.parent)
         code = self._PLOT_DRIVER.format(
-            scripts=str(_SCRIPTS_DIR), src=src, out=str(out_dir)
+            scripts=str(_SCRIPTS_DIR), root=root, out=str(out_dir)
         )
         env = dict(os.environ)
         env["MPLBACKEND"] = "Agg"
@@ -650,7 +734,7 @@ class TestReviewedFigureProvenance:
         import sys
 
         root = Path(__file__).parent.parent
-        from visualization.reproducibility import RenderTrace
+        from src.visualization.reproducibility import RenderTrace
 
         probe = tmp_path / "trace_probe"
         (probe / "scripts").mkdir(parents=True)
@@ -697,9 +781,18 @@ class TestReviewedFigureProvenance:
         )
 
     def test_historical_figures_and_fresh_render_inputs_match_reviewed_snapshot(self, tmp_path):
-        from visualization.reproducibility import snapshot_findings
+        from src.visualization.reproducibility import snapshot_findings
 
         root = Path(__file__).parent.parent
+        # Alias attacks need writable fixture inodes. Never hard-link or mutate
+        # the protected publication inputs in the working source tree.
+        probe = tmp_path / "protected-producer"
+        shutil.copytree(root / "src", probe / "src")
+        shutil.copytree(root / "scripts", probe / "scripts")
+        for directory in ("data", "figures"):
+            shutil.copytree(root / "output" / directory, probe / "output" / directory)
+        for filename in ("pyproject.toml", "uv.lock"):
+            shutil.copy2(root / filename, probe / filename)
         # Observed reports cannot clobber approved files through direct paths,
         # symlinks, or hard links. Rejection occurs before any plot is rendered.
         for index, relative in enumerate((
@@ -708,7 +801,7 @@ class TestReviewedFigureProvenance:
             "output/figures/ablation_study.png",
             "scripts/generate_all_figures.py",
         )):
-            protected = root / relative
+            protected = probe / relative
             original = protected.read_bytes()
             symlink = tmp_path / f"symlink-{index}"
             symlink.symlink_to(protected)
@@ -717,9 +810,9 @@ class TestReviewedFigureProvenance:
             for alias_index, destination in enumerate((protected, symlink, hardlink)):
                 rejected_out = tmp_path / f"rejected-{index}-{alias_index}"
                 rejected = subprocess.run(
-                    [sys.executable, str(root / "scripts/generate_all_figures.py"),
+                    [sys.executable, str(probe / "scripts/generate_all_figures.py"),
                      "--output", str(rejected_out), "--provenance", str(destination)],
-                    cwd=str(root), capture_output=True, text=True, timeout=60,
+                    cwd=str(probe), capture_output=True, text=True, timeout=60,
                 )
                 assert rejected.returncode != 0
                 assert "must not overwrite" in rejected.stderr

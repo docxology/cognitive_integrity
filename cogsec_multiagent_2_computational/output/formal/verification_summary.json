@@ -1,0 +1,18 @@
+{
+  "tools": {
+    "NuSMV": {
+      "status": "SKIP",
+      "detail": "NuSMV not found in PATH"
+    },
+    "SPIN": {
+      "status": "SKIP",
+      "detail": "SPIN not found in PATH"
+    },
+    "TLA+": {
+      "status": "SKIP",
+      "detail": "TLC (TLA+ checker) not found in PATH"
+    }
+  },
+  "verified": false,
+  "exit_code": 2
+}

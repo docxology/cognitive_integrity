@@ -24,7 +24,7 @@ _COMPONENTS = [
 
 def _load_synergy_data() -> np.ndarray:
     """Load synergy data from ablation_results.json."""
-    from data.result_loaders import load_ablation_results
+    from src.data.result_loaders import load_ablation_results
     data = load_ablation_results()
     matrix = np.zeros((8, 8))
     name_map = {c.lower(): i for i, c in enumerate(_COMPONENTS)}

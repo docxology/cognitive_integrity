@@ -30,7 +30,7 @@ import numpy as np
 from matplotlib.axes import Axes
 from matplotlib.figure import Figure
 
-from evaluation.baselines import load_comparison_artifact
+from src.evaluation.baselines import load_comparison_artifact
 
 from ..style import PALETTE, SEMANTIC_COLORS, add_source_annotation, apply_style, save_figure
 from .roc_curves import CATEGORY_COLORS, DETECTOR_COLORS, DETECTOR_LABELS

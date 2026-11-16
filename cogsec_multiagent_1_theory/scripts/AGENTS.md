@@ -64,10 +64,11 @@ Plots trust decay across delegation depths:
 - Bounded trust guarantees
 
 ### 03_detection_results_figure.py
-Shows detection performance:
-- ROC curves for different detectors
-- Precision-recall tradeoffs
-- F1 score comparisons
+Requires complete detection, ablation and integrity inputs under
+`output/figures/data/`; missing/malformed evidence raises before writing images.
+Panel A uses corpus detection inputs. Panels B/C are illustrative, not measured,
+and panel D's latency is a model input, not a measurement. No zero-filled
+configurations, fallback ablations, synthetic integrity series or error paths.
 
 ### 04_cif_architecture_figure.py
 System architecture diagram:
@@ -98,10 +99,10 @@ ROC curve analysis:
 - Semantic similarity
 
 ### 08_scalability_figure.py
-Scalability analysis:
-- Agent count vs latency
-- Memory usage scaling
-- Consensus convergence time
+Requires complete, finite analytic inputs in
+`output/figures/data/scalability_results.json`; missing/malformed evidence raises
+before writing images. Detection latency, memory and consensus panels remain
+explicitly analytic/non-measured. See `../src/visualization/README.md`.
 
 ### 09_attack_timeline_figure.py
 Attack progression visualization:

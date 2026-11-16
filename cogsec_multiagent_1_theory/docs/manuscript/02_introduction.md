@@ -241,7 +241,7 @@ We develop an initial taxonomy spanning epistemic, behavioral, social, and tempo
 
 \textbf{RQ2: Trust Algebra}. \textit{How might inter-agent trust be modeled to prevent trust amplification and laundering attacks while enabling legitimate delegation?}
 
-We introduce a trust calculus with bounded delegation ($\delta^d$ decay guarantee), prove associativity properties, and establish the no-amplification theorem ensuring that trust cannot be manufactured through delegation chains (\cref{sec:trust-calculus}).
+We introduce a trust calculus with bounded delegation ($\delta^d$ decay guarantee), explicitly distinguish the non-associative stepwise delegation operator from the associative path functional, and establish the no-amplification bound for that path functional (\cref{sec:trust-calculus}).
 
 \textbf{RQ3: Defense Composition}. \textit{How do cognitive defense mechanisms compose, and what guarantees can we provide about layered defense effectiveness?}
 
@@ -249,7 +249,7 @@ We present a defense composition algebra enabling formal reasoning about series 
 
 \textbf{RQ4: Fundamental Bounds}. \textit{What are the information-theoretic limits on cognitive attack detection?}
 
-We state the stealth-impact tradeoff theorem, which bounds detection independently of defense implementation, and give an information-geometric argument for its constant. The theorem asserts that attacks cannot simultaneously achieve high impact and complete undetectability; its full proof is deferred, and the proof-status index (S01, \cref{sec:proof-status}) records which results in this paper are proved and which are asserted (\cref{sec:detection-bounds}).
+We pose a stealth-impact tradeoff as an open formalization, while proving likelihood-ratio, Chernoff and KL bounds for the detection models defined here. The proposed product inequality is not established by the information-geometric construction and is recorded as deferred in the proof-status index (S01, \cref{sec:proof-status}) (\cref{sec:detection-bounds}).
 
 ## Contributions {#sec:contributions}
 
@@ -263,9 +263,9 @@ This paper provides both theoretical foundations and practical mechanisms for co
 
 \item \textbf{Defense Composition Algebra}: Formal rules for composing security mechanisms with provable detection rate bounds under series and parallel composition (\cref{sec:defense-composition})
 
-\item \textbf{Information-Theoretic Bounds}: Fundamental limits on attack detection relating stealth constraints to maximum achievable impact, independent of defense implementation (\cref{sec:detection-bounds})
+\item \textbf{Information-Theoretic Bounds}: Likelihood-ratio, Chernoff and KL detection bounds for stated observation models, with a stealth-impact tradeoff posed as an open formalization (\cref{sec:detection-bounds})
 
-\item \textbf{Formal Verification}: Model-checked safety properties including belief integrity, trust boundedness, and goal alignment preservation (\cref{sec:formal-verification})
+\item \textbf{Formal Verification}: Formally specified safety properties including belief integrity, trust boundedness, and goal alignment preservation, with model-checking configurations (\cref{sec:formal-verification})
 \end{enumerate}
 
 \textbf{Conceptual Contributions}:
@@ -289,15 +289,15 @@ The remainder of this paper is structured as follows:
 
 \textbf{\Cref{sec:anomaly-detection}: Detection Methods} covers anomaly detection algorithms, provenance analysis techniques, and real-time monitoring systems.
 
-\textbf{\Cref{sec:formal-verification}: Formal Verification} proves the main theorems, presents invariant preservation lemmas, and describes model checking configuration.
+\textbf{\Cref{sec:formal-verification}: Formal Verification} proves the main theorems, presents invariant preservation lemmas, and describes model-checking configurations without claiming that a checker was executed.
 
 \textbf{\Cref{sec:discussion}: Discussion} examines limitations, deployment considerations, and connections to related work.
 
 \textbf{\Cref{sec:summary}: Conclusion} summarizes contributions and identifies directions for future research.
 
-\textbf{Part 2: Computational Validation} A separate, second, companion paper reports empirical results from architecture-aware parametric simulation across 950 attack vectors and four production architectures. Readers seeking detection rates, ablation studies, Bayesian uncertainty quantification, and architecture-specific defense configurations should consult Part 2 (DOI: 10.5281/zenodo.22134546).
+\textbf{Part 2: Computational Validation} A separate, second, companion paper reports empirical results from architecture-aware parametric simulation across the historical 950-attack corpus and four production architectures, plus integrated-corpus pipeline evaluation across 1,475 attacks. Readers seeking detection rates, ablation studies, Bayesian uncertainty quantification, and architecture-specific defense configurations should consult Part 2 (DOI: 10.5281/zenodo.22134546).
 
-\textbf{Part 3+4: Practitioner Guidance \& Applications} The merged third companion paper (\emph{Cognitive Integrity Framework: Practical Applications and Deployment Guide}) provides a qualitative review and practitioner's synthesis---accessible-language summaries of the theoretical and empirical findings, operational checklists, risk assessment frameworks, deployment guides, monitoring strategies, cost-benefit analyses---combined with CIF applications across ten high-stakes operational sectors through the integrated CIF-AD-OODA analytical model. Readers interested in domain-specific goal-hijacking defenses, universal attack patterns (FR polarity inversion, constraint relaxation, context boundary violation), or retrospective analysis of documented 2024--2025 AI agent security incidents should consult Part 3 (DOI: 10.5281/zenodo.22134548).
+\textbf{Part 3+4: Practitioner Guidance \& Applications} The merged third companion paper (\emph{Cognitive Integrity Framework: Practical Applications and Deployment Guide}) provides a qualitative review and practitioner's synthesis---accessible-language summaries of the theoretical and empirical findings, operational checklists, risk assessment frameworks, deployment guides, monitoring strategies, cost-benefit analyses---combined with CIF applications across ten high-stakes operational sectors through the integrated CIF-AD-OODA analytical model. Readers interested in domain-specific goal-hijacking defenses, universal attack patterns (FR polarity inversion, constraint relaxation, context boundary violation), or retrospective mappings of five publicly documented 2024--2025 AI agent security incidents (qualitative hypotheses, not measured field validation) should consult Part 3 (DOI: 10.5281/zenodo.22134548).
 
 ## Reading Companion: Where to Find Specific Topics {#sec:reading-companion}
 
@@ -316,7 +316,7 @@ Empirical detection rates for the defense compositions proved here & Part 2 (DOI
 Ablation studies isolating the contribution of each defense mechanism & Part 2, \S{5d} (Ablation Studies and Scalability Benchmarks) and \S{14.2.1} (Ablation Effect Sizes) \\
 Bayesian uncertainty quantification on detection rates & Part 2, \S{5e} \\
 Game-theoretic analysis / Nash equilibrium of CIF vs.\ adaptive attackers & Part 2, \S{6} (Discussion) \\
-Model-checking execution (NuSMV, TLA+ traces) for the invariants defined here & Part 2 S04 (Model Checking) \\
+Model-checking specifications (NuSMV, SPIN, TLA+) for the invariants defined here; no checker was executed & Part 2 S04 (Model Checking) \\
 Deployment checklists and operator-posture guidance & Part 3 (DOI: 10.5281/zenodo.22134548), \S{5} (Deployment Guide), \S{5b} (Incident Response) \\
 Monitoring, drift detection playbooks, cost--benefit analysis & Part 3, \S{5c}--\S{5d} \\
 Case studies showing CIF in complex realistic deployments & Part 3, \S{6b} \\
@@ -324,7 +324,7 @@ Open problems / research directions for practitioners & Part 3 (DOI: 10.5281/zen
 Domain-specific goal-hijacking analyses across ten operational sectors & Part 3, \S{9c}--\S{9l} \\
 Three universal attack patterns (FR Polarity Inversion, Constraint Relaxation, Context Boundary Violation) & Part 3, \S{10} (Cross-Domain Discussion) \\
 Four novel defense extensions (verification channel separation, active perturbation probing, physics-informed invariants, semiotic decoupling) & Part 3, \S{9h} (Biowarfare), \S{9j} (Trade Wars), \S{9k} (Infrastructure), \S{9f} (Drone Wars) \\
-Retrospective analysis of documented 2024--2025 AI-agent security incidents & Part 3, S03 (Real-World Incidents) \\
+Retrospective qualitative mappings of five publicly documented 2024--2025 AI-agent security incidents & Part 3, S03 (Real-World Incidents) \\
 \bottomrule
 \end{tabular}
 \end{table}

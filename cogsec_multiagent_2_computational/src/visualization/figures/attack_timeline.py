@@ -30,7 +30,7 @@ from typing import List, Optional, Sequence, Tuple
 import numpy as np
 from matplotlib.figure import Figure
 
-from colony.benchmark import ColonyBenchmark
+from src.colony.benchmark import ColonyBenchmark
 
 from ..style import (
     FONTSIZE,

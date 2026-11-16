@@ -44,7 +44,7 @@ Under the attack, the design matrix acquires off-diagonal coupling:
 \label{eq:cyber_security_coupled}
 \end{equation}
 
-The off-diagonal term $A_{21}$ now allows availability actions ($DP_2$) to override security parameters ($FR_1$)---specifically, the `iptables -F` command (a $DP_2$ availability action) directly destroys the firewall state ($FR_1$). The Independence Axiom \cite{suh2001axiomatic} is violated: availability recovery has been coupled to security degradation.
+The off-diagonal term $A_{12}$ now allows availability actions ($DP_2$) to override security parameters ($FR_1$)---specifically, the `iptables -F` command (a $DP_2$ availability action) directly destroys the firewall state ($FR_1$). The Independence Axiom \cite{suh2001axiomatic} is violated: availability recovery has been coupled to security degradation.
 
 ## CIF Defense: Permission Boundaries and Quorum Verification
 

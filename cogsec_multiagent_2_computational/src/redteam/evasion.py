@@ -29,8 +29,9 @@ interval so a reader can tell "measured zero" from "measured nothing".
 from __future__ import annotations
 
 from dataclasses import dataclass
-from statistics.confidence import wilson_ci
 from typing import Any, Callable, Dict, Iterable, List, Sequence
+
+from src.statistics.confidence import wilson_ci
 
 #: Fewest distinct flagged payloads for a sweep to carry any information.
 #: Below this the Wilson interval spans most of [0, 1] and the measurement

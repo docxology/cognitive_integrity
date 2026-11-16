@@ -15,7 +15,7 @@ from pathlib import Path
 
 import pytest
 
-from evaluation.load_driver import LoadPoint, drive_at_rate, find_saturation, sweep_rates
+from src.evaluation.load_driver import LoadPoint, drive_at_rate, find_saturation, sweep_rates
 
 REPO = Path(__file__).resolve().parents[1]
 ARTIFACT = REPO / "output" / "data" / "load_sweep.json"

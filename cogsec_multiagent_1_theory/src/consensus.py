@@ -83,6 +83,18 @@ class ByzantineConsensus:
 
         self._votes: Dict[str, List[Vote]] = {}
         self._decided: Dict[str, ConsensusResult] = {}
+        # With no external identity registry, the first n distinct voter IDs
+        # form the electorate. Further IDs are rejected instead of inflating
+        # participation beyond the declared n/f assumptions.
+        self._agent_ids: Set[str] = set()
+
+    def _accept_voter(self, agent_id: str) -> bool:
+        if agent_id in self._agent_ids:
+            return True
+        if len(self._agent_ids) >= self.n_agents:
+            return False
+        self._agent_ids.add(agent_id)
+        return True
 
     def submit_vote(self, vote: Vote) -> None:
         """
@@ -91,6 +103,9 @@ class ByzantineConsensus:
         Args:
             vote: Agent's vote
         """
+        if not self._accept_voter(vote.agent_id):
+            raise ValueError(f"Unknown voter outside declared electorate: {vote.agent_id}")
+
         if vote.proposition not in self._votes:
             self._votes[vote.proposition] = []
 
@@ -233,11 +248,14 @@ class QuorumVerification:
             raise ValueError("max_byzantine must be non-negative")
         if n_agents < 1:
             raise ValueError("n_agents must be positive")
+        if n_agents < 3 * self.max_byzantine + 1:
+            raise ValueError(f"Need n >= 3f + 1: {n_agents} < 3*{self.max_byzantine}+1")
 
         # Quorum threshold: ceil((n + f + 1) / 2)
         self.quorum = int(np.ceil((n_agents + self.max_byzantine + 1) / 2))
 
         self._pending: Dict[str, Set[str]] = {}  # action -> approving agents
+        self._agent_ids: Set[str] = set()
 
     def request_approval(self, action_id: str) -> None:
         """Initialize approval request for action."""
@@ -254,6 +272,11 @@ class QuorumVerification:
         Returns:
             True if quorum reached
         """
+        if agent_id not in self._agent_ids:
+            if len(self._agent_ids) >= self.n_agents:
+                return False
+            self._agent_ids.add(agent_id)
+
         if action_id not in self._pending:
             self.request_approval(action_id)
 
@@ -542,8 +565,33 @@ class ConfidenceByzantineConsensus(ByzantineConsensus):
             # Too uncertain to decide
             return ConsensusResult.UNDECIDED, agg_confidence
 
-        # Use parent's consensus logic
-        return super().compute_consensus(proposition)
+        votes = self._confidence_votes.get(proposition, [])
+        min_votes = int(np.floor(self.n_agents * self.config.quorum_fraction)) + 1
+        if len(votes) < min_votes:
+            return ConsensusResult.UNDECIDED, len(votes) / self.n_agents
+
+        total_weight = sum(v.confidence for v in votes)
+        if total_weight <= 0:
+            return ConsensusResult.UNDECIDED, agg_confidence
+
+        accept_weight = sum(
+            v.confidence for v in votes if v.belief > self.config.acceptance_threshold
+        )
+        reject_weight = sum(
+            v.confidence for v in votes if v.belief < self.config.rejection_threshold
+        )
+        threshold = total_weight * self.config.quorum_fraction
+
+        if accept_weight > threshold:
+            self._decided[proposition] = ConsensusResult.ACCEPT
+            return ConsensusResult.ACCEPT, accept_weight / total_weight
+        if reject_weight > threshold:
+            self._decided[proposition] = ConsensusResult.REJECT
+            return ConsensusResult.REJECT, reject_weight / total_weight
+        return (
+            ConsensusResult.UNDECIDED,
+            max(accept_weight, reject_weight) / total_weight,
+        )
 
 
 @dataclass
@@ -632,3 +680,33 @@ class CombinedByzantineConsensus(ByzantineConsensus):
 
         weighted_sum = sum(v.belief * v.effective_weight for v in votes)
         return weighted_sum / total_weight
+
+    def compute_consensus(self, proposition: str) -> Tuple[ConsensusResult, float]:
+        """Compute consensus using trust × confidence as each vote's weight."""
+        votes = self._combined_votes.get(proposition, [])
+        min_votes = int(np.floor(self.n_agents * self.config.quorum_fraction)) + 1
+        if len(votes) < min_votes:
+            return ConsensusResult.UNDECIDED, len(votes) / self.n_agents
+
+        total_weight = sum(v.effective_weight for v in votes)
+        if total_weight <= 0:
+            return ConsensusResult.UNDECIDED, len(votes) / self.n_agents
+
+        accept_weight = sum(
+            v.effective_weight for v in votes if v.belief > self.config.acceptance_threshold
+        )
+        reject_weight = sum(
+            v.effective_weight for v in votes if v.belief < self.config.rejection_threshold
+        )
+        threshold = total_weight * self.config.quorum_fraction
+
+        if accept_weight > threshold:
+            self._decided[proposition] = ConsensusResult.ACCEPT
+            return ConsensusResult.ACCEPT, accept_weight / total_weight
+        if reject_weight > threshold:
+            self._decided[proposition] = ConsensusResult.REJECT
+            return ConsensusResult.REJECT, reject_weight / total_weight
+        return (
+            ConsensusResult.UNDECIDED,
+            max(accept_weight, reject_weight) / total_weight,
+        )

@@ -6,7 +6,7 @@ from typing import Dict, List, Optional, TypeVar
 
 import numpy as np
 
-from formal.category_theory import (
+from src.formal.category_theory import (
     CognitiveState,
     DefenseMorphism,
 )
@@ -42,12 +42,13 @@ class EnrichedHom:
 
 @dataclass
 class EnrichedDefenseCategory:
-    """DefenseCategory enriched over the monoidal category ([0,1], ≤, 1, min).
+    """Rates enriched over Lawvere's quantale ``([0,1], ≥, +, 0)``.
 
-    The enriched composition law:
-      Hom(g,h) ⊗ Hom(f,g) → Hom(f,h)
-    is implemented as:
-      hom(g,h) + hom(f,g) ≥ hom(f,h)   (triangle inequality on [0,1])
+    ``Hom(f,g)`` is a distance between mean detection scores, not a
+    detection rate.  In the Lawvere convention the order is reverse
+    inclusion of distances, the monoidal unit is 0, and composition is the
+    triangle inequality ``Hom(g,h) + Hom(f,g) ≥ Hom(f,h)``.  This is not
+    enrichment over ``([0,1], ≤, min, 1)``.
     """
 
     def hom(

@@ -9,6 +9,8 @@ from dataclasses import dataclass, field
 from enum import Enum, IntEnum
 from typing import Any, Dict, List, Optional
 
+import numpy as np
+
 # ---------------------------------------------------------------------------
 # Attack taxonomy
 # ---------------------------------------------------------------------------
@@ -122,11 +124,11 @@ class DefenseResult:
             ``details``, and ``latency_ms``.
         """
         return {
-            "detected": self.detected,
-            "score": round(self.score, 6),
+            "detected": _serialize_value(self.detected),
+            "score": round(float(self.score), 6),
             "module_name": self.module_name,
             "details": _serialize_value(self.details),
-            "latency_ms": round(self.latency_ms, 3),
+            "latency_ms": round(float(self.latency_ms), 3),
         }
 
     @classmethod
@@ -255,6 +257,8 @@ def _serialize_value(v: Any) -> Any:
     Returns:
         A JSON-serialisable counterpart.
     """
+    if isinstance(v, np.generic):
+        return _serialize_value(v.item())
     if v is None or isinstance(v, (bool, int, float, str)):
         return v
     if isinstance(v, Enum):

@@ -76,8 +76,14 @@ class ClaudeCodeAdapter(ArchitectureAdapter):
         max_depth = min(depth, self.profile.delegation_depth)
         if source == target:
             return 1.0
-        # Base trust depends on whether orchestrator is involved
-        base = 0.9 if source == 0 or target == 0 else 0.5
+        # Match the directional trust matrix: outbound orchestrator trust is
+        # 0.9, while sub-agents trust the orchestrator at 0.85.
+        if source == 0:
+            base = 0.9
+        elif target == 0:
+            base = 0.85
+        else:
+            base = 0.5
         decay = 0.85
         return float(base * (decay ** max(0, max_depth - 1)))
 

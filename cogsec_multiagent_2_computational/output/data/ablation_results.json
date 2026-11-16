@@ -16,21 +16,21 @@
   "component_removal": [
     {
       "removed": "invariants",
-      "tpr": 0.24,
-      "delta_tpr": -0.65,
+      "tpr": 0.22,
+      "delta_tpr": -0.67,
       "fpr": 0.0,
       "delta_fpr": 0.0,
-      "youden_j": 0.24,
-      "delta_youden_j": -0.65
+      "youden_j": 0.22,
+      "delta_youden_j": -0.67
     },
     {
       "removed": "tripwire",
-      "tpr": 0.87,
-      "delta_tpr": -0.020000000000000018,
+      "tpr": 0.88,
+      "delta_tpr": -0.010000000000000009,
       "fpr": 0.0,
       "delta_fpr": 0.0,
-      "youden_j": 0.87,
-      "delta_youden_j": -0.020000000000000018
+      "youden_j": 0.88,
+      "delta_youden_j": -0.010000000000000009
     },
     {
       "removed": "consensus",

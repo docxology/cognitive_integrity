@@ -14,10 +14,8 @@ Two layers:
 from __future__ import annotations
 
 import json
-import math
 import os
 import re
-import shlex
 import shutil
 import subprocess
 import sys
@@ -25,7 +23,7 @@ from pathlib import Path
 
 import pytest
 
-from manuscript.claim_registry import (
+from src.manuscript.claim_registry import (
     CLAIMS,
     EXACT,
     F3,
@@ -57,7 +55,7 @@ REAL_DATA = PROJECT_ROOT / "output" / "data"
 #   uv run python scripts/verify_claims.py --only-failures
 # Empty as of 2026-08-21: the Ollama-backed LLM demo (gemma3:4b) was re-run
 # with COGSEC_RUN_LLM_ANALYSIS=1, so llm_demo_results.json now carries real
-# measurements and all 163 shipped claims reconcile (0 MISMATCH, 0 NOT_FOUND,
+# measurements and all shipped claims reconcile (0 MISMATCH, 0 NOT_FOUND,
 # 0 UNBACKED). Keep this set for pinning any future known-unreconciled claims;
 # the anti-drift tests above fail the moment a new unsupported number appears.
 KNOWN_UNRECONCILED: frozenset[str] = frozenset()
@@ -96,6 +94,7 @@ def _deepcopy_json(obj):
 def _ablation(n: int = 50, detected: int = 10) -> dict[str, object]:
     """A minimal ablation artifact whose rates are k/n."""
     return {
+        "n_attacks": n,
         "full_pipeline": {"tpr": detected / n},
         "component_removal": [
             {"removed": "detection", "tpr": (detected - 5) / n, "delta_tpr": -5 / n},
@@ -353,8 +352,34 @@ class TestGroundTruthAblation:
         with pytest.raises(ClaimDataUnavailable, match="no component row"):
             gt.component("nope")
 
-    def test_corpus_size_recovers_the_denominator(self, tmp_path):
-        """POSITIVE CONTROL: change N in the artifact, the derived N follows."""
+    def test_delta_claim_rejects_a_loss_published_as_a_gain(self, tmp_path):
+        from src.manuscript.claim_registry import _component_claims
+
+        gt = _write_data(tmp_path / "data", ablation_results=_ablation())
+        manuscript = tmp_path / "manuscript"
+        manuscript.mkdir()
+        path = manuscript / "doc.md"
+        delta_claim = next(
+            claim
+            for claim in _component_claims(
+                "doc.md", {"detection": "Detection module"}, prefix="test"
+            )
+            if claim.id == "test.delta.detection"
+        )
+        path.write_text(
+            "| Detection module | 0.100 | $\\approx +0.100$ |\n",
+            encoding="utf-8",
+        )
+        assert verify_claims([delta_claim], manuscript, gt).results[0].verdict == "MISMATCH"
+
+        path.write_text(
+            "| Detection module | 0.100 | $\\approx -0.100$ |\n",
+            encoding="utf-8",
+        )
+        assert verify_claims([delta_claim], manuscript, gt).results[0].verdict == "MATCH"
+
+    def test_corpus_size_tracks_the_recorded_n(self, tmp_path):
+        """POSITIVE CONTROL: change recorded N in the artifact, the derived N follows."""
         gt50 = _write_data(tmp_path / "a", ablation_results=_ablation(n=50, detected=10))
         assert gt50.ablation_corpus_size() == pytest.approx(50.0)
         gt98 = _write_data(tmp_path / "b", ablation_results=_ablation(n=98, detected=12))
@@ -369,18 +394,18 @@ class TestGroundTruthAblation:
         gt = _write_data(tmp_path, ablation_results=payload)
         assert gt.ablation_corpus_size() == pytest.approx(40.0)
 
-    def test_corpus_size_rejects_implausible_denominator(self, tmp_path):
-        """Rates that are not k/N for any sane N must not yield a fake corpus size."""
-        payload = {
-            "full_pipeline": {"tpr": math.pi / 10},
-            "component_removal": [
-                {"removed": "x", "tpr": math.e / 10, "delta_tpr": -0.1},
-                {"removed": "y", "tpr": math.sqrt(2) / 10, "delta_tpr": -0.1},
-            ],
-            "top_synergies": [],
-        }
+    def test_corpus_size_uses_recorded_n_not_reduced_denominators(self, tmp_path):
+        """Every rate can reduce to denominator 100 while the measured N is 200."""
+        payload = _ablation(n=200, detected=20)
         gt = _write_data(tmp_path, ablation_results=payload)
-        with pytest.raises(ClaimDataUnavailable, match="implied denominator"):
+        assert gt.ablation_corpus_size() == pytest.approx(200.0)
+
+    def test_corpus_size_without_recorded_n_is_unavailable(self, tmp_path):
+        """The denominator LCM is a lower bound, not evidence for an exact count."""
+        payload = _ablation(n=200, detected=20)
+        del payload["n_attacks"]
+        gt = _write_data(tmp_path, ablation_results=payload)
+        with pytest.raises(ClaimDataUnavailable, match="only a lower bound"):
             gt.ablation_corpus_size()
 
     def test_synergy_is_order_independent(self, tmp_path):
@@ -764,6 +789,31 @@ class TestGroundTruthStatistics:
         assert gt.llm_detection_rate("claude_code") == pytest.approx(0.8)
         assert gt.llm_total("claude_code") == pytest.approx(5.0)
 
+    def test_llm_range_claims_use_minimum_and_maximum_not_architecture_order(
+        self, tmp_path
+    ):
+        gt = _write_data(
+            tmp_path / "data",
+            llm_demo_results={
+                "multiagent_results": {
+                    "claude_code": {"detection_rate": 2 / 3, "total": 3},
+                    "crewai": {"detection_rate": 0.5, "total": 4},
+                }
+            },
+        )
+        manuscript = tmp_path / "manuscript"
+        manuscript.mkdir()
+        (manuscript / "00_abstract.md").write_text(
+            r"achieving 50--67\% detection across", encoding="utf-8"
+        )
+        claims = [
+            claim
+            for claim in CLAIMS
+            if claim.id in {"abstract.llm_dr_low", "abstract.llm_dr_high"}
+        ]
+        report = verify_claims(claims, manuscript, gt)
+        assert [result.verdict for result in report.results] == ["MATCH", "MATCH"]
+
     def test_llm_missing_architecture_raises(self, tmp_path):
         gt = _write_data(tmp_path, llm_demo_results={"multiagent_results": {}})
         with pytest.raises(ClaimDataUnavailable, match="crewai"):
@@ -903,7 +953,7 @@ class TestShippedRegistry:
         # The synergy claims are generated from the artifact's recorded pairs,
         # so the requirement is that each table has one claim per reported
         # pair, whichever pairs those turn out to be.
-        from manuscript.claim_registry import _recorded_synergy_pairs
+        from src.manuscript.claim_registry import _recorded_synergy_pairs
 
         for prefix in ("05b", "05d"):
             for first, second in _recorded_synergy_pairs():
@@ -915,6 +965,12 @@ class TestShippedRegistry:
             "no synergy pairs were read from ablation_results.json, so the "
             "synergy tables are unwatched"
         )
+        recorded_rows = json.loads(
+            (REAL_DATA / "ablation_results.json").read_text(encoding="utf-8")
+        )["top_synergies"]
+        assert _recorded_synergy_pairs() == tuple(
+            (row["a"], row["b"]) for row in recorded_rows
+        ), "every recorded synergy row must have a registered claim"
 
         # every component-removal delta from the ablation artifact
         for component in (
@@ -976,6 +1032,22 @@ class TestShippedRegistryPositiveControls:
     @staticmethod
     def _result(report: ClaimReport, claim_id: str):
         return next(r for r in report.results if r.claim_id == claim_id)
+
+    def test_summary_synergy_mismatch_is_seen_by_its_own_pattern(self, tmp_path):
+        """The summary sentence must not fall back to the table-row regex."""
+        claim = next(claim for claim in CLAIMS if claim.id == "05b.summary_synergy")
+        source = (REAL_MANUSCRIPT / claim.file).read_text(encoding="utf-8")
+        match = claim.pattern.search(source)
+        assert match is not None, "control precondition: summary pattern must be live"
+        start, end = match.span(1)
+        wrong = float(match.group(1)) + 0.01
+        perturbed = source[:start] + f"{wrong:.3f}" + source[end:]
+
+        manuscript = tmp_path / "manuscript"
+        manuscript.mkdir()
+        (manuscript / claim.file).write_text(perturbed, encoding="utf-8")
+        result = verify_claims([claim], manuscript, GroundTruth(REAL_DATA)).results[0]
+        assert result.verdict == "MISMATCH"
 
     def test_perturbed_value_flips_match_to_mismatch(self, tmp_path):
         """POSITIVE CONTROL 1: change a number, the checker must say MISMATCH."""
@@ -1077,22 +1149,12 @@ class TestVerifyClaimsCli:
         assert proc.returncode == 0, proc.stdout
         assert "every manuscript claim matches the data" in proc.stdout
 
-        # Exercise the actual CI command too: an old inline counter rejected
-        # this healthy report, and swallowing CLI failure could hide bad data.
-        workflow = (PROJECT_ROOT.parent / ".github" / "workflows" / "ci.yml").read_text()
-        step = workflow.split(
-            "- name: Verify manuscript claims (numeric gate, fail-closed)", 1
-        )[1].split("\n  compat:", 1)[0]
-        command = re.search(r"\n\s+run: ([^\n]+)", step)
-        assert command, "the CI claim gate must expose its command"
-        argv = shlex.split(command.group(1))
-        # Keep reports in the fixture while preserving the CI gate behavior.
-        argv[argv.index("--json") + 1] = str(tmp_path / "ci_claim_report.json")
-        env = dict(os.environ, UV_PYTHON=sys.executable, PROJECT_DIR=str(PROJECT_ROOT))
-        healthy = subprocess.run(
-            argv, cwd=PROJECT_ROOT, env=env, capture_output=True, text=True, timeout=120
-        )
-        assert healthy.returncode == 0, healthy.stdout + healthy.stderr
+        # The consumer is the CLI in this interpreter, not dependency setup or
+        # the workflow's source spelling. Reports stay inside this fixture.
+        argv = [
+            sys.executable, str(self.SCRIPT), "--json", str(tmp_path / "ci_claim_report.json")
+        ]
+        env = dict(os.environ, PROJECT_DIR=str(PROJECT_ROOT))
 
         broken = tmp_path / "broken_project"
         shutil.copytree(REAL_MANUSCRIPT, broken / "docs" / "manuscript", symlinks=True)
@@ -1182,7 +1244,7 @@ UNCOVERED_WITH_REASON = {
         "sweep structure rather than scalars"
     ),
     "05e_bayesian_uncertainty.md": (
-        "its posteriors are computed at write time from statistics.bayesian "
+        "its posteriors are computed at write time from src.statistics.bayesian "
         "rather than read from an artifact; pinning them needs either an emitted "
         "artifact or derivers that call BetaPosterior directly"
     ),

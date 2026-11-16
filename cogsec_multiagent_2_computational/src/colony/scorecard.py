@@ -136,5 +136,6 @@ def compute_recovery_steps(
         if arr[i] >= threshold:
             return i - min_idx
 
-    # Never recovered
-    return len(arr) - min_idx
+    # Never recovered: apply the full-timeline penalty promised above,
+    # regardless of when the minimum occurred.
+    return len(arr)

@@ -30,14 +30,14 @@ from typing import List, Optional, Sequence
 
 import pytest
 
-from data.generate import (
+from src.data.generate import (
     DATA_ORIGIN_REAL,
     PROVENANCE_KEYS,
     DataGenerator,
     provenance_sidecar_path,
     read_provenance,
 )
-from utils.run_provenance import (
+from src.utils.run_provenance import (
     DEFAULT_REPO_ROOT,
     PROVENANCE_UNKNOWN,
     RUN_PROVENANCE_KEYS,

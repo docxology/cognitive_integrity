@@ -11,7 +11,9 @@ from .models import (
 class PreDeploymentChecklist:
     """Pre-deployment security checklist with 4 categories, 16 items.
 
-    Implements the pre-deployment section of manuscript Section 03.
+    Corresponds to ``docs/manuscript/05_deployment_guide.md`` and the monitoring
+    and incident-response guidance in ``05d_monitoring_guide.md`` and
+    ``05b_incident_response.md``.
     Phase gating ensures all items in a category should be completed
     before moving to the next deployment phase.
 
@@ -32,10 +34,10 @@ class PreDeploymentChecklist:
         self._load_defaults()
 
     def _load_defaults(self) -> None:
-        """Load the 16 default pre-deployment items from manuscript.
+        """Load the default pre-deployment items.
 
-        Items are organized into 4 categories with 4 items each,
-        matching the pre-deployment checklist in Section 03.
+        Items are organized into architecture, defense, monitoring, and
+        incident-response categories.
         """
         # Architecture Review
         arch_items = [
@@ -46,8 +48,9 @@ class PreDeploymentChecklist:
             ),
             (
                 "arch-002",
-                "Delegation limits configured: Trust decay factor set "
-                "(recommended: delta = 0.85-0.95)",
+                "Delegation limits configured: Trust decay factor selected "
+                "from the deployment profile (illustrative defaults: "
+                "delta = 0.95 low, 0.80 medium, 0.60 high)",
             ),
             (
                 "arch-003",
@@ -217,7 +220,7 @@ class PreDeploymentChecklist:
         """
         items = self.get_category_items(category)
         required = [i for i in items if i.item.required]
-        return all(i.completed for i in required)
+        return bool(required) and all(i.completed for i in required)
 
     def phase_gate_check(self) -> dict[ChecklistCategory, bool]:
         """Check completion status of each category (phase gate).

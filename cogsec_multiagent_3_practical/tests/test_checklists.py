@@ -290,6 +290,13 @@ class TestPreDeploymentChecklist:
         checklist = PreDeploymentChecklist()
         assert checklist.is_ready() is False
 
+    def test_is_ready_false_with_no_items(self):
+        """An empty checklist cannot satisfy every phase gate vacuously."""
+        checklist = PreDeploymentChecklist()
+        checklist.items.clear()
+        assert checklist.is_ready() is False
+        assert not any(checklist.phase_gate_check().values())
+
     def test_is_ready_true_when_all_complete(self):
         """Test is_ready returns true when all items completed."""
         checklist = PreDeploymentChecklist()
@@ -775,33 +782,15 @@ class TestConfigurationReference:
         symbols = [p.symbol for p in ref.trust_params]
         assert symbols == ["\u03b1", "\u03b2", "\u03b3", "\u03b4"]
 
-    def test_trust_param_recommended_values(self):
-        """Test trust parameters have manuscript-specified defaults."""
-        ref = ConfigurationReference()
-        values = [p.recommended for p in ref.trust_params]
-        assert values == [0.3, 0.4, 0.3, 0.9]
-
     def test_loads_4_firewall_thresholds(self):
         """Test default initialization loads 4 firewall thresholds."""
         ref = ConfigurationReference()
         assert len(ref.firewall_thresholds) == 4
 
-    def test_firewall_recommended_values(self):
-        """Test firewall thresholds have manuscript-specified defaults."""
-        ref = ConfigurationReference()
-        values = [t.recommended for t in ref.firewall_thresholds]
-        assert values == [0.3, 0.7, 0.3, 0.7]
-
     def test_loads_4_tripwire_configs(self):
         """Test default initialization loads 4 tripwire configurations."""
         ref = ConfigurationReference()
         assert len(ref.tripwire_configs) == 4
-
-    def test_tripwire_recommended_counts(self):
-        """Test tripwire configs have manuscript-specified counts."""
-        ref = ConfigurationReference()
-        counts = [c.recommended_count for c in ref.tripwire_configs]
-        assert counts == [3, 5, 2, 1]
 
     # --- Trust Weight Validation ---
 
@@ -873,8 +862,8 @@ class TestConfigurationReference:
 
     # --- Decay Validation ---
 
-    def test_validate_decay_valid_default(self):
-        """Test decay validation passes with recommended value."""
+    def test_validate_decay_valid_value(self):
+        """Test decay validation accepts a value inside the illustrative range."""
         ref = ConfigurationReference()
         valid, issues = ref.validate_decay(0.9)
         assert valid is True
@@ -914,8 +903,8 @@ class TestConfigurationReference:
 
     # --- Firewall Validation ---
 
-    def test_validate_firewall_valid_default(self):
-        """Test firewall validation with manuscript defaults."""
+    def test_validate_firewall_valid_illustrative_values(self):
+        """Test firewall validation with illustrative thresholds."""
         ref = ConfigurationReference()
         valid, issues = ref.validate_firewall(0.3, 0.7)
         assert valid is True

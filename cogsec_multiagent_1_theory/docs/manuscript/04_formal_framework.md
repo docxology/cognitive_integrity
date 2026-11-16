@@ -591,50 +591,23 @@ r > \frac{I(D; \mathcal{A})}{H(\mathcal{A})}
 \end{equation}
 \end{theorem}
 
-*The following theorem captures the fundamental tradeoff facing attackers: high-impact attacks are easier to detect, while stealthy attacks have limited effect. This is not a limitation of our defenses—it is a mathematical constraint that any attack must satisfy.*
-
-\begin{theorem}[Stealth-Impact Tradeoff]
+\begin{remark}[Stealth-Impact Tradeoff: Open Problem, Not a Theorem]
 \label{thm:stealth-impact}
-For attack with impact $\mathcal{I}$ and stealth $\mathcal{S}$ (inverse detectability):
+A useful formalization would relate an attack's impact $\mathcal{I}$ and its inverse detectability $\mathcal{S}$ through a channel-capacity-like quantity $C_{\text{channel}}$:
 \begin{equation}
 \label{eq:stealth-impact}
-\mathcal{I} \cdot \mathcal{S} \leq C_{\text{channel}}
+\mathcal{I} \cdot \mathcal{S} \leq C_{\text{channel}} .
 \end{equation}
-where $C_{\text{channel}}$ is the attack channel capacity.
-\end{theorem}
+The framework does not prove this inequality: impact, stealth, and $C_{\text{channel}}$ have not been given operational definitions under which it follows. It is retained as a research question, and no downstream result treats it as an established guarantee.
+\end{remark}
 
-\begin{remark}[Geometric Sharpening of the Stealth-Impact Bound]
+\begin{remark}[Geometry Does Not Prove the Proposed Tradeoff]
 \label{rem:geometric-bound}
-Theorem~\ref{thm:stealth-impact} can be sharpened using the information
-geometry of the belief manifold (Part~2, Supplement~S10).  When belief
-space is endowed with the Fisher-Rao metric
-$G_{ij}(p) = \delta_{ij}/p_i$ \cite{amari2000methods}, the Fisher-Rao geodesic distance
+The Fisher-Rao geodesic distance \cite{amari2000methods}
 \[
 d_{\mathrm{FR}}(p, q) = 2\arccos\!\left(\sum_i \sqrt{p_i q_i}\right)
 \]
-measures the geometric ``distance'' of an attack.  Impact $\mathcal{I}$
-is proportional to $d_{\mathrm{FR}}(p_0, p_{\text{attacked}})$, while
-stealth $\mathcal{S}$ is inversely proportional to the same quantity.
-The curvature of the probability simplex $\Delta^{n-1}$ (constant
-positive curvature $\kappa = n(n-1)/4$) implies that the product
-$\mathcal{I} \cdot \mathcal{S}$ is bounded by the diameter of the manifold:
-\[
-\mathcal{I} \cdot \mathcal{S} \leq \frac{\pi}{2},
-\]
-since $d_{\mathrm{FR}} \leq \pi$ (Hellinger antipodal distributions).
-This recovers $C_{\text{channel}} = \pi/2$ as the tight bound when impact
-is measured in natural (Fisher-Rao) units. It is a geometric \emph{argument}
-for the constant in Theorem~\ref{thm:stealth-impact}, not a proof of that
-theorem: the theorem itself is stated without proof and is recorded as
-deferred in the proof-status index (S01, \cref{sec:proof-status}), and the
-curvature step above assumes the impact measure is the Fisher-Rao distance
-rather than deriving that identification.
-Furthermore, the connection to KL divergence---$D_{\mathrm{KL}}(p \,\|\, p')
-\approx \tfrac{1}{2}(\Delta p)^\top G(p)(\Delta p)$ for small
-perturbations---gives geometric justification for the drift detection
-threshold $\theta_{\text{drift}} = 0.3$: this corresponds to a
-Fisher-Rao step of approximately $0.775$ radians, or roughly $25\%$ of
-the maximum possible attack distance ($r_\theta = \sqrt{2\,\theta_{\text{drift}}} = \sqrt{0.6}$).
+measures the geometric ``distance'' of a belief update. Setting impact proportional to $d_{\mathrm{FR}}$ and stealth inversely proportional to it makes $\mathcal{I}\mathcal{S}$ constant by definition; choosing a different reciprocal normalization produces a different constant. Neither is a theorem or a consequence of the simplex's curvature, and neither sharpens \cref{thm:stealth-impact}. Under the Hellinger map $p_i\mapsto 2\sqrt{p_i}$ the simplex lies on a sphere of radius $2$, with sectional curvature $1/4$ wherever defined, not curvature $\kappa=n(n-1)/4$ or a curvature that increases as beliefs concentrate. Small perturbations satisfy $D_{\mathrm{KL}}(p\|p+\delta p)\approx\tfrac12(\delta p)^\top G(p)(\delta p)$, so $\theta_{\text{drift}}=0.3$ corresponds locally to $r_\theta\approx\sqrt{0.6}=0.775$ radians; this approximation does not derive an operational detector threshold.
 \end{remark}
 
 \begin{table}[htbp]
@@ -850,7 +823,7 @@ where $\epsilon_{\text{OODA}} \in (0, 0.1)$ is the maximum tolerable overhead fr
 
 \begin{property}[OODA-CIF Latency Compatibility]
 \label{prop:ooda-latency}
-The CIF defense stack (Table~\ref{tab:defense-stack}) with total latency $L_{\text{total}} \leq 141$ms satisfies the overhead constraint for OODA cycles $\tau_{\text{OODA}} \geq 1.41$s (human-scale operations). For faster OODA cycles (drone swarms: $\tau \approx 100$ms), subset selection is required:
+The CIF defense stack (Table~\ref{tab:defense-stack}) has serial cost $L_{\text{total}} = 10 + 5 + 1 + \max(20,5) + 100 = 136$ms. It satisfies the overhead constraint $\tau_{\text{CIF}} \leq \epsilon_{\text{OODA}} \cdot \tau_{\text{OODA}}$ when $\tau_{\text{OODA}} \geq L_{\text{total}} / \epsilon_{\text{OODA}}$; at the illustrative fraction $\epsilon_{\text{OODA}} = 0.1$ this requires $\tau_{\text{OODA}} \geq 1.36$s, and smaller $\epsilon_{\text{OODA}}$ values require proportionally longer cycles. For faster OODA cycles (drone swarms: $\tau \approx 100$ms), subset selection is required:
 \begin{equation}
 \label{eq:ooda-subset}
 \mathcal{D}^* = \argmax_{\mathcal{D}' \subseteq \mathcal{D}} P_{\text{detect}}(\mathcal{D}') \quad \text{s.t.} \quad L(\mathcal{D}') \leq \epsilon_{\text{OODA}} \cdot \tau_{\text{OODA}}

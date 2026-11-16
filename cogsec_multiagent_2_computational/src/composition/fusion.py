@@ -19,7 +19,7 @@ from typing import List, Optional, Tuple
 
 import numpy as np
 
-from utils.types import DefenseResult
+from src.utils.types import DefenseResult
 
 # ---------------------------------------------------------------------------
 # Abstract base
@@ -55,6 +55,8 @@ class WeightedAverageFusion(FusionStrategy):
     """
 
     def __init__(self, weights: Optional[List[float]] = None, threshold: float = 0.5) -> None:
+        if weights is not None and any(weight < 0.0 for weight in weights):
+            raise ValueError("weights must be non-negative")
         self.weights = weights
         self.threshold = threshold
 
@@ -78,7 +80,7 @@ class WeightedAverageFusion(FusionStrategy):
             return False, 0.0
 
         fused = float(np.dot(w, scores) / w_sum)
-        return fused >= self.threshold, fused
+        return fused > self.threshold, fused
 
 
 # ---------------------------------------------------------------------------
@@ -114,7 +116,8 @@ class MajorityVotingFusion(FusionStrategy):
 class MaxScoreFusion(FusionStrategy):
     """Maximum score across modules (most conservative / sensitive).
 
-    Detected if the maximum score exceeds *threshold*.
+    Detected if any module detected, or if the maximum score reaches
+    *threshold*. The returned score remains the maximum module score.
 
     Args:
         threshold: Detection threshold (default 0.5).
@@ -128,7 +131,8 @@ class MaxScoreFusion(FusionStrategy):
             return False, 0.0
 
         max_score = max(r.score for r in results)
-        return max_score >= self.threshold, max_score
+        detected = any(r.detected for r in results) or max_score >= self.threshold
+        return detected, max_score
 
 
 # ---------------------------------------------------------------------------
@@ -272,6 +276,11 @@ class LearnedFusion(FusionStrategy):
         """
         if not results_list:
             raise ValueError("Cannot fit with empty training data")
+        if len(labels) != len(results_list):
+            raise ValueError(
+                f"Label count ({len(labels)}) != training sample count "
+                f"({len(results_list)})"
+            )
 
         rng = np.random.default_rng(seed)
 

@@ -36,9 +36,9 @@ from enum import Enum
 from pathlib import Path
 from typing import Optional, Sequence
 
-from formal.nusmv_spec import generate_nusmv_spec
-from formal.spin_spec import generate_promela_spec
-from formal.tla_spec import generate_tla_spec
+from src.formal.nusmv_spec import generate_nusmv_spec
+from src.formal.spin_spec import generate_promela_spec
+from src.formal.tla_spec import generate_tla_config, generate_tla_spec
 
 logger = logging.getLogger(__name__)
 
@@ -292,14 +292,25 @@ def verify_spin(spec_path: Path) -> VerificationResult:
 
 
 def verify_tla(spec_path: Path) -> VerificationResult:
-    """Verify a TLA+ spec with TLC, requiring TLC's explicit success banner."""
+    """Verify a configured TLA+ spec, requiring TLC's explicit success banner."""
+    config_path = spec_path.with_suffix(".cfg")
+    if not config_path.is_file():
+        return VerificationResult(
+            "TLA+",
+            VerificationStatus.ERROR,
+            f"TLC configuration is missing: {config_path.name}",
+        )
+
     tool = check_tool("tlc")
     if not tool:
         return VerificationResult(
             "TLA+", VerificationStatus.SKIPPED, "TLC (TLA+ checker) not found in PATH"
         )
 
-    outcome = run_command([tool, str(spec_path.name)], cwd=spec_path.parent)
+    outcome = run_command(
+        [tool, "-config", str(config_path.name), str(spec_path.name)],
+        cwd=spec_path.parent,
+    )
     if not outcome.executed:
         return _launch_failure("TLA+", outcome)
 
@@ -373,6 +384,9 @@ def generate_and_verify_all(
     tla_content = generate_tla_spec(n_agents=n_agents, max_byzantine=max_byzantine)
     tla_path = output_dir / "CognitiveIntegrityFramework.tla"
     tla_path.write_text(tla_content)
+    tla_path.with_suffix(".cfg").write_text(
+        generate_tla_config(n_agents=n_agents, max_byzantine=max_byzantine)
+    )
     results["TLA+"] = verify_tla(tla_path)
 
     return results

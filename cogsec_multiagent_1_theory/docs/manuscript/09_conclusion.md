@@ -18,7 +18,7 @@ Contribution & Significance \\
 \midrule
 Trust Calculus & Bounded delegation with $O(\delta^d)$ decay guarantee prevents trust laundering and amplification---a \textit{structural} property independent of adversary sophistication \\
 Defense Composition Algebra & Formal rules enabling predictable reasoning about layered defense effectiveness \\
-Information-Theoretic Bounds & Fundamental limits on stealth-impact tradeoff constraining adversary capabilities \\
+Information-Theoretic Bounds & Likelihood-ratio, Chernoff and KL limits for the stated detection models; the stealth-impact product remains open \\
 Integrity Properties & Belief consistency, goal alignment, provenance verifiability as verifiable properties \\
 \bottomrule
 \end{tabular}
@@ -42,7 +42,7 @@ Integrity Properties & Belief consistency, goal alignment, provenance verifiabil
 
 \item \textbf{Defenses compose predictably}: The defense composition algebra enables formal reasoning about layered security. Orthogonal defenses compose multiplicatively, explaining why full CIF substantially outperforms any single mechanism.
 
-\item \textbf{Information-theoretic limits constrain adversaries}: The stealth-impact tradeoff theorem establishes that high-impact attacks cannot remain completely undetectable. This provides theoretical grounding for defense strategies.
+\item \textbf{Detection limits are model-specific}: The Chernoff and KL analyses bound error for the stated observation models, and the proposed stealth-impact product remains an open research question rather than a guarantee that high-impact attacks must be detected.
 
 \item \textbf{Cognitive security requires continuous verification}: Unlike perimeter security that trusts internals after boundary checks, cognitive security requires continuous verification of beliefs, goals, and trust relationships.
 \end{enumerate}
@@ -69,7 +69,7 @@ Integrity Properties & Belief consistency, goal alignment, provenance verifiabil
 
 - **Q1: Optimal trust decay functions.** Under what conditions is exponential decay ($\delta^d$) optimal? Are there task distributions or adversary models where alternative decay functions (e.g., polynomial, threshold-based) provide better security-utility tradeoffs?
 
-- **Q2: Tight detection bounds.** Can the stealth-impact bounds in \cref{thm:stealth-impact} be tightened? What adversary adaptations most effectively approach the theoretical limit, and what detection enhancements can push the bound further?
+- **Q2: Valid detection bounds.** Can impact and stealth be given operational definitions that make the proposed inequality in \cref{thm:stealth-impact} a theorem? Which observation models admit a nontrivial capacity-like bound?
 
 - **Q3: Belief consistency under partial observability.** How should agents maintain belief integrity when they cannot observe the full system state? What guarantees remain achievable with bounded observation horizons?
 
@@ -154,11 +154,11 @@ Integrity Properties & Belief consistency, goal alignment, provenance verifiabil
 
 The shift from single-model inference to multiagent operators is not merely an engineering evolution---it introduces fundamentally new security challenges that require fundamentally new approaches. Traditional security focuses on perimeters and access control; cognitive security must address the integrity of reasoning processes themselves.
 
-CIF provides both theoretical foundations and practical mechanisms for this challenge. The trust calculus offers provable guarantees against amplification attacks. The defense composition algebra enables principled reasoning about layered security. The information-theoretic bounds establish fundamental limits on adversary capabilities. Together, these formal contributions move cognitive security from ad-hoc defenses to principled engineering.
+CIF provides both theoretical foundations and practical mechanisms for this challenge. The trust calculus offers provable guarantees against amplification attacks. The defense composition algebra enables principled reasoning about layered security. The likelihood-ratio, Chernoff and KL analyses bound detection for the stated models. Together, these formal contributions move cognitive security from ad-hoc defenses to principled engineering.
 
-**Part 2** of this series provides empirical validation demonstrating that these formal mechanisms translate to practical protection across diverse production architectures (parametric detection ceiling: 96--100\%; pipeline mean: 86.3\%). **Part 3** offers a combined qualitative review and practitioner's synthesis---accessible-language distillation of theoretical and empirical findings, deployment checklists, incident response playbooks, and risk assessment frameworks---together with CIF applications across ten critical operational domains through the CIF-AD-OODA integration model, identifying universal goal-hijacking patterns and validating CIF coverage against documented 2024--2025 AI agent incidents. Together, the three papers provide a comprehensive framework for understanding, implementing, operating, and deploying cognitive security in multiagent AI systems.
+**Part 2** evaluates the mechanisms on synthetic corpora and architecture models: the historical parametric design range is 96--100\%, and the architecture-agnostic multi-seed pipeline mean is 86.3\%; these do not establish field protection across production architectures. **Part 3** offers a combined qualitative review and practitioner's synthesis---accessible-language distillation of theoretical and empirical findings, deployment checklists, incident response playbooks, and risk assessment frameworks---together with CIF applications across ten critical operational domains through the CIF-AD-OODA integration model, identifying universal goal-hijacking patterns and retrospectively mapping CIF mechanisms to five publicly documented 2024--2025 AI agent incidents (a qualitative analysis, not a field-effectiveness measurement). Together, the three papers provide a comprehensive framework for understanding, implementing, operating, and deploying cognitive security in multiagent AI systems.
 
-The formal gaps identified in this work---semantic equivalence attacks, progressive drift, orchestrator compromise---define the frontier for future research, while the provable guarantees (bounded trust, composable defenses, information-theoretic limits) provide the stable theoretical foundation on which that research can build.
+The formal gaps identified in this work---semantic equivalence attacks, progressive drift, orchestrator compromise---define the frontier for future research, while the proved guarantees (bounded trust, composition for independent defenses, and model-specific information-theoretic limits) provide a foundation on which that research can build.
 
 For empirical validation of these theories, we refer the reader to **Part 2: Computational Validation** (DOI: 10.5281/zenodo.22134546). For actionable deployment strategies, domain-specific goal-hijacking analyses, and real-world incident mapping, we refer the reader to **Part 3+4: Practitioner Guidance \& Applications** (DOI: 10.5281/zenodo.22134548).
 

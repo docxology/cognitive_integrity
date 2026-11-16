@@ -208,9 +208,15 @@ class TestSandboxManager:
         belief = Belief("b1", "To promote", 0.9)
         manager.add_provisional(belief)
 
-        manager.promote("b1")
-
+        assert manager.promote("b1") is True
         assert manager.state.get_partition("b1") == BeliefPartition.VERIFIED
+
+    def test_manual_promotion_rejects_expired_belief(self):
+        manager = SandboxManager(SandboxConfig(default_ttl_seconds=0))
+        manager.add_provisional(Belief("b1", "Expired", 0.95, corroboration_count=1))
+
+        assert manager.promote("b1") is False
+        assert manager.state.get_belief("b1") is None
 
     def test_auto_promotion_on_criteria(self):
         """Beliefs auto-promote when meeting criteria."""
@@ -227,6 +233,14 @@ class TestSandboxManager:
 
         assert "high" in promoted
         assert manager.state.get_partition("high") == BeliefPartition.VERIFIED
+
+    def test_expired_belief_is_not_promoted(self):
+        manager = SandboxManager(SandboxConfig(default_ttl_seconds=0))
+        belief = Belief("expired", "Claim", 0.95, corroboration_count=1)
+        manager.add_provisional(belief)
+
+        assert manager.check_promotions() == []
+        assert manager.state.get_belief("expired") is None
 
     def test_default_promotion_requires_corroboration(self):
         """A fresh single-source belief is not auto-promoted by default (P1-11).
@@ -282,10 +296,19 @@ class TestSandboxManager:
         belief = Belief("b1", "Claim", 0.7, corroboration_count=0)
         manager.add_provisional(belief)
 
-        manager.add_corroboration("b1", "agent-2")
+        assert manager.add_corroboration("b1", "agent-2") is True
 
         updated = manager.state.get_belief("b1")
         assert updated.corroboration_count == 1
+
+    def test_source_cannot_corroborate_own_belief(self):
+        manager = SandboxManager()
+        belief = Belief("b1", "Claim", 0.95, source_agent="agent-1")
+        manager.add_provisional(belief)
+
+        assert manager.add_corroboration("b1", "agent-1") is False
+        assert belief.corroboration_count == 0
+        assert manager.check_promotions() == []
 
     def test_get_stats(self):
         """Manager reports statistics."""

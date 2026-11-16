@@ -1,388 +1,274 @@
-"""Extended tests for src/evaluation/llm_evaluator.py — covering lines 116-169.
-
-The run_llm_evaluation function body (after the Ollama check) is covered by
-using pytest-httpserver to stub the Ollama /api/tags endpoint, then providing
-real stub objects (no MagicMock) for adapters and runner.
-
-Strategy per test:
-- HTTP stubbing → pytest-httpserver (real HTTP server on localhost)
-- Adapters → real ArchitectureAdapter subclass or simple namespace object
-- Runner → real ExperimentRunner, or a plain Python class stub (no MagicMock)
-- Results → real ExperimentResult dataclass from evaluation.runner
-
-Per the project policy: NO MagicMock, patch, or unittest.mock anywhere.
-"""
+"""LLM matrix completion contracts, using real systems and local HTTP fixtures."""
 
 from __future__ import annotations
 
-import types
-from dataclasses import dataclass
-from typing import Any
+from dataclasses import replace
+from types import SimpleNamespace
 
+import numpy as np
 import pytest
 import requests
 
-from evaluation.llm_evaluator import DEMO_ATTACKS, run_llm_evaluation
-
-# ---------------------------------------------------------------------------
-# Real stub helpers — no MagicMock
-# ---------------------------------------------------------------------------
-
-
-@dataclass
-class _FakeProfile:
-    """Minimal ArchitectureProfile-like object."""
-    name: str
+from src.evaluation.llm_evaluator import (
+    DEMO_ATTACKS,
+    LLMEvaluationError,
+    run_llm_evaluation,
+)
+from src.evaluation.runner import ExperimentResult
 
 
-class _FakeAdapter:
-    """Real stub adapter with only the fields used by run_llm_evaluation."""
+class _Adapter:
+    def __init__(self, name="TestArch"):
+        self.profile = SimpleNamespace(name=name)
 
-    def __init__(self, name: str = "TestArch") -> None:
-        self.profile = _FakeProfile(name=name)
+    def create_trust_matrix(self, n_agents):
+        return np.ones((n_agents, n_agents)) * 0.5
 
+    def get_communication_graph(self, n_agents):
+        return {}
 
-@dataclass
-class _FakeResult:
-    """Real result object with the fields logged by run_llm_evaluation."""
-    detection_rate: float
-    false_positive_rate: float
-    n_attacks: int
-    architecture: str = "TestArch"
-    attack_category: str = "cat1"
-    true_positives: int = 4
-    false_positives: int = 0
-    true_negatives: int = 1
-    false_negatives: int = 1
-    avg_latency_ms: float = 1.0
+    def get_agent_roles(self, n_agents):
+        return ["assistant"] * n_agents
 
 
-class _RealRunner:
-    """A real Python runner stub that returns a _FakeResult."""
+class _Runner:
+    """An injected runner that records calls and returns real result objects."""
 
-    def __init__(self, result: _FakeResult | None = None, raise_exc: bool = False) -> None:
-        self._result = result or _FakeResult(
-            detection_rate=0.85, false_positive_rate=0.05, n_attacks=5
-        )
-        self._raise = raise_exc
-        self.calls: list[tuple] = []
+    def __init__(self):
+        self.calls = []
 
     def run_single_llm(self, adapter, samples, pipeline, system):
         self.calls.append((adapter, list(samples), pipeline, system))
-        if self._raise:
-            raise RuntimeError("Eval failed")
-        return self._result
+        n_attacks = sum(bool(sample.get("is_attack", True)) for sample in samples)
+        return ExperimentResult(
+            architecture=adapter.profile.name,
+            attack_category=samples[0].get("category", "unknown"),
+            n_attacks=n_attacks,
+            true_positives=n_attacks,
+            false_negatives=0,
+            false_positives=0,
+            true_negatives=len(samples) - n_attacks,
+            detection_rate=1.0 if n_attacks else 0.0,
+            false_positive_rate=0.0,
+            avg_latency_ms=1.0,
+            measurement_mode="llm",
+        )
 
 
-class _FailSystem:
-    """A MultiAgentSystem stand-in whose __init__ always raises."""
-    def __init__(self, **kwargs):
-        raise RuntimeError("Model not loaded")
+@pytest.fixture
+def ollama_endpoint(httpserver, monkeypatch):
+    """Redirect only the external health request to a real local HTTP server."""
+    real_get = requests.get
+
+    def get_tags(url, **kwargs):
+        assert url == "http://localhost:11434/api/tags"
+        return real_get(httpserver.url_for("/api/tags"), **kwargs)
+
+    monkeypatch.setattr(requests, "get", get_tags)
+    return httpserver
 
 
-class _OkSystem:
-    """A MultiAgentSystem stand-in that succeeds and exposes reset_all."""
-    def __init__(self, **kwargs):
-        pass
-
-    def reset_all(self):
-        pass
-
-
-# ---------------------------------------------------------------------------
-# Fixture: patch the lazy imports inside run_llm_evaluation
-# ---------------------------------------------------------------------------
-
-def _inject_agents_modules(ok_system: bool = True) -> None:
-    """Inject stub agents modules into sys.modules so run_llm_evaluation can import them."""
-    import sys
-
-    llm_mod = types.ModuleType("agents.llm_agent")
-
-    class _OllamaConfig:
-        def __init__(self, model, seed):
-            self.model = model
-            self.seed = seed
-
-    llm_mod.OllamaConfig = _OllamaConfig  # type: ignore[attr-defined]
-    sys.modules["agents.llm_agent"] = llm_mod
-
-    mas_mod = types.ModuleType("agents.multiagent_system")
-    mas_mod.MultiAgentSystem = _OkSystem if ok_system else _FailSystem  # type: ignore[attr-defined]
-    sys.modules["agents.multiagent_system"] = mas_mod
-
-
-def _make_ok_response(monkeypatch):
-    """Monkeypatch requests.get to return a real stub 200 response."""
-
-    class _OkResponse:
-        def raise_for_status(self):
-            pass
-
-        def json(self):
-            return {"models": [{"name": "gemma3:4b"}, {"name": "llama3:8b"}]}
-
-    monkeypatch.setattr(requests, "get", lambda *a, **kw: _OkResponse())
-
-
-# ---------------------------------------------------------------------------
-# Test: lines 116-169 (main loop body)
-# ---------------------------------------------------------------------------
+@pytest.fixture
+def available_ollama(ollama_endpoint):
+    ollama_endpoint.expect_request("/api/tags").respond_with_json(
+        {"models": [{"name": "gemma3:4b"}]}
+    )
+    return ollama_endpoint
 
 
 class TestRunLlmEvaluationMainLoop:
-    """Cover the main loop in run_llm_evaluation (lines 116-169)."""
+    @pytest.mark.parametrize(
+        ("adapters", "corpus", "sample_size"),
+        [
+            ([], {"attack": DEMO_ATTACKS[:2]}, 5),
+            ([_Adapter()], {}, 5),
+            ([_Adapter()], {"attack": DEMO_ATTACKS[:2]}, 0),
+            ([_Adapter()], {"attack": DEMO_ATTACKS[:2]}, -1),
+        ],
+    )
+    def test_empty_matrix_is_not_success(self, adapters, corpus, sample_size):
+        runner = _Runner()
+        with pytest.raises(LLMEvaluationError, match="requires adapters") as caught:
+            run_llm_evaluation(
+                adapters, corpus, None, runner, sample_size=sample_size,
+            )
+        assert caught.value.results == []
+        assert runner.calls == []
 
-    def test_returns_empty_list_when_no_adapters(self, monkeypatch):
-        """With no adapters, the loop is empty — returns []."""
-        _make_ok_response(monkeypatch)
-        _inject_agents_modules(ok_system=True)
+    def test_system_creation_failure_is_not_silent_success(self, available_ollama):
+        class BrokenAdapter(_Adapter):
+            def create_trust_matrix(self, n_agents):
+                raise RuntimeError("Model not loaded")
 
-        runner = _RealRunner()
+        runner = _Runner()
+        with pytest.raises(LLMEvaluationError, match="could not create LLM system") as caught:
+            run_llm_evaluation(
+                [BrokenAdapter("Broken"), _Adapter("Good")],
+                {"cat1": DEMO_ATTACKS[:2], "cat2": DEMO_ATTACKS[2:4]},
+                None, runner,
+            )
+        assert [cell["status"] for cell in caught.value.outcomes] == [
+            "failed", "failed", "complete", "complete",
+        ]
+        assert len(runner.calls) == len(caught.value.results) == 2
+
+    def test_run_single_llm_failure_is_not_silent_success(self, available_ollama):
+        class FailingRunner(_Runner):
+            def run_single_llm(self, *args):
+                result = super().run_single_llm(*args)
+                if len(self.calls) == 1:
+                    raise RuntimeError("Eval failed")
+                return result
+
+        runner = FailingRunner()
+        with pytest.raises(LLMEvaluationError, match="Eval failed") as caught:
+            run_llm_evaluation(
+                [_Adapter("ArchA"), _Adapter("ArchB")],
+                {"cat1": DEMO_ATTACKS[:2], "cat2": DEMO_ATTACKS[2:4]},
+                None, runner,
+            )
+        assert len(runner.calls) == 4
+        assert len(caught.value.results) == 3
+        assert [cell["status"] for cell in caught.value.outcomes] == [
+            "failed", "complete", "complete", "complete",
+        ]
+
+    def test_successful_run_appends_result(self, available_ollama):
         results = run_llm_evaluation(
-            adapters=[],
-            corpus_dict={"attack": DEMO_ATTACKS[:2]},
-            pipeline=None,
-            runner=runner,
-        )
-        assert results == []
-
-    def test_system_creation_failure_is_logged_and_skipped(self, monkeypatch):
-        """When MultiAgentSystem() raises, adapter is skipped (no crash)."""
-        _make_ok_response(monkeypatch)
-        _inject_agents_modules(ok_system=False)  # _FailSystem raises on init
-
-        adapter = _FakeAdapter("ArchFail")
-        runner = _RealRunner()
-
-        results = run_llm_evaluation(
-            adapters=[adapter],
-            corpus_dict={"attack": DEMO_ATTACKS[:2]},
-            pipeline=None,
-            runner=runner,
-        )
-        # System creation failed → continue → no results
-        assert results == []
-
-    def test_run_single_llm_failure_is_skipped(self, monkeypatch):
-        """When runner.run_single_llm raises, category is skipped."""
-        _make_ok_response(monkeypatch)
-        _inject_agents_modules(ok_system=True)
-
-        adapter = _FakeAdapter("ArchB")
-        runner = _RealRunner(raise_exc=True)
-
-        results = run_llm_evaluation(
-            adapters=[adapter],
-            corpus_dict={"cat1": DEMO_ATTACKS[:2]},
-            pipeline=None,
-            runner=runner,
-        )
-        assert results == []
-
-    def test_successful_run_appends_result(self, monkeypatch):
-        """Happy path: result is appended to returned list."""
-        _make_ok_response(monkeypatch)
-        _inject_agents_modules(ok_system=True)
-
-        fake_result = _FakeResult(detection_rate=0.85, false_positive_rate=0.05, n_attacks=5)
-        adapter = _FakeAdapter("ArchGood")
-        runner = _RealRunner(result=fake_result)
-
-        results = run_llm_evaluation(
-            adapters=[adapter],
-            corpus_dict={"cat1": DEMO_ATTACKS[:2]},
-            pipeline=None,
-            runner=runner,
+            [_Adapter("ArchGood")], {"cat1": DEMO_ATTACKS[:2]}, None, _Runner(),
         )
         assert len(results) == 1
-        assert results[0].detection_rate == 0.85
+        assert results[0].detection_rate == 1.0
+        assert results[0].architecture == "ArchGood"
+        assert results[0].category == "cat1"
 
-    def test_multiple_adapters_multiple_categories(self, monkeypatch):
-        """Multiple adapters × multiple categories produce multiple results."""
-        _make_ok_response(monkeypatch)
-        _inject_agents_modules(ok_system=True)
+    @pytest.mark.parametrize("fallback_count", [1, 2])
+    def test_fallback_result_is_not_returned_as_llm_success(
+        self, available_ollama, fallback_count,
+    ):
+        class FallbackRunner(_Runner):
+            def run_single_llm(self, *args):
+                return replace(
+                    super().run_single_llm(*args),
+                    llm_fallback_count=fallback_count,
+                    measurement_mode="mixed" if fallback_count == 1 else "pipeline",
+                )
 
-        adapters = [_FakeAdapter(f"Arch{i}") for i in range(2)]
-        runner = _RealRunner()
+        with pytest.raises(LLMEvaluationError, match="fell back") as caught:
+            run_llm_evaluation(
+                [_Adapter()], {"cat1": DEMO_ATTACKS[:2]}, None, FallbackRunner(),
+            )
+        assert caught.value.results[0].llm_fallback_count == fallback_count
+        assert caught.value.outcomes[0]["status"] == "failed"
 
+    @pytest.mark.parametrize("mode", ["parametric", "pipeline", "mixed", "real"])
+    def test_non_llm_provenance_is_not_success(self, available_ollama, mode):
+        class WrongModeRunner(_Runner):
+            def run_single_llm(self, *args):
+                return replace(super().run_single_llm(*args), measurement_mode=mode)
+
+        with pytest.raises(LLMEvaluationError, match="not LLM evidence"):
+            run_llm_evaluation(
+                [_Adapter()], {"cat1": DEMO_ATTACKS[:2]}, None, WrongModeRunner(),
+            )
+
+    @pytest.mark.parametrize("returned_samples", [0, 1])
+    def test_empty_or_partial_cell_result_is_not_success(
+        self, available_ollama, returned_samples,
+    ):
+        class PartialRunner(_Runner):
+            def run_single_llm(self, *args):
+                return replace(
+                    super().run_single_llm(*args),
+                    n_attacks=returned_samples, true_positives=returned_samples,
+                )
+
+        with pytest.raises(LLMEvaluationError, match="incomplete") as caught:
+            run_llm_evaluation(
+                [_Adapter()], {"cat1": DEMO_ATTACKS[:2]}, None, PartialRunner(),
+            )
+        assert caught.value.outcomes[0]["observed_samples"] == returned_samples
+        assert caught.value.results[0].n_attacks == returned_samples
+
+    def test_empty_category_does_not_hide_other_cells(self, available_ollama):
+        runner = _Runner()
+        with pytest.raises(LLMEvaluationError, match="no samples") as caught:
+            run_llm_evaluation(
+                [_Adapter()], {"empty": [], "populated": DEMO_ATTACKS[:1]},
+                None, runner,
+            )
+        assert [cell["status"] for cell in caught.value.outcomes] == [
+            "failed", "complete",
+        ]
+        assert len(runner.calls) == 1
+
+    def test_multiple_adapters_multiple_categories(self, available_ollama):
         results = run_llm_evaluation(
-            adapters=adapters,
-            corpus_dict={"cat1": DEMO_ATTACKS[:2], "cat2": DEMO_ATTACKS[2:4]},
-            pipeline=None,
-            runner=runner,
+            [_Adapter("ArchA"), _Adapter("ArchB")],
+            {"cat1": DEMO_ATTACKS[:2], "cat2": DEMO_ATTACKS[2:4]},
+            None, _Runner(),
         )
-        # 2 adapters × 2 categories = 4 results
-        assert len(results) == 4
+        assert {(r.architecture, r.category) for r in results} == {
+            ("ArchA", "cat1"), ("ArchA", "cat2"),
+            ("ArchB", "cat1"), ("ArchB", "cat2"),
+        }
 
-    def test_sample_size_subsampling(self, monkeypatch):
-        """Samples are subsampled when len(samples) > sample_size."""
-        _make_ok_response(monkeypatch)
-        _inject_agents_modules(ok_system=True)
-
-        captured_samples: list[list] = []
-
-        class _CapturingRunner:
-            def run_single_llm(self, adapter, samples, pipeline, system):
-                captured_samples.append(list(samples))
-                n = len(samples)
-                return _FakeResult(detection_rate=0.9, false_positive_rate=0.1, n_attacks=n)
-
-        adapter = _FakeAdapter("ArchSample")
-
-        # 18 samples (DEMO_ATTACKS × 3), sample_size=3 → subsampled
-        big_corpus = DEMO_ATTACKS * 3
+    def test_sample_size_subsampling(self, available_ollama):
+        runner = _Runner()
         results = run_llm_evaluation(
-            adapters=[adapter],
-            corpus_dict={"cat1": big_corpus},
-            pipeline=None,
-            runner=_CapturingRunner(),
-            sample_size=3,
-            seed=42,
+            [_Adapter()], {"cat1": DEMO_ATTACKS * 3}, None, runner,
+            sample_size=3, seed=42,
         )
         assert len(results) == 1
-        assert len(captured_samples[0]) == 3
+        assert len(runner.calls[0][1]) == 3
 
-    def test_save_callback_called_incrementally(self, monkeypatch):
-        """save_callback is called after each successful result."""
-        _make_ok_response(monkeypatch)
-        _inject_agents_modules(ok_system=True)
+    def test_save_callback_called_incrementally(self, available_ollama):
+        callback_calls = []
 
-        callback_calls: list[tuple] = []
-
-        def my_callback(results, final):
+        def save(results, final):
             callback_calls.append((len(results), final))
 
-        adapter = _FakeAdapter("ArchSave")
-        runner = _RealRunner()
-
         run_llm_evaluation(
-            adapters=[adapter],
-            corpus_dict={"cat1": DEMO_ATTACKS[:2], "cat2": DEMO_ATTACKS[2:4]},
-            pipeline=None,
-            runner=runner,
-            save_callback=my_callback,
+            [_Adapter()], {"cat1": DEMO_ATTACKS[:2], "cat2": DEMO_ATTACKS[2:4]},
+            None, _Runner(), save_callback=save,
         )
-        # Should be called twice (once per category) with final=False
-        assert len(callback_calls) == 2
-        assert all(final is False for _, final in callback_calls)
+        assert callback_calls == [(1, False), (2, False)]
 
-    def test_custom_model_and_seed(self, monkeypatch):
-        """Custom model and seed parameters are forwarded to OllamaConfig."""
-        import sys
-
-        _make_ok_response(monkeypatch)
-
-        captured_config: dict[str, Any] = {}
-
-        class _CapturingOllamaConfig:
-            def __init__(self, model, seed):
-                captured_config["model"] = model
-                captured_config["seed"] = seed
-
-        llm_mod = types.ModuleType("agents.llm_agent")
-        llm_mod.OllamaConfig = _CapturingOllamaConfig  # type: ignore[attr-defined]
-        sys.modules["agents.llm_agent"] = llm_mod
-
-        mas_mod = types.ModuleType("agents.multiagent_system")
-        mas_mod.MultiAgentSystem = _OkSystem  # type: ignore[attr-defined]
-        sys.modules["agents.multiagent_system"] = mas_mod
-
-        runner = _RealRunner()
+    def test_custom_model_and_seed(self, available_ollama):
+        runner = _Runner()
         run_llm_evaluation(
-            adapters=[],
-            corpus_dict={},
-            pipeline=None,
-            runner=runner,
-            model="llama3:8b",
-            seed=99,
+            [_Adapter()], {"cat1": DEMO_ATTACKS[:1]}, None, runner,
+            model="llama3:8b", seed=99,
         )
-        assert captured_config.get("model") == "llama3:8b"
-        assert captured_config.get("seed") == 99
+        config = runner.calls[0][3].agents[0].config
+        assert config.model == "llama3:8b"
+        assert config.seed == 99
 
-    def test_samples_not_subsampled_when_at_limit(self, monkeypatch):
-        """Samples not subsampled when len(samples) <= sample_size."""
-        _make_ok_response(monkeypatch)
-        _inject_agents_modules(ok_system=True)
-
-        captured_samples: list[list] = []
-
-        class _CapturingRunner:
-            def run_single_llm(self, adapter, samples, pipeline, system):
-                captured_samples.append(list(samples))
-                n = len(samples)
-                return _FakeResult(detection_rate=0.8, false_positive_rate=0.1, n_attacks=n)
-
-        adapter = _FakeAdapter("ArchFull")
-
-        # 3 samples, sample_size=10 → no subsampling
+    def test_samples_not_subsampled_when_at_limit(self, available_ollama):
+        runner = _Runner()
         run_llm_evaluation(
-            adapters=[adapter],
-            corpus_dict={"cat1": DEMO_ATTACKS[:3]},
-            pipeline=None,
-            runner=_CapturingRunner(),
-            sample_size=10,
+            [_Adapter()], {"cat1": DEMO_ATTACKS[:3]}, None, runner, sample_size=10,
         )
-        assert len(captured_samples[0]) == 3
-
-
-# ---------------------------------------------------------------------------
-# Test: pytest-httpserver based HTTP stubbing (covers the network check path)
-# ---------------------------------------------------------------------------
+        assert runner.calls[0][1] == DEMO_ATTACKS[:3]
 
 
 class TestRunLlmEvaluationWithHttpServer:
-    """Use pytest-httpserver to test the Ollama connectivity check."""
-
-    def test_ok_response_from_httpserver_proceeds(self, httpserver, monkeypatch):
-        """A real HTTP 200 with a model list allows run_llm_evaluation to proceed."""
-        import json
-
-        httpserver.expect_request("/api/tags").respond_with_data(
-            json.dumps({"models": [{"name": "gemma3:4b"}]}),
-            content_type="application/json",
-        )
-
-        # Point requests.get at the httpserver instead of localhost:11434.
-        # We capture the real requests.get *before* patching to avoid recursion.
-        real_url = httpserver.url_for("/api/tags")
-        _real_get = requests.get
-
-        monkeypatch.setattr(
-            requests,
-            "get",
-            lambda url, **kw: _real_get(real_url, **kw),
-        )
-        _inject_agents_modules(ok_system=True)
-
-        runner = _RealRunner()
+    def test_ok_response_from_httpserver_proceeds(self, available_ollama):
         results = run_llm_evaluation(
-            adapters=[],
-            corpus_dict={},
-            pipeline=None,
-            runner=runner,
+            [_Adapter()], {"cat1": DEMO_ATTACKS[:1]}, None, _Runner(),
         )
-        assert results == []
+        assert len(results) == 1
 
-    def test_500_from_httpserver_raises_runtime_error(self, httpserver, monkeypatch):
-        """An HTTP 500 from the Ollama endpoint raises RuntimeError."""
-        httpserver.expect_request("/api/tags").respond_with_data(
-            "Internal Server Error", status=500
+    def test_500_from_httpserver_raises_runtime_error(self, ollama_endpoint):
+        ollama_endpoint.expect_request("/api/tags").respond_with_data(
+            "Internal Server Error", status=500,
         )
-
-        real_url = httpserver.url_for("/api/tags")
-        _real_get = requests.get
-
-        monkeypatch.setattr(
-            requests,
-            "get",
-            lambda url, **kw: _real_get(real_url, **kw),
-        )
-
-        with pytest.raises(RuntimeError, match="Cannot reach Ollama"):
+        with pytest.raises(LLMEvaluationError, match="Cannot reach Ollama") as caught:
             run_llm_evaluation(
-                adapters=[],
-                corpus_dict={},
-                pipeline=None,
-                runner=None,
+                [_Adapter("ArchA"), _Adapter("ArchB")],
+                {"cat1": DEMO_ATTACKS[:1], "cat2": DEMO_ATTACKS[1:2]},
+                None, _Runner(),
             )
+        assert caught.value.results == []
+        assert len(caught.value.outcomes) == 4
+        assert all(cell["status"] == "not_run" for cell in caught.value.outcomes)

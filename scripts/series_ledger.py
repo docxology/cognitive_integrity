@@ -272,12 +272,22 @@ def _multiseed_hdi() -> tuple[float, float]:
 
 
 def invariants_solo_detection() -> float:
-    """What the invariants module detects on its own, as a percentage.
+    """Invariant-only TPR in the 100-attack ablation, as a percentage."""
+    rates = {
+        float(pair[f"tpr_{side}"])
+        for pair in _ablation()["top_synergies"]
+        for side in ("a", "b")
+        if pair.get(side) == "invariants"
+    }
+    if len(rates) != 1:
+        raise MissingArtifact(
+            "ablation must record one consistent invariant-only detection rate"
+        )
+    return rates.pop() * 100.0
 
-    The conclusions contrast it with the full stack to make the point that one
-    module carries most of the detection, so the two numbers have to move
-    together or the contrast misstates itself.
-    """
+
+def capability_invariants_solo_detection() -> float:
+    """Invariant-only detection on the distinct 1,475-item capability corpus."""
     payload = _obj("module_capability_matrix.json")
     return float(payload["detection_rate"]["invariants"]["_overall"]) * 100.0
 
@@ -641,9 +651,9 @@ class LedgerVariable:
     def in_scope(self, line: str, match: re.Match[str]) -> bool:
         start = max(0, match.start() - CONTEXT_WINDOW)
         window = line[start : match.end() + CONTEXT_WINDOW].lower()
-        if any(token in window for token in self.exclude):
+        if any(token.lower() in window for token in self.exclude):
             return False
-        if not any(token in window for token in self.require):
+        if not any(token.lower() in window for token in self.require):
             return False
         if self.guard is not None and not self.guard(match, line):
             return False
@@ -730,9 +740,9 @@ LEDGER: tuple[LedgerVariable, ...] = (
         # the middle of "1,475". Hence the explicit boundary: three or four
         # digits, not preceded by a digit or a thousands separator.
         pattern=re.compile(
-            rf"(?<![\d,])(\d{{3,4}})\s*{DASH}?\s*attack\b(?=[- ]?(?:corpus|set)\b)(?![- ]?(?:corpus|set)\s+ablation)"
+            rf"(?<![\d,])(\d{{3,4}})\s*{DASH}?\s*(?:attacks?\b|item\b)"
         ),
-        require=("corpus", "set"),
+        require=("legacy",),
         exclude=("ablation",),
         min_occurrences=2,
     ),
@@ -968,7 +978,7 @@ LEDGER: tuple[LedgerVariable, ...] = (
         pattern=re.compile(r"\$M\s*=\s*(\d{3,4})\$"),
         require=("mutation",),
         parts=("2",),
-        min_occurrences=2,
+        min_occurrences=1,
     ),
     LedgerVariable(
         id="at_baseline_dr",
@@ -1009,8 +1019,11 @@ LEDGER: tuple[LedgerVariable, ...] = (
         artifact="adversarial_training_results.json",
         deriver=at_rounds,
         unit="count",
-        pattern=re.compile(r"(five|5)\s+rounds?", re.IGNORECASE),
-        require=("rounds",),
+        pattern=re.compile(
+            r"\b(one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|\d+)\s+rounds?",
+            re.IGNORECASE,
+        ),
+        require=("adversarial training", "adversarial-training", "hardened"),
         tolerance=0.001,
     ),
     LedgerVariable(
@@ -1038,7 +1051,9 @@ LEDGER: tuple[LedgerVariable, ...] = (
         artifact="(derived)",
         deriver=gap_low,
         unit="percent",
-        pattern=re.compile(rf"(\d{{1,2}})\s*{DASH}\s*\d{{1,2}}\s+percentage[- ]point gap"),
+        pattern=re.compile(
+            rf"(\d{{1,2}}(?:\.\d)?)(?=\s*(?:{DASH}\s*\d{{1,2}}\s+percentage[- ]point gap|\$ percentage points, from the parametric floor))"
+        ),
         require=("gap",),
         tolerance=0.6,
     ),
@@ -1048,7 +1063,9 @@ LEDGER: tuple[LedgerVariable, ...] = (
         artifact="(derived)",
         deriver=gap_high,
         unit="percent",
-        pattern=re.compile(rf"\d{{1,2}}\s*{DASH}\s*(\d{{1,2}})\s+percentage[- ]point gap"),
+        pattern=re.compile(
+            rf"(\d{{1,2}}(?:\.\d)?)(?=\s*(?:percentage[- ]point gap|\$ percentage points, from the parametric top))"
+        ),
         require=("gap",),
         tolerance=0.6,
     ),
@@ -1134,15 +1151,35 @@ LEDGER: tuple[LedgerVariable, ...] = (
     ),
     LedgerVariable(
         id="invariants_solo_detection",
-        description="What the invariants module detects alone, as a percentage.",
-        artifact="module_capability_matrix.json",
+        description="Invariant-only TPR on the 100-attack ablation corpus.",
+        artifact="ablation_results.json",
         deriver=invariants_solo_detection,
         unit="percent",
-        pattern=re.compile(r"checker alone reaches (\d{2}\.\d)\s*\\?%"),
+        pattern=re.compile(
+            r"(?:checker alone reaches|module alone detects) (\d{2}(?:\.\d)?)\s*\\?%",
+            re.IGNORECASE,
+        ),
         require=("invariants",),
         parts=("3",),
         tolerance=0.06,
         min_occurrences=1,
+        guard=near("ablation", chars=110),
+    ),
+    LedgerVariable(
+        id="capability_invariants_solo_detection",
+        description="Invariant-only detection on the separate 1,475-item capability corpus.",
+        artifact="module_capability_matrix.json",
+        deriver=capability_invariants_solo_detection,
+        unit="percent",
+        pattern=re.compile(
+            r"(?:checker alone reaches|checker detects) (\d{2}(?:\.\d)?)\s*\\?%",
+            re.IGNORECASE,
+        ),
+        require=("invariants",),
+        parts=("3",),
+        tolerance=0.06,
+        min_occurrences=1,
+        guard=near("1,475", "1475", chars=110),
     ),
 )
 

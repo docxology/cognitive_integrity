@@ -234,19 +234,21 @@ def power_analysis_beta_binomial(
     alpha_prior: float = 1.0,
     beta_prior: float = 1.0,
 ) -> dict:
-    """Smallest sample size yielding a credible interval with given half-width.
+    """Smallest grid sample size yielding an HDI with given half-width.
 
-    Sweeps ``n`` over a geometric-ish progression (step 5 up to 5000)
-    and returns the smallest ``n`` whose posterior credible interval
-    centred on ``round(n * true_rate)`` has half-width at most
-    ``desired_ci_half_width``.  If no ``n`` in range satisfies the
+    Sweeps ``n`` over a fixed progression (step 5 up to 5000) and returns
+    the first candidate whose posterior highest-density interval, conditional
+    on ``k = round(n * true_rate)``, has half-width at most
+    ``desired_ci_half_width``.  The same design prior is used independently
+    for each candidate; this is not sequential updating across the grid. If
+    no candidate satisfies the
     criterion the largest candidate's diagnostics are returned with
     ``n_required = 5000``.
 
     Args:
         true_rate: Assumed true detection rate.
         desired_ci_half_width: Target half-width of the posterior CI.
-        confidence: Credible-interval mass (default 0.95).
+        confidence: HDI probability mass (default 0.95).
         alpha_prior, beta_prior: Beta prior hyperparameters.
 
     Returns:
@@ -268,7 +270,7 @@ def power_analysis_beta_binomial(
             alpha_prior=alpha_prior,
             beta_prior=beta_prior,
         )
-        lo, hi = posterior.credible_interval(width=confidence)
+        lo, hi = posterior.hdi(width=confidence)
         half = (hi - lo) / 2.0
         if half <= desired_ci_half_width:
             return {

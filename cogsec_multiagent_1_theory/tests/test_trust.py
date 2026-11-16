@@ -19,6 +19,10 @@ class TestTrustConfig:
         with pytest.raises(ValueError, match="sum to 1.0"):
             TrustConfig(alpha=0.5, beta=0.5, gamma=0.5)
 
+    def test_negative_weight_raises(self):
+        with pytest.raises(ValueError, match="non-negative"):
+            TrustConfig(alpha=-0.1, beta=0.6, gamma=0.5)
+
     def test_invalid_decay_raises(self):
         """Decay outside (0,1) raises."""
         with pytest.raises(ValueError, match="Decay"):
@@ -78,6 +82,13 @@ class TestTrustCalculus:
         calc = TrustCalculus(TrustConfig(decay=0.9))
         assert np.isclose(calc.compute_path_trust([1.0, 1.0, 1.0, 1.0]), 0.9**4)
         assert np.isclose(calc.compute_path_trust([1.0] * 5), 0.9**5)
+
+    def test_two_edge_path_uses_explicit_depth_two(self):
+        calc = TrustCalculus(TrustConfig(decay=0.9))
+        assert calc.delegate_trust(0.8, 0.7) == pytest.approx(0.7 * 0.9)
+        assert calc.delegate_trust(0.8, 0.7, depth=2) == pytest.approx(
+            calc.compute_path_trust([0.8, 0.7])
+        )
 
 
 class TestTrustMatrix:
@@ -144,10 +155,10 @@ class TestTrustBoundedness:
         """Trust cannot amplify through delegation."""
         calc = TrustCalculus(TrustConfig(decay=0.95))
 
-        # Even with high trust values
+        rng = np.random.default_rng(0)
         for _ in range(100):
-            t1 = np.random.uniform(0, 1)
-            t2 = np.random.uniform(0, 1)
+            t1 = rng.uniform(0, 1)
+            t2 = rng.uniform(0, 1)
             delegated = calc.delegate_trust(t1, t2, depth=1)
 
             assert delegated <= min(t1, t2)
@@ -212,6 +223,13 @@ class TestReputationDecay:
         # At time 10, recent negative should dominate
         rep = tracker.get_reputation("a", "b", current_time=10.0)
         assert rep < 0.5  # Should be closer to recent 0.0 than old 1.0
+
+    def test_old_interactions_do_not_underflow_to_neutral(self):
+        from trust import ReputationTracker
+
+        tracker = ReputationTracker(decay_rate=1.0)
+        tracker.record_interaction("a", "b", outcome=1.0, timestamp=0.0)
+        assert tracker.get_reputation("a", "b", current_time=1000.0) == 1.0
 
     def test_no_interactions_returns_default(self):
         """No recorded interactions returns default reputation."""

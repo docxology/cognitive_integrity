@@ -12,8 +12,8 @@ from typing import Any
 
 import numpy as np
 
-from attacks.corpus import AttackCorpus
-from composition.factory import MODULE_REGISTRY, create_pipeline_without
+from src.attacks.corpus import AttackCorpus
+from src.composition.factory import MODULE_REGISTRY, create_pipeline_without
 
 logger = logging.getLogger(__name__)
 
@@ -294,10 +294,10 @@ def run_full_ablation(
     dict
         Ablation results (serialisable).
     """
-    from ablation.component_removal import ComponentRemovalStudy
-    from ablation.minimal_config import MinimalConfigSearch
-    from ablation.synergy import PairwiseSynergyAnalysis
-    from utils.random_seed import set_global_seed
+    from src.ablation.component_removal import ComponentRemovalStudy
+    from src.ablation.minimal_config import MinimalConfigSearch
+    from src.ablation.synergy import PairwiseSynergyAnalysis
+    from src.utils.random_seed import set_global_seed
 
     # Seed the process-global RNG for reproducibility of anything
     # downstream; the ablation measurement itself consumes no randomness

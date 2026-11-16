@@ -6,6 +6,9 @@ figures correctly without errors.
 """
 
 import json
+import shutil
+import subprocess
+import sys
 import tempfile
 from pathlib import Path
 
@@ -14,6 +17,47 @@ import matplotlib
 matplotlib.use("Agg")  # Use non-interactive backend
 
 import matplotlib.pyplot as plt
+import pytest
+
+
+@pytest.fixture
+def detection_inputs(tmp_path):
+    """Complete test-only inputs, never producer or manuscript evidence."""
+    output_dir = tmp_path / "figures"
+    data_dir = output_dir / "data"
+    data_dir.mkdir(parents=True)
+    configs = [
+        {
+            "name": name,
+            "detection_rates": {"prompt_injection": rate, "trust_exploitation": rate},
+            "latency_overhead_pct": latency,
+        }
+        for name, rate, latency in (
+            ("Baseline", 0.1, 0),
+            ("Firewall Only", 0.8, 8),
+            ("Full CIF", 0.9, 23),
+        )
+    ]
+    (data_dir / "detection_results.json").write_text(
+        json.dumps({"defense_configurations": configs}), encoding="utf-8"
+    )
+    component_rates = {
+        "full_cif": 0.94,
+        "minus_firewall": 0.81,
+        "minus_sandbox": 0.88,
+        "minus_tripwires": 0.85,
+        "minus_invariants": 0.89,
+        "minus_trust_decay": 0.91,
+    }
+    ablation = {"metadata": {"illustrative": True}}
+    ablation.update({key: {"detection": rate} for key, rate in component_rates.items()})
+    (data_dir / "ablation_study.json").write_text(json.dumps(ablation), encoding="utf-8")
+    (data_dir / "integrity_timeseries.csv").write_text(
+        "attack_attempt,baseline_integrity,firewall_integrity,full_cif_integrity\n"
+        "0,0.45,0.75,0.96\n10,0.44,0.745,0.959\n",
+        encoding="utf-8",
+    )
+    return output_dir
 
 
 class TestVisualizationUtils:
@@ -101,6 +145,26 @@ class TestTrustDecay:
 
             assert output_dir.exists()
             assert result.exists()
+
+    def test_decay_curves_match_caption_domain(self, monkeypatch):
+        import numpy as np
+
+        from src.visualization.trust_decay import generate_trust_decay_figure
+
+        monkeypatch.setattr(plt, "close", lambda *args, **kwargs: None)
+        with tempfile.TemporaryDirectory() as tmpdir:
+            generate_trust_decay_figure(Path(tmpdir))
+            ax = plt.gcf().axes[0]
+            curves = {
+                float(line.get_label().split("=")[1]): line
+                for line in ax.lines
+                if line.get_label().startswith("$\\delta$")
+            }
+            assert set(curves) == {0.5, 0.7, 0.8, 0.9}
+            for delta, line in curves.items():
+                np.testing.assert_array_equal(line.get_xdata(), np.arange(1, 11))
+                np.testing.assert_allclose(line.get_ydata(), delta ** np.arange(1, 11))
+            assert ax.get_xlim() == (1.0, 10.0)
 
 
 class TestAblationStudy:
@@ -227,35 +291,54 @@ class TestCIFComprehensive:
 class TestComprehensiveTaxonomy:
     """Tests for visualization/comprehensive_taxonomy.py."""
 
-    def test_create_comprehensive_taxonomy_figure(self):
-        """Test comprehensive taxonomy figure generation."""
+    def test_create_comprehensive_taxonomy_figure(self, monkeypatch):
+        """Test taxonomy generation and its detection-difficulty semantics."""
         from src.visualization.comprehensive_taxonomy import create_comprehensive_taxonomy_figure
 
+        monkeypatch.setattr(plt, "close", lambda *args, **kwargs: None)
         with tempfile.TemporaryDirectory() as tmpdir:
             output_dir = Path(tmpdir)
             result = create_comprehensive_taxonomy_figure(output_dir)
 
             assert result.exists()
             assert result.suffix == ".pdf"
+            texts = [text.get_text() for ax in plt.gcf().axes for text in ax.texts]
+            assert "Detection difficulty: " in texts
+            assert "High (<60%)" in texts
+            assert "Medium (60-79%)" in texts
+            assert "Low (≥80%)" in texts
+            assert "High (≥80%)" not in texts
+            assert "Low (<60%)" not in texts
 
 
 class TestDefenseComposition:
     """Tests for visualization/defense_composition.py."""
 
-    def test_create_defense_composition_figure(self):
-        """Test defense composition figure generation."""
+    def test_create_defense_composition_figure(self, monkeypatch):
+        """Test defense composition generation and triple-region membership."""
         from src.visualization.defense_composition import create_defense_composition_figure
 
+        monkeypatch.setattr(plt, "close", lambda *args, **kwargs: None)
         with tempfile.TemporaryDirectory() as tmpdir:
             output_dir = Path(tmpdir)
             result = create_defense_composition_figure(output_dir)
 
-            # Returns tuple (png, pdf)
-            if isinstance(result, tuple):
-                png_path, pdf_path = result
-                assert pdf_path.exists()
-            else:
-                assert result.exists()
+            assert isinstance(result, tuple)
+            assert result[1].exists()
+            ax = plt.gcf().axes[0]
+            circles = list(ax.patches)[:4]
+            for label, expected_membership in (
+                ("Coordinated\nAttacks", (True, False, True, True)),
+                ("Gradual\nDrift", (False, True, True, True)),
+            ):
+                text = next(item for item in ax.texts if item.get_text() == label)
+                x, y = text.get_position()
+                membership = tuple(
+                    (x - circle.center[0]) ** 2 + (y - circle.center[1]) ** 2
+                    < circle.radius**2
+                    for circle in circles
+                )
+                assert membership == expected_membership
 
 
 class TestDetectionPerformance:
@@ -276,62 +359,14 @@ class TestDetectionPerformance:
 class TestDetectionResults:
     """Tests for visualization/detection_results.py."""
 
-    def test_create_detection_results_figure(self):
-        """Test detection results figure generation with proper data format."""
+    def test_create_detection_results_figure(self, detection_inputs):
+        """Complete artifacts produce both formats and the documented PDF path."""
         from src.visualization.detection_results import create_detection_results_figure
 
-        with tempfile.TemporaryDirectory() as tmpdir:
-            output_dir = Path(tmpdir) / "figures"
-            data_dir = output_dir / "data"
-            data_dir.mkdir(parents=True)
-
-            # Create required data in correct format
-            data = {
-                "defense_configurations": [
-                    {
-                        "name": "Baseline",
-                        "detection_rates": {
-                            "prompt_injection": 0.15,
-                            "trust_exploitation": 0.10,
-                            "belief_manipulation": 0.12,
-                            "coordination_attack": 0.08,
-                            "temporal_attack": 0.05,
-                        },
-                    },
-                    {
-                        "name": "Firewall Only",
-                        "detection_rates": {
-                            "prompt_injection": 0.85,
-                            "trust_exploitation": 0.70,
-                            "belief_manipulation": 0.65,
-                            "coordination_attack": 0.55,
-                            "temporal_attack": 0.50,
-                        },
-                    },
-                    {
-                        "name": "Full CIF",
-                        "detection_rates": {
-                            "prompt_injection": 0.98,
-                            "trust_exploitation": 0.95,
-                            "belief_manipulation": 0.92,
-                            "coordination_attack": 0.88,
-                            "temporal_attack": 0.85,
-                        },
-                    },
-                ]
-            }
-            with open(data_dir / "detection_results.json", "w") as f:
-                json.dump(data, f)
-
-            result = create_detection_results_figure(output_dir)
-
-            # May return Path or tuple
-            if isinstance(result, tuple):
-                png_path, pdf_path = result
-                assert pdf_path.exists()
-            else:
-                assert result.exists()
-                assert result.suffix == ".pdf"
+        result = create_detection_results_figure(detection_inputs)
+        assert result == detection_inputs / "detection_results.pdf"
+        assert result.is_file()
+        assert (detection_inputs / "detection_results.png").is_file()
 
 
 class TestFPMitigation:
@@ -363,19 +398,14 @@ class TestROCCurves:
         assert abs(compute_roc_auc(tpr, fpr) - 0.5) < 1e-3
 
     def test_compute_roc_auc_degenerate_constant_fpr(self):
-        """Degenerate all-zero FPR reports max(TPR), not AUC 0.000 (P1-4).
-
-        A classifier that never fires on negatives has FPR=0 at every
-        measured threshold; the trapezoidal rule over a zero-FPR width would
-        return 0.0, displaying a perfect-precision curve as AUC 0.000.
-        """
+        """A vertical segment at FPR=0 includes the half-area jump to (1, 1)."""
         import numpy as np
 
         from src.visualization.roc_curves import compute_roc_auc
 
         fpr = np.zeros(20)
         tpr = np.array([0.6] * 6 + [0.0] * 14)
-        assert abs(compute_roc_auc(tpr, fpr) - 0.6) < 1e-12
+        assert abs(compute_roc_auc(tpr, fpr) - 0.8) < 1e-12
 
     def test_compute_roc_auc_empty_returns_zero(self):
         from src.visualization.roc_curves import compute_roc_auc
@@ -429,13 +459,39 @@ class TestROCCurves:
             assert pdf_path.exists()
             assert png_path.exists()
 
+    def test_degenerate_measured_points_are_visible(self, monkeypatch):
+        from src.visualization.roc_curves import create_roc_curves_figure
+
+        monkeypatch.setattr(plt, "close", lambda *args, **kwargs: None)
+        with tempfile.TemporaryDirectory() as tmpdir:
+            output_dir = Path(tmpdir) / "figures"
+            data_dir = output_dir / "data"
+            data_dir.mkdir(parents=True)
+            (data_dir / "roc_results.json").write_text(json.dumps({
+                "firewall": {"fpr": [0.0] * 20, "tpr": [0.5] * 20}
+            }))
+
+            create_roc_curves_figure(output_dir)
+            ax = plt.gcf().axes[0]
+            measured = next(
+                line
+                for line in ax.lines
+                if line.get_label().startswith("Cognitive Firewall (Measured")
+            )
+            assert measured.get_marker() == "o"
+            assert len(measured.get_xdata()) == 20
+            assert "AUC=0.750" in measured.get_label()
+            assert not ax.collections
+
 
 class TestScalability:
     """Tests for visualization/scalability.py."""
 
-    def test_create_scalability_figure(self):
+    def test_create_scalability_figure(self, monkeypatch):
         """Test scalability figure generation with data file."""
         from src.visualization.scalability import create_scalability_figure
+
+        monkeypatch.setattr(plt, "close", lambda *args, **kwargs: None)
 
         with tempfile.TemporaryDirectory() as tmpdir:
             output_dir = Path(tmpdir) / "figures"
@@ -474,9 +530,10 @@ class TestScalability:
 
             result = create_scalability_figure(output_dir)
 
-            if isinstance(result, tuple):
-                png_path, pdf_path = result
-                assert pdf_path.exists()
+            png_path, pdf_path = result
+            assert png_path.is_file() and pdf_path.is_file()
+            footer = " ".join(text.get_text() for text in plt.gcf().texts).lower()
+            assert "analytic" in footer and "not measured" in footer
 
 
 class TestThreatTaxonomy:
@@ -497,181 +554,331 @@ class TestThreatTaxonomy:
 class TestTrustCalculus:
     """Tests for visualization/trust_calculus.py."""
 
-    def test_create_trust_calculus_figure(self):
-        """Test trust calculus figure generation."""
+    def test_create_trust_calculus_figure(self, monkeypatch):
+        """Test trust calculus generation and internally consistent chain values."""
         from src.visualization.trust_calculus import create_trust_calculus_figure
 
+        monkeypatch.setattr(plt, "close", lambda *args, **kwargs: None)
         with tempfile.TemporaryDirectory() as tmpdir:
             output_dir = Path(tmpdir)
             result = create_trust_calculus_figure(output_dir)
 
             assert result.exists()
             assert result.suffix == ".pdf"
+            texts = [text.get_text() for ax in plt.gcf().axes for text in ax.texts]
+            assert texts.count("T=1.00") == 2
+            assert "T(A→B)=1.0" in texts
+            assert "T(A→E) ≤ δ³·T(A→B) = 0.9³ × 1.0 = 0.73" in texts
+            assert not any("Theorem 3.1" in text for text in texts)
 
 
 class TestTrustNetwork:
     """Tests for visualization/trust_network.py."""
 
-    def test_generate_trust_network_figure(self):
-        """Test trust network figure generation."""
+    def test_generate_trust_network_figure(self, monkeypatch):
+        """Test distinct hierarchical/peer layouts and bidirectional edges."""
         from src.visualization.trust_network import generate_trust_network_figure
 
+        monkeypatch.setattr(plt, "close", lambda *args, **kwargs: None)
         with tempfile.TemporaryDirectory() as tmpdir:
             output_dir = Path(tmpdir)
             result = generate_trust_network_figure(output_dir)
 
-            # Returns a list of paths
-            if isinstance(result, list):
-                assert len(result) > 0
-                assert result[0].exists()
-            else:
-                assert result.exists()
+            assert isinstance(result, list) and result
+            assert result[0].exists()
+            fig = plt.gcf()
+            assert fig.axes[0].get_title() == "A. Hierarchical Trust Network (illustrative)"
+            assert fig.axes[1].get_title() == "B. Peer-to-peer Trust Network (illustrative)"
+            left_nodes = [patch.center for patch in fig.axes[0].patches]
+            right_nodes = [patch.center for patch in fig.axes[1].patches]
+            assert left_nodes != right_nodes
+            arrows = [
+                text.arrow_patch
+                for ax in fig.axes
+                for text in ax.texts
+                if not text.get_text() and getattr(text, "arrow_patch", None) is not None
+            ]
+            assert len(arrows) == 29
+            assert all(type(arrow.get_arrowstyle()).__name__ == "CurveAB" for arrow in arrows)
 
 
 class TestFigureDataIntegrityGuards:
     """Guard the P1-#10 / #11 data-integrity fixes (test gap #14)."""
 
-    def test_detection_performance_is_documented_schematic(self):
-        """The fabricated-metrics figure must remain visibly labelled schematic."""
-        import inspect
+    def test_detection_performance_is_visibly_schematic(self, monkeypatch):
+        """The rendered figure, not merely its docstring, disclaims measurements."""
+        from src.visualization.detection_performance import create_detection_performance_figure
 
-        from src.visualization import detection_performance as m
+        monkeypatch.setattr(plt, "close", lambda *args, **kwargs: None)
+        with tempfile.TemporaryDirectory() as tmpdir:
+            create_detection_performance_figure(Path(tmpdir))
+            footer = " ".join(text.get_text() for text in plt.gcf().texts).lower()
+            assert "schematic" in footer
+            assert "not measured" in footer
 
-        doc = (inspect.getdoc(m.create_detection_performance_figure) or "").upper()
-        upper_doc = doc.replace("measurements", "measurement").upper()
-        is_schematic = ("SCHEMATIC" in doc and "NOT MEASUREMENT" in upper_doc) or (
-            "NOT MEASURED" in doc
-        )
-        assert is_schematic
+    def test_detection_results_uses_only_measured_categories(self, monkeypatch, detection_inputs):
+        """No fabricated categories; schematic panels retain explicit labels."""
+        from src.visualization.detection_results import create_detection_results_figure
 
-    def test_detection_results_uses_only_measured_categories(self):
-        """detection_results must not plot fabricated (never-produced) categories."""
-        import inspect
+        monkeypatch.setattr(plt, "close", lambda *args, **kwargs: None)
+        path = detection_inputs / "data" / "detection_results.json"
+        data = json.loads(path.read_text())
+        for config in data["defense_configurations"]:
+            config["detection_rates"]["belief_manipulation"] = 0.3
+        path.write_text(json.dumps(data))
 
-        from src.visualization import detection_results as dr
-        src = inspect.getsource(dr)
-        assert "belief_manipulation" not in src
-        assert "temporal_attack" not in src
-        assert "coordination_attack" not in src
+        create_detection_results_figure(detection_inputs)
+        ax = plt.gcf().axes[0]
+        assert [tick.get_text() for tick in ax.get_xticklabels()] == [
+            "Prompt\nInjection", "Trust\nExploit",
+        ]
+        assert len(ax.patches) == 6
+        assert "illustrative, not measured" in plt.gcf().axes[1].get_title()
+        assert "illustrative, not measured" in plt.gcf().axes[2].get_title()
+        assert "not measured" in plt.gcf().axes[3].get_xlabel()
 
 class TestDetectionResultsBranches:
-    """Branch coverage for detection_results.py (missing-data, ablation, integrity, cfg)."""
+    """Fail-closed boundaries for required artifact/configuration/numeric inputs."""
 
-    def _write_detection_results(self, data_dir, configs):
-        data_dir.mkdir(parents=True, exist_ok=True)
-        (data_dir / "detection_results.json").write_text(json.dumps({
-            "defense_configurations": configs
-        }))
-
-    def test_data_missing_returns_error_pdf(self):
+    @pytest.mark.parametrize(
+        "filename", ("detection_results.json", "ablation_study.json", "integrity_timeseries.csv")
+    )
+    def test_data_missing_raises(self, detection_inputs, filename):
         from src.visualization.detection_results import create_detection_results_figure
 
-        with tempfile.TemporaryDirectory() as tmpdir:
-            output_dir = Path(tmpdir) / "figures"
-            result = create_detection_results_figure(output_dir)
-            assert result == output_dir / "error.pdf"
+        (detection_inputs / "data" / filename).unlink()
+        figures_before = plt.get_fignums()
+        with pytest.raises(FileNotFoundError, match=filename):
+            create_detection_results_figure(detection_inputs)
+        assert not list(detection_inputs.glob("*.pdf"))
+        assert not list(detection_inputs.glob("*.png"))
+        assert plt.get_fignums() == figures_before
 
-    def test_with_ablation_and_integrity_data(self):
+    def test_with_ablation_and_integrity_data(self, monkeypatch, detection_inputs):
+        """The supplied values, not fallback arrays or noise, reach the panels."""
+        import numpy as np
+
         from src.visualization.detection_results import create_detection_results_figure
 
-        with tempfile.TemporaryDirectory() as tmpdir:
-            output_dir = Path(tmpdir) / "figures"
-            data_dir = output_dir / "data"
-            self._write_detection_results(
-                data_dir,
-                [
-                    {
-                        "name": "Baseline",
-                        "detection_rates": {"prompt_injection": 0.1, "trust_exploitation": 0.1},
-                        "latency_overhead_pct": 0,
-                    },
-                    {
-                        "name": "Firewall Only",
-                        "detection_rates": {"prompt_injection": 0.8, "trust_exploitation": 0.7},
-                        "latency_overhead_pct": 8,
-                    },
-                    {
-                        "name": "Full CIF",
-                        "detection_rates": {"prompt_injection": 0.98, "trust_exploitation": 0.95},
-                        "latency_overhead_pct": 23,
-                    },
-                ],
-            )
-            (data_dir / "ablation_study.json").write_text(json.dumps({
-                "metadata": {"illustrative": True},
-                "full_cif": {"detection": 0.94, "delta": 0.0},
-                "minus_firewall": {"detection": 0.81, "delta": -0.13},
-            }))
-            (data_dir / "integrity_timeseries.csv").write_text(
+        monkeypatch.setattr(plt, "close", lambda *args, **kwargs: None)
+        create_detection_results_figure(detection_inputs)
+        axes = plt.gcf().axes
+        np.testing.assert_allclose(
+            [bar.get_width() for bar in axes[1].patches],
+            [0.94, 0.81, 0.88, 0.85, 0.89, 0.91],
+        )
+        np.testing.assert_array_equal(axes[2].lines[0].get_xdata(), [0, 10])
+        np.testing.assert_allclose(axes[2].lines[0].get_ydata(), [0.45, 0.44])
+        np.testing.assert_allclose(axes[2].lines[1].get_ydata(), [0.75, 0.745])
+        np.testing.assert_allclose(axes[2].lines[2].get_ydata(), [0.96, 0.959])
+
+    @pytest.mark.parametrize("name", ("Baseline", "Firewall Only", "Full CIF"))
+    def test_missing_config_raises(self, detection_inputs, name):
+        from src.visualization.detection_results import create_detection_results_figure
+
+        path = detection_inputs / "data" / "detection_results.json"
+        data = json.loads(path.read_text())
+        data["defense_configurations"] = [
+            config for config in data["defense_configurations"] if config["name"] != name
+        ]
+        path.write_text(json.dumps(data))
+        with pytest.raises(ValueError, match=name):
+            create_detection_results_figure(detection_inputs)
+        assert not list(detection_inputs.glob("*.pdf"))
+        assert not list(detection_inputs.glob("*.png"))
+
+    @pytest.mark.parametrize(
+        ("field", "value"),
+        (
+            ("prompt_injection", None),
+            ("trust_exploitation", "0.9"),
+            ("prompt_injection", float("nan")),
+            ("prompt_injection", True),
+            ("trust_exploitation", 1.5),
+            ("latency_overhead_pct", None),
+            ("latency_overhead_pct", -1),
+        ),
+    )
+    def test_invalid_numeric_field_raises(self, detection_inputs, field, value):
+        from src.visualization.detection_results import create_detection_results_figure
+
+        path = detection_inputs / "data" / "detection_results.json"
+        data = json.loads(path.read_text())
+        config = data["defense_configurations"][0]
+        if field == "latency_overhead_pct":
+            config[field] = value
+        elif value is None:
+            del config["detection_rates"][field]
+        else:
+            config["detection_rates"][field] = value
+        path.write_text(json.dumps(data))
+        with pytest.raises(ValueError, match="detection_results.json"):
+            create_detection_results_figure(detection_inputs)
+        assert not list(detection_inputs.glob("*.pdf"))
+        assert not list(detection_inputs.glob("*.png"))
+
+    @pytest.mark.parametrize(
+        ("filename", "content"),
+        (
+            ("detection_results.json", "{invalid"),
+            ("detection_results.json", "[]"),
+            ("ablation_study.json", "{}"),
+            ("ablation_study.json", "null"),
+            ("integrity_timeseries.csv", ""),
+            ("integrity_timeseries.csv", "attack_attempt,baseline_integrity\n0,0.4\n"),
+            (
+                "integrity_timeseries.csv",
                 "attack_attempt,baseline_integrity,firewall_integrity,full_cif_integrity\n"
-                "0,0.45,0.75,0.96\n10,0.44,0.745,0.959\n"
-            )
-            result = create_detection_results_figure(output_dir)
-            if isinstance(result, tuple):
-                assert result[1].exists()
-            else:
-                assert result.exists() and result.suffix == ".pdf"
-
-    def test_missing_config_falls_back_to_zeros(self):
+                "0,0.4,nan,0.9\n",
+            ),
+            (
+                "integrity_timeseries.csv",
+                "attack_attempt,baseline_integrity,firewall_integrity,full_cif_integrity\n",
+            ),
+        ),
+    )
+    def test_malformed_artifact_raises(self, detection_inputs, filename, content):
         from src.visualization.detection_results import create_detection_results_figure
 
-        with tempfile.TemporaryDirectory() as tmpdir:
-            output_dir = Path(tmpdir) / "figures"
-            data_dir = output_dir / "data"
-            self._write_detection_results(
-                data_dir,
-                [
-                    {
-                        "name": "Baseline",
-                        "detection_rates": {"prompt_injection": 0.1, "trust_exploitation": 0.1},
-                        "latency_overhead_pct": 0,
-                    },
-                ],
-            )
-            result = create_detection_results_figure(output_dir)
-            if isinstance(result, tuple):
-                assert result[1].exists()
-            else:
-                assert result.suffix == ".pdf"
-
+        (detection_inputs / "data" / filename).write_text(content)
+        with pytest.raises(ValueError, match=filename):
+            create_detection_results_figure(detection_inputs)
+        assert not list(detection_inputs.glob("*.pdf"))
+        assert not list(detection_inputs.glob("*.png"))
 
 class TestScalabilityBranches:
-    def test_data_missing_returns_error_tuple(self):
+    def test_data_missing_raises(self, tmp_path):
         from src.visualization.scalability import create_scalability_figure
 
-        with tempfile.TemporaryDirectory() as tmpdir:
-            output_dir = Path(tmpdir) / "figures"
-            png, pdf = create_scalability_figure(output_dir)
-            assert png == output_dir / "error.png"
-            assert pdf == output_dir / "error.pdf"
+        output_dir = tmp_path / "figures"
+        figures_before = plt.get_fignums()
+        with pytest.raises(FileNotFoundError, match="scalability_results.json"):
+            create_scalability_figure(output_dir)
+        assert not output_dir.exists()
+        assert plt.get_fignums() == figures_before
+
+    @pytest.mark.parametrize(
+        "content",
+        (
+            "{invalid",
+            "[]",
+            "{}",
+            '[{"agent_count": 4}]',
+            '[{"agent_count": 0, "detection_time_ms": 1, '
+            '"memory_mb": 2, "consensus_latency_ms": 3}]',
+            '[{"agent_count": 4, "detection_time_ms": "1", '
+            '"memory_mb": 2, "consensus_latency_ms": 3}]',
+            '[{"agent_count": 4, "detection_time_ms": NaN, '
+            '"memory_mb": 2, "consensus_latency_ms": 3}]',
+            '[{"agent_count": 4, "detection_time_ms": 1, '
+            '"memory_mb": -2, "consensus_latency_ms": 3}]',
+        ),
+    )
+    def test_malformed_artifact_raises(self, tmp_path, content):
+        from src.visualization.scalability import create_scalability_figure
+
+        output_dir = tmp_path / "figures"
+        data_dir = output_dir / "data"
+        data_dir.mkdir(parents=True)
+        (data_dir / "scalability_results.json").write_text(content)
+        figures_before = plt.get_fignums()
+        with pytest.raises(ValueError, match="scalability_results.json"):
+            create_scalability_figure(output_dir)
+        assert not list(output_dir.glob("*.pdf"))
+        assert not list(output_dir.glob("*.png"))
+        assert plt.get_fignums() == figures_before
 
 
 class TestRound7FigureHonesty:
     """Keep schematic figure values visibly distinct from measurements."""
 
-    def test_schematic_figure_docstrings_are_explicit(self):
-        import inspect
-
+    def test_schematic_figures_render_honesty_footers(self, monkeypatch):
         from src.visualization import ablation_study, fp_mitigation, trust_decay
 
-        functions = (
+        monkeypatch.setattr(plt, "close", lambda *args, **kwargs: None)
+        generators = (
             ablation_study.create_ablation_study_figure,
             fp_mitigation.create_fp_mitigation_figure,
             trust_decay.generate_trust_decay_figure,
         )
-        for function in functions:
-            doc = (inspect.getdoc(function) or "").upper()
-            assert "SCHEMATIC" in doc
-            assert "NOT MEASURED" in doc
+        for generate in generators:
+            with tempfile.TemporaryDirectory() as tmpdir:
+                generate(Path(tmpdir))
+                footer = " ".join(text.get_text() for text in plt.gcf().texts).lower()
+                assert "schematic" in footer, generate.__module__
+                assert "not measured" in footer, generate.__module__
 
-    def test_schematic_figure_sources_render_honesty_footer(self):
-        import inspect
 
-        from src.visualization import ablation_study, fp_mitigation, trust_decay
+class TestCIFADCouplingFigure:
+    def test_unachievable_portfolio_refuses_all_artifacts(self, tmp_path, monkeypatch):
+        """The .80 requirement fails before any image or JSON can be exported."""
+        import importlib.util
 
-        modules = (ablation_study, fp_mitigation, trust_decay)
-        for module in modules:
-            source = inspect.getsource(module)
-            source_lower = source.lower()
-            assert "schematic" in source_lower
-            assert "not measured" in source_lower
+        script_path = (
+            Path(__file__).resolve().parents[1]
+            / "scripts"
+            / "19_cif_ad_coupling_figure.py"
+        )
+        spec = importlib.util.spec_from_file_location("cif_ad_coupling_figure", script_path)
+        assert spec is not None and spec.loader is not None
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        monkeypatch.setattr(module, "OUTPUT_DIR", tmp_path / "figures")
+        monkeypatch.setattr(module, "DATA_DIR", tmp_path / "figures" / "data")
+
+        with pytest.raises(ValueError, match="Refusing.*0.80 coverage"):
+            module.generate_cif_ad_coupling_figure()
+
+        assert not list(tmp_path.rglob("cif_ad_coupling.pdf"))
+        assert not list(tmp_path.rglob("cif_ad_coupling.png"))
+        assert not list(tmp_path.rglob("cif_ad_coupling.json"))
+
+
+class TestMissingArtifactScriptFailures:
+    @pytest.mark.parametrize(
+        ("script_name", "missing_artifacts"),
+        (
+            ("03_detection_results_figure.py", ("detection_results.json",)),
+            ("08_scalability_figure.py", ("scalability_results.json",)),
+            (
+                "generate_all_figures.py",
+                ("detection_results.json", "scalability_results.json"),
+            ),
+        ),
+    )
+    def test_actual_scripts_exit_nonzero_without_inputs(
+        self, tmp_path, script_name, missing_artifacts
+    ):
+        """Run unchanged entry points in an isolated tree, not fake script paths."""
+        project_root = Path(__file__).resolve().parents[1]
+        isolated = tmp_path / "part1"
+        shutil.copytree(
+            project_root / "src",
+            isolated / "src",
+            ignore=shutil.ignore_patterns("__pycache__", "*.pyc"),
+        )
+        scripts = isolated / "scripts"
+        scripts.mkdir()
+        for name in (
+            "03_detection_results_figure.py",
+            "08_scalability_figure.py",
+            "generate_all_figures.py",
+        ):
+            shutil.copy2(project_root / "scripts" / name, scripts / name)
+        result = subprocess.run(
+            [sys.executable, str(scripts / script_name)],
+            cwd=isolated,
+            capture_output=True,
+            text=True,
+            check=False,
+            timeout=60,
+        )
+        assert result.returncode != 0, result.stdout
+        output = result.stdout + result.stderr
+        for artifact in missing_artifacts:
+            assert artifact in output, output
+        if script_name == "generate_all_figures.py":
+            assert "0/2 figure script(s) succeeded" in result.stdout
+            assert "03_detection_results_figure.py" in result.stderr
+            assert "08_scalability_figure.py" in result.stderr
+        assert not (isolated / "output").exists()

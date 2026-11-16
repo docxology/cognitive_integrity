@@ -5,7 +5,7 @@
 This supplement develops the information-geometric structure of the CIF belief state space and shows how this geometry illuminates three otherwise disconnected aspects of the framework: the drift-detection threshold $\theta_{\text{drift}} = 0.3$, the sandbox corroboration threshold $\kappa$, and the choice of canary-belief probability $\tau_{\text{canary}}$ for tripwires. Implementations of the constructions below are in [`src/analysis/information_geometry.py`](../../src/analysis/information_geometry.py); the numerical checks on curvature and geodesic lengths are in \texttt{tests/test\_information\_geometry.py}.
 
 > **Cross-paper reading guide.**
-> • **Formal stealth–impact bound** (which the Fisher–Rao construction realizes) is stated as Part 1's Stealth-Impact Tradeoff theorem \cite{friedman2026cogsec1}, which that paper's Proof Status index records as asserted without proof.
+> • **Stealth–impact tradeoff** is posed as an open formalization in Part 1 \cite{friedman2026cogsec1}; the Fisher–Rao construction does not prove it.
 > • **Operational implications** of the geodesic attack path for active-inference-based monitoring are discussed in Part 3 \cite{friedman2026cogsec3}'s theory-review section, under The Science Behind Belief Updates: Free Energy (Practical Implication for Operators).
 > • **Domain applications** — the geodesic framework applies to high-stakes sectors where adversarial inputs stay within a stealth budget; see Part 3 \cite{friedman2026cogsec3}, its Distilling Fake from Real News domain (information ecosystems, fake-news detection) in particular, where the Fisher--Rao metric informs distribution-shift monitoring.
 
@@ -22,13 +22,13 @@ G_{ij}(p) = \frac{\delta_{ij}}{p_i}.
 \label{eq:fisher-rao-metric}
 The Fisher-Rao metric is the unique metric (up to scaling) invariant under sufficient statistics \cite{cencov1982statistical,amari2000methods}; using any other metric would implicitly privilege some coordinate chart over the intrinsic probabilistic structure.
 
-A useful change of coordinates is the \emph{Hellinger embedding} $p \mapsto (\sqrt{p_1}, \ldots, \sqrt{p_n})$, which maps $\Delta^{n-1}$ isometrically onto a hemisphere of the unit sphere $S^{n-1}$ in $\mathbb{R}^n$. Under this embedding, the Fisher-Rao geodesic distance between distributions $p, q$ is the \emph{Bhattacharyya angle}
+A useful change of coordinates is the \emph{Hellinger embedding} $p \mapsto (\sqrt{p_1}, \ldots, \sqrt{p_n})$, which maps $\Delta^{n-1}$ onto the positive orthant of the unit sphere $S^{n-1}$ in $\mathbb{R}^n$ (a hemisphere only in the two-outcome case). Under this embedding, the Fisher-Rao geodesic distance between distributions $p, q$ is the \emph{Bhattacharyya angle}
 \begin{equation}
 d_{\mathrm{FR}}(p, q) = 2 \arccos\!\left(\sum_{i=1}^{n} \sqrt{p_i \, q_i}\right).
 \end{equation}
 \label{eq:bhattacharyya-angle}
 
-The manifold has constant positive curvature $\kappa_{\mathrm{curv}} = n(n-1)/4$. The practical consequence is that small differences in KL divergence translate to even larger geometric separations: two distributions that differ by $\KL = 0.1$ correspond to a geodesic distance bounded above by $\sqrt{2 \cdot 0.1} \approx 0.45$ radians (by the Pinsker-type inequality connecting KL and Fisher-Rao distance), and the positive curvature \emph{amplifies} the geometric distinguishability of nearby distributions in a bounded way.
+The unit sphere has sectional curvature $1$ and, in dimension $n-1$, scalar curvature $(n-1)(n-2)$. The number $(n-1)(n-2)$ is the \emph{scalar} curvature in that dimension; $\kappa=n(n-1)/4$ uses the number of categories rather than the manifold dimension and is not a sectional-curvature formula. (Part 1 instead uses the scaled embedding $2\sqrt p$, whose sphere has sectional curvature $1/4$.) For small perturbations, the local quadratic approximation $\KL[p\|p+\delta]\approx \delta^\top G(p)\delta/2$ gives a Fisher-Rao displacement $r\approx\sqrt{2\KL}$; for $\KL=0.1$ this is approximately $0.45$ radians. Pinsker's inequality is not a claim that KL is always bounded above by the resulting displacement, and constant positive curvature does not by itself amplify distinguishability.
 
 ## Attacks as Geodesic Updates {#sec:s10-geodesic-attacks}
 
@@ -44,27 +44,11 @@ The connection to CIF's drift detector (Part 1's Drift Score definition) comes f
 \KL[p \,\|\, p + \delta] = \frac{1}{2}\, \delta^{\top} G(p) \delta + O(\|\delta\|^3).
 \end{equation}
 \label{eq:kl-fisher-second-order}
-That is, the KL divergence is (to second order) the squared Fisher-Rao distance. The drift-detector threshold $\theta_{\text{drift}} = 0.3$ therefore corresponds to a geodesic step whose length, in radians on the Hellinger hemisphere, is approximately $2 \arcsin(\sqrt{0.3}/2) \approx 0.28$ radians. The empirically-calibrated threshold thus admits a principled geometric interpretation: it is the arc length beyond which belief updates have crossed from ``ordinary learning'' into ``territory probably controlled by a single adversarial channel''. This is a more satisfying justification than ``tuned on the validation corpus'' and is robust to changes in the corpus that do not change the underlying geometry.
+That is, the KL divergence is locally one half the squared Fisher-Rao distance. A normalized KL drift threshold $\theta_{\text{drift}}=0.3$ therefore corresponds to $r\approx\sqrt{2(0.3)}=0.775$ radians under that small-step approximation, not $0.28$. This is only a geometric interpretation of a chosen detector threshold: it neither derives nor calibrates an operational security boundary, and it says nothing about whether a channel is adversarial.
 
 ## Defense as Curvature Constraint {#sec:s10-curvature-constraint}
 
-The sandbox's corroboration criterion (Part 1's Sandbox Promotion Soundness theorem) can be restated geometrically. A belief update is provisionally allowed inside the sandbox, but promotion to the verified partition requires corroboration count $\geq \kappa$; equivalently, it requires that the updated belief lie within a geodesic ball around a multiply-witnessed reference.
-
-\begin{theorem}[Curvature Constraint Defense, CG.1]
-The CIF belief sandbox with corroboration threshold $\kappa$ and per-step update precision $\epsilon_{\text{precision}}$ implements a geodesic ball constraint of radius
-\begin{equation}
-\rho = 2 \arccos\!\left( \sqrt{1 - \kappa \cdot \epsilon_{\text{precision}}} \right)
-\end{equation}
-\label{eq:sandbox-geodesic-radius}
-around the baseline belief state $p^{(0)}$ in the Fisher-Rao metric: a provisional update $p^{(*)}$ is promoted if and only if $d_{\mathrm{FR}}(p^{(0)}, p^{(*)}) \leq \rho$.
-\end{theorem}
-
-\begin{proof}[Proof sketch]
-The corroboration criterion requires that $\kappa$ independent corroborating observations have been seen, each of which reduces the posterior uncertainty by $\epsilon_{\text{precision}}$ under the FEP-equivalent formulation (\cref{thm:attack-fep}). The cumulative effect is a tightening of the posterior's Bhattacharyya coefficient with the reference distribution to at least $1 - \kappa \cdot \epsilon_{\text{precision}}$, which translates to the Fisher-Rao ball radius $\rho = 2\arccos(\sqrt{1 - \kappa \cdot \epsilon_{\text{precision}}})$. The helper \texttt{defense\_as\_curvature\_constraint()} evaluates this radius and accepts or rejects an update against it.
-\end{proof}
-\label{thm:curvature-constraint}
-
-\cref{thm:curvature-constraint} provides a concrete practical implication. Operators who want to harden the sandbox against belief-manipulation attacks can either (a) increase $\kappa$, (b) raise the per-observation precision $\epsilon_{\text{precision}}$ by filtering low-precision channels, or (c) directly specify the geodesic radius $\rho$ and back-solve for $(\kappa, \epsilon_{\text{precision}})$. Option (c) is preferable when the security requirement is geometric (``no update moves beliefs by more than $x$ radians'') rather than statistical (``$\kappa$ corroborators required'').
+The sandbox's corroboration criterion and a geodesic step budget are distinct controls, not an established equivalence. A count of independent corroborators does not determine a Bhattacharyya coefficient or a Fisher-Rao distance without an observation model; no such derivation is asserted here. The independent helper \texttt{defense\_as\_curvature\_constraint()} rejects proposed updates whose Fisher-Rao distance exceeds its explicit \texttt{max\_geodesic\_step} argument. That geometric budget can be used alongside the sandbox, but it is not a consequence of the sandbox's corroboration threshold $\kappa$.
 
 ## Natural Gradient Attacks and Sensitivity {#sec:s10-natural-gradient}
 
@@ -75,15 +59,11 @@ The natural gradient \cite{amari1998natural} is the gradient of a loss $L(p)$ ex
 \label{eq:natural-gradient-belief}
 On the probability simplex, the natural gradient is the coordinate-wise product of the Euclidean gradient and the belief probabilities themselves.
 
-An adversary performing gradient-based belief manipulation is, from a geometric standpoint, more efficient using the natural gradient than the Euclidean gradient because the natural gradient respects the manifold's curvature and moves along geodesics rather than across them. The helper \texttt{sensitivity\_via\_riemannian\_metric()} quantifies the resulting sensitivity by computing $\widetilde{\nabla} L$ at each belief and reporting the per-dimension magnitude.
-
-The result is a non-obvious security insight: high-probability beliefs (large $p_i$) have proportionally larger natural-gradient magnitude and are therefore \emph{more} susceptible to gradient-based attacks than low-probability beliefs. This inverts the naive intuition that confident beliefs are hard to move. A belief at $p_i = 0.95$ has natural gradient magnitude nearly twenty times larger than a belief at $p_i = 0.05$, for the same Euclidean gradient.
-
-CIF's tripwire monitoring of canary beliefs (\cref{alg:tripwire-impl}) at thresholds $\tau_{\text{canary}} > 0.9$ directly addresses this vulnerability: canary placements are concentrated at the beliefs that geometric analysis identifies as the most gradient-sensitive, precisely where an efficient adversary will focus their effort. The canary-threshold choice of $0.9$ is therefore not an arbitrary high-probability convention but a principled selection of the points of maximum geometric vulnerability on the simplex.
+The helper \texttt{sensitivity\_via\_riemannian\_metric()} computes $\widetilde{\nabla} L = p_i\,\partial_i L$ at each belief. A larger component of the natural gradient does not imply that an adversary can more easily move that belief, nor that a discrete natural-gradient step follows a geodesic; those conclusions require a loss, an attack model, and a step-size analysis not supplied here. Consequently the $0.9$ canary threshold is an operational choice, not a derived placement at a maximally vulnerable point.
 
 ## Fisher Information Metric: Complete Derivations {#sec:s10-fim-derivations}
 
-> **v1.0 addition.** This section provides complete derivations of the Fisher information matrix (FIM) for the CIF belief state parameterization, extending the survey in §\ref{sec:s10-manifold} with explicit computations for practical parameter choices used in the empirical evaluation.
+> **Second-edition derivation.** This section derives the Fisher information matrix (FIM) for the CIF belief state parameterization, extending the survey in §\ref{sec:s10-manifold} with explicit computations for practical parameter choices used in the empirical evaluation.
 
 ### Parameterized Belief Family
 
@@ -145,29 +125,14 @@ Near the Nash equilibrium $\theta^*$ (where $p_{\text{detect}}(\theta^*) = \text
 
 ### Geometric Interpretation of the Drift Threshold
 
-The drift detection threshold $\theta_{\text{drift}} = 0.3$ admits a complete geometric derivation via the FIM. An agent's belief state $p$ drifts adversarially from baseline $p^{(0)}$ if the Fisher-Rao distance exceeds:
+A separate geometric drift rule may compare the Fisher-Rao distance to a chosen radius $r_\theta$:
 \begin{align}
-d_{\text{FR}}(p^{(0)}, p) &= 2\arccos\!\left(\sum_i \sqrt{p^{(0)}_i p_i}\right) > \theta_{\text{drift}}.
+d_{\text{FR}}(p^{(0)}, p) &= 2\arccos\!\left(\sum_i \sqrt{p^{(0)}_i p_i}\right) > r_\theta .
 \end{align}
 \label{eq:drift-fisher-rao-threshold}
-For two-dimensional belief spaces ($n = 2$), the threshold $\theta_{\text{drift}} = 0.3$ corresponds to:
-\begin{equation}
-\arccos\!\left(\sqrt{p \cdot (1-p)} + \sqrt{(1-p) \cdot p^{(0)}}\right) = 0.15 \text{ radians},
-\end{equation}
-\label{eq:drift-threshold-2d}
-or equivalently a KL divergence of $\text{KL}(p \| p^{(0)}) \approx 0.0225$ (by the second-order Pinsker approximation). This is the scale at which CIF's drift detector first activates — a belief shift equivalent to moving from 50\% confidence to approximately 61\% on a binary hypothesis, consistent with ``ordinary learning'' rather than adversarial manipulation.
+For $r_\theta=0.3$ radians, the small-step KL approximation gives $\KL\approx r_\theta^2/2=0.045$, not $0.0225$. In a binary model $p^{(0)}=(1/2,1/2)$, the boundary is $p\approx0.611$ or $0.389$. This analogy must not be conflated with the operational normalized-KL threshold $\theta_{\text{drift}}=0.3$, whose local Fisher-Rao displacement is $r\approx\sqrt{0.6}=0.775$ radians. Neither value proves an adversarial intent or a first-activation point.
 
 ### Relation to the Stealth–Impact Bound
 
-The Fisher-Rao geodesic distance provides the tightest information-theoretic constraint on stealth-bounded attacks. For an adversary constrained to move beliefs within a geodesic ball of radius $r$ (the stealth budget), the maximum achievable KL divergence from the baseline is:
-\begin{equation}
-\text{KL}_{\max}(r) = 2\sin^2(r/2) \leq r^2/2,
-\end{equation}
-\label{eq:stealth-kl-bound}
-where the bound uses $\sin(x) \leq x$. The stealth–impact bound from Part 1's Stealth-Impact Tradeoff theorem \cite{friedman2026cogsec1} (its Information-Theoretic Detection Bounds section) is recovered by substituting $r = \theta_{\text{drift}} / 2$ (half the detection radius):
-\begin{equation}
-\text{Impact} \leq f(\text{KL}_{\max}(r)) = f\!\left(2\sin^2(\theta_{\text{drift}}/4)\right),
-\end{equation}
-\label{eq:stealth-impact-bound}
-where $f(\cdot)$ is the impact quantity introduced in Part 1's Stealth-Impact Tradeoff theorem. The information geometry thus provides a complete derivation of the stealth–impact bound from first principles, without requiring the empirical calibration of the drift threshold.
+Fisher-Rao distance constrains geometric displacement, but it does not bound KL divergence either above or below by a universal function of radius alone. The small-step relation $\KL\approx r^2/2$ is an approximation, not the exact identity $2\sin^2(r/2)$; substituting a drift threshold does not derive Part 1's proposed stealth-impact tradeoff. That tradeoff remains unproved, and no capacity bound is asserted here.
 

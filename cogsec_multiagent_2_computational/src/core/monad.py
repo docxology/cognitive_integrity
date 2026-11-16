@@ -39,7 +39,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any, Callable, Dict, Generic, List, TypeVar, Union
 
-from utils.types import DefenseResult
+from src.utils.types import DefenseResult
 
 T = TypeVar("T")
 U = TypeVar("U")
@@ -295,7 +295,7 @@ def verify_monad_laws(test_results: List[DefenseResult]) -> Dict[str, bool]:
         return Ok(("f", x))
 
     def g(x: Any) -> Result:
-        return Ok(("g", x))
+        return Err(DetectionEvent(module_name="g", score=1.0))
 
     left_identity = True
     right_identity = True

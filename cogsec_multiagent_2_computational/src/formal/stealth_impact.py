@@ -9,7 +9,7 @@ exceeds the channel capacity bound.
 
 from __future__ import annotations
 
-from utils.random_seed import get_rng
+from src.utils.random_seed import get_rng
 
 from .theorem_registry import TheoremResult, TheoremStatus
 
@@ -55,34 +55,33 @@ def validate_stealth_impact(
             # This attack would be detected — not a "successful" attack
             violations += 1
 
-    # Verify: all *successful* attacks satisfy the bound
-    all_successful_bounded = max_product <= c_channel
-
-    if all_successful_bounded:
-        return TheoremResult(
-            theorem_id="4",
-            name="Stealth-Impact Tradeoff",
-            status=TheoremStatus.PASSED,
-            evidence=(
-                f"Schematic consistency check (fail-closed detection by "
-                f"construction; not an empirical measurement): all "
-                f"{n_trials - violations} successful attacks satisfy "
-                f"I*S <= {c_channel:.2f} (max product: {max_product:.4f}). "
-                f"{violations} attacks detected due to bound violation."
-            ),
-            details={
-                "c_channel": c_channel,
-                "n_trials": n_trials,
-                "n_detected": violations,
-                "max_product": max_product,
-                "detection_model": "fail-closed by construction (schematic)",
-            },
-        )
-    else:
+    details = {
+        "c_channel": c_channel,
+        "n_trials": n_trials,
+        "n_detected": violations,
+        "max_product": max_product,
+        "detection_model": "fail-closed by construction (schematic)",
+    }
+    if n_trials <= 0:
         return TheoremResult(
             theorem_id="4",
             name="Stealth-Impact Tradeoff",
             status=TheoremStatus.FAILED,
-            evidence=f"Bound violated: max product {max_product:.4f} > {c_channel:.2f}",
-            details={"max_product": max_product, "c_channel": c_channel},
+            evidence="No stealth-impact samples were generated; the theorem was not validated.",
+            details=details,
         )
+
+    # Detection is defined by the same inequality being checked, so this
+    # schematic cannot falsify the theorem and must not report a proof.
+    return TheoremResult(
+        theorem_id="4",
+        name="Stealth-Impact Tradeoff",
+        status=TheoremStatus.SKIPPED,
+        evidence=(
+            f"Schematic consistency only, not theorem validation: "
+            f"{n_trials - violations} of {n_trials} attacks were admitted "
+            f"by the construction I*S <= {c_channel:.2f}; {violations} were "
+            "detected by that same construction."
+        ),
+        details=details,
+    )

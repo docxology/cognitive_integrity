@@ -270,6 +270,11 @@ class SandboxManager:
         Returns:
             True if promotion succeeded
         """
+        expiry = self._ttl_registry.get(belief_id)
+        if expiry is not None and datetime.now() >= expiry:
+            self.cleanup_expired()
+            return False
+
         result = self.state.promote(belief_id)
         if result:
             # Remove from TTL registry - verified beliefs don't expire
@@ -283,6 +288,9 @@ class SandboxManager:
         Returns:
             List of belief IDs that were promoted
         """
+        # Expiry takes precedence over promotion: a belief whose TTL has
+        # elapsed must never enter the verified partition.
+        self.cleanup_expired()
         promoted = []
 
         for belief_id, belief in list(self.state.provisional.items()):
@@ -322,7 +330,7 @@ class SandboxManager:
             True if corroboration was added
         """
         belief = self.state.get_belief(belief_id)
-        if belief is None:
+        if belief is None or corroborating_agent == belief.source_agent:
             return False
 
         # Track unique corroborators

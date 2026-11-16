@@ -8,35 +8,35 @@ This section establishes the statistical validity of our empirical findings thro
 
 ## Pipeline Detection Rate Distribution {#sec:pipeline-distribution}
 
-Across 30 random seeds on the Claude Code architecture, the full CIF defense pipeline achieved the following detection rate distribution (\cref{tab:pipeline-distribution}):
+Across 30 random seeds, the architecture-agnostic CIF defense pipeline achieved the following detection rate distribution (\cref{tab:pipeline-distribution}):
 
-Table: Pipeline detection rate distribution (Claude Code, 30 seeds). {#tab:pipeline-distribution}
+Table: Pipeline detection rate distribution (architecture-agnostic pipeline, 30 seeds). {#tab:pipeline-distribution}
 
 | Statistic | Value |
 | --- | --- |
 | Mean DR | 0.863 |
 | Median DR | 0.86 |
-| Std Dev | 0.0441 |
+| Population Std Dev | 0.021 |
 | Min | 0.82 |
 | Max | 0.90 |
 | CV | 0.024 |
-| 95% Range | [0.82, 0.90] |
+| Observed Range | [0.82, 0.90] |
 
-The coefficient of variation (CV = 0.024) exceeds the 0.05 stability threshold, indicating that detection rates are moderately sensitive to random seed initialization. The distribution is approximately symmetric, with no evidence of heavy tails or bimodality.
+The overall coefficient of variation (CV = 0.024) is below the 0.05 threshold. The artifact's `stable` flag is nevertheless false because stability requires every per-category CV to fall below that threshold; belief manipulation (0.094) and provenance-and-isolation (0.085) exceed it.
 
 ## Effect Sizes (Real Pipeline) {#sec:real-effect-sizes}
 
 ### Ablation Effect Sizes
 
-We quantify the marginal contribution of each defense component using the real ablation data ($N=98$ attacks, prototype pipeline) in \cref{tab:real-component-effects}:
+We quantify the marginal contribution of each defense component using the real ablation data ($N=100$ attacks, prototype pipeline) in \cref{tab:real-component-effects}:
 
 Table: Component removal impact with effect sizes (real pipeline). {#tab:real-component-effects}
 
 | Removed Component | Pipeline TPR | $\Delta$ TPR | Relative Impact |
 | --- | --- | --- | --- |
 | None (full pipeline) | 0.890 | --- | Full pipeline (8 components active) |
-| Invariants | 0.240 | $\approx -0.650$ | Dominant ($\approx 73\%$ of baseline TPR) |
-| Tripwires | 0.870 | $\approx -0.020$ | Second, and the only other measurable loss |
+| Invariants | 0.220 | $\approx -0.670$ | Dominant ($\approx 75.3\%$ of baseline TPR) |
+| Tripwires | 0.880 | $\approx -0.010$ | Second, and the only other measurable loss |
 | Firewall | 0.890 | $\approx 0.000$ | No measurable marginal contribution |
 | Detection module | 0.890 | $\approx 0.000$ | No measurable marginal contribution |
 | Trust Calculus | 0.890 | $\approx 0.000$ | No measurable marginal contribution |
@@ -44,11 +44,11 @@ Table: Component removal impact with effect sizes (real pipeline). {#tab:real-co
 | Provenance | 0.890 | $\approx 0.000$ | No measurable marginal contribution |
 | Sandbox | 0.890 | $\approx 0.000$ | No measurable marginal contribution |
 
-**Interpretation**: Removing the Invariants module costs $\Delta\text{TPR} \approx -0.650$ against a full pipeline $\approx 0.890$, about 73\% of the pipeline's detection on this corpus. Tripwires are the only other removal with a measurable cost ($\approx -0.020$); the remaining six components measure exactly zero. Zero marginal contribution is not zero capability, and the two are routinely confused. Measured alone against the family each was built for (`scripts/run_module_capability_matrix.py`), Provenance detects 20.0\% of provenance-laundering payloads, Sandbox 28.6\% of sandbox-escape payloads and Consensus 81.1\% of byzantine-manipulation payloads -- all at a false-positive rate of 0.000 against the hard benign corpus. They contribute nothing here because Invariants already catches the same payloads, so a maximum rule that contains it gains nothing from a second detector firing on a subset of the same inputs. The pairwise synergies below, which are measured over coalitions that mostly exclude Invariants, are where those modules become visible.
+**Interpretation**: Removing the Invariants module costs $\Delta\text{TPR} \approx -0.670$ against a full pipeline $\approx 0.890$, about 75.3\% of the pipeline's detection on this corpus. Tripwires are the only other removal with a measurable cost ($\approx -0.010$); the remaining six components measure exactly zero. Zero marginal contribution is not zero capability, and the two are routinely confused. Measured alone against the family each was built for (`scripts/run_module_capability_matrix.py`), Provenance detects 20.0\% of provenance-laundering payloads, Sandbox 28.6\% of sandbox-escape payloads and Consensus 81.1\% of byzantine-manipulation payloads -- all at a false-positive rate of 0.000 against the hard benign corpus. They contribute nothing here because Invariants already catches the same payloads, so a maximum rule that contains it gains nothing from a second detector firing on a subset of the same inputs. The pairwise synergies below, which are measured over coalitions that mostly exclude Invariants, are where those modules become visible.
 
 ### Synergy Effect Sizes (Real Pipeline)
 
-\cref{tab:real-synergy} reports synergy scores for the top component pairs, where synergy = actual combined effect minus the sum of individual effects.
+\cref{tab:real-synergy} reports synergy scores for the top component pairs, where synergy = combined TPR minus the better singleton TPR. It is not excess beyond the sum of singleton effects and does not demonstrate detector independence.
 
 Table: Component pair synergy scores (real pipeline, ablation data). {#tab:real-synergy}
 
@@ -60,7 +60,7 @@ Table: Component pair synergy scores (real pipeline, ablation data). {#tab:real-
 | Tripwire + Invariants | $\approx +0.040$ | Canary monitoring + invariant-violation detection |
 | Detection + Consensus | $\approx +0.040$ | Text-feature analysis + quorum-subversion detection |
 
-Synergy scores measure the detection improvement of the pair beyond the sum of their individual effects. Three pairs tie for the strongest synergy (consensus+sandbox, tripwire+consensus and tripwire+sandbox, all $\approx +0.050$), and each combines two modules that contribute nothing on their own once the invariants module is present, which is the case for defense in depth that a marginal-contribution table cannot make. Pairs involving Invariants show little synergy for the opposite reason: a module that already detects most of the corpus has little left for a partner to add.
+Synergy scores measure the pair's improvement over its better singleton. Three pairs tie for the strongest synergy (consensus+sandbox, tripwire+consensus and tripwire+sandbox, all $\approx +0.050$). The modules' zero leave-one-out deltas in the full pipeline do not mean that they detect nothing alone: their detections overlap with other modules' detections. Pairs involving Invariants show less synergy because that module already detects most of this corpus, leaving less for a partner to add.
 
 ## Confidence Intervals (Empirical) {#sec:empirical-ci}
 
@@ -81,14 +81,14 @@ Table: LLM validation detection rates with exact binomial 95\% CI. {#tab:llm-ci}
 
 \cref{tab:multi-seed-ci} summarizes the mean pipeline detection rate with a 95\% confidence interval computed from the 30-seed sample.
 
-Table: Multi-seed pipeline summary with 95\% CI (30 seeds, Claude Code). {#tab:multi-seed-ci}
+Table: Multi-seed pipeline summary with 95\% CI (30 seeds, architecture-agnostic pipeline). {#tab:multi-seed-ci}
 
 | Metric | Estimate | 95\% CI (normal approximation) |
 | --- | --- | --- |
 | Mean DR | 0.863 | [0.855, 0.871] |
-| Std Dev | 0.0441 | — |
+| Population Std Dev | 0.021 | — |
 
-The 95\% confidence interval for the mean pipeline detection rate is [0.432, 0.464], based on 30 seeds using the normal approximation on the seed-level mean (mean ± 1.96·s/√k), matching the recorded interval method (P2-19). This provides a reliable estimate of expected pipeline performance on the Claude Code architecture with the current adapter implementations.
+The 95\% confidence interval for the mean pipeline detection rate is [0.855, 0.871], based on 30 seeds using the normal approximation on the seed-level mean (mean ± 1.96·s/√k), matching the recorded interval method (P2-19). It estimates the mean of the architecture-agnostic pipeline's seed-level rates and does not pool 3,000 attacks as independent trials.
 
 ## Power Analysis {#sec:real-power-analysis}
 
@@ -107,13 +107,7 @@ detecting architecture-specific differences. The multi-seed analysis is well-pow
 estimating the pipeline's mean detection rate (95\% CI [85.5, 87.1]); the ablation analysis has 
 moderate power for detecting component contributions.
 
-*Note on the first row (L2): 'mean vs 0' is a degenerate/reference power row, not the research 
-question --- a detection rate of 86.3\% is trivially distinguishable from 0. The substantive null 
-for the multi-seed pipeline is whether its mean differs from the design-level parametric ceiling, 
-and that comparison is settled decisively by the Bayes-factor gap analysis in 
-\cref{sec:real-power-analysis}'s companion section (Bayes factor $>10^6$ for the structural gap), not 
-by a power-vs-0 computation. The informative read of the table is the underpowered LLM row and the 
-moderate ablation row.*
+*Note on the first row (L2): 'mean vs 0' is a degenerate/reference power row, not the research question---a detection rate of 86.3\% is trivially distinguishable from 0. A substantive parametric--empirical test would require matched corpora and evaluation modes; those arms are not matched, so this section reports no Bayes factor for their descriptive separation. The informative read of the table is the underpowered LLM row and the moderate ablation row.*
 
 ## Multiple Comparison Correction {#sec:real-bonferroni}
 
@@ -122,9 +116,9 @@ For the ablation analysis comparing 8 component removals against the full pipeli
 ## Summary {#sec:real-stats-summary}
 
 \begin{enumerate}
-\item **Pipeline detection**: Mean 86.3\% [95\% CI: 85.5\%, 87.1\%] across 30 seeds (Claude Code), with CV = 0.024 indicating moderate seed sensitivity.
-\item **Component hierarchy**: Invariants ($\Delta\text{TPR} \approx -0.650$) $\gg$ Tripwire ($\approx -0.020$) $>$ every remaining component (each $\approx 0.000$).
-\item **Synergy**: Three pairs tie for the strongest synergy at $\approx +0.050$ (consensus+sandbox, tripwire+consensus, tripwire+sandbox)---complementary detection patterns among modules with no standalone marginal contribution on the ablation corpus.
+\item **Pipeline detection**: Mean 86.3\% [95\% CI: 85.5\%, 87.1\%] across 30 seeds for the architecture-agnostic pipeline, with CV = 0.024 below the overall 0.05 threshold but per-category stability not achieved.
+\item **Component hierarchy**: Invariants ($\Delta\text{TPR} \approx -0.670$) $\gg$ Tripwire ($\approx -0.010$) $>$ every remaining component (each $\approx 0.000$).
+\item **Synergy**: Three pairs tie for the strongest synergy at $\approx +0.050$ over the better singleton (consensus+sandbox, tripwire+consensus, tripwire+sandbox); this is not super-additivity or evidence of independence.
 \item **LLM validation underpowered**: $N=5$ per architecture yields very wide CIs (e.g., [0.28, 0.99] for Claude Code), necessitating expansion for reliable architecture-level conclusions.
-\item **Parametric reference**: Design-level parametric analysis (\cref{sec:parametric-analysis}) achieves 96--100\% detection, establishing the coverage ceiling for fully-realized adapter implementations.
+\item **Parametric reference**: Design-level parametric analysis (\cref{sec:parametric-analysis}) reports 96--100\% detection under its simulation model, not a measured target for the architecture-agnostic pipeline.
 \end{enumerate}

@@ -5,12 +5,11 @@ agents minimise variational free energy ``F = D_KL[Q || P] -
 E_Q[log P(o | s)]`` over their approximate posterior ``Q`` about
 hidden states ``s``.  We cast CIF defenses in this language:
 
-- An **attack** is any update that increases ``F`` beyond what the
-  agent's prior and likelihood can justify -- concretely
-  ``ΔF > κ_FEP`` for some threshold.
-- **Trust** in a message channel is the *precision* weight that the
-  agent places on evidence from that channel.  High trust = high
-  precision.
+- A threshold ``ΔF > κ_FEP`` is a configurable **attack heuristic**,
+  not a necessary-and-sufficient definition of every attack.
+- Trust weights may be interpreted as evidence precisions by modeling
+  convention; copying those weights does not prove that a trust score is
+  identical to an independently measured FEP precision.
 - **Belief sandboxing** is a constrained-inference step that refuses
   any update whose ``ΔF`` exceeds ``κ_FEP * prior.precision``.
 
@@ -393,9 +392,10 @@ def connect_to_trust_calculus(trust_config: Any) -> Dict[str, float]:
     """Map :class:`TrustConfig` weights to FEP precision values.
 
     The CIF trust calculus mixes three components with weights
-    ``alpha, beta, gamma`` that sum to 1.  In the FEP interpretation
-    each weight *is* a precision on its associated evidence channel,
-    and the composite trust *is* the total precision.
+    ``alpha, beta, gamma`` that sum to 1.  This function exposes the
+    modeling convention that interprets each weight as a precision on its
+    associated evidence channel.  It does not establish an isomorphism or
+    compare a trust score with an independently measured precision.
 
     Args:
         trust_config: Any object with ``alpha``, ``beta``, ``gamma``

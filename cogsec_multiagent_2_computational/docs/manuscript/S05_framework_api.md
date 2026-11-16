@@ -42,11 +42,11 @@ Table: Firewall module API: Classes for message classification and threat detect
 
 | Class | Description |
 | --- | --- |
-| \texttt{CognitiveFirewall} | Three-tier classifier (ACCEPT/QUARANTINE/REJECT) using dual thresholds, at their operational default $\tau_1 = 0.8$ (REJECT, hard-reject; inputs scoring above this are blocked outright) and operational default $\tau_2 = 0.5$ (QUARANTINE; inputs scoring in $(\tau_2, \tau_1]$ are sandboxed). Combines pattern matching, semantic analysis, and anomaly detection. |
-| \texttt{PatternDetector} | Heuristic pattern matching with 13 injection patterns and 7 suspicious indicators. Weighted scoring based on pattern severity. |
-| \texttt{SemanticSimilarityDetector} | Embedding-based similarity to known malicious patterns. Supports custom embedding models or hash-based fallback. |
-| \texttt{MultiStageClassifier} | Orchestrates multi-stage detection pipeline with configurable stage weights. |
-| \texttt{EnhancedCognitiveFirewall} | Extended firewall with provenance tracking and audit logging. |
+| \texttt{CognitiveFirewall} | Three-tier classifier (ACCEPT/QUARANTINE/REJECT) using dual thresholds, at their operational default $\tau_1 = 0.8$ (REJECT, hard-reject; inputs scoring above this are blocked outright) and operational default $\tau_2 = 0.5$ (QUARANTINE; inputs scoring in $(\tau_2, \tau_1]$ are sandboxed). Uses injection-pattern and suspicious-pattern scores plus message-length and structural heuristics. |
+| \texttt{PatternDetector} | Heuristic pattern matching with 13 injection patterns and 7 suspicious indicators. Weighted scoring based on pattern severity and local context. |
+| \texttt{SemanticSimilarityDetector} | TF-IDF embedding similarity to registered malicious patterns; an embedding-compatible custom model can be supplied. |
+| \texttt{MultiStageClassifier} | Orchestrates structural, pattern, and semantic stages with configurable stage weights. |
+| \texttt{EnhancedCognitiveFirewall} | Adds optional multi-stage semantic classification and detailed per-stage scores. It does not add provenance tracking or audit logging. |
 
 **Key Methods**:
 
@@ -63,8 +63,8 @@ Table: Consensus module API: Classes for Byzantine-tolerant multiagent decisions
 
 | Class | Description |
 | --- | --- |
-| \texttt{ByzantineConsensus} | Core consensus with $n \geq 3f + 1$ guarantee. Implements three-phase protocol: collect, echo, decide. |
-| \texttt{WeightedByzantineConsensus} | Trust-weighted voting where high-trust agents have greater influence. Prevents low-trust Sybil attacks. |
+| \texttt{ByzantineConsensus} | Single-round belief-vote aggregation with constructor enforcement of $n \geq 3f + 1$. It collects one belief value per agent and proposition, then applies acceptance, rejection, and quorum thresholds; it does not implement echo, signature, or multi-phase message protocols. |
+| \texttt{WeightedByzantineConsensus} | Trust-weighted voting where high-trust agents have greater influence in aggregation. |
 | \texttt{ConfidenceByzantineConsensus} | Votes weighted by agent confidence in their own belief. |
 | \texttt{CombinedByzantineConsensus} | Multiplies trust and confidence weights for robust aggregation. |
 | \texttt{QuorumVerification} | Action-level quorum gates for critical operations. Configurable approval thresholds. |
@@ -94,10 +94,10 @@ Table: Provenance module API: Classes for belief origin tracking and taint propa
 
 | Class | Description |
 | --- | --- |
-| \texttt{ProvenanceChain} | Linked list of provenance records tracking belief transformations. |
+| \texttt{ProvenanceChain} | Record store with parent IDs and transitive ancestry queries for belief transformations. |
 | \texttt{ProvenanceGraph} | DAG structure for complex multi-source belief provenance. Supports transitive queries. |
 | \texttt{TaintLabel} | Labels for marking untrusted information sources. Propagates through belief operations. |
-| \texttt{CausalAttribution} | Attributes beliefs to original evidence with contribution weights. |
+| \texttt{CausalAttribution} | Identifies the set of untrusted source belief IDs in a belief's ancestry; it does not compute numerical contribution weights. |
 
 ## Sandbox Module {#sec:sandbox-api}
 

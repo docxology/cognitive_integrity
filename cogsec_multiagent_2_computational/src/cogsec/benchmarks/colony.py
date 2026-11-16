@@ -28,7 +28,7 @@ import sys
 from pathlib import Path
 from typing import Any, Dict
 
-from cogsec.benchmarks import SCENARIOS, ColonyBenchmark
+from src.cogsec.benchmarks import SCENARIOS, ColonyBenchmark
 
 
 def load_config(path: Path) -> Dict[str, Any]:

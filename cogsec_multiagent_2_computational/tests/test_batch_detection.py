@@ -1,8 +1,9 @@
 """Tests for batch anomaly detection (S-Algorithm 4)."""
 
 import numpy as np
+import pytest
 
-from core.batch_detection import BatchDetector
+from src.core.batch_detection import BatchDetector
 
 
 class TestBatchDetector:
@@ -141,3 +142,47 @@ class TestBatchDetector:
         extractors = [lambda s: s["val"]]
         result = detector.analyze(history, feature_extractors=extractors)
         assert "thresholds" not in result
+
+
+class TestSuppliedBatchDetectors:
+    def test_score_detectors_are_used_and_averaged(self):
+        class ScoreDetector:
+            def __init__(self, scale):
+                self.scale = scale
+                self.calls = 0
+
+            def score(self, features):
+                self.calls += 1
+                return features[:, 0] * self.scale
+
+        first = ScoreDetector(2.0)
+        second = ScoreDetector(4.0)
+        detector = BatchDetector(detectors=[first, second])
+
+        result = detector.analyze(
+            [{"x": 1.0}, {"x": 2.0}], feature_extractors=[lambda s: s["x"]]
+        )
+
+        np.testing.assert_array_equal(result["scores"], [3.0, 6.0])
+        assert first.calls == second.calls == 1
+
+    def test_process_detector_is_used(self):
+        class ProcessDetector:
+            def process(self, features):
+                return features[:, 0] + 1.0
+
+        detector = BatchDetector(detectors=[ProcessDetector()])
+
+        scores = detector.batch_score(np.array([[1.0], [4.0]]))
+
+        np.testing.assert_array_equal(scores, [2.0, 5.0])
+
+    def test_detector_must_return_one_score_per_sample(self):
+        class InvalidDetector:
+            def score(self, features):
+                return 1.0
+
+        detector = BatchDetector(detectors=[InvalidDetector()])
+
+        with pytest.raises(ValueError, match="one score per sample"):
+            detector.batch_score(np.array([[1.0], [2.0]]))

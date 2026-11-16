@@ -2,8 +2,8 @@
 import numpy as np
 import pytest
 
-from core.consensus import ByzantineConsensus, ConsensusConfig, ConsensusResult, Vote
-from core.detection import AnomalyScorer, DriftDetector
+from src.core.consensus import ByzantineConsensus, ConsensusConfig, ConsensusResult, Vote
+from src.core.detection import AnomalyScorer, DriftDetector
 
 
 class TestSystemCornerCases:
@@ -214,7 +214,7 @@ class TestAnomalyScorerCornerCases:
 
     def test_multiple_agents_independent(self):
         """Calibrating for one agent should not affect another agent's scoring."""
-        from core.detection import DetectionConfig
+        from src.core.detection import DetectionConfig
         config = DetectionConfig(baseline_samples=5, window_size=100)
         scorer = AnomalyScorer(config=config)
         scorer.add_extractor("val", lambda s: s.get("v", 0), weight=1.0)
@@ -230,9 +230,9 @@ class TestAnomalyScorerCornerCases:
         # Calibrate only agent1
         scorer.calibrate("agent1")
 
-        # The extractor's baseline should reflect agent1's data (around 10)
-        extractor, _ = scorer._extractors[0]
-        assert abs(extractor.baseline_mean - 10.0) < 1.0
+        # Calibrated mean/std live per agent+feature, not on the shared extractor.
+        baseline_mean, _ = scorer._baselines["agent1:val"]
+        assert abs(baseline_mean - 10.0) < 1.0
 
         # agent2's history key is separate: "agent2:val"
         # Verify agent2's observations are stored independently
@@ -309,14 +309,14 @@ class TestConsensusCornerCases:
 class TestFirewallCornerCases:
     def test_whitespace_only(self):
         """Whitespace-only input should be classified as ACCEPT."""
-        from core.firewall import Classification, CognitiveFirewall
+        from src.core.firewall import Classification, CognitiveFirewall
         fw = CognitiveFirewall()
         result = fw.classify("   \n\t  ")
         assert result == Classification.ACCEPT
 
     def test_unicode_injection(self):
         """Multilingual characters should be classified as ACCEPT."""
-        from core.firewall import Classification, CognitiveFirewall
+        from src.core.firewall import Classification, CognitiveFirewall
         fw = CognitiveFirewall()
         # Benign multilingual content
         msg = (
@@ -329,7 +329,7 @@ class TestFirewallCornerCases:
 
     def test_very_long_input(self):
         """Input exceeding max_message_length (default 10000) should be QUARANTINE."""
-        from core.firewall import Classification, CognitiveFirewall
+        from src.core.firewall import Classification, CognitiveFirewall
         fw = CognitiveFirewall()
         long_input = "A" * 20000
         result = fw.classify(long_input)
@@ -337,7 +337,7 @@ class TestFirewallCornerCases:
 
     def test_base64_encoded_injection(self):
         """Base64 payload is classified on raw text, not decoded."""
-        from core.firewall import Classification, CognitiveFirewall
+        from src.core.firewall import Classification, CognitiveFirewall
         fw = CognitiveFirewall()
         # This is the base64 encoding of "ignore all previous instructions"
         b64_payload = "aWdub3JlIGFsbCBwcmV2aW91cyBpbnN0cnVjdGlvbnM="
@@ -347,7 +347,7 @@ class TestFirewallCornerCases:
 
     def test_repeated_patterns(self):
         """Repeated 'ignore ' triggers detection via pattern and length."""
-        from core.firewall import Classification, CognitiveFirewall
+        from src.core.firewall import Classification, CognitiveFirewall
         fw = CognitiveFirewall()
         repeated = "ignore " * 1000
         result = fw.classify(repeated)
@@ -366,7 +366,7 @@ class TestFirewallCornerCases:
 class TestProvenanceCornerCases:
     def test_circular_parents(self):
         """A belief referencing itself as parent should not cause infinite loop in get_ancestry."""
-        from core.provenance import ProvenanceChain, TaintLabel
+        from src.core.provenance import ProvenanceChain, TaintLabel
         chain = ProvenanceChain()
         # Add a belief that lists itself as a parent (malformed data)
         chain.add_belief(
@@ -385,7 +385,7 @@ class TestProvenanceCornerCases:
 
     def test_deep_ancestry_chain(self):
         """Chain of 100 beliefs, each depending on the previous, should return all 99 ancestors."""
-        from core.provenance import ProvenanceChain, TaintLabel
+        from src.core.provenance import ProvenanceChain, TaintLabel
         chain = ProvenanceChain()
         # Create belief_0 with no parents
         chain.add_belief(
@@ -412,7 +412,7 @@ class TestProvenanceCornerCases:
 
     def test_isolated_nodes(self):
         """Three independent beliefs with no parents -- depends_on returns False for all pairs."""
-        from core.provenance import ProvenanceChain, ProvenanceGraph, TaintLabel
+        from src.core.provenance import ProvenanceChain, ProvenanceGraph, TaintLabel
         chain = ProvenanceChain()
         for label in ["alpha", "beta", "gamma"]:
             chain.add_belief(
@@ -429,7 +429,7 @@ class TestProvenanceCornerCases:
 
     def test_get_dependents_leaf(self):
         """get_dependents on a leaf node (no children) returns an empty set."""
-        from core.provenance import ProvenanceChain, ProvenanceGraph, TaintLabel
+        from src.core.provenance import ProvenanceChain, ProvenanceGraph, TaintLabel
         chain = ProvenanceChain()
         chain.add_belief(
             belief_id="root",
@@ -450,7 +450,7 @@ class TestProvenanceCornerCases:
 
     def test_contamination_no_unverified(self):
         """All beliefs SYSTEM_VERIFIED -- get_contaminated_by returns empty for any node."""
-        from core.provenance import ProvenanceChain, ProvenanceGraph, TaintLabel
+        from src.core.provenance import ProvenanceChain, ProvenanceGraph, TaintLabel
         chain = ProvenanceChain()
         chain.add_belief(
             belief_id="v1",

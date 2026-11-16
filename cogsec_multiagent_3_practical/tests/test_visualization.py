@@ -8,6 +8,7 @@ All tests use real data - no mocks.
 import pytest
 from matplotlib import pyplot as plt
 
+from src.pitfalls import PitfallCatalog
 from src.visualization import (
     DeploymentPhase,
     FigureData,
@@ -137,35 +138,43 @@ class TestFivePillarsData:
     def test_custom_scores(self) -> None:
         """Test with custom pillar scores."""
         data = get_five_pillars_data(
-            firewall_score=0.9,
-            sandbox_score=0.8,
-            tripwire_score=0.7,
-            invariant_score=0.6,
-            provenance_score=0.5,
+            trust_boundary_score=0.9,
+            belief_provenance_score=0.8,
+            delegation_hygiene_score=0.7,
+            coordination_integrity_score=0.6,
+            continuous_monitoring_score=0.5,
         )
         assert data.data["values"] == [0.9, 0.8, 0.7, 0.6, 0.5]
         assert data.metadata["overall_score"] == pytest.approx(0.7)  # (0.9+0.8+0.7+0.6+0.5)/5
-        assert "Provenance" in data.metadata["weakest_pillar"]
-        assert "Firewall" in data.metadata["strongest_pillar"]
+        assert "Monitoring" in data.metadata["weakest_pillar"]
+        assert "Trust Boundary" in data.metadata["strongest_pillar"]
+        assert data.metadata["taxonomy"] == "operator_posture"
+        assert data.data["pillars"] == [
+            "Trust Boundary\nAwareness",
+            "Belief\nProvenance",
+            "Delegation\nHygiene",
+            "Coordination\nIntegrity",
+            "Continuous\nMonitoring",
+        ]
 
     def test_invalid_score_below_zero(self) -> None:
         """Test that negative scores raise ValueError."""
         with pytest.raises(ValueError, match="must be between 0 and 1"):
-            get_five_pillars_data(firewall_score=-0.1)
+            get_five_pillars_data(trust_boundary_score=-0.1)
 
     def test_invalid_score_above_one(self) -> None:
         """Test that scores above 1 raise ValueError."""
         with pytest.raises(ValueError, match="must be between 0 and 1"):
-            get_five_pillars_data(sandbox_score=1.5)
+            get_five_pillars_data(belief_provenance_score=1.5)
 
     def test_boundary_scores(self) -> None:
         """Test boundary values 0 and 1."""
         data = get_five_pillars_data(
-            firewall_score=0.0,
-            sandbox_score=1.0,
-            tripwire_score=0.0,
-            invariant_score=1.0,
-            provenance_score=0.0,
+            trust_boundary_score=0.0,
+            belief_provenance_score=1.0,
+            delegation_hygiene_score=0.0,
+            coordination_integrity_score=1.0,
+            continuous_monitoring_score=0.0,
         )
         assert data.data["values"] == [0.0, 1.0, 0.0, 1.0, 0.0]
 
@@ -185,14 +194,14 @@ class TestRenderPostureRadar:
 
     def test_render_creates_figure(self) -> None:
         """Test that render creates a matplotlib figure."""
-        data = get_five_pillars_data(firewall_score=0.5)
+        data = get_five_pillars_data(trust_boundary_score=0.5)
         fig = render_posture_radar(data)
         assert isinstance(fig, plt.Figure)
         plt.close(fig)  # type: ignore[arg-type]
 
     def test_render_with_provided_axes(self) -> None:
         """Test rendering onto provided axes."""
-        data = get_five_pillars_data(firewall_score=0.7)
+        data = get_five_pillars_data(trust_boundary_score=0.7)
         fig, ax = plt.subplots(subplot_kw=dict(projection="polar"))
         result = render_posture_radar(data, ax=ax)
         assert result is fig
@@ -201,11 +210,11 @@ class TestRenderPostureRadar:
     def test_render_all_scores_high(self) -> None:
         """Test rendering with all high scores."""
         data = get_five_pillars_data(
-            firewall_score=0.95,
-            sandbox_score=0.90,
-            tripwire_score=0.85,
-            invariant_score=0.92,
-            provenance_score=0.88,
+            trust_boundary_score=0.95,
+            belief_provenance_score=0.90,
+            delegation_hygiene_score=0.85,
+            coordination_integrity_score=0.92,
+            continuous_monitoring_score=0.88,
         )
         fig = render_posture_radar(data)
         # Data line + 4 threshold fills + 1 data fill (Polygon patches) (M5).
@@ -337,6 +346,12 @@ class TestRenderRiskMatrix:
         assert len(ax.images) == 1
         assert len(ax.lines) == len(custom_risks)
         assert len(ax.texts) == len(custom_risks)
+        image = ax.images[0]
+        low_color = image.get_cmap()(image.norm(1))
+        high_color = image.get_cmap()(image.norm(5))
+        # Low cells are yellow (more green/blue); high cells are red.
+        assert low_color[1] > high_color[1]
+        assert low_color[2] > high_color[2]
         plt.close(fig)  # type: ignore[arg-type]
 
     def test_render_with_provided_axes(self) -> None:
@@ -449,12 +464,20 @@ class TestRenderTrustDecay:
 class TestPitfallsData:
     """Tests for get_pitfalls_data."""
 
-    def test_pitfalls_structure(self) -> None:
-        """Test that pitfalls have correct structure."""
+    def test_pitfalls_match_authoritative_catalog(self) -> None:
+        """Every displayed field is projected from PitfallCatalog."""
         data = get_pitfalls_data()
         assert data.figure_type == FigureType.BAR
-        assert "pitfalls" in data.data
-        assert len(data.data["pitfalls"]) == 8
+        assert data.metadata["source"] == "pitfalls.PitfallCatalog"
+        displayed = [
+            (p.name, p.severity, p.description, p.category)
+            for p in data.data["pitfalls"]
+        ]
+        catalogued = [
+            (p.name, p.severity, p.pattern, p.category.value)
+            for p in PitfallCatalog().pitfalls
+        ]
+        assert displayed == catalogued
 
     def test_pitfall_severities_valid(self) -> None:
         """Test that all pitfall severities are in valid range."""
@@ -591,11 +614,11 @@ class TestIntegration:
     def test_full_workflow_posture_radar(self) -> None:
         """Test complete workflow for posture radar."""
         data = get_five_pillars_data(
-            firewall_score=0.85,
-            sandbox_score=0.70,
-            tripwire_score=0.60,
-            invariant_score=0.90,
-            provenance_score=0.55,
+            trust_boundary_score=0.85,
+            belief_provenance_score=0.70,
+            delegation_hygiene_score=0.60,
+            coordination_integrity_score=0.90,
+            continuous_monitoring_score=0.55,
         )
         fig = render_posture_radar(data)
 
@@ -652,11 +675,11 @@ class TestRenderArtistAssertions:
 
     def test_posture_radar_draws_thresholds_and_data(self) -> None:
         data = get_five_pillars_data(
-            firewall_score=0.8,
-            sandbox_score=0.6,
-            tripwire_score=0.7,
-            invariant_score=0.5,
-            provenance_score=0.9,
+            trust_boundary_score=0.8,
+            belief_provenance_score=0.6,
+            delegation_hygiene_score=0.7,
+            coordination_integrity_score=0.5,
+            continuous_monitoring_score=0.9,
         )
         fig = render_posture_radar(data)
         ax = fig.axes[0]

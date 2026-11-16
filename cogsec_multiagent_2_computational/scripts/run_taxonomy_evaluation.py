@@ -55,12 +55,12 @@ from typing import Iterable, Sequence
 import numpy as np
 
 REPO = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(REPO / "src"))
+sys.path.insert(0, str(REPO))
 
-from ablation.runner import COMPONENT_TO_MODULE  # noqa: E402
-from attacks.corpus import AttackCorpus  # noqa: E402
-from composition.factory import create_pipeline_without  # noqa: E402
-from evaluation.benign_corpus import BenignCorpus  # noqa: E402
+from src.ablation.runner import COMPONENT_TO_MODULE  # noqa: E402
+from src.attacks.corpus import AttackCorpus  # noqa: E402
+from src.composition.factory import create_pipeline_without  # noqa: E402
+from src.evaluation.benign_corpus import BenignCorpus  # noqa: E402
 
 #: The negative arm. Deliberately NOT ablation.runner.BENIGN_MESSAGES, which is
 #: 50 plainly-innocuous strings: measured against those, false-positive rates
@@ -250,7 +250,7 @@ def per_module_calibration(samples: Sequence[object], seed: int) -> dict[str, ob
     below an upper bound rather than an estimate, which is precisely the error
     the parametric tables already make.
     """
-    from composition.factory import MODULE_REGISTRY
+    from src.composition.factory import MODULE_REGISTRY
 
     rng = np.random.default_rng(seed)
     order = rng.permutation(len(samples))
@@ -389,7 +389,7 @@ def build(seed: int, mode: str, *, extended: bool = True) -> dict[str, object]:
             "deterministic": True,
         },
         "note": (
-            "Every cell is a real pipeline evaluation of the full 950-item corpus. "
+            f"Every cell is a real pipeline evaluation of the full {len(corpus)}-item corpus. "
             "No value here is calibrated, interpolated or modelled."
         ),
         "seed": seed,

@@ -549,13 +549,13 @@ class TestAttackSurfaceMapper:
         assert mapper.get_immediate_priorities() == []
 
     def test_evaluate_empty_mapper(self):
-        """Evaluate with no scenarios returns passing result."""
+        """An unassessed attack surface fails closed rather than reporting perfection."""
         mapper = AttackSurfaceMapper()
         result = mapper.evaluate()
         assert isinstance(result, AssessmentResult)
-        assert result.passed is True
-        assert result.score == 1.0
-        assert result.risk_level == RiskLevel.LOW
+        assert result.passed is False
+        assert result.score == 0.0
+        assert result.risk_level == RiskLevel.CRITICAL
         assert len(result.findings) == 1
         assert "No threat scenarios" in result.findings[0]
 
@@ -592,6 +592,21 @@ class TestAttackSurfaceMapper:
         assert result.risk_level == RiskLevel.CRITICAL
         assert result.score == 0.0  # 1.0 - 16/16 = 0.0
         assert any("IMMEDIATE" in r for r in result.recommendations)
+
+    def test_evaluate_critical_near_term_risk_fails(self):
+        """Critical exposure fails even when its priority is not IMMEDIATE."""
+        mapper = AttackSurfaceMapper()
+        mapper.add_threat_scenario(
+            ThreatScenario(
+                name="Critical near-term threat",
+                description="Critical aggregate risk requiring near-term mitigation",
+                impact_level=ImpactLevel.HIGH,
+                likelihood_level=LikelihoodLevel.VERY_HIGH,
+            )
+        )
+        result = mapper.evaluate()
+        assert result.risk_level == RiskLevel.CRITICAL
+        assert result.passed is False
 
     def test_evaluate_medium_risk(self):
         """Evaluate assigns MEDIUM risk for moderate scores."""

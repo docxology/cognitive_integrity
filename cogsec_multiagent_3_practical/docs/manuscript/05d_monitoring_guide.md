@@ -24,13 +24,13 @@ Firewall rejection rate & \% of inputs with score $> \tau_1$ & $>5\%$ & $>20\%$ 
 Trust matrix mean & Average pairwise trust & $<0.4$ & $<0.25$ & $\mathrm{mean}(T)$ & Per batch \\
 Belief drift score & Per-agent $D_{\mathrm{KL}}$ from baseline & $>0.15$ & $>0.30$ & DriftDetector output & Per round \\
 Colony entropy & Diversity of agent interaction patterns & $<2.0$ bits & $<1.0$ bits & $H$(interaction frequency) & Hourly \\
-False positive rate & \% of reviewed alerts confirmed clean & $>10\%$ & $>20\%$ & Manual review queue & Daily \\
+Alert false discovery proportion & \% of reviewed alerts confirmed clean & $>10\%$ & $>20\%$ & Manual review queue & Daily \\
 Consensus latency (p95) & 95th pct consensus decision time & $>2.0$s & $>4.2$s & Timing log & Per round \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-Each metric targets a specific failure mode: rejection rate catches attack waves, trust mean catches silent degradation, drift score catches per-agent compromise, colony entropy catches coordination attacks, FPR catches calibration drift, and consensus latency catches scaling issues.
+Each metric targets a specific failure mode: rejection rate catches attack waves, trust mean catches silent degradation, drift score catches per-agent compromise, colony entropy catches coordination attacks, alert false discovery proportion catches review-queue calibration drift, and consensus latency catches scaling issues. The review-queue proportion is $\mathrm{FP}/(\mathrm{TP}+\mathrm{FP})$ among reviewed alerts. It is **not** the false positive rate, $\mathrm{FPR}=\mathrm{FP}/(\mathrm{FP}+\mathrm{TN})$ over all benign inputs; the 10%/20% review thresholds therefore must not be compared directly with Part 2's measured 18.5\% FPR (30 seeds, 120 benign messages per seed). Measure FPR separately with a benign denominator.
 
 ## Alert Escalation
 

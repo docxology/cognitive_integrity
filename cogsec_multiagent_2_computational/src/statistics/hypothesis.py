@@ -3,8 +3,8 @@
 Provides statistical tests for the three core claims of the Cognitive
 Integrity Framework evaluation:
 
-- **H1**: CIF detection rate exceeds baseline (paired t-test, one-sided).
-- **H2**: CIF outperforms each individual component (Bonferroni-corrected).
+- **H1**: CIF detection rate exceeds baseline (Welch t-test, one-sided).
+- **H2**: CIF outperforms each component-removal arm (Bonferroni-corrected).
 - **H3**: CIF maintains superiority per architecture (6 architectures).
 
 All tests use ``scipy.stats`` under the hood and return structured
@@ -34,7 +34,7 @@ class HypothesisResult:
         significant: Whether *p_value* < *alpha* (after any correction).
         alpha: Significance threshold used.
         description: Plain-English description of what was tested.
-        method: Name of the statistical method (e.g. ``'paired t-test'``).
+        method: Name of the statistical method (e.g. ``'Welch t-test'``).
     """
 
     name: str
@@ -83,6 +83,20 @@ def paired_ttest(
     return float(result.statistic), float(result.pvalue)
 
 
+def welch_ttest(
+    x: np.ndarray,
+    y: np.ndarray,
+    alternative: str = "greater",
+) -> Tuple[float, float]:
+    """One-sided independent-samples Welch t-test for unpaired inputs."""
+    x = np.asarray(x, dtype=np.float64).ravel()
+    y = np.asarray(y, dtype=np.float64).ravel()
+    if x.size < 2 or y.size < 2:
+        raise ValueError("Need at least 2 independent observations per group")
+    result = stats.ttest_ind(x, y, equal_var=False, alternative=alternative)
+    return float(result.statistic), float(result.pvalue)
+
+
 def bonferroni_correct(
     p_values: List[float],
     alpha: float = 0.05,
@@ -117,7 +131,7 @@ def test_h1_cif_vs_baseline(
 ) -> HypothesisResult:
     """H1 -- CIF detection rate exceeds baseline.
 
-    Uses a one-sided paired t-test (CIF > baseline).
+    Uses a one-sided Welch t-test (CIF > baseline).
 
     Args:
         cif_scores: Per-run detection rates for the full CIF pipeline.
@@ -127,7 +141,7 @@ def test_h1_cif_vs_baseline(
     Returns:
         :class:`HypothesisResult` summarising the test.
     """
-    t_stat, p_val = paired_ttest(
+    t_stat, p_val = welch_ttest(
         np.asarray(cif_scores, dtype=np.float64),
         np.asarray(baseline_scores, dtype=np.float64),
         alternative="greater",
@@ -141,14 +155,14 @@ def test_h1_cif_vs_baseline(
         alpha=alpha,
         description=(
             "CIF detection rate is significantly greater than "
-            "baseline detection rate (one-sided paired t-test)."
+            "baseline detection rate (one-sided Welch t-test)."
         ),
-        method="paired t-test (one-sided, greater)",
+        method="Welch t-test (one-sided, greater)",
     )
 
 
 # ---------------------------------------------------------------------------
-# H2: CIF vs. each individual component
+# H2: CIF vs. each single-component-removal arm
 # ---------------------------------------------------------------------------
 
 def test_h2_cif_vs_components(
@@ -156,15 +170,16 @@ def test_h2_cif_vs_components(
     component_scores_dict: Dict[str, np.ndarray],
     alpha: float = 0.001,
 ) -> List[HypothesisResult]:
-    """H2 -- CIF outperforms each individual defense component.
+    """H2 -- CIF outperforms each single-component-removal arm.
 
-    Runs a paired t-test for every component and applies Bonferroni
-    correction across all comparisons.
+    Runs an independent Welch t-test for every removal arm and applies
+    Bonferroni correction across all comparisons.  These are not singleton-
+    component measurements, and inputs must not be described as paired runs.
 
     Args:
         cif_scores: Per-run detection rates for the full CIF pipeline.
-        component_scores_dict: Mapping of component name to per-run
-            detection rates.
+        component_scores_dict: Mapping of removed-component name to analysis
+            inputs for the corresponding pipeline-removal arm.
         alpha: Family-wise significance threshold.
 
     Returns:
@@ -179,7 +194,7 @@ def test_h2_cif_vs_components(
 
     for name in names:
         comp = np.asarray(component_scores_dict[name], dtype=np.float64)
-        t, p = paired_ttest(cif, comp, alternative="greater")
+        t, p = welch_ttest(cif, comp, alternative="greater")
         t_stats.append(t)
         raw_p_values.append(p)
 
@@ -196,10 +211,10 @@ def test_h2_cif_vs_components(
                 significant=significant_flags[i],
                 alpha=corrected_alpha,
                 description=(
-                    f"CIF detection rate > {name} component "
+                    f"CIF detection rate > pipeline with {name} removed "
                     f"(Bonferroni-corrected, m={m})."
                 ),
-                method="paired t-test (one-sided, Bonferroni-corrected)",
+                method="Welch t-test (one-sided, Bonferroni-corrected)",
             )
         )
 
@@ -243,9 +258,9 @@ def test_h3_per_architecture(
         cif_arr = np.asarray(cif, dtype=np.float64)
         base_arr = np.asarray(baseline, dtype=np.float64)
 
-        t_stat, p_val = paired_ttest(cif_arr, base_arr, alternative="greater")
+        t_stat, p_val = welch_ttest(cif_arr, base_arr, alternative="greater")
 
-        # Degenerate-operating-point guard (P2-18): a paired t-test on a
+        # Degenerate-operating-point guard (P2-18): a Welch t-test on a
         # constant series (e.g. every cell at rate 1.0) yields a meaningless
         # tiny p-value.  Surface it explicitly instead of reporting it as
         # evidence of superiority; the numeric p is preserved for the
@@ -253,11 +268,11 @@ def test_h3_per_architecture(
         degenerate = _is_degenerate(cif_arr, base_arr)
         desc = (
             f"CIF detection rate > baseline for architecture "
-            f"'{arch_name}' (one-sided paired t-test)."
+            f"'{arch_name}' (one-sided Welch t-test)."
         )
         if degenerate:
             desc += (" DEGENERATE OPERATING POINT: one or both input series "
-                     "is constant (zero variance); the paired t-test is not "
+                     "is constant (zero variance); the Welch t-test is not "
                      "meaningful here and this row is not treated as evidence.")
 
         results.append(
@@ -268,7 +283,7 @@ def test_h3_per_architecture(
                 significant=False if degenerate else (p_val < alpha),
                 alpha=alpha,
                 description=desc,
-                method="paired t-test (one-sided, per-architecture)",
+                method="Welch t-test (one-sided, per-architecture)",
             )
         )
 

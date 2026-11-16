@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 
 def _load_distributions() -> Dict[str, np.ndarray]:
     """Load per-architecture detection scores from full_evaluation_results.json."""
-    from data.result_loaders import load_full_evaluation
+    from src.data.result_loaders import load_full_evaluation
     rows = load_full_evaluation()
     arch_scores: Dict[str, list] = {}
     for r in rows:

@@ -11,9 +11,9 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "src"))
+sys.path.insert(0, str(ROOT))
 
-from manuscript.latex_converter import convert_file
+from src.manuscript.latex_converter import convert_file
 
 
 def main():

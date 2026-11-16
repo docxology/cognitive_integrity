@@ -31,7 +31,7 @@ from pathlib import Path
 from typing import Callable, Optional, Sequence
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "src"))
+sys.path.insert(0, str(ROOT))
 
 # Force headless backend
 os.environ.setdefault("MPLBACKEND", "Agg")
@@ -54,7 +54,7 @@ def default_figures() -> list[tuple[str, Callable[..., object]]]:
     study. Each fails closed if its artifact is absent, so a figure here is
     either drawn from a measurement or not drawn at all.
     """
-    from visualization.figures import (
+    from src.visualization.figures import (
         ablation_study,
         attack_surface,
         cif_comprehensive,
@@ -154,7 +154,7 @@ def main(
 
     matplotlib.rcParams["svg.hashsalt"] = SVG_HASHSALT
 
-    from visualization.reproducibility import RenderTrace
+    from src.visualization.reproducibility import RenderTrace
 
     trace = RenderTrace(ROOT) if args.provenance else None
     items = list(figures) if figures is not None else default_figures()

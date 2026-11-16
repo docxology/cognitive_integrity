@@ -21,17 +21,15 @@ from src.visualization import (
 
 def main() -> None:
     """Generate posture radar figure."""
-    # A worked example of the src/posture.py questionnaire, not an assessment
-    # of any system. There is no assessed deployment behind these five scores;
-    # they exist to show what the radar looks like when the questionnaire is
-    # filled in. The title says so, because a radar chart of five two-decimal
-    # scores reads as a measurement of something otherwise.
+    # A worked example of the src/posture.py operator questionnaire, not an
+    # assessment of any system. The five values below are answers on the
+    # questionnaire's actual readiness pillars, not defense-mechanism scores.
     data = get_five_pillars_data(
-        firewall_score=0.85,  # Strong input filtering
-        sandbox_score=0.70,  # Moderate belief isolation
-        tripwire_score=0.60,  # Basic identity verification
-        invariant_score=0.90,  # Robust behavioral constraints
-        provenance_score=0.55,  # Limited tracking
+        trust_boundary_score=0.85,
+        belief_provenance_score=0.70,
+        delegation_hygiene_score=0.60,
+        coordination_integrity_score=0.90,
+        continuous_monitoring_score=0.55,
     )
 
     # Render figure

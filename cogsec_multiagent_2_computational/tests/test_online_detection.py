@@ -3,7 +3,7 @@
 import numpy as np
 import pytest
 
-from core.online_detection import CircularBuffer, OnlineDetector, OnlineStatistics
+from src.core.online_detection import CircularBuffer, OnlineDetector, OnlineStatistics
 
 
 class TestCircularBuffer:

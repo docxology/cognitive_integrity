@@ -136,7 +136,9 @@ class BeliefCascadeScenario:
 
         # Pick adversary positions: highest-degree nodes
         degrees = adj.sum(axis=1)
-        adv_indices = set(np.argsort(degrees)[-n_adv:].tolist())
+        adv_indices = (
+            set(np.argsort(degrees)[-n_adv:].tolist()) if n_adv > 0 else set()
+        )
         honest_indices = set(range(n)) - adv_indices
 
         # Ground truth and adversary target beliefs

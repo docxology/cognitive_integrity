@@ -1,10 +1,11 @@
 """Statistical analysis orchestrator.
 
-Loads real data, runs hypothesis tests, and produces serialisable results.
+Loads evaluation data, runs disclosed simulation/design calculations, and
+produces serialisable results with explicit input provenance.
 
 Fail-closed contract
 --------------------
-``load_real_data`` derives component scores from the measured ablation file
+``load_real_data`` derives component-removal arms from the ablation file
 and from nothing else. A missing file, a malformed payload, or a row that has
 lost a key it depends on raises :class:`AblationDataUnavailableError`. It used
 to fall back to a table of hand-written per-component means, which meant a
@@ -36,8 +37,8 @@ class AblationDataUnavailableError(RuntimeError):
     """
 
 
-def _component_means_from_ablation(ablation_path: Path | None) -> dict[str, float]:
-    """Read per-component TPRs out of the ablation results file.
+def _removal_means_from_ablation(ablation_path: Path | None) -> dict[str, float]:
+    """Read full-pipeline TPRs with each named component removed.
 
     Raises
     ------
@@ -145,7 +146,7 @@ def load_real_data(
     *,
     simulated_control: bool = True,
 ) -> dict[str, Any]:
-    """Load real evaluation data and build analysis inputs.
+    """Load evaluation data and build explicitly simulated analysis inputs.
 
     Parameters
     ----------
@@ -160,7 +161,8 @@ def load_real_data(
     Returns
     -------
     dict
-        Keys: cif_scores, baseline_scores, component_scores, arch_scores.
+        Keys: cif_scores, baseline_scores, component_scores, arch_scores, and
+        data_origin.
 
     Raises
     ------
@@ -169,23 +171,25 @@ def load_real_data(
 
     Warning
     -------
-    ``cif_scores`` and ``arch_scores`` are measured. ``baseline_scores`` are
-    **not** — they are drawn from ``N(0.03, 0.02)`` because the evaluation
-    never ran an undefended control arm. ``component_scores`` are measured
-    per-component TPRs widened by ``N(0, 0.02)`` noise to give the hypothesis
-    tests a distribution to work with; they are not repeated measurements.
-    Any effect size computed against ``baseline_scores`` (notably
-    ``cohens_d_cif_vs_baseline``) is therefore a statement about a simulated
-    control, not an observed one, and must be labelled that way downstream.
+    ``cif_scores`` and ``arch_scores`` inherit the input artifact's provenance
+    (currently parametric simulation, not measured runs). ``baseline_scores``
+    are drawn independently from ``N(0.03, 0.02)`` because no undefended
+    control arm exists. The legacy ``component_scores`` key contains TPRs for
+    the pipeline with each component *removed*, widened by independent
+    ``N(0, 0.02)`` jitter; these are neither singleton-component measurements
+    nor repeated observations. All resulting p-values are simulation/design
+    calculations, not evidence from a paired or repeated-trial experiment.
     """
-    from data.result_loaders import load_full_evaluation
+    from src.data.generate import classify_provenance
+    from src.data.result_loaders import load_full_evaluation
 
+    data_origin = classify_provenance(eval_path)
     rows = load_full_evaluation(str(eval_path))
     arch_rates: dict[str, list[float]] = {}
     for r in rows:
         arch_rates.setdefault(r.architecture, []).append(r.detection_rate)
     cif_scores = np.concatenate(list(arch_rates.values()))
-    logger.info("Loaded real evaluation data from %s", eval_path)
+    logger.info("Loaded evaluation data from %s (origin=%s)", eval_path, data_origin)
 
     n = len(cif_scores)
     if not simulated_control:
@@ -200,14 +204,14 @@ def load_real_data(
         )
     baseline_scores = rng.normal(0.03, 0.02, size=n).clip(0.0, 0.10)
 
-    # Component scores from ablation. No fallback: an unreadable file or a
+    # Removal-arm scores from ablation. No fallback: an unreadable file or a
     # renamed key must stop the run, not quietly become invented means.
-    component_means = _component_means_from_ablation(ablation_path)
+    removal_means = _removal_means_from_ablation(ablation_path)
     component_scores: dict[str, np.ndarray] = {
-        comp: rng.normal(tpr, 0.02, size=n).clip(0.0, 1.0) for comp, tpr in component_means.items()
+        comp: rng.normal(tpr, 0.02, size=n).clip(0.0, 1.0) for comp, tpr in removal_means.items()
     }
     logger.info(
-        "Loaded component scores from ablation data (%d components) at %s",
+        "Loaded component-removal arm TPRs (%d arms) at %s",
         len(component_scores),
         ablation_path,
     )
@@ -229,6 +233,7 @@ def load_real_data(
         "baseline_scores": baseline_scores,
         "component_scores": component_scores,
         "arch_scores": arch_scores,
+        "data_origin": data_origin,
     }
 
 
@@ -275,8 +280,11 @@ def run_full_analysis(
     h2_results = test_h2_cif_vs_components(cif, data["component_scores"])
 
     # H3
+    # Welch tests use independent groups.  Reuse the complete disclosed
+    # simulated control for each architecture rather than slicing the same
+    # few draws into differently labelled pseudo-pairs.
     arch_h3_data = {
-        name: (scores, baseline[: len(scores)]) for name, scores in data["arch_scores"].items()
+        name: (scores, baseline) for name, scores in data["arch_scores"].items()
     }
     h3_results = test_h3_per_architecture(arch_h3_data)
 
@@ -309,9 +317,19 @@ def run_full_analysis(
             for ar in assumption_results
         ],
         "assumptions_met": assumptions_met,
+        "data_origin": data.get("data_origin", "unknown"),
+        "analysis_mode": "simulated independent-group design calculation",
         "provenance": {
+            "cif_scores": data.get("data_origin", "unknown"),
             "baseline_scores": "simulated N(0.03, 0.02): no observed control arm ran",
             "cohens_d_cif_vs_baseline": "vs. simulated control, not observed",
-            "component_scores": "measured per-component TPR + N(0, 0.02) noise",
+            "component_scores": (
+                "component-removal arm TPR + N(0, 0.02) synthetic jitter; "
+                "not singleton arms or repeated measurements"
+            ),
+            "hypothesis_tests": (
+                "independent Welch tests over aggregate rates and simulated/"
+                "jittered inputs; not paired or repeated-trial evidence"
+            ),
         },
     }

@@ -182,6 +182,8 @@ class CognitiveTripwire:
                 canary=canary, actual_belief=actual_belief, drift=drift
             )
             self._alerts.append(alert)
+            for handler in self._alert_handlers:
+                handler(alert)
             return alert
 
         return None

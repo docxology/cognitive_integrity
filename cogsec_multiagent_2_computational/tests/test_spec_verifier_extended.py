@@ -29,7 +29,7 @@ from pathlib import Path
 
 import pytest
 
-from formal.spec_verifier import (
+from src.formal.spec_verifier import (
     VerificationStatus,
     generate_and_verify_all,
     verify_nusmv,
@@ -53,6 +53,7 @@ def make_spec(tmp_path: Path, name: str, content: str = "spec\n") -> Path:
     spec_dir.mkdir(parents=True, exist_ok=True)
     spec = spec_dir / name
     spec.write_text(content)
+    spec.with_suffix(".cfg").write_text("CONSTANTS\n  N = 4\n")
     return spec
 
 

@@ -173,6 +173,23 @@ def test_formatting_preserves_the_shape_already_written(stated, value, expected)
     assert injector.format_like(stated, value) == expected
 
 
+@pytest.mark.parametrize(
+    "stated, value, tolerance, expected",
+    [
+        ("44.8", 44.84, 0.001, "44.84"),
+        ("96", 95.5, 0.001, "95.5"),
+        ("five", 5.5, 0.001, "5.5"),
+    ],
+)
+def test_formatting_adds_precision_until_the_value_meets_tolerance(
+    stated, value, tolerance, expected
+):
+    _, injector = _load()
+    rendered = injector.format_like(stated, value, tolerance)
+    assert rendered == expected
+    assert abs(injector.to_number(rendered) - value) <= tolerance
+
+
 def test_the_injector_and_the_gate_share_one_definition_of_where_numbers_live():
     """Two mechanisms with separate site tables is the defect they exist to catch."""
     _, injector = _load()
@@ -235,6 +252,17 @@ class TestTheRewriteTouchesOnlyTheMatchedSpan:
         ]
         assert apply_changes(changes) == 2
         assert "10--11 percentage-point gap" in path.read_text(encoding="utf-8")
+
+    def test_a_byte_identical_replacement_is_not_counted_as_a_write(self, tmp_path):
+        from inject_series_values import Change, apply_changes
+
+        path = tmp_path / "prose.md"
+        original = "The measured mean was 44.8\\%.\n"
+        path.write_text(original, encoding="utf-8")
+        start = path.read_text(encoding="utf-8").index("44.8")
+        change = Change(path, 1, "mean", "44.8", "44.8", start, start + 4)
+        assert apply_changes([change]) == 0
+        assert path.read_text(encoding="utf-8") == original
 
     def test_a_change_with_no_recorded_span_is_refused(self, tmp_path):
         """Fail closed: guessing where to write is what caused the corruption."""

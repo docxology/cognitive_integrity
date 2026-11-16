@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any, Callable, Dict, Generic, List, TypeVar, Union
 
-from formal.category_theory import (
+from src.formal.category_theory import (
     CognitiveState,
     DefenseResult,
 )
@@ -199,7 +199,7 @@ class DefenseProfunctor:
             v = lens.get(state)
             # GetPut
             restored = lens.set(state, v)
-            if abs(restored.get(lens.focus, 0.0) - state.get(lens.focus, 0.0)) > tol:
+            if restored != state:
                 get_put_ok = False
 
             # PutGet
@@ -212,9 +212,7 @@ class DefenseProfunctor:
             v1, v2 = 0.3, 0.7
             s_after_two = lens.set(lens.set(state, v1), v2)
             s_after_one = lens.set(state, v2)
-            if abs(
-                s_after_two.get(lens.focus, 0.0) - s_after_one.get(lens.focus, 0.0)
-            ) > tol:
+            if s_after_two != s_after_one:
                 put_put_ok = False
 
         return {

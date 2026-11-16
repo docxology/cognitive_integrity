@@ -12,9 +12,9 @@ No mocks.
 import numpy as np
 import pytest
 
-from ablation.component_removal import AblationResult, ComponentRemovalStudy
-from ablation.minimal_config import MinimalConfigResult, MinimalConfigSearch
-from ablation.synergy import PairwiseSynergyAnalysis, SynergyResult
+from src.ablation.component_removal import AblationResult, ComponentRemovalStudy
+from src.ablation.minimal_config import MinimalConfigResult, MinimalConfigSearch
+from src.ablation.synergy import PairwiseSynergyAnalysis, SynergyResult
 
 # ---------------------------------------------------------------------------
 # Shared test evaluation functions (real computation, no mocks)

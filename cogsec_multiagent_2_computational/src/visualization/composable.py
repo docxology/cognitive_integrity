@@ -19,7 +19,9 @@ import logging
 from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional, Tuple
 
-from composition.algebra import compute_parallel_detection_rate, compute_series_detection_rate
+from src.composition.algebra import compute_parallel_detection_rate, compute_series_detection_rate
+
+from .composer_data import get_module_registry
 
 # Optional graphviz import — graceful degradation
 try:
@@ -82,55 +84,18 @@ logger = logging.getLogger(__name__)
 # Module metadata (matches the 8 CIF defense modules)
 # ---------------------------------------------------------------------------
 
+#: Static module descriptions hydrated with the measured solo capability used
+#: by the composer backend.  Keeping a second detection-rate ladder here made
+#: these diagrams disagree with the artifact and with ``composer_data.py``.
 MODULE_META: Dict[str, Dict[str, Any]] = {
-    "Firewall": {
-        "omega_class": "Injection",
-        "detection_rate": 0.91,
-        "color": "#e74c3c",
-        "type_annotation": "CognitiveState → DefenseResult",
-    },
-    "Detection": {
-        "omega_class": "Steganographic",
-        "detection_rate": 0.88,
-        "color": "#e67e22",
-        "type_annotation": "CognitiveState → DefenseResult",
-    },
-    "Tripwire": {
-        "omega_class": "Sleeper",
-        "detection_rate": 0.85,
-        "color": "#f39c12",
-        "type_annotation": "CognitiveState → DefenseResult",
-    },
-    "TrustCalc": {
-        "omega_class": "Social",
-        "detection_rate": 0.82,
-        "color": "#27ae60",
-        "type_annotation": "CognitiveState → DefenseResult",
-    },
-    "Consensus": {
-        "omega_class": "Byzantine",
-        "detection_rate": 0.79,
-        "color": "#2980b9",
-        "type_annotation": "CognitiveState → DefenseResult",
-    },
-    "Provenance": {
-        "omega_class": "Provenance",
-        "detection_rate": 0.76,
-        "color": "#8e44ad",
-        "type_annotation": "CognitiveState → DefenseResult",
-    },
-    "Sandbox": {
-        "omega_class": "Resource",
-        "detection_rate": 0.73,
-        "color": "#16a085",
-        "type_annotation": "CognitiveState → DefenseResult",
-    },
-    "Invariants": {
-        "omega_class": "Logic",
-        "detection_rate": 0.70,
-        "color": "#2c3e50",
-        "type_annotation": "CognitiveState → DefenseResult",
-    },
+    name: {
+        "omega_class": meta["omega_class"],
+        "detection_rate": meta["detection_rate"],
+        "color": meta["color"],
+        "type_annotation": meta["morphism_type"],
+        "measured_on": meta["measured_on"],
+    }
+    for name, meta in get_module_registry().items()
 }
 
 PRESET_PIPELINES: Dict[str, Dict[str, Any]] = {
@@ -200,9 +165,15 @@ class DefenseGraph:
     strategy: str = "series"
 
     def add_module(self, name: str, rate: Optional[float] = None) -> str:
-        """Add a defense module node. Returns its node ID."""
+        """Add a defense module node, using its measured rate by default.
+
+        A custom module may supply an explicit static rate.  Omitting that
+        rate for an unknown module is an error, not a licence to invent 0.5.
+        """
+        if rate is None and name not in MODULE_META:
+            raise KeyError(f"{name!r} has no measured detection rate; pass rate explicitly")
         node_id = f"node_{len(self.nodes)}"
-        r = rate if rate is not None else MODULE_META.get(name, {}).get("detection_rate", 0.5)
+        r = rate if rate is not None else MODULE_META[name]["detection_rate"]
         color = MODULE_META.get(name, {}).get("color", "#95a5a6")
         self.nodes.append(PipelineNode(module_name=name, node_id=node_id, rate=r, color=color))
         return node_id
@@ -926,6 +897,8 @@ class LensDiagram:
     def to_ascii(self) -> str:
         lines = [
             f"=== {self.title} ===",
+            "  Static schematic: attack_strength and defense_rate are illustrative "
+            "inputs, not measurements.",
             f"  Focus belief: '{self.focus}'",
             "",
             "  ┌────────────────── S (CognitiveState) ──────────────────┐",
@@ -946,6 +919,11 @@ class LensDiagram:
 
     def to_svg_string(self, width: int = 700, height: int = 340) -> str:
         lines = _svg_document(width, height, self.title, title_y=28, font_size=15)
+        lines.append(
+            '<text x="20" y="52" font-family="monospace" font-size="10" '
+            'fill="#f39c12">Static schematic: numeric inputs are illustrative, '
+            'not measurements.</text>'
+        )
         lines += [
             '<defs><marker id="lens_arrow" markerWidth="8" markerHeight="6" '
             'refX="8" refY="3" orient="auto">'

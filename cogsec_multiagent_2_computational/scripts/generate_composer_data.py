@@ -29,13 +29,12 @@ import time
 from pathlib import Path
 
 # ---------------------------------------------------------------------------
-# Ensure src/ is on the Python path when running as a script
+# Ensure the project root is on the Python path when running as a script
 # ---------------------------------------------------------------------------
 _SCRIPT_DIR = Path(__file__).resolve().parent
 _PROJECT_ROOT = _SCRIPT_DIR.parent
-_SRC = _PROJECT_ROOT / "src"
-if str(_SRC) not in sys.path:
-    sys.path.insert(0, str(_SRC))
+if str(_PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(_PROJECT_ROOT))
 
 
 def parse_args() -> argparse.Namespace:
@@ -129,14 +128,14 @@ def main() -> int:
     # Ensure the output directory exists
     args.output.parent.mkdir(parents=True, exist_ok=True)
 
-    # Import composer_data lazily (requires src/ on path)
+    # Import composer_data lazily (requires the project root on path)
     try:
-        from visualization.composer_data import get_composer_data  # type: ignore[import]
+        from src.visualization.composer_data import get_composer_data  # type: ignore[import]
     except ImportError as exc:
         print(f"ERROR: Cannot import composer_data: {exc}", file=sys.stderr)
         print(
             "Make sure you run this script from the project root or that "
-            "src/ is on PYTHONPATH.",
+            "the project root is on PYTHONPATH.",
             file=sys.stderr,
         )
         return 1

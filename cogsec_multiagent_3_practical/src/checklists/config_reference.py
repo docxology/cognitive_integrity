@@ -7,9 +7,8 @@ from dataclasses import dataclass
 class TrustParameter:
     """A trust calculus parameter with recommended value and guidance.
 
-    Represents one of the four trust calculus parameters (alpha, beta,
-    gamma, delta) from the manuscript with its recommended value,
-    valid range, and adjustment guidance.
+    Represents one of four trust calculus parameters with an illustrative
+    starting value, validation range, and adjustment guidance.
 
     Args:
         name: Human-readable parameter name.
@@ -65,31 +64,30 @@ class TripwireConfig:
 
 
 class ConfigurationReference:
-    """Configuration quick reference from manuscript Section 03.
+    """Validate configuration against illustrative starting points.
 
-    Validates trust calculus, firewall, and tripwire parameters against
-    the recommended ranges specified in the manuscript. Provides
-    validation methods that return (valid, issues) tuples for each
+    The alpha/beta/gamma weights, firewall thresholds, and canary counts are
+    examples for validation, not measurements or manuscript-mandated values.
+    The decay default is the balanced deployment profile's delta (0.80).
+    Deployment profiles are implemented in ``src/deployment.py`` and discussed
+    in ``docs/manuscript/05_deployment_guide.md``.
+
+    Provides validation methods that return (valid, issues) tuples for each
     configuration area.
-
-    Default values from manuscript:
-        Trust Calculus: alpha=0.3, beta=0.4, gamma=0.3, delta=0.9
-        Firewall: accept=0.3, reject=0.7, quarantine=0.3-0.7
-        Tripwires: identity=3+, boundary=5+, principal=2+, temporal=1
     """
 
     def __init__(self) -> None:
-        """Initialize with default configuration references from manuscript."""
+        """Initialize with illustrative configuration references."""
         self.trust_params: list[TrustParameter] = []
         self.firewall_thresholds: list[FirewallThreshold] = []
         self.tripwire_configs: list[TripwireConfig] = []
         self._load_defaults()
 
     def _load_defaults(self) -> None:
-        """Load configuration reference from manuscript Section 03.
+        """Load illustrative configuration starting points.
 
         Populates trust parameters, firewall thresholds, and tripwire
-        configurations with the values specified in the manuscript.
+        configurations used by the validators.
         """
         self.trust_params = [
             TrustParameter(
@@ -119,7 +117,7 @@ class ConfigurationReference:
             TrustParameter(
                 name="Decay factor",
                 symbol="\u03b4",
-                recommended=0.9,
+                recommended=0.8,
                 range_min=0.5,
                 range_max=0.99,
                 adjustment_guidance="Decrease for security-critical systems",

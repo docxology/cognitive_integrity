@@ -13,7 +13,7 @@ from __future__ import annotations
 
 import pytest
 
-from ablation.runner import (
+from src.ablation.runner import (
     BENIGN_MESSAGES,
     COMPONENT_TO_MODULE,
     evaluate_component_subset,
@@ -88,7 +88,7 @@ class TestMakeDefaultComponents:
         A name with no registry counterpart is silently ignored by the
         pipeline factory, so its "removal" delta would measure nothing.
         """
-        from composition.factory import MODULE_REGISTRY
+        from src.composition.factory import MODULE_REGISTRY
 
         components = set(make_default_components())
         assert set(COMPONENT_TO_MODULE) == components

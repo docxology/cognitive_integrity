@@ -36,8 +36,25 @@ htmlcov/
 # Project-local verification logs (regenerable)
 **/manuscript_verification.log
 
-# Generated project outputs
-**/output/
+# Generated project outputs.
+#
+# `output/` is NOT ignored wholesale: `output/data/*.json` is the measurement
+# layer the series gates derive every published number from, and the figures,
+# tables, PDFs and formal verdicts are tracked evidence. A blanket `**/output/`
+# rule silently dropped every newly generated artifact from `git add`, so a
+# re-run pipeline produced a tree the gates could not see on a fresh clone.
+# Ignore only the regenerable bulk that no gate reads.
+**/.checkpoints/
+**/output/web/
+**/output/figure-portability/
+**/*.aux
+**/*.nav
+**/*.out
+**/*.snm
+**/*.toc
+**/*.vrb
+**/*.blg
+**/*.bbl
 
 # Build logs. They record absolute paths of whoever rendered, which is
 # machine-specific noise in a public repository and a B7 blocker in the

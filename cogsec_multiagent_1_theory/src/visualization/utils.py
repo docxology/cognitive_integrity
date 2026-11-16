@@ -6,6 +6,9 @@ Provides publication-quality defaults, a colorblind-safe palette, and a
 
 from __future__ import annotations
 
+import json
+import math
+from numbers import Real
 from pathlib import Path
 
 import matplotlib.pyplot as plt
@@ -64,3 +67,48 @@ def save_figure(fig: plt.Figure, output_dir: Path, name: str) -> Path:
     print(f"Saved {png_path}")
     print(f"Saved {pdf_path}")
     return pdf_path
+
+
+def _load_json_data(path: Path) -> object:
+    """Read required figure input without creating output on failure."""
+    def unique_fields(pairs):
+        record = {}
+        for key, value in pairs:
+            if key in record:
+                raise ValueError(f"duplicate JSON field {key!r}")
+            record[key] = value
+        return record
+
+    try:
+        with path.open(encoding="utf-8") as stream:
+            return json.load(stream, object_pairs_hook=unique_fields)
+    except FileNotFoundError as exc:
+        raise FileNotFoundError(
+            f"Required figure data not found: {path}. Supply the source artifact; "
+            "no figure was generated."
+        ) from exc
+    except ValueError as exc:
+        raise ValueError(f"Invalid JSON figure data in {path}: {exc}") from exc
+
+
+def _require_number(
+    value: object,
+    path: Path,
+    field: str,
+    *,
+    minimum: float = 0.0,
+    maximum: float | None = None,
+) -> float:
+    """Require a finite numeric field; missing values are never zero-filled."""
+    if isinstance(value, bool) or not isinstance(value, Real):
+        raise ValueError(f"{path}: {field} must be a finite number, got {value!r}")
+    try:
+        number = float(value)
+    except OverflowError as exc:
+        raise ValueError(f"{path}: {field} is outside the finite numeric range") from exc
+    if not math.isfinite(number) or number < minimum or (
+        maximum is not None and number > maximum
+    ):
+        bounds = f">= {minimum}" if maximum is None else f"in [{minimum}, {maximum}]"
+        raise ValueError(f"{path}: {field} must be finite and {bounds}, got {value!r}")
+    return number

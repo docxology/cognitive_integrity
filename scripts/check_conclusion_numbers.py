@@ -75,7 +75,35 @@ EXEMPT: dict[float, str] = {
     100.0: "the top of the scale",
 }
 
-_PERCENT = re.compile(r"(\d+\.\d)\\?%")
+#: Decimal *and* integer percentages. The decimal-only form missed the stale
+#: "12\%" ablation TPR in Part 2's conclusion: an integer percentage is exactly
+#: the shape a hand-typed headline takes once the decimal is rounded away.
+#: Integer matches are interpreted at full percentage-point precision.
+#:
+#: A confidence level ("95\% CI", "95\% HDI") is a property of the estimator,
+#: not a measurement, and a forward-looking target ("80--86\% detection") is a
+#: goal rather than a reported value. Both are excluded by construction: the
+#: gate judges reported measurements, not the statistics vocabulary around them.
+_NUMBER = r"\d+(?:\.\d+)?"
+_PERCENT = re.compile(rf"(?<![\d.])({_NUMBER})(?![\d.])\s*\\?%")
+_CONFIDENCE = re.compile(
+    rf"(?<![\d.]){_NUMBER}(?![\d.])\s*\\?%\s*(?:CI|HDI|credible|confidence)\b",
+    re.I,
+)
+_RANGE = re.compile(
+    rf"(?<![\d.])({_NUMBER})(?![\d.])\s*(?:--|–|—)\s*"
+    rf"(?<![\d.])({_NUMBER})(?![\d.])\s*\\?%"
+)
+# Exclude only the numeric expression introduced by an explicit prospective
+# marker.  In particular, ``goal-hijacking`` is a subject, not permission to
+# ignore every measured percentage elsewhere on the same physical line.
+_TARGET_VALUE = re.compile(
+    rf"\b(?:targets?|milestones?|expected\s+outcomes?|goals?\b(?=\s|:))"
+    rf"[^\n.?!]{{0,60}}?"
+    rf"(?P<value>(?<![\d.]){_NUMBER}(?![\d.])"
+    rf"(?:\s*(?:--|–|—)\s*(?<![\d.]){_NUMBER}(?![\d.]))?\s*\\?%)",
+    re.I,
+)
 
 
 def _headline_values() -> tuple[dict[float, str], list[str]]:
@@ -162,14 +190,27 @@ def main() -> int:
             problems.append(f"{name}: missing")
             continue
         text = _headline_prose(path)
-        for value in sorted({float(v) for v in _PERCENT.findall(text)}):
-            checked += 1
-            if value in EXEMPT or value in known:
-                continue
-            problems.append(
-                f"{name}: {value}\\% is not a quantity the ledger or the claim "
-                f"registry derives"
-            )
+        for line in text.splitlines():
+            excluded = [match.span() for match in _CONFIDENCE.finditer(line)]
+            excluded.extend(match.span("value") for match in _TARGET_VALUE.finditer(line))
+            candidates: dict[tuple[int, int], float] = {}
+            for match in _RANGE.finditer(line):
+                # A range shares its percent sign, but both endpoints are
+                # reported measurements and neither may hide behind the other.
+                candidates[match.span(1)] = float(match.group(1))
+                candidates[match.span(2)] = float(match.group(2))
+            for match in _PERCENT.finditer(line):
+                candidates[match.span(1)] = float(match.group(1))
+            for (start, end), value in sorted(candidates.items()):
+                if any(start >= left and end <= right for left, right in excluded):
+                    continue
+                checked += 1
+                if value in EXEMPT or value in known:
+                    continue
+                problems.append(
+                    f"{name}: {value}\\% is not a quantity the ledger or the claim "
+                    f"registry derives"
+                )
 
     if checked < 5:
         print(

@@ -5,9 +5,9 @@ from typing import Any, Dict, List, Optional, TypeVar
 
 import numpy as np
 
-from formal.advanced.enriched import EnrichedDefenseCategory
-from formal.advanced.kan import AgentArchitecture, KanExtension
-from formal.advanced.lattice import (
+from src.formal.advanced.enriched import EnrichedDefenseCategory
+from src.formal.advanced.kan import AgentArchitecture, KanExtension
+from src.formal.advanced.lattice import (
     BOTTOM,
     TOP,
     DefenseLattice,
@@ -15,11 +15,11 @@ from formal.advanced.lattice import (
     lattice_join,
     lattice_meet,
 )
-from formal.advanced.lenses import BeliefLens, DefenseProfunctor
-from formal.advanced.monad import DefenseMonad
-from formal.advanced.monoidal import MonoidalDefenseCategory
-from formal.advanced.operad import DefenseOperad
-from formal.category_theory import (
+from src.formal.advanced.lenses import BeliefLens, DefenseProfunctor
+from src.formal.advanced.monad import DefenseMonad
+from src.formal.advanced.monoidal import MonoidalDefenseCategory
+from src.formal.advanced.operad import DefenseOperad
+from src.formal.category_theory import (
     CognitiveState,
     DefenseMorphism,
     DefenseResult,
@@ -58,6 +58,18 @@ def make_test_morphism(rate: float, name: str) -> DefenseMorphism:
     return DefenseMorphism(fn=_fn, name=name, identity=False)
 
 
+def _interchange_witnesses() -> tuple[
+    DefenseMorphism, DefenseMorphism, DefenseMorphism, DefenseMorphism
+]:
+    """Concrete morphisms exposing short-circuit/tensor interchange failure."""
+    return (
+        make_test_morphism(0.1, "interchange_f"),
+        make_test_morphism(0.9, "interchange_f_prime"),
+        make_test_morphism(0.7, "interchange_g"),
+        make_test_morphism(0.1, "interchange_g_prime"),
+    )
+
+
 # ============================================================================
 # HIGH-LEVEL VERIFICATION RUNNER
 # ============================================================================
@@ -87,7 +99,9 @@ def _run_all_verifications_impl(states: List[CognitiveState]) -> Dict[str, Any]:
 
     # 2. Monoidal
     monoidal = MonoidalDefenseCategory()
-    monoidal_results = monoidal.verify_all(f, g, h, states)
+    monoidal_results = monoidal.verify_all(
+        f, g, h, states, interchange_witnesses=_interchange_witnesses()
+    )
 
     # 3. Operad
     operad = DefenseOperad()
@@ -147,13 +161,14 @@ def serialize_verification_results(
     n_states: int = 20,
     seed: int = 42,
 ) -> Dict[str, Any]:
-    """Run all 25 categorical verification checks and return them as JSON.
+    """Run named categorical checks and return every outcome as JSON.
 
-    The 25 checks span all 7 categorical structures:
+    The checks span 7 categorical structures:
 
     - **Lattice** (7): reflexivity, antisymmetry, transitivity,
       bottom_element, top_element, meet_existence, join_existence
-    - **Monoidal** (4): left_unitor, right_unitor, associator, symmetry
+    - **Monoidal** (5): left_unitor, right_unitor, associator, symmetry,
+      interchange (expected to fail for short-circuit sequencing)
     - **Operad** (2): operad_unit, operad_associativity
     - **Enriched** (2): enriched_identity, enriched_composition_law
     - **Kan extensions** (variable): lan_dominates + ran_wellformed for
@@ -170,8 +185,9 @@ def serialize_verification_results(
     seven lattice flags in particular are regression detectors over
     ``DetectionBound.__le__``/``lattice_meet``/``lattice_join`` rather than
     contingent facts: given the ``[0, 1]`` range enforced in
-    ``DetectionBound.__post_init__``, no admissible element set makes them
-    ``False``.  ``tests/test_category_theory_advanced.py::TestVerifierNegativeControls``
+    ``DetectionBound.__post_init__``, no admissible nonempty element set makes
+    them ``False``; an empty set is rejected as vacuous by ``verify_all``.
+    ``tests/test_category_theory_advanced.py::TestVerifierNegativeControls``
     pins, per structure, an input for which the verifier does report ``False``.
 
     Args:
@@ -282,8 +298,8 @@ def get_lattice_data(
 def get_monoidal_data(n_states: int = 20, seed: int = 42) -> Dict[str, Any]:
     """Return monoidal category structure data for diagram rendering.
 
-    Runs the four coherence verifications and packages them with the
-    monoidal structure description (tensor product ⊗, unit I).
+    Runs four coherence checks plus the required interchange check and
+    packages their actual outcomes with the tensor and unit descriptions.
 
     Args:
         n_states: Number of test states to use in verification.
@@ -302,7 +318,9 @@ def get_monoidal_data(n_states: int = 20, seed: int = 42) -> Dict[str, Any]:
     h = make_test_morphism(0.3, "h")
 
     monoidal = MonoidalDefenseCategory()
-    coherence = monoidal.verify_all(f, g, h, states)
+    coherence = monoidal.verify_all(
+        f, g, h, states, interchange_witnesses=_interchange_witnesses()
+    )
 
     return {
         "tensor_product": {
@@ -336,6 +354,11 @@ def get_monoidal_data(n_states: int = 20, seed: int = 42) -> Dict[str, Any]:
                 "name": "Symmetry (Hexagon)",
                 "formula": "σ_{f,g} : f ⊗ g ≅ g ⊗ f",
                 "passed": bool(coherence.get("symmetry", False)),
+            },
+            {
+                "name": "Interchange",
+                "formula": "(f;f′)⊗(g;g′) = (f⊗g);(f′⊗g′)",
+                "passed": bool(coherence.get("interchange", False)),
             },
         ],
     }

@@ -12,6 +12,7 @@ bare point estimate.
 
 from __future__ import annotations
 
+import inspect
 import logging
 import time
 from dataclasses import dataclass, field
@@ -204,8 +205,13 @@ def fit_with_inference(
     scale = np.linalg.norm(design, axis=0)
     scale[scale == 0.0] = 1.0
     design_s = design / scale
+    if np.linalg.matrix_rank(design_s) < n_params:
+        raise ValueError(
+            f"degree-{degree} design is rank deficient; coefficient inference "
+            "requires at least degree + 1 distinct predictor values"
+        )
 
-    gram_inv_s = np.linalg.pinv(design_s.T @ design_s)
+    gram_inv_s = np.linalg.inv(design_s.T @ design_s)
     beta_s = gram_inv_s @ (design_s.T @ y_arr)
     beta = beta_s / scale
 
@@ -336,21 +342,32 @@ class ScalabilityBenchmark:
             # Build pipeline
             pipeline = pipeline_factory(adapter, clamped_n)
 
-            # Time multiple runs of evaluate
+            # Resolve the callable's arity without executing it.  A TypeError
+            # raised inside evaluate must be treated as an evaluation failure,
+            # not mistaken for a signature probe and executed a second time.
             run_latencies: List[float] = []
             n_failed = 0
             sample_msg = f"test message for {clamped_n} agents"
+            signature = inspect.signature(pipeline.evaluate)
+            try:
+                signature.bind(sample_msg)
+                use_context = False
+            except TypeError as one_arg_error:
+                try:
+                    signature.bind(sample_msg, None)
+                    use_context = True
+                except TypeError:
+                    raise TypeError(
+                        "pipeline.evaluate must accept (message) or (message, context)"
+                    ) from one_arg_error
 
             for _ in range(self.n_timing_runs):
                 t0 = time.perf_counter()
                 try:
-                    try:
-                        pipeline.evaluate(sample_msg)
-                    except TypeError:
-                        # Pipeline may require (message, context).  Restart the
-                        # clock so the failed signature probe is not timed.
-                        t0 = time.perf_counter()
+                    if use_context:
                         pipeline.evaluate(sample_msg, None)
+                    else:
+                        pipeline.evaluate(sample_msg)
                 except _EVALUATE_FAILURES as exc:
                     n_failed += 1
                     logger.debug(
@@ -375,13 +392,11 @@ class ScalabilityBenchmark:
             latencies.append(avg_latency)
             failures.append(n_failed)
 
-            # Memory estimate: trust matrix + comm graph + overhead
-            trust_bytes = clamped_n * clamped_n * 8  # float64
-            comm_bytes = clamped_n * clamped_n * 8
-            overhead = clamped_n * 1024  # per-agent state
-            pipeline_bytes = _estimate_pipeline_memory(pipeline)
-            total_mem = trust_bytes + comm_bytes + overhead + pipeline_bytes
-            memories.append(total_mem)
+            # Count structures present on the pipeline; do not invent trust or
+            # communication matrices for a stateless pipeline.
+            from src.evaluation.benchmark import MemoryProfiler
+
+            memories.append(MemoryProfiler().estimate_memory(pipeline, clamped_n))
 
         return ScalabilityResult(
             agent_counts=list(self.agent_counts),
@@ -404,8 +419,12 @@ class ScalabilityBenchmark:
 
         Returns:
             A ``ScalingModel`` with fitted coefficients and R-squared.
+
+        Raises:
+            ValueError: If fewer than three distinct measured counts remain.
         """
-        n_arr = np.array(results.agent_counts, dtype=np.float64)
+        measured_counts = results.clamped_counts or results.agent_counts
+        n_arr = np.array(measured_counts, dtype=np.float64)
         t_arr = np.array(results.latencies_ms, dtype=np.float64)
 
         finite = np.isfinite(t_arr) & np.isfinite(n_arr)
@@ -417,9 +436,11 @@ class ScalabilityBenchmark:
             n_arr = n_arr[finite]
             t_arr = t_arr[finite]
 
-        if len(n_arr) < 3:
-            # Not enough data for a 3-parameter fit
-            return ScalingModel(beta0=0.0, beta1=0.0, beta2=0.0, r_squared=0.0)
+        if np.unique(n_arr).size < 3:
+            raise ValueError(
+                "quadratic scaling fit requires at least three distinct "
+                "successfully measured agent counts"
+            )
 
         def residuals(params: np.ndarray) -> np.ndarray:
             b0, b1, b2 = params
@@ -443,18 +464,3 @@ class ScalabilityBenchmark:
             beta2=float(b2),
             r_squared=r_squared,
         )
-
-
-def _estimate_pipeline_memory(pipeline: Any) -> int:
-    """Quick memory estimate for a pipeline object.
-
-    Uses ``sys.getsizeof`` on the pipeline and its ``modules`` list
-    if present.
-    """
-    import sys
-
-    total = sys.getsizeof(pipeline)
-    modules = getattr(pipeline, "modules", [])
-    for m in modules:
-        total += sys.getsizeof(m)
-    return total

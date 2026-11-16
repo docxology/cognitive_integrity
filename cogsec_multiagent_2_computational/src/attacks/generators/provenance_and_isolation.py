@@ -46,7 +46,7 @@ from typing import List
 
 import numpy as np
 
-from utils.types import AttackCategory
+from src.utils.types import AttackCategory
 
 # ---------------------------------------------------------------------------
 # Provenance laundering (175 samples)

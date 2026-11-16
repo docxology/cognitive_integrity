@@ -22,7 +22,7 @@ logger = __import__('logging').getLogger(__name__)
 
 def _load_data() -> Dict[str, np.ndarray]:
     """Load confusion counts from full_evaluation_results.json."""
-    from data.result_loaders import evaluation_to_confusion_counts, load_full_evaluation
+    from src.data.result_loaders import evaluation_to_confusion_counts, load_full_evaluation
     rows = load_full_evaluation()
     counts = evaluation_to_confusion_counts(rows)
     result = {}
@@ -33,7 +33,9 @@ def _load_data() -> Dict[str, np.ndarray]:
             fp += f
             tn += tn_
             fn += fn_
-        result[arch] = np.array([[tp, fp], [fn, tn]])
+        # Rows are actual classes and columns predicted classes:
+        # [[TP, FN], [FP, TN]].
+        result[arch] = np.array([[tp, fn], [fp, tn]])
     logger.info("Loaded confusion matrices for %d architectures", len(result))
     return result
 
@@ -57,7 +59,7 @@ def plot_confusion_matrices(output_dir: str = "output/figures") -> Figure:
     fig, axes = plt.subplots(2, 2, figsize=(10, 7))
     fig.patch.set_facecolor(COLORS["background"])
 
-    labels = [["TP", "FP"], ["FN", "TN"]]
+    labels = [["TP", "FN"], ["FP", "TN"]]
 
     for idx, arch in enumerate(archs):
         row, col = divmod(idx, 2)

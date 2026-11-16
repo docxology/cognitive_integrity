@@ -45,8 +45,8 @@ Table: Production deployment checklist. {#tab:deploy-checklist}
 **Core framework**:
 \begin{itemize}
 \item Set trust decay factor $\delta$ based on security requirements (\cref{tab:core-params})
-\item Configure belief thresholds $\tau_{accept}$, $\tau_{trusted}$
-\item Define corroboration count $\kappa$ based on agent pool size
+\item Configure `PromotionCriteria.min_confidence` ($\tau_{accept}$, shipped default 0.8)
+\item Define independent corroboration count $\kappa$ (`min_corroborations`, shipped default 1) based on agent pool size
 \item Set trust weights $\alpha, \beta, \gamma$ (must sum to 1)
 \end{itemize}
 
@@ -103,8 +103,9 @@ Table: Production deployment checklist. {#tab:deploy-checklist}
 
 ### Python Integration {#sec:python-integration}
 
+Run from this paper's root with `PYTHONPATH=src` (or install the package into the environment). The block uses a non-default two-corroborator promotion policy explicitly.
+
 ```python
-# Verified against the shipped API: this block runs as written.
 from core.firewall import CognitiveFirewall, FirewallConfig, Classification
 from core.sandbox import SandboxManager, SandboxConfig, PromotionCriteria, Belief
 from core.trust import TrustCalculus, TrustConfig
@@ -158,7 +159,7 @@ and files the belief as provisional.
 
 ### Operational Monitoring {#sec:operational-monitoring}
 
-The following operational metrics emerged as informative during our experimental evaluation and are included here as a reference for production monitoring:
+The following are illustrative alert-policy thresholds, not measured production limits or guarantees. Deployments must calibrate them on their own labelled traffic and threat model:
 
 Table: Key operational metrics for CIF monitoring. {#tab:operational-metrics}
 
@@ -171,9 +172,11 @@ Table: Key operational metrics for CIF monitoring. {#tab:operational-metrics}
 | Tripwire alert rate | $> 3\times$ baseline | Escalate to human review | Continuous |
 | Consensus round count | $> R_{max}/2$ avg | Check for Byzantine agents | Per consensus |
 
-These thresholds were calibrated against our experimental corpus and may require adjustment based on a given deployment's false-positive tolerance and threat model (see Part 3 for deployment-specific guidance).
+The synthetic-corpus results in this paper do not validate these alert thresholds for field use. See Part 3 for deployment-specific risk guidance.
 
 ### YAML Configuration {#sec:yaml-config}
+
+This is an illustrative operator-owned document, not a file schema consumed directly by a CIF configuration loader. Map its values explicitly to the Python dataclasses shown above; monitoring, webhook, TLS, and secrets settings belong to the surrounding deployment infrastructure.
 
 ```yaml
 cif:
@@ -198,7 +201,7 @@ cif:
   sandbox:
     enabled: true
     ttl_default: 3600
-    k_corroboration: 2
+    k_corroboration: 1  # PromotionCriteria.min_corroborations default
     max_provisional: 1000
 
   tripwires:

@@ -5,7 +5,7 @@ from typing import Callable, Dict, List, Optional, TypeVar
 
 import numpy as np
 
-from formal.category_theory import (
+from src.formal.category_theory import (
     CognitiveState,
     DefenseMorphism,
     categorical_product,
@@ -160,7 +160,7 @@ class DefenseOperad:
         right_unit = self.build_series([f, ident])
         vf = np.array([f(s).score for s in states])
         return all(
-            bool(np.allclose(np.array([m(s).score for s in states]), vf, atol=tol))
+            bool(np.allclose(np.array([m(s).score for s in states]), vf, atol=tol, rtol=0.0))
             for m in (unary, left_unit, right_unit)
         )
 
@@ -179,7 +179,7 @@ class DefenseOperad:
         fgh_right = self.build_series([f, gh])
         vl = np.array([fgh_left(s).score for s in states])
         vr = np.array([fgh_right(s).score for s in states])
-        return bool(np.allclose(vl, vr, atol=tol))
+        return bool(np.allclose(vl, vr, atol=tol, rtol=0.0))
 
 
 # ============================================================================

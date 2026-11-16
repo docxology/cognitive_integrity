@@ -15,7 +15,7 @@ from typing import Any, Dict, List, Tuple
 
 import numpy as np
 
-from utils.timing import LatencyAccumulator
+from src.utils.timing import LatencyAccumulator
 
 logger = logging.getLogger(__name__)
 
@@ -199,9 +199,9 @@ class MemoryProfiler:
 
         Walks the pipeline's attributes and estimates memory for:
         - Python primitive attributes (via ``sys.getsizeof``)
-        - numpy arrays (dtype itemsize x total elements)
+        - numpy arrays and their owning buffers, exactly once
         - Lists/dicts (recursive estimation)
-        - Agent-count-dependent structures (trust matrices = n^2)
+        - Per-agent state overhead
 
         Attributes that raise one of :attr:`SKIPPABLE_ATTR_ERRORS` on access
         are recorded in ``skipped_attributes`` and omitted from the total.
@@ -248,22 +248,8 @@ class MemoryProfiler:
 
             total += self._estimate_object(val)
 
-        # Estimate agent-count-dependent structures (P2-F6): only count the
-        # matrix structures that actually exist on the pipeline.  The previous
-        # code unconditionally added two n^2 terms, inflating estimates for
-        # pipelines that hold no such matrices.
-        matrix_like = 0
-        for attr_name in dir(pipeline):
-            if attr_name.startswith("_"):
-                continue
-            try:
-                val = getattr(pipeline, attr_name)
-            except self.SKIPPABLE_ATTR_ERRORS:
-                continue
-            if isinstance(val, np.ndarray) and val.ndim >= 2:
-                matrix_like += 1
-        trust_matrix_bytes = n_agents * n_agents * 8 * matrix_like
-        total += trust_matrix_bytes
+        # Numpy buffers found above are already included in ``total``.  Do not
+        # add another n^2 allocation merely because an attribute is a matrix.
 
         # Per-agent state overhead (estimated 1KB per agent)
         agent_state_bytes = n_agents * 1024
@@ -280,7 +266,8 @@ class MemoryProfiler:
             return 0
 
         if isinstance(obj, np.ndarray):
-            return int(obj.nbytes) + sys.getsizeof(obj)
+            # ndarray.__sizeof__ includes an owning array's data buffer.
+            return int(sys.getsizeof(obj))
 
         if isinstance(obj, (list, tuple)):
             total = sys.getsizeof(obj)

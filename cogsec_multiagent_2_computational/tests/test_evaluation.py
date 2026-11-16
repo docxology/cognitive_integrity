@@ -20,18 +20,18 @@ from pathlib import Path
 import numpy as np
 import pytest
 
-from architectures.base import ArchitectureAdapter, ArchitectureProfile
-from architectures.claude_code import ClaudeCodeAdapter
-from evaluation.benchmark import BenchmarkResult, LatencyProfiler, MemoryProfiler
-from evaluation.metrics import DetectionMetrics
-from evaluation.precision_recall import (
+from src.architectures.base import ArchitectureAdapter, ArchitectureProfile
+from src.architectures.claude_code import ClaudeCodeAdapter
+from src.evaluation.benchmark import BenchmarkResult, LatencyProfiler, MemoryProfiler
+from src.evaluation.metrics import DetectionMetrics
+from src.evaluation.precision_recall import (
     PRCurve,
     bootstrap_ap_ci,
     compute_average_precision,
     compute_average_precision_from_arrays,
     compute_pr_curve,
 )
-from evaluation.roc import (
+from src.evaluation.roc import (
     ROCCurve,
     bootstrap_auc_ci,
     compute_auc,
@@ -39,13 +39,13 @@ from evaluation.roc import (
     compute_roc,
     youdens_j,
 )
-from evaluation.runner import ExperimentResult, ExperimentRunner, dominant_category
-from evaluation.scalability import (
+from src.evaluation.runner import ExperimentResult, ExperimentRunner, dominant_category
+from src.evaluation.scalability import (
     ScalabilityBenchmark,
     ScalabilityResult,
     ScalingModel,
 )
-from utils.types import ExperimentConfig
+from src.utils.types import ExperimentConfig
 
 # ---------------------------------------------------------------------------
 # Helpers: lightweight real objects (no mocks)
@@ -170,9 +170,10 @@ class TestExperimentRunner:
         assert isinstance(result, ExperimentResult)
         assert result.architecture == "TestArch"
         assert result.attack_category == "direct_injection"
-        assert result.n_attacks == 30  # 20 attacks + 10 benign
+        assert result.n_attacks == 20
         assert result.true_positives + result.false_negatives == 20
         assert result.false_positives + result.true_negatives == 10
+        assert result.n_attacks + result.false_positives + result.true_negatives == 30
         assert 0.0 <= result.detection_rate <= 1.0
         assert 0.0 <= result.false_positive_rate <= 1.0
         assert result.avg_latency_ms >= 0.0
@@ -227,7 +228,7 @@ class TestExperimentRunner:
         result = runner.run_single(adapter, samples, pipeline)
 
         assert isinstance(result, ExperimentResult)
-        assert result.n_attacks == 20
+        assert result.n_attacks == 15  # 15 attacks, excluding 5 benign controls.
         # Pipeline returns score=0.8 and detected=True for all samples.
         # In pipeline-first mode, the runner uses the pipeline's verdict directly.
         assert result.true_positives == 15  # all 15 attacks detected
@@ -498,19 +499,23 @@ class TestMemoryProfiler:
     """Tests for memory estimation."""
 
     def test_estimate_memory_increases_with_agents(self):
-        """Memory estimate grows with agent count (trust matrix is n^2)."""
-        profiler = MemoryProfiler()
-        pipeline = _SimplePipeline(score=0.5)
+        """Only matrices actually present contribute n^2 storage."""
+        class _MatrixPipeline:
+            def __init__(self, n: int):
+                self.trust_matrix = np.eye(n, dtype=np.float64)
 
-        mem_10 = profiler.estimate_memory(pipeline, n_agents=10)
-        mem_50 = profiler.estimate_memory(pipeline, n_agents=50)
+        profiler = MemoryProfiler()
+        mem_10 = profiler.estimate_memory(_MatrixPipeline(10), n_agents=10)
+        mem_50 = profiler.estimate_memory(_MatrixPipeline(50), n_agents=50)
 
         assert mem_50 > mem_10
-        # n^2 growth: 50^2/10^2 = 25x for matrix components
-        # The matrix part: 2 * n^2 * 8 bytes
-        matrix_10 = 2 * 10 * 10 * 8
-        matrix_50 = 2 * 50 * 50 * 8
-        assert mem_50 - mem_10 >= (matrix_50 - matrix_10) * 0.9
+        matrix_growth = (50 * 50 - 10 * 10) * 8
+        assert mem_50 - mem_10 >= matrix_growth
+
+    def test_stateless_pipeline_has_no_invented_quadratic_matrix(self):
+        pipeline = _SimplePipeline(score=0.5)
+        estimate = MemoryProfiler().estimate_memory(pipeline, n_agents=50)
+        assert estimate - 50 * 1024 < 50 * 50 * 8
 
     def test_estimate_memory_positive(self):
         """Memory estimate is always positive."""
@@ -534,8 +539,12 @@ class TestMemoryProfiler:
 
         pipeline = _PipelineWithArray()
         mem = profiler.estimate_memory(pipeline, n_agents=5)
-        # Must account for the 100x100 float64 array = 80000 bytes
+        # Must account for the 100x100 float64 array without adding its
+        # owning buffer a second time.
         assert mem > 80000
+        assert profiler._estimate_object(pipeline.weights) == sys.getsizeof(
+            pipeline.weights
+        )
 
     def test_estimate_object_recurses_into_lists_and_dicts(self):
         """_estimate_object recursively sizes nested list/tuple/dict attributes."""
@@ -787,12 +796,20 @@ class TestPrecisionRecall:
         assert np.all(pr.recall <= 1.0)
 
     def test_no_positives_returns_zero_ap(self):
-        """With no positive labels, AP is 0."""
+        """With no positive labels, AP is 0 and false positives have precision 0."""
         y_true = np.zeros(20, dtype=int)
         scores = np.random.default_rng(42).uniform(0, 1, 20)
 
         pr = compute_pr_curve(y_true, scores)
         assert pr.average_precision == 0.0
+        assert pr.precision[0] == 0.0
+        assert pr.precision[-1] == 1.0  # no predictions above the maximum score
+
+    def test_ap_includes_highest_scoring_positive(self):
+        pr = compute_pr_curve(
+            np.array([1, 0]), np.array([1.0, 0.0]), n_thresholds=2
+        )
+        assert pr.average_precision == pytest.approx(1.0)
 
     def test_compute_average_precision_from_arrays(self):
         """Direct computation of AP from precision/recall arrays."""
@@ -925,6 +942,13 @@ class TestROC:
         auc = compute_auc_from_points(fpr, tpr)
         assert auc == pytest.approx(1.0, abs=0.01)
 
+    def test_auc_preserves_vertical_segment_order(self):
+        # Threshold order is descending: the vertical rise at FPR=0 must be
+        # integrated before the horizontal segment to FPR=1.
+        fpr = np.array([1.0, 0.0, 0.0, 1.0])
+        tpr = np.array([1.0, 0.0, 1.0, 1.0])
+        assert compute_auc_from_points(fpr, tpr) == pytest.approx(1.0)
+
     def test_auc_clamped_to_unit_interval(self):
         """AUC is always clamped to [0, 1]."""
         rng = np.random.default_rng(42)
@@ -954,6 +978,14 @@ class TestROC:
         assert lo <= hi
         assert 0.0 <= lo
         assert hi <= 1.0
+
+    def test_bootstrap_auc_uses_requested_point_grid(self):
+        y_true = np.array([True, False, True, False])
+        scores = np.array([0.9, 0.8, 0.7, 0.6])
+        point, _, _ = bootstrap_auc_ci(
+            y_true, scores, n_bootstrap=5, seed=1, n_thresholds=3
+        )
+        assert point == compute_roc(y_true, scores, n_thresholds=3).auc
 
     def test_bootstrap_auc_ci_empty_input(self):
         """Empty input returns all zeros."""
@@ -1042,10 +1074,10 @@ class TestScalabilityBenchmark:
 
         result = bench.run(_SimpleAdapter, pipeline_factory)
 
-        # Memory at 50 agents should be much larger than at 5
-        # Ratio of quadratic terms: (50^2)/(5^2) = 100
+        # Measured memory is dominated by a constant per-agent state overhead
+        # in this fixture, not a pure quadratic matrix ratio.
         ratio = result.memory_bytes[-1] / result.memory_bytes[0]
-        assert ratio > 10  # Generous bound; true ratio for matrix part is ~100
+        assert ratio > 5
 
     def test_latency_increases_with_agents(self):
         """Latency at higher agent count is at least as high as at lower."""
@@ -1117,7 +1149,7 @@ class TestScalabilityBenchmark:
             assert predicted == pytest.approx(expected_lat, rel=0.05)
 
     def test_fit_scaling_model_insufficient_data(self):
-        """With fewer than 3 data points, returns zero model."""
+        """A quadratic fit is refused rather than fabricated from two points."""
         result = ScalabilityResult(
             agent_counts=[5, 10],
             latencies_ms=[1.0, 2.0],
@@ -1125,12 +1157,8 @@ class TestScalabilityBenchmark:
         )
 
         bench = ScalabilityBenchmark()
-        model = bench.fit_scaling_model(result)
-
-        assert model.beta0 == 0.0
-        assert model.beta1 == 0.0
-        assert model.beta2 == 0.0
-        assert model.r_squared == 0.0
+        with pytest.raises(ValueError, match="at least three distinct"):
+            bench.fit_scaling_model(result)
 
 
 # ===========================================================================
@@ -1249,7 +1277,7 @@ def _run_under_hash_seeds(snippet: str) -> list:
     for seed in _HASH_SEEDS:
         env = dict(os.environ)
         env["PYTHONHASHSEED"] = seed
-        env["PYTHONPATH"] = str(project_root / "src")
+        env["PYTHONPATH"] = str(project_root)
         env["PYTHONDONTWRITEBYTECODE"] = "1"
         completed = subprocess.run(
             [sys.executable, "-c", snippet],
@@ -1293,7 +1321,7 @@ class TestDominantCategoryDeterminism:
     def test_dominant_category_is_hash_seed_independent(self):
         """The shipped helper returns the same label under every hash seed."""
         snippet = (
-            "from evaluation.runner import dominant_category\n"
+            "from src.evaluation.runner import dominant_category\n"
             f"print(dominant_category({_TIED_CATEGORIES!r}))\n"
         )
         outputs = _run_under_hash_seeds(snippet)
@@ -1336,6 +1364,49 @@ class TestDominantCategoryDeterminism:
         assert reversed_result.attack_category == "belief_drift"
 
 
+def test_invalid_real_pipeline_never_falls_back_to_simulation():
+    runner = ExperimentRunner(ExperimentConfig(seed=42))
+    adapter = _SimpleAdapter()
+    samples = _make_attack_samples("direct_injection", n_attacks=1, n_benign=0)
+
+    with pytest.raises(TypeError, match="must provide"):
+        runner.run_single(adapter, samples, object())
+
+    class _NoResultPipeline:
+        def evaluate(self, message):
+            return None
+
+    with pytest.raises(RuntimeError, match="no evaluation result"):
+        runner.run_single(adapter, samples, _NoResultPipeline())
+
+
+def test_partial_llm_fallback_is_labelled_mixed():
+    class _SimResult:
+        messages = []
+        responses = []
+
+    class _SometimesLLM:
+        def __init__(self):
+            self.calls = 0
+
+        def process_attack(self, **kwargs):
+            self.calls += 1
+            if self.calls == 1:
+                raise ConnectionError("unreachable")
+            return _SimResult()
+
+        def reset_all(self):
+            pass
+
+    samples = _make_attack_samples("direct_injection", n_attacks=2, n_benign=0)
+    result = ExperimentRunner(ExperimentConfig(seed=42)).run_single_llm(
+        _SimpleAdapter(), samples, None, _SometimesLLM()
+    )
+    assert result.measurement_mode == "mixed"
+    assert result.llm_fallback_count == 1
+    assert result.n_attacks == 2
+
+
 def test_run_single_llm_fallback_reports_honest_mode():
     """P2-2: when the LLM path raises for every sample, measurement_mode is
     not 'llm' — the result must disclose the fallback instead of publishing
@@ -1375,8 +1446,8 @@ def test_run_single_llm_fallback_reports_honest_mode():
 
 def test_full_matrix_records_top_level_category():
     """Matrix rows retain corpus category separately from subcategory."""
-    from architectures.autogpt import AutoGPTAdapter
-    from attacks.corpus import AttackCorpus
+    from src.architectures.autogpt import AutoGPTAdapter
+    from src.attacks.corpus import AttackCorpus
 
     corpus = AttackCorpus.generate(seed=42)
     samples = corpus.by_top_category("injection")

@@ -1,9 +1,8 @@
 """
 Risk Assessment Framework for Cognitive Security.
 
-Implements Section 06 of the Practical Implementation Guide:
-Attack surface mapping, threat modeling, worked examples,
-and common attack scenario analysis.
+Attack surface mapping, threat modeling, worked examples, and common attack
+scenario analysis corresponding to ``docs/manuscript/04_attack_scenarios.md``.
 """
 
 from __future__ import annotations
@@ -400,7 +399,7 @@ class AttackSurfaceMapper:
         """Evaluate the overall attack surface.
 
         Produces an AssessmentResult summarizing:
-        - Whether the assessment passes (no immediate priorities)
+        - Whether the assessment passes (neither immediate priorities nor critical risk)
         - Normalized score (1.0 = no risk, 0.0 = maximum risk)
         - Overall risk level based on highest scenario score
         - Top findings (up to 5)
@@ -411,9 +410,9 @@ class AttackSurfaceMapper:
         """
         if not self.threat_scenarios:
             return AssessmentResult(
-                passed=True,
-                score=1.0,
-                risk_level=RiskLevel.LOW,
+                passed=False,
+                score=0.0,
+                risk_level=RiskLevel.CRITICAL,
                 findings=["No threat scenarios identified"],
                 recommendations=["Conduct threat modeling to identify scenarios"],
             )
@@ -454,7 +453,7 @@ class AttackSurfaceMapper:
         normalized_score = 1.0 - (max_score / 16.0)
 
         return AssessmentResult(
-            passed=len(immediate) == 0,
+            passed=len(immediate) == 0 and risk_level != RiskLevel.CRITICAL,
             score=max(0.0, normalized_score),
             risk_level=risk_level,
             findings=findings,
@@ -469,7 +468,7 @@ class AttackSurfaceMapper:
 
 @dataclass
 class ThreatModelWorksheet:
-    """Structured threat modeling worksheet from Section 06.
+    """Structured threat modeling worksheet for ``04_attack_scenarios.md``.
 
     Provides a complete framework for documenting the threat model
     of a multi-agent system, including system description, entry
@@ -547,7 +546,7 @@ class ThreatModelWorksheet:
 
 
 class CommonAttackScenarios:
-    """Pre-built common attack scenarios from Section 06.
+    """Pre-built common attack scenarios from 04_attack_scenarios.md.
 
     Provides ready-to-use threat scenarios for the most common
     cognitive security attack patterns:
@@ -753,7 +752,7 @@ class CommonAttackScenarios:
     def ecommerce_worked_example() -> ThreatModelWorksheet:
         """Worked example: E-Commerce CustomerBot from manuscript.
 
-        Implements the complete worked example from Section 06,
+        Implements the complete worked example from 04_attack_scenarios.md,
         modeling a 5-agent e-commerce customer support system with
         entry point analysis and a shipping API trust laundering
         attack scenario.

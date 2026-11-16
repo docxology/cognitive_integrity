@@ -142,6 +142,19 @@ class AdversarialGenerator:
         score = base_evasion + mutation_bonus - threshold_penalty + noise
         return float(np.clip(score, 0.0, 1.0))
 
+    def _conditioned_mutation(self) -> str | None:
+        """Choose a payload transformation from the current defense config.
+
+        This is a deterministic generation heuristic, not a measured evasion
+        model: tolerant drift settings select incremental insertion, while a
+        high anomaly threshold otherwise selects paraphrasing.
+        """
+        if self.config_thresholds.get("drift_threshold", 0.3) >= 0.6:
+            return "gradual_insertion"
+        if self.config_thresholds.get("anomaly_threshold", 0.5) >= 0.7:
+            return "semantic_paraphrase"
+        return None
+
     def generate_attack(
         self,
         round_num: int = 1,
@@ -156,6 +169,8 @@ class AdversarialGenerator:
         Returns:
             GeneratedAttack instance.
         """
+        if mutation_operator is None:
+            mutation_operator = self._conditioned_mutation()
         categories = self.CATEGORY_TEMPLATES[self.omega_level]
         category = str(self.rng.choice(categories))
         seed_val = int(self.rng.integers(0, 2**32))
@@ -228,12 +243,8 @@ class AdversarialGenerator:
             false_result=placeholder,
             category=category,
         )
-        if mutation_op == "semantic_paraphrase":
-            payload = f"[PARAPHRASED] {payload}"
-        elif mutation_op == "nested_wrapping":
-            payload = f"[[OUTER: {payload}]]"
-        elif mutation_op == "indirect_routing":
-            payload = f"[VIA: trusted_source] {payload}"
+        if mutation_op is not None:
+            payload = AttackMutator._apply_mutation(payload, mutation_op)
         return payload
 
     def generate_batch(
@@ -330,8 +341,9 @@ class AttackMutator:
         """
         return self._apply_mutation(payload, operator)
 
-    def _apply_mutation(self, payload: str, operator: str) -> str:
-        """Apply mutation to payload string."""
+    @staticmethod
+    def _apply_mutation(payload: str, operator: str) -> str:
+        """Apply mutation to payload string without retaining mutator state."""
         mutations = {
             "semantic_paraphrase": lambda p: f"[paraphrased variant] {p}",
             "nested_wrapping": lambda p: f"[[level-2 [[{p}]] ]]",
@@ -343,7 +355,10 @@ class AttackMutator:
             "chain_delegation": lambda p: f"Agent(1)->Agent(2)->Agent(3): {p}",
             "belief_anchoring": lambda p: f"[anchor: existing belief] {p}",
             "multi_hop_routing": lambda p: f"[via A->B->C->D] {p}",
-            "canary_avoidance": lambda p: p.replace("canary", "c4n4ry"),
+            "canary_avoidance": lambda p: (
+                "[indirect channel] "
+                + p.replace("canary", "c4n4ry").replace("CANARY", "C4N4RY")
+            ),
             "confidence_spoofing": lambda p: f"[confidence: 0.99] {p}",
             "byzantine_mimicry": lambda p: f"[honest-looking] {p}",
             "quorum_flooding": lambda p: p * 3,

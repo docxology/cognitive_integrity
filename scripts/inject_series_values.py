@@ -82,23 +82,45 @@ class Change:
         return f"  {location}:{self.line}: {self.variable}: {self.before!r} -> {self.after!r}"
 
 
-def format_like(stated: str, value: float) -> str:
-    """Render ``value`` in the shape the site already uses.
+def format_like(stated: str, value: float, tolerance: float | None = None) -> str:
+    """Render ``value`` in the site's shape, adding precision when required.
 
-    A site written ``44.8`` gets one decimal back, not ``44.80``; a site written
-    ``ten`` gets a word back, not ``10``.  Preserving the existing shape keeps
-    the diff to the digits that actually changed, which is what makes an
-    injected manuscript reviewable.
+    Preserving a site's existing precision is useful only when the result still
+    satisfies the ledger tolerance. Otherwise a report can announce a rewrite
+    whose formatted replacement is byte-for-byte identical to the stale value.
     """
     text = stated.strip()
-    if text.lower() in {w for w in WORD_FOR.values()}:
-        return WORD_FOR.get(int(round(value)), str(int(round(value))))
-    if "{,}" in text or "," in text:
-        return f"{int(round(value)):,}".replace(",", "{,}") if "{,}" in text else f"{int(round(value)):,}"
-    if "." in text:
-        decimals = len(text.split(".", 1)[1])
-        return f"{value:.{decimals}f}"
-    return str(int(round(value)))
+    is_word = text.lower() in set(WORD_FOR.values())
+    grouped = "{,}" in text or "," in text
+    latex_grouping = "{,}" in text
+    decimals = len(text.split(".", 1)[1]) if "." in text and not is_word else 0
+
+    def render(places: int) -> str:
+        if is_word and places == 0:
+            return WORD_FOR.get(int(round(value)), str(int(round(value))))
+        if grouped:
+            rendered = f"{value:,.{places}f}"
+            return rendered.replace(",", "{,}") if latex_grouping else rendered
+        if places:
+            return f"{value:.{places}f}"
+        return str(int(round(value)))
+
+    result = render(decimals)
+    if tolerance is None:
+        return result
+    try:
+        error = abs(to_number(result) - value)
+    except ValueError:
+        error = float("inf")
+    while error > tolerance and decimals < 15:
+        decimals += 1
+        result = render(decimals)
+        error = abs(to_number(result) - value)
+    if error > tolerance:
+        raise ValueError(
+            f"cannot render {value!r} from {stated!r} within tolerance {tolerance}"
+        )
+    return result
 
 
 def substitutions_for(var: LedgerVariable, value: float) -> Iterable[Change]:
@@ -128,7 +150,7 @@ def substitutions_for(var: LedgerVariable, value: float) -> Iterable[Change]:
                         number,
                         var.id,
                         stated,
-                        format_like(stated, value),
+                        format_like(stated, value, var.tolerance),
                         match.start(1),
                         match.end(1),
                     )
@@ -148,6 +170,12 @@ def apply_changes(changes: Sequence[Change]) -> int:
         for change in sorted(items, key=lambda c: (c.line, c.start), reverse=True):
             index = change.line - 1
             line = lines[index]
+            if change.before == change.after:
+                print(
+                    f"  refused (replacement would be a no-op): {change.render().strip()}",
+                    file=sys.stderr,
+                )
+                continue
             if change.start < 0:
                 # No recorded span: refuse rather than guess. This used to fall
                 # back to ``line.replace(before, after, 1)``, which rewrote the
@@ -204,7 +232,11 @@ def main(argv: Sequence[str] | None = None) -> int:
             print(f"  {line}")
         return 1
 
-    changes = [c for var in selected for c in substitutions_for(var, values[var.id])]
+    try:
+        changes = [c for var in selected for c in substitutions_for(var, values[var.id])]
+    except ValueError as exc:
+        print(f"refusing to run: {exc}", file=sys.stderr)
+        return 1
 
     if not changes:
         print(f"{len(selected)} variable(s) checked; every governed site already matches its artifact.")
@@ -220,6 +252,13 @@ def main(argv: Sequence[str] | None = None) -> int:
 
     written = apply_changes(changes)
     print(f"\nrewrote {written} site(s)")
+    if written != len(changes):
+        print(
+            f"refused {len(changes) - written} unsafe or ineffective site(s); "
+            "the manuscript still disagrees with the artifacts",
+            file=sys.stderr,
+        )
+        return 1
     return 0
 
 

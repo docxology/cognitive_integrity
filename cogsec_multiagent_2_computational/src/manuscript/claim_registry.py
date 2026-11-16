@@ -46,9 +46,8 @@ import json
 import math
 import re
 from dataclasses import dataclass
-from fractions import Fraction
 from pathlib import Path
-from typing import Any, Callable, Iterable, Literal, Sequence
+from typing import Any, Callable, Literal, Sequence
 
 Unit = Literal["fraction", "percent", "count"]
 Provenance = Literal["real", "parametric", "illustrative"]
@@ -67,9 +66,6 @@ _Z95 = 1.959963984540054
 #: Floating-point slack added to every tolerance so that a value rounded to the
 #: last printed digit (|delta| exactly == half a ULP of that digit) compares equal.
 _TOL_EPS = 1e-9
-
-#: Largest plausible evaluation-corpus size when recovering a denominator.
-_MAX_CORPUS = 100_000
 
 
 class ClaimDataUnavailable(RuntimeError):
@@ -217,31 +213,20 @@ class GroundTruth:
         )
 
     def ablation_corpus_size(self) -> float:
-        """Recover the ablation corpus size N from the measured rates.
+        """Return the explicitly recorded ablation corpus size.
 
-        Every TPR in ``ablation_results.json`` is ``k/N`` for integer ``k``, so
-        N is the least common multiple of the reduced denominators. This binds
-        the manuscript's stated corpus size to the measurement resolution
-        instead of trusting a hand-written literal.
+        Reduced TPR denominators determine only a lower bound on ``N``: rates
+        measured on 200 attacks can have the same denominators as rates on
+        100.  The LCM therefore cannot substantiate an exact prose count.
         """
-        rows = self._component_rows()
-        rates = [self.full_pipeline_tpr()] + [float(r["tpr"]) for r in rows]
-        synergies = self.ablation().get("top_synergies")
-        if isinstance(synergies, list):
-            for row in synergies:
-                rates.extend(float(row[key]) for key in ("tpr_a", "tpr_b", "combined_tpr"))
-        denominator = 1
-        for rate in rates:
-            if rate <= 0:
-                continue
-            frac = Fraction(rate).limit_denominator(_MAX_CORPUS // 10)
-            denominator = denominator * frac.denominator // math.gcd(denominator, frac.denominator)
-            if denominator > _MAX_CORPUS:
-                raise ClaimDataUnavailable(
-                    "cannot recover the ablation corpus size: implied denominator "
-                    f"exceeds {_MAX_CORPUS}"
-                )
-        return float(denominator)
+        data = self.ablation()
+        n_attacks = data.get("n_attacks")
+        if isinstance(n_attacks, bool) or not isinstance(n_attacks, int) or n_attacks <= 0:
+            raise ClaimDataUnavailable(
+                "ablation_results.json has no positive integer 'n_attacks'; "
+                "the LCM of rate denominators is only a lower bound"
+            )
+        return float(n_attacks)
 
     # -- multi-seed --------------------------------------------------------
 
@@ -934,14 +919,14 @@ def _component_claims(
     labels: dict[str, str],
     *,
     prefix: str,
-    positive_deltas: Iterable[str] = (),
 ) -> tuple[Claim, ...]:
     """Claims for one ablation component-removal table.
 
     ``labels`` maps the artifact component key onto the row label used in that
-    file (the two tables spell 'Tripwire'/'Tripwires' differently).
+    file (the two tables spell 'Tripwire'/'Tripwires' differently).  Delta
+    signs are captured and compared: a loss cannot verify as a gain merely
+    because its magnitude agrees.
     """
-    positive = set(positive_deltas)
     claims: list[Claim] = []
     for key, label in labels.items():
         escaped = re.escape(label)
@@ -955,17 +940,12 @@ def _component_claims(
                 "fraction",
             )
         )
-        deriver = (
-            (lambda k: lambda gt: gt.component_delta(k))(key)
-            if key in positive
-            else (lambda k: lambda gt: gt.component_delta_magnitude(k))(key)
-        )
         claims.append(
             _c(
                 f"{prefix}.delta.{key}",
                 file,
-                rf"\| {escaped} \| [\d.]+ \| \$\\+approx [+-]?([\d.]+)\$",
-                deriver,
+                rf"\| {escaped} \| [\d.]+ \| \$\\+approx ([+-]?[\d.]+)\$",
+                (lambda k: lambda gt: gt.component_delta(k))(key),
                 F3,
                 "fraction",
             )
@@ -991,13 +971,13 @@ _SYNERGY_LABEL: dict[str, str] = {
 }
 
 
-def _recorded_synergy_pairs() -> tuple[tuple[str, str], tuple[str, str]] | tuple:
+def _recorded_synergy_pairs() -> tuple[tuple[str, str], ...]:
     """The pairs the ablation artifact currently reports, in its own order.
 
-    The pairs are read from the artifact rather than named here. Hardcoding
-    today's top two rows binds the claims to a ranking, and a ranking moves
-    whenever a module's detection changes: the derivers then ask the artifact
-    for a pair it no longer records and every such claim reports
+    Every recorded pair is read from the artifact rather than named here.
+    Hardcoding today's leading rows binds the claims to a ranking, and a
+    ranking moves whenever a module's detection changes: the derivers then
+    ask the artifact for a pair it no longer records and every such claim reports
     ``NOT_FOUND``. A claim that names the row it checks cannot survive
     the row changing, so the pairs are read from the artifact that writes the
     table.
@@ -1014,8 +994,8 @@ def _recorded_synergy_pairs() -> tuple[tuple[str, str], tuple[str, str]] | tuple
         return ()
     if not isinstance(rows, list):
         return ()
-    pairs = []
-    for row in rows[:2]:
+    pairs: list[tuple[str, str]] = []
+    for row in rows:
         first, second = row.get("a"), row.get("b")
         if first in _SYNERGY_LABEL and second in _SYNERGY_LABEL:
             pairs.append((first, second))
@@ -1147,16 +1127,18 @@ _ABSTRACT: tuple[Claim, ...] = (
     _c(
         "abstract.ablation_share",
         "00_abstract.md",
-        r"accounting for (\d+)\\% of pipeline detection",
+        r"accounting for (\d+\.\d+)\\% of pipeline detection",
         lambda gt: gt.dominant_share_of_pipeline(),
-        PCT0,
+        PCT1,
         "percent",
     ),
     _c(
         "abstract.llm_dr_low",
         "00_abstract.md",
         r"achieving (\d+)--\d+\\% detection across",
-        lambda gt: gt.llm_detection_rate("claude_code"),
+        lambda gt: min(
+            gt.llm_detection_rate("claude_code"), gt.llm_detection_rate("crewai")
+        ),
         PCT0,
         "percent",
     ),
@@ -1164,7 +1146,9 @@ _ABSTRACT: tuple[Claim, ...] = (
         "abstract.llm_dr_high",
         "00_abstract.md",
         r"achieving \d+--(\d+)\\% detection across",
-        lambda gt: gt.llm_detection_rate("crewai"),
+        lambda gt: max(
+            gt.llm_detection_rate("claude_code"), gt.llm_detection_rate("crewai")
+        ),
         PCT0,
         "percent",
     ),
@@ -1187,15 +1171,15 @@ _ABSTRACT: tuple[Claim, ...] = (
     _c(
         "abstract.colony_dr_low",
         "00_abstract.md",
-        r"demonstrating (\d+)--\d+\\% detection on structured",
+        r"demonstrating (\d+\.\d+)--\d+\\% detection on structured",
         lambda gt: gt.colony_structured_dr_min(),
-        PCT0,
+        PCT1,
         "percent",
     ),
     _c(
         "abstract.colony_dr_high",
         "00_abstract.md",
-        r"demonstrating \d+--(\d+)\\% detection on structured",
+        r"demonstrating \d+\.\d+--(\d+)\\% detection on structured",
         lambda gt: gt.colony_structured_dr_max(),
         PCT0,
         "percent",
@@ -1273,18 +1257,36 @@ _RESULTS: tuple[Claim, ...] = (
         "fraction",
     ),
     _c(
-        "results.gap_claude_parametric",
+        "results.gap_parametric_low",
         "05_results.md",
-        r"\| Claude Code \(multi-seed pipeline\) \| (\d+)\\%",
-        lambda gt: gt.parametric_arch_dr("Claude Code"),
+        (
+            r"\| Four-architecture simulation range \| Architecture-agnostic "
+            r"multi-seed pipeline \| (\d+)--\d+\\%"
+        ),
+        lambda gt: gt.parametric_dr_min(),
         PCT0,
         "percent",
         "parametric",
     ),
     _c(
-        "results.gap_claude_empirical",
+        "results.gap_parametric_high",
         "05_results.md",
-        r"\| Claude Code \(multi-seed pipeline\) \| \d+\\% \| (\d+\.\d+)\\%",
+        (
+            r"\| Four-architecture simulation range \| Architecture-agnostic "
+            r"multi-seed pipeline \| \d+--(\d+)\\%"
+        ),
+        lambda gt: gt.parametric_dr_max(),
+        PCT0,
+        "percent",
+        "parametric",
+    ),
+    _c(
+        "results.gap_ms_mean",
+        "05_results.md",
+        (
+            r"\| Four-architecture simulation range \| Architecture-agnostic "
+            r"multi-seed pipeline \| \d+--\d+\\% \| (\d+\.\d+)\\%"
+        ),
         lambda gt: gt.ms_mean(),
         PCT1,
         "percent",
@@ -1300,9 +1302,9 @@ _RESULTS: tuple[Claim, ...] = (
     _c(
         "results.summary_ms_mean",
         "05_results.md",
-        r"mean detection rate of \$\\sim\$(\d+)\\%",
+        r"mean detection rate of (\d+\.\d+)\\% \(observed seed range:",
         lambda gt: gt.ms_mean(),
-        PCT_APPROX,
+        PCT1,
         "percent",
     ),
     _c(
@@ -1372,7 +1374,7 @@ _STATISTICAL: tuple[Claim, ...] = (
     _c(
         "05b.range_low",
         "05b_statistical_significance.md",
-        r"\| 95% Range \| \[(\d+\.\d+), \d+\.\d+\]",
+        r"\| Observed Range \| \[(\d+\.\d+), \d+\.\d+\]",
         lambda gt: gt.ms_min(),
         F3,
         "fraction",
@@ -1380,7 +1382,7 @@ _STATISTICAL: tuple[Claim, ...] = (
     _c(
         "05b.range_high",
         "05b_statistical_significance.md",
-        r"\| 95% Range \| \[\d+\.\d+, (\d+\.\d+)\]",
+        r"\| Observed Range \| \[\d+\.\d+, (\d+\.\d+)\]",
         lambda gt: gt.ms_max(),
         F3,
         "fraction",
@@ -1420,9 +1422,9 @@ _STATISTICAL: tuple[Claim, ...] = (
     _c(
         "05b.dominant_share",
         "05b_statistical_significance.md",
-        r"about (\d+)\\% of the pipeline's detection",
+        r"about (\d+\.\d+)\\% of the pipeline's detection",
         lambda gt: gt.dominant_share_of_pipeline(),
-        PCT0,
+        PCT1,
         "percent",
     ),
     _c(
@@ -1481,7 +1483,7 @@ _STATISTICAL: tuple[Claim, ...] = (
     _c(
         "05b.summary_cv",
         "05b_statistical_significance.md",
-        r"with CV = (\d+\.\d+) indicating",
+        r"with CV = (\d+\.\d+) below the overall",
         lambda gt: gt.ms_cv(),
         F3,
         "fraction",
@@ -1501,11 +1503,10 @@ _STATISTICAL: tuple[Claim, ...] = (
     _c(
         "05b.summary_synergy",
         "05b_statistical_significance.md",
-        # Was a two-way tie at +0.031 between Firewall+Detection and
-        # Tripwire+Detection. With the corrected detectors the tie breaks:
-        # Firewall+Detection stands alone at the top, so the claim now pins
-        # that pair rather than the tie that no longer exists.
-        r"tie for the strongest synergy \([^)]*all \$\\approx \+([\d.]+)\$\)",
+        (
+            r"\*\*Synergy\*\*: Three pairs tie for the strongest synergy at "
+            r"\$\\approx \+([\d.]+)\$ over the better singleton"
+        ),
         lambda gt: gt.top_synergy_value(),
         F3,
         "fraction",
@@ -1513,7 +1514,10 @@ _STATISTICAL: tuple[Claim, ...] = (
     _c(
         "05b.parametric_ceiling_low",
         "05b_statistical_significance.md",
-        r"achieves (\d+)--\d+\\% detection, establishing",
+        (
+            r"Design-level parametric analysis \(\\cref\{sec:parametric-analysis\}\) "
+            r"reports (\d+)--\d+\\% detection under its simulation model"
+        ),
         lambda gt: gt.parametric_dr_min(),
         PCT0,
         "percent",
@@ -1522,7 +1526,10 @@ _STATISTICAL: tuple[Claim, ...] = (
     _c(
         "05b.parametric_ceiling_high",
         "05b_statistical_significance.md",
-        r"achieves \d+--(\d+)\\% detection, establishing",
+        (
+            r"Design-level parametric analysis \(\\cref\{sec:parametric-analysis\}\) "
+            r"reports \d+--(\d+)\\% detection under its simulation model"
+        ),
         lambda gt: gt.parametric_dr_max(),
         PCT0,
         "percent",
@@ -1541,7 +1548,6 @@ _STATISTICAL: tuple[Claim, ...] = (
         "consensus": "Consensus",
     },
     prefix="05b",
-    positive_deltas=("sandbox", "consensus"),
 ) + _synergy_claims("05b_statistical_significance.md", prefix="05b")
 
 _ABLATION: tuple[Claim, ...] = (
@@ -1581,7 +1587,7 @@ _ABLATION: tuple[Claim, ...] = (
     _c(
         "05d.ms_mean",
         "05d_ablation_and_scalability.md",
-        r"multi-seed analysis shows \$\\sim\$(\d+\.\d+)\\% mean DR",
+        r"multi-seed analysis shows \$\\sim\$(\d+\.\d+)\\% mean detection rate over 30 seeds",
         lambda gt: gt.ms_mean(),
         PCT1,
         "percent",
@@ -1599,14 +1605,13 @@ _ABLATION: tuple[Claim, ...] = (
         "consensus": "Consensus",
     },
     prefix="05d",
-    positive_deltas=("sandbox", "consensus"),
 ) + _synergy_claims("05d_ablation_and_scalability.md", prefix="05d")
 
 _DISCUSSION: tuple[Claim, ...] = (
     _c(
         "06.evidence_ms_mean",
         "06_discussion.md",
-        r"\| Mean detection rate \| (\d+\.\d+)\\%",
+        r"architecture-agnostic\) \| Mean attack detection rate \| (\d+\.\d+)\\%",
         lambda gt: gt.ms_mean(),
         PCT1,
         "percent",
@@ -1614,7 +1619,7 @@ _DISCUSSION: tuple[Claim, ...] = (
     _c(
         "06.evidence_ci_low",
         "06_discussion.md",
-        r"\| Mean detection rate \| \d+\.\d+\\% \[CI: (\d+\.\d+)\\%",
+        r"architecture-agnostic\) \| Mean attack detection rate \| \d+\.\d+\\% \[CI: (\d+\.\d+)\\%",
         lambda gt: gt.ms_ci_low(),
         PCT1,
         "percent",
@@ -1622,7 +1627,10 @@ _DISCUSSION: tuple[Claim, ...] = (
     _c(
         "06.evidence_ci_high",
         "06_discussion.md",
-        r"\| Mean detection rate \| \d+\.\d+\\% \[CI: \d+\.\d+\\%, (\d+\.\d+)\\%\]",
+        (
+            r"architecture-agnostic\) \| Mean attack detection rate \| "
+            r"\d+\.\d+\\% \[CI: \d+\.\d+\\%, (\d+\.\d+)\\%\]"
+        ),
         lambda gt: gt.ms_ci_high(),
         PCT1,
         "percent",
@@ -1638,15 +1646,15 @@ _DISCUSSION: tuple[Claim, ...] = (
     _c(
         "06.evidence_dominant_share",
         "06_discussion.md",
-        r"about (\d+)\\% of the pipeline's detection",
+        r"about (\d+\.\d+)\\% of the pipeline's detection",
         lambda gt: gt.dominant_share_of_pipeline(),
-        PCT0,
+        PCT1,
         "percent",
     ),
     _c(
         "06.synthesis_ms_mean",
         "06_discussion.md",
-        r"mean detection rate of (\d+\.\d+)\\% \[95\\% CI",
+        r"achieves a mean attack detection rate of (\d+\.\d+)\\% \[95\\% CI",
         lambda gt: gt.ms_mean(),
         PCT1,
         "percent",
@@ -1670,15 +1678,21 @@ _DISCUSSION: tuple[Claim, ...] = (
     _c(
         "06.colony_dr_low",
         "06_discussion.md",
-        r"colony benchmarks demonstrate (\d+)--\d+\\% detection",
+        (
+            r"Colony benchmarks \(20--100 agents\) \| Structured / emergent "
+            r"scenarios \| (\d+\.\d+)--\d+\\% / \d+\.\d+\\%"
+        ),
         lambda gt: gt.colony_structured_dr_min(),
-        PCT0,
+        PCT1,
         "percent",
     ),
     _c(
         "06.colony_dr_high",
         "06_discussion.md",
-        r"colony benchmarks demonstrate \d+--(\d+)\\% detection",
+        (
+            r"Colony benchmarks \(20--100 agents\) \| Structured / emergent "
+            r"scenarios \| \d+\.\d+--(\d+)\\% / \d+\.\d+\\%"
+        ),
         lambda gt: gt.colony_structured_dr_max(),
         PCT0,
         "percent",
@@ -1686,7 +1700,7 @@ _DISCUSSION: tuple[Claim, ...] = (
     _c(
         "06.parametric_ceiling_low",
         "06_discussion.md",
-        r"design-level ceiling of (\d+)--\d+\\%",
+        r"Parametric simulation \(\$N=3\{,\}800\$\) \| Design-level ceiling \| (\d+)--\d+\\%",
         lambda gt: gt.parametric_dr_min(),
         PCT0,
         "percent",
@@ -1695,7 +1709,7 @@ _DISCUSSION: tuple[Claim, ...] = (
     _c(
         "06.parametric_ceiling_high",
         "06_discussion.md",
-        r"design-level ceiling of \d+--(\d+)\\%",
+        r"Parametric simulation \(\$N=3\{,\}800\$\) \| Design-level ceiling \| \d+--(\d+)\\%",
         lambda gt: gt.parametric_dr_max(),
         PCT0,
         "percent",
@@ -1731,7 +1745,7 @@ _CONCLUSION: tuple[Claim, ...] = (
     _c(
         "07.bayes_ms_mean",
         "07_conclusion.md",
-        r"\(mean (\d+\.\d+)\\%, 95\\% HDI",
+        r"\(plug-in rate (\d+\.\d+)\\%, \$\\mathrm\{Beta\}\([^)]*\)\$, median",
         lambda gt: gt.ms_mean(),
         PCT1,
         "percent",
@@ -1785,9 +1799,17 @@ _CONCLUSION: tuple[Claim, ...] = (
         "fraction",
     ),
     _c(
+        "07.current_ablation_tpr",
+        "07_conclusion.md",
+        r"separate \d+-attack ablation corpus is \$\\sim\$(\d+\.\d+)\\%",
+        lambda gt: gt.full_pipeline_tpr(),
+        PCT1,
+        "percent",
+    ),
+    _c(
         "07.n_seeds",
         "07_conclusion.md",
-        r"across (\d+) seeds on Claude Code",
+        r"across (\d+) seeds for the architecture-agnostic pipeline",
         lambda gt: gt.ms_n(),
         EXACT,
         "count",
@@ -1851,7 +1873,10 @@ _SETUP: tuple[Claim, ...] = (
     _c(
         "04.power_ms_dr",
         "04_experimental_setup.md",
-        r"\| Multi-seed pipeline \(30 seeds \$\\times\$ 100\) \| 3\{,\}000 \| DR = (\d+\.\d+) \|",
+        (
+            r"\| Multi-seed pipeline \(per seed; 30 seeds\) \| 100 attacks "
+            r"\+ 120 benign \| DR = (\d+\.\d+) \|"
+        ),
         lambda gt: gt.ms_mean(),
         F3,
         "fraction",
@@ -1859,7 +1884,7 @@ _SETUP: tuple[Claim, ...] = (
     _c(
         "04.summary_ms_mean",
         "04_experimental_setup.md",
-        r"\| Multi-seed pipeline \(Claude Code, 30 seeds\) \| (\d+\.\d+)\\%",
+        r"\| Multi-seed pipeline \(architecture-agnostic, 30 seeds\) \| (\d+\.\d+)\\%",
         lambda gt: gt.ms_mean(),
         PCT1,
         "percent",
@@ -1867,7 +1892,7 @@ _SETUP: tuple[Claim, ...] = (
     _c(
         "04.summary_ci_low",
         "04_experimental_setup.md",
-        r"\| Multi-seed pipeline \(Claude Code, 30 seeds\) \| \d+\.\d+\\% \[(\d+\.\d+),",
+        r"\| Multi-seed pipeline \(architecture-agnostic, 30 seeds\) \| \d+\.\d+\\% \[(\d+\.\d+),",
         lambda gt: gt.ms_ci_low(),
         PCT1,
         "percent",
@@ -1875,7 +1900,7 @@ _SETUP: tuple[Claim, ...] = (
     _c(
         "04.summary_ci_high",
         "04_experimental_setup.md",
-        r"\| Multi-seed pipeline \(Claude Code, 30 seeds\) \| \d+\.\d+\\% "
+        r"\| Multi-seed pipeline \(architecture-agnostic, 30 seeds\) \| \d+\.\d+\\% "
         r"\[\d+\.\d+, (\d+\.\d+)\\%\]",
         lambda gt: gt.ms_ci_high(),
         PCT1,
@@ -2096,7 +2121,7 @@ _PREVIOUSLY_UNCOVERED: tuple[Claim, ...] = (
     _c(
         "05h.corpus_size",
         "05h_redteam_evaluation.md",
-        r"in the (\d+)-sample corpus",
+        r"in the ([\d,]+)-sample integrated corpus",
         lambda gt: gt.redteam_denominator("corpus_size"),
         EXACT,
         "count",

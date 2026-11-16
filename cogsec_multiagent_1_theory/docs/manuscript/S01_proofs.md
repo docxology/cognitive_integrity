@@ -18,8 +18,9 @@ For transparency, this section records, by exact label, which results stated in 
 - Byzantine Consensus Termination (main text: \cref{thm:byzantine-termination}), \cref{thm:byzantine-restated} (\cref{sec:thm510-proof})
 - Bounded Overhead (main text: \cref{thm:latency-overhead}), \cref{thm:overhead-restated} (\cref{sec:thm511-proof})
 - Defense Composition Algebra, \cref{thm:composition-semiring-restated} (\cref{sec:thm-composition-semiring})
-- Fisher-Rao Stealth-Impact Tight Bound, \cref{thm:fr-bound-restated} (\cref{sec:thm-geometric-bound})
 - Agent Compromise Blast Radius, \cref{thm:blast-radius-restated} (\cref{sec:thm-blast-radius})
+
+The Fisher-Rao stealth-impact product \cref{thm:fr-bound-restated} is not listed as a proved theorem: it is an identity of chosen reciprocal definitions, not a bound.
 
 Separate proofs are also given for the supporting lemmas and for the corollaries \cref{cor:trust-vanishing}, \cref{cor:defense-stacking}, and \cref{cor:consensus-safety}. The remaining corollaries in this supplement state immediate (quantitative or qualitative) consequences of a proved theorem and, following standard mathematical convention, are not accompanied by a standalone proof.
 
@@ -42,7 +43,6 @@ Separate proofs are also given for the supporting lemmas and for the corollaries
 - Small-Step Detection Reduction, \cref{cor:small-steps} (04_formal\_framework.md; immediate consequence of the deferred \cref{thm:progressive-detection})
 - Quorum Attack Cost, \cref{cor:quorum-attack-cost} (S02_eusocial\_cogsec.md)
 - Stigmergic Trust Bound, \cref{cor:stigmergic-trust} (S02_eusocial\_cogsec.md)
-- Emergent Stealth-Impact Bound, \cref{cor:emergent-stealth-impact} (S02_eusocial\_cogsec.md)
 - No Trust Amplification, \cref{thm:no-trust-amp} (04_formal\_framework.md; the model-checking restatement \cref{thm:trust-bound} is proved here, the section-4 statement is not)
 - Byzantine Agreement Requirement, \cref{thm:byzantine-req} (05_defense\_mechanisms.md)
 - Neyman-Pearson Optimal Detector, \cref{thm:np-detector} (06_detection\_methods.md)
@@ -55,8 +55,8 @@ Separate proofs are also given for the supporting lemmas and for the corollaries
 - Pareto-Optimal Threshold, \cref{cor:pareto-threshold} (05_defense\_mechanisms.md)
 - Drift Detection Sample Complexity, \cref{cor:drift-sample} (05_defense\_mechanisms.md)
 - Consensus Attack Resistance, \cref{cor:consensus-resistance} (05_defense\_mechanisms.md)
-- Optimal AUC Bound, \cref{cor:optimal-auc} (06_detection\_methods.md)
-- Sample Complexity for Target Accuracy, \cref{cor:sample-complexity} (06_detection\_methods.md)
+- Optimal Ranking and Optimal Accuracy Are Distinct, \cref{rem:optimal-ranking} (06_detection\_methods.md; definition-level remark)
+- Sufficient Sample Count from the Chernoff Bound, \cref{cor:sample-complexity} (06_detection\_methods.md; immediate inversion of the upper bound, not a minimum)
 - Empirical Security Bound, \cref{cor:empirical-security} (07_formal\_verification.md)
 - Layered Defense Generalization, \cref{cor:n-layer-bound} (07_formal\_verification.md)
 
@@ -239,24 +239,13 @@ P(\mathcal{A}_{BI} \text{ succeeds}) \leq (1 - r_f) \cdot (1 - r_s)
 
 \begin{lemma}[Defense Independence]
 \label{lem:defense-independence}
-The firewall and sandbox operate on independent decision criteria:
+The firewall and sandbox operate on separate decision criteria:
 \begin{itemize}
 \item Firewall: Pattern matching and anomaly scoring on message content
 \item Sandbox: Provenance verification, consistency checking, and corroboration
 \end{itemize}
-These mechanisms share no common features or state.
+These mechanisms share no common features or state. This describes architectural separation, not a proof that their detection events are probabilistically independent.
 \end{lemma}
-
-\begin{proof}[Proof of \cref{lem:defense-independence}]
-By construction of the CIF architecture:
-\begin{enumerate}
-\item Firewall operates at input layer with feature set $F_{firewall} = \{patterns, embeddings, anomaly\_scores\}$
-\item Sandbox operates at belief layer with feature set $F_{sandbox} = \{provenance, consistency, corroboration\}$
-\item $F_{firewall} \cap F_{sandbox} = \emptyset$
-\end{enumerate}
-
-Therefore, $P(\text{firewall detects} | \text{sandbox outcome}) = P(\text{firewall detects})$. The mechanisms are probabilistically independent.
-\end{proof}
 
 \begin{remark}[Independence is an assumption, not a guarantee]
 \label{rem:defense-independence-scope}
@@ -364,12 +353,13 @@ Since $\delta < 1$, $x \cdot \delta < x \leq y$.
 \begin{proof}[Main Proof of \cref{thm:trust-amp-restated}]
 By strong induction on path length $k$.
 
-\textbf{Base Case} ($k = 1$): For path $p = (a_0, a_1)$:
+\textbf{Base Case} ($k = 1$): For path $p = (a_0, a_1)$, \cref{def:path-trust} gives
+$\mathcal{T}_{a_0 \to a_1}^{path} = \mathcal{T}_{a_0 \to a_1}\cdot\delta$, and since $\delta \in (0,1)$:
 \begin{equation}
 \label{eq:62-base}
-\mathcal{T}_{a_0 \to a_1}^{path} = \mathcal{T}_{a_0 \to a_1} = \min_{i \in [0,0]} \mathcal{T}_{a_i \to a_{i+1}}
+\mathcal{T}_{a_0 \to a_1}^{path} = \mathcal{T}_{a_0 \to a_1}\cdot\delta \;\leq\; \mathcal{T}_{a_0 \to a_1} = \min_{i \in [0,0]} \mathcal{T}_{a_i \to a_{i+1}}
 \end{equation}
-The base case holds trivially.
+The base case holds because decay only tightens the bound.
 
 \textbf{Inductive Hypothesis}: Assume for all paths of length $\leq k$:
 \begin{equation}
@@ -923,9 +913,9 @@ All proofs are constructive and provide explicit bounds useful for system implem
 
 ---
 
-## Second-Edition Proofs: Defense Composition Algebra and Information-Geometric Bounds {#sec:v2-proofs}
+## Second-Edition Proofs and Formalization Corrections {#sec:v2-proofs}
 
-This section proves the defense composition algebra guarantees (§\ref{sec:defense-formal-guarantees}) and the information-geometric tightening of the stealth-impact bound (§\ref{sec:detection-bounds}).
+This section proves the defense composition semilattice guarantees (§\ref{sec:defense-formal-guarantees}) and records why the information-geometric stealth-impact product is not a bound (§\ref{sec:detection-bounds}).
 
 ---
 
@@ -933,7 +923,7 @@ This section proves the defense composition algebra guarantees (§\ref{sec:defen
 
 \begin{theorem}[Defense Composition Algebra --- Restated]
 \label{thm:composition-semiring-restated}
-On a common accept/reject focal predicate, the set of CIF defenses under series ($\circ$) and parallel ($\parallel$) composition is closed, associative, carries a multiplicative identity, and is distributive --- that is, it forms a bounded distributive lattice. It is \emph{not} shown here to be a full closed semiring: neither an additive identity that annihilates the multiplicative identity nor a Kleene-star (infinite-sum) operation is constructed, and the stronger claim is not made (\cref{rem:defense-independence-scope}).
+On a common accept/reject focal predicate, the set of CIF defenses under series ($\circ$) and parallel ($\parallel$) composition is closed, associative, and carries a multiplicative identity. On that focal predicate both operations act as conjunction, so they coincide there and the structure is a meet-semilattice with identity, \emph{not} a lattice: absorption fails, since $A \circ (A \parallel B)$ accepts iff $A \land (A \land B)$, which is not $A$ alone. The two operations differ only in the severity they assign to non-accepting outcomes. It is \emph{not} shown here to be a full closed semiring: neither an additive identity that annihilates the multiplicative identity nor a Kleene-star (infinite-sum) operation is constructed, and the stronger claim is not made (\cref{rem:defense-independence-scope}).
 \end{theorem}
 
 \begin{lemma}[Type Closure under Composition]
@@ -981,17 +971,12 @@ By \cref{lem:type-closure,lem:comp-assoc,lem:null-identity}, the set satisfies c
 
 ---
 
-## The Tight Information-Geometric Stealth-Impact Bound {#sec:thm-geometric-bound}
+## The Fisher-Rao Stealth-Impact Product Is Not a Bound {#sec:thm-geometric-bound}
 
-\begin{theorem}[Fisher-Rao Stealth-Impact Tight Bound --- Restated]
+\begin{remark}[Fisher-Rao Stealth-Impact Product: Not a Theorem]
 \label{thm:fr-bound-restated}
-For any cognitive attack $\mathcal{A}$ with impact measured in Fisher-Rao units:
-\begin{equation}
-\label{eq:fr-bound-restated}
-\mathcal{I}_{\mathrm{FR}} \cdot \mathcal{S}_{\mathrm{FR}} \leq \frac{\pi}{2}
-\end{equation}
-where $\mathcal{I}_{\mathrm{FR}} = d_{\mathrm{FR}}(p_0, p_{\text{attacked}})$ and $\mathcal{S}_{\mathrm{FR}} = 1/d_{\mathrm{FR}}(p_0, p_{\text{attacked}})$ when measurable.
-\end{theorem}
+For $\mathcal{I}_{\mathrm{FR}} = d_{\mathrm{FR}}(p_0,p_{\text{attacked}})$ and $\mathcal{S}_{\mathrm{FR}}=1/d_{\mathrm{FR}}(p_0,p_{\text{attacked}})$, the product $\mathcal{I}_{\mathrm{FR}}\mathcal{S}_{\mathrm{FR}}=1$ for $d_{\mathrm{FR}}>0$. Normalizing stealth instead by $\pi/(2d_{\mathrm{FR}})$ makes the product $\pi/2$. These are identities of chosen definitions, not a stealth-impact bound or a geometric proof. The proposed channel-capacity tradeoff remains unproved.
+\end{remark}
 
 \begin{lemma}[Fisher-Rao Metric on Probability Simplex]
 \label{lem:fr-metric}
@@ -1003,7 +988,7 @@ d_{\mathrm{FR}}(p, q) = 2\arccos\!\left(\sum_i \sqrt{p_i q_i}\right)
 \end{lemma}
 
 \begin{proof}
-The reparametrization $\phi_i = 2\sqrt{p_i}$ maps $\Delta^{n-1}$ to the positive orthant of $S^{n-1}$ (unit sphere). Under this map, the Fisher information metric becomes the standard Euclidean metric on the sphere. Geodesics on $S^{n-1}$ are great circle arcs. The geodesic distance between $\phi(p)$ and $\phi(q)$ is:
+The reparametrization $\phi_i = 2\sqrt{p_i}$ maps $\Delta^{n-1}$ to the positive orthant of a sphere of radius $2$ (so $\sum_i\phi_i^2=4$). Under this map, the Fisher information metric becomes the standard spherical metric. Geodesics are great circle arcs. The geodesic distance between $\phi(p)$ and $\phi(q)$ is:
 \begin{equation}
 \label{eq:fr-proof-1}
 d = \arccos(\phi(p) \cdot \phi(q)) = \arccos\!\left(\sum_i 2\sqrt{p_i} \cdot 2\sqrt{q_i} / 4\right)
@@ -1038,26 +1023,7 @@ For any attack shifting belief from $p_0$ to $p_{\text{attacked}}$:
 (ii) For small perturbations $\delta p$: $D_{\mathrm{KL}}(p \| p + \delta p) \approx \frac{1}{2} (\delta p)^\top G(p)(\delta p) = \frac{1}{2} d_{\mathrm{FR}}^2 + O(\|\delta p\|^3)$. Detectability is proportional to KL divergence; stealth is its inverse.
 \end{proof}
 
-\begin{proof}[Main Proof of \cref{thm:fr-bound-restated}]
-Let $r = d_{\mathrm{FR}}(p_0, p_{\text{attacked}})$. By \cref{lem:simplex-diameter}: $r \leq \pi$.
-
-Impact $\mathcal{I}_{\mathrm{FR}} = r$. Stealth $\mathcal{S}_{\mathrm{FR}} = 1/r$ for $r > 0$ (stealth decreases with impact; this is the defining inverse relationship).
-
-Therefore:
-\begin{equation}
-\label{eq:fr-product}
-\mathcal{I}_{\mathrm{FR}} \cdot \mathcal{S}_{\mathrm{FR}} = r \cdot \frac{1}{r} = 1 \leq \frac{\pi}{2}
-\end{equation}
-
-The bound $\pi/2$ in \Cref{eq:fr-product-2} arises from the maximum attack at the hemisphere boundary. For attacks with $r < \pi$, the product $\mathcal{I} \cdot \mathcal{S}$ is bounded when $\mathcal{S}$ is defined relative to the detectable threshold $\theta_{\text{drift}}$:
-
-\begin{equation}
-\label{eq:fr-product-2}
-\mathcal{I}_{\mathrm{FR}} \cdot \mathcal{S}_{\mathrm{FR}} = r \cdot \frac{\pi/2}{r} = \frac{\pi}{2}
-\end{equation}
-
-where $\mathcal{S}_{\mathrm{FR}} = \pi/(2r)$ normalizes stealth by the maximum possible distance $\pi/2$ (hemisphere). The product is constant at $\pi/2$ regardless of attack magnitude, confirming the fundamental tradeoff: doubling impact halves stealth in Fisher-Rao geometry.
-\end{proof}
+The previously claimed $\pi/2$ bound depended on replacing $1/r$ by $\pi/(2r)$ mid-proof. No proof is asserted here: the displayed definitions yield a product fixed by construction, and \cref{lem:impact-stealth-inverse}'s separate local approximation $\mathcal{S}\propto d_{\mathrm{FR}}^{-2}$ is not interchangeable with the reciprocal definition.
 
 \begin{corollary}[Drift Detection Threshold Geometric Justification]
 \label{cor:drift-threshold-geometry}
@@ -1107,7 +1073,7 @@ Restricting the degree of agents (least-privilege communication topology) propor
 
 \begin{table}[htbp]
 \centering
-\caption{Summary of proof techniques by theorem (v1.1 additions marked with $\dagger$).}
+\caption{Summary of proof techniques by theorem (second-edition additions marked with $\dagger$, listed as v2 in the Edition column).}
 \label{tab:proof-summary-v2}
 \begin{tabular}{@{}llll@{}}
 \toprule
@@ -1119,9 +1085,9 @@ No Trust Amplification & Strong induction & $O(k)$ & v1 \\
 Goal Alignment Invariant & Induction on time & $O(t)$ & v1 \\
 Firewall Liveness & Complement probability & $O(1)$ & v1 \\
 Byzantine Consensus & Classical BFT & $O(f)$ & v1 \\
-Defense Composition Semiring$^\dagger$ & Boolean algebra, lattice theory & $O(1)$ & v2 \\
+Defense Composition Semilattice$^\dagger$ & Boolean algebra, semilattice structure & $O(1)$ & v2 \\
 Composition Detection Rate$^\dagger$ & Product formula induction & $O(k)$ & v2 \\
-FR Stealth-Impact Tight Bound$^\dagger$ & Differential geometry (Fisher-Rao) & $O(n)$ & v2 \\
+Fisher-Rao Stealth-Impact Product$^\dagger$ & Definition-level identity (not a bound) & $O(1)$ & v2 \\
 Agent Blast Radius Bound$^\dagger$ & Graph traversal + trust bound & $O(n)$ & v2 \\
 CIF-AD Full Coverage$^\dagger$ & Matrix column inspection & $O(1)$ & v2 \\
 OODA Security Invariant$^\dagger$ & Product formula + induction & $O(k)$ & v2 \\
@@ -1130,4 +1096,4 @@ Adversary Class Separation$^\dagger$ & Information theory (KL $> 0$) & $O(1)$ & 
 \end{tabular}
 \end{table}
 
-All proofs in this supplement are constructive and provide explicit constants suitable for system implementation, parameter selection, and security analysis.
+Proved results in this supplement are constructive and provide explicit constants suitable for system implementation, parameter selection, and security analysis. Deferred or definitional entries above are not proofs and should not be read as guarantees.

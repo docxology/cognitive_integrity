@@ -457,14 +457,14 @@ class SecurityInvariantChecker:
 
 
 class BeliefDriftMonitor:
-    """Monitors belief distribution drift using KL-divergence.
+    """Monitors independent belief confidences using summed Bernoulli KL.
 
     Implements the belief drift monitoring protocol from Section 04.
-    After every external input, computes KL-divergence between the
-    current belief confidence distribution and the session baseline.
+    After every external input, compares the current aligned confidence values
+    with the session baseline without normalizing them into a categorical law.
 
-    The KL-divergence D_KL(P || Q) measures how much distribution P
-    (current) diverges from reference distribution Q (baseline).
+    The divergence measures how much the current independent propositions
+    diverge from their baseline Bernoulli laws.
     Values near 0 indicate minimal drift; values above the threshold
     trigger a flag.
 
@@ -487,44 +487,59 @@ class BeliefDriftMonitor:
         self.drift_history: list[float] = []
 
     def set_baseline(self, confidences: list[float]) -> None:
-        """Set baseline belief confidence distribution.
-
-        Should be called at session start with the initial confidence
-        values for all tracked beliefs.
+        """Set the baseline confidence for each independently tracked belief.
 
         Args:
-            confidences: List of confidence values (0-1) for all beliefs
+            confidences: Nonempty list of independent Bernoulli confidence
+                values, each in [0, 1]. Values are aligned by list position;
+                they are not components of a categorical distribution.
 
         Raises:
-            ValueError: If confidences is empty
+            ValueError: If confidences is empty, non-finite, or outside [0, 1]
         """
-        if not confidences:
+        self.baseline = self._confidence_array(confidences).tolist()
+
+    @staticmethod
+    def _confidence_array(confidences: list[float]) -> np.ndarray:
+        values = np.asarray(confidences, dtype=np.float64)
+        if values.ndim != 1 or values.size == 0:
             raise ValueError("Confidences list cannot be empty")
-        self.baseline = list(confidences)
+        if not np.all(np.isfinite(values)) or np.any((values < 0.0) | (values > 1.0)):
+            raise ValueError("Confidences must be finite values between 0 and 1")
+        return values
 
     @staticmethod
     def _kl_divergence(p: list[float], q: list[float], epsilon: float = 1e-10) -> float:
-        """Compute KL-divergence D_KL(P || Q).
+        """Compute summed Bernoulli KL divergence over aligned beliefs.
 
-        Both distributions are normalized to sum to 1 before
-        computation. A small epsilon is added to avoid log(0).
+        Each confidence describes an independent binary proposition, not one
+        component of a categorical probability vector. Normalizing the vectors
+        would therefore erase meaningful changes such as [0.5, 0.5] becoming
+        [0.9, 0.9], and would make every single-belief divergence zero.
 
         Args:
-            p: Distribution P (current)
-            q: Distribution Q (baseline)
-            epsilon: Small value to avoid log(0)
+            p: Current independent confidence values
+            q: Baseline independent confidence values, aligned with ``p``
+            epsilon: Positive boundary clipping used to keep logarithms finite
 
         Returns:
-            KL-divergence value (non-negative float)
+            Finite, non-negative sum of per-belief Bernoulli KL divergences
         """
-        p_arr = np.array(p, dtype=np.float64) + epsilon
-        q_arr = np.array(q, dtype=np.float64) + epsilon
+        p_arr = BeliefDriftMonitor._confidence_array(p)
+        q_arr = BeliefDriftMonitor._confidence_array(q)
+        if p_arr.size != q_arr.size:
+            raise ValueError("Confidence vectors must have the same length")
+        if not 0.0 < epsilon < 0.5:
+            raise ValueError("epsilon must be between 0 and 0.5")
 
-        # Normalize to proper probability distributions
-        p_arr = p_arr / p_arr.sum()
-        q_arr = q_arr / q_arr.sum()
-
-        return float(np.sum(p_arr * np.log(p_arr / q_arr)))
+        p_arr = np.clip(p_arr, epsilon, 1.0 - epsilon)
+        q_arr = np.clip(q_arr, epsilon, 1.0 - epsilon)
+        divergence = np.sum(
+            p_arr * np.log(p_arr / q_arr)
+            + (1.0 - p_arr) * np.log((1.0 - p_arr) / (1.0 - q_arr))
+        )
+        # Roundoff can make an exactly zero divergence very slightly negative.
+        return max(0.0, float(divergence))
 
     def check_drift(self, current_confidences: list[float]) -> dict[str, Any]:
         """Check belief drift against baseline.
@@ -745,7 +760,7 @@ class CoordinationIntegrityMonitor:
         Each vote dict should have:
         - ``"agent_id"``: str
         - ``"vote"``: Any (the vote value)
-        - ``"timestamp"``: float (epoch seconds)
+        - ``"timestamp"``: float (epoch seconds); omit only when unknown
 
         Args:
             votes: List of vote dictionaries
@@ -753,9 +768,10 @@ class CoordinationIntegrityMonitor:
         Returns:
             Dict with:
             - ``"suspicious"``: bool (both simultaneous AND identical)
-            - ``"simultaneous"``: bool (all within 1 second)
+            - ``"simultaneous"``: bool (all known times within 1 second)
             - ``"identical"``: bool (all same vote value)
-            - ``"time_spread"``: float (max - min timestamp)
+            - ``"time_spread"``: float or None when any timestamp is missing
+            - ``"timestamps_complete"``: bool
             - ``"unique_vote_count"``: int
             - ``"vote_count"``: int
         """
@@ -767,10 +783,13 @@ class CoordinationIntegrityMonitor:
                 "vote_count": len(votes),
             }
 
-        # Check simultaneous (all within 1 second)
-        timestamps = [v.get("timestamp", 0) for v in votes]
-        time_spread = max(timestamps) - min(timestamps)
-        simultaneous = time_spread < 1.0
+        timestamps = [v.get("timestamp") for v in votes]
+        timestamps_complete = all(timestamp is not None for timestamp in timestamps)
+        time_spread: float | None = None
+        simultaneous = False
+        if timestamps_complete:
+            time_spread = max(timestamps) - min(timestamps)
+            simultaneous = time_spread < 1.0
 
         # Check identical votes
         vote_values = [str(v.get("vote", "")) for v in votes]
@@ -784,6 +803,7 @@ class CoordinationIntegrityMonitor:
             "simultaneous": simultaneous,
             "identical": identical,
             "time_spread": time_spread,
+            "timestamps_complete": timestamps_complete,
             "unique_vote_count": len(unique_votes),
             "vote_count": len(votes),
         }

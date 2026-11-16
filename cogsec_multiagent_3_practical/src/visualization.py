@@ -19,6 +19,7 @@ from matplotlib.figure import Figure, SubFigure
 from matplotlib.patches import Patch
 
 from .deployment import TrustDecayAnalyzer
+from .pitfalls import PitfallCatalog
 
 
 class FigureType(Enum):
@@ -48,27 +49,24 @@ class FigureData:
 
 
 def get_five_pillars_data(
-    firewall_score: float = 0.0,
-    sandbox_score: float = 0.0,
-    tripwire_score: float = 0.0,
-    invariant_score: float = 0.0,
-    provenance_score: float = 0.0,
+    trust_boundary_score: float = 0.0,
+    belief_provenance_score: float = 0.0,
+    delegation_hygiene_score: float = 0.0,
+    coordination_integrity_score: float = 0.0,
+    continuous_monitoring_score: float = 0.0,
 ) -> FigureData:
-    """Generate data for Five Pillars posture radar chart.
+    """Generate data for the five-pillar operator-posture radar chart.
 
-    The Five Pillars of the Cognitive Immunity Framework (CIF):
-    1. Cognitive Firewall (F) - filters malicious inputs
-    2. Belief Sandbox (W) - isolates uncertain beliefs
-    3. Identity Tripwire (T) - detects identity deception
-    4. Behavioral Invariants (I) - enforces constraints
-    5. Epistemic Provenance (P) - tracks information sources
+    These axes are the operator-readiness pillars assessed by
+    ``posture.FivePillarsAssessment``. They are not scores for the CIF defense
+    mechanisms (firewall, sandbox, tripwire, invariants, provenance).
 
     Args:
-        firewall_score: Cognitive Firewall implementation score (0-1)
-        sandbox_score: Belief Sandbox implementation score (0-1)
-        tripwire_score: Identity Tripwire implementation score (0-1)
-        invariant_score: Behavioral Invariant implementation score (0-1)
-        provenance_score: Epistemic Provenance implementation score (0-1)
+        trust_boundary_score: Trust Boundary Awareness score (0-1)
+        belief_provenance_score: Belief Provenance score (0-1)
+        delegation_hygiene_score: Delegation Hygiene score (0-1)
+        coordination_integrity_score: Coordination Integrity score (0-1)
+        continuous_monitoring_score: Continuous Monitoring score (0-1)
 
     Returns:
         FigureData with radar chart configuration
@@ -77,11 +75,11 @@ def get_five_pillars_data(
         ValueError: If any score is outside [0, 1] range
     """
     scores = {
-        "firewall": firewall_score,
-        "sandbox": sandbox_score,
-        "tripwire": tripwire_score,
-        "invariant": invariant_score,
-        "provenance": provenance_score,
+        "trust_boundary": trust_boundary_score,
+        "belief_provenance": belief_provenance_score,
+        "delegation_hygiene": delegation_hygiene_score,
+        "coordination_integrity": coordination_integrity_score,
+        "continuous_monitoring": continuous_monitoring_score,
     }
 
     for name, score in scores.items():
@@ -89,27 +87,18 @@ def get_five_pillars_data(
             raise ValueError(f"{name}_score must be between 0 and 1, got {score}")
 
     pillars = [
-        "Cognitive\nFirewall (F)",
-        "Belief\nSandbox (W)",
-        "Identity\nTripwire (T)",
-        "Behavioral\nInvariants (I)",
-        "Epistemic\nProvenance (P)",
+        "Trust Boundary\nAwareness",
+        "Belief\nProvenance",
+        "Delegation\nHygiene",
+        "Coordination\nIntegrity",
+        "Continuous\nMonitoring",
     ]
 
-    values = [
-        firewall_score,
-        sandbox_score,
-        tripwire_score,
-        invariant_score,
-        provenance_score,
-    ]
+    values = list(scores.values())
 
     return FigureData(
         figure_type=FigureType.RADAR,
-        # "Assessment" implied an assessed system. The scores this renders are
-        # whatever the caller passes to the questionnaire; the figure shipped
-        # in the deployment guide passes a worked example.
-        title="Five Pillars Security Posture (worked example)",
+        title="Five-Pillar Operator Posture (worked example)",
         data={
             "pillars": pillars,
             "values": values,
@@ -124,6 +113,7 @@ def get_five_pillars_data(
             "overall_score": sum(values) / len(values),
             "weakest_pillar": pillars[values.index(min(values))],
             "strongest_pillar": pillars[values.index(max(values))],
+            "taxonomy": "operator_posture",
         },
     )
 
@@ -459,7 +449,7 @@ def render_risk_matrix(data: FigureData, ax: Axes | None = None) -> Figure | Sub
     )
 
     # Color mapping
-    cmap = plt.get_cmap("YlOrRd_r")  # Yellow=low risk, Red=high risk (colorblind-accessible)
+    cmap = plt.get_cmap("YlOrRd")  # Yellow=low risk, Red=high risk (colorblind-accessible)
     norm = colors.Normalize(vmin=1, vmax=5)
 
     # Draw heatmap
@@ -640,70 +630,25 @@ class Pitfall:
 
 
 def get_pitfalls_data() -> FigureData:
-    """Generate data for the common-pitfalls severity chart.
+    """Generate severity-chart data from the authoritative pitfall catalog.
 
-    NOTE (P3-M2): the pitfalls rendered here are ILLUSTRATIVE EXAMPLES and are
-    NOT derived from the authoritative ``pitfalls.PitfallCatalog`` (PIT-1..PIT-8).
-    Names/severities may diverge from that catalog; readers should treat this
-    figure as illustrative and the catalog as the source of truth.
-
-    Returns:
-        FigureData with illustrative pitfall severity rankings
+    Names, descriptions, categories, and severities are projected directly
+    from ``pitfalls.PitfallCatalog`` so this view cannot drift into a separate
+    invented ranking.
     """
     pitfalls = [
         Pitfall(
-            name="Implicit Trust in Outputs",
-            severity=5,
-            description="Treating agent outputs as verified without validation",
-            category="security",
-        ),
-        Pitfall(
-            name="Missing Input Validation",
-            severity=5,
-            description="No cognitive firewall on external inputs",
-            category="security",
-        ),
-        Pitfall(
-            name="Flat Trust Architecture",
-            severity=4,
-            description="All agents at same trust level regardless of role",
-            category="design",
-        ),
-        Pitfall(
-            name="No Behavioral Invariants",
-            severity=4,
-            description="Missing hard constraints on agent actions",
-            category="security",
-        ),
-        Pitfall(
-            name="Single Point of Failure",
-            severity=4,
-            description="Critical decisions without redundancy",
-            category="operational",
-        ),
-        Pitfall(
-            name="Insufficient Monitoring",
-            severity=3,
-            description="No visibility into agent decision-making",
-            category="operational",
-        ),
-        Pitfall(
-            name="Over-Privileged Agents",
-            severity=3,
-            description="Agents with more capabilities than needed",
-            category="design",
-        ),
-        Pitfall(
-            name="Static Trust Levels",
-            severity=2,
-            description="Trust never updated based on behavior",
-            category="design",
-        ),
+            name=definition.name,
+            severity=definition.severity,
+            description=definition.pattern,
+            category=definition.category.value,
+        )
+        for definition in PitfallCatalog().pitfalls
     ]
 
     return FigureData(
         figure_type=FigureType.BAR,
-        title="Common Deployment Pitfalls by Severity (assigned severities)",
+        title="Documented Deployment Pitfalls by Catalog Severity",
         data={
             "pitfalls": pitfalls,
             "severity_labels": {
@@ -714,6 +659,7 @@ def get_pitfalls_data() -> FigureData:
                 1: "Minimal",
             },
         },
+        metadata={"source": "pitfalls.PitfallCatalog"},
     )
 
 

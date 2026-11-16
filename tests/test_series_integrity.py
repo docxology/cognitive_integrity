@@ -49,6 +49,16 @@ def _load_module(monkeypatch_root: Path | None = None):
     return module
 
 
+def _load_root_script(name: str):
+    path = REPO_ROOT / "scripts" / f"{name}.py"
+    spec = importlib.util.spec_from_file_location(f"{name}_regression", path)
+    assert spec and spec.loader
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = module
+    spec.loader.exec_module(module)
+    return module
+
+
 @pytest.fixture(scope="module")
 def gate():
     return _load_module()
@@ -108,20 +118,32 @@ def _build_tree(root: Path, *, part_text: dict[str, str], bibs: dict[str, str]) 
         # and the truncation check reads the end of the file, so a citation
         # added after the defect hides it.
         # Sentences the new ledger variables gate. A synthetic tree with no
-        # HDI and no solo-detection line is not a clean tree, it is a tree
-        # missing two gated quantities, and the guard is right to say so.
+        # HDI or corpus-specific solo-detection lines is not a clean tree;
+        # the anti-vacuity guard is right to reject it.
         gated = (
             "\nThe representative multi-seed estimate (mean 44.8\\%, 95\\% HDI "
             "[35.5\\%, 54.7\\%]) is reported with uncertainty.\n"
-            "\nThe Invariants checker alone reaches 83.3\\% against the full stack.\n"
+            "\nOn the ablation corpus the Invariants checker alone reaches 85.0\\% "
+            "against the full stack.\n"
+            "\nOn the 1,475-item capability corpus the Invariants checker alone "
+            "reaches 83.3\\% against the full stack.\n"
         )
         # Prepended, never appended: several tests plant a severed final clause
         # and the truncation check reads the end of the file.
         if part == "2" and "HDI" not in body:
-            body = gated.split("\nThe Invariants")[0] + "\n" + body
+            body = gated.split("\nOn the ablation")[0] + "\n" + body
+        if part == "2" and "legacy" not in body:
+            body = (
+                "The legacy 950-item corpus is retained for the parametric sweep.\n"
+                "The legacy 950-attack, four-family corpus is a distinct denominator.\n\n"
+                + body
+            )
         if part == "3" and "checker alone reaches" not in body:
             body = (
-                "The Invariants checker alone reaches 83.3\\% against the full stack.\n\n"
+                "On the ablation corpus the Invariants checker alone reaches 85.0\\% "
+                "against the full stack.\n"
+                "On the 1,475-item capability corpus the Invariants checker alone "
+                "reaches 83.3\\% against the full stack.\n\n"
                 + body
             )
 
@@ -194,9 +216,9 @@ def _build_tree(root: Path, *, part_text: dict[str, str], bibs: dict[str, str]) 
 #: is internally consistent (ceiling 96--100, mean 44.8, corpus 950, 4 arches).
 _ARTIFACTS: dict[str, object] = {
     "full_evaluation_results.json": _PARAMETRIC_ROWS,
-    # Read by invariants_solo_detection. Only the one path the ledger walks is
-    # populated: a fixture that mirrored the whole real artifact would drift
-    # from it, and this one exists to be internally consistent, not complete.
+    # Read by capability_invariants_solo_detection. Only the path the ledger
+    # walks is populated: this fixture exists to be internally consistent, not
+    # to mirror the whole real artifact.
     "module_capability_matrix.json": {
         "data_origin": "real_pipeline",
         "source_script": "scripts/run_module_capability_matrix.py",
@@ -237,6 +259,8 @@ _ARTIFACTS: dict[str, object] = {
              "tpr_a": 1 / 98, "tpr_b": 5 / 98, "fpr_a": 0.0, "fpr_b": 0.0},
             {"a": "firewall", "b": "trust_calculus", "synergy": 2 / 98,
              "tpr_a": 1 / 98, "tpr_b": 2 / 98, "fpr_a": 0.0, "fpr_b": 0.0},
+            {"a": "invariants", "b": "detection", "synergy": 0.0,
+             "tpr_a": 0.85, "tpr_b": 5 / 98, "fpr_a": 0.0, "fpr_b": 0.0},
         ],
     },
     "colony_results.json": {
@@ -534,6 +558,24 @@ def test_truncation_catches_a_heading_with_no_body(tmp_path):
     result = module.CHECKS["truncation"]()
     assert not result.ok
     assert any("has no body" in p.message for p in result.problems)
+
+
+def test_truncation_ignores_python_comments_in_lstlisting(tmp_path):
+    """A Python comment is not an empty Markdown section."""
+    body = CEILING_OK + (
+        "\n\\begin{lstlisting}[language=Python]\n"
+        "result = compute()\n"
+        "# result[\"delta\"] is the measured change.\n"
+        "\\end{lstlisting}\n\n"
+        "The executable example is complete.\n"
+    )
+    tree = _build_tree(
+        tmp_path / "listing-comments",
+        part_text={"1": CEILING_OK, "2": body, "3": CEILING_OK},
+        bibs={},
+    )
+    module = _load_module(tree)
+    assert module.CHECKS["truncation"]().ok
 
 
 @pytest.mark.parametrize(
@@ -838,11 +880,13 @@ def test_bare_ceiling_form_is_gated_and_excludes_range_digits(gate):
 def test_every_artifact_the_ledger_reads_is_tracked_by_git():
     """A gate that cannot run on a clean clone is a gate nobody has.
 
-    output/ is gitignored, and the shipped artifacts are force-added one at a
-    time. Three that the ledger derives from had never been added, so CI's
-    gating step would have failed on any fresh checkout with "cannot derive
-    ground truth" -- red from the first build, for a reason unrelated to the
-    manuscripts.
+    ``output/`` used to be gitignored wholesale, and the shipped artifacts were
+    force-added one at a time. Three that the ledger derives from had never
+    been added, so CI's gating step would have failed on any fresh checkout
+    with "cannot derive ground truth" -- red from the first build, for a reason
+    unrelated to the manuscripts. The blanket rule is now narrowed to
+    regenerable bulk, but this test stays: being addable is not the same as
+    being added, and an untracked measurement is still a broken clone.
     """
     import subprocess
 
@@ -927,6 +971,35 @@ def test_artifact_provenance_accepts_a_sidecar_that_declares(tmp_path):
     assert module.CHECKS["artifact-provenance"]().ok
 
 
+@pytest.mark.parametrize(
+    "inline, sidecar",
+    [
+        ({"data_origin": "synthetic_schema"}, {"data_origin": "real_pipeline"}),
+        ({"data_origin": "real_pipeline"}, {"data_origin": "synthetic_schema"}),
+        ({"data_origin": "real_pipeline"}, {"source_script": "src/data/generate.py"}),
+        ({"source_script": "src/data/generate.py"}, {"data_origin": "real_pipeline"}),
+    ],
+)
+def test_artifact_provenance_rejects_synthetic_inline_or_sidecar_origins(
+    tmp_path, inline, sidecar
+):
+    tree = _build_tree(
+        tmp_path / "synthetic-provenance",
+        part_text={"1": CEILING_OK,
+                   "2": CEILING_OK + "\nData from `output/data/listy.json`.\n",
+                   "3": CEILING_OK},
+        bibs={},
+    )
+    module = _load_module(tree)
+    (module.DATA_DIR / "listy.json").write_text(json.dumps(inline), encoding="utf-8")
+    (module.DATA_DIR / "listy.provenance.json").write_text(
+        json.dumps(sidecar), encoding="utf-8"
+    )
+    result = module.CHECKS["artifact-provenance"]()
+    assert not result.ok
+    assert any("a placeholder, not a result" in p.message for p in result.problems)
+
+
 def test_artifact_provenance_sees_a_bare_filename_citation(tmp_path):
     """Prose cites files by name as well as by path."""
     tree = _build_tree(
@@ -941,6 +1014,77 @@ def test_artifact_provenance_sees_a_bare_filename_citation(tmp_path):
     result = module.CHECKS["artifact-provenance"]()
     assert not result.ok
     assert any("declares no provenance" in p.message for p in result.problems)
+
+
+def test_artifact_provenance_rejects_a_dangling_output_path(tmp_path):
+    """``output/formal/verification_summary.json`` was cited and never shipped.
+
+    The ``output/data`` pattern cannot see a path outside ``output/data``, so a
+    manuscript pointing at a non-existent formal-verdict artifact passed the
+    gate. The second pass exists to catch exactly that.
+    """
+    tree = _build_tree(
+        tmp_path / "dangling",
+        part_text={"1": CEILING_OK,
+                   "2": CEILING_OK + "\nRecorded in `output/formal/verification_summary.json`.\n",
+                   "3": CEILING_OK},
+        bibs={},
+    )
+    module = _load_module(tree)
+    result = module.CHECKS["artifact-provenance"]()
+    assert not result.ok
+    assert any("dangling" in p.message for p in result.problems)
+
+
+def test_artifact_provenance_accepts_an_output_path_that_exists(tmp_path):
+    """The same pointer is clean once the artifact is actually shipped."""
+    tree = _build_tree(
+        tmp_path / "resolved",
+        part_text={"1": CEILING_OK,
+                   "2": CEILING_OK + "\nRecorded in `output/formal/verification_summary.json`.\n",
+                   "3": CEILING_OK},
+        bibs={},
+    )
+    module = _load_module(tree)
+    target = module.REPO_ROOT / module.PARTS["2"] / "output" / "formal"
+    target.mkdir(parents=True, exist_ok=True)
+    (target / "verification_summary.json").write_text(
+        json.dumps({"verified": False}), encoding="utf-8"
+    )
+    assert module.CHECKS["artifact-provenance"]().ok
+
+
+def test_artifact_provenance_resolves_a_sibling_parts_output_path(tmp_path):
+    """Part 3 citing Part 2's ``output/data/composer_data.json`` is legitimate."""
+    tree = _build_tree(
+        tmp_path / "sibling",
+        part_text={"1": CEILING_OK,
+                   "2": CEILING_OK,
+                   "3": CEILING_OK + "\nSee Part 2's `output/data/composer_data.json`.\n"},
+        bibs={},
+    )
+    module = _load_module(tree)
+    (module.DATA_DIR / "composer_data.json").write_text(
+        json.dumps({"data_origin": "real_pipeline"}), encoding="utf-8"
+    )
+    assert module.CHECKS["artifact-provenance"]().ok
+
+
+def test_artifact_provenance_rejects_a_wrong_owner_sibling_path(tmp_path):
+    tree = _build_tree(
+        tmp_path / "wrong-owner",
+        part_text={"1": CEILING_OK,
+                   "2": CEILING_OK,
+                   "3": CEILING_OK + "\nSee `cogsec_multiagent_1_theory/output/formal/owner.json`.\n"},
+        bibs={},
+    )
+    module = _load_module(tree)
+    target = module.REPO_ROOT / module.PARTS["2"] / "output" / "formal"
+    target.mkdir(parents=True, exist_ok=True)
+    (target / "owner.json").write_text("{}", encoding="utf-8")
+    result = module.CHECKS["artifact-provenance"]()
+    assert not result.ok
+    assert any("owner.json" in p.message for p in result.problems)
 
 
 def test_artifact_provenance_ignores_a_sentence_disclaiming_an_artifact(tmp_path):
@@ -1029,8 +1173,14 @@ def test_every_gated_quantity_declares_context_keywords(gate):
 
 def test_every_ledger_variable_derives_from_the_real_artifacts(gate):
     """Anti-vacuity: a deriver that raises would silently stop gating."""
+    # Synthetic-tree tests deliberately reroot this shared module. Restore all
+    # three pieces of global state before judging the real artifacts; otherwise
+    # a cached synthetic payload can make this test prove nothing about them.
     import series_ledger
 
+    series_ledger.REPO_ROOT = REPO_ROOT
+    series_ledger.DATA_DIR = REPO_ROOT / series_ledger.PARTS["2"] / "output" / "data"
+    series_ledger._CACHE.clear()
     failures = []
     for var in series_ledger.LEDGER:
         try:
@@ -1038,6 +1188,37 @@ def test_every_ledger_variable_derives_from_the_real_artifacts(gate):
         except Exception as exc:  # noqa: BLE001 - report, never mask
             failures.append(f"{var.id}: {type(exc).__name__}: {exc}")
     assert not failures, failures
+
+
+def test_invariant_solo_rates_derive_from_their_distinct_experiments(tmp_path):
+    tree = _build_tree(
+        tmp_path / "solo-corpora",
+        part_text={"1": CEILING_OK, "2": CEILING_OK, "3": CEILING_OK},
+        bibs={},
+    )
+    module = _load_module(tree)
+    quantities = {q.id: q for q in module.SHARED_QUANTITIES}
+    assert quantities["invariants_solo_detection"].value() == pytest.approx(85.0)
+    assert quantities["capability_invariants_solo_detection"].value() == pytest.approx(83.3)
+
+
+def test_ablation_prose_cannot_use_the_capability_corpus_rate(tmp_path):
+    tree = _build_tree(
+        tmp_path / "solo-wrong-corpus",
+        part_text={"1": CEILING_OK, "2": CEILING_OK, "3": CEILING_OK},
+        bibs={},
+    )
+    module = _load_module(tree)
+    path = module.manuscript_dir("3") / "01_body.md"
+    path.write_text(
+        path.read_text(encoding="utf-8").replace(
+            "On the ablation corpus the Invariants checker alone reaches 85.0",
+            "On the ablation corpus the Invariants checker alone reaches 83.3",
+        ),
+        encoding="utf-8",
+    )
+    result = module.check_shared_quantities()
+    assert any("invariants_solo_detection" in p.message for p in result.problems)
 
 
 def test_the_ledger_gates_a_meaningful_share_of_its_variables(gate):
@@ -1051,6 +1232,21 @@ def test_the_ledger_gates_a_meaningful_share_of_its_variables(gate):
 def test_shared_quantity_ids_are_unique(gate):
     ids = [q.id for q in gate.SHARED_QUANTITIES]
     assert len(ids) == len(set(ids))
+
+
+def test_context_require_tokens_are_case_insensitive(gate):
+    quantity = next(q for q in gate.SHARED_QUANTITIES if q.id == "at_final_hardened_dr")
+    line = "The round 5 configuration reaches 67.9\\% detection."
+    match = next(quantity.pattern.finditer(line))
+    assert quantity.in_scope(line, match)
+
+
+@pytest.mark.parametrize("count", ["six", "7", "twelve"])
+def test_round_guard_accepts_word_and_numeric_counts(gate, count):
+    quantity = next(q for q in gate.SHARED_QUANTITIES if q.id == "at_rounds")
+    line = f"Adversarial training ran for {count} rounds."
+    match = next(quantity.pattern.finditer(line))
+    assert quantity.in_scope(line, match)
 
 
 def test_context_window_excludes_a_neighbouring_arm(gate):
@@ -1117,25 +1313,22 @@ class TestTheBibliographyGateIsClosed:
     them.
     """
 
-    def test_an_uncited_entry_fails_the_gate(self, tmp_path, monkeypatch):
-        """Test of the test: the gate must be able to fail."""
+    def test_an_uncited_entry_fails_the_gate(self, clean_tree):
+        """Plant the uncited entry only in an isolated manuscript tree."""
         gate = _load_module()
-        part = "1"
-        bib = gate.manuscript_dir(part) / "references.bib"
+        gate.REPO_ROOT = clean_tree
+        bib = gate.manuscript_dir("1") / "references.bib"
         original = bib.read_text(encoding="utf-8")
-        try:
-            bib.write_text(
-                original
-                + "\n@misc{nobodycitesthisatall2026,\n"
-                '  title = {A Source Nobody Cites},\n'
-                "  year = {2026},\n}\n",
-                encoding="utf-8",
-            )
-            result = gate.check_bibliography()
-            hits = [p for p in result.problems if "nobodycitesthisatall2026" in p.message]
-            assert hits, "the gate did not notice an entry nothing cites"
-        finally:
-            bib.write_text(original, encoding="utf-8")
+        bib.write_text(
+            original
+            + "\n@misc{nobodycitesthisatall2026,\n"
+            '  title = {A Source Nobody Cites},\n'
+            "  year = {2026},\n}\n",
+            encoding="utf-8",
+        )
+        result = gate.check_bibliography()
+        hits = [p for p in result.problems if "nobodycitesthisatall2026" in p.message]
+        assert hits, "the gate did not notice an entry nothing cites"
 
     def test_the_shipped_bibliographies_are_closed(self):
         """And the negative control: the tree as shipped must pass."""
@@ -1149,3 +1342,58 @@ class TestTheBibliographyGateIsClosed:
         part = "2"
         keys = {"friedman2026cogsec2"}
         assert gate._keys_named_outside_the_prose(part, keys) == keys
+
+
+def test_publication_doi_is_not_a_fallback_for_paper_doi(tmp_path):
+    module = _load_root_script("check_publication_identity")
+    module.REPO = tmp_path
+    module.PARTS = ("part",)
+    config = tmp_path / "part" / "docs" / "manuscript" / "config.yaml"
+    config.parent.mkdir(parents=True)
+    config.write_text(
+        "publication:\n  doi: 10.5281/zenodo.1111111\n",
+        encoding="utf-8",
+    )
+    assert module.registered_dois() == {
+        "part": {"publication": "10.5281/zenodo.1111111"}
+    }
+
+    config.write_text(
+        "paper:\n  title: Example\n  doi: 10.5281/zenodo.2222222\n"
+        "publication:\n  doi: 10.5281/zenodo.1111111\n",
+        encoding="utf-8",
+    )
+    entry = module.registered_dois()["part"]
+    assert entry["version"] == "10.5281/zenodo.2222222"
+    assert entry["publication"] == "10.5281/zenodo.1111111"
+
+
+def test_pruner_reads_canonical_manuscript_bibliographies(tmp_path, capsys):
+    module = _load_root_script("prune_bibliography")
+    module.REPO = tmp_path
+    module._gate.REPO_ROOT = tmp_path
+    for part in module.PARTS:
+        manuscript = tmp_path / module.PARTS[part] / "docs" / "manuscript"
+        manuscript.mkdir(parents=True)
+        (manuscript / "01_body.md").write_text("See [@used].\n", encoding="utf-8")
+        (manuscript / "references.bib").write_text(
+            "@misc{used,\n  title = {Used},\n}\n"
+            "@misc{orphan,\n  title = {Orphan},\n}\n",
+            encoding="utf-8",
+        )
+    report = module.plan()
+    assert set(report) == set(module.PARTS)
+    assert all(entry["remove"] == ["orphan"] for entry in report.values())
+    assert module.main(["--check"]) == 1
+
+
+def test_pruner_refuses_an_empty_bibliography_corpus(tmp_path, capsys):
+    module = _load_root_script("prune_bibliography")
+    module.REPO = tmp_path
+    module._gate.REPO_ROOT = tmp_path
+    for part in module.PARTS:
+        manuscript = tmp_path / module.PARTS[part] / "docs" / "manuscript"
+        manuscript.mkdir(parents=True)
+        (manuscript / "references.bib").write_text("", encoding="utf-8")
+    assert module.main(["--check"]) == 2
+    assert "incomplete bibliography corpus" in capsys.readouterr().err

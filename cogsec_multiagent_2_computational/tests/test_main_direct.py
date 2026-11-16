@@ -18,11 +18,10 @@ from pathlib import Path
 
 import pytest
 
-# Ensure src is on the path
+# Ensure the repository root is on the path for the canonical src package
 _PROJECT_ROOT = Path(__file__).resolve().parent.parent
-_SRC = str(_PROJECT_ROOT / "src")
-if _SRC not in sys.path:
-    sys.path.insert(0, _SRC)
+if str(_PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(_PROJECT_ROOT))
 
 
 class TestMainModule:

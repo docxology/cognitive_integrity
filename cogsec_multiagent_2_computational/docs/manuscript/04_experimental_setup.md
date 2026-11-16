@@ -78,17 +78,17 @@ The LLM-backed results provide preliminary evidence that CIF's defense pipeline 
 
 Table: Statistical power analysis for each evaluation mode. {#tab:power-analysis-preregistration}
 
-The power summary (\cref{tab:power-analysis-preregistration}) shows that the multi-seed and LLM validation modes are severely underpowered for precise estimation.
+The power summary (\cref{tab:power-analysis-preregistration}) distinguishes the representative per-seed interval target from the across-seed mean CI and shows that the LLM validation mode is severely underpowered.
 
 | Evaluation Mode | $N$ (Actual) | Effect Size | Required $N$ ($\pm 5\%$ precision) | Interpretation |
 | :--- | :--- | :--- | :--- | :--- |
-| Multi-seed pipeline (30 seeds $\times$ 100) | 3{,}000 | DR = 0.863 | $N \geq 380$ | Adequately powered in aggregate |
-| Ablation corpus | 100 attacks | TPR = 0.890 | $N \geq 165$ | Marginally underpowered |
+| Multi-seed pipeline (per seed; 30 seeds) | 100 attacks + 120 benign | DR = 0.863 | $N \geq 185$ attacks | Per-seed precision target not met; mean CI uses 30 seed estimates |
+| Ablation corpus | 100 attacks | TPR = 0.890 | $N \geq 150$ | Marginally underpowered |
 | LLM multiagent (per arch.) | 5 per arch. | DR $\in$ [0.80, 1.00] | $N \geq 245$ | Severely underpowered; $\pm 29$ pp at $n=5$ |
 | Colony benchmark | 1 scenario each | — | $N \geq 10$ scenarios | Exploratory only; not powered for inference |
 | Parametric simulation | 3,800 | DR = 0.96--1.00 | Sufficient | Design-level; not subject to sampling |
 
-*Interpretation*: The multi-seed and LLM validation modes are severely underpowered for precise estimation of detection rates. The reported results should be interpreted as preliminary estimates with the uncertainty quantified in \cref{sec:bayesian-uncertainty}. The parametric simulation ($N=3{,}800$) is adequately powered but reflects design-level properties rather than empirical pipeline performance. Future work should target $N \geq 245$ seeds (multi-seed) and $N \geq 245$ per architecture (LLM validation) for definitive inference.
+*Interpretation*: A representative 100-attack multi-seed plug-in posterior does not meet the $\pm5$ pp target, while the across-seed mean CI is estimated separately from the 30 seed-level rates; the 3,000 attack evaluations are not pooled as independent Bernoulli trials. The LLM validation is severely underpowered and the ablation remains below its target precision. The parametric simulation ($N=3{,}800$) reflects design-level properties rather than empirical pipeline performance. Future work should target at least 185 attacks per representative multi-seed arm and $N \geq 245$ per architecture for LLM validation when $\pm5$ pp precision is required.
 
 **Runtime and Resource Requirements.** The full experiment suite completes in approximately 15 minutes on the reference hardware specified below. Peak memory usage reaches approximately 2GB during Byzantine consensus tests, which require maintaining state for all agent interactions. Individual defense mechanism tests (firewall-only, sandbox-only, tripwires-only) complete in under 5 minutes each.
 
@@ -96,9 +96,11 @@ The power summary (\cref{tab:power-analysis-preregistration}) shows that the mul
 
 ## Key Findings {#sec:key-findings}
 
-### Finding 1: Layered Defense Significantly Outperforms Single Mechanisms
+### Finding 1: Invariants Dominate Marginal Detection
 
-The central empirical finding validates CIF's layered approach. No single defense mechanism achieves acceptable protection, but their composition yields substantial improvement. \Cref{fig:detection-performance} presents detection rates across defense configurations and attack categories, with the full numerical summary in \cref{tab:detection-performance}.
+The retained legacy parametric corpus is distinct from the integrated pipeline corpus; its denominator and operating point are not matched to the multi-seed arm.
+
+The central ablation finding is that one mechanism dominates marginal detection on this corpus; the measurement does not validate uniformly layered defense. \Cref{fig:detection-performance} presents detection rates across defense configurations and attack categories, with the full numerical summary in \cref{tab:detection-performance}.
 
 ![Detection performance. **Panel A** reports the ablation run (\texttt{output/data/ablation\_results.json}): each mechanism's true-positive rate in isolation, and the full pipeline's. The five mechanisms whose solo rates the ablation's pairwise records carry are shown. Measured false-positive rate is exactly zero for every configuration in this run, but that zero is measured against \texttt{ablation.runner.BENIGN\_MESSAGES}---50 plainly benign strings---and not against the 120-item \texttt{BenignCorpus} whose hard half carries attack-adjacent vocabulary, so it is a floor rather than an operating-point FPR. The FPR series is therefore present but sits on the axis; F1 is computed from the measured pair, which at zero FPR reduces to $2r/(1+r)$. The series composition rule $1 - \prod(1 - r_i)$ predicts 87.8\% from the solo rates against a measured 89.0\% --- close agreement, and the sharper test of the composition algebra than any single number. **Panel B** reports \texttt{output/data/full\_evaluation\_results.json}, written by \texttt{scripts/run\_full\_evaluation.py}: detection rate for each of four agent architectures across four attack categories. Its provenance sidecar records \texttt{parametric\_simulation}, so the panel is labelled a simulation and not a measurement of a deployed system. The intervals are 95\% Wilson intervals on each cell's own true-positive count out of its attack count, which ranges from 100 to 500 across cells; they are narrow because those counts are large, and a narrow interval honestly derived is worth more than a wide one invented. The two panels are therefore not comparable in kind --- Panel A is a measured ablation of single mechanisms, Panel B a parametric simulation of whole architectures --- which is also why their ordinates differ by an order of magnitude.](figures/detection_performance.pdf){#fig:detection-performance width=95%}
 
@@ -106,7 +108,7 @@ Table: Detection performance summary — empirical results across evaluation mod
 
 | Evaluation Mode | Detection Rate | Sample Size | Source |
 | --- | --- | --- | --- |
-| Multi-seed pipeline (Claude Code, 30 seeds) | 86.3\% [85.5, 87.1\%] | $N=30$ seeds | `multi_seed_results.json` |
+| Multi-seed pipeline (architecture-agnostic, 30 seeds) | 86.3\% [85.5, 87.1\%] | $N=30$ seeds | `multi_seed_results.json` |
 | Ablation pipeline (full, 100-attack corpus) | 89.0\% | $N=100$ | `ablation_results.json` |
 | LLM multiagent — Claude Code (Gemma 3 4B) | 80.0\% [28, 99\%] | $N=5$ | `llm_demo_results.json` |
 | LLM multiagent — CrewAI (Gemma 3 4B) | 100\% [48, 100\%] | $N=5$ | `llm_demo_results.json` |
@@ -115,11 +117,11 @@ Table: Detection performance summary — empirical results across evaluation mod
 | Colony — emergent misalignment (50 agents) | 74.3\% | 1 scenario | `colony_results.json` |
 | Parametric simulation (design ceiling) | 96--100\% | $N=3{,}800$ | \cref{sec:parametric-analysis} |
 
-*Note: The wide variation across evaluation modes (12--100\%) reflects the distinction between CIF's design-level coverage (parametric) and the current adapter implementations' maturity (pipeline/LLM). The multi-seed mean of 86.3\% represents the most reliable single estimate for the Claude Code architecture under current implementation. Confidence intervals for LLM results are Clopper-Pearson exact binomial intervals reflecting the preliminary sample size ($N=5$ per architecture).*
+*Note: The variation across evaluation modes reflects distinct corpora, denominators, and operating points; it is not a causal measurement of adapter maturity. The multi-seed mean of 86.3\% represents the architecture-agnostic pipeline on its stratified 100-attack plus 120-benign-per-seed arm. Confidence intervals for LLM results are Clopper-Pearson exact binomial intervals reflecting the preliminary sample size ($N=5$ per architecture).*
 
-The real ablation data (\cref{tab:component-removal}) quantifies the layered architecture's individual contributions: no single component accounts for a majority of detection (Detection module: $\Delta\text{TPR} \approx +0.000$ when removed), while the three largest harmful removals (Detection, Tripwires, Invariants) together account for about 80\% of the summed negative $\Delta\text{TPR}$ magnitude on this corpus. This confirms that defense composition provides meaningful improvement over individual mechanisms, consistent with the multiplicative composition theorems from Part 1.
+The real ablation data (\cref{tab:component-removal}) shows a dominant component rather than uniform layering. Removing Invariants costs $\Delta\text{TPR} \approx -0.670$ from the 0.890 full-pipeline TPR---about 75.3\% of baseline detection---while removing Tripwires costs 0.010, the Detection module costs $\Delta\text{TPR} \approx +0.000$, and every remaining removal costs zero at the corpus's 0.01 resolution. These two harmful removals account for all measured negative $\Delta\text{TPR}$ magnitude. The full pipeline exceeds the strongest singleton, Invariants at 0.850, by 0.040 on this 100-attack corpus; this does not support the earlier claim that no single component dominates.
 
-The multi-seed pipeline analysis (mean DR = 86.3\%, CV = 0.024 across 30 seeds) establishes a reliable baseline for the Claude Code architecture. The parametric simulation (\cref{sec:parametric-analysis}) achieves 96--100\% detection rate, defining the design-level coverage ceiling that fully-realized adapter implementations should approach.
+The multi-seed pipeline analysis (mean DR = 86.3\%, CV = 0.024 across 30 seeds) establishes an architecture-agnostic baseline on 100 stratified attacks and 120 benign messages per seed. The separate parametric simulation (\cref{sec:parametric-analysis}) reports a 96--100\% design-level range; it is not a matched performance target for this arm.
 
 ### Finding 2: Trust Calculus Prevents Amplification Attacks
 
@@ -148,11 +150,9 @@ Preliminary LLM validation across two architectures shows topology-dependent det
 
 Architectures with explicit role boundaries (CrewAI) and rich graph structure (LangGraph, per parametric analysis) provide more interception opportunities for CIF monitors. Extension of LLM validation to AutoGPT and LangGraph is planned for future work.
 
-### Finding 4: Performance Overhead Is Acceptable for Security Contexts
+### Finding 4: Overhead Is Reported in Absolute Units
 
-Full CIF deployment introduces latency overhead in the 20-25\% range with memory requirements scaling with agent count. For security-critical deployments, this overhead is acceptable given the integrity improvement achieved.
-
-The overhead is dominated by the cognitive firewall (input classification) and Byzantine consensus (coordination). For environments where consensus is unnecessary, lighter configurations achieve comparable detection with lower overhead (Table 3 (Risk-Based Configuration, Part 1)).
+The controlled overhead run measures a median addition of 0.610 ms and 32 KiB peak memory for the full pipeline. Its undefended control is an empty loop rather than a unit of agent work, so no valid percentage overhead or per-architecture overhead is measured. Production acceptability and the contribution of individual modules are not established by this run.
 
 ### Finding 5: Attack-Type Specific Vulnerabilities Remain
 

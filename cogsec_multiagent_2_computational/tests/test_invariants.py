@@ -2,6 +2,8 @@
 
 from datetime import datetime
 
+import pytest
+
 from src import (
     AgentAction,
     Invariant,
@@ -728,3 +730,43 @@ class TestInvariantPredicateEdgeCases:
         none_violations = [v for v in violations if v.invariant_id == "NONE-1"]
         assert len(none_violations) == 1
         assert none_violations[0].severity == InvariantSeverity.MEDIUM
+
+
+class TestInvariantSecurityRegressions:
+    def test_parameters_cannot_override_action_envelope(self):
+        action = AgentAction(
+            agent_id="agent-7",
+            action_type="execute_code",
+            parameters={
+                "code_trusted": False,
+                "action": "noop",
+                "agent_id": "agent-1",
+            },
+        )
+
+        violations = RuntimeMonitor().check_action(action)
+
+        assert [v.invariant_id for v in violations] == ["INV-1"]
+        assert violations[0].context["agent_id"] == "agent-7"
+        assert violations[0].context["action"] == "execute_code"
+
+    def test_missing_direct_trust_does_not_authorize_delegation(self):
+        checker = InvariantChecker()
+
+        violation = checker.check_single(
+            "INV-5",
+            {"action": "trust_evaluation", "delegated_trust": 0.99},
+        )
+
+        assert violation is not None
+
+    @pytest.mark.parametrize(
+        "error", [IndexError, AttributeError, ZeroDivisionError]
+    )
+    def test_model_errors_fail_closed(self, error):
+        def broken_predicate(context):
+            raise error("unevaluable")
+
+        invariant = Invariant("ERR", broken_predicate, "broken model")
+
+        assert invariant.check({}) is False

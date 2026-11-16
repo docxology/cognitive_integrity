@@ -51,8 +51,8 @@ def generate_trust_decay_figure(output_dir: Path) -> Path:
 
     # Panel A: Trust decay curves for different delta values
     ax1 = axes[0]
-    depths = np.arange(0, 21)
-    decay_factors = [0.95, 0.9, 0.85, 0.8, 0.7]
+    depths = np.arange(1, 11)
+    decay_factors = [0.5, 0.7, 0.8, 0.9]
 
     # Use a sequential palette for decay factors
     # Gradient from blue to purple
@@ -90,7 +90,7 @@ def generate_trust_decay_figure(output_dir: Path) -> Path:
     ax1.legend(loc="upper right", frameon=True, framealpha=0.9)
     ax1.grid(True, alpha=0.2, linestyle="-")
     ax1.set_ylim(-0.02, 1.05)
-    ax1.set_xlim(0, 20)
+    ax1.set_xlim(1, 10)
 
     # Add mathematical annotation
     ax1.text(

@@ -86,12 +86,24 @@ def test_geodesic_path_stays_on_simplex():
     assert np.all(path >= -1e-12)
 
 
+def test_geodesic_path_is_constant_speed_great_circle():
+    """Normalized chords do not generally have linear Fisher–Rao distance."""
+    mfd = StatisticalManifold(n_outcomes=3)
+    start = np.array([0.64, 0.25, 0.11])
+    end = np.array([0.09, 0.16, 0.75])
+    path = mfd.geodesic_path(start, end, n_steps=5)
+    total = mfd.riemannian_distance(start, end)
+    for index, fraction in enumerate(np.linspace(0.0, 1.0, 5)):
+        distance = mfd.riemannian_distance(start, path[index])
+        assert distance == pytest.approx(total * fraction, abs=1e-4)
+
+
 def test_curvature_constant_for_categorical():
-    """Scalar curvature is n*(n-1)/4 for the Hellinger-embedded simplex."""
+    """Unit-sphere scalar curvature is (n-1)(n-2), not a sectional formula."""
     mfd = StatisticalManifold(n_outcomes=4)
     p = np.array([0.1, 0.2, 0.3, 0.4])
     c = mfd.curvature_at(p)
-    assert c == pytest.approx(4 * 3 / 4.0)
+    assert c == pytest.approx(3 * 2)
 
 
 def test_geodesic_attack_path_shapes():

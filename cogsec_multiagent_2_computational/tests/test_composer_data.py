@@ -17,7 +17,7 @@ from __future__ import annotations
 
 import pytest
 
-from visualization.composer_data import (
+from src.visualization.composer_data import (
     ALGEBRA_FORMULAS,
     MODULE_REGISTRY,
     PRESET_PIPELINES,
@@ -68,10 +68,10 @@ class TestModuleRegistry:
             assert not missing, f"Module {name} missing fields: {missing}"
 
     def test_detection_rates_in_unit_interval(self):
-        """Measured rates, so the lower bound is zero-exclusive by measurement."""
+        """Measured rates use the closed unit interval, including a silent module."""
         for name, meta in get_module_registry().items():
             dr = meta["detection_rate"]
-            assert 0.0 < dr <= 1.0, f"{name} detection_rate={dr} out of range"
+            assert 0.0 <= dr <= 1.0, f"{name} detection_rate={dr} out of range"
 
     def test_latencies_positive(self):
         for name, meta in get_module_registry().items():

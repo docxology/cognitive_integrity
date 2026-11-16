@@ -27,9 +27,9 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "src"))
+sys.path.insert(0, str(ROOT))
 
-from statistics.stability import make_pipeline_eval_fn, run_multi_seed_stability
+from src.statistics.stability import make_pipeline_eval_fn, run_multi_seed_stability
 
 
 def main() -> None:
