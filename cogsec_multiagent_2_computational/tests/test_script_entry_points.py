@@ -39,8 +39,8 @@ run_formal_validation = importlib.import_module("run_formal_validation")
 verify_formal_specs = importlib.import_module("verify_formal_specs")
 verify_manuscript = importlib.import_module("verify_manuscript")
 
-from formal.spec_verifier import VerificationResult, VerificationStatus  # noqa: E402
-from formal.theorem_registry import TheoremResult, TheoremStatus  # noqa: E402
+from src.formal.spec_verifier import VerificationResult, VerificationStatus  # noqa: E402
+from src.formal.theorem_registry import TheoremResult, TheoremStatus  # noqa: E402
 
 # ---------------------------------------------------------------------------
 # verify_formal_specs.py — audit SCRIPT-02
@@ -173,26 +173,29 @@ class TestFormalValidationCounting:
         assert counts == {"passed": 1, "failed": 1, "skipped": 0, "error": 1}
 
     def test_live_registry_has_twelve_distinct_theorems(self):
-        """Bind the published theorem count to the registry, not to prose."""
-        from formal.theorem_registry import TheoremRegistry
+        """Count results, without requiring every heuristic to pass."""
+        from src.formal.theorem_registry import TheoremRegistry
 
         results = TheoremRegistry().validate_all(seed=42)
         assert run_formal_validation.duplicate_theorem_ids(results) == {}
         counts = run_formal_validation.distinct_status_counts(results)
         assert sum(counts.values()) == 12
-        assert counts["passed"] == 12
+        assert counts["passed"] < 12
+        assert any(r.status.value == "failed" for r in results)
+        assert any(r.status.value == "skipped" for r in results)
 
     def test_main_reports_twelve_and_writes_structured_json(self, tmp_path, capsys):
         code = run_formal_validation.main(["--seed", "42", "--output", str(tmp_path)])
-        assert code == 0
+        assert code == 1, "known false equivalence must fail closed"
         out = capsys.readouterr().out
-        assert "12/12 distinct theorems validated" in out
-        assert "16/16" not in out
+        assert "12 distinct theorems validated" in out
         payload = json.loads(
             (tmp_path / "formal_validation_results.json").read_text()
         )
+        assert payload["data_origin"] == "simulation_analysis"
         assert payload["n_distinct_theorems"] == 12
         assert payload["n_registry_entries"] == 12
+        assert payload["n_passed"] < 12
         assert len(payload["theorems"]) == 12
         ids = [t["theorem_id"] for t in payload["theorems"]]
         assert len(set(ids)) == len(ids), f"duplicate theorem ids persisted: {ids}"

@@ -13,12 +13,12 @@ import time
 import numpy as np
 import pytest
 
-from colony.belief_cascade import BeliefCascadeScenario
-from colony.benchmark import ColonyConfig, ColonyScenario
-from colony.emergent_misalignment import EmergentMisalignmentScenario
-from colony.quorum_manipulation import QuorumManipulationScenario
-from colony.scorecard import CCSWeights, compute_ccs
-from colony.sybil_infiltration import SybilInfiltrationScenario
+from src.colony.belief_cascade import BeliefCascadeScenario
+from src.colony.benchmark import ColonyConfig, ColonyScenario
+from src.colony.emergent_misalignment import EmergentMisalignmentScenario
+from src.colony.quorum_manipulation import QuorumManipulationScenario
+from src.colony.scorecard import CCSWeights, compute_ccs
+from src.colony.sybil_infiltration import SybilInfiltrationScenario
 
 
 def _run_scenario(scenario: ColonyScenario, config: ColonyConfig):

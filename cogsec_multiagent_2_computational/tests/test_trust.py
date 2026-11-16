@@ -394,3 +394,31 @@ class TestTrustMatrixWithDecay:
         with pytest.raises(ValueError, match="n_agents"):
             TrustMatrix(n_agents=0)
 
+
+class TestTrustSecurityRegressions:
+    def test_negative_weights_cannot_amplify_trust(self):
+        with pytest.raises(ValueError, match="non-negative"):
+            TrustConfig(alpha=1.5, beta=-0.5, gamma=0.0)
+
+    def test_reputation_underflow_preserves_observed_outcome(self):
+        from src import ReputationTracker
+
+        tracker = ReputationTracker(decay_rate=0.1)
+        tracker.record_interaction("A", "B", outcome=0.0, timestamp=0.0)
+
+        assert tracker.get_reputation("A", "B", current_time=7460.0) == 0.0
+
+    def test_decay_matrix_does_not_fabricate_neutral_reputation(self):
+        from src import TrustMatrixWithDecay
+
+        matrix = TrustMatrixWithDecay(n_agents=2, decay_rate=0.1)
+        matrix._base[0, 1] = 1.0
+        matrix._context[0, 1] = 1.0
+        matrix.record_interaction(0, 1, outcome=0.0, timestamp=0.0)
+        early = matrix.get_trust_at_time(0, 1, current_time=0.0)
+
+        late = matrix.get_trust_at_time(0, 1, current_time=7460.0)
+
+        assert late == pytest.approx(early)
+        assert late == pytest.approx(0.5)
+

@@ -60,17 +60,17 @@
       "trust_inflation": 0.016666666666666666
     },
     "firewall": {
-      "_benign_fpr": 0.1,
-      "_overall": 0.05355932203389831,
+      "_benign_fpr": 0.11666666666666667,
+      "_overall": 0.06169491525423729,
       "belief_drift": 0.0,
       "belief_fabrication": 0.0,
       "belief_injection": 0.0,
       "byzantine_manipulation": 0.09714285714285714,
       "consensus_poisoning": 0.0,
       "delegation_abuse": 0.0,
-      "direct_injection": 0.31,
+      "direct_injection": 0.365,
       "impersonation": 0.0,
-      "indirect_injection": 0.0,
+      "indirect_injection": 0.005,
       "nested_injection": 0.0,
       "provenance_laundering": 0.0,
       "sandbox_escape": 0.0,
@@ -155,14 +155,14 @@
       "trust_inflation": 0.0
     },
     "trust": {
-      "_benign_fpr": 0.03333333333333333,
-      "_overall": 0.016271186440677966,
+      "_benign_fpr": 0.0,
+      "_overall": 0.0,
       "belief_drift": 0.0,
-      "belief_fabrication": 0.02,
+      "belief_fabrication": 0.0,
       "belief_injection": 0.0,
       "byzantine_manipulation": 0.0,
-      "consensus_poisoning": 0.6666666666666666,
-      "delegation_abuse": 0.05,
+      "consensus_poisoning": 0.0,
+      "delegation_abuse": 0.0,
       "direct_injection": 0.0,
       "impersonation": 0.0,
       "indirect_injection": 0.0,
@@ -176,60 +176,60 @@
   },
   "latency_ms": {
     "consensus": {
-      "max_ms": 0.14899999951012433,
-      "mean_ms": 0.022681476074760242,
-      "median_ms": 0.02041699190158397,
+      "max_ms": 0.0784160802140832,
+      "mean_ms": 0.019709620451144244,
+      "median_ms": 0.01795799471437931,
       "n": 1475,
-      "p95_ms": 0.038875004975125194
+      "p95_ms": 0.03270898014307022
     },
     "detection": {
-      "max_ms": 0.027749993023462594,
-      "mean_ms": 0.00616624874410109,
-      "median_ms": 0.0057919969549402595,
+      "max_ms": 0.05024997517466545,
+      "mean_ms": 0.005294237270067304,
+      "median_ms": 0.004834029823541641,
       "n": 1475,
-      "p95_ms": 0.009709008736535907
+      "p95_ms": 0.008333008736371994
     },
     "firewall": {
-      "max_ms": 0.2143339952453971,
-      "mean_ms": 0.041505092462935184,
-      "median_ms": 0.0400420103687793,
+      "max_ms": 0.13179192319512367,
+      "mean_ms": 0.03631013311382573,
+      "median_ms": 0.03541703335940838,
       "n": 1475,
-      "p95_ms": 0.054625008488073945
+      "p95_ms": 0.04570803139358759
     },
     "invariants": {
-      "max_ms": 0.9612499998183921,
-      "mean_ms": 0.2514851559348152,
-      "median_ms": 0.22762500157114118,
+      "max_ms": 1.1338749900460243,
+      "mean_ms": 0.22569718967996916,
+      "median_ms": 0.2045829314738512,
       "n": 1475,
-      "p95_ms": 0.4367499932413921
+      "p95_ms": 0.38937502540647984
     },
     "provenance": {
-      "max_ms": 0.03304099664092064,
-      "mean_ms": 0.004185758900070973,
-      "median_ms": 0.003749999450519681,
+      "max_ms": 0.012459000572562218,
+      "mean_ms": 0.003889985856110767,
+      "median_ms": 0.003458932042121887,
       "n": 1475,
-      "p95_ms": 0.007166003342717886
+      "p95_ms": 0.006832997314631939
     },
     "sandbox": {
-      "max_ms": 0.09379199764225632,
-      "mean_ms": 0.005094655444135226,
-      "median_ms": 0.004250003257766366,
+      "max_ms": 0.03658398054540157,
+      "mean_ms": 0.004467563861507481,
+      "median_ms": 0.0038750004023313522,
       "n": 1475,
-      "p95_ms": 0.00925001222640276
+      "p95_ms": 0.007999944500625134
     },
     "tripwire": {
-      "max_ms": 0.08604100730735809,
-      "mean_ms": 0.002748447389468172,
-      "median_ms": 0.0024999899324029684,
+      "max_ms": 0.07620803080499172,
+      "mean_ms": 0.0024319013138696297,
+      "median_ms": 0.002209097146987915,
       "n": 1475,
-      "p95_ms": 0.004542001988738775
+      "p95_ms": 0.003500026650726795
     },
     "trust": {
-      "max_ms": 0.0882500025909394,
-      "mean_ms": 0.006988420273508813,
-      "median_ms": 0.006249989382922649,
+      "max_ms": 0.022208085283637047,
+      "mean_ms": 0.006255485448923151,
+      "median_ms": 0.005624955520033836,
       "n": 1475,
-      "p95_ms": 0.0117499876068905
+      "p95_ms": 0.01054094173014164
     }
   },
   "low_rate_modules": [
@@ -238,11 +238,12 @@
     "firewall",
     "provenance",
     "sandbox",
-    "tripwire",
-    "trust"
+    "tripwire"
   ],
   "note": "detection_rate[module][category] is that module evaluated alone. It is not a marginal contribution and must never be compared to a Shapley value: a module can detect a family and still add nothing to a pipeline that already contains a module detecting the same payloads.",
   "seed": 42,
-  "silent_modules": [],
+  "silent_modules": [
+    "trust"
+  ],
   "source_script": "scripts/run_module_capability_matrix.py"
 }

@@ -328,9 +328,9 @@ def create_comprehensive_taxonomy_figure(output_dir: Path) -> Path:
         color=colors["text"],
     )
     legend_items = [
-        ("High (≥80%)", "#648FFF"),
+        ("High (<60%)", "#DC267F"),
         ("Medium (60-79%)", "#FFB000"),
-        ("Low (<60%)", "#DC267F"),
+        ("Low (≥80%)", "#648FFF"),
     ]
     for j, (label, color) in enumerate(legend_items):
         ax.add_patch(

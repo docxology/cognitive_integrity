@@ -152,7 +152,7 @@ class OODAPhaseMonitor:
         # Cumulative KL tracking (CUSUM)
         self._cusum_stat: float = 0.0
         self._cusum_allowance: float = drift_threshold / 2.0  # Wald's optimal
-        self._cusum_threshold: float = 4.6  # For ARL0 ~ 1000
+        self._cusum_threshold: float = 13.0  # For ARL0 ~ 1000
 
     def transition_phase(self, new_phase: OODAPhase) -> bool:
         """
@@ -207,7 +207,8 @@ class OODAPhaseMonitor:
             Alert if attack detected; None otherwise.
         """
         if self._current_phase != OODAPhase.OBSERVE:
-            self.transition_phase(OODAPhase.OBSERVE)
+            if not self.transition_phase(OODAPhase.OBSERVE):
+                return self._alerts_this_cycle[-1]
 
         self._events_this_cycle[OODAPhase.OBSERVE].append(event)
 
@@ -258,13 +259,14 @@ class OODAPhaseMonitor:
             Alert if attack detected; None otherwise.
         """
         if self._current_phase != OODAPhase.ORIENT:
-            self.transition_phase(OODAPhase.ORIENT)
+            if not self.transition_phase(OODAPhase.ORIENT):
+                return self._alerts_this_cycle[-1]
 
         if event:
             self._events_this_cycle[OODAPhase.ORIENT].append(event)
 
         # Normalize beliefs
-        beliefs_norm = np.asarray(current_beliefs, dtype=float)
+        beliefs_norm = np.array(current_beliefs, dtype=float, copy=True)
         if beliefs_norm.size == 0:
             raise ValueError("belief distribution must be non-empty")
         total = beliefs_norm.sum()
@@ -275,7 +277,7 @@ class OODAPhaseMonitor:
 
         # Check for belief injection: sudden large change
         if previous_beliefs is not None:
-            prev_norm = np.asarray(previous_beliefs, dtype=float)
+            prev_norm = np.array(previous_beliefs, dtype=float, copy=True)
             if prev_norm.size == 0:
                 raise ValueError("previous belief distribution must be non-empty")
             prev_sum = prev_norm.sum()
@@ -349,7 +351,8 @@ class OODAPhaseMonitor:
             Alert if attack detected; None otherwise.
         """
         if self._current_phase != OODAPhase.DECIDE:
-            self.transition_phase(OODAPhase.DECIDE)
+            if not self.transition_phase(OODAPhase.DECIDE):
+                return self._alerts_this_cycle[-1]
 
         if event:
             self._events_this_cycle[OODAPhase.DECIDE].append(event)
@@ -410,7 +413,8 @@ class OODAPhaseMonitor:
             Alert if attack detected; None otherwise.
         """
         if self._current_phase != OODAPhase.ACT:
-            self.transition_phase(OODAPhase.ACT)
+            if not self.transition_phase(OODAPhase.ACT):
+                return self._alerts_this_cycle[-1]
 
         if event:
             self._events_this_cycle[OODAPhase.ACT].append(event)
@@ -473,8 +477,8 @@ class OODAPhaseMonitor:
         """
         if ooda_cycle_duration <= 0:
             return 0.0
-        # CIF monitoring overhead (total detection latency = ~141ms from defense stack)
-        cif_latency_s = 0.141  # 141ms default stack
+        # CIF monitoring overhead (total detection latency = ~136ms from defense stack)
+        cif_latency_s = 0.136  # 136ms default stack
         return min(1.0, cif_latency_s / ooda_cycle_duration)
 
     def check_latency_budget(self, ooda_cycle_duration: float) -> bool:
@@ -570,8 +574,8 @@ class OODAPhaseMonitor:
         Returns:
             Fisher-Rao distance in [0, pi].
         """
-        p_norm = np.clip(p, 0, None)
-        q_norm = np.clip(q, 0, None)
+        p_norm = np.clip(np.asarray(p, dtype=float), 0, None)
+        q_norm = np.clip(np.asarray(q, dtype=float), 0, None)
         p_sum, q_sum = p_norm.sum(), q_norm.sum()
         if p_sum > 0:
             p_norm /= p_sum
@@ -585,13 +589,12 @@ class OODAPhaseMonitor:
     @staticmethod
     def stealth_impact_product(belief_shift_fr: float) -> Tuple[float, float, float]:
         """
-        Compute the stealth-impact pair and their product for a Fisher-Rao shift.
+        Compute a definitional impact/stealth pair for a Fisher-Rao shift.
 
-        From Theorem (FR Tight Bound): I_FR * S_FR <= pi/2, with equality
-        when stealth is normalized as S = (pi/2) / I_FR.  Returning the raw
-        product alone would be a tautology (it is always pi/2 by
-        construction); returning the components lets consumers verify the
-        bound against *computed* (not definitionally-normalized) values.
+        This is a visualization convention, not a proved security bound:
+        S = (pi/2) / I_FR makes the product identically pi/2 by construction.
+        The returned components expose that normalization rather than claiming
+        a geometric theorem.
 
         Args:
             belief_shift_fr: Fisher-Rao distance of the attack.
@@ -599,11 +602,11 @@ class OODAPhaseMonitor:
         Returns:
             Tuple of (impact, stealth, product), where
             impact = belief_shift_fr, stealth = (pi/2) / belief_shift_fr,
-            product = impact * stealth (<= pi/2 by construction).
+            product = impact * stealth (= pi/2 by construction).
         """
         if belief_shift_fr <= 0:
             return 0.0, 0.0, 0.0
-        # Stealth normalized to [0, 1]: S = (pi/2) / r
+        # Display convention only; the product is constant, not a bound.
         stealth = (math.pi / 2) / belief_shift_fr
         impact = belief_shift_fr
         return impact, stealth, impact * stealth

@@ -18,24 +18,25 @@ All tests use real data and computation. No mocks.
 import numpy as np
 import pytest
 
-from formal.byzantine_guarantees import (
+from src.formal.byzantine_guarantees import (
     _simulate_quorum_agreement,
     default_bound_predicate,
     validate_byzantine_bound,
 )
-from formal.composition_proofs import (
+from src.formal.composition_proofs import (
     validate_associativity,
     validate_parallel_composition,
     validate_series_composition,
 )
-from formal.latency_bound import validate_latency_bound
-from formal.nusmv_spec import generate_nusmv_spec, parse_nusmv_result
-from formal.spin_spec import generate_promela_spec, parse_spin_result
-from formal.stealth_impact import validate_stealth_impact
-from formal.theorem_registry import TheoremRegistry, TheoremResult, TheoremStatus
-from formal.tla_spec import generate_tla_spec, parse_tla_result
-from formal.trust_bounds import validate_trust_bound
-from utils.random_seed import get_rng
+from src.formal.latency_bound import validate_latency_bound
+from src.formal.nusmv_spec import generate_nusmv_spec, parse_nusmv_result
+from src.formal.spec_verifier import VerificationStatus, verify_tla
+from src.formal.spin_spec import generate_promela_spec, parse_spin_result
+from src.formal.stealth_impact import validate_stealth_impact
+from src.formal.theorem_registry import TheoremRegistry, TheoremResult, TheoremStatus
+from src.formal.tla_spec import generate_tla_config, generate_tla_spec, parse_tla_result
+from src.formal.trust_bounds import validate_trust_bound
+from src.utils.random_seed import get_rng
 
 # ---------------------------------------------------------------------------
 # Section 1: TheoremResult and TheoremStatus (dataclass / enum basics)
@@ -177,13 +178,14 @@ class TestTheoremRegistry:
         assert len(results) == len(registry._validators)
 
     def test_summary_counts(self):
-        """summary returns a dict with all status keys."""
+        """summary reports the last run rather than launching another one."""
         registry = TheoremRegistry()
+        assert sum(registry.summary().values()) == 0
+        registry.validate_all(seed=42)
         summary = registry.summary()
         for status in TheoremStatus:
             assert status.value in summary
-        total = sum(summary.values())
-        assert total == len(registry._validators)
+        assert sum(summary.values()) == len(registry._validators)
 
     def test_validate_passes_kwargs(self):
         """kwargs are forwarded to the validator function."""
@@ -354,7 +356,7 @@ class TestSeriesComposition:
         """Series composition passes with default parameters."""
         result = validate_series_composition(seed=42)
         assert result.status == TheoremStatus.PASSED
-        assert result.theorem_id == "3.1b"
+        assert result.theorem_id == "3.2a"
 
     def test_deterministic(self):
         """Same seed gives identical results."""
@@ -388,7 +390,7 @@ class TestParallelComposition:
         """Parallel composition passes with default parameters."""
         result = validate_parallel_composition(seed=42)
         assert result.status == TheoremStatus.PASSED
-        assert result.theorem_id == "3.2"
+        assert result.theorem_id == "3.2b"
 
     def test_deterministic(self):
         """Same seed produces identical results."""
@@ -423,7 +425,7 @@ class TestCompositionAssociativity:
         """Associativity passes with default parameters."""
         result = validate_associativity(seed=42)
         assert result.status == TheoremStatus.PASSED
-        assert result.theorem_id == "3.3"
+        assert result.theorem_id == "3.2c"
 
     def test_max_error_negligible(self):
         """Max error is below float epsilon threshold."""
@@ -562,6 +564,13 @@ class TestNuSMVSpec:
         spec = generate_nusmv_spec(n_agents=5, max_byzantine=1)
         assert "3 * byzantine_count + 1" in spec
 
+    def test_agent_parameters_are_initialised_and_stable(self):
+        spec = generate_nusmv_spec(n_agents=7, max_byzantine=2)
+        assert "init(n_agents) := 7;" in spec
+        assert "init(byzantine_count) := {0, 1, 2};" in spec
+        assert "next(n_agents) := n_agents;" in spec
+        assert "next(byzantine_count) := byzantine_count;" in spec
+
     def test_firewall_property(self):
         """CTL property about firewall preventing injection is present."""
         spec = generate_nusmv_spec()
@@ -668,6 +677,12 @@ class TestSPINSpec:
         assert "ltl trust_bound" in spec
         assert "ltl no_injection" in spec
 
+    def test_injection_is_reachable_and_eventually_blocked(self):
+        spec = generate_promela_spec()
+        assert "proctype Attacker()" in spec
+        assert "injection = true" in spec
+        assert "<> !injection" in spec
+
     def test_delegation_decay_in_spec(self):
         """Delegation decay factor is encoded in Promela."""
         spec = generate_promela_spec()
@@ -698,17 +713,9 @@ class TestSPINSpec:
         assert any(v is False for v in results.values())
 
     def test_parse_spin_no_acceptance_cycle(self):
-        """Parser processes 'no acceptance cycle' line.
-
-        Note: due to the if/elif ordering in parse_spin_result, the
-        substring 'acceptance cycle' matches before 'no acceptance cycle',
-        so this line is recorded as a failure (False).  This test documents
-        the current behavior.
-        """
-        output = "no acceptance cycle found\n"
-        results = parse_spin_result(output)
-        # The line contains "acceptance cycle" which matches first (elif never reached)
-        assert any(v is False for v in results.values())
+        """The negative phrase must not match as an acceptance-cycle failure."""
+        results = parse_spin_result("no acceptance cycle found\n")
+        assert list(results.values()) == [True]
 
     def test_parse_spin_acceptance_cycle(self):
         """Parser recognizes 'acceptance cycle' as failing."""
@@ -735,11 +742,12 @@ class TestSPINSpec:
 class TestStealthImpact:
     """Tests for validate_stealth_impact: I * S <= C_channel."""
 
-    def test_passes_default_params(self):
-        """Stealth-impact tradeoff passes with c_channel=1.0."""
+    def test_schematic_check_is_not_a_theorem_pass(self):
+        """A detector defined by the bound cannot independently prove it."""
         result = validate_stealth_impact(seed=42)
-        assert result.status == TheoremStatus.PASSED
+        assert result.status == TheoremStatus.SKIPPED
         assert result.theorem_id == "4"
+        assert "not theorem validation" in result.evidence
 
     def test_details_contain_expected_keys(self):
         """Result details contain channel capacity and trial info."""
@@ -846,10 +854,11 @@ class TestTLASpec:
         spec = generate_tla_spec()
         assert "SafetyProperty ==" in spec
 
-    def test_contains_liveness_property(self):
-        """Liveness property for eventual consensus is defined."""
+    def test_does_not_claim_unforced_liveness(self):
+        """Whole-Next fairness cannot force any honest agent to vote."""
         spec = generate_tla_spec()
-        assert "LivenessProperty ==" in spec
+        assert "LivenessProperty ==" not in spec
+        assert "WF_vars(Next)" not in spec.split("No liveness assumption", 1)[0]
 
     def test_contains_theorems(self):
         """THEOREM declarations are present."""
@@ -857,7 +866,7 @@ class TestTLASpec:
         assert "THEOREM Spec => []TypeInvariant" in spec
         assert "THEOREM Spec => []TrustBounded" in spec
         assert "THEOREM Spec => []SafetyProperty" in spec
-        assert "THEOREM Spec => LivenessProperty" in spec
+        assert "THEOREM Spec => LivenessProperty" not in spec
 
     def test_agent_count_in_comment(self):
         """Agent count appears in the header comment."""
@@ -874,15 +883,33 @@ class TestTLASpec:
         assert "DelegateTrust(source, target) ==" in spec
 
     def test_delegation_decay_in_spec(self):
-        """Trust delegation uses 85% decay factor."""
+        """Delegation decays the weaker endpoint, not just the source."""
         spec = generate_tla_spec()
-        assert "85" in spec  # decay factor encoded
+        assert "85" in spec
+        assert "IF trust[source] <= trust[target]" in spec
+        assert "THEN trust[source] ELSE trust[target]" in spec
 
     def test_different_params(self):
         """Different parameters produce different specs."""
         s1 = generate_tla_spec(n_agents=5, max_byzantine=1)
         s2 = generate_tla_spec(n_agents=10, max_byzantine=3)
         assert s1 != s2
+
+    def test_tla_config_binds_all_constants_and_safety_properties(self):
+        config = generate_tla_config(n_agents=5, max_byzantine=1)
+        assert "Agents = {1, 2, 3, 4, 5}" in config
+        assert "MaxByzantine = 1" in config
+        assert "Quorum = 4" in config
+        assert "SPECIFICATION Spec" in config
+        assert "SafetyProperty" in config
+        assert "LivenessProperty" not in config
+
+    def test_verify_tla_rejects_missing_configuration(self, tmp_path):
+        spec_path = tmp_path / "CognitiveIntegrityFramework.tla"
+        spec_path.write_text(generate_tla_spec())
+        result = verify_tla(spec_path)
+        assert result.status == VerificationStatus.ERROR
+        assert "configuration is missing" in result.detail
 
     def test_parse_tla_no_error(self):
         """Parser recognizes 'Model checking completed. No error' as passing."""
@@ -998,14 +1025,17 @@ class TestTrustBounds:
 class TestRegistryIntegration:
     """Integration tests running multiple validators through the registry."""
 
-    def test_all_defaults_pass(self):
-        """All default-registered theorems pass with seed=42."""
+    def test_defaults_report_non_proofs_and_counterexamples(self):
         registry = TheoremRegistry()
-        results = registry.validate_all(seed=42)
-        for r in results:
-            assert r.status == TheoremStatus.PASSED, (
-                f"Theorem {r.theorem_id} ({r.name}) did not pass: {r.evidence}"
-            )
+        results = {r.theorem_id: r for r in registry.validate_all(seed=42)}
+        for theorem_id, result in results.items():
+            if theorem_id not in {"4", "FEP.1", "FEP.2"}:
+                assert result.status == TheoremStatus.PASSED, result.evidence
+        assert results["4"].status == TheoremStatus.SKIPPED
+        assert results["FEP.1"].status == TheoremStatus.FAILED
+        assert results["FEP.1"].details["equivalence_counterexample"] is True
+        assert results["FEP.1"].details["same_delta_F"] is True
+        assert results["FEP.2"].status == TheoremStatus.SKIPPED
 
     def test_individual_validators_agree_with_registry(self):
         """Direct calls match registry.validate calls."""
@@ -1017,13 +1047,15 @@ class TestRegistryIntegration:
         assert direct.status == via_registry.status
         assert direct.theorem_id == via_registry.theorem_id
 
-    def test_summary_all_passed(self):
-        """Summary reports all theorems as passed."""
+    def test_summary_matches_actual_results(self):
         registry = TheoremRegistry()
+        results = registry.validate_all(seed=42)
         summary = registry.summary()
-        # 7 Paper 1 theorems + 5 Paper 2 extensions (CT.1-3, FEP.1-2).
-        assert summary["passed"] == 12
-        assert summary["failed"] == 0
+        assert summary["passed"] == sum(
+            r.status == TheoremStatus.PASSED for r in results
+        )
+        assert summary["failed"] == 1
+        assert summary["skipped"] == 2
         assert summary["error"] == 0
 
 
@@ -1133,6 +1165,27 @@ class TestEdgeCases:
         """Trust bound works with large depth."""
         result = validate_trust_bound(max_depth=20, n_trials=50, seed=42)
         assert result.status == TheoremStatus.PASSED
+
+    @pytest.mark.parametrize(
+        "validator",
+        [validate_series_composition, validate_parallel_composition, validate_associativity],
+    )
+    def test_zero_trial_composition_does_not_pass(self, validator):
+        assert validator(n_trials=0).status == TheoremStatus.FAILED
+
+    @pytest.mark.parametrize("kwargs", [{"n_trials": 0}, {"max_depth": 0}])
+    def test_empty_trust_bound_does_not_pass(self, kwargs):
+        assert validate_trust_bound(**kwargs).status == TheoremStatus.FAILED
+
+    def test_empty_stealth_check_does_not_pass(self):
+        assert validate_stealth_impact(n_trials=0).status == TheoremStatus.FAILED
+
+    def test_single_arm_byzantine_predicate_does_not_pass(self):
+        result = validate_byzantine_bound(
+            max_n=8, n_rounds=3, bound_predicate=lambda n, f: True
+        )
+        assert result.status == TheoremStatus.FAILED
+        assert result.details["invalid_total"] == 0
 
     def test_nusmv_parse_garbage_input(self):
         """NuSMV parser handles unrecognized output gracefully."""

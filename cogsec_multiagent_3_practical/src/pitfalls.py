@@ -1,7 +1,7 @@
 """
 Common Pitfall Catalog for Cognitive Security Deployments.
 
-Implements Section 07 of the Practical Implementation Guide:
+Implements 06_common_pitfalls.md of the Practical Implementation Guide:
 Eight documented anti-patterns with detection, assessment, and remediation.
 """
 
@@ -17,7 +17,7 @@ class PitfallID(Enum):
     """Identifiers for the eight common pitfalls.
 
     Each value corresponds to the manuscript's PIT-N numbering scheme
-    from Section 07.
+    from 06_common_pitfalls.md.
     """
 
     IMPLICIT_TRUST = "PIT-1"
@@ -31,7 +31,7 @@ class PitfallID(Enum):
 
 
 class PitfallCategory(Enum):
-    """Pitfall categories from Section 07.
+    """Pitfall categories from 06_common_pitfalls.md.
 
     Categories group pitfalls by the nature of the anti-pattern:
     security design flaws, operational oversights, or architectural
@@ -115,7 +115,7 @@ class PitfallCatalog:
     """Registry of all 8 documented pitfalls with detection logic.
 
     Provides lookup, filtering, and assessment capabilities
-    for the pitfall catalog from Section 07. The catalog is
+    for the pitfall catalog from 06_common_pitfalls.md. The catalog is
     initialized with the complete set of pitfall definitions
     from the manuscript.
     """
@@ -150,7 +150,7 @@ class PitfallCatalog:
                     PitfallMitigation("Apply delegation decay (delta < 1 per hop)"),
                     PitfallMitigation("Verify source on every inter-agent message"),
                 ],
-                manuscript_reference="Section 07, Pitfall 1",
+                manuscript_reference="docs/manuscript/06_common_pitfalls.md, Pitfall 1",
             ),
             PitfallDefinition(
                 id=PitfallID.SECURITY_AFTERTHOUGHT,
@@ -169,7 +169,7 @@ class PitfallCatalog:
                     PitfallMitigation("Build provenance tracking into belief management"),
                     PitfallMitigation("Include security constraints in agent system prompts"),
                 ],
-                manuscript_reference="Section 07, Pitfall 2",
+                manuscript_reference="docs/manuscript/06_common_pitfalls.md, Pitfall 2",
             ),
             PitfallDefinition(
                 id=PitfallID.UNCALIBRATED_THRESHOLDS,
@@ -183,12 +183,15 @@ class PitfallCatalog:
                     PitfallIndicator("No testing against representative attacks"),
                 ],
                 mitigations=[
-                    PitfallMitigation("Assess risk profile before configuring (see Section 6)"),
+                    PitfallMitigation(
+                        "Assess risk profile before configuring "
+                        "(see docs/manuscript/05_deployment_guide.md)"
+                    ),
                     PitfallMitigation("Test thresholds against representative attack samples"),
                     PitfallMitigation("Monitor false positive/negative rates in production"),
                     PitfallMitigation("Adjust based on operational feedback"),
                 ],
-                manuscript_reference="Section 07, Pitfall 3",
+                manuscript_reference="docs/manuscript/06_common_pitfalls.md, Pitfall 3",
             ),
             PitfallDefinition(
                 id=PitfallID.INDIVIDUAL_ONLY,
@@ -211,14 +214,14 @@ class PitfallCatalog:
                     PitfallMitigation("Monitor for unusual coordination patterns"),
                     PitfallMitigation("Apply quorum requirements assuming adversarial presence"),
                 ],
-                manuscript_reference="Section 07, Pitfall 4",
+                manuscript_reference="docs/manuscript/06_common_pitfalls.md, Pitfall 4",
             ),
             PitfallDefinition(
                 id=PitfallID.STATIC_TRIPWIRES,
                 name="Static Tripwires",
                 pattern=("Deploying canary tripwires once without rotation"),
                 category=PitfallCategory.DESIGN,
-                severity=3,  # manuscript Section 07 labels this Medium
+                severity=3,  # manuscript 06_common_pitfalls.md labels this Medium
                 indicators=[
                     PitfallIndicator("Same canary values since deployment"),
                     PitfallIndicator("No rotation schedule"),
@@ -230,7 +233,7 @@ class PitfallCatalog:
                     PitfallMitigation("Monitor canary check patterns, not just modifications"),
                     PitfallMitigation("Include non-obvious canaries"),
                 ],
-                manuscript_reference="Section 07, Pitfall 5",
+                manuscript_reference="docs/manuscript/06_common_pitfalls.md, Pitfall 5",
             ),
             PitfallDefinition(
                 id=PitfallID.IGNORING_DRIFT,
@@ -249,7 +252,7 @@ class PitfallCatalog:
                     PitfallMitigation("Periodic baseline comparison"),
                     PitfallMitigation("Alert on trend as well as absolute magnitude"),
                 ],
-                manuscript_reference="Section 07, Pitfall 6",
+                manuscript_reference="docs/manuscript/06_common_pitfalls.md, Pitfall 6",
             ),
             PitfallDefinition(
                 id=PitfallID.INSUFFICIENT_LOGGING,
@@ -268,14 +271,14 @@ class PitfallCatalog:
                     PitfallMitigation("Periodic cognitive state snapshots"),
                     PitfallMitigation("Structured logging for causal analysis"),
                 ],
-                manuscript_reference="Section 07, Pitfall 7",
+                manuscript_reference="docs/manuscript/06_common_pitfalls.md, Pitfall 7",
             ),
             PitfallDefinition(
                 id=PitfallID.SINGLE_ORCHESTRATOR,
                 name="Single-Orchestrator Reliance",
                 pattern=("Relying entirely on orchestrator integrity without backup"),
                 category=PitfallCategory.DESIGN,
-                severity=4,  # manuscript Section 07 labels this High
+                severity=4,  # manuscript 06_common_pitfalls.md labels this High
                 indicators=[
                     PitfallIndicator("Single orchestrator for entire system"),
                     PitfallIndicator("No orchestrator monitoring"),
@@ -289,7 +292,7 @@ class PitfallCatalog:
                     PitfallMitigation("Workers verify orchestrator identity on critical commands"),
                     PitfallMitigation("Implement orchestrator-specific tripwires"),
                 ],
-                manuscript_reference="Section 07, Pitfall 8",
+                manuscript_reference="docs/manuscript/06_common_pitfalls.md, Pitfall 8",
             ),
         ]
 
@@ -454,7 +457,7 @@ class PitfallChecklistEntry:
 class PitfallChecklist:
     """Assessment checklist tracking pitfall review status.
 
-    Matches the Summary Checklist table in Section 07 of the
+    Matches the Summary Checklist table in 06_common_pitfalls.md of the
     manuscript. Provides workflow methods for assessing each
     pitfall, tracking mitigation status, and evaluating overall
     deployment readiness.
@@ -554,7 +557,13 @@ class PitfallChecklist:
             AssessmentResult with scoring and findings
         """
         if not self.entries:
-            return AssessmentResult(passed=True, score=1.0, risk_level=RiskLevel.LOW)
+            return AssessmentResult(
+                passed=False,
+                score=0.0,
+                risk_level=RiskLevel.CRITICAL,
+                findings=["No pitfalls assessed"],
+                recommendations=["Populate the pitfall checklist before deployment"],
+            )
 
         assessed_count = sum(1 for e in self.entries if e.assessed)
         assessment_score = assessed_count / len(self.entries)
@@ -566,12 +575,8 @@ class PitfallChecklist:
         #     CONFIRMED active risk;
         #   - unassessed pitfalls carry nominal severity as an UNVERIFIED
         #     potential risk (the deployment has not been checked against them).
-        # Previously only detected_unmitigated was considered with a seed of 0,
-        # so a fresh or partially-assessed checklist under-reported to LOW even
-        # when high-severity pitfalls were unevaluated. NOTE: this raises the
-        # risk_level returned here; it does not change any committed figure
-        # (pitfall figures render the illustrative get_pitfalls_data(), not this
-        # checklist), so no committed artifact was regenerated.
+        # This risk_level is evaluation state only. The catalog-backed pitfall
+        # figure obtains its independent figure data from get_pitfalls_data().
         max_open_severity = 0
         for entry in detected_unmitigated:
             pitfall = self.catalog.get_by_id(entry.pitfall_id)

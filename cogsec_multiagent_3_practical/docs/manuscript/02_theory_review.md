@@ -40,17 +40,13 @@ In the Part 2 experiments, this modular structure was shown to be the primary de
 
 ## The Stealth-Impact Tradeoff {#sec:stealth-impact-review}
 
-Part 1 provides a theoretical bound on attack performance, formalized as the Stealth-Impact Tradeoff.
-
-> **Stealth-Impact Tradeoff**: *For a given defense sensitivity $\epsilon$, the probability of detection $P(d)$ approaches 1 as the divergence of the attack behavior from the baseline increases.*
-
-This formalism suggests that catastrophic attacks are inherently easier to detect than subtle attacks. Part 2 does not test that: its corpus carries no impact label, so no impact-stratified detection rate has ever been computed. The sentence that stood here reported one --- "High-impact attacks were detected 98\% of the time, while low-impact attacks were detected only 74\%" --- and it was typed. Impact is the one dimension deliberately left off `AttackSample` when adversary class and target were added: unlike those two it varies within a category by design, so assigning it per category would manufacture the axis rather than expose it, and a real label requires a per-sample judgement the corpus does not carry. The prediction is worth testing and is tracked as such; it remains untested.
+Part 1 poses a Stealth-Impact Tradeoff as an open formalization, not a proved theorem. Detection probability can rise with divergence in particular observation models, but no universal bound follows that catastrophic attacks must be easier to detect than subtle attacks. Part 2 does not test an impact-stratified version: its corpus deliberately carries no per-sample impact label, so no such detection rate has been computed. The hypothesis remains a target for a separately labelled evaluation rather than an empirical result.
 
 ## Defense Composition {#sec:composition-review}
 
 Finally, Part 1 defines the **Composition Algebra**, determining how output probabilities of distinct modules interact. The key result is that orthogonal defenses compose multiplicatively.
 
-This "Swiss Cheese Model" was supported by Part 2's parametric simulation, where the full stack reached a 96--100% design-level detection ceiling and outperformed the sum of its parts. The real prototype pipeline is lower and is reported separately as a multi-seed mean of 86.3%. It also distributes the work far less evenly than the model implies: on Part 2's 100-attack ablation corpus the series-composition prediction lands within a couple of points of the measured full-stack rate, but nearly all of the detection comes from one module, so the full stack's margin over the best single layer is about three percentage points. Compose layers for coverage, not on the assumption that each contributes an independent slice.
+Part 2's historical parametric model reports a 96--100% design-level detection ceiling; that is not a measured field result or evidence that a stack outperforms the sum of its parts. The real architecture-agnostic multi-seed pipeline mean is 86.3%, with a different corpus and denominator. On Part 2's 100-attack ablation corpus, the full pipeline reaches 89% and Invariants alone 85%, leaving a four-percentage-point margin over the best singleton. Compose layers for coverage, not on the assumption that each contributes an independent slice.
 
 ## The Science Behind Belief Updates: Free Energy {#sec:fep-connection}
 
@@ -68,7 +64,7 @@ The first term penalizes divergence from the prior; the second rewards accurate 
 
 From the FEP perspective, **a cognitive attack is any intervention that forces an agent's free energy up**. Prompt injections, belief manipulation, and trust exploitation all work by injecting observations (or "observations"—fabricated messages, false context) that drive the agent's belief state $Q$ away from its prior $P$ in ways that serve the attacker's goals rather than the agent's.
 
-CIF formalizes this in Part 2 (FEP.1): an attack $\omega$ is detected when $\Delta F(\omega) = F(Q_\text{attacked}) - F(Q_\text{baseline}) > \kappa_\text{FEP}$. The threshold $\kappa_\text{FEP}$ is set by the precision of the agent's prior—agents with strong, well-calibrated priors (high precision) require larger perturbations to shift their beliefs, making them more attack-resistant.
+CIF formalizes a related diagnostic in Part 2 (FEP.1): $\Delta F(\omega) = F(Q_\text{attacked}) - F(Q_\text{baseline})$ can flag an update when it exceeds a chosen threshold. That is not an if-and-only-if attack test: an observation model can have a small $\Delta F$ while behavior is still unsafe. A high-precision prior changes the response to a message, but does not by itself guarantee greater attack resistance.
 
 ### Trust as Precision Weighting
 
@@ -76,28 +72,28 @@ CIF's trust calculus (the $\delta^d$ decay) has a natural interpretation under F
 
 ### The Belief Sandbox as Constrained Inference
 
-The belief sandbox (Part 1) has a direct FEP interpretation: it is **constrained variational inference** where the update is only accepted if $\Delta F \leq \kappa \cdot \varepsilon_\text{precision}$. This is equivalent to requiring that accepted belief updates stay within a bounded geodesic radius on the statistical manifold of belief distributions—exactly Theorem CG.1 from Part 2.
+The belief sandbox (Part 1) can be interpreted as **constrained variational inference** where the update is only accepted if $\Delta F \leq \kappa \cdot \varepsilon_\text{precision}$. That threshold is not, without a specified observation model, equivalent to a bounded Fisher–Rao radius. Part 2 supplies a separate geodesic step-budget helper, not a proof of this equivalence.
 
 ### Practical Implication for Operators
 
 This connection is not just theoretical. It means:
 
-1. **Emergent misalignment is the hardest problem** because it minimizes $\Delta F$ per agent: each individual belief shift is sub-threshold, but the collective drift accumulates. This is precisely why colony-scale monitoring is necessary—the FEP signal is distributed across agents.
+1. **Emergent misalignment is difficult for per-message monitors** when each individual change is sub-threshold but the collective drift accumulates. Colony-scale monitoring is therefore one candidate response; this mechanism is not a proof that every emergent scenario minimizes $\Delta F$ per agent.
 2. **Trust calibration is precision calibration**: operators who carefully calibrate trust scores are effectively setting the precision weighting of their agent network. Well-calibrated trust → robust cognition.
-3. **The $\Omega_5$ miss rate (2.5\%) reflects FEP's fundamental challenge**: systematic manipulation by a compromised orchestrator can shift the agent's generative model $P$ itself (not just $Q$), making the baseline a moving target. This requires out-of-band verification (human review, Byzantine quorum) rather than in-context detection.
+3. **Compromised orchestrators are a distinct verification problem**: systematic manipulation can change the agent's baseline generative model $P$ itself, not just $Q$. Out-of-band verification is therefore a candidate control, not a measured $\Omega_5$ miss-rate result; Part 2 does not publish per-access-class measured miss rates.
 
 For the full mathematical treatment, see Part~2's theoretical-connections and information-geometry sections.
 
 ## Category-Theoretic Formalization of Defense Composition {#sec:category-theory-crossref}
 
-Part 2's Theoretical Connections and Composability Algebra sections extend the composition algebra of Part 1 into a full category-theoretic framework. This formalization is relevant to practitioners because it provides *structural guarantees* — not just empirical observations — about how CIF defenses combine.
+Part 2's Theoretical Connections and Composability Algebra sections explore category-theoretic descriptions of defense composition. These are design languages plus executable property checks, not a full verified framework of universal guarantees.
 
 **The Defense Category $\calD$** (Part 2, Definition CT.1): The CIF defense suite forms a category whose objects are cognitive states $\cogstate{} \in \Sigma$ and whose morphisms are detection functions $f : \cogstate{} \to \mathrm{DefenseResult}$. The composition rule formalizes *short-circuit detection*: once any module fires, subsequent modules do not override the event.
 
-**Three key theorems** (Part 2, Theorems CT.1–CT.3):
-- **CT.1 (Category Laws)**: Defense composition satisfies identity and associativity — the algebraic scaffold that makes multi-layer defenses predictable.
-- **CT.2 (Categorical Product)**: Parallel composition is the categorical product in $\calD$, with max-score fusion as the universal construction — recovering Part 1's parallel composition rule from first principles.
-- **CT.3 (Functor Preservation)**: Any defense-preserving transformation (e.g., architecture adapter) that maps morphisms while preserving composition structure cannot reduce the composite detection rate below the guarantee of Theorem 3.1.
+**Three structural ideas** (Part 2, CT.1–CT.3):
+- **CT.1 (Category Laws)**: Short-circuit composition is designed to satisfy identity and associativity — an algebraic scaffold for multi-layer defenses.
+- **CT.2 (Product Structure)**: Parallel composition uses product states and max-score fusion; the implementation does not establish a categorical universal property.
+- **CT.3 (Composition Preservation)**: Architecture adapters aim to preserve short-circuit behavior; this is not a guarantee that every transformation preserves measured detection rates.
 
 **Practical value for operators**: The categorical framing enables *type-checked composition* (incompatible modules are refused at composition time), *empirical law verification* (the `verify_category_laws()` function in Part 2's `src/formal/category_theory.py` validates the laws against randomly sampled morphism triples), and a unified framework for reasoning about series and parallel configurations. When designing a new CIF deployment, the Defense Category $\calD$ provides the structural language to specify *what it means* for two defense modules to compose correctly.
 

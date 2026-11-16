@@ -21,9 +21,9 @@ from __future__ import annotations
 
 import pytest
 
-from core.trust import TrustCalculus, TrustConfig
-from formal.theorem_registry import TheoremStatus
-from formal.trust_bounds import DECAY_FACTOR_DEFAULT, validate_trust_bound
+from src.core.trust import TrustCalculus, TrustConfig
+from src.formal.theorem_registry import TheoremStatus
+from src.formal.trust_bounds import DECAY_FACTOR_DEFAULT, validate_trust_bound
 
 
 def amplifying_delegation(source: float, target: float, depth: int) -> float:

@@ -220,9 +220,9 @@ class TestPitfallCatalog:
             assert len(p.mitigations) >= 1, f"{p.id.value} has no mitigations"
 
     def test_each_pitfall_has_manuscript_reference(self) -> None:
-        """Every pitfall references the manuscript."""
+        """Every pitfall references its stable manuscript source file."""
         for p in self.catalog.pitfalls:
-            assert p.manuscript_reference.startswith("Section 07")
+            assert p.manuscript_reference.startswith("docs/manuscript/06_common_pitfalls.md")
 
     def test_get_by_id_valid(self) -> None:
         """get_by_id returns correct pitfall."""
@@ -604,7 +604,7 @@ class TestPitfallChecklistEvaluate:
         assert result.risk_level == RiskLevel.MEDIUM
 
     def test_evaluate_single_orchestrator_unmitigated(self) -> None:
-        """Severity-4 unmitigated (PIT-8 is High per manuscript Section 07): risk=HIGH."""
+        """Severity-4 unmitigated PIT-8 yields HIGH risk."""
         for pid in PitfallID:
             self.checklist.assess(pid, detected=False)
         self.checklist.assess(PitfallID.SINGLE_ORCHESTRATOR, detected=True)
@@ -652,12 +652,12 @@ class TestPitfallChecklistEvaluate:
         assert result.passed is False
 
     def test_evaluate_empty_entries(self) -> None:
-        """Edge case: empty entries list returns clean result."""
+        """An empty assessment cannot report a clean deployment."""
         self.checklist.entries.clear()
         result = self.checklist.evaluate()
-        assert result.passed is True
-        assert result.score == 1.0
-        assert result.risk_level == RiskLevel.LOW
+        assert result.passed is False
+        assert result.score == 0.0
+        assert result.risk_level == RiskLevel.CRITICAL
 
     def test_evaluate_returns_assessment_result_type(self) -> None:
         """evaluate() returns an AssessmentResult instance."""

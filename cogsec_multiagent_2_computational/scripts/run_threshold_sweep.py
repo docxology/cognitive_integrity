@@ -33,12 +33,12 @@ import sys
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(REPO / "src"))
+sys.path.insert(0, str(REPO))
 
-from attacks.corpus import AttackCorpus  # noqa: E402
-from core.firewall import FirewallConfig  # noqa: E402
-from evaluation.benign_corpus import BenignCorpus  # noqa: E402
-from evaluation.threshold_sweep import (  # noqa: E402
+from src.attacks.corpus import AttackCorpus  # noqa: E402
+from src.core.firewall import FirewallConfig  # noqa: E402
+from src.evaluation.benign_corpus import BenignCorpus  # noqa: E402
+from src.evaluation.threshold_sweep import (  # noqa: E402
     sweep_quarantine_threshold,
     sweep_reject_threshold,
 )

@@ -3,22 +3,22 @@ Operator Posture Assessment for Cognitive Security.
 
 Implements an operator-posture assessment: five pillars of operator posture
 (readiness), maturity scoring, and capability validation, aligned with the
-deployment / incident-response guidance in Part 3 SS02-SS05.
+deployment, monitoring, and incident-response guidance in Part 3.
 
 NOTE (P3-M1): the "Five Pillars" taxonomy defined here (trust-boundary,
 belief-provenance, delegation-hygiene, coordination-integrity,
-continuous-monitoring) is THIS MODULE'S OWN operator-posture schema.  It is
-distinct from, and must not be conflated with, the CIF *defense-component*
-pillars used by ``visualization.py`` (firewall / belief-sandbox / identity-
-tripwire / behavioral-invariants / epistemic-provenance).  Where the manuscript
-uses the CIF defense-component pillars, they are referenced via the
-visualization layer; this module's taxonomy is the operator-readiness one.
+continuous-monitoring) is THIS MODULE'S OWN operator-posture schema. The
+operator-readiness radar in ``visualization.py`` consumes these axes. They
+remain distinct from the CIF *defense-component* pillars (firewall /
+belief-sandbox / identity-tripwire / behavioral-invariants /
+epistemic-provenance).
 """
 
 from __future__ import annotations
 
 from dataclasses import dataclass, field
 from enum import Enum
+from math import fsum
 
 # Import shared types from package
 from . import AssessmentResult, PostureLevel, RiskLevel
@@ -330,36 +330,34 @@ class FivePillarsAssessment:
         return gaps
 
     def route_to_sections(self) -> dict[str, str]:
-        """Route assessment results to relevant manuscript sections.
-
-        Based on manuscript guidance:
-        - Low trust mapping -> Section 03 (Human Checklist)
-        - Low detection -> Section 04 (Agent Guidelines)
-        - Low bounding -> Section 05 (Deployment)
-        - Low consensus/monitoring -> Section 06 (Risk Assessment)
-        - Anti-patterns identified -> Section 07 (Common Pitfalls)
+        """Route assessment results to current manuscript source files.
 
         Returns:
-            Dictionary mapping section numbers to reasons
+            Dictionary mapping manuscript filenames to reasons for review.
         """
         assessments = self.assess_all()
         routes: dict[str, str] = {}
 
+        def add_route(source: str, reason: str) -> None:
+            routes[source] = f"{routes[source]}; {reason}" if source in routes else reason
+
+        deployment = "05_deployment_guide.md"
+        monitoring = "05d_monitoring_guide.md"
+        pitfalls = "06_common_pitfalls.md"
+
         if assessments[PillarType.TRUST_BOUNDARY].score < 0.6:
-            routes["03"] = "Trust mapping scored low - systematic deployment guidance needed"
+            add_route(deployment, "Trust mapping scored low; review deployment boundaries")
         if assessments[PillarType.BELIEF_PROVENANCE].score < 0.6:
-            routes["04"] = "Detection scored low - cognitive tripwire implementations needed"
+            add_route(monitoring, "Detection scored low; review tripwire and drift monitoring")
         if assessments[PillarType.DELEGATION_HYGIENE].score < 0.6:
-            routes["05"] = "Bounding scored low - delegation parameter configuration needed"
+            add_route(deployment, "Delegation hygiene scored low; review decay configuration")
         if (
             assessments[PillarType.COORDINATION_INTEGRITY].score < 0.6
             or assessments[PillarType.CONTINUOUS_MONITORING].score < 0.6
         ):
-            routes["06"] = "Consensus/monitoring scored low - threat modeling methodology needed"
+            add_route(monitoring, "Consensus or monitoring scored low; review monitoring guidance")
 
-        # Always recommend pitfalls review
-        routes["07"] = "Common pitfalls review recommended for all deployments"
-
+        add_route(pitfalls, "Common pitfalls review recommended for all deployments")
         return routes
 
 
@@ -502,7 +500,7 @@ class PostureReport:
         overall_score: Combined overall score (0.0-1.0)
         posture_level: Determined posture level
         gaps: All identified gaps
-        recommended_sections: Manuscript sections to review
+        recommended_sections: Manuscript source files to review
         capabilities_present: Operational capabilities present
         capabilities_missing: Operational capabilities missing
     """
@@ -573,7 +571,8 @@ class CapabilityDefinition:
 class CapabilityChecker:
     """Validates operational capabilities against manuscript requirements.
 
-    Checks the 7 operational capabilities from Section 02.
+    Checks the operational capabilities described in
+    ``docs/manuscript/05_deployment_guide.md``.
     """
 
     def __init__(self) -> None:
@@ -723,7 +722,7 @@ def generate_posture_report(
     pillar_score = pillars.overall_score()
     maturity_score = maturity.total_score / 30.0
     capability_score = capability_checker.completeness_score()
-    overall = 0.5 * pillar_score + 0.3 * maturity_score + 0.2 * capability_score
+    overall = fsum((0.5 * pillar_score, 0.3 * maturity_score, 0.2 * capability_score))
 
     posture_level = determine_posture_level(overall)
 

@@ -110,7 +110,7 @@ def test_the_runner_would_catch_a_broken_example(tmp_path: Path) -> None:
     """A guard that cannot fire proves nothing; prove this one fires."""
     broken = (
         f"{RUNNABLE_MARKER}\n"
-        "from core.firewall import FirewallConfig\n"
+        "from src.core.firewall import FirewallConfig\n"
         "FirewallConfig(tau_1=0.7)\n"
     )
     if str(SRC) not in sys.path:

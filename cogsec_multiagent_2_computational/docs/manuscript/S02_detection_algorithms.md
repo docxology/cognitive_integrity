@@ -35,25 +35,14 @@ This supplementary section presents detection algorithm implementations for the 
 
 ## Detector Performance Results
 
-Table: Detector performance comparison via ROC metrics. {#tab:detector-roc}
-
-| Detector  | AUC  | F1-max $\tau$ | TPR@1\%FPR | TPR@5\%FPR |
-| --- | --- | --- | --- | --- |
-| Drift Score | 0.87 | 0.42 | 0.61 | 0.78 |
-| Deviation Score | 0.82 | 0.55 | 0.52 | 0.71 |
-| Provenance Check | 0.91 | 0.38 | 0.74 | 0.86 |
-| Firewall | 0.85 | 0.60 | 0.58 | 0.75 |
-| Tripwire | 0.79 | 0.45 | 0.48 | 0.65 |
-| Ensemble | **0.94** | 0.35 | **0.82** | **0.91** |
-
 Table: Detector AUC over the attack and hard benign corpora, with percentile bootstrap intervals. {#tab:auc-ci}
 
 | Detector  | AUC  | 95\% CI |
 | --- | --- | --- |
-| Invariants | 0.915 | [0.908, 0.926] |
-| Ensemble (all eight, equal weight) | 0.915 | [0.869, 0.926] |
-| Firewall pattern matcher | 0.383 | [0.334, 0.430] |
-| Drift score | 0.374 | [0.338, 0.419] |
+| Invariants | 0.917 | [0.908, 0.926] |
+| Ensemble (all eight, equal weight) | 0.918 | [0.905, 0.931] |
+| Firewall pattern matcher | 0.384 | [0.334, 0.432] |
+| Drift score | 0.373 | [0.335, 0.412] |
 
 *Measured by `scripts/run_detector_auc.py` over 1,475 attacks and 120 benign
 messages, with each interval a percentile bootstrap over 1,000 resamples of the
@@ -64,9 +53,9 @@ corpus the drift score and the firewall pattern matcher order a random attack ab
 message less often than chance would, and their intervals exclude 0.5 from below. That is consistent
 with what the ablation and the threshold sweep report for the same two components independently, and
 it means their contribution to the pipeline comes from the specific inputs they flag rather than
-from any general ability to rank. The ensemble's AUC is the invariants module's to three decimals,
-with a wider interval: averaging seven weak scorers into one strong one costs precision and buys
-nothing.*
+from any general ability to rank. The ensemble's AUC is slightly above the invariants module's (0.918 versus 0.917), with overlapping
+bootstrap intervals and a wider interval; averaging seven weak scorers into one strong one does not
+show a meaningful gain and does not justify a claim that the ensemble is uniformly better.*
 
 ## Multi-Detector Fusion Algorithm
 
@@ -161,7 +150,7 @@ Table: Hybrid configuration trade-off analysis. {#tab:hybrid-tradeoffs}
 | Hybrid (hourly batch) | 92\% | 10ms + lag | Medium |
 | Hybrid (continuous) | **94\%** | 10ms | High |
 
-*Note: These detection rates reflect parametric evaluation of the detector architecture. Realized pipeline detection rates are lower with current adapter implementations (see \cref{sec:extended-results}).*
+*Note: These detection rates reflect parametric evaluation of the detector architecture, not measurements of the current real pipeline; see \cref{sec:extended-results} for separately measured pipeline results.*
 
 ## False Positive Mitigation Results
 
@@ -342,6 +331,6 @@ Table: Information-geometric vs.\ KL-based detection comparison. {#tab:ig-vs-kl}
 
 ## Summary
 
-These algorithms implement the detection methodology defined in Part 1, providing: (1) ROC curve construction with Youden's J threshold optimization, (2) multi-detector fusion via weighted averaging, majority voting, or learned MLP/attention, (3) online and batch detection architectures with configurable latency/accuracy trade-offs, (4) false positive mitigation by post-filtering module results (\cref{tab:fp-mitigation-results}), (5) adaptive baseline update for non-stationary environments, and (6) information-geometric detection (Algorithms IG.1--IG.2) using the Fisher-Rao geodesic distance and natural gradient anomaly score for enhanced detection of boundary-trajectory attacks. The hybrid online+batch architecture (\cref{tab:hybrid-tradeoffs}) achieves the best detection-latency profile for production deployments; pairing it with the Fisher-Rao geodesic detector (\cref{tab:ig-vs-kl}) improves AUC from 0.94 to an estimated 0.95--0.96 on geodesic attack variants.
+These algorithms implement the detection methodology defined in Part 1, providing: (1) ROC curve construction with Youden's J threshold optimization, (2) multi-detector fusion via weighted averaging, majority voting, or learned MLP/attention, (3) online and batch detection architectures with configurable latency/accuracy trade-offs, (4) false positive mitigation by post-filtering module results (\cref{tab:fp-mitigation-results}), (5) adaptive baseline update for non-stationary environments, and (6) information-geometric detection (Algorithms IG.1--IG.2) using the Fisher-Rao geodesic distance and natural gradient anomaly score for enhanced detection of boundary-trajectory attacks. The hybrid online+batch trade-offs (\cref{tab:hybrid-tradeoffs}) and information-geometric comparison (\cref{tab:ig-vs-kl}) are parametric/design analyses, not production or field measurements, and do not support an estimated field AUC. The measured detector AUCs on 1,475 attacks and 120 benign messages are reported separately in \cref{tab:auc-ci}.
 
 For formal definitions and theoretical foundations, see Part 1's Detection Methods section and Part 2, \cref{sec:information-geometry}.

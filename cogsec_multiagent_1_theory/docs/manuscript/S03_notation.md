@@ -73,8 +73,9 @@ This supplement provides a comprehensive reference for the mathematical notation
 | $\mathcal{F}(m)$ | Cognitive firewall classification function | \cref{def:firewall} |
 | $D_{\text{inj}}$ | Injection detection score | \cref{def:firewall-rules} |
 | $D_{\text{sus}}$ | Suspicious content score | \cref{def:firewall-rules} |
-| $\tau_1$ | Firewall reject threshold | \cref{eq:firewall-rules} |
-| $\tau_2$ | Firewall quarantine threshold | \cref{eq:firewall-rules} |
+| $\tau_1$ | Firewall reject threshold (strict $>$ comparison) | \cref{eq:firewall-rules} |
+| $\tau_2$ | Firewall quarantine threshold (strict $>$ comparison) | \cref{eq:firewall-rules} |
+| $L_{\text{message}}$ | Maximum message length before the basic firewall's independent quarantine guard | \cref{eq:firewall-rules} |
 | $\mathcal{B}_{\text{verified}}$ | Set of verified beliefs | \cref{def:sandbox} |
 | $\mathcal{B}_{\text{provisional}}$ | Set of provisional (sandboxed) beliefs | \cref{def:sandbox} |
 | $\pi(\phi)$ | Provenance chain for belief $\phi$ | \cref{def:evidence} |

@@ -147,30 +147,34 @@ A classification function on incoming messages:
 
 \begin{definition}[Firewall Decision Rules]
 \label{def:firewall-rules}
+For the reference \texttt{CognitiveFirewall}, with rules evaluated from top to bottom,
 \begin{equation}
 \label{eq:firewall-rules}
 \mathcal{F}(m) = \begin{cases}
 \textsc{reject} & \text{if } D_{\text{inj}}(m) > \tau_1 \\
-\textsc{quarantine} & \text{if } D_{\text{sus}}(m) > \tau_2 \\
+\textsc{quarantine} & \text{if } |m| > L_{\text{message}}
+ \ \text{or}\ \max\{D_{\text{inj}}(m),D_{\text{sus}}(m)\} > \tau_2 \\
 \textsc{accept} & \text{otherwise}
 \end{cases}
 \end{equation}
-where $D_{\text{inj}}$ detects injection attempts and $D_{\text{sus}}$ scores suspicious content.
+where $D_{\text{inj}}$ detects injection attempts, $D_{\text{sus}}$ scores suspicious content, and $L_{\text{message}}$ is the configured length limit. Thus injection scoring and the reject comparison precede the length guard; quarantine uses the maximum score rather than an independent suspicious-score-only rule.
 \end{definition}
 
 \begin{table}[htbp]
 \centering
-\caption{Firewall detector components.}
+\caption{Firewall detector components in the basic reference implementation.}
 \label{tab:firewall-detectors}
 \begin{tabular}{@{}llp{5cm}@{}}
 \toprule
 Detector & Target & Method \\
 \midrule
-$D_{\text{inj}}$ & Injection attempts & Pattern matching + semantic analysis \\
-$D_{\text{sus}}$ & Suspicious content & Anomaly scoring vs. baseline \\
+$D_{\text{inj}}$ & Injection attempts & Regex injection-pattern scoring \\
+$D_{\text{sus}}$ & Suspicious content & Regex suspicious-pattern scoring \\
 \bottomrule
 \end{tabular}
 \end{table}
+
+The enhanced \texttt{MultiStageClassifier} is a distinct mode, not the same scalar rule with an extra detector. It permits per-stage early rejection when a stage score exceeds $\tau_1$; otherwise its weighted aggregate rejects above $\tau_1$, quarantines above $\tau_2$, and accepts otherwise. Its semantic stage requires an explicitly supplied embedding callable from an application-configured trained model and uses nonnegative cosine similarity to registered malicious patterns. No default model or feature-hash embedder is supplied: missing backends, invalid embedding vectors, and backend execution failures raise rather than silently producing a semantic score. The optional \texttt{PinnedSentenceTransformerEncoder} provides trained all-MiniLM-L6-v2 embeddings through a version-pinned backend, verifying a local acquisition manifest and immutable weight identity before CPU-only, offline safetensors loading with remote code disabled; the source guide records the exact revision and provisioning contract. The application owns offline provisioning and empirical qualification of semantic effectiveness; a small trained-vector paraphrase regression is not field-effectiveness evidence. All comparisons are strict. In particular, $\tau_1=\tau_2$ leaves no aggregate-score interval for quarantine because rejection takes precedence, although the basic implementation's independent length guard can still quarantine.
 
 \begin{theorem}[Optimal Threshold Selection]
 \label{thm:threshold-selection}
@@ -202,14 +206,17 @@ F = D_{\mathrm{KL}}\bigl[Q(s) \,\|\, P(s)\bigr] - \mathbb{E}_{Q}\bigl[\log P(o \
 \]
 measures the divergence of an agent's approximate posterior $Q$ from its
 generative model prior $P$, penalised by explanatory adequacy.
-A cognitive attack $\omega$ is effective if and only if it induces a free energy
-increase $\Delta F(\omega) > \kappa_{\mathrm{FEP}}$, where $\kappa_{\mathrm{FEP}}$
-is the sandbox's corroboration threshold $\kappa$ scaled by the source
-precision $\epsilon_{\text{prec}}$ (Part~2, Theorem~FEP.1, ``Attack-FEP Equivalence''):
+A cognitive attack $\omega$ is \emph{effective} if it induces a free energy
+increase exceeding the sandbox's rejection threshold. Writing $\kappa_{\mathrm{FEP}}$
+for that threshold --- the sandbox's corroboration threshold $\kappa$ scaled by the source
+precision $\epsilon_{\text{prec}}$ (Part~2, Theorem~FEP.1, ``Attack-FEP Equivalence'') --- the
+sandbox rejects the update whenever
 \[
 \Delta F(\omega) = F\!\left(Q_{\text{attacked}}\right) - F\!\left(Q_{\text{baseline}}\right)
-\leq \kappa \cdot \epsilon_{\text{prec}}.
+> \kappa_{\mathrm{FEP}} = \kappa \cdot \epsilon_{\text{prec}},
 \]
+and an attack is effective precisely when the update is not rejected, i.e. when
+$\Delta F(\omega) \leq \kappa \cdot \epsilon_{\text{prec}}$.
 Belief promotion from provisional to verified corresponds to \emph{active
 inference}: the sandbox permits an update only when the evidential
 quality of incoming messages justifies the free energy cost of revision.
@@ -583,9 +590,9 @@ The cognitive firewall classifies every message into exactly one of three outcom
 \end{equation}
 \end{theorem}
 
-\begin{theorem}[Firewall False Positive Monotonicity]
+\begin{theorem}[Firewall Rejection-Rate Monotonicity]
 \label{thm:firewall-fpr-monotone}
-Increasing the rejection threshold $\tau_1$ decreases false positive rate and decreases true positive rate monotonically:
+For a fixed injection-score distribution, increasing the rejection threshold $\tau_1$ makes rejection-based false-positive and true-positive rates non-increasing:
 \begin{equation}
 \label{eq:firewall-fpr-monotone}
 \tau_1' > \tau_1 \Rightarrow \text{FPR}(\tau_1') \leq \text{FPR}(\tau_1) \land \text{TPR}(\tau_1') \leq \text{TPR}(\tau_1)
@@ -593,8 +600,10 @@ Increasing the rejection threshold $\tau_1$ decreases false positive rate and de
 \end{theorem}
 
 \begin{proof}
-By the definition of $\mathcal{F}$: rejection requires $D_{\text{inj}}(m) > \tau_1$. Increasing $\tau_1$ tightens this condition. Since TPR = $P(D_{\text{inj}}(m) > \tau_1 \mid m \in \mathcal{A})$ and both probabilities are CDFs of continuous distributions, they are non-increasing in $\tau_1$.
+Rejection requires $D_{\text{inj}}(m) > \tau_1$. Raising $\tau_1$ can only remove messages from the rejection set, so the probabilities of rejection conditional on benign and attack inputs are both non-increasing. Neither strict decrease nor continuity of the score distribution is required.
 \end{proof}
+
+This comparative-statics statement concerns rejection by the abstract threshold rule, not an empirical threshold sweep of the complete three-class implementation. It does not assert that varying $\tau_2$ changes rejection rates, nor that a distinct quarantine band exists when $\tau_1=\tau_2$; the concrete mode differences and equal-threshold degeneracy are documented with \cref{def:firewall-rules}.
 
 \begin{corollary}[Pareto-Optimal Threshold]
 \label{cor:pareto-threshold}
@@ -752,32 +761,32 @@ $n$ agents & Max faulty $f$ & Quorum $q$ & Message complexity & Rounds \\
 
 \begin{theorem}[Composition Algebra Closure]
 \label{thm:composition-closure}
-On a common accept/reject focal predicate, the set of CIF defenses $\mathcal{D}$ under series ($\circ$) and parallel ($\parallel$) composition forms a bounded distributive lattice --- it satisfies closure, associativity, identity and distributivity (see the scope remark below for what is \emph{not} claimed):
+On a common accept/reject focal predicate, the set of CIF defenses $\mathcal{D}$ under series ($\circ$) and parallel ($\parallel$) composition is closed, associative, and carries an identity. On that focal predicate both operations act as conjunction, so they coincide there and the structure is a meet-semilattice with identity rather than a lattice (see the scope remark below for what is \emph{not} claimed):
 \begin{enumerate}
 \item \textbf{Closure}: $\mathcal{D}_1, \mathcal{D}_2 \in \mathcal{D} \Rightarrow \mathcal{D}_1 \circ \mathcal{D}_2 \in \mathcal{D}$ and $\mathcal{D}_1 \parallel \mathcal{D}_2 \in \mathcal{D}$
 \item \textbf{Associativity}: $(\mathcal{D}_1 \circ \mathcal{D}_2) \circ \mathcal{D}_3 = \mathcal{D}_1 \circ (\mathcal{D}_2 \circ \mathcal{D}_3)$
 \item \textbf{Identity}: $\exists \mathcal{D}_\emptyset: \mathcal{D} \circ \mathcal{D}_\emptyset = \mathcal{D}_\emptyset \circ \mathcal{D} = \mathcal{D}$ (null defense: always accept)
-\item \textbf{Distributivity}: $\mathcal{D}_1 \circ (\mathcal{D}_2 \parallel \mathcal{D}_3) = (\mathcal{D}_1 \circ \mathcal{D}_2) \parallel (\mathcal{D}_1 \circ \mathcal{D}_3)$
+\item \textbf{Distributivity (degenerate)}: $\mathcal{D}_1 \circ (\mathcal{D}_2 \parallel \mathcal{D}_3)$ and $(\mathcal{D}_1 \circ \mathcal{D}_2) \parallel (\mathcal{D}_1 \circ \mathcal{D}_3)$ accept exactly under $A_1 \land A_2 \land A_3$, so the two sides agree on the focal predicate; because both operations are conjunction there, this is idempotence of $\land$ rather than a lattice distributive law.
 \end{enumerate}
 \end{theorem}
 
 \begin{proof}
-Closure: both composition operators produce functions $\mathcal{M} \to \{\textsc{accept}, \textsc{quarantine}, \textsc{reject}\}$, so the output type is preserved. Associativity follows from Boolean operator associativity. The null defense $\mathcal{D}_\emptyset(m) = \textsc{accept}$ for all $m$ is the identity. Distributivity follows from logic: $A \land (B \lor C) \equiv (A \land B) \lor (A \land C)$ instantiated on the accept/reject conditions.
+Closure: both composition operators produce functions $\mathcal{M} \to \{\textsc{accept}, \textsc{quarantine}, \textsc{reject}\}$, so the output type is preserved. Associativity follows from Boolean operator associativity. The null defense $\mathcal{D}_\emptyset(m) = \textsc{accept}$ for all $m$ is the identity. On the accept predicate both operators are conjunction, so the distributivity item reduces to $A_1 \land (A_2 \land A_3) \equiv (A_1 \land A_2) \land (A_1 \land A_3)$, which holds by associativity, commutativity and idempotence of $\land$. Absorption $A \circ (A \parallel B) = A$ fails, so the structure is not a lattice.
 \end{proof}
 
 \begin{remark}[Scope of the composition-algebra claim]
 \label{rem:composition-algebra-scope}
-$\circ$ and $\parallel$ are defined here on a common accept/compare focal predicate so that closure, associativity, identity, and both distributive laws hold; under that reading the algebra is a bounded distributive lattice, not in general a \emph{field}-like structure. A full \emph{closed semiring} additionally requires a commutative additive identity that annihilates the multiplicative identity and a Kleene-star (infinite-sum) operation [@gondran2008graphs], neither of which is constructed or proven here. The claim should therefore be read as ``the defense-composition operators form a bounded distributive lattice under the stated independence assumption (\cref{rem:defense-independence-scope}),'' not as a complete closed semiring.
+$\circ$ and $\parallel$ are defined here on a common accept/compare focal predicate so that closure, associativity, and identity hold; on that predicate both act as conjunction, so the algebra is a meet-semilattice with identity, not a lattice and not in general a \emph{field}-like structure. A full \emph{closed semiring} additionally requires a commutative additive identity that annihilates the multiplicative identity and a Kleene-star (infinite-sum) operation [@gondran2008graphs], neither of which is constructed or proven here. The claim should therefore be read as ``the defense-composition operators form a meet-semilattice with identity under the stated independence assumption (\cref{rem:defense-independence-scope}),'' not as a complete closed semiring or a distributive lattice.
 \end{remark}
 
 \begin{theorem}[Defense Composition Detection Rate Bound]
 \label{thm:composition-bound}
-For any composition of defenses $\mathcal{D}_1, \ldots, \mathcal{D}_k$ with individual rates $r_1, \ldots, r_k$:
+Under the independence assumption of \cref{rem:defense-independence-scope}, for any composition of defenses $\mathcal{D}_1, \ldots, \mathcal{D}_k$ with individual rates $r_1, \ldots, r_k$:
 \begin{equation}
 \label{eq:composition-bound}
 P_{\text{detect}}(\mathcal{D}_1 \circ \cdots \circ \mathcal{D}_k) = 1 - \prod_{i=1}^{k}(1 - r_i)
 \end{equation}
-This is monotone increasing in each $r_i$, bounded in $[r_{\max}, 1)$, and converges to $1$ as $k \to \infty$ if each $r_i > 0$.
+This is monotone increasing in each $r_i$ and bounded below by $\max_i r_i$ (when the stated independence model holds). It converges to $1$ as $k \to \infty$ if and only if $\prod_i(1-r_i) \to 0$; strictly positive $r_i$ alone is insufficient (for example $r_i=2^{-i}$ leaves a nonzero miss probability).
 \end{theorem}
 
 \begin{proof}
@@ -791,5 +800,5 @@ The full CIF stack (5 defenses with $r_i \geq 0.55$) achieves:
 \label{eq:layered-guarantee}
 P_{\text{detect}} \geq 1 - (0.45)^5 = 1 - 0.0185 = 0.9815
 \end{equation}
-This bound is conservative; empirical rates exceed $0.994$ with the recommended configuration.
+The 0.9815 figure is a worst-case bound under the corollary's hypothetical $r_i \geq 0.55$, not an estimate of the actual stack's performance. Measured per-cell parametric design rates are 0.96--1.00, and the architecture-agnostic multi-seed pipeline mean is 86.3\% across 30 seeds; these measurements are not instances of that hypothetical bound.
 \end{corollary}

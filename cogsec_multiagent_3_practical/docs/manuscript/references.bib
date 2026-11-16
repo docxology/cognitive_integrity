@@ -36,7 +36,7 @@
   volume    = {3},
   year      = {2026},
   doi       = {10.5281/zenodo.22134548},
-  note      = {Part 3+4 (unified): Practitioner guidance (deployment guides, subagent hardening, incident-response playbooks, monitoring, cost--benefit analysis, common pitfalls, case studies, operator risk frameworks) combined with cross-domain CIF-AD-OODA applications across ten critical domains, three universal attack patterns, four novel defense extensions, and retrospective analysis of six documented 2024--2025 AI-agent security incidents.}
+  note      = {Part 3+4 (unified): Practitioner guidance (deployment guides, subagent hardening, incident-response playbooks, monitoring, cost--benefit analysis, common pitfalls, case studies, operator risk frameworks) combined with cross-domain CIF-AD-OODA applications across ten critical domains, three universal attack patterns, four novel defense extensions, and retrospective analysis of five publicly documented 2024--2025 AI-agent security incidents.}
   ,
   url       = {https://github.com/docxology/cognitive_integrity},
 }
@@ -552,7 +552,7 @@
   journal   = {Proceedings of the International Conference on Learning Representations (ICLR)},
   year      = {2025},
   url       = {https://arxiv.org/abs/2410.02644},
-  note      = {84.3\% average attack success rate across 10 scenarios and 400+ tools}
+  note      = {Mixed Attack category averages up to 84.30\% attack success across 13 backbones, over 10 scenarios and 400+ tools; not a universal 84.3\% per-tool or defense-mitigation rate}
 }
 
 % ============================================================
@@ -827,11 +827,13 @@
 }
 
 @misc{copilot2025rce,
-  author       = {Raz, Avi and Yankelevsky, Ariel},
-  title        = {{CVE-2025-53773}: {GitHub Copilot} Prompt Injection Enables Remote Code Execution via {YOLO} Mode},
-  howpublished = {Security Advisory},
+  author       = {{Embrace The Red}},
+  title        = {{GitHub Copilot}: Remote Code Execution via Prompt Injection ({CVE-2025-53773})},
+  howpublished = {Primary Research Disclosure},
   year         = {2025},
-  url          = {https://www.pillar.security/blog/new-vulnerability-in-github-copilot}
+  month        = aug,
+  url          = {https://embracethered.com/blog/posts/2025/github-copilot-remote-code-execution-via-prompt-injection/},
+  note         = {Publicly disclosed August 12, 2025; privately reported to Microsoft June 29, 2025. The exploit modifies \texttt{.vscode/settings.json} to set \texttt{chat.tools.autoApprove} to true.}
 }
 
 @misc{promptarmor2024slack,
@@ -849,7 +851,7 @@
   year         = {2024},
   month        = may,
   url          = {https://www.cnn.com/2024/05/16/tech/arup-deepfake-scam-loss-hong-kong-intl-hnk},
-  note         = {A finance employee in Arup's Hong Kong office made 15 transfers totalling HK\$200 million (about US\$25.6 million) after a video conference in which every other participant was a deepfake built from publicly available footage. Reported by Hong Kong police in February 2024; Arup identified itself as the victim in May 2024.}
+  note         = {A finance employee in Arup's Hong Kong office made 15 transfers totalling HK\$200 million (about US\$25.6 million) after a video conference in which every other participant was a deepfake built from publicly available footage. Arup notified Hong Kong police about the incident in January 2024; police publicly discussed it in February 2024, and Arup identified itself as the victim in May 2024.}
 }
 
 @misc{guardian2024chatgptsearch,

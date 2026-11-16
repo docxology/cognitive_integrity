@@ -421,10 +421,10 @@ def make_pipeline_eval_fn(
         )
 
     def eval_fn(seed: int) -> SeedMetrics:
-        from attacks.corpus import AttackCorpus
-        from composition.factory import create_full_pipeline
-        from evaluation.benign_corpus import BenignCorpus
-        from utils.random_seed import set_global_seed
+        from src.attacks.corpus import AttackCorpus
+        from src.composition.factory import create_full_pipeline
+        from src.evaluation.benign_corpus import BenignCorpus
+        from src.utils.random_seed import set_global_seed
 
         set_global_seed(seed)
         pipeline = create_full_pipeline()

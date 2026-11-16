@@ -22,6 +22,11 @@ dependencies = [
     "seaborn>=0.13.0",
 ]
 
+[project.optional-dependencies]
+semantic = [
+    "sentence-transformers==6.3.0",
+]
+
 [dependency-groups]
 dev = [
     "pytest>=7.4.0",
@@ -52,7 +57,7 @@ exclude_lines = [
 
 [tool.ruff]
 line-length = 100
-target-version = "py310"
+target-version = "py311"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "W"]
@@ -71,7 +76,8 @@ select = ["E", "F", "I", "W"]
 "src/sandbox.py" = ["E402"]
 
 [tool.setuptools.packages.find]
-where = ["src"]
+where = ["."]
+include = ["src", "src.*"]
 
 [tool.uv]
 # Inherits workspace settings from root pyproject.toml

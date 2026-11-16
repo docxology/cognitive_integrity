@@ -12,7 +12,7 @@ from typing import Any
 import matplotlib.pyplot as plt
 from matplotlib.patches import FancyBboxPatch, Rectangle
 
-from attacks.corpus import AttackCorpus
+from src.attacks.corpus import AttackCorpus
 
 from ..style import FONTSIZE, SEMANTIC_COLORS, add_source_annotation, apply_style, save_figure
 
@@ -21,22 +21,19 @@ from ..style import FONTSIZE, SEMANTIC_COLORS, add_source_annotation, apply_styl
 # ``except (ImportError, ModuleNotFoundError, Exception)`` block: the
 # derivation always raised and a hardcoded table always won, so the caption's
 # corpus size could not track the corpus it names.
-_CORPUS_COUNTS: dict[str, int] = dict(AttackCorpus.generate(seed=42).distribution())
+_CORPUS = AttackCorpus.generate(seed=42)
+_CORPUS_COUNTS: dict[str, int] = dict(_CORPUS.distribution())
+_OMEGA_COUNTS = {
+    level: sum(sample.omega_level == level for sample in _CORPUS)
+    for level in range(1, 6)
+}
 
 
 
-#: Per-adversary-class detection, measured rather than typed.
-#:
-#: Five rates were written into the ``classes`` list below -- 0.85, 0.78, 0.71,
-#: 0.65, 0.45 -- and drawn as filled progress bars labelled "Detection: 85%"
-#: and so on, under a caption that draws a conclusion from the trend. Nothing
-#: measured them. ``adversarial_training_results.json`` carries
-#: ``omega_level_dr`` keyed ``omega_1_passive`` through ``omega_5_coordinated``,
-#: one-for-one with this figure's five columns, and it is used here.
-#:
-#: That artifact's ``data_origin`` is ``parametric_simulation``, so the panel
-#: says so. Replacing a typed number with a simulated one and calling it
-#: measured would be the same defect in better clothes.
+#: Closed-form detection projections indexed by the corpus's category-derived
+#: technique annotations.  These Ω groups are not Part 1's access-based
+#: adversary classes, and the projections are not independent measurements.
+#: The figure names both limitations next to the bars.
 _OMEGA_DR_PATH = (
     Path(__file__).resolve().parents[3] / "output" / "data" / "adversarial_training_results.json"
 )
@@ -52,12 +49,12 @@ _OMEGA_KEYS = (
 
 
 def _omega_detection_rates() -> list[float]:
-    """Detection per adversary class, in column order. Fails closed."""
+    """Closed-form projections by technique annotation, in column order."""
     if not _OMEGA_DR_PATH.is_file():
         raise FileNotFoundError(
             f"{_OMEGA_DR_PATH} is missing; run "
-            f"scripts/run_adversarial_training.py. This panel reports a rate "
-            f"per adversary class and has no stand-in values."
+            f"scripts/run_adversarial_training.py. This panel reports closed-form "
+            f"projections by technique annotation and has no stand-in values."
         )
     payload = json.loads(_OMEGA_DR_PATH.read_text(encoding="utf-8"))
     rates = payload.get("omega_level_dr") or {}
@@ -103,7 +100,7 @@ def plot_comprehensive_taxonomy(output_dir: str | Path = "output/figures") -> pl
     ax.text(
         8,
         9.5,
-        "COGNITIVE ATTACK SURFACE TAXONOMY",
+        "TECHNIQUE-DERIVED Ω ANNOTATIONS",
         ha="center",
         va="center",
         fontsize=18,
@@ -113,8 +110,8 @@ def plot_comprehensive_taxonomy(output_dir: str | Path = "output/figures") -> pl
     ax.text(
         8,
         9.0,
-        f"Classification of Multiagent AI Attack Vectors "
-        f"(n={sum(_CORPUS_COUNTS.values())} corpus)",
+        f"Corpus technique groups, not access-based adversary classes "
+        f"(n={sum(_CORPUS_COUNTS.values())} attacks)",
         ha="center",
         va="center",
         fontsize=12,
@@ -127,79 +124,76 @@ def plot_comprehensive_taxonomy(output_dir: str | Path = "output/figures") -> pl
     col_gap = 0.3
     start_x = 0.8
 
-    # Data for each adversary class. The detection rate is attached below from
-    # the artifact rather than written into the literal.
+    # Static technique descriptions plus measured corpus counts and the
+    # artifact's separately qualified closed-form projection for each Ω key.
     detection_rates = _omega_detection_rates()
     classes: list[Any] = [
         {
             "symbol": "Ω₁",
-            "name": "EXTERNAL",
+            "name": "PASSIVE",
             "color": colors["external"],
-            "icon": "↓",  # Input arrow
-            "attacks": [
-                "Direct Prompt\nInjection",
-                "Social\nEngineering",
-                "Malicious\nUser Input",
-            ],
+            "icon": "↓",
+            "attacks": ["No attack-corpus\nentries", "—", "—"],
             "complexity": "Low",
-            "impact": "Entry Point",
+            "impact": "No attack samples",
         },
         {
             "symbol": "Ω₂",
-            "name": "PERIPHERAL",
+            "name": "INJECTION",
             "color": colors["peripheral"],
-            "icon": "⚡",  # Tool/API
+            "icon": "⚡",
             "attacks": [
-                "Tool Response\nManipulation",
-                "Memory\nPoisoning",
-                "API Data\nCorruption",
+                "Direct / Indirect\nInjection",
+                "Nested\nInjection",
+                "Sandbox\nEscape",
             ],
             "complexity": "Medium",
-            "impact": "Data Injection",
+            "impact": "Action Execution",
         },
         {
             "symbol": "Ω₃",
-            "name": "AGENT-LEVEL",
+            "name": "IMPERSONATION",
             "color": colors["agent"],
-            "icon": "◉",  # Agent/brain
+            "icon": "◉",
             "attacks": [
-                "Identity\nConfusion",
-                "Belief\nInjection",
-                "Goal\nManipulation",
+                "Identity\nImpersonation",
+                "Trust\nInflation",
+                "Delegation\nAbuse",
             ],
             "complexity": "High",
-            "impact": "State Corruption",
+            "impact": "Trust / Goal Exploitation",
         },
         {
             "symbol": "Ω₄",
-            "name": "COORDINATION",
+            "name": "BELIEF MANIP.",
             "color": colors["coordination"],
-            "icon": "⬡",  # Network
+            "icon": "⬡",
             "attacks": [
-                "Trust\nLaundering",
-                "Sybil\nAttacks",
-                "Consensus\nManipulation",
+                "Belief Drift /\nFabrication",
+                "Belief\nInjection",
+                "Provenance\nLaundering",
             ],
             "complexity": "High",
-            "impact": "Trust Exploitation",
+            "impact": "Belief-State Corruption",
         },
         {
             "symbol": "Ω₅",
-            "name": "SYSTEMIC",
+            "name": "COORDINATED",
             "color": colors["systemic"],
-            "icon": "⚠",  # Warning
+            "icon": "⚠",
             "attacks": [
-                "Orchestrator\nCompromise",
-                "System-Wide\nCorruption",
-                "Cascading\nFailure",
+                "Sybil / Consensus\nAttacks",
+                "Timing\nAttacks",
+                "Byzantine\nManipulation",
             ],
             "complexity": "Critical",
-            "impact": "Total Compromise",
+            "impact": "Coordination Abuse",
         },
     ]
 
-    for _column, _rate in zip(classes, detection_rates):
+    for level, (_column, _rate) in enumerate(zip(classes, detection_rates), start=1):
         _column["detection"] = _rate
+        _column["corpus_n"] = _OMEGA_COUNTS[level]
 
     # Draw each class column
     for i, cls in enumerate(classes):
@@ -245,10 +239,10 @@ def plot_comprehensive_taxonomy(output_dir: str | Path = "output/figures") -> pl
         ax.text(
             x + col_width / 2,
             7.6,
-            cls["name"],
+            f"{cls['name']}\nn={cls['corpus_n']}",
             ha="center",
             va="center",
-            fontsize=10,
+            fontsize=9,
             fontweight="bold",
             color="white",
         )
@@ -327,7 +321,7 @@ def plot_comprehensive_taxonomy(output_dir: str | Path = "output/figures") -> pl
         ax.text(
             x + col_width / 2,
             1.75,
-            f"Detection: {cls['detection']:.0%}\u2020",
+            f"Model projection: {cls['detection']:.0%}\u2020",
             ha="center",
             va="center",
             fontsize=FONTSIZE["small"],
@@ -370,7 +364,7 @@ def plot_comprehensive_taxonomy(output_dir: str | Path = "output/figures") -> pl
     ax.text(
         0.5,
         0.4,
-        "Detection difficulty: ",
+        "Projected detection (closed-form): ",
         ha="left",
         va="center",
         fontsize=FONTSIZE["base"],
@@ -401,13 +395,13 @@ def plot_comprehensive_taxonomy(output_dir: str | Path = "output/figures") -> pl
             fontsize=FONTSIZE["small"],
             color=colors["text"],
         )
-    # The dagger on each Detection label. The artifact these come from records
-    # data_origin "parametric_simulation", and a bar chart with no qualifier
-    # reads as a measurement whatever its source.
+    # The Ω values are category-derived technique annotations, not a second
+    # access taxonomy.  Their rates are closed-form scenario projections, not
+    # per-class measurements (and Ω₁ has no attack-corpus denominator).
     ax.text(
         0.5, 0.015,
-        "\u2020 Detection rates from adversarial_training_results.json "
-        "(parametric simulation, not a deployed measurement).",
+        "\u2020 Closed-form projections from adversarial_training_results.json; "
+        "Ω groups are technique annotations, not access classes or independent measurements.",
         transform=fig.transFigure, ha="center", va="bottom",
         fontsize=7, color="#5A6472", style="italic",
     )

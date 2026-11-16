@@ -18,8 +18,8 @@ import time
 from collections import Counter
 from typing import Any, Dict, List, Optional
 
-from composition.pipeline import DefenseModule
-from utils.types import DefenseResult
+from src.composition.pipeline import DefenseModule
+from src.utils.types import DefenseResult
 
 from .calibration import DEFAULT_THRESHOLD
 
@@ -52,8 +52,8 @@ class FirewallAdapter(DefenseModule):
     """Wraps :class:`EnhancedCognitiveFirewall` as a pipeline module.
 
     Uses the multi-stage classifier (structural + pattern + semantic)
-    to score incoming messages and flag those whose aggregate score
-    exceeds *threshold*.
+    to score incoming messages. A stage-level REJECT always detects;
+    otherwise the aggregate score must exceed *threshold*.
     """
 
     @property
@@ -61,7 +61,7 @@ class FirewallAdapter(DefenseModule):
         return "CognitiveFirewall"
 
     def __init__(self, *, threshold: float | None = None) -> None:
-        from core.firewall import EnhancedCognitiveFirewall
+        from src.core.firewall import EnhancedCognitiveFirewall
 
         self._threshold = DEFAULT_THRESHOLD if threshold is None else threshold
         self._firewall = EnhancedCognitiveFirewall(use_semantic=True)
@@ -71,9 +71,15 @@ class FirewallAdapter(DefenseModule):
     ) -> DefenseResult:
         t0 = time.perf_counter()
 
+        from src.core.firewall import Classification
+
         result = self._firewall.classify_detailed(message)
+        classification = result.get("classification")
         aggregate_score: float = result.get("aggregate_score", 0.0)
-        detected = aggregate_score > self._threshold
+        detected = (
+            classification is Classification.REJECT
+            or aggregate_score > self._threshold
+        )
 
         latency_ms = (time.perf_counter() - t0) * 1000.0
 
@@ -249,7 +255,7 @@ class TripwireAdapter(DefenseModule):
         threshold: float | None = None,
         shift_indicators: Optional[List[str]] = None,
     ) -> None:
-        from core.tripwire import CognitiveTripwire
+        from src.core.tripwire import CognitiveTripwire
 
         self._threshold = DEFAULT_THRESHOLD if threshold is None else threshold
         # Use caller-supplied list or fall back to the class default.
@@ -418,7 +424,7 @@ class TrustAdapter(DefenseModule):
         delegation_pattern: Optional[str] = None,
         match_weight: float = 0.2,
     ) -> None:
-        from core.trust import TrustCalculus
+        from src.core.trust import TrustCalculus
 
         self._threshold = DEFAULT_THRESHOLD if threshold is None else threshold
         self._match_weight = match_weight
@@ -448,7 +454,7 @@ class TrustAdapter(DefenseModule):
         # Baseline trust for an unknown source (low across all three axes).
         trust_score = self._trust.compute_trust(0.3, 0.3, 0.3)
 
-        detected = claim_score > trust_score
+        detected = claim_score > self._threshold
         score = claim_score
 
         latency_ms = (time.perf_counter() - t0) * 1000.0
@@ -624,14 +630,14 @@ class ConsensusAdapter(DefenseModule):
         n_agents: int = 7,
         sensitivity_profiles: Optional[List[float]] = None,
     ) -> None:
-        from core.consensus import ByzantineConsensus
+        from src.core.consensus import ByzantineConsensus
 
         self._threshold = DEFAULT_THRESHOLD if threshold is None else threshold
         self._SENSITIVITY_PROFILES: List[float] = (
             sensitivity_profiles if sensitivity_profiles is not None
             else list(self._DEFAULT_SENSITIVITY_PROFILES)
         )
-        max_byzantine = max(1, n_agents // 3)
+        max_byzantine = (n_agents - 1) // 3
         self._consensus = ByzantineConsensus(
             n_agents=n_agents, max_byzantine=max_byzantine
         )
@@ -663,7 +669,7 @@ class ConsensusAdapter(DefenseModule):
     def evaluate(
         self, message: str, context: Optional[Dict[str, Any]] = None
     ) -> DefenseResult:
-        from core.consensus import ConsensusResult, Vote
+        from src.core.consensus import ConsensusResult, Vote
 
         t0 = time.perf_counter()
         self._consensus.reset()
@@ -696,13 +702,14 @@ class ConsensusAdapter(DefenseModule):
         # The mechanism decides, not this adapter. The previous implementation
         # submitted these votes and then ignored the result.
         result, confidence = self._consensus.compute_consensus("message_suspicious")
-        detected = result is ConsensusResult.ACCEPT
+        score = _clamp(evidence)
+        detected = result is ConsensusResult.ACCEPT and score > self._threshold
 
         latency_ms = (time.perf_counter() - t0) * 1000.0
 
         return DefenseResult(
             detected=detected,
-            score=_clamp(evidence),
+            score=score,
             module_name=self.name,
             details={
                 "invariants_matched": sorted(dimensions),
@@ -742,7 +749,7 @@ class ProvenanceAdapter(DefenseModule):
         return "ProvenanceAnalysis"
 
     def __init__(self, *, threshold: float | None = None) -> None:
-        from core.provenance import ProvenanceChain
+        from src.core.provenance import ProvenanceChain
 
         self._threshold = DEFAULT_THRESHOLD if threshold is None else threshold
         self._provenance = ProvenanceChain()
@@ -802,7 +809,7 @@ class SandboxAdapter(DefenseModule):
         return "SandboxBypassDetector"
 
     def __init__(self, *, threshold: float | None = None) -> None:
-        from core.sandbox import SandboxManager
+        from src.core.sandbox import SandboxManager
 
         self._threshold = DEFAULT_THRESHOLD if threshold is None else threshold
         self._sandbox = SandboxManager()
@@ -1131,7 +1138,7 @@ class InvariantsAdapter(DefenseModule):
         return "InvariantViolationDetector"
 
     def __init__(self, *, threshold: float | None = None) -> None:
-        from core.invariants import InvariantChecker
+        from src.core.invariants import InvariantChecker
 
         self._threshold = DEFAULT_THRESHOLD if threshold is None else threshold
         self._checker = InvariantChecker()
@@ -1385,7 +1392,13 @@ class InvariantsAdapter(DefenseModule):
             pattern_score = 1.0 - (1.0 - pattern_score) * (1.0 - weight)
 
         score = _clamp(max(pattern_score, violation_score))
-        detected = score > self._threshold
+        from src.core.invariants import InvariantSeverity
+
+        critical_violation = any(
+            violation.severity >= InvariantSeverity.CRITICAL
+            for violation in violations
+        )
+        detected = critical_violation or score > self._threshold
 
         latency_ms = (time.perf_counter() - t0) * 1000.0
 

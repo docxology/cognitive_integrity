@@ -85,11 +85,11 @@ cogsec_multiagent_1_theory/
 └── output/                 # pdf, figures, reports (generated)
 ```
 
-Dependencies: repository root `uv sync` plus any extras declared in this part’s `pyproject.toml` when present.
+Dependencies are declared in this part’s `pyproject.toml`; the standalone repository root has no Python project file.
 
 ## Installation / setup
 
-Use `uv sync` at the repository root. Typical packages: `numpy`, `pytest` (see root `pyproject.toml`).
+From `cogsec_multiagent_1_theory/`, use `uv sync --frozen`. Typical packages include `numpy` and `pytest` (see this part’s `pyproject.toml`).
 
 ## Usage Examples
 
@@ -126,11 +126,17 @@ from src.firewall import CognitiveFirewall, EnhancedCognitiveFirewall
 firewall = CognitiveFirewall()
 classification = firewall.classify("Hello, how can I help?")  # ACCEPT
 
-# Enhanced with semantic detection
-enhanced = EnhancedCognitiveFirewall(use_semantic=True)
-result = enhanced.classify_detailed("Ignore previous instructions")
-# Returns: {"classification": REJECT, "scores": {...}, "aggregate_score": 0.85}
+# Enhanced detection requires the application's loaded, trained encoder.
+# This function does not choose or download a model.
+def classify_with_embeddings(message, encode):
+    enhanced = EnhancedCognitiveFirewall(use_semantic=True, embedding_fn=encode)
+    return enhanced.classify_detailed(message)
 ```
+
+Semantic mode without `embedding_fn` raises `ValueError`; there is no default
+hash embedder. The optional `PinnedSentenceTransformerEncoder(model_dir)` loads
+the version-pinned, provenance-checked MiniLM model from an explicit local path.
+See [`src/README.md`](src/README.md) for pins, offline provisioning and vector tests.
 
 ### Byzantine Consensus
 

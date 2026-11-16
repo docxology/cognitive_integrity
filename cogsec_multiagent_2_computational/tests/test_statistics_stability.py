@@ -21,7 +21,11 @@ All tests use real computation. No mocks.
 
 from __future__ import annotations
 
-from statistics.stability import (
+import numpy as np
+import pytest
+
+from src.attacks.corpus import AttackCorpus
+from src.statistics.stability import (
     SeedMetrics,
     StabilityReport,
     coefficient_of_variation,
@@ -31,11 +35,6 @@ from statistics.stability import (
     run_multi_seed_stability,
     youden_j,
 )
-
-import numpy as np
-import pytest
-
-from attacks.corpus import AttackCorpus
 
 # ---------------------------------------------------------------------------
 # SeedMetrics

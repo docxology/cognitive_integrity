@@ -19,21 +19,22 @@ import numpy as np
 
 
 def compute_roc_auc(y, x) -> float:
-    """Compute area under a ROC curve using the trapezoidal rule.
+    """Compute ROC AUC, including the conventional jump to ``(1, 1)``.
 
-    Handles the degenerate all-constant-FPR case: a trapezoid over a
-    zero-FPR width returns 0 by construction, which would display a
-    perfect-precision classifier (one that never fires on negatives) as
-    AUC 0.000.  Such a curve is conventionally the vertical segment at
-    FPR=0 up to max(TPR), so AUC = max(TPR) (the curve then jumps to
-    (1, 1) at the loosest threshold).
+    A vertical measured segment at FPR=0 receives half credit for the
+    horizontal jump from its maximum TPR to ``(1, 1)``.  Thus repeated
+    observations at ``(0, 0.5)`` have AUC ``0.75``, not ``0.5``: this is the
+    usual tied-score contribution, not the maximum TPR or a chance result.
     """
     x = np.asarray(x, dtype=float)
     y = np.asarray(y, dtype=float)
     if x.size == 0:
         return 0.0
-    if np.all(np.abs(x - x[0]) < 1e-12):
-        return float(np.max(y))
+    if x.size != y.size:
+        raise ValueError("ROC FPR and TPR arrays must have equal lengths")
+    if np.all(np.abs(x) < 1e-12):
+        max_tpr = float(np.max(y))
+        return max_tpr + (1.0 - max_tpr) / 2.0
     return float(np.sum(np.diff(x) * (y[:-1] + y[1:]) / 2))
 
 
@@ -122,9 +123,10 @@ def create_roc_curves_figure(output_dir: Path) -> tuple[Path, Path]:
         ax.plot(
             fpr_firewall_sorted,
             tpr_firewall_sorted,
-            "-",
+            "-o",
             color=colors["firewall"],
             linewidth=2.5,
+            markersize=5,
             label=f"Cognitive Firewall (Measured, AUC={auc_firewall:.3f})",
         )
     else:
@@ -183,37 +185,8 @@ def create_roc_curves_figure(output_dir: Path) -> tuple[Path, Path]:
         label="Random Classifier",
     )
 
-    # Mark operating points (chosen thresholds).
-    # (#21) These operating-point markers are schematic choices, not
-    # measured from the plotted curves (the rate curves are themselves
-    # parametric guesses).
-    operating_points = [
-        (0.05, 0.78, "firewall", "Firewall"),
-        (0.08, 0.68, "sandbox", "Sandbox"),
-        (0.03, 0.85, "tripwire", "Tripwire"),
-        (0.06, 0.73, "anomaly", "Anomaly"),
-        (0.02, 0.94, "full_cif", "CIF"),
-    ]
-
-    for fpr, tpr, key, name in operating_points:
-        ax.scatter(
-            [fpr],
-            [tpr],
-            s=120,
-            c=colors[key],
-            edgecolors="black",
-            linewidth=1.5,
-            zorder=5,
-            marker="o",
-        )
-        ax.annotate(
-            name,
-            (fpr, tpr),
-            xytext=(8, -12),
-            textcoords="offset points",
-            fontsize=9,
-            fontweight="bold",
-        )
+    # Every plotted point belongs to its displayed measured or theoretical
+    # curve; no disconnected operating-point markers are invented here.
 
     # Styling
     ax.set_xlabel("False Positive Rate (FPR)", fontsize=12, fontweight="bold")

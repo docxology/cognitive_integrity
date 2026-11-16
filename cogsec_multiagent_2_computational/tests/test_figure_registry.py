@@ -18,7 +18,7 @@ from pathlib import Path
 
 import pytest
 
-from manuscript.figure_registry import (
+from src.manuscript.figure_registry import (
     AutoNumberer,
     FigureEntry,
     FigureRegistry,

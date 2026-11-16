@@ -15,18 +15,17 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "src"))
+sys.path.insert(0, str(ROOT))
 
-from statistics.sensitivity import (
+import numpy as np
+
+from src.statistics.sensitivity import (
     compute_sensitivity_index,
     grid_search_2d,
     make_default_evaluate_fn,
     parameter_sweep,
 )
-
-import numpy as np
-
-from utils.random_seed import set_global_seed
+from src.utils.random_seed import set_global_seed
 
 
 def main() -> None:

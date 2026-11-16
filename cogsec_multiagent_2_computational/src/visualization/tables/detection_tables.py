@@ -76,7 +76,7 @@ def _load_results(
         be published either way, so this fails rather than silently
         preferring one of them.
     """
-    from data.result_loaders import evaluation_to_detection_matrix
+    from src.data.result_loaders import evaluation_to_detection_matrix
 
     data_path = Path(path) if path is not None else _DATA_PATH
     archs, cats, matrix = evaluation_to_detection_matrix(path=str(data_path))

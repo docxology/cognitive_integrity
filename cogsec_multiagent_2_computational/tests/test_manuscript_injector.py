@@ -15,7 +15,7 @@ from pathlib import Path
 
 import pytest
 
-from manuscript.injector import (
+from src.manuscript.injector import (
     GroundTruthUnavailableError,
     InjectionPatternError,
     InjectionReport,
@@ -577,7 +577,7 @@ def test_unavailable_llm_is_never_logged_as_real(
     data_dir, manuscript_dir = project
     _break_llm(data_dir, {"status": "skipped", "reason": "not run"})
 
-    with caplog.at_level(logging.INFO, logger="manuscript.injector"):
+    with caplog.at_level(logging.INFO, logger="src.manuscript.injector"):
         with pytest.raises(GroundTruthUnavailableError):
             inject_all(data_dir, manuscript_dir, dry_run=True)
 
@@ -593,7 +593,7 @@ def test_measured_llm_is_logged_as_real(
     """Positive control for the logging test above: measured values do say [REAL]."""
     data_dir, manuscript_dir = project
 
-    with caplog.at_level(logging.INFO, logger="manuscript.injector"):
+    with caplog.at_level(logging.INFO, logger="src.manuscript.injector"):
         inject_all(data_dir, manuscript_dir, dry_run=True)
 
     llm_lines = [r.getMessage() for r in caplog.records if "LLM" in r.getMessage()]
@@ -742,7 +742,7 @@ def test_unavailable_multi_seed_leaves_every_dependent_claim_alone(
 
 def test_degenerate_ablation_input_does_not_invent_an_ordering() -> None:
     """Empty inputs yield nothing, not a plausible-looking default."""
-    from manuscript.injector import _component_hierarchy, _tied_top_synergies
+    from src.manuscript.injector import _component_hierarchy, _tied_top_synergies
 
     assert _tied_top_synergies([]) == []
     assert _component_hierarchy([]) == ""
@@ -787,7 +787,7 @@ def test_supplement_injector_raises_standalone_when_the_file_is_gone(
 
 def test_component_baseline_tpr_of_no_components_is_zero() -> None:
     """Degenerate ablation input does not blow up the loader helper."""
-    from manuscript.injector import _component_baseline_tpr
+    from src.manuscript.injector import _component_baseline_tpr
 
     assert _component_baseline_tpr([]) == 0.0
     assert _component_baseline_tpr(
@@ -1164,7 +1164,7 @@ def test_tied_components_are_joined_with_equals_not_greater_than(
 
 def test_the_ci_method_is_recorded_alongside_the_halfwidth(tmp_path: Path) -> None:
     """The manuscript must be able to state which interval this is."""
-    from manuscript.injector import MULTI_SEED_CI_METHOD
+    from src.manuscript.injector import MULTI_SEED_CI_METHOD
 
     data_dir = tmp_path / "data"
     _write_required_data(data_dir)
@@ -1243,3 +1243,44 @@ def test_injected_llm_values_track_the_data_file(project: tuple[Path, Path]) -> 
     assert "achieving 60--75\\% detection across" in (
         manuscript_dir / "00_abstract.md"
     ).read_text()
+
+
+def test_llm_range_is_sorted_and_rounded_to_reader_precision(
+    project: tuple[Path, Path],
+) -> None:
+    data_dir, manuscript_dir = project
+    payload = _llm_payload()
+    payload["multiagent_results"]["claude_code"] = {
+        "detection_rate": 2 / 3,
+        "true_positives": 2,
+        "false_negatives": 1,
+        "total": 3,
+    }
+    payload["multiagent_results"]["crewai"] = {
+        "detection_rate": 0.5,
+        "true_positives": 2,
+        "false_negatives": 2,
+        "total": 4,
+    }
+    _write_json(data_dir / "llm_demo_results.json", payload)
+
+    inject_abstract(load_ground_truth(data_dir), manuscript_dir)
+
+    abstract = (manuscript_dir / "00_abstract.md").read_text()
+    assert "achieving 50--67\\% detection across" in abstract
+
+
+def test_seed_extrema_keep_three_decimals_for_the_claim_reader(
+    project: tuple[Path, Path],
+) -> None:
+    data_dir, manuscript_dir = project
+    payload = json.loads((data_dir / "multi_seed_results.json").read_text())
+    payload["seed_metrics"][0]["overall"] = 0.371
+    payload["seed_metrics"][2]["overall"] = 0.563
+    _write_json(data_dir / "multi_seed_results.json", payload)
+
+    inject_results(load_ground_truth(data_dir), manuscript_dir)
+
+    results = (manuscript_dir / "05_results.md").read_text()
+    assert "Min Detection Rate | 0.371" in results
+    assert "Max Detection Rate | 0.563" in results

@@ -16,21 +16,14 @@ import argparse
 import os
 import subprocess
 import sys
+import tomllib
 from pathlib import Path
-
-try:
-    import tomllib  # Python 3.11+
-except ImportError:
-    try:
-        import tomli as tomllib  # type: ignore[no-redef]
-    except ImportError:
-        tomllib = None  # type: ignore[assignment]
 
 
 def load_config(project_root: Path, publication: bool = False) -> dict:
     """Load experiment_config.toml and return resolved parameters."""
     config_path = project_root / "experiment_config.toml"
-    if config_path.exists() and tomllib is not None:
+    if config_path.exists():
         with open(config_path, "rb") as f:
             raw = tomllib.load(f)
         if publication:
@@ -49,7 +42,7 @@ def load_config(project_root: Path, publication: bool = False) -> dict:
     return {"sample_size": 5, "replicates": 1, "model": "gemma3:4b", "seed": 42}
 
 
-def main() -> None:
+def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         description="Run CIF experiments (reads experiment_config.toml)"
     )  # noqa: E501
@@ -69,7 +62,7 @@ def main() -> None:
         action="store_true",
         help="Run live Ollama LLM evaluation (also enabled by COGSEC_RUN_LLM_ANALYSIS=1)",
     )  # noqa: E501
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
 
     # Resolve paths
     current_script = Path(__file__).resolve()
@@ -109,8 +102,11 @@ def main() -> None:
         subprocess.run(cmd_sim, cwd=str(project_root), check=True)
         print(">> Parametric simulation complete.")
     except subprocess.CalledProcessError as e:
-        print(f"ERROR: Parametric simulation failed with exit code {e.returncode}")
-        sys.exit(e.returncode)
+        print(
+            f"ERROR: Parametric simulation failed with exit code {e.returncode}",
+            file=sys.stderr,
+        )
+        return e.returncode
 
     # 2. LLM Evaluation (opt-in; live Ollama calls are too slow for default renders)
     total_calls = sample_size * 4 * 4  # 4 categories × 4 architectures
@@ -136,36 +132,25 @@ def main() -> None:
             "WARNING: LLM evaluation skipped. Set COGSEC_RUN_LLM_ANALYSIS=1 or pass --run-llm to run real Ollama evaluation."  # noqa: E501
         )  # noqa: E501
         print("WARNING: Parametric simulation complete; LLM publication data remains opt-in.")
-        sys.exit(0)
+        return 0
 
     try:
-        # Check if Ollama is likely available (simple check)
-        import socket
-
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        result = sock.connect_ex(("localhost", 11434))
-        sock.close()
-
-        if result == 0:
-            subprocess.run(cmd_llm, cwd=str(project_root), check=True)
-            print(">> LLM evaluation complete.")
-        else:
-            print("WARNING: Ollama not detected on port 11434. Skipping LLM evaluation.")
-            print(
-                "WARNING: Ollama not available — LLM evaluation skipped. Parametric results are still valid."  # noqa: E501
-            )  # noqa: E501
-            sys.exit(0)
+        # The evaluator owns the Ollama probe and persists failed/partial
+        # diagnostics. A separate port probe would discard that evidence.
+        subprocess.run(cmd_llm, cwd=str(project_root), check=True)
+        print(">> LLM evaluation complete.")
 
     except subprocess.CalledProcessError as e:
-        print(f"ERROR: LLM evaluation failed with exit code {e.returncode}")
-        sys.exit(e.returncode)
+        print(f"ERROR: LLM evaluation failed with exit code {e.returncode}", file=sys.stderr)
+        return e.returncode
     except Exception as e:
-        print(f"ERROR: Unexpected error in LLM evaluation: {e}")
-        sys.exit(1)
+        print(f"ERROR: Unexpected error in LLM evaluation: {e}", file=sys.stderr)
+        return 1
 
     print("\n" + "=" * 70)
     print("ALL EXPERIMENTS COMPLETED SUCCESSFULLY")
     print("=" * 70)
+    return 0
 
 
 if __name__ == "__main__":

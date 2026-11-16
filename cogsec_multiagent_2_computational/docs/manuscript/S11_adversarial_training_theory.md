@@ -2,10 +2,11 @@
 
 # Supplement S11: Adversarial Training Theory {#sec:adversarial-training-theory}
 
-This supplement provides the theoretical foundations for the adversarial training
-(AT) protocol described in §\ref{sec:adversarial-training}. We formalize the AT
-game, derive convergence guarantees, and prove the connection to the information-
-geometric framework of §\ref{sec:information-geometry}.
+This supplement defines a hypothetical adversarial-training (AT) game for the
+protocol described in §\ref{sec:adversarial-training} and separates that model
+from what the implementation and artifacts establish. It does not claim a
+measured Nash equilibrium, a convergence guarantee, or an information-geometric
+convergence proof.
 
 > **Cross-paper reading guide.**
 > • **Formal foundations** for the adversary taxonomy appear in Part 1
@@ -14,10 +15,10 @@ geometric framework of §\ref{sec:information-geometry}.
 > • **Operational implications** for practitioners are in the merged Part 3+4
 >   \cite{friedman2026cogsec3} §4.2 (red-team integration) and §5.3 (iterative hardening).
 >
-> **Reproducibility.** The AT convergence analysis is implemented in
-> `src/redteam/convergence.py`; theoretical bounds can be verified against
-> empirical AT results via `scripts/run_redteam.py`, whose convergence
-> assertions are exercised by `tests/test_redteam_convergence.py`.
+> **Reproducibility.** Diagnostic helpers live in `src/redteam/convergence.py`,
+> and `scripts/run_adversarial_training.py` runs the parametric model or its
+> explicitly selected real-firewall mode. These are numerical diagnostics, not
+> verification of equilibrium existence or convergence theorems.
 
 ## The Adversarial Training Game {#sec:at-game}
 
@@ -45,113 +46,71 @@ concave-convex (concave in $\theta$, convex in $a$), the minimax theorem
 \cite{von1928theorie} guarantees existence of a Nash equilibrium satisfying:
 $$\max_{\theta} \min_a \mathrm{DR}(\theta, a) = \min_a \max_\theta \mathrm{DR}(\theta, a)$$
 \label{eq:minimax-theorem-at}
-In practice, $\Theta$ is a bounded hypercube (all thresholds in $[0,1]$) and
-$\mathrm{DR}$ is approximately concave-convex near the operational point, making the
-minimax theorem approximately applicable.
+The shipped parameter sets include thresholds and structural choices, and the
+code does not establish compact convex strategy spaces or concave-convexity of
+$\mathrm{DR}$. Consequently this minimax statement is a conditional property of
+the hypothetical game, not a theorem about the shipped AT runs.
 
-## Convergence Guarantees {#sec:at-convergence-theory}
+## Convergence Diagnostics, Not Guarantees {#sec:at-convergence-theory}
 
-### Theorem S11.1 (AT Convergence Rate)
+Lipschitz continuity alone does not make a gradient-ascent step a contraction,
+and the implementation does not establish the strong monotonicity, smoothness,
+or equilibrium-uniqueness assumptions from which a convergence-rate theorem
+could follow. Accordingly, no AT convergence-rate theorem is asserted here.
 
-\begin{theorem}[Adversarial Training Convergence]
-Under the following conditions:
-\begin{enumerate}
-  \item The AT game $G$ has a unique Nash equilibrium $(\theta^*, a^*)$.
-  \item The detection rate $\mathrm{DR}(\theta, a)$ is $L$-Lipschitz in $\theta$ for
-        fixed $a$.
-  \item The threshold refinement step is $\theta^{(k)} = \theta^{(k-1)} +
-        \alpha \nabla_\theta \hat{\mathrm{DR}}^{(k)}$ with step size $\alpha \leq 1/(2L)$.
-\end{enumerate}
-The AT sequence $\{\theta^{(k)}\}$ satisfies:
-$$\|\theta^{(k)} - \theta^*\|_2 \leq (1 - \alpha L)^k \|\theta^{(0)} - \theta^*\|_2$$
-\label{eq:at-convergence-rate}
-\end{theorem}
-\label{thm:at-convergence}
+`ATConfig.learning_rate` controls threshold updates, but in the default `model`
+mode the round detection rates come from `ROUND_GAP_ATTRIBUTION` through
+`_simulate_hardened_dr`; they are not measurements of the updated thresholds'
+effect on a detector. Neither that mode nor the geometric helper identifies a
+Nash equilibrium or a Lipschitz constant for the detection-rate surface.
 
-\begin{proof}
-By $L$-Lipschitz continuity, the gradient step is a contraction with constant
-$(1 - \alpha L)$ when $\alpha \leq 1/L$. The contraction mapping theorem then
-gives the stated geometric convergence rate.
-\end{proof}
+Each `ATRoundResult.delta_dr` is **cumulative**: hardened detection rate minus
+the common baseline. A geometric-increment diagnostic must first convert the
+sequence $d_1,\ldots,d_K$ to per-round increments
+$g_1=d_1$ and $g_k=d_k-d_{k-1}$ for $k>1$. Feeding $(d_k)$ itself to a geometric
+series sums cumulative values and is invalid. In particular, a ratio above one
+for cumulative gains is not evidence of divergence, and clamping a ratio or the
+resulting detection rate to one is not evidence of convergence or of a 100%
+Nash-equilibrium detection rate. This supplement therefore reports no infinite,
+divergent, or saturated numerical equilibrium projection.
 
-**No Lipschitz constant is recoverable from the AT results.** The contraction
-bound above invites reading an observed geometric decay ratio as $1 - \alpha L$
-and solving for $L$ given the step size. Neither input supports it. The step
-size is real: `ATConfig.learning_rate`
-is $0.05$ and `AdversarialTrainer.run_round` applies `learning_rate * gradient`
-to every threshold. But in the default `model` measurement mode --- the mode that
-produced the AT results of §\ref{sec:at-convergence} --- the reported round
-detection rates come from the `ROUND_GAP_ATTRIBUTION` constants via
-`_simulate_hardened_dr` and never read the updated thresholds: re-running the
-five rounds at $\alpha = 0$, $0.5$ and $5.0$ reproduces the identical gain
-sequence $(7.27, 5.60, 5.04, 2.91, 2.41)$ pp. Nor is $0.65$ an observation; it is
-the constant `geometric_convergence_projection` returns when the gain list is
-empty or its first entry is non-positive. On the measured per-round increments
-the median ratio is $0.80$, and on the cumulative gain series it is $1.28$ ---
-divergent, with an infinite projection --- which is why
-§\ref{sec:at-convergence} describes the sequence as approximately linear rather
-than geometrically decaying. No Lipschitz constant for the detection-rate
-surface is recoverable from these runs.
+When positive per-round increments decay geometrically with ratio $0<r<1$, the
+expression $g_1/(1-r)$ is only a fitted model extrapolation. Nonpositive or
+nonconvergent increments must be reported as nonconvergence rather than mapped
+to a negative round, an arbitrary default ratio, or a finite equilibrium claim.
 
 ## Information-Geometric View of Adversarial Training {#sec:at-infogeo}
 
-The AT game has a natural information-geometric interpretation (extending
-§\ref{sec:information-geometry}). The defender's threshold space $\Theta$ can be
-equipped with a Fisher information metric \cite{amari2000methods}:
+A future probabilistic AT model could use information geometry (extending
+§\ref{sec:information-geometry}). If that model supplies a normalized likelihood
+$p_\theta(y\mid x)$, its Fisher information metric is \cite{amari2000methods}:
 $$G_F(\theta)_{ij} = \mathbb{E}_{(x,y) \sim \mathcal{D}} \left[
-  \frac{\partial \log \mathrm{DR}(\theta, x)}{\partial \theta_i}
-  \frac{\partial \log \mathrm{DR}(\theta, x)}{\partial \theta_j}
+  \frac{\partial \log p_\theta(y\mid x)}{\partial \theta_i}
+  \frac{\partial \log p_\theta(y\mid x)}{\partial \theta_j}
 \right]$$ {#eq:fisher-info-at}
-where $\mathcal{D}$ is the attack distribution.
+where $\mathcal{D}$ is the modelled data distribution. A scalar detection-rate
+surface is not itself such a likelihood, and the shipped AT experiments do not
+estimate $p_\theta$ or $G_F$.
 
-Under this metric, the natural gradient ascent for the defender:
-$$\theta^{(k+1)} = \theta^{(k)} + \alpha G_F(\theta^{(k)})^{-1} \nabla_\theta \mathrm{DR}$$
+Under a positive-definite Fisher metric, a natural-gradient ascent step has the
+form
+$$\theta^{(k+1)} = \theta^{(k)} + \alpha G_F(\theta^{(k)})^{-1} \nabla_\theta \mathrm{DR}.$$
 \label{eq:natural-gradient-ascent}
-follows the steepest ascent direction in the Riemannian sense, converging faster
-than Euclidean gradient ascent near the Nash equilibrium.
+`src/redteam/convergence.py::natural_gradient_at_step()` implements this linear
+algebra operation and falls back to the Euclidean gradient when the supplied
+matrix is singular. The function does not estimate a Fisher matrix from AT data,
+select a step size with a convergence guarantee, or establish second-order
+convergence. No acceleration theorem is claimed for the shipped AT protocol.
 
-**Theorem S11.2 (Natural Gradient AT Acceleration).** The natural gradient AT
-update achieves second-order convergence near $\theta^*$:
-$$\|\theta^{(k+1)}_{\text{NG}} - \theta^*\|_G \leq C \|\theta^{(k)}_{\text{NG}} - \theta^*\|_G^2$$
-\label{eq:natural-gradient-quadratic-convergence}
-for some constant $C > 0$, while the Euclidean gradient update achieves only
-first-order (geometric) convergence. The implementation is in
-`src/redteam/convergence.py::natural_gradient_at_step()`.
+## Adversarial Robustness Limitations {#sec:at-robustness-bound}
 
-## Adversarial Robustness Bound {#sec:at-robustness-bound}
-
-### Theorem S11.3 (Defense Robustness Under Adversarial Training)
-
-\begin{theorem}[AT Robustness]
-Let $\theta^{(K)}$ be the defense configuration after $K$ rounds of adversarial
-training with geometric convergence rate $(1 - \alpha L)$. For any attack
-$a \in \mathcal{A}$ generated by an adversary with capability level $\Omega_j$:
-$$\mathrm{DR}(\theta^{(K)}, a) \geq \mathrm{DR}(\theta^*, a) -
-  \epsilon_j \cdot (1 - \alpha L)^K \|\theta^{(0)} - \theta^*\|_2$$
-\label{eq:at-robustness-bound}
-where $\epsilon_j > 0$ is the sensitivity coefficient for capability level $\Omega_j$.
-\end{theorem}
-\label{thm:at-robustness}
-
-The theorem shows that after $K$ rounds, the hardened configuration provides
-detection rates within $\epsilon_j \cdot (1 - \alpha L)^K$ of the Nash equilibrium
-rate. For the $\Omega_5$ case (coordinated attacks), $\epsilon_5$ is highest because
-coordinated attacks are most sensitive to configuration gaps, making convergence to
-the Nash equilibrium most impactful for $\Omega_5$ defense.
+Without a convergence theorem and a measured sensitivity bound, no general
+lower bound on post-training detection rate follows for an arbitrary attack or
+$\Omega$ level. The code does not estimate level-specific sensitivity
+coefficients. In particular, it does not establish that coordinated attacks
+receive the largest equilibrium benefit or that any level converges to a given
+detection rate.
 
 ## Adversarial Training and the Stealth–Impact Bound {#sec:at-stealth-bound}
 
-The stealth–impact bound from Part 1's Stealth-Impact Tradeoff theorem \cite{friedman2026cogsec1} (Information-Theoretic Detection Bounds) states that
-for any attack in the Fisher-Rao ball of radius $r$ around the baseline,
-the maximum impact is bounded by $I_{\max}(r)$. Adversarial training's effect on
-this bound is:
-
-**Proposition S11.1.** After $K$ rounds of AT, the effective detection radius
-$r_{\text{eff}}^{(K)}$ of the hardened configuration satisfies:
-$$r_{\text{eff}}^{(K)} \geq r_{\text{eff}}^{(0)} + \sum_{k=1}^K \Delta r^{(k)}$$
-\label{eq:at-radius-monotone}
-where $\Delta r^{(k)} > 0$ is the radius gain from round $k$'s threshold refinement.
-
-This provides a monotone guarantee: adversarial training can only expand the
-detection radius, never shrink it, as long as the refinement respects the
-curvature constraint (Theorem CG.1 in §\ref{sec:s10-curvature-constraint}).
+Part 1's stealth-impact product is an open formalization, not a theorem \cite{friedman2026cogsec1}. No universal radius expansion follows from adversarial training: a refinement that changes thresholds can decrease coverage for some attacks while increasing it for others. A monotone radius claim requires an attack distribution and a refinement policy that are not supplied here. The independent geometric step-budget helper in §\ref{sec:s10-curvature-constraint} is not evidence for such a guarantee.

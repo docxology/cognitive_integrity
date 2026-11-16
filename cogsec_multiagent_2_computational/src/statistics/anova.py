@@ -158,8 +158,13 @@ def two_way_anova(
     ms_interaction = ss_interaction / df_interaction if df_interaction > 0 else 0.0
     ms_residual = ss_residual / df_residual if df_residual > 0 else 0.0
 
-    # F statistics and p-values
-    if ms_residual > 0.0:
+    # F statistics and p-values.  Zero residual variance makes a nonzero
+    # effect infinite, not non-significant; with no residual degrees of
+    # freedom the test is undefined.
+    if df_residual <= 0:
+        f1 = f2 = f_int = float("nan")
+        p1 = p2 = p_int = float("nan")
+    elif ms_residual > 0.0:
         f1 = ms_factor1 / ms_residual
         f2 = ms_factor2 / ms_residual
         f_int = ms_interaction / ms_residual
@@ -168,8 +173,14 @@ def two_way_anova(
         p2 = float(1.0 - stats.f.cdf(f2, df_factor2, df_residual))
         p_int = float(1.0 - stats.f.cdf(f_int, df_interaction, df_residual))
     else:
-        f1 = f2 = f_int = 0.0
-        p1 = p2 = p_int = 1.0
+        def _zero_residual_test(ms_effect: float) -> tuple[float, float]:
+            if ms_effect > 0.0:
+                return float("inf"), 0.0
+            return float("nan"), float("nan")
+
+        f1, p1 = _zero_residual_test(ms_factor1)
+        f2, p2 = _zero_residual_test(ms_factor2)
+        f_int, p_int = _zero_residual_test(ms_interaction)
 
     return [
         AnovaResult(

@@ -23,9 +23,9 @@ import time
 import numpy as np
 import pytest
 
-from architectures.base import ArchitectureAdapter, ArchitectureProfile
-from evaluation.benchmark import MemoryEstimate, MemoryProfiler
-from evaluation.scalability import (
+from src.architectures.base import ArchitectureAdapter, ArchitectureProfile
+from src.evaluation.benchmark import MemoryEstimate, MemoryProfiler
+from src.evaluation.scalability import (
     RegressionInference,
     ScalabilityBenchmark,
     ScalabilityResult,
@@ -129,10 +129,7 @@ class _HalfFailingPipeline(_WorkingPipeline):
 class _ContextOnlyPipeline(_WorkingPipeline):
     """Pipeline that requires the (message, context) two-argument form."""
 
-    def evaluate(self, message: str, context=None):  # type: ignore[override]
-        if context is None and not getattr(self, "_probed", False):
-            self._probed = True
-            raise TypeError("evaluate() missing 1 required positional argument")
+    def evaluate(self, message: str, context):  # type: ignore[override]
         return super().evaluate(message, context)
 
 
@@ -199,12 +196,29 @@ class TestFailedEvaluationsExcludedFromLatency:
         assert measured < _WorkingPipeline.SUCCESS_MS * 6.0, measured
 
     def test_context_requiring_pipeline_still_measured(self):
-        """A TypeError signature probe is a retry, not a failure."""
+        """A two-argument callable is selected by signature inspection."""
         bench = ScalabilityBenchmark(agent_counts=[4], n_timing_runs=3)
         result = bench.run(_WideAdapter, lambda adapter, n: _ContextOnlyPipeline(n))
 
         assert result.failures == [0]
         assert np.isfinite(result.latencies_ms[0])
+
+    def test_internal_type_error_is_not_retried_as_arity_probe(self):
+        class _InternalTypeErrorPipeline:
+            def __init__(self):
+                self.calls = 0
+
+            def evaluate(self, message):
+                self.calls += 1
+                raise TypeError("bug inside evaluation")
+
+        pipeline = _InternalTypeErrorPipeline()
+        result = ScalabilityBenchmark(agent_counts=[4], n_timing_runs=2).run(
+            _WideAdapter, lambda adapter, n: pipeline
+        )
+        assert result.failures == [2]
+        assert pipeline.calls == 2
+        assert np.isnan(result.latencies_ms[0])
 
     def test_unexpected_exception_type_propagates(self):
         """Only the declared failure types are absorbed; others surface."""
@@ -217,7 +231,7 @@ class TestFailedEvaluationsExcludedFromLatency:
             return _AlwaysFailingPipeline(n)
 
         bench = ScalabilityBenchmark(agent_counts=[4], n_timing_runs=2)
-        with caplog.at_level(logging.DEBUG, logger="evaluation.scalability"):
+        with caplog.at_level(logging.DEBUG, logger="src.evaluation.scalability"):
             bench.run(_WideAdapter, factory)
         assert any("excluded from latency" in rec.message for rec in caplog.records)
 
@@ -253,6 +267,25 @@ class TestFailedEvaluationsExcludedFromLatency:
         modular = bench.run(_WideAdapter, lambda adapter, n: _ModularPipeline(n))
 
         assert modular.memory_bytes[0] > bare.memory_bytes[0]
+
+    def test_fit_uses_clamped_counts_and_rejects_underdetermined_models(self):
+        requested = [2, 20, 5, 10]
+        measured = [2, 10, 5, 10]
+        latencies = [1.0 + 0.1 * n + 0.005 * n * n for n in measured]
+        result = ScalabilityResult(
+            agent_counts=requested,
+            clamped_counts=measured,
+            latencies_ms=latencies,
+            memory_bytes=[0] * 4,
+        )
+        model = ScalabilityBenchmark().fit_scaling_model(result)
+        assert model.beta2 == pytest.approx(0.005, abs=1e-8)
+
+        insufficient = ScalabilityResult(
+            agent_counts=[2, 10], latencies_ms=[1.0, 2.0], memory_bytes=[0, 0]
+        )
+        with pytest.raises(ValueError, match="three distinct"):
+            ScalabilityBenchmark().fit_scaling_model(insufficient)
 
     def test_fit_drops_non_finite_latencies(self):
         """A nan from an all-failed count must not poison the whole fit."""
@@ -443,6 +476,10 @@ class TestFitWithInference:
     def test_insufficient_observations_rejected(self):
         with pytest.raises(ValueError, match="need at least 4 observations"):
             fit_with_inference([1.0, 2.0, 3.0], [1.0, 2.0, 3.0], degree=2)
+
+    def test_rank_deficient_design_rejected(self):
+        with pytest.raises(ValueError, match="rank deficient"):
+            fit_with_inference([2.0] * 5, [1.0, 2.0, 3.0, 4.0, 5.0], degree=2)
 
     def test_non_finite_input_rejected(self):
         with pytest.raises(ValueError, match="must be finite"):

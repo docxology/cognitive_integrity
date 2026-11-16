@@ -15,11 +15,12 @@ import importlib.util
 import json
 import sys
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 import requests
 
-from evaluation.llm_evaluator import DEMO_ATTACKS, run_llm_evaluation
+from src.evaluation.llm_evaluator import DEMO_ATTACKS, run_llm_evaluation
 
 ROOT = Path(__file__).resolve().parent.parent
 
@@ -108,11 +109,11 @@ class TestRunLlmEvaluationErrorPath:
 
         monkeypatch.setattr(requests, "get", _fail)
 
-        # Dummy args — should raise before using them
+        # A requested cell exists; the health failure precedes construction.
         with pytest.raises(RuntimeError, match="Cannot reach Ollama"):
             run_llm_evaluation(
-                adapters=[],
-                corpus_dict={},
+                adapters=[SimpleNamespace(profile=SimpleNamespace(name="TestArch"))],
+                corpus_dict={"attack": DEMO_ATTACKS[:1]},
                 pipeline=None,
                 runner=None,
             )
@@ -133,8 +134,8 @@ class TestRunLlmEvaluationErrorPath:
 
         with pytest.raises(RuntimeError, match="Cannot reach Ollama"):
             run_llm_evaluation(
-                adapters=[],
-                corpus_dict={},
+                adapters=[SimpleNamespace(profile=SimpleNamespace(name="TestArch"))],
+                corpus_dict={"attack": DEMO_ATTACKS[:1]},
                 pipeline=None,
                 runner=None,
             )
@@ -149,8 +150,8 @@ class TestRunLlmEvaluationErrorPath:
 
         with pytest.raises(RuntimeError, match="Cannot reach Ollama"):
             run_llm_evaluation(
-                adapters=[],
-                corpus_dict={},
+                adapters=[SimpleNamespace(profile=SimpleNamespace(name="TestArch"))],
+                corpus_dict={"attack": DEMO_ATTACKS[:1]},
                 pipeline=None,
                 runner=None,
             )
@@ -273,7 +274,7 @@ class TestProducerConsumerContract:
     """The producer's output must drive the consumer's fail-closed decision."""
 
     def test_skipped_payload_yields_no_numbers_downstream(self, demo, tmp_path):
-        from manuscript.injector import _load_llm_ground_truth
+        from src.manuscript.injector import _load_llm_ground_truth
 
         target = tmp_path / "llm_demo_results.json"
         demo.write_results(
@@ -295,7 +296,7 @@ class TestProducerConsumerContract:
         while the consumer read 'multiagent_results', so a real run was
         silently replaced by hardcoded 80%/100% defaults.
         """
-        from manuscript.injector import _load_llm_ground_truth
+        from src.manuscript.injector import _load_llm_ground_truth
 
         target = tmp_path / "llm_demo_results.json"
         demo.write_results(

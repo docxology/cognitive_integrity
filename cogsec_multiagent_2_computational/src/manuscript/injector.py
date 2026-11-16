@@ -679,8 +679,9 @@ def inject_abstract(
 
     # LLM detection range — only when a real LLM run produced measurements.
     if is_available(gt, "llm"):
-        llm_lo = int(gt["llm_claude_dr"] * 100)
-        llm_hi = int(gt["llm_crewai_dr"] * 100)
+        llm_lo, llm_hi = sorted(
+            round(gt[source] * 100) for source in ("llm_claude_dr", "llm_crewai_dr")
+        )
         text = _apply(
             text,
             r"achieving \d+--\d+\\% detection across",
@@ -749,7 +750,7 @@ def inject_results(
         text = _apply(
             text,
             r"Min Detection Rate\s*\|\s*\d+\.\d+",
-            f"Min Detection Rate | {gt['multi_seed_min_dr']:.2f}",
+            f"Min Detection Rate | {gt['multi_seed_min_dr']:.3f}",
             document=document,
             label="multi_seed_min_dr",
             report=report,
@@ -757,7 +758,7 @@ def inject_results(
         text = _apply(
             text,
             r"Max Detection Rate\s*\|\s*\d+\.\d+",
-            f"Max Detection Rate | {gt['multi_seed_max_dr']:.2f}",
+            f"Max Detection Rate | {gt['multi_seed_max_dr']:.3f}",
             document=document,
             label="multi_seed_max_dr",
             report=report,
@@ -981,8 +982,8 @@ def inject_discussion(
     if is_available(gt, "multi_seed"):
         text = _apply(
             text,
-            r"mean detection rate of \d+\.\d+\\%",
-            f"mean detection rate of {format_pct(gt['multi_seed_mean_dr'], 1)}\\%",
+            r"(mean (?:attack )?detection rate of )\d+\.\d+\\%",
+            rf"\g<1>{format_pct(gt['multi_seed_mean_dr'], 1)}\\%",
             document=document,
             label="multi_seed_mean_dr",
             report=report,

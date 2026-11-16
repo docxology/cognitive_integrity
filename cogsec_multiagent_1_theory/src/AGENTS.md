@@ -29,14 +29,25 @@ Multi-stage input classification for prompt injection defense.
 - `FirewallConfig` - Thresholds for injection/suspicious detection
 - `PatternDetector` - Regex-based pattern matching (15+ injection patterns)
 - `CognitiveFirewall` - Basic three-tier classifier
-- `EmbeddingStub` - Placeholder for semantic embeddings
-- `SemanticSimilarityDetector` - Embedding-based similarity detection
+- `SemanticSimilarityDetector` - Cosine scoring with a required caller-configured embedding callable
 - `MultiStageClassifier` - Structural + Pattern + Semantic pipeline
 - `EnhancedCognitiveFirewall` - Full multi-stage implementation
 
 **Detection Patterns:**
 - Injection: "ignore previous", "disregard rules", "system:", etc.
 - Suspicious: "act as if", "roleplay as", "hypothetically", etc.
+
+Semantic mode has no default model or hash embedder. Construct
+`SemanticSimilarityDetector(embedding_fn=encode)`,
+`MultiStageClassifier(embedding_fn=encode)`, or
+`EnhancedCognitiveFirewall(use_semantic=True, embedding_fn=encode)` only after
+loading the application's actual trained model. The optional
+`PinnedSentenceTransformerEncoder(model_dir)` supplies a pinned
+sentence-transformers 6.3.0 / all-MiniLM-L6-v2 backend with manifest-verified,
+strictly local CPU safetensors loading; see [`README.md`](README.md) for the
+immutable model revision, acquisition manifest and real-model regression command.
+Missing backends, invalid vectors and backend failures raise rather than
+producing a low-risk score. Non-semantic mode needs no model.
 
 ### consensus.py - Byzantine Consensus
 Fault-tolerant belief agreement for distributed agents.
@@ -148,7 +159,9 @@ sandbox.py     --> (standalone)
 3. **Bounded Values** - All trust/confidence scores in [0, 1]
 4. **Fail-Safe Defaults** - Unknown inputs treated as untrusted
 5. **Audit Trail** - All decisions logged with context
-6. **No External Dependencies** - Only numpy and stdlib
+6. **Explicit Optional Dependencies** - Core algorithms use numpy and stdlib;
+   trained semantic encoding additionally requires the pinned `semantic` extra
+   and a separately provisioned, verified local model.
 
 ## Testing Requirements
 

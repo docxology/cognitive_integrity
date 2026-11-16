@@ -9,7 +9,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Dict, List, Set
 
-from utils.types import AttackCategory
+from src.utils.types import AttackCategory
 
 from .corpus import AttackCorpus
 

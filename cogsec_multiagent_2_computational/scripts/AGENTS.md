@@ -27,9 +27,9 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "src"))
+sys.path.insert(0, str(ROOT))
 
-from evaluation.runner import ExperimentRunner  # noqa: E402 — computation in src/
+from src.evaluation.runner import ExperimentRunner  # noqa: E402 — computation in src/
 
 def main() -> None:
     out = ROOT / "output" / "data"
@@ -46,10 +46,9 @@ if __name__ == "__main__":
 
 - All computation delegated to `src/` imports.
 - Scripts handle only I/O, reporting, logging, and manifest bookkeeping.
-- Bootstrap idiom (used by every script here): `sys.path.insert(0, str(ROOT / "src"))`,
-  then import the top-level modules that live under `src/` — e.g.
-  `from evaluation.runner import ExperimentRunner`, **not** `from src.evaluation.runner import ...`.
-  `src/` itself is not an importable package from these scripts.
+- Bootstrap idiom (used by every script here): `sys.path.insert(0, str(ROOT))`,
+  then use canonical package imports such as `from src.evaluation.runner import ExperimentRunner`.
+  The repository root, not `src/` itself, must be on the import path.
 - Deterministic RNG: default `seed=42`, overridable via `--seed`.
 - Respect `MPLBACKEND=Agg` for headless matplotlib; figure entry points pin
   `SOURCE_DATE_EPOCH` before matplotlib is imported (see `generate_all_figures.py`).
@@ -165,8 +164,8 @@ surface. Docs that list scripts must match the directory.
 - **Figure reproducibility.** `generate_all_figures.py` pins
   `SOURCE_DATE_EPOCH` and the matplotlib SVG hash salt before importing
   matplotlib; keep that ordering if you touch it.
-- **Import idiom.** After the `sys.path.insert(0, str(ROOT / "src"))`
-  bootstrap, import top-level modules (`from evaluation.runner import ...`).
+- **Import idiom.** After the `sys.path.insert(0, str(ROOT))`
+  bootstrap, use canonical package imports (`from src.evaluation.runner import ...`).
   `ruff` noqa `E402` on those lines is expected.
 
 ## Manuscript-to-Script Anchor

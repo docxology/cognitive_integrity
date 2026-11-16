@@ -24,7 +24,7 @@ from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 import numpy as np
 
-from utils.types import ExperimentConfig
+from src.utils.types import ExperimentConfig
 
 # ---------------------------------------------------------------------------
 # Attack difficulty mapping
@@ -103,9 +103,10 @@ class ExperimentResult:
         avg_latency_ms: Mean processing latency per sample.
         measurement_mode: Provenance of these numbers — one of
             "real" (real defense pipeline / Mode 1), "llm" (real LLM
-            multiagent evaluation / Mode 3), or "parametric" (closed-form
-            design model / Mode 2). "parametric" must never be published as
-            a measured "real_pipeline" result.
+            multiagent evaluation / Mode 3), "parametric" (closed-form
+            design model / Mode 2), "pipeline" (complete LLM-to-pipeline
+            fallback), or "mixed" (partial LLM fallback). Simulated and
+            fallback results must never be published as LLM measurements.
         llm_fallback_count: Number of samples intended for the LLM path (Mode 3)
             that fell back to the pipeline/parametric path (e.g. LLM unreachable),
             so readers can tell a genuine LLM result from a fallback. (P2-2)
@@ -207,7 +208,7 @@ class ExperimentRunner:
         return ExperimentResult(
             architecture=arch_name,
             attack_category=dominant,
-            n_attacks=len(attack_samples),
+            n_attacks=tp + fn,
             true_positives=tp,
             false_positives=fp,
             true_negatives=tn,
@@ -283,7 +284,7 @@ class ExperimentRunner:
         result = ExperimentResult(
             architecture=arch_name,
             attack_category=dominant,
-            n_attacks=len(attack_samples),
+            n_attacks=tp + fn,
             true_positives=tp,
             false_positives=fp,
             true_negatives=tn,
@@ -442,9 +443,16 @@ class ExperimentRunner:
         if pipeline is not None and hasattr(pipeline, "evaluate"):
             content = sample.get("content", "")
             result = pipeline.evaluate(content)
-            detected = bool(result.detected) if hasattr(result, "detected") else False
-            score = float(result.score) if hasattr(result, "score") else 0.5
-            return detected, score
+            if result is None:
+                raise RuntimeError("defense pipeline returned no evaluation result")
+            if not hasattr(result, "detected") or not hasattr(result, "score"):
+                raise TypeError("pipeline result must provide detected and score fields")
+            return bool(result.detected), float(result.score)
+
+        # A non-None object without evaluate is a broken pipeline, not an
+        # invitation to replace a real evaluation with parametric simulation.
+        if pipeline is not None:
+            raise TypeError("defense_pipeline must provide an evaluate(message) method")
 
         # --- Mode 2: parametric simulation (calibrated) ---
         if is_attack:
@@ -533,13 +541,15 @@ class ExperimentRunner:
         n = len(attack_samples)
         if n > 0 and self._llm_fallback_count == n:
             measurement_mode = "pipeline" if defense_pipeline is not None else "parametric"
+        elif self._llm_fallback_count:
+            measurement_mode = "mixed"
         else:
             measurement_mode = "llm"
 
         return ExperimentResult(
             architecture=arch_name,
             attack_category=dominant,
-            n_attacks=len(attack_samples),
+            n_attacks=tp + fn,
             true_positives=tp,
             false_positives=fp,
             true_negatives=tn,

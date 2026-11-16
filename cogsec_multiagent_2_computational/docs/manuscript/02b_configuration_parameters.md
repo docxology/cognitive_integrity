@@ -4,7 +4,7 @@
 
 This section documents configuration parameters for all CIF defense components. For algorithm pseudocode, see \cref{sec:methodology}. Sensitivity analysis quantifying parameter impact is provided in \cref{sec:sensitivity}.
 
-> **Reproducibility**: Default values were determined via `scripts/run_sensitivity_analysis.py` → `output/data/sensitivity_results.json`. Empirically validated ranges are reported across all four architecture types.
+> **Reproducibility**: The defaults below are the shipped dataclass and method defaults. The ranges are operational guidance, not empirically validated performance intervals; sensitivity measurements are reported separately in \cref{sec:sensitivity}.
 
 ## Core Framework Parameters {#sec:core-params}
 
@@ -12,9 +12,8 @@ Table: Core framework configuration parameters. {#tab:core-params}
 
 | Parameter | Symbol | Default | Range | Description |
 | --- | --- | --- | --- | --- |
-| Acceptance threshold | $\tau_{accept}$ | 0.7 | $(0, 1)$ | Minimum belief confidence |
-| Trusted source threshold | $\tau_{trusted}$ | 0.9 | $(0, 1)$ | Direct promotion threshold |
-| Corroboration count | $\kappa$\footnote{Throughout this paper, $\kappa$ denotes the corroboration threshold count in the CIF framework. It is not Cohen's $\kappa$; no inter-rater statistic is reported anywhere in this series, because the corpus carries no human annotation (\cref{sec:corpus-validation}).} | 2 | $[1, n-1]$ | Required confirmations |
+| Promotion confidence threshold | $\tau_{accept}$ | 0.8 | $(0, 1)$ | `PromotionCriteria.min_confidence` |
+| Corroboration count | $\kappa$\footnote{Throughout this paper, $\kappa$ denotes the corroboration threshold count in the CIF framework. It is not Cohen's $\kappa$; no inter-rater statistic is reported anywhere in this series, because the corpus carries no human annotation (\cref{sec:corpus-validation}).} | 1 | $[1, n-1]$ | `PromotionCriteria.min_corroborations`; independent corroborators required before automatic promotion |
 | Consistency threshold | $\tau$ | 0.8 | $(0, 1)$ | Contradiction detection |
 | Random seed | $s$ | 42 | $\mathbb{Z}^+$ | Reproducibility seed |
 
@@ -28,10 +27,9 @@ Table: Trust calculus configuration parameters. {#tab:trust-params}
 | Reputation weight | $\beta$ | 0.5 | $[0, 1]$ | Historical accuracy weight |
 | Context weight | $\gamma$ | 0.2 | $[0, 1]$ | Task-specific weight |
 | Trust decay factor | $\delta$ | 0.8 | $(0, 1)$ | Delegation chain decay |
-| Learning rate | $\eta$ | 0.1 | $(0, 1)$ | Reputation update rate |
-| Penalty factor | $\rho$ | 2.0 | $[1, 5]$ | Failure penalty multiplier |
+| Learning rate | $\eta$ | 0.1 | $(0, 1)$ | `TrustMatrix.update_reputation(..., learning_rate=...)` method default |
 
-**Constraint**: $\alpha + \beta + \gamma = 1$ (see Part 1, Equation 5). The default $\alpha = 0.3$, $\beta = 0.5$, $\gamma = 0.2$ weights direct observation, historical reputation, and contextual trust respectively.
+**Constraint**: $\alpha + \beta + \gamma = 1$ (see Part 1, Equation 5). The default $\alpha = 0.3$, $\beta = 0.5$, $\gamma = 0.2$ weights direct observation, historical reputation, and contextual trust respectively. Reputation updates use $\text{reputation} \leftarrow (1-\eta)\,\text{reputation} + \eta\,\text{outcome}$. There is no separate $\rho$ failure-penalty parameter in `TrustConfig` or `TrustMatrix.update_reputation`.
 
 ## Firewall Parameters {#sec:firewall-params}
 

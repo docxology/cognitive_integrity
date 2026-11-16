@@ -10,7 +10,7 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
 
-from core.trust import TrustCalculus, TrustConfig
+from src.core.trust import TrustCalculus, TrustConfig
 
 from ..style import (
     FONTSIZE,

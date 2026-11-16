@@ -48,7 +48,7 @@ exclude_lines = [
 
 [tool.ruff]
 line-length = 100
-target-version = "py310"
+target-version = "py311"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "W"]
@@ -61,8 +61,11 @@ select = ["E", "F", "I", "W"]
 "src/risk_assessment.py" = ["E501"]
 "src/identity.py" = ["E501"]
 
+# Publish the single src package (including its flat modules) and descendants.
+# Discovering below src would omit src itself and break relative checklist imports.
 [tool.setuptools.packages.find]
-where = ["src"]
+where = ["."]
+include = ["src", "src.*"]
 
 [tool.uv]
 # Inherits workspace settings from root pyproject.toml

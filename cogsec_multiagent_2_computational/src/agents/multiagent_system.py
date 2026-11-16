@@ -210,7 +210,9 @@ class MultiAgentSystem:
 
         # Resolve agent count
         arch_cfg = _ARCHITECTURE_CONFIGS.get(self.architecture_name, {})
-        self._n_agents = n_agents or arch_cfg.get("default_n", 4)
+        self._n_agents = (
+            n_agents if n_agents is not None else arch_cfg.get("default_n", 4)
+        )
 
         # Build config
         self._config = config or OllamaConfig()
@@ -351,7 +353,12 @@ class MultiAgentSystem:
         total_latency = (time.time() - start_time) * 1000
         llm_latency = sum(r.latency_ms for r in all_responses)
         max_hop = max(
-            (m.metadata.get("hop", 0) for m in all_messages), default=0,
+            (
+                response.input_message.metadata.get("hop", 0)
+                for response in all_responses
+                if response.input_message is not None
+            ),
+            default=0,
         )
 
         logger.info(

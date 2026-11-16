@@ -83,12 +83,17 @@ def test_a_registration_only_covers_its_own_pattern(tmp_path):
     rel = "cogsec_multiagent_2_computational/docs/manuscript/03c_attack_ethics.md"
     assert (rel, "ethics-review") in gate.ALLOWED
     assert (rel, "acknowledgement-of-people") not in gate.ALLOWED
-
-    path = REPO / rel
-    original = path.read_text(encoding="utf-8")
-    try:
-        path.write_text(original + "\nThe authors thank the reviewers.\n", encoding="utf-8")
-        findings = gate.scan([path])
-        assert any(name == "acknowledgement-of-people" for _, name, _, _ in findings)
-    finally:
-        path.write_text(original, encoding="utf-8")
+    spec = importlib.util.spec_from_file_location("isolated_unhappened_claims", _SPEC.origin)
+    assert spec is not None and spec.loader is not None
+    isolated = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(isolated)
+    isolated.REPO = tmp_path
+    path = tmp_path / rel
+    path.parent.mkdir(parents=True)
+    path.write_text(
+        (REPO / rel).read_text(encoding="utf-8")
+        + "\nThe authors thank the reviewers.\n",
+        encoding="utf-8",
+    )
+    findings = isolated.scan([path])
+    assert any(name == "acknowledgement-of-people" for _, name, _, _ in findings)

@@ -1,9 +1,9 @@
 """
 Human-Actionable Checklists for Cognitive Security.
 
-Implements Section 03 of the Practical Implementation Guide:
-Pre-deployment, operational, and incident response checklists
-with configuration reference validation.
+Human-actionable checklists corresponding to the deployment, monitoring, and
+incident-response guidance in ``docs/manuscript/05_deployment_guide.md``,
+``05d_monitoring_guide.md``, and ``05b_incident_response.md``.
 
 This module provides three checklist types aligned to the manuscript:
 
@@ -19,7 +19,7 @@ This module provides three checklist types aligned to the manuscript:
 
 Additionally, **ConfigurationReference** validates trust calculus
 parameters, firewall thresholds, and tripwire configurations against
-manuscript-specified recommended values and ranges.
+illustrative starting values and ranges.
 """
 
 from __future__ import annotations

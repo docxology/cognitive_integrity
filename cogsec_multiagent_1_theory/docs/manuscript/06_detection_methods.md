@@ -64,7 +64,7 @@ where $\sigma$ is the sigmoid function and weights $(w_d, b)$ are learned from l
 
 ## ROC Curve Analysis {#sec:roc-analysis}
 
-![Receiver Operating Characteristic (ROC) curves for CIF detection across attack categories (illustrative/schematic operating points under the Neyman-Pearson framework; the sandbox/tripwire/anomaly/full-CIF curves are labeled Theoretical, not empirical measurements, whereas the Cognitive Firewall entry is measured over this part's small test corpus. That entry is a single operating point at zero false positives, drawn as the conventional vertical segment, so the area beside it equals its true-positive rate and must not be read as chance performance despite coinciding numerically with the random-classifier diagonal. Measured evaluation curves are reported in Part 2).](figures/roc_curves.pdf){#fig:roc-curves width=85%}
+![Receiver Operating Characteristic (ROC) curves for CIF detection across attack categories (illustrative/schematic operating points under the Neyman-Pearson framework; the sandbox/tripwire/anomaly/full-CIF curves are labeled Theoretical, not empirical measurements, whereas the Cognitive Firewall entry is measured over this part's small test corpus. Its repeated measured points are $(\mathrm{FPR},\mathrm{TPR})=(0,0.5)$. Under the tie-aware ROC convention, their vertical segment and the conventional jump to $(1,1)$ receive half credit for the remaining interval, giving $\mathrm{AUC}=0.5+0.5(1-0.5)=0.75$, not the maximum TPR or the random-classifier value $0.5$. This small-corpus computation is not evidence of field effectiveness; broader measured evaluation curves are reported in Part 2).](figures/roc_curves.pdf){#fig:roc-curves width=85%}
 
 ### Receiver Operating Characteristic Framework
 
@@ -117,11 +117,12 @@ Using DeLong's method:
 \label{eq:auc-ci}
 \text{CI}_{95\%}(\text{AUC}) = \text{AUC} \pm 1.96 \cdot \sqrt{\text{Var}(\text{AUC})}
 \end{equation}
-where:
+where $n_a$ and $n_b$ are the attack and benign sample sizes, $V_1^i = \frac{1}{n_b}\sum_j \psi(S_i^{\text{attack}}, S_j^{\text{benign}})$ and $V_0^j = \frac{1}{n_a}\sum_i \psi(S_i^{\text{attack}}, S_j^{\text{benign}})$ are the per-observation placement values with $\psi(x,y) = \mathbb{1}[x>y] + \tfrac12\mathbb{1}[x=y]$, and the DeLong variance estimate is
 \begin{equation}
 \label{eq:auc-variance}
-\text{Var}(\text{AUC}) = \frac{1}{n_a} \sum_{i=1}^{n_a} (V_1^i - \text{AUC})^2 + \frac{1}{n_b} \sum_{j=1}^{n_b} (V_0^j - \text{AUC})^2
+\text{Var}(\text{AUC}) = \frac{1}{n_a(n_a-1)} \sum_{i=1}^{n_a} (V_1^i - \text{AUC})^2 + \frac{1}{n_b(n_b-1)} \sum_{j=1}^{n_b} (V_0^j - \text{AUC})^2
 \end{equation}
+so that the estimate shrinks with sample size, as a variance of a mean must.
 \end{definition}
 
 ## Multi-Detector Fusion {#sec:detector-fusion}
@@ -321,19 +322,19 @@ Each belief carries provenance tags:
 
 \begin{table}[htbp]
 \centering
-\caption{Taint categories with trust levels. (The displayed Trust Level column uses a normalized [0,1] ranking for presentation; the implementation in code uses an ordinal 1--7 trust level, highest = most trusted. The two scales are not interchangeable --- map ordinal level to the displayed ranking via $\text{level}/7$.)}
+\caption{Taint categories with normalized ordinal ranks. The implementation assigns ordinal trust levels 1--7 (highest = most trusted); the displayed rank is exactly $\text{level}/7$. These ranks order source categories for presentation; they are neither measured trust values nor probabilities.}
 \label{tab:taint-categories}
 \begin{tabular}{@{}lll@{}}
 \toprule
-Category & Trust Level & Example \\
+Category & Normalized Rank & Example \\
 \midrule
-\textsc{system\_verified} & 1.0 & Hardcoded facts \\
-\textsc{principal\_input} & 0.9 & Direct user commands \\
-\textsc{agent\_internal} & 0.8 & Agent's own reasoning \\
-\textsc{agent\_external} & 0.6 & Other agent claims \\
-\textsc{tool\_output} & 0.5 & API/tool responses \\
-\textsc{web\_content} & 0.3 & Fetched web pages \\
-\textsc{unverified} & 0.1 & Unknown origin \\
+\textsc{system\_verified} & 1.000 & Hardcoded facts \\
+\textsc{principal\_input} & 0.857 & Direct user commands \\
+\textsc{agent\_internal} & 0.714 & Agent's own reasoning \\
+\textsc{agent\_external} & 0.571 & Other agent claims \\
+\textsc{tool\_output} & 0.429 & API/tool responses \\
+\textsc{web\_content} & 0.286 & Fetched web pages \\
+\textsc{unverified} & 0.143 & Unknown origin \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -416,7 +417,7 @@ L4 & Systemic compromise & System shutdown \\
 
 The detection methods presented in this section have been empirically validated in Part 2 of this series. Key results include:
 
-\textbf{ROC Analysis}: Receiver Operating Characteristic curves demonstrate the tradeoff between True Positive Rate and False Positive Rate for each detector type. The ROC figure in this section pairs the measured Cognitive Firewall operating point over this part's small test corpus with theory-guided reference curves for the other mechanisms and the full ensemble; on those reference curves the ensemble achieves AUC $\approx 0.85$, with individual mechanisms ranging from $\approx 0.74$ (Belief Sandbox) to $\approx 0.81$ (Tripwire Monitor). Measured ROC curves with per-curve AUC values and 95\% bootstrap intervals are reported in Part 2 (\S{4}, Experimental Setup).
+\textbf{ROC Analysis}: Receiver Operating Characteristic curves demonstrate the tradeoff between True Positive Rate and False Positive Rate for each detector type. The ROC figure in this section pairs the measured Cognitive Firewall operating point over this part's small test corpus with theory-guided reference curves for the other mechanisms and the full ensemble; on those illustrative reference curves the ensemble has AUC $\approx 0.85$, with individual mechanisms ranging from $\approx 0.74$ (Belief Sandbox) to $\approx 0.81$ (Tripwire Monitor); these are not measured values. Measured ROC curves with per-curve AUC values and 95\% bootstrap intervals are reported in Part 2 (\S{4}, Experimental Setup).
 
 \textbf{Detection Performance by Component}: Part 2 measures marginal contribution per defense component, not detection rate per adversary class --- its corpus carries a design-level $\Omega$ label rather than a runtime one, so the per-$\Omega$ coverage attributed to each mechanism in this section remains a design expectation rather than a measured result. What Part 2 does measure is that one component, Behavioral Invariants, accounts for almost all of the composed pipeline's detection, and that the remaining components add little beyond it. See Part 2's "Defense Component Contributions" section.
 
@@ -444,15 +445,20 @@ The likelihood ratio $\Lambda(m) = P_{\text{attack}}(m) / P_{\text{benign}}(m)$ 
 The likelihood ratio test $\delta_{\text{NP}}(m) = \mathbb{1}[\Lambda(m) \geq \eta]$ maximizes TPR subject to FPR $\leq \alpha$. No other test achieves higher TPR at the same FPR \cite{neyman1933ix}.
 \end{theorem}
 
-\begin{corollary}[Optimal AUC Bound]
-\label{cor:optimal-auc}
-The AUC of any detector is bounded by:
+\begin{remark}[Optimal Ranking and Optimal Accuracy Are Distinct]
+\label{rem:optimal-ranking}
+The likelihood ratio supplies the optimal ranking. For independently drawn
+$m_1 \sim P_{\text{attack}}$ and $m_0 \sim P_{\text{benign}}$, its AUC is
 \begin{equation}
 \label{eq:optimal-auc}
-\text{AUC}^* = P(P_{\text{attack}}(m_1) > P_{\text{attack}}(m_0))
+\text{AUC}^{*} = P\!\left(\Lambda(m_1) > \Lambda(m_0)\right)
+  + \tfrac{1}{2}P\!\left(\Lambda(m_1) = \Lambda(m_0)\right),
+\qquad \Lambda(m) = \frac{P_{\text{attack}}(m)}{P_{\text{benign}}(m)} .
 \end{equation}
-where $m_1 \sim P_{\text{attack}}$ and $m_0 \sim P_{\text{benign}}$. This is the Bayes-optimal discriminability.
-\end{corollary}
+Ranking messages by $P_{\text{attack}}$ alone is not generally optimal; ties
+receive half credit. The identity $\text{accuracy}^{*} = \tfrac12(1+\mathrm{TV})$
+concerns the minimum-error equal-prior classifier, not the AUC of a ranking.
+\end{remark}
 
 ### Chernoff Information and Error Exponents
 
@@ -472,50 +478,27 @@ For $n$ independent message observations, the optimal error probability decays e
 \label{eq:error-exponent}
 P_e^* \leq e^{-n C^*}
 \end{equation}
-The Chernoff information $C^*$ is the maximum achievable error exponent \cite{chernoff1952measure}.
+The Chernoff information $C^*$ is the optimal asymptotic error exponent for this iid observation model \cite{chernoff1952measure}; the displayed inequality is a finite-$n$ upper bound, not an exact finite-$n$ probability.
 \end{theorem}
 
-\begin{corollary}[Sample Complexity for Target Accuracy]
+\begin{corollary}[Sufficient Sample Count from the Chernoff Bound]
 \label{cor:sample-complexity}
-To achieve error probability $\leq \epsilon$, the minimum number of observations required is:
+The upper bound in \cref{thm:error-exponent} guarantees error probability at most $\epsilon$ when
 \begin{equation}
 \label{eq:sample-complexity}
-n^* = \left\lceil \frac{\log(1/\epsilon)}{C^*} \right\rceil
+n \geq \left\lceil \frac{\log(1/\epsilon)}{C^*} \right\rceil .
 \end{equation}
-This is the information-theoretic minimum; no detector can achieve the same accuracy with fewer samples.
+Inverting that bound supplies a sufficient count, not an information-theoretic minimum: an exact finite-sample Bayes analysis can achieve the same error probability with fewer observations.
 \end{corollary}
 
 ### KL Divergence and Detection Rate Coupling
 
-\begin{theorem}[KL-AUC Coupling]
+\begin{remark}[KL-AUC Coupling: Direction and Limits]
 \label{thm:kl-auc-coupling}
-The AUC of any detector is lower-bounded by the KL divergence between attack and benign distributions:
-\begin{equation}
-\label{eq:kl-auc-coupling}
-\text{AUC} \geq 1 - e^{-D_{\mathrm{KL}}(P_{\text{attack}} \| P_{\text{benign}})/2}
-\end{equation}
-\end{theorem}
+No universal lower bound on $\text{AUC}^{*}$ in terms of $D_{\mathrm{KL}}$ alone exists: $D_{\mathrm{KL}}$ can be driven to infinity while $\|P_{\text{attack}}-P_{\text{benign}}\|_{TV}$ stays bounded away from $1$, so a large divergence does not by itself guarantee a highly separable detector. Nor does the previously printed upper bound follow from Pinsker's inequality: for example, $P_{\text{attack}}=\mathcal N(1,1)$ and $P_{\text{benign}}=\mathcal N(0,1)$ have $D_{\mathrm{KL}}=0.5$ but $\text{AUC}^{*}\approx0.7602$, exceeding $\tfrac12(1+\sqrt{0.25})=0.75$. The asserted inequality $\text{AUC}^{*}\leq\tfrac12(1+\sqrt{D_{\mathrm{KL}}/2})$ is therefore withdrawn, not retained as a bound. Pinsker \cite{cover2006elements} gives $\mathrm{TV}\leq\sqrt{D_{\mathrm{KL}}/2}$, but total variation is not a general identity for ranking AUC, and the equal-prior Bayes classification error $\tfrac12(1-\mathrm{TV})$ is a different decision problem, not a universal identity for AUC or a basis for the printed AUC inequality.
+\end{remark}
 
-\begin{proof}
-By Pinsker's inequality \cite{cover2006elements}: $\| P_{\text{attack}} - P_{\text{benign}} \|_{TV} \leq \sqrt{D_{\mathrm{KL}}/2}$. The AUC satisfies $\text{AUC} \geq \frac{1}{2}(1 + \|P_{\text{attack}} - P_{\text{benign}}\|_{TV})$. Combining and applying the bound $\|P\|_{TV} \leq 1 - e^{-D_{\mathrm{KL}}/2}$ gives the result.
-\end{proof}
-
-\begin{table}[htbp]
-\centering
-\caption{Information-theoretic detectability by attack class. The AUC lower bound is \cref{thm:kl-auc-coupling} applied to the $D_{\mathrm{KL}}$ column; it falls below the chance level $0.5$ once $D_{\mathrm{KL}} < 2\ln 2 \approx 1.39$, so for $\Omega_3$--$\Omega_5$ the bound is vacuous and places no constraint on the Practical AUC column.}
-\label{tab:it-detectability}
-\begin{tabular}{@{}lllll@{}}
-\toprule
-Attack Class & $D_{\mathrm{KL}}$ (typical) & AUC lower bound & Required observations & Practical AUC \\
-\midrule
-$\Omega_1$ (External) & 2.5 & 0.71 & 3 & 0.95 \\
-$\Omega_2$ (Peripheral) & 1.8 & 0.59 & 5 & 0.88 \\
-$\Omega_3$ (Agent) & 1.2 & 0.45 & 8 & 0.85 \\
-$\Omega_4$ (Coordination) & 0.7 & 0.30 & 14 & 0.80 \\
-$\Omega_5$ (Systemic) & 0.2 & 0.10 & 46 & 0.65 \\
-\bottomrule
-\end{tabular}
-\end{table}
+The earlier per-class table of ``typical'' $D_{\mathrm{KL}}$ values, AUC bounds and required observations is removed: those values were neither measured nor derived by a valid bound, and no such per-class rates are asserted here. The sufficient-count formula above applies only when $C^{*}$ is actually estimated for a specified observation model.
 
 ### Fundamental Undetectability Regime
 

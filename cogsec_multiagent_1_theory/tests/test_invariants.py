@@ -247,6 +247,11 @@ class TestInvariantChecker:
         inv4_violations = [v for v in violations if v.invariant_id == "INV-4"]
         assert len(inv4_violations) == 1
 
+    def test_fail_closed_missing_direct_trust(self):
+        checker = InvariantChecker()
+        violations = checker.check_all({"action": "trust_evaluation", "delegated_trust": 0.0})
+        assert [violation.invariant_id for violation in violations] == ["INV-5"]
+
     def test_add_custom_invariant(self):
         """Custom invariants can be added."""
         checker = InvariantChecker()
@@ -310,7 +315,7 @@ class TestRuntimeMonitor:
         )
 
         violations = monitor.check_action(action)
-        assert isinstance(violations, list)
+        assert violations == []
 
     def test_monitor_logs_violations(self):
         """Monitor maintains violation log."""
@@ -325,7 +330,7 @@ class TestRuntimeMonitor:
         monitor.check_action(action)
         log = monitor.get_violation_log()
 
-        assert isinstance(log, list)
+        assert [violation.invariant_id for violation in log] == ["INV-1"]
 
     def test_monitor_by_agent(self):
         """Monitor can filter by agent."""
@@ -376,8 +381,9 @@ class TestRuntimeMonitor:
         critical_only = monitor.get_violations_by_severity(InvariantSeverity.CRITICAL)
         all_violations = monitor.get_violation_log()
 
-        # Critical filter should have fewer or equal violations
-        assert len(critical_only) <= len(all_violations)
+        assert len(all_violations) == 1
+        assert all_violations[0].invariant_id == "LOW-INV"
+        assert critical_only == []
 
     def test_monitor_clear_log(self):
         """Monitor log can be cleared."""
@@ -442,3 +448,17 @@ class TestAgentAction:
         assert context["agent_id"] == "agent-1"
         assert context["action"] == "send_message"
         assert context["message_content"] == "hello"
+
+    def test_parameters_cannot_override_reserved_context(self):
+        action = AgentAction(
+            agent_id="actual-agent",
+            action_type="execute_code",
+            parameters={"agent_id": "innocent", "action": "noop", "code_trusted": False},
+        )
+        context = action.to_context()
+
+        assert context["agent_id"] == "actual-agent"
+        assert context["action"] == "execute_code"
+        violations = RuntimeMonitor().check_action(action)
+        assert [violation.invariant_id for violation in violations] == ["INV-1"]
+        assert violations[0].context["agent_id"] == "actual-agent"

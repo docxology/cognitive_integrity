@@ -8,6 +8,7 @@ from __future__ import annotations
 
 """Detection results visualization module."""
 
+import csv
 import os
 
 os.environ["MPLBACKEND"] = "Agg"
@@ -17,13 +18,92 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
 
+from .utils import _load_json_data, _require_number
+
 
 def create_detection_results_figure(output_dir: Path) -> Path:
     """
-    Create experimental results visualization.
+    Create a mixed measured/schematic figure from complete source artifacts.
+
+    All three files under ``output_dir/data`` are required. Invalid evidence
+    raises before a figure or output directory is created. Ablation/integrity
+    inputs and latency overhead are illustrative models, not measurements.
+    The PDF path is returned only after both PNG and PDF have been saved.
     """
-    if not output_dir.exists():
-        output_dir.mkdir(parents=True, exist_ok=True)
+    data_path = output_dir / "data" / "detection_results.json"
+    data = _load_json_data(data_path)
+    if not isinstance(data, dict) or not isinstance(data.get("defense_configurations"), list):
+        raise ValueError(f"{data_path}: defense_configurations must be a list of named records")
+
+    configs = {}
+    for index, config in enumerate(data["defense_configurations"]):
+        if not isinstance(config, dict) or not isinstance(config.get("name"), str):
+            raise ValueError(f"{data_path}: defense_configurations[{index}] requires a name")
+        name = config["name"]
+        if name in configs:
+            raise ValueError(f"{data_path}: duplicate defense configuration {name!r}")
+        configs[name] = config
+
+    pd_names = ["Baseline", "Firewall Only", "Full CIF"]
+    attack_keys = ("prompt_injection", "trust_exploitation")
+    config_rates = {}
+    pd_detection = []
+    pd_latency = []
+    for name in pd_names:
+        if name not in configs:
+            raise ValueError(f"{data_path}: required defense configuration {name!r} is missing")
+        config = configs[name]
+        rates = config.get("detection_rates")
+        if not isinstance(rates, dict) or any(key not in rates for key in attack_keys):
+            raise ValueError(
+                f"{data_path}: {name!r}.detection_rates requires "
+                "prompt_injection and trust_exploitation"
+            )
+        validated_rates = {
+            key: _require_number(value, data_path, f"{name}.detection_rates.{key}", maximum=1.0)
+            for key, value in rates.items()
+        }
+        config_rates[name] = [validated_rates[key] for key in attack_keys]
+        pd_detection.append(float(np.mean(list(validated_rates.values()))))
+        pd_latency.append(
+            _require_number(
+                config.get("latency_overhead_pct"), data_path, f"{name}.latency_overhead_pct"
+            )
+        )
+
+    ablation_path = output_dir / "data" / "ablation_study.json"
+    ablation_data = _load_json_data(ablation_path)
+    component_keys = (
+        "full_cif",
+        "minus_firewall",
+        "minus_sandbox",
+        "minus_tripwires",
+        "minus_invariants",
+        "minus_trust_decay",
+    )
+    if not isinstance(ablation_data, dict):
+        raise ValueError(f"{ablation_path}: expected component records")
+    detection = []
+    for key in component_keys:
+        component = ablation_data.get(key)
+        if not isinstance(component, dict):
+            raise ValueError(f"{ablation_path}: required component {key!r} is missing or malformed")
+        detection.append(
+            _require_number(
+                component.get("detection"), ablation_path, f"{key}.detection", maximum=1.0
+            )
+        )
+    components = ["Full CIF"] + [
+        f"- {key.removeprefix('minus_').replace('_', ' ').title()}" for key in component_keys[1:]
+    ]
+    delta = [value - detection[0] for value in detection]
+
+    integrity_path = output_dir / "data" / "integrity_timeseries.csv"
+    attempts, baseline_integrity, firewall_integrity, full_cif_integrity = _load_integrity_data(
+        integrity_path
+    )
+
+    output_dir.mkdir(parents=True, exist_ok=True)
     fig, axes = plt.subplots(2, 2, figsize=(14, 11))
 
     # Colorblind-friendly palette (IBM Design)
@@ -36,16 +116,6 @@ def create_detection_results_figure(output_dir: Path) -> Path:
         "full_cif": "#FE6100",
     }
 
-    # Load generated data
-    data_path = output_dir / "data" / "detection_results.json"
-    if not data_path.exists():
-        print(f"Data file not found: {data_path}")
-        return output_dir / "error.pdf"
-
-    import json
-
-    with open(data_path, "r") as f:
-        data = json.load(f)
 
     # Panel A: Detection rate by attack type
     ax1 = axes[0, 0]
@@ -57,20 +127,9 @@ def create_detection_results_figure(output_dir: Path) -> Path:
         "Trust\nExploit",
     ]
 
-    # Helper to get rates
-    def get_rates(config_name):
-        cfg = next((c for c in data["defense_configurations"] if c["name"] == config_name), None)
-        if not cfg:
-            return [0.0] * 2
-        rates = cfg["detection_rates"]
-        return [
-            rates.get("prompt_injection", 0),
-            rates.get("trust_exploitation", 0),
-        ]
-
-    baseline = get_rates("Baseline")
-    firewall = get_rates("Firewall Only")
-    full_cif = get_rates("Full CIF")
+    baseline = config_rates["Baseline"]
+    firewall = config_rates["Firewall Only"]
+    full_cif = config_rates["Full CIF"]
 
     x = np.arange(len(attack_types))
     width = 0.25
@@ -87,45 +146,8 @@ def create_detection_results_figure(output_dir: Path) -> Path:
     ax1.set_ylim(0, 1.1)
     ax1.grid(True, alpha=0.3, axis="y")
 
-    # Panel B: Defense component contribution (Using ablation_study.json if available, else derive)
+    # Panel B uses the producer's illustrative ablation inputs, never a fallback.
     ax2 = axes[0, 1]
-
-    # Check for ablation data
-    ablation_path = output_dir / "data" / "ablation_study.json"
-    if ablation_path.exists():
-        with open(ablation_path, "r") as f:
-            ablation_data = json.load(f)
-            # Ignore the metadata/illustrative marker key when listing
-            # components so it is not plotted as a component.
-            component_keys = [k for k in ablation_data.keys() if k != "metadata"]
-            components = ["Full CIF"] + [
-                f"- {k.replace('minus_', '').replace('_', ' ').title()}"
-                for k in component_keys
-                if k != "full_cif"
-            ]
-
-            # Base full cif
-            base_val = ablation_data["full_cif"]["detection"]
-            detection = [base_val]
-            delta = [0.0]
-
-            for k in component_keys:
-                if k != "full_cif":
-                    val = ablation_data[k]["detection"]
-                    detection.append(val)
-                    delta.append(val - base_val)
-    else:
-        # Fallback to hardcoded if not generated
-        components = [
-            "Full CIF",
-            "- Firewall",
-            "- Sandbox",
-            "- Tripwires",
-            "- Invariants",
-            "- Trust Decay",
-        ]
-        detection = [0.94, 0.81, 0.88, 0.85, 0.89, 0.91]
-        delta = [0, -0.13, -0.06, -0.09, -0.05, -0.03]
 
     y_pos = np.arange(len(components))
     bars = ax2.barh(y_pos, detection, color=colors["full_cif"], alpha=0.8)
@@ -142,8 +164,8 @@ def create_detection_results_figure(output_dir: Path) -> Path:
     ax2.set_yticks(y_pos)
     ax2.set_yticklabels(components, fontsize=10)
     ax2.set_xlabel("Detection Rate", fontsize=11)
-    ax2.set_title("B. Ablation Study: Component Contribution", fontsize=12, fontweight="bold")
-    ax2.set_xlim(0.7, 1.0)
+    ax2.set_title("B. Ablation (illustrative, not measured)", fontsize=12, fontweight="bold")
+    ax2.set_xlim(0, 1.05)
     ax2.grid(True, alpha=0.3, axis="x")
 
     # Add delta annotations
@@ -151,33 +173,8 @@ def create_detection_results_figure(output_dir: Path) -> Path:
         if d != 0:
             ax2.text(det + 0.005, i, f"Δ={d:+.2f}", va="center", fontsize=9)
 
-    # Panel C: Integrity over attack attempts
+    # Panel C uses the supplied illustrative series, never invented samples.
     ax3 = axes[1, 0]
-    attempts = np.arange(0, 161, 10)  # Placeholder x-axis
-
-    # Try to load integrity data
-    integrity_path = output_dir / "data" / "integrity_timeseries.csv"
-    if integrity_path.exists():
-        import csv
-
-        with open(integrity_path, "r") as f:
-            reader = csv.DictReader(f)
-            rows = list(reader)
-            attempts = [int(r["attack_attempt"]) for r in rows]
-            baseline_integrity = [float(r["baseline_integrity"]) for r in rows]
-            firewall_integrity = [float(r["firewall_integrity"]) for r in rows]
-            full_cif_integrity = [float(r["full_cif_integrity"]) for r in rows]
-    else:
-        # Fallback synthetic
-        np.random.seed(42)
-        baseline_integrity = 0.45 - 0.002 * attempts + np.random.normal(0, 0.02, len(attempts))
-        baseline_integrity = np.clip(baseline_integrity, 0.25, 0.5)
-
-        firewall_integrity = 0.75 - 0.001 * attempts + np.random.normal(0, 0.015, len(attempts))
-        firewall_integrity = np.clip(firewall_integrity, 0.65, 0.8)
-
-        full_cif_integrity = 0.96 - 0.0002 * attempts + np.random.normal(0, 0.01, len(attempts))
-        full_cif_integrity = np.clip(full_cif_integrity, 0.92, 0.98)
 
     ax3.plot(
         attempts,
@@ -209,32 +206,15 @@ def create_detection_results_figure(output_dir: Path) -> Path:
 
     ax3.set_xlabel("Attack Attempts", fontsize=11)
     ax3.set_ylabel("Belief Integrity Score", fontsize=11)
-    ax3.set_title("C. Integrity Degradation Under Attack", fontsize=12, fontweight="bold")
+    ax3.set_title("C. Integrity (illustrative, not measured)", fontsize=12, fontweight="bold")
     ax3.legend(loc="lower left", fontsize=9)
-    ax3.set_ylim(0.2, 1.05)
+    ax3.set_ylim(0, 1.05)
     ax3.grid(True, alpha=0.3)
 
     # Panel D: Performance trade-off (Detection vs Latency)
     ax4 = axes[1, 1]
 
-    # Computed from the measured detection_results.json, not hard-coded:
-    # plot the three real defense configurations with their measured
-    # detection rates and declared latency overhead.  (Sandbox/Tripwires are
-    # not in the data file, so no fabricated points are added.)
-    def config_by_name(name):
-        return next((c for c in data["defense_configurations"] if c["name"] == name), None)
-
-    pd_names = ["Baseline", "Firewall Only", "Full CIF"]
-    pd_detection = []
-    pd_latency = []
-    for name in pd_names:
-        cfg = config_by_name(name)
-        pd_latency.append(cfg.get("latency_overhead_pct", 0) if cfg else 0)
-        if cfg is None:
-            pd_detection.append(0.0)
-        else:
-            rates = list(cfg.get("detection_rates", {}).values())
-            pd_detection.append(float(np.mean(rates)) if rates else 0.0)
+    # Detection comes from the artifact; latency is its declared model input.
     sizes = [100, 200, 300]
 
     scatter_colors = [
@@ -258,14 +238,19 @@ def create_detection_results_figure(output_dir: Path) -> Path:
         )
         ax4.annotate(name, (lat, det), xytext=(5, 5), textcoords="offset points", fontsize=9)
 
-    ax4.set_xlabel("Latency Overhead (%)", fontsize=11)
+    ax4.set_xlabel("Latency Overhead (%, model; not measured)", fontsize=11)
     ax4.set_ylabel("Detection Rate", fontsize=11)
     ax4.set_title("D. Detection vs. Performance Trade-off", fontsize=12, fontweight="bold")
-    ax4.set_xlim(-2, 30)
     ax4.set_ylim(-0.05, 1.05)
     ax4.grid(True, alpha=0.3)
 
-    plt.tight_layout()
+    fig.text(
+        0.5, 0.01,
+        "A: corpus detection rates. B/C: illustrative, not measured. "
+        "D: detection vs. model latency.",
+        ha="center", fontsize=10,
+    )
+    plt.tight_layout(rect=[0, 0.04, 1, 1])
 
     output_path_png = output_dir / "detection_results.png"
     output_path_pdf = output_dir / "detection_results.pdf"
@@ -283,3 +268,51 @@ def create_detection_results_figure(output_dir: Path) -> Path:
     print(str(output_path_png))
     print(str(output_path_pdf))
     return output_path_pdf
+
+
+def _load_integrity_data(path: Path) -> tuple[list[int], list[float], list[float], list[float]]:
+    """Validate the complete illustrative CSV before allocating a figure."""
+    columns = ("baseline_integrity", "firewall_integrity", "full_cif_integrity")
+    attempts: list[int] = []
+    series: list[list[float]] = [[], [], []]
+    try:
+        with path.open(encoding="utf-8", newline="") as stream:
+            reader = csv.DictReader(stream, strict=True)
+            required = {"attack_attempt", *columns}
+            if reader.fieldnames is None or not required.issubset(reader.fieldnames):
+                raise ValueError(f"{path}: required CSV columns are {', '.join(sorted(required))}")
+            if len(reader.fieldnames) != len(set(reader.fieldnames)):
+                raise ValueError(f"{path}: duplicate CSV column names are not allowed")
+            for line, row in enumerate(reader, start=2):
+                if None in row:
+                    raise ValueError(f"{path}: row {line} has more fields than the CSV header")
+                try:
+                    attempt = int(row["attack_attempt"])
+                except (TypeError, ValueError) as exc:
+                    raise ValueError(
+                        f"{path}: row {line}.attack_attempt must be an integer"
+                    ) from exc
+                if attempt < 0 or (attempts and attempt <= attempts[-1]):
+                    raise ValueError(
+                        f"{path}: row {line}.attack_attempt must be nonnegative "
+                        "and strictly increasing"
+                    )
+                attempts.append(attempt)
+                for values, column in zip(series, columns):
+                    try:
+                        value = float(row[column])
+                    except (TypeError, ValueError) as exc:
+                        raise ValueError(f"{path}: row {line}.{column} must be numeric") from exc
+                    values.append(
+                        _require_number(value, path, f"row {line}.{column}", maximum=1.0)
+                    )
+    except FileNotFoundError as exc:
+        raise FileNotFoundError(
+            f"Required figure data not found: {path}. Supply the source artifact; "
+            "no figure was generated."
+        ) from exc
+    except (csv.Error, UnicodeDecodeError) as exc:
+        raise ValueError(f"Invalid CSV figure data in {path}: {exc}") from exc
+    if not attempts:
+        raise ValueError(f"{path}: integrity timeseries must contain at least one numeric row")
+    return attempts, series[0], series[1], series[2]

@@ -150,6 +150,13 @@ class TestProvenanceChain:
         taint = chain.get_effective_taint("child")
         assert taint == TaintLabel.WEB_CONTENT
 
+    def test_unknown_ancestor_is_unverified(self):
+        chain = ProvenanceChain()
+        chain.add_belief(
+            "child", "Derived", TaintLabel.SYSTEM_VERIFIED, "sys", parent_ids=["ghost"]
+        )
+        assert chain.get_effective_taint("child") == TaintLabel.UNVERIFIED
+
 
 class TestProvenanceGraph:
     """Tests for ProvenanceGraph dependency analysis."""
@@ -209,6 +216,15 @@ class TestProvenanceGraph:
         assert "mixed" in contaminated
         assert "downstream" in contaminated
         assert "clean" not in contaminated
+
+    def test_dependents_include_records_added_after_graph_construction(self):
+        chain = ProvenanceChain()
+        chain.add_belief("root", "Root", TaintLabel.SYSTEM_VERIFIED, "sys")
+        graph = ProvenanceGraph(chain)
+        chain.add_belief("child", "Child", TaintLabel.AGENT_INTERNAL, "ag", ["root"])
+
+        assert graph.get_contaminated_by("root") == {"child"}
+        assert graph.depends_on("child", "root")
 
 
 class TestCausalAttribution:

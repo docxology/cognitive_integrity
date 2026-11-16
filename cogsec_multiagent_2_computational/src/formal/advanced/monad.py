@@ -5,7 +5,7 @@ from typing import Callable, Dict, List, TypeVar
 
 import numpy as np
 
-from formal.category_theory import (
+from src.formal.category_theory import (
     CognitiveState,
     DefenseMorphism,
     DefenseResult,
@@ -61,28 +61,19 @@ class DefenseMonad:
         f: Callable[[CognitiveState], DefenseResult],
         g: Callable[[CognitiveState], DefenseResult],
     ) -> Callable[[CognitiveState], DefenseResult]:
-        """Kleisli composition: f >=> g.
+        """Kleisli composition ``f >=> g`` using the same join as ``mu``.
 
-        Chains two monadic functions. Result carries the max score
-        and the OR of detection flags.
+        Sequencing short-circuits on detection.  Only two clean results are
+        arbitrated by maximum score; composing every pair with max/OR would
+        run a defense after an earlier detection and disagree with ``mu``.
         """
-
-        def _kleisli(state: CognitiveState) -> DefenseResult:
-            r_f = f(state)
-            # In the Kleisli category, f's output is the "context" for g.
-            # We thread state through, taking max-score and OR detection.
-            r_g = g(state)
-            detected = r_f.detected or r_g.detected
-            score = max(r_f.score, r_g.score)
-            return DefenseResult(
-                detected=detected,
-                score=score,
-                module_name=f"({r_f.module_name} >=> {r_g.module_name})",
-                details={"left": r_f.details, "right": r_g.details},
-                latency_ms=r_f.latency_ms + r_g.latency_ms,
-            )
-
-        return _kleisli
+        f_morphism = DefenseMorphism(
+            fn=f, name=getattr(f, "name", getattr(f, "__name__", "f"))
+        )
+        g_morphism = DefenseMorphism(
+            fn=g, name=getattr(g, "name", getattr(g, "__name__", "g"))
+        )
+        return self.mu(g_morphism, f_morphism)
 
     def verify_left_unit(
         self,
@@ -94,7 +85,7 @@ class DefenseMonad:
         composed = self.kleisli_compose(self.eta, f)
         vf = np.array([f(s).score for s in states])
         vc = np.array([composed(s).score for s in states])
-        return bool(np.allclose(vc, vf, atol=tol))
+        return bool(np.allclose(vc, vf, atol=tol, rtol=0.0))
 
     def verify_right_unit(
         self,
@@ -106,7 +97,7 @@ class DefenseMonad:
         composed = self.kleisli_compose(f, self.eta)
         vf = np.array([f(s).score for s in states])
         vc = np.array([composed(s).score for s in states])
-        return bool(np.allclose(vc, vf, atol=tol))
+        return bool(np.allclose(vc, vf, atol=tol, rtol=0.0))
 
     def verify_associativity(
         self,
@@ -123,7 +114,7 @@ class DefenseMonad:
         rhs = self.kleisli_compose(f, gh)
         vl = np.array([lhs(s).score for s in states])
         vr = np.array([rhs(s).score for s in states])
-        return bool(np.allclose(vl, vr, atol=tol))
+        return bool(np.allclose(vl, vr, atol=tol, rtol=0.0))
 
     def verify_all(
         self,

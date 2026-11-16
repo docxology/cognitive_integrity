@@ -14,7 +14,7 @@ from pathlib import Path
 import numpy as np
 import pytest
 
-from redteam import (
+from src.redteam import (
     AdversarialTrainer,
     ATConfig,
     NashEquilibriumEstimator,
@@ -22,17 +22,17 @@ from redteam import (
     measure_detection_rate,
     refine_thresholds,
 )
-from redteam.convergence import (
+from src.redteam.convergence import (
     convergence_round_estimate,
     geometric_convergence_projection,
     natural_gradient_at_step,
 )
-from redteam.evasion import (
+from src.redteam.evasion import (
     VacuousSweepError,
     flagged_payloads,
     run_evasion_sweep,
 )
-from redteam.generator import (
+from src.redteam.generator import (
     AdversarialGenerator,
     AttackMutator,
     GeneratedAttack,
@@ -113,6 +113,21 @@ class TestAdversarialGenerator:
         mutated = mutator.mutate(base_attack, "semantic_paraphrase")
         assert "[paraphrased variant]" in mutated.payload
         assert mutated.attack_id != base_attack.attack_id
+
+    def test_defense_config_changes_generated_payloads(self):
+        low = AdversarialGenerator(
+            {"drift_threshold": 0.3, "anomaly_threshold": 0.5}, seed=42
+        ).generate_batch(20)
+        high = AdversarialGenerator(
+            {"drift_threshold": 0.99, "anomaly_threshold": 0.99}, seed=42
+        ).generate_batch(20)
+        assert {a.payload for a in low} != {a.payload for a in high}
+
+    def test_canary_avoidance_changes_payload_without_canary_word(self):
+        attack = AdversarialGenerator({}, seed=42).generate_attack()
+        mutated = AttackMutator(seed=42).mutate(attack, "canary_avoidance")
+        assert mutated.payload != attack.payload
+        assert "[indirect channel]" in mutated.payload
 
     def test_mutate_all_operators(self):
         """Mutating all operators produces one attack per operator."""
@@ -260,6 +275,11 @@ class TestNashEquilibriumEstimator:
         proj = estimator.projected_equilibrium_dr(0.447)
         assert proj <= 1.0
 
+    def test_divergent_projection_is_not_clamped_to_one(self):
+        estimator = NashEquilibriumEstimator([0.1, 0.1, 0.1])
+        assert estimator.projected_equilibrium_dr(0.4) == float("inf")
+        assert estimator.convergence_round() is None
+
     def test_convergence_round_positive(self):
         """Convergence round estimate is positive for typical gains."""
         gains = [0.077, 0.052, 0.049]
@@ -322,7 +342,7 @@ class TestExtendedSpecGeneration:
 
     def test_tla_spec_v2_contains_composition(self):
         """Extended TLA+ spec mentions composition_mode."""
-        from formal.extended_specs import generate_tla_spec_v2
+        from src.formal.extended_specs import generate_tla_spec_v2
 
         spec = generate_tla_spec_v2()
         assert "composition_mode" in spec
@@ -331,7 +351,7 @@ class TestExtendedSpecGeneration:
 
     def test_promela_spec_v2_contains_ltl(self):
         """Extended Promela spec has LTL properties."""
-        from formal.extended_specs import generate_promela_spec_v2
+        from src.formal.extended_specs import generate_promela_spec_v2
 
         spec = generate_promela_spec_v2()
         assert "ltl" in spec
@@ -340,7 +360,7 @@ class TestExtendedSpecGeneration:
 
     def test_nusmv_spec_v2_contains_safety(self):
         """Extended NuSMV spec has SPEC safety properties."""
-        from formal.extended_specs import generate_nusmv_spec_v2
+        from src.formal.extended_specs import generate_nusmv_spec_v2
 
         spec = generate_nusmv_spec_v2()
         assert "SPEC AG" in spec
@@ -349,7 +369,7 @@ class TestExtendedSpecGeneration:
 
     def test_write_extended_specs_creates_files(self, tmp_path):
         """write_extended_specs creates all three output files."""
-        from formal.extended_specs import write_extended_specs
+        from src.formal.extended_specs import write_extended_specs
 
         paths = write_extended_specs(tmp_path)
         assert paths["tla"].exists()
@@ -560,8 +580,8 @@ class TestCorpusSourcedEvasionSweep:
 
     @staticmethod
     def _denominator():
-        from attacks.corpus import AttackCorpus
-        from core.firewall import Classification, CognitiveFirewall
+        from src.attacks.corpus import AttackCorpus
+        from src.core.firewall import Classification, CognitiveFirewall
 
         firewall = CognitiveFirewall()
         corpus = AttackCorpus.generate(seed=42)
@@ -584,8 +604,8 @@ class TestCorpusSourcedEvasionSweep:
         the sweep's own minimum.
         """
         denominator, firewall = self._denominator()
-        from attacks.corpus import AttackCorpus
-        from core.firewall import Classification
+        from src.attacks.corpus import AttackCorpus
+        from src.core.firewall import Classification
 
         expected = {
             s.payload
@@ -596,7 +616,7 @@ class TestCorpusSourcedEvasionSweep:
         assert len(denominator) >= 50
 
     def test_gradual_insertion_is_the_only_operator_that_evades(self):
-        from core.firewall import Classification
+        from src.core.firewall import Classification
 
         denominator, firewall = self._denominator()
         mutator = AttackMutator(seed=42)
@@ -621,7 +641,7 @@ class TestCorpusSourcedEvasionSweep:
 
     def test_gradual_insertion_evasions_split_the_trigger_phrase(self):
         """Explain the evasions: the mutation inserts ' ... ' inside the trigger."""
-        from core.firewall import Classification
+        from src.core.firewall import Classification
 
         denominator, firewall = self._denominator()
         mutator = AttackMutator(seed=42)
@@ -641,7 +661,7 @@ class TestCorpusSourcedEvasionSweep:
         # there were three; the fourth evasion splits `jailbreak` instead, and
         # the narrow assertion would have read that as a broken mechanism
         # rather than the same mechanism on a different trigger.
-        from core.firewall import PatternDetector
+        from src.core.firewall import PatternDetector
 
         detector = PatternDetector()
         for original in evaded:
@@ -712,7 +732,7 @@ class TestManuscriptMutationTableConsistency:
         return rows
 
     def test_every_operator_row_matches_the_live_sweep(self):
-        from core.firewall import Classification
+        from src.core.firewall import Classification
 
         denominator, firewall = TestCorpusSourcedEvasionSweep._denominator()
         mutator = AttackMutator(seed=42)
@@ -815,8 +835,8 @@ class TestRealFunctionalATModules:
 
     @staticmethod
     def _real_fixture():
-        from attacks.corpus import AttackCorpus
-        from core.firewall import Classification, CognitiveFirewall
+        from src.attacks.corpus import AttackCorpus
+        from src.core.firewall import Classification, CognitiveFirewall
 
         firewall = CognitiveFirewall()
         payloads = [s.payload for s in AttackCorpus.generate(seed=42)]
@@ -877,7 +897,7 @@ class TestRealFunctionalATModules:
         assert 0.01 <= a["drift_threshold"] <= 0.99
 
     def test_evaluate_adaptive_attacks_measures_real_fraction(self):
-        from redteam.generator import AdversarialGenerator
+        from src.redteam.generator import AdversarialGenerator
 
         _, detect = self._real_fixture()
         cfg = {"drift_threshold": 0.3, "anomaly_threshold": 0.5}
@@ -895,8 +915,8 @@ class TestRealFunctionalATModules:
         the raw batch (~100) contains far fewer distinct payloads, and a
         rate over the raw batch would use a phantom denominator.
         """
-        from redteam import AdversarialTrainer, ATConfig
-        from redteam.generator import AdversarialGenerator, OmegaLevel
+        from src.redteam import AdversarialTrainer, ATConfig
+        from src.redteam.generator import AdversarialGenerator, OmegaLevel
 
         trainer = AdversarialTrainer(
             ATConfig(n_rounds=2, attacks_per_round=100), measurement_mode="real"
@@ -909,7 +929,12 @@ class TestRealFunctionalATModules:
             omega_level=OmegaLevel.OMEGA_3_IMPERSONATION,
             seed=trainer.config.seed,
         )
-        raw = [a.payload for a in gen.generate_batch(100)]
+        raw = [
+            a.payload
+            for a in gen.generate_batch(
+                100, round_num=1, mutation_operators=trainer.config.mutation_operators
+            )
+        ]
         distinct = len(set(raw))
         assert distinct < len(raw)  # the batch is duplicate-inflated
 

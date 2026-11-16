@@ -12,11 +12,11 @@ import re
 import textwrap
 from pathlib import Path
 
-from manuscript.latex_converter import (
+from src.manuscript.latex_converter import (
     convert_file,
     convert_latex_table_to_markdown,
 )
-from manuscript.verifier import ManuscriptVerifier
+from src.manuscript.verifier import ManuscriptVerifier
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
@@ -99,6 +99,15 @@ class TestCitations:
         v = ManuscriptVerifier(str(tmp_path))
         assert v.check_citations() is True
 
+    def test_natbib_optional_arguments_are_scanned(self, tmp_path):
+        (tmp_path / "references.bib").write_text("@article{k1, title={T}}")
+        (tmp_path / "doc.md").write_text(
+            r"See \citep[see][p. 7]{missing} and \citep[see][]{k1}."
+        )
+        v = ManuscriptVerifier(str(tmp_path))
+        assert v.check_citations() is False
+        assert v.get_cited_keys() == {"missing", "k1"}
+
     def test_duplicate_bib_key_fails(self, tmp_path):
         (tmp_path / "references.bib").write_text(
             "@article{dup, title={A}}\n@inproceedings{dup, title={B}}\n"
@@ -159,6 +168,20 @@ class TestLabelsAndRefs:
         md = "# Heading {#sec:intro}\n\nSee \\ref{sec:intro}."
         (tmp_path / "doc.md").write_text(md)
         v = ManuscriptVerifier(str(tmp_path))
+        assert v.check_labels_and_refs() is True
+
+    def test_capital_cref_and_pandoc_attributes(self, tmp_path):
+        (tmp_path / "references.bib").write_text("")
+        (tmp_path / "doc.md").write_text(
+            "![Caption](figure.pdf){#fig:pipeline width=90%}\n\n"
+            r"See \Cref{fig:pipeline} and \Cref{fig:missing}."
+        )
+        v = ManuscriptVerifier(str(tmp_path))
+        assert v.check_labels_and_refs() is False
+        (tmp_path / "doc.md").write_text(
+            "![Caption](figure.pdf){#fig:pipeline width=90%}\n\n"
+            r"See \Cref{fig:pipeline}."
+        )
         assert v.check_labels_and_refs() is True
 
 

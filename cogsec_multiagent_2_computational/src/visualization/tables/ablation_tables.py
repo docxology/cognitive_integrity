@@ -294,8 +294,9 @@ def generate_synergy_table(results: Optional[Dict] = None) -> str:
         r"\begin{table}[htbp]",
         r"\centering",
         r"\caption{Recorded pairwise component synergies. "
-        r"Synergy is the combined-pair TPR minus the sum of the two "
-        r"single-component TPRs. Only the pairs serialised by the ablation "
+        r"Synergy is the combined-pair TPR minus the maximum of the two "
+        r"single-component TPRs (improvement over the better singleton, not "
+        r"super-additivity). Only the pairs serialised by the ablation "
         r"runner are listed; unlisted pairs were not measured, which is not "
         r"the same as measuring zero.}",
         r"\label{tab:synergy}",

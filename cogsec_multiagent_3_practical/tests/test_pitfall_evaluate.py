@@ -75,11 +75,11 @@ class TestEvaluateRiskSurfacing:
         assert result.passed is True
         assert result.risk_level == RiskLevel.LOW
 
-    def test_empty_entries_passthrough(self) -> None:
-        """Empty checklist short-circuits to passed/LOW (unchanged behaviour)."""
+    def test_empty_entries_fail_closed(self) -> None:
+        """An explicitly emptied checklist has no evidence of readiness."""
         checklist = PitfallChecklist()
         checklist.entries.clear()
         result = checklist.evaluate()
-        assert result.passed is True
-        assert result.score == 1.0
-        assert result.risk_level == RiskLevel.LOW
+        assert result.passed is False
+        assert result.score == 0.0
+        assert result.risk_level == RiskLevel.CRITICAL

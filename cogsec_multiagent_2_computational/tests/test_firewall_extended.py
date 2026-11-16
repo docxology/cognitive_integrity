@@ -2,7 +2,7 @@
 import numpy as np
 import pytest
 
-from core.firewall import (
+from src.core.firewall import (
     Classification,
     CognitiveFirewall,
     EnhancedCognitiveFirewall,

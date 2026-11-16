@@ -13,7 +13,7 @@ from __future__ import annotations
 
 import numpy as np
 
-from utils.random_seed import get_rng
+from src.utils.random_seed import get_rng
 
 from .theorem_registry import TheoremResult, TheoremStatus
 

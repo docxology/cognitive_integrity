@@ -33,10 +33,11 @@ from pathlib import Path
 
 import pytest
 
-from data.generate import (
+from src.data.generate import (
     AUTHORITATIVE_RESULT_NAMES,
     DATA_ORIGIN_PARAMETRIC,
     DATA_ORIGIN_REAL,
+    DATA_ORIGIN_SIMULATION_ANALYSIS,
     DATA_ORIGIN_SYNTHETIC,
     DATA_ORIGIN_UNKNOWN,
     PROVENANCE_KEYS,
@@ -99,6 +100,12 @@ class TestClassifyProvenance:
     def test_unrecognised_origin_value_is_unknown(self, tmp_path):
         p = tmp_path / "a.json"
         _write_json(p, {"data_origin": "handwritten", "v": 1})
+        assert classify_provenance(p) == DATA_ORIGIN_UNKNOWN
+        assert is_synthetic_artifact(p) is False
+
+    def test_unhashable_origin_value_is_unknown(self, tmp_path):
+        p = tmp_path / "a.json"
+        _write_json(p, {"data_origin": ["real_pipeline"], "v": 1})
         assert classify_provenance(p) == DATA_ORIGIN_UNKNOWN
         assert is_synthetic_artifact(p) is False
 
@@ -508,7 +515,11 @@ class TestShippedArtifacts:
         # honestly stamped `parametric_simulation` instead of a misleading
         # `real_pipeline`.
         origin = classify_provenance(path)
-        assert origin in {DATA_ORIGIN_REAL, DATA_ORIGIN_PARAMETRIC}, (
+        assert origin in {
+            DATA_ORIGIN_REAL,
+            DATA_ORIGIN_PARAMETRIC,
+            DATA_ORIGIN_SIMULATION_ANALYSIS,
+        }, (
             f"{name}.json classified as {origin!r} — it was probably "
             f"overwritten by DataGenerator"
         )
@@ -554,7 +565,7 @@ class TestSidecarWritersUseTheKeyTheReaderReads:
     """
 
     def test_every_shipped_sidecar_binds_to_its_artifact(self):
-        from data.generate import SIDECAR_HASH_KEY, classify_provenance
+        from src.data.generate import SIDECAR_HASH_KEY, classify_provenance
 
         sidecars = sorted(_DATA_DIR.glob("*.provenance.json"))
         assert sidecars, "no sidecars found; this test would be vacuous"
@@ -618,7 +629,7 @@ class TestEveryShippedArtifactDeclaresItsOrigin:
     }
 
     def test_no_artifact_classifies_as_unknown(self):
-        from data.generate import classify_provenance
+        from src.data.generate import classify_provenance
 
         artifacts = [
             p

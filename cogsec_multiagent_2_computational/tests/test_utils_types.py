@@ -18,7 +18,9 @@ from __future__ import annotations
 
 import json
 
-from utils.types import (
+import numpy as np
+
+from src.utils.types import (
     ArchitectureType,
     AttackCategory,
     AttackOutcome,
@@ -76,7 +78,7 @@ class TestAttackCategory:
 
     def test_has_twelve_published_categories_plus_three_extension_families(self):
         """12 published + 3 that probe provenance, sandbox and consensus."""
-        from attacks.validation import EXTENSION_CATEGORIES, PUBLISHED_CATEGORIES
+        from src.attacks.validation import EXTENSION_CATEGORIES, PUBLISHED_CATEGORIES
 
         assert len(PUBLISHED_CATEGORIES) == 12
         assert len(EXTENSION_CATEGORIES) == 3
@@ -251,6 +253,15 @@ class TestSerializeValue:
 
     def test_str_passthrough(self):
         assert _serialize_value("hello") == "hello"
+
+    def test_numpy_scalars_become_builtin_values(self):
+        assert _serialize_value(np.bool_(False)) is False
+        assert _serialize_value(np.int64(4)) == 4
+        payload = DefenseResult(
+            detected=np.bool_(False), score=0.1, module_name="m"
+        ).to_dict()
+        assert payload["detected"] is False
+        assert json.dumps(payload)
 
     def test_enum_becomes_value(self):
         result = _serialize_value(AttackCategory.DIRECT_INJECTION)

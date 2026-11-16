@@ -18,12 +18,12 @@ import pytest
 
 matplotlib.use("Agg")
 
-from visualization.artifact import DATA_DIR, load_artifact, provenance_line  # noqa: E402
-from visualization.figures.load_saturation import plot_load_saturation  # noqa: E402
-from visualization.figures.mitigation_tradeoff import plot_mitigation_tradeoff  # noqa: E402
-from visualization.figures.module_capability import plot_module_capability  # noqa: E402
-from visualization.figures.operating_curve import plot_operating_curve  # noqa: E402
-from visualization.figures.stratified_detection import (  # noqa: E402
+from src.visualization.artifact import DATA_DIR, load_artifact, provenance_line  # noqa: E402
+from src.visualization.figures.load_saturation import plot_load_saturation  # noqa: E402
+from src.visualization.figures.mitigation_tradeoff import plot_mitigation_tradeoff  # noqa: E402
+from src.visualization.figures.module_capability import plot_module_capability  # noqa: E402
+from src.visualization.figures.operating_curve import plot_operating_curve  # noqa: E402
+from src.visualization.figures.stratified_detection import (  # noqa: E402
     plot_stratified_detection,
 )
 
@@ -77,7 +77,7 @@ def test_each_figure_refuses_to_draw_without_its_measurement(
     default somewhere, and a default is indistinguishable from a measurement
     once it is rendered.
     """
-    import visualization.artifact as artifact_module
+    import src.visualization.artifact as artifact_module
 
     empty = tmp_path / "no-data"
     empty.mkdir()

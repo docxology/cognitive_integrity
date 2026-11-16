@@ -38,10 +38,11 @@ benchmark evaluation, AT closes the loop between attack generation and defense
 refinement, providing an empirical lower bound on the detection rate achievable after
 a fixed number of red-teaming rounds.
 
-This section reports results from $K = 5$ rounds of adversarial training applied to
-the Claude Code architecture's CIF pipeline. Each round generates $M = 100$ novel
-attacks adapted to the previous round's defense configuration, evaluates detection
-rates, and updates the pipeline parameters to address observed gaps.
+This section reports results from $K = 5$ rounds of the closed-form CIF
+adversarial-training design model, not a pipeline-in-the-loop architecture measurement.
+Each modeled round generates $M = 100$ attacks adapted to the previous round's defense
+configuration and applies the model's deterministic detection, gap-attribution, and
+parameter-refinement rules.
 
 ## Adversarial Training Protocol {#sec:at-protocol}
 
@@ -79,13 +80,14 @@ The red-team generator adapts attacks along three axes per round:
   routing attacks through it, exploiting gaps in delegation-chain verification.
 
 The adaptation is implemented in `src/redteam/generator.py::AdversarialGenerator`
-and uses the $\Omega_3$–$\Omega_5$ adversary capability levels from
-Part 1's Agent-Level, Coordination, and Systemic Adversary definitions
-\cite{friedman2026cogsec1}.
+and uses the $\Omega_3$–$\Omega_5$ levels of this paper's technique ladder
+(\cref{sec:omega-mapping}). These technique categories are not the access-based
+Agent-Level, Coordination, and Systemic Adversary classes in Part 1
+\cite{friedman2026cogsec1}, and their indices are not interchangeable.
 
 ## Results {#sec:at-results}
 
-Table: Adversarial training round-by-round detection rates (Claude Code, seed 42). {#tab:at-rounds}
+Table: Adversarial training round-by-round detection rates (closed-form design model, seed 42; 950-sample original-corpus projection and 100 generated attacks per round). {#tab:at-rounds}
 
 | Round | Attack Set | Base DR | AT-Hardened DR | $\Delta$ from baseline |
 | :---: | :--- | :---: | :---: | :---: |
@@ -144,21 +146,23 @@ this corpus size) is a property of the assumed per-round gains of the design
 model — it is a projection, not a measured result. Larger corpora and stochastic
 evaluation would produce intermediate Nash values.
 
-The gap between the Nash projection (100.0\%) and the parametric
-ceiling (96--100\%) reflects the deterministic evaluation on a fixed attack
-corpus. The adapter-maturity gap $G_{\text{adapter}}$ identified in
-§\ref{sec:architecture-gap-analysis} separates the parametric design ceiling
-from current empirical pipeline performance.
+The Nash projection (100.0\%) and the parametric ceiling (96--100\%) are outputs
+of distinct design models, not measurements of the current pipeline. Comparing
+either with empirical pipeline performance does not identify adapter maturity or
+architecture as the cause of their differences.
 
 ## Implications for the $\Omega_1$–$\Omega_5$ Adversary Taxonomy {#sec:at-omega-implications}
 
-Per-$\Omega$ detection rates are deliberately **not** reported here. The only
-per-level numbers the codebase can produce come from
-`AdversarialTrainer.omega_level_dr()`, which scales one hardened detection rate by a
-fixed per-level constant; they are a property of those constants, not a measurement
-of per-class performance. They are therefore not tabulated here, and this section retains its label so
-that cross-references from the rest of the series resolve.
-Establishing measured per-$\Omega$ rates requires a runtime `omega_level`
-annotation on `AttackSample`, which the corpus generator does not currently emit
-(\cref{sec:omega-mapping}); that is the prerequisite for this analysis, and it is
-recorded as future work rather than reported as a result.
+Per-$\Omega$ detection rates are deliberately **not** reported here.
+`AdversarialTrainer.omega_level_dr()` scales one hardened detection rate by fixed
+per-level constants; its outputs are properties of those constants, not measurements
+of per-class performance.
+
+The corpus generator **does** emit an `omega_level` annotation on every generated
+`AttackSample`, derived from the sample's attack category through `_CATEGORY_PROFILE`.
+Stratifying pipeline outcomes by that existing field would therefore measure groups
+on this paper's category-derived technique ladder (\cref{sec:omega-mapping}), not an
+independent per-sample judgement and not Part 1's access-based adversary taxonomy.
+No such stratified pipeline evaluation is reported in this section. Empirical
+per-$\Omega$ rates require that additional evaluation; access-based rates would
+require separately defined labels rather than an index mapping from `omega_level`.

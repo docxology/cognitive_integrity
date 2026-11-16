@@ -43,7 +43,7 @@ where:
 \text{DR}_c &= \text{Colony-level detection rate} \\
 \text{FPR}_c &= \text{Colony-level false positive rate} \\
 \text{Resilience} &= \frac{\mathcal{F}_c(\text{under attack})}{\mathcal{F}_c(\text{baseline})} \\
-\text{Recovery} &= \max(0,\, 1 - t_{\text{recovery}} / t_{\max}) \text{ (normalized; } t_{\max} = 60\text{s default, configurable)}
+\text{Recovery} &= \operatorname{clip}(1 - t_{\text{recovery}} / t_{\max}, 0, 1) \text{ (}t_{\max}\text{ is the configured simulation-step count)}
 \end{align}
 with weights $w_i$ summing to 1.
 \end{definition}
@@ -57,8 +57,8 @@ with weights $w_i$ summing to 1.
 uv venv cogsec-bench
 source cogsec-bench/bin/activate
 
-# Install dependencies
-uv pip install numpy scipy networkx redis kafka-python
+# Install dependencies used by the scenarios and YAML configuration reader
+uv pip install numpy scipy networkx pyyaml
 
 # Run benchmark suite
 PYTHONPATH=src uv run python -m cogsec.benchmarks.colony --config colony_configs.yaml
@@ -72,7 +72,6 @@ from cogsec.benchmarks import ColonyBenchmark
 # Configure benchmark
 config = {
     "n_agents": 100,
-    "stigmergy": "redis",
     "adversary_class": "omega_2",
     "duration_steps": 300,
 }
@@ -88,9 +87,11 @@ ccs = benchmark.compute_ccs(
 print(f"Colony CogSec Score: {ccs:.3f}")
 ```
 
-> **Note**: `cogsec.benchmarks` is the shipped public API: a facade over the internal modules under `src/`, exercised by `tests/test_public_api.py`. It is a facade rather than the internals themselves because the internal layout is organised for the framework's development and this one is organised for reproducing the paper. `src/` must be on `PYTHONPATH`, which is why the quickstart sets it; the project deliberately does not publish every directory under `src/` as a top-level package.
+> **Note**: `cogsec.benchmarks` is the shipped public API: a facade over the internal modules under `src/`, exercised by `tests/test_public_api.py`. It is a facade rather than the internals themselves because the internal layout is organised for the framework's development and this one is organised for reproducing the paper. `src/` must be on `PYTHONPATH`, which is why the quickstart sets it; the project deliberately does not publish every directory under `src/` as a top-level package. The optional `stigmergy` configuration value is recorded as metadata only: the current scenarios do not model Redis, Kafka, filesystem, or in-memory stigmergic substrates.
 
-### Stigmergic Substrate Configuration
+### Proposed Stigmergic Substrate Configuration
+
+The following YAML is a **design sketch only**. It is not accepted by `cogsec.benchmarks.colony`, and the current benchmark implementations do not consume these substrate, marker, or logging settings.
 
 ```yaml
 # stigmergy_config.yaml
@@ -133,8 +134,8 @@ suite.run_colony_benchmarks(
     benchmarks=["recruitment_poisoning", "sybil_infiltration"]
 )
 
-# Generate combined report
-suite.generate_report(output="./reports/cif_full.pdf")
+# Generate a JSON report containing only stages that were actually run
+suite.generate_report(output="./reports/cif_full.json")
 ```
 
 ## Benchmark Validity Considerations {#sec:benchmark-validity}
@@ -143,7 +144,7 @@ Colony-scale benchmarks introduce considerations not present in individual-agent
 
 1. **Emergent behavior confounds**: At $n > 50$, agent collectives may develop coordination patterns that affect both attack success and detection rates independently of CIF mechanisms. Benchmarks should include control runs without adversaries to establish behavioral baselines.
 
-2. **Stigmergic channel security**: Shared memory substrates (Redis, message queues) introduce attack surfaces not present in direct communication models. The benchmark suite includes substrate-specific attack generators for each supported backend.
+2. **Stigmergic channel security**: Shared memory substrates (Redis, message queues) would introduce attack surfaces not present in direct communication models. Backend-specific substrate and attack-generator implementations remain proposed work; no such backend measurements are reported here.
 
 3. **Temporal coupling**: Colony dynamics evolve over hundreds of steps; snapshot metrics (single-point detection rate) may miss temporal patterns. The CCS metric addresses this through the Recovery component, but practitioners should also examine detection rate trajectories over the benchmark duration.
 

@@ -15,9 +15,9 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "src"))
+sys.path.insert(0, str(ROOT))
 
-from ablation.runner import run_full_ablation
+from src.ablation.runner import run_full_ablation
 
 
 def main() -> None:

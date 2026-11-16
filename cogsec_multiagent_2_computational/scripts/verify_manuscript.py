@@ -27,9 +27,9 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "src"))
+sys.path.insert(0, str(ROOT))
 
-from manuscript.verifier import ManuscriptVerifier  # noqa: E402
+from src.manuscript.verifier import ManuscriptVerifier  # noqa: E402
 
 DEFAULT_LOG_PATH = ROOT / "output" / "logs" / "manuscript_verification.log"
 

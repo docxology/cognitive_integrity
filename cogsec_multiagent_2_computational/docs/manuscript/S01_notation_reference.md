@@ -38,9 +38,9 @@ This paper uses notation from the Cognitive Integrity Framework (CIF) formal spe
 | $\tau_1$ | Hard-reject threshold (Part 2 operational default: $\tau_1 = 0.8$; Part 1's reference implementation deliberately uses 0.7) | \cref{sec:firewall-api} |
 | $\tau_2$ | Quarantine threshold (Part 2 operational default: $\tau_2 = 0.5$); $\tau_2 < \tau_1$ required | \cref{sec:firewall-api} |
 | $\epsilon_{\text{drift}}$ | Drift detection threshold (generic) | Equation 8 |
-| $\epsilon_{\text{critical}}$ | Drift severity: CRITICAL ($\epsilon > 0.30$; default) | \cref{sec:deployment} |
-| $\epsilon_{\text{high}}$ | Drift severity: HIGH ($0.20 < \epsilon \leq 0.30$; default) | \cref{sec:deployment} |
-| $\epsilon_{\text{medium}}$ | Drift severity: MEDIUM ($0.08 < \epsilon \leq 0.20$; default) | \cref{sec:deployment} |
+| $\epsilon_{\text{critical}}$ | Tripwire drift severity: CRITICAL ($\epsilon > 0.50$; default) | \cref{sec:deployment} |
+| $\epsilon_{\text{high}}$ | Tripwire drift severity: HIGH ($0.30 < \epsilon \leq 0.50$; default) | \cref{sec:deployment} |
+| $\epsilon_{\text{medium}}$ | Tripwire drift severity: MEDIUM ($0.20 < \epsilon \leq 0.30$; default) | \cref{sec:deployment} |
 
 ### Consensus and Coordination (reproduced from Part 1, Table 4 for reader convenience)
 

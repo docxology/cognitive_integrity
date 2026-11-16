@@ -56,15 +56,6 @@ def compute_pr_curve(
     precisions = []
     recalls = []
 
-    total_positives = np.sum(y_true == 1)
-    if total_positives == 0:
-        return PRCurve(
-            precision=np.ones(n_thresholds),
-            recall=np.zeros(n_thresholds),
-            thresholds=thresholds,
-            average_precision=0.0,
-        )
-
     for t in thresholds:
         predicted_pos = scores >= t
         tp = np.sum((predicted_pos) & (y_true == 1))
@@ -94,20 +85,24 @@ def compute_average_precision_from_arrays(
     precision: np.ndarray,
     recall: np.ndarray,
 ) -> float:
-    """Compute average precision from precision and recall arrays.
+    """Compute AP as rectangular strips under the precision envelope."""
+    order = np.argsort(recall, kind="stable")
+    recall_sorted = np.asarray(recall, dtype=float)[order]
+    precision_sorted = np.asarray(precision, dtype=float)[order]
 
-    Uses the trapezoidal rule on the monotone-decreasing envelope.
-    """
-    # Sort by recall (ascending)
-    order = np.argsort(recall)
-    recall_sorted = recall[order]
-    precision_sorted = precision[order]
-
-    # Make precision monotonically decreasing from right
+    # Make precision monotonically decreasing from right.
     for i in range(len(precision_sorted) - 2, -1, -1):
         precision_sorted[i] = max(precision_sorted[i], precision_sorted[i + 1])
 
-    # Compute AP as sum of rectangular strips
+    # The threshold sweep starts at positive recall.  Without a recall-zero
+    # endpoint, AP silently omits the highest-scoring positives.
+    if len(recall_sorted) == 0:
+        return 0.0
+    if recall_sorted[0] > 0.0:
+        recall_sorted = np.concatenate(([0.0], recall_sorted))
+        precision_sorted = np.concatenate(([precision_sorted[0]], precision_sorted))
+
+    # Compute AP as sum of rectangular strips.
     ap = 0.0
     for i in range(1, len(recall_sorted)):
         dr = recall_sorted[i] - recall_sorted[i - 1]

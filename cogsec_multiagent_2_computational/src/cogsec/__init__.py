@@ -1,10 +1,12 @@
 """The public API the supplements document.
 
-S03 documents ``from cogsec.benchmarks import ColonyBenchmark`` and
-``from cogsec.testing import CIFTestSuite``, and carried a note conceding that
-neither import worked: "the import path shown above reflects the proposed
-public API". A note saying a code block does not run is more honest than
-silence and still leaves the reader with a code block that does not run.
+The canonical forms of S03's documented public imports are
+``from src.cogsec.benchmarks import ColonyBenchmark`` and
+``from src.cogsec.testing import CIFTestSuite``. The supplement originally
+carried a note conceding that neither import worked: "the import path shown
+above reflects the proposed public API". A note saying a code block does not
+run is more honest than silence and still leaves the reader with a code block
+that does not run.
 
 This package is that API, implemented rather than proposed. It is a facade:
 every entry point delegates to the internal modules under ``src/`` and adds no

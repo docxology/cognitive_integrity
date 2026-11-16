@@ -47,12 +47,14 @@ CANONICAL_REPO_URL = "https://github.com/docxology/cognitive_integrity"
 EXTERNAL_ZENODO: frozenset[str] = frozenset({"10.5281/zenodo.5759807"})
 
 _ZENODO = re.compile(r"10\.5281/zenodo\.\d+")
-_CONFIG_DOI = re.compile(r"^\s{2}doi:\s*['\"]?(10\.\d{4,9}/[^'\"\s]+)['\"]?", re.M)
+_PAPER_DOI = re.compile(
+    r"^paper:\n(?:[ \t]+.*\n|\n)*?[ \t]+doi:\s*['\"]?(10\.\d{4,9}/[^'\"\s]+)['\"]?",
+    re.M,
+)
 _CONFIG_CONCEPT = re.compile(r"^\s{2}concept_doi:\s*['\"]?(10\.\d{4,9}/[^'\"\s]+)['\"]?", re.M)
 #: The release tooling writes ``publication.doi``; the cover page reads
-#: ``paper.doi``. They are different keys in the same file, and nothing kept
-#: them in step, so a reserved DOI could land in the config without reaching
-#: the cover of the paper it identifies.
+#: ``paper.doi``. They are different keys in different mappings, and neither
+#: may serve as a fallback for the other.
 _PUBLICATION_DOI = re.compile(
     r"^publication:\n(?:[ \t]+.*\n|\n)*?[ \t]+doi:\s*['\"]?(10\.\d{4,9}/[^'\"\s]+)['\"]?",
     re.M,
@@ -72,7 +74,13 @@ def _tracked(*patterns: str) -> list[Path]:
 
 def _text_files() -> list[Path]:
     keep = (".md", ".yaml", ".yml", ".cff", ".bib", ".py", ".toml", ".txt", ".json")
-    return [p for p in _tracked() if p.suffix in keep and p.is_file()]
+    # Test fixtures deliberately use unregistered DOIs to exercise rejection
+    # paths. They are not publication surfaces and must not fail the gate.
+    return [
+        p
+        for p in _tracked()
+        if p.suffix in keep and p.is_file() and "tests" not in p.parts
+    ]
 
 
 def registered_dois() -> dict[str, dict[str, str]]:
@@ -84,7 +92,7 @@ def registered_dois() -> dict[str, dict[str, str]]:
             raise SystemExit(f"{config} is missing; the registry cannot be built")
         text = config.read_text(encoding="utf-8")
         entry: dict[str, str] = {}
-        version = _CONFIG_DOI.search(text)
+        version = _PAPER_DOI.search(text)
         if version:
             entry["version"] = version.group(1)
         concept = _CONFIG_CONCEPT.search(text)

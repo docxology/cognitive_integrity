@@ -30,13 +30,13 @@ class DetectionBound:
     def __eq__(self, other: object) -> bool:  # type: ignore[override]
         if not isinstance(other, DetectionBound):
             return NotImplemented
-        return math.isclose(self.rate, other.rate, abs_tol=1e-10)
+        return self.rate == other.rate
 
     def __repr__(self) -> str:
         return f"DetectionBound({self.rate:.4f}, name={self.name!r})"
 
     def __hash__(self) -> int:
-        return hash(round(self.rate, 10))
+        return hash(self.rate)
 
 
 # Lattice extremes
@@ -54,13 +54,12 @@ def lattice_meet(a: DetectionBound, b: DetectionBound) -> DetectionBound:
 
 
 def lattice_join(a: DetectionBound, b: DetectionBound) -> DetectionBound:
-    """Least upper bound: series composition → 1 - (1-a)(1-b).
+    """Least upper bound under the detection-rate order: ``max(a, b)``.
 
-    Series composition gives combined miss-rate (1-a)(1-b), so detection rate
-    is 1-(1-a)(1-b) = a + b - ab ≥ max(a,b).
+    Probabilistic-OR composition is a separate operation, not the join for
+    this order: it is not idempotent and can exceed the least upper bound.
     """
-    combined = a.rate + b.rate - a.rate * b.rate
-    return DetectionBound(min(combined, 1.0), name=f"({a.name} ∨ {b.name})")
+    return DetectionBound(max(a.rate, b.rate), name=f"({a.name} ∨ {b.name})")
 
 
 @dataclass
@@ -117,23 +116,29 @@ class DefenseLattice:
         return True
 
     def verify_join_existence(self) -> bool:
-        """For all pairs a,b their join exists and is ≥ both."""
+        """For all pairs a,b their join is the least upper bound."""
         for a in self.elements:
             for b in self.elements:
                 j = lattice_join(a, b)
                 if not (a <= j and b <= j):
                     return False
+                for upper in self.elements:
+                    if a <= upper and b <= upper and not j <= upper:
+                        return False
         return True
 
     def verify_all(self) -> Dict[str, bool]:
+        # Universal quantification over an empty element set is vacuous; an
+        # empty input is not evidence that a concrete lattice was checked.
+        nonempty = bool(self.elements)
         return {
-            "reflexivity": self.verify_reflexivity(),
-            "antisymmetry": self.verify_antisymmetry(),
-            "transitivity": self.verify_transitivity(),
-            "bottom_element": self.verify_bottom(),
-            "top_element": self.verify_top(),
-            "meet_existence": self.verify_meet_existence(),
-            "join_existence": self.verify_join_existence(),
+            "reflexivity": nonempty and self.verify_reflexivity(),
+            "antisymmetry": nonempty and self.verify_antisymmetry(),
+            "transitivity": nonempty and self.verify_transitivity(),
+            "bottom_element": nonempty and self.verify_bottom(),
+            "top_element": nonempty and self.verify_top(),
+            "meet_existence": nonempty and self.verify_meet_existence(),
+            "join_existence": nonempty and self.verify_join_existence(),
         }
 
 

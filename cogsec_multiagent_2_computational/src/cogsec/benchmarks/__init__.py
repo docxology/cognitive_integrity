@@ -1,14 +1,14 @@
 """Colony-scale benchmarks, in the form S03 documents them.
 
-The supplement's runner reads::
+The canonical form of the supplement's runner is::
 
-    from cogsec.benchmarks import ColonyBenchmark
+    from src.cogsec.benchmarks import ColonyBenchmark
 
     benchmark = ColonyBenchmark("recruitment_poisoning", config)
     results = benchmark.run()
     ccs = benchmark.compute_ccs(weights=[0.3, 0.2, 0.3, 0.2])
 
-The internal :class:`colony.benchmark.ColonyBenchmark` takes a list of scenario
+The internal :class:`src.colony.benchmark.ColonyBenchmark` takes a list of scenario
 objects and runs all of them; it has no single-scenario constructor, no
 ``run()`` and no ``compute_ccs()``. Rather than rewrite the supplement to the
 internal shape, this wraps the internals in the documented shape, because a
@@ -20,19 +20,19 @@ from __future__ import annotations
 
 from typing import Any, Dict, Mapping, Optional, Sequence
 
-from colony.benchmark import ColonyConfig, ColonyResult
-from colony.scorecard import CCSWeights, compute_ccs
+from src.colony.benchmark import ColonyConfig, ColonyResult
+from src.colony.scorecard import CCSWeights, compute_ccs
 
 __all__ = ["ColonyBenchmark", "SCENARIOS"]
 
 
 def _scenario_registry() -> Dict[str, Any]:
     """The five built-in scenarios, by the names the manuscript uses."""
-    from colony.belief_cascade import BeliefCascadeScenario
-    from colony.emergent_misalignment import EmergentMisalignmentScenario
-    from colony.quorum_manipulation import QuorumManipulationScenario
-    from colony.recruitment_poisoning import RecruitmentPoisoningScenario
-    from colony.sybil_infiltration import SybilInfiltrationScenario
+    from src.colony.belief_cascade import BeliefCascadeScenario
+    from src.colony.emergent_misalignment import EmergentMisalignmentScenario
+    from src.colony.quorum_manipulation import QuorumManipulationScenario
+    from src.colony.recruitment_poisoning import RecruitmentPoisoningScenario
+    from src.colony.sybil_infiltration import SybilInfiltrationScenario
 
     return {
         "recruitment_poisoning": RecruitmentPoisoningScenario,
@@ -124,7 +124,7 @@ class ColonyBenchmark:
                 if omega is not None
                 else float(config.get("adversary_fraction", ColonyConfig.adversary_fraction))
             )
-            n_adversaries = max(1, round(n_agents * fraction))
+            n_adversaries = max(0, round(n_agents * fraction))
 
         return ColonyConfig(
             n_agents=n_agents,
@@ -194,11 +194,13 @@ class ColonyBenchmark:
                     f"[detection, false_positive, resilience, recovery], got {len(values)}"
                 )
             resolved = CCSWeights(*values)
+        if target.config is None:
+            raise ValueError("result must include the ColonyConfig used to produce it")
         return compute_ccs(
             detection_rate=target.detection_rate,
             false_positive_rate=target.false_positive_rate,
             resilience=target.resilience_score,
             recovery_steps=target.recovery_steps,
-            max_steps=self.config.n_steps,
+            max_steps=target.config.n_steps,
             weights=resolved,
         )

@@ -46,12 +46,9 @@ Let $f_1, \ldots, f_m$ be independent detection morphisms with miss probabilitie
 
 The proof is immediate: the composite fails to detect only if every $f_i$ individually misses, which by independence has probability $\prod_i (1 - r_i)$. The multiplicative miss-rate law of Part 1 is therefore the category-theoretic composition of detection morphisms.
 
-\begin{theorem}[Categorical Product, CT.2]
-Parallel composition of defense modules is the categorical product in $\calD$. Given $f_1 : \cogstate{} \to \mathrm{DefenseResult}_1$ and $f_2 : \cogstate{} \to \mathrm{DefenseResult}_2$, the product morphism $f_1 \times f_2 : \cogstate{} \to \mathrm{DefenseResult}_1 \times \mathrm{DefenseResult}_2$ satisfies the universal property of products, and its detection decision is given by max-score fusion: $\mathrm{detected}(f_1 \times f_2) = \max(s_1, s_2) > \tau$.
-\end{theorem}
-\label{thm:categorical-product}
-
-This recovers the parallel composition rule from Part 1's Parallel Detection Rate theorem: parallel defenses aggregate via max-score, and the categorical framing makes explicit that this is the unique universal construction commuting with both projections. The empirical composition helper \texttt{compute\_parallel\_detection\_rate()} implements exactly this max-fusion.
+\begin{remark}[Parallel Composition and Product Structure, CT.2]
+Parallel defense composition can be described using a product state space and max-score fusion. The present \texttt{categorical\_product()} helper returns a winning \texttt{DefenseResult}; it does not expose projection morphisms or establish the universal property required for a categorical product. Accordingly CT.2 is a design interpretation, not a proved theorem, and no uniqueness of the construction is asserted. The helper \texttt{compute\_parallel\_detection\_rate()} implements the max-fusion rule separately.
+\end{remark}
 
 \begin{remark}[Practical Value]\label{rem:category-practical}
 Recognizing $\calD$ as a category is not a purely aesthetic observation. It enables type-checked composition (the \texttt{compose\_morphisms()} helper refuses to compose incompatible morphisms), empirical verification of composition laws against the codebase (via \texttt{verify\_category\_laws()}), and a unified framework for reasoning about both series and parallel compositions as instances of categorical operations.
@@ -68,51 +65,38 @@ Active inference proceeds by minimizing $F$ along two axes: perception updates $
 
 The CIF defense modules admit a natural FEP interpretation. Agent beliefs $\belief{i}{\cdot}$ from Part 1 correspond to the approximate posterior $Q_i$; the generative model prior $P_i$ encodes the agent's baseline world model; and incoming messages from peers constitute observations. An attack, in these terms, is any adversarial intervention that inflates $F[Q_i]$---either by driving $Q_i$ away from $P_i$ (the KL term) or by making $Q_i$ assign low probability to veridical observations (the likelihood term).
 
-\begin{theorem}[Attack-FEP Equivalence, FEP.1]
-A cognitive attack $\adversary{}$ on agent $i$ is effective in the CIF sense (inducing a belief state flagged by the sandbox corroboration criterion of Part 1's Sandbox Promotion Soundness theorem) if and only if the induced free energy change
-\begin{equation}
-\Delta F(\adversary{}) = F[Q_i^{\text{attacked}}] - F[Q_i^{\text{baseline}}] > \kappa_{\mathrm{FEP}}
-\end{equation}
-\label{eq:attack-free-energy-change}
-exceeds a threshold $\kappa_{\mathrm{FEP}}$ determined by the sandbox corroboration parameter $\kappa$.
-\end{theorem}
-
-\begin{proof}[Proof sketch]
-The sandbox promotes a provisional belief to verified status iff corroboration count $\geq \kappa$ and the belief is consistent with provenance and the ambient belief set. Both conditions can be recast as bounds on the KL divergence between the provisional belief and the (multiply-corroborated) reference distribution; equivalently, on the free energy of the attacked posterior under the reference generative model. The explicit mapping $\kappa_{\mathrm{FEP}} = \kappa \cdot \log(1 + \epsilon_{\text{precision}}^{-1})$ is derived in \texttt{src/formal/free\_energy.py::free\_energy\_of\_attack()}.
-\end{proof}
-\label{thm:attack-fep}
+\begin{remark}[Attack-FEP Interpretation, FEP.1]\label{thm:attack-fep}
+The helper \texttt{free\_energy\_of\_attack()} computes
+\[
+\Delta F(\adversary{}) = F[Q_i^{\text{attacked}}] - F[Q_i^{\text{baseline}}]
+\]
+under an explicitly supplied generative model and observation. It flags a candidate when $\Delta F>0.1$; a separate sandbox helper blocks an update when $\Delta F>\kappa\cdot\text{prior.precision}$. These are chosen diagnostic thresholds, not an ``if and only if'' equivalence between attacks and the corroboration count $\kappa$. No derivation of $\kappa_{\mathrm{FEP}}=\kappa\log(1+\epsilon_{\text{precision}}^{-1})$ exists, and Part 1's sandbox semantics do not imply it.
+\end{remark}
 
 A second FEP connection concerns trust. In Part 1 (the Trust Function definition) the composite trust score is $T(i \to j) = \alpha \cdot T_{\text{base}} + \beta \cdot T_{\text{rep}} + \gamma \cdot T_{\text{ctx}}$. Within active inference, the analogous quantity is the \emph{precision} weight $\rho_{ij}$ assigned to messages from agent $j$ when updating $Q_i$: messages from high-precision sources dominate the posterior update, while low-precision sources are effectively ignored.
 
-\begin{theorem}[Trust-Precision Duality, FEP.2]\label{thm:trust-precision}
-The CIF composite trust $T(i \to j)$ is an affine function of the FEP precision weight $\rho_{ij}$: $T(i \to j) = a \rho_{ij} + b$ for architecture-specific constants $a, b$ determined by the trust calculus parameters. High-trust agents correspond to high-precision message channels, and the trust decay bound $T_{\text{delegated}} \leq \delta^d \cdot T_{\text{direct}}$ corresponds to precision decay under delegation.
-\end{theorem}
-\label{thm:trust-precision-duality}
-
-This duality has a concrete algorithmic consequence: CIF's drift detector monitors $\KL[\belieft{i}{t}{\cdot} \,\|\, \belieft{i}{t-w}{\cdot}] > \theta_{\text{drift}}$ (Part 1's Drift Detection definition); under the trust-precision mapping, this is exactly an FEP-grounded free-energy spike detector. The empirically calibrated threshold $\theta_{\text{drift}} = 0.3$ therefore admits a principled interpretation as the free-energy budget beyond which belief updates must be attributable to multiple high-precision (high-trust) sources rather than a single adversarial channel.
+\begin{remark}[Trust-Precision Analogy, FEP.2]\label{thm:trust-precision}
+The composite trust score $T(i \to j) = \alpha T_{\text{base}} + \beta T_{\text{rep}} + \gamma T_{\text{ctx}}$ invites an analogy with precision weighting. The supplied \texttt{connect\_to\_trust\_calculus()} helper returns the component weights and their sum as candidate precision values; it does not derive an affine map from measured trust to a generative model's precision, nor prove precision decay from the trust decay bound. Drift monitoring and free-energy change monitoring are therefore related diagnostics, not formally identical detectors, and $\theta_{\text{drift}}=0.3$ does not imply a multiple-corroborator requirement.
+\end{remark}
 
 \begin{lstlisting}[language=Python]
-from src.formal.free_energy import (
-    BeliefState,
-    GenerativeModel,
-    variational_free_energy,
-    free_energy_of_attack,
-    connect_to_trust_calculus,
+import numpy as np
+from src.formal.free_energy import BeliefState, GenerativeModel, free_energy_of_attack
+
+labels = ["safe", "unsafe"]
+baseline = BeliefState(probs=np.array([0.9, 0.1]), labels=labels)
+attacked = BeliefState(probs=np.array([0.3, 0.7]), labels=labels)
+model = GenerativeModel(
+    prior=np.array([0.95, 0.05]),
+    likelihood=np.eye(2),
 )
-
-baseline = BeliefState(probs={"safe": 0.9, "unsafe": 0.1})
-attacked = BeliefState(probs={"safe": 0.3, "unsafe": 0.7})
-model = GenerativeModel(prior={"safe": 0.95, "unsafe": 0.05})
-
-delta_F = free_energy_of_attack(baseline, attacked, model)
-# delta_F > kappa_FEP implies the sandbox should quarantine the update.
-
-precision = connect_to_trust_calculus(trust_score=0.72)
-# precision is the FEP-equivalent weight used in Q updates.
+result = free_energy_of_attack(baseline, attacked, model, observation_idx=0)
+# result["free_energy_increase"] is the model-specific change in F.
+# result["is_attack"] applies the helper's chosen 0.1 diagnostic threshold.
 \end{lstlisting}
 
 \begin{remark}[Connection to Active Inference Research]\label{rem:ai-institute}
-The trust-precision duality situates CIF within the active inference literature \cite{friston2010free,dacosta2020active}, offering a bridge between cognitive security and computational neuroscience: message-channel precision in predictive coding corresponds structurally to composite trust in CIF, and drift detection becomes a free-energy change monitor. This bridge identifies belief manipulation attacks with precision-inflation attacks on hierarchical generative models, a class previously studied in active inference but not in security contexts.
+The trust-precision analogy offers a possible bridge between cognitive security and active inference \cite{friston2010free,dacosta2020active}: message-channel precision in predictive coding can be compared with composite trust, and free-energy changes can serve as drift diagnostics. The present helper does not establish a formal duality or identify belief manipulation with precision-inflation attacks.
 \end{remark}
 
 ## Game-Theoretic Analysis {#sec:game-theory}
@@ -148,7 +132,7 @@ By the minimax theorem, the game value is
 v^* = \max_{d \in D} \min_{a \in \Omega} M[a, d] = \min_{a \in \Omega} \max_{d \in D} M[a, d] \approx 0.61,
 \end{equation}
 \label{eq:minimax-game-value}
-achieved at the pure strategy pair $(a^*, d^*) = (\text{Coordination}, \text{Full CIF})$. In particular, Full CIF weakly dominates every alternative defense configuration column-wise in \cref{tab:payoff-matrix}, so the minimax-optimal defense is the pure strategy ``Full CIF''---no mixed strategy improves on it at current adapter maturity. The attacker's Nash best-response is likewise pure: emergent misalignment minimizes detection across all defense configurations.
+achieved at the pure strategy pair $(a^*, d^*) = (\text{Coordination}, \text{Full CIF})$. In particular, Full CIF weakly dominates every alternative defense configuration column-wise in \cref{tab:payoff-matrix}, so the minimax-optimal defense is the pure strategy ``Full CIF''---no mixed strategy improves on it within this matrix. The attacker's Nash best-response is likewise pure: coordination minimizes detection against Full CIF.
 
 \begin{theorem}[CIF Nash Equilibrium, GT.1]
 The CIF defense game $\calG$ admits a unique pure-strategy Nash equilibrium $(d^* = \text{Full CIF}, a^* = \text{Coordination})$ with game value $v^* \approx 0.61$. Full CIF strictly dominates every proper subset configuration; no mixed strategy yields a higher defender payoff.
@@ -165,4 +149,4 @@ The zero-sum solver \texttt{solve\_zero\_sum\_game()} in \texttt{src/analysis/ga
 \item Without any maintenance, the detection rate asymptotes toward zero over $\sim 30$ cycles. This has no counterpart in Part 1: its trust calculus and detection bounds are stated against a fixed adversary, and it proves nothing about an adapting one. The adaptive case is simulated here precisely because the formal treatment leaves it open.
 \end{itemize}
 
-\paragraph{Practical implication.} Full CIF is the dominant pure strategy at current maturity, so deployment planning does not require stochastic mixing of defense configurations. However, \cref{thm:cif-nash} holds only in the static game; the arms-race simulation demonstrates that active maintenance---adversarial retraining, honeypot-informed signature updates, periodic corpus refresh---is required to sustain equilibrium performance. Cognitive security is not a one-shot deployment but a maintenance regime whose cadence must match the attacker adaptation rate.
+\paragraph{Practical implication.} Within the static, mixed-provenance payoff matrix, Full CIF is the dominant pure strategy. The arms-race result is a simulation of one update rule, not a measured field-degradation rate or a validated retraining schedule. It motivates prospective evaluation of adaptive maintenance---including retraining, signature updates, and corpus refresh---but does not establish that any particular cadence will preserve detection in deployment.

@@ -8,9 +8,9 @@ The parameter sensitivity analysis---characterizing how CIF performance varies w
 
 ## Summary of Optimal Configuration
 
-The parametric analysis identifies the following parameter configuration as F1-maximizing (\cref{tab:default-config}). These values are used as defaults in the real pipeline evaluation:
+The parametric analysis identifies the following parameter configuration as F1-maximizing within that design model (\cref{tab:default-config}). These are parametric optima, not a statement of the operational defaults used by the real pipeline:
 
-Table: Default parameter configuration (from parametric optimization). {#tab:default-config}
+Table: Parametric F1-maximizing configuration (design-model optima, not operational defaults). {#tab:default-config}
 
 | Parameter | Value | Rationale |
 | --- | --- | --- |
@@ -20,4 +20,4 @@ Table: Default parameter configuration (from parametric optimization). {#tab:def
 | $\kappa$ | 2 | Best bypass-reduction-to-latency ratio |
 | $w$ (window) | 100 | Drift detection within $\sim$8.5s |
 
-These defaults were used for all empirical evaluations reported in Sections \ref{sec:extended-results} and \ref{sec:extended-ablation}. Future work should conduct sensitivity analysis using the real pipeline to validate whether parametric optima transfer to empirical performance.
+The empirical evaluations reported in Sections \ref{sec:extended-results} and \ref{sec:extended-ablation} used the operational `FirewallConfig` reject default $\tau_1=0.8$, not the parametric design optimum $\tau_1=0.7$; the operational quarantine default is $\tau_2=0.5$. Future work should conduct sensitivity analysis using the real pipeline to test whether the parametric optima transfer under a separately defined empirical evaluation.

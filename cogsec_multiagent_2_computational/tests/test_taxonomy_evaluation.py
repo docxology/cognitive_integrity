@@ -19,6 +19,7 @@ import pytest
 REPO = Path(__file__).resolve().parents[1]
 SCRIPT = REPO / "scripts" / "run_taxonomy_evaluation.py"
 ARTIFACT = REPO / "output" / "data" / "taxonomy_evaluation_results.json"
+CAPABILITY_ARTIFACT = REPO / "output" / "data" / "module_capability_matrix.json"
 
 
 def _module():
@@ -99,41 +100,19 @@ def test_an_unmapped_category_is_a_failure_not_a_silent_drop(monkeypatch) -> Non
         module.build(42, "axes")
 
 
-def test_no_component_is_invisible_to_the_corpus(payload) -> None:
-    """Every component must carry a measurable share of the lattice.
+def test_solo_detection_matches_the_capability_matrix(payload) -> None:
+    """Independent solo-measurement artifacts must agree, including silent modules.
 
-    This assertion used to read the other way. Three adapters -- consensus,
-    provenance and sandbox -- had a Shapley value of exactly zero in every one
-    of the 256 coalitions, and the test asserted that the zeros were present
-    and pinned them as a corpus-coverage gap rather than a verdict on the
-    mechanisms.
-
-    Both halves of that reading have since been tested and only one survived.
-    The corpus was extended by 525 payloads across ``provenance_laundering``,
-    ``sandbox_escape`` and ``byzantine_manipulation``, written for exactly
-    those three adapters, and all three Shapley values stayed at zero.
-    Measuring each module alone (``scripts/run_module_capability_matrix.py``)
-    showed why: provenance and sandbox detected 20.0% and 28.6% of their own
-    families and were masked by an invariants module that caught the same
-    payloads and more, while consensus detected nothing anywhere because its
-    entire heuristic was a substring test for two English words.
-
-    With the corpus that reaches all eight and a consensus module rewritten
-    around named consensus invariants, no component is invisible. A zero
-    returning here means either a module has stopped working or the corpus has
-    stopped reaching it, and the capability matrix is what distinguishes the
-    two.
+    A zero Shapley value with positive solo detection is masking. A zero solo
+    rate is a capability limitation, not something a test may prohibit or hide.
     """
-    zeros = [c for c, v in payload["shapley_overall_tpr"].items() if v == 0.0]
-    assert not zeros, (
-        f"{zeros} contribute exactly nothing across all 256 coalitions; run "
-        f"scripts/run_module_capability_matrix.py to tell a masked module "
-        f"from a dead one"
-    )
+    capability = json.loads(CAPABILITY_ARTIFACT.read_text(encoding="utf-8"))
+    capability_names = {"trust_calculus": "trust"}
     for component in payload["components"]:
-        assert payload["cells"][component]["per_family"]["overall"] > 0.0, (
-            f"{component} alone detects nothing in the corpus"
-        )
+        name = capability_names.get(component, component)
+        assert payload["cells"][component]["per_family"]["overall"] == pytest.approx(
+            capability["detection_rate"][name]["_overall"]
+        ), f"{component} disagrees with its independent solo measurement"
 
 
 def test_the_benign_ceiling_reaches_the_top_of_the_scale(payload) -> None:

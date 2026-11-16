@@ -115,6 +115,13 @@ class BeliefState:
             return True
         return False
 
+    def remove_provisional(self, belief_id: str) -> bool:
+        """Remove only a provisional belief, preserving a same-ID verified belief."""
+        if belief_id not in self._provisional:
+            return False
+        del self._provisional[belief_id]
+        return True
+
     def promote(self, belief_id: str) -> bool:
         """
         Promote a belief from provisional to verified.
@@ -217,6 +224,7 @@ class SandboxManager:
         self.state = BeliefState()
         self._ttl_registry: Dict[str, datetime] = {}  # belief_id -> expiry time
         self._corroborators: Dict[str, Set[str]] = {}  # belief_id -> agent IDs
+        self._last_cleanup = datetime.now()
 
     def add_provisional(
         self, belief: Belief, ttl_seconds: Optional[float] = None
@@ -228,6 +236,11 @@ class SandboxManager:
             belief: The belief to add
             ttl_seconds: Custom TTL (uses config default if None)
         """
+        if (
+            datetime.now() - self._last_cleanup
+        ).total_seconds() >= self.config.auto_cleanup_interval:
+            self.cleanup_expired()
+
         # Enforce the provisional-store cap (P2-36): without this the store is
         # unbounded (a soft resource-exhaustion surface).  Caller-side
         # management (promote() / cleanup_expired()) remains available.
@@ -253,13 +266,16 @@ class SandboxManager:
             List of expired belief IDs that were removed
         """
         now = datetime.now()
+        self._last_cleanup = now
         expired = []
 
         for belief_id, expiry in list(self._ttl_registry.items()):
             if now >= expiry:
-                if self.state.get_partition(belief_id) == BeliefPartition.PROVISIONAL:
-                    self.state.remove(belief_id)
+                # A verified belief with the same ID must neither shield a
+                # provisional entry from expiry nor be removed with it.
+                if self.state.remove_provisional(belief_id):
                     expired.append(belief_id)
+                self._corroborators.pop(belief_id, None)
                 del self._ttl_registry[belief_id]
 
         return expired
@@ -287,6 +303,9 @@ class SandboxManager:
         Returns:
             List of belief IDs that were promoted
         """
+        # Expiry is a precondition for promotion, not merely a maintenance
+        # task that a qualifying belief may bypass.
+        self.cleanup_expired()
         promoted = []
 
         for belief_id, belief in list(self.state.provisional.items()):
@@ -328,8 +347,13 @@ class SandboxManager:
         belief = self.state.get_belief(belief_id)
         if belief is None:
             return False
+        if (
+            belief.source_agent is not None
+            and corroborating_agent == belief.source_agent
+        ):
+            return False
 
-        # Track unique corroborators
+        # Track unique corroborators, excluding the belief's originator.
         if belief_id not in self._corroborators:
             self._corroborators[belief_id] = set()
 

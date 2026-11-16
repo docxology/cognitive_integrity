@@ -17,19 +17,22 @@ from pathlib import Path
 from typing import Callable, Optional, Sequence
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "src"))
+sys.path.insert(0, str(ROOT))
 
 
 def default_tables() -> list[tuple[str, Callable[[], str]]]:
     """Return the ``(filename, generator)`` pairs for every manuscript table."""
-    from visualization.tables.ablation_tables import generate_ablation_table, generate_synergy_table
-    from visualization.tables.assumption_tables import generate_assumption_table
-    from visualization.tables.corpus_tables import generate_corpus_table
-    from visualization.tables.cross_validation_tables import generate_cross_validation_table
-    from visualization.tables.detection_tables import generate_detection_table
-    from visualization.tables.scalability_tables import generate_scalability_table
-    from visualization.tables.stability_tables import generate_stability_table
-    from visualization.tables.statistical_tables import (
+    from src.visualization.tables.ablation_tables import (
+        generate_ablation_table,
+        generate_synergy_table,
+    )
+    from src.visualization.tables.assumption_tables import generate_assumption_table
+    from src.visualization.tables.corpus_tables import generate_corpus_table
+    from src.visualization.tables.cross_validation_tables import generate_cross_validation_table
+    from src.visualization.tables.detection_tables import generate_detection_table
+    from src.visualization.tables.scalability_tables import generate_scalability_table
+    from src.visualization.tables.stability_tables import generate_stability_table
+    from src.visualization.tables.statistical_tables import (
         generate_effect_size_table,
         generate_hypothesis_table,
     )

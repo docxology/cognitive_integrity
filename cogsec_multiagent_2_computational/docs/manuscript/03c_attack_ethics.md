@@ -34,7 +34,9 @@ The honest limitation is the one this design cannot escape: the attacks are temp
 
 Per-category and per-module effectiveness is reported where it is measured rather than restated here. The module capability matrix (`output/data/module_capability_matrix.json`) records, for each of the eight defense modules, its detection rate on each of the fifteen categories and on the corpus as a whole; the ablation study (\cref{sec:ablation-summary}) records what each module contributes to a pipeline that already contains the others. The two are different questions, and the matrix exists because they had been conflated.
 
-The summary finding is that capability is concentrated. Measured alone on the full corpus, the invariants checker detects 83.3\% and no other module exceeds 10\%; measured as ranked scorers, the drift score and the firewall pattern matcher fall below chance, with AUCs of 0.374 and 0.383 whose intervals exclude 0.5. Any claim that the layered architecture distributes work evenly across modules is not supported by this corpus, and the paper does not make it.
+The summary finding is that capability is concentrated. Measured alone on the full corpus, the invariants checker detects 83.3\% and no other module exceeds 10\%; measured as ranked scorers, the drift score and the firewall pattern matcher fall below chance, with AUCs of 0.373 and 0.384 whose intervals exclude 0.5. Any claim that the layered architecture distributes work evenly across modules is not supported by this corpus, and the paper does not make it.
+
+The trust adapter fires on no corpus item at the shipped 0.5 threshold. Its zero Shapley value is therefore not masking by Invariants, and the formal delegation bound must not be read as a measured corpus detection result.
 
 ## Ethical Considerations {#sec:ethical-considerations}
 

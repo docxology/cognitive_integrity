@@ -37,9 +37,9 @@ from pathlib import Path
 from typing import Mapping
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "src"))
+sys.path.insert(0, str(ROOT))
 
-from formal.spec_verifier import (  # noqa: E402
+from src.formal.spec_verifier import (  # noqa: E402
     VerificationResult,
     VerificationStatus,
     generate_and_verify_all,

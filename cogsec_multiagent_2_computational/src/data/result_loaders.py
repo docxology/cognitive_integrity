@@ -86,8 +86,8 @@ def load_full_evaluation(
             detection_rate=r["detection_rate"],
             false_positive_rate=r["false_positive_rate"],
             # Timing is optional: reproducible result artifacts omit
-            # wall-clock latency, while older artifacts may still carry it.
-            avg_latency_ms=r.get("avg_latency_ms", 0.0),
+            # wall-clock latency.  Preserve that as missing, not a measured 0ms.
+            avg_latency_ms=float(r.get("avg_latency_ms", float("nan"))),
         )
         for r in raw
     ]
@@ -134,7 +134,7 @@ _ARCH_ORDER = [
 # falls through to alphabetical order while `detection_tables._CATEGORIES`
 # prints the top-level names, and the columns silently swap.
 _CAT_ORDER = [
-    "indirect_injection",
+    "direct_injection",
     "impersonation",
     "belief_drift",
     "sybil_attack",
@@ -184,14 +184,14 @@ def evaluation_to_detection_matrix(
     archs = _ordered(_ARCH_ORDER, {r.architecture for r in rows})
     cats = _ordered(_CAT_ORDER, {r.attack_category for r in rows})
 
-    matrix = np.zeros((len(archs), len(cats)))
+    matrix = np.full((len(archs), len(cats)), np.nan, dtype=float)
     for i, arch in enumerate(archs):
         for j, cat in enumerate(cats):
             entry = lookup.get((arch, cat))
             if entry is None:
                 logger.warning(
-                    "No result row for (%s, %s); leaving 0.0 detection. "
-                    "A missing combo presented as 0%% can mask a data gap (P2-F7).",
+                    "No result row for (%s, %s); leaving NaN detection so "
+                    "the data gap is not presented as a measured zero.",
                     arch,
                     cat,
                 )

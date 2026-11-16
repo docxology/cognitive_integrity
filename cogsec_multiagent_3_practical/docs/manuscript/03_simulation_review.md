@@ -20,11 +20,13 @@ The test corpus included direct prompt injection, poisoned RAG contexts, deep tr
 ## Finding 1: Defense Layering vs. Individual Efficacy
 
 **The Data**: In the parametric evaluation the full CIF stack achieved a **96--100% parametric detection ceiling**, with direct injection detected at 99--100% across architectures. The separate real-pipeline evaluation had a lower multi-seed mean of 86.3%.
-**The Implication**: The parametric model rewards layering, but the real pipeline does not spread the work evenly across layers, and the 100-attack ablation corpus says so plainly. The Invariants module alone detects 83.3% of that corpus against the full stack's 89.0%; no other module detects more than 10% on its own (the next best, Consensus, reaches 9.6%). Removing Invariants costs 65 percentage points of true-positive rate, removing the Tripwire costs two, and removing Consensus, Detection, Firewall, Provenance, Sandbox or Trust Calculus costs nothing this corpus can measure. That is a statement about *marginal* contribution, not about capability: a module whose detections are all also caught by Invariants scores zero here while detecting plenty on its own. Layering still buys coverage against attacks this corpus does not contain, but the older claim that removing any single layer opens a measurable gap is not what the ablation shows.
+**The Implication**: The parametric model rewards layering, but the real pipeline does not spread the work evenly across layers, and the 100-attack ablation corpus says so plainly. The Invariants module alone detects 85% of that corpus against the full stack's 89.0%, a four-percentage-point margin over the best singleton; no other module detects more than 10% on its own (the next best, Consensus, reaches 6%). Removing Invariants costs 67 percentage points of true-positive rate, removing the Tripwire costs one, and removing Consensus, Detection, Firewall, Provenance, Sandbox or Trust Calculus costs nothing this corpus can measure. That is a statement about *marginal* contribution, not about capability: a module whose detections are all also caught by Invariants scores zero here while detecting plenty on its own. Layering may still buy coverage against attacks this corpus does not contain, but the older claim that removing any single layer opens a measurable gap is not what the ablation shows.
+
+On the separate 1,475-item capability corpus, the Invariants checker detects 83.3\% on its own. That solo capability result is not the 85\% ablation-only TPR and must not be substituted for it.
 
 ## Finding 2: State Machine Determinism
 
-**The Data**: **LangGraph** architectures achieved the highest detection rates (98%).
+**The Data**: In the historical parametric full evaluation (950 simulated attacks per architecture), **LangGraph detected 950/950 (100%)**, tied with Claude Code and CrewAI; AutoGPT detected 931/950 (98.0%). No architecture was uniquely best.
 **The Mechanism**: In a state machine, valid transitions are explicitly defined. Attempts to move from an `Analyze` state to an `Execute` state without passing through `Verify` were caught immediately.
 **The Implication**: Explicit state definitions provide a "security for free" effect, where the architecture itself enforces behavioral invariants that are difficult to bypass.
 
@@ -42,8 +44,8 @@ The test corpus included direct prompt injection, poisoned RAG contexts, deep tr
 
 ## Finding 5: The Stealth-Impact Tradeoff
 
-**The Data**: High-impact attacks were consistently easier to detect than low-impact nudges.
-**The Implication**: "Catastrophic" takeover attempts generate significant noise in the system state. The primary challenge for defenders is not the sudden takeover, but the slow, subtle drift of agent beliefs over long time horizons.
+**The Data**: Part 2's corpus has no impact label, so it provides no impact-stratified detection result. The stealth--impact tradeoff is a theoretical prediction, not an experimental finding of this evaluation.
+**The Implication**: Whether catastrophic takeover attempts generate more detectable noise than low-impact nudges remains untested here. Operators should not claim an empirical advantage against either class without a corpus that records impact and reports detection by impact stratum.
 
 ## Finding 6: Emergent Misalignment Is the Hardest Scenario to Detect
 
@@ -62,7 +64,7 @@ This is not a failure of CIF—it is a consequence of its success. When explicit
 
 ## Finding 7: The Implementation Gap Is a Feature, Not a Bug
 
-The 10--11 percentage-point gap between the parametric ceiling (96--100\%) and the real pipeline reflects **adapter implementation maturity**, not a failure of CIF's formal architecture. Its two ends are two different measurements and should not be read as one range around one deployment. The wide end is the distance from the parametric floor to the 30-seed pipeline mean of 86.3\%. The narrow end is the distance from the top of the parametric range to the 89.0\% the same pipeline reaches on the 100-attack ablation corpus, where almost all of the detection comes from the Invariants module and removing any other module except the Tripwire costs nothing the corpus can measure. Plan against the wide end. Part~2 introduces a 5-level CMMI-style adapter maturity scale:
+The arithmetic gaps between the parametric ceiling (96--100\%) and the real pipeline compare unlike measurements; they do not identify adapter maturity or any other cause. The **narrow** gap is $96.0-86.3=9.7$ percentage points, from the parametric floor to the architecture-agnostic 30-seed pipeline mean (100 stratified attacks plus 120 benign messages per seed, no adapter). The **wide** gap is $100.0-89.0=11.0$ percentage points, from the parametric top to the full pipeline's rate on the separate 100-attack ablation corpus, where almost all detection comes from the Invariants module and removing any other module except the Tripwire costs nothing the corpus can measure. These are not endpoints of one deployment estimate. Use the 30-seed result for conservative planning and retain each corpus's mode and denominator. Part~2 introduces a 5-level CMMI-style adapter maturity scale:
 
 | Level | Name | Marginal TPR | Description |
 | :--- | :--- | :--- | :--- |
@@ -76,9 +78,9 @@ The rubric column is each adapter's *marginal* contribution to true-positive rat
 not a whole-pipeline detection rate: a Level-5 adapter is one that adds 30 or more
 percentage points when introduced, not one that reaches 30\% detection on its own.
 
-The current Claude Code adapter is at Level 3 (Statistical), explaining the 86.3\% mean. Part 2's roadmap describes what advancing each adapter toward Level 5 would require, without quoting a projected point gain for any of them. The parametric ceiling (96--100\%) represents what Level-5 adapters achieve—it is a design target, not an overclaim.
+The 86.3\% multi-seed mean comes from one architecture-agnostic pipeline with no adapter, so it neither measures a Claude Code adapter nor establishes a maturity level. Part 2's roadmap describes what advancing each adapter toward Level 5 would require, without quoting a projected point gain for any of them. The parametric ceiling (96--100\%) is a design target from simulation, not a measured result for a deployed adapter.
 
-**Operator implication**: When deploying CIF, assess the maturity level of each adapter against your threat model. Level-3 adapters (current) provide meaningful protection against unsophisticated $\Omega_1$--$\Omega_2$ attacks; Level-4--5 adapters (planned) are required for $\Omega_4$--$\Omega_5$ protection. The gap is closeable—it is an engineering challenge, not a theoretical limitation.
+**Operator implication**: If a deployment introduces architecture-specific adapters, assess each adapter against its own threat model and corpus rather than assigning a level from the architecture-agnostic multi-seed result. Whether adapter work closes the parametric-to-pipeline gap requires future measurement; the current artifacts do not establish that outcome.
 
 ---
 
@@ -94,7 +96,7 @@ We proved the *architecture* works. The implementation fidelity is the variable 
 > **A Note on Three Numbers**: Throughout this guide you will encounter three detection rates that may seem contradictory. They are not — they measure different things:
 >
 > - **96--100\%** (parametric simulation, $N=3{,}800$): CIF's **design-level detection ceiling** — what the defense architecture achieves when adapters are fully mature (Level 5) and conditions match the calibrated model. This is the target, not the current reality.
-> - **86.3\%** [95\% CI: 85.5\%, 87.1\%] (multi-seed pipeline, 30 seeds): The **current empirical baseline** for the Claude Code architecture with Level-3 adapters. This is what you get today, out of the box, before adapter tuning.
+> - **86.3\%** [95\% CI: 85.5\%, 87.1\%] (architecture-agnostic multi-seed pipeline, 30 seeds of 100 stratified attacks plus 120 benign messages, no adapter): The **current empirical baseline** for this pipeline, with measured FPR 18.5\% over the benign arms. It is not an architecture-specific or adapter-tuning estimate.
 > - **89.0\%** (100-attack ablation corpus, all categories including hardest): full-pipeline true-positive rate on a corpus built to include difficult attacks, almost all of it contributed by the Invariants module, which scores demand structure rather than topic nouns. Read it as an upper bound rather than a floor: the corpus is template-generated, a detector keyed on demand structure is being asked to recognise generated demands, and the 0\% false-positive rate reported beside it comes from the fifty easy benign strings hard-coded in Part 2's ablation runner, not from the adversarially hard `BenignCorpus` behind the multi-seed figure above.
 >
 > All three numbers are correct, and they are not interchangeable. Use 86.3\% for realistic planning, since it is measured on the adversarially hard benign corpus and carries its 18.5\% false-positive rate with it; read 89.0\% as an upper bound, because its corpus is template-generated and the 0\% false-positive rate beside it comes from fifty easy benign strings; and treat 96\% as the floor of the achievable ceiling with mature adapters rather than as anything measured today.

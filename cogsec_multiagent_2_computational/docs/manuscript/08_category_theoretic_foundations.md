@@ -3,13 +3,14 @@
 # Category-Theoretic Foundations of Defense Composition {#sec:category-theoretic-foundations}
 
 > **Reading guide.**
-> This section formalises the compositional structure of CIF defenses using
-> category theory, providing the mathematical backbone for the composability
-> algebra introduced in §\ref{sec:composability-algebra}. The constructions
-> here are implemented in `src/formal/category_theory_advanced.py` and verified
-> against empirical detection data throughout
-> §\ref{sec:results}–§\ref{sec:discussion}. For visualisations of these
-> structures, see Supplement S12 (\cref{sec:composable-visualization}).
+> This section explores category-theoretic descriptions of CIF defenses.
+> Some helpers and structural checks exist under `src/formal/`; they do not
+> establish every claimed universal property, and the empirical artifacts do
+> not verify these categorical laws as stated. In particular, the symmetric
+> monoidal, enriched-category, pipeline-monad, Kan and optic claims below are
+> scoped to the structures actually implemented rather than presented as
+> completed proofs. For visualisations, see Supplement S12
+> (\cref{sec:composable-visualization}).
 
 ## Defense Lattice {#sec:defense-lattice}
 
@@ -22,16 +23,12 @@ $$\bot = \mathrm{DR}^{-1}(0),\qquad \top = \mathrm{DR}^{-1}(1),$$
 \label{eq:lattice-bounds}
 $$f \wedge g = \mathrm{DR}^{-1}\!\bigl(\min(\mathrm{DR}(f),\mathrm{DR}(g))\bigr),$$
 \label{eq:lattice-meet}
-$$f \vee g = \mathrm{DR}^{-1}\!\bigl(1 - (1-\mathrm{DR}(f))(1-\mathrm{DR}(g))\bigr).$$
+$$f \vee g = \mathrm{DR}^{-1}\!\bigl(\max(\mathrm{DR}(f),\mathrm{DR}(g))\bigr).$$
 \label{eq:lattice-join}
-The join formula $f \vee g$ is precisely the **series composition** detection
-rate from Part 1's Series Detection Rate theorem \cite{friedman2026cogsec1}: independent
-miss-events multiply, so the combined detection equals $\mathrm{DR}(f) + \mathrm{DR}(g) - \mathrm{DR}(f)\cdot\mathrm{DR}(g)$.
+The independent series composition formula $\mathrm{DR}(f)+\mathrm{DR}(g)-\mathrm{DR}(f)\mathrm{DR}(g)$ is not this join: it can exceed $\max(\mathrm{DR}(f),\mathrm{DR}(g))$, so it is not the least upper bound. The poset construction above has meet and join by real-number minimum and maximum, with $\bot$ and $\top$ given by the rate extrema; it must not be conflated with series composition.
 
-**Axiom verification** (`DefenseLattice`, `src/formal/category_theory_advanced.py`):
-all seven standard lattice axioms (reflexivity, antisymmetry, transitivity,
-existence of meet, existence of join, bottom, top) are verified empirically
-over all 950-attack detection-rate measurements via `verify_all_axioms()`.
+**Axiom verification** (`DefenseLattice` and `src/formal/advanced/lattice.py`):
+the helper checks a finite set of representative rate examples, not all attack measurements. It is not a `verify_all_axioms()` API, and an empty example set is not a proof. Verification must be read as bounded property testing of the stated poset, not proof over the 950-attack corpus.
 
 ## Symmetric Monoidal Category {#sec:monoidal-category}
 
@@ -41,21 +38,7 @@ over all 950-attack detection-rate measurements via `verify_all_axioms()`.
   (firewall, sandbox, tripwire, trust calculus, Byzantine consensus, provenance);
 - *composition* is sequential pipeline application; identity is the pass-through.
 
-**Theorem 8.1 (Symmetric Monoidal Structure).** $(\mathbf{Def},\,\otimes,\, I)$
-is a symmetric monoidal category, where $\otimes$ is parallel composition,
-$I$ is the identity defense, and the following natural isomorphisms hold:
-
-- **Left unitor** $\lambda_f : I \otimes f \xrightarrow{\sim} f$,
-- **Right unitor** $\rho_f : f \otimes I \xrightarrow{\sim} f$,
-- **Associator** $\alpha_{f,g,h} : (f \otimes g) \otimes h \xrightarrow{\sim} f \otimes (g \otimes h)$,
-- **Symmetry** $\gamma_{f,g} : f \otimes g \xrightarrow{\sim} g \otimes f$,
-
-satisfying Pentagon and Hexagon coherence equations (verified in
-`verify_monoidal_laws()`, `src/formal/category_theory_advanced.py`).
-
-*Proof sketch.* The coherence maps are all detection-rate-preserving; the
-Pentagon and Hexagon equations reduce to commutativity of real-number
-arithmetic. $\blacksquare$
+**Remark 8.1 (Monoidal structure is conditional, not proved).** Parallel composition has unit, associator and symmetry candidates, but short-circuit sequential composition is not generally compatible with that tensor. The required interchange law fails: there are detection morphisms for which $(f;f')\otimes(g;g') \neq (f\otimes g);(f'\otimes g')$. Thus $\mathbf{Def}$ is not shown to be symmetric monoidal as claimed, and no `verify_monoidal_laws()` routine is cited. Detection-rate equality alone would also be insufficient to prove the required natural isomorphisms.
 
 ## Operad Defense Composition {#sec:operad}
 
@@ -69,20 +52,16 @@ returns one filtered output.
   parallel defense lanes whose outputs are max-score fused
   (§\ref{sec:composability-algebra}).
 
-Operadic associativity (`verify_operad_associativity()`) guarantees that
-re-bracketing a defense pipeline never changes detection semantics.
+The available associativity helper exercises selected examples of these tree constructions; it does not establish every operad law or a guarantee for arbitrary defense morphisms.
 
 ## Enriched Category Over $[0,1]$ {#sec:enriched-category}
 
-$\mathbf{Def}$ is enriched over the monoidal category $([0,1], \times, 1)$
-(unit interval with multiplication), assigning to each hom-set the
-**detection-distance**:
-
-$$\mathbf{Def}(f,g) = \bigl|\mathrm{DR}(f) - \mathrm{DR}(g)\bigr| \in [0,1].$$
-\label{eq:detection-distance}
-This enrichment makes $\mathbf{Def}$ a *Lawvere metric space* where distance
-measures how much two defenses differ in efficacy.  The Cauchy-completion of
-$\mathbf{Def}$ with respect to this metric yields the ideal defense $\top$.
+A Lawvere-metric enrichment would instead use $([0,1], \le, 1, \min)$ with
+$\mathrm{Hom}(f,f)=1$ in the chosen convention, not the multiplicative interval
+with $\mathrm{Hom}(f,f)=0$ as an additive triangle calculation. The current
+code checks a different additive-score construction and does not establish the
+stated enrichment or its Cauchy completion. Accordingly this section describes
+a metric-space analogy, not a proved enriched category or an ideal defense.
 
 ## Pipeline Monad {#sec:pipeline-monad}
 
@@ -95,12 +74,12 @@ $\mathbf{Set}$ of cognitive states:
 - $\mu_\sigma : T(T(\sigma)) \to T(\sigma)$ — join (flatten nested pipeline
   applications).
 
-**Monad laws** (verified in `PipelineMonad`, `src/formal/category_theory_advanced.py`):
-left unit $\mu \circ \eta T = \mathrm{id}$, right unit $\mu \circ T\eta = \mathrm{id}$,
-associativity $\mu \circ T\mu = \mu \circ \mu T$.
+**Monad laws are not established by the current helpers.** The available
+Kleisli composition and flattening operations are not shown to be one coherent
+monad: the verifiers do not call $\mu$ with the same semantics used by Kleisli
+composition. Consequently no `PipelineMonad` verification is claimed here.
 
-The Kleisli category of $\mathbb{T}$ is precisely the category of *guarded*
-CIF operations — morphisms that may conditionally block or sandbox their input.
+The guarded-operation interpretation remains useful descriptively, but it is not presented as the Kleisli category of a proved monad.
 
 ## Kan Extensions Between Architectures {#sec:kan-extensions}
 
@@ -111,10 +90,7 @@ via the **left Kan extension** $\mathrm{Lan}_F D$:
 
 $$\mathrm{Lan}_F D(\sigma_2) = \mathrm{colim}_{F(\sigma_1) \to \sigma_2} D(\sigma_1).$$
 \label{eq:kan-extension}
-Implemented as `left_kan_extension()` / `right_kan_extension()` in
-`src/formal/category_theory_advanced.py`, this provides a principled
-architecture-transfer mechanism that preserves detection-rate lower bounds
-(used in the cross-architecture gap analysis, §\ref{sec:architecture-gap-analysis}).
+The existing Kan helpers are exploratory: the left helper short-circuits when a source is missing, and the right helper uses a max-product rule rather than a demonstrated meet. No `left_kan_extension()` or `right_kan_extension()` function is cited as established here, and no preservation of detection-rate lower bounds or validated architecture transfer is asserted.
 
 ## Lens/Optic Profunctor for Attack-Defense {#sec:lens-optic}
 
@@ -128,24 +104,15 @@ A CIF defense module is the corresponding **profunctor optic** that mediates
 the lens: it intercepts the $\mathrm{set}$ action, applies detection and
 sandboxing, and returns a *residual* that either permits or blocks the write.
 
-The optic representation (`CognitiveAttackLens`, `AttackDefenseOptic` in
-`src/formal/category_theory_advanced.py`) enables compositional reasoning
-about **attack composition**: stacking two lenses corresponds to a coordinated
-two-stage attack, whose combined optic is exactly the composition of the
-corresponding defense optics — ensuring that the defense pipeline is
-*closed under composition* with respect to the attack model.
+The lens/optic helpers provide a descriptive representation, not a proof that defense pipelines are closed under attack composition. Current checks must not be read as establishing that closure or a profunctor universal property.
 
 ## Cross-Reference to Composable Visualization {#sec:cat-theory-viz-ref}
 
-All categorical structures in this section are rendered as interactive diagrams
-by the composable visualization engine documented in Supplement S12
-(\cref{sec:composable-visualization}):
-`CategoryDiagram` renders the $\mathbf{Def}$ morphism graph,
-`LatticeViz` renders the detection-rate lattice,
-`OperadPlot` renders composition trees,
-`MonadFlow` renders the Kleisli pipeline,
-and `LensDiagram` renders the attack-defense optic.
-The visualization data is generated by `scripts/generate_composer_data.py`
-into `output/data/composer_data.json`, which feeds the diagram components
-listed above. An interactive web deployment is planned but not yet shipped;
-the current artifact is the JSON data layer.
+The composable visualization engine documented in Supplement S12
+(\cref{sec:composable-visualization}) provides static ASCII/SVG representations
+of these categorical structures: `CategoryDiagram` renders the $\mathbf{Def}$
+morphism graph, `LatticeViz` renders the detection-rate lattice, `OperadPlot`
+renders composition trees, `MonadFlow` renders the Kleisli pipeline, and
+`LensDiagram` renders the attack-defense optic. Separately,
+`scripts/generate_composer_data.py` exports `output/data/composer_data.json`
+as a language-neutral data API. Neither artifact provides an interactive web UI.

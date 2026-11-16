@@ -14,7 +14,7 @@ from pathlib import Path
 
 import pytest
 
-from composition.mitigations import (
+from src.composition.mitigations import (
     MITIGATIONS,
     Verdict,
     combined,
@@ -24,7 +24,7 @@ from composition.mitigations import (
     identity,
     temporal_smoothing,
 )
-from utils.types import DefenseResult
+from src.utils.types import DefenseResult
 
 REPO = Path(__file__).resolve().parents[1]
 ARTIFACT = REPO / "output" / "data" / "fp_mitigation.json"

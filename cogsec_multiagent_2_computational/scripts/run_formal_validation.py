@@ -26,14 +26,14 @@ from pathlib import Path
 from typing import Dict, List, Sequence
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "src"))
+sys.path.insert(0, str(ROOT))
 
-from formal.theorem_registry import (  # noqa: E402
+from src.formal.theorem_registry import (  # noqa: E402
     TheoremRegistry,
     TheoremResult,
     TheoremStatus,
 )
-from utils.random_seed import set_global_seed  # noqa: E402
+from src.utils.random_seed import set_global_seed  # noqa: E402
 
 STATUS_ICON = {
     TheoremStatus.PASSED: "PASS",
@@ -149,10 +149,13 @@ def main(argv: List[str] | None = None) -> int:
             for r in results
         ],
     }
-    # A model-checking run is a real run: the specifications were executed by
-    # a checker and the statuses below are its verdicts. Without these keys the
-    # artifact classified as `unknown`, which reads as unproven provenance.
-    data["data_origin"] = "real_pipeline"
+    # These are numerical property checks over a seeded Python model, not
+    # model-checker verdicts. The actual formal-spec tool runner reports its
+    # own SKIP/verified status separately in output/formal/verification_summary.json.
+    data["data_origin"] = "simulation_analysis"
+    data["verification_scope"] = (
+        "seeded Python property checks; no external model checker was executed"
+    )
     data["source_script"] = "scripts/run_formal_validation.py"
 
     with open(out_path, "w") as f:

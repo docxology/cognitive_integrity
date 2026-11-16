@@ -186,3 +186,14 @@ class TestCognitiveTripwire:
         counts = tripwire.get_canary_count()
         assert counts["identity"] == 2
         assert "I am agent Old-Agent" not in tripwire._canaries
+
+    def test_check_single_notifies_handlers(self):
+        tripwire = CognitiveTripwire()
+        canary = Canary("boundary", expected_belief=0.0, tolerance=0.1)
+        tripwire.add_canary(canary)
+        received = []
+        tripwire.register_handler(received.append)
+
+        alert = tripwire.check_single("boundary", 1.0)
+
+        assert received == [alert]

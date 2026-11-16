@@ -34,17 +34,17 @@ from collections import defaultdict
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "src"))
+sys.path.insert(0, str(ROOT))
 
-from attacks.corpus import AttackCorpus  # noqa: E402
-from core.firewall import Classification, CognitiveFirewall  # noqa: E402
-from redteam.evasion import (  # noqa: E402
+from src.attacks.corpus import AttackCorpus  # noqa: E402
+from src.core.firewall import Classification, CognitiveFirewall  # noqa: E402
+from src.redteam.evasion import (  # noqa: E402
     DEFAULT_MIN_DENOMINATOR,
     VacuousSweepError,
     flagged_payloads,
     run_evasion_sweep,
 )
-from redteam.generator import AdversarialGenerator, AttackMutator, OmegaLevel  # noqa: E402
+from src.redteam.generator import AdversarialGenerator, AttackMutator, OmegaLevel  # noqa: E402
 
 DEFAULT_THRESHOLDS = {
     "drift_threshold": 0.3,

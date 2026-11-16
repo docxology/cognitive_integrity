@@ -16,7 +16,7 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import Any, Dict, List, Optional
 
-from utils.types import DefenseResult
+from src.utils.types import DefenseResult
 
 # ---------------------------------------------------------------------------
 # Abstract base -- every defense module must implement this
@@ -62,7 +62,7 @@ class DefenseModule(ABC):
         """
         # Imported here rather than at module scope: core.base re-exports this
         # class, so a top-level import would close a cycle.
-        from core.base import coerce_message
+        from src.core.base import coerce_message
 
         message, context = coerce_message(state)
         return self.evaluate(message, context)

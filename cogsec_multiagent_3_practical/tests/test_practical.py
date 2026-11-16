@@ -50,12 +50,29 @@ class TestOperatorPostureAssessment:
     """Tests for OperatorPostureAssessment."""
 
     def test_empty_checklist_evaluation(self):
-        """Test evaluation with empty checklist."""
+        """An unassessed checklist fails closed rather than reporting perfection."""
         assessment = OperatorPostureAssessment()
         result = assessment.evaluate()
-        assert result.passed is True
-        assert result.score == 1.0
-        assert result.risk_level == RiskLevel.LOW
+        assert result.passed is False
+        assert result.score == 0.0
+        assert result.risk_level == RiskLevel.CRITICAL
+
+    def test_optional_only_checklist_does_not_pass(self):
+        """Optional items alone cannot produce a perfect required-check score."""
+        assessment = OperatorPostureAssessment()
+        assessment.add_check(
+            ChecklistItem(
+                id="optional",
+                category="optional",
+                description="Optional hardening",
+                required=False,
+                completed=True,
+            )
+        )
+        result = assessment.evaluate()
+        assert result.passed is False
+        assert result.score == 0.0
+        assert result.risk_level == RiskLevel.CRITICAL
 
     def test_full_compliance(self, sample_checklist_items):
         """Test full compliance scenario."""
@@ -94,13 +111,32 @@ class TestOperatorPostureAssessment:
         assert result.passed is True
         assert result.score == 1.0
 
-    def test_posture_level_initialization(self):
-        """Test posture level initialization."""
-        minimal = OperatorPostureAssessment(PostureLevel.MINIMAL)
-        assert minimal.posture_level == PostureLevel.MINIMAL
-
+    def test_posture_level_changes_pass_threshold(self):
+        """The same completion score may meet STANDARD but miss MAXIMUM."""
+        standard = OperatorPostureAssessment(PostureLevel.STANDARD)
         maximum = OperatorPostureAssessment(PostureLevel.MAXIMUM)
-        assert maximum.posture_level == PostureLevel.MAXIMUM
+        for index in range(5):
+            item = ChecklistItem(
+                id=f"required-{index}",
+                category="required",
+                description=f"Required check {index}",
+                completed=index < 4,
+            )
+            standard.add_check(item)
+            maximum.add_check(
+                ChecklistItem(
+                    id=item.id,
+                    category=item.category,
+                    description=item.description,
+                    completed=item.completed,
+                )
+            )
+
+        standard_result = standard.evaluate()
+        maximum_result = maximum.evaluate()
+        assert standard_result.score == 0.8
+        assert standard_result.passed is True
+        assert maximum_result.passed is False
 
 
 class TestDeploymentReadinessCheck:

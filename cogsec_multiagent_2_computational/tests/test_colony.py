@@ -11,23 +11,23 @@ No mocks are used anywhere.
 import numpy as np
 import pytest
 
-from colony.belief_cascade import BeliefCascadeScenario, _build_small_world_adjacency
-from colony.benchmark import (
+from src.colony.belief_cascade import BeliefCascadeScenario, _build_small_world_adjacency
+from src.colony.benchmark import (
     ColonyBenchmark,
     ColonyConfig,
     ColonyResult,
     ColonyScenario,
 )
-from colony.emergent_misalignment import EmergentMisalignmentScenario
-from colony.quorum_manipulation import QuorumManipulationScenario
-from colony.recruitment_poisoning import RecruitmentPoisoningScenario
-from colony.scorecard import (
+from src.colony.emergent_misalignment import EmergentMisalignmentScenario
+from src.colony.quorum_manipulation import QuorumManipulationScenario
+from src.colony.recruitment_poisoning import RecruitmentPoisoningScenario
+from src.colony.scorecard import (
     CCSWeights,
     compute_ccs,
     compute_recovery_steps,
     compute_resilience,
 )
-from colony.sybil_infiltration import SybilInfiltrationScenario
+from src.colony.sybil_infiltration import SybilInfiltrationScenario
 
 # =========================================================================
 # Section 1: Scorecard tests
@@ -201,8 +201,12 @@ class TestComputeRecoverySteps:
     def test_never_recovered(self):
         timeline = [0.3, 0.2, 0.1, 0.1, 0.1]
         rec = compute_recovery_steps(timeline, threshold=0.9)
-        # min at index 2 (0.1), never reaches 0.9 after that
-        assert rec == len(timeline) - 2  # 5 - 2 = 3
+        assert rec == len(timeline)
+
+    def test_late_collapse_without_recovery_gets_full_penalty(self):
+        """A last-step collapse must not earn a near-instant recovery score."""
+        timeline = [1.0] * 99 + [0.0]
+        assert compute_recovery_steps(timeline, threshold=0.9) == 100
 
     def test_recovery_after_dip(self):
         timeline = [1.0, 0.5, 0.3, 0.5, 0.8, 0.95]
@@ -366,6 +370,14 @@ class TestBeliefCascadeScenario:
         rng = np.random.default_rng(42)
         result = scenario.run(config, rng)
         assert result.detection_rate > 0.0
+
+    def test_zero_adversaries_leaves_an_honest_control_population(self):
+        scenario = BeliefCascadeScenario()
+        config = ColonyConfig(n_agents=12, n_steps=40, n_adversaries=0, seed=42)
+        result = scenario.run(config, np.random.default_rng(42))
+
+        assert result.detection_rate == 0.0
+        assert all(integrity > 0.0 for integrity in result.timeline)
 
     def test_cascade_depth_grows_over_time(self):
         """More honest agents should be affected as cascade continues."""
@@ -1069,6 +1081,14 @@ class TestRecruitmentPoisoningScenario:
         rng = np.random.default_rng(42)
         result = scenario.run(config, rng)
         assert result.detection_rate > 0.0
+
+    def test_detection_window_includes_first_exploitation_step(self):
+        """All 60 exploitation steps contribute both adversary opportunities."""
+        scenario = RecruitmentPoisoningScenario()
+        config = ColonyConfig(n_agents=20, n_steps=100, n_adversaries=2, seed=42)
+        result = scenario.run(config, np.random.default_rng(42))
+
+        assert result.detection_rate == pytest.approx(96 / 120)
 
 
 # =========================================================================

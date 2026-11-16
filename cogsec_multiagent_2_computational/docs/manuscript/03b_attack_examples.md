@@ -111,7 +111,8 @@ Attack Sequence:
 
 Attack Vector: Reputation bootstrapping
 Detection Method: Trust decay + behavioral invariants
-CIF Response: Trust capped by decay (Theorem 4.2): T_max = delta^0 = 0.8
+CIF Response: Trust capped by decay (Theorem 4.2): at depth d = 0,
+T_max = delta^0 * T_direct = 1 * 0.85 = 0.85; at d = 1 the cap is 0.8 * 0.85 = 0.68
 \end{verbatim}
 \end{example}
 

@@ -21,9 +21,9 @@ from pathlib import Path
 import numpy as np
 import pytest
 
-from ablation.runner import BENIGN_MESSAGES, evaluate_component_subset, make_default_components
-from attacks.corpus import AttackCorpus
-from evaluation.baselines import (
+from src.ablation.runner import BENIGN_MESSAGES, evaluate_component_subset, make_default_components
+from src.attacks.corpus import AttackCorpus
+from src.evaluation.baselines import (
     DEFAULT_KEYWORD_PATTERNS,
     BagOfWordsDetector,
     CIFPipelineDetector,
@@ -208,8 +208,8 @@ class TestStratifiedFolds:
         so this holds; remove the ``sorted()`` and this test fails.
         """
         program = (
-            "import sys, json; sys.path.insert(0, 'src');"
-            "from evaluation.baselines import build_evaluation_corpus, stratified_folds;"
+            "import sys, json; sys.path.insert(0, '.');"
+            "from src.evaluation.baselines import build_evaluation_corpus, stratified_folds;"
             "c = build_evaluation_corpus(seed=42);"
             "print(json.dumps([f.tolist() for f in stratified_folds(c, 5, 42)]))"
         )
@@ -332,8 +332,8 @@ class TestRandomDetectorNull:
         second = [detector.score(p) for p in ("alpha", "beta", "gamma")]
         assert first == second
         program = (
-            "import sys; sys.path.insert(0, 'src');"
-            "from evaluation.baselines import RandomDetector;"
+            "import sys; sys.path.insert(0, '.');"
+            "from src.evaluation.baselines import RandomDetector;"
             "print(RandomDetector(flag_rate=0.5, seed=42).score('alpha'))"
         )
         seen = set()
@@ -665,6 +665,16 @@ class TestCurveSummary:
         assert summary.auc_ci95[0] == pytest.approx(1.0)
         assert summary.youden_j == pytest.approx(1.0)
 
+    def test_youden_checks_scores_between_uniform_grid_points(self):
+        """The optimum must not disappear between two display-grid points."""
+        y = np.array([False, True, True, False])
+        scores = np.array([0.1, 0.499, 0.9, 0.2])
+        summary = curve_summary(
+            "grid-miss", y, scores, n_thresholds=3, n_bootstrap=1, seed=42
+        )
+        assert summary.youden_threshold == pytest.approx(0.499)
+        assert summary.youden_j == pytest.approx(1.0)
+
     def test_random_scores_straddle_chance(self):
         """Negative control: the interval for noise must contain 0.5."""
         rng = np.random.default_rng(3)
@@ -801,8 +811,20 @@ class TestMeasuredComparisonResult:
             "cif", corpus.label_array, cif_output.scores, n_bootstrap=300, seed=42
         )
         assert summary.auc_ci95[0] > 0.5
-        # With TPR ~0.96, youden_j ~1.0; the old 3x ratio is no longer meaningful.
-        assert summary.youden_j >= evaluate_output(cif_output, corpus).youden_j
+        labels = corpus.label_array
+        scores = cif_output.scores
+        n_pos = int(labels.sum())
+        n_neg = len(labels) - n_pos
+        expected = max(
+            float(
+                np.sum((scores >= threshold) & labels) / n_pos
+                - np.sum((scores >= threshold) & ~labels) / n_neg
+            )
+            for threshold in np.unique(scores)
+        )
+        # Deployed module verdicts need not equal any score cutpoint when
+        # verdict_score_disagreements is nonzero. Check the actual score optimum.
+        assert summary.youden_j == pytest.approx(expected)
 
 
 # ---------------------------------------------------------------------------
@@ -967,7 +989,7 @@ class TestFiguresBindToMeasurements:
     def test_roc_legend_auc_matches_the_artifact(self, tmp_path):
         import matplotlib.pyplot as plt
 
-        from visualization.figures.roc_curves import plot_roc_curves
+        from src.visualization.figures.roc_curves import plot_roc_curves
 
         payload = load_comparison_artifact()
         _write_artifact(tmp_path, payload)
@@ -985,7 +1007,7 @@ class TestFiguresBindToMeasurements:
         """
         import matplotlib.pyplot as plt
 
-        from visualization.figures.roc_curves import plot_roc_curves
+        from src.visualization.figures.roc_curves import plot_roc_curves
 
         payload = json.loads(json.dumps(load_comparison_artifact()))
         payload["detectors"][0]["curves"]["auc"] = 0.123456
@@ -998,7 +1020,7 @@ class TestFiguresBindToMeasurements:
     def test_roc_draws_bootstrap_bands(self, tmp_path):
         import matplotlib.pyplot as plt
 
-        from visualization.figures.roc_curves import plot_roc_curves
+        from src.visualization.figures.roc_curves import plot_roc_curves
 
         _write_artifact(tmp_path, load_comparison_artifact())
         fig = plot_roc_curves(output_dir=tmp_path / "figures")
@@ -1010,7 +1032,7 @@ class TestFiguresBindToMeasurements:
         """Positive control: a broken measurement stops the render."""
         import matplotlib.pyplot as plt
 
-        from visualization.figures.roc_curves import plot_roc_curves
+        from src.visualization.figures.roc_curves import plot_roc_curves
 
         data_dir = tmp_path / "data"
         data_dir.mkdir(parents=True)
@@ -1024,7 +1046,7 @@ class TestFiguresBindToMeasurements:
     def test_roc_skips_a_series_with_no_points(self, tmp_path):
         import matplotlib.pyplot as plt
 
-        from visualization.figures.roc_curves import plot_roc_curves
+        from src.visualization.figures.roc_curves import plot_roc_curves
 
         data_dir = tmp_path / "data"
         data_dir.mkdir(parents=True)
@@ -1045,7 +1067,7 @@ class TestFiguresBindToMeasurements:
     def test_pr_legend_ap_matches_the_artifact(self, tmp_path):
         import matplotlib.pyplot as plt
 
-        from visualization.figures.precision_recall_curves import (
+        from src.visualization.figures.precision_recall_curves import (
             plot_precision_recall_curves,
         )
 
@@ -1062,7 +1084,7 @@ class TestFiguresBindToMeasurements:
         """The old figure drew ``axhline(0.5)`` and called it the random baseline."""
         import matplotlib.pyplot as plt
 
-        from visualization.figures.precision_recall_curves import (
+        from src.visualization.figures.precision_recall_curves import (
             plot_precision_recall_curves,
         )
 
@@ -1083,7 +1105,7 @@ class TestFiguresBindToMeasurements:
     def test_pr_refuses_an_artifact_with_no_curves(self, tmp_path):
         import matplotlib.pyplot as plt
 
-        from visualization.figures.precision_recall_curves import (
+        from src.visualization.figures.precision_recall_curves import (
             plot_precision_recall_curves,
         )
 

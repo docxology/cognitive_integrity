@@ -13,32 +13,32 @@ from typing import Dict, List
 import numpy as np
 import pytest
 
-from attacks.corpus import _CATEGORY_PREFIX, _TOP_CATEGORY_MAP, AttackCorpus, AttackSample
-from attacks.generators.belief_manipulation import (
+from src.attacks.corpus import _CATEGORY_PREFIX, _TOP_CATEGORY_MAP, AttackCorpus, AttackSample
+from src.attacks.generators.belief_manipulation import (
     generate_all_belief_manipulation,
     generate_belief_drift,
     generate_belief_fabrication,
     generate_belief_injection,
 )
-from attacks.generators.coordination import (
+from src.attacks.generators.coordination import (
     generate_all_coordination,
     generate_consensus_poisoning,
     generate_sybil_attacks,
     generate_timing_attacks,
 )
-from attacks.generators.injection import (
+from src.attacks.generators.injection import (
     generate_all_injection,
     generate_direct_injection,
     generate_indirect_injection,
     generate_nested_injection,
 )
-from attacks.generators.trust_exploitation import (
+from src.attacks.generators.trust_exploitation import (
     generate_all_trust_exploitation,
     generate_delegation_abuse,
     generate_impersonation,
     generate_trust_inflation,
 )
-from attacks.templates import (
+from src.attacks.templates import (
     AttackTemplate,
     _belief_manipulation_templates,
     _coordination_templates,
@@ -47,13 +47,13 @@ from attacks.templates import (
     expand_template,
     get_all_templates,
 )
-from attacks.validation import (
+from src.attacks.validation import (
     EXPECTED_DISTRIBUTION,
     EXPECTED_SUBCATEGORY_DISTRIBUTION,
     ValidationReport,
     validate_corpus,
 )
-from utils.types import AttackCategory
+from src.utils.types import AttackCategory
 
 # ---------------------------------------------------------------------------
 # Fixtures
@@ -398,6 +398,15 @@ class TestAttackCorpusDistribution:
         coord = corpus.by_top_category("coordination")
         assert len(coord) == 100
 
+    def test_by_top_category_provenance_and_isolation(self):
+        """The extended corpus's fifth family is queryable by its public name."""
+        corpus = AttackCorpus.generate(seed=42)
+        family = corpus.by_top_category("provenance_and_isolation")
+        assert len(family) == 525
+        assert {sample.category.top_category for sample in family} == {
+            "provenance_and_isolation"
+        }
+
     def test_by_top_category_invalid_raises_keyerror(self, corpus: AttackCorpus):
         """by_top_category with an invalid name raises KeyError."""
         with pytest.raises(KeyError):
@@ -489,7 +498,7 @@ class TestAttackCorpusUniqueness:
         that probe provenance, sandbox and consensus; asserting on the enum
         would make adding any category fail here, in a test about the corpus.
         """
-        from attacks.validation import EXTENSION_CATEGORIES, PUBLISHED_CATEGORIES
+        from src.attacks.validation import EXTENSION_CATEGORIES, PUBLISHED_CATEGORIES
 
         cats = {s.category for s in corpus}
         assert cats == PUBLISHED_CATEGORIES
@@ -497,7 +506,7 @@ class TestAttackCorpusUniqueness:
 
     def test_the_extended_corpus_adds_exactly_the_extension_families(self):
         """And the extension is additive: it never drops a published category."""
-        from attacks.validation import EXTENSION_CATEGORIES, PUBLISHED_CATEGORIES
+        from src.attacks.validation import EXTENSION_CATEGORIES, PUBLISHED_CATEGORIES
 
         extended = {s.category for s in AttackCorpus.generate(seed=42, extended=True)}
         assert extended == PUBLISHED_CATEGORIES | EXTENSION_CATEGORIES
@@ -519,6 +528,13 @@ class TestAttackCorpusStratifiedSplit:
         """Train + test sizes sum to the original corpus size."""
         train, test = corpus.stratified_split(train_frac=0.7, seed=42)
         assert len(train) + len(test) == len(corpus)
+
+    def test_zero_training_fraction_allocates_no_training_samples(
+        self, corpus: AttackCorpus
+    ):
+        train, test = corpus.stratified_split(train_frac=0.0, seed=42)
+        assert len(train) == 0
+        assert len(test) == len(corpus)
 
     def test_split_approximate_fractions(self, corpus: AttackCorpus):
         """Train set is approximately 70% of the corpus."""
@@ -1665,7 +1681,7 @@ class TestTheStratificationDimensions:
             assert sample.target, sample.id
 
     def test_targets_come_from_the_declared_set(self, corpus: AttackCorpus):
-        from attacks.corpus import ATTACK_TARGETS
+        from src.attacks.corpus import ATTACK_TARGETS
 
         assert {s.target for s in corpus} <= set(ATTACK_TARGETS)
 
@@ -1676,7 +1692,7 @@ class TestTheStratificationDimensions:
         with no adversary class and no target vanishes from both breakdowns
         while still counting toward the totals above them.
         """
-        from attacks import corpus as corpus_module
+        from src.attacks import corpus as corpus_module
 
         trimmed = dict(corpus_module._CATEGORY_PROFILE)
         trimmed.pop("timing_attack")
@@ -1694,7 +1710,7 @@ class TestTheStratificationDimensions:
         would need removing -- so the constraint is asserted rather than left
         as a comment.
         """
-        from attacks.corpus import _CATEGORY_PROFILE
+        from src.attacks.corpus import _CATEGORY_PROFILE
 
         for sample in corpus:
             key = getattr(sample.category, "value", str(sample.category))
@@ -1712,6 +1728,6 @@ class TestTheStratificationDimensions:
         per-sample labelling pass, and this test should be replaced by one
         checking that pass exists.
         """
-        from attacks.corpus import AttackSample
+        from src.attacks.corpus import AttackSample
 
         assert not hasattr(AttackSample("x", "p", None, "s", "easy", True), "impact")

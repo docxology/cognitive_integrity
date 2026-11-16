@@ -62,22 +62,24 @@ class LatencyAccumulator:
 
     def p50(self) -> float:
         """Median latency."""
-        return float(np.percentile(self.samples, 50)) if self.samples else 0.0
+        return float(np.percentile(self.samples, 50)) if self.samples else float("nan")
 
     def p95(self) -> float:
         """95th-percentile latency."""
-        return float(np.percentile(self.samples, 95)) if self.samples else 0.0
+        return float(np.percentile(self.samples, 95)) if self.samples else float("nan")
 
     def p99(self) -> float:
         """99th-percentile latency."""
-        return float(np.percentile(self.samples, 99)) if self.samples else 0.0
+        return float(np.percentile(self.samples, 99)) if self.samples else float("nan")
 
     def mean(self) -> float:
-        """Mean latency."""
-        return float(np.mean(self.samples)) if self.samples else 0.0
+        """Mean latency, or NaN when no samples have been recorded."""
+        return float(np.mean(self.samples)) if self.samples else float("nan")
 
     def std(self) -> float:
         """Standard deviation of latency."""
+        if not self.samples:
+            return float("nan")
         return float(np.std(self.samples, ddof=1)) if len(self.samples) > 1 else 0.0
 
     def count(self) -> int:

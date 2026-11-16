@@ -10,12 +10,12 @@ from the `src.*` package, and handle output only — computation lives in `src/`
 |--------|---------|--------------|-------------|
 | `01_attack_surface_figure.py` | Threat taxonomy / attack surface diagram | `src/visualization/attack_surface.py` | `uv run python scripts/01_attack_surface_figure.py` |
 | `02_trust_decay_figure.py` | Trust decay curves across delegation depths | `src/visualization/trust_decay.py` | `uv run python scripts/02_trust_decay_figure.py` |
-| `03_detection_results_figure.py` | Detection performance: ROC / precision-recall / F1 | `src/visualization/detection_results.py` | `uv run python scripts/03_detection_results_figure.py` |
+| `03_detection_results_figure.py` | Corpus detection plus explicitly illustrative ablation/integrity/model-latency panels | `src/visualization/detection_results.py` | `uv run python scripts/03_detection_results_figure.py` |
 | `04_cif_architecture_figure.py` | CIF component architecture diagram | `src/visualization/cif_architecture.py` | `uv run python scripts/04_cif_architecture_figure.py` |
 | `05_threat_taxonomy_figure.py` | Adversary classes / threat classification | `src/visualization/threat_taxonomy.py` | `uv run python scripts/05_threat_taxonomy_figure.py` |
 | `06_generate_data.py` | All experimental datasets (trust decay, detection, scenarios, consensus) | `src/data_generation.py` | `uv run python scripts/06_generate_data.py` |
 | `07_roc_curves_figure.py` | ROC analysis / detection thresholds | `src/visualization/roc_curves.py` | `uv run python scripts/07_roc_curves_figure.py` |
-| `08_scalability_figure.py` | Scalability: agent count vs performance | `src/visualization/scalability.py` | `uv run python scripts/08_scalability_figure.py` |
+| `08_scalability_figure.py` | Analytic scalability models (not measured performance) | `src/visualization/scalability.py` | `uv run python scripts/08_scalability_figure.py` |
 | `09_attack_timeline_figure.py` | Attack progression / temporal analysis | `src/visualization/attack_timeline.py` | `uv run python scripts/09_attack_timeline_figure.py` |
 | `10_defense_composition_figure.py` | Defense layers / security stack | `src/visualization/defense_composition.py` | `uv run python scripts/10_defense_composition_figure.py` |
 | `11_trust_network_figure.py` | Trust graph / agent relationships | `src/visualization/trust_network.py` | `uv run python scripts/11_trust_network_figure.py` |
@@ -55,6 +55,15 @@ uv run python scripts/verify_manuscript.py
 - Figures: `output/figures/`
 - Data: `output/data/`
 - Reports: `output/reports/`
+
+The detection/scalability figures specifically read `output/figures/data/`;
+see the [result-figure input contract](../src/visualization/README.md). Missing or
+malformed artifacts raise and make the numbered script exit nonzero before
+writing images. No missing configuration is plotted as zero, no ablation or
+integrity series is fabricated, and no `error.pdf` path is reported as success.
+Do not run data generation over protected producer evidence to fill a gap.
+The batch command propagates figure failures; it is not permission to overwrite
+protected artifacts.
 
 ## Thin-Orchestrator Pattern
 

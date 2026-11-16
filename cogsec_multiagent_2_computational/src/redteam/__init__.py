@@ -288,10 +288,10 @@ class AdversarialTrainer:
         """
         if self._detector is not None:
             return self._detector(payload)
-        from core.firewall import Classification
+        from src.core.firewall import Classification
 
         if self._firewall is None:
-            from core.firewall import CognitiveFirewall
+            from src.core.firewall import CognitiveFirewall
 
             self._firewall = CognitiveFirewall()
         return self._firewall.classify(payload) != Classification.ACCEPT
@@ -299,7 +299,7 @@ class AdversarialTrainer:
     def corpus_payloads(self) -> list[str]:
         """The real 950-sample attack corpus payloads (generated once, cached)."""
         if self._corpus_payloads_cache is None:
-            from attacks.corpus import AttackCorpus
+            from src.attacks.corpus import AttackCorpus
 
             self._corpus_payloads_cache = [
                 s.payload for s in AttackCorpus.generate(seed=self.config.seed)
@@ -312,18 +312,23 @@ class AdversarialTrainer:
 
     def _real_round_attack_dr(self, round_num: int) -> float:
         """Generate real adaptive attacks for a round and measure the detected fraction."""
-        from redteam.generator import AdversarialGenerator, OmegaLevel
+        from src.redteam.generator import AdversarialGenerator, OmegaLevel
 
         gen = AdversarialGenerator(
             config_thresholds=self.thresholds,
             omega_level=OmegaLevel.OMEGA_3_IMPERSONATION,
             seed=self.config.seed,
         )
-        # De-duplicate the round batch before measuring (P2-17): the
-        # generator expands a handful of templates, so the raw batch is
-        # duplicate-inflated and measuring over it would report a base DR
-        # on a phantom denominator (100 attacks -> ~3 distinct payloads).
-        payloads = sorted({a.payload for a in gen.generate_batch(self.config.attacks_per_round)})
+        # De-duplicate the round-specific, operator-mutated batch before
+        # measuring so repeated template draws do not inflate its denominator.
+        payloads = sorted({
+            a.payload
+            for a in gen.generate_batch(
+                self.config.attacks_per_round,
+                round_num=round_num,
+                mutation_operators=self.config.mutation_operators,
+            )
+        })
         return measure_detection_rate(payloads, self._detect)
 
     def run_round(self, round_num: int) -> ATRoundResult:
@@ -407,22 +412,20 @@ class AdversarialTrainer:
         return self.rounds
 
     def convergence_projection(self) -> float:
-        """Project Nash equilibrium DR using geometric decay model.
+        """Project from per-round increments of the cumulative DR deltas.
 
         Returns:
             Projected equilibrium detection rate.
         """
         if len(self.rounds) < 2:
             raise ValueError("Need at least 2 rounds for convergence projection")
-        gains = [r.delta_dr for r in self.rounds]
-        # Fit geometric decay: gain[k] ≈ gain[0] * ratio^k
-        if len(gains) >= 2 and gains[0] > 0:
-            ratio = gains[-1] / gains[0] if gains[0] > 0 else 0.65
-            ratio = max(0.1, min(0.95, ratio))
-            # Geometric series sum: total_gain = gains[0] / (1 - ratio)
-            total_gain = gains[0] / (1.0 - ratio)
-            return float(min(1.0, self._baseline_dr + total_gain))
-        return self._baseline_dr
+        cumulative = [r.delta_dr for r in self.rounds]
+        increments = [cumulative[0]] + [
+            cumulative[i] - cumulative[i - 1] for i in range(1, len(cumulative))
+        ]
+        return NashEquilibriumEstimator(increments).projected_equilibrium_dr(
+            self._baseline_dr
+        )
 
     def omega_level_dr(self) -> dict[str, float]:
         """Return final hardened DR per adversary capability level.
@@ -494,21 +497,18 @@ class NashEquilibriumEstimator:
             Projected equilibrium DR.
         """
         ratio = self.geometric_ratio()
-        ratio = max(0.01, min(0.99, ratio))
+        if ratio >= 1.0:
+            return float("inf")
+        ratio = max(0.01, ratio)
         total_gain = self.gains[0] / (1.0 - ratio) if self.gains else 0.0
         return float(min(1.0, baseline_dr + total_gain))
 
-    def convergence_round(self, tolerance: float = 0.001) -> int:
-        """Estimate the round at which gains fall below tolerance.
-
-        Args:
-            tolerance: Gain threshold for convergence.
-
-        Returns:
-            Estimated convergence round.
-        """
+    def convergence_round(self, tolerance: float = 0.001) -> int | None:
+        """Estimate convergence round, or ``None`` for nonconvergent gains."""
         ratio = self.geometric_ratio()
-        if self.gains and self.gains[0] > tolerance:
-            k = math.log(tolerance / self.gains[0]) / math.log(ratio)
-            return int(math.ceil(k))
-        return 0
+        if not self.gains or self.gains[0] <= tolerance:
+            return 0
+        if ratio <= 0 or ratio >= 1:
+            return None
+        k = math.log(tolerance / self.gains[0]) / math.log(ratio)
+        return int(math.ceil(k)) if k >= 0 else None

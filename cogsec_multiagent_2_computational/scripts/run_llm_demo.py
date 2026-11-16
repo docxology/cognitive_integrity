@@ -22,17 +22,17 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "src"))
+sys.path.insert(0, str(ROOT))
 
-from agents.llm_agent import AgentMessage, LLMAgent, OllamaConfig
-from agents.multiagent_system import MultiAgentSystem
-from architectures.claude_code import ClaudeCodeAdapter
-from architectures.crewai import CrewAIAdapter
-from composition.factory import create_full_pipeline
-from evaluation.llm_evaluator import DEMO_ATTACKS
-from evaluation.runner import ExperimentRunner
-from utils.random_seed import set_global_seed
-from utils.types import ExperimentConfig
+from src.agents.llm_agent import AgentMessage, LLMAgent, OllamaConfig
+from src.agents.multiagent_system import MultiAgentSystem
+from src.architectures.claude_code import ClaudeCodeAdapter
+from src.architectures.crewai import CrewAIAdapter
+from src.composition.factory import create_full_pipeline
+from src.evaluation.llm_evaluator import DEMO_ATTACKS
+from src.evaluation.runner import ExperimentRunner
+from src.utils.random_seed import set_global_seed
+from src.utils.types import ExperimentConfig
 
 logger = logging.getLogger("llm_demo")
 
@@ -212,6 +212,8 @@ def run_demo(model: str = "gemma3:4b") -> dict:
             "true_positives": result.true_positives,
             "false_negatives": result.false_negatives,
             "avg_latency_ms": result.avg_latency_ms,
+            "measurement_mode": result.measurement_mode,
+            "llm_fallback_count": result.llm_fallback_count,
         }
         print(f"  │  Detection Rate: {result.detection_rate:.1%}")
         print(f"  │  TP: {result.true_positives}  FN: {result.false_negatives}")

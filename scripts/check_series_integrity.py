@@ -606,14 +606,33 @@ def check_truncation() -> CheckResult:
 
             fenced: set[int] = set()
             in_fence = False
+            in_listing = False
             for n, raw in enumerate(lines, 1):
-                if raw.lstrip().startswith(("```", "~~~")):
+                stripped = raw.lstrip()
+                if stripped.startswith("\\begin{lstlisting}"):
+                    in_listing = True
+                    fenced.add(n)
+                elif stripped.startswith("\\end{lstlisting}"):
+                    fenced.add(n)
+                    in_listing = False
+                elif in_listing:
+                    fenced.add(n)
+                elif stripped.startswith(("```", "~~~")):
                     in_fence = not in_fence
                     fenced.add(n)
                 elif in_fence:
                     fenced.add(n)
 
-            numbered = [(n, s) for n, s in enumerate(lines, 1) if s.strip()]
+            # ``# result[...]`` is a Python comment, not a Markdown heading.
+            # Treating it as a section reports a false empty-section defect on
+            # executable snippets embedded in otherwise complete prose. Only
+            # ignore comment lines inside a fenced code block; a genuine
+            # manuscript heading outside one is still checked.
+            numbered = [
+                (n, s)
+                for n, s in enumerate(lines, 1)
+                if s.strip() and not (n in fenced and s.lstrip().startswith("# "))
+            ]
             if not numbered:
                 result.problems.append(Problem(result.name, rel(path), 0, "file is empty"))
                 continue
@@ -779,13 +798,44 @@ _CITED_ARTIFACT = re.compile(
     r"(?:output/data/|`)([A-Za-z0-9_]+(?:\.provenance)?\.json)"
 )
 
+#: A backtick-quoted path into any part's ``output/`` tree, e.g.
+#: ``output/formal/verification_summary.json``. The ``output/data`` pattern
+#: above cannot see these, and a manuscript citing a non-existent artifact
+#: outside ``output/data`` therefore passed the gate: Part 1's formal
+#: verification section cited ``output/formal/verification_summary.json``,
+#: which no run had produced.
+_CITED_OUTPUT_PATH = re.compile(
+    r"`(?:(cogsec_multiagent_[A-Za-z0-9_]+)/)?"
+    r"(output/[A-Za-z0-9_./-]+\.(?:json|csv|tex|pdf|png))`"
+)
+
 #: ``data_origin`` values that mark a file as a *placeholder*. The paper draws
 #: honest distinctions between measured, parametric and design-model results, so
 #: the rule is not "must be measured" -- it is "must say which it is, and must
 #: not be a DataGenerator stand-in".
 _SYNTHETIC_ORIGINS = frozenset(
-    {"synthetic", "generated", "placeholder", "datagenerator", "mock", "fake", "stub"}
+    {
+        "synthetic",
+        "synthetic_schema",
+        "generated",
+        "placeholder",
+        "datagenerator",
+        "mock",
+        "fake",
+        "stub",
+    }
 )
+
+
+def _synthetic_declaration(value: object) -> bool:
+    """Whether any provenance field identifies the schema-only generator."""
+    declared = str(value).strip().lower()
+    return (
+        declared in _SYNTHETIC_ORIGINS
+        or "src/data/generate.py" in declared
+        or "datagenerator" in declared
+    )
+
 
 #: Keys any of which counts as a provenance declaration.
 _PROVENANCE_KEYS = ("data_origin", "source_script", "generator")
@@ -856,38 +906,58 @@ def check_artifact_provenance() -> CheckResult:
                         continue
                     if name in _STRUCTURAL_ARTIFACTS:
                         continue
-                    # A list-shaped artifact carries provenance in a sidecar, but
-                    # the sidecar has to say something: an empty file, or one
-                    # that declares nothing, satisfied the old existence test.
+                    # Inline and sidecar declarations are cumulative. A real-looking
+                    # sidecar must not launder an inline synthetic origin (or vice
+                    # versa), and any reference to the schema generator is fatal.
+                    declarations: list[tuple[str, object]] = []
+                    if isinstance(payload, dict):
+                        declarations.extend(
+                            (key, payload[key])
+                            for key in _PROVENANCE_KEYS
+                            if payload.get(key)
+                        )
                     sidecar = DATA_DIR / f"{artifact.stem}.provenance.json"
+                    invalid_sidecar = False
                     if sidecar.is_file():
                         try:
                             side = json.loads(sidecar.read_text(encoding="utf-8"))
                         except json.JSONDecodeError:
                             side = None
-                        if isinstance(side, dict) and any(
-                            side.get(key) for key in _PROVENANCE_KEYS
-                        ):
-                            continue
+                            invalid_sidecar = True
+                        if isinstance(side, dict):
+                            declarations.extend(
+                                (f"{sidecar.name}:{key}", side[key])
+                                for key in _PROVENANCE_KEYS
+                                if side.get(key)
+                            )
+                    synthetic = [
+                        (key, value)
+                        for key, value in declarations
+                        if _synthetic_declaration(value)
+                    ]
+                    if synthetic:
+                        key, declared = synthetic[0]
                         result.problems.append(
                             Problem(
                                 result.name,
                                 rel(path),
                                 number,
-                                f"cites {name}, whose sidecar {sidecar.name} declares no "
-                                f"provenance ({' / '.join(_PROVENANCE_KEYS)}). An empty "
-                                f"sidecar satisfied the file-exists test while saying "
-                                f"nothing at all.",
+                                f"cites {name}, whose {key} declares {declared!r}: "
+                                f"a placeholder, not a result. src/data/generate.py "
+                                f"states these must not back manuscript tables.",
                             )
                         )
-                        continue
-                    declared = None
-                    if isinstance(payload, dict):
-                        for key in _PROVENANCE_KEYS:
-                            if payload.get(key):
-                                declared = str(payload[key])
-                                break
-                    if declared is None:
+                    elif invalid_sidecar:
+                        result.problems.append(
+                            Problem(
+                                result.name,
+                                rel(path),
+                                number,
+                                f"cites {name}, whose sidecar {sidecar.name} is not "
+                                f"valid JSON; provenance cannot be established.",
+                            )
+                        )
+                    elif not declarations:
                         result.problems.append(
                             Problem(
                                 result.name,
@@ -899,17 +969,40 @@ def check_artifact_provenance() -> CheckResult:
                                 f"declaration is a failure rather than a pass.",
                             )
                         )
-                    elif declared.lower() in _SYNTHETIC_ORIGINS:
-                        result.problems.append(
-                            Problem(
-                                result.name,
-                                rel(path),
-                                number,
-                                f"cites {name}, which declares itself {declared!r}: "
-                                f"a placeholder, not a result. src/data/generate.py "
-                                f"states these must not back manuscript tables.",
-                            )
+    # Second pass: a backtick-quoted path into any part's ``output/`` tree must
+    # resolve to a file. This is an existence check only -- the provenance
+    # requirement above is specific to ``output/data`` measurements -- because a
+    # dangling pointer is the defect regardless of what the file would declare.
+    # A manuscript may legitimately point at a sibling paper's artifact, so the
+    # path is resolved against every part, not just the citing one.
+    for part in PARTS:
+        for path in manuscript_files(part):
+            for number, line in iter_lines(path):
+                for match in _CITED_OUTPUT_PATH.finditer(line):
+                    owner, cited = match.groups()
+                    # An unqualified output path is the established cross-paper
+                    # shorthand. Once a path names its owner, however, another
+                    # paper's same-named sibling is not evidence that it exists.
+                    owners = (
+                        {part for part, package in PARTS.items() if package == owner}
+                        if owner
+                        else set(PARTS)
+                    )
+                    if any(
+                        (REPO_ROOT / PARTS[other] / cited).is_file() for other in owners
+                    ):
+                        continue
+                    shown = f"{owner}/{cited}" if owner else cited
+                    result.problems.append(
+                        Problem(
+                            result.name,
+                            rel(path),
+                            number,
+                            f"cites `{shown}`, which does not exist under "
+                            + (f"Part {next(iter(owners))}'s" if len(owners) == 1 else "any part's")
+                            + " output tree; the pointer is dangling.",
                         )
+                    )
     if result.scanned == 0:
         result.problems.append(
             Problem(

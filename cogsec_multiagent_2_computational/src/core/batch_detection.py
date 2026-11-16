@@ -31,8 +31,10 @@ class BatchDetector:
     def batch_score(self, features: np.ndarray) -> np.ndarray:
         """Score a batch of feature vectors for anomalies.
 
-        Computes z-scores against the batch mean/std for each feature,
-        then returns the L2 norm of the z-score vector per sample.
+        Supplied detectors are called in order with the full feature matrix
+        and must each return one numeric score per sample; their means form
+        the ensemble score. Without supplied detectors, computes z-scores
+        against the batch mean/std and returns their L2 norm per sample.
 
         Args:
             features: Array of shape (n_samples, n_features).
@@ -43,6 +45,24 @@ class BatchDetector:
         features = np.asarray(features, dtype=float)
         if features.ndim == 1:
             features = features.reshape(1, -1)
+
+        if self._detectors:
+            detector_scores = []
+            for detector in self._detectors:
+                if hasattr(detector, "score"):
+                    values = detector.score(features)
+                elif hasattr(detector, "process"):
+                    values = detector.process(features)
+                else:
+                    raise TypeError("batch detectors must provide score() or process()")
+                scores = np.asarray(values, dtype=float)
+                if scores.shape != (len(features),):
+                    raise ValueError(
+                        "each batch detector must return one score per sample; "
+                        f"expected {(len(features),)}, got {scores.shape}"
+                    )
+                detector_scores.append(scores)
+            return np.mean(detector_scores, axis=0)
 
         mean = np.mean(features, axis=0)
         std = np.std(features, axis=0) + 1e-10

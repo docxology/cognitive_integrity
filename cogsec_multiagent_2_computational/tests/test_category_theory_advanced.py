@@ -1,15 +1,10 @@
 """Dedicated tests for src/formal/category_theory_advanced.py.
 
-This module backs the manuscript's "defense composition algebra" claims
-(25 categorical verification checks across lattice, monoidal, operad,
-enriched, Kan-extension, monad, and lens structures). Prior to this file,
-its only exercise was indirectly through
-src.visualization.composer_data.get_composer_data(), which wraps the whole
-module in a broad ``except Exception`` and whose only test asserted
-``isinstance(result, dict)`` -- passing whether the underlying math was
-correct, broken, or non-functional. These tests call the verification
-entry points directly and assert the checks actually report all-pass, plus
-exercise the individual categorical laws in isolation.
+This module backs the executable composition diagnostics across lattice,
+candidate monoidal, operad, enriched, aggregation, monad, and lens
+structures.  Tests call the verification entry points directly and require
+honest outcomes, including the concrete monoidal-interchange counterexample,
+plus exercise individual operations and negative controls in isolation.
 """
 
 from __future__ import annotations
@@ -20,13 +15,13 @@ from typing import Any, Callable, Dict, List, Optional
 import numpy as np
 import pytest
 
-from formal.category_theory import (
+from src.formal.category_theory import (
     CognitiveState,
     DefenseMorphism,
     DefenseResult,
     identity_morphism,
 )
-from formal.category_theory_advanced import (
+from src.formal.category_theory_advanced import (
     BOTTOM,
     TOP,
     AgentArchitecture,
@@ -120,7 +115,7 @@ def take_right(a: float, b: float) -> float:
 
 
 class TestRunAllVerifications:
-    """run_all_verifications() must report every categorical law as passing."""
+    """run_all_verifications() reports genuine successes and failures."""
 
     def test_all_structures_present(self):
         result = run_all_verifications(n_states=20, seed=42)
@@ -129,22 +124,16 @@ class TestRunAllVerifications:
             "kan_extensions", "monad", "lenses",
         }
 
-    def test_all_checks_pass(self):
-        """Every individual boolean check across all 7 structures is True.
-
-        This is the regression test the module was missing: a broken law
-        (e.g. a sign error in lattice_meet, or a Kleisli-composition bug)
-        would previously go undetected because nothing asserted on the
-        actual verification outcomes.
-        """
+    def test_only_interchange_counterexample_fails(self):
         result = run_all_verifications(n_states=20, seed=42)
-        failures = []
-        for structure, checks in result.items():
-            if isinstance(checks, dict):
-                for check_name, passed in checks.items():
-                    if not passed:
-                        failures.append(f"{structure}.{check_name}")
-        assert failures == [], f"Failed categorical checks: {failures}"
+        failures = [
+            f"{structure}.{check_name}"
+            for structure, checks in result.items()
+            if isinstance(checks, dict)
+            for check_name, passed in checks.items()
+            if not passed
+        ]
+        assert failures == ["monoidal.interchange"]
 
     def test_deterministic_with_seed(self):
         r1 = run_all_verifications(n_states=15, seed=7)
@@ -165,11 +154,11 @@ class TestSerializeVerificationResults:
         assert data["summary"]["passed"] == passed
         assert data["summary"]["failed"] == total - passed
 
-    def test_all_checks_pass_via_serialized_summary(self):
-        """The manuscript claims '25/25 checks' pass; verify none are failing."""
+    def test_serialized_summary_includes_interchange_failure(self):
         data = serialize_verification_results(n_states=20, seed=42)
-        assert data["summary"]["failed"] == 0
-        assert data["summary"]["passed"] == data["summary"]["total"]
+        assert data["results"]["monoidal.interchange"] is False
+        assert data["summary"]["failed"] == 1
+        assert data["summary"]["passed"] == data["summary"]["total"] - 1
         assert data["summary"]["total"] > 0
 
     def test_by_structure_grouping_matches_flat_keys(self):
@@ -207,12 +196,14 @@ class TestGetLatticeData:
 
 
 class TestGetMonoidalData:
-    def test_structure_and_all_axioms_pass(self):
+    def test_structure_includes_failed_interchange(self):
         data = get_monoidal_data(n_states=15, seed=3)
         assert set(data.keys()) == {"tensor_product", "unit", "coherence", "axioms"}
-        assert len(data["axioms"]) == 4
-        for axiom in data["axioms"]:
-            assert axiom["passed"] is True, f"{axiom['name']} failed"
+        outcomes = {axiom["name"]: axiom["passed"] for axiom in data["axioms"]}
+        assert outcomes["Interchange"] is False
+        assert all(
+            passed for name, passed in outcomes.items() if name != "Interchange"
+        )
 
 
 class TestGetOperadData:
@@ -233,24 +224,12 @@ class TestLatticeLaws:
             m = lattice_meet(a, a)
             assert math.isclose(m.rate, a.rate, abs_tol=1e-10)
 
-    def test_join_not_idempotent_by_design(self):
-        """a ∨ a != a for a not in {0, 1} -- lattice_join is a ≠ idempotent op.
-
-        lattice_join implements a probabilistic-OR / series-composition
-        combinator (a + b - ab), which satisfies the upper-bound property
-        exercised by DefenseLattice.verify_join_existence() (join(a,b) >= a
-        and >= b) but is NOT an idempotent lattice join in the strict
-        algebraic sense: join(a, a) = 2a - a^2 != a for a in (0, 1). This
-        documents that behavior explicitly rather than asserting the
-        (false) idempotence law, so a future change to lattice_join's
-        formula shows up here as an intentional decision, not a silent
-        regression. See lattice_meet (min-based) for the operation that
-        *is* a genuine idempotent/absorptive semilattice operation.
-        """
-        a = DetectionBound(0.3)
-        j = lattice_join(a, a)
-        assert not math.isclose(j.rate, a.rate, abs_tol=1e-10)
-        assert math.isclose(j.rate, 2 * a.rate - a.rate ** 2, abs_tol=1e-10)
+    def test_join_is_idempotent_least_upper_bound(self):
+        for rate in [0.0, 0.3, 0.5, 0.7, 1.0]:
+            a = DetectionBound(rate)
+            assert lattice_join(a, a).rate == pytest.approx(rate)
+        a, b = DetectionBound(0.3), DetectionBound(0.7)
+        assert lattice_join(a, b).rate == pytest.approx(0.7)
 
     def test_meet_absorption(self):
         """a ∧ (a ∨ b) = a (absorption law) -- holds because join(a,b) >= a always."""
@@ -258,16 +237,10 @@ class TestLatticeLaws:
         lhs = lattice_meet(a, lattice_join(a, b))
         assert math.isclose(lhs.rate, a.rate, abs_tol=1e-10)
 
-    def test_join_absorption_does_not_hold(self):
-        """a ∨ (a ∧ b) != a in general -- the dual absorption law fails.
-
-        Since lattice_join is not idempotent (see test above), the dual
-        absorption law a ∨ (a ∧ b) = a does not hold either, except in the
-        degenerate cases where min(a,b) in {0} or a == 1.
-        """
+    def test_join_absorption(self):
         a, b = DetectionBound(0.3), DetectionBound(0.7)
         lhs = lattice_join(a, lattice_meet(a, b))
-        assert not math.isclose(lhs.rate, a.rate, abs_tol=1e-10)
+        assert lhs.rate == pytest.approx(a.rate)
 
     def test_bottom_and_top_are_absorbing(self):
         a = DetectionBound(0.5)
@@ -281,6 +254,11 @@ class TestLatticeLaws:
         ])
         results = lattice.verify_all()
         assert all(results.values()), results
+
+    def test_empty_lattice_does_not_report_vacuous_passes(self):
+        results = DefenseLattice().verify_all()
+        assert results
+        assert not any(results.values())
 
 
 class TestMonadLaws:
@@ -306,15 +284,18 @@ class TestMonadLaws:
         h = make_test_morphism(0.3, "h")
         assert monad.verify_associativity(f, g, h, states) is True
 
-    def test_kleisli_compose_ors_detection_and_maxes_score(self):
+    def test_kleisli_compose_uses_join_short_circuit(self):
         monad = DefenseMonad()
         state = generate_test_states(n=1, seed=2)[0]
-        f = make_test_morphism(0.2, "low")
-        g = make_test_morphism(0.9, "high")
-        composed = monad.kleisli_compose(f, g)
-        r_f, r_g, r_c = f(state), g(state), composed(state)
-        assert r_c.detected == (r_f.detected or r_g.detected)
-        assert r_c.score == max(r_f.score, r_g.score)
+        detecting_low = const_morphism(0.6, True, "detecting_low")
+        silent_high = const_morphism(0.9, False, "silent_high")
+        composed = monad.kleisli_compose(detecting_low, silent_high)
+        result = composed(state)
+        assert result.detected is True
+        assert result.score == pytest.approx(0.6)
+        assert result.score == pytest.approx(
+            monad.mu(silent_high, detecting_low)(state).score
+        )
 
 
 class TestLensLaws:
@@ -351,6 +332,13 @@ class TestLensLaws:
         states = generate_test_states(n=10, seed=5)
         results = profunctor.verify_lens_laws(lens, states)
         assert results == {"get_put": True, "put_get": True, "put_put": True}
+
+    def test_get_put_detects_a_new_missing_focus_key(self):
+        profunctor = DefenseProfunctor(get_fn=lambda s: s, put_fn=lambda s, r: s)
+        results = profunctor.verify_lens_laws(
+            BeliefLens(focus="trust"), [{"consensus": 0.1}]
+        )
+        assert results["get_put"] is False
 
 
 class TestFAlgebraCatamorphism:
@@ -394,6 +382,17 @@ class TestMonoidalLaws:
         h = make_test_morphism(0.3, "h")
         results = monoidal.verify_all(f, g, h, states)
         assert all(results.values()), results
+
+    def test_interchange_fails_with_short_circuit_composition(self):
+        monoidal = MonoidalDefenseCategory()
+        states = generate_test_states(n=3, seed=11)
+        assert monoidal.verify_interchange(
+            const_morphism(0.1, False, "f"),
+            const_morphism(0.9, True, "f_prime"),
+            const_morphism(0.7, True, "g"),
+            const_morphism(0.1, False, "g_prime"),
+            states,
+        ) is False
 
 
 # ===========================================================================
@@ -885,17 +884,18 @@ class DampedKleisliMonad(DefenseMonad):
 class TestVerifierNegativeControls:
     """Each of the seven verifiers must be able to report ``False``.
 
-    ``serialize_verification_results`` reports 25/25 passing.  Without these
-    tests nothing proved any of the 25 flags *can* go False, so a verifier
+    ``serialize_verification_results`` derives its counts from named checks.
+    Without these tests nothing proved each flag *can* go False, so a verifier
     hardcoded to ``True`` would be indistinguishable from a working one.
 
     Scope note (reported honestly rather than papered over): for genuine
     ``DetectionBound`` inputs the seven lattice flags cannot fail, because
     ``__post_init__`` confines ``rate`` to ``[0, 1]`` and ``__le__`` is float
     ``<=``.  Their negative controls therefore substitute the order relation.
-    The monoidal, operad, enriched (triangle), monad and lens flags are
-    likewise structurally true for the production operations; their controls
-    substitute the operation.  Three flags are falsifiable with ordinary
+    The four monoidal coherence, operad, enriched (triangle), monad and lens
+    flags are structurally true for the production operations; their controls
+    substitute the operation.  Monoidal interchange instead fails on an
+    ordinary short-circuit witness.  Three flags are falsifiable with ordinary
     inputs and no substitution at all: ``lan_dominates_*``,
     ``ran_wellformed_*`` and ``enriched_identity``.
     """
@@ -1059,7 +1059,9 @@ class TestVerifierNegativeControls:
     def test_monad_unit_laws_can_fail(self):
         loud = LoudEtaMonad()
         assert loud.verify_left_unit(self.f, self.states) is False
-        assert loud.verify_right_unit(self.f, self.states) is False
+        # A detecting f short-circuits before eta; use a clean morphism to
+        # expose that the substituted eta is not a right unit.
+        assert loud.verify_right_unit(self.h, self.states) is False
 
     def test_monad_associativity_can_fail(self):
         assert (
@@ -1136,7 +1138,7 @@ class TestVerifierNegativeControls:
     # --- Cross-cutting ----------------------------------------------------
 
     def test_serialized_summary_would_report_failures_if_any_check_failed(self):
-        """The 25/25 summary arithmetic is not hardcoded.
+        """The summary arithmetic is not hardcoded.
 
         ``serialize_verification_results`` derives ``passed``/``failed`` by
         counting; feeding the same counting logic a dict containing a False
@@ -1144,9 +1146,9 @@ class TestVerifierNegativeControls:
         """
         data = serialize_verification_results(n_states=10, seed=2)
         flat = dict(data["results"])
-        assert data["summary"]["failed"] == 0
+        assert data["summary"]["failed"] == 1
         assert data["summary"]["total"] == len(flat)
-        first_key = sorted(flat)[0]
+        first_key = next(key for key in sorted(flat) if flat[key])
         flat[first_key] = False
         recomputed_failed = sum(1 for v in flat.values() if not v)
-        assert recomputed_failed == 1
+        assert recomputed_failed == data["summary"]["failed"] + 1

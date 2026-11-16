@@ -79,7 +79,7 @@ def cohens_d_ci(
     n2: int,
     ci: float = 0.95,
 ) -> Tuple[float, float]:
-    """Confidence interval for Cohen's d via non-central t approximation.
+    """Normal-approximation confidence interval for Cohen's d.
 
     Uses the variance formula for the sampling distribution of d:
 
@@ -113,6 +113,9 @@ def cohens_d(
 
         s_pooled = sqrt(((n1-1)*s1^2 + (n2-1)*s2^2) / (n1+n2-2))
 
+    If both groups are constant but have different means, the limiting effect
+    is signed infinity rather than a fabricated negligible zero effect.
+
     Args:
         group1: Observations from group 1 (e.g. CIF scores).
         group2: Observations from group 2 (e.g. baseline scores).
@@ -132,12 +135,16 @@ def cohens_d(
     var1, var2 = g1.var(ddof=1), g2.var(ddof=1)
 
     pooled_sd = math.sqrt(((n1 - 1) * var1 + (n2 - 1) * var2) / (n1 + n2 - 2))
+    mean_difference = mean1 - mean2
     if pooled_sd == 0.0:
-        d = 0.0
+        d = 0.0 if mean_difference == 0.0 else math.copysign(math.inf, mean_difference)
     else:
-        d = (mean1 - mean2) / pooled_sd
+        d = mean_difference / pooled_sd
 
-    lower, upper = cohens_d_ci(d, n1, n2, ci)
+    if math.isinf(d):
+        lower = upper = d
+    else:
+        lower, upper = cohens_d_ci(d, n1, n2, ci)
 
     return EffectSizeResult(
         measure="Cohen's d",

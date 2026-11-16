@@ -22,11 +22,11 @@ The attack surface has expanded significantly: supply chain breaches surged appr
 After the constraint relaxation attack, the adversary introduces a spurious off-diagonal coupling:
 
 \begin{equation}
-\{FR\}' = [A']\{DP\} = \begin{bmatrix} A_{11} & A_{12} \\ 0 & A_{22}' \end{bmatrix} \begin{bmatrix} DP_1 \\ DP_2 \end{bmatrix}
+\{FR\}' = [A']\{DP\} = \begin{bmatrix} A_{11} & 0 \\ A_{21} & A_{22}' \end{bmatrix} \begin{bmatrix} DP_1 \\ DP_2 \end{bmatrix}
 \label{eq:supply_chain_coupled}
 \end{equation}
 
-The injected term $A_{12}$ allows routing decisions ($DP_1$) to override integrity constraints ($FR_2$), while $A_{22}'$ is weakened from a hard constraint to a soft preference. This violates the Independence Axiom (Axiom 2) \cite{suh2001axiomatic}.
+The injected term $A_{21}$ allows routing decisions ($DP_1$) to override integrity constraints ($FR_2$), while $A_{22}'$ is weakened from a hard constraint to a soft preference. This violates the Independence Axiom (Axiom 2) \cite{suh2001axiomatic}.
 
 ## The Goal Hijacking Attack
 

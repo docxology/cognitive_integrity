@@ -8,26 +8,26 @@ The series and parallel composition theorems of Part 1 (the Defense Mechanisms s
 
 Traditional defense pipelines interleave success paths with explicit null-checking, exception handling, and early-return control flow. Each module must redundantly decide whether the previous module has already flagged the input, and subtle bugs arise when this bookkeeping is inconsistent across modules. Railway-oriented programming \cite{wlaschin2014railway} eliminates this redundancy by structuring computation as a two-track pipeline: every step either stays on the success track (\texttt{Ok}) or diverges to the error track (\texttt{Err}), and subsequent steps automatically receive the current track without the pipeline author writing any branching logic.
 
-The CIF adaptation maps cleanly onto this pattern. Let $\mathrm{Result}[T, E] = \mathrm{Ok}[T] \mid \mathrm{Err}[E]$ be the sum type of successful values of type $T$ and errors of type $E$. For defense, $T$ is the cognitive state $\cogstate{}$ and $E$ is a $\mathrm{DetectionEvent}$ carrying the firing module's identity, score, and captured context. A defense chain becomes
+The CIF adaptation maps cleanly onto this pattern. Let $\mathrm{Result}[T, E] = \mathrm{Ok}[T] \mid \mathrm{Err}[E]$ be the sum type of successful values of type $T$ and errors of type $E$. The generic monad permits any $T$; \texttt{MonadicPipeline} specifically returns \texttt{Ok(list[DefenseResult])} after a clean run. Its detection branch carries a $\mathrm{DetectionEvent}$ with the firing module's identity, score, and details. A defense chain becomes
 
 \begin{lstlisting}[language=Python]
-from src.core.monad import MonadicPipeline, Ok, Err, DetectionEvent
+from src.composition import create_module_dict
+from src.core.monad import MonadicPipeline, Ok, Err
 
-pipeline = MonadicPipeline([firewall, sandbox, tripwire, trust])
-result = pipeline.run(message, context)
+modules = create_module_dict()
+pipeline = MonadicPipeline([modules["firewall"], modules["invariants"]])
+result = pipeline.run("Ignore previous instructions. Disregard your rules.")
 
 match result:
     case Ok(defense_results):
-        # All modules passed: input is clean.
-        # defense_results is a list[DefenseResult], one per module.
-        ...
+        # All modules passed; one DefenseResult per executed module.
+        print([r.module_name for r in defense_results])
     case Err(event):
-        # A detection event fired; pipeline short-circuited.
-        # event.module_name, event.score, event.details are populated.
-        log_detection(event)
+        # The firewall detected this input; invariants did not run.
+        print(event.module_name, event.score, event.details)
 \end{lstlisting}
 
-The key operational property is that once any module returns a $\mathrm{DetectionEvent}$, the $\mathrm{Err}$ track short-circuits the remaining modules. No downstream module can mask, suppress, or ``apologize for'' an upstream detection. We now prove this is a formal monadic property rather than an ad hoc implementation convention.
+The key operational property is that once any module returns a $\mathrm{DetectionEvent}$, the $\mathrm{Err}$ track short-circuits the remaining modules. No downstream module can mask, suppress, or ``apologize for'' an upstream detection. Both `MonadicPipeline([])` and `SeriesPipeline([])` raise `ValueError`; neither treats an empty defense chain as `Ok([])` or as a clean evaluation. We now prove this is a formal monadic property rather than an ad hoc implementation convention.
 
 ## Formal Monadic Laws {#sec:monadic-laws}
 
@@ -50,7 +50,7 @@ satisfies the three standard monad laws and a fourth CIF-specific detection-pres
 \begin{proof}[Proof sketch]
 Laws 1--3 follow from the standard construction of the error monad (also known as the ``either'' monad in Haskell's \texttt{Control.Monad.Error}). Left identity unfolds by definition of \texttt{bind} on an $\mathrm{Ok}$ argument. Right identity unfolds case-wise: if $m = \mathrm{Ok}(t)$, then $\texttt{bind}(\mathrm{Ok}(t), \mathrm{Ok}) = \mathrm{Ok}(t) = m$; if $m = \mathrm{Err}(e)$, then $\texttt{bind}(\mathrm{Err}(e), \mathrm{Ok}) = \mathrm{Err}(e) = m$. Associativity requires case analysis on $m$, $f(m)$; all four cases reduce algebraically via the \texttt{bind} definition.
 
-Law 4 is the CIF-specific invariant that forbids any downstream module from promoting an $\mathrm{Err}$ back to $\mathrm{Ok}$. This property does not hold in arbitrary sum-type monads (e.g., \texttt{Either} in languages where error values can be pattern-matched away), but it is guaranteed in our construction because the \texttt{bind} definition fixes $\mathrm{Err}$ as an absorbing element: no $f$ receives the error value, so no $f$ can transform it. The \texttt{verify\_monad\_laws()} helper in \texttt{src/core/monad.py} checks all four laws empirically over sampled inputs; the absorbing-element property provides the closed-form argument.
+Law 4 is the CIF-specific invariant that forbids any downstream module from promoting an $\mathrm{Err}$ back to $\mathrm{Ok}$. This property does not hold in arbitrary sum-type monads (e.g., \texttt{Either} in languages where error values can be pattern-matched away), but it is guaranteed in our construction because the \texttt{bind} definition fixes $\mathrm{Err}$ as an absorbing element: no $f$ receives the error value, so no $f$ can transform it. The \texttt{verify\_monad\_laws()} helper in \texttt{src/core/monad.py} checks the three standard monad laws over supplied inputs; detection preservation follows directly from the absorbing-element definition rather than from that helper.
 \end{proof}
 \label{thm:monadic-laws}
 
@@ -62,8 +62,9 @@ The monadic pipeline accepts any object that implements a specific call signatur
 
 \begin{lstlisting}[language=Python]
 from typing import Protocol
-from src.core.monad import Ok, Err, Result, DetectionEvent
-from src.core.base import DefenseResult
+from src.core.base import CognitiveState
+from src.core.monad import Ok, Result, DetectionEvent
+from src.utils.types import DefenseResult
 
 class DefenseProtocol(Protocol):
     """Any object with this signature is a CIF-compatible defense."""
@@ -81,22 +82,22 @@ class MonadicDefense(Protocol):
     ) -> Result[CognitiveState, DetectionEvent]: ...
 \end{lstlisting}
 
-The adapter \texttt{from\_defense\_result()} in \texttt{src/core/monad.py} converts any \texttt{DefenseProtocol} implementation into a \texttt{MonadicDefense}, and the categorical lifting \texttt{lift\_defense\_module()} (\texttt{src/formal/category\_theory.py}) wraps it as a \texttt{DefenseMorphism}. Together these two bridges mean that every existing \texttt{DefenseModule} subclass in the codebase is automatically composable in the monadic pipeline \emph{without} any modification to its class definition. New defense modules need only provide an \texttt{evaluate()} method; inheritance from \texttt{DefenseModule} remains available but is no longer required for pipeline composability.
+The function \texttt{from\_defense\_result()} in \texttt{src/core/monad.py} lifts an individual \texttt{DefenseResult} into \texttt{Ok} or \texttt{Err}; it does not convert a module object into a \texttt{MonadicDefense}. \texttt{MonadicPipeline} itself accepts duck-typed modules implementing \texttt{evaluate(message, context)}. Existing composition adapters therefore work without subclass modification, while core classes that expose only a different API (for example, \texttt{CognitiveFirewall.classify}) must first be wrapped in an adapter. The separate categorical helper \texttt{lift\_defense\_module()} in \texttt{src/formal/category\_theory.py} is not required by \texttt{MonadicPipeline}.
 
 ## Relationship to Existing Architecture {#sec:monadic-vs-series}
 
-\cref{thm:monadic-laws} proves that the monadic pipeline is a formal object with the detection-preservation law baked in. It does not, however, change \emph{what} CIF detects. The \texttt{MonadicPipeline} and the pre-existing \texttt{SeriesPipeline} produce identical detection outcomes on every input: both apply modules in order, both short-circuit on the first detection, both aggregate $\mathrm{DefenseResult}$ objects from non-firing modules. The value added by the monadic formulation is formal and architectural rather than behavioral.
+\cref{thm:monadic-laws} proves that the monadic pipeline is a formal object with the detection-preservation law baked in. Given the same nonempty ordered module list and input, \texttt{MonadicPipeline} and \texttt{SeriesPipeline} produce the same detection verdict and execute the same prefix of modules: both stop at the first detection. Their return containers and timing fields differ, so this is not a claim of bit-identical results. The value added by the monadic formulation is formal and architectural rather than a different detection rule.
 
-Table: Comparison of pipeline interfaces. Detection outcomes are identical; the monadic interface adds formal guarantees, typed composition, and categorical structure. {#tab:pipeline-comparison}
+Table: Comparison of pipeline interfaces. Detection verdicts agree for the same nonempty ordered modules; the monadic interface adds the Result abstraction. {#tab:pipeline-comparison}
 
 | Feature | \texttt{SeriesPipeline} | \texttt{MonadicPipeline} |
 | --- | --- | --- |
 | Detection outcome on input $x$ | identical | identical |
 | Error propagation | manual branching | automatic via \texttt{Err} |
-| Type of return value | \texttt{list[DefenseResult]} + flag | \texttt{Result[\ldots, DetectionEvent]} |
-| Categorical composition | implicit | explicit (\texttt{compose\_morphisms}) |
+| Type of return value | \texttt{PipelineResult} | \texttt{Result[\ldots, DetectionEvent]} |
+| Result composition | caller-managed | \texttt{bind} / \texttt{map\_result} |
 | Detection-preservation law | operationally satisfied | formally verified (\cref{thm:monadic-laws}) |
 | Typical use site | existing code, regression tests | new code, formal analysis |
 
 
-The decision rule for practitioners is straightforward: existing call sites continue to use \texttt{SeriesPipeline}, while new code or proofs requiring the categorical structure use \texttt{MonadicPipeline}. Because both interfaces produce identical outcomes, no migration is forced. The categorical lifting \texttt{lift\_defense\_module()} permits ad-hoc composition of monadic and ABC-style modules within the same pipeline, bridging the two approaches at the boundary of legacy and formally-verified code. See Supplement S09 (\cref{sec:s09-functional-api}) for the full API specification.
+Existing call sites can continue to use \texttt{SeriesPipeline}; callers wanting the \texttt{Result} interface can use \texttt{MonadicPipeline} with the same ordered adapter instances. No migration is forced by the detection rule. See Supplement S09 (\cref{sec:s09-functional-api}) for the functional API.

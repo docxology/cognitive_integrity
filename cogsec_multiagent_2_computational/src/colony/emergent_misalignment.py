@@ -1,6 +1,6 @@
 """No adversary scenario: emergent misalignment from accumulated errors.
 
-No adversary is present.  Each agent has small random noise (std=0.01) per
+No adversary is present.  Each agent has small random noise (std=0.015) per
 step.  Over 1000 steps, cumulative drift can cause the colony to become
 misaligned from its initial state.  This tests whether the system can
 detect *organic* drift.

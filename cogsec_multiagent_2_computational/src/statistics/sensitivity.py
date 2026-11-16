@@ -177,9 +177,11 @@ def k_fold_cross_validation(
     for label in unique_labels:
         label_idx = np.where(labels == label)[0]
         rng.shuffle(label_idx)
-        # Round-robin assign to folds
+        # Continue at the least-populated fold instead of restarting every
+        # class at fold zero, which can leave later folds completely empty.
+        offset = min(range(k), key=lambda i: len(fold_indices[i]))
         for i, idx in enumerate(label_idx):
-            fold_indices[i % k].append(int(idx))
+            fold_indices[(offset + i) % k].append(int(idx))
 
     # Shuffle within each fold for good measure
     for fold in fold_indices:
