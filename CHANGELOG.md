@@ -37,6 +37,9 @@ where a major version marks a change to a published number.
   Historical scientific inputs, artifact identities, renderer history and strict
   validation remain unchanged; the original input snapshot is retained in history.
 
+- Preserved every tied immediate successor in `LatticeViz.covering_relations()`:
+  the diagram now emits every node at the minimum strictly greater rate rather
+  than only the first, with a regression covering rates `[0, 0.2, 0.2, 1]`.
 - Reconciled Part 2's integrated and legacy attack-corpus descriptions against
   the shipped generator and retained experiment artifacts. The current corpus
   chapter reports five primary families, fifteen subcategories, 1,475 uniquely
