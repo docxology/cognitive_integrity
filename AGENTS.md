@@ -50,7 +50,7 @@ manuscript. Nothing compared the three papers to each other, which is how a shar
 came to be published as two different numbers in two papers that cite each other.
 
 ```bash
-# the gating set — this is what CI runs and what must exit 0. Run it in Part 2's
+# The gating set defined in the CI workflow must exit 0. Run it in Part 2's
 # environment: `shared-quantities` derives its Bayesian interval by loading Part
 # 2's src/statistics/bayesian.py, so NumPy and SciPy must be importable.
 uv run --project cogsec_multiagent_2_computational --frozen \
@@ -98,7 +98,7 @@ manuscripts, and a governed value that disagrees with its artifact fails the bui
 The series test count is derived too. `scripts/collect_test_inventory.py` records collected
 counts into `cogsec_multiagent_2_computational/output/data/test_inventory.json`; `--check`
 recollects and fails if the recorded numbers have moved. Run that check after adding tests;
-CI provisions all three part environments and runs the same fresh collection check.
+The CI definition provisions all three part environments for this collection check.
 The inventory counts *collected* tests rather than passes, because collection
 is deterministic and side-effect free while a pass count depends on the environment a given run
 happened to have.
@@ -133,7 +133,7 @@ and requires it to be caught.
 
 Each project follows the standalone paradigm with:
 
-- `manuscript/` — Paper content
+- `docs/manuscript/` — Canonical source for each paper
 - `src/` — Source implementations
 - `scripts/` — Entry point scripts
 - `tests/` — Test suites
@@ -144,7 +144,12 @@ Each project follows the standalone paradigm with:
 
 - Each part’s generated PDFs, figures, and reports live under that part’s `output/` and (after `05_copy_outputs.py`) under `output/cognitive_integrity/<part>/`. Program-level [`.gitignore`](.gitignore) ignores `**/output/`, cache dirs, and `**/manuscript_verification.log`.
 
-## Build / test (from repo root)
+## Build and test
+
+For changes to trust-calculus documentation, use the
+[isolated numerical fixture](docs/verification/README.md). Its local receipt
+supports the stated score and input-validation observations.
+
 
 **When nested inside `docxology/template`** (`./run.sh` and `scripts/` present at that repo's root):
 
@@ -154,6 +159,6 @@ uv run pytest projects/cognitive_integrity/cogsec_multiagent_2_computational/tes
 uv run pytest projects/cognitive_integrity/cogsec_multiagent_3_practical/tests/ -q
 ```
 
-Run one part at a time if you need to isolate failures. Part 2 imports `scipy` (see that part’s `pyproject.toml`); if imports fail, `uv sync` from the **repository root** first, or sync that part’s environment as described in the program [README](README.md).
+Run one part at a time if you need to isolate failures. Part 2 imports `scipy` (see that part’s `pyproject.toml`); if imports fail, use `uv sync --locked` from the Part 2 directory as described in the program [README](README.md).
 
-**In a standalone checkout** (no `run.sh` at this root), there is no repo-root entry point — build/test each part from its own directory instead: `uv sync && uv run pytest tests/ -q && uv run ruff check .`, plus `make all` in `cogsec_multiagent_2_computational/` for the full data/figures/tables/verify pipeline, or `uv run python scripts/verify_manuscript.py --root docs/manuscript` in Parts 1/3. See the program [README](README.md) § Building.
+**In a standalone checkout** (no `run.sh` at this root), the papers have no shared root environment — build/test each part from its own directory instead: `uv sync && uv run pytest tests/ -q && uv run ruff check .`, plus `make all` in `cogsec_multiagent_2_computational/` for the full data/figures/tables/verify pipeline, or `uv run python scripts/verify_manuscript.py --root docs/manuscript` in Parts 1/3. See the program [README](README.md) § Building.
