@@ -135,11 +135,12 @@ By the trust delegation rule (\cref{def:trust-delegation}):
 \mathcal{T}_{a \to c}^{del} = \min(\mathcal{T}_{a \to b}, \mathcal{T}_{b \to c}) \cdot \delta
 \end{equation}
 
-Since $\min(\mathcal{T}_{a \to b}, \mathcal{T}_{b \to c}) \leq \mathcal{T}_{a \to b}$ and $\delta < 1$:
+Since $\min(\mathcal{T}_{a \to b}, \mathcal{T}_{b \to c}) \leq \mathcal{T}_{a \to b}$ and $0 < \delta < 1$:
 \begin{equation}
 \label{eq:lem-single-hop-2}
-\mathcal{T}_{a \to c}^{del} = \min(\mathcal{T}_{a \to b}, \mathcal{T}_{b \to c}) \cdot \delta \leq \mathcal{T}_{a \to b} \cdot \delta < \mathcal{T}_{a \to b}
+\mathcal{T}_{a \to c}^{del} = \min(\mathcal{T}_{a \to b}, \mathcal{T}_{b \to c}) \cdot \delta \leq \mathcal{T}_{a \to b} \cdot \delta \leq \mathcal{T}_{a \to b}
 \end{equation}
+The last inequality is strict when $\mathcal{T}_{a \to b} > 0$. If the incoming score is zero, the delegated score is also zero.
 \end{proof}
 
 \begin{lemma}[Trust Decay Bound]
