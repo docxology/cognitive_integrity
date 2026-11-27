@@ -4,6 +4,8 @@ A three-part manuscript series establishing the theoretical foundations, computa
 
 ![Cognitive Integrity Framework architecture: architectural, runtime, agent cognitive state and coordination layers](cogsec_multiagent_1_theory/output/figures/cif_architecture.png)
 
+[Program documentation](docs/README.md) · [Local trust verification](docs/verification/README.md)
+
 ## Running it
 
 Each paper is a self-contained Python project with its own pinned environment.

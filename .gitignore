@@ -65,3 +65,5 @@ manuscript_verification.log
 output/reports/output_statistics.txt
 **/output/reports/output_statistics.txt
 .zenodo-drafts.json
+
+/output/
