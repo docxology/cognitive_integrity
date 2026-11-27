@@ -1,7 +1,7 @@
 # Local trust-calculus assurance note
 
 The numbered files here describe a bounded, reproducible check of the existing
-theory trust module. The [publication inventory](MANUSCRIPT_STATUS.md) records
+theory trust module. The [publication inventory](../MANUSCRIPT_STATUS.md) records
 the separate source trees for the three-part Cognitive Integrity Program.
 
 Run [the local trust fixture](../verification/README.md) first. Its JSON and
@@ -9,9 +9,10 @@ figure are generated inputs for this paper.
 
 ## Render the note
 
-Use a clean checkout and
-[docxology/template at revision
-87704feae0a4490ef7dad9c931d268e8c30273c2](https://github.com/docxology/template/tree/87704feae0a4490ef7dad9c931d268e8c30273c2).
+Start from a clean checkout in a directory named `cognitive_integrity` so the
+validator can locate the combined PDF. Use the
+[pinned Template source](https://github.com/docxology/template/tree/87704feae0a4490ef7dad9c931d268e8c30273c2) at
+revision `87704feae0a4490ef7dad9c931d268e8c30273c2`.
 Install the Template environment and put Pandoc, the matching
 pandoc-crossref, XeLaTeX and BibTeX on PATH. From the project root, register
 this checkout with Template.

@@ -31,7 +31,7 @@ reproduction require their own evidence.
 
 ## Program-level assurance note
 
-The [local trust-calculus note](README.md) documents a finite mathematical
+The [local trust-calculus note](manuscript/README.md) documents a finite mathematical
 fixture against the theory module. The three separately maintained papers
 above retain their own source, claims, and publication history. The local
 note has its own numerical verification and rendered provenance.
