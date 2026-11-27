@@ -5,7 +5,8 @@ Agent-facing notes for this documentation tree.
 ## Layout
 
 - `README.md` — human entry point; indexes this program docs/ and each part's own `docs/` folder.
-- `manuscript/MANUSCRIPT_STATUS.md` — why this top-level repo carries no top-level manuscript, and where the real manuscripts live.
+- `verification/` contains the local trust fixture and its reproduction guide.
+- `manuscript/` contains the finite trust assurance note and the publication inventory.
 
 ## Repository structure
 

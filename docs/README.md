@@ -4,6 +4,12 @@ Documentation index for the **Cognitive Security for Multiagent Operators**
 three-part manuscript series. This index is the entry point for documentation
 across the program and each part's `docs/` folder.
 
+## Local assurance
+
+- [Run the local numerical trust fixture](verification/README.md)
+- [Read and render the assurance note](manuscript/README.md)
+- [Publication inventory](manuscript/MANUSCRIPT_STATUS.md)
+
 ## Program overview
 
 The **Cognitive Integrity Framework (CIF)** provides defense-in-depth security
