@@ -8,7 +8,15 @@ across the program and each part's `docs/` folder.
 
 - [Run the local numerical trust fixture](verification/README.md)
 - [Read and render the assurance note](manuscript/README.md)
-- [Publication inventory](manuscript/MANUSCRIPT_STATUS.md)
+
+## Publications
+
+- [Paper series and version DOIs](../README.md#paper-series)
+- [Publication inventory and archived PDF checksums](manuscript/MANUSCRIPT_STATUS.md)
+
+Each part keeps its authored sections in `docs/manuscript/` and its generated
+artifacts in `output/`. Part 2's `src/manuscript/` contains Python modules and
+package guides.
 
 ## Program overview
 
@@ -22,7 +30,6 @@ series map, reading order, and build commands, and
 | Location | Contents |
 | -------- | -------- |
 | **`README.md` (this file)** | Program-wide documentation index |
-
 | [Part 2 `docs/RED_TEAM_ASSESSMENT.md`](../cogsec_multiagent_2_computational/docs/RED_TEAM_ASSESSMENT.md) | Authoritative deep red-team (adversarial) assessment — theory soundness, empirical/model validity, code/security/reproducibility, and their resolutions |
 | [Part 1 `docs/`](../cogsec_multiagent_1_theory/docs/) | [Part 1 index](../cogsec_multiagent_1_theory/docs/README.md) — formal-foundations documentation (manuscript map, figures, tests) |
 | [Part 2 `docs/`](../cogsec_multiagent_2_computational/docs/) | [Part 2 index](../cogsec_multiagent_2_computational/docs/README.md) — claims traceability, framework validation, per-module usage guides, audit reports |
