@@ -8,11 +8,17 @@ A three-part manuscript series establishing the theoretical foundations, computa
 
 ## Running it
 
-Each paper is a self-contained Python project with its own pinned environment.
+To check the trust calculus with a small numerical fixture, start with the
+[local trust verification guide](docs/verification/README.md). It records
+the computed weighted score, fixed-path delegation scores, and invalid-input
+checks. The [assurance note](docs/manuscript/README.md) describes what those
+observations support.
+
+Each paper is a self-contained Python project with its own lockfile and requires Python 3.11 or later.
 From any paper's directory:
 
 ```bash
-uv sync                       # install the pinned environment
+uv sync --locked              # install the pinned environment
 uv run pytest tests/ -q       # the paper's own test suite
 uv run python scripts/generate_all_figures.py   # regenerate every figure
 uv run python scripts/verify_manuscript.py      # the manuscript gate
@@ -130,7 +136,7 @@ uv run pytest projects/cognitive_integrity/cogsec_multiagent_3_practical/tests/ 
 
 Part 2's tests import `scipy` (declared in that part's `pyproject.toml`). If collection fails with `ModuleNotFoundError: scipy`, run `uv sync` from `cogsec_multiagent_2_computational/` so its dependencies are installed, then re-run pytest from the repo root as above.
 
-**In a standalone checkout of this repo** (no `run.sh`/`scripts/` at this root — the case if you cloned `docxology/cognitive_integrity` directly rather than as a nested project of `docxology/template`), there is no repo-root build entry point. Each part is independently buildable from its own directory:
+**In a standalone checkout**, build each paper from its own directory. The root `scripts/` contains series-level checks and uses the environment documented below.
 
 ```bash
 (cd cogsec_multiagent_1_theory && uv sync --frozen && uv run --frozen pytest tests/ -q && uv run --frozen ruff check .)
@@ -148,7 +154,7 @@ manuscript. Nothing compared the three papers to each other, which is how a shar
 came to be published as two different numbers in two papers that cite each other.
 
 ```bash
-# the gating set — this is what CI runs and what must exit 0. Run it in Part 2's
+# The gating set defined in the CI workflow must exit 0. Run it in Part 2's
 # environment: `shared-quantities` derives its Bayesian interval by loading Part
 # 2's src/statistics/bayesian.py, so NumPy and SciPy must be importable.
 uv run --project cogsec_multiagent_2_computational --frozen \
@@ -196,7 +202,7 @@ manuscripts, and a governed value that disagrees with its artifact fails the bui
 The series test count is derived too. `scripts/collect_test_inventory.py` records collected
 counts into [`test_inventory.json`](cogsec_multiagent_2_computational/output/data/test_inventory.json);
 `--check` recollects and fails if the recorded numbers have moved. Run that check after adding
-tests; CI provisions all three part environments and runs the same fresh collection check.
+tests. The CI definition provisions all three part environments for this collection check.
 The inventory counts *collected* tests rather than passes, because collection
 is deterministic and side-effect free while a pass count depends on the environment a given run
 happened to have.
