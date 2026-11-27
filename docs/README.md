@@ -12,7 +12,7 @@ across the program and each part's `docs/` folder.
 ## Publications
 
 - [Paper series and version DOIs](../README.md#paper-series)
-- [Publication inventory and archived PDF checksums](manuscript/MANUSCRIPT_STATUS.md)
+- [Publication inventory and archived PDF checksums](MANUSCRIPT_STATUS.md)
 
 Each part keeps its authored sections in `docs/manuscript/` and its generated
 artifacts in `output/`. Part 2's `src/manuscript/` contains Python modules and

@@ -16,7 +16,7 @@ python docs/verification/replay_trust.py
 ```
 
 The fixture requires the weighted score, path scores, and invalid-input
-controls documented in the [assurance note](../manuscript/README.md).
+controls documented in the [assurance note's results](../manuscript/02_results.md#results).
 Its receipt is `output/data/trust_fixture.json`. A failure stops artifact
 generation and calls for inspection of the source and stated invariant.
 
